@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<extension name="Items Managment" url="/taoItems/Items/index">
+		<sections>
+			<section name="items" url="/taoItems/Items/index">
+				<actions>
+					<action name="create new item" url="/taoItems/Items/create" />
+					<action name="import items" url="/taoItems/Items/import" />
+					<action name="choose existing item(s)" url="/taoItems/Items/select" />
+					<action name="preview item" url="" />
+					<action name="edit item history" url="" />
+					<action name="search for items" url="/taoItems/Items/search" />
+				</actions>
+			</section>
+			<section name="item editor" url="/taoItems/ItemsEditor/index">
+				<actions>
+					<action name="item properties" url="/taoItems/ItemsEditor/property" />
+					<action name="text fields" url="/taoItems/ItemsEditor/fields" />
+					<action name="stimulus" url="/taoItems/ItemsEditor/stimulus" />
+				</actions>
+			</section>
+			<section name="item types" url="">
+				<actions>
+					<action name="create new item model" url="" />
+					<action name="choose item model" url="" />
+					<action name="item model properties" url="" />
+					<action name="edit import file format" url="" />
+					<action name="search for item model" url="" />
+				</actions>
+			</section>
+		</sections>
+	</extension>

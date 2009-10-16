@@ -1,6 +1,6 @@
 <?php
 
-class Items extends Module{
+class ItemsEditor extends Module{
 
 	public function index(){
 		$context = Context::getInstance();
@@ -8,25 +8,19 @@ class Items extends Module{
 		$this->setView('view.tpl');
 	}
 	
-	public function create(){
+	public function property(){
 		$context = Context::getInstance();
 		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
 		$this->setView('view.tpl');;
 	}
 	
-	public function import(){
+	public function fields(){
 		$context = Context::getInstance();
 		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
 		$this->setView('view.tpl');
 	}
 	
-	public function select(){
-		$context = Context::getInstance();
-		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
-		$this->setView('view.tpl');
-	}
-	
-	public function search(){
+	public function stimulus(){
 		$context = Context::getInstance();
 		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
 		$this->setView('view.tpl');
