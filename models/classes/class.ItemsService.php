@@ -156,13 +156,13 @@ class taoItems_models_classes_ItemsService
      * @param  string mode
      * @return core_kernel_classes_Resource
      */
-    public function getItem( mixed $identifier, $mode = 'uri')
+    public function getItem($identifier, $mode = 'uri')
     {
         $returnValue = null;
 
         // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 begin
 		
-		$returnValue = $this->getOneResourceBy( $this->itemClass, $identifier, $mode);
+		$returnValue = $this->getOneInstanceBy( $this->itemClass, $identifier, $mode);
 		
         // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 end
 
@@ -178,7 +178,7 @@ class taoItems_models_classes_ItemsService
      * @param  string mode
      * @return core_kernel_classes_Resource
      */
-    public function getItemModel( mixed $identifier, $mode = 'uri')
+    public function getItemModel($identifier, $mode = 'uri')
     {
         $returnValue = null;
 

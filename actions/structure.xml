@@ -2,13 +2,19 @@
 	<extension name="Items Managment" url="/taoItems/Items/index">
 		<sections>
 			<section name="items" url="/taoItems/Items/index">
+				<trees>
+					<tree name="item profiles" 
+						dataUrl="/taoItems/Items/getItems" 
+						editClassUrl=""
+						editInstanceUrl="/taoItems/Items/edit"
+						addInstanceUrl="/taoItems/Items/add"
+					/>
+				</trees>
 				<actions>
-					<action name="create new item" url="/taoItems/Items/create" />
+					<action name="items list" url="/taoItems/Items/index" />
+					<action name="create new item" url="/taoItems/Items/add" />
 					<action name="import items" url="/taoItems/Items/import" />
-					<action name="choose existing item(s)" url="/taoItems/Items/select" />
-					<action name="preview item" url="" />
-					<action name="edit item history" url="" />
-					<action name="search for items" url="/taoItems/Items/search" />
+					<action name="export items" url="/taoItems/Items/import" />
 				</actions>
 			</section>
 			<section name="item editor" url="/taoItems/ItemsEditor/index">

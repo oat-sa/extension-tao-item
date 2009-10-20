@@ -9,4 +9,4 @@
 <div class="ui-widget-content ui-corner-bottom ui-state-default" style="padding:5px; font-size:0.9em;">
 	<?=get_data('myForm')?>
 </div>
-
+<?include('footer.tpl');?>
