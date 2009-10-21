@@ -5,14 +5,14 @@
 				<trees>
 					<tree name="item profiles" 
 						dataUrl="/taoItems/Items/getItems" 
-						editClassUrl=""
-						editInstanceUrl="/taoItems/Items/edit"
-						addInstanceUrl="/taoItems/Items/add"
+						editClassUrl="/taoItems/Items/editClass"
+						editInstanceUrl="/taoItems/Items/editInstance"
+						addInstanceUrl="/taoItems/Items/addInstance"
+						addSubClassUrl="/taoItems/Items/addSubClass"
 					/>
 				</trees>
 				<actions>
 					<action name="items list" url="/taoItems/Items/index" />
-					<action name="create new item" url="/taoItems/Items/add" />
 					<action name="import items" url="/taoItems/Items/import" />
 					<action name="export items" url="/taoItems/Items/import" />
 				</actions>

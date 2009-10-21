@@ -10,8 +10,8 @@ class Items extends Module{
 
 	public function index(){
 		$context = Context::getInstance();
-		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
-		$this->setView('view.tpl');
+		$this->setData('content', "this is the ". get_class($this) ." module, " . $context->getActionName());
+		$this->setView('index.tpl');
 	}
 	
 	/**
@@ -24,60 +24,33 @@ class Items extends Module{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
-		
-		$data = array();
-		
-		
-		$instances = array();
-		foreach($this->service->getItems() as $instance){
-			$instances[] = array(
-					'data' 	=> $instance->getLabel(),
-					'attributes' => array(
-						'id' => tao_helpers_Uri::encode($instance->uriResource),
-						'class' => 'node-instance'
-					)
-				);
-		}
-		$itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
-		//format classes for json tree datastore 
-		$data = array(
-				'data' 	=> $itemClass->getLabel(),
-				'attributes' => array(
-						'id' => tao_helpers_Uri::encode($itemClass->uriResource),
-						'class' => 'node-class'
-					),
-				'children'	=> $instances
-			);
-		
-		
-		
 		//render directly the json
-		echo json_encode($data);
+		$highlightUri = '';
+		if($this->hasSessionAttribute("showNodeUri")){
+			$highlightUri = $this->getSessionAttribute("showNodeUri");
+			unset($_SESSION[SESSION_NAMESPACE]["showNodeUri"]);
+		} 
+		echo json_encode( $this->service->toTree(new core_kernel_classes_Class( TAO_ITEM_CLASS ), true, true, $highlightUri));
 	}
 	
-	public function add(){
-		$itemClass = new core_kernel_classes_Class( TAO_ITEM_CLASS );
-		$myForm = tao_helpers_form_GenerisFormFactory::createFromClass($itemClass);
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-				$instance = $this->service->createInstance($itemClass);
-				$instance = $this->service->bindProperties($instance, $myForm->getValues());
-				print "<pre>";
-				print_r($instance);
-				print "<pre><br>";
-				$this->setData('message', 'item created');
-			}
+	public function addInstance(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
 		}
-		
-		$this->setData('formTitle', 'Create a new Item');
-		$this->setData('myForm', $myForm->render());
-		$this->setView('form.tpl');;
+		$itemClass = $this->getCurrentClass();
+		$instance = $this->service->createInstance($itemClass);
+		if($instance instanceof core_kernel_classes_Resource){
+			echo json_encode(array(
+				'label'	=> $instance->getLabel(),
+				'uri' 	=> tao_helpers_Uri::encode($instance->uriResource)
+			));
+		}
 	}
 	
-	public function edit(){
-		$itemClass = new core_kernel_classes_Class( TAO_ITEM_CLASS );
+	public function editInstance(){
+		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentItem();
-		$myForm = tao_helpers_form_GenerisFormFactory::createFromClass($itemClass, $item);
+		$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($itemClass, $item);
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$this->service->bindProperties($item, $myForm->getValues());
@@ -90,16 +63,50 @@ class Items extends Module{
 		$this->setView('form.tpl');;
 	}
 	
+	public function addSubClass(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$subClass = $this->service->createSubClass($this->getCurrentClass());
+		if($subClass instanceof core_kernel_classes_Class){
+			echo json_encode(array(
+				'label'	=> $subClass->getLabel(),
+				'uri' 	=> tao_helpers_Uri::encode($subClass->uriResource)
+			));
+		}
+	}
+	
+	public function editClass(){
+		$myForm = tao_helpers_form_GenerisFormFactory::classEditor($this->getCurrentClass());
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				$class = $this->service->bindProperties($this->getCurrentClass(), $myForm->getValues());
+				
+				if($class instanceof core_kernel_classes_Resource){
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($class->uriResource));
+				}
+				
+				$this->setData('message', 'class saved');
+				$this->setData('reload', true);
+				$this->forward('Items', 'index');
+			}
+		}
+		
+		$this->setData('formTitle', 'Edit a class');
+		$this->setData('myForm', $myForm->render());
+		$this->setView('form.tpl');
+	}
+	
 	public function import(){
 		$context = Context::getInstance();
-		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
-		$this->setView('view.tpl');
+		$this->setData('content', "this is the ". get_class($this) ." module, " . $context->getActionName());
+		$this->setView('index.tpl');
 	}
 	
 	public function export(){
 		$context = Context::getInstance();
-		$this->setData('testVar', "this is the ". get_class($this) ." module, " . $context->getActionName());
-		$this->setView('view.tpl');
+		$this->setData('content', "this is the ". get_class($this) ." module, " . $context->getActionName());
+		$this->setView('index.tpl');
 	}
 	
 	
@@ -122,7 +129,7 @@ class Items extends Module{
 		return $item;
 	}
 	
-	private function getCurrentModel(){
+	private function getCurrentClass(){
 		$classUri = tao_helpers_Uri::decode($this->getRequestParameter('classUri'));
 		if(is_null($classUri) || empty($classUri)){
 			throw new Exception("No valid uri found");
@@ -130,5 +137,6 @@ class Items extends Module{
 		
 		return  new core_kernel_classes_Class($classUri);
 	}
+	
 }
 ?>
