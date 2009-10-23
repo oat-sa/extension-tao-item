@@ -80,12 +80,38 @@ class Items extends Module{
 		$myForm = tao_helpers_form_GenerisFormFactory::classEditor($this->getCurrentClass(), new core_kernel_classes_Class( TAO_ITEM_CLASS ));
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				$class = $this->service->bindProperties($this->getCurrentClass(), $myForm->getValues());
 				
-				if($class instanceof core_kernel_classes_Resource){
+				$classValues = array();
+				$propertyValues = array();
+				foreach($myForm->getValues() as $key => $value){
+					if(preg_match("/^class_/", $key)){
+						$classValues[str_replace('class_', '', $key)] = $value;
+					}
+					if(preg_match("/^property_/", $key)){
+						
+						$key = str_replace('property_', '', $key);
+						$propNum = substr($key, 0, 1 );
+						$key = str_replace($propNum.'_', '', $key);
+						$propertyValues[$propNum][$key] = $value;
+					}
+				}
+				/*print "<pre>";
+				print_r($_POST);
+				print "</pre>";
+				print "<pre>";
+				print_r($myForm->getValues());
+				print "</pre>";
+				print "<pre>";
+				print_r($classValues);
+				print "</pre>";*/
+				
+				$clazz = $this->service->bindProperties($this->getCurrentClass(), $classValues);
+				foreach($propertyValues as $propertyValue){
+			//		$this->service->bindProperties(new core_kern, $classValues);
+				}
+				if($clazz instanceof core_kernel_classes_Resource){
 					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($class->uriResource));
 				}
-				
 				$this->setData('message', 'class saved');
 				$this->setData('reload', true);
 				$this->forward('Items', 'index');
