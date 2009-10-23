@@ -77,7 +77,7 @@ class Items extends Module{
 	}
 	
 	public function editClass(){
-		$myForm = tao_helpers_form_GenerisFormFactory::classEditor($this->getCurrentClass());
+		$myForm = tao_helpers_form_GenerisFormFactory::classEditor($this->getCurrentClass(), new core_kernel_classes_Class( TAO_ITEM_CLASS ));
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$class = $this->service->bindProperties($this->getCurrentClass(), $myForm->getValues());
