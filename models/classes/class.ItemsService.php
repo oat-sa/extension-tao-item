@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 19.10.2009, 10:28:24 with ArgoUML PHP module 
+ * Automatically generated on 26.10.2009, 17:51:52 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
@@ -62,44 +62,12 @@ class taoItems_models_classes_ItemsService
     protected $itemClass = null;
 
     /**
-     * Short description of attribute itemModelClass
-     *
-     * @access protected
-     * @var Class
-     */
-    protected $itemModelClass = null;
-
-    /**
-     * Short description of attribute itemContentProperty
-     *
-     * @access protected
-     * @var Property
-     */
-    protected $itemContentProperty = null;
-
-    /**
-     * Short description of attribute itemModelProperty
-     *
-     * @access protected
-     * @var Property
-     */
-    protected $itemModelProperty = null;
-
-    /**
-     * Short description of attribute swfFileProperty
-     *
-     * @access protected
-     * @var Property
-     */
-    protected $swfFileProperty = null;
-
-    /**
      * Short description of attribute itemsOntologies
      *
      * @access protected
      * @var array
      */
-    protected $itemsOntologies = array('http://www.tao.lu/Ontologies/TAOItem.rdf#');
+    protected $itemsOntologies = array('http://www.tao.lu/Ontologies/TAOItem.rdf');
 
     // --- OPERATIONS ---
 
@@ -117,13 +85,64 @@ class taoItems_models_classes_ItemsService
 		$this->loadOntologies($this->itemsOntologies);
 		
 		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
-		$this->itemModelClass		= new core_kernel_classes_Class( TAO_ITEM_MODEL_CLASS );
-		$this->itemContentProperty	= new core_kernel_classes_Property('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent');
-		$this->itemModelProperty	= new core_kernel_classes_Property('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel');
-		$this->swfFileProperty		= new core_kernel_classes_Property('http://www.tao.lu/Ontologies/TAOItem.rdf#SWFFile');
-		
 		
         // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 end
+    }
+
+    /**
+     * Short description of method isItemSubClass
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  Class clazz
+     * @return boolean
+     */
+    public function isItemSubClass( core_kernel_classes_Class $clazz)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001AD2 begin
+		
+		foreach($clazz->getParentClasses(true) as $parent){
+			if($parent->uriResource == $this->itemClass->uriResource){
+				$returnValue = true;
+				break;
+			}
+		}
+		
+        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001AD2 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getItem
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  mixed identifier
+     * @param  Class itemClazz
+     * @param  string mode
+     * @return core_kernel_classes_Resource
+     */
+    public function getItem($identifier,  core_kernel_classes_Class $itemClazz = null, $mode = 'uri')
+    {
+        $returnValue = null;
+
+        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 begin
+		if(is_null($itemClazz)){
+			$itemClazz = $this->itemClass;
+		}
+		if($itemClazz->uriResource != $this->itemClass->uriResource){
+			if(!$this->isItemSubClass($itemClazz)){
+				throw new Exception("The item class is not a valid item sub class");
+			}
+		}
+		$returnValue = $this->getOneInstanceBy( $itemClazz, $identifier, $mode);
+		
+        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 end
+
+        return $returnValue;
     }
 
     /**
@@ -148,50 +167,6 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getItem
-     *
-     * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
-     * @param  mixed identifier
-     * @param  string mode
-     * @return core_kernel_classes_Resource
-     */
-    public function getItem($identifier, $mode = 'uri')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 begin
-		
-		$returnValue = $this->getOneInstanceBy( $this->itemClass, $identifier, $mode);
-		
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 end
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method getItemModel
-     *
-     * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
-     * @param  mixed identifier
-     * @param  string mode
-     * @return core_kernel_classes_Resource
-     */
-    public function getItemModel($identifier, $mode = 'uri')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:000000000000189D begin
-		
-		$returnValue = $this->getOneResourceBy( $this->itemModelClass, $identifier, $mode, true);
-		
-        // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:000000000000189D end
-
-        return $returnValue;
-    }
-
-    /**
      * Short description of method createItem
      *
      * @access public
@@ -200,7 +175,7 @@ class taoItems_models_classes_ItemsService
      * @param  string itemContent
      * @return core_kernel_classes_Resource
      */
-    public function createItem( mixed $itemModel = null, $itemContent = '')
+    public function createItem( $itemModel = null, $itemContent = '')
     {
         $returnValue = null;
 
@@ -258,6 +233,30 @@ class taoItems_models_classes_ItemsService
 		}
 		
         // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BB end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method deleteItemSubClazz
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  Class clazz
+     * @return boolean
+     */
+    public function deleteItemSubClazz( core_kernel_classes_Class $clazz)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001ACF begin
+		
+		if(!is_null($clazz)){
+			if($this->isItemSubClass($clazz)){
+				$returnValue = $clazz->delete();
+			}
+		}
+        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001ACF end
 
         return (bool) $returnValue;
     }

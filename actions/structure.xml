@@ -9,6 +9,8 @@
 						editInstanceUrl="/taoItems/Items/editInstance"
 						addInstanceUrl="/taoItems/Items/addInstance"
 						addSubClassUrl="/taoItems/Items/addSubClass"
+						deleteUrl="/taoItems/Items/delete"
+						duplicateUrl="/taoItems/Items/duplicate"
 					/>
 				</trees>
 				<actions>
