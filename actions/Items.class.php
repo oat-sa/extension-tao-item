@@ -173,8 +173,7 @@ class Items extends Module{
 					$clone->setPropertyValue($property, $propertyValue);
 				}
 			}
-			$num = count($clazz->getInstances()) + 1;
-			$clone->setLabel($item->getLabel()." ".($num));
+			$clone->setLabel($item->getLabel()."'");
 			echo json_encode(array(
 				'label'	=> $clone->getLabel(),
 				'uri' 	=> tao_helpers_Uri::encode($clone->uriResource)
