@@ -181,6 +181,33 @@ class Items extends Module{
 		}
 	}
 	
+	public function testGrid(){
+		$data = array(
+			'page'		=> '1',
+			'total'		=> '1',
+			'records' 	=> '3',
+			'rows'		=> array(
+				array(
+					'id'	=> 1,
+					'cell'	=> array("1","2007-10-06","Client 1", "test")
+				),
+				array(
+					'id'	=> 2,
+					'cell'	=> array("2","2007-10-06","Client 2", "test comments")
+				),
+				array(
+					'id'	=> 3,
+					'cell'	=> array("3","2007-10-04","Client 3", "test comments comments")
+				),
+			)
+		);	
+		echo json_encode($data);
+	}
+	
+	/*
+	 * TODO
+	 */
+	
 	public function import(){
 		$context = Context::getInstance();
 		$this->setData('content', "this is the ". get_class($this) ." module, " . $context->getActionName());
@@ -197,6 +224,11 @@ class Items extends Module{
 	/*
 	 * conveniance methods
 	 */
+	
+	/**
+	 * get the instancee of the current item regarding the 'uri' and 'classUri' request parameters
+	 * @return core_kernel_classes_Resource the item instance
+	 */
 	private function getCurrentItem(){
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
 		$classUri = tao_helpers_Uri::decode($this->getRequestParameter('classUri'));
@@ -212,6 +244,10 @@ class Items extends Module{
 		return $item;
 	}
 	
+	/**
+	 * get the current item class regarding the classUri' request parameter
+	 * @return core_kernel_classes_Class the item class
+	 */
 	private function getCurrentClass(){
 		$classUri = tao_helpers_Uri::decode($this->getRequestParameter('classUri'));
 		if(is_null($classUri) || empty($classUri)){
