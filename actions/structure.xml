@@ -5,21 +5,22 @@
 				<trees>
 					<tree name="item library" 
 						dataUrl="/taoItems/Items/getItems" 
-						editClassUrl="/taoItems/Items/editClass"
+						editClassUrl=""
 						editInstanceUrl="/taoItems/Items/editInstance"
-						addInstanceUrl="/taoItems/Items/addInstance"
+						addInstanceUrl=""
 						addSubClassUrl="/taoItems/Items/addSubClass"
 						deleteUrl="/taoItems/Items/delete"
 						duplicateUrl="/taoItems/Items/duplicate"
+						gridUrl="/taoItems/Items/getItemHistoryGrid"
 					/>
 				</trees>
 				<actions>
-					<action name="items list" url="/taoItems/Items/index" />
 					<action name="import items" url="/taoItems/Items/import" />
 					<action name="export items" url="/taoItems/Items/import" />
+					<action name="preview full screen" url="/taoItems/Items/import" />
 				</actions>
 			</section>
-			<section name="edit items" url="/taoItems/Items/index">
+			<section name="edit items" url="/taoItems/ItemsEditor/index">
 				<trees>
 					<tree name="item profiles" 
 						dataUrl="/taoItems/Items/getItems" 
@@ -32,7 +33,6 @@
 					/>
 				</trees>
 				<actions>
-					<action name="items list" url="/taoItems/Items/index" />
 					<action name="import items" url="/taoItems/Items/import" />
 					<action name="export items" url="/taoItems/Items/import" />
 				</actions>

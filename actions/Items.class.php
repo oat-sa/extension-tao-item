@@ -17,7 +17,7 @@ class Items extends Module{
 	public function index(){
 		$context = Context::getInstance();
 		$this->setData('content', "this is the ". get_class($this) ." module, " . $context->getActionName());
-		$this->setView('index.tpl');
+		$this->setView('preview_index.tpl');
 	}
 	
 	/**
@@ -74,7 +74,7 @@ class Items extends Module{
 			}
 		}
 		
-		$this->setData('formTitle', 'Create a new Item');
+		$this->setData('formTitle', 'Edit Item');
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl');;
 	}
@@ -181,7 +181,18 @@ class Items extends Module{
 		}
 	}
 	
-	public function testGrid(){
+	public function getItemHistoryGrid(){
+		$this->setData('grid', false);
+		$item = $this->getCurrentItem();
+		if(!is_null($item)){
+			$this->setData('grid', true);
+			$this->setData('dataUrl', _url('getItemHistoryData', 'Items'));
+		}
+		
+		$this->setView('grid.tpl');
+	}
+	
+	public function getItemHistoryData(){
 		$data = array(
 			'page'		=> '1',
 			'total'		=> '1',
