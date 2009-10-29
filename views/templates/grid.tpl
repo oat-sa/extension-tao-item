@@ -12,10 +12,10 @@
 			mtype: 'POST',
 		    colNames:['<?=__("Index")?>','<?=__("Date")?>', '<?=__("User")?>', '<?=__("Comment")?>'],
 		    colModel :[ 
-		      {name:'id', index:'rid', width:50}, 
-		      {name:'date', index:'date', width:100}, 
-			  {name:'user', index:'user', width:100}, 
-		      {name:'comment', index:'comment', width:290, sortable:false} 
+		      {name:'id', index:'rid', width:75}, 
+		      {name:'date', index:'date'}, 
+			  {name:'user', index:'user'}, 
+		      {name:'comment', index:'comment', sortable:false} 
 		    ],
 		    pager: '#grid-pager',
 		    rowNum: 5,

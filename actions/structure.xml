@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<extension name="Items Managment" url="/taoItems/Items/index">
-		<sections>
-			<section name="manage items" url="/taoItems/Items/index">
-				<trees>
-					<tree name="item library" 
-						dataUrl="/taoItems/Items/getItems" 
-						editClassUrl=""
-						editInstanceUrl="/taoItems/Items/editInstance"
-						addInstanceUrl=""
-						addSubClassUrl="/taoItems/Items/addSubClass"
-						deleteUrl="/taoItems/Items/delete"
-						duplicateUrl="/taoItems/Items/duplicate"
-						gridUrl="/taoItems/Items/getItemHistoryGrid"
-					/>
-				</trees>
-				<actions>
-					<action name="import items" url="/taoItems/Items/import" />
-					<action name="export items" url="/taoItems/Items/import" />
-					<action name="preview full screen" url="/taoItems/Items/import" />
-				</actions>
-			</section>
-			<section name="edit items" url="/taoItems/ItemsEditor/index">
-				<trees>
-					<tree name="item profiles" 
-						dataUrl="/taoItems/Items/getItems" 
-						editClassUrl="/taoItems/Items/editClass"
-						editInstanceUrl="/taoItems/Items/editInstance"
-						addInstanceUrl="/taoItems/Items/addInstance"
-						addSubClassUrl="/taoItems/Items/addSubClass"
-						deleteUrl="/taoItems/Items/delete"
-						duplicateUrl="/taoItems/Items/duplicate"
-					/>
-				</trees>
-				<actions>
-					<action name="import items" url="/taoItems/Items/import" />
-					<action name="export items" url="/taoItems/Items/import" />
-				</actions>
-			</section>
-		</sections>
-	</extension>
+<extension name="Items Managment" url="/taoItems/Items/index">
+	<sections>
+		<section name="manage items" url="/taoItems/Items/index">
+			<trees>
+				<tree name="item library" 
+					dataUrl="/taoItems/Items/getItems" 
+					editClassUrl=""
+					editInstanceUrl="/taoItems/Items/editItem"
+					addInstanceUrl=""
+					addSubClassUrl=""
+					deleteUrl="/taoItems/Items/delete"
+					duplicateUrl="/taoItems/Items/cloneItem"
+					gridUrl="/taoItems/Items/getItemHistoryGrid"
+				/>
+			</trees>
+			<actions>
+				<action name="import items" url="/taoItems/Items/import" />
+				<action name="export items" url="/taoItems/Items/import" />
+				<action name="preview full screen" url="/taoItems/Items/import" />
+			</actions>
+		</section>
+		<section name="edit items" url="/taoItems/ItemsEditor/index">
+			<trees>
+				<tree name="item profiles" 
+					dataUrl="/taoItems/ItemsEditor/getItems" 
+					editClassUrl="/taoItems/ItemsEditor/editItemClass"
+					editInstanceUrl="/taoItems/ItemsEditor/editItem"
+					addInstanceUrl="/taoItems/ItemsEditor/addItem"
+					addSubClassUrl="/taoItems/ItemsEditor/addItemClass"
+					deleteUrl="/taoItems/ItemsEditor/delete"
+					duplicateUrl="/taoItems/ItemsEditor/cloneItem"
+					gridUrl="/taoItems/ItemsEditor/getItemHistoryGrid"
+				/>
+			</trees>
+			<actions>
+				<action name="import items" url="/taoItems/ItemsEditor/import" />
+				<action name="export items" url="/taoItems/ItemsEditor/import" />
+			</actions>
+		</section>
+	</sections>
+</extension>
