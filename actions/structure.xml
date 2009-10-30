@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension name="Items Managment" url="/taoItems/Items/index">
+<extension name="Items Managment" url="/taoItems/Items/index" level="0">
 	<sections>
 		<section name="manage items" url="/taoItems/Items/index">
 			<trees>
