@@ -3,12 +3,12 @@
 	<sections>
 		<section name="manage items" url="/taoItems/Items/index">
 			<trees>
-				<tree name="item library" 
+				<tree name="item profiles" 
 					dataUrl="/taoItems/Items/getItems" 
-					editClassUrl=""
+					editClassUrl="/taoItems/Items/editItemClass"
 					editInstanceUrl="/taoItems/Items/editItem"
-					addInstanceUrl=""
-					addSubClassUrl=""
+					addInstanceUrl="/taoItems/Items/addItem"
+					addSubClassUrl="/taoItems/Items/addItemClass"
 					deleteUrl="/taoItems/Items/delete"
 					duplicateUrl="/taoItems/Items/cloneItem"
 					gridUrl="/taoItems/Items/getItemHistoryGrid"
@@ -20,19 +20,7 @@
 				<action name="preview full screen" url="/taoItems/Items/import" />
 			</actions>
 		</section>
-		<section name="edit items" url="/taoItems/ItemsEditor/index">
-			<trees>
-				<tree name="item profiles" 
-					dataUrl="/taoItems/ItemsEditor/getItems" 
-					editClassUrl="/taoItems/ItemsEditor/editItemClass"
-					editInstanceUrl="/taoItems/ItemsEditor/editItem"
-					addInstanceUrl="/taoItems/ItemsEditor/addItem"
-					addSubClassUrl="/taoItems/ItemsEditor/addItemClass"
-					deleteUrl="/taoItems/ItemsEditor/delete"
-					duplicateUrl="/taoItems/ItemsEditor/cloneItem"
-					gridUrl="/taoItems/ItemsEditor/getItemHistoryGrid"
-				/>
-			</trees>
+		<section name="edit items" url="/taoItems/Items/index">
 			<actions>
 				<action name="import items" url="/taoItems/ItemsEditor/import" />
 				<action name="export items" url="/taoItems/ItemsEditor/import" />
