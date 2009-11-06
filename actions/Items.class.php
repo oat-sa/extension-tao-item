@@ -13,6 +13,12 @@ class Items extends CommonModule{
 	}
 
 	public function index(){
+		
+		if($this->getData('reload') == true){
+			unset($_SESSION[SESSION_NAMESPACE]['uri']);
+			unset($_SESSION[SESSION_NAMESPACE]['classUri']);
+		}
+		
 		$context = Context::getInstance();
 		$this->setData('content', "module: ". get_class($this) ." , action: " . $context->getActionName());
 		$this->setView('index.tpl');
@@ -43,6 +49,7 @@ class Items extends CommonModule{
 	public function editItem(){
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentItem();
+		
 		$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($itemClass, $item);
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
@@ -52,13 +59,14 @@ class Items extends CommonModule{
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				$this->setData('message', 'item saved');
 				$this->setData('reload', true);
-				$this->forward('ItemsEditor', 'index');
+				$this->forward('Items', 'index');
 			}
 		}
+		$item = $this->getCurrentItem();
 		
 		$this->setData('formTitle', 'Edit Item');
 		$this->setData('myForm', $myForm->render());
-		$this->setView('form.tpl');
+		$this->setView('form_preview.tpl');
 	}
 	
 	/**
@@ -83,8 +91,12 @@ class Items extends CommonModule{
 							$propKey = tao_helpers_Uri::decode(str_replace($propNum.'_', '', $key));
 							$propertyValues[$propNum][$propKey] = tao_helpers_Uri::decode($value);
 						}
-						elseif(!isset($propertyValues[$propNum])){
-							$propertyValues[substr(str_replace('property_', '', $key), 0, 1 )] = array();
+						else{
+							$key = str_replace('property_', '', $key);
+							$propNum = substr($key, 0, 1 );
+							if(!isset($propertyValues[$propNum])){
+								$propertyValues[$propNum] = array();
+							}
 						}
 					}
 				}
@@ -250,6 +262,10 @@ class Items extends CommonModule{
 		$this->setView('index.tpl');
 	}
 	
+	public function authoring(){
+		$this->setData('content', "ITEM AUTHORING TOOL");
+		$this->setView('index.tpl');
+	}
 	
 	/*
 	 * conveniance methods
@@ -261,8 +277,7 @@ class Items extends CommonModule{
 	 */
 	protected function getCurrentItem(){
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
-		
-		if(is_null($uri) || empty($uri) || is_null($classUri) || empty($classUri)){
+		if(is_null($uri) || empty($uri)){
 			throw new Exception("No valid uri found");
 		}
 		

@@ -15,16 +15,18 @@
 				/>
 			</trees>
 			<actions>
-				<action name="import items" url="/taoItems/Items/import" />
-				<action name="export items" url="/taoItems/Items/import" />
-				<action name="preview full screen" url="/taoItems/Items/import" />
+				<action name="new class" url="/taoItems/Items/index" context="class" />
+				<action name="new item" url="/taoItems/Items/index" context="class" />
+				<action name="delete" url="/taoItems/Items/index" context="resource" />
+				<action name="duplicate" url="/taoItems/Items/index" context="resource" />
+				<action name="edit item" url="/taoItems/Items/index" context="instance" />
+				<action name="fullscreen preview" url="/taoItems/Items/import" context="instance" />
+				<action name="import" url="/taoItems/Items/import" context="*" />
+				<action name="export" url="/taoItems/Items/import" context="*" />
 			</actions>
 		</section>
-		<section name="edit items" url="/taoItems/Items/index">
-			<actions>
-				<action name="import items" url="/taoItems/ItemsEditor/import" />
-				<action name="export items" url="/taoItems/ItemsEditor/import" />
-			</actions>
+		<section name="edit items" url="/taoItems/Items/authoring">
+			<actions />
 		</section>
 	</sections>
 </extension>

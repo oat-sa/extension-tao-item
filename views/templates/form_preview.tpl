@@ -1,5 +1,9 @@
 <?include('header.tpl')?>
 
+<div id="preview-container" class="ui-corner-all">
+	PREVIEW<br />
+	BOX
+</div>
 <div class="main-container">
 	<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
 		<?=get_data('formTitle')?>

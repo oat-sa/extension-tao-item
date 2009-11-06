@@ -6,16 +6,11 @@ $(function(){
 	
 	<?if(get_data('reload') === true):?>	
 		
-		<?if(get_data('showNodeUri')):?>
-			var showNode = "<?=get_data('showNodeUri')?>";
-		<?else:?>
-			var showNode = false;
-		<?endif?>
-		
 	loadControls();
 	
 	<?else:?>
 	
+	initActions();
 	initNavigation();
 	
 	<?endif?>
