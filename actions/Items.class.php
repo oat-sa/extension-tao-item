@@ -1,10 +1,11 @@
 <?php
 require_once('tao/actions/CommonModule.class.php');
+require_once('tao/actions/TaoModule.class.php');
 
 /**
  * Items controller
  */
-class Items extends CommonModule{
+class Items extends TaoModule{
 
 	public function __construct(){
 		//the service is initialized by default
@@ -64,6 +65,35 @@ class Items extends CommonModule{
 		}
 		$item = $this->getCurrentItem();
 		
+		$this->setData('preview', false);
+		
+		unset($_SESSION['ITEMpreview']);
+		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+		if($itemContent instanceof core_kernel_classes_Literal ){
+			$_SESSION['ITEMpreview'] = (string)$itemContent;
+		}
+		
+		$swfFound = false;
+		try{
+			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			if($itemModel instanceof core_kernel_classes_Resource){
+				$swf = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_SWFFILE_PROPERTY));
+				if($swf instanceof core_kernel_classes_Literal ){
+					$swffile = BASE_URL.'/models/ext/itemRuntime/'.(string)$swf;
+					$this->setData('swf', $swffile);
+					$this->setData('dataPreview', urlencode(BASE_URL.'/models/ext/itemRuntime/TAOgetItemPreview.php'));
+					$swfFound = true;
+				}
+			}
+		}
+		catch(Exception $e){}
+		
+		if(isset($_SESSION['ITEMpreview']) && $swfFound){
+			$this->setData('preview', true);
+		}
+		
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		$this->setData('formTitle', 'Edit Item');
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form_preview.tpl');
@@ -180,7 +210,7 @@ class Items extends CommonModule{
 			$deleted = $this->service->deleteItem($this->getCurrentItem());
 		}
 		else{
-			$deleted = $this->service->deleteItemSubClazz($this->getCurrentClass());
+			$deleted = $this->service->deleteItemClass($this->getCurrentClass());
 		}
 		echo json_encode(array('deleted'	=> $deleted));
 	}
@@ -212,39 +242,49 @@ class Items extends CommonModule{
 		}
 	}
 	
-	public function getItemHistoryGrid(){
-		$this->setData('grid', false);
-		$item = $this->getCurrentItem();
-		if(!is_null($item)){
-			$this->setData('grid', true);
-			$this->setData('dataUrl', _url('getItemHistoryData', 'Items'));
+	public function getMetaData(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
 		}
 		
-		$this->setView('grid.tpl');
+		$this->setData('metadata', false); 
+		if($this->getRequestParameter('uri') && $this->getRequestParameter('classUri')){
+			
+			$item = $this->getCurrentItem();
+			
+			$date = $item->getLastModificationDate();
+			$this->setData('date', $date->format('d/m/Y H:i:s'));
+			$this->setData('user', $item->getLastModificationUser());
+			$this->setData('comment', $item->comment);
+			
+			$this->setData('uri', $this->getRequestParameter('uri'));
+			$this->setData('classUri', $this->getRequestParameter('classUri'));
+			$this->setData('metadata', true); 
+		}
+		
+		
+		$this->setView('metadata.tpl');
 	}
 	
-	public function getItemHistoryData(){
-		$data = array(
-			'page'		=> '1',
-			'total'		=> '1',
-			'records' 	=> '3',
-			'rows'		=> array(
-				array(
-					'id'	=> 1,
-					'cell'	=> array("1","2007-10-06","Client 1", "test")
-				),
-				array(
-					'id'	=> 2,
-					'cell'	=> array("2","2007-10-06","Client 2", "test comments")
-				),
-				array(
-					'id'	=> 3,
-					'cell'	=> array("3","2007-10-04","Client 3", "test comments comments")
-				),
-			)
-		);	
-		echo json_encode($data);
-	}
+	public function saveComment(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$response = array(
+			'saved' 	=> false,
+			'comment' 	=> ''
+		);
+		if($this->getRequestParameter('uri') && $this->getRequestParameter('classUri') && $this->getRequestParameter('comment')){
+			
+			$item = $this->getCurrentItem();
+			$item->setComment($this->getRequestParameter('comment'));
+			if($item->comment == $this->getRequestParameter('comment')){
+				$response['saved'] = true;
+				$response['comment'] = $item->comment;
+			}
+		}
+		echo json_encode($response);
+	} 
 	
 	/*
 	 * TODO

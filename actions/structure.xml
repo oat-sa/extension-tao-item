@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension name="Items Managment" url="/taoItems/Items/index" level="0">
+<extension name="Items" url="/taoItems/Items/index" level="0">
 	<sections>
-		<section name="manage items" url="/taoItems/Items/index">
+		<section name="Manage items" url="/taoItems/Items/index">
 			<trees>
-				<tree name="item profiles" 
+				<tree name="Item library" 
 					dataUrl="/taoItems/Items/getItems" 
 					editClassUrl="/taoItems/Items/editItemClass"
 					editInstanceUrl="/taoItems/Items/editItem"
@@ -11,21 +11,20 @@
 					addSubClassUrl="/taoItems/Items/addItemClass"
 					deleteUrl="/taoItems/Items/delete"
 					duplicateUrl="/taoItems/Items/cloneItem"
-					gridUrl="/taoItems/Items/getItemHistoryGrid"
 				/>
 			</trees>
 			<actions>
-				<action name="new class" url="/taoItems/Items/index" context="class" />
-				<action name="new item" url="/taoItems/Items/index" context="class" />
-				<action name="delete" url="/taoItems/Items/index" context="resource" />
-				<action name="duplicate" url="/taoItems/Items/index" context="resource" />
-				<action name="edit item" url="/taoItems/Items/index" context="instance" />
-				<action name="fullscreen preview" url="/taoItems/Items/import" context="instance" />
+				<action name="new class" js="subClass" url="/taoItems/Items/addItemClass" context="class" />
+				<action name="new item" js="instanciate" url="/taoItems/Items/addItem" context="class" />
+				<action name="delete" js="removeNode" url="/taoItems/Items/delete" context="resource" />
+				<action name="duplicate" js="cloneNode" url="/taoItems/Items/cloneItem" context="instance" />
+				<action name="edit item" url="/taoItems/Items/editItem" context="instance" />
+				<action name="fullscreen preview" url="/taoItems/Items/index" context="instance" />
 				<action name="import" url="/taoItems/Items/import" context="*" />
-				<action name="export" url="/taoItems/Items/import" context="*" />
+				<action name="export" url="/taoItems/Items/export" context="*" />
 			</actions>
 		</section>
-		<section name="edit items" url="/taoItems/Items/authoring">
+		<section name="Item authoring" url="/taoItems/Items/authoring">
 			<actions />
 		</section>
 	</sections>
