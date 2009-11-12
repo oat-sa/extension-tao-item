@@ -6,13 +6,43 @@ require_once('tao/actions/TaoModule.class.php');
  * Items controller
  */
 class Items extends TaoModule{
-
+	
+	/**
+	 * constructor: initialize the service and the default data
+	 * @return  Items
+	 */
 	public function __construct(){
 		//the service is initialized by default
 		$this->service = tao_models_classes_ServiceFactory::get('Items');
 		$this->defaultData();
 	}
 
+/*
+ * conveniance methods
+ */
+	
+	/**
+	 * get the instancee of the current item regarding the 'uri' and 'classUri' request parameters
+	 * @return core_kernel_classes_Resource the item instance
+	 */
+	protected function getCurrentItem(){
+		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
+		if(is_null($uri) || empty($uri)){
+			throw new Exception("No valid uri found");
+		}
+		
+		$item = $this->service->getItem($uri, $this->getCurrentClass());
+		if(is_null($item)){
+			throw new Exception("No item found for the uri {$uri}");
+		}
+		
+		return $item;
+	}
+
+	/**
+	 * the default action. Do nothing
+	 * @return void
+	 */
 	public function index(){
 		
 		if($this->getData('reload') == true){
@@ -55,7 +85,7 @@ class Items extends TaoModule{
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
-				$this->service->bindProperties($item, $myForm->getValues());
+				$item = $this->service->bindProperties($item, $myForm->getValues());
 				
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				$this->setData('message', 'item saved');
@@ -63,7 +93,6 @@ class Items extends TaoModule{
 				$this->forward('Items', 'index');
 			}
 		}
-		$item = $this->getCurrentItem();
 		
 		$this->setData('preview', false);
 		
@@ -73,22 +102,23 @@ class Items extends TaoModule{
 			$_SESSION['ITEMpreview'] = (string)$itemContent;
 		}
 		
-		$swfFound = false;
+		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			if($itemModel instanceof core_kernel_classes_Resource){
-				$swf = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_SWFFILE_PROPERTY));
-				if($swf instanceof core_kernel_classes_Literal ){
-					$swffile = BASE_URL.'/models/ext/itemRuntime/'.(string)$swf;
-					$this->setData('swf', $swffile);
-					$this->setData('dataPreview', urlencode(BASE_URL.'/models/ext/itemRuntime/TAOgetItemPreview.php'));
-					$swfFound = true;
+				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+				if($runtime instanceof core_kernel_classes_Literal ){
+					if(preg_match("/\.swf$/", (string)$runtime)){
+						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+						$this->setData('dataPreview', urlencode(BASE_URL.'/models/ext/itemRuntime/TAOgetItemPreview.php'));
+						$runtimeFound = true;
+					}
 				}
 			}
 		}
 		catch(Exception $e){}
 		
-		if(isset($_SESSION['ITEMpreview']) && $swfFound){
+		if(isset($_SESSION['ITEMpreview']) && $runtimeFound){
 			$this->setData('preview', true);
 		}
 		
@@ -100,54 +130,53 @@ class Items extends TaoModule{
 	}
 	
 	/**
+	 * Preview an item
+	 * @return void
+	 */
+	public function preview(){
+		$itemClass = $this->getCurrentClass();
+		$item = $this->getCurrentItem();
+		
+		$this->setData('preview', false);
+		
+		unset($_SESSION['ITEMpreview']);
+		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+		if($itemContent instanceof core_kernel_classes_Literal ){
+			$_SESSION['ITEMpreview'] = (string)$itemContent;
+		}
+		
+		$runtimeFound = false;
+		try{
+			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			if($itemModel instanceof core_kernel_classes_Resource){
+				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+				if($runtime instanceof core_kernel_classes_Literal ){
+					if(preg_match("/\.swf$/", (string)$runtime)){
+						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+						$this->setData('dataPreview', urlencode(BASE_URL.'/models/ext/itemRuntime/TAOgetItemPreview.php'));
+						$runtimeFound = true;
+					}
+				}
+			}
+		}
+		catch(Exception $e){ }
+		
+		if(isset($_SESSION['ITEMpreview']) && $runtimeFound){
+			$this->setData('preview', true);
+		}
+		
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		$this->setView('preview.tpl');
+	}
+	
+	/**
 	 * Edit a class
 	 */
 	public function editItemClass(){
-		$myForm = tao_helpers_form_GenerisFormFactory::classEditor($this->getCurrentClass(), $this->service->getItemClass());
+		$myForm = $this->editClass($this->getCurrentClass(), $this->service->getItemClass());
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				
-				$classValues = array();
-				$propertyValues = array();
-				foreach($myForm->getValues() as $key => $value){
-					if(preg_match("/^class_/", $key)){
-						$classKey =  tao_helpers_Uri::decode(str_replace('class_', '', $key));
-						$classValues[$classKey] =  tao_helpers_Uri::decode($value);
-					}
-					if(preg_match("/^property_/", $key)){
-						if(isset($_POST[$key])){
-							$key = str_replace('property_', '', $key);
-							$propNum = substr($key, 0, 1 );
-							$propKey = tao_helpers_Uri::decode(str_replace($propNum.'_', '', $key));
-							$propertyValues[$propNum][$propKey] = tao_helpers_Uri::decode($value);
-						}
-						else{
-							$key = str_replace('property_', '', $key);
-							$propNum = substr($key, 0, 1 );
-							if(!isset($propertyValues[$propNum])){
-								$propertyValues[$propNum] = array();
-							}
-						}
-					}
-				}
-				
-				$clazz = $this->service->bindProperties($this->getCurrentClass(), $classValues);
-				foreach($propertyValues as $propNum => $properties){
-					if(isset($_POST['propertyUri'.$propNum]) && count($properties) == 0){
-						
-						//delete property mode
-						foreach($clazz->getProperties() as $classProperty){
-							if($classProperty->uriResource == tao_helpers_Uri::decode($_POST['propertyUri'.$propNum])){
-								
-								$classProperty->delete();
-								break;
-							}
-						}
-					}
-					else{
-						$this->service->bindProperties(new core_kernel_classes_Resource(tao_helpers_Uri::decode($_POST['propertyUri'.$propNum])), $properties);
-					}
-				}
 				if($clazz instanceof core_kernel_classes_Resource){
 					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
 				}
@@ -156,7 +185,6 @@ class Items extends TaoModule{
 				$this->forward('Items', 'index');
 			}
 		}
-		
 		$this->setData('formTitle', 'Edit a class');
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl');
@@ -242,6 +270,10 @@ class Items extends TaoModule{
 		}
 	}
 	
+	/**
+	 * @see TaoModule::getMetaData
+	 * @return void
+	 */
 	public function getMetaData(){
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
@@ -266,6 +298,10 @@ class Items extends TaoModule{
 		$this->setView('metadata.tpl');
 	}
 	
+	/**
+	 * @see TaoModule::saveComment
+	 * @return void
+	 */
 	public function saveComment(){
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
@@ -287,7 +323,7 @@ class Items extends TaoModule{
 	} 
 	
 	/*
-	 * TODO
+	 * @TODO implement the following actions
 	 */
 	
 	public function import(){
@@ -307,27 +343,7 @@ class Items extends TaoModule{
 		$this->setView('index.tpl');
 	}
 	
-	/*
-	 * conveniance methods
-	 */
-	
-	/**
-	 * get the instancee of the current item regarding the 'uri' and 'classUri' request parameters
-	 * @return core_kernel_classes_Resource the item instance
-	 */
-	protected function getCurrentItem(){
-		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
-		if(is_null($uri) || empty($uri)){
-			throw new Exception("No valid uri found");
-		}
-		
-		$item = $this->service->getItem($uri, $this->getCurrentClass());
-		if(is_null($item)){
-			throw new Exception("No item found for the uri {$uri}");
-		}
-		
-		return $item;
-	}
+
 	
 }
 ?>
