@@ -22,10 +22,10 @@
 * @version 1.1
 */
 if (!(isset($_SESSION))) {session_start();}
-//header("Content-Type: text/xml; charset utf-8");
+header("Content-Type: text/xml; charset utf-8");
 
 $xml=  $_SESSION["ITEMpreview"];
-/*
+
 $xml =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $xml ) ;
 $xml =ereg_replace("--TEXTBOX[^-]*--" , "" , $xml ) ;
 
@@ -38,7 +38,7 @@ $xml=str_replace("&lt;font size=&quot;5&quot;&gt;","&lt;font size=&quot;24&quot;
 $xml=str_replace("&lt;font size=&quot;6&quot;&gt;","&lt;font size=&quot;28&quot;&gt;",$xml);
 $xml=str_replace("&lt;font size=&quot;7&quot;&gt;","&lt;font size=&quot;32&quot;&gt;",$xml);
 $xml=str_replace("127.0.0.1",$_SERVER["HTTP_HOST"],$xml);
-$xml=str_replace("localhost",$_SERVER["HTTP_HOST"],$xml);*/
+$xml=str_replace("localhost",$_SERVER["HTTP_HOST"],$xml);
 //$xml =str_replace("<br />" , "" , $xml ) ;
 echo $xml;
 ?>

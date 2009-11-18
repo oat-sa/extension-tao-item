@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 29.10.2009, 15:25:56 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2009, 17:18:19 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
@@ -289,6 +289,59 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001ACF end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getAuthoringFileUriById
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  string id
+     * @return string
+     */
+    public function getAuthoringFileUriById($id)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 begin
+		
+		if(strlen($id) > 0){
+			if(preg_match("/^[0-9a-e]{12,16}$/", $id)){
+				
+				$dbWrapper = core_kernel_classes_DbWrapper::singleton();
+				$query = "SELECT `cache`.`value` from `cache` where `identifier` = 'authoring_{$id}' LIMIT 1";
+				$result = $dbWrapper->execSql($query);
+				$returnValue = $result->fields['value'];
+			}
+		}
+        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getAuthoringFileIdByUri
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  string uri
+     * @return string
+     */
+    public function getAuthoringFileIdByUri($uri)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D begin
+		if(strlen($uri) > 0){
+				
+			$dbWrapper = core_kernel_classes_DbWrapper::singleton();
+			$query = "SELECT `cache`.`identifier` from `cache` where `identifier` LIKE 'authoring_%' AND value='{$uri}'";
+			$result = $dbWrapper->execSql($query);
+			$returnValue = $result->fields['identifier'];
+		}
+        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D end
+
+        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */

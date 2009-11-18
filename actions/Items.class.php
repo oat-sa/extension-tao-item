@@ -12,6 +12,9 @@ class Items extends TaoModule{
 	 * @return  Items
 	 */
 	public function __construct(){
+		
+		parent::__construct();
+		
 		//the service is initialized by default
 		$this->service = tao_models_classes_ServiceFactory::get('Items');
 		$this->defaultData();
@@ -95,13 +98,6 @@ class Items extends TaoModule{
 		}
 		
 		$this->setData('preview', false);
-		
-		unset($_SESSION['ITEMpreview']);
-		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-		if($itemContent instanceof core_kernel_classes_Literal ){
-			$_SESSION['ITEMpreview'] = (string)$itemContent;
-		}
-		
 		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
@@ -110,7 +106,7 @@ class Items extends TaoModule{
 				if($runtime instanceof core_kernel_classes_Literal ){
 					if(preg_match("/\.swf$/", (string)$runtime)){
 						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
-						$this->setData('dataPreview', urlencode(BASE_URL.'/models/ext/itemRuntime/TAOgetItemPreview.php'));
+						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
 						$runtimeFound = true;
 					}
 				}
@@ -118,8 +114,9 @@ class Items extends TaoModule{
 		}
 		catch(Exception $e){}
 		
-		if(isset($_SESSION['ITEMpreview']) && $runtimeFound){
+		if($runtimeFound){
 			$this->setData('preview', true);
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
 		}
 		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
@@ -138,13 +135,6 @@ class Items extends TaoModule{
 		$item = $this->getCurrentItem();
 		
 		$this->setData('preview', false);
-		
-		unset($_SESSION['ITEMpreview']);
-		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-		if($itemContent instanceof core_kernel_classes_Literal ){
-			$_SESSION['ITEMpreview'] = (string)$itemContent;
-		}
-		
 		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
@@ -153,7 +143,7 @@ class Items extends TaoModule{
 				if($runtime instanceof core_kernel_classes_Literal ){
 					if(preg_match("/\.swf$/", (string)$runtime)){
 						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
-						$this->setData('dataPreview', urlencode(BASE_URL.'/models/ext/itemRuntime/TAOgetItemPreview.php'));
+						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
 						$runtimeFound = true;
 					}
 				}
@@ -161,8 +151,9 @@ class Items extends TaoModule{
 		}
 		catch(Exception $e){ }
 		
-		if(isset($_SESSION['ITEMpreview']) && $runtimeFound){
+		if($runtimeFound){
 			$this->setData('preview', true);
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
 		}
 		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
@@ -322,6 +313,51 @@ class Items extends TaoModule{
 		echo json_encode($response);
 	} 
 	
+	public function getItemContent(){
+		header("Content-Type: text/xml; charset utf-8");
+		$item = $this->getCurrentItem();
+		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+		if($itemContent instanceof core_kernel_classes_Literal ){
+			echo (string)$itemContent;
+		}
+	}
+	
+	/**
+	 * Item Authoring tool loader action
+	 * @return 
+	 */
+	public function authoring(){
+		$this->setData('error', false);
+		try{
+			$item = $this->getCurrentItem();
+			$itemClass = $this->getCurrentClass();
+			
+			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			if($itemModel instanceof core_kernel_classes_Resource){
+				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
+				if($authoring instanceof core_kernel_classes_Literal ){
+					if(preg_match("/\.swf$/", (string)$authoring)){
+						$this->setData('type', 'swf');
+					}
+					if(preg_match("/\.php$/", (string)$authoring)){
+						$this->setData('type', 'php');
+					}
+					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
+					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
+				}
+			}
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+		}
+		catch(Exception $e){
+			$this->setData('error', true);
+		}
+		
+		
+		$this->setView('authoring.tpl');
+	}
+	
+	
+	
 	/*
 	 * @TODO implement the following actions
 	 */
@@ -337,13 +373,6 @@ class Items extends TaoModule{
 		$this->setData('content', "module: ". get_class($this) ." , action: " . $context->getActionName());
 		$this->setView('index.tpl');
 	}
-	
-	public function authoring(){
-		$this->setData('content', "ITEM AUTHORING TOOL");
-		$this->setView('index.tpl');
-	}
-	
-
 	
 }
 ?>
