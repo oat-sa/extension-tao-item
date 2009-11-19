@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 18.11.2009, 17:18:19 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2009, 11:16:25 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
@@ -306,12 +306,8 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 begin
 		
 		if(strlen($id) > 0){
-			if(preg_match("/^[0-9a-e]{12,16}$/", $id)){
-				
-				$dbWrapper = core_kernel_classes_DbWrapper::singleton();
-				$query = "SELECT `cache`.`value` from `cache` where `identifier` = 'authoring_{$id}' LIMIT 1";
-				$result = $dbWrapper->execSql($query);
-				$returnValue = $result->fields['value'];
+			if(preg_match("/^[0-9a-f]{12,16}$/", $id)){
+				$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/'.$id.'.xml';
 			}
 		}
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 end
@@ -333,15 +329,46 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D begin
 		if(strlen($uri) > 0){
-				
-			$dbWrapper = core_kernel_classes_DbWrapper::singleton();
-			$query = "SELECT `cache`.`identifier` from `cache` where `identifier` LIKE 'authoring_%' AND value='{$uri}'";
-			$result = $dbWrapper->execSql($query);
-			$returnValue = $result->fields['identifier'];
+			if(file_exists($uri)){
+				$returnValue = str_replace(TAO_ITEM_AUTHORING_BASE_URI.'/', '',
+					str_replace('.xml', '', $uri)
+				);
+			}
 		}
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getAuthoringFile
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  string id
+     * @return array
+     */
+    public function getAuthoringFile($id = '')
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E begin
+		if(strlen($id) == 0){
+			$id = uniqid();
+		}
+		$uri = $this->getAuthoringFileUriById($id);
+		
+		if(!file_exists($uri)){
+			file_put_contents($uri, '');
+		}
+		$returnValue = array(
+			'id'	=> $id,
+			'uri'	=> $uri
+		);
+		
+        // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */

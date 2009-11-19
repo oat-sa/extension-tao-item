@@ -313,6 +313,11 @@ class Items extends TaoModule{
 		echo json_encode($response);
 	} 
 	
+	/**
+	 * Display the Item.ItemContent property value. 
+	 * It's used by the authoring runtime/tools to retrieve the content
+	 * @return void 
+	 */
 	public function getItemContent(){
 		header("Content-Type: text/xml; charset utf-8");
 		$item = $this->getCurrentItem();
@@ -324,7 +329,7 @@ class Items extends TaoModule{
 	
 	/**
 	 * Item Authoring tool loader action
-	 * @return 
+	 * @return void
 	 */
 	public function authoring(){
 		$this->setData('error', false);
@@ -356,7 +361,34 @@ class Items extends TaoModule{
 		$this->setView('authoring.tpl');
 	}
 	
-	
+	/**
+	 * Authoring File mappgin service:
+	 * Send into the request the parameters id and/or uri or nothing.
+	 * Must be called via Ajax. 
+	 * Render json response {id: id, uri: uri}
+	 * @return void
+	 */
+	public function getAuthoringFile(){
+		
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		
+		$idParam 	= $this->getRequestParameter('id');
+		$uriParam 	= $this->getRequestParameter('uri');
+		
+		$authoringFileData = array();
+		
+		if(!$uriParam){
+			$authoringFileData = $this->service->getAuthoringFile($idParam);
+		}
+		else{
+			$authoringFileData['uri'] 	= $uriParam;
+			$authoringFileData['id'] 	= $this->service->getAuthoringFileIdByUri($uriParam);
+		}
+		
+		echo json_encode($authoringFileData);
+	}
 	
 	/*
 	 * @TODO implement the following actions
