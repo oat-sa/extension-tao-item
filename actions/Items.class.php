@@ -3,7 +3,11 @@ require_once('tao/actions/CommonModule.class.php');
 require_once('tao/actions/TaoModule.class.php');
 
 /**
- * Items controller
+ * Items Controller provide actions performed from url resolution
+ * 
+ * @author Bertrand Chevrier, <taosupport@tudor.lu>
+ * @package taoItems
+ * @subpackage actions
  */
 class Items extends TaoModule{
 	
@@ -20,6 +24,19 @@ class Items extends TaoModule{
 		$this->defaultData();
 	}
 
+	/**
+	 * Override auth method
+	 * @see TaoModule::_isAllowed
+	 * @return boolean
+	 */	
+	protected function _isAllowed(){
+		$context = Context::getInstance();
+		if($context->getActionName() != 'getItemContent'){
+			return parent::_isAllowed();
+		}
+		return true;
+	}
+	
 /*
  * conveniance methods
  */
@@ -41,6 +58,10 @@ class Items extends TaoModule{
 		
 		return $item;
 	}
+	
+/*
+ * controller actions
+ */
 
 	/**
 	 * the default action. Do nothing
@@ -390,21 +411,25 @@ class Items extends TaoModule{
 		echo json_encode($authoringFileData);
 	}
 	
+	
 	/*
 	 * @TODO implement the following actions
 	 */
 	
+	public function getMetaData(){
+		throw new Exception("Not yet implemented");
+	}
+	
+	public function saveComment(){
+		throw new Exception("Not yet implemented");
+	}
+	
 	public function import(){
-		$context = Context::getInstance();
-		$this->setData('content', "module: ". get_class($this) ." , action: " . $context->getActionName());
-		$this->setView('index.tpl');
+		throw new Exception("Not yet implemented");
 	}
 	
 	public function export(){
-		$context = Context::getInstance();
-		$this->setData('content', "module: ". get_class($this) ." , action: " . $context->getActionName());
-		$this->setView('index.tpl');
+		throw new Exception("Not yet implemented");
 	}
-	
 }
 ?>

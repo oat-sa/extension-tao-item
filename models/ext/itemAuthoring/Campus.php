@@ -25,7 +25,7 @@
 
 
 header('Content-Type: text/html; charset=UTF-8');
-include("../generis_utils.php");
+include($_SERVER['DOCUMENT_ROOT']."generis/core/view/generis_utils.php");
 if (!(isset($_SESSION))) {session_start();}
 $_SESSION["extendedselectedExtendedValues"]=array();
 if (isset($_POST["enonce"])) {$_SESSION["Identity"] = basename($_SERVER["PHP_SELF"]);}
@@ -38,22 +38,27 @@ $identity = $_SESSION["Identity"];
 
 
 
-$instance=$_SESSION["ModelnsInstance"];
-$property=$_SESSION["ModelnsProperty"];
-$lg = $_SESSION["datalg"];
+//$instance=$_SESSION["ModelnsInstance"];
+$instance = $_GET['instance'];
+
+//$property=$_SESSION["ModelnsProperty"];
+$property = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+//$lg = $_SESSION["datalg"];
+$lg = 'en';
 
 saveItem();
-$struct = loadItem($instance,$property);
+$struct = loadXml($_GET['localXmlFile']);
+//$struct = loadItem($instance,$property);
 
 $output='<head>
 
-<LINK media=screen href="../CSS/generis_default.css" 
+<LINK media=screen href="/generis/core/view/CSS/generis_default.css" 
 type=text/css rel=stylesheet>
-<LINK media=screen href="TAO.css" 
+<LINK media=screen href="/generis/core/install/TAO.css" 
 type=text/css rel=stylesheet>
 <meta HTTP-EQUIV="content-type" CONTENT="text/html; charset=UTF-8">
 <script type="text/javascript">
-  _editor_url = "http://'.$_SERVER["HTTP_HOST"].'/middleware/HTMLArea-3.0-rc1/";
+  _editor_url = "/generis/core/view/HTMLArea-3.0-rc1/";
   _editor_lang = "en";
 </script>
 
@@ -61,7 +66,7 @@ type=text/css rel=stylesheet>
 
 
 
-<script type="text/javascript" src="http://'.$_SERVER["HTTP_HOST"].'/middleware/HTMLArea-3.0-rc1/htmlarea2.js"></script>
+<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea2.js"></script>
 
 <script type="text/javascript">
       HTMLArea.loadPlugin("TableOperations");
@@ -249,6 +254,18 @@ function loadItem($instance,$property)
 	
 	return $struct;
 }
+
+function loadXml($localXmlFile){
+	$output = '';
+	if(!empty($localXmlFile)){
+		$curlHandler = curl_init();
+        curl_setopt($curlHandler, CURLOPT_URL, $localXmlFile);
+		curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
+		$output = curl_exec($curlHandler);
+		curl_close($curlHandler);  
+	}
+	return $output;
+}  
 
 function saveItem()
 {

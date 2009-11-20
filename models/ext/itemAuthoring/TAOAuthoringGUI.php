@@ -6,22 +6,52 @@
 * @version 1.1
 */
 error_reporting("^E_NOTICE");
-require_once("generis_ConstantsOfGui.php");	   
+require_once($_SERVER['DOCUMENT_ROOT']."generis/core/view/generis_ConstantsOfGui.php");	   
+require_once($_SERVER['DOCUMENT_ROOT']."generis/core/view/generis_utils.php");	
 
-class TAOAuthoringGUI
-{
-	function TAOAuthoringGUI()
-	{
+class TAOAuthoringGUI {
+	
+	protected $instance;
+	protected $localXmlFile;
+
+	/**
+	 * cosntructor
+	 * @param object $localXmlFile
+	 * @param object $instance
+	 * @return 
+	 */	
+	function __construct($localXmlFile, $instance){
+		$this->instance = $instance;
+		$this->localXmlFile = $localXmlFile;
 	}
+	
+	/**
+	 * load xml with an http request
+	 * @return thee xml data
+	 */
+	private function loadXml(){
+		$output = '';
+		if(!empty($this->localXmlFile)){
+			error_log("Call ".$this->localXmlFile);
+			$curlHandler = curl_init();
+	        curl_setopt($curlHandler, CURLOPT_URL, $this->localXmlFile);
+			curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
+			$output = curl_exec($curlHandler);
+			error_log("\nReceive:\n ".$output."\n\n");
+			curl_close($curlHandler);  
+		}
+		return $output;
+	}  
+	
 	function getIfUrl($string)
 	{
 		$r="^http://([_a-zA-Z0-9])+(\.[_a-zA-Z0-9])+(\.fr)|(\.com)|(\.org)|(\.net)";
-  if (eregi($r, $Url))
-    return (1); //valide
-  else
-    return (0); //non valide
-
+		if (eregi($r, $Url))
+		    return (1); //valide
+		else
+		    return (0); //non valide
 	}
+	
 	function getInquiries($val,$values)
 	{	
 		$indexes = $this->getInquiriesindexes($val,$values);
@@ -120,9 +150,15 @@ class TAOAuthoringGUI
 		return array($prop,$last);
 	}
 
+	/**
+	 * @deprecated use loadXml
+	 * @param object $idinstance
+	 * @param object $idproperty
+	 * @return 
+	 */
 	function getXML($idinstance,$idproperty)
 	{
-		error_reporting("^E_NOTICE");
+		//error_reporting("^E_NOTICE");
 		
 		$result = calltoKernel('getInstanceDescription',array($_SESSION["session"],array($idinstance),array("")));
 		
@@ -150,8 +186,8 @@ class TAOAuthoringGUI
 		$xml=str_replace("&nbsp;"," ",$xml);
 	/*TO DO instructions below really need refactoring */
 	//MRE hack
-	$xml=str_replace("Ã ",utf8_encode("à "),$xml);
-	$xml=str_replace("Â ",utf8_encode(" "),$xml);
+	$xml=str_replace("ï¿½ ",utf8_encode("ï¿½ "),$xml);
+	$xml=str_replace("ï¿½ ",utf8_encode(" "),$xml);
 
 //hack related to the problem of sound inclusion with no escaped & , it happened at the cll, i didnt reproduced this problem
 //echo $xml;
@@ -399,27 +435,33 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 	return $struct;
 	}
 
-	function getOutput($ressource)
-	{
+	function getOutput(){
 		
 		$SCRIPT='';
 		$output='';
 		
-		foreach ($ressource as $key=>$val)
+		/*	
+	 	foreach ($ressource as $key=>$val)
 			{
 				$instance=$key;
 				foreach ($val as $keyu=>$valu)
 				{$property=$keyu;}
 			}
+
 		$_SESSION["ClassInd"]=$instance;
-		$xml = $this->getXML($instance,$property);
-		//echo $xml;
+		$xml = $this->getXML($instance,$property);		
 		$struct = $this->parseXML($xml);
 
 		
 		//$hdl = fopen("xmldata","wb");
 		//fwrite($hdl,serialize($struct));
 		//fclose($hdl);
+			*/
+		$instance = $this->instance;
+		$property = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+		$_SESSION["ClassInd"]=$instance;
+		$xml = $this->loadXml();
+		$struct = $this->parseXML($xml);
 
 		$chechedinabox="";
 			if ((strpos($xml,'<textbox id="problem_textbox"'))===false) {$chechedinabox="";} else {$chechedinabox="CHECKED";}
@@ -442,6 +484,12 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 			}
 
 		$item=getButtonimage(PREVIEW,false);	
+		$output.='<html><head>';
+		$output.='<script type="text/javascript">var _editor_url="/generis/core/view/HTMLArea-3.0-rc1/";</script>';
+		$output.='<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
+		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
+		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/CSS/generis_default.css" />';
+		$output.='</head><body>';
 		$output.='
 		<FORM enctype="multipart/form-data" action=index.php name=newressource target=_top method=post><input type=hidden name=MAX_FILE_SIZE value=2000000>
 		
@@ -451,7 +499,7 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 		{
 		document.getElementById('PContent').style.visibility='hidden';		
 		";
-		error_reporting("^E_NOTICE");
+		//error_reporting("^E_NOTICE");
 		foreach ($struct["INQUIRIES"] as $p=>$v)
 				{
 					$nm=$p+1;//index of inquiry(for user)
@@ -490,7 +538,7 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 
 
 
-error_reporting("^E_NOTICE");
+//error_reporting("^E_NOTICE");
 $output.='<A NAME="PContent" class=mainpane style="visibility:visible;font-family:verdana;font-size:10;" id="PContent">';
 		$output.='<input '.$chechedinabox.' type=checkbox id=pbminabox name=itemcontent[tao:inabox] >'.INABOX.' <br> ';
 		
@@ -705,7 +753,7 @@ $output.= '
 		</script>
 		
 		
-		<br /><br /><br />Template :<br /><input type=radio onClick=template1(); name=template><img width=220 src=./icons/template01.gif /><input type=radio name=template onClick=template2();><img width=220 src=./icons/template02.gif /><input type=radio name=template onClick=template3();><img width=220 src=./icons/template03.gif /><br />';
+		<br /><br /><br />Template :<br /><input type=radio onClick=template1(); name=template><img width=220 src=/generis/core/view/icons/template01.gif /><input type=radio name=template onClick=template2();><img width=220 src=/generis/core/view/icons/template02.gif /><input type=radio name=template onClick=template3();><img width=220 src=/generis/core/view/icons/template03.gif /><br />';
 $output.='</A>';
 
 foreach ($struct["INQUIRIES"] as $p=>$v)
@@ -806,24 +854,18 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 						';
 					}
 				}
-$output.='</A>';
-
-
-
-				}
-
-$output.='</form>';
-
-$output.='<script language="javascript" type="text/javascript" defer="1">HTMLArea.replaceAll();</script>';
-return $output;
-
-	
+		$output.='</A>';
+		
+		
+		
+						}
+		
+		$output.='</form>';
+		$output.='<script language="javascript" type="text/javascript" defer="1">HTMLArea.replaceAll();</script>';
+		$output.='</body><html>';
+		
+		return $output;
 	}
 	   
-	 
-	 
-	
-
-
 }
 ?>
