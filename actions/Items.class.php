@@ -416,14 +416,6 @@ class Items extends TaoModule{
 	 * @TODO implement the following actions
 	 */
 	
-	public function getMetaData(){
-		throw new Exception("Not yet implemented");
-	}
-	
-	public function saveComment(){
-		throw new Exception("Not yet implemented");
-	}
-	
 	public function import(){
 		throw new Exception("Not yet implemented");
 	}
