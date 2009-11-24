@@ -186,7 +186,8 @@ class Items extends TaoModule{
 	 * Edit a class
 	 */
 	public function editItemClass(){
-		$myForm = $this->editClass($this->getCurrentClass(), $this->service->getItemClass());
+		$clazz = $this->getCurrentClass();
+		$myForm = $this->editClass($clazz, $this->service->getItemClass());
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				if($clazz instanceof core_kernel_classes_Resource){
