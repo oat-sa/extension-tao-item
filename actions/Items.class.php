@@ -440,6 +440,8 @@ class Items extends TaoModule{
 	 * @TODO implement the following actions
 	 */
 	
+	public function getLists(){}
+	
 	public function import(){
 		throw new Exception("Not yet implemented");
 	}
