@@ -412,6 +412,29 @@ class Items extends TaoModule{
 		echo json_encode($authoringFileData);
 	}
 	
+	/**
+	 * use the xml content in session and set it to the item
+	 * forwarded to the index action 
+	 * @return void
+	 */
+	public function saveItemContent(){
+		
+		$message = __('An error occured while saving the item');
+		
+		if(isset($_SESSION['instance']) && isset($_SESSION['xml'])){
+		
+			$item = $this->service->getItem($_SESSION['instance']);
+			if(!is_null($item)){
+				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+				
+				$message = __('Item saved successfully');
+			}
+			unset($_SESSION['instance']);
+			unset($_SESSION['xml']);
+		}
+		
+		$this->redirect('/tao/Main/index?extension=taoItems&message='.urlencode($message));
+	}
 	
 	/*
 	 * @TODO implement the following actions
