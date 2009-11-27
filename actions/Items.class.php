@@ -425,6 +425,8 @@ class Items extends TaoModule{
 		
 			$item = $this->service->getItem($_SESSION['instance']);
 			if(!is_null($item)){
+				
+				$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				
 				$message = __('Item saved successfully');
@@ -433,7 +435,8 @@ class Items extends TaoModule{
 			unset($_SESSION['xml']);
 		}
 		
-		$this->redirect('/tao/Main/index?extension=taoItems&message='.urlencode($message));
+		
+		//$this->redirect('/tao/Main/index?extension=taoItems&message='.urlencode($message));
 	}
 	
 	/*

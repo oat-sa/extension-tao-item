@@ -33,7 +33,7 @@ if (isset($_POST["enonce"])) {$_SESSION["Identity"] = basename($_SERVER["PHP_SEL
 
 
 
-$identity = $_SESSION["Identity"];
+//$identity = $_SESSION["Identity"];
 //Define new identity
 
 
@@ -46,8 +46,8 @@ $property = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
 //$lg = $_SESSION["datalg"];
 $lg = 'en';
 
-saveItem();
-$struct = loadXml($_GET['localXmlFile']);
+//saveItem();
+$struct = loadXml($_GET['xml']);
 //$struct = loadItem($instance,$property);
 
 $output='<head>
@@ -78,7 +78,7 @@ type=text/css rel=stylesheet>
 ';
 		
 
-$output.='<FORM action="'.$identity.'" method=post>';
+$output.='<FORM action="index.php" method=post target="_top">';
 $output.='<input type=hidden name=Authoring['.$instance.']['.$property.']>
 		<input type=hidden name=instance value='.$instance.'>
 		<input type=hidden name=property value='.$property.'>

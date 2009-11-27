@@ -24,7 +24,7 @@
 				<action name="export" url="/taoItems/Items/export" context="*" />
 			</actions>
 		</section>
-		<section id="item_authoring" name="Item authoring" url="/taoItems/Items/authoring">
+		<section id="item_authoring" name="Item authoring" url="/taoItems/Items/authoring" >
 			<actions />
 		</section>
 	</sections>

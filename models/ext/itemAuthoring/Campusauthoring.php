@@ -79,7 +79,7 @@ type=text/css rel=stylesheet>
 ';
 		
 
-$output.='<FORM action="'.$identity.'" method=post>';
+$output.='<FORM action="'.$identity.'" method="post" target="_top">';
 $output.='<input type=hidden name=Authoring['.$instance.']['.$property.']>
 		<input type=hidden name=instance value='.$instance.'>
 		<input type=hidden name=property value='.$property.'>
