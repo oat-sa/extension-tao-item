@@ -22,7 +22,7 @@ define("DIR_VIEWS"			, "views/");
 define("DIR_HELPERS"		, dirname(__FILE__) . "/../helpers/");
 
 # core directory
-define("DIR_CORE"			, dirname(__FILE__) . "/core/");
+define("DIR_CORE"			, dirname(__FILE__) . "/../../PHP-Framework/core/");
 
 # core helpers directory
 define("DIR_CORE_HELPERS"	, DIR_CORE . "helpers/");
@@ -30,14 +30,10 @@ define("DIR_CORE_HELPERS"	, DIR_CORE . "helpers/");
 # core utils directory
 define("DIR_CORE_UTILS"		, DIR_CORE . "util/");
 
-# database config
-/*
-define("DATABASE_LOGIN"		, "root");
-define("DATABASE_PASS"		, "");
-define("DATABASE_URL"		, "");
-define("DATABASE_DRIVER"	, "");
-define("DATABASE_NAME"		, "localhost");
-*/
+//@todo to remove when the user management is implemented
+define("API_LOGIN", "demo", true);
+define("API_PASS", md5("demo"), true);
+define("API_MODULE", "taoitems", true);
 
 # session namespace
 define('SESSION_NAMESPACE', 'PHPFramework');
@@ -58,4 +54,13 @@ $GLOBALS['dir_theme']		= "templates/";
 
 # language
 $GLOBALS['lang']			= 'en';
+
+#BASE PATH: the root path in the file system (usually the document root)
+define('BASE_PATH', $_SERVER['DOCUMENT_ROOT'] . 'taoItems');
+
+#BASE URL (usually the domain root)
+define('BASE_URL', 'http://'.$_SERVER['HTTP_HOST']. '/taoItems');
+
+#BASE WWW the web resources path
+define('BASE_WWW', BASE_URL . '/' . DIR_VIEWS);
 ?>

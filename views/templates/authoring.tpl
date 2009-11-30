@@ -29,17 +29,12 @@
 		<?break;
 		
 		case 'php':?>
-		<iframe  src="<?=get_data('authoringFile')?>?xml=<?=get_data('dataPreview')?>&instance=<?=get_data('instanceUri')?>" style="border-width:0px;width:100%; height:100%;overflow:scroll;" />
+		<iframe  src="<?=get_data('authoringFile')?>?xml=<?=get_data('dataPreview')?>&instance=<?=get_data('instanceUri')?>" style="border-width:0px;width:100%;height:100%;" />
 		<?break;
 		
 	}?>
 </div>
-<br />
-<span class="ui-widget ui-state-default ui-corner-all" style="padding:5px;">
-	<a href="#" onclick="selectTabByName('manage_items');"><?=__('Back')?></a>
-</span>
 	
 <?endif?>
-
 
 <?include('footer.tpl')?>
