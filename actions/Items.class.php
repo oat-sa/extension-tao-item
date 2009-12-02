@@ -74,8 +74,6 @@ class Items extends TaoModule{
 			unset($_SESSION[SESSION_NAMESPACE]['classUri']);
 		}
 		
-		//var_dump($this->service->toArray(new core_kernel_classes_Class(TAO_ITEM_CLASS)));
-		
 		$context = Context::getInstance();
 		$this->setData('content', "module: ". get_class($this) ." , action: " . $context->getActionName());
 		$this->setView('index.tpl');

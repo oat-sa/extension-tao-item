@@ -30,16 +30,5 @@ $(function(){
 		<?endif?>
 	<?endif?>
 	
-	
-	
-	<?if(get_data('action') == 'authoring'):?>
-		var uiTab = $('.ui-tabs-panel')[tabs.tabs('option', 'selected')].id;
-		$("div#"+uiTab).css('left', '0.5%');
-		$("div#"+uiTab).css('width', '95%');
-	<?else:?>
-		var uiTab = $('.ui-tabs-panel')[tabs.tabs('option', 'selected')].id;
-		$("div#"+uiTab).css('left', '17.5%');
-		$("div#"+uiTab).css('width', '81%');
-	<?endif?>
 });
 </script>
