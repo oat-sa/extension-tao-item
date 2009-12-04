@@ -122,7 +122,7 @@ class TAOAuthoringGUI {
 							(($values[$theIndex]["tag"])=="TAO:INQUIRY")
 						)
 					)
-					&& $theIndex < count($values)
+					&& $theIndex <= count($values)
 				)
 				{$theIndex++;} 
 				$indexes[$i]["end"]=$theIndex-1;$i++;
@@ -469,7 +469,7 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 		{
 		document.getElementById('PContent').style.visibility='hidden';		
 		";
-		//error_reporting("^E_NOTICE");
+		error_reporting("^E_NOTICE");
 		foreach ($struct["INQUIRIES"] as $p=>$v)
 				{
 					$nm=$p+1;//index of inquiry(for user)
@@ -508,7 +508,7 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 
 
 
-//error_reporting("^E_NOTICE");
+error_reporting("^E_NOTICE");
 $output.='<A NAME="PContent" class=mainpane style="visibility:visible;font-family:verdana;font-size:10;" id="PContent">';
 		$output.='<input '.$chechedinabox.' type=checkbox id=pbminabox name=itemcontent[tao:inabox] >'.INABOX.' <br> ';
 		
