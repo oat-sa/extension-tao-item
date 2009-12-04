@@ -6,8 +6,8 @@
 * @version 1.1
 */
 error_reporting("^E_NOTICE");
-require_once($_SERVER['DOCUMENT_ROOT']."generis/core/view/generis_ConstantsOfGui.php");	   
-require_once($_SERVER['DOCUMENT_ROOT']."generis/core/view/generis_utils.php");	
+require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_ConstantsOfGui.php");	   
+require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_utils.php");	
 
 class TAOAuthoringGUI {
 	
@@ -32,12 +32,10 @@ class TAOAuthoringGUI {
 	private function loadXml(){
 		$output = '';
 		if(!empty($this->localXmlFile)){
-			error_log("Call ".$this->localXmlFile);
 			$curlHandler = curl_init();
 	        curl_setopt($curlHandler, CURLOPT_URL, $this->localXmlFile);
 			curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
 			$output = curl_exec($curlHandler);
-			error_log("\nReceive:\n ".$output."\n\n");
 			curl_close($curlHandler);  
 		}
 		return $output;
@@ -54,7 +52,9 @@ class TAOAuthoringGUI {
 	
 	function getInquiries($val,$values)
 	{	
+	
 		$indexes = $this->getInquiriesindexes($val,$values);
+		
 		/*For each inquiries*/
 		foreach ($indexes as $back=>$tab)
 			{
@@ -93,6 +93,8 @@ class TAOAuthoringGUI {
 					}
 					$inquiries[]=array("ORDER" => $order, "TYPE" => $questiontype,"QUESTION" => $question,"PROPOSITIONTYPE" => $propositionType,"WIDGET"=> $widget,"ANSWERTYPE" => $answertype, "EVALUATIONRULE" => $evaluationRule,"HASGUIDE"=>$hasGuide,"LISTPROPOSITION" => $propositions,"HASANSWER"=>$hasanswer);
 			}
+			
+			
 			return $inquiries;
 
 
@@ -101,7 +103,8 @@ class TAOAuthoringGUI {
 	function getInquiriesindexes($val,$values)
 	{
 		
-		$i=-1;$indexes=Array();
+		$i=-1;
+		$indexes=array();
 		foreach($val as $key => $val)
 		{
 			if ((($values[$val]["type"])=="open") and (($values[$val]["tag"])=="TAO:INQUIRY"))
@@ -119,12 +122,14 @@ class TAOAuthoringGUI {
 							(($values[$theIndex]["tag"])=="TAO:INQUIRY")
 						)
 					)
+					&& $theIndex < count($values)
 				)
 				{$theIndex++;} 
 				$indexes[$i]["end"]=$theIndex-1;$i++;
 			}
 
 		}
+		
 		return($indexes);
 	}
 
@@ -150,32 +155,14 @@ class TAOAuthoringGUI {
 		return array($prop,$last);
 	}
 
-	/**
-	 * @deprecated use loadXml
-	 * @param object $idinstance
-	 * @param object $idproperty
-	 * @return 
-	 */
-	function getXML($idinstance,$idproperty)
-	{
-		//error_reporting("^E_NOTICE");
-		
-		$result = calltoKernel('getInstanceDescription',array($_SESSION["session"],array($idinstance),array("")));
-		
-		$_SESSION["label"]=$result["pDescription"]["label"];
-		
-		foreach ($result["pDescription"]["PropertiesValues"][0] as $key=>$val)
-		{
-			if ($val["PropertyKey"]==$idproperty) {$xml=$val["PropertyValue"];  
-			
-			return $xml;}
-		}
-	}
 
 	function parseXML($xml)
 	{
 		
 		$xml_parser=xml_parser_create("UTF-8");
+		
+		
+		
 		$items=array();$y=0;
 	$xml=str_replace("&#180;","'",$xml);
 	
@@ -211,8 +198,6 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 
 	error_reporting("^E_NOTICE");
 	xml_parse_into_struct($xml_parser, $xml, $values, $tags);
-	
-	
 	
 		 foreach ($tags as $key=>$val)
 		 {	
@@ -440,27 +425,12 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 		$SCRIPT='';
 		$output='';
 		
-		/*	
-	 	foreach ($ressource as $key=>$val)
-			{
-				$instance=$key;
-				foreach ($val as $keyu=>$valu)
-				{$property=$keyu;}
-			}
-
-		$_SESSION["ClassInd"]=$instance;
-		$xml = $this->getXML($instance,$property);		
-		$struct = $this->parseXML($xml);
-
-		
-		//$hdl = fopen("xmldata","wb");
-		//fwrite($hdl,serialize($struct));
-		//fclose($hdl);
-			*/
 		$instance = $this->instance;
 		$property = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
 		$_SESSION["ClassInd"]=$instance;
 		$xml = $this->loadXml();
+		
+		
 		$struct = $this->parseXML($xml);
 
 		$chechedinabox="";

@@ -25,7 +25,7 @@
 
 
 header('Content-Type: text/html; charset=UTF-8');
-include($_SERVER['DOCUMENT_ROOT']."generis/core/view/generis_utils.php");
+include($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_utils.php");
 if (!(isset($_SESSION))) {session_start();}
 $_SESSION["extendedselectedExtendedValues"]=array();
 if (isset($_POST["enonce"])) {$_SESSION["Identity"] = basename($_SERVER["PHP_SELF"]);}

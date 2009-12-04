@@ -20,8 +20,8 @@
 				<action name="duplicate" js="cloneNode" url="/taoItems/Items/cloneItem" context="instance" />
 				<action name="edit item" url="/taoItems/Items/editItem" context="instance" />
 				<action name="fullscreen preview" js="fullScreen" url="/taoItems/Items/preview" context="instance" />
-				<action name="import" url="/taoItems/Items/import" context="*" />
-				<action name="export" url="/taoItems/Items/export" context="*" />
+				<action name="import" url="/taoItems/Items/import" context="class" />
+				<action name="export" url="/taoItems/Items/export"  context="class" reload="true" />
 			</actions>
 		</section>
 		<section id="item_authoring" name="Item authoring" url="/taoItems/Items/authoring" >

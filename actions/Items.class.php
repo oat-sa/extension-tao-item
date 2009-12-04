@@ -439,18 +439,22 @@ class Items extends TaoModule{
 		$this->redirect('/tao/Main/index?extension=taoItems&message='.urlencode($message));
 	}
 	
-	/*
-	 * @TODO implement the following actions
+	/**
+	 * get the list data: all taoObjects children except the taoItem and taoItemModels classes
+	 * @return void
 	 */
-	
-	public function getLists(){}
-	
-	public function import(){
-		throw new Exception("Not yet implemented");
+	public function getLists(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		
+		return json_encode(
+			$this->getListData(array(
+				TAO_ITEM_CLASS,
+				TAO_ITEM_MODEL_CLASS
+			))
+		);
 	}
 	
-	public function export(){
-		throw new Exception("Not yet implemented");
-	}
 }
 ?>
