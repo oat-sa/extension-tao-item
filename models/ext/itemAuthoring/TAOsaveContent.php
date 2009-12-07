@@ -77,16 +77,18 @@ class TAOsaveContent
 	function getOutput($ressource)
 	{
 		
+		if(!isset($_SESSION["datalg"])){
+			$_SESSION["datalg"] = $GLOBALS['lang'];
+		}
+		
 		$instance = $ressource["instance"];
 		$property = $ressource["property"];
 		$output="";
 			
-		$iDescr = calltoKernel('getInstanceDescription',array($_SESSION["session"],array($instance),array(""))) ;
-
-
-		$label = $iDescr["pDescription"]["label"];
-		$comment = $iDescr["pDescription"]["comment"];
-		$script = calltoKernel('getNamespace',array($_SESSION["session"])).substr($ressource["instance"],strpos($ressource["instance"],"#"));
+		$item = new core_kernel_classes_Resource($instance);
+		$label = $item->getLabel();
+		$comment =  $item->comment;
+		$script = $instance;
 
 		
 	
@@ -275,7 +277,6 @@ class TAOsaveContent
 	
 			$xulpropositions =  '<box id="propositions_box" left="10" top="13">
                         '.$propositionbox.'</box>'; // RJa 20071030 30 -> 13
-			
 			//ADDED INQUIRY POSITION
 			
 			if ((isset($ressource["inquiryleft".$a])) and ($ressource["inquiryleft".$a]!="")){$left=$ressource["inquiryleft".$a];} else {$left="0";}
@@ -317,7 +318,6 @@ class TAOsaveContent
 					$subsidiaryquestion.='</radiogroup>';
 					$subsidiaryquestion.='</box>';
 				}
-
 
 
 
@@ -568,7 +568,6 @@ if (isset($ressource["tao:showComment"]))
 
 
 
-
 				$xulITEM='
 				<tao:ITEMPRESENTATION>
 						<xul>
@@ -606,8 +605,8 @@ $xml = str_replace('<image src="listen.swf?','<image disabled="false" src="liste
 
 
 
-	calltoKernel('removeSubjectPredicate',array($_SESSION["session"],$instance,$property));
-	calltoKernel('setStatement',array($_SESSION["session"],$instance,$property,$xml,"l",$_SESSION["datalg"],"","r"));	
+	//calltoKernel('removeSubjectPredicate',array($_SESSION["session"],$instance,$property));
+	//calltoKernel('setStatement',array($_SESSION["session"],$instance,$property,$xml,"l",$_SESSION["datalg"],"","r"));	
 
 
 
@@ -626,7 +625,7 @@ $xml = str_replace('<image src="listen.swf?','<image disabled="false" src="liste
 		//fclose($hd);
 		
 
-		$_SESSION["ITEMpreview"]=$xml;
+	//	$_SESSION["ITEMpreview"]=$xml;
 		
 		return $xml;
 		

@@ -6,11 +6,9 @@
 * @version 1.1
 */
 error_reporting("^E_NOTICE");
-ini_set("register_globals", "on");
 require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_ConstantsOfGui.php");	   
 require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_utils.php");	
-
-include_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/lg/FR.php");	
+include_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/lg/".strtoupper($GLOBALS['lang']).".php");	
 
 class TAOAuthoringGUI {
 	
@@ -422,6 +420,12 @@ class TAOAuthoringGUI {
 		$xml = $this->loadXml();
 		$struct = $this->parseXML($xml);
 		
+		
+		$uri = tao_helpers_Uri::encode($instance);
+		$item = new core_kernel_classes_Resource($instance);
+		$type = $item->getUniquePropertyValue(new core_kernel_classes_Property('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'));
+		$classUri = tao_helpers_Uri::encode($type->uriResource);
+		$previewUri = "/taoItems/Items/preview?uri=$uri&classUri=$classUri";
 
 		$chechedinabox="";
 			if ((strpos($xml,'<textbox id="problem_textbox"'))===false) {$chechedinabox="";} else {$chechedinabox="CHECKED";}
@@ -449,10 +453,10 @@ class TAOAuthoringGUI {
 		$output.='<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/CSS/generis_default.css" />';
+		$output.='<style type="text/css">input[type=button],input[type=submit]{cursor:pointer; padding:4px; font-weight:bold;}</style>';
 		$output.='</head><body>';
 		$output.='
-		<FORM enctype="multipart/form-data" action=index.php name=newressource target=_top method=post><input type=hidden name=MAX_FILE_SIZE value=2000000>
-		
+		<FORM id="myQCMForm" enctype="multipart/form-data" action=index.php name=newressource target=_top method=post><input type=hidden name=MAX_FILE_SIZE value=2000000>
 		<input type=hidden name=Authoring['.$instance.']['.$property."] />
 		<SCRIPT LANGUAGE=\"Javascript1.2\">
 		function phighlight(zelement)
@@ -472,29 +476,37 @@ class TAOAuthoringGUI {
 		document.getElementById('template').style.visibility='hidden';
 		document.getElementById(zelement).style.visibility='visible';
 		}
+		function refreshQCM(){
+			var myForm = document.getElementById('myQCMForm');
+			if(myForm){
+				myForm.action = '';
+				myForm.target = '';
+			}
+		}
+		function fullScreen(url){
+			window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no');
+		}
 		</SCRIPT>
 		";
+		$output.="<input type=hidden name='instance' value='$instance'>";
 		$output.="<input type=hidden name=itemcontent[instance] value=$instance>";
 		$output.="<input type=hidden name=itemcontent[property] value=$property>";
-		$output.='<span style=position:absolute;left:0px;z-index: 99999999;overflow:visible;><ul id="globalnav">
-		 <li> <a href="#top" onClick="phighlight(\'PContent\');" >'.PROBCONT.'</a>
+		$output.='<span style=position:absolute;left:0px;z-index: 99999999;overflow:visible;>
+		<input type=button onClick="phighlight(\'PContent\');" value="'.PROBCONT.'" />
 		
-		 <li><a href="#top" onClick="phighlight(\'PrStyle\');">'.PARAMETERS.'</a></li>
+		 <input type=button onClick="phighlight(\'PrStyle\');"  value="'.PARAMETERS.'" />
 		';
 		foreach ($struct["INQUIRIES"] as $p=>$v)
 				{
 					$nm=$p+1;//index of inquiry(for user)
-				$output.='<li><a href="#top" onClick="phighlight(\'Q'.$nm.'Content\');" >'.QUESTION.' '.$nm.'</a>';
+				$output.=' <input type=button onClick="phighlight(\'Q'.$nm.'Content\');" value="'.QUESTION.' '.$nm.'" />';
 				}
 		$output.='
-		<li><a href="#top" onClick="phighlight(\'template\');">Template</a></li>
-		<li>&nbsp;&nbsp;&nbsp;&nbsp;
-		<li><input type=submit class=purplebutton name=AddInquiry value='.ADDAQUESTION.' />
-		
-		<li>'."<input type=submit class=purplebutton onClick=\"window.open('../itemRuntime/tao_item.php?i=".substr($instance,2)."&PHPSESSID=".session_id()."')\" name=saveContent value=".PREVIEW.">
-		
-		<li><input class=purplebutton type=submit value=".APPLY.">
-		</ul><a name=top></a></span>";
+		<input type=button onClick="phighlight(\'template\');" value="Template" />
+		<input type=submit  name=AddInquiry onclick="refreshQCM();" value="'.ADDAQUESTION.'" />
+		<input type=button  onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.PREVIEW.'" />
+		<input type=submit value="'.APPLY.'">
+		</span>';
 
 
 
@@ -720,7 +732,7 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 				{
 			$nm=$p+1;//index of inquiry(for user)
 			$output.='<A NAME="Q'.$nm.'Content" class=mainpane style="visibility:hidden;font-family:verdana;font-size:10;" id="Q'.$nm.'Content"><br>';
-			$output.='<input type=submit name=removeInquiry['.$p.'] value=Remove&nbsp;this&nbsp;question class=purplebutton><br />';
+			$output.='<input type=submit name=removeInquiry['.$p.'] value=Remove&nbsp;this&nbsp;question onclick="refreshQCM();"><br />';
 			$inquiryleftstring = "inquiryleft".$p;$inquirytopstring = "inquirytop".$p;	$proptype[0]="";$proptype[1]="";
 			if ($v["PROPOSITIONTYPE"]=="Exclusive Choice") {$proptype[0]="SELECTED";$proptype[1]="";$proptype[2]="";}
 			if ($v["PROPOSITIONTYPE"]=="Multiple Choice") {$proptype[1]="SELECTED";$proptype[0]="";$proptype[2]="";}
@@ -763,7 +775,7 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 			</span>
 			<TEXTAREA NAME=itemcontent[tao:inquiry]['.$p.'][question] COLS=80 	ROWS=14>'.$v["QUESTION"].'</TEXTAREA>
 
-				<input type=submit name=AddProp['.$p.'] value=Add&nbsp;a&nbsp;Proposition class=purplebutton><br /> <br />
+				<input type=submit name=AddProp['.$p.'] value=Add&nbsp;a&nbsp;Proposition onclick="refreshQCM();"><br /> <br />
 			';
 				//echo $v["QUESTION"];
 
@@ -789,15 +801,16 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 						$num=$a+1;
 						
 						$form='itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]';
-						$script = '<SCRIPT type="text/javascript">function openNewWin3'.$p.$a.'() {
-						window.open("../../widgets/GUIUploadMultimediaFile.php?form='.$form.'","_blank","toolbar=yes,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=250,height=300");
-							}</script>
+						$script = '<SCRIPT type="text/javascript">
+						function openNewWin3'.$p.$a.'() {
+							window.open("../../widgets/GUIUploadMultimediaFile.php?form='.$form.'","_blank","toolbar=yes,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=250,height=300");
+						}
+						</script>
 
-						<INPUT type="button" width=60 name="change" class=purplebutton value="Insert Multimedia Content" onClick="openNewWin3'.$p.$a.'()">';
+						<INPUT type="button" width=60 name="change" value="Insert Multimedia Content" onClick="openNewWin3'.$p.$a.'()">';
 						
 						$propositionleftstring = "propositionleft".$p.$a;
 						$propositiontopstring = "propositiontop".$p.$a;
-					//	error_reporting("^E_NOTICE");
 						
 						$output.='<br /><br />Proposition '.$num.' '.LEFT.'<input size=2 type=text name=itemcontent['.$propositionleftstring.'] id='.$propositionleftstring.' value='.array_shift($struct[$relevantarrayleft]).'>
 						'.TOP.'<input size=2 type=text name=itemcontent['.$propositiontopstring.'] id='.$propositiontopstring.' value='.array_shift($struct[$relevantarraytop]).'> '.CORRECTANSWER.' <input type=Checkbox name=itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][good] '.$ch.'>
@@ -808,7 +821,7 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 
 						$output.=''.$script.'&nbsp;
 
-						<input type=submit name=removeProposition['.$p.']['.$a.'] value=Remove&nbsp;this&nbsp;proposition class=purplebutton><br>
+						<input type=submit name=removeProposition['.$p.']['.$a.'] value=Remove&nbsp;this&nbsp;proposition onclick="refreshQCM();"><br>
 						<TEXTAREA NAME="itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]" COLS=80 ROWS=10>'.$b["value"].'</TEXTAREA>
 											
 						';
