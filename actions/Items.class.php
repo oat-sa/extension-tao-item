@@ -110,6 +110,7 @@ class Items extends TaoModule{
 			if($myForm->isValid()){
 				
 				$item = $this->service->bindProperties($item, $myForm->getValues());
+				$item = $this->service->setDefaultItemContent($item);
 				
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				$this->setData('message', 'item saved');
@@ -341,28 +342,57 @@ class Items extends TaoModule{
 	 * @return void 
 	 */
 	public function getItemContent(){
-		//header("Content-Type: text/xml; charset utf-8");
-		$item = $this->getCurrentItem();
-		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-		if($itemContent instanceof core_kernel_classes_Literal ){
-			$xml = (string)$itemContent;
+		
+		header("Content-Type: text/xml; charset utf-8");
+		
+		try{
+			$item = $this->getCurrentItem();
+			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
+				
+				$xml = (string)$itemContent;
+				
+				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
+					$fileId = '';
+					if(!empty($xml)){
+						$xmlElt = new SimpleXMLElement($xml);
+						if($xmlElt->root){
+							if(isset($xmlElt->root['reference'])){
+								$fileId = (string)$xmlElt->root['reference'];
+							}
+						}
+					}
+					if(empty($fileId)){
+						$fileId = $item->uriResource;
+					}
+					$xml = file_get_contents($this->service->getAuthoringFile($fileId));
+				}
+				
+				//@todo REFACTOR THIS
+			/*	$xml = ereg_replace("--MULTIMEDIA[^-]*--" , "" , $xml ) ;
+				$xml = ereg_replace("--TEXTBOX[^-]*--" , "" , $xml ) ;
+				$xml = str_replace("&#180;","'",$xml);
+				$xml = str_replace("&lt;font size=&quot;1&quot;&gt;","&lt;font size=&quot;8&quot;&gt;",$xml);
+				$xml = str_replace("&lt;font size=&quot;2&quot;&gt;","&lt;font size=&quot;12&quot;&gt;",$xml);
+				$xml = str_replace("&lt;font size=&quot;3&quot;&gt;","&lt;font size=&quot;16&quot;&gt;",$xml);
+				$xml = str_replace("&lt;font size=&quot;4&quot;&gt;","&lt;font size=&quot;18&quot;&gt;",$xml);
+				$xml = str_replace("&lt;font size=&quot;5&quot;&gt;","&lt;font size=&quot;24&quot;&gt;",$xml);
+				$xml = str_replace("&lt;font size=&quot;6&quot;&gt;","&lt;font size=&quot;28&quot;&gt;",$xml);
+				$xml = str_replace("&lt;font size=&quot;7&quot;&gt;","&lt;font size=&quot;32&quot;&gt;",$xml);
+				$xml = str_replace("127.0.0.1", $_SERVER["HTTP_HOST"], $xml);
+				$xml = str_replace("localhost", $_SERVER["HTTP_HOST"], $xml);*/
+				//
+	
+				echo $xml;
+			}
+		}
+		catch(Exception $e){
 			
-			//@todo REFACTOR THIS
-			$xml =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $xml ) ;
-			$xml =ereg_replace("--TEXTBOX[^-]*--" , "" , $xml ) ;
-			$xml=str_replace("&#180;","'",$xml);
-			$xml=str_replace("&lt;font size=&quot;1&quot;&gt;","&lt;font size=&quot;8&quot;&gt;",$xml);
-			$xml=str_replace("&lt;font size=&quot;2&quot;&gt;","&lt;font size=&quot;12&quot;&gt;",$xml);
-			$xml=str_replace("&lt;font size=&quot;3&quot;&gt;","&lt;font size=&quot;16&quot;&gt;",$xml);
-			$xml=str_replace("&lt;font size=&quot;4&quot;&gt;","&lt;font size=&quot;18&quot;&gt;",$xml);
-			$xml=str_replace("&lt;font size=&quot;5&quot;&gt;","&lt;font size=&quot;24&quot;&gt;",$xml);
-			$xml=str_replace("&lt;font size=&quot;6&quot;&gt;","&lt;font size=&quot;28&quot;&gt;",$xml);
-			$xml=str_replace("&lt;font size=&quot;7&quot;&gt;","&lt;font size=&quot;32&quot;&gt;",$xml);
-			$xml=str_replace("127.0.0.1",$_SERVER["HTTP_HOST"],$xml);
-			$xml=str_replace("localhost",$_SERVER["HTTP_HOST"],$xml);
-			//
-
-			echo $xml;
+			error_log($e->getMessage());
+			
+			//print an empty response
+			echo '<?xml version="1.0" encoding="utf-8" ?>';
 		}
 	}
 	
@@ -446,26 +476,31 @@ class Items extends TaoModule{
 				$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 				if($itemModel instanceof core_kernel_classes_Resource){
 					
-					
-					
-					if($itemModel->uriResource != TAO_ITEM_MODEL_QCM){
-						isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
-						$data = "<?xml version='1.0' encoding='UTF-8'?><tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
-									<rdfs:LABEL lang='$lang'>{$item->uriResource}</rdfs:LABEL>
-									<rdfs:COMMENT lang='$lang'>{$item->uriResource}</rdfs:COMMENT>".
-										$_SESSION['xml']
-									."</tao:ITEM>";
+					switch($itemModel->uriResource){
+						
+						case TAO_ITEM_MODEL_QCM :
+							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
+							break;
+							
+						case TAO_ITEM_MODEL_WATERPHENIX:
+							$fileUri = $this->service->getAuthoringFile($item->uriResource);
+							file_put_contents($fileUri, $_SESSION['xml']);
+							break;
+							
+						default:
+							isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
+							$data = "<?xml version='1.0' encoding='UTF-8'?><tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
+										<rdfs:LABEL lang='$lang'>".$item->getLabel()."</rdfs:LABEL>
+										<rdfs:COMMENT lang='$lang'>".$item->comment."</rdfs:COMMENT>".
+											$_SESSION['xml']
+										."</tao:ITEM>";
+							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $data));
+							break;
+							
 					}
-					else{
-						$data = $_SESSION['xml'];
-					}
-					$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $data));
 					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 					$message = __('Item saved successfully');
 				}
-				
-				
-				
 				
 			}
 			unset($_SESSION['instance']);

@@ -6,8 +6,11 @@
 * @version 1.1
 */
 error_reporting("^E_NOTICE");
+ini_set("register_globals", "on");
 require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_ConstantsOfGui.php");	   
 require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_utils.php");	
+
+include_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/lg/FR.php");	
 
 class TAOAuthoringGUI {
 	
@@ -114,15 +117,16 @@ class TAOAuthoringGUI {
 				$theIndex++;
 				$indexes[$i]["start"]=$theIndex-1;
 				while 
-				(!
-					(
+				(
+					(isset($values[$theIndex]))
+					and
+					!(
 						(
 							(($values[$theIndex]["type"])=="close")
 							and
 							(($values[$theIndex]["tag"])=="TAO:INQUIRY")
 						)
 					)
-					&& $theIndex <= count($values)
 				)
 				{$theIndex++;} 
 				$indexes[$i]["end"]=$theIndex-1;$i++;
@@ -161,43 +165,32 @@ class TAOAuthoringGUI {
 		
 		$xml_parser=xml_parser_create("UTF-8");
 		
-		
-		
-		$items=array();$y=0;
-	$xml=str_replace("&#180;","'",$xml);
 	
-	//$xml=str_replace("127.0.0.1","10.13.1.31",$xml);
+		$items=array();$y=0;
+		$xml=str_replace("&#180;","'",$xml);
 		$xml =trim($xml);	
 		$xml=str_replace("&Acirc;"," ",$xml);
-
 		$xml=str_replace("&nbsp;"," ",$xml);
-	/*TO DO instructions below really need refactoring */
-	//MRE hack
-	$xml=str_replace("� ",utf8_encode("� "),$xml);
-	$xml=str_replace("� ",utf8_encode(" "),$xml);
+		/*TO DO instructions below really need refactoring */
+		//MRE hack
+		$xml=str_replace("� ",utf8_encode("� "),$xml);
+		$xml=str_replace("� ",utf8_encode(" "),$xml);
+		//hack related to the problem of sound inclusion with no escaped & , it happened at the cll, i didnt reproduced this problem
 
-//hack related to the problem of sound inclusion with no escaped & , it happened at the cll, i didnt reproduced this problem
-//echo $xml;
+		$xml=str_replace("&logo=http","&amp;logo=http",$xml);
+		$xml=str_replace("&isvisible=","&amp;isvisible=",$xml);
+		$xml=str_replace("&delay=","&amp;delay=",$xml);
+		
+		$xml=str_replace("&nblisten=","&amp;nblisten=",$xml);
+		$xml=str_replace("&allpause=","&amp;allpause=",$xml);
+		$xml=str_replace("&allstop=","&amp;allstop=",$xml);
 
-$xml=str_replace("&logo=http","&amp;logo=http",$xml);
-$xml=str_replace("&isvisible=","&amp;isvisible=",$xml);
-$xml=str_replace("&delay=","&amp;delay=",$xml);
+		$xml=ereg_replace('src="[^">]*>',"/>",$xml);
+		$xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 
-$xml=str_replace("&nblisten=","&amp;nblisten=",$xml);
-$xml=str_replace("&allpause=","&amp;allpause=",$xml);
-$xml=str_replace("&allstop=","&amp;allstop=",$xml);
-
-
-
-//echo $xml;
-
-
-$xml=ereg_replace('src="[^">]*>',"/>",$xml);
-$xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
-
-
-	error_reporting("^E_NOTICE");
-	xml_parse_into_struct($xml_parser, $xml, $values, $tags);
+		error_reporting("^E_NOTICE");
+		xml_parse_into_struct($xml_parser, $xml, $values, $tags);
+	
 	
 		 foreach ($tags as $key=>$val)
 		 {	
@@ -214,8 +207,7 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 			if ($key == "TAO:PROBLEM")
 				 { 
 					foreach ($val as $x=>$theIndex)
-					 {	//echo "ya";
-						//print_r($values[$theIndex]);
+					 {	
 						$struct["TAO:PROBLEM"] = $values[$theIndex]["value"];
 					 }
 				 }
@@ -321,7 +313,6 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 						
 						 $struct[$inquiryleftstring] = $values[$theIndex]["attributes"]["LEFT"];
 						 $struct[$inquirytopstring]  = $values[$theIndex]["attributes"]["TOP"];
-						 //echo $values[$theIndex]["attributes"]["TOP"];die();
 						 }
 					 }
 				 }
@@ -429,9 +420,8 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 		$property = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
 		$_SESSION["ClassInd"]=$instance;
 		$xml = $this->loadXml();
-		
-		
 		$struct = $this->parseXML($xml);
+		
 
 		$chechedinabox="";
 			if ((strpos($xml,'<textbox id="problem_textbox"'))===false) {$chechedinabox="";} else {$chechedinabox="CHECKED";}
@@ -501,7 +491,7 @@ $xml=ereg_replace('----MULTIMEDIA[^>]*--',"--",$xml);
 		<li>&nbsp;&nbsp;&nbsp;&nbsp;
 		<li><input type=submit class=purplebutton name=AddInquiry value='.ADDAQUESTION.' />
 		
-		<li>'."<input type=submit class=purplebutton onClick=\"OuvrirFenetre('".$_SESSION["ext"]->httpLocation.$_SESSION["ext"]->widgets."itemRuntime/tao_item.php?i=".substr($instance,2)."&PHPSESSID=".session_id()."')\" name=saveContent value=".PREVIEW.">
+		<li>'."<input type=submit class=purplebutton onClick=\"window.open('../itemRuntime/tao_item.php?i=".substr($instance,2)."&PHPSESSID=".session_id()."')\" name=saveContent value=".PREVIEW.">
 		
 		<li><input class=purplebutton type=submit value=".APPLY.">
 		</ul><a name=top></a></span>";
@@ -807,7 +797,7 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 						
 						$propositionleftstring = "propositionleft".$p.$a;
 						$propositiontopstring = "propositiontop".$p.$a;
-						error_reporting("^E_NOTICE");
+					//	error_reporting("^E_NOTICE");
 						
 						$output.='<br /><br />Proposition '.$num.' '.LEFT.'<input size=2 type=text name=itemcontent['.$propositionleftstring.'] id='.$propositionleftstring.' value='.array_shift($struct[$relevantarrayleft]).'>
 						'.TOP.'<input size=2 type=text name=itemcontent['.$propositiontopstring.'] id='.$propositiontopstring.' value='.array_shift($struct[$relevantarraytop]).'> '.CORRECTANSWER.' <input type=Checkbox name=itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][good] '.$ch.'>

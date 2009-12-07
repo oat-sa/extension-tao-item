@@ -9,8 +9,8 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 19.11.2009, 11:16:25 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 07.12.2009, 11:49:01 with ArgoUML PHP module 
+ * (last revised $Date: 2009-04-11 21:57:46 +0200 (Sat, 11 Apr 2009) $)
  *
  * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
  * @package taoItems
@@ -292,23 +292,59 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getAuthoringFileUriById
+     * Short description of method setDefaultItemContent
      *
      * @access public
      * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
-     * @param  string id
+     * @param  Resource item
+     * @return core_kernel_classes_Resource
+     */
+    public function setDefaultItemContent( core_kernel_classes_Resource $item)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 begin
+		
+		try{
+			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
+				$content = (string)$itemContent;
+				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX && trim($content) == ''){
+					$content = file_get_contents(TAO_ITEM_AUTHORING_TPL_FILE);
+					$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
+					
+					$item = $this->bindProperties($item, array(
+						TAO_ITEM_CONTENT_PROPERTY => $content
+					));
+				}
+			}
+		}
+		catch(Exception $e){
+		}
+		$returnValue = $item;
+		
+        // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getAuthoringFileUriByItem
+     *
+     * @access public
+     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @param  string itemUri
      * @return string
      */
-    public function getAuthoringFileUriById($id)
+    public function getAuthoringFileUriByItem($itemUri)
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 begin
 		
-		if(strlen($id) > 0){
-			if(preg_match("/^[0-9a-f]{12,16}$/", $id)){
-				$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/'.$id.'.xml';
-			}
+		if(strlen($itemUri) > 0){
+			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/'.tao_helpers_Uri::encode($itemUri).'.xml';			
 		}
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 end
 
@@ -316,22 +352,24 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getAuthoringFileIdByUri
+     * Short description of method getAuthoringFileItemByUri
      *
      * @access public
      * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
      * @param  string uri
      * @return string
      */
-    public function getAuthoringFileIdByUri($uri)
+    public function getAuthoringFileItemByUri($uri)
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D begin
 		if(strlen($uri) > 0){
 			if(file_exists($uri)){
-				$returnValue = str_replace(TAO_ITEM_AUTHORING_BASE_URI.'/', '',
-					str_replace('.xml', '', $uri)
+				$returnValue = tao_helpers_Uri::decode(
+					str_replace(TAO_ITEM_AUTHORING_BASE_URI.'/', '',
+						str_replace('.xml', '', $uri)
+					)
 				);
 			}
 		}
@@ -345,30 +383,24 @@ class taoItems_models_classes_ItemsService
      *
      * @access public
      * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
-     * @param  string id
-     * @return array
+     * @param  string itemUri
+     * @return string
      */
-    public function getAuthoringFile($id = '')
+    public function getAuthoringFile($itemUri)
     {
-        $returnValue = array();
+        $returnValue = (string) '';
 
         // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E begin
-		if(strlen($id) == 0){
-			$id = uniqid();
-		}
-		$uri = $this->getAuthoringFileUriById($id);
+		$uri = $this->getAuthoringFileUriByItem($itemUri);
 		
 		if(!file_exists($uri)){
-			file_put_contents($uri, '');
+			file_put_contents($uri, '<?xml version="1.0" encoding="utf-8" ?>');
 		}
-		$returnValue = array(
-			'id'	=> $id,
-			'uri'	=> $uri
-		);
+		$returnValue = $uri;
 		
         // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E end
 
-        return (array) $returnValue;
+        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */
