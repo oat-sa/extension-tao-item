@@ -425,8 +425,6 @@ class Items extends TaoModule{
 		catch(Exception $e){
 			$this->setData('error', true);
 		}
-		
-		
 		$this->setView('authoring.tpl');
 	}
 	
