@@ -476,6 +476,7 @@ class Items extends TaoModule{
 					
 					switch($itemModel->uriResource){
 						
+						case TAO_ITEM_MODEL_KHOS:
 						case TAO_ITEM_MODEL_QCM :
 							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
 							break;
