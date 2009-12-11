@@ -20,6 +20,8 @@ class Items extends TaoModule{
 		parent::__construct();
 		
 		//the service is initialized by default
+		
+
 		$this->service = tao_models_classes_ServiceFactory::get('Items');
 		$this->defaultData();
 	}
