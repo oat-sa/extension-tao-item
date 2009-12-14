@@ -1,4 +1,5 @@
 <?php
+require('../../../../generis/common/inc.extension.php');
 require('../../../includes/common.php');
 
 if (isset($_POST["AddInquiry_x"])) {$_SESSION["AddInquiry_x"] = $_POST["AddInquiry_x"];}

@@ -3,6 +3,7 @@ session_start();
 
 /* BRIDGE WITH THE LEGACY FORMS */
 if(isset($_POST['itemcontent'])){
+	require('../../../../generis/common/inc.extension.php');
 	require('../../../includes/common.php');
 	require_once('TAOsaveContent.php');
 	$TAOsaveContent = new TAOsaveContent();
