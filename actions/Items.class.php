@@ -1,4 +1,5 @@
 <?php
+
 require_once('tao/actions/CommonModule.class.php');
 require_once('tao/actions/TaoModule.class.php');
 
@@ -8,6 +9,7 @@ require_once('tao/actions/TaoModule.class.php');
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
  * @subpackage actions
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class Items extends TaoModule{
 	
