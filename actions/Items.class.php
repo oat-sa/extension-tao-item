@@ -127,14 +127,14 @@ class Items extends TaoModule{
 		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-			if($itemModel instanceof core_kernel_classes_Resource){
+			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
 				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-				if($runtime instanceof core_kernel_classes_Literal ){
-					if(preg_match("/\.swf$/", (string)$runtime)){
-						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
-						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
-						$runtimeFound = true;
-					}
+				$content = trim((string)$itemContent);
+				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+					$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
+					$runtimeFound = true;
 				}
 			}
 		}
@@ -164,14 +164,14 @@ class Items extends TaoModule{
 		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-			if($itemModel instanceof core_kernel_classes_Resource){
+			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
 				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-				if($runtime instanceof core_kernel_classes_Literal ){
-					if(preg_match("/\.swf$/", (string)$runtime)){
-						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
-						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
-						$runtimeFound = true;
-					}
+				$content = trim((string)$itemContent);
+				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+					$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
+					$runtimeFound = true;
 				}
 			}
 		}

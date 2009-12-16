@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 /* BRIDGE WITH THE LEGACY FORMS */
 if(isset($_POST['itemcontent'])){
 	require('../../../../generis/common/inc.extension.php');
@@ -10,6 +8,7 @@ if(isset($_POST['itemcontent'])){
 	$_SESSION['xml'] = $TAOsaveContent->getOutput($_POST['itemcontent']);
 }
 else{
+	session_start();
 	$_SESSION['xml'] = $_POST['xml'];
 }
 $_SESSION['instance'] = $_POST['instance'];
