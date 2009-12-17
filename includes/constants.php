@@ -18,7 +18,13 @@ $todefine = array(
 	'TAO_ITEM_MODEL_WATERPHENIX'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#125933161031263',
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
 	'TAO_ITEM_AUTHORING_TPL_FILE' 		=> BASE_PATH.'/data/black_ref.xml',
-	'GENERIS_BOOLEAN'		=> 'http://www.tao.lu/Ontologies/generis.rdf#Boolean'
+	'TAO_OBJECT_CLASS' 					=> 'http://www.tao.lu/Ontologies/TAO.rdf#TAOObject',
+	'TAO_GROUP_CLASS' 					=> 'http://www.tao.lu/Ontologies/TAOGroup.rdf#Group',
+	'TAO_RESULT_CLASS' 					=> 'http://www.tao.lu/Ontologies/TAOResult.rdf#Result',
+	'TAO_SUBJECT_CLASS' 				=> 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject',
+	'TAO_TEST_CLASS' 					=> 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test',
+	'RDFS_LABEL'						=> 'http://www.w3.org/2000/01/rdf-schema#label',
+	'GENERIS_BOOLEAN'					=> 'http://www.tao.lu/Ontologies/generis.rdf#Boolean'
 );
 foreach($todefine as $constName => $constValue){
 	if(!defined($constName)){
