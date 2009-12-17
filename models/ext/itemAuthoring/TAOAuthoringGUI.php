@@ -42,7 +42,7 @@ class TAOAuthoringGUI {
 			$url .= 'session_id=' . session_id();
 			curl_setopt($curlHandler, CURLOPT_URL, $url);
 			curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curlHandler, CURLOPT_COOKIE, 'PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/'); 
+			curl_setopt($curlHandler, CURLOPT_COOKIE, session_name(). '=' . $_COOKIE[session_name()] . '; path=/'); 
 			$output = curl_exec($curlHandler);
 			curl_close($curlHandler);  
 		}
