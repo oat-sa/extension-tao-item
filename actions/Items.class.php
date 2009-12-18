@@ -77,9 +77,6 @@ class Items extends TaoModule{
 			unset($_SESSION[SESSION_NAMESPACE]['uri']);
 			unset($_SESSION[SESSION_NAMESPACE]['classUri']);
 		}
-		
-		$context = Context::getInstance();
-		$this->setData('content', "module: ". get_class($this) ." , action: " . $context->getActionName());
 		$this->setView('index.tpl');
 	}
 	
