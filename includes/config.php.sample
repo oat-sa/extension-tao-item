@@ -35,7 +35,10 @@ define('DEFAULT_MODULE_NAME', 'Items');
 #default action name
 define('DEFAULT_ACTION_NAME', 'index');
 
-
+#if there is a .htaccess with an http auth
+define('USE_HTTP_AUTH', false);
+define('USE_HTTP_USER', '');
+define('USE_HTTP_PASS', '');
 
 # theme directory
 $GLOBALS['dir_theme']		= "templates/";
