@@ -3,16 +3,9 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - taoItems/models/classes/class.ItemsService.php
+ * Service methods to manage the Items business models using the RDF API.
  *
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- *
- * This file is part of Generis Object Oriented API.
- *
- * Automatically generated on 07.12.2009, 11:49:01 with ArgoUML PHP module 
- * (last revised $Date: 2009-04-11 21:57:46 +0200 (Sat, 11 Apr 2009) $)
- *
- * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -25,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('tao/models/classes/class.Service.php');
 
@@ -38,10 +31,10 @@ require_once('tao/models/classes/class.Service.php');
 // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-constants end
 
 /**
- * Short description of class taoItems_models_classes_ItemsService
+ * Service methods to manage the Items business models using the RDF API.
  *
  * @access public
- * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -54,7 +47,7 @@ class taoItems_models_classes_ItemsService
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute itemClass
+     * The RDFS top level item class
      *
      * @access protected
      * @var Class
@@ -62,7 +55,7 @@ class taoItems_models_classes_ItemsService
     protected $itemClass = null;
 
     /**
-     * Short description of attribute itemsOntologies
+     * The ontologies to load
      *
      * @access protected
      * @var array
@@ -75,7 +68,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return void
      */
     public function __construct()
@@ -90,10 +83,12 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * access to the top level Item class
+     * get an item subclass by uri. 
+     * If the uri is not set, it returns the  item class (the top level class.
+     * If the uri don't reference an item subclass, it returns null
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string uri
      * @return core_kernel_classes_Class
      */
@@ -120,10 +115,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method isItemClass
+     * check if the class is a or a subclass of an Item
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -146,10 +141,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getItem
+     * get an item
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string identifier
      * @param  Class itemClazz
      * @param  string mode
@@ -176,10 +171,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getItems
+     * get a list of items
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array options
      * @return core_kernel_classes_ContainerCollection
      */
@@ -197,10 +192,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method createItem
+     * create an item
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemModel
      * @param  string itemContent
      * @return core_kernel_classes_Resource
@@ -245,10 +240,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method deleteItem
+     * delete an item
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -268,10 +263,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method deleteItemClass
+     * delete an item class or subclass
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -295,7 +290,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setDefaultItemContent
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -330,10 +325,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getAuthoringFileUriByItem
+     * Get the file linked to an item
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -352,10 +347,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getAuthoringFileItemByUri
+     * get the item uri linked to the given file
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string uri
      * @return string
      */
@@ -379,10 +374,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getAuthoringFile
+     * Get the file linked to an item
      *
      * @access public
-     * @author Bertrand Chevrier, <chevrier.bertrand@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemUri
      * @return string
      */
