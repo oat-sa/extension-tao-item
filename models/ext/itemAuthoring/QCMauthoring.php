@@ -2,11 +2,41 @@
 require('../../../../generis/common/inc.extension.php');
 require('../../../includes/common.php');
 
-if (isset($_POST["AddInquiry_x"])) {$_SESSION["AddInquiry_x"] = $_POST["AddInquiry_x"];}
-if (isset($_POST["AddInquiry"])) {$_SESSION["AddInquiry"] = $_POST["AddInquiry"];}
-if (isset($_POST["AddProp"])) {$_SESSION["AddProp"] = $_POST["AddProp"];}
-if (isset($_POST["removeInquiry"])) {$_SESSION["removeInquiry"] = $_POST["removeInquiry"];}
-if (isset($_POST["removeProposition"])) {$_SESSION["removeProposition"] = $_POST["removeProposition"]; }
+if (isset($_POST["AddInquiry_x"])) {
+	$_SESSION["AddInquiry_x"] = $_POST["AddInquiry_x"];
+}
+else{
+	unset($_SESSION["AddInquiry_x"]);
+}
+
+if (isset($_POST["AddInquiry"])) {
+	$_SESSION["AddInquiry"] = $_POST["AddInquiry"];
+}
+else{
+	unset($_SESSION["AddInquiry"]);
+}
+
+if (isset($_POST["AddProp"])) {
+	$_SESSION["AddProp"] = $_POST["AddProp"];
+}
+else{
+	unset($_SESSION["AddProp"]);
+}
+
+if (isset($_POST["removeInquiry"])) {
+	$_SESSION["removeInquiry"] = $_POST["removeInquiry"];
+}
+else{
+	unset($_SESSION["removeInquiry"]);
+}
+
+if (isset($_POST["removeProposition"])) {
+	$_SESSION["removeProposition"] = $_POST["removeProposition"]; 
+}
+else{
+	unset($_SESSION["removeProposition"]);
+}
+
 
 if(isset($_POST['itemcontent']) && isset($_POST['instance'])){
 
