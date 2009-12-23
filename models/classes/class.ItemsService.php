@@ -129,6 +129,7 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001AD2 begin
 		
 		foreach($clazz->getParentClasses(true) as $parent){
+			
 			if($parent->uriResource == $this->itemClass->uriResource){
 				$returnValue = true;
 				break;
@@ -155,15 +156,27 @@ class taoItems_models_classes_ItemsService
         $returnValue = null;
 
         // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 begin
+	
+		if(is_null($itemClazz) && $mode == 'uri'){
+			try{
+				$resource = new core_kernel_classes_Resource($identifier);
+				$itemType = $resource->getUniquePropertyValue(new core_kernel_classes_Property( RDF_TYPE ));
+				$itemClazz = new core_kernel_classes_Class($itemType->uriResource);
+			}
+			catch(Exception $e){}
+		}
 		if(is_null($itemClazz)){
 			$itemClazz = $this->itemClass;
 		}
 		if($itemClazz->uriResource != $this->itemClass->uriResource){
+			
 			if(!$this->isItemClass($itemClazz)){
 				throw new Exception("The item class is not a valid item sub class");
 			}
+			
 		}
 		$returnValue = $this->getOneInstanceBy( $itemClazz, $identifier, $mode);
+		
 		
         // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 end
 
