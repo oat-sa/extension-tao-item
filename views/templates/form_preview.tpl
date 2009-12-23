@@ -11,7 +11,8 @@
 		<embed src="<?=get_data('swf')?>?localXmlFile=<?=get_data('dataPreview')?>&instance=<?=get_data('instanceUri')?>" quality="high" bgcolor="#ffffff" wmode="opaque" width="800" height="600" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 	</object>
 	<?else:?>
-		<?=__('PREVIEW BOX')?>
+		<?=__('PREVIEW BOX')?><br /><br />
+		<?=get_data('previewMsg')?>
 	<?endif?>
 </div>
 <div class="main-container">

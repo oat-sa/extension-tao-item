@@ -125,17 +125,24 @@ class Items extends TaoModule{
 		}
 		
 		$this->setData('preview', false);
+		$this->setData('previewMsg', __("Preview not yet available"));
 		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
-				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-				$content = trim((string)$itemContent);
-				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
-					$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
-					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
-					$runtimeFound = true;
+				
+				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
+					$this->setData('previewMsg', __("Preview available inside the authoring tool"));
+				}
+				else{
+					$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+					$content = trim((string)$itemContent);
+					if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
+						$runtimeFound = true;
+					}
 				}
 			}
 		}
@@ -162,17 +169,24 @@ class Items extends TaoModule{
 		$item = $this->getCurrentItem();
 		
 		$this->setData('preview', false);
+		$this->setData('previewMsg', __("Preview not yet available"));
 		$runtimeFound = false;
 		try{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
-				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-				$content = trim((string)$itemContent);
-				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
-					$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
-					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
-					$runtimeFound = true;
+				
+				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
+					$this->setData('previewMsg', __("Preview available inside the authoring tool"));
+				}
+				else{
+					$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+					$content = trim((string)$itemContent);
+					if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+						$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
+						$runtimeFound = true;
+					}
 				}
 			}
 		}
