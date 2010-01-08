@@ -184,27 +184,6 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * get a list of items
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  array options
-     * @return core_kernel_classes_ContainerCollection
-     */
-    public function getItems($options = array())
-    {
-        $returnValue = null;
-
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017B5 begin
-		
-		$returnValue = $this->itemClass->getInstances();
-		
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017B5 end
-
-        return $returnValue;
-    }
-
-    /**
      * create an item
      *
      * @access public
