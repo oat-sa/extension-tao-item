@@ -819,14 +819,6 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 						$num=$a+1;
 						
 						$form='itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]';
-						$script = '<SCRIPT type="text/javascript">
-						function openNewWin3'.$p.$a.'() {
-							window.open("../../widgets/GUIUploadMultimediaFile.php?form='.$form.'","_blank","toolbar=yes,location=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=250,height=300");
-						}
-						</script>
-
-						<INPUT type="button" width=60 name="change" value="Insert Multimedia Content" onClick="openNewWin3'.$p.$a.'()">';
-						
 						$propositionleftstring = "propositionleft".$p.$a;
 						$propositiontopstring = "propositiontop".$p.$a;
 						

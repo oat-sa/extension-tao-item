@@ -193,7 +193,7 @@ class TAOsaveContent
 							{
 								if ($value!="0")
 								{
-								$value=str_replace("--MULTIMEDIA url=","<image src=",$value);
+								$value=preg_replace("/\-\-MULTIMEDIA(.*?)url\=/","<image src=",$value);
 								$value=str_replace("--","/>",$value);
 								$propimages.=str_replace('\"','"',$value);
 								}
@@ -254,7 +254,19 @@ class TAOsaveContent
             if ($xmlwidget=="radio") {$propositionbox.='</radiogroup>';}
 			/****/
 			/*Search for inclusions of multimedia files into question */
-			eregi("--MULTIMEDIA(.)*--",$b["question"],$occurences) ;
+			$myQuestion =  $b["question"];
+			$mymatches = array();
+			preg_match_all('/\<img(.*?)\>/', $myQuestion, $mymatches);
+			if(isset($mymatches[0])){
+				foreach($mymatches[0] as $amatch){
+					$newmatch = str_replace("src", "url", $amatch);
+					$newmatch = str_replace("<img", "--MULTIMEDIA", $newmatch);
+					$newmatch = str_replace("/>", "--", $newmatch);
+					$myQuestion = str_replace($amatch, $newmatch,  $myQuestion);
+				}
+			}
+
+			eregi("--MULTIMEDIA(.)*--",$myQuestion,$occurences) ;
 				$inqimages="";
 				if (is_array($occurences))
 				{
@@ -263,8 +275,8 @@ class TAOsaveContent
 						if ($value!="0")
 						{
 							
-						$value=str_replace("--MULTIMEDIA url=","<image src=",$value);
-					$value=str_replace("--","/>",$value);
+						$value=preg_replace("/\-\-MULTIMEDIA(.*?)url\=/","<image src=",$value);
+						$value=str_replace("--","/>",$value);
 						$inqimages.=str_replace('&quot;','"',$value);
 						
 
@@ -429,9 +441,22 @@ $cquestion =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $this->validateliteral($b[
 				$box.=  '</box>';
 /****/
 /*Search for inclusions of multimedia files into problem */
-$temp = $ressource["tao:problem"];
-	$temp =ereg_replace("--TEXTBOX[^-]*--" , "" ,$temp ) ;
-eregi("--MULTIMEDIA(.)*--",$temp,$occurences) ;
+
+$tao_problem = $ressource["tao:problem"];
+
+$mymatches = array();
+	preg_match_all('/\<img(.*?)\>/', $tao_problem, $mymatches);
+	if(isset($mymatches[0])){
+		foreach($mymatches[0] as $amatch){
+			$newmatch = str_replace("src", "url", $amatch);
+			$newmatch = str_replace("<img", "--MULTIMEDIA", $newmatch);
+			$newmatch = str_replace("/>", "--", $newmatch);
+			$tao_problem = str_replace($amatch, $newmatch,  $tao_problem);
+		}
+	}
+
+	$tao_problem =ereg_replace("--TEXTBOX[^-]*--" , "" ,$tao_problem ) ;
+	eregi("--MULTIMEDIA(.)*--",$tao_problem, $occurences) ;
 
 	$problemimages="";
 	if (is_array($occurences))
@@ -441,7 +466,7 @@ eregi("--MULTIMEDIA(.)*--",$temp,$occurences) ;
 			if ($value!="0")
 			{
 				
-			$value=str_replace("--MULTIMEDIA url=","<image src=",$value);
+			$value=preg_replace("/\-\-MULTIMEDIA(.*?)url\=/","<image src=",$value);
 			$value=str_replace("--","/>",$value);
 
 			$problemimages.=str_replace('&quot;','"',$value);
@@ -450,12 +475,10 @@ eregi("--MULTIMEDIA(.)*--",$temp,$occurences) ;
 	 }
 	  $problemimages=substr($problemimages,0,strlen($problemimages)-1);
 
+$tao_problem =ereg_replace("--MULTIMEDIA[^-]*--" , "" ,$tao_problem ) ;
 
-$temp = $ressource["tao:problem"];
-$temp =ereg_replace("--MULTIMEDIA[^-]*--" , "" ,$temp ) ;
-eregi("--TEXTBOX(.)*--",$temp,$boxoccurences) ;
 
-	
+eregi("--TEXTBOX(.)*--",$tao_problem, $boxoccurences) ;
 
 $problemboxes="";
 	if (is_array($boxoccurences))
@@ -489,13 +512,14 @@ $problemimages.=$problemboxes;
 	
 	
 
-	if (!(isset($ressource["tao:inabox"])) or (($ressource["tao:inabox"])!="on"))
+		if (!(isset($ressource["tao:inabox"])) or (($ressource["tao:inabox"])!="on"))
 		{
-	$xulproblem='<label id="problem_textbox" left="'.$left.'" top="'.$top.'" multiline="true" wrap="true" value="'.$this->validateliteral($ressource["tao:problem"],true).'"/>'.$problemimages;
+			if($top <= 15 && !empty($problemimages)) $top = "50";
+			$xulproblem='<label id="problem_textbox" left="'.$left.'" top="'.$top.'" multiline="true" wrap="true" value="'.$this->validateliteral($ressource["tao:problem"],true).'"/>'.$problemimages;
 		}
-	else
+		else
 		{
-		$xulproblem='<textbox id="problem_textbox" left="'.$left.'" top="'.$top.'" width="'.$width.'" height="'.$height.'" multiline="true" wrap="true" value="'.$this->validateliteral($ressource["tao:problem"],true).'"/>'.$problemimages;
+			$xulproblem='<textbox id="problem_textbox" left="'.$left.'" top="'.$top.'" width="'.$width.'" height="'.$height.'" multiline="true" wrap="true" value="'.$this->validateliteral($ressource["tao:problem"],true).'"/>';//.$problemimages;
 		}
 	}
 	else
