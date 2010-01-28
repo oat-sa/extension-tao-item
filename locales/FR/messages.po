@@ -1,0 +1,27 @@
+msgid ""
+msgstr ""
+
+msgid "Preview available inside the authoring tool"
+msgstr "La prévisualisation est disponible depuis l'éditeur"
+
+msgid "An error occured while saving the item"
+msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
+
+msgid "Item saved successfully"
+msgstr "L'item a été enregistré avec succès"
+
+msgid "Please select an item before!"
+msgstr "Veuillez choisir un item!"
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "PREVIEW BOX"
+msgstr "Prévisualisation"
+
+msgid "Edit item comment"
+msgstr "Modifier les commentaires de l'item"
+
+msgid "Save"
+msgstr "Enregistrer"
+

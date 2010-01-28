@@ -1,0 +1,27 @@
+msgid "Preview not yet available"
+msgstr ""
+
+msgid "Preview available inside the authoring tool"
+msgstr ""
+
+msgid "An error occured while saving the item"
+msgstr ""
+
+msgid "Item saved successfully"
+msgstr ""
+
+msgid "Please select an item before!"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "PREVIEW BOX"
+msgstr ""
+
+msgid "Edit item comment"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
