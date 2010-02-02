@@ -90,16 +90,11 @@ class Items extends TaoModule{
 			throw new Exception("wrong request mode");
 		}
 		//render directly the json
-		$highlightUri = '';
-		if($this->hasSessionAttribute("showNodeUri")){
-			$highlightUri = $this->getSessionAttribute("showNodeUri");
-			unset($_SESSION[SESSION_NAMESPACE]["showNodeUri"]);
-		} 
 		$filter = '';
 		if($this->hasRequestParameter('filter')){
 			$filter = $this->getRequestParameter('filter');
 		}
-		echo json_encode( $this->service->toTree( $this->service->getItemClass() , true, true, $highlightUri, $filter) );
+		echo json_encode( $this->service->toTree( $this->service->getItemClass() , true, true, '', $filter) );
 	}
 	
 	
