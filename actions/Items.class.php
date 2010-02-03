@@ -115,7 +115,6 @@ class Items extends TaoModule{
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				$this->setData('message', 'item saved');
 				$this->setData('reload', true);
-				$this->forward('Items', 'index');
 			}
 		}
 		
@@ -210,7 +209,6 @@ class Items extends TaoModule{
 				}
 				$this->setData('message', 'class saved');
 				$this->setData('reload', true);
-				$this->forward('Items', 'index');
 			}
 		}
 		$this->setData('formTitle', 'Edit a class');

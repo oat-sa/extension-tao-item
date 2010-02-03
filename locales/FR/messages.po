@@ -1,4 +1,4 @@
-msgid ""
+msgid "Preview not yet available"
 msgstr ""
 
 msgid "Preview available inside the authoring tool"
