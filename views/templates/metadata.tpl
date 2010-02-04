@@ -1,14 +1,14 @@
 <?if(get_data('metadata')):?>
 <div id="meta-title" class="ui-widget-header ui-corner-top ui-state-default">
-	Meta Data
+	<?=__('Meta Data')?>
 </div>
 <div id="meta-content" class="ui-widget-content ui-state-default">
 	<table>
 		<thead>
 			<tr>
-				<th>Date</th>
-				<th>User</th>
-				<th>Comment</th>
+				<th><?=__('Date')?></th>
+				<th><?=__('User')?></th>
+				<th><?=__('Comment')?></th>
 			</tr>
 		</thead>
 		<tbody>

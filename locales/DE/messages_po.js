@@ -1,4 +1,4 @@
 /* auto generated content */
 /* extesion: taoItems, lang: DE */
 var langCode = 'DE';
-var i18n_tr = {"Preview not yet available":"","Preview available inside the authoring tool":"","An error occured while saving the item":"","Item saved successfully":"","Please select an item before!":"","Back":"","PREVIEW BOX":"","Edit item comment":"","Save":""};
+var i18n_tr = {"Item saved":"","Preview not yet available":"","Preview available inside the authoring tool":"","Edit Item":"","Class saved":"","Edit a class":"","An error occured while saving the item":"","Item saved successfully":"","Items":"","Manage items":"","Item library":"","new class":"","new item":"","delete":"","duplicate":"","edit item":"","new property":"","fullscreen preview":"","create table":"","import":"","export":"","Item authoring":"","Please select an item before!":"","Back":"","PREVIEW BOX":"","The Item module enables the creation and design of items and exercises.":"","A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc.":"","Meta Data":"","Date":"","User":"","Comment":"","Edit item comment":"","Save":""};

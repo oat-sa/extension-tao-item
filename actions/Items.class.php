@@ -113,7 +113,7 @@ class Items extends TaoModule{
 				$item = $this->service->setDefaultItemContent($item);
 				
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
-				$this->setData('message', 'item saved');
+				$this->setData('message', __('Item saved'));
 				$this->setData('reload', true);
 			}
 		}
@@ -149,7 +149,7 @@ class Items extends TaoModule{
 		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
-		$this->setData('formTitle', 'Edit Item');
+		$this->setData('formTitle', __('Edit Item'));
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form_preview.tpl');
 	}
@@ -207,11 +207,11 @@ class Items extends TaoModule{
 				if($clazz instanceof core_kernel_classes_Resource){
 					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
 				}
-				$this->setData('message', 'class saved');
+				$this->setData('message', __('Class saved'));
 				$this->setData('reload', true);
 			}
 		}
-		$this->setData('formTitle', 'Edit a class');
+		$this->setData('formTitle', __('Edit a class'));
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl');
 	}

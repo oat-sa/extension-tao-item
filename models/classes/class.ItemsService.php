@@ -15,13 +15,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include
- *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- */
-require_once('class..php');
-
-/**
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
@@ -46,9 +39,7 @@ require_once('tao/models/classes/class.Service.php');
  * @subpackage models_classes
  */
 class taoItems_models_classes_ItemsService
-    /* multiple generalisations not supported by PHP: */
-    /* extends tao_models_classes_Service,
-             */
+    extends tao_models_classes_Service
 {
     // --- ASSOCIATIONS ---
 
@@ -188,54 +179,6 @@ class taoItems_models_classes_ItemsService
 		
 		
         // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 end
-
-        return $returnValue;
-    }
-
-    /**
-     * create an item
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string itemModel
-     * @param  string itemContent
-     * @return core_kernel_classes_Resource
-     */
-    public function createItem($itemModel = null, $itemContent = '')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:000000000000186A begin
-		
-		if(is_string($itemModel)){
-			$itemModel = $this->getItemModel(
-				$itemModel, 
-				(strpos($itemModel, '#') === false) ? 'label' : 'uri'
-			);
-		}
-		if( ! $itemModel instanceof core_kernel_classes_Resource || is_null($itemModel) ){
-			throw new Exception("itemModel instance is a mandatory property to create a new item");
-		}
-		
-		$itemInstance = core_kernel_classes_ResourceFactory::create(
-			$this->itemClass,
-			'item_' . ($this->itemClass->getInstances()->count() + 1),
-			'item created from ' . get_class($this) . ' the '. date('Y-m-d h:i:s') 
-		);
-		
-		$itemInstance->setPropertyValue(
-			$this->itemModelProperty,
-			$itemModel->uriRessource
-		);
-		
-		$itemInstance->setPropertyValue(
-			$this->itemContentProperty,
-			$itemContent
-		);
-		
-		$returnValue = $itemInstance;
-		
-        // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:000000000000186A end
 
         return $returnValue;
     }

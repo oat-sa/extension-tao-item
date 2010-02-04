@@ -1,13 +1,67 @@
+msgid "Item saved"
+msgstr ""
+
 msgid "Preview not yet available"
 msgstr ""
 
 msgid "Preview available inside the authoring tool"
 msgstr ""
 
+msgid "Edit Item"
+msgstr ""
+
+msgid "Class saved"
+msgstr ""
+
+msgid "Edit a class"
+msgstr ""
+
 msgid "An error occured while saving the item"
 msgstr ""
 
 msgid "Item saved successfully"
+msgstr ""
+
+msgid "Items"
+msgstr ""
+
+msgid "Manage items"
+msgstr ""
+
+msgid "Item library"
+msgstr ""
+
+msgid "new class"
+msgstr ""
+
+msgid "new item"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "duplicate"
+msgstr ""
+
+msgid "edit item"
+msgstr ""
+
+msgid "new property"
+msgstr ""
+
+msgid "fullscreen preview"
+msgstr ""
+
+msgid "create table"
+msgstr ""
+
+msgid "import"
+msgstr ""
+
+msgid "export"
+msgstr ""
+
+msgid "Item authoring"
 msgstr ""
 
 msgid "Please select an item before!"
@@ -19,9 +73,28 @@ msgstr ""
 msgid "PREVIEW BOX"
 msgstr ""
 
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr ""
+
+msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
+msgstr ""
+
+msgid "Meta Data"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
 msgid "Edit item comment"
 msgstr ""
 
 msgid "Save"
 msgstr ""
+
 
