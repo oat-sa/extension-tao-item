@@ -15,6 +15,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
+ * include
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('class..php');
+
+/**
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
@@ -39,7 +46,9 @@ require_once('tao/models/classes/class.Service.php');
  * @subpackage models_classes
  */
 class taoItems_models_classes_ItemsService
-    extends tao_models_classes_Service
+    /* multiple generalisations not supported by PHP: */
+    /* extends tao_models_classes_Service,
+             */
 {
     // --- ASSOCIATIONS ---
 
@@ -386,6 +395,29 @@ class taoItems_models_classes_ItemsService
 		$returnValue = $uri;
 		
         // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getTempAuthoringFile
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string itemUri
+     * @return string
+     */
+    public function getTempAuthoringFile($itemUri)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 begin
+		
+		if(strlen($itemUri) > 0){
+			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';			
+		}
+		
+        // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 end
 
         return (string) $returnValue;
     }

@@ -492,5 +492,29 @@ class Items extends TaoModule{
 		$this->redirect('/tao/Main/index?extension=taoItems&message='.urlencode($message));
 	}
 	
+	/**
+	 * 
+	 * @return void
+	 */
+	public function loadTempAuthoringFile(){
+		try{
+			echo file_get_contents($this->service->getTempAuthoringFile($this->getRequestParameter('instance')));
+		}
+		catch(Exception $e){
+			//print an empty response
+			echo '<?xml version="1.0" encoding="utf-8" ?>';
+		}
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public function saveTempAuthoringFile(){
+		$instance = $this->getRequestParameter('instance');
+		$xml = $this->getRequestParameter('xml');
+		
+		file_put_contents($this->service->getTempAuthoringFile($instance), $xml);
+	}
 }
 ?>
