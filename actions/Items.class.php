@@ -265,6 +265,11 @@ class Items extends TaoModule{
 	}
 	
 	
+	public function translateInstance(){
+		parent::translateInstance();
+		$this->setView('form.tpl', false);
+	}
+	
 	/**
 	 * @see TaoModule::getMetaData
 	 * @return void
