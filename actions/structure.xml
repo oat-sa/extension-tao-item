@@ -7,17 +7,17 @@
 					dataUrl="/taoItems/Items/getItems" 
 					editClassUrl="/taoItems/Items/editItemClass"
 					editInstanceUrl="/taoItems/Items/editItem"
-					addInstanceUrl="/taoItems/Items/addItem"
+					addInstanceUrl="/taoItems/Items/addInstance"
 					addSubClassUrl="/taoItems/Items/addItemClass"
 					deleteUrl="/taoItems/Items/delete"
-					duplicateUrl="/taoItems/Items/cloneItem"
+					duplicateUrl="/taoItems/Items/cloneInstance"
 				/>
 			</trees>
 			<actions>
 				<action name="new class" js="GenerisAction.subClass" url="/taoItems/Items/addItemClass" context="class" />
-				<action name="new item" js="GenerisAction.instanciate" url="/taoItems/Items/addItem" context="class" />
+				<action name="new item" js="GenerisAction.instanciate" url="/taoItems/Items/addInstance" context="class" />
 				<action name="delete" js="GenerisAction.removeNode" url="/taoItems/Items/delete" context="resource" />
-				<action name="duplicate" js="GenerisAction.duplicateNode" url="/taoItems/Items/cloneItem" context="instance" />
+				<action name="duplicate" js="GenerisAction.duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" />
 				<action name="edit item" url="/taoItems/Items/editItem" context="instance" />
 				<action name="new property" js="GenerisAction.addProperty" url="/taoItems/Items/addClassProperty" context="class" />
 				<action name="fullscreen preview" js="GenerisAction.fullScreen" url="/taoItems/Items/preview" context="instance" />

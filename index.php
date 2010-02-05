@@ -18,7 +18,7 @@
 		$fc->loadModule();
 	} catch (Exception $e) {
 		$message	= $e->getMessage();
-		require_once DIR_VIEWS . $GLOBALS['dir_theme'] . 'error404.tpl';
+		require_once TAOVIEW_PATH . $GLOBALS['dir_theme'] . 'error404.tpl';
 	}
 
 ?>

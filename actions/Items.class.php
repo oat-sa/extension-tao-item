@@ -49,7 +49,7 @@ class Items extends TaoModule{
 	 * get the instancee of the current item regarding the 'uri' and 'classUri' request parameters
 	 * @return core_kernel_classes_Resource the item instance
 	 */
-	protected function getCurrentItem(){
+	protected function getCurrentInstance(){
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
 		if(is_null($uri) || empty($uri)){
 			throw new Exception("No valid uri found");
@@ -67,19 +67,6 @@ class Items extends TaoModule{
  * controller actions
  */
 
-	/**
-	 * the default action. Do nothing
-	 * @return void
-	 */
-	public function index(){
-		
-		if($this->getData('reload') == true){
-			unset($_SESSION[SESSION_NAMESPACE]['uri']);
-			unset($_SESSION[SESSION_NAMESPACE]['classUri']);
-		}
-		$this->setView('index.tpl');
-	}
-	
 	/**
 	 * Render json data to populate the subject tree 
 	 * 'modelType' must be in request parameter
@@ -103,7 +90,7 @@ class Items extends TaoModule{
 	 */
 	public function editItem(){
 		$itemClass = $this->getCurrentClass();
-		$item = $this->getCurrentItem();
+		$item = $this->getCurrentInstance();
 		
 		$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($itemClass, $item);
 		if($myForm->isSubmited()){
@@ -126,7 +113,7 @@ class Items extends TaoModule{
 			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
 				
-				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
+				/*if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
 					$this->setData('previewMsg', __("Preview available inside the authoring tool"));
 				}
 				else{
@@ -137,6 +124,18 @@ class Items extends TaoModule{
 						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
 						$runtimeFound = true;
 					}
+				}*/
+				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
+					$content = trim(file_get_contents($this->service->getTempAuthoringFile($item->uriResource)));
+				}
+				else{
+					$content = trim((string)$itemContent);
+				}
+				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+					$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource, 'preview' => true))));
+					$runtimeFound = true;
 				}
 			}
 		}
@@ -160,7 +159,7 @@ class Items extends TaoModule{
 	 */
 	public function preview(){
 		$itemClass = $this->getCurrentClass();
-		$item = $this->getCurrentItem();
+		$item = $this->getCurrentInstance();
 		
 		$this->setData('preview', false);
 		$this->setData('previewMsg', __("Preview not yet available"));
@@ -169,7 +168,7 @@ class Items extends TaoModule{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
-				
+				/*
 				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
 					$this->setData('previewMsg', __("Preview available inside the authoring tool"));
 				}
@@ -181,6 +180,18 @@ class Items extends TaoModule{
 						$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
 						$runtimeFound = true;
 					}
+				}*/
+				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
+					$content = trim(file_get_contents($this->service->getTempAuthoringFile($item->uriResource)));
+				}
+				else{
+					$content = trim((string)$itemContent);
+				}
+				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+					$this->setData('swf', BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime);
+					$this->setData('dataPreview', urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource, 'preview' => true))));
+					$runtimeFound = true;
 				}
 			}
 		}
@@ -216,22 +227,6 @@ class Items extends TaoModule{
 		$this->setView('form.tpl');
 	}
 	
-	/**
-	 * Add an item instance
-	 */
-	public function addItem(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		$itemClass = $this->getCurrentClass();
-		$instance = $this->service->createInstance($itemClass);
-		if($instance instanceof core_kernel_classes_Resource){
-			echo json_encode(array(
-				'label'	=> $instance->getLabel(),
-				'uri' 	=> tao_helpers_Uri::encode($instance->uriResource)
-			));
-		}
-	}
 	
 	/**
 	 * Sub Class
@@ -261,7 +256,7 @@ class Items extends TaoModule{
 		
 		$deleted = false;
 		if($this->getRequestParameter('uri')){
-			$deleted = $this->service->deleteItem($this->getCurrentItem());
+			$deleted = $this->service->deleteItem($this->getCurrentInstance());
 		}
 		else{
 			$deleted = $this->service->deleteItemClass($this->getCurrentClass());
@@ -269,22 +264,6 @@ class Items extends TaoModule{
 		echo json_encode(array('deleted'	=> $deleted));
 	}
 	
-	/**
-	 * duplicate an item instance by property copy
-	 */
-	public function cloneItem(){
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		
-		$clone = $this->service->cloneInstance($this->getCurrentItem(), $this->getCurrentClass());
-		if(!is_null($clone)){
-			echo json_encode(array(
-				'label'	=> $clone->getLabel(),
-				'uri' 	=> tao_helpers_Uri::encode($clone->uriResource)
-			));
-		}
-	}
 	
 	/**
 	 * @see TaoModule::getMetaData
@@ -298,7 +277,7 @@ class Items extends TaoModule{
 		$this->setData('metadata', false); 
 		if($this->getRequestParameter('uri') && $this->getRequestParameter('classUri')){
 			
-			$item = $this->getCurrentItem();
+			$item = $this->getCurrentInstance();
 			
 			$date = $item->getLastModificationDate();
 			$this->setData('date', $date->format('d/m/Y H:i:s'));
@@ -328,7 +307,7 @@ class Items extends TaoModule{
 		);
 		if($this->getRequestParameter('uri') && $this->getRequestParameter('classUri') && $this->getRequestParameter('comment')){
 			
-			$item = $this->getCurrentItem();
+			$item = $this->getCurrentInstance();
 			$item->setComment($this->getRequestParameter('comment'));
 			if($item->comment == $this->getRequestParameter('comment')){
 				$response['saved'] = true;
@@ -348,7 +327,7 @@ class Items extends TaoModule{
 		header("Content-Type: text/xml; charset utf-8");
 		
 		try{
-			$item = $this->getCurrentItem();
+			$item = $this->getCurrentInstance();
 			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
@@ -356,19 +335,24 @@ class Items extends TaoModule{
 				$xml = (string)$itemContent;
 				
 				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
-					$fileId = '';
-					if(!empty($xml)){
-						$xmlElt = new SimpleXMLElement($xml);
-						if($xmlElt->root){
-							if(isset($xmlElt->root['reference'])){
-								$fileId = (string)$xmlElt->root['reference'];
+					if($this->hasRequestParameter('preview')){
+						$xml = file_get_contents($this->service->getTempAuthoringFile($item->uriResource));
+					}
+					else{
+						$fileId = '';
+						if(!empty($xml)){
+							$xmlElt = new SimpleXMLElement($xml);
+							if($xmlElt->root){
+								if(isset($xmlElt->root['reference'])){
+									$fileId = (string)$xmlElt->root['reference'];
+								}
 							}
 						}
+						if(empty($fileId)){
+							$fileId = $item->uriResource;
+						}
+						$xml = file_get_contents($this->service->getAuthoringFile($fileId));
 					}
-					if(empty($fileId)){
-						$fileId = $item->uriResource;
-					}
-					$xml = file_get_contents($this->service->getAuthoringFile($fileId));
 				}
 				echo $xml;
 			}
@@ -386,7 +370,7 @@ class Items extends TaoModule{
 	public function authoring(){
 		$this->setData('error', false);
 		try{
-			$item = $this->getCurrentItem();
+			$item = $this->getCurrentInstance();
 			$itemClass = $this->getCurrentClass();
 			
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
@@ -498,7 +482,7 @@ class Items extends TaoModule{
 	 */
 	public function loadTempAuthoringFile(){
 		try{
-			echo file_get_contents($this->service->getTempAuthoringFile($this->getRequestParameter('instance')));
+			echo file_get_contents($this->service->getTempAuthoringFile( $this->getRequestParameter('instance')));
 		}
 		catch(Exception $e){
 			//print an empty response

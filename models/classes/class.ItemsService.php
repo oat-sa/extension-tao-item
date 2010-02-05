@@ -357,7 +357,10 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 begin
 		
 		if(strlen($itemUri) > 0){
-			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';			
+			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';	
+			if(!file_exists($returnValue)){	//fallback in case of error
+				$returnValue = $this->getAuthoringFile($itemUri);
+			}
 		}
 		
         // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 end

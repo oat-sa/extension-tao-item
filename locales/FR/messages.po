@@ -97,3 +97,14 @@ msgstr "Modifier les commentaires de l'item"
 msgid "Save"
 msgstr "Enregistrer"
 
+msgid "EN"
+msgstr "English"
+
+msgid "FR"
+msgstr "French"
+
+msgid "DE"
+msgstr "German"
+
+msgid "LU"
+msgstr "Luxemburgish"

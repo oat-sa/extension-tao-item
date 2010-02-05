@@ -1,4 +1,4 @@
-<?include('header.tpl')?>
+<?include(TAO_TPL_PATH . 'header.tpl')?>
 
 
 <?if(get_data('error')):?>

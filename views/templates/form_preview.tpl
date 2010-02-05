@@ -1,4 +1,4 @@
-<?include('header.tpl')?>
+<?include(TAO_TPL_PATH . 'header.tpl')?>
 
 <div id="preview-container" class="ui-corner-all">
 	<?if(get_data('preview')):?>

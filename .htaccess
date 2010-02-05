@@ -2,6 +2,11 @@ Options +FollowSymLinks
 Options +Indexes
 RewriteEngine On
 
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteCond %{REQUEST_URI} /taoItems/Items/eXULiS.swf$ [NC]
+#rewrite to the new saving action (chained to the other rules)
+RewriteRule ^(.*)$ /taoItems/models/ext/itemRuntime/eXULiS.swf [L]
+
 #usual behavior for resources calls
 RewriteCond %{REQUEST_URI} !/views/  [NC]
 RewriteCond %{REQUEST_URI} !/test/  [NC]
