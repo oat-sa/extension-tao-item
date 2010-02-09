@@ -63,27 +63,18 @@ class Items extends TaoModule{
 		return $item;
 	}
 	
+	/**
+	 * get the main class
+	 * @return core_kernel_classes_Classes
+	 */
+	protected function getRootClass(){
+		return $this->service->getItemClass();
+	}
+	
 /*
  * controller actions
  */
 
-	/**
-	 * Render json data to populate the subject tree 
-	 * 'modelType' must be in request parameter
-	 */
-	public function getItems(){
-		
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		//render directly the json
-		$filter = '';
-		if($this->hasRequestParameter('filter')){
-			$filter = $this->getRequestParameter('filter');
-		}
-		echo json_encode( $this->service->toTree( $this->service->getItemClass() , true, true, '', $filter) );
-	}
-	
 	
 	/**
 	 * edit an item instance
