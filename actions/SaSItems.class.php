@@ -10,7 +10,6 @@
 class SaSItems extends Items {
 
     
-    
     /**
      * @see Items::__construct()
      */
@@ -32,6 +31,7 @@ class SaSItems extends Items {
 		}
 		parent::setView('sas.tpl', true);
     }
+	
 	
 }
 ?>
