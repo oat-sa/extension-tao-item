@@ -20,10 +20,9 @@ $(function(){
 	<?else:?>
 	
 		$("#section-meta").empty();
-		
-		<?if(get_data('action') != 'authoring'):?>
+		if(ctx_action != 'authoring'){
 			UiBootstrap.tabs.tabs('disable', index);
-		<?endif?>
+		}
 		
 	<?endif?>
 	

@@ -8,4 +8,4 @@
 	</div>
 </div>
 
-<?include(TAO_TPL_PATH . 'footer.tpl')?>
+<?include('footer.tpl')?>
