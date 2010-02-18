@@ -22,6 +22,7 @@
 				<action name="edit item" url="/taoItems/Items/editItem" context="instance" />
 				<action name="new property" js="GenerisAction.addProperty" url="/taoItems/Items/addClassProperty" context="class" />
 				<action name="preview" js="GenerisAction.fullScreen" url="/taoItems/Items/preview" context="instance" />
+				<action name="meta data" js="GenerisAction.loadMetaData" url="/taoItems/Items/getMetaData"  context="instance" />
 				<action name="create table" js="GenerisAction.resultTable" url="/taoResults/Results/createTable"  context="class" />
 				<!--<action name="import" url="/taoItems/Items/import" context="class" />-->
 				<action name="export" url="/taoItems/Items/export"  context="class" reload="true" />

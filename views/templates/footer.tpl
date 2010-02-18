@@ -8,8 +8,6 @@ $(function(){
 	
 	<?if(get_data('uri') && get_data('classUri')):?>
 		
-		uiBootstrap.getMetaData("<?=get_data('uri')?>", "<?=get_data('classUri')?>");
-		
 		<?if(get_data('action') != 'authoring'):?>
 		
 			UiBootstrap.tabs.tabs('url', index, "/taoItems/Items/authoring?uri=<?=get_data('uri')?>&classUri=<?=get_data('classUri')?>");
@@ -19,7 +17,6 @@ $(function(){
 		
 	<?else:?>
 	
-		$("#section-meta").empty();
 		if(ctx_action != 'authoring'){
 			UiBootstrap.tabs.tabs('disable', index);
 		}
