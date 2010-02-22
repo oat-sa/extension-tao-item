@@ -1,11 +1,8 @@
-msgid ""
+msgid "Item saved"
 msgstr ""
 
 msgid "Preview not yet available"
 msgstr "Prévisualisation non disponible"
-
-msgid "Preview available inside the authoring tool"
-msgstr "La prévisualisation est disponible depuis l'éditeur"
 
 msgid "Edit Item"
 msgstr "Modifier un item"
@@ -31,6 +28,9 @@ msgstr "Gérer les items"
 msgid "Item library"
 msgstr "Librairie d'items"
 
+msgid "search"
+msgstr ""
+
 msgid "new class"
 msgstr "nouvelle classe"
 
@@ -49,14 +49,14 @@ msgstr "modifier l'item"
 msgid "new property"
 msgstr "nouvelle propriété"
 
-msgid "fullscreen preview"
-msgstr "prévisualisation en plein écran"
+msgid "preview"
+msgstr ""
+
+msgid "meta data"
+msgstr ""
 
 msgid "create table"
 msgstr "créer un tableau"
-
-msgid "import"
-msgstr "importer"
 
 msgid "export"
 msgstr "exporter"
@@ -70,6 +70,9 @@ msgstr "Veuillez choisir un item!"
 msgid "Back"
 msgstr "Retour"
 
+msgid "Preview"
+msgstr ""
+
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
 
@@ -78,6 +81,15 @@ msgstr "Le module Item vous permet la création et le design d'items et d'exerci
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "Un ensemble de différent modèles est fournit au auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
+
+msgid "Preview available inside the authoring tool"
+msgstr "La prévisualisation est disponible depuis l'éditeur"
+
+msgid "fullscreen preview"
+msgstr "prévisualisation en plein écran"
+
+msgid "import"
+msgstr "importer"
 
 msgid "Meta Data"
 msgstr "Meta-données"
@@ -108,3 +120,4 @@ msgstr "German"
 
 msgid "LU"
 msgstr "Luxemburgish"
+

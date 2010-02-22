@@ -427,8 +427,7 @@ class Items extends TaoModule{
 	public function saveTempAuthoringFile(){
 		$instance = $this->getRequestParameter('instance');
 		$xml = $this->getRequestParameter('xml');
-		
-		file_put_contents($this->service->getTempAuthoringFile($instance), $xml);
+		file_put_contents($this->service->getTempAuthoringFile($instance), html_entity_decode($xml));
 	}
 }
 ?>

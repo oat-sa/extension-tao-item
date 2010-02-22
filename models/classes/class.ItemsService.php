@@ -348,9 +348,10 @@ class taoItems_models_classes_ItemsService
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemUri
+     * @param  boolean fallback
      * @return string
      */
-    public function getTempAuthoringFile($itemUri)
+    public function getTempAuthoringFile($itemUri, $fallback = false)
     {
         $returnValue = (string) '';
 
@@ -358,8 +359,10 @@ class taoItems_models_classes_ItemsService
 		
 		if(strlen($itemUri) > 0){
 			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';	
-			if(!file_exists($returnValue)){	//fallback in case of error
-				$returnValue = $this->getAuthoringFile($itemUri);
+			if(!file_exists($returnValue)){
+				if($fallback){	//fallback in case of error otheerwise create  the file
+					$returnValue = $this->getAuthoringFile($itemUri);
+				}
 			}
 		}
 		

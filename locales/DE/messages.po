@@ -4,9 +4,6 @@ msgstr ""
 msgid "Preview not yet available"
 msgstr ""
 
-msgid "Preview available inside the authoring tool"
-msgstr ""
-
 msgid "Edit Item"
 msgstr ""
 
@@ -31,6 +28,9 @@ msgstr ""
 msgid "Item library"
 msgstr ""
 
+msgid "search"
+msgstr ""
+
 msgid "new class"
 msgstr ""
 
@@ -49,13 +49,13 @@ msgstr ""
 msgid "new property"
 msgstr ""
 
-msgid "fullscreen preview"
+msgid "preview"
+msgstr ""
+
+msgid "meta data"
 msgstr ""
 
 msgid "create table"
-msgstr ""
-
-msgid "import"
 msgstr ""
 
 msgid "export"
@@ -70,6 +70,9 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+msgid "Preview"
+msgstr ""
+
 msgid "PREVIEW BOX"
 msgstr ""
 
@@ -77,24 +80,6 @@ msgid "The Item module enables the creation and design of items and exercises."
 msgstr ""
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr ""
-
-msgid "Meta Data"
-msgstr ""
-
-msgid "Date"
-msgstr ""
-
-msgid "User"
-msgstr ""
-
-msgid "Comment"
-msgstr ""
-
-msgid "Edit item comment"
-msgstr ""
-
-msgid "Save"
 msgstr ""
 
 msgid "EN"
@@ -108,3 +93,4 @@ msgstr "German"
 
 msgid "LU"
 msgstr "Luxemburgish"
+
