@@ -446,29 +446,43 @@ class TAOAuthoringGUI {
 		$previewUri = "/taoItems/Items/preview?uri=$uri&classUri=$classUri";
 
 		$chechedinabox="";
-			if ((strpos($xml,'<textbox id="problem_textbox"'))===false) {$chechedinabox="";} else {$chechedinabox="CHECKED";}
+			if ((strpos($xml,'<textbox id="problem_textbox"'))===false) {
+					$chechedinabox="";
+			} 
+			else {
+				$chechedinabox="CHECKED";
+			}
+			$showLastQuestion = false;
 		//Change number of questions 
 			if (isset($_SESSION["nbinq"])) 
 			{ 
 				$nb = $_SESSION["nbinq"];
-				while ($nb>0) {$nb--;$struct["INQUIRIES"][]=array();}
+				while ($nb>0) {
+					$nb--;
+					$struct["INQUIRIES"][]=array();
+				}
 				unset($_SESSION["nbinq"]);
 			}
 			//print_r($_SESSION);
-			if (isset($_SESSION["AddInquiry"])) {unset($_SESSION["AddInquiry"]);$struct["INQUIRIES"][]=array();}
-			
+			if (isset($_SESSION["AddInquiry"])) {
+				unset($_SESSION["AddInquiry"]);
+				$struct["INQUIRIES"][]=array();
+				$showLastQuestion = true;
+			}
 			if (isset($_SESSION["removeInquiry"]))
 			{
-			$keys = array_keys($_SESSION["removeInquiry"]);
-			unset($struct["INQUIRIES"][$keys[0]]);
-			$struct["INQUIRIES"] = array_values($struct["INQUIRIES"]);
-			unset($_SESSION["removeInquiry"]);
+				$keys = array_keys($_SESSION["removeInquiry"]);
+				unset($struct["INQUIRIES"][$keys[0]]);
+				$struct["INQUIRIES"] = array_values($struct["INQUIRIES"]);
+				$showLastQuestion = true;
+				unset($_SESSION["removeInquiry"]);
 			}
 
 		$item=getButtonimage(PREVIEW,false);	
 		$output.='<html><head>';
 		$output.='<script type="text/javascript">var _editor_url="/generis/core/view/HTMLArea-3.0-rc1/";</script>';
 		$output.='<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
+		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js"></script>';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/CSS/generis_default.css" />';
 		$output.='<style type="text/css">input[type=button],input[type=submit]{cursor:pointer; padding:4px; font-weight:bold;}</style>';
@@ -479,7 +493,7 @@ class TAOAuthoringGUI {
 		<SCRIPT LANGUAGE=\"Javascript1.2\">
 		function phighlight(zelement)
 		{
-		document.getElementById('PContent').style.visibility='hidden';		
+			document.getElementById('PContent').style.visibility='hidden';		
 		";
 		error_reporting("^E_NOTICE");
 		foreach ($struct["INQUIRIES"] as $p=>$v)
@@ -521,50 +535,52 @@ class TAOAuthoringGUI {
 				}
 		$output.='
 		<input type=button onClick="phighlight(\'template\');" value="Template" />
+		<input type=button onClick="FmRunner.load();" value="File Manager" />
 		<input type=submit  name=AddInquiry onclick="refreshQCM();" value="'.ADDAQUESTION.'" />
 		<input type=button  onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.PREVIEW.'" />
-		<input type=submit value="'.APPLY.'">
-		</span>';
+		<input type=submit onclick="refreshQCM();" value="'.APPLY.'">
+		<input type=submit value="Save and close">
+		</span><br /><br />';
 
 
 
-error_reporting("^E_NOTICE");
-$output.='<A NAME="PContent" class=mainpane style="visibility:visible;font-family:verdana;font-size:10;" id="PContent">';
-		$output.='<input '.$chechedinabox.' type=checkbox id=pbminabox name=itemcontent[tao:inabox] >'.INABOX.' <br> ';
+		error_reporting("^E_NOTICE");
+		$output.='<A NAME="PContent" class=mainpane style="font-family:verdana;font-size:10;" id="PContent">';
+				$output.='<input '.$chechedinabox.' type=checkbox id=pbminabox name=itemcontent[tao:inabox] >'.INABOX.' <br> ';
+				
+				$output.=LEFT.'<input type=text name=itemcontent[tao:problemleft] id=leftproblem size=2 value='.$struct["problemeleft"] .'>'.TOP.'<input type=text size=2 name=itemcontent[tao:problemtop] id=topproblem value='.$struct["problemetop"] .'>'.WIDTH.'<input type=text name=itemcontent[tao:problemwidth] size=2 id=problemwidth value='.$struct["problemewidth"] .'>'.HEIGHT.'<input type=text  size=2 name=itemcontent[tao:problemheight] id=problemheight value='.$struct["problemeheight"] .'>';
+				$output.='<TEXTAREA NAME="itemcontent[tao:problem]" COLS=80 ROWS=25>'.$struct["TAO:PROBLEM"].'</TEXTAREA>';
+				
+				$output.=''.ADD.' <input size=2 type=textbox name=nbinq> '.NBQUESTIONS.SAND.' <input size=2 type=textbox name=nbprop> '.NBPROPOSITIONS.'';
 		
-		$output.=LEFT.'<input type=text name=itemcontent[tao:problemleft] id=leftproblem size=2 value='.$struct["problemeleft"] .'>'.TOP.'<input type=text size=2 name=itemcontent[tao:problemtop] id=topproblem value='.$struct["problemetop"] .'>'.WIDTH.'<input type=text name=itemcontent[tao:problemwidth] size=2 id=problemwidth value='.$struct["problemewidth"] .'>'.HEIGHT.'<input type=text  size=2 name=itemcontent[tao:problemheight] id=problemheight value='.$struct["problemeheight"] .'>';
-		$output.='<TEXTAREA NAME="itemcontent[tao:problem]" COLS=80 ROWS=25>'.$struct["TAO:PROBLEM"].'</TEXTAREA>';
+		$output.='</A>';
+
+
+		//echo $struct["TAO:DISPLAYALLINQUIRIES"];
+		if ($struct["TAO:DISPLAYALLINQUIRIES"]=="on") $displayall="checked"; else $displayall="";
 		
-		$output.=''.ADD.'<input size=2 type=textbox name=nbinq>'.NBQUESTIONS.SAND.'<input size=2 type=textbox name=nbprop>'.NBPROPOSITIONS.'';
-
-$output.='</A>';
-
-
-//echo $struct["TAO:DISPLAYALLINQUIRIES"];
-if ($struct["TAO:DISPLAYALLINQUIRIES"]=="on") $displayall="checked"; else $displayall="";
-
-$output.='<A NAME="PrStyle" class=mainpane style="visibility:hidden;font-family:verdana;font-size:10;" id=PrStyle>';
-		$output.='<b>'.ITEMPARAMS.'</b><br /><br />
-					'.DURATION.' : <input type=text name=itemcontent[tao:duration] value='.$struct["TAO:DURATION"].'><br /><br />
-		'.SHOWLABEL.'<input '.$struct["showLabel"].' type=checkbox name=itemcontent[tao:showLabel]><br /><br />
-		'.SHOWCOMMENT.'<input '.$struct["showComment"].' type=checkbox name=itemcontent[tao:showComment]><br /><br />
-		Display All inquiries <input '.$displayall.' type=checkbox name=itemcontent[tao:displayAllInquiries]><br /><br />				
-		<br />';
-		$output.='<br />
-					'.SUBSIDIARYQUESTION.' : <input type=text size=35 name=itemcontent[tao:subsidiaryquestion] value="'.$struct["TAO:SUBSIDIARYQUESTION"].'"><br /><br />'.TOP.'<input type=text size=2 name=itemcontent[tao:subsidiaryquestiontop] value='.$struct["TAO:SUBSIDIARYQUESTIONTOP"].'>'.LEFT.'<input type=text size=2 name=itemcontent[tao:subsidiaryquestionleft] value='.$struct["TAO:SUBSIDIARYQUESTIONLEFT"].'><br /><br />	<input type=text size=50 name=itemcontent[tao:subsidiaryp1] value="'.$struct["TAO:SUBSIDIARYP1"].'"><br>	<input type=text size=50 name=itemcontent[tao:subsidiaryp2] value="'.$struct["TAO:SUBSIDIARYP2"].'">	<br>
-					<input type=text size=50 name=itemcontent[tao:subsidiaryp3] value="'.$struct["TAO:SUBSIDIARYP3"].'">	<br><input type=text size=50 name=itemcontent[tao:subsidiaryp4] value="'.$struct["TAO:SUBSIDIARYP4"].'"><br><input type=text size=50 name=itemcontent[tao:subsidiaryp5] value="'.$struct["TAO:SUBSIDIARYP5"].'"><br>';
-		$output.= '<br />Navigation<br />'.NAVTOP.'<input size=2 type=text name=itemcontent[navtop] id=navtop value='.$struct["navtop"] .'><br />
-						'.NAVLEFT.'<input size=2 type=text name=itemcontent[navleft] id=navleft value='.$struct["navleft"] .'><br />
-						'.URLLEFT.'</td><td><input size=50 type=text name=itemcontent[urlleft] value='.$struct["urlleft"] .'><br />
-						'.URLRIGHT.'<input size=50 type=text name=itemcontent[urlright] value='.$struct["urlright"] .'><br />';
-
+		$output.='<A NAME="PrStyle" class=mainpane style="visibility:hidden;font-family:verdana;font-size:10;" id=PrStyle>';
+				$output.='<b>'.ITEMPARAMS.'</b><br /><br />
+							'.DURATION.' : <input type=text name=itemcontent[tao:duration] value='.$struct["TAO:DURATION"].'><br /><br />
+				'.SHOWLABEL.'<input '.$struct["showLabel"].' type=checkbox name=itemcontent[tao:showLabel]><br /><br />
+				'.SHOWCOMMENT.'<input '.$struct["showComment"].' type=checkbox name=itemcontent[tao:showComment]><br /><br />
+				Display All inquiries <input '.$displayall.' type=checkbox name=itemcontent[tao:displayAllInquiries]><br /><br />				
+				<br />';
+				$output.='<br />
+							'.SUBSIDIARYQUESTION.' : <input type=text size=35 name=itemcontent[tao:subsidiaryquestion] value="'.$struct["TAO:SUBSIDIARYQUESTION"].'"><br /><br />'.TOP.'<input type=text size=2 name=itemcontent[tao:subsidiaryquestiontop] value='.$struct["TAO:SUBSIDIARYQUESTIONTOP"].'>'.LEFT.'<input type=text size=2 name=itemcontent[tao:subsidiaryquestionleft] value='.$struct["TAO:SUBSIDIARYQUESTIONLEFT"].'><br /><br />	<input type=text size=50 name=itemcontent[tao:subsidiaryp1] value="'.$struct["TAO:SUBSIDIARYP1"].'"><br>	<input type=text size=50 name=itemcontent[tao:subsidiaryp2] value="'.$struct["TAO:SUBSIDIARYP2"].'">	<br>
+							<input type=text size=50 name=itemcontent[tao:subsidiaryp3] value="'.$struct["TAO:SUBSIDIARYP3"].'">	<br><input type=text size=50 name=itemcontent[tao:subsidiaryp4] value="'.$struct["TAO:SUBSIDIARYP4"].'"><br><input type=text size=50 name=itemcontent[tao:subsidiaryp5] value="'.$struct["TAO:SUBSIDIARYP5"].'"><br>';
+				$output.= '<br />Navigation<br />'.NAVTOP.'<input size=2 type=text name=itemcontent[navtop] id=navtop value='.$struct["navtop"] .'><br />
+								'.NAVLEFT.'<input size=2 type=text name=itemcontent[navleft] id=navleft value='.$struct["navleft"] .'><br />
+								'.URLLEFT.'</td><td><input size=50 type=text name=itemcontent[urlleft] value='.$struct["urlleft"] .'><br />
+								'.URLRIGHT.'<input size=50 type=text name=itemcontent[urlright] value='.$struct["urlright"] .'><br />';
 		
-
-$output.='</A>';
-
-$output.='<A NAME="template" class=template style="visibility:hidden;font-family:verdana;font-size:10;" id=template>';
-$output.= '
-		<script>
+				
+		
+		$output.='</A>';
+		
+		$output.='<A NAME="template" class=template style="visibility:hidden;font-family:verdana;font-size:10;" id=template>';
+		$output.= '
+				<script>
 		function template2()
 		{
 			
@@ -743,11 +759,10 @@ $output.= '
 		</script>
 		
 		
-		<br /><br /><br />Template :<br /><input type=radio onClick=template1(); name=template><img width=220 src=/generis/core/view/icons/template01.gif /><input type=radio name=template onClick=template2();><img width=220 src=/generis/core/view/icons/template02.gif /><input type=radio name=template onClick=template3();><img width=220 src=/generis/core/view/icons/template03.gif /><br />';
-$output.='</A>';
+			<br /><br /><br />Template :<br /><input type=radio onClick=template1(); name=template><img width=220 src=/generis/core/view/icons/template01.gif /><input type=radio name=template onClick=template2();><img width=220 src=/generis/core/view/icons/template02.gif /><input type=radio name=template onClick=template3();><img width=220 src=/generis/core/view/icons/template03.gif /><br />';
+		$output.='</A>';
 
-foreach ($struct["INQUIRIES"] as $p=>$v)
-				{
+		foreach ($struct["INQUIRIES"] as $p=>$v){
 			$nm=$p+1;//index of inquiry(for user)
 			$output.='<A NAME="Q'.$nm.'Content" class=mainpane style="visibility:hidden;font-family:verdana;font-size:10;" id="Q'.$nm.'Content"><br>';
 			$output.='<input type=submit name=removeInquiry['.$p.'] value=Remove&nbsp;this&nbsp;question onclick="refreshQCM();"><br />';
@@ -791,62 +806,78 @@ foreach ($struct["INQUIRIES"] as $p=>$v)
 				wsdl : <input size=50 type=text name=itemcontent[wsdl] value='.$struct["wsdl"] .'><br /> Service : <input size=10 type=text name=itemcontent[service] value='.$struct["service"] .'><br>
 				
 			</span>
-			<TEXTAREA NAME=itemcontent[tao:inquiry]['.$p.'][question] COLS=80 	ROWS=14>'.$v["QUESTION"].'</TEXTAREA>
+			<TEXTAREA NAME=itemcontent[tao:inquiry]['.$p.'][question] COLS=80 ROWS=14 >'.$v["QUESTION"].'</TEXTAREA>
 
 				<input type=submit name=AddProp['.$p.'] value=Add&nbsp;a&nbsp;Proposition onclick="refreshQCM();"><br /> <br />
 			';
 				//echo $v["QUESTION"];
 
 			$hansw = IntegerToArray($v["HASANSWER"]);
-			foreach ($hansw as $a=>$b)
-					{if ($v["HASANSWER"][$a]=="1") {$answer[$a]="CHECKED";} else {$answer[$a]="";} }
-			if (isset($_SESSION["AddProp"][$p])) {$v["LISTPROPOSITION"][]=array();unset($_SESSION["AddProp"]);}
-			if (isset($_SESSION["nbprop"])) 
-				{$nb = $_SESSION["nbprop"];while ($nb>0) {$nb--;$v["LISTPROPOSITION"][]=array();}	}
-
-			if (isset($v["LISTPROPOSITION"]))
-			{
-				if (isset($_SESSION["removeProposition"][$p]))
-				{
-				$keys = array_keys($_SESSION["removeProposition"][$p]);
-				unset($v["LISTPROPOSITION"][$keys[0]]);
-				$v["LISTPROPOSITION"] = array_values($v["LISTPROPOSITION"]);
-				unset($_SESSION["removeProposition"]);
+			foreach ($hansw as $a=>$b){
+				if ($v["HASANSWER"][$a]=="1") {
+					$answer[$a]="CHECKED";
+				} 
+				else {
+					$answer[$a]="";
+				} 
+			}
+			if (isset($_SESSION["AddProp"][$p])) {
+				$v["LISTPROPOSITION"][]=array();
+				unset($_SESSION["AddProp"]);
+			}
+			if (isset($_SESSION["nbprop"])) {
+				$nb = $_SESSION["nbprop"];
+				while ($nb>0) {
+					$nb--;
+					$v["LISTPROPOSITION"][]=array();
 				}
-			foreach ($v["LISTPROPOSITION"] as $a=>$b)
-					{
-						if (($hansw[$a])==0) {$ch="";} else {$ch="CHECKED";}
-						$num=$a+1;
-						
-						$form='itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]';
-						$propositionleftstring = "propositionleft".$p.$a;
-						$propositiontopstring = "propositiontop".$p.$a;
-						
-						$output.='<br /><br />Proposition '.$num.' '.LEFT.'<input size=2 type=text name=itemcontent['.$propositionleftstring.'] id='.$propositionleftstring.' value='.array_shift($struct[$relevantarrayleft]).'>
-						'.TOP.'<input size=2 type=text name=itemcontent['.$propositiontopstring.'] id='.$propositiontopstring.' value='.array_shift($struct[$relevantarraytop]).'> '.CORRECTANSWER.' <input type=Checkbox name=itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][good] '.$ch.'>
-						
-						';
-						
-	
+			}
 
-						$output.=''.$script.'&nbsp;
-
-						<input type=submit name=removeProposition['.$p.']['.$a.'] value=Remove&nbsp;this&nbsp;proposition onclick="refreshQCM();"><br>
-						<TEXTAREA NAME="itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]" COLS=80 ROWS=10>'.$b["value"].'</TEXTAREA>
-											
-						';
+			if (isset($v["LISTPROPOSITION"])){
+				if (isset($_SESSION["removeProposition"][$p])){
+					$keys = array_keys($_SESSION["removeProposition"][$p]);
+					unset($v["LISTPROPOSITION"][$keys[0]]);
+					$v["LISTPROPOSITION"] = array_values($v["LISTPROPOSITION"]);
+					unset($_SESSION["removeProposition"]);
+				}
+				foreach ($v["LISTPROPOSITION"] as $a=>$b){
+					if (($hansw[$a])==0) {
+						$ch="";
+					} 
+					else {
+						$ch="CHECKED";
 					}
+					$num=$a+1;
+							
+					$form='itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]';
+					$propositionleftstring = "propositionleft".$p.$a;
+					$propositiontopstring = "propositiontop".$p.$a;
+					
+					$output.='<br /><br />Proposition '.$num.' '.LEFT.'<input size=2 type=text name=itemcontent['.$propositionleftstring.'] id='.$propositionleftstring.' value='.array_shift($struct[$relevantarrayleft]).'>
+					'.TOP.'<input size=2 type=text name=itemcontent['.$propositiontopstring.'] id='.$propositiontopstring.' value='.array_shift($struct[$relevantarraytop]).'> '.CORRECTANSWER.' <input type=Checkbox name=itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][good] '.$ch.'>
+					
+					';
+					$output.=''.$script.'&nbsp;
+
+					<input type=submit name=removeProposition['.$p.']['.$a.'] value=Remove&nbsp;this&nbsp;proposition onclick="refreshQCM();"><br>
+					<TEXTAREA NAME="itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]" COLS=80 ROWS=10>'.$b["value"].'</TEXTAREA>
+									
+					';
 				}
-		$output.='</A>';
-		
-		
-		
-						}
+			}
+			$output.='</A>';
+		}
 		
 		$output.='</form>';
-		$output.='<script language="javascript" type="text/javascript" defer="1">HTMLArea.replaceAll();</script>';
+		$output.='<script language="javascript" type="text/javascript" defer="1">
+			HTMLArea.replaceAll();';
+		if($showLastQuestion){
+			$last = count($struct["INQUIRIES"]);
+			$output.="phighlight('Q{$last}Content');";
+		}
+		$output.='</script>';
 		$output.='</body><html>';
-		
+			
 		return $output;
 	}
 	   
