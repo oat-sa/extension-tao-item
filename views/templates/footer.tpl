@@ -8,7 +8,7 @@ $(function(){
 	
 	<?if(get_data('uri') && get_data('classUri')):?>
 		
-		<?if(get_data('action') != 'authoring'):?>
+		<?if(get_data('action') != 'authoring' && get_data('modelDefined') != false):?>
 		
 			UiBootstrap.tabs.tabs('url', index, "/taoItems/Items/authoring?uri=<?=get_data('uri')?>&classUri=<?=get_data('classUri')?>");
 			UiBootstrap.tabs.tabs('enable', index);

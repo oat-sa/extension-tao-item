@@ -26,6 +26,8 @@ class Items extends TaoModule{
 
 		$this->service = tao_models_classes_ServiceFactory::get('Items');
 		$this->defaultData();
+		$this->setData('modelDefined', false);
+		
 	}
 
 	/**
@@ -80,6 +82,7 @@ class Items extends TaoModule{
 	 * edit an item instance
 	 */
 	public function editItem(){
+	
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
 		
@@ -95,6 +98,10 @@ class Items extends TaoModule{
 				$this->setData('reload', true);
 			}
 		}
+		$modelDefined = $this->isModelDefined($item);
+		if(!$modelDefined){
+			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
+		}
 		
 		$previewData = $this->initPreview($item, $itemClass);
 		if(count($previewData) == 0){
@@ -108,6 +115,7 @@ class Items extends TaoModule{
 				$this->setData($key, $value);
 			}
 		}
+		$this->setData('modelDefined', $modelDefined);
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		$this->setData('formTitle', __('Edit Item'));
@@ -179,7 +187,24 @@ class Items extends TaoModule{
 		return $previewData;
 	}
 	
-	
+	/**
+	 * Chekc
+	 * @param core_kernel_classes_Resource $item
+	 * @return 
+	 */
+	protected function isModelDefined(core_kernel_classes_Resource $item){
+		$isDefined = false;
+		if(!is_null($item)){
+			try{
+				$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+				if($itemModel instanceof core_kernel_classes_Resource){
+					$isDefined = true;
+				}
+			}
+			catch(Exception $e){}
+		}
+		return $isDefined;
+	}
 	
 	/**
 	 * Edit a class
@@ -201,7 +226,6 @@ class Items extends TaoModule{
 		$this->setView('form.tpl');
 	}
 	
-	
 	/**
 	 * Sub Class
 	 */
@@ -217,7 +241,6 @@ class Items extends TaoModule{
 			));
 		}
 	}
-	
 	
 	/**
 	 * delete an item or an item class
@@ -320,6 +343,7 @@ class Items extends TaoModule{
 			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
 		}
 		catch(Exception $e){
+			print $e;
 			$this->setData('error', true);
 		}
 		$this->setView('authoring.tpl');
