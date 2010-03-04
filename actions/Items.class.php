@@ -307,7 +307,7 @@ class Items extends TaoModule{
 						$xml = file_get_contents($this->service->getAuthoringFile($fileId));
 					}
 				}
-				echo utf8_encode($xml);
+				echo $xml;
 			}
 		}
 		catch(Exception $e){
