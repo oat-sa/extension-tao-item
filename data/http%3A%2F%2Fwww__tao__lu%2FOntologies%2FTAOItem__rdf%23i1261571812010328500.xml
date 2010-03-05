@@ -103,7 +103,7 @@
           <box orient="vertical">
             <xul:spacer height="45">
             </xul:spacer>
-            <xul:image width="150" src="http://beta.tao.lu/filemanager/views/data/hawai_images/waterfall.png">
+            <xul:image width="150" src="/filemanager/views/data/hawai_images/waterfall.png">
             </xul:image>
           </box>
           <xul:spacer width="15">
