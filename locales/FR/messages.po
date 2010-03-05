@@ -1,5 +1,5 @@
 msgid "Item saved"
-msgstr ""
+msgstr "Item enregistré"
 
 msgid "Preview not yet available"
 msgstr "Prévisualisation non disponible"
@@ -29,7 +29,7 @@ msgid "Item library"
 msgstr "Librairie d'items"
 
 msgid "search"
-msgstr ""
+msgstr "Recharcher"
 
 msgid "new class"
 msgstr "nouvelle classe"
@@ -50,10 +50,10 @@ msgid "new property"
 msgstr "nouvelle propriété"
 
 msgid "preview"
-msgstr ""
+msgstr "Afficher"
 
 msgid "meta data"
-msgstr ""
+msgstr "Métadonnée"
 
 msgid "create table"
 msgstr "créer un tableau"
@@ -71,7 +71,7 @@ msgid "Back"
 msgstr "Retour"
 
 msgid "Preview"
-msgstr ""
+msgstr "Afficher"
 
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
