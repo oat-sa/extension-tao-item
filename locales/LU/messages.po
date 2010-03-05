@@ -1,86 +1,86 @@
 msgid "Item saved"
-msgstr ""
+msgstr "Item gespaichert"
 
 msgid "Preview not yet available"
-msgstr ""
+msgstr "Viirbléck nat net verfügbar"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Item editéiren"
 
 msgid "Class saved"
-msgstr ""
+msgstr "Klass gespaichert"
 
 msgid "Edit a class"
-msgstr ""
+msgstr "Klass editéiren"
 
 msgid "An error occured while saving the item"
-msgstr ""
+msgstr "Beim Spaicheren vum Item gouf et e Fehler"
 
 msgid "Item saved successfully"
-msgstr ""
+msgstr "Item erfollegraich gespaichert"
 
 msgid "Items"
-msgstr ""
+msgstr "Itemen"
 
 msgid "Manage items"
-msgstr ""
+msgstr "Itemen verwalten"
 
 msgid "Item library"
-msgstr ""
+msgstr "Item Sammlung"
 
 msgid "search"
-msgstr ""
+msgstr "sichen"
 
 msgid "new class"
-msgstr ""
+msgstr "nei Klass"
 
 msgid "new item"
-msgstr ""
+msgstr "neien Item"
 
 msgid "delete"
-msgstr ""
+msgstr "läschen"
 
 msgid "duplicate"
-msgstr ""
+msgstr "duplizéiren"
 
 msgid "edit item"
-msgstr ""
+msgstr "Item editéiren"
 
 msgid "new property"
-msgstr ""
+msgstr "nei Proprietéit"
 
 msgid "preview"
-msgstr ""
+msgstr "Viirbléck"
 
 msgid "meta data"
-msgstr ""
+msgstr "Meta Daten"
 
 msgid "create table"
-msgstr ""
+msgstr "Tabell erstellen"
 
 msgid "export"
-msgstr ""
+msgstr "exportéiren"
 
 msgid "Item authoring"
-msgstr ""
+msgstr "Item Entwécklung"
 
 msgid "Please select an item before!"
-msgstr ""
+msgstr "W.e.g. sicht fier d'éischt een Item eraus!"
 
 msgid "Back"
-msgstr ""
+msgstr "Zréck"
 
 msgid "Preview"
-msgstr ""
+msgstr "Viirbléck"
 
 msgid "PREVIEW BOX"
-msgstr ""
+msgstr "Viirbléck Këscht"
 
 msgid "The Item module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Den Item Modul erlaabt d'Erstellen an formatéiren vun Itemen an Aufgaben"
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr ""
+msgstr "D'Item Ersteller kënnen op eng Lëscht vun Viirlagen zréckgraifen wéi z.B. mutliple choice Froen, Puzzle Froen, Lückentext, asw."
 
 msgid "EN"
 msgstr "English"
@@ -92,5 +92,5 @@ msgid "DE"
 msgstr "German"
 
 msgid "LU"
-msgstr "Luxemburgish"
+msgstr "Luxembourgish"
 

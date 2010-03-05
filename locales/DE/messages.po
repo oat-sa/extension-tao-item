@@ -1,96 +1,96 @@
 msgid "Item saved"
-msgstr ""
+msgstr "Item gespeichert"
 
 msgid "Preview not yet available"
-msgstr ""
+msgstr "Vorschau noch nicht verfügbar"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Item bearbeiten"
 
 msgid "Class saved"
-msgstr ""
+msgstr "Kalsse gespeichert"
 
 msgid "Edit a class"
-msgstr ""
+msgstr "Klasse bearbeiten"
 
 msgid "An error occured while saving the item"
-msgstr ""
+msgstr "Ein Fehler ist während des Speicherns des Items aufgetreten"
 
 msgid "Item saved successfully"
-msgstr ""
+msgstr "Item erfolgreich gespeichert"
 
 msgid "Items"
-msgstr ""
+msgstr "Items"
 
 msgid "Manage items"
-msgstr ""
+msgstr "Items verwalten"
 
 msgid "Item library"
-msgstr ""
+msgstr "Item-Bibliothek"
 
 msgid "search"
-msgstr ""
+msgstr "suchen"
 
 msgid "new class"
-msgstr ""
+msgstr "neue Klasse"
 
 msgid "new item"
-msgstr ""
+msgstr "neues Item"
 
 msgid "delete"
-msgstr ""
+msgstr "löschen"
 
 msgid "duplicate"
-msgstr ""
+msgstr "duplizieren"
 
 msgid "edit item"
-msgstr ""
+msgstr "Item bearbeiten"
 
 msgid "new property"
-msgstr ""
+msgstr "neue Eigenschaft"
 
 msgid "preview"
-msgstr ""
+msgstr "Vorschau"
 
 msgid "meta data"
-msgstr ""
+msgstr "Meta-Daten"
 
 msgid "create table"
-msgstr ""
+msgstr "Tabelle erstellen"
 
 msgid "export"
-msgstr ""
+msgstr "Export"
 
 msgid "Item authoring"
-msgstr ""
+msgstr "Item-Authoring"
 
 msgid "Please select an item before!"
-msgstr ""
+msgstr "Bitte Item markieren!"
 
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 msgid "Preview"
-msgstr ""
+msgstr "Vorschau"
 
 msgid "PREVIEW BOX"
-msgstr ""
+msgstr "VORSCHAU BOX"
 
 msgid "The Item module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Das Item-Modul ermöglicht das Erstellen und Entwickeln von Items und Übungen."
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr ""
+msgstr "Verschiedene Templates werden dem Item-Autoren zur Verfügung gestellt, wie z.B. Multiple-Choice-Fragen, Puzzle-Entwurf, Lückentexte, etc.""
 
 msgid "EN"
-msgstr "English"
+msgstr "Englisch"
 
 msgid "FR"
-msgstr "French"
+msgstr "Französisch"
 
 msgid "DE"
-msgstr "German"
+msgstr "Deutsch"
 
 msgid "LU"
-msgstr "Luxemburgish"
+msgstr "Luxemburgisch"
 
