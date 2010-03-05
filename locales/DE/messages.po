@@ -94,3 +94,9 @@ msgstr "Deutsch"
 msgid "LU"
 msgstr "Luxemburgisch"
 
+msgid "edit group"
+msgstr "Gruppe bearbeiten"
+
+msgid "new group"
+msgstr "neue Gruppe"
+

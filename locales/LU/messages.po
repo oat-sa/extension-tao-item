@@ -1,17 +1,17 @@
-msgid "Item saved"
+Ôªømsgid "Item saved"
 msgstr "Item gespaichert"
 
 msgid "Preview not yet available"
-msgstr "Viirbléck nat net verfügbar"
+msgstr "Viirbl√©ck nat net verf√ºgbar"
 
 msgid "Edit Item"
-msgstr "Item editéiren"
+msgstr "Item edit√©iren"
 
 msgid "Class saved"
 msgstr "Klass gespaichert"
 
 msgid "Edit a class"
-msgstr "Klass editéiren"
+msgstr "Klass edit√©iren"
 
 msgid "An error occured while saving the item"
 msgstr "Beim Spaicheren vum Item gouf et e Fehler"
@@ -38,19 +38,19 @@ msgid "new item"
 msgstr "neien Item"
 
 msgid "delete"
-msgstr "läschen"
+msgstr "l√§schen"
 
 msgid "duplicate"
-msgstr "duplizéiren"
+msgstr "dupliz√©iren"
 
 msgid "edit item"
-msgstr "Item editéiren"
+msgstr "Item edit√©iren"
 
 msgid "new property"
-msgstr "nei Proprietéit"
+msgstr "nei Propriet√©it"
 
 msgid "preview"
-msgstr "Viirbléck"
+msgstr "Viirbl√©ck"
 
 msgid "meta data"
 msgstr "Meta Daten"
@@ -59,28 +59,28 @@ msgid "create table"
 msgstr "Tabell erstellen"
 
 msgid "export"
-msgstr "exportéiren"
+msgstr "export√©iren"
 
 msgid "Item authoring"
-msgstr "Item Entwécklung"
+msgstr "Item Entw√©cklung"
 
 msgid "Please select an item before!"
-msgstr "W.e.g. sicht fier d'éischt een Item eraus!"
+msgstr "W.e.g. sicht fier d'√©ischt een Item eraus!"
 
 msgid "Back"
-msgstr "Zréck"
+msgstr "Zr√©ck"
 
 msgid "Preview"
-msgstr "Viirbléck"
+msgstr "Viirbl√©ck"
 
 msgid "PREVIEW BOX"
-msgstr "Viirbléck Këscht"
+msgstr "Viirbl√©ck K√´scht"
 
 msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Den Item Modul erlaabt d'Erstellen an formatéiren vun Itemen an Aufgaben"
+msgstr "Den Item Modul erlaabt d'Erstellen an format√©iren vun Itemen an Aufgaben"
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr "D'Item Ersteller kënnen op eng Lëscht vun Viirlagen zréckgraifen wéi z.B. mutliple choice Froen, Puzzle Froen, Lückentext, asw."
+msgstr "D'Item Ersteller k√´nnen op eng L√´scht vun Viirlagen zr√©ckgraifen w√©i z.B. mutliple choice Froen, Puzzle Froen, L√ºckentext, asw."
 
 msgid "EN"
 msgstr "English"
