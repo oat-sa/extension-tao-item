@@ -95,89 +95,89 @@
     </tao:items>
   </black:business>
   <black:layout>
-    <xul:window height="600" width="800" left="-103" top="4" id="myBlackWindow" xmlns:rdfs="http://www.w3.org/TR/1999/PR-rdf-schema-19990303#" xmlns:auth="http://www.tao.lu/waterphoenix.rdfs#" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:tao="http://www.tao.lu/tao.rdfs#" xmlns:html="http://www.w3.org/1999/xhtml">
-      <hbox left="0" top="0" width="800" height="600" style="overflow: auto;">
-        <hbox height="600" width="800" left="0" top="0" flex="1">
-          <xul:spacer height="600" left="0" top="0" width="15">
+    <xul:window height="599.9999847412109" width="799.9999847412109" left="3.3000030517578125" top="3.3000030517578125" id="myBlackWindow" xmlns:rdfs="http://www.w3.org/TR/1999/PR-rdf-schema-19990303#" xmlns:auth="http://www.tao.lu/waterphoenix.rdfs#" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:tao="http://www.tao.lu/tao.rdfs#" xmlns:html="http://www.w3.org/1999/xhtml">
+      <hbox left="0" top="0" width="799.9999847412109" height="599.9999847412109" style="overflow: auto;">
+        <hbox height="599.9999847412109" width="799.9999847412109" left="0" top="0" flex="1">
+          <xul:spacer height="599.9999847412109" left="0" top="0" width="15">
           </xul:spacer>
-          <box height="600" width="150" left="15" top="0" orient="vertical">
-            <xul:spacer width="150" left="0" top="0" height="45">
-            </xul:spacer>
-            <xul:image height="0" left="0" top="45" width="150" src="/filemanager/views/data/hawai_images/waterfall.png">
+          <box height="599.9999847412109" width="150" left="15" top="0" pack="center" orient="vertical">
+            <xul:image height="449.99998474121094" left="0" top="75" width="150" src="/filemanager/views/data/hawai_images/waterfall.png">
             </xul:image>
           </box>
-          <xul:spacer height="600" left="165" top="0" width="15">
+          <xul:spacer height="599.9999847412109" left="165" top="0" width="15">
           </xul:spacer>
-          <vbox height="600" width="620" left="180" top="0" flex="1">
-            <hbox height="27" width="620" left="0" top="0" pack="center">
-              <description height="22" width="383" left="119" top="1" id="UNIT_STIMULUS_LABEL_UID1" style="font-size: 18px; font-weight: bold;">
+          <vbox height="599.9999847412109" width="619.9999847412109" left="180" top="0" flex="1">
+            <hbox height="27" width="619.9999847412109" left="0" top="0" pack="center">
+              <description height="22" width="419.0999755859375" left="100.44999694824219" top="1" id="UNIT_STIMULUS_LABEL_UID1" style="font-size: 18px; font-weight: bold;">
                 <![CDATA[ How to develop with Waterfall Processes ? ]]>
               </description>
             </hbox>
-            <xul:spacer width="620" left="0" top="27" height="35">
+            <xul:spacer width="619.9999847412109" left="0" top="27" height="35">
             </xul:spacer>
-            <xul:label height="13" width="609" left="6" top="63" style="font-weight: bold; color: red;">
+            <xul:label height="16.5" width="608.9999847412109" left="6" top="63" style="font-weight: bold; color: red;">
               <![CDATA[ Item 1 ]]>
             </xul:label>
-            <xul:groupbox height="141" width="614" left="3" top="81" id="ITEM1" orient="horizontal">
-              <description height="127" left="9" top="4" style="font-style: italic;" width="325" id="ITEM1_QM">
+            <xul:groupbox height="149.39999389648438" width="609.9999847412109" left="5" top="86.5" id="ITEM1" orient="horizontal">
+              <description height="144.39999389648438" left="15" top="1" style="font-style: italic;" width="324.99998474121094" id="ITEM1_QM">
                 <![CDATA[ In which Phase do you validate your development ? ]]>
               </description>
-              <radiogroup height="132" width="194" left="339" top="3">
-                <radio height="18" width="186" left="4" top="2" id="ITEM1_PROP_UID_1" label="Requirements specification Phase">
+              <xul:box height="149.39999389648438" width="0" left="344.99998474121094" top="0" flex="1">
+              </xul:box>
+              <radiogroup height="149.39999389648438" width="265" left="344.99998474121094" top="0">
+                <radio height="20.899993896484375" width="257" left="4" top="2" id="ITEM1_PROP_UID_1" label="Requirements specification Phase">
                 </radio>
-                <radio height="18" width="186" left="4" top="24" id="ITEM1_PROP_UID_2" label="Design Phase">
+                <radio height="20.900009155273438" width="257" left="4" top="26.899993896484375" id="ITEM1_PROP_UID_2" label="Design Phase">
                 </radio>
-                <radio height="18" width="186" left="4" top="46" id="ITEM1_PROP_UID_3" label="Implementation Phase">
+                <radio height="20.899993896484375" width="257" left="4" top="51.80000305175781" id="ITEM1_PROP_UID_3" label="Implementation Phase">
                 </radio>
-                <radio height="18" width="186" left="4" top="68" id="ITEM1_PROP_UID_4" label="Integration Phase">
+                <radio height="20.899993896484375" width="257" left="4" top="76.69999694824219" id="ITEM1_PROP_UID_4" label="Integration Phase">
                 </radio>
-                <radio height="18" width="186" left="4" top="90" id="ITEM1_PROP_UID_5" label="Testing and Debugging Phase">
+                <radio height="20.900009155273438" width="257" left="4" top="101.59999084472656" id="ITEM1_PROP_UID_5" label="Testing and Debugging Phase">
                 </radio>
-                <radio height="18" width="186" left="4" top="112" id="ITEM1_PROP_UID_6" label="Installation and Maintenance">
+                <radio height="20.899993896484375" width="257" left="4" top="126.5" id="ITEM1_PROP_UID_6" label="Installation and Maintenance">
                 </radio>
               </radiogroup>
             </xul:groupbox>
-            <xul:spacer width="620" left="0" top="225" height="15">
+            <xul:spacer width="619.9999847412109" left="0" top="240.89999389648438" height="15.000015258789062">
             </xul:spacer>
-            <xul:label height="13" width="609" left="6" top="241" style="font-weight: bold; color: green;">
+            <xul:label height="16.5" width="608.9999847412109" left="6" top="256.90000915527344" style="font-weight: bold; color: green;">
               <![CDATA[ Item 2 ]]>
             </xul:label>
-            <xul:groupbox height="53" width="614" left="3" top="259" orient="horizontal" id="ITEM2">
-              <description height="39" left="9" top="4" style="font-style: italic;" width="325" id="ITEM2_QM">
+            <xul:groupbox height="71" width="609.9999847412109" left="5" top="280.40000915527344" orient="horizontal" id="ITEM2">
+              <description height="66" left="15" top="1" style="font-style: italic;" width="324.99998474121094" id="ITEM2_QM">
                 <![CDATA[ Does WaterFall model suit to development where requirements are not well understood or are likely to change in the course of the project ? ]]>
               </description>
-              <radiogroup height="44" width="272" left="339" top="3" flex="1">
-                <radio height="18" width="264" left="4" top="2" id="ITEM2_PROP_UID_1" label="true">
+              <radiogroup height="71" width="265" left="344.99998474121094" top="0" flex="1">
+                <radio height="20.9000244140625" width="257" left="4" top="2" id="ITEM2_PROP_UID_1" label="true">
                 </radio>
-                <radio height="18" width="264" left="4" top="24" id="ITEM2_PROP_UID_2" label="false">
+                <radio height="20.899993896484375" width="257" left="4" top="26.899993896484375" id="ITEM2_PROP_UID_2" label="false">
                 </radio>
               </radiogroup>
             </xul:groupbox>
             <!-- ********************************************* ITEM 1 layout definition RADIOBUTTON Example ********************************************* -->
             <!-- ********************************************* ITEM 2 layout definition RADIOBUTTON Example ********************************************* -->
             <!-- ********************************************* ITEM 3 layout definition CHECKBOX Example ********************************************* -->
-            <xul:spacer width="620" left="0" top="315" height="15">
+            <xul:spacer width="619.9999847412109" left="0" top="356.40000915527344" height="15">
             </xul:spacer>
-            <xul:label height="13" width="609" left="6" top="331" style="font-weight: bold; color: orange;">
+            <xul:label height="16.5" width="608.9999847412109" left="6" top="372.40000915527344" style="font-weight: bold; color: orange;">
               <![CDATA[ Item 3 ]]>
             </xul:label>
-            <xul:groupbox height="135" width="614" left="3" top="349" orient="horizontal" id="ITEM3">
-              <description height="121" left="9" top="4" style="font-style: italic;" width="325" id="ITEM3_QM">
+            <xul:groupbox height="149.4000244140625" width="609.9999847412109" left="5" top="395.90000915527344" orient="horizontal" id="ITEM3">
+              <description height="144.4000244140625" left="15" top="1" style="font-style: italic;" width="324.99998474121094" id="ITEM3_QM">
                 <![CDATA[ Which type of testing focuses on finding defects after a major code change has occurred. ]]>
               </description>
-              <box height="126" width="127" left="339" top="3" orient="vertical">
-                <checkbox height="17" width="119" left="4" top="2" id="ITEM3_PROP_UID_1" label="Beta testing">
+              <box height="149.4000244140625" width="166" left="344.99998474121094" top="0" orient="vertical">
+                <checkbox height="20.9000244140625" width="158" left="4" top="2" id="ITEM3_PROP_UID_1" label="Beta testing">
                 </checkbox>
-                <checkbox height="17" width="119" left="4" top="23" id="ITEM3_PROP_UID_2" label="Acceptance testing">
+                <checkbox height="20.899993896484375" width="158" left="4" top="26.899993896484375" id="ITEM3_PROP_UID_2" label="Acceptance testing">
                 </checkbox>
-                <checkbox height="17" width="119" left="4" top="44" id="ITEM3_PROP_UID_3" label="Unit Testing">
+                <checkbox height="20.899993896484375" width="158" left="4" top="51.79998779296875" id="ITEM3_PROP_UID_3" label="Unit Testing">
                 </checkbox>
-                <checkbox height="17" width="119" left="4" top="65" id="ITEM3_PROP_UID_4" label="Integration Testing">
+                <checkbox height="20.899993896484375" width="158" left="4" top="76.69998168945312" id="ITEM3_PROP_UID_4" label="Integration Testing">
                 </checkbox>
-                <checkbox height="17" width="119" left="4" top="86" id="ITEM3_PROP_UID_5" label="Regression Testing">
+                <checkbox height="20.89996337890625" width="158" left="4" top="101.5999755859375" id="ITEM3_PROP_UID_5" label="Regression Testing">
                 </checkbox>
-                <checkbox height="17" width="119" left="4" top="107" id="ITEM3_PROP_UID_6" label="System Testing">
+                <checkbox height="20.9000244140625" width="158" left="4" top="126.5" id="ITEM3_PROP_UID_6" label="System Testing">
                 </checkbox>
               </box>
             </xul:groupbox>
