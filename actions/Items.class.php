@@ -98,21 +98,22 @@ class Items extends TaoModule{
 				$this->setData('reload', true);
 			}
 		}
+		
+		$this->setData('preview', false);
+		$this->setData('previewMsg', __("Preview not yet available"));
+		
 		$modelDefined = $this->isModelDefined($item);
 		if(!$modelDefined){
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
-		
-		$previewData = $this->initPreview($item, $itemClass);
-		if(count($previewData) == 0){
-			$this->setData('preview', false);
-			$this->setData('previewMsg', __("Preview not yet available"));
-		}
 		else{
-			$this->setData('preview', true);
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
-			foreach($previewData as $key => $value){
-				$this->setData($key, $value);
+			$previewData = $this->initPreview($item, $itemClass);
+			if(count($previewData) > 0){
+				$this->setData('preview', true);
+				$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+				foreach($previewData as $key => $value){
+					$this->setData($key, $value);
+				}
 			}
 		}
 		$this->setData('modelDefined', $modelDefined);
@@ -201,7 +202,8 @@ class Items extends TaoModule{
 					$isDefined = true;
 				}
 			}
-			catch(Exception $e){}
+			catch(Exception $e){
+			}
 		}
 		return $isDefined;
 	}
