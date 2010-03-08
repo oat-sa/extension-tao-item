@@ -2,7 +2,7 @@ msgid "Item saved"
 msgstr "Item gespeichert"
 
 msgid "Preview not yet available"
-msgstr "Vorschau noch nicht verfÃ¼gbar"
+msgstr "Vorschau noch nicht verfügbar"
 
 msgid "Edit Item"
 msgstr "Item bearbeiten"
@@ -14,7 +14,7 @@ msgid "Edit a class"
 msgstr "Klasse bearbeiten"
 
 msgid "An error occured while saving the item"
-msgstr "Ein Fehler ist wÃ¤hrend des Speicherns des Items aufgetreten"
+msgstr "Ein Fehler ist während des Speicherns des Items aufgetreten"
 
 msgid "Item saved successfully"
 msgstr "Item erfolgreich gespeichert"
@@ -38,7 +38,7 @@ msgid "new item"
 msgstr "neues Item"
 
 msgid "delete"
-msgstr "lÃ¶schen"
+msgstr "löschen"
 
 msgid "duplicate"
 msgstr "duplizieren"
@@ -68,7 +68,7 @@ msgid "Please select an item before!"
 msgstr "Bitte Item markieren!"
 
 msgid "Back"
-msgstr "ZurÃ¼ck"
+msgstr "Zurück"
 
 msgid "Preview"
 msgstr "Vorschau"
@@ -77,16 +77,16 @@ msgid "PREVIEW BOX"
 msgstr "VORSCHAU BOX"
 
 msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Das Item-Modul ermÃ¶glicht das Erstellen und Entwickeln von Items und Ãbungen."
+msgstr "Das Item-Modul ermöglicht das Erstellen und Entwickeln von Items und Übungen."
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr "Verschiedene Templates werden dem Item-Autoren zur VerfÃ¼gung gestellt, wie z.B. Multiple-Choice-Fragen, Puzzle-Entwurf, LÃ¼ckentexte, etc."
+msgstr "Verschiedene Templates werden dem Item-Autoren zur Verfügung gestellt, wie z.B. Multiple-Choice-Fragen, Puzzle-Entwurf, Lückentexte, etc."
 
 msgid "EN"
 msgstr "Englisch"
 
 msgid "FR"
-msgstr "FranzÃ¶sisch"
+msgstr "Französisch"
 
 msgid "DE"
 msgstr "Deutsch"
