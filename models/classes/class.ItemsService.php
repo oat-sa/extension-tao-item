@@ -231,7 +231,8 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method setDefaultItemContent
+     * define the content of item to be inserted by default (to prevent null
+     * after creation)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -343,7 +344,7 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getTempAuthoringFile
+     * Service to get the temporary authoring file
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
