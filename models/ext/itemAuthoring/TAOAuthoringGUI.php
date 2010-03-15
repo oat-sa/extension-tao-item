@@ -480,7 +480,10 @@ class TAOAuthoringGUI {
 
 		$item=getButtonimage(PREVIEW,false);	
 		$output.='<html><head>';
-		$output.='<script type="text/javascript">var _editor_url="/generis/core/view/HTMLArea-3.0-rc1/";</script>';
+		$output.='<script type="text/javascript">
+						var _editor_url="/generis/core/view/HTMLArea-3.0-rc1/";
+						var _editor_lang="en";
+				</script>';
 		$output.='<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
 		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js"></script>';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
