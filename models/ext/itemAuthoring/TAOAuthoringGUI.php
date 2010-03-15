@@ -494,22 +494,20 @@ class TAOAuthoringGUI {
 		<FORM id="myQCMForm" enctype="multipart/form-data" action=index.php name=newressource target=_top method=post><input type=hidden name=MAX_FILE_SIZE value=2000000>
 		<input type=hidden name=Authoring['.$instance.']['.$property."] />
 		<SCRIPT LANGUAGE=\"Javascript1.2\">
-		function phighlight(zelement)
-		{
-			document.getElementById('PContent').style.visibility='hidden';		
+		function phighlight(zelement){
+			if(document.getElementById(zelement)){
+				document.getElementById('PContent').style.visibility='hidden';		
 		";
 		error_reporting("^E_NOTICE");
-		foreach ($struct["INQUIRIES"] as $p=>$v)
-				{
-					$nm=$p+1;//index of inquiry(for user)
-				$output.="document.getElementById('Q".$nm."Content').style.visibility='hidden';
-				";
-				}
+		foreach ($struct["INQUIRIES"] as $p=>$v){
+			$nm=$p+1;//index of inquiry(for user)
+			$output.="document.getElementById('Q".$nm."Content').style.visibility='hidden';";
+		}
 		$output.="
-		
-		document.getElementById('PrStyle').style.visibility='hidden';
-		document.getElementById('template').style.visibility='hidden';
-		document.getElementById(zelement).style.visibility='visible';
+				document.getElementById('PrStyle').style.visibility='hidden';
+				document.getElementById('template').style.visibility='hidden';
+				document.getElementById(zelement).style.visibility='visible';
+			}
 		}
 		function refreshQCM(){
 			var myForm = document.getElementById('myQCMForm');
@@ -765,6 +763,7 @@ class TAOAuthoringGUI {
 			<br /><br /><br />Template :<br /><input type=radio onClick=template1(); name=template><img width=220 src=/generis/core/view/icons/template01.gif /><input type=radio name=template onClick=template2();><img width=220 src=/generis/core/view/icons/template02.gif /><input type=radio name=template onClick=template3();><img width=220 src=/generis/core/view/icons/template03.gif /><br />';
 		$output.='</A>';
 
+		$currentInquery = 0;
 		foreach ($struct["INQUIRIES"] as $p=>$v){
 			$nm=$p+1;//index of inquiry(for user)
 			$output.='<A NAME="Q'.$nm.'Content" class=mainpane style="visibility:hidden;font-family:verdana;font-size:10;" id="Q'.$nm.'Content"><br>';
@@ -826,6 +825,7 @@ class TAOAuthoringGUI {
 			}
 			if (isset($_SESSION["AddProp"][$p])) {
 				$v["LISTPROPOSITION"][]=array();
+				$currentInquery= $nm;
 				unset($_SESSION["AddProp"]);
 			}
 			if (isset($_SESSION["nbprop"])) {
@@ -842,6 +842,7 @@ class TAOAuthoringGUI {
 					unset($v["LISTPROPOSITION"][$keys[0]]);
 					$v["LISTPROPOSITION"] = array_values($v["LISTPROPOSITION"]);
 					unset($_SESSION["removeProposition"]);
+					$currentInquery= $nm;
 				}
 				foreach ($v["LISTPROPOSITION"] as $a=>$b){
 					if (($hansw[$a])==0) {
@@ -877,6 +878,9 @@ class TAOAuthoringGUI {
 		if($showLastQuestion){
 			$last = count($struct["INQUIRIES"]);
 			$output.="phighlight('Q{$last}Content');";
+		}
+		if($currentInquery > 0){
+			$output.="phighlight('Q{$currentInquery}Content');";
 		}
 		$output.='</script>';
 		$output.='</body><html>';
