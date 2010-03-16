@@ -1,43 +1,42 @@
 <?php
+require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../includes/common.php';
 
-require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
-require_once INCLUDES_PATH.'/simpletest/autorun.php';
 /**
  *
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
- * @package tao
+ * @package taoItems
  * @subpackage test
  */
-class FormTestCase extends UnitTestCase {
+class ItemsTestCase extends UnitTestCase {
 	
-	protected $service;
+	/**
+	 * 
+	 * @var taoItems_models_classes_ItemsService
+	 */
+	protected $itemsService = null;
 	
 	/**
 	 * tests initialization
 	 */
 	public function setUp(){		
-		//connection to the API 
-		$this->service = tao_models_classes_ServiceFactory::get('Items');
+		TestRunner::initTest();
 	}
 	
 	/**
-	 * @return 
+	 * Test the user service implementation
+	 * @see tao_models_classes_ServiceFactory::get
+	 * @see taoItems_models_classes_ItemsService::__construct
 	 */
-	public function testAuthoringService(){
+	public function testService(){
 		
-		$authoringFileData = $this->service->getAuthoringFile();
-		$this->assertEqual(count($authoringFileData), 2);
+		$itemsService = tao_models_classes_ServiceFactory::get('Items');
+		$this->assertIsA($itemsService, 'tao_models_classes_Service');
+		$this->assertIsA($itemsService, 'taoItems_models_classes_ItemsService');
 		
-		$id = $this->service->getAuthoringFileIdByUri($authoringFileData['uri']);
-		$this->assertNotEqual('', $id);
-		
-		$uri = $this->service->getAuthoringFileUriById($authoringFileData['id']);
-		$this->assertNotEqual('', $uri);
-		
-		if(file_exists($uri)){
-			unlink($uri);
-		}
+		$this->itemsService = $itemsService;
 	}
+	
 
 }
 ?>

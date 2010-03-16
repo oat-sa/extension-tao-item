@@ -14,7 +14,6 @@ $(function(){
 			UiBootstrap.tabs.tabs('enable', index);
 		
 		<?endif?>
-		
 	<?else:?>
 	
 		if(ctx_action != 'authoring'){
