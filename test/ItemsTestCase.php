@@ -65,9 +65,10 @@ class ItemsTestCase extends UnitTestCase {
 		$subItemInstanceLabel = 'subItem instance';
 		$subItemInstance = $this->itemsService->createInstance($subItemClass);
 		$this->assertTrue(defined('RDFS_LABEL'));
+		$subItemInstance->removePropertyValues(new core_kernel_classes_Property(RDFS_LABEL));
 		$subItemInstance->setPropertyValue(new core_kernel_classes_Property(RDFS_LABEL), $subItemInstanceLabel);
 		$this->assertIsA($subItemInstance, 'core_kernel_classes_Resource');
-//		$this->assertEqual($subItemInstanceLabel, $subItemInstance->getLabel());
+		$this->assertEqual($subItemInstanceLabel, $subItemInstance->getLabel());
 		
 		$subItemInstanceLabel2 = 'my sub item instance';
 		$subItemInstance->setLabel($subItemInstanceLabel2);
