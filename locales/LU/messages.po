@@ -1,4 +1,4 @@
-﻿msgid "Item saved"
+msgid "Item saved"
 msgstr "Item gespaichert"
 
 msgid "Preview not yet available"
@@ -63,6 +63,129 @@ msgstr "exportéiren"
 
 msgid "Item authoring"
 msgstr "Item Entwécklung"
+
+msgid "TAO Authoring Tool"
+msgstr ""
+
+msgid "Browser incompatibility"
+msgstr ""
+
+msgid "Browser compatibility"
+msgstr ""
+
+msgid "Authoring Tool has been developped especially for "
+msgstr ""
+
+msgid "You can download the latest version of"
+msgstr ""
+
+msgid "here"
+msgstr ""
+
+msgid "Thank you for your understanding,"
+msgstr ""
+
+msgid "TAO Team"
+msgstr ""
+
+msgid "Document has been updated with success"
+msgstr ""
+
+msgid "Your document contains errors"
+msgstr ""
+
+msgid "Document has been edited"
+msgstr ""
+
+msgid "Your are inserting a new item, follow the wizard"
+msgstr ""
+
+msgid "Item has been inserted with success"
+msgstr ""
+
+msgid "Attribute deleted with success"
+msgstr ""
+
+msgid "Attribute inserted with success"
+msgstr ""
+
+msgid "Attribute updated with success"
+msgstr ""
+
+msgid "Item has been updated with success"
+msgstr ""
+
+msgid "Target a position for the new element"
+msgstr ""
+
+msgid "Use the Workspace View or the Hierarchical View"
+msgstr ""
+
+msgid "For more information about positionning, go to the "
+msgstr ""
+
+msgid "wiki"
+msgstr ""
+
+msgid "Step 1 ok. Continue to Step2 or validate the wizard without attributes"
+msgstr ""
+
+msgid "New Element"
+msgstr ""
+
+msgid "has been inserted with success"
+msgstr ""
+
+msgid "Your are inserting a new element, follow the wizard"
+msgstr ""
+
+msgid "Target a question material"
+msgstr ""
+
+msgid "For more information about question material, go to the "
+msgstr ""
+
+msgid "A question material element must have an ID"
+msgstr ""
+
+msgid "Target an anwser proposition"
+msgstr ""
+
+msgid "For more information about answer proposition, go to the "
+msgstr ""
+
+msgid "An answer proposition element must have an ID"
+msgstr ""
+
+msgid "you can not access this feature as long as you do not finish the current process"
+msgstr ""
+
+msgid "Document has been saved with success"
+msgstr ""
+
+msgid "Element removed with success"
+msgstr ""
+
+msgid "You are in selection mode, click to select a node"
+msgstr ""
+
+msgid "Select mode disabled"
+msgstr ""
+
+msgid "You could enable it by clicking on the button at the right of the main menu"
+msgstr ""
+
+msgid "Select mode enabled"
+msgstr ""
+
+msgid "You could disable it by clicking on the button at the right of the main menu"
+msgstr ""
+
+msgid "Your are moving an element"
+msgstr ""
+
+msgid "Click to select the node : "
+msgstr ""
 
 msgid "Please select an item before!"
 msgstr "W.e.g. sicht fier d'éischt een Item eraus!"
