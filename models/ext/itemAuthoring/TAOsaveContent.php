@@ -89,7 +89,6 @@ class TAOsaveContent
 		$comment =  $item->comment;
 		$script = $instance;
 
-		
 	
 		$type="String";
 		$ressource["tao:problem"]=str_replace("<p>&nbsp;</p>","",$ressource["tao:problem"]);
@@ -101,24 +100,18 @@ class TAOsaveContent
 		$ressource["tao:problem"]=str_replace("</p>","",$ressource["tao:problem"]);
 		$ressource["tao:problem"]=str_replace("<p />","<br>",$ressource["tao:problem"]);
 		$ressource["tao:problem"]=str_replace("<img","<p><img",$ressource["tao:problem"]);
+		$ressource["tao:problem"]=str_replace("&amp;logo=http","&logo=http",$ressource["tao:problem"]);
+		$ressource["tao:problem"]=str_replace("&amp;isvisible=","&isvisible=",$ressource["tao:problem"]);
+		$ressource["tao:problem"]=str_replace("&amp;delay=","&delay=",$ressource["tao:problem"]);
+		$ressource["tao:problem"]=str_replace("&amp;nblisten=","&nblisten=",$ressource["tao:problem"]);
+		$ressource["tao:problem"]=str_replace("&amp;allpause=","&allpause=",$ressource["tao:problem"]);
+		$ressource["tao:problem"]=str_replace("&amp;allstop=","&allstop=",$ressource["tao:problem"]);
 		
-	//$backup = $ressource["tao:problem"];
-	
-		
-		//todo
-		/*
-	$ressource["tao:problem"]=str_replace("&amp;logo=http","&logo=http",$ressource["tao:problem"]);
-	$ressource["tao:problem"]=str_replace("&amp;isvisible=","&isvisible=",$ressource["tao:problem"]);
-	$ressource["tao:problem"]=str_replace("&amp;delay=","&delay=",$ressource["tao:problem"]);
-	$ressource["tao:problem"]=str_replace("&amp;nblisten=","&nblisten=",$ressource["tao:problem"]);
-	$ressource["tao:problem"]=str_replace("&amp;allpause=","&allpause=",$ressource["tao:problem"]);
-	$ressource["tao:problem"]=str_replace("&amp;allstop=","&allstop=",$ressource["tao:problem"]);
-
-	*/
-
 		
 		$problem='<tao:PROBLEM lang="'.$_SESSION["datalg"].'" type="'.$type.'">'.trim($this->validateliteral($ressource["tao:problem"])).'</tao:PROBLEM>';
-		//$ressource["tao:problem"]=$backup;
+
+		
+		
 		$xml=$problem;
 		
 		$sizeofpronlem = strlen(trim($ressource["tao:problem"]));
@@ -202,8 +195,6 @@ class TAOsaveContent
 					 }
 					$propimages=  substr($propimages,0,strlen($propimages)-1);
 					if (($four) and ($factor > 10) and ($ind== 2)) {$left = 170;$inder=1;} // RJa 20071030 20 -> 10
-					//"propositionleft".$p.$a
-					//print_r($ressource);
 					//added
 					if ((isset($ressource["propositionleft".$a.$ind])) and ($ressource["propositionleft".$a.$ind]!="") and ($ressource["propositionleft".$a.$ind]!="0")){$lef=$ressource["propositionleft".$a.$ind];} else {$lef=$left;}
 					
@@ -359,7 +350,6 @@ $cquestion =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $this->validateliteral($b[
                 </xul></tao:HASPRESENTATIONLAYER>
 			
 			';
-			//echo $b["proposition type"];
 			error_reporting("^E_NOTICE");
 			switch ($b["evalrule"])
 				{	
@@ -368,7 +358,6 @@ $cquestion =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $this->validateliteral($b[
 				}
 
 			
-			//print_r($ressource);
 			$inquiryDescription="
 			<tao:INQUIRYDESCRIPTION><tao:PROPOSITIONTYPE>".$proptype."</tao:PROPOSITIONTYPE>
 			<tao:WIDGET>".$widgetopt."</tao:WIDGET>
@@ -529,7 +518,7 @@ $problemimages.=$problemboxes;
 error_reporting("^E_NOTICE");				
 	if ((sizeof($ressource["tao:inquiry"]))>1)
 					{
-				//print_r($ressource);
+				
 				if 
 					(
 					(!(isset($ressource["navtop"])))
@@ -609,52 +598,26 @@ if (isset($ressource["tao:showComment"]))
 
 
 		
-$xml=
-"<?xml version='1.0' encoding='UTF-8' ?>
-<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID=\"$script\" xmlns:tao='http://www.tao.lu/tao.rdfs#'
- xmlns:rdfs='http://www.w3.org/TR/1999/PR-rdf-schema-19990303#'>
-<rdfs:LABEL lang=\"".$_SESSION["datalg"]."\">".strip_tags($label)."</rdfs:LABEL>
-<rdfs:COMMENT lang=\"".$_SESSION["datalg"]."\">".strip_tags($comment)."</rdfs:COMMENT>
-
-<tao:DISPLAYALLINQUIRIES>".$ressource["tao:displayAllInquiries"]."</tao:DISPLAYALLINQUIRIES>
-
-<tao:DURATION>".$ressource["tao:duration"]."</tao:DURATION>
-".$xulITEM."
-<tao:ITEMLISTENERS></tao:ITEMLISTENERS>".$xml;
-$xml = str_replace('<image src="listen.swf?','<image disabled="false" src="listen.swf?',$xml);
-
-
-//die();
-
-
-
-	//calltoKernel('removeSubjectPredicate',array($_SESSION["session"],$instance,$property));
-	//calltoKernel('setStatement',array($_SESSION["session"],$instance,$property,$xml,"l",$_SESSION["datalg"],"","r"));	
-
-
-
-			$_SESSION["Authoring"]=array($ressource["instance"]=> array($ressource["property"]=>""));		
+		$xml=
+		"<?xml version='1.0' encoding='UTF-8' ?>
+		<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID=\"$script\" xmlns:tao='http://www.tao.lu/tao.rdfs#'
+		 xmlns:rdfs='http://www.w3.org/TR/1999/PR-rdf-schema-19990303#'>
+		<rdfs:LABEL lang=\"".$_SESSION["datalg"]."\">".strip_tags($label)."</rdfs:LABEL>
+		<rdfs:COMMENT lang=\"".$_SESSION["datalg"]."\">".strip_tags($comment)."</rdfs:COMMENT>
 		
+		<tao:DISPLAYALLINQUIRIES>".$ressource["tao:displayAllInquiries"]."</tao:DISPLAYALLINQUIRIES>
+		
+		<tao:DURATION>".$ressource["tao:duration"]."</tao:DURATION>
+		".$xulITEM."
+		<tao:ITEMLISTENERS></tao:ITEMLISTENERS>".$xml;
+		$xml = str_replace('<image src="listen.swf?','<image disabled="false" src="'.BASE_URL.'/models/ext/itemRuntime/listen.swf?',$xml);
+
+
+		$_SESSION["Authoring"]=array($ressource["instance"]=> array($ressource["property"]=>""));		
 		$xml = str_replace('\\\'','\'',$xml);		
-
-
-		$xml =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $xml ) ;
-		$xml =ereg_replace("--TEXTBOX[^-]*--" , "" , $xml ) ;
-		
-		//trace  xml
-		
-		//$hd=fopen("./genfiles/essai.xml","wb");
-		//fwrite($hd,$xml);
-		//fclose($hd);
-		
-
-	//	$_SESSION["ITEMpreview"]=$xml;
 		
 		return $xml;
-		
 	
 	}
-	   
-	
 }
 ?>

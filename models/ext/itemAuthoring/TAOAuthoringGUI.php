@@ -224,7 +224,6 @@ class TAOAuthoringGUI {
 						$struct["TAO:PROBLEM"] = $values[$theIndex]["value"];
 					 }
 				 }
-			
 			if ($key == "TAO:DURATION")
 				 { 
 					foreach ($val as $x=>$theIndex)
@@ -413,15 +412,9 @@ class TAOAuthoringGUI {
 						 }
 					 }
 				 }
-
-			
-					 
-		 }
-	
-	xml_parser_free($xml_parser);
-	
-
-	return $struct;
+			 }
+		xml_parser_free($xml_parser);
+		return $struct;
 	}
 
 	function getOutput(){
@@ -437,7 +430,6 @@ class TAOAuthoringGUI {
 		
 		
 		$struct = $this->parseXML($xml);
-		
 		
 		$uri = tao_helpers_Uri::encode($instance);
 		$item = new core_kernel_classes_Resource($instance);
@@ -485,6 +477,13 @@ class TAOAuthoringGUI {
 						var _editor_lang="en";
 				</script>';
 		$output.='<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
+		$output.='<script type="text/javascript">
+				      HTMLArea.loadPlugin("TableOperations");
+				      HTMLArea.loadPlugin("ImageManager");
+					  HTMLArea.loadPlugin("SoundManager");
+				      HTMLArea.loadPlugin("CSS");
+				      HTMLArea.loadPlugin("ContextMenu");
+				</script>';
 		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js"></script>';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/CSS/generis_default.css" />';
@@ -552,7 +551,7 @@ class TAOAuthoringGUI {
 				$output.=LEFT.'<input type=text name=itemcontent[tao:problemleft] id=leftproblem size=2 value='.$struct["problemeleft"] .'>'.TOP.'<input type=text size=2 name=itemcontent[tao:problemtop] id=topproblem value='.$struct["problemetop"] .'>'.WIDTH.'<input type=text name=itemcontent[tao:problemwidth] size=2 id=problemwidth value='.$struct["problemewidth"] .'>'.HEIGHT.'<input type=text  size=2 name=itemcontent[tao:problemheight] id=problemheight value='.$struct["problemeheight"] .'>';
 				$output.='<TEXTAREA NAME="itemcontent[tao:problem]" COLS=80 ROWS=25>'.$struct["TAO:PROBLEM"].'</TEXTAREA>';
 				
-				$output.=''.ADD.' <input size=2 type=textbox name=nbinq> '.NBQUESTIONS.SAND.' <input size=2 type=textbox name=nbprop> '.NBPROPOSITIONS.'';
+			//	$output.=''.ADD.' <input size=2 type=textbox name=nbinq> '.NBQUESTIONS.SAND.' <input size=2 type=textbox name=nbprop> '.NBPROPOSITIONS.'';
 		
 		$output.='</A>';
 
