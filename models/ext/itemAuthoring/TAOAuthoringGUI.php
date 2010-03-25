@@ -570,10 +570,11 @@ class TAOAuthoringGUI {
 							'.SUBSIDIARYQUESTION.' : <input type=text size=35 name=itemcontent[tao:subsidiaryquestion] value="'.$struct["TAO:SUBSIDIARYQUESTION"].'"><br /><br />'.TOP.'<input type=text size=2 name=itemcontent[tao:subsidiaryquestiontop] value='.$struct["TAO:SUBSIDIARYQUESTIONTOP"].'>'.LEFT.'<input type=text size=2 name=itemcontent[tao:subsidiaryquestionleft] value='.$struct["TAO:SUBSIDIARYQUESTIONLEFT"].'><br /><br />	<input type=text size=50 name=itemcontent[tao:subsidiaryp1] value="'.$struct["TAO:SUBSIDIARYP1"].'"><br>	<input type=text size=50 name=itemcontent[tao:subsidiaryp2] value="'.$struct["TAO:SUBSIDIARYP2"].'">	<br>
 							<input type=text size=50 name=itemcontent[tao:subsidiaryp3] value="'.$struct["TAO:SUBSIDIARYP3"].'">	<br><input type=text size=50 name=itemcontent[tao:subsidiaryp4] value="'.$struct["TAO:SUBSIDIARYP4"].'"><br><input type=text size=50 name=itemcontent[tao:subsidiaryp5] value="'.$struct["TAO:SUBSIDIARYP5"].'"><br>';
 				$output.= '<br />Navigation<br />'.NAVTOP.'<input size=2 type=text name=itemcontent[navtop] id=navtop value='.$struct["navtop"] .'><br />
-								'.NAVLEFT.'<input size=2 type=text name=itemcontent[navleft] id=navleft value='.$struct["navleft"] .'><br />
+								'.NAVLEFT.'<input size=2 type=text name=itemcontent[navleft] id=navleft value='.$struct["navleft"] .'><br />';
+				/*
 								'.URLLEFT.'</td><td><input size=50 type=text name=itemcontent[urlleft] value='.$struct["urlleft"] .'><br />
 								'.URLRIGHT.'<input size=50 type=text name=itemcontent[urlright] value='.$struct["urlright"] .'><br />';
-		
+		*/
 				
 		
 		$output.='</A>';

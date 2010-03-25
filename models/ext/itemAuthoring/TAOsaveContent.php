@@ -531,7 +531,7 @@ error_reporting("^E_NOTICE");
 				$ressource["navleftnext"]=$ressource["navleft"]+55;
 				$ressource["navleftprogressbar"]=$ressource["navleftnext"]+60;
 
-				if 
+		/*		if 
 					(
 					(!(isset($ressource["urlleft"])))
 					or
@@ -546,7 +546,7 @@ error_reporting("^E_NOTICE");
 					($ressource["urlright"]=="")
 					) 
 					{$ressource["urlright"]="http://www.tao.lu/middleware/itempics/default/right.swf";}
-				
+				*/
 
 				
 
