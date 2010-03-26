@@ -52,4 +52,8 @@ define('EXPORT_URL', 	BASE_URL  . '/' . DIR_VIEWS . 'export');
 define('TAOBASE_WWW',  ROOT_URL  . '/tao/' . DIR_VIEWS);
 define('TAOVIEW_PATH', ROOT_PATH . '/tao/' . DIR_VIEWS);
 define('TAO_TPL_PATH', ROOT_PATH . '/tao/' . DIR_VIEWS . $GLOBALS['dir_theme']);
+
+#Path to the old generis interface
+define('LEGACY_PATH', ROOT_PATH ."/generis/core/view/");
+define('LEGACY_URL',  ROOT_URL ."/generis/core/view/");
 ?>
