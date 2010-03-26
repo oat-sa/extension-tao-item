@@ -31,8 +31,8 @@ class TAOsaveContent
 		}
 	function validateliteral($literal,$removetextboxes=false)
 	{
-		if (ACTIVATEMOODLE)
-		{
+		/*if (ACTIVATEMOODLE)
+		{*/
 				$problemboxes="";
 				$literal=str_replace("\\","",$literal);
 				$literal=str_replace("<strong>","<b>",$literal);
@@ -66,7 +66,7 @@ class TAOsaveContent
 				$literal = trim($literal);
 				$literal.=$problemboxes;
 				
-		}
+		//}
 
 		
 		return $literal;
@@ -234,6 +234,7 @@ class TAOsaveContent
 							$propositionbox.='
 								<'.$xmlwidget.' id="proposition_'.$order.'_'.$xmlwidget.'" left="'.$lef.'" top="'.$to.'" width="1000" selected="false" label="'.$this->validateliteral($valu["value"]).'">'.$propimages.'</'.$xmlwidget.'>';
 						}
+					$propositionbox = ereg_replace("--MULTIMEDIA[^-]*--" , "" , $propositionbox ) ;
 										
 					if ($xmlwidget=="checkbox") {$listeners.='<tao:ITEMBEHAVIOR tao:LISTENERNAME="Answered : '.$this->validateliteral($b["question"]).' #{XPATH(/tao:ITEM/tao:INQUIRY[@order='.$orderInq.']/tao:INQUIRYDESCRIPTION/tao:LISTPROPOSITION/tao:PROPOSITION[@order='.$order.'])}#" src="#{XPATH(/tao:ITEM/tao:INQUIRY[@order='.$orderInq.']/tao:INQUIRYDESCRIPTION/tao:HASPRESENTATIONLAYER/xul/box/box/checkbox[@id=proposition_'.$order.'_'.$xmlwidget.'])}#"/>';}
 					$inder=$inder+$factor;$order=$order+1;
@@ -546,8 +547,8 @@ error_reporting("^E_NOTICE");
 					($ressource["urlright"]=="")
 					) 
 					{$ressource["urlright"]="http://www.tao.lu/middleware/itempics/default/right.swf";}
-				*/
-
+				
+*/
 				
 
 				$inquiriesnav='<button id="prevInquiry_button" left="'.$ressource["navleft"].'" top="'.$ressource["navtop"].'" label="&lt;" image="inquiry_previous.jpg" url="'.$ressource["urlleft"].'" disabled="true" oncommand="tao_item.prevInquiry"/>

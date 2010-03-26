@@ -2,6 +2,7 @@
 require('../../../../generis/common/inc.extension.php');
 require('../../../includes/common.php');
 
+
 $checkParams = array(
 	'AddInquiry_x',
 	'AddInquiry',

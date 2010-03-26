@@ -6,9 +6,9 @@
 * @version 1.1
 */
 error_reporting("^E_NOTICE");
-require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_ConstantsOfGui.php");	   
-require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_utils.php");	
-include_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/lg/".strtoupper($GLOBALS['lang']).".php");	
+require_once(LEGACY_PATH."generis_ConstantsOfGui.php");	   
+require_once(LEGACY_PATH."generis_utils.php");	
+include_once(LEGACY_PATH."/lg/".strtoupper($GLOBALS['lang']).".php");	
 
 class TAOAuthoringGUI {
 	
@@ -377,10 +377,6 @@ class TAOAuthoringGUI {
 					 }
 				 }
 		
-
-
-
-
 			if ($key == "BUTTON")
 				 { 
 					foreach ($val as $x=>$theIndex)
@@ -417,6 +413,9 @@ class TAOAuthoringGUI {
 		return $struct;
 	}
 
+	/**
+	 * @return string the QCM authoring for as a standalone HTML page
+	 */
 	function getOutput(){
 		
 		$SCRIPT='';
@@ -484,7 +483,20 @@ class TAOAuthoringGUI {
 				      HTMLArea.loadPlugin("CSS");
 				      HTMLArea.loadPlugin("ContextMenu");
 				</script>';
-		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js"></script>';
+		
+		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery-1.3.2.min.js" ></script> ';
+		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js" ></script>';
+		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery.fmRunner.js"></script>';
+		$output.='<script type="text/javascript">
+					$(document).ready(function(){
+						$(".proposition-field").fmbind({type: "image"}, function(elt, value){
+							elt.value += "\n --MULTIMEDIA url=\""+value+"\" left=\"0\" top=\"20\" width=\"\" height=\"\" --";
+						});
+						$(".proposition-field").fmbind({type: "audio"}, function(elt, value){
+							elt.value += "\n --MULTIMEDIA url=\"listen.swf?file="+value+"&isvisible=true&delay=0&nblisten=\" left=\"0\" top=\"20\" width=\"\" height=\"\" --";
+						});
+					});
+				</script>';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
 		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/CSS/generis_default.css" />';
 		$output.='<style type="text/css">input[type=button],input[type=submit]{cursor:pointer; padding:4px; font-weight:bold;}</style>';
@@ -854,6 +866,8 @@ class TAOAuthoringGUI {
 					$num=$a+1;
 							
 					$form='itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]';
+					
+					
 					$propositionleftstring = "propositionleft".$p.$a;
 					$propositiontopstring = "propositiontop".$p.$a;
 					
@@ -864,7 +878,7 @@ class TAOAuthoringGUI {
 					$output.=''.$script.'&nbsp;
 
 					<input type=submit name=removeProposition['.$p.']['.$a.'] value=Remove&nbsp;this&nbsp;proposition onclick="refreshQCM();"><br>
-					<TEXTAREA NAME="itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]" COLS=80 ROWS=10>'.$b["value"].'</TEXTAREA>
+					<TEXTAREA NAME="itemcontent[tao:inquiry]['.$p.'][proposition]['.$a.'][value]" id="proposition-field_'.$p.$a.'" class="proposition-field" COLS=80 ROWS=10>'.$b["value"].'</TEXTAREA>
 									
 					';
 				}
