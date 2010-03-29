@@ -484,7 +484,7 @@ class TAOAuthoringGUI {
 				      HTMLArea.loadPlugin("ContextMenu");
 				</script>';
 		
-		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery-1.3.2.min.js" ></script> ';
+		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery-1.4.2.min.js" ></script> ';
 		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js" ></script>';
 		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery.fmRunner.js"></script>';
 		$output.='<script type="text/javascript">
