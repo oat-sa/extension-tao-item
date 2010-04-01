@@ -536,21 +536,22 @@ class TAOAuthoringGUI {
 		$output.="<input type=hidden name=itemcontent[instance] value=$instance>";
 		$output.="<input type=hidden name=itemcontent[property] value=$property>";
 		$output.='<span style=position:absolute;left:0px;z-index: 99999999;overflow:visible;>
-		<input type=button onClick="phighlight(\'PContent\');" value="'.PROBCONT.'" />
+		<input type=button onClick="phighlight(\'PContent\');" value="'.__('Problem content').'" />
+		<input type=submit  name=AddInquiry onclick="refreshQCM();" value="'.__('Add a question').'" />
 		
-		 <input type=button onClick="phighlight(\'PrStyle\');"  value="'.PARAMETERS.'" />
 		';
 		foreach ($struct["INQUIRIES"] as $p=>$v)
 				{
 					$nm=$p+1;//index of inquiry(for user)
-				$output.=' <input type=button onClick="phighlight(\'Q'.$nm.'Content\');" value="'.QUESTION.' '.$nm.'" />';
+				$output.=' <input type=button onClick="phighlight(\'Q'.$nm.'Content\');" value="'.__('Question').' '.$nm.'" />';
 				}
 		$output.='
-		<input type=button onClick="phighlight(\'template\');" value="Template" />
-		<input type=button onClick="FmRunner.load();" value="File Manager" />
-		<input type=submit  name=AddInquiry onclick="refreshQCM();" value="'.ADDAQUESTION.'" />
-		<input type=button  onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.PREVIEW.'" />
-		<input type=submit onclick="refreshQCM();" value="'.APPLY.'">
+		
+		<input type=button onClick="FmRunner.load();" value="'.__('File Manager').'" />
+		<input type=button onClick="phighlight(\'template\');" value="'.__('Template').'" />
+		<input type=button onClick="phighlight(\'PrStyle\');"  value="'.__('Parameters').'" />
+		<input type=button onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.__('Preview').'" />
+		<input type=submit onclick="refreshQCM();" value="'.__('Apply').'">
 		<input type=submit value="Save and close">
 		</span><br /><br />';
 
