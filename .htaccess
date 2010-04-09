@@ -10,6 +10,14 @@ RewriteRule ^(.*)$ /taoItems/models/ext/itemRuntime/eXULiS.swf [L]
 #RewriteCond %{REQUEST_URI} /taoItems/Items/listen.swf$ [NC]
 #RewriteRule ^(.*)$ /taoItems/models/ext/itemRuntime/listen.swf [L]
 
+RewriteCond %{REQUEST_METHOD} ^GET$
+RewriteCond %{REQUEST_URI} /taoItems/SaSItems/eXULiS.swf$ [NC]
+RewriteRule ^(.*)$ /taoItems/models/ext/itemRuntime/eXULiS.swf [L]
+
+#RewriteCond %{REQUEST_METHOD} ^GET$
+#RewriteCond %{REQUEST_URI} /taoItems/SaSItems/listen.swf$ [NC]
+#RewriteRule ^(.*)$ /taoItems/models/ext/itemRuntime/listen.swf [L]
+
 #usual behavior for resources calls
 RewriteCond %{REQUEST_URI} !/views/  [NC]
 RewriteCond %{REQUEST_URI} !/test/  [NC]
