@@ -128,6 +128,10 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001AD2 begin
 		
+		if($this->itemClass->uriResource == $clazz->uriResource){
+			return true;
+		}
+		
 		foreach($clazz->getParentClasses(true) as $parent){
 			
 			if($parent->uriResource == $this->itemClass->uriResource){
@@ -246,10 +250,12 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 begin
 		
 		try{
-			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			$itemContent = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));//it is ok if it is null
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
+			
+			if($itemModel instanceof core_kernel_classes_Resource){
 				$content = (string)$itemContent;
+				
 				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX && trim($content) == ''){
 					$content = file_get_contents(TAO_ITEM_AUTHORING_TPL_FILE);
 					$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
