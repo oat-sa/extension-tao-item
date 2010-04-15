@@ -2,8 +2,8 @@
 <!DOCTYPE services SYSTEM "../../tao/doc/sas.dtd">
 <services>
 	<service>
-		<name>Add item</name>
-		<description>add a new item and redirect to the edit form</description>
+		<name>Item add</name>
+		<description>Add a new item and redirect to the edit form</description>
 		<location url="/taoItems/SaSItems/sasAddInstance">
 			<param key="classUri" value="^itemClassUri" />
 		</location>
@@ -20,7 +20,7 @@
 		</location>
 	</service>
 	<service>
-		<name>Full item edit</name>
+		<name>Item full editor</name>
 		<description>Full edit form: edit item properties and preview item</description>
 		<location url="/taoItems/SaSItems/editItem">
 			<param key="uri" value="^itemUri" />
@@ -29,13 +29,13 @@
 	</service>
 	<service>
 		<name>Item class editor</name>
-		<description>Edit a (sub)item class: add/edit/delete class properties</description>
+		<description>Edit a Item (sub)class: add/edit/delete class properties</description>
 		<location url="/taoItems/SaSItems/editItemClass">
 			<param key="classUri" value="^itemClassUri" />
 		</location>
 	</service>
 	<service>
-		<name>Preview</name>
+		<name>Item preview</name>
 		<description>Preview an item</description>
 		<location url="/taoItems/SaSItems/preview">
 			<param key="uri" value="^itemUri" />
@@ -43,7 +43,7 @@
 		</location>
 	</service>
 	<service>
-		<name>Authoring</name>
+		<name>Item authoring</name>
 		<description>Open the authoring tool of the selected item</description>
 		<location url="/taoItems/SaSItems/authoring">
 			<param key="uri" value="^itemUri" />
@@ -51,7 +51,7 @@
 		</location>
 	</service>
 	<service>
-		<name>Translate item</name>
+		<name>Item translation</name>
 		<description>Translate the value of the item properties</description>
 		<location url="/taoItems/SaSItems/translateInstance">
 			<param key="uri" value="^itemUri" />
@@ -60,7 +60,7 @@
 		</location>	
 	</service>
 	<service>
-		<name>Search items</name>
+		<name>Items searching</name>
 		<description>Search items instances</description>
 		<location url="/taoItems/SaSItems/search" />
 		<return>
@@ -68,7 +68,7 @@
 		</return>
 	</service>	
 	<service>
-		<name>Delete item</name>
+		<name>Item removing</name>
 		<description>Delete an item instance</description>
 		<location url="/taoItems/SaSItems/sasDeleteInstance">
 			<param key="uri" value="^itemUri" />
