@@ -2,6 +2,27 @@
 <!DOCTYPE services SYSTEM "../../tao/doc/sas.dtd">
 <services>
 	<service>
+		<name>Item class selection</name>
+		<description>Select an item (sub)class</description>
+		<location url="/taoItems/SaSItems/sasSelect">
+			<param key="selectInstance" value="false" />
+		</location>
+		<return>
+			<param key="itemClassUri" />
+		</return>
+	</service>
+	<service>
+		<name>Item selection</name>
+		<description>Select an item</description>
+		<location url="/taoItems/SaSItems/sasSelect">
+			<param key="selectInstance" value="true" />
+		</location>
+		<return>
+			<param key="itemClassUri" />
+			<param key="itemUri" />
+		</return>
+	</service>
+	<service>
 		<name>Item add</name>
 		<description>Add a new item and redirect to the edit form</description>
 		<location url="/taoItems/SaSItems/sasAddInstance">
