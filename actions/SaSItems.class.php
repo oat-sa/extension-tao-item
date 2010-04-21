@@ -49,5 +49,29 @@ class SaSItems extends Items {
         }
 		return $this->getRootClass();
     }
+    
+/**
+	 * Edit an instances 
+	 * @return void
+	 */
+	public function sasEditInstance(){
+		$clazz = $this->getCurrentClass();
+		$instance = $this->getCurrentInstance();
+		
+		$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($clazz, $instance);
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				$instance = $this->service->bindProperties($instance, $myForm->getValues());
+				$instance = $this->service->setDefaultItemContent($instance);
+				$this->setData('message', __('Item saved'));
+			}
+		}
+		
+		$this->setData('uri', tao_helpers_Uri::encode($instance->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($clazz->uriResource));
+		$this->setData('formTitle', __('Edit item'));
+		$this->setData('myForm', $myForm->render());
+		$this->setView('form.tpl', true);
+	}
 }
 ?>
