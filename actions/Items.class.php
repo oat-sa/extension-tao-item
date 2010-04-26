@@ -409,13 +409,15 @@ class Items extends TaoModule{
 							file_put_contents($fileUri, $_SESSION['xml']);
 							break;
 							
+
 						default:
 							isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
-							$data = "<?xml version='1.0' encoding='UTF-8'?><tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
-										<rdfs:LABEL lang='$lang'>".$item->getLabel()."</rdfs:LABEL>
-										<rdfs:COMMENT lang='$lang'>".$item->comment."</rdfs:COMMENT>".
-											$_SESSION['xml']
-										."</tao:ITEM>";
+							$data = "<?xml version='1.0' encoding='UTF-8'?>
+										<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
+											<rdfs:LABEL lang='{$lang}'>{$item->getLabel()}</rdfs:LABEL>
+											<rdfs:COMMENT lang='{$lang}'>{$item->comment}</rdfs:COMMENT>
+											{$_SESSION['xml']}
+										</tao:ITEM>";
 							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $data));
 							break;
 							
@@ -424,10 +426,8 @@ class Items extends TaoModule{
 					$message = __('Item saved successfully');
 				}
 			}
-			unset($_SESSION['instance']);
-			unset($_SESSION['xml']);
 		}
-		
+	
 		if($this->mode == self::MODE_STANDALONE){
 			$itemClass = $this->service->getClass($item);
 			$this->redirect('/taoItems/SaSItems/authoring?uri='.tao_helpers_Uri::encode($item->uriResource).'&classUri='.tao_helpers_Uri::encode($itemClass->uriResource).'&message='.urlencode($message));
