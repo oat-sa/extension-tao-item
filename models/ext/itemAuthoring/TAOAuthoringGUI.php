@@ -551,9 +551,13 @@ class TAOAuthoringGUI {
 		<input type=button onClick="phighlight(\'template\');" value="'.__('Template').'" />
 		<input type=button onClick="phighlight(\'PrStyle\');"  value="'.__('Parameters').'" />
 		<input type=button onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.__('Preview').'" />
-		<input type=submit onclick="refreshQCM();" value="'.__('Apply').'">
-		<input type=submit value="Save and close">
-		</span><br /><br />';
+		<input type=submit onclick="refreshQCM();" value="'.__('Apply').'">';
+		
+		if(!isset($_SESSION['processUri'])){
+			$output.='<input type=submit value="'.__('Save and close').'">';
+		}
+		
+		$output.='</span><br /><br />';
 
 
 
