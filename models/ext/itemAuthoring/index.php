@@ -19,7 +19,7 @@ else{
 }
 $_SESSION['instance'] = $_POST['instance'];
 
-if($_SERVER['REQUEST_URI'] == '/taoItems/SaSItems/index.php'){
+if(preg_match("/SaSItems/", $_SERVER['REQUEST_URI'])){
 	header("Location: "._url('saveItemContent', 'SaSItems', 'taoItems'));
 }
 else{

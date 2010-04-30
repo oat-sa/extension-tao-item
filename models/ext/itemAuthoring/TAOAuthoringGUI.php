@@ -472,10 +472,10 @@ class TAOAuthoringGUI {
 		$item=getButtonimage(PREVIEW,false);	
 		$output.='<html><head>';
 		$output.='<script type="text/javascript">
-						var _editor_url="/generis/core/view/HTMLArea-3.0-rc1/";
+						var _editor_url="'.ROOT_URL.'/generis/core/view/HTMLArea-3.0-rc1/";
 						var _editor_lang="en";
 				</script>';
-		$output.='<script type="text/javascript" src="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
+		$output.='<script type="text/javascript" src="'.ROOT_URL.'/generis/core/view/HTMLArea-3.0-rc1/htmlarea.js"></script>';
 		$output.='<script type="text/javascript">
 				      HTMLArea.loadPlugin("TableOperations");
 				      HTMLArea.loadPlugin("ImageManager");
@@ -484,9 +484,9 @@ class TAOAuthoringGUI {
 				      HTMLArea.loadPlugin("ContextMenu");
 				</script>';
 		
-		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery-1.4.2.min.js" ></script> ';
-		$output.='<script type="text/javascript" src="/filemanager/views/js/fmRunner.js" ></script>';
-		$output.='<script type="text/javascript" src="/filemanager/views/js/jquery.fmRunner.js"></script>';
+		$output.='<script type="text/javascript" src="'.ROOT_URL.'/filemanager/views/js/jquery-1.4.2.min.js" ></script> ';
+		$output.='<script type="text/javascript" src="'.ROOT_URL.'/filemanager/views/js/fmRunner.js" ></script>';
+		$output.='<script type="text/javascript" src="'.ROOT_URL.'/filemanager/views/js/jquery.fmRunner.js"></script>';
 		$output.='<script type="text/javascript">
 					$(document).ready(function(){
 						$(".proposition-field").fmbind({type: "image"}, function(elt, value){
@@ -497,8 +497,8 @@ class TAOAuthoringGUI {
 						});
 					});
 				</script>';
-		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
-		$output.='<link rel="stylesheet" type="text/css" href="/generis/core/view/CSS/generis_default.css" />';
+		$output.='<link rel="stylesheet" type="text/css" href="'.ROOT_URL.'/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
+		$output.='<link rel="stylesheet" type="text/css" href="'.ROOT_URL.'/generis/core/view/CSS/generis_default.css" />';
 		$output.='<style type="text/css">input[type=button],input[type=submit]{cursor:pointer; padding:4px; font-weight:bold;}</style>';
 		$output.='</head><body>';
 		$output.='
@@ -551,7 +551,8 @@ class TAOAuthoringGUI {
 		<input type=button onClick="phighlight(\'template\');" value="'.__('Template').'" />
 		<input type=button onClick="phighlight(\'PrStyle\');"  value="'.__('Parameters').'" />
 		<input type=button onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.__('Preview').'" />
-		<input type=submit onclick="refreshQCM();" value="'.__('Apply').'">';
+		<input type=submit onclick="refreshQCM();" value="'.__('Apply').'">
+		';
 		
 		if(!isset($_SESSION['processUri'])){
 			$output.='<input type=submit value="'.__('Save and close').'">';

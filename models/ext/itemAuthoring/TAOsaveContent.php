@@ -6,7 +6,8 @@
 * @author Plichart Patrick <patrick.plichart@tudor.lu>
 * @version 1.1
 */
-require_once($_SERVER['DOCUMENT_ROOT']."/generis/core/view/generis_ConstantsOfGui.php");
+require_once(dirname(__FILE__)."../../../../../generis/core/view/generis_ConstantsOfGui.php");
+
 class TAOsaveContent
 {
 	function TAOsaveContent()
