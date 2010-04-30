@@ -164,7 +164,7 @@ class Items extends TaoModule{
 			
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
 				
-				$contentUrl = urlencode(_url('getItemContent', 'Items', array('uri' => $item->uriResource, 'classUri' => $clazz->uriResource, 'preview' => true)));
+				$contentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($clazz->uriResource), 'preview' => true)));
 				
 				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
 			
@@ -315,6 +315,7 @@ class Items extends TaoModule{
 		catch(Exception $e){
 			//print an empty response
 			echo '<?xml version="1.0" encoding="utf-8" ?>';
+			print $e;
 		}
 	}
 	
@@ -339,7 +340,7 @@ class Items extends TaoModule{
 						$this->setData('type', 'php');
 					}
 					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
-					$this->setData('dataPreview', urlencode(_url('getItemContent', get_class($this), array('uri' => $item->uriResource, 'classUri' => $itemClass->uriResource))));
+					$this->setData('dataPreview', urlencode(_url('getItemContent', get_class($this), 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($itemClass->uriResource)))));
 				}
 			}
 			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
@@ -430,10 +431,10 @@ class Items extends TaoModule{
 	
 		if($this->mode == self::MODE_STANDALONE){
 			$itemClass = $this->service->getClass($item);
-			$this->redirect('/taoItems/SaSItems/authoring?uri='.tao_helpers_Uri::encode($item->uriResource).'&classUri='.tao_helpers_Uri::encode($itemClass->uriResource).'&message='.urlencode($message));
+			$this->redirect(_url('authoring', 'SaSItems', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource).'&classUri='.tao_helpers_Uri::encode($itemClass->uriResource), 'classUri' => tao_helpers_Uri::encode($itemClass->uriResource), 'message' => urlencode($message))));
 		}
 		else{
-			$this->redirect('/tao/Main/index?extension=taoItems&message='.urlencode($message));
+			$this->redirect( _url('index', 'Main', 'tao', array('message' => urlencode($message))));
 		}
 	}
 	

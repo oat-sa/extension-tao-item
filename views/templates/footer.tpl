@@ -10,7 +10,7 @@ $(function(){
 		
 		<?if(get_data('action') != 'authoring' && get_data('modelDefined') != false):?>
 		
-			UiBootstrap.tabs.tabs('url', index, "/taoItems/Items/authoring?uri=<?=get_data('uri')?>&classUri=<?=get_data('classUri')?>");
+			UiBootstrap.tabs.tabs('url', index, "<?=_url('authoring', 'Items', 'taoItems', array('uri' => get_data('uri'), classUri => get_data('classUri')))?>");
 			UiBootstrap.tabs.tabs('enable', index);
 		
 		<?endif?>

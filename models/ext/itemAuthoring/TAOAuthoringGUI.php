@@ -434,7 +434,7 @@ class TAOAuthoringGUI {
 		$item = new core_kernel_classes_Resource($instance);
 		$type = $item->getUniquePropertyValue(new core_kernel_classes_Property('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'));
 		$classUri = tao_helpers_Uri::encode($type->uriResource);
-		$previewUri = "/taoItems/Items/preview?uri=$uri&classUri=$classUri";
+		$previewUri = ROOT_URL."/taoItems/Items/preview?uri=$uri&classUri=$classUri";
 
 		$chechedinabox="";
 			if ((strpos($xml,'<textbox id="problem_textbox"'))===false) {
