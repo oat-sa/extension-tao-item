@@ -15,8 +15,10 @@ $todefine = array(
 	'TAO_ITEM_MODEL_QCM'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#QCM',
 	'TAO_ITEM_MODEL_KHOS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#kohs',
 	'TAO_ITEM_MODEL_WATERPHENIX'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#i125933161031263',
+	'TAO_ITEM_MODEL_CAMPUS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#campus',
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
-	'TAO_ITEM_AUTHORING_TPL_FILE' 		=> BASE_PATH.'/data/black_ref.xml'
+	'TAO_ITEM_HAWAI_TPL_FILE'	 		=> BASE_PATH.'/data/black_ref.xml',
+	'TAO_ITEM_CAMPUS_TPL_FILE'	 		=> BASE_PATH.'/data/campus_ref.xml'
 );
 foreach($todefine as $constName => $constValue){
 	if(!defined($constName)){

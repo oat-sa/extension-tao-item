@@ -402,6 +402,7 @@ class Items extends TaoModule{
 						
 						case TAO_ITEM_MODEL_KHOS:
 						case TAO_ITEM_MODEL_QCM :
+						case TAO_ITEM_MODEL_CAMPUS :
 							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
 							break;
 							
