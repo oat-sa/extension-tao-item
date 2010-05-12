@@ -60,7 +60,7 @@ class taoItems_models_classes_ItemsService
      * @access protected
      * @var array
      */
-    protected $itemsOntologies = array('http://www.tao.lu/Ontologies/TAOItem.rdf');
+    protected $itemsOntologies = array('http://www.tao.lu/Ontologies/TAOItem.rdf', 'http://www.tao.lu/middleware/review.rdf', 'http://www.tao.lu/middleware/taoqual.rdf');
 
     // --- OPERATIONS ---
 
