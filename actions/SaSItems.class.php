@@ -50,7 +50,7 @@ class SaSItems extends Items {
 		return $this->getRootClass();
     }
     
-/**
+	/**
 	 * Edit an instances 
 	 * @return void
 	 */
@@ -72,6 +72,29 @@ class SaSItems extends Items {
 		$this->setData('formTitle', __('Edit item'));
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl', true);
+	}
+	
+	public function viewInstance(){
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
+		}
+		$clazz = $this->getCurrentClass();
+		$instance = $this->getCurrentInstance();
+		
+		$properties = array();
+		foreach($this->service->getClazzProperties($clazz) as $property){
+			$value = '';
+			try{
+			$value = $instance->getUniquePropertyValue($property);
+			}
+			catch(common_Exception $ce){}
+			$properties[] = array(
+				'name'	=> $property->getLabel(),
+				'value'	=> $value
+			);
+		}
+		$this->setData('itemProperties', $properties);
+		$this->setView('view.tpl');
 	}
 }
 ?>
