@@ -338,7 +338,7 @@ if (isset($ressource["wsdl"]) and (($ressource["wsdl"])!=""))
 
 		';
 }
-$cquestion =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $this->validateliteral($b["question"]) ) ;
+$cquestion =ereg_replace("--MULTIMEDIA[^-]*--" , "" , $this->validateliteral($myQuestion) ) ;
 			
 			$xulinquiry='
 			<tao:HASPRESENTATIONLAYER><xul>

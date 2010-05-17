@@ -31,6 +31,6 @@
 				<action name="import" url="/tao/Import/index"  context="class" /> 
 			</actions>
 		</section>
-		<section id="items_authoring" name="Item authoring" url="/taoItems/Items/authoring" />
+		<section id="items_authoring" name="Authoring" url="/taoItems/Items/authoring" />
 	</sections>
 </extension>

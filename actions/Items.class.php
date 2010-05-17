@@ -100,7 +100,7 @@ class Items extends TaoModule{
 		}
 		
 		$this->setData('preview', false);
-		$this->setData('previewMsg', __("Preview not yet available"));
+		$this->setData('previewMsg', __("Not yet available"));
 		
 		$modelDefined = $this->isModelDefined($item);
 		if(!$modelDefined){
@@ -135,7 +135,7 @@ class Items extends TaoModule{
 		$previewData = $this->initPreview($item, $itemClass);
 		if(count($previewData) == 0){
 			$this->setData('preview', false);
-			$this->setData('previewMsg', __("Preview not yet available"));
+			$this->setData('previewMsg', __("Not yet available"));
 		}
 		else{
 			$this->setData('preview', true);

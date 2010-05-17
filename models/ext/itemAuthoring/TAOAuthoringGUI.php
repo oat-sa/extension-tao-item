@@ -129,8 +129,7 @@ class TAOAuthoringGUI {
 				$theIndex=$val;
 				$theIndex++;
 				$indexes[$i]["start"]=$theIndex-1;
-				while 
-				(
+				while (
 					(isset($values[$theIndex]))
 					and
 					!(
@@ -150,22 +149,9 @@ class TAOAuthoringGUI {
 		return($indexes);
 	}
 
-	function getPropositionindexes($i,$values)
-	{
-	$prop=array();
-	while 
-		
-	(
-		(isset($values[$i])) 
-		and
-		(!
-			(	
-				($values[$i]["tag"]=="TAO:INQUIRY") and ($values[$i]["type"]=="close")
-			) 
-		)
-
-	)
-		{
+	function getPropositionindexes($i,$values){
+		$prop=array();
+		while ( (isset($values[$i]))  and ( !(($values[$i]["tag"]=="TAO:INQUIRY") and ($values[$i]["type"]=="close")) )){
 			if ($values[$i]["tag"]=="TAO:PROPOSITION") {$last=$i;$prop[]=$i;}
 			$i++;
 		}
@@ -211,9 +197,7 @@ class TAOAuthoringGUI {
 				 { 
 					foreach ($val as $x=>$theIndex)
 					 {	
-						
-							$struct["TAO:DISPLAYALLINQUIRIES"]=$values[$theIndex]["value"];
-													 
+						$struct["TAO:DISPLAYALLINQUIRIES"]=$values[$theIndex]["value"];
 					 }
 				 }
 
@@ -422,7 +406,7 @@ class TAOAuthoringGUI {
 		$output='';
 		
 		$instance = $this->instance;
-		$property = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+		$property = TAO_ITEM_CONTENT_PROPERTY;
 		error_reporting(E_ALL);
 		$_SESSION["ClassInd"]=$instance;
 		$xml = $this->loadXml();
@@ -432,7 +416,7 @@ class TAOAuthoringGUI {
 		
 		$uri = tao_helpers_Uri::encode($instance);
 		$item = new core_kernel_classes_Resource($instance);
-		$type = $item->getUniquePropertyValue(new core_kernel_classes_Property('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'));
+		$type = $item->getUniquePropertyValue(new core_kernel_classes_Property(RDFS_TYPE));
 		$classUri = tao_helpers_Uri::encode($type->uriResource);
 		$previewUri = ROOT_URL."/taoItems/Items/preview?uri=$uri&classUri=$classUri";
 
@@ -445,9 +429,12 @@ class TAOAuthoringGUI {
 			}
 			$showLastQuestion = false;
 		//Change number of questions 
+			$saveInqCount = count($struct["INQUIRIES"]);
+			$autoInqCount = 0;
 			if (isset($_SESSION["nbinq"])) 
 			{ 
 				$nb = $_SESSION["nbinq"];
+				$autoInqCount = $_SESSION["nbinq"];
 				while ($nb>0) {
 					$nb--;
 					$struct["INQUIRIES"][]=array();
@@ -467,6 +454,8 @@ class TAOAuthoringGUI {
 				$struct["INQUIRIES"] = array_values($struct["INQUIRIES"]);
 				$showLastQuestion = true;
 				unset($_SESSION["removeInquiry"]);
+				unset($_SESSION["nbinq"]);
+				unset($_SESSION["nbprop"]);
 			}
 
 		$item=getButtonimage(PREVIEW,false);	
@@ -569,7 +558,7 @@ class TAOAuthoringGUI {
 				$output.=LEFT.'<input type=text name=itemcontent[tao:problemleft] id=leftproblem size=2 value='.$struct["problemeleft"] .'>'.TOP.'<input type=text size=2 name=itemcontent[tao:problemtop] id=topproblem value='.$struct["problemetop"] .'>'.WIDTH.'<input type=text name=itemcontent[tao:problemwidth] size=2 id=problemwidth value='.$struct["problemewidth"] .'>'.HEIGHT.'<input type=text  size=2 name=itemcontent[tao:problemheight] id=problemheight value='.$struct["problemeheight"] .'>';
 				$output.='<TEXTAREA NAME="itemcontent[tao:problem]" COLS=80 ROWS=25>'.$struct["TAO:PROBLEM"].'</TEXTAREA>';
 				
-			//	$output.=''.ADD.' <input size=2 type=textbox name=nbinq> '.NBQUESTIONS.SAND.' <input size=2 type=textbox name=nbprop> '.NBPROPOSITIONS.'';
+				$output.=''.__('Add').' <input size=2 type=textbox name=nbinq> '.__('inquiries').' '.__('and').' <input size=2 type=textbox name=nbprop> '.__('propositions');
 		
 		$output.='</A>';
 
@@ -782,7 +771,9 @@ class TAOAuthoringGUI {
 		$output.='</A>';
 
 		$currentInquery = 0;
+		$inqIndex = 0;
 		foreach ($struct["INQUIRIES"] as $p=>$v){
+			$inqIndex++;
 			$nm=$p+1;//index of inquiry(for user)
 			$output.='<A NAME="Q'.$nm.'Content" class=mainpane style="visibility:hidden;font-family:verdana;font-size:10;" id="Q'.$nm.'Content"><br>';
 			$output.='<input type=submit name=removeInquiry['.$p.'] value=Remove&nbsp;this&nbsp;question onclick="refreshQCM();"><br />';
@@ -846,7 +837,8 @@ class TAOAuthoringGUI {
 				$currentInquery= $nm;
 				unset($_SESSION["AddProp"]);
 			}
-			if (isset($_SESSION["nbprop"])) {
+			if (isset($_SESSION["nbprop"]) && !isset($v["LISTPROPOSITION"]) && $inqIndex > $saveInqCount && $autoInqCount > 0) {
+				$autoInqCount--;
 				$nb = $_SESSION["nbprop"];
 				while ($nb>0) {
 					$nb--;
