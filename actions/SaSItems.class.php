@@ -74,25 +74,49 @@ class SaSItems extends Items {
 		$this->setView('form.tpl', true);
 	}
 	
-	public function viewInstance(){
+	public function viewItem(){
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
-		$clazz = $this->getCurrentClass();
-		$instance = $this->getCurrentInstance();
+		$itemClass = $this->getCurrentClass();
+		$item = $this->getCurrentInstance();
 		
 		$properties = array();
-		foreach($this->service->getClazzProperties($clazz) as $property){
-			$value = '';
-			try{
-			$value = $instance->getUniquePropertyValue($property);
+		foreach($this->service->getClazzProperties($itemClass) as $property){
+			$range = $property->getRange();
+			foreach($item->getPropertyValues($property) as $propValue){	
+				$value = '';
+				if($range->uriResource == RDFS_LITERAL){
+					$value = (string)$propValue;
+				}
+				else {
+					$resource = new core_kernel_classes_Resource($propValue);
+					$value = $resource->getLabel();
+				}
+				$properties[] = array(
+					'name'	=> $property->getLabel(),
+					'value'	=> $value
+				);
 			}
-			catch(common_Exception $ce){}
-			$properties[] = array(
-				'name'	=> $property->getLabel(),
-				'value'	=> $value
-			);
 		}
+		
+		$previewData = $this->initPreview($item, $itemClass);
+		if(count($previewData) == 0){
+			$this->setData('preview', false);
+			$this->setData('previewMsg', __("Not yet available"));
+		}
+		else{
+			$this->setData('preview', true);
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+			foreach($previewData as $key => $value){
+				$this->setData($key, $value);
+			}
+		}
+		
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		
+		$this->setData('label', $item->getLabel());
 		$this->setData('itemProperties', $properties);
 		$this->setView('view.tpl');
 	}
