@@ -78,11 +78,20 @@ class SaSItems extends Items {
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
+		
+		
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
 		
+		$hiddenProperties = array(
+			TAO_ITEM_CONTENT_PROPERTY
+		);
+		
 		$properties = array();
 		foreach($this->service->getClazzProperties($itemClass) as $property){
+			if(in_array($property->uriResource, $hiddenProperties)){
+				continue;
+			}
 			$range = $property->getRange();
 			foreach($item->getPropertyValues($property) as $propValue){	
 				$value = '';
