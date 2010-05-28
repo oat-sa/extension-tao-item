@@ -54,14 +54,6 @@ class taoItems_models_classes_ItemsService
      */
     protected $itemClass = null;
 
-    /**
-     * The ontologies to load
-     *
-     * @access protected
-     * @var array
-     */
-    protected $itemsOntologies = array('http://www.tao.lu/Ontologies/TAOItem.rdf', 'http://www.tao.lu/middleware/review.rdf', 'http://www.tao.lu/middleware/taoqual.rdf');
-
     // --- OPERATIONS ---
 
     /**
@@ -77,7 +69,6 @@ class taoItems_models_classes_ItemsService
 		
 		parent::__construct();
 		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
-		$this->loadOntologies($this->itemsOntologies);
 		
         // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 end
     }
