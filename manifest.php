@@ -8,7 +8,7 @@
 		'name' => 'TAO Items',
 		'description' => 'TAO Items extensions http://www.tao.lu',
 		'additional' => array(
-			'version' => '1.0',
+			'version' => '1.2',
 			'author' => 'CRP Henri Tudor',
 			'dependances' => array(),
 			'install' => array( 
