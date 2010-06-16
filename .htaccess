@@ -1,5 +1,4 @@
 Options +FollowSymLinks
-Options +Indexes
 RewriteEngine On
 
 RewriteCond %{REQUEST_METHOD} ^GET$
