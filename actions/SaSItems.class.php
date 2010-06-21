@@ -55,10 +55,8 @@ class SaSItems extends Items {
 	 * @return void
 	 */
 	public function sasEditInstance(){
-		//$clazz = $this->getCurrentClass();
-		//$instance = $this->getCurrentInstance();
-		$clazz = new core_kernel_classes_Class('http://tao.localdomain/middleware/taotrans_v2.rdf#i1275389549011797000');
-		$instance = new core_kernel_classes_Resource('http://tao.localdomain/middleware/taotrans_v2.rdf#i1275389749010048200');
+		$clazz = $this->getCurrentClass();
+		$instance = $this->getCurrentInstance();
 		
 		$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($clazz, $instance);
 		if($myForm->isSubmited()){
