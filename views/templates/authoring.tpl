@@ -29,7 +29,7 @@
 		<?break;
 		
 		case 'php':?>
-		<iframe  src="<?=get_data('authoringFile')?>?xml=<?=get_data('dataPreview')?>&instance=<?=get_data('instanceUri')?>" style="border-width:0px;width:100%;height:100%;overflow-y:scroll;" />
+		<iframe  src="<?=get_data('authoringFile')?>?xml=<?=get_data('dataPreview')?>&instance=<?=get_data('instanceUri')?>" style="border-width:0px;width:100%;height:100%;overflow-y:auto;" />
 		<?break;
 		
 	}?>
