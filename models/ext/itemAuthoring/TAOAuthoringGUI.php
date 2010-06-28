@@ -489,7 +489,7 @@ class TAOAuthoringGUI {
 		$output.='<link rel="stylesheet" type="text/css" href="'.ROOT_URL.'/generis/core/view/HTMLArea-3.0-rc1/htmlarea.css" />';
 		$output.='<link rel="stylesheet" type="text/css" href="'.ROOT_URL.'/generis/core/view/CSS/generis_default.css" />';
 		$output.='<style type="text/css">input[type=button],input[type=submit]{cursor:pointer; padding:4px; font-weight:bold;}</style>';
-		$output.='</head><body>';
+		$output.='</head><body style="overflow-y:auto;">';
 		$output.='
 		<FORM id="myQCMForm" enctype="multipart/form-data" action=index.php name=newressource target=_top method=post><input type=hidden name=MAX_FILE_SIZE value=2000000>
 		<input type=hidden name=Authoring['.$instance.']['.$property."] />
