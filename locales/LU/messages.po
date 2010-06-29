@@ -1,8 +1,8 @@
 msgid "Item saved"
 msgstr "Item gespaichert"
 
-msgid "Preview not yet available"
-msgstr "Viirbléck nat net verfügbar"
+msgid "Not yet available"
+msgstr ""
 
 msgid "Edit Item"
 msgstr "Item editéiren"
@@ -18,6 +18,9 @@ msgstr "Beim Spaicheren vum Item gouf et e Fehler"
 
 msgid "Item saved successfully"
 msgstr "Item erfollegraich gespaichert"
+
+msgid "Edit item"
+msgstr ""
 
 msgid "Items"
 msgstr "Itemen"
@@ -43,14 +46,14 @@ msgstr "läschen"
 msgid "duplicate"
 msgstr "duplizéiren"
 
-msgid "edit item"
-msgstr "Item editéiren"
-
-msgid "new property"
-msgstr "nei Proprietéit"
+msgid "move"
+msgstr ""
 
 msgid "preview"
 msgstr "Viirbléck"
+
+msgid "lists"
+msgstr ""
 
 msgid "meta data"
 msgstr "Meta Daten"
@@ -58,11 +61,53 @@ msgstr "Meta Daten"
 msgid "create table"
 msgstr "Tabell erstellen"
 
-msgid "export"
-msgstr "exportéiren"
+msgid "rdf"
+msgstr ""
 
-msgid "Item authoring"
-msgstr "Item Entwécklung"
+msgid "import"
+msgstr ""
+
+msgid "Authoring"
+msgstr ""
+
+msgid "Problem content"
+msgstr ""
+
+msgid "Add a question"
+msgstr ""
+
+msgid "Question"
+msgstr ""
+
+msgid "File Manager"
+msgstr ""
+
+msgid "Template"
+msgstr ""
+
+msgid "Parameters"
+msgstr ""
+
+msgid "Preview"
+msgstr "Viirbléck"
+
+msgid "Apply"
+msgstr ""
+
+msgid "Save and close"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "inquiries"
+msgstr ""
+
+msgid "and"
+msgstr ""
+
+msgid "propositions"
+msgstr ""
 
 msgid "TAO Authoring Tool"
 msgstr ""
@@ -97,7 +142,28 @@ msgstr ""
 msgid "Document has been edited"
 msgstr ""
 
+msgid "Are you sure ?"
+msgstr ""
+
+msgid "Sure ?"
+msgstr ""
+
+msgid "Your are editing an item"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Item has been updated with success"
+msgstr ""
+
 msgid "Your are inserting a new item, follow the wizard"
+msgstr ""
+
+msgid "Insert"
 msgstr ""
 
 msgid "Item has been inserted with success"
@@ -110,9 +176,6 @@ msgid "Attribute inserted with success"
 msgstr ""
 
 msgid "Attribute updated with success"
-msgstr ""
-
-msgid "Item has been updated with success"
 msgstr ""
 
 msgid "Target a position for the new element"
@@ -136,6 +199,9 @@ msgstr ""
 msgid "has been inserted with success"
 msgstr ""
 
+msgid "Wizard not complete : Please select a position for your new widget at Step 1"
+msgstr ""
+
 msgid "Your are inserting a new element, follow the wizard"
 msgstr ""
 
@@ -145,7 +211,7 @@ msgstr ""
 msgid "For more information about question material, go to the "
 msgstr ""
 
-msgid "A question material element must have an ID"
+msgid "A question material element must have an ID, want you generate one automatically ?"
 msgstr ""
 
 msgid "Target an anwser proposition"
@@ -157,16 +223,19 @@ msgstr ""
 msgid "An answer proposition element must have an ID"
 msgstr ""
 
+msgid "Once you finished click on the continue button"
+msgstr ""
+
+msgid "Target a position for the new snipet"
+msgstr ""
+
+msgid "Wizard New Snipet"
+msgstr ""
+
 msgid "you can not access this feature as long as you do not finish the current process"
 msgstr ""
 
-msgid "Document has been saved with success"
-msgstr ""
-
-msgid "Element removed with success"
-msgstr ""
-
-msgid "You are in selection mode, click to select a node"
+msgid "Are you sure you want save the document ?"
 msgstr ""
 
 msgid "Select mode disabled"
@@ -181,10 +250,181 @@ msgstr ""
 msgid "You could disable it by clicking on the button at the right of the main menu"
 msgstr ""
 
+msgid "Document has been saved with success"
+msgstr ""
+
+msgid "Element removed with success"
+msgstr ""
+
+msgid "Your are editing a widget"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "Your are resizing an element"
+msgstr ""
+
+msgid "You are in selection mode, click to select a node"
+msgstr ""
+
 msgid "Your are moving an element"
 msgstr ""
 
 msgid "Click to select the node : "
+msgstr ""
+
+msgid "Target Radio Group"
+msgstr ""
+
+msgid "Target Button"
+msgstr ""
+
+msgid "Setting Button"
+msgstr ""
+
+msgid "What type of button ?"
+msgstr ""
+
+msgid "Text Button"
+msgstr ""
+
+msgid "Image Button"
+msgstr ""
+
+msgid "Setting Button text"
+msgstr ""
+
+msgid "What is the label of your button ?"
+msgstr ""
+
+msgid "Setting Button Image"
+msgstr ""
+
+msgid "What is the image of your button ?"
+msgstr ""
+
+msgid "Target Checkboxes"
+msgstr ""
+
+msgid "Setting Checkboxes"
+msgstr ""
+
+msgid "How Many Checkboxes ?"
+msgstr ""
+
+msgid "What orientation ?"
+msgstr ""
+
+msgid "What is the labels of your checkboxes ?"
+msgstr ""
+
+msgid "Target Grid"
+msgstr ""
+
+msgid "Setting Grid"
+msgstr ""
+
+msgid "How Many Rows ?"
+msgstr ""
+
+msgid "How Many Columns ?"
+msgstr ""
+
+msgid "Orient the grid by : "
+msgstr ""
+
+msgid "Target Image"
+msgstr ""
+
+msgid "Setting Image"
+msgstr ""
+
+msgid "What is the url of your image ?"
+msgstr ""
+
+msgid "Target Label"
+msgstr ""
+
+msgid "Setting Label"
+msgstr ""
+
+msgid "What is the text of your label ?"
+msgstr ""
+
+msgid "Setting Item"
+msgstr ""
+
+msgid "What is the identifier of your item ?"
+msgstr ""
+
+msgid "ex: myItemId (alphanumeric characters and _ are allowed)"
+msgstr ""
+
+msgid "The Right Answer"
+msgstr ""
+
+msgid "What is the right answer ?"
+msgstr ""
+
+msgid "Setting Radio Group"
+msgstr ""
+
+msgid "How Many Radio Button ?"
+msgstr ""
+
+msgid "What is the labels of your radio buttons ?"
+msgstr ""
+
+msgid "Target Select Box"
+msgstr ""
+
+msgid "Setting Select Box"
+msgstr ""
+
+msgid "How Many Options ?"
+msgstr ""
+
+msgid "What is the labels of the options ?"
+msgstr ""
+
+msgid "What type of widget ?"
+msgstr ""
+
+msgid "Step 1"
+msgstr ""
+
+msgid "Target a position for the new snipet ?"
+msgstr ""
+
+msgid "Step 2"
+msgstr ""
+
+msgid "Which Sound you want ?"
+msgstr ""
+
+msgid "Target SVG"
+msgstr ""
+
+msgid "Create your own SVG ?"
+msgstr ""
+
+msgid "Target Textbox"
+msgstr ""
+
+msgid "Setting Textbox"
+msgstr ""
+
+msgid "Teams"
+msgstr ""
+
+msgid "Which is the team 1 ?"
+msgstr ""
+
+msgid "Which is the team 2 ?"
 msgstr ""
 
 msgid "Please select an item before!"
@@ -192,9 +432,6 @@ msgstr "W.e.g. sicht fier d'éischt een Item eraus!"
 
 msgid "Back"
 msgstr "Zréck"
-
-msgid "Preview"
-msgstr "Viirbléck"
 
 msgid "PREVIEW BOX"
 msgstr "Viirbléck Këscht"
@@ -204,6 +441,42 @@ msgstr "Den Item Modul erlaabt d'Erstellen an formatéiren vun Itemen an Aufgabe
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "D'Item Ersteller kënnen op eng Lëscht vun Viirlagen zréckgraifen wéi z.B. mutliple choice Froen, Puzzle Froen, Lückentext, asw."
+
+msgid "Item"
+msgstr ""
+
+msgid "Preview not yet available"
+msgstr "Viirbléck nat net verfügbar"
+
+msgid "edit item"
+msgstr "Item editéiren"
+
+msgid "new property"
+msgstr "nei Proprietéit"
+
+msgid "export"
+msgstr "exportéiren"
+
+msgid "Item authoring"
+msgstr "Item Entwécklung"
+
+msgid "Authoring Tool has been developped especially for"
+msgstr ""
+
+msgid "For more information about positionning, go to the"
+msgstr ""
+
+msgid "For more information about question material, go to the"
+msgstr ""
+
+msgid "A question material element must have an ID"
+msgstr ""
+
+msgid "For more information about answer proposition, go to the"
+msgstr ""
+
+msgid "Click to select the node :"
+msgstr ""
 
 msgid "EN"
 msgstr "English"

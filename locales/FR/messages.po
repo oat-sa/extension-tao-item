@@ -1,8 +1,8 @@
-msgid "Item saved"
+msgid ""
 msgstr ""
 
-msgid "Preview not yet available"
-msgstr "Prévisualisation non disponible"
+msgid "Not yet available"
+msgstr "Pas encore disponible"
 
 msgid "Edit Item"
 msgstr "Modifier un item"
@@ -18,6 +18,9 @@ msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
 
 msgid "Item saved successfully"
 msgstr "L'item a été enregistré avec succès"
+
+msgid "Edit item"
+msgstr "Modifier un item"
 
 msgid "Items"
 msgstr "Items"
@@ -43,14 +46,14 @@ msgstr "supprimer"
 msgid "duplicate"
 msgstr "dupliquer"
 
-msgid "edit item"
-msgstr "modifier l'item"
-
-msgid "new property"
-msgstr "nouvelle propriété"
+msgid "move"
+msgstr "déplacer"
 
 msgid "preview"
 msgstr "Afficher"
+
+msgid "lists"
+msgstr "listes"
 
 msgid "meta data"
 msgstr "Métadonnée"
@@ -58,14 +61,56 @@ msgstr "Métadonnée"
 msgid "create table"
 msgstr "créer un tableau"
 
-msgid "export"
-msgstr "exporter"
+msgid "rdf"
+msgstr "rdf"
 
-msgid "Item authoring"
-msgstr "Editeur d'item"
+msgid "import"
+msgstr "importer"
+
+msgid "Authoring"
+msgstr "Editeur"
+
+msgid "Problem content"
+msgstr "Problématique"
+
+msgid "Add a question"
+msgstr "Ajouter une question"
+
+msgid "Question"
+msgstr "Question"
+
+msgid "File Manager"
+msgstr "Gestionnaire de fichier"
+
+msgid "Template"
+msgstr "Modèle"
+
+msgid "Parameters"
+msgstr "Paramètres"
+
+msgid "Preview"
+msgstr "Afficher"
+
+msgid "Apply"
+msgstr "Appliquer"
+
+msgid "Save and close"
+msgstr "Sauver et enregistrer"
+
+msgid "Add"
+msgstr "Ajouter"
+
+msgid "inquiries"
+msgstr "questions"
+
+msgid "and"
+msgstr "et"
+
+msgid "propositions"
+msgstr "propositions"
 
 msgid "TAO Authoring Tool"
-msgstr ""
+msgstr "Editeur TAO"
 
 msgid "Browser incompatibility"
 msgstr ""
@@ -97,8 +142,29 @@ msgstr ""
 msgid "Document has been edited"
 msgstr ""
 
+msgid "Are you sure ?"
+msgstr ""
+
+msgid "Sure ?"
+msgstr ""
+
+msgid "Your are editing an item"
+msgstr ""
+
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Item has been updated with success"
+msgstr ""
+
 msgid "Your are inserting a new item, follow the wizard"
 msgstr ""
+
+msgid "Insert"
+msgstr "Ajouter"
 
 msgid "Item has been inserted with success"
 msgstr ""
@@ -110,9 +176,6 @@ msgid "Attribute inserted with success"
 msgstr ""
 
 msgid "Attribute updated with success"
-msgstr ""
-
-msgid "Item has been updated with success"
 msgstr ""
 
 msgid "Target a position for the new element"
@@ -136,6 +199,9 @@ msgstr ""
 msgid "has been inserted with success"
 msgstr ""
 
+msgid "Wizard not complete : Please select a position for your new widget at Step 1"
+msgstr ""
+
 msgid "Your are inserting a new element, follow the wizard"
 msgstr ""
 
@@ -145,7 +211,7 @@ msgstr ""
 msgid "For more information about question material, go to the "
 msgstr ""
 
-msgid "A question material element must have an ID"
+msgid "A question material element must have an ID, want you generate one automatically ?"
 msgstr ""
 
 msgid "Target an anwser proposition"
@@ -157,16 +223,19 @@ msgstr ""
 msgid "An answer proposition element must have an ID"
 msgstr ""
 
+msgid "Once you finished click on the continue button"
+msgstr ""
+
+msgid "Target a position for the new snipet"
+msgstr ""
+
+msgid "Wizard New Snipet"
+msgstr ""
+
 msgid "you can not access this feature as long as you do not finish the current process"
 msgstr ""
 
-msgid "Document has been saved with success"
-msgstr ""
-
-msgid "Element removed with success"
-msgstr ""
-
-msgid "You are in selection mode, click to select a node"
+msgid "Are you sure you want save the document ?"
 msgstr ""
 
 msgid "Select mode disabled"
@@ -181,10 +250,181 @@ msgstr ""
 msgid "You could disable it by clicking on the button at the right of the main menu"
 msgstr ""
 
+msgid "Document has been saved with success"
+msgstr ""
+
+msgid "Element removed with success"
+msgstr ""
+
+msgid "Your are editing a widget"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "Your are resizing an element"
+msgstr ""
+
+msgid "You are in selection mode, click to select a node"
+msgstr ""
+
 msgid "Your are moving an element"
 msgstr ""
 
 msgid "Click to select the node : "
+msgstr ""
+
+msgid "Target Radio Group"
+msgstr ""
+
+msgid "Target Button"
+msgstr ""
+
+msgid "Setting Button"
+msgstr ""
+
+msgid "What type of button ?"
+msgstr ""
+
+msgid "Text Button"
+msgstr ""
+
+msgid "Image Button"
+msgstr ""
+
+msgid "Setting Button text"
+msgstr ""
+
+msgid "What is the label of your button ?"
+msgstr ""
+
+msgid "Setting Button Image"
+msgstr ""
+
+msgid "What is the image of your button ?"
+msgstr ""
+
+msgid "Target Checkboxes"
+msgstr ""
+
+msgid "Setting Checkboxes"
+msgstr ""
+
+msgid "How Many Checkboxes ?"
+msgstr ""
+
+msgid "What orientation ?"
+msgstr ""
+
+msgid "What is the labels of your checkboxes ?"
+msgstr ""
+
+msgid "Target Grid"
+msgstr ""
+
+msgid "Setting Grid"
+msgstr ""
+
+msgid "How Many Rows ?"
+msgstr ""
+
+msgid "How Many Columns ?"
+msgstr ""
+
+msgid "Orient the grid by : "
+msgstr ""
+
+msgid "Target Image"
+msgstr ""
+
+msgid "Setting Image"
+msgstr ""
+
+msgid "What is the url of your image ?"
+msgstr ""
+
+msgid "Target Label"
+msgstr ""
+
+msgid "Setting Label"
+msgstr ""
+
+msgid "What is the text of your label ?"
+msgstr ""
+
+msgid "Setting Item"
+msgstr ""
+
+msgid "What is the identifier of your item ?"
+msgstr ""
+
+msgid "ex: myItemId (alphanumeric characters and _ are allowed)"
+msgstr ""
+
+msgid "The Right Answer"
+msgstr ""
+
+msgid "What is the right answer ?"
+msgstr ""
+
+msgid "Setting Radio Group"
+msgstr ""
+
+msgid "How Many Radio Button ?"
+msgstr ""
+
+msgid "What is the labels of your radio buttons ?"
+msgstr ""
+
+msgid "Target Select Box"
+msgstr ""
+
+msgid "Setting Select Box"
+msgstr ""
+
+msgid "How Many Options ?"
+msgstr ""
+
+msgid "What is the labels of the options ?"
+msgstr ""
+
+msgid "What type of widget ?"
+msgstr ""
+
+msgid "Step 1"
+msgstr ""
+
+msgid "Target a position for the new snipet ?"
+msgstr ""
+
+msgid "Step 2"
+msgstr ""
+
+msgid "Which Sound you want ?"
+msgstr ""
+
+msgid "Target SVG"
+msgstr ""
+
+msgid "Create your own SVG ?"
+msgstr ""
+
+msgid "Target Textbox"
+msgstr ""
+
+msgid "Setting Textbox"
+msgstr ""
+
+msgid "Teams"
+msgstr ""
+
+msgid "Which is the team 1 ?"
+msgstr ""
+
+msgid "Which is the team 2 ?"
 msgstr ""
 
 msgid "Please select an item before!"
@@ -192,9 +432,6 @@ msgstr "Veuillez choisir un item!"
 
 msgid "Back"
 msgstr "Retour"
-
-msgid "Preview"
-msgstr "Afficher"
 
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
@@ -205,14 +442,47 @@ msgstr "Le module Item vous permet la création et le design d'items et d'exerci
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
 
+msgid "Item"
+msgstr ""
+
+msgid "Preview not yet available"
+msgstr "Prévisualisation non disponible"
+
+msgid "edit item"
+msgstr "modifier l'item"
+
+msgid "new property"
+msgstr "nouvelle propriété"
+
+msgid "export"
+msgstr "exporter"
+
+msgid "Item authoring"
+msgstr "Editeur d'item"
+
+msgid "Authoring Tool has been developped especially for"
+msgstr ""
+
+msgid "For more information about positionning, go to the"
+msgstr ""
+
+msgid "For more information about question material, go to the"
+msgstr ""
+
+msgid "A question material element must have an ID"
+msgstr ""
+
+msgid "For more information about answer proposition, go to the"
+msgstr ""
+
+msgid "Click to select the node :"
+msgstr ""
+
 msgid "Preview available inside the authoring tool"
 msgstr "La prévisualisation est disponible depuis l'éditeur"
 
 msgid "fullscreen preview"
 msgstr "prévisualisation en plein écran"
-
-msgid "import"
-msgstr "importer"
 
 msgid "Meta Data"
 msgstr "Meta-données"
@@ -228,9 +498,6 @@ msgstr "Commentaire"
 
 msgid "Edit item comment"
 msgstr "Modifier les commentaires de l'item"
-
-msgid "Save"
-msgstr "Enregistrer"
 
 msgid "EN"
 msgstr "English"
