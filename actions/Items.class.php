@@ -230,6 +230,7 @@ class Items extends TaoModule{
 	
 	/**
 	 * Sub Class
+	 * @return void
 	 */
 	public function addItemClass(){
 		if(!tao_helpers_Request::isAjax()){
@@ -247,6 +248,8 @@ class Items extends TaoModule{
 	/**
 	 * delete an item or an item class
 	 * called via ajax
+	 * @see TaoModule::delete
+	 * @return void
 	 */
 	public function delete(){
 		if(!tao_helpers_Request::isAjax()){
@@ -440,7 +443,7 @@ class Items extends TaoModule{
 	}
 	
 	/**
-	 * 
+	 * get the temporary authoring file
 	 * @return void
 	 */
 	public function loadTempAuthoringFile(){
@@ -454,8 +457,8 @@ class Items extends TaoModule{
 	}
 	
 	/**
-	 * 
-	 * @return 
+	 * save the temporary authoring file
+	 * @return void
 	 */
 	public function saveTempAuthoringFile(){
 		$instance = $this->getRequestParameter('instance');

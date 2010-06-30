@@ -1,6 +1,6 @@
 <?php
 /**
- * SaSItems Controller provide process services
+ * SaSItems Controller provide process services for in the Items
  * 
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
@@ -9,8 +9,6 @@
  */
 class SaSItems extends Items {
 
-    
-	
 	
     /**
      * @see Items::__construct()
@@ -22,8 +20,11 @@ class SaSItems extends Items {
     }
 
 	/**
-     * @see TaoModule::setView()
-     */
+	 * @see TaoModule::setView()
+	 * @param string $identifier the view name
+	 * @param boolean $useMetaExtensionView use a view from the parent extention
+	 * @return mixed 
+	 */
     public function setView($identifier, $useMetaExtensionView = false) {
 		if(tao_helpers_Request::isAjax()){
 			return parent::setView($identifier, $useMetaExtensionView);
@@ -74,6 +75,10 @@ class SaSItems extends Items {
 		$this->setView('form.tpl', true);
 	}
 	
+	/**
+	 * view and item
+	 * @return void
+	 */
 	public function viewItem(){
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
