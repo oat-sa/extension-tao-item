@@ -436,7 +436,7 @@ class Items extends TaoModule{
 			}
 		}
 	
-		if($this->mode == self::MODE_STANDALONE){
+		if(tao_helpers_Context::check('STANDALONE_MODE')){
 			$itemClass = $this->service->getClass($item);
 			$this->redirect(_url('authoring', 'SaSItems', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource).'&classUri='.tao_helpers_Uri::encode($itemClass->uriResource), 'classUri' => tao_helpers_Uri::encode($itemClass->uriResource), 'message' => urlencode($message))));
 		}
