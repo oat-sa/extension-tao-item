@@ -86,8 +86,6 @@ class Items extends TaoModule{
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
 		
-		//$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($itemClass, $item);
-		
 		$formContainer = new tao_actions_form_Instance($itemClass, $item);
 		$myForm = $formContainer->getForm();
 		if($myForm->isSubmited()){

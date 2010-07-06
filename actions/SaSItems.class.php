@@ -58,7 +58,9 @@ class SaSItems extends Items {
 		$clazz = $this->getCurrentClass();
 		$instance = $this->getCurrentInstance();
 		
-		$myForm = tao_helpers_form_GenerisFormFactory::instanceEditor($clazz, $instance);
+		$formContainer = new tao_actions_form_Instance($clazz, $instance);
+		$myForm = $formContainer->getForm();
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$instance = $this->service->bindProperties($instance, $myForm->getValues());
