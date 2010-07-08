@@ -214,6 +214,11 @@ class Items extends TaoModule{
 	 */
 	public function editItemClass(){
 		$clazz = $this->getCurrentClass();
+
+		if($this->hasRequestParameter('property_mode')){
+			$this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
+		}
+		
 		$myForm = $this->editClass($clazz, $this->service->getItemClass());
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
