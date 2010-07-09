@@ -94,35 +94,26 @@ class Items extends TaoModule{
 				$item = $this->service->bindProperties($item, $myForm->getValues());
 				$item = $this->service->setDefaultItemContent($item);
 				
-				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				$this->setData('message', __('Item saved'));
 				$this->setData('reload', true);
 			}
 		}
 		
-		$this->setData('preview', false);
-		$this->setData('previewMsg', __("Not yet available"));
+		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 		
 		$modelDefined = $this->isModelDefined($item);
 		if(!$modelDefined){
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
-		else{
-			$previewData = $this->initPreview($item, $itemClass);
-			if(count($previewData) > 0){
-				$this->setData('preview', true);
-				$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
-				foreach($previewData as $key => $value){
-					$this->setData($key, $value);
-				}
-			}
-		}
 		$this->setData('modelDefined', $modelDefined);
+		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		
 		$this->setData('formTitle', __('Edit Item'));
 		$this->setData('myForm', $myForm->render());
-		$this->setView('form_preview.tpl');
+		
+		$this->setView('form.tpl');
 	}
 	
 	/**

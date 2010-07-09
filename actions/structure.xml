@@ -31,5 +31,6 @@
 			</actions>
 		</section>
 		<section id="items_authoring" name="Authoring" url="/taoItems/Items/authoring" />
+		<section id="items_preview" name="Preview" url="/taoItems/Items/preview" />
 	</sections>
 </extension>
