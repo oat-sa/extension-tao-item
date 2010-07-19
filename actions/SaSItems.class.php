@@ -14,6 +14,7 @@ class SaSItems extends Items {
      * @see Items::__construct()
      */
     public function __construct() {
+    	tao_helpers_Context::load('STANDALONE_MODE');
         $this->setSessionAttribute('currentExtension', 'taoItems');
 		parent::__construct();
     }
@@ -57,6 +58,7 @@ class SaSItems extends Items {
 	public function sasEditInstance(){
 		$clazz = $this->getCurrentClass();
 		$instance = $this->getCurrentInstance();
+		
 		
 		$formContainer = new tao_actions_form_Instance($clazz, $instance);
 		$myForm = $formContainer->getForm();
