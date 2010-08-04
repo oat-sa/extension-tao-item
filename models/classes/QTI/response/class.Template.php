@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of Generis Object Oriented API.
  *
- * Automatically generated on 03.08.2010, 13:08:50 with ArgoUML PHP module 
+ * Automatically generated on 03.08.2010, 14:55:38 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -53,12 +53,52 @@ class taoItems_models_classes_QTI_response_Template
     // --- ATTRIBUTES ---
 
     /**
+     * Short description of attribute MATCH_CORRECT
+     *
+     * @access public
+     * @var string
+     */
+    const MATCH_CORRECT = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct';
+
+    /**
+     * Short description of attribute MAP_RESPONSE
+     *
+     * @access public
+     * @var string
+     */
+    const MAP_RESPONSE = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response';
+
+    /**
+     * Short description of attribute MAP_RESPONSE_POINT
+     *
+     * @access public
+     * @var string
+     */
+    const MAP_RESPONSE_POINT = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response_point';
+
+    /**
      * Short description of attribute uri
      *
      * @access protected
      * @var string
      */
     protected $uri = '';
+
+    /**
+     * Short description of attribute file
+     *
+     * @access protected
+     * @var string
+     */
+    protected $file = '';
+
+    /**
+     * Short description of attribute rptemplatesPath
+     *
+     * @access protected
+     * @var string
+     */
+    protected static $rptemplatesPath = '../data/rptemplates/';
 
     // --- OPERATIONS ---
 
@@ -93,7 +133,15 @@ class taoItems_models_classes_QTI_response_Template
     {
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 begin
         
+    	if($uri != self::MATCH_CORRECT && $uri != self::MAP_RESPONSE && $uri != self::MAP_RESPONSE_POINT){
+    		throw new Exception("Unknown response processing template $uri");
+    	}
     	$this->uri = $uri;
+    	
+    	$this->file = self::$rptemplatesPath . basename($this->uri). '.xml';
+    	if(!file_exists($this->file)){
+    		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
+    	}
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 end
     }
