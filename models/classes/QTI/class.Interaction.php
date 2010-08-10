@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API -
+ * TAO - taoItems/models/classes/QTI/class.Interaction.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 03.08.2010, 11:04:54 with ArgoUML PHP module 
+ * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -90,7 +90,50 @@ abstract class taoItems_models_classes_QTI_Interaction
      */
     protected $response = null;
 
+    /**
+     * Short description of attribute type
+     *
+     * @access protected
+     * @var string
+     */
+    protected $type = '';
+
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string type
+     * @param  string id
+     * @param  array options
+     * @return mixed
+     */
+    public function __construct($type, $id = null, $options = array())
+    {
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 begin
+        
+    	parent::_construct($id, $options);
+    	
+    	$tplPath = '';
+    	if(isset($this->options['template_path'])) {
+    		$tplPath = $this->options['template_path'];
+    	}
+    	
+    	//check type
+    	$file = '';
+    	if(!empty($type)){
+    		$file = $tplPath . PATH_SEPARATOR . 'qti.' .strtolower($type) . '.xml';
+    	}
+    	if(empty($file) || !file_exists($file)){
+    		throw new InvalidArgumentException("No interaction found for argument type: $type");
+    	}
+    	
+    	$this->type = strtolower($type);
+    	
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 end
+    }
 
     /**
      * Short description of method setChoices
@@ -211,6 +254,77 @@ abstract class taoItems_models_classes_QTI_Interaction
     	$this->response = $response;
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023FB end
+    }
+
+    /**
+     * Short description of method getType
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function getType()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000248F begin
+        
+        $returnValue = $this->type;
+        
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000248F end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toXHTML
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toXHTML()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 begin
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toQTI
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toQTI()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 begin
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toForm
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return tao_helpers_form_Form
+     */
+    public function toForm()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 begin
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
+
+        return $returnValue;
     }
 
 } /* end of abstract class taoItems_models_classes_QTI_Interaction */

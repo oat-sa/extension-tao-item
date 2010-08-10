@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - taoItems/models/classes/QTI/class.Data.php
+ * TAO - taoItems/models/classes/QTI/class.Data.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 03.08.2010, 11:04:54 with ArgoUML PHP module 
+ * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -270,6 +270,16 @@ abstract class taoItems_models_classes_QTI_Data
      * @return string
      */
     public abstract function toQTI();
+
+    /**
+     * Short description of method toForm
+     *
+     * @abstract
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return tao_helpers_form_Form
+     */
+    public abstract function toForm();
 
 } /* end of abstract class taoItems_models_classes_QTI_Data */
 

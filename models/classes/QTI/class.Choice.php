@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - taoItems/models/classes/QTI/class.Choice.php
+ * TAO - taoItems/models/classes/QTI/class.Choice.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 03.08.2010, 11:04:54 with ArgoUML PHP module 
+ * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -183,6 +183,23 @@ class taoItems_models_classes_QTI_Choice
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E1 end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toForm
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return tao_helpers_form_Form
+     */
+    public function toForm()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B begin
+        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Choice */
