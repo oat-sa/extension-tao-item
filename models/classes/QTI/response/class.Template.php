@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API -
+ * TAO - taoItems/models/classes/QTI/response/class.Template.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 03.08.2010, 14:55:38 with ArgoUML PHP module 
+ * Automatically generated on 11.08.2010, 14:22:13 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -92,14 +92,6 @@ class taoItems_models_classes_QTI_response_Template
      */
     protected $file = '';
 
-    /**
-     * Short description of attribute rptemplatesPath
-     *
-     * @access protected
-     * @var string
-     */
-    protected static $rptemplatesPath = '../data/rptemplates/';
-
     // --- OPERATIONS ---
 
     /**
@@ -133,12 +125,14 @@ class taoItems_models_classes_QTI_response_Template
     {
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 begin
         
-    	if($uri != self::MATCH_CORRECT && $uri != self::MAP_RESPONSE && $uri != self::MAP_RESPONSE_POINT){
+    	if( $uri != self::MATCH_CORRECT && 
+    		$uri != self::MAP_RESPONSE && 
+    		$uri != self::MAP_RESPONSE_POINT ){
     		throw new Exception("Unknown response processing template $uri");
     	}
     	$this->uri = $uri;
     	
-    	$this->file = self::$rptemplatesPath . basename($this->uri). '.xml';
+    	$this->file = BASE_PATH . '/models/classes/QTI/data/rptemplates/' . basename($this->uri). '.xml';
     	if(!file_exists($this->file)){
     		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
     	}

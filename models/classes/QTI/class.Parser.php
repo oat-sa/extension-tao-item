@@ -92,15 +92,11 @@ class taoItems_models_classes_QTI_Parser
         
         //load it using the SimpleXml library
     	$xml = simplexml_load_file($file);
-    	
-    	//register the default namespace
-    	$namespaces = $xml->getDocNamespaces();
-    	$defaultNamespace = 'qti';
-    	$xml->registerXPathNamespace($defaultNamespace, $namespaces['']); 
-    	
     	//build the item from the xml
-    	$item = taoItems_models_classes_QTI_Factory::buildItem($xml, $defaultNamespace);
-       
+    	$item = taoItems_models_classes_QTI_Factory::buildItem($xml);
+       	print "<pre>";
+        print_r($item);
+       	print "</pre>";
         
         // section 127-0-1-1-26978f63:12a3830d3d3:-8000:000000000000244A end
 

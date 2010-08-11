@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
+ * Automatically generated on 11.08.2010, 14:54:06 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -60,13 +60,12 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
 /**
  * Short description of class taoItems_models_classes_QTI_Interaction
  *
- * @abstract
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
-abstract class taoItems_models_classes_QTI_Interaction
+class taoItems_models_classes_QTI_Interaction
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
@@ -114,20 +113,22 @@ abstract class taoItems_models_classes_QTI_Interaction
     {
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 begin
         
-    	parent::_construct($id, $options);
+    	parent::__construct($id, $options);
     	
-    	$tplPath = '';
+    	$tplPath = BASE_PATH . '/models/classes/QTI/interactions/';
     	if(isset($this->options['template_path'])) {
     		$tplPath = $this->options['template_path'];
     	}
     	
+    	
     	//check type
     	$file = '';
     	if(!empty($type)){
-    		$file = $tplPath . PATH_SEPARATOR . 'qti.' .strtolower($type) . '.xml';
+    		$file = $tplPath . 'qti.' .strtolower($type) . '.tpl.php';
     	}
     	if(empty($file) || !file_exists($file)){
-    		throw new InvalidArgumentException("No interaction found for argument type: $type");
+    		var_dump($file);
+    		throw new InvalidArgumentException("No interaction found for argument: type = '$type'");
     	}
     	
     	$this->type = strtolower($type);
@@ -327,6 +328,6 @@ abstract class taoItems_models_classes_QTI_Interaction
         return $returnValue;
     }
 
-} /* end of abstract class taoItems_models_classes_QTI_Interaction */
+} /* end of class taoItems_models_classes_QTI_Interaction */
 
 ?>

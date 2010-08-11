@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API - taoItems/models/classes/QTI/class.Factory.php
+ * TAO - taoItems/models/classes/QTI/class.Factory.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 04.08.2010, 11:56:47 with ArgoUML PHP module 
+ * Automatically generated on 11.08.2010, 17:14:35 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -81,47 +81,61 @@ class taoItems_models_classes_QTI_Factory
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
-     * @param  string namespace
      * @return taoItems_models_classes_QTI_Item
      */
-    public static function buildItem( SimpleXMLElement $data, $namespace = '')
+    public static function buildItem( SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000248E begin
 
-    	if(!empty($namespace)){
-	       	$queryNamespace = $namespace . ':';
-	    }
-	    
 	    //check on the root tag
 	    if($data->getName() != 'assessmentItem'){
 	       	throw new taoItems_models_classes_QTI_ParsingException("incorrect item root tag");
 	    }
 	       
+	    //get the item id
 	    $itemId = null;
        	if(isset($data['identifier'])){
 			$itemId = (string)$data['identifier'];
        	}
        
-       	$myItem = new taoItems_models_classes_QTI_Item($itemId, (array)$data->attributes());
+       	//retrieve the item attributes
+       	$options = array();
+       	foreach($data->attributes() as $key => $value){
+       		$options[$key] = (string)$value;
+       	}
+       	
+       	//create the item instance
+       	$myItem = new taoItems_models_classes_QTI_Item($itemId, $options);
        
-     	
-        $interactionNodes = $data->xpath("//{$queryNamespace}*[contains(name(.), 'Interaction')]");
-        if($interactionNodes instanceof SimpleXMLElement){
-	        foreach($interactionNodes as $interactionNode){
-	        	$interaction = self::buildInteraction($interactionNode, $name);
-	        	if(!is_null($interaction)){
-	       			$myItem->addInteraction($interaction);
-	        	}
+     	//parse the xml to find the interaction nodes
+        $interactionNodes = $data->xpath("//*[contains(name(.), 'Interaction')]");
+        foreach($interactionNodes as $interactionNode){
+        	//build an interaction instance by found node
+        	$interaction = self::buildInteraction($interactionNode);
+        	if(!is_null($interaction)){
+       			$myItem->addInteraction($interaction);
+        	}
+        }
+        
+        //extract the item structure to separate the structural/style content to the item content 
+        $itemBodyNodes = $data->xpath("//*[name(.) = 'itemBody']/*");
+        
+        $itemData = '';
+        foreach($itemBodyNodes as $itemBodyNode){
+        	$itemData .= $itemBodyNode->asXml();
+        }
+        if(!empty($itemData)){
+	        foreach($myItem->getInteractions() as $interation){
+	        	//map the interactions by a identified tag: {interaction-id} 
+	        	$tag = $interation->getType().'Interaction';
+	        	$pattern = "/<{$tag}\b[^>]*>(.*?)<\/{$tag}>/is";
+	        	$itemData = preg_replace($pattern, "{{$interaction->getId()}}", $itemData, 1);
 	        }
+	        $myItem->setData($itemData);
         }
-        
-        
-        $itemBodyNode = $data->xpath("/{$queryNamespace}itemBody");
-        if($itemBodyNode instanceof SimpleXMLElement){
-        	$itemBody->asXml();
-        }
+        $returnValue = $myItem;
        
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000248E end
 
@@ -134,21 +148,48 @@ class taoItems_models_classes_QTI_Factory
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
-     * @param  string namespace
-     * @return doc_Interaction
+     * @return taoItems_models_classes_QTI_Interaction
      */
-    public static function buildInteraction( SimpleXMLElement $data, $namespace = '')
+    public static function buildInteraction( SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002491 begin
         
-    	if(!empty($namespace)){
-	       	$queryNamespace = $namespace . ':';
-	    }
-       
-       	$result = $data->xpath("//{$queryNamespace}*[contains(name(.), 'simpleChoice')]");
+    	$options = array();
+       	foreach($data->attributes() as $key => $value){
+       		$options[$key] = (string)$value;
+       	}
+       	try{
+       		$type = str_replace('Interaction', '', $data->getName());
+       		$myInteraction = new taoItems_models_classes_QTI_Interaction($type, null, $options);
+       	
+       		switch($type){
+       			case 'match':
+       			case 'gap':
+       			case 'hottext':
+       			case 'graphicassociate':
+       			case 'graphicgapmatch':
+       			default :
+       				$choiceNodes = $data->xpath("//*[contains(name(.), 'Choice')]");
+       				foreach($choiceNodes as $choiceNode){
+			        	$choice = self::buildChoice($choiceNode);
+			        	if(!is_null($choice)){
+			       			$myInteraction->addChoice($choice);
+			        	}
+       				}
+       				break;
+       		}
+       		
+       		$returnValue = $myInteraction;
+       	}
+       	catch(InvalidArgumentException $iae){
+       		throw new taoItems_models_classes_QTI_ParsingException($iae);
+       	}
+       	//$result = $data->xpath("//{$queryNamespace}*[contains(name(.), 'simpleChoice')]");
         
+       	
+       	
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002491 end
 
         return $returnValue;
@@ -160,14 +201,31 @@ class taoItems_models_classes_QTI_Factory
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
-     * @param  string namespace
      * @return taoItems_models_classes_QTI_Choice
      */
-    public static function buildChoice( SimpleXMLElement $data, $namespace = '')
+    public static function buildChoice( SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002494 begin
+        
+    	$options = array();
+       	foreach($data->attributes() as $key => $value){
+       		$options[$key] = (string)$value;
+       	}
+       	
+    	//get the choice id
+	    $id = null;
+       	if(isset($data['identifier'])){
+			$id = (string)$data['identifier'];
+       	}
+       	
+       	$myChoice = new taoItems_models_classes_QTI_Choice($id, $options);
+       	$myChoice->setName($data->getName());
+       	$myChoice->setValue((string)$data);
+       	
+       	$returnValue = $myChoice;
+        
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002494 end
 
         return $returnValue;
@@ -179,10 +237,9 @@ class taoItems_models_classes_QTI_Factory
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
-     * @param  string namespace
      * @return taoItems_models_classes_QTI_Response
      */
-    public static function buildResponse( SimpleXMLElement $data, $namespace = '')
+    public static function buildResponse( SimpleXMLElement $data)
     {
         $returnValue = null;
 
@@ -198,46 +255,14 @@ class taoItems_models_classes_QTI_Factory
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
-     * @param  string namespace
      * @return taoItems_models_classes_QTI_Score
      */
-    public static function buildScore( SimpleXMLElement $data, $namespace = '')
+    public static function buildScore( SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000249A begin
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000249A end
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method stripXmlNodes
-     *
-     * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  SimpleXMLElement data
-     * @param  string pattern
-     * @return SimpleXMLElement
-     */
-    protected static function stripXmlNodes( SimpleXMLElement $data, $pattern)
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1--656c58c6:12a3c59f354:-8000:0000000000002462 begin
-        
-        foreach($data->children() as $child){
-        	if(preg_macth($pattern, $child->getName())){
-        		unset($data->{$child->getName()});
-        	}
-        	else{
-        		$child = self::stripXmlNodes($child, $pattern);
-        	}
-        }
-        
-        $returnValue = $data;
-        
-        // section 127-0-1-1--656c58c6:12a3c59f354:-8000:0000000000002462 end
 
         return $returnValue;
     }
