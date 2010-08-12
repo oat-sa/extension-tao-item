@@ -19,8 +19,14 @@ class QTITestCase extends UnitTestCase {
 	
 	
 	public function testParser(){
-		$qtiParser = new taoItems_models_classes_QTI_Parser();
-		$qtiParser->load(dirname(__FILE__).'/samples/choice.xml');
+		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
+			$this->assertTrue(file_exists($file) && is_readable($file));
+			
+			$qtiParser = new taoItems_models_classes_QTI_Parser();
+			$qtiParser->load($file);
+		}
+
+		
 	}
 	
 }

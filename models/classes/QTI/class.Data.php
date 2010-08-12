@@ -130,7 +130,7 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
     	$clazz = strtolower(get_class($this));
-    	$prefix = substr($clazz, strpos($clazz, 'qti_'));
+    	$prefix = substr($clazz, strpos($clazz, 'qti_')).'_';
     	$this->id = str_replace('.', '', uniqid($prefix, true));
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end

@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Factory.php
+ * TAO - taoItems/models/classes/QTI/class.ParerFactory.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 11.08.2010, 17:14:35 with ArgoUML PHP module 
+ * Automatically generated on 12.08.2010, 17:13:15 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -30,14 +30,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E9-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Factory
+ * Short description of class taoItems_models_classes_QTI_ParerFactory
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
-class taoItems_models_classes_QTI_Factory
+class taoItems_models_classes_QTI_ParerFactory
 {
     // --- ASSOCIATIONS ---
 
@@ -45,35 +45,6 @@ class taoItems_models_classes_QTI_Factory
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-
-    /**
-     * Short description of method getInteraction
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string type
-     * @param  array options
-     * @return doc_Interaction
-     */
-    public static function getInteraction($type, $options = array())
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023EA begin
-        
-        $baseClassName = str_replace('Factory', 'interaction_', get_class(self));
-        $interactionClassName = $baseClassName . $type;
-        
-        if(!class_exists($interactionClassName, true)){
-        	throw new Exception("Unable to found class $interactionClassName");
-        }
-        
-		$returnValue = new $interactionClassName(null, $options);
-        
-        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023EA end
-
-        return $returnValue;
-    }
 
     /**
      * Short description of method buildItem
@@ -88,8 +59,8 @@ class taoItems_models_classes_QTI_Factory
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000248E begin
-
-	    //check on the root tag
+        
+        //check on the root tag
 	    if($data->getName() != 'assessmentItem'){
 	       	throw new taoItems_models_classes_QTI_ParsingException("incorrect item root tag");
 	    }
@@ -105,6 +76,7 @@ class taoItems_models_classes_QTI_Factory
        	foreach($data->attributes() as $key => $value){
        		$options[$key] = (string)$value;
        	}
+       	unset($options['identifier']);
        	
        	//create the item instance
        	$myItem = new taoItems_models_classes_QTI_Item($itemId, $options);
@@ -136,7 +108,7 @@ class taoItems_models_classes_QTI_Factory
 	        $myItem->setData($itemData);
         }
         $returnValue = $myItem;
-       
+        
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000248E end
 
         return $returnValue;
@@ -156,7 +128,7 @@ class taoItems_models_classes_QTI_Factory
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002491 begin
         
-    	$options = array();
+    $options = array();
        	foreach($data->attributes() as $key => $value){
        		$options[$key] = (string)$value;
        	}
@@ -181,15 +153,29 @@ class taoItems_models_classes_QTI_Factory
        				break;
        		}
        		
+	       	//extract the interaction structure to separate the structural/style content to the interaction content 
+	        $interactionNodes = $data->children();
+	        
+	        $interactionData = '';
+	        foreach($interactionNodes as $interactionNode){
+	        	$interactionData .= $interactionNode->asXml();
+	        }
+	        if(!empty($interactionData)){
+		        foreach($myInteraction->getChoices() as $choice){
+		        	//map the interactions by a identified tag: {interaction-id} 
+		        	$tag = $choice->getName();
+		        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
+		        	$interactionData = preg_replace($pattern, "{{$choice->getId()}}", $interactionData, 1);
+		        }
+		        $myInteraction->setData($interactionData);
+	        }
+       		
        		$returnValue = $myInteraction;
        	}
        	catch(InvalidArgumentException $iae){
        		throw new taoItems_models_classes_QTI_ParsingException($iae);
        	}
-       	//$result = $data->xpath("//{$queryNamespace}*[contains(name(.), 'simpleChoice')]");
         
-       	
-       	
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002491 end
 
         return $returnValue;
@@ -209,20 +195,20 @@ class taoItems_models_classes_QTI_Factory
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002494 begin
         
-    	$options = array();
+        $options = array();
        	foreach($data->attributes() as $key => $value){
        		$options[$key] = (string)$value;
        	}
+       	unset($options['identifier']);
        	
-    	//get the choice id
-	    $id = null;
-       	if(isset($data['identifier'])){
-			$id = (string)$data['identifier'];
+       	if(!isset($data['identifier'])){
+			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for the choice {$data->getName()}");
        	}
        	
-       	$myChoice = new taoItems_models_classes_QTI_Choice($id, $options);
+       	$myChoice = new taoItems_models_classes_QTI_Choice(null, $options);
        	$myChoice->setName($data->getName());
-       	$myChoice->setValue((string)$data);
+       	$myChoice->setData((string)$data);
+       	$myChoice->setValue((string)$data['identifier']);
        	
        	$returnValue = $myChoice;
         
@@ -267,6 +253,6 @@ class taoItems_models_classes_QTI_Factory
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_QTI_Factory */
+} /* end of class taoItems_models_classes_QTI_ParerFactory */
 
 ?>
