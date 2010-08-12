@@ -137,6 +137,11 @@ class Items extends TaoModule{
 			}
 		}
 		
+		$previewTitle = __('Preview');
+		if($this->hasRequestParameter('previewTitle')){
+			$previewTitle = $this->getRequestParameter('previewTitle');
+		}
+		$this->setData('previewTitle', $previewTitle);
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		$this->setView('preview.tpl');

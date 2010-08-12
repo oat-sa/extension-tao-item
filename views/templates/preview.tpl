@@ -1,6 +1,6 @@
 
 <div class="ui-widget ui-state-default ui-widget-header ui-corner-top container-title" >
-	<?=__('Preview')?>
+	<?=get_data('previewTitle')?>
 </div>
 <div class="ui-widget ui-widget-content">
 	<?if(get_data('preview')):?>
