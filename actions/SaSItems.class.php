@@ -87,9 +87,13 @@ class SaSItems extends Items {
 			throw new Exception("wrong request mode");
 		}
 		
-		
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
+
+		$lang = null;
+		if($this->hasRequestParameter('target_lang')){
+			$lang = $this->getRequestParameter('target_lang');
+		}
 		
 		$hiddenProperties = array(
 			TAO_ITEM_CONTENT_PROPERTY
@@ -101,7 +105,15 @@ class SaSItems extends Items {
 				continue;
 			}
 			$range = $property->getRange();
-			foreach($item->getPropertyValues($property) as $propValue){	
+			
+			if(is_null($lang)){
+				$propValues = $item->getPropertyValues($property);
+			}
+			else{
+				$propContainer = $item->getPropertyValuesByLg($property, $lang);
+				$propValues = $propContainer->getIterator();
+			}
+			foreach($propValues as $propValue){	
 				$value = '';
 				if($range->uriResource == RDFS_LITERAL){
 					$value = (string)$propValue;
