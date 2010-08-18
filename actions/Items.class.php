@@ -349,6 +349,9 @@ class Items extends TaoModule{
 				}
 			}
 			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+		
+			$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+			$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		}
 		catch(Exception $e){
 			print $e;
