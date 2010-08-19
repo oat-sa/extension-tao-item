@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
+ * Automatically generated on 19.08.2010, 17:28:27 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -69,6 +69,14 @@ abstract class taoItems_models_classes_QTI_Data
      */
     protected $options = array();
 
+    /**
+     * Short description of attribute presist
+     *
+     * @access protected
+     * @var boolean
+     */
+    protected $presist = true;
+
     // --- OPERATIONS ---
 
     /**
@@ -93,6 +101,78 @@ abstract class taoItems_models_classes_QTI_Data
     	$this->options = $options;
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 end
+    }
+
+    /**
+     * Short description of method __destruct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    public function __destruct()
+    {
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF begin
+        
+    	if($this->persist){
+    		Session::setAttribute($this->id, serialize($this));
+        }
+        else{
+        	Session::removeAttribute($this->id);
+        }
+        
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF end
+    }
+
+    /**
+     * Short description of method __sleep
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function __sleep()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 begin
+
+        $reflection = new ReflectionClass($this);
+        $returnValue = array_keys($reflection->geProperties(!ReflectionProperty::IS_STATIC));
+        
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method __wakeup
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    public function __wakeup()
+    {
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 begin
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 end
+    }
+
+    /**
+     * Short description of method setPersitance
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  boolean enabled
+     * @return mixed
+     */
+    public function setPersitance($enabled)
+    {
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 begin
+        
+    	$this->persist = (bool)$enabled;
+    	
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 end
     }
 
     /**

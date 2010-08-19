@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.ParerFactory.php
+ * TAO - taoItems/models/classes/QTI/class.ParserFactory.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 12.08.2010, 17:13:15 with ArgoUML PHP module 
+ * Automatically generated on 19.08.2010, 11:06:27 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -30,14 +30,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E9-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_ParerFactory
+ * Short description of class taoItems_models_classes_QTI_ParserFactory
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
-class taoItems_models_classes_QTI_ParerFactory
+class taoItems_models_classes_QTI_ParserFactory
 {
     // --- ASSOCIATIONS ---
 
@@ -128,7 +128,7 @@ class taoItems_models_classes_QTI_ParerFactory
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002491 begin
         
-    $options = array();
+        $options = array();
        	foreach($data->attributes() as $key => $value){
        		$options[$key] = (string)$value;
        	}
@@ -253,6 +253,6 @@ class taoItems_models_classes_QTI_ParerFactory
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_QTI_ParerFactory */
+} /* end of class taoItems_models_classes_QTI_ParserFactory */
 
 ?>

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.08.2010, 17:19:51 with ArgoUML PHP module 
+ * Automatically generated on 19.08.2010, 17:27:28 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -88,6 +88,68 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024C3 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method getResponseById
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_QTI_Response
+     */
+    public function getResponseById($id)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D1 begin
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D1 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getDataById
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string id
+     * @param  string type
+     * @return taoItems_models_classes_QTI_Data
+     */
+    public function getDataById($id, $type = '')
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 begin
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method remove
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Data data
+     * @return boolean
+     */
+    public function remove( taoItems_models_classes_QTI_Data $data)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E8 begin
+        
+        $tmpId = $data->getId();
+        $data->setPersitance(false);
+        unset($data);
+        
+        $returnValue = (!Session::hasAttribute($tmpId));
+        
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E8 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Service */

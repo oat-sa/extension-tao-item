@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 11.08.2010, 14:54:06 with ArgoUML PHP module 
+ * Automatically generated on 19.08.2010, 17:27:28 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -134,6 +134,36 @@ class taoItems_models_classes_QTI_Interaction
     	$this->type = strtolower($type);
     	
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 end
+    }
+
+    /**
+     * Short description of method __sleep
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function __sleep()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DD begin
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DD end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method __wakeup
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    public function __wakeup()
+    {
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF begin
+        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF end
     }
 
     /**

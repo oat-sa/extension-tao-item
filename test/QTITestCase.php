@@ -18,16 +18,54 @@ class QTITestCase extends UnitTestCase {
 	}
 	
 	
-	public function testParser(){
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
-			$this->assertTrue(file_exists($file) && is_readable($file));
-			
-			$qtiParser = new taoItems_models_classes_QTI_Parser();
-			$qtiParser->load($file);
-		}
-
+	public function testFileParsing(){
+		return;
 		
+		foreach(glob(dirname(__FILE__).'/samples/wrong/*.*') as $file){
+			
+			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
+			
+			$qtiParser->validate();
+			
+			$this->assertFalse($qtiParser->isValid());
+			$this->assertTrue(count($qtiParser->getErrors()) > 0);
+		}
+		
+		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
+			
+			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
+			$qtiParser->validate();
+			
+			$this->assertTrue($qtiParser->isValid());
+			
+			$item = $qtiParser->load();
+			
+			$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
+		}
 	}
 	
+	public function testBuilding(){
+		
+		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice.xml');
+		
+		$item = $qtiParser->load();
+		
+		$this->assertTrue($qtiParser->isValid());
+		$this->assertNotNull($item);
+		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
+		
+		$serializedItem = serialize($item);
+		
+		$this->assertTrue( !empty($serializedItem) );
+		
+		
+		$item = unserialize($serializedItem);
+		
+		$this->assertNotNull($item);
+		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
+		
+		
+		
+	}
 }
 ?>
