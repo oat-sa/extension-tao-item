@@ -10,17 +10,26 @@ require_once dirname(__FILE__) . '/../includes/common.php';
  */
 class QTITestCase extends UnitTestCase {
 	
+	protected $qtiService;
+	
 	/**
 	 * tests initialization
 	 */
 	public function setUp(){		
 		TestRunner::initTest();
+		
+		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
 	
 	
+	/**
+	 * test qti file parsing: validation and loading in a non-persistant context
+	 */
 	public function testFileParsing(){
-		return;
 		
+		taoItems_models_classes_QTI_Data::setPersistance(false);
+		
+		//check if wrong files are not validated correctly
 		foreach(glob(dirname(__FILE__).'/samples/wrong/*.*') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
@@ -31,6 +40,7 @@ class QTITestCase extends UnitTestCase {
 			$this->assertTrue(count($qtiParser->getErrors()) > 0);
 		}
 		
+		//check if sampels are loaded 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
@@ -44,28 +54,56 @@ class QTITestCase extends UnitTestCase {
 		}
 	}
 	
+	/**
+	 * test the building an QTI_Item object from it's XML definition
+	 */
 	public function testBuilding(){
 		
-		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice.xml');
+		taoItems_models_classes_QTI_Data::setPersistance(false);
 		
+		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice.xml');
 		$item = $qtiParser->load();
 		
 		$this->assertTrue($qtiParser->isValid());
 		$this->assertNotNull($item);
 		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
 		
-		$serializedItem = serialize($item);
+		foreach($item->getInteractions() as $interaction){
+			$this->assertIsA($interaction, 'taoItems_models_classes_QTI_Interaction');
+			
+			foreach($interaction->getChoices() as $choice){
+				$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
+			}
+		}
+	}
+	
+	public function testPersitance(){
 		
-		$this->assertTrue( !empty($serializedItem) );
+		taoItems_models_classes_QTI_Data::setPersistance(true);
 		
+		//load an item
+		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice_multiple.xml');
+		$item = $qtiParser->load();
 		
-		$item = unserialize($serializedItem);
-		
+		$this->assertTrue($qtiParser->isValid());
 		$this->assertNotNull($item);
 		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
 		
+		$itemId = $item->getId();
 		
+		//item is saved by destruction 
+		unset($item);
 		
+		$savedItem = $this->qtiService->getItemById($itemId);
+		$this->assertNotNull($savedItem);
+		$this->assertIsA($savedItem, 'taoItems_models_classes_QTI_Item');
+		
+		//real remove
+		taoItems_models_classes_QTI_Data::setPersistance(false);
+		unset($savedItem);
+		
+		$this->assertNull($this->qtiService->getItemById($itemId));
 	}
+	
 }
 ?>

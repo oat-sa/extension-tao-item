@@ -81,6 +81,11 @@ class taoItems_models_classes_QTI_Item
         $returnValue = array();
 
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D9 begin
+        
+        $this->interactions = array_keys($this->interactions);
+        
+        $returnValue = parent::__sleep();
+        
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D9 end
 
         return (array) $returnValue;
@@ -96,6 +101,15 @@ class taoItems_models_classes_QTI_Item
     public function __wakeup()
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB begin
+        
+    	$interactionIds = $this->interactions; 
+    	$this->interactions = array();
+    	foreach($interactionIds as $interactionId){
+    		if(Session::hasAttribute($interactionId)){
+    			$this->interactions[$interactionId] = unserialize(Session::getAttribute($interactionId));
+    		}
+    	}
+    	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB end
     }
 

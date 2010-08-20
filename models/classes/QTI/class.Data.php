@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.08.2010, 17:28:27 with ArgoUML PHP module 
+ * Automatically generated on 20.08.2010, 14:10:05 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -70,12 +70,12 @@ abstract class taoItems_models_classes_QTI_Data
     protected $options = array();
 
     /**
-     * Short description of attribute presist
+     * Short description of attribute persist
      *
-     * @access protected
+     * @access public
      * @var boolean
      */
-    protected $presist = true;
+    public static $persist = true;
 
     // --- OPERATIONS ---
 
@@ -114,7 +114,7 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF begin
         
-    	if($this->persist){
+    	if(self::$persist){
     		Session::setAttribute($this->id, serialize($this));
         }
         else{
@@ -138,8 +138,11 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 begin
 
         $reflection = new ReflectionClass($this);
-        $returnValue = array_keys($reflection->geProperties(!ReflectionProperty::IS_STATIC));
-        
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$returnValue[] = $property->getName();
+			}
+		}
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 end
 
         return (array) $returnValue;
@@ -159,18 +162,18 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method setPersitance
+     * Short description of method setPersistance
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  boolean enabled
      * @return mixed
      */
-    public function setPersitance($enabled)
+    public static function setPersistance($enabled)
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 begin
         
-    	$this->persist = (bool)$enabled;
+    	self::$persist = (bool)$enabled;
     	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 end
     }
