@@ -346,6 +346,18 @@ class Items extends TaoModule{
 					}
 					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
 					$this->setData('dataPreview', urlencode(_url('getItemContent', get_class($this), 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($itemClass->uriResource)))));
+					
+					// var_dump($authoring, preg_match("/taoItems/", (string)$authoring));
+					if(preg_match("/taoItems\//", (string)$authoring)){
+						// $this->setData('type', 'taoItems');
+						// $this->setData('authoringFile', ROOT_URL.'/'.(string)$authoring);
+						// echo _url('index', 'processBrowser', null, array('processUri' => urlencode($processUri)));
+						// exit;
+						$itemContent = 'THE item content';
+						$this->redirect((string)$authoring.'?xml='.$itemContent.'&instance='.tao_helpers_Uri::encode($item->uriResource, false));
+					}
+					
+					
 				}
 			}
 			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
