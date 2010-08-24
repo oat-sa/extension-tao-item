@@ -353,7 +353,7 @@ class Items extends TaoModule{
 						// $this->setData('authoringFile', ROOT_URL.'/'.(string)$authoring);
 						// echo _url('index', 'processBrowser', null, array('processUri' => urlencode($processUri)));
 						// exit;
-						$itemContent = 'THE item content';
+						$itemContent = '';
 						$this->redirect((string)$authoring.'?xml='.$itemContent.'&instance='.tao_helpers_Uri::encode($item->uriResource, false));
 					}
 					

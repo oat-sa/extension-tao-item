@@ -1,39 +1,8 @@
 <script language="Javascript" type="text/javascript">
-CL = function(arg1, arg2){
-	if(arg1){
-		if(arg2){
-			console.log(arg1, arg2);
-		}else{
-			console.log(arg1);
-		}
-	}
-}
-CD = function(object, desc){
-	if(desc){
-		console.log(desc+':');
-	}
-	console.dir(object);
-}
-getEltInFrame = function(selector){
-	var foundElts = [];
-	//for each iframe:
-	$('iframe').each(function(){
-	
-		//get its document
-		$(this).each( function(){
-			var selectedDocument = this.contentWindow.document;
-			$(selector, selectedDocument).each(function(){
-				foundElts.push(this);  
-			});
-		});
-	});
-	return foundElts;
-}
-getUniqueEltInFrame = function(){
-
-}
-
 </script>
+
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEdit.js"></script>
 <script type="text/javascript" src="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="<?=get_data('simplemodal_path')?>jquery.simplemodal.js"></script>
 
@@ -45,31 +14,48 @@ getUniqueEltInFrame = function(){
 </style>
 
 	
-<div>
-    <textarea name="wysiwyg" id="wysiwyg" rows="5" cols="103"></textarea>
-    </div>
-    <label><input type="checkbox" value="1" id="click-inform" /> Inform about clicks.</label>
-    
+<div id='qtiAuthoring_itemEditor'>
+    <textarea name="wysiwyg" id="wysiwyg" rows="10" cols="103"><?=get_data('itemData')?></textarea>
+</div>
+<label><input type="checkbox" value="1" id="click-inform" /> Inform about clicks.</label>
+
+<div id='qtiAuthoring_interactionEditor'/>    
         
 <script type="text/javascript">
+//init the item's jwysiwyg editor here:
 var addInteraction = {
 	visible : true,
 	className: 'addInteraction',
 	exec: function(){
 		CL('inserting interaction...');
+		//display modal window with the list of available type of interactions
 		
+		//callback when the interaction has been created:
+		
+		//get its id:
 		var interaction_id = 'interaction_'+12;
+		
+		//insert into the item editor:
 		this.insertHtml('&nbsp;<button id="'+interaction_id+'" title="interaction name" value="&middot;&middot;&middot;"/>&nbsp;');
-		var interactions = getEltInFrame('#'+interaction_id);
-		if(interactions.length != 1){
-			throw 'incorrect number of interaction with the id '+interaction_id+' ('+interactions.length+')';
-		}
-		var interaction = $(interactions[0]);
+		var interaction = qtiEdit.getUniqueEltInFrame('#'+interaction_id);
 		CL(interaction);
 		interaction.height(20);
+		
+		//add click listener
+		interaction.click(function(){
+			
+			CL('interaction clicked!');
+		});
+		
+		//go to the form:
+		// qtiEdit.loadInteractionForm(interaction_id);
 	},
 	tooltip: 'add interaction'
 };
+
+var save = null;
+var loadXmlQti = null;
+var exportXmlQti = null;
 
 (function($)
 {
