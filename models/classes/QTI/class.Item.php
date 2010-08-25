@@ -243,6 +243,9 @@ class taoItems_models_classes_QTI_Item
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002493 begin
+		
+		//the base iframe: tpl+js
+		
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002493 end
 
         return $returnValue;

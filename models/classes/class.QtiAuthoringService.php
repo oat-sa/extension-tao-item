@@ -149,7 +149,40 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
-
+	
+	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $name='', $value=''){
+		
+		$returnValue = null;
+		
+		if(!is_null($interaction)){
+			//create a new choice:
+			$choice = new taoItems_models_classes_QTI_Choice(null);
+			if(!empty($data)){
+				$choice->setData($data);
+			}
+		
+			$interaction->addChoice($choice);
+			
+			$returnValue = $choice;
+		}
+		
+		return $returnValue;
+	}
+	
+	public function editChoiceData(taoItems_models_classes_QTI_Choice $choice, $data=''){
+		if(!is_null($choice)){
+			$choice->setdata($data);
+		}
+	}
+	
+	public function deleteInteraction(taoItems_models_classes_QTI_Item $item, taoItems_models_classes_QTI_Interaction $interaction){
+		//add specific method in the item class: deleteInteraction??
+	}
+	
+	public function deleteChoice(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Choice $choice){
+		//add specific method in the interaction class: deleteChoice??
+	}
+	
     /**
      * define the content of item to be inserted by default (to prevent null
      * after creation)

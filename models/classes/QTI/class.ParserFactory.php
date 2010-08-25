@@ -68,7 +68,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	    //get the item id
 	    $itemId = null;
        	if(isset($data['identifier'])){
-			$itemId = (string)$data['identifier'];
+			$itemId = (string)$data['identifier'];//might be an issue if the identifier given is no good, e.g. twice the same value...
        	}
        
        	//retrieve the item attributes

@@ -375,6 +375,20 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 begin
+		
+		//if 'block', add prompt box
+		//if 'string', special attr
+		//if 'graphic', object tag
+		//if 'inline', nothing
+		$interactionFormClass = 'taoItems_actions_QTIform_'.ucfirst(strtolower($this->getType())).'Interaction';
+		if(!class_exists($interactionFormClass)){
+			throw new Exception("the class {$interactionFormClass} does not exist");
+		}else{
+			$formContainer = new $interactionFormClass(array(), array('choices'=>$this->getChoices()));
+			$myForm = $formContainer->getForm();
+		}
+		
+		
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
 
         return $returnValue;

@@ -197,6 +197,9 @@ class taoItems_models_classes_QTI_Choice
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B begin
+		
+		//simple textArea + filemanager integrated
+		
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B end
 
         return $returnValue;
