@@ -125,7 +125,8 @@ class QTiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'added' => $added,
-			'interactionId' => $interactionId
+			'interactionId' => $interactionId,
+			'itemData' => $itemData
 		));
 	}
 	
@@ -150,10 +151,39 @@ class QTiAuthoring extends CommonModule {
 		return $returnValue;
 	}
 	
+	public function getCurrentChoice(){
+		$returnValue = null;
+		if($this->hasRequestParameter('choiceId')){
+			$choice = $this->qtiService->getChoiceById($this->getRequestParameter('choiceId'));
+			if(!empty($choice)){
+				$returnValue = $choice;
+			}
+		}else{
+			throw new Exception('no request parameter "choiceId" found');
+		}
+		
+		return $returnValue;
+	}
+	
+	//to be called at the same time as edit response
 	public function editInteraction(){
 		$interaction = $this->getCurrentInteraction();
 		
 		//build the form with its method "toForm"
+		$myForm = $interaction->toForm();
+		
+		//build the choices, no matter the way they shall be displayed (e.g. one/two column(s)), the template shall manage that
+		$choices = array();
+		foreach($interaction->getChoices() as $choice){
+			$choices[] = $choice->toForm();//first, the simple version: choice are editable immediately. 
+		
+		}
+		
+		//display the template, according to the type of interaction
+	}
+	
+	public function editChoice(){
+		$choice = $this->getCurrentChoice();
 	}
 }
 ?>

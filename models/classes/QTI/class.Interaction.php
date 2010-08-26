@@ -384,8 +384,9 @@ class taoItems_models_classes_QTI_Interaction
 		if(!class_exists($interactionFormClass)){
 			throw new Exception("the class {$interactionFormClass} does not exist");
 		}else{
-			$formContainer = new $interactionFormClass(array(), array('choices'=>$this->getChoices()));
+			$formContainer = new $interactionFormClass($this, $this->getChoices());//include choices or not...
 			$myForm = $formContainer->getForm();
+			$returnValue = $myForm;
 		}
 		
 		

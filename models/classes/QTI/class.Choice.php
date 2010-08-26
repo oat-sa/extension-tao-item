@@ -198,8 +198,16 @@ class taoItems_models_classes_QTI_Choice
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B begin
 		
-		//simple textArea + filemanager integrated
-		
+		//$choiceType = $this->getType();
+		$choiceType = 'Simple';//defined upon creation, according to the type of interaction
+		$choiceFormClass = 'taoItems_actions_QTIform_'.ucfirst(strtolower($choiceType)).'Choice';
+		if(!class_exists($choiceFormClass)){
+			throw new Exception("the class {$choiceFormClass} does not exist");
+		}else{
+			$formContainer = new $choiceFormClass($this);
+			$myForm = $formContainer->getForm();
+			$returnValue = $myForm;
+		}
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B end
 
         return $returnValue;
