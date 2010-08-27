@@ -12,7 +12,7 @@
  */
 
 /*jslint browser: true, forin: true */
-
+// alert('loaded');
 (function ($)
 {
         /**
@@ -666,7 +666,12 @@
                         var self = $.data(this, 'wysiwyg');
                         self.destroy();
 						return this;
-                }
+                },
+				
+				undo: function(){
+					var self = $.data(this, 'wysiwyg');
+					self.editorDoc.execCommand('undo', false, null);
+				}
         });
 
         var addHoverClass = function()
@@ -711,7 +716,7 @@
 
                 init: function (element, options)
                 {
-						CL('init');
+						// CL('init');
                         var self = this;
 
                         this.editor = element;
@@ -893,6 +898,7 @@
                                                         return false;
                                                 }
                                         }
+										
                                         return true;
                                 });
                         }
@@ -926,7 +932,8 @@
                                 }).mousedown(function ()
                                 {
                                         self.saveContent();
-                                });
+                                }).keypress(function(){
+								});
                         }
 
                         if (this.options.css)

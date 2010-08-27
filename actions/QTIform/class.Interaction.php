@@ -61,7 +61,7 @@ abstract class taoItems_actions_QTIform_Interaction
 		$interactionType = $this->interaction->getType();
 		$this->form = tao_helpers_form_FormFactory::getForm(strtolower($interactionType).'Interaction');
 		
-		$saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Save');
+		$saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Submit');
 		$saveElt->setValue(__('Save'));
 		$this->form->setActions(array($saveElt), 'top');//put save button on top because the bottom would be the place for the choice editing
 		

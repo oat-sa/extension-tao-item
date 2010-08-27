@@ -142,13 +142,40 @@ class QTiAuthoring extends CommonModule {
 			'interactionId' => $interactionId,
 			'itemData' => html_entity_decode($itemData)
 		));
-		
-		// var_dump(json_encode(array(
-			// 'added' => $added,
-			// 'interactionId' => $interactionId,
-			// 'itemData' => $itemData
-		// )));
 	}
+	
+	public function addChoice(){
+		$added = false;
+		$choiceId = '';
+		$choiceForm = '';
+		
+		$interaction = $this->getCurrentInteraction();
+		if(!is_null($interaction)){
+			$choice = $this->service->addChoice($interaction);
+			
+			//return id and form:
+			
+			$choiceId = $choice->getId();
+			$choiceForm = $choice->toForm()->render();
+			$added = true;
+		}
+		
+		echo json_encode(array(
+			'added' => $added,
+			'choiceId' => $choiceId,
+			'choiceForm' => $choiceForm
+		));
+	}
+	
+	
+	public function deleteInteraction(){
+	
+	}
+	
+	public function deleteChoice(){
+	
+	}
+	
 	
 	//to be used to dynamically update the main itemData editor frame:
 	public function getInteractionTag(){
@@ -192,14 +219,22 @@ class QTiAuthoring extends CommonModule {
 		//build the form with its method "toForm"
 		$myForm = $interaction->toForm();
 		
+		
 		//build the choices, no matter the way they shall be displayed (e.g. one/two column(s)), the template shall manage that
 		$choices = array();
 		foreach($interaction->getChoices() as $choice){
-			$choices[] = $choice->toForm();//first, the simple version: choice are editable immediately. 
-		
+			// $choices[] = $choice->toForm();//first, the simple version: choice are editable immediately. 
+			$choices[$choice->getId()] = $choice->toForm()->render();
 		}
 		
+		
 		//display the template, according to the type of interaction
+		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
+		// $this->setData('formId', $formName);
+		$this->setData('interactionId', $interaction->getId());
+		$this->setData('formInteraction', $myForm->render());
+		$this->setData('formChoices', $choices);
+		$this->setView($templateName);
 	}
 	
 	public function editChoice(){

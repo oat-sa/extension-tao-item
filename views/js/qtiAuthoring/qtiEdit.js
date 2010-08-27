@@ -4,6 +4,9 @@ qtiEdit = new Object();
 
 qtiEdit.itemEditor = null;
 qtiEdit.itemId = '';
+qtiEdit.interactions = [];
+qtiEdit.itemDataContainer = '';
+qtiEdit.interactionFormContent = '';
 
 qtiEdit.getEltInFrame = function(selector){
 	var foundElts = [];
@@ -17,6 +20,7 @@ qtiEdit.getEltInFrame = function(selector){
 				foundElts.push($(this));  
 			});
 		});
+		
 	});
 	return foundElts;
 }
@@ -29,15 +33,25 @@ qtiEdit.getUniqueEltInFrame = function(selector){
 	return foundElts[0];
 }
 
+//bind the interaction listener and refresh the table of interactions at the same time
 qtiEdit.bindInteractionLinkListener = function(){
 	//destroy all listeners:
-	// qtiEdit.getEltInFrame('.qti_interaction_link').unbind('click');
+	
+	//reset the interaction array:
+	qtiEdit.interactionIds = [];
 	
 	var links = qtiEdit.getEltInFrame('.qti_interaction_link');
 	for(var i in links){
+		
+		var interactionId = links[i].attr('id');
+		
+		qtiEdit.interactions[interactionId] = interactionId;
+		
 		links[i].unbind('click').click(function(){
 			CL("go to editing "+$(this).attr('id'));
+			qtiEdit.loadInteractionForm($(this).attr('id'));
 		});
+		
 	}
 }
 
@@ -68,6 +82,40 @@ qtiEdit.addInteraction = function(interactionType, itemData, itemId){
 	});
 }
 
+qtiEdit.deleteInteraction = function(interactionId){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/deleteInteraction",
+	   data: {
+			'interactionId': interactionId,
+			'itemId': qtiEdit.itemId
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			
+			delete qtiEdit.interactions[interactionId];
+	   }
+	});
+}
+
+qtiEdit.checkInteractionDeletion = function(all){
+
+	if(typeof(all) == 'undefined'){
+		var all = false; 
+	}
+	
+	//TODO: improve with the use of regular expressions: 
+	var itemData = $(qtiEdit.itemDataContainer).val();
+	for(var interactionId in qtiEdit.interactions){
+		if(itemData.indexOf(interactionId)<0){
+			//not found:
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 qtiEdit.saveItemData = function(itemId){
 	
 	if(!itemId){
@@ -84,6 +132,21 @@ qtiEdit.saveItemData = function(itemId){
 	   dataType: 'json',
 	   success: function(r){
 			CL('saved');
+	   }
+	});
+}
+
+qtiEdit.loadInteractionForm = function(interactionId){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/editInteraction",
+	   data: {
+			'interactionId': interactionId,
+			'itemId': qtiEdit.itemId
+	   },
+	   dataType: 'html',
+	   success: function(form){
+			$(qtiEdit.interactionFormContent).html(form);
 	   }
 	});
 }

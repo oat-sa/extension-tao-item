@@ -158,6 +158,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if(!is_null($interaction)){
 			//create a new choice:
+			//determine the type of choice automatically?
 			$choice = new taoItems_models_classes_QTI_Choice(null);
 			if(!empty($data)){
 				$choice->setData($data);

@@ -48,23 +48,26 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		$interaction = $this->getInteraction();
 		
 		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
-		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textbox');//should be a text... need to solve the conflict with the 
+		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textarea');//should be a text... need to solve the conflict with the 
 		$promptElt->setDescription(__('Prompt'));
 		// $promptElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));//no validator required for prompt
 		$interactionData = $interaction->getData();
 		if(!empty($interactionData)){
-			$promptElt->setData($interactionData);
+			$promptElt->setValue($interactionData);
 		}
 		$this->form->addElement($promptElt);
 		
 		
-		$suffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
-		$suffleElt->setDescription(__('Shuffle'));
+		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
+		$shuffleElt->setDescription(__('Shuffle'));
 		$shuffle = $interaction->getOption('shuffle');
+		$shuffleElt->setOptions(array('shuffle' => ''));
 		if(!empty($shuffle)){
-			$suffleElt->setData($shuffle);
+			if($shuffle === 'true' || $shuffle === true){
+				$fixedElt->setValue('shuffle');
+			}
 		}
-		$this->form->addElement($suffleElt);
+		$this->form->addElement($shuffleElt);
 		
 		//the "maxAssociations" attr shall be set automatically?
 		$maxAssocElt = tao_helpers_form_FormFactory::getElement('maxAssociations', 'TextBox');
@@ -72,13 +75,10 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		//validator: is int??
 		$maxAssociations = $interaction->getOption('maxAssociations');
 		if(!empty($maxAssociations)){
-			$maxAssocElt->setData($maxAssociations);
+			$maxAssocElt->setValue($maxAssociations);
 		}
 		$this->form->addElement($maxAssocElt);
 		
-		// $interactionSeparatorElt = tao_helpers_form_FormFactory::getElement('interactionSeparator', 'Free');
-		// $interactionSeparatorElt->setDescription('<br/>');
-		// $this->form->addElement($interactionSeparatorElt);
     }
 
 }

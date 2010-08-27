@@ -1,3 +1,5 @@
+// console.log('util loaded');
+
 util = new Object();
 
 CL = function(arg1, arg2){

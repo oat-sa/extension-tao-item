@@ -9,10 +9,6 @@
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.modal.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('simplemodal_path')?>jquery.simplemodal.css" type="text/css" />
-<style type="text/css">
-	div.wysiwyg ul.panel li a.html2 { background-position: -47px -46px;}
-</style>
-
 	
 <div id='qtiAuthoring_itemEditor'>
     <textarea name="wysiwyg" id="wysiwyg" rows="10" cols="103"><?=get_data('itemData')?></textarea>
@@ -23,6 +19,8 @@
         
 <script type="text/javascript">
 qtiEdit.itemId = '<?=get_data('itemId')?>';
+qtiEdit.itemDataContainer = '#wysiwyg';
+qtiEdit.interactionFormContent = '#qtiAuthoring_interactionEditor';
 
 //init the item's jwysiwyg editor here:
 var addInteraction = {
@@ -116,18 +114,40 @@ $(document).ready(function(){
 	  saveItemData: saveItemData
     },
     events: {
-      click : function(e)
+      keyup : function(e)
       {
-        if ($('#click-inform:checked').length > 0)
-        {
-          e.preventDefault();
-          alert('You have clicked jWysiwyg content!');
-        }
+		
+		// CL('sdqsdqsd');
+		if(qtiEdit.checkInteractionDeletion() == false){
+			if(!confirm('please confirm deletion of the interaction')){
+				// undo:
+				$('#wysiwyg').wysiwyg('undo');
+			}
+		}
+        // if ($('#click-inform:checked').length > 0){
+          // e.preventDefault();
+          // alert('You have clicked jWysiwyg content!');
+        // }
       }
     }
   });
+  
+  
+  // $('#wysiwyg').wysiwyg('document').keypress(function(e)
+	// {
+	  // alert('press');
+	// });
+
+
 	
 	setTimeout(qtiEdit.bindInteractionLinkListener,250);
+	
+	// CD($('#wysiwyg').wysiwyg('document'));
+	// $('#wysiwyg').wysiwyg('document').click(function(e){
+		// e.preventDefault();
+		// alert('press');
+	// });
+	 // $('#wysiwyg').wysiwyg('document').click();
 });
 
 </script>
