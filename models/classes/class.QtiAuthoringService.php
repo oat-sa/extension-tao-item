@@ -91,7 +91,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
-		$returnValue .= "<button id='{$interaction->getId()}' value='{$interaction->getType()}'/>";
+		$returnValue .= "<input type='button' id='{$interaction->getId()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
 		
 		return $returnValue;
 	}
@@ -103,8 +103,10 @@ class taoItems_models_classes_QtiAuthoringService
 			foreach($item->getInteractions() as $interaction){
 				//replace the interactions by a identified tag with the authoring elements
 				$pattern0 = $this->getInteractionTag($interaction);
-				$pattern = "/{$pattern0}/";
-				$itemData = preg_replace($pattern, "{{$interaction->getId()}}", $itemData, 1);
+				// $pattern = "/{$pattern0}/";
+				// $itemData = preg_replace($pattern, "{{$interaction->getId()}}", $itemData, 1);
+				$count = 0;
+				$itemData = str_replace($pattern0, "{{$interaction->getId()}}", $itemData, $count);
 			}
 			
 			//item saved in session:

@@ -22,6 +22,8 @@
 <div id='qtiAuthoring_interactionEditor'/>    
         
 <script type="text/javascript">
+qtiEdit.itemId = '<?=get_data('itemId')?>';
+
 //init the item's jwysiwyg editor here:
 var addInteraction = {
 	visible : true,
@@ -29,23 +31,13 @@ var addInteraction = {
 	exec: function(){
 		CL('inserting interaction...');
 		//display modal window with the list of available type of interactions
+		var interactionType = 'choice';
 		
-		//callback when the interaction has been created:
+		//insert location of the current interaction in the item:
+		this.insertHtml('{qti_interaction_new}');
 		
-		//get its id:
-		var interaction_id = 'interaction_'+12;
-		
-		//insert into the item editor:
-		this.insertHtml('&nbsp;<button id="'+interaction_id+'" title="interaction name" value="&middot;&middot;&middot;"/>&nbsp;');
-		var interaction = qtiEdit.getUniqueEltInFrame('#'+interaction_id);
-		CL(interaction);
-		interaction.height(20);
-		
-		//add click listener
-		interaction.click(function(){
-			
-			CL('interaction clicked!');
-		});
+		//send to request to the server
+		qtiEdit.addInteraction(interactionType, this.getContent(), qtiEdit.itemId);
 		
 		//go to the form:
 		// qtiEdit.loadInteractionForm(interaction_id);
@@ -53,13 +45,21 @@ var addInteraction = {
 	tooltip: 'add interaction'
 };
 
-var save = null;
+var saveItemData = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		qtiEdit.saveItemData();
+	},
+	tooltip: 'save'
+};
 var loadXmlQti = null;
 var exportXmlQti = null;
 
-(function($)
-{
-  $('#wysiwyg').wysiwyg({
+
+$(document).ready(function(){
+
+  qtiEdit.itemEditor = $('#wysiwyg').wysiwyg({
     controls: {
       strikeThrough : { visible : true },
       underline     : { visible : true },
@@ -112,7 +112,8 @@ var exportXmlQti = null;
       paste : { visible : true },
       html  : { visible: true },
       exam_html: { exec: function() { this.insertHtml('<abbr title="exam">Jam</abbr>') }, visible: true  },
-	  addInteraction: addInteraction
+	  addInteraction: addInteraction,
+	  saveItemData: saveItemData
     },
     events: {
       click : function(e)
@@ -125,8 +126,11 @@ var exportXmlQti = null;
       }
     }
   });
+	
+	setTimeout(qtiEdit.bindInteractionLinkListener,250);
+});
 
-  $('#wysiwyg').wysiwyg('insertHtml', 'sample code');
+</script>
 
-})(jQuery);
+<script type="text/javascript">
 </script>
