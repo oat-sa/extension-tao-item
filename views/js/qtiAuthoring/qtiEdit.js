@@ -82,27 +82,35 @@ qtiEdit.addInteraction = function(interactionType, itemData, itemId){
 	});
 }
 
-qtiEdit.deleteInteraction = function(interactionId){
+qtiEdit.deleteInteractions = function(interactionIds){
+
+	var data = '';
+	//prepare the data to be sent:
+	for(var i in interactionIds){
+		data += 'interactionIds['+ i +']=' + interactionIds[i] + '&';
+	}
+	data += 'itemId=' + qtiEdit.itemId;
+	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/deleteInteraction",
-	   data: {
-			'interactionId': interactionId,
-			'itemId': qtiEdit.itemId
-	   },
+	   url: "/taoItems/QtiAuthoring/deleteInteractions",
+	   data: data,
 	   dataType: 'json',
 	   success: function(r){
 			
-			delete qtiEdit.interactions[interactionId];
+			if(r.deleted){
+				for(var i in interactionIds){
+					delete qtiEdit.interactions[interactionIds[i]];
+				}
+			}
+			
 	   }
 	});
+	
 }
 
-qtiEdit.checkInteractionDeletion = function(all){
-
-	if(typeof(all) == 'undefined'){
-		var all = false; 
-	}
+/*
+qtiEdit.checkInteractionDeletion = function(){
 	
 	//TODO: improve with the use of regular expressions: 
 	var itemData = $(qtiEdit.itemDataContainer).val();
@@ -115,6 +123,24 @@ qtiEdit.checkInteractionDeletion = function(all){
 	
 	return true;
 }
+*/
+
+qtiEdit.getDeletedInteractions = function(one){
+	var deletedInteractions = [];
+	var itemData = $(qtiEdit.itemDataContainer).val();//TODO: improve with the use of regular expressions:
+	for(var interactionId in qtiEdit.interactions){
+		if(itemData.indexOf(interactionId)<0){
+			//not found so considered as deleted:
+			deletedInteractions.push(interactionId);
+			if(one){
+				return deletedInteractions;
+			}
+		}
+	}
+	
+	return deletedInteractions;
+}
+
 
 qtiEdit.saveItemData = function(itemId){
 	

@@ -168,8 +168,41 @@ class QTiAuthoring extends CommonModule {
 	}
 	
 	
-	public function deleteInteraction(){
-	
+	public function deleteInteractions(){
+		// var_dump($this->getCurrentItem(), $this->getRequestParameter('interactionIds'));
+		
+		$deleted = false;
+		
+		$interactionIds = array();
+		if($this->hasRequestParameter('interactionIds')){
+			$interactionIds = $this->getRequestParameter('interactionIds');
+		}
+		if(empty($interactionIds)){
+			throw new Exception('no interaction ids found to be deleted');
+		}else{
+			$item = $this->getCurrentItem();
+			$deleteCount = 0;
+			
+			//delete interactions:
+			foreach($interactionIds as $interactionId){
+				$interaction = $this->qtiService->getInteractionById($interactionId);
+				if(!empty($interaction)){
+					$this->service->deleteInteraction($item, $interaction);
+					$deleteCount++;
+				}else{
+					throw new Exception('no interaction found to be deleted with the id: '.$interactionId);
+				}
+			}
+			
+			if($deleteCount == count($interactionIds)){
+				$deleted = true;
+			}
+		}
+		
+		echo json_encode(array(
+			'deleted' => $deleted
+		));
+		
 	}
 	
 	public function deleteChoice(){

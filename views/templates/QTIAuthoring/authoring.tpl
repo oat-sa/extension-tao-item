@@ -54,7 +54,14 @@ var saveItemData = {
 var loadXmlQti = null;
 var exportXmlQti = null;
 
-
+//extend the jwysi obj:
+// $.extend(Wysiwyg, {
+	// undo: function(){
+		// var self = $.data(this, 'wysiwyg');
+		// self.editorDoc.execCommand('undo', false, null);
+	// }
+// });
+		
 $(document).ready(function(){
 
   qtiEdit.itemEditor = $('#wysiwyg').wysiwyg({
@@ -114,21 +121,21 @@ $(document).ready(function(){
 	  saveItemData: saveItemData
     },
     events: {
-      keyup : function(e)
-      {
-		
-		// CL('sdqsdqsd');
-		if(qtiEdit.checkInteractionDeletion() == false){
+	  keyup : function(e){
+		if(qtiEdit.getDeletedInteractions(true).length > 0){
 			if(!confirm('please confirm deletion of the interaction')){
 				// undo:
-				$('#wysiwyg').wysiwyg('undo');
+				qtiEdit.itemEditor.wysiwyg('undo');
+			}else{
+				var deletedInteractions = qtiEdit.getDeletedInteractions();
+				qtiEdit.deleteInteractions(deletedInteractions);
 			}
 		}
-        // if ($('#click-inform:checked').length > 0){
-          // e.preventDefault();
-          // alert('You have clicked jWysiwyg content!');
-        // }
-      }
+		// if ($('#click-inform:checked').length > 0){
+		  // e.preventDefault();
+		  // alert('You have clicked jWysiwyg content!');
+		// }
+	  }
     }
   });
   
@@ -139,7 +146,7 @@ $(document).ready(function(){
 	// });
 
 
-	
+	//the binding require the modified html data to be ready
 	setTimeout(qtiEdit.bindInteractionLinkListener,250);
 	
 	// CD($('#wysiwyg').wysiwyg('document'));
