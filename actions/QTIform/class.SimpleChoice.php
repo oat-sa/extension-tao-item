@@ -33,13 +33,14 @@ class taoItems_actions_QTIform_SimpleChoice
 		
 		//add textarea:
 		$dataElt = tao_helpers_form_FormFactory::getElement('content', 'Textbox');//should be a textarea... need to solve the conflict with the 
-		$dataElt->setDescription(__('Content'));
+		$dataElt->setDescription(__('Value'));
 		$choiceData = $this->choice->getData();
 		if(!empty($choiceData)){
 			$dataElt->setData($choiceData);
 		}
 		$this->form->addElement($dataElt);
 		
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getId(), __('Advanced properties'), array('fixed'));
 	}
 
 }

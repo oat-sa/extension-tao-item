@@ -79,6 +79,7 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		}
 		$this->form->addElement($maxAssocElt);
 		
+		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxAssociations'));
     }
 
 }

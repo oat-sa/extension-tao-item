@@ -63,7 +63,7 @@ abstract class taoItems_actions_QTIform_Choice
     public function initForm()
     {
 		$this->form = tao_helpers_form_FormFactory::getForm('ChoiceForm_'.$this->choice->getId());
-		
+		$this->form->setActions(array(), 'bottom');
 		//no save elt required, all shall be done with ajax request
 		// $saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Save');
 		// $saveElt->setValue(__('Save'));
@@ -78,7 +78,6 @@ abstract class taoItems_actions_QTIform_Choice
 		//the fixed attribute element
 		$fixedElt = tao_helpers_form_FormFactory::getElement('fixed', 'CheckBox');
 		$fixedElt->setDescription(__('Fixed'));
-		$fixedElt = tao_helpers_form_FormFactory::getElement(tao_helpers_Uri::encode(PROPERTY_CONNECTORS_TYPE), 'Combobox');
 		$fixedElt->setOptions(array('fixed' => ''));//empty label because the description of the element is enough
 		$fixed = $this->choice->getOption('fixed');
 		if(!empty($fixed)){

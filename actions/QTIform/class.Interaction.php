@@ -61,9 +61,17 @@ abstract class taoItems_actions_QTIform_Interaction
 		$interactionType = $this->interaction->getType();
 		$this->form = tao_helpers_form_FormFactory::getForm(strtolower($interactionType).'Interaction');
 		
-		$saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Submit');
-		$saveElt->setValue(__('Save'));
-		$this->form->setActions(array($saveElt), 'top');//put save button on top because the bottom would be the place for the choice editing
+		// $saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Submit');
+		// $saveElt->setValue(__('Save'));
+		// $this->form->setActions(array($saveElt), 'top');//put save button on top because the bottom would be the place for the choice editing
+		
+		$actions = tao_helpers_form_FormFactory::getCommonActions('top', true, false);
+		$addChoiceElt = tao_helpers_form_FormFactory::getElement('addchoice', 'Free');
+		$addChoiceElt->setValue("<a href='#' class='form-choice-adder' ><img src='".TAOBASE_WWW."/img/add.png'  /> ".__('Add a choice')."</a>");
+		$actions[] = $addChoiceElt;
+		
+		$this->form->setActions($actions, 'top');
+		$this->form->setActions(array(), 'bottom');
 		
     }
 	

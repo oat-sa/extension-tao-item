@@ -102,6 +102,9 @@ qtiEdit.deleteInteractions = function(interactionIds){
 				for(var i in interactionIds){
 					delete qtiEdit.interactions[interactionIds[i]];
 				}
+				
+				//save item data, i.e. validate the changes operated on the item data:
+				qtiEdit.saveItemData();
 			}
 			
 	   }
@@ -141,6 +144,35 @@ qtiEdit.getDeletedInteractions = function(one){
 	return deletedInteractions;
 }
 
+qtiEdit.addChoice = function(interactionId, $appendTo, containerClass){
+	
+	if(!$appendTo || !$appendTo.length){
+		throw 'the append target element do not exists';
+	}
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/addChoice",
+	   data: {
+			'interactionId': interactionId
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			CL('choice added');
+			if(r.added){
+				var newFormElt = $('<div/>');
+				newFormElt.attr('id', r.choiceId);
+				newFormElt.attr('class', containerClass);
+				newFormElt.append(r.choiceForm);
+				$appendTo.append(newFormElt);
+				
+				newFormElt.hide();
+				initToggleChoiceOptions();
+				newFormElt.show();
+			}
+	   }
+	});
+}
 
 qtiEdit.saveItemData = function(itemId){
 	
