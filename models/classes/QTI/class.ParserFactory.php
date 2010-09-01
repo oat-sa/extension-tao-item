@@ -139,11 +139,10 @@ class taoItems_models_classes_QTI_ParserFactory
        		switch($type){
        			case 'match':
        			case 'gap':
-       			case 'hottext':
        			case 'graphicassociate':
        			case 'graphicgapmatch':
        			default :
-       				$choiceNodes = $data->xpath("//*[contains(name(.), 'Choice')]");
+       				$choiceNodes = $data->xpath("//*[ (contains(name(.), 'Choice')) or (name(.) = 'hottext')]");
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
 			        	if(!is_null($choice)){

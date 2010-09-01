@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.08.2010, 17:27:28 with ArgoUML PHP module 
+ * Automatically generated on 01.09.2010, 11:23:14 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -127,7 +127,6 @@ class taoItems_models_classes_QTI_Interaction
     		$file = $tplPath . 'qti.' .strtolower($type) . '.tpl.php';
     	}
     	if(empty($file) || !file_exists($file)){
-    		var_dump($file);
     		throw new InvalidArgumentException("No interaction found for argument: type = '$type'");
     	}
     	
@@ -270,6 +269,28 @@ class taoItems_models_classes_QTI_Interaction
     	}
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F6 end
+    }
+
+    /**
+     * Short description of method removeChoice
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Choice choice
+     * @return mixed
+     */
+    public function removeChoice( taoItems_models_classes_QTI_Choice $choice)
+    {
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 begin
+        
+   	 	if(!is_null($choice)){
+    		if(isset($this->choices[$choice->getId()])){
+    			unset($this->choices[$choice->getId()]);
+    			$returnValue = true;
+    		}
+    	}
+    	
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 end
     }
 
     /**

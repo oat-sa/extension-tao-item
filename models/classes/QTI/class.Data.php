@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.08.2010, 14:10:05 with ArgoUML PHP module 
+ * Automatically generated on 01.09.2010, 11:36:36 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -202,20 +202,55 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
+     * Short description of method setId
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string id
+     * @return mixed
+     */
+    public function setId($id)
+    {
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F begin
+    	
+    	if(Session::hasAttribute($id)){
+    		throw new InvalidArgumentException("Id $id is already in use");
+    	}
+    	$this->id = $id;
+    	
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F end
+    }
+
+    /**
      * Short description of method createUniqueId
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  boolean random
      * @return mixed
      */
-    protected function createUniqueId()
+    protected function createUniqueId($random = false)
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
     	$clazz = strtolower(get_class($this));
     	$prefix = substr($clazz, strpos($clazz, 'qti_')).'_';
-    	$this->id = str_replace('.', '', uniqid($prefix, true));
-    	
+    	if($random){
+    		$this->id = str_replace('.', '', uniqid($prefix, true));
+    	}
+    	else{
+    		$index = 1;
+    		do {
+    			$exist = false;
+    			$id = $prefix . '_' . $index;
+    			if(Session::hasAttribute($id)){
+    				$exist = true;
+    				$index++;
+    			}
+    		} while($exist);
+    		
+    		$this->id = $id;
+    	}
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
     }
 

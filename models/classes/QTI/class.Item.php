@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.08.2010, 17:27:28 with ArgoUML PHP module 
+ * Automatically generated on 01.09.2010, 11:23:14 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -35,6 +35,13 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
+/**
+ * include taoItems_models_classes_QTI_response_ResponseProcessing
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.php');
+
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000233F-includes begin
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000233F-includes end
@@ -55,7 +62,7 @@ class taoItems_models_classes_QTI_Item
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -66,6 +73,14 @@ class taoItems_models_classes_QTI_Item
      * @var array
      */
     protected $interactions = array();
+
+    /**
+     * Short description of attribute responseProcessing
+     *
+     * @access protected
+     * @var ResponseProcessing
+     */
+    protected $responseProcessing = null;
 
     // --- OPERATIONS ---
 
@@ -195,6 +210,69 @@ class taoItems_models_classes_QTI_Item
     	}
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023DF end
+    }
+
+    /**
+     * Short description of method removeInteraction
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Interaction interaction
+     * @return boolean
+     */
+    public function removeInteraction( taoItems_models_classes_QTI_Interaction $interaction)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002538 begin
+        
+    	if(!is_null($interaction)){
+    		if(isset($this->interactions[$interaction->getId()])){
+    			unset($this->interactions[$interaction->getId()]);
+    			$returnValue = true;
+    		}
+    	}
+        
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002538 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getResponseProcessing
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return taoItems_models_classes_QTI_response_ResponseProcessing
+     */
+    public function getResponseProcessing()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253B begin
+        
+        $returnValue = $this->responseProcessing;
+        
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253B end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method setResponseProcessing
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  ResponseProcessing rprocessing
+     * @return mixed
+     */
+    public function setResponseProcessing( taoItems_models_classes_QTI_response_ResponseProcessing $rprocessing)
+    {
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E begin
+        
+    	$this->responseProcessing = $rprocessing;
+    	
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E end
     }
 
     /**

@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Parser.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 19.08.2010, 15:22:55 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The QTI Parser enables you to parse QTI xml files and build the corresponding
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -30,7 +23,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1-26978f63:12a3830d3d3:-8000:000000000000243C-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Parser
+ * The QTI Parser enables you to parse QTI xml files and build the corresponding
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -45,7 +38,7 @@ class taoItems_models_classes_QTI_Parser
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute file
+     * the path of the qti file
      *
      * @access protected
      * @var string
@@ -53,7 +46,7 @@ class taoItems_models_classes_QTI_Parser
     protected $file = '';
 
     /**
-     * Short description of attribute errors
+     * the list of errors and exception launched by the file parsing
      *
      * @access protected
      * @var array
@@ -61,7 +54,7 @@ class taoItems_models_classes_QTI_Parser
     protected $errors = array();
 
     /**
-     * Short description of attribute valid
+     * The validation status of the file
      *
      * @access protected
      * @var boolean
@@ -71,7 +64,7 @@ class taoItems_models_classes_QTI_Parser
     // --- OPERATIONS ---
 
     /**
-     * Short description of method __construct
+     * The constructor needs the path of the QTI file
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -88,7 +81,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method validate
+     * Run the validation process
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -143,7 +136,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method load
+     * load the file content, parse it  and build the QTI_Item
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -182,7 +175,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method isValid
+     * Check the current validation status
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -202,7 +195,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method forceValidation
+     * force the validation status to load it instead errors
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -218,7 +211,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method getErrors
+     * get the validation errors
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -238,14 +231,14 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method addError
+     * add a validation error
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  mixed error
      * @return mixed
      */
-    protected function addError($error)
+    protected function addError( mixed $error)
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024C7 begin
         
@@ -270,7 +263,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method addErrors
+     * add validation errors
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -289,7 +282,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * Short description of method clearErrors
+     * clean the validation errors
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

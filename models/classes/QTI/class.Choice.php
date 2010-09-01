@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
+ * Automatically generated on 01.09.2010, 11:29:18 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -74,6 +74,14 @@ class taoItems_models_classes_QTI_Choice
      * @var string
      */
     protected $value = '';
+
+    /**
+     * Short description of attribute type
+     *
+     * @access protected
+     * @var string
+     */
+    protected $type = '';
 
     // --- OPERATIONS ---
 
@@ -152,6 +160,43 @@ class taoItems_models_classes_QTI_Choice
     }
 
     /**
+     * Short description of method getType
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function getType()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002506 begin
+        
+        $returnValue = $this->type;
+        
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002506 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method setType
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string type
+     * @return mixed
+     */
+    public function setType($type)
+    {
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250C begin
+        
+    	$this->type = $type;
+    	
+        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250C end
+    }
+
+    /**
      * Short description of method toXHTML
      *
      * @access public
@@ -208,6 +253,7 @@ class taoItems_models_classes_QTI_Choice
 			$myForm = $formContainer->getForm();
 			$returnValue = $myForm;
 		}
+		
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B end
 
         return $returnValue;
