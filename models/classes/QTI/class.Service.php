@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Service.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 20.08.2010, 14:40:19 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The QTI_Service gives you a central access to the managment methods of the
+ * objects
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -37,7 +31,8 @@ require_once('tao/models/classes/class.Service.php');
 // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A8-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Service
+ * The QTI_Service gives you a central access to the managment methods of the
+ * objects
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -55,7 +50,7 @@ class taoItems_models_classes_QTI_Service
     // --- OPERATIONS ---
 
     /**
-     * Short description of method getItemById
+     * Retrive a QTI_Item instance by it's id
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -76,7 +71,7 @@ class taoItems_models_classes_QTI_Service
     }
 
     /**
-     * Short description of method getInteractionById
+     * Retrive a QTI_Interaction instance by it's id
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -97,7 +92,7 @@ class taoItems_models_classes_QTI_Service
     }
 
     /**
-     * Short description of method getResponseById
+     * Retrive a QTI_Response instance by it's id
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -118,7 +113,7 @@ class taoItems_models_classes_QTI_Service
     }
 
     /**
-     * Short description of method getDataById
+     * Retrive a QTI_Data child instance by it's id
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

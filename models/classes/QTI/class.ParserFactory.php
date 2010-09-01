@@ -3,14 +3,9 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.ParserFactory.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 19.08.2010, 11:06:27 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The ParserFactory provides some methods to build the QTI_Data objects from an
+ * element.
+ * SimpleXML is used as source to build the model.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -30,7 +25,9 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E9-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_ParserFactory
+ * The ParserFactory provides some methods to build the QTI_Data objects from an
+ * element.
+ * SimpleXML is used as source to build the model.
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -47,12 +44,13 @@ class taoItems_models_classes_QTI_ParserFactory
     // --- OPERATIONS ---
 
     /**
-     * Short description of method buildItem
+     * Build a QTI_Item from a SimpleXMLElement (the root tag of this element is
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Item
+     * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10010
      */
     public static function buildItem( SimpleXMLElement $data)
     {
@@ -115,12 +113,14 @@ class taoItems_models_classes_QTI_ParserFactory
     }
 
     /**
-     * Short description of method buildInteraction
+     * Build a QTI_Interaction from a SimpleXMLElement (the root tag of this
+     * is an 'interaction' node)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Interaction
+     * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
      */
     public static function buildInteraction( SimpleXMLElement $data)
     {
@@ -181,12 +181,14 @@ class taoItems_models_classes_QTI_ParserFactory
     }
 
     /**
-     * Short description of method buildChoice
+     * Build a QTI_Choice from a SimpleXMLElement (the root tag of this element
+     * an 'choice' node)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Choice
+     * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
      */
     public static function buildChoice( SimpleXMLElement $data)
     {
@@ -223,6 +225,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Response
+     * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
      */
     public static function buildResponse( SimpleXMLElement $data)
     {
