@@ -1,0 +1,11 @@
+#qtiAuthoring_left_container {
+	width: 70%;
+}
+
+#qtiAuthoring_itemEditor{
+	overflow: scroll;
+}
+
+#itemEditor_wysiwyg{
+	width:70%;
+}

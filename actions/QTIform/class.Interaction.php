@@ -59,11 +59,8 @@ abstract class taoItems_actions_QTIform_Interaction
     public function initForm()
     {
 		$interactionType = $this->interaction->getType();
-		$this->form = tao_helpers_form_FormFactory::getForm(strtolower($interactionType).'Interaction');
+		$this->form = tao_helpers_form_FormFactory::getForm('InteractionForm_'.strtolower($interactionType).'Interaction');
 		
-		// $saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Submit');
-		// $saveElt->setValue(__('Save'));
-		// $this->form->setActions(array($saveElt), 'top');//put save button on top because the bottom would be the place for the choice editing
 		
 		$actions = tao_helpers_form_FormFactory::getCommonActions('top', true, false);
 		$addChoiceElt = tao_helpers_form_FormFactory::getElement('addchoice', 'Free');
@@ -78,7 +75,21 @@ abstract class taoItems_actions_QTIform_Interaction
 	public function getInteraction(){
 		return $this->interaction;
 	}
-
+	
+	public function setCommonElements(){
+		
+		//add hidden id element, to know what the old id is:
+		$oldIdElt = tao_helpers_form_FormFactory::getElement('interactionId', 'Hidden');
+		$oldIdElt->setValue($this->interaction->getId());
+		$this->form->addElement($oldIdElt);
+		
+		//id element: need for checking unicity
+		$labelElt = tao_helpers_form_FormFactory::getElement('newId', 'TextBox');
+		$labelElt->setDescription(__('Id'));
+		$labelElt->setValue($this->interaction->getId());
+		$this->form->addElement($labelElt);
+	
+	}	
 }
 
 ?>

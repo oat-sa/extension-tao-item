@@ -9,24 +9,27 @@
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.modal.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('simplemodal_path')?>jquery.simplemodal.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/qtiAuthoring.css" />
 
-<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
-		<?=__('Item Editor:')?>
-</div>
-<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
-	<div class="ext-home-container ui-state-highlight">
-		<textarea name="wysiwyg" id="wysiwyg" rows="10" cols="103"><?=get_data('itemData')?></textarea>
+<div id="qtiAuthoring_left_container">
+	<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
+			<?=__('Item Editor:')?>
 	</div>
-</div>
+	<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
+		<div class="ext-home-container ui-state-highlight">
+			<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
+		</div>
 
-<div id='qtiAuthoring_interactionEditor'/>    
-        
+	</div>
+
+	<div id='qtiAuthoring_interactionEditor'/>    
+</div>      
 <script type="text/javascript">
 // img_url_tao = root_url + "/tao/views/img/";
 // img_url = root_url + "/taoItems/views/img/";
 
 qtiEdit.itemId = '<?=get_data('itemId')?>';
-qtiEdit.itemDataContainer = '#wysiwyg';
+qtiEdit.itemDataContainer = '#itemEditor_wysiwyg';
 qtiEdit.interactionFormContent = '#qtiAuthoring_interactionEditor';
 
 //init the item's jwysiwyg editor here:
@@ -71,7 +74,7 @@ var exportXmlQti = null;
 		
 $(document).ready(function(){
 
-  qtiEdit.itemEditor = $('#wysiwyg').wysiwyg({
+  qtiEdit.itemEditor = $(qtiEdit.itemDataContainer).wysiwyg({
     controls: {
       strikeThrough : { visible : true },
       underline     : { visible : true },

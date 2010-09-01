@@ -91,6 +91,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
+		// $returnValue .= "<input type='button' id='{$interaction->getId()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
 		$returnValue .= "<input type='button' id='{$interaction->getId()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
 		
 		return $returnValue;

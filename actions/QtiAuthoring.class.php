@@ -261,6 +261,7 @@ class QTiAuthoring extends CommonModule {
 		}
 		
 		
+		
 		//display the template, according to the type of interaction
 		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
 		// $this->setData('formId', $formName);
@@ -269,6 +270,35 @@ class QTiAuthoring extends CommonModule {
 		$this->setData('formChoices', $choices);
 		$this->setView($templateName);
 	}
+	
+	
+	public function saveInteraction(){
+		$interaction = $this->getCurrentInteraction();
+		$myForm = $interaction->toForm();
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				var_dump($myForm->getValues());
+				//check unicity of the id:
+				$unique = true;
+				if($unique){
+					//save id
+					
+				}
+				
+				
+				// $group = $this->service->bindProperties($group, $myForm->getValues());
+				
+				// $this->setData('message', __('Interaction saved'));
+				// $this->setData('reload', true);
+			}
+		}
+		
+	}
+	
+	public function saveChoice(){
+	
+	}
+	
 	
 	public function editChoice(){
 		$choice = $this->getCurrentChoice();

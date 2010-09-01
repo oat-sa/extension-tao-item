@@ -48,6 +48,8 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		$interaction = $this->getInteraction();
 		
 		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
+		$this->setCommonElements();
+		
 		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textarea');//should be a text... need to solve the conflict with the 
 		$promptElt->setDescription(__('Prompt'));
 		// $promptElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));//no validator required for prompt
@@ -81,7 +83,10 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		
 		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxAssociations'));
     }
-
+	
+	public function setCommonElements(){
+		parent::setCommonElements();
+	}
 }
 
 ?>

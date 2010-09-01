@@ -7,25 +7,30 @@
 	<div class="ext-home-container ui-state-highlight">
 		<?=get_data('formInteraction')?>
 	</div>
-</div>
-
-
-<div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
-		<?=__('Choices editor:')?>
-</div>
-<div id="formContainer_choices_title" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
-	<div id="formContainer_choices">
-	<?foreach(get_data('formChoices') as $choiceId => $choiceForm):?>
-		<div id='<?=$choiceId?>' class='formContainer_choice'>
-			<?=$choiceForm?>
-			
+	
+	<div class="ext-home-container">
+		<div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
+				<?=__('Choices editor:')?>
 		</div>
-	<?endforeach;?>
+		<div id="formContainer_choices_title" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
+			<div id="formContainer_choices">
+			<?foreach(get_data('formChoices') as $choiceId => $choiceForm):?>
+				<div id='<?=$choiceId?>' class='formContainer_choice'>
+					<?=$choiceForm?>
+					
+				</div>
+			<?endforeach;?>
+			</div>
+			<div id='add_choice_button'>
+				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Add a choice</a>
+			</div>
+		</div>
 	</div>
-	<div id='add_choice_button'>
-		<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Add a choice</a>
-	</div>
+	
 </div>
+
+
+
 
 
 
@@ -38,18 +43,23 @@ function toggleChoiceOptions($group){
 		if($('#a_'+groupId).length){
 			$('#a_'+groupId).remove();
 		}
+		if($('#delete_'+groupId).length){
+			$('#delete_'+groupId).remove();
+		}
 		
 		var deleteElt = $('<span id="delete_'+groupId+'" title="<?=__('Delete choice')?>" class="form-group-control ui-icon ui-icon-circle-close"></span>');
 		$group.before(deleteElt);
 		deleteElt.css('position', 'relative');
 		// deleteElt.css('left',0);
 		
-		var buttonElt = $('<span id="a_'+groupId+'" title="<?=__('Advanced options')?>" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
-		// var buttonElt = '<a id="a_'+groupId+'" href="#">+/- <?=__('Advanced options')?></a>';
-		$group.before(buttonElt);
-		buttonElt.css('position', 'relative');
-		buttonElt.css('left','18px');
-		buttonElt.css('top','-16px');
+		var $buttonElt = $('<span id="a_'+groupId+'" title="<?=__('Advanced options')?>" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
+		// var $buttonElt = '<a id="a_'+groupId+'" href="#">+/- <?=__('Advanced options')?></a>';
+		$group.before($buttonElt);
+		
+		//TODO: put into a css file!!
+		$buttonElt.css('position', 'relative');
+		$buttonElt.css('left','18px');
+		$buttonElt.css('top','-16px');
 		
 		$group.css('position', 'relative');
 		$group.css('top','-19px');
@@ -88,10 +98,45 @@ $(document).ready(function(){
 		//add a choice to the current interaction:
 		var interactionId = '<?=get_data('interactionId')?>';
 		qtiEdit.addChoice(interactionId, $('#formContainer_choices'), 'formContainer_choice');
-		
+		return false;
 	});
 
 	initToggleChoiceOptions();
+	
+	modifiedInteraction = false;
+	modifiedChoices = [];
+	$("form").children().change(function(){
+		CL('changed', $(this).parents('form').attr('id'));
+		$modifiedForm = $(this).parents('form');
+		if($modifiedForm.length){
+			if($modifiedForm.attr('id').indexOf('ChoiceForm') == 0){
+				//it is a choice form:
+			}else if($modifiedForm.attr('id').indexOf('InteractionForm') == 0){
+				modifiedInteraction = true;
+			}
+		}
+	});
+	
+	$(".form-submiter").click(function(){
+		
+		var $myForm = $(this).parents("form");
+		//linearize it and post it:
+		if(modifiedInteraction){
+			qtiEdit.saveInteraction($myForm);
+		}
+		
+		for(var choiceId in modifiedChoices){
+			var $choiceForm = $('#'+choiceId);
+			
+			//linearize+submit:
+			if($choiceForm.length){
+				qtiEdit.saveChoice($choiceForm);
+			}
+		}
+		
+		//check modified choices then send it as well:
+		return false;
+	});
 
 });
 </script>
