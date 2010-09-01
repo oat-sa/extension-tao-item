@@ -341,6 +341,64 @@ class taoItems_models_classes_QtiAuthoringService
 
         return (string) $returnValue;
     }
+	
+	public function setInteractionId(taoItems_models_classes_QTI_Interaction $interaction, $newId){
+		if(!is_null($interaction) && !empty($newId)){
+			try{
+				$interaction->setId($newId);
+			}catch(InvalidArgumentException $e){
+				throw new Exception('the given interaction id already exists');
+			}
+		}
+	}
+	
+	// public function setInteractionOptions(taoItems_models_classes_QTI_Interaction $interaction, $options=array()){
+		// if(!is_null($interaction) && !empty($options)){
+			// $interaction->setOptions($options);
+		// }
+	// }
+	
+	public function setChoiceId(taoItems_models_classes_QTI_Choice $choice, $newId){
+		if(!is_null($choice) && !empty($newId)){
+			try{
+				$choice->setId($newId);
+			}catch(InvalidArgumentException $e){
+				throw new Exception('the given choice id already exists');
+			}
+		}
+	}
+	
+	// public function setChoiceOptions(taoItems_models_classes_QTI_Choice $choice, $options=array()){
+		// if(!is_null($choice) && !empty($options)){
+			// $choice->setOptions($options);
+		// }
+	// }
+	
+	public function setOptions(taoItems_models_classes_QTI_Data $data, $newOptions=array()){
+		
+		if(!is_null($data) && !empty($newOptions)){
+		
+			$options = array();
+		
+			foreach($newOptions as $key=>$value){
+				if(is_array($value)){
+					if(count($value)==1 && isset($value[0])){
+						$options[$key] = $value[0];
+					}else{
+						$options[$key] = array();
+						foreach($value as $val){
+							$options[$key][] = $val;
+						}
+					}
+				}else{
+					$options[$key] = $value;
+				}
+			}
+			
+			$data->setOptions($options);
+		}
+		
+	}
 
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 

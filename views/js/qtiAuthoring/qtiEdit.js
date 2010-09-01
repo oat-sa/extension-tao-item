@@ -211,16 +211,16 @@ qtiEdit.loadInteractionForm = function(interactionId){
 
 qtiEdit.saveInteraction = function($myForm){
 	//TODO: check unicity of the id:
-	CL("saving "+$myForm.attr('id'), $myForm.serialize());
-	// $.ajax({
-	   // type: "POST",
-	   // url: "/taoItems/QtiAuthoring/saveInteraction",
-	   // data: $myForm.serialize(),
-	   // dataType: 'html',
-	   // success: function(form){
+	// CL("saving "+$myForm.attr('id'), $myForm.serialize());
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveInteraction",
+	   data: $myForm.serialize(),
+	   dataType: 'json',
+	   success: function(r){
 			// $(qtiEdit.interactionFormContent).html(form);
-	   // }
-	// });
+	   }
+	});
 }
 
 qtiEdit.saveChoice = function($choiceForm){

@@ -275,17 +275,25 @@ class QTiAuthoring extends CommonModule {
 	public function saveInteraction(){
 		$interaction = $this->getCurrentInteraction();
 		$myForm = $interaction->toForm();
+		$saved = false;
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				var_dump($myForm->getValues());
-				//check unicity of the id:
-				$unique = true;
-				if($unique){
-					//save id
-					
+				// var_dump($myForm->getValues());
+				$values = $myForm->getValues();
+				
+				if($values['interactionId'] != $values['newId']){
+					// check unicity of the new id $values['newId']:
+					$unique = true;
+					if($unique){
+						// save id
+						$this->service->setInteractionId($interaction, $values['newId']);
+					}
 				}
+				unset $values['interactionId'];
+				unset $values['newId'];
+				$this->service->setOptions($interaction, $values);
 				
-				
+				$saved  = true;
 				// $group = $this->service->bindProperties($group, $myForm->getValues());
 				
 				// $this->setData('message', __('Interaction saved'));
@@ -293,10 +301,40 @@ class QTiAuthoring extends CommonModule {
 			}
 		}
 		
+		echo json_encode(array(
+			'saved' => $saved;
+		));
+		
 	}
 	
 	public function saveChoice(){
-	
+		$choice = $this->getCurrentChoice();
+		$myForm = $choice->toForm();
+		$saved = false;
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				// var_dump($myForm->getValues());
+				$values = $myForm->getValues();
+				
+				if($values['choiceId'] != $values['newId']){
+					// check unicity of the new id $values['newId']:
+					$unique = true;
+					if($unique){
+						// save id
+						$this->service->setInteractionId($choice, $values['newId']);
+					}
+				}
+				unset $values['choiceId'];
+				unset $values['newId'];
+				$this->service->setOptions($choice, $values);
+				
+				$saved  = true;
+			}
+		}
+		
+		echo json_encode(array(
+			'saved' => $saved;
+		));
 	}
 	
 	

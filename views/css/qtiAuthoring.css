@@ -9,3 +9,11 @@
 #itemEditor_wysiwyg{
 	width:70%;
 }
+
+#qtiAuthoring_rigth_container{
+	position: absolute;
+	top:0%;
+	left:71%;
+	width:29%;
+	height: 100%;
+}

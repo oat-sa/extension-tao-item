@@ -23,7 +23,20 @@
 	</div>
 
 	<div id='qtiAuthoring_interactionEditor'/>    
-</div>      
+</div>
+<!--
+<div id="qtiAuthoring_rigth_container">
+	<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
+			<?=__('Response & Scoring Editor:')?>
+	</div>
+	<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
+		<div class="ext-home-container ui-state-highlight">
+			
+		</div>
+
+	</div>
+</div>
+-->      
 <script type="text/javascript">
 // img_url_tao = root_url + "/tao/views/img/";
 // img_url = root_url + "/taoItems/views/img/";
