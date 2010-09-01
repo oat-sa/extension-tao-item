@@ -138,11 +138,10 @@ class taoItems_models_classes_QTI_ParserFactory
        	
        		switch($type){
        			case 'match':
-       			case 'gap':
        			case 'graphicassociate':
        			case 'graphicgapmatch':
        			default :
-       				$choiceNodes = $data->xpath("//*[ (contains(name(.), 'Choice')) or (name(.) = 'hottext')]");
+       				$choiceNodes = $data->xpath("//*[ (contains(name(.), 'Choice')) or (name(.) = 'hottext') or (name(.) = 'gapText')]");
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
 			        	if(!is_null($choice)){
@@ -160,9 +159,15 @@ class taoItems_models_classes_QTI_ParserFactory
 	        	$interactionData .= $interactionNode->asXml();
 	        }
 	        if(!empty($interactionData)){
-		        foreach($myInteraction->getChoices() as $choice){
-		        	//map the interactions by a identified tag: {interaction-id} 
-		        	$tag = $choice->getName();
+				
+	        	foreach($myInteraction->getChoices() as $choice){
+		        	//map the interactions by a identified tag: {interaction-id}
+		        	if($type ==  'gapMatch'){
+		        		$tag = 'gap';
+		        	}
+		        	else{
+		        		$tag = $choice->getName();
+		        	}
 		        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 		        	$interactionData = preg_replace($pattern, "{{$choice->getId()}}", $interactionData, 1);
 		        }
@@ -206,7 +211,7 @@ class taoItems_models_classes_QTI_ParserFactory
 			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for the choice {$data->getName()}");
        	}
        	
-       	$myChoice = new taoItems_models_classes_QTI_Choice(null, $options);
+       	$myChoice = new taoItems_models_classes_QTI_Choice($data['identifier'], $options);
        	$myChoice->setName($data->getName());
        	$myChoice->setData((string)$data);
        	$myChoice->setValue((string)$data['identifier']);

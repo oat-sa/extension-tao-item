@@ -213,9 +213,22 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F begin
     	
-    	if(Session::hasAttribute($id)){
+    	$ids = array();
+        if(Session::hasAttribute('qti-ids')){
+    		$ids = Session::getAttribute('qti-ids');
+    		if(!is_array($ids)){
+    			$ids = array($ids);
+    		}
+    	}
+    	if(in_array($id, $ids)){
     		throw new InvalidArgumentException("Id $id is already in use");
     	}
+    	if(!empty($this->id)){
+    		//unset($ids[$this->id]);
+    	}
+    	
+    	$ids[] = $id;
+    	Session::setAttribute('qtiids', $ids);
     	$this->id = $id;
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F end
@@ -233,24 +246,35 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
+    	$ids = array();
+        if(Session::hasAttribute('qti-ids')){
+    		$ids = Session::getAttribute('qti-ids');
+    		if(!is_array($ids)){
+    			$ids = array($ids);
+    		}
+    	}
+    	
     	$clazz = strtolower(get_class($this));
     	$prefix = substr($clazz, strpos($clazz, 'qti_')).'_';
     	if($random){
-    		$this->id = str_replace('.', '', uniqid($prefix, true));
+    		$id = str_replace('.', '', uniqid($prefix, true));
     	}
     	else{
     		$index = 1;
     		do {
     			$exist = false;
-    			$id = $prefix . '_' . $index;
-    			if(Session::hasAttribute($id)){
+    			$id = $prefix . $index;
+    			if(in_array($id, $ids)){
     				$exist = true;
     				$index++;
     			}
     		} while($exist);
     		
-    		$this->id = $id;
     	}
+    	$ids[] = $id;
+    	Session::setAttribute('qti-ids', $ids);
+    	
+    	$this->id = $id;
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
     }
 
