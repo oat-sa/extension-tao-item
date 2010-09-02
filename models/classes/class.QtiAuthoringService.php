@@ -181,10 +181,12 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function deleteInteraction(taoItems_models_classes_QTI_Item $item, taoItems_models_classes_QTI_Interaction $interaction){
 		//add specific method in the item class: deleteInteraction??
+		$item->removeInteraction($interaction);
 	}
 	
 	public function deleteChoice(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Choice $choice){
 		//add specific method in the interaction class: deleteChoice??
+		$interaction->removeChoice($choice);
 	}
 	
     /**
@@ -345,19 +347,15 @@ class taoItems_models_classes_QtiAuthoringService
 	public function setInteractionId(taoItems_models_classes_QTI_Interaction $interaction, $newId){
 		if(!is_null($interaction) && !empty($newId)){
 			try{
+				echo 'bbb';
 				$interaction->setId($newId);
 			}catch(InvalidArgumentException $e){
+				var_dump($_SESSION);
 				throw new Exception('the given interaction id already exists');
 			}
 		}
 	}
-	
-	// public function setInteractionOptions(taoItems_models_classes_QTI_Interaction $interaction, $options=array()){
-		// if(!is_null($interaction) && !empty($options)){
-			// $interaction->setOptions($options);
-		// }
-	// }
-	
+		
 	public function setChoiceId(taoItems_models_classes_QTI_Choice $choice, $newId){
 		if(!is_null($choice) && !empty($newId)){
 			try{
@@ -367,12 +365,6 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 		}
 	}
-	
-	// public function setChoiceOptions(taoItems_models_classes_QTI_Choice $choice, $options=array()){
-		// if(!is_null($choice) && !empty($options)){
-			// $choice->setOptions($options);
-		// }
-	// }
 	
 	public function setOptions(taoItems_models_classes_QTI_Data $data, $newOptions=array()){
 		
@@ -384,7 +376,7 @@ class taoItems_models_classes_QtiAuthoringService
 				if(is_array($value)){
 					if(count($value)==1 && isset($value[0])){
 						$options[$key] = $value[0];
-					}else{
+					}else if(count($value)>1){
 						$options[$key] = array();
 						foreach($value as $val){
 							$options[$key][] = $val;
@@ -399,7 +391,10 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 		
 	}
-
+	
+	public function setData(taoItems_models_classes_QTI_Data $qtiObject, $data = ''){
+		$qtiObject->setData($data);
+	}
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>

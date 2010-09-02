@@ -80,7 +80,7 @@ class QTiAuthoring extends CommonModule {
 	
 		// $itemData = $this->getCurrentItem()->getData();
 		$currentItem = $this->getCurrentItem();
-		
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
@@ -234,7 +234,7 @@ class QTiAuthoring extends CommonModule {
 	public function getCurrentChoice(){
 		$returnValue = null;
 		if($this->hasRequestParameter('choiceId')){
-			$choice = $this->qtiService->getChoiceById($this->getRequestParameter('choiceId'));
+			$choice = $this->qtiService->getDataById($this->getRequestParameter('choiceId'), 'taoItems_models_classes_QTI_Choice');
 			if(!empty($choice)){
 				$returnValue = $choice;
 			}
@@ -289,8 +289,15 @@ class QTiAuthoring extends CommonModule {
 						$this->service->setInteractionId($interaction, $values['newId']);
 					}
 				}
-				unset $values['interactionId'];
-				unset $values['newId'];
+				
+				if(isset($values['data'])){
+					$this->service->setData($interaction, $values['data']);
+					unset($values['data']);
+				}
+				
+				unset($values['interactionId']);
+				unset($values['newId']);
+				
 				$this->service->setOptions($interaction, $values);
 				
 				$saved  = true;
@@ -302,7 +309,7 @@ class QTiAuthoring extends CommonModule {
 		}
 		
 		echo json_encode(array(
-			'saved' => $saved;
+			'saved' => $saved
 		));
 		
 	}
@@ -324,8 +331,14 @@ class QTiAuthoring extends CommonModule {
 						$this->service->setInteractionId($choice, $values['newId']);
 					}
 				}
-				unset $values['choiceId'];
-				unset $values['newId'];
+				
+				if(isset($values['data'])){
+					$this->service->setData($choice, $values['data']);
+					unset($values['data']);
+				}
+				
+				unset($values['choiceId']);
+				unset($values['newId']);
 				$this->service->setOptions($choice, $values);
 				
 				$saved  = true;
@@ -333,7 +346,8 @@ class QTiAuthoring extends CommonModule {
 		}
 		
 		echo json_encode(array(
-			'saved' => $saved;
+			'saved' => $saved,
+			'choiceId' => $choice->getId()
 		));
 	}
 	

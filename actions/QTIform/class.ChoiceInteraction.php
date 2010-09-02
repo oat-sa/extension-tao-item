@@ -50,7 +50,8 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
 		$this->setCommonElements();
 		
-		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textarea');//should be a text... need to solve the conflict with the 
+		//the prompt field is the interaction's data for a block interaction, that's why the id is data and not 
+		$promptElt = tao_helpers_form_FormFactory::getElement('data', 'Textarea');//should be a text... need to solve the conflict with the 
 		$promptElt->setDescription(__('Prompt'));
 		// $promptElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));//no validator required for prompt
 		$interactionData = $interaction->getData();
@@ -63,10 +64,10 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
 		$shuffleElt->setDescription(__('Shuffle'));
 		$shuffle = $interaction->getOption('shuffle');
-		$shuffleElt->setOptions(array('shuffle' => ''));
+		$shuffleElt->setOptions(array('true' => ''));
 		if(!empty($shuffle)){
 			if($shuffle === 'true' || $shuffle === true){
-				$fixedElt->setValue('shuffle');
+				$shuffleElt->setValue('true');
 			}
 		}
 		$this->form->addElement($shuffleElt);

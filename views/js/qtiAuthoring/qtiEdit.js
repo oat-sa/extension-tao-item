@@ -144,36 +144,6 @@ qtiEdit.getDeletedInteractions = function(one){
 	return deletedInteractions;
 }
 
-qtiEdit.addChoice = function(interactionId, $appendTo, containerClass){
-	
-	if(!$appendTo || !$appendTo.length){
-		throw 'the append target element do not exists';
-	}
-	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/addChoice",
-	   data: {
-			'interactionId': interactionId
-	   },
-	   dataType: 'json',
-	   success: function(r){
-			CL('choice added');
-			if(r.added){
-				var newFormElt = $('<div/>');
-				newFormElt.attr('id', r.choiceId);
-				newFormElt.attr('class', containerClass);
-				newFormElt.append(r.choiceForm);
-				$appendTo.append(newFormElt);
-				
-				newFormElt.hide();
-				initToggleChoiceOptions();
-				newFormElt.show();
-			}
-	   }
-	});
-}
-
 qtiEdit.saveItemData = function(itemId){
 	
 	if(!itemId){
@@ -209,20 +179,3 @@ qtiEdit.loadInteractionForm = function(interactionId){
 	});
 }
 
-qtiEdit.saveInteraction = function($myForm){
-	//TODO: check unicity of the id:
-	// CL("saving "+$myForm.attr('id'), $myForm.serialize());
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveInteraction",
-	   data: $myForm.serialize(),
-	   dataType: 'json',
-	   success: function(r){
-			// $(qtiEdit.interactionFormContent).html(form);
-	   }
-	});
-}
-
-qtiEdit.saveChoice = function($choiceForm){
-	CL("saving "+$choiceForm.attr('id'), $choiceForm.serialize());
-}

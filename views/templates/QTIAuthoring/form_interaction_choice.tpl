@@ -1,5 +1,4 @@
 
-
 <div id="formInteraction_title_<?=get_data('interactionId')?>" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
 		<?=__('Interaction editor:')?>
 </div>
@@ -29,114 +28,21 @@
 	
 </div>
 
-
-
-
-
-
 <script type="text/javascript">
-function toggleChoiceOptions($group){
-	var groupId = $group.attr('id');
-	if(groupId.indexOf('choicePropOptions') == 0){
-		
-		// it is a choice group:
-		if($('#a_'+groupId).length){
-			$('#a_'+groupId).remove();
-		}
-		if($('#delete_'+groupId).length){
-			$('#delete_'+groupId).remove();
-		}
-		
-		var deleteElt = $('<span id="delete_'+groupId+'" title="<?=__('Delete choice')?>" class="form-group-control ui-icon ui-icon-circle-close"></span>');
-		$group.before(deleteElt);
-		deleteElt.css('position', 'relative');
-		// deleteElt.css('left',0);
-		
-		var $buttonElt = $('<span id="a_'+groupId+'" title="<?=__('Advanced options')?>" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
-		// var $buttonElt = '<a id="a_'+groupId+'" href="#">+/- <?=__('Advanced options')?></a>';
-		$group.before($buttonElt);
-		
-		//TODO: put into a css file!!
-		$buttonElt.css('position', 'relative');
-		$buttonElt.css('left','18px');
-		$buttonElt.css('top','-16px');
-		
-		$group.css('position', 'relative');
-		$group.css('top','-19px');
-		$group.css('left','20px');
-		$group.width('90%');
-		
-		$group.hide();
-		
-		// $('#a_'+groupId).unbind('click');
-		$('#a_'+groupId).toggle(function(){
-			$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
-			$('#'+groupId).show().effect('slide');
-		},function(){
-			$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
-			$('#'+groupId).hide().effect('fold');
-		});
-		
-		$('#delete_'+groupId).click(function(){
-			if(confirm('Do you want to delete the choice?')){
-				var choiceId = $(this).attr('id').replace('delete_choicePropOptions_', '');
-				CL('deleting the choice '+choiceId);
-			}
-		});
-	}
-}
-
-function initToggleChoiceOptions(){
-	$('.form-group').each(function(){
-		toggleChoiceOptions($(this));
-	});
-}
-
 $(document).ready(function(){
-
+	
+	interactionEdit.initInteractionFormSubmitter();
+	
 	$('#add_choice_button').click(function(){
 		//add a choice to the current interaction:
 		var interactionId = '<?=get_data('interactionId')?>';
-		qtiEdit.addChoice(interactionId, $('#formContainer_choices'), 'formContainer_choice');
+		interactionEdit.addChoice(interactionId, $('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
 
-	initToggleChoiceOptions();
+	interactionEdit.initToggleChoiceOptions();
 	
-	modifiedInteraction = false;
-	modifiedChoices = [];
-	$("form").children().change(function(){
-		CL('changed', $(this).parents('form').attr('id'));
-		$modifiedForm = $(this).parents('form');
-		if($modifiedForm.length){
-			if($modifiedForm.attr('id').indexOf('ChoiceForm') == 0){
-				//it is a choice form:
-			}else if($modifiedForm.attr('id').indexOf('InteractionForm') == 0){
-				modifiedInteraction = true;
-			}
-		}
-	});
-	
-	$(".form-submiter").click(function(){
-		
-		var $myForm = $(this).parents("form");
-		//linearize it and post it:
-		if(modifiedInteraction){
-			qtiEdit.saveInteraction($myForm);
-		}
-		
-		for(var choiceId in modifiedChoices){
-			var $choiceForm = $('#'+choiceId);
-			
-			//linearize+submit:
-			if($choiceForm.length){
-				qtiEdit.saveChoice($choiceForm);
-			}
-		}
-		
-		//check modified choices then send it as well:
-		return false;
-	});
+	interactionEdit.setFormChangeListener();//all form
 
 });
 </script>

@@ -87,11 +87,11 @@ abstract class taoItems_actions_QTIform_Choice
 		//the fixed attribute element
 		$fixedElt = tao_helpers_form_FormFactory::getElement('fixed', 'CheckBox');
 		$fixedElt->setDescription(__('Fixed'));
-		$fixedElt->setOptions(array('fixed' => ''));//empty label because the description of the element is enough
+		$fixedElt->setOptions(array('true' => ''));//empty label because the description of the element is enough
 		$fixed = $this->choice->getOption('fixed');
 		if(!empty($fixed)){
 			if($fixed === 'true' || $fixed === true){
-				$fixedElt->setValue('fixed');
+				$fixedElt->setValue('true');
 			}
 		}
 		$this->form->addElement($fixedElt);

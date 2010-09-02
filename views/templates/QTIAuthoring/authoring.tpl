@@ -3,6 +3,7 @@
 
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEdit.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionEdit.js"></script>
 <script type="text/javascript" src="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="<?=get_data('simplemodal_path')?>jquery.simplemodal.js"></script>
 
