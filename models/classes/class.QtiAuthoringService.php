@@ -347,7 +347,7 @@ class taoItems_models_classes_QtiAuthoringService
 	public function setInteractionId(taoItems_models_classes_QTI_Interaction $interaction, $newId){
 		if(!is_null($interaction) && !empty($newId)){
 			try{
-				echo 'bbb';
+				$interaction->setId($newId);
 				$interaction->setId($newId);
 			}catch(InvalidArgumentException $e){
 				var_dump($_SESSION);

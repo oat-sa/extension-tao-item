@@ -206,7 +206,15 @@ class QTiAuthoring extends CommonModule {
 	}
 	
 	public function deleteChoice(){
-	
+		$interaction = $this->getCurrentInteraction();
+		$choice = $this->getCurrentChoice();
+		if(!is_null($interaction) && !is_null($choice)){
+			$this->service->deleteChoice($interaction, $choice);
+		}
+		
+		echo json_encode(array(
+			'deleted' => true
+		));
 	}
 	
 	
@@ -259,8 +267,6 @@ class QTiAuthoring extends CommonModule {
 			// $choices[] = $choice->toForm();//first, the simple version: choice are editable immediately. 
 			$choices[$choice->getId()] = $choice->toForm()->render();
 		}
-		
-		
 		
 		//display the template, according to the type of interaction
 		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';

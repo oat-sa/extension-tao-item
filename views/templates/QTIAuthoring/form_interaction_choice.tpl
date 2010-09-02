@@ -31,12 +31,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	interactionEdit.interactionId = '<?=get_data('interactionId')?>';
 	interactionEdit.initInteractionFormSubmitter();
 	
 	$('#add_choice_button').click(function(){
 		//add a choice to the current interaction:
-		var interactionId = '<?=get_data('interactionId')?>';
-		interactionEdit.addChoice(interactionId, $('#formContainer_choices'), 'formContainer_choice');
+		interactionEdit.addChoice(interactionEdit.interactionId, $('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
 

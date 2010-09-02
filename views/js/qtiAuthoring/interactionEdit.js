@@ -1,6 +1,7 @@
 // alert('interaction edit loaded');
 
 interactionEdit = new Object();
+interactionEdit.interactionId = '';
 interactionEdit.modifiedInteraction = false;
 interactionEdit.modifiedChoices = [];
 
@@ -48,7 +49,8 @@ interactionEdit.toggleChoiceOptions = function($group){
 		$('#delete_'+groupId).click(function(){
 			if(confirm('Do you want to delete the choice?')){
 				var choiceId = $(this).attr('id').replace('delete_choicePropOptions_', '');
-				CL('deleting the choice '+choiceId);
+				// CL('deleting the choice '+choiceId);
+				interactionEdit.deleteChoice(choiceId);
 			}
 		});
 		
@@ -182,5 +184,20 @@ interactionEdit.addChoice = function(interactionId, $appendTo, containerClass){
 	   }
 	});
 }
-/*
-*/
+
+interactionEdit.deleteChoice = function(choiceId){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/deleteChoice",
+	   data: {
+			'choiceId': choiceId,
+			'interactionId': interactionEdit.interactionId
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			if(r.deleted){
+				$('#'+choiceId).remove();
+			}
+	   }
+	});
+}
