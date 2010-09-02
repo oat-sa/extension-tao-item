@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 02.09.2010, 11:51:52 with ArgoUML PHP module 
+ * Automatically generated on 02.09.2010, 16:53:55 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -34,6 +34,13 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
+
+/**
+ * include taoItems_models_classes_QTI_Group
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/class.Group.php');
 
 /**
  * include taoItems_models_classes_QTI_Item
@@ -69,7 +76,7 @@ class taoItems_models_classes_QTI_Interaction
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -96,6 +103,14 @@ class taoItems_models_classes_QTI_Interaction
      * @var string
      */
     protected $type = '';
+
+    /**
+     * Short description of attribute groups
+     *
+     * @access protected
+     * @var array
+     */
+    protected $groups = array();
 
     // --- OPERATIONS ---
 
@@ -277,20 +292,94 @@ class taoItems_models_classes_QTI_Interaction
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Choice choice
-     * @return mixed
+     * @return boolean
      */
     public function removeChoice( taoItems_models_classes_QTI_Choice $choice)
     {
+        $returnValue = (bool) false;
+
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 begin
         
    	 	if(!is_null($choice)){
-    		if(isset($this->choices[$choice->getId()])){
-    			unset($this->choices[$choice->getId()]);
+    		if(isset($this->choices[$choice->getSerial()])){
+    			unset($this->choices[$choice->getSerial()]);
     			$returnValue = true;
     		}
     	}
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getGroups
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function getGroups()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002544 begin
+        
+        $returnValue  = $this->groups;
+        
+        // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002544 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method addGroup
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Group group
+     * @return mixed
+     */
+    public function addGroup( taoItems_models_classes_QTI_Group $group)
+    {
+        // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:0000000000002546 begin
+        
+    	$this->groups[$group->getSerial()] = $group;
+    	
+        // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:0000000000002546 end
+    }
+
+    /**
+     * Short description of method removeGroup
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Group group
+     * @param  boolean recursive
+     * @return boolean
+     */
+    public function removeGroup( core_kernel_classes_Group $group, $recursive = false)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:000000000000254D begin
+        
+    	if(!is_null($group)){
+    		if(isset($this->groups[$group->getSerial()])){
+    			
+    			if($recursive){
+    				foreach($group->getChoices() as $choice){
+    					$this->removeChoice($choice);
+    				}
+    			}
+    			unset($this->groups[$group->getSerial()]);
+    			$returnValue = true;
+    		}
+    	}
+    	
+        // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:000000000000254D end
+
+        return (bool) $returnValue;
     }
 
     /**

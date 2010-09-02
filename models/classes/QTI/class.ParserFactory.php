@@ -137,11 +137,49 @@ class taoItems_models_classes_QTI_ParserFactory
        		$myInteraction = new taoItems_models_classes_QTI_Interaction($type, null, $options);
        	
        		switch($type){
+       			
        			case 'match':
-       			case 'graphicassociate':
-       			case 'graphicgapmatch':
+       				$matchSetNodes = $data->xpath("//*[name(.) = 'simpleMatchSet']");
+       				foreach($matchSetNodes as $matchSetNode){
+       					$choiceNodes = $matchSetNode->xpath("//*[name(.) = 'simpleAssociableChoice']");
+       					$choices = array();
+	       				foreach($choiceNodes as $choiceNode){
+				        	$choice = self::buildChoice($choiceNode);
+				        	if(!is_null($choice)){
+				        		$myInteraction->addChoice($choice);
+				        		$choices[] = $choice;
+				        	}
+	       				}
+       					if(count($choices) > 0){
+       						$group = new taoItems_models_classes_QTI_Group();
+       						$group->setName((string)$matchSetNode->getName());
+       						$group->setChoices($choices);
+       						$myInteraction->addGroup($group);
+       					}
+       				}
+       				break;
+       				
+       			case 'gapMatch':
+       				$choiceNodes = $data->xpath("//*[name(.) = 'gapText']");
+       				$choices = array();
+       				foreach($choiceNodes as $choiceNode){
+			        	$choice = self::buildChoice($choiceNode);
+			        	if(!is_null($choice)){
+			       			$myInteraction->addChoice($choice);
+			       			$choices[] = $choice;
+			        	}
+       				}
+       				$gapNodes = $data->xpath("//*[name(.) = 'gap']");
+       				foreach($gapNodes as $gapNode){
+       					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
+       					$group->setName((string)$gapNode->getName());
+       					$group->setChoices($choices);
+       					$myInteraction->addGroup($group);
+       				}
+       				break;
+       				
        			default :
-       				$choiceNodes = $data->xpath("//*[ (contains(name(.), 'Choice')) or (name(.) = 'hottext') or (name(.) = 'gapText')]");
+       				$choiceNodes = $data->xpath("//*[ (contains(name(.), 'Choice')) or (name(.) = 'hottext')]");
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
 			        	if(!is_null($choice)){
@@ -159,19 +197,45 @@ class taoItems_models_classes_QTI_ParserFactory
 	        	$interactionData .= $interactionNode->asXml();
 	        }
 	        if(!empty($interactionData)){
-				
-	        	foreach($myInteraction->getChoices() as $choice){
-		        	//map the interactions by a identified tag: {interaction-id}
-		        	if($type ==  'gapMatch'){
-		        		$tag = 'gap';
-		        	}
-		        	else{
-		        		$tag = $choice->getName();
-		        	}
-		        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
-		        	$interactionData = preg_replace($pattern, "{{$choice->getSerial()}}", $interactionData, 1);
-		        }
-		        $myInteraction->setData($interactionData);
+	        	
+				switch($type){
+					
+       				case 'match':
+       					foreach($myInteraction->getGroups() as $group){
+       						//map the group by a identified tag: {group-serial}
+       						$tag = $group->getName();
+				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
+				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
+       					}
+						
+       					break;
+       					
+       				case 'gapMatch':
+						foreach($myInteraction->getGroups() as $group){
+       						//map the group by a identified tag: {group-serial}
+       						$tag = $group->getName();
+				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
+				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
+       					}
+						foreach($myInteraction->getChoices() as $choice){
+							//remove the choices tags
+				        	$tag = $choice->getName();
+				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
+				        	$interactionData = preg_replace($pattern, "", $interactionData, 1);
+				        }
+       					break;
+       					
+       				default:
+			        	foreach($myInteraction->getChoices() as $choice){
+				        	//map the choices by a identified tag: {choice-serial}
+				        	$tag = $choice->getName();
+				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
+				        	$interactionData = preg_replace($pattern, "{{$choice->getSerial()}}", $interactionData, 1);
+				        }
+				        break;
+		        
+	       		}
+	        	$myInteraction->setData($interactionData);
 	        }
        		
        		$returnValue = $myInteraction;
