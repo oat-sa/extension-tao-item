@@ -54,16 +54,16 @@ class taoItems_models_classes_QTI_Service
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
+     * @param  string serial
      * @return taoItems_models_classes_QTI_Item
      */
-    public function getItemById($id)
+    public function getItemBySerial($serial)
     {
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A9 begin
         
-        $returnValue = $this->getDataById($id, 'taoItems_models_classes_QTI_Item');
+        $returnValue = $this->getDataBySerial($serial, 'taoItems_models_classes_QTI_Item');
         
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A9 end
 
@@ -75,16 +75,16 @@ class taoItems_models_classes_QTI_Service
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
-     * @return taoItems_models_classes_QTI_Interaction
+     * @param  string serial
+     * @return doc_Interaction
      */
-    public function getInteractionById($id)
+    public function getInteractionBySerial($serial)
     {
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024C3 begin
         
-        $returnValue = $this->getDataById($id, 'taoItems_models_classes_QTI_Interaction');
+        $returnValue = $this->getDataBySerial($serial, 'taoItems_models_classes_QTI_Interaction');
         
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024C3 end
 
@@ -96,16 +96,16 @@ class taoItems_models_classes_QTI_Service
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
+     * @param  string serial
      * @return taoItems_models_classes_QTI_Response
      */
-    public function getResponseById($id)
+    public function getResponseBySerial($serial)
     {
         $returnValue = null;
 
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D1 begin
         
-         $returnValue = $this->getDataById($id, 'taoItems_models_classes_QTI_Response');
+         $returnValue = $this->getDataBySerial($serial, 'taoItems_models_classes_QTI_Response');
         
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D1 end
 
@@ -117,23 +117,23 @@ class taoItems_models_classes_QTI_Service
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
+     * @param  string serial
      * @param  string type
      * @return taoItems_models_classes_QTI_Data
      */
-    public function getDataById($id, $type = '')
+    public function getDataBySerial($serial, $type = '')
     {
         $returnValue = null;
 
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 begin
         
-    	if(!empty($id)){
-	        if(Session::hasAttribute($id)){
+    	if(!empty($serial)){
+	        if(Session::hasAttribute($serial)){
 
-	        	$data = @unserialize(Session::getAttribute($id));
+	        	$data = @unserialize(Session::getAttribute($serial));
 	        
 	        	if($data === false){
-	        		throw new Exception("Unable to unserialie  session entry identified by $id");
+	        		throw new Exception("Unable to unserialie  session entry identified by $serial");
 	        	}
 	        	if(!empty($type)){
 	        		if( ! $data instanceof $type) {

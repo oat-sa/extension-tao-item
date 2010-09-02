@@ -17,7 +17,6 @@ class QTITestCase extends UnitTestCase {
 	 */
 	public function setUp(){		
 		TestRunner::initTest();
-		
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
 	
@@ -40,7 +39,7 @@ class QTITestCase extends UnitTestCase {
 			$this->assertTrue(count($qtiParser->getErrors()) > 0);
 		}
 		
-		//check if sampels are loaded 
+		//check if samples are loaded 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
@@ -75,34 +74,6 @@ class QTITestCase extends UnitTestCase {
 				$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 			}
 		}
-	}
-	
-	public function testPersitance(){
-		
-		taoItems_models_classes_QTI_Data::setPersistance(true);
-		
-		//load an item
-		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice_multiple.xml');
-		$item = $qtiParser->load();
-		
-		$this->assertTrue($qtiParser->isValid());
-		$this->assertNotNull($item);
-		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
-		
-		$itemId = $item->getId();
-		
-		//item is saved by destruction 
-		unset($item);
-		
-		$savedItem = $this->qtiService->getItemById($itemId);
-		$this->assertNotNull($savedItem);
-		$this->assertIsA($savedItem, 'taoItems_models_classes_QTI_Item');
-		
-		//real remove
-		taoItems_models_classes_QTI_Data::setPersistance(false);
-		unset($savedItem);
-		
-		$this->assertNull($this->qtiService->getItemById($itemId));
 	}
 	
 }

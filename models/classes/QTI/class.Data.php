@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.09.2010, 11:36:36 with ArgoUML PHP module 
+ * Automatically generated on 02.09.2010, 11:51:52 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -54,6 +54,14 @@ abstract class taoItems_models_classes_QTI_Data
     protected $id = '';
 
     /**
+     * Short description of attribute serial
+     *
+     * @access protected
+     * @var string
+     */
+    protected $serial = '';
+
+    /**
      * Short description of attribute data
      *
      * @access protected
@@ -77,6 +85,14 @@ abstract class taoItems_models_classes_QTI_Data
      */
     public static $persist = true;
 
+    /**
+     * Short description of attribute PREFIX
+     *
+     * @access public
+     * @var string
+     */
+    const PREFIX = 'qti_';
+
     // --- OPERATIONS ---
 
     /**
@@ -92,12 +108,15 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 begin
         
-    	if(is_null($id) || empty($id)){
-    		$this->createUniqueId();
+    	$this->createSerial();
+    	
+    	try{
+    		$this->setId($id);
     	}
-    	else{
-    		$this->id = $id;
+    	catch(InvalidArgumentException $iae){
+    		$this->createId();
     	}
+    	
     	$this->options = $options;
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 end
@@ -115,10 +134,21 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF begin
         
     	if(self::$persist){
-    		Session::setAttribute($this->id, serialize($this));
+    		Session::setAttribute($this->serial, serialize($this));
         }
         else{
-        	Session::removeAttribute($this->id);
+        	if(!empty($this->serial)){
+        		Session::removeAttribute($this->serial);
+        	}
+        	if(!empty($this->id) && !is_null($this->id)){
+        		$ids = Session::getAttribute('qti-ids');
+        		if(is_array($ids)){
+	    			if(isset($ids[$this->id])){
+        				unset($ids[$this->id]);
+	    				Session::setAttribute('qti-ids', $ids);
+	    			}
+        		}
+        	}
         }
         
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF end
@@ -143,6 +173,7 @@ abstract class taoItems_models_classes_QTI_Data
 				$returnValue[] = $property->getName();
 			}
 		}
+		
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 end
 
         return (array) $returnValue;
@@ -179,6 +210,29 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
+     * Short description of method getSerial
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function getSerial()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002548 begin
+        
+    	if(is_null($this->serial) || empty($this->serial)){
+        	$this->createSerial();
+        }
+        $returnValue = $this->serial;
+        
+        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002548 end
+
+        return (string) $returnValue;
+    }
+
+    /**
      * Short description of method getId
      *
      * @access public
@@ -192,8 +246,10 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002320 begin
         
         if(is_null($this->id) || empty($this->id)){
-        	$this->createUniqueId();
+        	$this->createId();
         }
+        $this->createSerial();
+        
         $returnValue = $this->id;
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002320 end
@@ -213,6 +269,10 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F begin
     	
+    	if(empty($id) || is_null($id)){
+    		throw new InvalidArgumentException("Id should be set");
+    	}
+    	
     	$ids = array();
         if(Session::hasAttribute('qti-ids')){
     		$ids = Session::getAttribute('qti-ids');
@@ -224,25 +284,24 @@ abstract class taoItems_models_classes_QTI_Data
     		throw new InvalidArgumentException("Id $id is already in use");
     	}
     	if(!empty($this->id)){
-    		//unset($ids[$this->id]);
+    		unset($ids[$this->id]);
     	}
     	
     	$ids[] = $id;
-    	Session::setAttribute('qtiids', $ids);
+    	Session::setAttribute('qti-ids', $ids);
     	$this->id = $id;
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F end
     }
 
     /**
-     * Short description of method createUniqueId
+     * Short description of method createId
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  boolean random
      * @return mixed
      */
-    protected function createUniqueId($random = false)
+    protected function createId()
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
@@ -255,27 +314,42 @@ abstract class taoItems_models_classes_QTI_Data
     	}
     	
     	$clazz = strtolower(get_class($this));
-    	$prefix = substr($clazz, strpos($clazz, 'qti_')).'_';
-    	if($random){
-    		$id = str_replace('.', '', uniqid($prefix, true));
-    	}
-    	else{
-    		$index = 1;
-    		do {
-    			$exist = false;
-    			$id = $prefix . $index;
-    			if(in_array($id, $ids)){
-    				$exist = true;
-    				$index++;
-    			}
-    		} while($exist);
+    	$prefix = substr($clazz, strpos($clazz, 'qti_') + 4).'_';
     		
-    	}
+    	$index = 1;
+    	do {
+    		$exist = false;
+    		$id = $prefix . $index;
+    		if(in_array($id, $ids)){
+    			$exist = true;
+    			$index++;
+    		}
+    	} while($exist);
+    		
     	$ids[] = $id;
     	Session::setAttribute('qti-ids', $ids);
     	
     	$this->id = $id;
+    	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
+    }
+
+    /**
+     * Short description of method createSerial
+     *
+     * @access protected
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    protected function createSerial()
+    {
+        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 begin
+        
+    	$clazz  = strtolower(get_class($this));
+    	$prefix = substr($clazz, strpos($clazz, 'qti_')).'_';
+    	$this->serial = str_replace('.', '', uniqid($prefix, true));
+    	
+        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 end
     }
 
     /**

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.09.2010, 11:23:14 with ArgoUML PHP module 
+ * Automatically generated on 02.09.2010, 11:51:52 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -117,11 +117,11 @@ class taoItems_models_classes_QTI_Item
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB begin
         
-    	$interactionIds = $this->interactions; 
+    	$interactionSerials = $this->interactions; 
     	$this->interactions = array();
-    	foreach($interactionIds as $interactionId){
-    		if(Session::hasAttribute($interactionId)){
-    			$this->interactions[$interactionId] = unserialize(Session::getAttribute($interactionId));
+    	foreach($interactionSerials as $serial){
+    		if(Session::hasAttribute($serial)){
+    			$this->interactions[$serial] = unserialize(Session::getAttribute($serial));
     		}
     	}
     	
@@ -173,18 +173,18 @@ class taoItems_models_classes_QTI_Item
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
+     * @param  string serial
      * @return taoItems_models_classes_QTI_Interaction
      */
-    public function getInteraction($id)
+    public function getInteraction($serial)
     {
         $returnValue = null;
 
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023DB begin
         
-        if(!empty($id)){
+        if(!empty($serial)){
 	        if(array_key_exists($id, $this->interactions)){
-	        	$returnValue = $this->interactions[$id];
+	        	$returnValue = $this->interactions[$serial];
 	        }
         }
         
@@ -206,7 +206,7 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023DF begin
         
     	if(!is_null($interaction)){
-    		$this->interactions[$interaction->getId()] = $interaction;
+    		$this->interactions[$interaction->getSerial()] = $interaction;
     	}
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023DF end
@@ -227,8 +227,8 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002538 begin
         
     	if(!is_null($interaction)){
-    		if(isset($this->interactions[$interaction->getId()])){
-    			unset($this->interactions[$interaction->getId()]);
+    		if(isset($this->interactions[$interaction->getSerial()])){
+    			unset($this->interactions[$interaction->getSerial()]);
     			$returnValue = true;
     		}
     	}

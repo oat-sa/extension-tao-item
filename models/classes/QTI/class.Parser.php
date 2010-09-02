@@ -235,10 +235,10 @@ class taoItems_models_classes_QTI_Parser
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  mixed error
+     * @param  mixed error Exception|LibXMLError
      * @return mixed
      */
-    protected function addError( mixed $error)
+    protected function addError($error)
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024C7 begin
         

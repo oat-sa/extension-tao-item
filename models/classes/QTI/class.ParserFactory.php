@@ -101,7 +101,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	        	//map the interactions by a identified tag: {interaction-id} 
 	        	$tag = $interation->getType().'Interaction';
 	        	$pattern = "/<{$tag}\b[^>]*>(.*?)<\/{$tag}>/is";
-	        	$itemData = preg_replace($pattern, "{{$interaction->getId()}}", $itemData, 1);
+	        	$itemData = preg_replace($pattern, "{{$interaction->getSerial()}}", $itemData, 1);
 	        }
 	        $myItem->setData($itemData);
         }
@@ -169,7 +169,7 @@ class taoItems_models_classes_QTI_ParserFactory
 		        		$tag = $choice->getName();
 		        	}
 		        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
-		        	$interactionData = preg_replace($pattern, "{{$choice->getId()}}", $interactionData, 1);
+		        	$interactionData = preg_replace($pattern, "{{$choice->getSerial()}}", $interactionData, 1);
 		        }
 		        $myInteraction->setData($interactionData);
 	        }
@@ -211,7 +211,7 @@ class taoItems_models_classes_QTI_ParserFactory
 			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for the choice {$data->getName()}");
        	}
        	
-       	$myChoice = new taoItems_models_classes_QTI_Choice($data['identifier'], $options);
+       	$myChoice = new taoItems_models_classes_QTI_Choice((string)$data['identifier'], $options);
        	$myChoice->setName($data->getName());
        	$myChoice->setData((string)$data);
        	$myChoice->setValue((string)$data['identifier']);

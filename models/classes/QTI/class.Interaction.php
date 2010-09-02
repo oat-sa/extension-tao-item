@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.09.2010, 11:23:14 with ArgoUML PHP module 
+ * Automatically generated on 02.09.2010, 11:51:52 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -150,7 +150,7 @@ class taoItems_models_classes_QTI_Interaction
         
         $this->choices = array_keys($this->choices);
         if(!is_null($this->response)){
-        	$this->response = $this->response->getId();
+        	$this->response = $this->response->getSerial();
         }
         
         $returnValue = parent::__sleep();
@@ -171,17 +171,17 @@ class taoItems_models_classes_QTI_Interaction
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF begin
         
-    	$choiceIds = $this->choices; 
+    	$choiceSerials = $this->choices; 
     	$this->choices = array();
-    	foreach($choiceIds as $choiceId){
-    		if(Session::hasAttribute($choiceId)){
-    			$this->choices[$choiceId] = unserialize(Session::getAttribute($choiceId));
+    	foreach($choiceSerials as $serial){
+    		if(Session::hasAttribute($serial)){
+    			$this->choices[$serial] = unserialize(Session::getAttribute($serial));
     		}
     	}
-    	$responseId = $this->response;
+    	$responseSerial = $this->response;
     	$this->response = null;
-    	if(Session::hasAttribute($responseId)){
-    		$this->response = unserialize(Session::getAttribute($responseId));
+    	if(Session::hasAttribute($responseSerial)){
+    		$this->response = unserialize(Session::getAttribute($responseSerial));
     	}
     	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF end
@@ -232,10 +232,10 @@ class taoItems_models_classes_QTI_Interaction
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
+     * @param  string serial
      * @return taoItems_models_classes_QTI_Choice
      */
-    public function getChoice($id)
+    public function getChoice($serial)
     {
         $returnValue = null;
 
@@ -265,7 +265,7 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F6 begin
         
     	if(!is_null($choice)){
-    		$this->choices[$choice->getId()] = $choice;
+    		$this->choices[$choice->getSerial()] = $choice;
     	}
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F6 end
