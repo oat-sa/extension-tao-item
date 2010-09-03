@@ -3,14 +3,11 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Data.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 02.09.2010, 11:51:52 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -30,7 +27,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000022FE-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Data
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
  *
  * @abstract
  * @access public
@@ -46,15 +47,21 @@ abstract class taoItems_models_classes_QTI_Data
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute id
+     * It repesents the  QTI  identifier. 
+     * It's a unique string. 
+     * It can be generated if it hasn't been set.
      *
      * @access protected
+     * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10541
      * @var string
      */
-    protected $id = '';
+    protected $identifier = '';
 
     /**
-     * Short description of attribute serial
+     * The serial number is a INTERNAL auto-generated unique key to identify
+     * the instance.
+     * It has no consequence on the in/output format and is generated again at
+     * new instanciation and is kept during the persisting session.
      *
      * @access protected
      * @var string
@@ -62,7 +69,16 @@ abstract class taoItems_models_classes_QTI_Data
     protected $serial = '';
 
     /**
-     * Short description of attribute data
+     * Short description of attribute type
+     *
+     * @access protected
+     * @var string
+     */
+    protected static $type = '';
+
+    /**
+     * represents the element data as a document with {tag} to place the
+     * elements.
      *
      * @access protected
      * @var string
@@ -70,7 +86,7 @@ abstract class taoItems_models_classes_QTI_Data
     protected $data = '';
 
     /**
-     * Short description of attribute options
+     * the options of the element
      *
      * @access protected
      * @var array
@@ -78,7 +94,7 @@ abstract class taoItems_models_classes_QTI_Data
     protected $options = array();
 
     /**
-     * Short description of attribute persist
+     * It defines if the instance should be kept after destruction
      *
      * @access public
      * @var boolean
@@ -86,7 +102,7 @@ abstract class taoItems_models_classes_QTI_Data
     public static $persist = true;
 
     /**
-     * Short description of attribute PREFIX
+     * String prefix used in session, keys and ids management
      *
      * @access public
      * @var string
@@ -96,25 +112,26 @@ abstract class taoItems_models_classes_QTI_Data
     // --- OPERATIONS ---
 
     /**
-     * Short description of method __construct
+     * The constructor initialize the instance with the given identifier (if
+     * a human readable identifier will be created)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string id
+     * @param  string identifier
      * @param  array options
      * @return mixed
      */
-    public function __construct($id = null, $options = array())
+    public function __construct($identifier = null, $options = array())
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 begin
         
     	$this->createSerial();
     	
     	try{
-    		$this->setId($id);
+    		$this->setIdentifier($identifier);
     	}
     	catch(InvalidArgumentException $iae){
-    		$this->createId();
+    		$this->createIdentifier();
     	}
     	
     	$this->options = $options;
@@ -123,7 +140,8 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method __destruct
+     * if the persistance is set to on, the instance is saved, just before the
+     * Be carefull to the assignment in the loops!!!
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -134,18 +152,20 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF begin
         
     	if(self::$persist){
+    		//The instance is serialized and saved in the session me before the destruction 
     		Session::setAttribute($this->serial, serialize($this));
         }
         else{
+        	//clean session
         	if(!empty($this->serial)){
         		Session::removeAttribute($this->serial);
         	}
         	if(!empty($this->id) && !is_null($this->id)){
-        		$ids = Session::getAttribute('qti-ids');
+        		$ids = Session::getAttribute(self::PREFIX . 'identifiers');
         		if(is_array($ids)){
-	    			if(isset($ids[$this->id])){
-        				unset($ids[$this->id]);
-	    				Session::setAttribute('qti-ids', $ids);
+	    			if(isset($ids[$this->identifier])){
+        				unset($ids[$this->identifier]);
+	    				Session::setAttribute(self::PREFIX . 'identifiers', $ids);
 	    			}
         		}
         	}
@@ -155,7 +175,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method __sleep
+     * Gives the list of attributes to serialize by reflection.
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -193,7 +213,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method setPersistance
+     * Enable or disable the persistance mode.
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -210,7 +230,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method getSerial
+     * get the serial number
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -233,24 +253,24 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method getId
+     * get the identifier
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
-    public function getId()
+    public function getIdentifier()
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002320 begin
         
-        if(is_null($this->id) || empty($this->id)){
-        	$this->createId();
+        if(is_null($this->identifier) || empty($this->identifier)){
+        	$this->createIdentifier();
         }
         $this->createSerial();
         
-        $returnValue = $this->id;
+        $returnValue = $this->identifier;
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002320 end
 
@@ -258,14 +278,15 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method setId
+     * Set a unique identifier.
+     * If the parameter already exists a InvalidArgumentException is thrown.
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string id
      * @return mixed
      */
-    public function setId($id)
+    public function setIdentifier($id)
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F begin
     	
@@ -273,9 +294,11 @@ abstract class taoItems_models_classes_QTI_Data
     		throw new InvalidArgumentException("Id should be set");
     	}
     	
+    	$idsKey = self::PREFIX . 'identifiers';
+    	
     	$ids = array();
-        if(Session::hasAttribute('qti-ids')){
-    		$ids = Session::getAttribute('qti-ids');
+        if(Session::hasAttribute($idsKey)){
+    		$ids = Session::getAttribute($idsKey);
     		if(!is_array($ids)){
     			$ids = array($ids);
     		}
@@ -283,25 +306,25 @@ abstract class taoItems_models_classes_QTI_Data
     	if(in_array($id, $ids)){
     		throw new InvalidArgumentException("Id $id is already in use");
     	}
-    	if(!empty($this->id)){
-    		unset($ids[$this->id]);
+    	if(!empty($this->identifier)){
+    		unset($ids[$this->identifier]);
     	}
     	
     	$ids[] = $id;
-    	Session::setAttribute('qti-ids', $ids);
-    	$this->id = $id;
+    	Session::setAttribute($idsKey, $ids);
+    	$this->identifier = $id;
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F end
     }
 
     /**
-     * Short description of method createId
+     * Create a unique identifier, based on the kind of instance.
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
-    protected function createId()
+    protected function createIdentifier()
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
@@ -335,7 +358,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method createSerial
+     * create a unique serial number
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -353,7 +376,44 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method getData
+     * Short description of method getType
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function getType()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--182be7ee:12ad75ec1c8:-8000:00000000000025C5 begin
+        
+        $returnValue = $this->type;
+        
+        // section 127-0-1-1--182be7ee:12ad75ec1c8:-8000:00000000000025C5 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method setType
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string type
+     * @return mixed
+     */
+    public function setType($type)
+    {
+        // section 127-0-1-1--182be7ee:12ad75ec1c8:-8000:00000000000025C7 begin
+        
+    	$this->type = $type;
+    	
+        // section 127-0-1-1--182be7ee:12ad75ec1c8:-8000:00000000000025C7 end
+    }
+
+    /**
+     * get the data
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -373,7 +433,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method setData
+     * set the data
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -390,7 +450,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method getOptions
+     * get the options
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -410,7 +470,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method setOptions
+     * set the options
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -427,7 +487,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method getOption
+     * get an options by it's name
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -450,7 +510,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method setOption
+     * set an option
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -468,7 +528,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method toXHTML
+     * Rendering to XHTML format.
      *
      * @abstract
      * @access public
@@ -478,7 +538,7 @@ abstract class taoItems_models_classes_QTI_Data
     public abstract function toXHTML();
 
     /**
-     * Short description of method toQTI
+     * Renddering to QTI format.
      *
      * @abstract
      * @access public
@@ -488,12 +548,13 @@ abstract class taoItems_models_classes_QTI_Data
     public abstract function toQTI();
 
     /**
-     * Short description of method toForm
+     * Output to a tao_helpers_form_Form instance.
      *
      * @abstract
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_Form
+     * @since tao_helpers_form_Form
      */
     public abstract function toForm();
 

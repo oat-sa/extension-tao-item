@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 02.09.2010, 16:46:39 with ArgoUML PHP module 
+ * Automatically generated on 03.09.2010, 14:03:25 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -22,7 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Data
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
@@ -60,14 +64,6 @@ class taoItems_models_classes_QTI_Group
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute name
-     *
-     * @access protected
-     * @var string
-     */
-    protected $name = '';
-
-    /**
      * Short description of attribute choices
      *
      * @access protected
@@ -76,43 +72,6 @@ class taoItems_models_classes_QTI_Group
     protected $choices = array();
 
     // --- OPERATIONS ---
-
-    /**
-     * Short description of method getName
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function getName()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002573 begin
-        
-        $returnValue = $this->name;
-        
-        // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002573 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method setName
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string name
-     * @return mixed
-     */
-    public function setName($name)
-    {
-        // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002575 begin
-        
-    	$this->name = $name;
-    	
-        // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002575 end
-    }
 
     /**
      * Short description of method getChoices

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.09.2010, 11:29:18 with ArgoUML PHP module 
+ * Automatically generated on 03.09.2010, 14:03:25 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -22,7 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Data
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
@@ -59,142 +63,7 @@ class taoItems_models_classes_QTI_Choice
 
     // --- ATTRIBUTES ---
 
-    /**
-     * Short description of attribute name
-     *
-     * @access protected
-     * @var string
-     */
-    protected $name = '';
-
-    /**
-     * Short description of attribute value
-     *
-     * @access protected
-     * @var string
-     */
-    protected $value = '';
-
-    /**
-     * Short description of attribute type
-     *
-     * @access protected
-     * @var string
-     */
-    protected $type = '';
-
     // --- OPERATIONS ---
-
-    /**
-     * Short description of method getName
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function getName()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002406 begin
-        
-        $returnValue = $this->name;
-        
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002406 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method setName
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string name
-     * @return mixed
-     */
-    public function setName($name)
-    {
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002408 begin
-        
-    	$this->name = $name;
-    	
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002408 end
-    }
-
-    /**
-     * Short description of method getValue
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function getValue()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000240B begin
-        
-        $returnValue = $this->value;
-        
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000240B end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method setValue
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string value
-     * @return mixed
-     */
-    public function setValue($value)
-    {
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000240D begin
-        
-    	$this->value = $value;
-    	
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000240D end
-    }
-
-    /**
-     * Short description of method getType
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function getType()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002506 begin
-        
-        $returnValue = $this->type;
-        
-        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002506 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method setType
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string type
-     * @return mixed
-     */
-    public function setType($type)
-    {
-        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250C begin
-        
-    	$this->type = $type;
-    	
-        // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250C end
-    }
 
     /**
      * Short description of method toXHTML
