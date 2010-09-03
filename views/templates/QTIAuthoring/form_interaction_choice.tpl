@@ -1,8 +1,8 @@
 
-<div id="formInteraction_title_<?=get_data('interactionId')?>" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
+<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
 		<?=__('Interaction editor:')?>
 </div>
-<div id="formInteraction_content_<?=get_data('interactionId')?>" class="ui-widget-content ui-corner-bottom">
+<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
 	<div class="ext-home-container ui-state-highlight">
 		<?=get_data('formInteraction')?>
 	</div>
@@ -31,12 +31,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	interactionEdit.interactionId = '<?=get_data('interactionId')?>';
+	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
 	interactionEdit.initInteractionFormSubmitter();
 	
 	$('#add_choice_button').click(function(){
 		//add a choice to the current interaction:
-		interactionEdit.addChoice(interactionEdit.interactionId, $('#formContainer_choices'), 'formContainer_choice');
+		interactionEdit.addChoice(interactionEdit.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
 

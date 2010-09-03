@@ -74,14 +74,14 @@ abstract class taoItems_actions_QTIform_Choice
 	public function setCommonElements(){
 		
 		//add hidden id element, to know what the old id is:
-		$oldIdElt = tao_helpers_form_FormFactory::getElement('choiceId', 'Hidden');
-		$oldIdElt->setValue($this->choice->getId());
-		$this->form->addElement($oldIdElt);
+		// $oldIdElt = tao_helpers_form_FormFactory::getElement('choiceId', 'Hidden');
+		// $oldIdElt->setValue($this->choice->getId());
+		// $this->form->addElement($oldIdElt);
 		
 		//id element: need for checking unicity
-		$labelElt = tao_helpers_form_FormFactory::getElement('newId', 'TextBox');
-		$labelElt->setDescription(__('Id'));
-		$labelElt->setValue($this->choice->getId());
+		$labelElt = tao_helpers_form_FormFactory::getElement('choiceIdentifier', 'TextBox');
+		$labelElt->setDescription(__('Identifier'));
+		$labelElt->setValue($this->choice->getIdentifier());
 		$this->form->addElement($labelElt);
 		
 		//the fixed attribute element

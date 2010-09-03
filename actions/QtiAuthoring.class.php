@@ -33,12 +33,52 @@ class QTiAuthoring extends CommonModule {
 		$item = null;
 		
 		$itemUri = '';
-		$itemId = '';
+		$itemSerial = '';
+		$itemIdentifier = tao_helpers_Uri::getUniqueId($itemUri);//TODO: remove coopling to TAO
+		
+		//when actions are executed in the authroing tool, retrieve the item with the serial:
+		if($this->hasRequestParameter('itemSerial')){
+			$itemSerial = tao_helpers_Uri::decode($this->getRequestParameter('itemSerial'));
+			$item = $this->qtiService->getItemBySerial($itemSerial);
+		}else{
+			//try creating a new item:
+			$itemFile = $this->getRequestParameter('xml');
+			if(empty($itemFile)){
+			
+				//temp check to allow page reloading without xml file:
+				$itemUri = $this->getRequestParameter('instance');
+				if(!empty($itemUri)){
+					if(isset($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)])){
+						$item = $this->qtiService->getItemBySerial($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)]);
+					}
+				}
+				
+				if(empty($item)){
+					//create a new tiem object:
+					$item = $this->service->createNewItem($itemIdentifier);
+					$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
+				}
+				
+				if(empty($item)){
+					throw new Exception('a new qti item xml cannot be created');
+				}
+			}else{
+				//import it:
+				$qtiParser = new taoItems_models_classes_QTI_Parser($itemFile);
+				$item = $qtiParser->load();
+				if(empty($item)){
+					throw new Exception('cannot load the item from the file: '.$itemFile);
+				}
+			}
+		}
+		
+		
+		/*
 		if($this->hasRequestParameter('instance')){
 			$itemUri = $this->getRequestParameter('instance');
-			$itemId = 'qti_item_'.tao_helpers_Uri::getUniqueId(tao_helpers_Uri::decode($this->getRequestParameter('instance')));
-		}elseif($this->hasRequestParameter('itemId')){
-			$itemId = tao_helpers_Uri::decode($this->getRequestParameter('itemId'));
+			$itemSerial = 'qti_item_'.tao_helpers_Uri::getUniqueId(tao_helpers_Uri::decode($this->getRequestParameter('instance')));
+		}elseif($this->hasRequestParameter('itemSerial')){
+			$itemSerial = tao_helpers_Uri::decode($this->getRequestParameter('itemSerial'));
 		}else{
 			throw new Exception('no current id for the item');
 		}
@@ -47,10 +87,10 @@ class QTiAuthoring extends CommonModule {
 		if(empty($itemFile)){
 			
 			//debug
-			// var_dump(unserialize(Session::getAttribute($itemId)));
+			// var_dump(unserialize(Session::getAttribute($itemSerial)));
 			
 			//get item from serialized object in session:
-			$item = $this->qtiService->getItemById($itemId);
+			$item = $this->qtiService->getItemBySerial($itemSerial);
 			
 			if(is_null($item)){
 				//create a new qti xml file:
@@ -68,6 +108,8 @@ class QTiAuthoring extends CommonModule {
 				throw new Exception('cannot load the item from the file: '.$itemFile);
 			}
 		}
+		*/
+		
 		
 		if(is_null($item)){
 			throw new Exception('there is no item');
@@ -78,13 +120,12 @@ class QTiAuthoring extends CommonModule {
 
 	public function index(){
 	
-		// $itemData = $this->getCurrentItem()->getData();
 		$currentItem = $this->getCurrentItem();
-		// var_dump($currentItem);
+		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
-		$this->setData('itemId', $currentItem->getId());
+		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemData', $itemData);
 		$this->setData('jwysiwyg_path', BASE_WWW.'js/jwysiwyg/');
 		$this->setData('simplemodal_path', BASE_WWW.'js/simplemodal/');
@@ -113,7 +154,7 @@ class QTiAuthoring extends CommonModule {
 	
 	public function addInteraction(){
 		$added = false;
-		$interactionId = '';
+		$interactionSerial = '';
 		
 		$interactionType = $this->getRequestParameter('interactionType');
 		$itemData = urldecode($this->getRequestParameter('itemData'));
@@ -126,27 +167,27 @@ class QTiAuthoring extends CommonModule {
 			if(!is_null($interaction)){
 				//save the itemData, i.e. the location at which the new interaction shall be inserted
 				//the location has been marked with {qti_interaction_new}
-				$itemData = preg_replace("/{qti_interaction_new}/", "{{$interaction->getId()}}", $itemData, 1);
+				$itemData = preg_replace("/{qti_interaction_new}/", "{{$interaction->getSerial()}}", $itemData, 1);
 				$this->service->saveItemData($item, $itemData);
 				// var_dump('item', $item);
 				$itemData = $this->service->getItemData($item);//do not convert to html entities...
 				
 				//everything ok:
 				$added = true;
-				$interactionId = $interaction->getId();
+				$interactionSerial = $interaction->getSerial();
 			}
 		}
 		
 		echo json_encode(array(
 			'added' => $added,
-			'interactionId' => $interactionId,
+			'interactionSerial' => $interactionSerial,
 			'itemData' => html_entity_decode($itemData)
 		));
 	}
 	
 	public function addChoice(){
 		$added = false;
-		$choiceId = '';
+		$choiceSerial = '';
 		$choiceForm = '';
 		
 		$interaction = $this->getCurrentInteraction();
@@ -155,46 +196,46 @@ class QTiAuthoring extends CommonModule {
 			
 			//return id and form:
 			
-			$choiceId = $choice->getId();
+			$choiceSerial = $choice->getSerial();
 			$choiceForm = $choice->toForm()->render();
 			$added = true;
 		}
 		
 		echo json_encode(array(
 			'added' => $added,
-			'choiceId' => $choiceId,
+			'choiceSerial' => $choiceSerial,
 			'choiceForm' => $choiceForm
 		));
 	}
 	
 	
 	public function deleteInteractions(){
-		// var_dump($this->getCurrentItem(), $this->getRequestParameter('interactionIds'));
+		// var_dump($this->getCurrentItem(), $this->getRequestParameter('interactionSerials'));
 		
 		$deleted = false;
 		
-		$interactionIds = array();
-		if($this->hasRequestParameter('interactionIds')){
-			$interactionIds = $this->getRequestParameter('interactionIds');
+		$interactionSerials = array();
+		if($this->hasRequestParameter('interactionSerials')){
+			$interactionSerials = $this->getRequestParameter('interactionSerials');
 		}
-		if(empty($interactionIds)){
+		if(empty($interactionSerials)){
 			throw new Exception('no interaction ids found to be deleted');
 		}else{
 			$item = $this->getCurrentItem();
 			$deleteCount = 0;
 			
 			//delete interactions:
-			foreach($interactionIds as $interactionId){
-				$interaction = $this->qtiService->getInteractionById($interactionId);
+			foreach($interactionSerials as $interactionSerial){
+				$interaction = $this->qtiService->getInteractionBySerial($interactionSerial);
 				if(!empty($interaction)){
 					$this->service->deleteInteraction($item, $interaction);
 					$deleteCount++;
 				}else{
-					throw new Exception('no interaction found to be deleted with the id: '.$interactionId);
+					throw new Exception('no interaction found to be deleted with the serial: '.$interactionSerial);
 				}
 			}
 			
-			if($deleteCount == count($interactionIds)){
+			if($deleteCount == count($interactionSerials)){
 				$deleted = true;
 			}
 		}
@@ -227,13 +268,13 @@ class QTiAuthoring extends CommonModule {
 	
 	public function getCurrentInteraction(){
 		$returnValue = null;
-		if($this->hasRequestParameter('interactionId')){
-			$interaction = $this->qtiService->getInteractionById($this->getRequestParameter('interactionId'));
+		if($this->hasRequestParameter('interactionSerial')){
+			$interaction = $this->qtiService->getInteractionBySerial($this->getRequestParameter('interactionSerial'));
 			if(!empty($interaction)){
 				$returnValue = $interaction;
 			}
 		}else{
-			throw new Exception('no request parameter "interactionId" found');
+			throw new Exception('no request parameter "interactionSerial" found');
 		}
 		
 		return $returnValue;
@@ -241,13 +282,13 @@ class QTiAuthoring extends CommonModule {
 	
 	public function getCurrentChoice(){
 		$returnValue = null;
-		if($this->hasRequestParameter('choiceId')){
-			$choice = $this->qtiService->getDataById($this->getRequestParameter('choiceId'), 'taoItems_models_classes_QTI_Choice');
+		if($this->hasRequestParameter('choiceSerial')){
+			$choice = $this->qtiService->getDataBySerial($this->getRequestParameter('choiceSerial'), 'taoItems_models_classes_QTI_Choice');
 			if(!empty($choice)){
 				$returnValue = $choice;
 			}
 		}else{
-			throw new Exception('no request parameter "choiceId" found');
+			throw new Exception('no request parameter "choiceSerial" found');
 		}
 		
 		return $returnValue;
@@ -264,14 +305,30 @@ class QTiAuthoring extends CommonModule {
 		//build the choices, no matter the way they shall be displayed (e.g. one/two column(s)), the template shall manage that
 		$choices = array();
 		foreach($interaction->getChoices() as $choice){
-			// $choices[] = $choice->toForm();//first, the simple version: choice are editable immediately. 
-			$choices[$choice->getId()] = $choice->toForm()->render();
+			$choices[$choice->getSerial()] = $choice->toForm()->render();
 		}
+		
+		//new impl
+		$choices = $this->service->getInteractionChoices($interaction);
+		$interactionType = strtolower($interaction->getType());
+		if($interactionType=='match' || $interactionType=='gapmatch'){
+			foreach($choices as $order=>$group){
+				$choices[$order] = array();
+				foreach($group as $choice){
+					$choices[$order][] = $choice->toForm()->render();
+				}
+			}
+		}else{
+			foreach($choices as $order=>$choice){
+				$choices[$order] = $choice->toForm()->render();
+			}
+		}
+		
 		
 		//display the template, according to the type of interaction
 		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
 		// $this->setData('formId', $formName);
-		$this->setData('interactionId', $interaction->getId());
+		$this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('formInteraction', $myForm->render());
 		$this->setData('formChoices', $choices);
 		$this->setView($templateName);
@@ -287,22 +344,42 @@ class QTiAuthoring extends CommonModule {
 				// var_dump($myForm->getValues());
 				$values = $myForm->getValues();
 				
-				if($values['interactionId'] != $values['newId']){
+				/*
+				if($values['interactionSerial'] != $values['newId']){
 					// check unicity of the new id $values['newId']:
 					$unique = true;
 					if($unique){
 						// save id
 						$this->service->setInteractionId($interaction, $values['newId']);
 					}
+				}*/
+				
+				if(isset($values['interactionIdentifier'])){
+					// die('set identifier');
+					$this->service->setIdentifier($interaction, $values['interactionIdentifier']);
+					unset($values['interactionIdentifier']);
+				}
+				
+				
+				if(isset($values['prompt'])){
+					$interaction->setPrompt($values['prompt']);
+					unset($values['prompt']);
 				}
 				
 				if(isset($values['data'])){
-					$this->service->setData($interaction, $values['data']);
+					$choiceOrder = array();
+					if(isset($values['choiceOrder'])){
+						$choiceOrder = $values['choiceOrder'];
+						unset($values['choiceOrder']);
+					}elseif(isset($values['choiceOrder0']) && isset($values['choiceOrder1'])){
+						$choiceOrder[0] = $values['choiceOrder0'];
+						$choiceOrder[1] = $values['choiceOrder1'];
+						unset($values['choiceOrder0']);
+						unset($values['choiceOrder1']);
+					}
+					$this->service->setInteractionData($interaction, $values['data'], $choiceOrder);
 					unset($values['data']);
 				}
-				
-				unset($values['interactionId']);
-				unset($values['newId']);
 				
 				$this->service->setOptions($interaction, $values);
 				
@@ -329,6 +406,7 @@ class QTiAuthoring extends CommonModule {
 				// var_dump($myForm->getValues());
 				$values = $myForm->getValues();
 				
+				/*
 				if($values['choiceId'] != $values['newId']){
 					// check unicity of the new id $values['newId']:
 					$unique = true;
@@ -336,6 +414,10 @@ class QTiAuthoring extends CommonModule {
 						// save id
 						$this->service->setInteractionId($choice, $values['newId']);
 					}
+				}*/
+				if(isset($values['choiceIdentifier'])){
+					$this->service->setIdentifier($choice, $values['choiceIdentifier']);
+					unset($values['choiceIdentifier']);
 				}
 				
 				if(isset($values['data'])){
@@ -343,17 +425,16 @@ class QTiAuthoring extends CommonModule {
 					unset($values['data']);
 				}
 				
-				unset($values['choiceId']);
 				unset($values['newId']);
 				$this->service->setOptions($choice, $values);
 				
-				$saved  = true;
+				$saved = true;
 			}
 		}
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'choiceId' => $choice->getId()
+			'choiceId' => $choice->getSerial()
 		));
 	}
 	

@@ -1,5 +1,9 @@
 #qtiAuthoring_left_container {
+	
 	width: 70%;
+	top:5px;
+	left:0%;
+	padding:0px 3px;
 }
 
 #qtiAuthoring_itemEditor{
@@ -7,13 +11,14 @@
 }
 
 #itemEditor_wysiwyg{
-	width:70%;
+	width:68%;
 }
 
-#qtiAuthoring_rigth_container{
+#qtiAuthoring_right_container{
 	position: absolute;
-	top:0%;
-	left:71%;
-	width:29%;
+	top:5px;
+	left:70%;
+	width:30%;
 	height: 100%;
+	padding:0px 3px;
 }

@@ -1,7 +1,7 @@
 // alert('interaction edit loaded');
 
 interactionEdit = new Object();
-interactionEdit.interactionId = '';
+interactionEdit.interactionSerial = '';
 interactionEdit.modifiedInteraction = false;
 interactionEdit.modifiedChoices = [];
 
@@ -153,7 +153,7 @@ interactionEdit.setFormChangeListener = function(target){
 	return true;
 }
 
-interactionEdit.addChoice = function(interactionId, $appendTo, containerClass){
+interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClass){
 	
 	if(!$appendTo || !$appendTo.length){
 		throw 'the append target element do not exists';
@@ -163,7 +163,7 @@ interactionEdit.addChoice = function(interactionId, $appendTo, containerClass){
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/addChoice",
 	   data: {
-			'interactionId': interactionId
+			'interactionSerial': interactionSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){
@@ -191,7 +191,7 @@ interactionEdit.deleteChoice = function(choiceId){
 	   url: "/taoItems/QtiAuthoring/deleteChoice",
 	   data: {
 			'choiceId': choiceId,
-			'interactionId': interactionEdit.interactionId
+			'interactionSerial': interactionEdit.interactionSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){

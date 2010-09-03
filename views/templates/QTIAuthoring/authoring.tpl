@@ -12,37 +12,39 @@
 <link rel="stylesheet" href="<?=get_data('simplemodal_path')?>jquery.simplemodal.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/qtiAuthoring.css" />
 
-<div id="qtiAuthoring_left_container">
-	<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
-			<?=__('Item Editor:')?>
-	</div>
-	<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
-		<div class="ext-home-container ui-state-highlight">
-			<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
+<div id="qtiAuthoring_main_container">
+	<div id="qtiAuthoring_left_container">
+		<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
+				<?=__('Item Editor:')?>
+		</div>
+		<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
+			<div class="ext-home-container ui-state-highlight">
+				<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
+			</div>
+
 		</div>
 
+		<div id='qtiAuthoring_interactionEditor'/>    
 	</div>
 
-	<div id='qtiAuthoring_interactionEditor'/>    
-</div>
-<!--
-<div id="qtiAuthoring_rigth_container">
-	<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
-			<?=__('Response & Scoring Editor:')?>
-	</div>
-	<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
-		<div class="ext-home-container ui-state-highlight">
-			
+	<div id="qtiAuthoring_right_container">
+		<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
+				<?=__('Response & Scoring Editor:')?>
 		</div>
+		<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
+			<div class="ext-home-container ui-state-highlight">
+				
+			</div>
 
+		</div>
 	</div>
 </div>
--->      
+
 <script type="text/javascript">
 // img_url_tao = root_url + "/tao/views/img/";
 // img_url = root_url + "/taoItems/views/img/";
 
-qtiEdit.itemId = '<?=get_data('itemId')?>';
+qtiEdit.itemSerial = '<?=get_data('itemSerial')?>';
 qtiEdit.itemDataContainer = '#itemEditor_wysiwyg';
 qtiEdit.interactionFormContent = '#qtiAuthoring_interactionEditor';
 
@@ -59,7 +61,7 @@ var addInteraction = {
 		this.insertHtml('{qti_interaction_new}');
 		
 		//send to request to the server
-		qtiEdit.addInteraction(interactionType, this.getContent(), qtiEdit.itemId);
+		qtiEdit.addInteraction(interactionType, this.getContent(), qtiEdit.itemSerial);
 		
 		//go to the form:
 		// qtiEdit.loadInteractionForm(interaction_id);

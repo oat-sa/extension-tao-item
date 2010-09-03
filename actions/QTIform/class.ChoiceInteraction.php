@@ -51,10 +51,10 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		$this->setCommonElements();
 		
 		//the prompt field is the interaction's data for a block interaction, that's why the id is data and not 
-		$promptElt = tao_helpers_form_FormFactory::getElement('data', 'Textarea');//should be a text... need to solve the conflict with the 
+		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textarea');//should be a text... need to solve the conflict with the 
 		$promptElt->setDescription(__('Prompt'));
 		// $promptElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));//no validator required for prompt
-		$interactionData = $interaction->getData();
+		$interactionData = $interaction->getPrompt();
 		if(!empty($interactionData)){
 			$promptElt->setValue($interactionData);
 		}

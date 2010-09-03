@@ -31,7 +31,9 @@ class taoItems_models_classes_QtiAuthoringService
      * @var Class
      */
     protected $itemClass = null;
-
+	
+	protected $qtiService = null;
+	
     // --- OPERATIONS ---
 
     /**
@@ -44,6 +46,7 @@ class taoItems_models_classes_QtiAuthoringService
     public function __construct()
     {
 		parent::__construct();
+		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
     }
 	
 	/**
@@ -53,18 +56,20 @@ class taoItems_models_classes_QtiAuthoringService
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return taoItems_models_classes_QTI_Item
      */
-	public function createNewItem($itemUri){
+	public function createNewItem($itemIdentifier=''){
 		
 		$returnValue = null;
-		// $qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		
-		$itemId = tao_helpers_Uri::getUniqueId($itemUri);
-		if(empty($itemId)){
-			throw new Exception('wrong format of itemUri given');
-		}else{
-			$itemId = 'qti_item_'.$itemId;
-			$returnValue = new taoItems_models_classes_QTI_Item($itemId, array());
-		}
+		$returnValue = new taoItems_models_classes_QTI_Item($itemIdentifier, array());
+		
+		// $itemId = tao_helpers_Uri::getUniqueId($itemUri);
+		// if(empty($itemId)){
+			// throw new Exception('wrong format of itemUri given');
+		// }else{
+			// $itemId = 'qti_item_'.$itemId;
+			// $returnValue = new taoItems_models_classes_QTI_Item($itemId, array());
+		// }
+		// var_dump($itemId, $returnValue);
 		
 		return $returnValue;
 	}
@@ -82,7 +87,7 @@ class taoItems_models_classes_QtiAuthoringService
 		//insert the interaction tags:
 		foreach($item->getInteractions() as $interaction){
 			//replace the interactions by a identified tag with the authoring elements
-			$pattern = "/{{$interaction->getId()}}/";
+			$pattern = "/{{$interaction->getSerial()}}/";
 			$itemData = preg_replace($pattern, $this->getInteractionTag($interaction), $itemData, 1);
 		}
 		
@@ -91,11 +96,121 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
-		// $returnValue .= "<input type='button' id='{$interaction->getId()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
-		$returnValue .= "<input type='button' id='{$interaction->getId()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
+		// $returnValue .= "<input type='button' id='{$interaction->getSerial()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
+		$returnValue .= "<input type='button' id='{$interaction->getSerial()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
 		
 		return $returnValue;
 	}
+	
+	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
+		$data = $interaction->getdata();
+		
+		//depending on the type of interaciton, strip the choice identifier or transfor it to editable elt
+		$interactionType = strtolower($interaction->getType());
+		if($interactionType == 'gapmatch'){
+			//transform group reference to clickable choice buttons
+			foreach($interaction->getGroups() as $group){
+				$pattern = "/{{$group->getSerial()}}/";
+				// $data = preg_replace($pattern, $this->getGapmatchTag($interaction), $data, 1);
+				break; //there should be only one..
+			}
+		}else{
+			if($interactionType == 'match'){
+				foreach($interaction->getGroups() as $group){
+					$pattern = "/{{$group->getSerial()}}/";
+					$data = preg_replace($pattern, '', $data, 1);
+				}
+			}else{
+				foreach($interaction->getChoices() as $choice){
+					$pattern = "/{{$choice->getSerial()}}/";
+					$data = preg_replace($pattern, '', $data, 1);
+				}
+			}
+		}
+	}
+	
+	//return an ordered array of choices:
+	public function getInteractionChoices(taoItems_models_classes_QTI_Interaction $interaction){
+		
+		$returnValue = array();
+		
+		if(!is_null($interaction)){
+			
+			$data = $interaction->getData();
+			switch(strtolower($interaction->getType())){
+				case 'choice':
+				case 'order':{
+					$choices = array();
+					foreach($interaction->getChoices() as $choiceId => $choice){
+						//get the order from the interaction data:
+						$order = false;
+						$order = strpos($data, '{'.$choiceId.'}');
+						if($order === false){
+							throw new Exception("the position of the choice {$choiceId} cannot be found in the interaction data");//need to save the choice in the data everytime
+							// continue;
+						}else{
+							$choices[$order] = $choice;
+						}
+					}
+					
+					//sort the choices
+					ksort($choices);
+					foreach($choices as $choice){
+						$returnValue[] = $choice;
+					}
+					
+					break;
+				}
+				case 'match':
+				case 'gapmatch':{
+					//get groups and do the same for each group:
+					$groups = array();//1 or 2 maximum
+					foreach($interaction->getGroups() as $groupSerial => $group){
+						//get the order from the interaction data:
+						$order = false;
+						$order = strpos($data, '{'.$groupSerial.'}');
+						if($order === false){
+							throw new Exception("the position of the group {$groupSerial} cannot be found in the interaction data");//need to save the choice in the data everytime
+							// continue;
+						}else{
+							$groups[$order] = $group;
+						}
+					}
+					
+					//sort the groups
+					ksort($groups);
+					$i = 0;
+					foreach($groups as $group){
+						$returnValue[$i] = array();
+						//get the choice for each group:
+						$choices = $group->getChoices();
+						foreach($choices as $choiceId){
+							$returnValue[$i][] = $this->qtiService->getDataBySerial($choiceId, 'taoItems_models_classes_QTI_Choice');
+						}
+						$i++;
+					}
+					
+					break;
+				}
+				default:{
+					throw new Exception('unknown interaction type: '.$interaction->getType());
+				}
+					
+			}
+			
+		}
+		
+		return $returnValue;
+	}
+	
+	//get the choices of a
+	private function getChoices(taoItems_models_classes_QTI_Data $dataObj, $ordered=true){
+		//check type interaction or 
+		if($dataObj instanceof taoItems_models_classes_QTI_Interaction || $dataObj instanceof taoItems_models_classes_QTI_Group){
+			
+		}
+	}
+	
 	
 	public function saveItemData(taoItems_models_classes_QTI_Item $item, $itemData){
 		if(!is_null($item)){
@@ -105,9 +220,9 @@ class taoItems_models_classes_QtiAuthoringService
 				//replace the interactions by a identified tag with the authoring elements
 				$pattern0 = $this->getInteractionTag($interaction);
 				// $pattern = "/{$pattern0}/";
-				// $itemData = preg_replace($pattern, "{{$interaction->getId()}}", $itemData, 1);
+				// $itemData = preg_replace($pattern, "{{$interaction->getSerial()}}", $itemData, 1);
 				$count = 0;
-				$itemData = str_replace($pattern0, "{{$interaction->getId()}}", $itemData, $count);
+				$itemData = str_replace($pattern0, "{{$interaction->getSerial()}}", $itemData, $count);
 			}
 			
 			//item saved in session:
@@ -146,6 +261,19 @@ class taoItems_models_classes_QtiAuthoringService
 			$item->addInteraction($interaction);
 			// $item->setData($itemData);
 			
+			//insert the required group immediately:
+			if($interactionType == 'match'){
+				$group1 = new taoItems_models_classes_QTI_Group();
+				$group2 = new taoItems_models_classes_QTI_Group();
+				$interaction->addGroups($group1);
+				$interaction->addGroups($group2);
+				$interaction->setData('{'.$group1->getSerial().'}{'.$group2->getSerial().'}');
+			}else if($interactionType == 'gapmatch'){
+				$group1 = new taoItems_models_classes_QTI_Group();
+				$interaction->addGroups($group1);
+				$interaction->setData('{'.$group1->getSerial().'}');
+			}
+			
 			$returnValue = $interaction;
 		}
 		
@@ -153,7 +281,7 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	
-	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $name='', $value=''){
+	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $identifier=''){
 		
 		$returnValue = null;
 		
@@ -164,8 +292,17 @@ class taoItems_models_classes_QtiAuthoringService
 			if(!empty($data)){
 				$choice->setData($data);
 			}
-		
+			
+			//append the choice to the interaciton's choice list, both in the php object and in the data property:
 			$interaction->addChoice($choice);
+			$interactionType = strtolower($interaction->getType());
+			if($interactionType == 'match' || $interactionType == 'gapmatch'){
+				//insert into group:
+			}else{
+				// $interaction->getData();
+				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
+			}
+			
 			
 			$returnValue = $choice;
 		}
@@ -344,17 +481,18 @@ class taoItems_models_classes_QtiAuthoringService
         return (string) $returnValue;
     }
 	
-	public function setInteractionId(taoItems_models_classes_QTI_Interaction $interaction, $newId){
-		if(!is_null($interaction) && !empty($newId)){
-			try{
-				$interaction->setId($newId);
-				$interaction->setId($newId);
-			}catch(InvalidArgumentException $e){
-				var_dump($_SESSION);
-				throw new Exception('the given interaction id already exists');
-			}
-		}
-	}
+	//deprecated...
+	// public function setInteractionId(taoItems_models_classes_QTI_Interaction $interaction, $newId){
+		// if(!is_null($interaction) && !empty($newId)){
+			// try{
+				// $interaction->setId($newId);
+				// $interaction->setId($newId);
+			// }catch(InvalidArgumentException $e){
+				// var_dump($_SESSION);
+				// throw new Exception('the given interaction id already exists');
+			// }
+		// }
+	// }
 		
 	public function setChoiceId(taoItems_models_classes_QTI_Choice $choice, $newId){
 		if(!is_null($choice) && !empty($newId)){
@@ -395,6 +533,46 @@ class taoItems_models_classes_QtiAuthoringService
 	public function setData(taoItems_models_classes_QTI_Data $qtiObject, $data = ''){
 		$qtiObject->setData($data);
 	}
+	
+	public function setIdentifier(taoItems_models_classes_QTI_Data $qtiObject, $identifier = ''){
+		$qtiObject->setIdentifier($identifier);
+	}
+	
+	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
+		//append the choices id to the interaction data:
+		switch(strtolower($interaction->getType())){
+			case 'choice':{
+				foreach($choiceOrder as $order=>$choiceSerial){
+					$data .= '{'.$choiceSerial.'}';
+				}
+				$interaction->setData($data);
+				break;
+			}
+			case 'match':
+			case 'gapmatch':{
+				//append directly yo the group(s):
+				//note: there must be only one group for 'gapmatch' but two for 'match'
+				foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
+					$group = null;
+					$group = $this->qtiService->getDataBySerial($groupSerial, 'taoItems_models_classes_QTI_Group');
+					if(!is_null($group)){
+						$choices = array();
+						foreach($groupChoiceOrder as $order => $choiceSerial){
+							$choices[] = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+						}
+						$group->setChoices($choices);
+					}
+				}
+				$interaction->setData($data);
+				break;
+			}
+			default:{
+				throw new Exception('unknown type of interaction');
+			}
+		}
+		
+	}
+	
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>

@@ -79,14 +79,14 @@ abstract class taoItems_actions_QTIform_Interaction
 	public function setCommonElements(){
 		
 		//add hidden id element, to know what the old id is:
-		$oldIdElt = tao_helpers_form_FormFactory::getElement('interactionId', 'Hidden');
-		$oldIdElt->setValue($this->interaction->getId());
+		$oldIdElt = tao_helpers_form_FormFactory::getElement('interactionSerial', 'Hidden');
+		$oldIdElt->setValue($this->interaction->getSerial());
 		$this->form->addElement($oldIdElt);
 		
 		//id element: need for checking unicity
-		$labelElt = tao_helpers_form_FormFactory::getElement('newId', 'TextBox');
-		$labelElt->setDescription(__('Id'));
-		$labelElt->setValue($this->interaction->getId());
+		$labelElt = tao_helpers_form_FormFactory::getElement('interactionIdentifier', 'TextBox');
+		$labelElt->setDescription(__('Identifier'));
+		$labelElt->setValue($this->interaction->getIdentifier());
 		$this->form->addElement($labelElt);
 	
 	}	

@@ -3,7 +3,7 @@
 qtiEdit = new Object();
 
 qtiEdit.itemEditor = null;
-qtiEdit.itemId = '';
+qtiEdit.itemSerial = '';
 qtiEdit.interactions = [];
 qtiEdit.itemDataContainer = '';
 qtiEdit.interactionFormContent = '';
@@ -38,14 +38,14 @@ qtiEdit.bindInteractionLinkListener = function(){
 	//destroy all listeners:
 	
 	//reset the interaction array:
-	qtiEdit.interactionIds = [];
+	qtiEdit.interactionSerials = [];
 	
 	var links = qtiEdit.getEltInFrame('.qti_interaction_link');
 	for(var i in links){
 		
-		var interactionId = links[i].attr('id');
+		var interactionSerial = links[i].attr('id');
 		
-		qtiEdit.interactions[interactionId] = interactionId;
+		qtiEdit.interactions[interactionSerial] = interactionSerial;
 		
 		links[i].unbind('click').click(function(){
 			CL("go to editing "+$(this).attr('id'));
@@ -55,10 +55,10 @@ qtiEdit.bindInteractionLinkListener = function(){
 	}
 }
 
-qtiEdit.addInteraction = function(interactionType, itemData, itemId){
+qtiEdit.addInteraction = function(interactionType, itemData, itemSerial){
 	
-	if(!itemId){
-		itemId = qtiEdit.itemId
+	if(!itemSerial){
+		itemSerial = qtiEdit.itemSerial
 	}
 
 	$.ajax({
@@ -67,7 +67,7 @@ qtiEdit.addInteraction = function(interactionType, itemData, itemId){
 	   data: {
 			'interactionType': interactionType,
 			'itemData': itemData,
-			'itemId': itemId
+			'itemSerial': itemSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){
@@ -82,14 +82,14 @@ qtiEdit.addInteraction = function(interactionType, itemData, itemId){
 	});
 }
 
-qtiEdit.deleteInteractions = function(interactionIds){
+qtiEdit.deleteInteractions = function(interactionSerials){
 
 	var data = '';
 	//prepare the data to be sent:
-	for(var i in interactionIds){
-		data += 'interactionIds['+ i +']=' + interactionIds[i] + '&';
+	for(var i in interactionSerials){
+		data += 'interactionSerials['+ i +']=' + interactionSerials[i] + '&';
 	}
-	data += 'itemId=' + qtiEdit.itemId;
+	data += 'itemSerial=' + qtiEdit.itemSerial;
 	
 	$.ajax({
 	   type: "POST",
@@ -99,8 +99,8 @@ qtiEdit.deleteInteractions = function(interactionIds){
 	   success: function(r){
 			
 			if(r.deleted){
-				for(var i in interactionIds){
-					delete qtiEdit.interactions[interactionIds[i]];
+				for(var i in interactionSerials){
+					delete qtiEdit.interactions[interactionSerials[i]];
 				}
 				
 				//save item data, i.e. validate the changes operated on the item data:
@@ -117,8 +117,8 @@ qtiEdit.checkInteractionDeletion = function(){
 	
 	//TODO: improve with the use of regular expressions: 
 	var itemData = $(qtiEdit.itemDataContainer).val();
-	for(var interactionId in qtiEdit.interactions){
-		if(itemData.indexOf(interactionId)<0){
+	for(var interactionSerial in qtiEdit.interactions){
+		if(itemData.indexOf(interactionSerial)<0){
 			//not found:
 			return false;
 		}
@@ -131,10 +131,10 @@ qtiEdit.checkInteractionDeletion = function(){
 qtiEdit.getDeletedInteractions = function(one){
 	var deletedInteractions = [];
 	var itemData = $(qtiEdit.itemDataContainer).val();//TODO: improve with the use of regular expressions:
-	for(var interactionId in qtiEdit.interactions){
-		if(itemData.indexOf(interactionId)<0){
+	for(var interactionSerial in qtiEdit.interactions){
+		if(itemData.indexOf(interactionSerial)<0){
 			//not found so considered as deleted:
-			deletedInteractions.push(interactionId);
+			deletedInteractions.push(interactionSerial);
 			if(one){
 				return deletedInteractions;
 			}
@@ -144,10 +144,10 @@ qtiEdit.getDeletedInteractions = function(one){
 	return deletedInteractions;
 }
 
-qtiEdit.saveItemData = function(itemId){
+qtiEdit.saveItemData = function(itemSerial){
 	
-	if(!itemId){
-		var itemId = qtiEdit.itemId;
+	if(!itemSerial){
+		var itemSerial = qtiEdit.itemSerial;
 	}
 	
 	$.ajax({
@@ -155,7 +155,7 @@ qtiEdit.saveItemData = function(itemId){
 	   url: "/taoItems/QtiAuthoring/saveItemData",
 	   data: {
 			'itemData': qtiEdit.itemEditor.wysiwyg('getContent'),
-			'itemId': itemId
+			'itemSerial': itemSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){
@@ -164,13 +164,13 @@ qtiEdit.saveItemData = function(itemId){
 	});
 }
 
-qtiEdit.loadInteractionForm = function(interactionId){
+qtiEdit.loadInteractionForm = function(interactionSerial){
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/editInteraction",
 	   data: {
-			'interactionId': interactionId,
-			'itemId': qtiEdit.itemId
+			'interactionSerial': interactionSerial,
+			'itemSerial': qtiEdit.itemSerial
 	   },
 	   dataType: 'html',
 	   success: function(form){
