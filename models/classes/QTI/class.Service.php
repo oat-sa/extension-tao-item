@@ -128,9 +128,10 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 begin
         
     	if(!empty($serial)){
-	        if(Session::hasAttribute($serial)){
+    		$key = taoItems_models_classes_QTI_Data::PREFIX . $serial;
+	        if(Session::hasAttribute($key)){
 
-	        	$data = @unserialize(Session::getAttribute($serial));
+	        	$data = @unserialize(Session::getAttribute($key));
 	        
 	        	if($data === false){
 	        		throw new Exception("Unable to unserialie  session entry identified by $serial");

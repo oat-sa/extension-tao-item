@@ -156,6 +156,14 @@ class taoItems_models_classes_QTI_Parser
     	$xml = simplexml_load_file($this->file);
     	if($xml !== false){
     		
+    		//clean session's previous item 
+    		foreach(Session::getAttributeNames() as $key){
+    			if(preg_match("/^".taoItems_models_classes_QTI_Data::PREFIX."/", $key)){
+    				Session::removeAttribute($key);
+    			}
+    		}
+    		Session::removeAttribute(taoItems_models_classes_QTI_Data::PREFIX . 'identifiers');
+    		
     		//build the item from the xml
     		$returnValue = taoItems_models_classes_QTI_ParserFactory::buildItem($xml);
     		

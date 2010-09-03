@@ -14,7 +14,6 @@ class QTITestCase extends UnitTestCase {
 	
 	/**
 	 * tests initialization
-	 * load qti service
 	 */
 	public function setUp(){		
 		TestRunner::initTest();
@@ -23,40 +22,9 @@ class QTITestCase extends UnitTestCase {
 	
 	
 	/**
-	 * test the QTI objects persistance
-	 */
-	public function testPersitance(){
-		
-		taoItems_models_classes_QTI_Data::setPersistance(true);
-		
-		//load an item
-		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice_multiple.xml');
-		$item = $qtiParser->load();
-		
-		$this->assertTrue($qtiParser->isValid());
-		$this->assertNotNull($item);
-		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
-		
-		$serial = $item->getSerial();
-		
-		//item is saved by destruction 
-		unset($item);
-		
-		$savedItem = $this->qtiService->getItemBySerial($serial);
-		$this->assertNotNull($savedItem);
-		$this->assertIsA($savedItem, 'taoItems_models_classes_QTI_Item');
-		
-		//real remove
-		taoItems_models_classes_QTI_Data::setPersistance(false);
-		unset($savedItem);
-		
-		$this->assertNull($this->qtiService->getItemBySerial($serial));
-	}
-	
-	/**
 	 * test the building of item from all the samples
 	 */
-	public function testSamples(){		
+	public function testToQTI(){		
 		//check if samples are loaded 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
@@ -73,6 +41,9 @@ class QTITestCase extends UnitTestCase {
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
 			}
+			
+			echo htmlentities($item->toQTI());
+			break;
 		}
 	}
 	

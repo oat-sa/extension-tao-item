@@ -74,7 +74,7 @@ abstract class taoItems_models_classes_QTI_Data
      * @access protected
      * @var string
      */
-    protected static $type = '';
+    protected $type = '';
 
     /**
      * represents the element data as a document with {tag} to place the
@@ -108,6 +108,14 @@ abstract class taoItems_models_classes_QTI_Data
      * @var string
      */
     const PREFIX = 'qti_';
+
+    /**
+     * Short description of attribute templatesPath
+     *
+     * @access protected
+     * @var string
+     */
+    protected static $templatesPath = '';
 
     // --- OPERATIONS ---
 
@@ -153,12 +161,12 @@ abstract class taoItems_models_classes_QTI_Data
         
     	if(self::$persist){
     		//The instance is serialized and saved in the session me before the destruction 
-    		Session::setAttribute($this->serial, serialize($this));
+    		Session::setAttribute(self::PREFIX . $this->serial, serialize($this));
         }
         else{
         	//clean session
         	if(!empty($this->serial)){
-        		Session::removeAttribute($this->serial);
+        		Session::removeAttribute(self::PREFIX . $this->serial);
         	}
         	if(!empty($this->id) && !is_null($this->id)){
         		$ids = Session::getAttribute(self::PREFIX . 'identifiers');
@@ -227,6 +235,29 @@ abstract class taoItems_models_classes_QTI_Data
     	self::$persist = (bool)$enabled;
     	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 end
+    }
+
+    /**
+     * Short description of method getTemplatePath
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public static function getTemplatePath()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:0000000000002580 begin
+        
+        if(empty(self::$templatesPath)){
+        	self::$templatesPath = BASE_PATH . '/models/classes/QTI/templates/';
+        }
+        $returnValue = self::$templatesPath;
+        
+        // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:0000000000002580 end
+
+        return (string) $returnValue;
     }
 
     /**

@@ -134,16 +134,10 @@ class taoItems_models_classes_QTI_Interaction
         
     	parent::__construct($id, $options);
     	
-    	$tplPath = BASE_PATH . '/models/classes/QTI/interactions/';
-    	if(isset($this->options['template_path'])) {
-    		$tplPath = $this->options['template_path'];
-    	}
-    	
-    	
     	//check type
     	$file = '';
     	if(!empty($type)){
-    		$file = $tplPath . 'qti.' .strtolower($type) . '.tpl.php';
+    		$file = self::getTemplatePath() . '/interactions/qti.' .strtolower($type) . '.tpl.php';
     	}
     	if(empty($file) || !file_exists($file)){
     		throw new InvalidArgumentException("No interaction found for argument: type = '$type'");
