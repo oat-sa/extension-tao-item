@@ -62,11 +62,9 @@ class QTITestCase extends UnitTestCase {
 	/**
 	 * test the building of item from all the samples
 	 */
-	public function testSamples(){
-		
+	public function testSamples(){		
 		//check if samples are loaded 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
-			//$file = dirname(__FILE__).'/samples/gap_match.xml';
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -80,11 +78,7 @@ class QTITestCase extends UnitTestCase {
 				foreach($interaction->getChoices() as $choice){
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
-//				print "<pre>";
-//				print_r($interaction);
-//				print "</pre>";
 			}
-			
 		}
 	}
 	

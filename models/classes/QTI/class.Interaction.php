@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 02.09.2010, 16:53:55 with ArgoUML PHP module 
+ * Automatically generated on 03.09.2010, 10:29:24 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -111,6 +111,14 @@ class taoItems_models_classes_QTI_Interaction
      * @var array
      */
     protected $groups = array();
+
+    /**
+     * Short description of attribute prompt
+     *
+     * @access protected
+     * @var string
+     */
+    protected $prompt = '';
 
     // --- OPERATIONS ---
 
@@ -437,6 +445,43 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000248F end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getPrompt
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function getPrompt()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002573 begin
+        
+        $returnValue = $this->prompt;
+        
+        // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002573 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method setPrompt
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string text
+     * @return mixed
+     */
+    public function setPrompt($text)
+    {
+        // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002575 begin
+        
+    	$this->prompt = $text;
+    	
+        // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002575 end
     }
 
     /**

@@ -160,7 +160,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				break;
        				
        			case 'gapMatch':
-       				$choiceNodes = $data->xpath("//*[name(.) = 'gapText']");
+       				$choiceNodes = $data->xpath("//*[name(.)='gapText']");
        				$choices = array();
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
@@ -169,7 +169,7 @@ class taoItems_models_classes_QTI_ParserFactory
 			       			$choices[] = $choice;
 			        	}
        				}
-       				$gapNodes = $data->xpath("//*[name(.) = 'gap']");
+       				$gapNodes = $data->xpath("//*[name(.)='gap']");
        				foreach($gapNodes as $gapNode){
        					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
        					$group->setName((string)$gapNode->getName());
@@ -179,7 +179,8 @@ class taoItems_models_classes_QTI_ParserFactory
        				break;
        				
        			default :
-       				$choiceNodes = $data->xpath("//*[ (contains(name(.), 'Choice')) or (name(.) = 'hottext')]");
+       				$exp= "*[contains(name(.),'Choice')] | //*[(name(.)='hottext')]";
+       				$choiceNodes = $data->xpath($exp);
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
 			        	if(!is_null($choice)){
@@ -235,6 +236,13 @@ class taoItems_models_classes_QTI_ParserFactory
 				        break;
 		        
 	       		}
+	       		$promptNodes = $data->xpath("//*[name(.) = 'prompt']");
+	       		foreach($promptNodes as $promptNode){
+	       			$myInteraction->setPrompt((string)$promptNode);
+	       			$pattern = "/(<prompt\b[^>]*>(.*?)<\/prompt>)|(<prompt\b[^>]*\/>)/is";
+	       			$interactionData = preg_replace($pattern, "{prompt}", $interactionData);
+	       		}
+	       		
 	        	$myInteraction->setData($interactionData);
 	        }
        		
@@ -272,6 +280,7 @@ class taoItems_models_classes_QTI_ParserFactory
        	unset($options['identifier']);
        	
        	if(!isset($data['identifier'])){
+       		print_r($data);
 			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for the choice {$data->getName()}");
        	}
        	
