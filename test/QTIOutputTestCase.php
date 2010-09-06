@@ -41,8 +41,13 @@ class QTIOutputTestCase extends UnitTestCase {
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
 			}
+			//test if content has been exported
 			$qti = $item->toQTI();
 			$this->assertFalse(empty($qti));
+			
+			//test if it's a well formed xml string 
+			$root = simplexml_load_string($qti);
+			$this->assertIsA($root, 'SimpleXmlElement');
 		}
 	}
 	

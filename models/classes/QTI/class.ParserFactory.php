@@ -90,10 +90,10 @@ class taoItems_models_classes_QTI_ParserFactory
         }
         
         //extract the item structure to separate the structural/style content to the item content 
-        $itemBodyNodes = $data->xpath("//*[name(.) = 'itemBody']/*");
+        $itemBodyNodes = $data->xpath("*[name(.) = 'itemBody']/*");
         
         $itemData = '';
-        foreach($itemBodyNodes as $itemBodyNode){
+        foreach($itemBodyNodes as $itemBodyNode){	//the node should be alone
         	$itemData .= $itemBodyNode->asXml();
         }
         if(!empty($itemData)){
@@ -105,6 +105,43 @@ class taoItems_models_classes_QTI_ParserFactory
 	        }
 	        $myItem->setData($itemData);
         }
+        
+        //extract thee responses
+        $responseNodes = $data->xpath("*[name(.) = 'responseDeclaration']");
+        foreach($responseNodes as $responseNode){
+        	$response = self::buildResponse($responseNode);
+        	if(!is_null($response)){
+        		foreach($myItem->getInteractions() as $interation){
+        			if($interaction->getOption('responseIdentifier') == $response->getIdentifier()){
+        				$interaction->setResponse($response);
+        				break;
+        			}
+        		}
+        	}
+        }
+        
+        //extract outcome variables
+        $outcomes = array();
+        $outComeNodes = $data->xpath("*[name(.) = 'outcomeDeclaration']");
+        foreach($outComeNodes as $outComeNode){
+        	$outcome = self::buildOutcome($outComeNode);
+        	if(!is_null($outcome)){
+        		$outcomes[] = $outcome;
+        	}
+        }
+        if(count($outcomes) > 0){
+        	$myItem->setOutcomes($outcomes);
+        }
+        
+        //extract the response processing
+        $rpNodes = $data->xpath("*[name(.) = 'responseProcessing']");
+        foreach($rpNodes as $rpNode){		//the node should be alone
+        	$rProcessing = self::buildResponseProcessing($rpNode);
+        	if(!is_null($rProcessing)){
+        		$myItem->setResponseProcessing($rProcessing);
+        	}
+        }
+        
         $returnValue = $myItem;
         
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000248E end
@@ -280,7 +317,6 @@ class taoItems_models_classes_QTI_ParserFactory
        	unset($options['identifier']);
        	
        	if(!isset($data['identifier'])){
-       		print_r($data);
 			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for the choice {$data->getName()}");
        	}
        	
@@ -309,25 +345,116 @@ class taoItems_models_classes_QTI_ParserFactory
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002497 begin
+        
+	    $options = array();
+       	foreach($data->attributes() as $key => $value){
+       		$options[$key] = (string)$value;
+       	}
+       	unset($options['identifier']);
+       	
+       	if(!isset($data['identifier'])){
+			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for {$data->getName()}");
+       	}
+       	
+       	$myResponse = new taoItems_models_classes_QTI_Response((string)$data['identifier'], $options);
+       	$myResponse->setType($data->getName());
+       	
+       	//set the correct responses
+       	$correctResponseNodes = $data->xpath("*[name(.) = 'correctResponse']");
+       	$responses = array();
+       	foreach($correctResponseNodes as $correctResponseNode){
+       		foreach($correctResponseNode->value as $value){
+       			$responses[] = (string)$value;
+       		}
+       		break;
+       	}
+       	$myResponse->setCorrectResponses($responses);
+       	
+       	//set the mapping if defined
+       	$mappingNodes = $data->xpath("*[name(.) = 'mapping']");
+       	foreach($mappingNodes as $mappingNode){
+       		
+       		if(isset($mappingNode['defaultValue'])){
+       			$myResponse->setMappingDefaultValue((string)$mappingNode['defaultValue']);
+       		}
+       		
+       		$mapping = array();
+       		foreach($mappingNode->mapEntry as $mapEntry){
+       			$mapping[(string)$mapEntry['mapKey']] = (string)$mapEntry['mappedValue'];
+       		}
+       		$myResponse->setMapping($mapping);
+       		
+       		break;
+       	}
+       	
+       	
+       	$returnValue = $myResponse;
+        
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002497 end
 
         return $returnValue;
     }
 
     /**
-     * Short description of method buildScore
+     * Short description of method buildOutcome
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  SimpleXMLElement data
-     * @return taoItems_models_classes_QTI_Score
+     * @return taoItems_models_classes_QTI_Outcome
      */
-    public static function buildScore( SimpleXMLElement $data)
+    public static function buildOutcome( SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000249A begin
+        
+    	$options = array();
+       	foreach($data->attributes() as $key => $value){
+       		$options[$key] = (string)$value;
+       	}
+       	unset($options['identifier']);
+       	
+       	if(!isset($data['identifier'])){
+			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for an {$data->getName()}");
+       	}
+       	
+       	$outCome = new taoItems_models_classes_QTI_Outcome((string)$data['identifier'], $options);
+        if(isset($outcome->defaultValue)){
+        	$outCome->setDefaultValue((string)$outcome->defaultValue->value);
+        }
+        
+        $returnValue = $outCome;
+       	
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000249A end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method buildResponseProcessing
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  SimpleXMLElement data
+     * @return taoItems_models_classes_QTI_response_ResponseProcessing
+     */
+    public static function buildResponseProcessing( SimpleXMLElement $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 begin
+        
+        if(isset($data['template'])){
+        	//template processing
+        	 $returnValue = new taoItems_models_classes_QTI_response_Template((string)$data['template']);
+        }
+        else{
+			//custom rule processing
+        	
+        }
+        
+        // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
 
         return $returnValue;
     }

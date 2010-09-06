@@ -299,7 +299,6 @@ abstract class taoItems_models_classes_QTI_Data
         if(is_null($this->identifier) || empty($this->identifier)){
         	$this->createIdentifier();
         }
-        $this->createSerial();
         
         $returnValue = $this->identifier;
         

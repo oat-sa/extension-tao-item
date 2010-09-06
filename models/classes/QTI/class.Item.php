@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 02.09.2010, 11:51:52 with ArgoUML PHP module 
+ * Automatically generated on 06.09.2010, 16:00:39 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -22,7 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Data
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
@@ -34,6 +38,13 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
+
+/**
+ * include taoItems_models_classes_QTI_Outcome
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
 /**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
@@ -62,7 +73,7 @@ class taoItems_models_classes_QTI_Item
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -81,6 +92,14 @@ class taoItems_models_classes_QTI_Item
      * @var ResponseProcessing
      */
     protected $responseProcessing = null;
+
+    /**
+     * Short description of attribute outcomes
+     *
+     * @access protected
+     * @var array
+     */
+    protected $outcomes = array();
 
     // --- OPERATIONS ---
 
@@ -183,7 +202,7 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023DB begin
         
         if(!empty($serial)){
-	        if(array_key_exists($id, $this->interactions)){
+	        if(array_key_exists($serial, $this->interactions)){
 	        	$returnValue = $this->interactions[$serial];
 	        }
         }
@@ -273,6 +292,99 @@ class taoItems_models_classes_QTI_Item
     	$this->responseProcessing = $rprocessing;
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E end
+    }
+
+    /**
+     * Short description of method setOutcomes
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array outcomes
+     * @return mixed
+     */
+    public function setOutcomes($outcomes)
+    {
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A4 begin
+        
+    	foreach($outcomes as $outcome){
+    		if( ! $outcome instanceof taoItems_models_classes_QTI_Outcome){
+    			throw new InvalidArgumentException("wrong entry in outcomes list");
+    		}
+    		$this->outcomes[$outcome->getSerial()] = $outcome;
+    	}
+    	
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A4 end
+    }
+
+    /**
+     * Short description of method getOutcomes
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function getOutcomes()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A7 begin
+        
+        $returnValue = $this->outcomes;
+        
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A7 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getOutcome
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string serial
+     * @return taoItems_models_classes_QTI_Outcome
+     */
+    public function getOutcome($serial)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A9 begin
+        
+     	if(!empty($serial)){
+	        if(array_key_exists($serial, $this->outcomes)){
+	        	$returnValue = $this->outcomes[$serial];
+	        }
+        }
+        
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A9 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method removeOutcome
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Outcome outcome
+     * @return boolean
+     */
+    public function removeOutcome( taoItems_models_classes_QTI_Outcome $outcome)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025AC begin
+        
+	    if(!is_null($outcome)){
+    		if(isset($this->outcomes[$outcome->getSerial()])){
+    			unset($this->outcomes[$outcome->getSerial()]);
+    			$returnValue = true;
+    		}
+    	}
+    	
+        // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025AC end
+
+        return (bool) $returnValue;
     }
 
     /**

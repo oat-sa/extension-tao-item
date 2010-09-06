@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Score.php
+ * TAO - taoItems/models/classes/QTI/class.Outcome.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 10.08.2010, 16:44:14 with ArgoUML PHP module 
+ * Automatically generated on 06.09.2010, 15:04:56 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -22,11 +22,22 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Data
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
+
+/**
+ * include taoItems_models_classes_QTI_Item
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/class.Item.php');
 
 /**
  * include taoItems_models_classes_QTI_Response
@@ -44,18 +55,18 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002347-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Score
+ * Short description of class taoItems_models_classes_QTI_Outcome
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
-class taoItems_models_classes_QTI_Score
+class taoItems_models_classes_QTI_Outcome
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -63,17 +74,9 @@ class taoItems_models_classes_QTI_Score
      * Short description of attribute defaultValue
      *
      * @access protected
-     * @var int
+     * @var string
      */
-    protected $defaultValue = 0;
-
-    /**
-     * Short description of attribute mapping
-     *
-     * @access protected
-     * @var array
-     */
-    protected $mapping = array();
+    protected $defaultValue = '';
 
     // --- OPERATIONS ---
 
@@ -82,11 +85,11 @@ class taoItems_models_classes_QTI_Score
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return int
+     * @return string
      */
     public function getDefaultValue()
     {
-        $returnValue = (int) 0;
+        $returnValue = (string) '';
 
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002418 begin
         
@@ -94,7 +97,7 @@ class taoItems_models_classes_QTI_Score
         
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002418 end
 
-        return (int) $returnValue;
+        return (string) $returnValue;
     }
 
     /**
@@ -102,7 +105,7 @@ class taoItems_models_classes_QTI_Score
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  int value
+     * @param  string value
      * @return mixed
      */
     public function setDefaultValue($value)
@@ -112,46 +115,6 @@ class taoItems_models_classes_QTI_Score
     	$this->defaultValue = $value;
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241A end
-    }
-
-    /**
-     * Short description of method getMappging
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return array
-     */
-    public function getMappging()
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241D begin
-        
-        $returnValue = $this->mapping;
-        
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241D end
-
-        return (array) $returnValue;
-    }
-
-    /**
-     * Short description of method setMapping
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  array map
-     * @return mixed
-     */
-    public function setMapping($map)
-    {
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241F begin
-        
-    	if(!is_array($map)){
-    		$map = array($map);
-    	}
-    	$this->mapping = $map;
-    	
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241F end
     }
 
     /**
@@ -205,6 +168,6 @@ class taoItems_models_classes_QTI_Score
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_QTI_Score */
+} /* end of class taoItems_models_classes_QTI_Outcome */
 
 ?>
