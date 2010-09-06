@@ -62,7 +62,7 @@ abstract class taoItems_actions_QTIform_Choice
      */
     public function initForm()
     {
-		$this->form = tao_helpers_form_FormFactory::getForm('ChoiceForm_'.$this->choice->getId());
+		$this->form = tao_helpers_form_FormFactory::getForm('ChoiceForm_'.$this->choice->getSerial());
 		$this->form->setActions(array(), 'bottom');
 		//no save elt required, all shall be done with ajax request
 		// $saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Save');
@@ -74,9 +74,9 @@ abstract class taoItems_actions_QTIform_Choice
 	public function setCommonElements(){
 		
 		//add hidden id element, to know what the old id is:
-		// $oldIdElt = tao_helpers_form_FormFactory::getElement('choiceId', 'Hidden');
-		// $oldIdElt->setValue($this->choice->getId());
-		// $this->form->addElement($oldIdElt);
+		$oldIdElt = tao_helpers_form_FormFactory::getElement('choiceSerial', 'Hidden');
+		$oldIdElt->setValue($this->choice->getSerial());
+		$this->form->addElement($oldIdElt);
 		
 		//id element: need for checking unicity
 		$labelElt = tao_helpers_form_FormFactory::getElement('choiceIdentifier', 'TextBox');

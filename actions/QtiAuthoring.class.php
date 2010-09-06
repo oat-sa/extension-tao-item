@@ -169,7 +169,6 @@ class QTiAuthoring extends CommonModule {
 				//the location has been marked with {qti_interaction_new}
 				$itemData = preg_replace("/{qti_interaction_new}/", "{{$interaction->getSerial()}}", $itemData, 1);
 				$this->service->saveItemData($item, $itemData);
-				// var_dump('item', $item);
 				$itemData = $this->service->getItemData($item);//do not convert to html entities...
 				
 				//everything ok:
@@ -303,24 +302,25 @@ class QTiAuthoring extends CommonModule {
 		
 		
 		//build the choices, no matter the way they shall be displayed (e.g. one/two column(s)), the template shall manage that
-		$choices = array();
-		foreach($interaction->getChoices() as $choice){
-			$choices[$choice->getSerial()] = $choice->toForm()->render();
-		}
+		// $choices = array();
+		// foreach($interaction->getChoices() as $choice){
+			// $choices[$choice->getSerial()] = $choice->toForm()->render();
+		// }
 		
 		//new impl
 		$choices = $this->service->getInteractionChoices($interaction);
+		$choiceForms = array();
 		$interactionType = strtolower($interaction->getType());
 		if($interactionType=='match' || $interactionType=='gapmatch'){
 			foreach($choices as $order=>$group){
-				$choices[$order] = array();
+				$choiceForms[$order] = array();
 				foreach($group as $choice){
-					$choices[$order][] = $choice->toForm()->render();
+					$choiceForms[$order][$choice->getSerial()] = $choice->toForm()->render();
 				}
 			}
 		}else{
 			foreach($choices as $order=>$choice){
-				$choices[$order] = $choice->toForm()->render();
+				$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
 			}
 		}
 		
@@ -330,13 +330,15 @@ class QTiAuthoring extends CommonModule {
 		// $this->setData('formId', $formName);
 		$this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('formInteraction', $myForm->render());
-		$this->setData('formChoices', $choices);
+		$this->setData('formChoices', $choiceForms);
+		$this->setData('orderedChoices', $choices);
 		$this->setView($templateName);
 	}
 	
 	
 	public function saveInteraction(){
 		$interaction = $this->getCurrentInteraction();
+		
 		$myForm = $interaction->toForm();
 		$saved = false;
 		if($myForm->isSubmited()){
@@ -356,7 +358,9 @@ class QTiAuthoring extends CommonModule {
 				
 				if(isset($values['interactionIdentifier'])){
 					// die('set identifier');
-					$this->service->setIdentifier($interaction, $values['interactionIdentifier']);
+					if($values['interactionIdentifier'] != $interaction->getIdentifier()){
+						$this->service->setIdentifier($interaction, $values['interactionIdentifier']);
+					}
 					unset($values['interactionIdentifier']);
 				}
 				
@@ -381,6 +385,7 @@ class QTiAuthoring extends CommonModule {
 					unset($values['data']);
 				}
 				
+				unset($values['interactionSerial']);
 				$this->service->setOptions($interaction, $values);
 				
 				$saved  = true;
@@ -399,24 +404,18 @@ class QTiAuthoring extends CommonModule {
 	
 	public function saveChoice(){
 		$choice = $this->getCurrentChoice();
+		
 		$myForm = $choice->toForm();
 		$saved = false;
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				// var_dump($myForm->getValues());
+			
 				$values = $myForm->getValues();
-				
-				/*
-				if($values['choiceId'] != $values['newId']){
-					// check unicity of the new id $values['newId']:
-					$unique = true;
-					if($unique){
-						// save id
-						$this->service->setInteractionId($choice, $values['newId']);
-					}
-				}*/
+								
 				if(isset($values['choiceIdentifier'])){
-					$this->service->setIdentifier($choice, $values['choiceIdentifier']);
+					if($values['choiceIdentifier'] != $choice->getIdentifier()){
+						$this->service->setIdentifier($choice, $values['choiceIdentifier']);
+					}
 					unset($values['choiceIdentifier']);
 				}
 				
@@ -425,7 +424,7 @@ class QTiAuthoring extends CommonModule {
 					unset($values['data']);
 				}
 				
-				unset($values['newId']);
+				unset($values['choiceSerial']);
 				$this->service->setOptions($choice, $values);
 				
 				$saved = true;
@@ -434,7 +433,7 @@ class QTiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'choiceId' => $choice->getSerial()
+			'choiceSerial' => $choice->getSerial()
 		));
 	}
 	

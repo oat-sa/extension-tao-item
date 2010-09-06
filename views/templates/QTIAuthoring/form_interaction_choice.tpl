@@ -29,7 +29,55 @@
 </div>
 
 <script type="text/javascript">
+jQuery.fn.sortElements = (function(){
+ 
+    var sort = [].sort;
+ 
+    return function(comparator, getSortable) {
+ 
+        getSortable = getSortable || function(){return this;};
+ 
+        var placements = this.map(function(){
+ 
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+ 
+                // Since the element itself will change position, we have
+                // to have some way of storing its original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+ 
+            return function() {
+ 
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+ 
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+ 
+            };
+ 
+        });
+ 
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+ 
+    };
+ 
+})();
+
 $(document).ready(function(){
+	
+	
 	
 	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
 	interactionEdit.initInteractionFormSubmitter();
@@ -39,10 +87,27 @@ $(document).ready(function(){
 		interactionEdit.addChoice(interactionEdit.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
-
+	
+	//add adv. & delete button
 	interactionEdit.initToggleChoiceOptions();
 	
+	//add move up and down button
+	interactionEdit.orderedChoices = [];
+	<?foreach(get_data('orderedChoices') as $choice):?>
+		interactionEdit.orderedChoices.push('<?=$choice->getSerial()?>');
+	<?endforeach;?>
+	interactionEdit.setOrderedChoicesButtons(interactionEdit.orderedChoices);
+	
+	//add the listener to the form changing 
 	interactionEdit.setFormChangeListener();//all form
+	
+	
+	//order the choices forms:
+	$('#formContainer_choices').children('div').sortElements(function(a, b){
+		// CL('$(a)', $(a));
+		// CL('$(b)', $(b));
+		return interactionEdit.orderedChoices[$(a).attr('id')] > interactionEdit.orderedChoices[$(b).attr('id')] ? 1 : -1;
+	});
 
 });
 </script>

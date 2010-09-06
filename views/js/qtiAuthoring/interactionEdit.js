@@ -4,6 +4,30 @@ interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
 interactionEdit.modifiedInteraction = false;
 interactionEdit.modifiedChoices = [];
+interactionEdit.orderedChoices = [];
+
+interactionEdit.setOrderedChoicesButtons = function(list){
+	var total = list.length;
+	for(var i=0; i<total; i++){
+		$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control ui-icon ui-icon-circle-triangle-n"></span>');
+		
+		//get the corresponding group id:
+		$("#a_choicePropOptions_"+list[i]).after($upElt);
+		$upElt.click(function(){
+			var choiceSerial = $(this).attr('id').substr(3);
+			CL('moving up '+choiceSerial);
+		});
+		$upElt.click();
+	}
+}
+
+interactionEdit.orderChoices = function(list){
+	
+}
+
+interactionEdit.sortOrderedChoices = function(list, order){
+	
+}
 
 interactionEdit.toggleChoiceOptions = function($group){
 	var groupId = $group.attr('id');
@@ -24,6 +48,9 @@ interactionEdit.toggleChoiceOptions = function($group){
 		
 		var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
 		$group.before($buttonElt);
+		
+		// var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
+		// $group.before($buttonElt);
 		
 		//TODO: put into a css file!!
 		$buttonElt.css('position', 'relative');
@@ -48,9 +75,9 @@ interactionEdit.toggleChoiceOptions = function($group){
 		
 		$('#delete_'+groupId).click(function(){
 			if(confirm('Do you want to delete the choice?')){
-				var choiceId = $(this).attr('id').replace('delete_choicePropOptions_', '');
-				// CL('deleting the choice '+choiceId);
-				interactionEdit.deleteChoice(choiceId);
+				var choiceSerial = $(this).attr('id').replace('delete_choicePropOptions_', '');
+				// CL('deleting the choice '+choiceSerial);
+				interactionEdit.deleteChoice(choiceSerial);
 			}
 		});
 		
@@ -72,8 +99,8 @@ interactionEdit.initInteractionFormSubmitter = function(){
 			interactionEdit.saveInteraction($myForm);
 		}
 		
-		for(var choiceId in interactionEdit.modifiedChoices){
-			var $choiceForm = $('#'+choiceId);
+		for(var choiceSerial in interactionEdit.modifiedChoices){
+			var $choiceForm = $('#'+choiceSerial);
 			
 			//linearize+submit:
 			if($choiceForm.length){
@@ -119,7 +146,7 @@ interactionEdit.saveChoice = function($choiceForm){
 				createErrorMessage(__('The choice cannot be saved'));
 			}else{
 				createInfoMessage(__('The choice has been saved'));
-				delete interactionEdit.modifiedChoices['ChoiceForm_'+r.choiceId];
+				delete interactionEdit.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 			}
 	   }
 	});
@@ -137,7 +164,7 @@ interactionEdit.setFormChangeListener = function(target){
 	
 	// $("form").children().unbind('change');//use finely targetted object
 	$("form").children().change(function(){
-		// CL('changed', $(this).parents('form').attr('id'));
+		CL('changed', $(this).parents('form').attr('id'));
 		var $modifiedForm = $(this).parents('form');
 		if($modifiedForm.length){
 			var id = $modifiedForm.attr('id');
@@ -170,7 +197,7 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 			CL('choice added');
 			if(r.added){
 				var newFormElt = $('<div/>');
-				newFormElt.attr('id', r.choiceId);
+				newFormElt.attr('id', r.choiceSerial);
 				newFormElt.attr('class', containerClass);
 				newFormElt.append(r.choiceForm);
 				$appendTo.append(newFormElt);
@@ -179,24 +206,24 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 				interactionEdit.initToggleChoiceOptions();
 				newFormElt.show();
 				
-				interactionEdit.setFormChangeListener('#'+r.choiceId);
+				interactionEdit.setFormChangeListener('#'+r.choiceSerial);
 			}
 	   }
 	});
 }
 
-interactionEdit.deleteChoice = function(choiceId){
+interactionEdit.deleteChoice = function(choiceSerial){
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/deleteChoice",
 	   data: {
-			'choiceId': choiceId,
+			'choiceSerial': choiceSerial,
 			'interactionSerial': interactionEdit.interactionSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){
 			if(r.deleted){
-				$('#'+choiceId).remove();
+				$('#'+choiceSerial).remove();
 			}
 	   }
 	});

@@ -40,7 +40,7 @@ class taoItems_actions_QTIform_SimpleChoice
 		}
 		$this->form->addElement($dataElt);
 		
-		$this->form->createGroup('choicePropOptions_'.$this->choice->getId(), __('Advanced properties'), array('fixed'));
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed'));
 	}
 
 }
