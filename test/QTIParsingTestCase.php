@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../includes/common.php';
  * @package taoItems
  * @subpackage test
  */
-class QTITestCase extends UnitTestCase {
+class QTIParsingTestCase extends UnitTestCase {
 	
 	protected $qtiService;
 	

@@ -94,6 +94,25 @@ class taoItems_models_classes_QTI_Choice
         $returnValue = (string) '';
 
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E1 begin
+        
+        //check first if there is a template for the given type
+        $template = self::getTemplatePath() . 'choices/qti.' .strtolower($this->type) . '.tpl.php';
+        if(!file_exists($template)){
+        	 $template = self::getTemplatePath() . 'qti.choice.tpl.php';
+        }
+        
+        //get the variables to used in the template
+        $variables = array(
+        	'identifier'	=> $this->identifier,
+        	'type'			=> $this->type,
+        	'data'			=> $this->data,
+        	'options'		=> $this->options
+        );
+		
+		//parse and render the template
+		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$returnValue = $tplRenderer->render();
+        
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E1 end
 
         return (string) $returnValue;

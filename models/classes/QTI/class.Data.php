@@ -359,9 +359,10 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
+    	$idsKey = self::PREFIX . 'identifiers';
     	$ids = array();
-        if(Session::hasAttribute('qti-ids')){
-    		$ids = Session::getAttribute('qti-ids');
+        if(Session::hasAttribute($idsKey)){
+    		$ids = Session::getAttribute($idsKey);
     		if(!is_array($ids)){
     			$ids = array($ids);
     		}
@@ -381,7 +382,7 @@ abstract class taoItems_models_classes_QTI_Data
     	} while($exist);
     		
     	$ids[] = $id;
-    	Session::setAttribute('qti-ids', $ids);
+    	Session::setAttribute($idsKey, $ids);
     	
     	$this->id = $id;
     	
@@ -400,7 +401,7 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 begin
         
     	$clazz  = strtolower(get_class($this));
-    	$prefix = substr($clazz, strpos($clazz, 'qti_')).'_';
+    	$prefix = substr($clazz, strpos($clazz, 'qti_') + 4).'_';
     	$this->serial = str_replace('.', '', uniqid($prefix, true));
     	
         // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 end

@@ -135,7 +135,7 @@ class taoItems_models_classes_QTI_Interaction
     	parent::__construct($id, $options);
     	
     	//check type
-    	$file = '';
+    /*	$file = '';
     	if(!empty($type)){
     		$file = self::getTemplatePath() . '/interactions/qti.' .strtolower($type) . '.tpl.php';
     	}
@@ -143,7 +143,8 @@ class taoItems_models_classes_QTI_Interaction
     		throw new InvalidArgumentException("No interaction found for argument: type = '$type'");
     	}
     	
-    	$this->type = strtolower($type);
+    	$this->type = strtolower($type);*/
+    	$this->type = $type;
     	
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 end
     }
@@ -363,6 +364,7 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:000000000000254D begin
         
     	if(!is_null($group)){
+    		
     		if(isset($this->groups[$group->getSerial()])){
     			
     			if($recursive){
@@ -373,6 +375,7 @@ class taoItems_models_classes_QTI_Interaction
     			unset($this->groups[$group->getSerial()]);
     			$returnValue = true;
     		}
+    		
     	}
     	
         // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:000000000000254D end
@@ -483,6 +486,40 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 begin
+        
+        //check first if there is a template for the given type
+        $template = self::getTemplatePath() . 'interactions/qti.' .strtolower($this->type) . '.tpl.php';
+        if(!file_exists($template)){
+        	 $template = self::getTemplatePath() . 'qti.interaction.tpl.php';
+        }
+        
+        //get the variables to used in the template
+        $variables = array();
+    	$reflection = new ReflectionClass($this);
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$variables[$property->getName()] = $this->{$property->getName()};
+			}
+		}
+		
+		$variables['data'] = preg_replace("/{prompt}/", "<prompt>{$this->prompt}</prompt>", $variables['data']);
+		
+   		//build back the choices in the data variable
+   		if(count($this->getGroups()) > 0){
+   			foreach($this->getGroups() as $group){
+				$variables['data'] = preg_replace("/{".$group->getSerial()."}/", $group->toQti(), $variables['data']);
+			}
+   		}
+   		
+		foreach($this->getChoices() as $choice){
+			$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toQti(), $variables['data']);
+		}
+   		
+		
+		//parse and render the template
+		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$returnValue = $tplRenderer->render();
+        
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 end
 
         return (string) $returnValue;

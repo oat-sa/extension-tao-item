@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../includes/common.php';
  * @package taoItems
  * @subpackage test
  */
-class QTITestCase extends UnitTestCase {
+class QTIOutputTestCase extends UnitTestCase {
 	
 	protected $qtiService;
 	
@@ -41,9 +41,8 @@ class QTITestCase extends UnitTestCase {
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
 			}
-			
-			echo htmlentities($item->toQTI());
-			break;
+			$qti = $item->toQTI();
+			$this->assertFalse(empty($qti));
 		}
 	}
 	

@@ -1,4 +1,5 @@
-<<?=$type?> identifier="<?=$identifier?>"
+<<?=$type?> 
+<?if($identifier):?>identifier="<?=$identifier?>"<?endif?>
 <?foreach($options as $key => $value):?>
    	<?=$key?>="<?=$value?>" 
 <?endforeach?> ><?=$data?></<?=$type?>>

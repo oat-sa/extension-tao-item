@@ -307,12 +307,18 @@ class taoItems_models_classes_QTI_Item
         
         $template  = self::getTemplatePath() . '/qti.item.tpl.php';
         
+        //get the variables to used in the template
         $variables = array();
     	$reflection = new ReflectionClass($this);
 		foreach($reflection->getProperties() as $property){
 			if(!$property->isStatic()){
 				$variables[$property->getName()] = $this->{$property->getName()};
 			}
+		}
+		
+		//build back the interactions in the data variable
+		foreach($this->getInteractions() as $interaction){
+			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toQti(), $variables['data']);
 		}
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);

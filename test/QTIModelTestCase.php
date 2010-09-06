@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../includes/common.php';
  * @package taoItems
  * @subpackage test
  */
-class QTITestCase extends UnitTestCase {
+class QTIModelTestCase extends UnitTestCase {
 	
 	protected $qtiService;
 	
@@ -41,7 +41,7 @@ class QTITestCase extends UnitTestCase {
 		
 		//item is saved by destruction 
 		unset($item);
-		
+
 		$savedItem = $this->qtiService->getItemBySerial($serial);
 		$this->assertNotNull($savedItem);
 		$this->assertIsA($savedItem, 'taoItems_models_classes_QTI_Item');
