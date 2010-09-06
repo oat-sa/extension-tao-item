@@ -120,8 +120,8 @@ class taoItems_models_classes_QTI_Item
     	$interactionSerials = $this->interactions; 
     	$this->interactions = array();
     	foreach($interactionSerials as $serial){
-    		if(Session::hasAttribute($serial)){
-    			$this->interactions[$serial] = unserialize(Session::getAttribute($serial));
+    		if(Session::hasAttribute(self::PREFIX .$serial)){
+    			$this->interactions[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
     		}
     	}
     	

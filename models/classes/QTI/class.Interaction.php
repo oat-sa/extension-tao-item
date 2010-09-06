@@ -188,8 +188,8 @@ class taoItems_models_classes_QTI_Interaction
     	$choiceSerials = $this->choices; 
     	$this->choices = array();
     	foreach($choiceSerials as $serial){
-    		if(Session::hasAttribute($serial)){
-    			$this->choices[$serial] = unserialize(Session::getAttribute($serial));
+    		if(Session::hasAttribute(self::PREFIX .$serial)){
+    			$this->choices[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
     		}
     	}
     	$responseSerial = $this->response;
