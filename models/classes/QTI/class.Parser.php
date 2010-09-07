@@ -253,14 +253,14 @@ class taoItems_models_classes_QTI_Parser
     	$this->valid = false;
     	
     	if($error instanceof Exception){
-    		$this->errors = array(
+    		$this->errors[] = array(
     			'file' 		=> $error->getFile(),
     			'line' 		=> $error->getLine(),
     			'message'	=> $error->getMessage()
     		);
     	}
     	if($error instanceof LibXMLError){
-    		$this->errors = array(
+    		$this->errors[] = array(
     			'file' 		=> $error->file,
     			'line'		=> $error->line,
     			'message'	=> $error->message

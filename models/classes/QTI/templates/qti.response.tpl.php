@@ -12,7 +12,7 @@
 	<?endif?>
 	
 	<?if(count($mapping) > 0):?>
-        <mapping <?if($defaultMappingValue):?>defaultValue="<?=$defaultMappingValue?>"<?endif?>>
+        <mapping defaultValue="<?=$mappingDefaultValue?>">
             <?foreach($mapping as $key => $value):?>
             	<mapEntry mapKey="<?=$key?>" mappedValue="<?=$value?>"/>
             <?endforeach?>

@@ -22,11 +22,14 @@ class QTIOutputTestCase extends UnitTestCase {
 	
 	
 	/**
-	 * test the building of item from all the samples
+	 * test the building and exporting out the items
 	 */
 	public function testToQTI(){		
-		//check if samples are loaded 
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+		
+		taoItems_models_classes_QTI_Data::setPersistance(false);
+
+	foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+//			$file = dirname(__FILE__).'/samples/text_entry.xml';
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -45,9 +48,25 @@ class QTIOutputTestCase extends UnitTestCase {
 			$qti = $item->toQTI();
 			$this->assertFalse(empty($qti));
 			
-			//test if it's a well formed xml string 
-			$root = simplexml_load_string($qti);
-			$this->assertIsA($root, 'SimpleXmlElement');
+//			echo "<pre>".htmlentities($qti)."</pre>";
+
+			//test if it's a valid QTI file
+			$tmpFile = dirname(__FILE__).'/samples/'.uniqid('qti_', true).'.xml';
+			file_put_contents($tmpFile, $qti);
+			$this->assertTrue(file_exists($tmpFile));
+			
+			$parserValidator = new taoItems_models_classes_QTI_Parser($tmpFile);
+			
+			$parserValidator->validate();
+			@unlink($tmpFile);
+			if(!$parserValidator->isValid()){
+				$message = '';
+				foreach($parserValidator->getErrors() as $error){
+					$message .= "Validation error: {$error['message']} in file {$error['file']}, line {$error['line']}<br>";
+				}
+				$this->fail($message);
+			}
+			$this->assertFalse(file_exists($tmpFile));
 		}
 	}
 	

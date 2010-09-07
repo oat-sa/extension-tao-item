@@ -134,16 +134,6 @@ class taoItems_models_classes_QTI_Interaction
         
     	parent::__construct($id, $options);
     	
-    	//check type
-    /*	$file = '';
-    	if(!empty($type)){
-    		$file = self::getTemplatePath() . '/interactions/qti.' .strtolower($type) . '.tpl.php';
-    	}
-    	if(empty($file) || !file_exists($file)){
-    		throw new InvalidArgumentException("No interaction found for argument: type = '$type'");
-    	}
-    	
-    	$this->type = strtolower($type);*/
     	$this->type = $type;
     	
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 end

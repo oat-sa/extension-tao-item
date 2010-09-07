@@ -7,6 +7,18 @@
    	<?=$key?>="<?=$value?>" 
 <?endforeach?> >
     
-    <?=$data?>
-    
+	<?=$response?>
+	
+<?foreach($outcomes as $outcome):?>
+	<?=$outcome->toQTI()?>
+<?endforeach?>
+	
+	<itemBody>
+	    <?=$data?>
+	</itemBody>
+	
+<?if($responseProcessing):?>
+	<?=$responseProcessing->toQTI()?>
+<?endif?>
+
 </assessmentItem>

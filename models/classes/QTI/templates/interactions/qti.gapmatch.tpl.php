@@ -9,7 +9,12 @@
 	
 	    <?foreach($choices as  $choice):?>
 	    	<?if($groupChoiceSerial == $choice->getSerial()):?>
-	    		<gapText identifier="<?=$choice->getIdentifier()?>"><?=$choice->getData()?></gapText>
+	    		<gapText 
+	    			identifier="<?=$choice->getIdentifier()?>" 
+	    			<?foreach($choice->getOptions() as $key => $value):?>
+	    				<?=$key?>="<?=$value?>" 
+	    			<?endforeach?>
+	    			><?=$choice->getData()?></gapText>
 	    		<?break?>
 	    	<?endif?>
 	    <?endforeach?>

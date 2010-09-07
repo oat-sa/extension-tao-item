@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 11.08.2010, 14:22:13 with ArgoUML PHP module 
+ * Automatically generated on 07.09.2010, 16:06:32 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -20,6 +20,17 @@ error_reporting(E_ALL);
 if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
+
+/**
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
@@ -45,6 +56,7 @@ require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.
  * @subpackage models_classes_QTI_response
  */
 class taoItems_models_classes_QTI_response_Template
+    extends taoItems_models_classes_QTI_Data
         implements taoItems_models_classes_QTI_response_ResponseProcessing
 {
     // --- ASSOCIATIONS ---
@@ -99,11 +111,11 @@ class taoItems_models_classes_QTI_response_Template
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  array correctResponses
-     * @param  Score score
+     * @param  Response response
+     * @param  Outcome score
      * @return boolean
      */
-    public function process($correctResponses,  taoItems_models_classes_QTI_Score $score)
+    public function process( taoItems_models_classes_QTI_Response $response,  taoItems_models_classes_QTI_Outcome $score = null)
     {
         $returnValue = (bool) false;
 
@@ -137,7 +149,67 @@ class taoItems_models_classes_QTI_response_Template
     		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
     	}
     	
+    	parent::__construct(null);
+    	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 end
+    }
+
+    /**
+     * Short description of method toXHTML
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toXHTML()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A6 begin
+        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A6 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toQTI
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toQTI()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A8 begin
+        
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer(
+        		self::getTemplatePath() . '/qti.rptemplate.tpl.php', 
+        		array('uri' => $this->uri)
+        	);
+        $returnValue = $tplRenderer->render();
+        
+        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A8 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toForm
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return tao_helpers_form_Form
+     */
+    public function toForm()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025AA begin
+        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025AA end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_response_Template */

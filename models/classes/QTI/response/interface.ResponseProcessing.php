@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * Generis Object Oriented API -
+ * TAO - taoItems/models/classes/QTI/response/interface.ResponseProcessing.php
  *
  * $Id$
  *
- * This file is part of Generis Object Oriented API.
+ * This file is part of TAO.
  *
- * Automatically generated on 03.08.2010, 13:08:50 with ArgoUML PHP module 
+ * Automatically generated on 07.09.2010, 15:54:40 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -22,11 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Response
+ * include taoItems_models_classes_QTI_Item
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/class.Response.php');
+require_once('taoItems/models/classes/QTI/class.Item.php');
 
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023A0-includes begin
@@ -55,11 +55,11 @@ interface taoItems_models_classes_QTI_response_ResponseProcessing
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  array correctResponses
-     * @param  Score score
+     * @param  Response response
+     * @param  Outcome score
      * @return boolean
      */
-    public function process($correctResponses,  taoItems_models_classes_QTI_Score $score);
+    public function process( taoItems_models_classes_QTI_Response $response,  taoItems_models_classes_QTI_Outcome $score = null);
 
 } /* end of interface taoItems_models_classes_QTI_response_ResponseProcessing */
 

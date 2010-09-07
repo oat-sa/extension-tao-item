@@ -428,14 +428,31 @@ class taoItems_models_classes_QTI_Item
 			}
 		}
 		
-		//build back the interactions in the data variable
+		
+		$variables['response'] = '';
+		$foundResponses = array();
 		foreach($this->getInteractions() as $interaction){
+			
+			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toQti(), $variables['data']);
+			
+			//build the response
+			$response = $interaction->getResponse();
+			if(!is_null($response)){
+				if(!in_array($response->getIdentifier(), $foundResponses)){
+					$variables['response'] .= $response->toQTI();
+					$foundResponses[] = $response->getIdentifier();
+				}
+			}
 		}
+		
+		
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
-        
-        $returnValue = $tplRenderer->render();
+       
+		//render and clean the xml	        
+        $xmlElt = simplexml_load_string($tplRenderer->render());
+		$returnValue = $xmlElt->asXml();
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000238A end
 

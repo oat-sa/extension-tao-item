@@ -146,6 +146,19 @@ class taoItems_models_classes_QTI_Outcome
         $returnValue = (string) '';
 
         // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002464 begin
+        
+        $template  = self::getTemplatePath() . '/qti.outcome.tpl.php';
+    	
+        //get the variables to used in the template
+        $variables = array(
+        	'identifier'	=> $this->identifier,
+        	'options'		=> $this->options,
+        	'defaultValue'	=> $this->defaultValue
+        );
+		
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $returnValue = $tplRenderer->render();
+        
         // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002464 end
 
         return (string) $returnValue;
