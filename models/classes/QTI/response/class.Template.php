@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 07.09.2010, 16:06:32 with ArgoUML PHP module 
+ * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -155,23 +155,6 @@ class taoItems_models_classes_QTI_response_Template
     }
 
     /**
-     * Short description of method toXHTML
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toXHTML()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A6 begin
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A6 end
-
-        return (string) $returnValue;
-    }
-
-    /**
      * Short description of method toQTI
      *
      * @access public
@@ -193,23 +176,6 @@ class taoItems_models_classes_QTI_response_Template
         // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A8 end
 
         return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toForm
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
-     */
-    public function toForm()
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025AA begin
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025AA end
-
-        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_response_Template */

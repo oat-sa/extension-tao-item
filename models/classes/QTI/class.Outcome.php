@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 06.09.2010, 15:04:56 with ArgoUML PHP module 
+ * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -115,70 +115,6 @@ class taoItems_models_classes_QTI_Outcome
     	$this->defaultValue = $value;
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241A end
-    }
-
-    /**
-     * Short description of method toXHTML
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toXHTML()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002462 begin
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002462 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toQTI
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toQTI()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002464 begin
-        
-        $template  = self::getTemplatePath() . '/qti.outcome.tpl.php';
-    	
-        //get the variables to used in the template
-        $variables = array(
-        	'identifier'	=> $this->identifier,
-        	'options'		=> $this->options,
-        	'defaultValue'	=> $this->defaultValue
-        );
-		
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
-        $returnValue = $tplRenderer->render();
-        
-        // section 127-0-1-1--4be859a6:12a33452171:-8000:0000000000002464 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toForm
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
-     */
-    public function toForm()
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249F begin
-        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249F end
-
-        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Outcome */

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 06.09.2010, 14:27:46 with ArgoUML PHP module 
+ * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -208,72 +208,6 @@ class taoItems_models_classes_QTI_Response
     	$this->mappingDefaultValue = $value;
     	
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025EA end
-    }
-
-    /**
-     * Short description of method toXHTML
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toXHTML()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002414 begin
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002414 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toQTI
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toQTI()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002416 begin
-        
-        $template  = self::getTemplatePath() . '/qti.response.tpl.php';
-    	
-        //get the variables to used in the template
-        $variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
-		
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
-        $returnValue = $tplRenderer->render();
-        
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002416 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toForm
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
-     */
-    public function toForm()
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249D begin
-        // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249D end
-
-        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Response */

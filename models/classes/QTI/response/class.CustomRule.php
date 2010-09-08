@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 07.09.2010, 15:54:40 with ArgoUML PHP module 
+ * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -83,57 +83,6 @@ class taoItems_models_classes_QTI_response_CustomRule
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002422 end
 
         return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method toXHTML
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toXHTML()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A0 begin
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A0 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toQTI
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public function toQTI()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A2 begin
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A2 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toForm
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
-     */
-    public function toForm()
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A4 begin
-        // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A4 end
-
-        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_response_CustomRule */

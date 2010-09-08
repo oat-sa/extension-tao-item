@@ -18,6 +18,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
+/**
+ * include taoItems_models_classes_QTI_Exportable
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/interface.Exportable.php');
+
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000022FE-includes begin
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000022FE-includes end
@@ -40,6 +47,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @subpackage models_classes_QTI
  */
 abstract class taoItems_models_classes_QTI_Data
+        implements taoItems_models_classes_QTI_Exportable
 {
     // --- ASSOCIATIONS ---
 
@@ -118,6 +126,75 @@ abstract class taoItems_models_classes_QTI_Data
     protected static $templatesPath = '';
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method toXHTML
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toXHTML()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 begin
+        // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toQTI
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toQTI()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--3f707dcb:12af06fca53:-8000:000000000000415B begin
+        
+        $clazz = strtolower(get_class($this));
+    	$type = substr($clazz, strpos($clazz, 'qti_') + 4);
+    	
+        $template  = self::getTemplatePath() . '/qti.'.$type.'.tpl.php';
+    	
+        //get the variables to used in the template
+        $variables = array();
+    	$reflection = new ReflectionClass($this);
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$variables[$property->getName()] = $this->{$property->getName()};
+			}
+		}
+		
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $returnValue = $tplRenderer->render();
+        
+        // section 127-0-1-1--3f707dcb:12af06fca53:-8000:000000000000415B end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toForm
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return tao_helpers_form_Form
+     */
+    public function toForm()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--3f707dcb:12af06fca53:-8000:000000000000415D begin
+        // section 127-0-1-1--3f707dcb:12af06fca53:-8000:000000000000415D end
+
+        return $returnValue;
+    }
 
     /**
      * The constructor initialize the instance with the given identifier (if
@@ -557,37 +634,6 @@ abstract class taoItems_models_classes_QTI_Data
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002337 end
     }
-
-    /**
-     * Rendering to XHTML format.
-     *
-     * @abstract
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public abstract function toXHTML();
-
-    /**
-     * Renddering to QTI format.
-     *
-     * @abstract
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
-     */
-    public abstract function toQTI();
-
-    /**
-     * Output to a tao_helpers_form_Form instance.
-     *
-     * @abstract
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
-     * @since tao_helpers_form_Form
-     */
-    public abstract function toForm();
 
 } /* end of abstract class taoItems_models_classes_QTI_Data */
 

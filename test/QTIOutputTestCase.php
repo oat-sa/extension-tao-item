@@ -29,7 +29,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
 	foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
-//			$file = dirname(__FILE__).'/samples/text_entry.xml';
+
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -44,11 +44,11 @@ class QTIOutputTestCase extends UnitTestCase {
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
 			}
+			
 			//test if content has been exported
 			$qti = $item->toQTI();
 			$this->assertFalse(empty($qti));
 			
-//			echo "<pre>".htmlentities($qti)."</pre>";
 
 			//test if it's a valid QTI file
 			$tmpFile = dirname(__FILE__).'/samples/'.uniqid('qti_', true).'.xml';

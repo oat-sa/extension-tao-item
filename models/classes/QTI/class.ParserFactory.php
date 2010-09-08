@@ -178,7 +178,7 @@ class taoItems_models_classes_QTI_ParserFactory
        			case 'match':
        				$matchSetNodes = $data->xpath("//*[name(.) = 'simpleMatchSet']");
        				foreach($matchSetNodes as $matchSetNode){
-       					$choiceNodes = $matchSetNode->xpath("//*[name(.) = 'simpleAssociableChoice']");
+       					$choiceNodes = $matchSetNode->xpath("*[name(.) = 'simpleAssociableChoice']");
        					$choices = array();
 	       				foreach($choiceNodes as $choiceNode){
 				        	$choice = self::buildChoice($choiceNode);
@@ -255,13 +255,13 @@ class taoItems_models_classes_QTI_ParserFactory
 				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
-						foreach($myInteraction->getChoices() as $choice){
+						/*foreach($myInteraction->getChoices() as $choice){
 							//remove the choices tags
 				        	$tag = $choice->getType();
 				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 				        	$interactionData = preg_replace($pattern, "", $interactionData, 1);
 				        }
-       					break;
+       					break;*/
        					
        				default:
 			        	foreach($myInteraction->getChoices() as $choice){
