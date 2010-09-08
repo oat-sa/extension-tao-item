@@ -86,8 +86,14 @@ class Items extends TaoModule{
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
 		
-		$formContainer = new tao_actions_form_Instance($itemClass, $item);
+		$formContainer = new taoItems_actions_form_Item($itemClass, $item);
 		$myForm = $formContainer->getForm();
+		
+		$modelDefined = $this->isModelDefined($item);
+		if(!$modelDefined){
+			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
+		}
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -101,16 +107,38 @@ class Items extends TaoModule{
 		
 		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 		
-		$modelDefined = $this->isModelDefined($item);
-		if(!$modelDefined){
-			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
-		}
+		
 		$this->setData('modelDefined', $modelDefined);
 		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		
 		$this->setData('formTitle', __('Edit Item'));
+		$this->setData('myForm', $myForm->render());
+		
+		$this->setView('form.tpl');
+	}
+	
+	public function itemContentIO(){
+		
+		$item = $this->getCurrentInstance();
+		$itemClass = $this->getCurrentClass();
+		
+		$formContainer = new taoItems_actions_form_ItemContentIO($itemClass, $item);
+		$myForm = $formContainer->getForm();
+		
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				
+				$this->setData('message', __('ok'));
+				$this->setData('reload', true);
+			}
+		}
+		
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		
+		$this->setData('formTitle', __(''));
 		$this->setData('myForm', $myForm->render());
 		
 		$this->setView('form.tpl');
