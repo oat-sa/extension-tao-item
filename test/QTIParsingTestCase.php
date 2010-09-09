@@ -37,6 +37,7 @@ class QTIParsingTestCase extends UnitTestCase {
 			
 			$this->assertFalse($qtiParser->isValid());
 			$this->assertTrue(count($qtiParser->getErrors()) > 0);
+			$this->assertTrue(strlen($qtiParser->displayErrors()) > 0);
 		}
 		
 		//check if samples are loaded 

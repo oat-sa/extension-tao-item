@@ -28,7 +28,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-	foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
@@ -59,12 +59,9 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			$parserValidator->validate();
 			@unlink($tmpFile);
+			
 			if(!$parserValidator->isValid()){
-				$message = '';
-				foreach($parserValidator->getErrors() as $error){
-					$message .= "Validation error: {$error['message']} in file {$error['file']}, line {$error['line']}<br>";
-				}
-				$this->fail($message);
+				$this->fail($parserValidator->displayErrors());
 			}
 			$this->assertFalse(file_exists($tmpFile));
 		}

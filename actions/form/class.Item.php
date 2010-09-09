@@ -78,7 +78,7 @@ class taoItems_actions_form_Item
     		));
     		
     		$itemContentIOElt = tao_helpers_form_FormFactory::getElement('itemContentIO', 'Free');
-			$itemContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".TAOBASE_WWW."/img/text-xml.png'  /> ".__('Content IO')."</a>");
+			$itemContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('Content IO')."</a>");
 			$actions[] = $itemContentIOElt;
 		}
 		

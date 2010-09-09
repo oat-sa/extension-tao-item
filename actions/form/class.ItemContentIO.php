@@ -100,27 +100,29 @@ class taoItems_actions_form_ItemContentIO
 				));
 				
 				$downloadFileElt = tao_helpers_form_FormFactory::getElement("file_download", 'Free');
-				$downloadFileElt->setValue("<a href='$downloadUrl' target='_blank'>".__('download item content')."</a>");
+				$downloadFileElt->setValue("<a href='$downloadUrl' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml'  />".__('Download item content')."</a>");
 				$this->form->addElement($downloadFileElt);
 				
-				$this->form->createGroup('i1', 'Download', array($downloadFileElt->getName()));
+				$this->form->createGroup('export', 'Download', array($downloadFileElt->getName()));
 			}
 		}
 		catch(common_Exception $ce){}
     	
     	$importFileElt = tao_helpers_form_FormFactory::getElement("file_import", 'AsyncFile');
-		$importFileElt->setDescription(__("Upload an item content file (XML format required)"));
-		$importFileElt->addValidator(
-			tao_helpers_form_FormFactory::getValidator(
-				"FileMimeType", 
-				array(
-					'mimetype' => 'application/xml', 
-					'extension' => array('xml', 'qti'))
-				)
-		);
+		$importFileElt->setDescription(__("Upload the item content (XML format required)"));
+		$importFileElt->addValidators(array(
+			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
+			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),	
+			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/xml', 'application/xml'), 'extension' => array('xml', 'qti')))
+		));
 		$this->form->addElement($importFileElt);
 		
-		$this->form->createGroup('i2', 'Import',  array($importFileElt->getName()));
+		$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
+		$disableValidationElt->setDescription("Disable validation");
+		$disableValidationElt->setOptions(array("on" => ""));
+		$this->form->addElement($disableValidationElt);
+		
+		$this->form->createGroup('import', 'Import item content',  array($importFileElt->getName(), $disableValidationElt->getName()));
 			
     	//add an hidden elt for the class uri
 		$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');

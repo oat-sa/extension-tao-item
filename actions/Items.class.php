@@ -89,11 +89,6 @@ class Items extends TaoModule{
 		$formContainer = new taoItems_actions_form_Item($itemClass, $item);
 		$myForm = $formContainer->getForm();
 		
-		$modelDefined = $this->isModelDefined($item);
-		if(!$modelDefined){
-			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
-		}
-		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -107,7 +102,10 @@ class Items extends TaoModule{
 		
 		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 		
-		
+		$modelDefined = $this->isModelDefined($item);
+		if(!$modelDefined){
+			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
+		}
 		$this->setData('modelDefined', $modelDefined);
 		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
@@ -130,8 +128,25 @@ class Items extends TaoModule{
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
-				$this->setData('message', __('ok'));
-				$this->setData('reload', true);
+				$data = $myForm->getValues();
+				
+				if(isset($data['file_import']['uploaded_file'])){
+					
+					$validate = true;
+					if(isset($data['file_import']['disable_validation'])){
+						if(in_array('on', $data['file_import']['disable_validation'])){
+							$validate = false;
+						}
+					}
+					
+					if($validate){
+						
+					}
+					
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+					$this->setData('message', __('ok'));
+					$this->setData('reload', true);
+				}
 			}
 		}
 		
@@ -141,7 +156,7 @@ class Items extends TaoModule{
 		$this->setData('formTitle', __(''));
 		$this->setData('myForm', $myForm->render());
 		
-		$this->setView('form.tpl');
+		$this->setView('form_content.tpl');
 	}
 	
 	/**
