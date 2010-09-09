@@ -369,22 +369,20 @@ class QTiAuthoring extends CommonModule {
 					$interaction->setPrompt($values['prompt']);
 					unset($values['prompt']);
 				}
-				
+				$data = '';
 				if(isset($values['data'])){
-					$choiceOrder = array();
-					if(isset($values['choiceOrder'])){
-						$choiceOrder = $values['choiceOrder'];
-						unset($values['choiceOrder']);
-					}elseif(isset($values['choiceOrder0']) && isset($values['choiceOrder1'])){
-						$choiceOrder[0] = $values['choiceOrder0'];
-						$choiceOrder[1] = $values['choiceOrder1'];
-						unset($values['choiceOrder0']);
-						unset($values['choiceOrder1']);
-					}
-					$this->service->setInteractionData($interaction, $values['data'], $choiceOrder);
+					$data = $values['data'];
 					unset($values['data']);
 				}
 				
+				if(isset($_POST['choiceOrder'])){
+					$choiceOrder = $_POST['choiceOrder'];
+				}elseif(isset($_POST['choiceOrder0']) && isset($_POST['choiceOrder1'])){
+					$choiceOrder[0] = $_POST['choiceOrder0'];
+					$choiceOrder[1] = $_POST['choiceOrder1'];
+				}
+				$this->service->setInteractionData($interaction, $data, $choiceOrder);
+					
 				unset($values['interactionSerial']);
 				$this->service->setOptions($interaction, $values);
 				

@@ -1,4 +1,4 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
@@ -15,14 +15,71 @@ interactionEdit.setOrderedChoicesButtons = function(list){
 		$("#a_choicePropOptions_"+list[i]).after($upElt);
 		$upElt.click(function(){
 			var choiceSerial = $(this).attr('id').substr(3);
-			CL('moving up '+choiceSerial);
+			interactionEdit.switchOrder(choiceSerial, 'up');
 		});
-		$upElt.click();
+		
+		$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control ui-icon ui-icon-circle-triangle-s"></span>');
+		$upElt.after($downElt);
+		$downElt.click(function(){
+			var choiceSerial = $(this).attr('id').substr(5);
+			interactionEdit.switchOrder(choiceSerial, 'down');
+		});
 	}
 }
 
-interactionEdit.orderChoices = function(list){
+interactionEdit.switchOrder = function(choiceId, direction){
 	
+	var currentPosition = 0;
+	for(var i=0; i<interactionEdit.orderedChoices.length; i++){
+		if(interactionEdit.orderedChoices[i] == choiceId){
+			currentPosition = i;
+			break;
+		}
+	}
+			
+	switch(direction){
+		case 'up':{
+			//get the previous choice:
+			if(currentPosition>0){
+				$('#'+choiceId).insertBefore('#'+interactionEdit.orderedChoices[currentPosition-1]);
+				// $('#'+choiceId).remove();
+				var newOrder = [];
+				for(var i=0;i<interactionEdit.orderedChoices.length;i++){
+					if(i == currentPosition-1){
+						newOrder[i] = interactionEdit.orderedChoices[i+1];
+					}else if(i == currentPosition){
+						newOrder[i] = interactionEdit.orderedChoices[i-1];
+					}else{
+						newOrder[i] = interactionEdit.orderedChoices[i];
+					}
+				}
+				interactionEdit.orderedChoices = newOrder;
+			}
+			break;
+		}
+		case 'down':{
+			//get the previous choice:
+			if(currentPosition<interactionEdit.orderedChoices.length){
+				$('#'+choiceId).insertAfter('#'+interactionEdit.orderedChoices[currentPosition+1]);
+				// $('#'+choiceId).remove();
+				var newOrder = [];
+				for(var i=0;i<interactionEdit.orderedChoices.length;i++){
+					if(i == currentPosition){
+						newOrder[i] = interactionEdit.orderedChoices[i+1];
+					}else if(i == currentPosition+1){
+						newOrder[i] = interactionEdit.orderedChoices[i-1];
+					}else{
+						newOrder[i] = interactionEdit.orderedChoices[i];
+					}
+				}
+				interactionEdit.orderedChoices = newOrder;
+			}
+			break;
+		}
+	}
+	
+	//indicates that the interaction has changed:
+	interactionEdit.modifiedInteraction = true;
 }
 
 interactionEdit.sortOrderedChoices = function(list, order){
@@ -116,10 +173,15 @@ interactionEdit.initInteractionFormSubmitter = function(){
 interactionEdit.saveInteraction = function($myForm){
 	//TODO: check unicity of the id:
 	// CL("saving "+$myForm.attr('id'), $myForm.serialize());
+	//serialize the order:
+	var orderedChoices = '';
+	for(var i=0;i<interactionEdit.orderedChoices.length;i++){
+		orderedChoices += '&choiceOrder['+i+']='+interactionEdit.orderedChoices[i];
+	}
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveInteraction",
-	   data: $myForm.serialize(),
+	   data: $myForm.serialize()+orderedChoices,
 	   dataType: 'json',
 	   success: function(r){
 			// $(interactionEdit.interactionFormContent).html(form);

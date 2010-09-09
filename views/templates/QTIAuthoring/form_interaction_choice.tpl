@@ -16,10 +16,10 @@
 			<?foreach(get_data('formChoices') as $choiceId => $choiceForm):?>
 				<div id='<?=$choiceId?>' class='formContainer_choice'>
 					<?=$choiceForm?>
-					
 				</div>
 			<?endforeach;?>
 			</div>
+
 			<div id='add_choice_button'>
 				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Add a choice</a>
 			</div>
@@ -77,7 +77,9 @@ jQuery.fn.sortElements = (function(){
 
 $(document).ready(function(){
 	
-	
+	$("#sortable").sortable();
+	$("#sortable").disableSelection();
+
 	
 	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
 	interactionEdit.initInteractionFormSubmitter();
@@ -103,11 +105,12 @@ $(document).ready(function(){
 	
 	
 	//order the choices forms:
-	$('#formContainer_choices').children('div').sortElements(function(a, b){
+	// CL($('#formContainer_choices').children('div'));
+	// $('#formContainer_choices').children('div').sortElements(function(a, b){
 		// CL('$(a)', $(a));
 		// CL('$(b)', $(b));
-		return interactionEdit.orderedChoices[$(a).attr('id')] > interactionEdit.orderedChoices[$(b).attr('id')] ? 1 : -1;
-	});
+		// return interactionEdit.orderedChoices[$(a).attr('id')] > interactionEdit.orderedChoices[$(b).attr('id')] ? 1 : -1;
+	// });
 
 });
 </script>

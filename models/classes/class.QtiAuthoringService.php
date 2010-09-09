@@ -542,8 +542,8 @@ class taoItems_models_classes_QtiAuthoringService
 		//append the choices id to the interaction data:
 		switch(strtolower($interaction->getType())){
 			case 'choice':{
-				foreach($choiceOrder as $order=>$choiceSerial){
-					$data .= '{'.$choiceSerial.'}';
+				for($i=0; $i<count($choiceOrder); $i++){
+					$data .= '{'.$choiceOrder[$i].'}';
 				}
 				$interaction->setData($data);
 				break;
