@@ -573,6 +573,47 @@ class taoItems_models_classes_QtiAuthoringService
 		
 	}
 	
+	public function setResponseProcessing(taoItems_models_classes_QTI_Item $item, $type){
+		
+		$returnValue = false;
+		
+		if(!is_null($item)){
+			//create a responseProcessing object
+			$responseTemplates = array(
+				QTI_RESPONSE_TEMPLATE_MATCH_CORRECT,
+				QTI_RESPONSE_TEMPLATE_MAP_RESPONSE,
+				QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
+			);
+			
+			$responseProcessing = null;
+			if(in_array($type, $responseTemplates)){
+				//it is one of the available qti default templates:
+				$responseProcessing = new taoItems_models_classes_QTI_response_Template($type);
+			}else{
+				//a custom rule:
+				$responseProcessing = new taoItems_models_classes_QTI_response_CustomRule();
+				//parse the rule and assign it to the processing object
+			}
+			
+			if(!is_null($responseProcessing)){
+				$item->setResponseProcessing($responseProcessing);
+				$returnValue = true;
+			}
+		}
+		
+		return $returnValue;
+	}
+	
+	public function getResponseProcessing(taoItems_models_classes_QTI_Item $item){
+		
+		$returnValue = null;
+		
+		if(!is_null($item)){
+			$returnValue = $item->getResponseProcessing();
+		}
+		
+		return $returnValue;
+	}
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>

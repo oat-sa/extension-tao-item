@@ -4,6 +4,7 @@
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEdit.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionEdit.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseEdit.js"></script>
 <script type="text/javascript" src="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="<?=get_data('simplemodal_path')?>jquery.simplemodal.js"></script>
 
@@ -32,10 +33,9 @@
 				<?=__('Response & Scoring Editor:')?>
 		</div>
 		<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
-			<div class="ext-home-container ui-state-highlight">
-				
+			<div class="ext-home-container ui-state-highlight_cancel">
+				<table id="qtiAuthoring_response_grid"></table>
 			</div>
-
 		</div>
 	</div>
 </div>
@@ -166,25 +166,18 @@ $(document).ready(function(){
     }
   });
   
-  
-  // $('#wysiwyg').wysiwyg('document').keypress(function(e)
-	// {
-	  // alert('press');
-	// });
-
-
 	//the binding require the modified html data to be ready
 	setTimeout(qtiEdit.bindInteractionLinkListener,250);
 	
-	// CD($('#wysiwyg').wysiwyg('document'));
-	// $('#wysiwyg').wysiwyg('document').click(function(e){
-		// e.preventDefault();
-		// alert('press');
-	// });
-	 // $('#wysiwyg').wysiwyg('document').click();
 });
 
 </script>
 
 <script type="text/javascript">
+	try{
+		responseEdit.buildGrid('qtiAuthoring_response_grid');
+	}catch(err){
+		CL('building grid error:', err);
+	}
+	
 </script>

@@ -1,4 +1,4 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';

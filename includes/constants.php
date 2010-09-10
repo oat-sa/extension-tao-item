@@ -18,7 +18,10 @@ $todefine = array(
 	'TAO_ITEM_MODEL_CAMPUS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#campus',
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
 	'TAO_ITEM_HAWAI_TPL_FILE'	 		=> BASE_PATH.'/data/black_ref.xml',
-	'TAO_ITEM_CAMPUS_TPL_FILE'	 		=> BASE_PATH.'/data/campus_ref.xml'
+	'TAO_ITEM_CAMPUS_TPL_FILE'	 		=> BASE_PATH.'/data/campus_ref.xml',
+	'QTI_RESPONSE_TEMPLATE_MATCH_CORRECT' => 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct',
+	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE' => 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response',
+	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT' => 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response_point'
 );
 foreach($todefine as $constName => $constValue){
 	if(!defined($constName)){
