@@ -8,6 +8,7 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 	
 	//reset the grid:
 	responseEdit.grid = [];
+	responseEdit.grid.interactionId = interactionId;
 	
 	//firstly, get the column models, from the interactionId:
 	//label = columName
@@ -21,8 +22,8 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 	];
 	
 	serverResponse.data = [
-		{id:'1', choice1:'r1', choice2:'a2', correct:'yes', score:'-2', 'scrap':'yeah'},
-		{id:'2', choice1:'r2', 'scrap2':'yeah', choice2:'a3', correct:null}
+		{id:'1', choice1:'r3', choice2:'a2', correct:'yes', score:'-2', 'scrap':'yeah'},
+		{id:'2', choice1:'r1', 'scrap2':'yeah', choice2:'a3', correct:null}
 	];
 	
 	var fixedColumn = [];
@@ -106,6 +107,9 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 	$("#"+tableElementId).after('<div id="' + pagerId + '"/>');
 
 	responseEdit.grid.myGrid = $("#"+tableElementId).jqGrid({
+		url: "/taoItems/QtiAuthoring/saveResponse",
+		// editurl: "/taoItems/QtiAuthoring/saveResponse",
+		editData: {responseId:'aaa'},
 		datatype: "local", 
 		colNames: colNames, 
 		colModel: colModel, 
@@ -131,8 +135,36 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 		onSelectRow: function(id){
 			if(id && id!==responseEdit.grid.currentRowId){
 				responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
-				responseEdit.grid.myGrid.jqGrid('editRow',id,true); 
-				responseEdit.grid.currentRowId = id; 
+				// responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, "/taoItems/QtiAuthoring/saveResponse", {'interactionId': interactionId}); 
+				responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, 'clientArray', {'interactionId': interactionId}, function(){
+					var responseData = responseEdit.grid.myGrid.jqGrid('getRowData');
+					CD(responseData);
+					var responseDataString = JSON.stringify(responseData);
+					
+					//save to server:
+					//global processUri value
+					CL('responseEdit.grid.interactionId', responseEdit.grid.interactionId);
+					$.ajax({
+						url: "/taoItems/QtiAuthoring/saveResponse",
+						type: "POST",
+						data: {'interactionId': responseEdit.grid.interactionId, "responseDataString": responseDataString},
+						dataType: 'json',
+						success: function(response){
+							// console.log(response);
+							if (response.ok){
+								// console.log('diagram saved');
+							}else{
+								// console.log('error in saving the diagram');
+							}
+						}
+					});
+				}); 
+				responseEdit.grid.currentRowId = id;
+				
+				
+				
+				//local edit, then systematic global save:
+				
 			}
 		}
 	});

@@ -614,6 +614,22 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		return $returnValue;
 	}
+	
+	public function getInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction){
+		$response = $interaction->getResponse();
+		
+		if(is_null($response)){
+			//create a new one here, with default data model, according to the type of interaction:
+			$response = new taoItems_models_classes_QTI_Response();
+			
+		}
+		
+		return $response;
+	}
+	
+	public function getInteractionResponseColumnModel(){
+	
+	}
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>
