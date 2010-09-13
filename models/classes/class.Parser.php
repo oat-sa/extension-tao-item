@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 09.09.2010, 15:27:36 with ArgoUML PHP module 
+ * Automatically generated on 10.09.2010, 14:52:35 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -45,12 +45,12 @@ class taoItems_models_classes_Parser
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute file
+     * Short description of attribute uri
      *
      * @access protected
      * @var string
      */
-    protected $file = '';
+    protected $uri = '';
 
     /**
      * Short description of attribute errors
@@ -75,14 +75,17 @@ class taoItems_models_classes_Parser
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string file
+     * @param  string uri
      * @return mixed
      */
-    public function __construct($file)
+    public function __construct($uri)
     {
         // section 127-0-1-1-64df0e4a:12af6a1640c:-8000:00000000000025B8 begin
         
-    	$this->file = $file;
+    	if(!is_file($uri) && !preg_match("/^http/", $uri)){
+    		throw new Exception("Only regular file or HTTP(s) url are allowed");
+    	}
+    	$this->uri = $uri;
     	
         // section 127-0-1-1-64df0e4a:12af6a1640c:-8000:00000000000025B8 end
     }
@@ -106,19 +109,30 @@ class taoItems_models_classes_Parser
         $this->valid = true;
         
         try{
-	    	//check file
-	   		if(!file_exists($this->file)){
-	    		throw new Exception("File {$this->file} not found.");
-	    	}
-	    	if(!is_readable($this->file)){
-	    		throw new Exception("Unable to read file {$this->file}.");
-	    	}
-	   		if(!preg_match("/\.xml$/", basename($this->file))){
-	    		throw new Exception("Wrong file extension in {$this->file}, xml extension is expected");
-	    	}
-	   		if(!tao_helpers_File::securityCheck($this->file)){
-	    		throw new Exception("{$this->file} seems to contain some security issues");
-	    	}
+        	if(is_file($this->uri)){
+        		
+		    	//check file
+		   		if(!file_exists($this->uri)){
+		    		throw new Exception("File {$this->uri} not found.");
+		    	}
+		    	if(!is_readable($this->uri)){
+		    		throw new Exception("Unable to read file {$this->uri}.");
+		    	}
+		   		if(!preg_match("/\.xml$/", basename($this->uri))){
+		    		throw new Exception("Wrong file extension in {$this->uri}, xml extension is expected");
+		    	}
+		   		if(!tao_helpers_File::securityCheck($this->uri)){
+		    		throw new Exception("{$this->uri} seems to contain some security issues");
+		    	}
+        	}
+        	else{
+        		
+        		//only same domain
+        		if(!preg_match("/^".preg_quote(BASE_URL, '/')."/", $this->uri)){
+        			throw new Exception("The given uri must be in the domain {$_SERVER['HTTP_HOST']}");
+        		}
+        		
+        	}
         }
         catch(Exception $e){
         	if($forced){
@@ -129,7 +143,7 @@ class taoItems_models_classes_Parser
         	}
         }   
              
-        if($this->valid){	//valida can be true if forceValidation has been called
+        if($this->valid && !$forced){	//valida can be true if forceValidation has been called
         	
         	$this->valid = false;
 
@@ -138,7 +152,15 @@ class taoItems_models_classes_Parser
 	    		libxml_use_internal_errors(true);
 	    		
 		    	$dom = new DomDocument();
-		    	if($dom->load($this->file)){
+		    	$loadResult = false;
+		    	if(is_file($this->uri)){
+		    		$loadResult = $dom->load($this->uri);
+		    	}
+		    	else{
+		    		$xmlContent = tao_helpers_Request::load($this->uri, true);
+		    		$loadResult = $dom->loadXML($xmlContent);
+		    	}
+		    	if($loadResult){
 		    		if(!empty($schema)){
 		    			$this->valid = $dom->schemaValidate($schema);
 		    		}

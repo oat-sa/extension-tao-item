@@ -6,7 +6,7 @@
       <xs:sequence>
         <xs:element ref="tao:MATRIX"/>
       </xs:sequence>
-      <xs:attribute ref="rdf:Id" use="required"/>
+      <xs:attribute ref="rdf:ID" use="required"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="MATRIX" type="xs:integer"/>

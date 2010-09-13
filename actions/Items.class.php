@@ -117,6 +117,9 @@ class Items extends TaoModule{
 		$this->setView('form.tpl');
 	}
 	
+	/**
+	 * Edit the row item content: download and upload the item content from the XML format 
+	 */
 	public function itemContentIO(){
 		
 		$item = $this->getCurrentInstance();
@@ -132,20 +135,51 @@ class Items extends TaoModule{
 				
 				if(isset($data['file_import']['uploaded_file'])){
 					
+					//parse and validate the sent file
+					$parser = new taoItems_models_classes_Parser($data['file_import']['uploaded_file']);
+					
+					//check if the valdiation should be skipped
 					$validate = true;
-					if(isset($data['file_import']['disable_validation'])){
-						if(in_array('on', $data['file_import']['disable_validation'])){
-							$validate = false;
+					if(isset($data['disable_validation'])){
+						if(in_array('on', $data['disable_validation'])){
+							$validate = false;	
 						}
 					}
-					
-					if($validate){
+					if(!$validate){
+						$parser->forceValidation();
+					}
+					$schema = '';
+					 
+					//get the Xml Schema regarding the item model
+					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+					switch($itemModel->uriResource){
+						case TAO_ITEM_MODEL_QCM: break;
+					 	case TAO_ITEM_MODEL_WATERPHENIX: break;
+					 	case TAO_ITEM_MODEL_QTI:
+							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
+							break;
+					 	default:
+					 		$modelName = strtolower(trim($itemModel->getLabel()));
+					 		$schema = BASE_PATH . "/models/classes/data/{$modelName}/{$modelName}.xsd";
+							break;
 						
 					}
+					 
+					if(!empty($schema)){
+						//run the validation
+						$parser->validate($schema);	
+					}
 					
-					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
-					$this->setData('message', __('ok'));
-					$this->setData('reload', true);
+					if($parser->isValid()){
+						//if the file is valid, we set it as the property of the item
+						$item->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), file_get_contents($data['file_import']['uploaded_file']));
+						
+						$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+						$this->setData('message', __('Item content saved'));
+					}
+					
+					//get the errors (is empty if the file is valid)  
+					$this->setData('importErrors', $parser->getErrors());
 				}
 			}
 		}
@@ -153,7 +187,7 @@ class Items extends TaoModule{
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		
-		$this->setData('formTitle', __(''));
+		$this->setData('formTitle', __('Manage item content'));
 		$this->setData('myForm', $myForm->render());
 		
 		$this->setView('form_content.tpl');
@@ -204,8 +238,10 @@ class Items extends TaoModule{
 			
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
 				
+				//the item content url 
 				$contentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($clazz->uriResource), 'preview' => true)));
 				
+				//the runtime
 				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
 			
 				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
@@ -220,11 +256,11 @@ class Items extends TaoModule{
 				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
 					$previewData['swf'] 		= BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime;
 					$previewData['contentUrl'] 	= $contentUrl;
-					//$previewData['content'] 	= $content;
 				}
 			}
 		}
 		catch(Exception $e){}
+		
 		return $previewData;
 	}
 	
@@ -372,7 +408,9 @@ class Items extends TaoModule{
 	 * @return void
 	 */
 	public function authoring(){
+		
 		$this->setData('error', false);
+		
 		try{
 			$item = $this->getCurrentInstance();
 			$itemClass = $this->getCurrentClass();
@@ -380,26 +418,26 @@ class Items extends TaoModule{
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			if($itemModel instanceof core_kernel_classes_Resource){
 				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
-				if($authoring instanceof core_kernel_classes_Literal ){
+				if($authoring instanceof core_kernel_classes_Literal){
+					
+					//urlencode instead of tao_helpers_Uri::encode to be compatible with the swf authoring tools
+					$itemContentUrlParam = array(
+						'uri' => urlencode($item->uriResource), 
+						'classUri' => urlencode($itemClass->uriResource)
+					);
+					$itemContentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', $itemContentUrlParam));
+					
 					if(preg_match("/\.swf$/", (string)$authoring)){
 						$this->setData('type', 'swf');
 					}
 					if(preg_match("/\.php$/", (string)$authoring)){
 						$this->setData('type', 'php');
 					}
-					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
-					$this->setData('dataPreview', urlencode(_url('getItemContent', get_class($this), 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($itemClass->uriResource)))));
-					
-					// var_dump($authoring, preg_match("/taoItems/", (string)$authoring));
 					if(preg_match("/taoItems\//", (string)$authoring)){
-						// $this->setData('type', 'taoItems');
-						// $this->setData('authoringFile', ROOT_URL.'/'.(string)$authoring);
-						// echo _url('index', 'processBrowser', null, array('processUri' => urlencode($processUri)));
-						// exit;
-						$itemContent = '';
-						$this->redirect((string)$authoring.'?xml='.$itemContent.'&instance='.tao_helpers_Uri::encode($item->uriResource, false));
+						$this->redirect((string)$authoring.'?xml='.$itemContentUrl.'&instance='.tao_helpers_Uri::encode($item->uriResource, false));
 					}
-					
+					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
+					$this->setData('itemContentUrl', $itemContentUrl);
 					
 				}
 			}
@@ -409,7 +447,7 @@ class Items extends TaoModule{
 			$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		}
 		catch(Exception $e){
-			print $e;
+			
 			$this->setData('error', true);
 		}
 		$this->setView('authoring.tpl');
@@ -462,12 +500,6 @@ class Items extends TaoModule{
 				if($itemModel instanceof core_kernel_classes_Resource){
 					
 					switch($itemModel->uriResource){
-						
-						case TAO_ITEM_MODEL_KHOS:
-						case TAO_ITEM_MODEL_QCM :
-						case TAO_ITEM_MODEL_CAMPUS :
-							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
-							break;
 							
 						case TAO_ITEM_MODEL_WATERPHENIX:
 							$fileUri = $this->service->getAuthoringFile($item->uriResource);
@@ -475,7 +507,7 @@ class Items extends TaoModule{
 							break;
 							
 
-						default:
+						case TAO_ITEM_MODEL_CTEST :
 							isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
 							$data = "<?xml version='1.0' encoding='UTF-8'?>
 										<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
@@ -485,7 +517,9 @@ class Items extends TaoModule{
 										</tao:ITEM>";
 							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $data));
 							break;
-							
+						default:
+							$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
+							break;
 					}
 					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 					$message = __('Item saved successfully');

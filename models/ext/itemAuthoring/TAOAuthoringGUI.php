@@ -26,37 +26,6 @@ class TAOAuthoringGUI {
 		$this->localXmlFile = $localXmlFile;
 	}
 	
-	/**
-	 * load xml with an http request
-	 * @return thee xml data
-	 */
-	private function loadXml(){
-		$output = '';
-		if(!empty($this->localXmlFile)){
-			session_write_close();
-			$curlHandler = curl_init();
-			$url = $this->localXmlFile;
-			if(!preg_match("/&$/", $url)){
-				$url .= '&';
-			}
-			$url .= 'session_id=' . session_id();
-			curl_setopt($curlHandler, CURLOPT_URL, $url);
-			
-			//if there is an http auth, it's mandatory to connect with curl
-			if(USE_HTTP_AUTH){
-				curl_setopt($curlHandler, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            	curl_setopt($curlHandler, CURLOPT_USERPWD, USE_HTTP_USER.":".USE_HTTP_PASS);
-			}
-			curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
-			
-			//to keep the session
-			curl_setopt($curlHandler, CURLOPT_COOKIE, session_name(). '=' . $_COOKIE[session_name()] . '; path=/'); 
-			$output = curl_exec($curlHandler);
-			curl_close($curlHandler);  
-		}
-		return $output;
-	}  
-	
 	function getIfUrl($string)
 	{
 		$r="^http://([_a-zA-Z0-9])+(\.[_a-zA-Z0-9])+(\.fr)|(\.com)|(\.org)|(\.net)";
@@ -164,8 +133,8 @@ class TAOAuthoringGUI {
 		
 		$xml_parser=xml_parser_create("UTF-8");
 		
-	
-		$items=array();$y=0;
+		
+		$items=array(); $y=0;
 		$xml=str_replace("&#180;","'",$xml);
 		$xml =trim($xml);	
 		$xml=str_replace("&Acirc;"," ",$xml);
@@ -189,9 +158,9 @@ class TAOAuthoringGUI {
 
 		error_reporting("^E_NOTICE");
 		xml_parse_into_struct($xml_parser, $xml, $values, $tags);
-	
-	
-		 foreach ($tags as $key=>$val)
+		
+		
+		foreach ($tags as $key=>$val)
 		 {	
 			if ($key == "TAO:DISPLAYALLINQUIRIES")
 				 { 
@@ -409,9 +378,8 @@ class TAOAuthoringGUI {
 		$property = TAO_ITEM_CONTENT_PROPERTY;
 		error_reporting(E_ALL);
 		$_SESSION["ClassInd"]=$instance;
-		$xml = $this->loadXml();
 		
-		
+		$xml = tao_helpers_Request::load($this->localXmlFile, true);
 		$struct = $this->parseXML($xml);
 		
 		$uri = tao_helpers_Uri::encode($instance);

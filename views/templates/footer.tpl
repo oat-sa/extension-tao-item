@@ -10,11 +10,11 @@ $(function(){
 	<?if(get_data('uri') && get_data('classUri')):?>
 		
 		if(ctx_action != 'authoring'){
-			UiBootstrap.tabs.tabs('url', authoringIndex, "<?=_url('authoring', 'Items', 'taoItems', array('uri' => get_data('uri'), classUri => get_data('classUri')))?>");
+			UiBootstrap.tabs.tabs('url', authoringIndex, "<?=_url('authoring', 'Items', 'taoItems', array('uri' => get_data('uri'), 'classUri' => get_data('classUri')))?>");
 			UiBootstrap.tabs.tabs('enable', authoringIndex);
 		}
 		if(ctx_action != 'preview'){
-			UiBootstrap.tabs.tabs('url', previewIndex, "<?=_url('preview', 'Items', 'taoItems', array('uri' => get_data('uri'), classUri => get_data('classUri')))?>");
+			UiBootstrap.tabs.tabs('url', previewIndex, "<?=_url('preview', 'Items', 'taoItems', array('uri' => get_data('uri'), 'classUri' => get_data('classUri')))?>");
 			UiBootstrap.tabs.tabs('enable', previewIndex);
 		}
 	<?else:?>

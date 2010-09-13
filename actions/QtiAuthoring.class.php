@@ -42,7 +42,7 @@ class QTiAuthoring extends CommonModule {
 			$item = $this->qtiService->getItemBySerial($itemSerial);
 		}else{
 			//try creating a new item:
-			$itemFile = $this->getRequestParameter('xml');
+			$itemFile = html_entity_decode($this->getRequestParameter('xml'));
 			if(empty($itemFile)){
 			
 				//temp check to allow page reloading without xml file:
@@ -65,6 +65,12 @@ class QTiAuthoring extends CommonModule {
 			}else{
 				//import it:
 				$qtiParser = new taoItems_models_classes_QTI_Parser($itemFile);
+				$qtiParser->validate();
+				if(!$qtiParser->isValid()){
+					var_dump($itemFile);
+					echo $qtiParser->displayErrors();
+					return null;
+				}
 				$item = $qtiParser->load();
 				if(empty($item)){
 					throw new Exception('cannot load the item from the file: '.$itemFile);

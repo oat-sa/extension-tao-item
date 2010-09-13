@@ -26,7 +26,7 @@ $lg = $GLOBALS['lang'];
 error_reporting("^E_NOTICE");
 $struct = array();
 if(isset($_GET['xml'])){
-	$struct = parseXml(loadItem($_GET['xml']));
+	$struct = parseXml(tao_helpers_Request::load($_GET['xml'], true));
 }
 if (isset($_POST["saveItem"])){
 	$struct = parseXml(saveItem());
@@ -212,33 +212,7 @@ function getExtendedValueKey($label,$structextvalues)
 				}
 			}
 	}
-function loadItem($localXmlFile)
-{
-	$output  = '';
-	if(trim($localXmlFile) != ''){
-		session_write_close();
-		$curlHandler = curl_init();
-		$url = $localXmlFile;
-		if(!preg_match("/&$/", $url)){
-			$url .= '&';
-		}
-		$url .= 'session_id=' . session_id();
-		curl_setopt($curlHandler, CURLOPT_URL, $url);
-		
-		//if there is an http auth, it's mandatory to connect with curl
-		if(USE_HTTP_AUTH){
-			curl_setopt($curlHandler, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($curlHandler, CURLOPT_USERPWD, USE_HTTP_USER.":".USE_HTTP_PASS);
-		}
-		curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, 1);
-		
-		//to keep the session
-		curl_setopt($curlHandler, CURLOPT_COOKIE, session_name(). '=' . $_COOKIE[session_name()] . '; path=/'); 
-		$output = curl_exec($curlHandler);
-		curl_close($curlHandler);  
-	}
-	return $output;
-}
+
 function saveItem()
 {
 	$xml = buildXml();

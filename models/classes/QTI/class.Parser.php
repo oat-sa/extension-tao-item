@@ -85,7 +85,15 @@ class taoItems_models_classes_QTI_Parser
         }
         
         //load it using the SimpleXml library
-    	$xml = simplexml_load_file($this->file);
+        $xml = false;
+    	if(is_file($this->uri)){
+        	$xml = simplexml_load_file($this->uri);
+    	}
+    	else{
+    		$xmlContent = tao_helpers_Request::load($this->uri, true);
+    		$xml = simplexml_load_string($xmlContent);
+    	}
+    	
     	if($xml !== false){
     		
     		//clean session's previous item 

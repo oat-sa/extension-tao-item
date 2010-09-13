@@ -66,13 +66,11 @@ class taoItems_actions_form_ItemContentIO
     {
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002596 begin
         
-    	(isset($this->options['name'])) ? $name = $this->options['name'] : $name = ''; 
-    	if(empty($name)){
-			$name = 'form_'.(count(self::$forms)+1);
-		}
-		unset($this->options['name']);
-			
-		$this->form = tao_helpers_form_FormFactory::getForm($name, $this->options);
+    	parent::initForm();
+    	
+    	$actions = tao_helpers_form_FormFactory::getCommonActions();
+    	$this->form->setActions($actions, 'top');
+    	$this->form->setActions($actions, 'bottom');
     	
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002596 end
     }
@@ -100,7 +98,7 @@ class taoItems_actions_form_ItemContentIO
 				));
 				
 				$downloadFileElt = tao_helpers_form_FormFactory::getElement("file_download", 'Free');
-				$downloadFileElt->setValue("<a href='$downloadUrl' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml'  />".__('Download item content')."</a>");
+				$downloadFileElt->setValue("<a href='$downloadUrl' class='nd' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml'  />".__('Download item content')."</a>");
 				$this->form->addElement($downloadFileElt);
 				
 				$this->form->createGroup('export', 'Download', array($downloadFileElt->getName()));
@@ -113,7 +111,7 @@ class taoItems_actions_form_ItemContentIO
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
 			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),	
-			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/xml', 'application/xml'), 'extension' => array('xml', 'qti')))
+			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/xml', 'application/xml'), 'extension' => array('xml')))
 		));
 		$this->form->addElement($importFileElt);
 		
