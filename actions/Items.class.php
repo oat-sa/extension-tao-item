@@ -125,6 +125,7 @@ class Items extends TaoModule{
 		$item = $this->getCurrentInstance();
 		$itemClass = $this->getCurrentClass();
 		
+		//instantiate the item content form container
 		$formContainer = new taoItems_actions_form_ItemContentIO($itemClass, $item);
 		$myForm = $formContainer->getForm();
 		
@@ -176,6 +177,7 @@ class Items extends TaoModule{
 						
 						$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 						$this->setData('message', __('Item content saved'));
+						
 					}
 					
 					//get the errors (is empty if the file is valid)  

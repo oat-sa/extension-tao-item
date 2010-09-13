@@ -98,7 +98,7 @@ class taoItems_actions_form_ItemContentIO
 				));
 				
 				$downloadFileElt = tao_helpers_form_FormFactory::getElement("file_download", 'Free');
-				$downloadFileElt->setValue("<a href='$downloadUrl' class='nd' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml'  />".__('Download item content')."</a>");
+				$downloadFileElt->setValue("<a href='$downloadUrl' class='blink' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml' class='icon'  /> ".__('Download item content')."</a>");
 				$this->form->addElement($downloadFileElt);
 				
 				$this->form->createGroup('export', 'Download', array($downloadFileElt->getName()));
