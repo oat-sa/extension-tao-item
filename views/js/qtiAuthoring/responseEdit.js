@@ -14,16 +14,15 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 	//name = name&index
 	//the column model is defined by the interaction + processMatching type:
 	serverResponse.colModel = [
-		{name:'id', label:'id', edittype: 'text'},
 		{name:'choice1', label:'choice 1', edittype: 'fixed', values:['r1', 'r2', 'r3']},
-		{name:'choice2', label:'choice 2', edittype: 'select', values:['a1', 'a2', 'a3', 'a4']},
+		{name:'choice2', label:'choice 2', edittype: 'select', values:{a1_id:'a1', a2_id:'a2', a3_id:'a3', a4_id:'a4'}},
 		{name:'correct', label:'correct response', edittype: 'checkbox', values:['yes', 'no']},
 		{name:'score', label:'score', edittype: 'text'}
 	];
 	
 	serverResponse.data = [
-		{id:'1', choice1:'r1', choice2:'a2', correct:'no', score:'-2'},
-		{id:'2', choice1:'r2', choice2:'a3', correct:null}
+		{id:'1', choice1:'r1', choice2:'a2', correct:'yes', score:'-2', 'scrap':'yeah'},
+		{id:'2', choice1:'r2', 'scrap2':'yeah', choice2:'a3', correct:null}
 	];
 	
 	var fixedColumn = [];
@@ -40,44 +39,65 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 		colModel[i].index = colElt.name;
 		colModel[i].editable = true;//all field is editable by default (except "fixed" column and id)
 		
-		if(colElt.edittype == 'select' || colElt.edittype == 'checkbox'){
-		
-			colModel[i].edittype = colElt.edittype;
-			
-		}else if(colElt.edittype == 'fixed' ){
-		
-			//the grid is set as requireing a column to be fixed
-			colModel[i].editable = false;
-			
-			//record the name and the values of the column, it will be used to filter and display the grid after:
-			if(fixedColumn.name){
-				throw 'building grid: only one column can be fixed';
-			}
-			fixedColumn.name = colElt.name;
-			fixedColumn.values = colElt.values;
-		}
-		
-		if(colElt.values){
-			if(colElt.values.length){
-			
-				var value = '';
-				for(var j=0; j<colElt.values.length; j++){
-					value += colElt.values[j]+':';
+		switch(colElt.edittype){
+			case 'checkbox':{
+				colModel[i].edittype = colElt.edittype;
+				
+				if(colElt.values){
+					if(colElt.values.length){
+					
+						var value = '';
+						for(var j=0; j<colElt.values.length; j++){
+							value += colElt.values[j]+':';
+						}
+						value = value.substring(0,value.length-1);
+						
+						colModel[i].editoptions = {
+							value:value
+						};
+						
+					}
 				}
-				value = value.substring(0,value.length-1);
+		
+				break;
+			}
+			case 'select':{
+				colModel[i].edittype = colElt.edittype;
 				
-				colModel[i].editoptions = {
-					value:value
-				};
+				if(colElt.values){
+					// if(colElt.values.length){
+					
+						var value = '';
+						for(var k in colElt.values){
+							value += k+':'+colElt.values[k]+';';
+						}
+						value = value.substring(0,value.length-1);
+						
+						colModel[i].editoptions = {
+							value:value
+						};
+						
+					// }
+				}
+				break;
+			}
+			case 'fixed':{
+				//the grid is set as requireing a column to be fixed
+				colModel[i].editable = false;
+				
+				//record the name and the values of the column, it will be used to filter and display the grid after:
+				if(fixedColumn.name){
+					throw 'building grid: only one column can be fixed';
+				}
+				fixedColumn.name = colElt.name;
+				fixedColumn.values = colElt.values;
 				
 			}
 		}
-		
 	}
 	
-	
-	CL('colNames', colNames);
-	CL('colModel', colModel);
+	// CL('colNames', colNames);
+	// CL('colModel', colModel);
 	responseEdit.grid.colNames = colNames;
 	responseEdit.grid.colModel = colModel;
 	
@@ -93,7 +113,7 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 		height:300, 
 		width:'',
 		pager: '#'+tableElementId+'_pager', 
-		sortname: 'id', 
+		sortname: 'choice1', 
 		viewrecords: false, 
 		sortorder: "asc", 
 		caption: __("Responses Editor"),
@@ -151,9 +171,19 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 					if(colElt.name == fixedColumn.name){
 						val = theValue;
 					}else if(colElt.values){
-						val = colElt.values[0];
-					}else if(colElt.name == 'id'){
-						val = i+1;
+						switch(colElt.edittype){
+							case 'checkbox':{
+								val = colElt.values[1];//take the "false" variable
+								break;
+							}
+							case 'select':{
+								for(var key in colElt.values){
+									val = colElt.values[key];
+									break;
+								}
+								break;
+							}
+						}
 					}else{
 						val = '';
 					}
@@ -162,7 +192,7 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 				
 			}
 			
-			CL('added row:', theRow)
+			// CL('added row:', theRow)
 			//add row:
 			responseEdit.grid.myGrid.jqGrid('addRowData', i, theRow);	
 		}
