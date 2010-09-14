@@ -413,10 +413,14 @@ abstract class taoItems_models_classes_QTI_Data
     	if(in_array($id, $ids)){
     		throw new InvalidArgumentException("Id $id is already in use");
     	}
+		
     	if(!empty($this->identifier)){
-    		unset($ids[$this->identifier]);
+			$index = array_search($this->identifier, $ids);
+			if($index !== false){
+				unset($ids[$index]);
+			}
     	}
-    	
+		
     	$ids[] = $id;
     	Session::setAttribute($idsKey, $ids);
     	$this->identifier = $id;
@@ -460,7 +464,7 @@ abstract class taoItems_models_classes_QTI_Data
     	$ids[] = $id;
     	Session::setAttribute($idsKey, $ids);
     	
-    	$this->id = $id;
+    	$this->identifier = $id;
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
     }
