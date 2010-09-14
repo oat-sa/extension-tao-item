@@ -176,7 +176,7 @@ $(document).ready(function(){
 
 <script type="text/javascript">
 	try{
-		responseEdit.buildGrid('qtiAuthoring_response_grid', 'myInteractionId');
+		responseEdit.buildGrid('qtiAuthoring_response_grid', 'interaction_4c8f38ea6c5ef570186701');
 	}catch(err){
 		CL('building grid error:', err);
 	}

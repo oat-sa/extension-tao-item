@@ -269,6 +269,9 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 				newFormElt.show();
 				
 				interactionEdit.setFormChangeListener('#'+r.choiceSerial);
+				
+				//add to the local choices order array:
+				interactionEdit.orderedChoices.push(r.choiceSerial);
 			}
 	   }
 	});

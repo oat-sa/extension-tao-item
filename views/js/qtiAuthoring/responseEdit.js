@@ -4,13 +4,13 @@ responseEdit = new Object();
 responseEdit.grid = null;
 serverResponse = new Object();
 
-responseEdit.buildGrid = function(tableElementId, interactionId){
+responseEdit.buildGrid = function(tableElementId, interactionSerial){
 	
 	//reset the grid:
 	responseEdit.grid = [];
-	responseEdit.grid.interactionId = interactionId;
+	responseEdit.grid.interactionSerial = interactionSerial;
 	
-	//firstly, get the column models, from the interactionId:
+	//firstly, get the column models, from the interactionSerial:
 	//label = columName
 	//name = name&index
 	//the column model is defined by the interaction + processMatching type:
@@ -135,19 +135,19 @@ responseEdit.buildGrid = function(tableElementId, interactionId){
 		onSelectRow: function(id){
 			if(id && id!==responseEdit.grid.currentRowId){
 				responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
-				// responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, "/taoItems/QtiAuthoring/saveResponse", {'interactionId': interactionId}); 
-				responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, 'clientArray', {'interactionId': interactionId}, function(){
+				// responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, "/taoItems/QtiAuthoring/saveResponse", {'interactionSerial': interactionSerial}); 
+				responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, 'clientArray', {'interactionSerial': interactionSerial}, function(){
 					var responseData = responseEdit.grid.myGrid.jqGrid('getRowData');
 					CD(responseData);
 					var responseDataString = JSON.stringify(responseData);
 					
 					//save to server:
 					//global processUri value
-					CL('responseEdit.grid.interactionId', responseEdit.grid.interactionId);
+					CL('responseEdit.grid.interactionSerial', responseEdit.grid.interactionSerial);
 					$.ajax({
 						url: "/taoItems/QtiAuthoring/saveResponse",
 						type: "POST",
-						data: {'interactionId': responseEdit.grid.interactionId, "responseDataString": responseDataString},
+						data: {'interactionSerial': responseEdit.grid.interactionSerial, "responseDataString": responseDataString},
 						dataType: 'json',
 						success: function(response){
 							// console.log(response);

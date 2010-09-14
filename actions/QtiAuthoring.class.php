@@ -64,17 +64,17 @@ class QTiAuthoring extends CommonModule {
 				}
 			}else{
 				//import it:
-				$qtiParser = new taoItems_models_classes_QTI_Parser($itemFile);
-				$qtiParser->validate();
-				if(!$qtiParser->isValid()){
-					var_dump($itemFile);
-					echo $qtiParser->displayErrors();
-					return null;
-				}
-				$item = $qtiParser->load();
-				if(empty($item)){
-					throw new Exception('cannot load the item from the file: '.$itemFile);
-				}
+				// $qtiParser = new taoItems_models_classes_QTI_Parser($itemFile);
+				// $qtiParser->validate();
+				// if(!$qtiParser->isValid()){
+					// var_dump($itemFile);
+					// echo $qtiParser->displayErrors();
+					// return null;
+				// }
+				// $item = $qtiParser->load();
+				// if(empty($item)){
+					// throw new Exception('cannot load the item from the file: '.$itemFile);
+				// }
 			}
 		}
 		
@@ -451,92 +451,16 @@ class QTiAuthoring extends CommonModule {
 		//get the response from the interaction:
 		$interaction = $this->getCurrentInteraction();
 		
-		if(!is_null($interaction)){
-			$interactionResponse = $this->service->getInteractionResponse($interaction);
-		}
+		
 		
 		if($this->hasRequestParameter('responseDataString')){
-		
+			
 			$responseData = json_decode(html_entity_decode($this->getRequestParameter('responseDataString')));
+			// var_dump($interaction, $responseData);
 			
-			//sort the key, according to the type of interaction:
-			$interaction = $this->getCurrentInteraction();
-			$correctResponses = array();
-			$mapping = array();
+			$saved = $this->service->saveInteractionResponse($interaction, $responseData);
 			
-			switch(strtolower($interaction->getType())){
-				case 'choice':{
-					foreach($responseData as $response){
-						//if required identifier not empty:
-						if(!empty($response['choice1'])){
-						
-							$responseValue = $response['choice1'];
-							
-							if($response['correct'] == 'yes'){
-								$correctResponses[] = $responseValue;
-							}
-							if(!empty($response['score'])){
-								//0 is considered as empty:
-								$mapping[$responseValue] = $response['score'];
-							}
-						}
-					}
-					break;
-				}
-				case 'associate':{
-					foreach($responseData as $response){
-						if(!empty($response['choice1']) && !empty($response['choice2'])){
-						
-							$responseValue = $response['choice1'].' '.$response['choice2'];
-							
-							if($response['correct'] == 'yes'){
-								$correctResponses[] = $responseValue;
-							}
-							if(!empty($response['score'])){
-								//0 is considered as empty:
-								$mapping[$responseValue] = $response['score'];
-							}
-						}
-					}
-					break;
-				}
-				case 'order':{
-					foreach($responseData as $response){
-						//find the correct order:
-						$tempResponseValue = array();
-						$responseValue = array();
-						foreach($response as $choicePosition => $choiceValue){
-							//check if it is a choice:
-							if(strpos($choicePosition, 'choice') === 0 ){
-								//ok:
-								$pos = intval(substr($choicePosition, 0, 6));
-								if($pos>0){
-									//starting from 1... so need (-1):
-									$tempResponseValue[$pos-1] = $choiceValue;
-								}
-							}
-						}
-						
-						//check if order has been breached, i.e. user forgot an intermediate value:
-						for($i=0; $i<count($tempResponseValue); $i++){
-							if(isset($tempResponseValue[$i])){
-								$responseValue[$i] = $tempResponseValue[$i];
-							}else{
-								break;
-							}
-						}
-						
-						if($response['correct'] == 'yes'){
-							//set response array directly:
-							$interactionResponse->setCorrectResponses($responseValue);
-						}
-						if(!empty($response['score'])){
-							//partial order...
-						}
-					}
-					break;
-				}
-			}
+			
 		}
 		
 	}

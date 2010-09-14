@@ -621,7 +621,9 @@ class taoItems_models_classes_QtiAuthoringService
 		if(is_null($response)){
 			//create a new one here, with default data model, according to the type of interaction:
 			$response = new taoItems_models_classes_QTI_Response();
-			
+			var_dump($interaction, $response);
+			$interaction->setResponse($response);
+			var_dump($interaction);
 		}
 		
 		return $response;
@@ -630,6 +632,143 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getInteractionResponseColumnModel(){
 	
 	}
+	
+	public function getInteractionChoiceByIdentifier($interaction, $identifier){
+	
+		if(!is_null($interaction) && !empty($identifier)){
+			foreach($interaction->getChoices() as $choice){
+				if($choice->getIdentifier() == $identifier){
+					return $choice;
+				}
+			}
+			//search in group as well:
+			foreach($interaction->getGroups() as $group){
+				foreach($interaction->getChoices() as $choice){
+					if($choice->getIdentifier() == $identifier){
+						return $choice;
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public function saveInteractionResponse($interaction, $responseData){
+		
+		$returnValue = false;
+		
+		if(!is_null($interaction)){
+		
+			$interactionResponse = $this->getInteractionResponse($interaction);
+			
+			//sort the key, according to the type of interaction:
+			$correctResponses = array();
+			$mapping = array();
+			
+			switch(strtolower($interaction->getType())){
+				case 'choice':{
+					foreach($responseData as $response){
+						$response = (array)$response;
+						//if required identifier not empty:
+						if(!empty($response['choice1'])){
+						
+							$choice1 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
+							if(!is_null($choice1)){
+								
+								$responseValue = $choice1->getSerial();
+								
+								if($response['correct'] === 'yes' || $response['correct'] === true){
+									$correctResponses[] = $responseValue;
+								}
+								if(!empty($response['score'])){
+									//0 is considered as empty:
+									$mapping[$responseValue] = $response['score'];//float
+								}
+								
+							}
+							
+						}
+					}
+					break;
+				}
+				case 'associate':{
+					foreach($responseData as $response){
+						if(!empty($response['choice1']) && !empty($response['choice2'])){
+							
+							$choice1 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
+							$choice2 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
+							if(!is_null($choice1) && !is_null($choice2)){
+							
+								$responseValue = $choice1->getSerial().' '.$choice2->getSerial();
+								
+								if($response['correct'] == 'yes' || $response['correct'] === true){
+									$correctResponses[] = $responseValue;
+								}
+								if(!empty($response['score'])){
+									//0 is considered as empty:
+									$mapping[$responseValue] = $response['score'];
+								}
+								
+							}
+						}
+					}
+					break;
+				}
+				case 'order':{
+					foreach($responseData as $response){
+						//find the correct order:
+						$tempResponseValue = array();
+						$responseValue = array();
+						foreach($response as $choicePosition => $choiceValue){
+							//check if it is a choice:
+							if(strpos($choicePosition, 'choice') === 0 ){
+								//ok:
+								$pos = intval(substr($choicePosition, 0, 6));
+								if($pos>0){
+									
+									$choice = $this->getInteractionChoiceByIdentifier($interaction, $choiceValue);
+									if(!is_null($choice)){
+										//starting from 1... so need (-1):
+										$tempResponseValue[$pos-1] = $choice->getSerial();
+									}
+									
+								}
+							}
+						}
+						
+						//check if order has been breached, i.e. user forgot an intermediate value:
+						for($i=0; $i<count($tempResponseValue); $i++){
+							if(isset($tempResponseValue[$i])){
+								$responseValue[$i] = $tempResponseValue[$i];
+							}else{
+								break;
+							}
+						}
+						
+						if($response['correct'] == 'yes'){
+							//set response array directly:
+							$correctResponses = $responseValue;
+							// $interactionResponse->setCorrectResponses($responseValue);
+						}
+						if(!empty($response['score'])){
+							//partial order...
+						}
+					}
+					break;
+				}
+			}
+			
+			// var_dump($correctResponses, $mapping);exit;
+			//set correct responses & mapping
+			if(!empty($correctResponses)) $interactionResponse->setCorrectResponses($correctResponses);
+			if(!empty($mapping)) $interactionResponse->setMapping($mapping);
+			
+			$returnValue = true;
+		}
+		return $returnValue;
+	}
+	
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>
