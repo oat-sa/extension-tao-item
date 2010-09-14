@@ -462,7 +462,19 @@ class TAOAuthoringGUI {
 		<FORM id="myQCMForm" enctype="multipart/form-data" action=index.php name=newressource target=_top method=post><input type=hidden name=MAX_FILE_SIZE value=2000000>
 		<input type=hidden name=Authoring['.$instance.']['.$property."] />
 		<SCRIPT LANGUAGE=\"Javascript1.2\">
-		function phighlight(zelement){
+		function phighlight(elt, zelement){
+		
+			var elts  = document.getElementsByClassName('phighlighter');
+			var i = 0;
+			while(i < elts.length){
+				elts[i].style.color = '#555555';
+				elts[i].style.borderColor = '#999999';
+				i++;
+			}
+			
+			elt.style.borderColor = '#333333';
+			elt.style.color = '#D00239';
+		
 			if(document.getElementById(zelement)){
 				document.getElementById('PContent').style.visibility='hidden';		
 		";
@@ -493,26 +505,27 @@ class TAOAuthoringGUI {
 		$output.="<input type=hidden name=itemcontent[instance] value=$instance>";
 		$output.="<input type=hidden name=itemcontent[property] value=$property>";
 		$output.='<span style=position:absolute;left:0px;z-index: 99999999;overflow:visible;>
-		<input type=button onClick="phighlight(\'PContent\');" value="'.__('Problem content').'" />
-		<input type=submit  name=AddInquiry onclick="refreshQCM();" value="'.__('Add a question').'" />
+		
+		<input type="button" class="phighlighter" id="phighlighter-PContent"  onclick="phighlight(this, \'PContent\');" value="'.__('Problem content').'" />
+		<input type="submit" class="phighlighter" name="AddInquiry" onclick="refreshQCM();" value="'.__('Add a question').'" />
 		
 		';
 		foreach ($struct["INQUIRIES"] as $p=>$v)
 				{
 					$nm=$p+1;//index of inquiry(for user)
-				$output.=' <input type=button onClick="phighlight(\'Q'.$nm.'Content\');" value="'.__('Question').' '.$nm.'" />';
+				$output.=' <input type="button" id="phighlighter-Q'.$nm.'Content" class="phighlighter" onclick="phighlight(this, \'Q'.$nm.'Content\');" value="'.__('Question').' '.$nm.'" />';
 				}
 		$output.='
 		
-		<input type=button onClick="FmRunner.load();" value="'.__('File Manager').'" />
-		<input type=button onClick="phighlight(\'template\');" value="'.__('Template').'" />
-		<input type=button onClick="phighlight(\'PrStyle\');"  value="'.__('Parameters').'" />
-		<input type=button onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.__('Preview').'" />
-		<input type=submit onclick="refreshQCM();" value="'.__('Apply').'">
+		<input type="button" class="phighlighter" onClick="FmRunner.load();" value="'.__('File Manager').'" />
+		<input type="button" class="phighlighter" onClick="phighlight(this, \'template\');" value="'.__('Template').'" />
+		<input type="button" class="phighlighter" onClick="phighlight(this, \'PrStyle\');"  value="'.__('Parameters').'" />
+		<input type="button" class="phighlighter" onClick="fullScreen(\''.$previewUri.'\'); return false;" name=saveContent value="'.__('Preview dialog').'" />
+		<input type="submit" class="phighlighter" onclick="refreshQCM();" value="'.__('Apply').'">
 		';
 		
 		if(!isset($_SESSION['processUri'])){
-			$output.='<input type=submit value="'.__('Save and close').'">';
+			$output.='<input type="submit" class="phighlighter" value="'.__('Save and close').'">';
 		}
 		
 		$output.='</span><br /><br />';
@@ -857,10 +870,13 @@ class TAOAuthoringGUI {
 			HTMLArea.replaceAll();';
 		if($showLastQuestion){
 			$last = count($struct["INQUIRIES"]);
-			$output.="phighlight('Q{$last}Content');";
+			$output.="phighlight(document.getElementById('phighlighter-Q{$last}Content'), 'Q{$last}Content');";
 		}
-		if($currentInquery > 0){
-			$output.="phighlight('Q{$currentInquery}Content');";
+		else if($currentInquery > 0){
+			$output.="phighlight(document.getElementById('phighlighter-Q{$currentInquery}Content'), 'Q{$currentInquery}Content');";
+		}
+		else{
+			$output.="phighlight(document.getElementById('phighlighter-PContent'), 'PContent');";
 		}
 		$output.='</script>';
 		$output.='</body><html>';
