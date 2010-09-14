@@ -156,7 +156,6 @@ class taoItems_models_classes_QTI_Interaction
         if(!is_null($this->response)){
         	$this->response = $this->response->getSerial();
         }
-        
         $returnValue = parent::__sleep();
         
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DD end
@@ -184,10 +183,9 @@ class taoItems_models_classes_QTI_Interaction
     	}
     	$responseSerial = $this->response;
     	$this->response = null;
-    	if(Session::hasAttribute($responseSerial)){
-    		$this->response = unserialize(Session::getAttribute($responseSerial));
+    	if(Session::hasAttribute(self::PREFIX .$responseSerial)){
+    		$this->response = unserialize(Session::getAttribute(self::PREFIX .$responseSerial));
     	}
-    	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF end
     }
 
