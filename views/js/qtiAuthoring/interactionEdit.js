@@ -209,6 +209,7 @@ interactionEdit.saveChoice = function($choiceForm){
 			}else{
 				createInfoMessage(__('The choice has been saved'));
 				delete interactionEdit.modifiedChoices['ChoiceForm_'+r.choiceSerial];
+				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 			}
 	   }
 	});
@@ -248,6 +249,11 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 		throw 'the append target element do not exists';
 	}
 	
+	if(!interactionSerial && interactionEdit.interactionSerial){
+		var interactionSerial = interactionEdit.interactionSerial;
+	}
+	
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/addChoice",
@@ -272,6 +278,9 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 				
 				//add to the local choices order array:
 				interactionEdit.orderedChoices.push(r.choiceSerial);
+				
+				//rebuild the response grid:
+				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 			}
 	   }
 	});
@@ -289,6 +298,8 @@ interactionEdit.deleteChoice = function(choiceSerial){
 	   success: function(r){
 			if(r.deleted){
 				$('#'+choiceSerial).remove();
+				//TODO: need to be optimized: only after the last choice saving
+				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 			}
 	   }
 	});

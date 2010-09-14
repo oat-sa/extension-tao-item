@@ -7,6 +7,7 @@ qtiEdit.itemSerial = '';
 qtiEdit.interactions = [];
 qtiEdit.itemDataContainer = '';
 qtiEdit.interactionFormContent = '';
+qtiEdit.responseGrid = 'qtiAuthoring_response_grid';
 
 qtiEdit.getEltInFrame = function(selector){
 	var foundElts = [];
@@ -48,8 +49,14 @@ qtiEdit.bindInteractionLinkListener = function(){
 		qtiEdit.interactions[interactionSerial] = interactionSerial;
 		
 		links[i].unbind('click').click(function(){
-			CL("go to editing "+$(this).attr('id'));
-			qtiEdit.loadInteractionForm($(this).attr('id'));
+			qtiEdit.currentInteractionSerial = $(this).attr('id');
+			
+			qtiEdit.loadInteractionForm(qtiEdit.currentInteractionSerial);
+			try{
+				responseEdit.buildGrid(qtiEdit.responseGrid, qtiEdit.currentInteractionSerial);
+			}catch(err){
+				CL('building grid error:', err);
+			}
 		});
 		
 	}
@@ -102,6 +109,9 @@ qtiEdit.deleteInteractions = function(interactionSerials){
 				for(var i in interactionSerials){
 					delete qtiEdit.interactions[interactionSerials[i]];
 				}
+				
+				//destroy the response form:
+				responseEdit.destroyGrid(qtiEdit.responseGrid);
 				
 				//save item data, i.e. validate the changes operated on the item data:
 				qtiEdit.saveItemData();
@@ -159,7 +169,7 @@ qtiEdit.saveItemData = function(itemSerial){
 	   },
 	   dataType: 'json',
 	   success: function(r){
-			CL('saved');
+			CL('item saved');
 	   }
 	});
 }

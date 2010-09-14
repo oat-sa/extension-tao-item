@@ -281,14 +281,14 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	
-	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $identifier=''){
+	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $identifier=null){
 		
 		$returnValue = null;
 		
 		if(!is_null($interaction)){
 			//create a new choice:
 			//determine the type of choice automatically?
-			$choice = new taoItems_models_classes_QTI_Choice(null);
+			$choice = new taoItems_models_classes_QTI_Choice($identifier);
 			if(!empty($data)){
 				$choice->setData($data);
 			}
@@ -621,9 +621,7 @@ class taoItems_models_classes_QtiAuthoringService
 		if(is_null($response)){
 			//create a new one here, with default data model, according to the type of interaction:
 			$response = new taoItems_models_classes_QTI_Response();
-			var_dump($interaction, $response);
 			$interaction->setResponse($response);
-			var_dump($interaction);
 		}
 		
 		return $response;
@@ -800,7 +798,6 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 			
-			// var_dump($correctResponses, $mapping);exit;
 			//set correct responses & mapping
 			if(!empty($correctResponses)) $interactionResponse->setCorrectResponses($correctResponses);
 			if(!empty($mapping)) $interactionResponse->setMapping($mapping);

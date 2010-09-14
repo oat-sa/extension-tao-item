@@ -2,14 +2,17 @@ alert('response edit loaded');
 
 responseEdit = new Object();
 responseEdit.grid = null;
-serverResponse = new Object();
+
+
+responseEdit.destroyGrid = function(tableElementId){
+	responseEdit.grid = [];
+	$('#'+tableElementId).children().remove();
+}
 
 responseEdit.buildGrid = function(tableElementId, interactionSerial){
-	
-	
 					
 	//reset the grid:
-	responseEdit.grid = [];
+	responseEdit.destroyGrid(tableElementId);
 	responseEdit.grid.interactionSerial = interactionSerial;
 	
 	$.ajax({
@@ -32,6 +35,7 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 		//label = columName
 		//name = name&index
 		//the column model is defined by the interaction + processMatching type:
+		// serverResponse = new Object();
 		// serverResponse.colModel = [
 			// {name:'choice1', label:'choice 1', edittype: 'fixed', values:['r1', 'r2', 'r3']},
 			// {name:'choice2', label:'choice 2', edittype: 'select', values:{a1_id:'a1', a2_id:'a2', a3_id:'a3', a4_id:'a4'}},
