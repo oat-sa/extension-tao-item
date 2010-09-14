@@ -448,10 +448,10 @@ class QTiAuthoring extends CommonModule {
 	
 	public function saveResponse(){
 		
+		$saved = false;
+		
 		//get the response from the interaction:
 		$interaction = $this->getCurrentInteraction();
-		
-		
 		
 		if($this->hasRequestParameter('responseDataString')){
 			
@@ -462,6 +462,26 @@ class QTiAuthoring extends CommonModule {
 			
 			
 		}
+		
+		echo json_encode(array(
+			'saved' => $saved
+		));
+	}
+	
+	//edit the interaction response:
+	public function editResponse(){
+	
+		$interaction = $this->getCurrentInteraction();
+		
+		//get model:
+		$columnModel = $this->service->getInteractionResponseColumnModel($interaction);
+		$responseData = $this->service->getInteractionResponseData($interaction);
+		
+		echo json_encode(array(
+			'ok' => true,
+			'colModel' => $columnModel,
+			'data' => $responseData
+		));
 		
 	}
 }

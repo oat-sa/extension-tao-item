@@ -629,11 +629,52 @@ class taoItems_models_classes_QtiAuthoringService
 		return $response;
 	}
 	
-	public function getInteractionResponseColumnModel(){
-	
+	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction){
+		$returnValue = array();
+		switch(strtolower($interaction->getType())){
+			case 'choice':{
+				$choices = array(); 
+				foreach($interaction->getChoices() as $choice){
+					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
+				}
+				$i = 1;
+				$editType = 'fixed';
+				$returnValue[] = array(
+					'name' => 'choice'.$i,
+					'label' => __('Choice').' '.$i,
+					'edittype' => $editType,
+					'values' => $choices
+				);
+				break;
+			}
+			case 'match':{
+				
+			}
+			case 'order':{
+				
+			}
+		}
+		
+		//check if the response processing is a match or a map type, or a custom one:
+		//correct response (mandatory):
+		$returnValue[] = array(
+			'name' => 'correct',
+			'label' => __('Correct Responses'),
+			'edittype' => 'checkbox',
+			'values' => array('yes', 'no')
+		);
+		
+		//mapping:
+		$returnValue[] = array(
+			'name' => 'score',
+			'label' => __('Score'),
+			'edittype' => 'text'
+		);
+		
+		return $returnValue;
 	}
 	
-	public function getInteractionChoiceByIdentifier($interaction, $identifier){
+	public function getInteractionChoiceByIdentifier(taoItems_models_classes_QTI_Interaction $interaction, $identifier){
 	
 		if(!is_null($interaction) && !empty($identifier)){
 			foreach($interaction->getChoices() as $choice){
@@ -654,7 +695,7 @@ class taoItems_models_classes_QtiAuthoringService
 		return null;
 	}
 	
-	public function saveInteractionResponse($interaction, $responseData){
+	public function saveInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction, $responseData){
 		
 		$returnValue = false;
 		
@@ -765,6 +806,61 @@ class taoItems_models_classes_QtiAuthoringService
 			if(!empty($mapping)) $interactionResponse->setMapping($mapping);
 			
 			$returnValue = true;
+		}
+		return $returnValue;
+	}
+	
+	//correct responses + mapping
+	public function getInteractionResponseData(taoItems_models_classes_QTI_Interaction $interaction){
+		$reponse = $this->getInteractionResponse($interaction);
+		
+		$returnValue = array();
+		$correctResponses = $reponse->getCorrectResponses();
+		$mapping = $reponse->getMapping();
+		
+		$i = 0;
+		if(!empty($correctResponses)){
+			
+			foreach($correctResponses as $choiceSerialConcat){
+				$choiceSerials = explode(' ', $choiceSerialConcat);
+				
+				$returnValue[$i] = array();
+				$returnValue[$i]['correct'] = 'yes';
+				
+				$j = 1;//j<=2
+				//set data as not persistent
+				foreach($choiceSerials as $choiceSerial){
+					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+					$j++;
+				}
+				
+				if(isset($mapping[$choiceSerialConcat])){
+					$returnValue[$i]['score'] = $mapping[$choiceSerialConcat];
+					unset($mapping[$choiceSerialConcat]);
+				}
+				
+				$i++;
+			}
+		}
+		if(!empty($mapping)){
+			foreach($mapping as $choiceSerialConcat => $score){
+				$choiceSerials = explode(' ', $choiceSerialConcat);
+				
+				$returnValue[$i] = array();
+				$returnValue[$i]['correct'] = 'no';
+				
+				$j = 1;//j<=2
+				foreach($choiceSerials as $choiceSerial){
+					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+					$j++;
+				}
+				
+				$returnValue[$i]['score'] = $score;
+				
+				$i++;
+			}
 		}
 		return $returnValue;
 	}
