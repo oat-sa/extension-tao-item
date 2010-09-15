@@ -107,7 +107,7 @@ class taoItems_actions_QTIform_ResponseProcessing
 		//if the type is a custom one, display the rule editor:
 		if(false){
 			//the rule id element:
-			$ruleElt = tao_helpers_form_FormFactory::getElement('customRuleSerial', 'Textarea');
+			$ruleElt = tao_helpers_form_FormFactory::getElement('customRule', 'Textarea');
 			$ruleElt->setDescription(__('Processing rule:'));
 			$ruleElt->setValue($this->responseProcessing->getIdentifier());
 			$this->form->addElement($ruleElt);

@@ -8,6 +8,7 @@ qtiEdit.interactions = [];
 qtiEdit.itemDataContainer = '';
 qtiEdit.interactionFormContent = '';
 qtiEdit.responseProcessingFormContent = '';
+qtiEdit.responseMappingOptionsFormContainer = '';
 qtiEdit.responseGrid = 'qtiAuthoring_response_grid';
 qtiEdit.responseMappingMode = false;
 
@@ -206,6 +207,20 @@ qtiEdit.loadResponseProcessingForm = function(itemSerial){
 	   dataType: 'html',
 	   success: function(form){
 			$(qtiEdit.responseProcessingFormContent).html(form);
+	   }
+	});
+}
+
+qtiEdit.saveResponseProcessing = function($myForm){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveResponseProcessing",
+	   data: $myForm.serialize(),
+	   dataType: 'json',
+	   success: function(r){
+			if(r.saved){
+				createInfoMessage(__('The response processing has been saved'));
+			}
 	   }
 	});
 }

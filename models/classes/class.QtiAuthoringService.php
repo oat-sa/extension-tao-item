@@ -573,7 +573,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 	}
 	
-	public function setResponseProcessing(taoItems_models_classes_QTI_Item $item, $type){
+	public function setResponseProcessing(taoItems_models_classes_QTI_Item $item, $type, $customRule=''){
 		
 		$returnValue = false;
 		
@@ -589,10 +589,12 @@ class taoItems_models_classes_QtiAuthoringService
 			if(in_array($type, $responseTemplates)){
 				//it is one of the available qti default templates:
 				$responseProcessing = new taoItems_models_classes_QTI_response_Template($type);
-			}else{
+			}else if($type == 'custom'){
 				//a custom rule:
 				$responseProcessing = new taoItems_models_classes_QTI_response_CustomRule();
 				//parse the rule and assign it to the processing object
+			}else{
+				throw new Exception('unknown processing type');
 			}
 			
 			if(!is_null($responseProcessing)){

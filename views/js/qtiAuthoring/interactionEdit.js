@@ -216,6 +216,36 @@ interactionEdit.saveChoice = function($choiceForm){
 }
 
 
+
+interactionEdit.loadResponseMappingForm = function(){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/editMappingOptions",
+	   data: {
+			'interactionSerial': interactionEdit.interactionSerial
+	   },
+	   dataType: 'html',
+	   success: function(form){
+			$(qtiEdit.responseMappingOptionsFormContainer).html(form);
+	   }
+	});
+}
+
+
+interactionEdit.saveResponseMappingOptions = function($myForm){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveMappingOptions",
+	   data: $myForm.serialize(),
+	   dataType: 'json',
+	   success: function(r){
+			if(r.saved){
+				createInfoMessage(__('The mapping options has been saved'));
+			}
+	   }
+	});
+}
+
 interactionEdit.setFormChangeListener = function(target){
 	if(!target){
 		var target = "form";

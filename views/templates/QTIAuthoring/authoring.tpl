@@ -38,15 +38,8 @@
 			
 		</div>
 		
-		<div id="qtiAuthoring_scoring_container">
-			<div id="qtiAuthoring_scoring_title" class="ui-widget-header ui-corner-top ui-state-default">
-					<?=__('Scoring editor:')?>
-			</div>
-			<div id="qtiAuthoring_scoringEditor" class="ui-widget-content ui-corner-bottom">
-				<div class="ext-home-container ui-state-highlight">
-					
-				</div>
-			</div>
+		<div id="qtiAuthoring_mapping_container">
+			
 		</div>
 		
 		<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
@@ -68,6 +61,7 @@ qtiEdit.itemSerial = '<?=get_data('itemSerial')?>';
 qtiEdit.itemDataContainer = '#itemEditor_wysiwyg';
 qtiEdit.interactionFormContent = '#qtiAuthoring_interactionEditor';
 qtiEdit.responseProcessingFormContent = '#qtiAuthoring_processingEditor';
+qtiEdit.responseMappingOptionsFormContainer = '#qtiAuthoring_mapping_container';
 
 //init the item's jwysiwyg editor here:
 var addInteraction = {

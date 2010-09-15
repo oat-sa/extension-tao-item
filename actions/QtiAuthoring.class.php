@@ -127,6 +127,8 @@ class QTiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
+		$testarray= array('upper'=>123, 'lower'=>23456);
+		var_dump($testarray, (string) $testarray);
 		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
@@ -299,6 +301,32 @@ class QTiAuthoring extends CommonModule {
 		return $returnValue;
 	}
 	
+	public function getCurrentResponse(){
+		$returnValue = null;
+		if($this->hasRequestParameter('responseSerial')){
+			$response = $this->qtiService->getDataBySerial($this->getRequestParameter('responseSerial'), 'taoItems_models_classes_QTI_Response');
+			if(!empty($response)){
+				$returnValue = $response;
+			}
+		}else{
+			try{
+				//second change: try getting the response from the interaction, is set in the request parameter
+				$interaction = $this->getCurrentInteraction();
+				if(!empty($interaction)){
+					$response = $this->service->getInteractionResponse($interaction);
+					if(!empty($response)){
+						$returnValue = $response;
+					}
+				}
+			}catch(Exception $e){
+				throw new Exception('cannot find the response no request parameter "responseSerial" found');
+			}
+			
+		}
+		
+		return $returnValue;
+	}
+	
 	//to be called at the same time as edit response
 	public function editInteraction(){
 		$interaction = $this->getCurrentInteraction();
@@ -455,13 +483,52 @@ class QTiAuthoring extends CommonModule {
 		
 		// $this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('form', $myForm->render());
-		$processingType = $myForm->getProcessingType();
+		$processingType = $formContainer->getProcessingType();
 		$responseMappingMode = false;
-		if($processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE ||$processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
+		if($processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
 			$responseMappingMode = true;
 		}
 		$this->setData('responseMappingMode', $responseMappingMode);
 		$this->setView('QTIAuthoring/form_response_processing.tpl');
+	}
+	
+	public function saveResponseProcessing(){
+		
+		$item = $this->getCurrentItem();
+		$responseProcessingType = $this->getRequestParameter('responseProcessingType');
+		$customRule = $this->getRequestParameter('customRule');
+		
+		$saved = $this->service->setResponseProcessing($item, $responseProcessingType, $customRule);
+		
+		echo json_encode(array(
+			'saved' => $saved
+		));
+	}
+	
+	
+	public function editMappingOptions(){
+		$response = $this->getCurrentResponse();
+			
+		$formContainer = new taoItems_actions_QTIform_Mapping($response);
+		
+		$this->setData('form', $formContainer->getForm()->render());
+		$this->setView('QTIAuthoring/form_response_mapping.tpl');
+		
+	}
+	
+	public function saveMappingOptions(){
+		$response = $this->getCurrentResponse();
+		
+		$defaultValue = $this->getRequestParameter('defaultValue');
+		$response->setMappingDefaultValue($defaultValue);
+		
+		$mappingOptions = array();
+		$lowerBound = $this->getRequestParameter('lowerBound');
+		$upperBound = $this->getRequestParameter('upperBound');
+		if(!is_null($lowerBound) && $lowerBound!= '') $mappingOptions['lowerBound'] = $lowerBound;
+		if(!is_null($upperBound) && $upperBound!= '') $mappingOptions['upperBound'] = $upperBound;
+		$response->setOption('mapping', $mappingOptions);
+		
 	}
 	
 	public function saveResponse(){
@@ -491,7 +558,7 @@ class QTiAuthoring extends CommonModule {
 	
 		$interaction = $this->getCurrentInteraction();
 		$item = $this->getCurrentItem();
-		$responseProcessing = $item->getResponsePRocessing();
+		$responseProcessing = $item->getResponseProcessing();
 		
 		//get model:
 		$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
