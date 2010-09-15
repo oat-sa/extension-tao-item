@@ -446,6 +446,24 @@ class QTiAuthoring extends CommonModule {
 		$choice = $this->getCurrentChoice();
 	}
 	
+	public function editResponseProcessing(){
+	
+		$item = $this->getCurrentItem();
+		
+		$formContainer = new taoItems_actions_QTIform_ResponseProcessing($item);
+		$myForm = $formContainer->getForm();
+		
+		// $this->setData('interactionSerial', $interaction->getSerial());
+		$this->setData('form', $myForm->render());
+		$processingType = $myForm->getProcessingType();
+		$responseMappingMode = false;
+		if($processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE ||$processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
+			$responseMappingMode = true;
+		}
+		$this->setData('responseMappingMode', $responseMappingMode);
+		$this->setView('QTIAuthoring/form_response_processing.tpl');
+	}
+	
 	public function saveResponse(){
 		
 		$saved = false;
@@ -472,9 +490,11 @@ class QTiAuthoring extends CommonModule {
 	public function editResponse(){
 	
 		$interaction = $this->getCurrentInteraction();
+		$item = $this->getCurrentItem();
+		$responseProcessing = $item->getResponsePRocessing();
 		
 		//get model:
-		$columnModel = $this->service->getInteractionResponseColumnModel($interaction);
+		$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
 		$responseData = $this->service->getInteractionResponseData($interaction);
 		
 		echo json_encode(array(

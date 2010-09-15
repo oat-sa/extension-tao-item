@@ -627,7 +627,7 @@ class taoItems_models_classes_QtiAuthoringService
 		return $response;
 	}
 	
-	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction){
+	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing=null){
 		$returnValue = array();
 		switch(strtolower($interaction->getType())){
 			case 'choice':{
@@ -662,12 +662,36 @@ class taoItems_models_classes_QtiAuthoringService
 			'values' => array('yes', 'no')
 		);
 		
-		//mapping:
-		$returnValue[] = array(
-			'name' => 'score',
-			'label' => __('Score'),
-			'edittype' => 'text'
-		);
+		if($this->getResponseProcessingType($responseProcessing) == 'map'){
+			//mapping:
+			$returnValue[] = array(
+				'name' => 'score',
+				'label' => __('Score'),
+				'edittype' => 'text'
+			);
+		}
+		
+		return $returnValue;
+	}
+	
+	//is a template or custome, if a template, which one?
+	public function getResponseProcessingType(taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing = null){
+		$returnValue = QTI_RESPONSE_TEMPLATE_MAP_RESPONSE;
+		
+		if($responseProcessing instanceof taoItems_models_classes_QTI_Response){
+			//get the template type:
+			$template = '';//default one: QTI_RESPONSE_TEMPLATE_MAP_RESPONSE or QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
+			
+			//method of qti service to get the template:
+			
+			
+			$returnValue = $template;
+		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_CustomRule){
+			$returnValue = 'custom';
+			
+		}else{
+			// throw new Exception('invalid type of response processing');
+		}
 		
 		return $returnValue;
 	}

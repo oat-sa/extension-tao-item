@@ -7,7 +7,9 @@ qtiEdit.itemSerial = '';
 qtiEdit.interactions = [];
 qtiEdit.itemDataContainer = '';
 qtiEdit.interactionFormContent = '';
+qtiEdit.responseProcessingFormContent = '';
 qtiEdit.responseGrid = 'qtiAuthoring_response_grid';
+qtiEdit.responseMappingMode = false;
 
 qtiEdit.getEltInFrame = function(selector){
 	var foundElts = [];
@@ -189,3 +191,21 @@ qtiEdit.loadInteractionForm = function(interactionSerial){
 	});
 }
 
+qtiEdit.loadResponseProcessingForm = function(itemSerial){
+	
+	if(!itemSerial){
+		var itemSerial = qtiEdit.itemSerial;
+	}
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/editResponseProcessing",
+	   data: {
+			'itemSerial': itemSerial
+	   },
+	   dataType: 'html',
+	   success: function(form){
+			$(qtiEdit.responseProcessingFormContent).html(form);
+	   }
+	});
+}

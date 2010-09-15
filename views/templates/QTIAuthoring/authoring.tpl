@@ -30,8 +30,27 @@
 	</div>
 
 	<div id="qtiAuthoring_right_container">
+		
+		<div id="qtiAuthoring_processing_title" class="ui-widget-header ui-corner-top ui-state-default">
+				<?=__('Response processing template editor:')?>
+		</div>
+		<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom">
+			
+		</div>
+		
+		<div id="qtiAuthoring_scoring_container">
+			<div id="qtiAuthoring_scoring_title" class="ui-widget-header ui-corner-top ui-state-default">
+					<?=__('Scoring editor:')?>
+			</div>
+			<div id="qtiAuthoring_scoringEditor" class="ui-widget-content ui-corner-bottom">
+				<div class="ext-home-container ui-state-highlight">
+					
+				</div>
+			</div>
+		</div>
+		
 		<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
-				<?=__('Response & Scoring Editor:')?>
+				<?=__('Response editor:')?>
 		</div>
 		<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
 			<div class="ext-home-container ui-state-highlight_cancel">
@@ -48,6 +67,7 @@
 qtiEdit.itemSerial = '<?=get_data('itemSerial')?>';
 qtiEdit.itemDataContainer = '#itemEditor_wysiwyg';
 qtiEdit.interactionFormContent = '#qtiAuthoring_interactionEditor';
+qtiEdit.responseProcessingFormContent = '#qtiAuthoring_processingEditor';
 
 //init the item's jwysiwyg editor here:
 var addInteraction = {
@@ -170,6 +190,7 @@ $(document).ready(function(){
 	//the binding require the modified html data to be ready
 	setTimeout(qtiEdit.bindInteractionLinkListener,250);
 	
+	qtiEdit.loadResponseProcessingForm();
 });
 
 </script>
