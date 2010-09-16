@@ -6,13 +6,12 @@ responseEdit.grid = null;
 
 responseEdit.destroyGrid = function(tableElementId){
 	responseEdit.grid = [];
-	$('#'+tableElementId).children().remove();
+	$('#'+tableElementId).empty();
 }
 
 responseEdit.buildGrid = function(tableElementId, interactionSerial){
-					
-	//reset the grid:
-	responseEdit.destroyGrid(tableElementId);
+	
+	responseEdit.grid = [];
 	responseEdit.grid.interactionSerial = interactionSerial;
 	
 	$.ajax({
@@ -25,7 +24,8 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 		dataType: 'json',
 		success: function(serverResponse){
 			if (serverResponse.ok){
-				// console.log('diagram saved');
+				//reset the grid:
+				$('#'+tableElementId).empty();
 				buildGrid(serverResponse);
 			}else{
 				CL('error in loading the response editing data');
@@ -105,6 +105,10 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 							
 						// }
 					}
+					break;
+				}
+				case 'text':{
+					colModel[i].edittype = colElt.edittype;
 					break;
 				}
 				case 'fixed':{

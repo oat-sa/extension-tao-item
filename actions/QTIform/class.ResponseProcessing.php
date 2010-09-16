@@ -99,7 +99,10 @@ class taoItems_actions_QTIform_ResponseProcessing
 			'custom' => __('custom')
 		));
 		$qtiAuthoringService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
-		$type = $qtiAuthoringService->getResponseProcessingType($this->responseProcessing);
+		try{
+			$type = $qtiAuthoringService->getResponseProcessingType($this->responseProcessing);
+		}catch(Exception $e){}
+		
 		if(!empty($type)){
 			$this->processingType = $type;
 			$typeElt->setValue($type);

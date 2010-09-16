@@ -64,7 +64,7 @@ qtiEdit.responseProcessingFormContent = '#qtiAuthoring_processingEditor';
 qtiEdit.responseMappingOptionsFormContainer = '#qtiAuthoring_mapping_container';
 
 //init the item's jwysiwyg editor here:
-var addInteraction = {
+var addChoiceInteraction = {
 	visible : true,
 	className: 'addInteraction',
 	exec: function(){
@@ -77,11 +77,19 @@ var addInteraction = {
 		
 		//send to request to the server
 		qtiEdit.addInteraction(interactionType, this.getContent(), qtiEdit.itemSerial);
-		
-		//go to the form:
-		// qtiEdit.loadInteractionForm(interaction_id);
 	},
-	tooltip: 'add interaction'
+	tooltip: 'add choice interaction'
+};
+
+var addAssociateInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		var interactionType = 'associate';
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction(interactionType, this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add associate interaction'
 };
 
 var saveItemData = {
@@ -158,7 +166,8 @@ $(document).ready(function(){
       paste : { visible : true },
       html  : { visible: true },
       exam_html: { exec: function() { this.insertHtml('<abbr title="exam">Jam</abbr>') }, visible: true  },
-	  addInteraction: addInteraction,
+	  addChoiceInteraction: addChoiceInteraction,
+	  addAssociateInteraction: addAssociateInteraction,
 	  saveItemData: saveItemData
     },
     events: {

@@ -62,6 +62,9 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		$returnValue = new taoItems_models_classes_QTI_Item($itemIdentifier, array());
 		
+		//add default responseProcessing:
+		$this->setResponseProcessing($returnValue, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
+		
 		// $itemId = tao_helpers_Uri::getUniqueId($itemUri);
 		// if(empty($itemId)){
 			// throw new Exception('wrong format of itemUri given');
@@ -139,6 +142,7 @@ class taoItems_models_classes_QtiAuthoringService
 			$data = $interaction->getData();
 			switch(strtolower($interaction->getType())){
 				case 'choice':
+				case 'associate':
 				case 'order':{
 					$choices = array();
 					foreach($interaction->getChoices() as $choiceId => $choice){
@@ -247,6 +251,7 @@ class taoItems_models_classes_QtiAuthoringService
 			'match',
 			'gap',
 			'hottext',
+			'associate',
 			'graphicassociate',
 			'graphicgapmatch'
 		);
@@ -299,7 +304,6 @@ class taoItems_models_classes_QtiAuthoringService
 			if($interactionType == 'match' || $interactionType == 'gapmatch'){
 				//insert into group:
 			}else{
-				// $interaction->getData();
 				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
 			}
 			
@@ -637,6 +641,7 @@ class taoItems_models_classes_QtiAuthoringService
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
 				}
+				
 				$i = 1;
 				$editType = 'fixed';
 				$returnValue[] = array(
@@ -645,10 +650,39 @@ class taoItems_models_classes_QtiAuthoringService
 					'edittype' => $editType,
 					'values' => $choices
 				);
+				
+				break;
+			}
+			case 'associate':{
+				$choices = array(); 
+				foreach($interaction->getChoices() as $choice){
+					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
+				}
+				$editType = 'select';
+				
+				for($i=1;$i<=2;$i++){
+					$returnValue[] = array(
+						'name' => 'choice'.$i,
+						'label' => __('Choice').' '.$i,
+						'edittype' => $editType,
+						'values' => $choices
+					);
+				}
+				
 				break;
 			}
 			case 'match':{
 				
+			}
+			case 'textEntry':{
+				//values = mapping then...
+				$i = 1;
+				$editType = 'text';
+				$returnValue[] = array(
+					'name' => 'choice'.$i,
+					'label' => __('Choice').' '.$i,
+					'edittype' => $editType
+				);
 			}
 			case 'order':{
 				
@@ -664,7 +698,9 @@ class taoItems_models_classes_QtiAuthoringService
 			'values' => array('yes', 'no')
 		);
 		
-		$responseProcessingType = $this->getResponseProcessingType($responseProcessing);
+		try{
+			$responseProcessingType = $this->getResponseProcessingType($responseProcessing);
+		}catch(Exception $e){}
 		if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
 			//mapping:
 			$returnValue[] = array(
@@ -878,6 +914,9 @@ class taoItems_models_classes_QtiAuthoringService
 				foreach($choiceSerials as $choiceSerial){
 					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
 					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+					
+					//add exception for textEntry interaction where the values are the $choiceSerial:
+					
 					$j++;
 				}
 				

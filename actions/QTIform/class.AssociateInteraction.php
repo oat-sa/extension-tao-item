@@ -30,9 +30,11 @@ require_once('tao/helpers/form/class.FormContainer.php');
  * @package tao
  * @subpackage actions_form
  */
-class taoItems_actions_QTIform_ChoiceInteraction
+class taoItems_actions_QTIform_AssociateInteraction
     extends taoItems_actions_QTIform_BlockInteraction
 {
+
+    //initForm() in the parent class...
 
     /**
      * Short description of method initElements
@@ -59,17 +61,17 @@ class taoItems_actions_QTIform_ChoiceInteraction
 		}
 		$this->form->addElement($shuffleElt);
 		
-		//the "maxChoices" attr shall be set automatically?
-		$maxChoiceElt = tao_helpers_form_FormFactory::getElement('maxChoices', 'TextBox');
-		$maxChoiceElt->setDescription(__('Maximum Number of Choice'));
+		//the "maxAssociations" attr shall be set automatically?
+		$maxAssocElt = tao_helpers_form_FormFactory::getElement('maxAssociations', 'TextBox');
+		$maxAssocElt->setDescription(__('Maximum Number of associations'));
 		//validator: is int??
-		$maxChoices = $interaction->getOption('maxChoices');
-		if(!empty($maxChoices)){
-			$maxChoiceElt->setValue($maxChoices);
+		$maxAssociations = $interaction->getOption('maxAssociations');
+		if(!empty($maxAssociations)){
+			$maxAssocElt->setValue($maxAssociations);
 		}
-		$this->form->addElement($maxChoiceElt);
+		$this->form->addElement($maxAssocElt);
 		
-		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxChoices'));
+		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxAssociations'));
     }
 	
 	public function setCommonElements(){

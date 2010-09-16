@@ -68,7 +68,7 @@ qtiEdit.bindInteractionLinkListener = function(){
 qtiEdit.addInteraction = function(interactionType, itemData, itemSerial){
 	
 	if(!itemSerial){
-		itemSerial = qtiEdit.itemSerial
+		itemSerial = qtiEdit.itemSerial;
 	}
 
 	$.ajax({
@@ -81,13 +81,13 @@ qtiEdit.addInteraction = function(interactionType, itemData, itemSerial){
 	   },
 	   dataType: 'json',
 	   success: function(r){
-			// CD(r, 'res');
-			
 			//set the content:
 			qtiEdit.itemEditor.wysiwyg('setContent', $("<div/>").html(r.itemData).html());
 			
 			//then add listener
 			qtiEdit.bindInteractionLinkListener();
+			
+			//auto load the interaction form?
 	   }
 	});
 }

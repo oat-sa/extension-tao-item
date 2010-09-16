@@ -54,7 +54,7 @@ class QTiAuthoring extends CommonModule {
 				}
 				
 				if(empty($item)){
-					//create a new tiem object:
+					//create a new item object:
 					$item = $this->service->createNewItem($itemIdentifier);
 					$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
 				}
