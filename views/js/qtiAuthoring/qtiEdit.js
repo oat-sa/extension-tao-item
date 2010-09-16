@@ -110,6 +110,10 @@ qtiEdit.deleteInteractions = function(interactionSerials){
 			
 			if(r.deleted){
 				for(var i in interactionSerials){
+					if(interactionEdit.interactionSerial == interactionSerials[i]){
+						// destroy the interaction form:
+						$(qtiEdit.interactionFormContent).empty();
+					}
 					delete qtiEdit.interactions[interactionSerials[i]];
 				}
 				

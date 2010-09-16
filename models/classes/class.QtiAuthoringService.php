@@ -664,7 +664,8 @@ class taoItems_models_classes_QtiAuthoringService
 			'values' => array('yes', 'no')
 		);
 		
-		if($this->getResponseProcessingType($responseProcessing) == 'map'){
+		$responseProcessingType = $this->getResponseProcessingType($responseProcessing);
+		if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
 			//mapping:
 			$returnValue[] = array(
 				'name' => 'score',
@@ -678,21 +679,21 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	//is a template or custome, if a template, which one?
 	public function getResponseProcessingType(taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing = null){
-		$returnValue = QTI_RESPONSE_TEMPLATE_MAP_RESPONSE;
+		$returnValue = '';
 		
-		if($responseProcessing instanceof taoItems_models_classes_QTI_Response){
+		if($responseProcessing instanceof taoItems_models_classes_QTI_response_Template){
 			//get the template type:
-			$template = '';//default one: QTI_RESPONSE_TEMPLATE_MAP_RESPONSE or QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
+			$template = QTI_RESPONSE_TEMPLATE_MAP_RESPONSE;//default one: QTI_RESPONSE_TEMPLATE_MAP_RESPONSE or QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
 			
 			//method of qti service to get the template:
-			
 			
 			$returnValue = $template;
 		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_CustomRule){
 			$returnValue = 'custom';
 			
 		}else{
-			// throw new Exception('invalid type of response processing');
+			// var_dump($responseProcessing);
+			throw new Exception('invalid type of response processing');
 		}
 		
 		return $returnValue;
@@ -888,6 +889,29 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
+	public function setMappingOptions(taoItems_models_classes_QTI_Response $response, $mappingOptions=array()){
+		
+		$returnValue = false;
+		
+		if(!is_null($response)){
+			if(isset($mappingOptions['defaultValue'])){
+				$response->setMappingDefaultValue($mappingOptions['defaultValue']);
+			}
+			
+			$options = array();
+			if(isset($mappingOptions['lowerBound'])){
+				if(!empty($mappingOptions['lowerBound'])) $options['lowerBound'] = $mappingOptions['lowerBound'];
+			}
+			if(isset($mappingOptions['upperBound'])){
+				if(!empty($mappingOptions['upperBound'])) $options['upperBound'] = $mappingOptions['upperBound'];
+			}
+			$response->setOption('mapping', $options);
+			
+			$returnValue = true;
+		}
+		
+		return $returnValue;
+	}
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>

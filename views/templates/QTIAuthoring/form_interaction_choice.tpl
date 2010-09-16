@@ -51,6 +51,9 @@ $(document).ready(function(){
 	
 	//add the listener to the form changing 
 	interactionEdit.setFormChangeListener();//all form
-
+	
+	//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode)
+	interactionEdit.loadResponseMappingForm();
+	
 });
 </script>

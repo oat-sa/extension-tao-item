@@ -18,7 +18,10 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 	$.ajax({
 		url: "/taoItems/QtiAuthoring/editResponse",
 		type: "POST",
-		data: {'interactionSerial': responseEdit.grid.interactionSerial},
+		data: {
+			'interactionSerial': responseEdit.grid.interactionSerial,
+			'itemSerial': qtiEdit.itemSerial
+		},
 		dataType: 'json',
 		success: function(serverResponse){
 			if (serverResponse.ok){

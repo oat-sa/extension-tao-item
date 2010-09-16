@@ -46,7 +46,9 @@ class taoItems_actions_QTIform_ResponseProcessing
 	
 	public function __construct(taoItems_models_classes_QTI_Item $item){
 		$this->item = $item;
+		
 		$this->responseProcessing = $item->getResponseProcessing();
+		// var_dump($item, $this->responseProcessing);
 		$returnValue = parent::__construct(array(), array('option1' => ''));
 		
 	}

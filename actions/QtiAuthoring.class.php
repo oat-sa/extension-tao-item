@@ -127,8 +127,6 @@ class QTiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
-		$testarray= array('upper'=>123, 'lower'=>23456);
-		var_dump($testarray, (string) $testarray);
 		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
@@ -495,7 +493,7 @@ class QTiAuthoring extends CommonModule {
 	public function saveResponseProcessing(){
 		
 		$item = $this->getCurrentItem();
-		$responseProcessingType = $this->getRequestParameter('responseProcessingType');
+		$responseProcessingType = tao_helpers_Uri::decode($this->getRequestParameter('responseProcessingType'));
 		$customRule = $this->getRequestParameter('customRule');
 		
 		$saved = $this->service->setResponseProcessing($item, $responseProcessingType, $customRule);
@@ -508,9 +506,9 @@ class QTiAuthoring extends CommonModule {
 	
 	public function editMappingOptions(){
 		$response = $this->getCurrentResponse();
-			
-		$formContainer = new taoItems_actions_QTIform_Mapping($response);
 		
+		$formContainer = new taoItems_actions_QTIform_Mapping($response);
+		// var_dump($formContainer->getForm()->render());
 		$this->setData('form', $formContainer->getForm()->render());
 		$this->setView('QTIAuthoring/form_response_mapping.tpl');
 		
@@ -519,16 +517,14 @@ class QTiAuthoring extends CommonModule {
 	public function saveMappingOptions(){
 		$response = $this->getCurrentResponse();
 		
-		$defaultValue = $this->getRequestParameter('defaultValue');
-		$response->setMappingDefaultValue($defaultValue);
+		$mappingOptions = $_POST;
 		
-		$mappingOptions = array();
-		$lowerBound = $this->getRequestParameter('lowerBound');
-		$upperBound = $this->getRequestParameter('upperBound');
-		if(!is_null($lowerBound) && $lowerBound!= '') $mappingOptions['lowerBound'] = $lowerBound;
-		if(!is_null($upperBound) && $upperBound!= '') $mappingOptions['upperBound'] = $upperBound;
-		$response->setOption('mapping', $mappingOptions);
+		$this->service->setMappingOptions($response, $mappingOptions);
+		$saved = true;
 		
+		echo json_encode(array(
+			'saved' => $saved
+		));
 	}
 	
 	public function saveResponse(){

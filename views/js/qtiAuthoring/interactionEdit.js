@@ -226,7 +226,13 @@ interactionEdit.loadResponseMappingForm = function(){
 	   },
 	   dataType: 'html',
 	   success: function(form){
-			$(qtiEdit.responseMappingOptionsFormContainer).html(form);
+			$formContainer = $(qtiEdit.responseMappingOptionsFormContainer);
+			$formContainer.html(form);
+			if(qtiEdit.responseMappingMode){
+				$formContainer.show();
+			}else{
+				$formContainer.hide();
+			}
 	   }
 	});
 }

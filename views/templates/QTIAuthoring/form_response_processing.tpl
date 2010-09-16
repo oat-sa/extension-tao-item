@@ -8,10 +8,13 @@
 	if(qtiEdit.responseMappingMode){
 		//do nothing:
 	}else{
-		//display the scoring form:
+		//display the scoring form: //TODO: load it only when necessary:
 		qtiEdit.responseMappingMode = true;
+		$(qtiEdit.responseMappingOptionsFormContainer).show();
 	}
-	
+	<?else:?>
+	qtiEdit.responseMappingMode = false;
+	$(qtiEdit.responseMappingOptionsFormContainer).hide();
 	<?endif;?>
 	
 	
