@@ -317,6 +317,7 @@ class taoItems_models_classes_QtiAuthoringService
 	public function editChoiceData(taoItems_models_classes_QTI_Choice $choice, $data=''){
 		if(!is_null($choice)){
 			$choice->setdata($data);
+			
 		}
 	}
 	
@@ -328,6 +329,14 @@ class taoItems_models_classes_QtiAuthoringService
 	public function deleteChoice(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Choice $choice){
 		//add specific method in the interaction class: deleteChoice??
 		$interaction->removeChoice($choice);
+		
+		//completely remove the choice from the session
+		taoItems_models_classes_QTI_Data::setPersistance(false);
+		unset($choice);
+		taoItems_models_classes_QTI_Data::setPersistance(true);//but not the other variables!
+		
+		//then simulate get+save response data to filter affected variables
+		$this->saveInteractionResponse($interaction, $this->getInteractionResponseData($interaction));
 	}
 	
     /**
@@ -796,10 +805,11 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'associate':{
 					foreach($responseData as $response){
+						$response = (array)$response;
 						if(!empty($response['choice1']) && !empty($response['choice2'])){
 							
 							$choice1 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
-							$choice2 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
+							$choice2 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice2']);
 							if(!is_null($choice1) && !is_null($choice2)){
 							
 								$responseValue = $choice1->getSerial().' '.$choice2->getSerial();
@@ -862,8 +872,9 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			
 			//set correct responses & mapping
-			if(!empty($correctResponses)) $interactionResponse->setCorrectResponses($correctResponses);
-			if(!empty($mapping)) $interactionResponse->setMapping($mapping);
+			//note: do not check if empty or not to allow erasing the values
+			$interactionResponse->setCorrectResponses($correctResponses);
+			$interactionResponse->setMapping($mapping);
 			
 			$returnValue = true;
 		}
@@ -891,6 +902,9 @@ class taoItems_models_classes_QtiAuthoringService
 				//set data as not persistent
 				foreach($choiceSerials as $choiceSerial){
 					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+					if(is_null($choice)){
+						break(2);//important: do not take into account deleted choice
+					}
 					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
 					$j++;
 				}
@@ -913,6 +927,9 @@ class taoItems_models_classes_QtiAuthoringService
 				$j = 1;//j<=2
 				foreach($choiceSerials as $choiceSerial){
 					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+					if(is_null($choice)){
+						break(2);//important: do not take into account deleted choice
+					}
 					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
 					
 					//add exception for textEntry interaction where the values are the $choiceSerial:

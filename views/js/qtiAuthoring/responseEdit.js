@@ -162,47 +162,42 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 				// });
 			},
 			onSelectRow: function(id){
-				if(id && id!==responseEdit.grid.currentRowId){
-					responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
-					// responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, "/taoItems/QtiAuthoring/saveResponse", {'interactionSerial': interactionSerial}); 
-					responseEdit.grid.myGrid.jqGrid('editRow',id,true, null, null, 'clientArray', {'interactionSerial': interactionSerial}, function(){
-						var responseData = responseEdit.grid.myGrid.jqGrid('getRowData');
-						// CD(responseData);
-						var responseDataString = JSON.stringify(responseData);
-						
-						//save to server:
-						//global processUri value
-						$.ajax({
-							url: "/taoItems/QtiAuthoring/saveResponse",
-							type: "POST",
-							data: {'interactionSerial': responseEdit.grid.interactionSerial, "responseDataString": responseDataString},
-							dataType: 'json',
-							success: function(response){
-								if (response.saved){
-								
-								}else{
-								
-								}
-							}
-						});
-					}); 
-					responseEdit.grid.currentRowId = id;
-					
-					
-					
-					//local edit, then systematic global save:
-					
-				}
+				responseEdit.editGridRow(id);
 			}
 		});
 		//configure the navigation bar:
+		//afterRefresh
 		var navGridParam = {};
+		var navGridParamDefault = {
+			search: false,
+			afterRefresh: function(){
+				CL('refreshed');
+				responseEdit.buildGrid(tableElementId, interactionSerial);
+			},
+			editfunc: function(rowId){
+				responseEdit.editGridRow(rowId);
+			}
+		}
 		if(fixedColumn.name && fixedColumn.values){
 			//is fixed, so disable the add and delete row
-			navGridParam = {add:false, del:false, search:false};
+			var navGridParamOptions = {add:false, del:false};
 		}else{
-			
+			var navGridParamOptions = {
+				addfunc: function(){
+					var newId = responseEdit.getUniqueRowId();
+					responseEdit.grid.myGrid.jqGrid('addRowData', newId, new Object(), 'last');
+					responseEdit.editGridRow(newId);
+				},
+				delfunc: function(rowId){
+					if(confirm(__("Do you really want to delete the row?"))){
+						responseEdit.grid.myGrid.jqGrid('delRowData', rowId);
+						responseEdit.saveResponseGrid();
+					}
+				}
+			};
 		}
+		navGridParam = $.extend(navGridParam, navGridParamOptions, navGridParamDefault);
+		
 		responseEdit.grid.myGrid.jqGrid('navGrid', '#'+pagerId, navGridParam); 
 		
 		if(fixedColumn.name && fixedColumn.values){
@@ -264,4 +259,130 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 		
 		responseEdit.grid.fixedColumn = fixedColumn;
 	}
+}
+
+responseEdit.editGridRow = function(rowId){
+	var id = rowId;
+	
+	if(id && id!==responseEdit.grid.currentRowId){
+		responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
+		responseEdit.grid.currentRowData = responseEdit.grid.myGrid.jqGrid('getRowData', id);
+		responseEdit.grid.myGrid.jqGrid(
+			'editRow',
+			id,
+			true,
+			null, 
+			null, 
+			'clientArray',
+			{'optionalData': null},
+			function(){
+				// responseEdit.grid.myGrid.jqGrid('resetSelection');
+				
+				var repeatedChoice = responseEdit.checkRepeatedChoice(responseEdit.grid.currentRowId);
+				var repeatedRow =  responseEdit.checkRepeatedRow(responseEdit.grid.currentRowId);
+				if(repeatedChoice){
+					alert('There cannot be identical choice in a row.');
+					// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
+					CL('responseEdit.grid.currentRowData', responseEdit.grid.currentRowData);
+					responseEdit.grid.myGrid.jqGrid('setRowData', responseEdit.grid.currentRowId, responseEdit.grid.currentRowData);
+					return false;
+				}
+				if(repeatedRow){
+					alert('There is already a row with the same choices.');
+					// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
+					responseEdit.grid.myGrid.jqGrid('setRowData', responseEdit.grid.currentRowId, responseEdit.grid.currentRowData);
+					return false;
+				}
+				// CL('repeatedChoice', repeatedChoice);
+				// CL('repeatedRow', repeatedRow);
+				
+				responseEdit.saveResponseGrid();
+								
+				// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
+				responseEdit.grid.myGrid.jqGrid('resetSelection');
+			}
+		); 
+		responseEdit.grid.currentRowId = id;
+		
+		//local edit, then systematic global save:
+	}
+}
+
+responseEdit.getUniqueRowId = function(){
+	var responseData = responseEdit.grid.myGrid.jqGrid('getRowData');
+	return responseData.length+1;
+}
+
+responseEdit.saveResponseGrid = function(){
+	var responseData = responseEdit.grid.myGrid.jqGrid('getRowData');
+	var responseDataString = JSON.stringify(responseData);
+	
+	//save to server:
+	//global processUri value
+	$.ajax({
+		url: "/taoItems/QtiAuthoring/saveResponse",
+		type: "POST",
+		data: {'interactionSerial': responseEdit.grid.interactionSerial, "responseDataString": responseDataString},
+		dataType: 'json',
+		success: function(response){
+			if (response.saved){
+				
+			}else{
+			
+			}
+		}
+	});
+}
+
+responseEdit.checkRepeatedChoice = function(rowId){
+	var data = responseEdit.grid.myGrid.jqGrid('getRowData', rowId);
+	delete data['correct'];
+	delete data['score'];
+	
+	var choices = []
+	for(var columnName in data){
+		choices.push(data[columnName]);
+	}
+	
+	for(var i=0; i<choices.length; i++){
+		for(var j=i+1; j<choices.length; j++){
+			if(choices[i] == choices[j]){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+responseEdit.checkRepeatedRow = function(rowId){
+	var thisRowData = responseEdit.grid.myGrid.jqGrid('getRowData', rowId);
+	delete thisRowData['correct'];
+	delete thisRowData['score'];
+	
+	var allData = responseEdit.grid.myGrid.jqGrid('getRowData');
+	
+	outer_loop:
+	for(var i = 0; i<allData.length; i++){
+		var count = 0;
+		
+		if(i == rowId){
+			continue;
+		}
+		//compare each element:
+		var anotherRowData = allData[i];
+		// delete anotherRowData['correct'];
+		// delete anotherRowData['score'];
+		
+		for(var columnName in thisRowData){
+			if(thisRowData[columnName] == anotherRowData[columnName]){
+				count++;
+				continue;
+			}else{
+				break outer_loop;
+			}
+		}
+		//if the anotherRowData is able to exit the for loop, a identical row has been found!
+		return true;
+	}
+	return false;
 }
