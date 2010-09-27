@@ -54,8 +54,43 @@
 </div>
 
 <script type="text/javascript">
-// img_url_tao = root_url + "/tao/views/img/";
-// img_url = root_url + "/taoItems/views/img/";
+$.jgrid.GridDestroy = function () {
+	return this.each(function(){
+		CL('this', this);
+		if ( this.grid ) { 
+			if ( this.p.pager ) { // if not part of grid
+				// $(this.p.pager).remove();
+			}
+			var gid = this.id;
+			try {
+				$("#gbox_"+gid).remove();
+			} catch (_) {}
+		}
+	});
+};
+
+//customized unload function:
+$.jgrid.GridUnload = function(){
+	return this.each(function(){
+		if ( !this.grid ) {return;}
+		var defgrid = {id: $(this).attr('id'),cl: $(this).attr('class')};
+		if (this.p.pager) {
+			$(this.p.pager).empty().removeClass("ui-state-default ui-jqgrid-pager corner-bottom");
+		}
+		var newtable = document.createElement('table');
+		$(newtable).attr({id:defgrid.id});
+		newtable.className = defgrid.cl;
+		var gid = this.id;
+		$(newtable).removeClass("ui-jqgrid-btable");
+		if( $(this.p.pager).parents("#gbox_"+gid).length === 1 ) {
+			$(newtable).insertBefore("#gbox_"+gid).show();
+			$(this.p.pager).insertBefore("#gbox_"+gid);
+		} else {
+			$(newtable).insertBefore("#gbox_"+gid).show();
+		}
+		$("#gbox_"+gid).remove();
+	});
+};
 
 qtiEdit.itemSerial = '<?=get_data('itemSerial')?>';
 qtiEdit.itemDataContainer = '#itemEditor_wysiwyg';
@@ -90,6 +125,16 @@ var addAssociateInteraction = {
 		qtiEdit.addInteraction(interactionType, this.getContent(), qtiEdit.itemSerial);
 	},
 	tooltip: 'add associate interaction'
+};
+
+var addOrderInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('order', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add order interaction'
 };
 
 var saveItemData = {
@@ -168,6 +213,7 @@ $(document).ready(function(){
       exam_html: { exec: function() { this.insertHtml('<abbr title="exam">Jam</abbr>') }, visible: true  },
 	  addChoiceInteraction: addChoiceInteraction,
 	  addAssociateInteraction: addAssociateInteraction,
+	  addOrderInteraction: addOrderInteraction,
 	  saveItemData: saveItemData
     },
     events: {

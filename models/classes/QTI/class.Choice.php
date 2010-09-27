@@ -114,9 +114,10 @@ class taoItems_models_classes_QTI_Choice
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B begin
 		
-		//$choiceType = $this->getType();
-		$choiceType = 'Simple';//defined upon creation, according to the type of interaction
-		$choiceFormClass = 'taoItems_actions_QTIform_'.ucfirst(strtolower($choiceType)).'Choice';
+		// $choiceType = 'Simple';//defined upon creation, according to the type of interaction
+		// $choiceFormClass = 'taoItems_actions_QTIform_'.ucfirst(strtolower($choiceType)).'Choice';
+		$choiceType = $this->getType();
+		$choiceFormClass = 'taoItems_actions_QTIform_choice_'.ucfirst($choiceType);
 		if(!class_exists($choiceFormClass)){
 			throw new Exception("the class {$choiceFormClass} does not exist");
 		}else{

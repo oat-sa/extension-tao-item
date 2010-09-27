@@ -11,6 +11,15 @@ responseEdit.destroyGrid = function(tableElementId){
 
 responseEdit.buildGrid = function(tableElementId, interactionSerial){
 	
+	if(responseEdit.grid){
+		if(responseEdit.grid.myGrid){
+			CL('destroy grid');
+			// $.jgrid.GridDestroy(responseEdit.grid.myGrid.attr('id'));
+			var selector = '#'+responseEdit.grid.myGrid.attr('id');
+			// $(selector).GridDestroy(selector);
+			$(selector).GridUnload(selector);
+		}
+	}
 	responseEdit.grid = [];
 	responseEdit.grid.interactionSerial = interactionSerial;
 	
@@ -25,7 +34,9 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 		success: function(serverResponse){
 			if (serverResponse.ok){
 				//reset the grid:
+				
 				$('#'+tableElementId).empty();
+				
 				buildGrid(serverResponse);
 			}else{
 				CL('error in loading the response editing data');
@@ -134,7 +145,8 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 		//insert the pager:
 		var pagerId = tableElementId + '_pager';
 		$("#"+tableElementId).after('<div id="' + pagerId + '"/>');
-
+		
+		
 		responseEdit.grid.myGrid = $("#"+tableElementId).jqGrid({
 			url: "/taoItems/QtiAuthoring/saveResponse",
 			// editurl: "/taoItems/QtiAuthoring/saveResponse",
@@ -172,6 +184,8 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 			search: false,
 			afterRefresh: function(){
 				CL('refreshed');
+				// $('#'+tableElementId).empty();
+				$.jgrid.GridDestroy(responseEdit.grid.myGrid.attr('id'));
 				responseEdit.buildGrid(tableElementId, interactionSerial);
 			},
 			editfunc: function(rowId){
@@ -310,7 +324,7 @@ responseEdit.editGridRow = function(rowId){
 
 responseEdit.getUniqueRowId = function(){
 	var responseData = responseEdit.grid.myGrid.jqGrid('getRowData');
-	return responseData.length+1;
+	return responseData.length;
 }
 
 responseEdit.saveResponseGrid = function(){
@@ -355,34 +369,42 @@ responseEdit.checkRepeatedChoice = function(rowId){
 }
 
 responseEdit.checkRepeatedRow = function(rowId){
-	var thisRowData = responseEdit.grid.myGrid.jqGrid('getRowData', rowId);
-	delete thisRowData['correct'];
-	delete thisRowData['score'];
+	var thisRowDataObject = responseEdit.grid.myGrid.jqGrid('getRowData', rowId);
+	var thisRowData = [];
+	var thisRowDataLength = 0;
+	for(var key in thisRowDataObject){
+		if(key != 'correct' && key != 'score'){
+			thisRowData[key] = thisRowDataObject[key];
+			thisRowDataLength ++;
+		}
+	}
 	
 	var allData = responseEdit.grid.myGrid.jqGrid('getRowData');
-	
-	outer_loop:
 	for(var i = 0; i<allData.length; i++){
 		var count = 0;
-		
+		CL('loop', i);
+		CL('thisRowData', thisRowData);
+		CL('anotherRowData', anotherRowData);
 		if(i == rowId){
 			continue;
 		}
 		//compare each element:
 		var anotherRowData = allData[i];
-		// delete anotherRowData['correct'];
-		// delete anotherRowData['score'];
-		
 		for(var columnName in thisRowData){
 			if(thisRowData[columnName] == anotherRowData[columnName]){
 				count++;
 				continue;
 			}else{
-				break outer_loop;
+				break;
 			}
 		}
-		//if the anotherRowData is able to exit the for loop, a identical row has been found!
-		return true;
+		CL('count', count);
+		if(count == thisRowDataLength){
+			//if the anotherRowData is able to exit the for loop, a identical row has been found!
+			// CL('thisRowData', thisRowData);
+			// CL('anotherRowData', anotherRowData);
+			return true;
+		}
 	}
 	return false;
 }

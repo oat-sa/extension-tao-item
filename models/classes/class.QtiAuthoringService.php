@@ -248,6 +248,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		$authorizedInteractions = array(
 			'choice',
+			'order',
 			'match',
 			'gap',
 			'hottext',
@@ -292,8 +293,35 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if(!is_null($interaction)){
 			//create a new choice:
-			//determine the type of choice automatically?
+			//determine the type of choice according to the type of the interaction:
+			$choiceType = '';
+			switch(strtolower($interaction->getType())){
+				case 'choice':
+				case 'order':{
+					$choiceType = 'simpleChoice';//case sensitive! used to get the xml qti element tag + the choice form
+					break;
+				}
+				case 'associate':
+				case 'match':{
+					$choiceType = 'simpleAssociableChoice';
+					break;
+				}
+				case 'gapmatch':{
+					$choiceType = 'gapChoice';
+					break;
+				}
+				case 'inlinechoice':{
+					$choiceType = 'inlineChoice';
+					break;
+				}
+				default:{
+					throw new Exception('invalid interaction type');
+				}
+			}
+			
 			$choice = new taoItems_models_classes_QTI_Choice($identifier);
+			$choice->setType($choiceType);
+			
 			if(!empty($data)){
 				$choice->setData($data);
 			}
@@ -554,7 +582,9 @@ class taoItems_models_classes_QtiAuthoringService
 	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
 		//append the choices id to the interaction data:
 		switch(strtolower($interaction->getType())){
-			case 'choice':{
+			case 'choice':
+			case 'order':
+			case 'associate':{
 				for($i=0; $i<count($choiceOrder); $i++){
 					$data .= '{'.$choiceOrder[$i].'}';
 				}
@@ -662,6 +692,22 @@ class taoItems_models_classes_QtiAuthoringService
 				
 				break;
 			}
+			case 'order':{
+				$choices = array(); 
+				foreach($interaction->getChoices() as $choice){
+					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant to the user
+				}
+				$editType = 'select';
+				for($i=1;$i<=count($choices);$i++){
+					$returnValue[] = array(
+						'name' => 'choice'.$i,
+						'label' => __('Choice').' '.$i,
+						'edittype' => $editType,
+						'values' => $choices
+					);
+				}
+				break;
+			}
 			case 'associate':{
 				$choices = array(); 
 				foreach($interaction->getChoices() as $choice){
@@ -693,32 +739,32 @@ class taoItems_models_classes_QtiAuthoringService
 					'edittype' => $editType
 				);
 			}
-			case 'order':{
-				
+			
+		}
+		
+		if(strtolower($interaction->getType()) != 'order'){//no mapping allowed for order interaction for the time being
+			//check if the response processing is a match or a map type, or a custom one:
+			//correct response (mandatory):
+			$returnValue[] = array(
+				'name' => 'correct',
+				'label' => __('Correct Responses'),
+				'edittype' => 'checkbox',
+				'values' => array('yes', 'no')
+			);
+			
+			try{
+				$responseProcessingType = $this->getResponseProcessingType($responseProcessing);
+			}catch(Exception $e){}
+			
+			if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
+				//mapping:
+				$returnValue[] = array(
+					'name' => 'score',
+					'label' => __('Score'),
+					'edittype' => 'text'
+				);
 			}
 		}
-		
-		//check if the response processing is a match or a map type, or a custom one:
-		//correct response (mandatory):
-		$returnValue[] = array(
-			'name' => 'correct',
-			'label' => __('Correct Responses'),
-			'edittype' => 'checkbox',
-			'values' => array('yes', 'no')
-		);
-		
-		try{
-			$responseProcessingType = $this->getResponseProcessingType($responseProcessing);
-		}catch(Exception $e){}
-		if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
-			//mapping:
-			$returnValue[] = array(
-				'name' => 'score',
-				'label' => __('Score'),
-				'edittype' => 'text'
-			);
-		}
-		
 		return $returnValue;
 	}
 	
@@ -804,6 +850,7 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'associate':{
+					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;
 						if(!empty($response['choice1']) && !empty($response['choice2'])){
@@ -825,10 +872,13 @@ class taoItems_models_classes_QtiAuthoringService
 							}
 						}
 					}
+					// var_dump($correctResponses,$mapping);
 					break;
 				}
 				case 'order':{
 					foreach($responseData as $response){
+						$response = (array)$response;
+						
 						//find the correct order:
 						$tempResponseValue = array();
 						$responseValue = array();
@@ -836,7 +886,7 @@ class taoItems_models_classes_QtiAuthoringService
 							//check if it is a choice:
 							if(strpos($choicePosition, 'choice') === 0 ){
 								//ok:
-								$pos = intval(substr($choicePosition, 0, 6));
+								$pos = intval(substr($choicePosition, 6));
 								if($pos>0){
 									
 									$choice = $this->getInteractionChoiceByIdentifier($interaction, $choiceValue);
@@ -864,17 +914,20 @@ class taoItems_models_classes_QtiAuthoringService
 							// $interactionResponse->setCorrectResponses($responseValue);
 						}
 						if(!empty($response['score'])){
-							//partial order...
+							//partial order... not available yet
 						}
 					}
 					break;
+				}
+				default:{
+					throw new Exception('invalid interaction type for response saving');
 				}
 			}
 			
 			//set correct responses & mapping
 			//note: do not check if empty or not to allow erasing the values
 			$interactionResponse->setCorrectResponses($correctResponses);
-			$interactionResponse->setMapping($mapping);
+			$interactionResponse->setMapping($mapping);//method: unsetMapping + unsetCorrectResponses?
 			
 			$returnValue = true;
 		}
@@ -890,57 +943,83 @@ class taoItems_models_classes_QtiAuthoringService
 		$mapping = $reponse->getMapping();
 		
 		$i = 0;
-		if(!empty($correctResponses)){
+		
+		if(strtolower($interaction->getType()) == 'order'){
+			if(!empty($correctResponses)){
 			
-			foreach($correctResponses as $choiceSerialConcat){
-				$choiceSerials = explode(' ', $choiceSerialConcat);
-				
 				$returnValue[$i] = array();
 				$returnValue[$i]['correct'] = 'yes';
-				
-				$j = 1;//j<=2
-				//set data as not persistent
-				foreach($choiceSerials as $choiceSerial){
+				$j = 1;
+				foreach($correctResponses as $choiceSerial){
 					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
 					if(is_null($choice)){
-						break(2);//important: do not take into account deleted choice
+						break;//important: do not take into account deleted choice
 					}
 					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
 					$j++;
 				}
 				
-				if(isset($mapping[$choiceSerialConcat])){
-					$returnValue[$i]['score'] = $mapping[$choiceSerialConcat];
-					unset($mapping[$choiceSerialConcat]);
-				}
-				
-				$i++;
+				//note: there could only be one correct response so $i should be 0
+				//note 2: there is no possible direct score mapping against correct response order: as a consequence, only the response tlp match can work for the time being
 			}
-		}
-		if(!empty($mapping)){
-			foreach($mapping as $choiceSerialConcat => $score){
-				$choiceSerials = explode(' ', $choiceSerialConcat);
-				
-				$returnValue[$i] = array();
-				$returnValue[$i]['correct'] = 'no';
-				
-				$j = 1;//j<=2
-				foreach($choiceSerials as $choiceSerial){
-					$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
-					if(is_null($choice)){
-						break(2);//important: do not take into account deleted choice
+			
+			
+			//case of mapping here:
+			
+		}else{
+		
+			if(!empty($correctResponses)){
+				foreach($correctResponses as $choiceSerialConcat){
+					$choiceSerials = explode(' ', $choiceSerialConcat);
+					
+					$returnValue[$i] = array();
+					$returnValue[$i]['correct'] = 'yes';
+					
+					$j = 1;//j<=2
+					//set data as not persistent
+					foreach($choiceSerials as $choiceSerial){
+						$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+						if(is_null($choice)){
+							break(2);//important: do not take into account deleted choice
+						}
+						$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+						$j++;
 					}
-					$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
 					
-					//add exception for textEntry interaction where the values are the $choiceSerial:
+					if(isset($mapping[$choiceSerialConcat])){
+						$returnValue[$i]['score'] = $mapping[$choiceSerialConcat];
+						unset($mapping[$choiceSerialConcat]);
+					}
 					
-					$j++;
+					$i++;
 				}
-				
-				$returnValue[$i]['score'] = $score;
-				
-				$i++;
 			}
+			if(!empty($mapping)){
+				foreach($mapping as $choiceSerialConcat => $score){
+					$choiceSerials = explode(' ', $choiceSerialConcat);
+					
+					$returnValue[$i] = array();
+					$returnValue[$i]['correct'] = 'no';
+					
+					$j = 1;//j<=2
+					foreach($choiceSerials as $choiceSerial){
+						$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+						if(is_null($choice)){
+							break(2);//important: do not take into account deleted choice
+						}
+						$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+						
+						//add exception for textEntry interaction where the values are the $choiceSerial:
+						
+						$j++;
+					}
+					
+					$returnValue[$i]['score'] = $score;
+					
+					$i++;
+				}
+			}
+			
 		}
 		return $returnValue;
 	}

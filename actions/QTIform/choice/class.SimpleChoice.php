@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * This container initialize the qti item form:
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package tao
  * @subpackage actions_form
  */
@@ -18,12 +18,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * This container initialize the login form.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package tao
  * @subpackage actions_form
  */
-class taoItems_actions_QTIform_SimpleChoice
-    extends taoItems_actions_QTIform_Choice{
+class taoItems_actions_QTIform_choice_SimpleChoice
+    extends taoItems_actions_QTIform_choice_Choice{
 	
 	public function initElements(){
 		

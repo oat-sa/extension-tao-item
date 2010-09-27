@@ -530,7 +530,7 @@ class taoItems_models_classes_QTI_Interaction
 		//if 'string', special attr
 		//if 'graphic', object tag
 		//if 'inline', nothing
-		$interactionFormClass = 'taoItems_actions_QTIform_'.ucfirst(strtolower($this->getType())).'Interaction';
+		$interactionFormClass = 'taoItems_actions_QTIform_interaction_'.ucfirst(strtolower($this->getType())).'Interaction';
 		if(!class_exists($interactionFormClass)){
 			throw new Exception("the class {$interactionFormClass} does not exist");
 		}else{

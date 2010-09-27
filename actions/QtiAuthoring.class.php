@@ -1,6 +1,6 @@
 <?php
 /**
- * QTiAuthoring Controller provide actions to edit a QTI item
+ * QtiAuthoring Controller provide actions to edit a QTI item
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
@@ -8,7 +8,7 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
  
-class QTiAuthoring extends CommonModule {
+class QtiAuthoring extends CommonModule {
 	
 	/**
 	 * constructor: initialize the service and the default data
@@ -559,6 +559,11 @@ class QTiAuthoring extends CommonModule {
 		//get model:
 		$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
 		$responseData = $this->service->getInteractionResponseData($interaction);
+		
+		if(strtolower($interaction->getType()) == 'order'){
+			//special case for order interaction:
+			
+		}
 		
 		echo json_encode(array(
 			'ok' => true,
