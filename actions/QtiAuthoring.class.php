@@ -127,7 +127,7 @@ class QtiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
-		var_dump($currentItem);
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working

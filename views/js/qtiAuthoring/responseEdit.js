@@ -6,7 +6,14 @@ responseEdit.grid = null;
 
 responseEdit.destroyGrid = function(tableElementId){
 	responseEdit.grid = [];
-	$('#'+tableElementId).empty();
+	if(!tableElementId){
+		var selector = '#'+responseEdit.grid.myGrid.attr('id');
+	}else{
+		var selector = '#'+tableElementId;
+	}
+	
+	$(selector).GridUnload(selector);
+	// $('#'+tableElementId).empty();
 }
 
 responseEdit.buildGrid = function(tableElementId, interactionSerial){
@@ -14,10 +21,7 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 	if(responseEdit.grid){
 		if(responseEdit.grid.myGrid){
 			CL('destroy grid');
-			// $.jgrid.GridDestroy(responseEdit.grid.myGrid.attr('id'));
-			var selector = '#'+responseEdit.grid.myGrid.attr('id');
-			// $(selector).GridDestroy(selector);
-			$(selector).GridUnload(selector);
+			responseEdit.destroyGrid(tableElementId);
 		}
 	}
 	responseEdit.grid = [];
@@ -184,8 +188,7 @@ responseEdit.buildGrid = function(tableElementId, interactionSerial){
 			search: false,
 			afterRefresh: function(){
 				CL('refreshed');
-				// $('#'+tableElementId).empty();
-				$.jgrid.GridDestroy(responseEdit.grid.myGrid.attr('id'));
+				responseEdit.destroyGrid(tableElementId);
 				responseEdit.buildGrid(tableElementId, interactionSerial);
 			},
 			editfunc: function(rowId){
@@ -382,9 +385,9 @@ responseEdit.checkRepeatedRow = function(rowId){
 	var allData = responseEdit.grid.myGrid.jqGrid('getRowData');
 	for(var i = 0; i<allData.length; i++){
 		var count = 0;
-		CL('loop', i);
-		CL('thisRowData', thisRowData);
-		CL('anotherRowData', anotherRowData);
+		// CL('loop', i);
+		// CL('thisRowData', thisRowData);
+		// CL('anotherRowData', anotherRowData);
 		if(i == rowId){
 			continue;
 		}
@@ -398,7 +401,7 @@ responseEdit.checkRepeatedRow = function(rowId){
 				break;
 			}
 		}
-		CL('count', count);
+		// CL('count', count);
 		if(count == thisRowDataLength){
 			//if the anotherRowData is able to exit the for loop, a identical row has been found!
 			// CL('thisRowData', thisRowData);
