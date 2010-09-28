@@ -54,21 +54,6 @@
 </div>
 
 <script type="text/javascript">
-$.jgrid.GridDestroy = function () {
-	return this.each(function(){
-		CL('this', this);
-		if ( this.grid ) { 
-			if ( this.p.pager ) { // if not part of grid
-				// $(this.p.pager).remove();
-			}
-			var gid = this.id;
-			try {
-				$("#gbox_"+gid).remove();
-			} catch (_) {}
-		}
-	});
-};
-
 //customized unload function:
 $.jgrid.GridUnload = function(){
 	return this.each(function(){
@@ -135,6 +120,16 @@ var addOrderInteraction = {
 		qtiEdit.addInteraction('order', this.getContent(), qtiEdit.itemSerial);
 	},
 	tooltip: 'add order interaction'
+};
+
+var addMatchInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('match', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add match interaction'
 };
 
 var saveItemData = {
@@ -205,7 +200,6 @@ $(document).ready(function(){
               tags: ['h6'],
               tooltip: 'Header 6'
       },
-      
       cut   : { visible : true },
       copy  : { visible : true },
       paste : { visible : true },
@@ -214,6 +208,7 @@ $(document).ready(function(){
 	  addChoiceInteraction: addChoiceInteraction,
 	  addAssociateInteraction: addAssociateInteraction,
 	  addOrderInteraction: addOrderInteraction,
+	  addMatchInteraction: addMatchInteraction,
 	  saveItemData: saveItemData
     },
     events: {

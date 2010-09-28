@@ -197,7 +197,13 @@ class QtiAuthoring extends CommonModule {
 		
 		$interaction = $this->getCurrentInteraction();
 		if(!is_null($interaction)){
-			$choice = $this->service->addChoice($interaction);
+			try{
+				//not null in case of a match or gapmatch interaction:
+				$group = null;
+				$group = $this->getCurrentGroup();
+			}catch(Exception $e){}
+		
+			$choice = $this->service->addChoice($interaction, '', null, $group);
 			
 			//return id and form:
 			
@@ -299,6 +305,20 @@ class QtiAuthoring extends CommonModule {
 		return $returnValue;
 	}
 	
+	public function getCurrentChoice(){
+		$returnValue = null;
+		if($this->hasRequestParameter('groupSerial')){
+			$group = $this->qtiService->getDataBySerial($this->getRequestParameter('groupSerial'), 'taoItems_models_classes_QTI_Group');
+			if(!empty($group)){
+				$returnValue = $group;
+			}
+		}else{
+			throw new Exception('no request parameter "groupSerial" found');
+		}
+		
+		return $returnValue;
+	}
+	
 	public function getCurrentResponse(){
 		$returnValue = null;
 		if($this->hasRequestParameter('responseSerial')){
@@ -343,7 +363,7 @@ class QtiAuthoring extends CommonModule {
 		$choices = $this->service->getInteractionChoices($interaction);
 		$choiceForms = array();
 		$interactionType = strtolower($interaction->getType());
-		if($interactionType=='match' || $interactionType=='gapmatch'){
+		if($interactionType == 'match' || $interactionType == 'gapmatch'){
 			foreach($choices as $order=>$group){
 				$choiceForms[$order] = array();
 				foreach($group as $choice){

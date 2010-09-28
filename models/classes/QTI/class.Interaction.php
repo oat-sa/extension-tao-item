@@ -287,12 +287,18 @@ class taoItems_models_classes_QTI_Interaction
 
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 begin
         
-   	 if(!is_null($choice)){
+		if(!is_null($choice)){
     		if(isset($this->choices[$choice->getSerial()])){
     			foreach($this->getGroups() as $group){
-					$group->removeChoice();
+					$group->removeChoice($choice);
 				}
 				unset($this->choices[$choice->getSerial()]);
+				
+				//remove the choice from the interaction data:
+				$data = $this->getData();
+				$data = str_replace("{{$choice->getSerial()}}", '', $data);
+				$this->setData($data);
+				
     			$returnValue = true;
     		}
 		

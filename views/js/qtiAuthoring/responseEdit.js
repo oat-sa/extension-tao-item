@@ -1,4 +1,4 @@
-alert('response edit loaded');
+// alert('response edit loaded');
 
 responseEdit = new Object();
 responseEdit.grid = null;
@@ -300,7 +300,7 @@ responseEdit.editGridRow = function(rowId){
 				if(repeatedChoice){
 					alert('There cannot be identical choice in a row.');
 					// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
-					CL('responseEdit.grid.currentRowData', responseEdit.grid.currentRowData);
+					// CL('responseEdit.grid.currentRowData', responseEdit.grid.currentRowData);
 					responseEdit.grid.myGrid.jqGrid('setRowData', responseEdit.grid.currentRowId, responseEdit.grid.currentRowData);
 					return false;
 				}

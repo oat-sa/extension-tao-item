@@ -107,10 +107,13 @@ class taoItems_models_classes_QTI_Group
         
     	$groupElements = array();
     	foreach($choices as $choice){
-    		if( ! $choice instanceof taoItems_models_classes_QTI_Choice){
-    			throw new InvalidArgumentException("the choices parameter should be a list taoItems_models_classes_QTI_Choice");
-    		}
-    		$this->choices[] = $choice->getSerial();
+    		if($choice instanceof taoItems_models_classes_QTI_Choice){
+				$this->choices[] = $choice->getSerial();
+    		}else if(is_string($choice)){
+				$this->choices[] = $choice;
+			}else{
+				throw new InvalidArgumentException("the choices parameter should be a list of taoItems_models_classes_QTI_Choice or of string");
+			}
     	}
     	
         // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:000000000000257A end
@@ -171,6 +174,20 @@ class taoItems_models_classes_QTI_Group
         $returnValue = (bool) false;
 
         // section 127-0-1-1-15fd4bad:12b579443b6:-8000:00000000000025A9 begin
+		
+		if(!is_null($choice)){
+			$key = array_search($choice->getSerial(), $this->choices);
+    		if($key !== false){
+			
+				unset($this->choices[$key]);
+				
+				//remove the choice from the group data:
+				$this->setData(str_replace("{{$choice->getSerial()}}", '', $this->getData()));
+				
+				$returnValue = true;
+			}
+		}
+		
         // section 127-0-1-1-15fd4bad:12b579443b6:-8000:00000000000025A9 end
 
         return (bool) $returnValue;
