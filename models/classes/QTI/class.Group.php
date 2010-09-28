@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
+ * Automatically generated on 28.09.2010, 11:10:16 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -156,6 +156,24 @@ class taoItems_models_classes_QTI_Group
         // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:000000000000257F end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method removeChoice
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Choice choice
+     * @return boolean
+     */
+    public function removeChoice( taoItems_models_classes_QTI_Choice $choice)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-15fd4bad:12b579443b6:-8000:00000000000025A9 begin
+        // section 127-0-1-1-15fd4bad:12b579443b6:-8000:00000000000025A9 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Group */

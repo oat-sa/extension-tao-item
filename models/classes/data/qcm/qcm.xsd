@@ -4,17 +4,20 @@
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="./rdf.xsd"/>
   <xs:import namespace="http://www.w3.org/TR/1999/PR-rdf-schema-19990303#" schemaLocation="./rdfs.xsd"/>
   
+ <!-- 
+ 	The XUL tags content is ignored due to the liberty let to the user
+  -->
+  
   <xs:complexType name="xul">
     <xs:sequence>
       <xs:element ref="xul"/>
     </xs:sequence>
   </xs:complexType>
-  
   <xs:element name="xul">
-    <xs:simpleType>
-
-    </xs:simpleType>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:any processContents="skip" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
   </xs:element>
-  
-  
 </xs:schema>
