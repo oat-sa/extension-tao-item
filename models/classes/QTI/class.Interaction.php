@@ -156,6 +156,7 @@ class taoItems_models_classes_QTI_Interaction
         if(!is_null($this->response)){
         	$this->response = $this->response->getSerial();
         }
+		$this->groups = array_keys($this->groups);
         $returnValue = parent::__sleep();
         
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DD end
@@ -181,10 +182,19 @@ class taoItems_models_classes_QTI_Interaction
     			$this->choices[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
     		}
     	}
+		
     	$responseSerial = $this->response;
     	$this->response = null;
     	if(Session::hasAttribute(self::PREFIX .$responseSerial)){
     		$this->response = unserialize(Session::getAttribute(self::PREFIX .$responseSerial));
+    	}
+		
+		$groupSerials = $this->groups;
+		$this->groups = array();
+    	foreach($groupSerials as $serial){
+    		if(Session::hasAttribute(self::PREFIX .$serial)){
+    			$this->groups[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
+    		}
     	}
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF end
     }

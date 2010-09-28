@@ -127,7 +127,7 @@ class QtiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
-		// var_dump($currentItem);
+		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
@@ -305,7 +305,7 @@ class QtiAuthoring extends CommonModule {
 		return $returnValue;
 	}
 	
-	public function getCurrentChoice(){
+	public function getCurrentGroup(){
 		$returnValue = null;
 		if($this->hasRequestParameter('groupSerial')){
 			$group = $this->qtiService->getDataBySerial($this->getRequestParameter('groupSerial'), 'taoItems_models_classes_QTI_Group');
@@ -362,14 +362,20 @@ class QtiAuthoring extends CommonModule {
 		//new impl
 		$choices = $this->service->getInteractionChoices($interaction);
 		$choiceForms = array();
+		
 		$interactionType = strtolower($interaction->getType());
 		if($interactionType == 'match' || $interactionType == 'gapmatch'){
-			foreach($choices as $order=>$group){
-				$choiceForms[$order] = array();
+			$i = 0;
+			$groupSerials = array();
+			foreach($choices as $groupSerial=>$group){
+				$groupSerials[$i] = $groupSerial;
+				$choiceForms[$i] = array();
 				foreach($group as $choice){
-					$choiceForms[$order][$choice->getSerial()] = $choice->toForm()->render();
+					$choiceForms[$i][$choice->getSerial()] = $choice->toForm()->render();
 				}
+				$i++;
 			}
+			$this->setData('groupSerials', $groupSerials);
 		}else{
 			foreach($choices as $order=>$choice){
 				$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
@@ -571,7 +577,7 @@ class QtiAuthoring extends CommonModule {
 	
 	//edit the interaction response:
 	public function editResponse(){
-	
+		// exit;
 		$interaction = $this->getCurrentInteraction();
 		$item = $this->getCurrentItem();
 		$responseProcessing = $item->getResponseProcessing();

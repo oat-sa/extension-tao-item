@@ -15,64 +15,62 @@ interactionEdit.setOrderedChoicesButtons = function(list){
 		$("#a_choicePropOptions_"+list[i]).after($upElt);
 		$upElt.click(function(){
 			var choiceSerial = $(this).attr('id').substr(3);
-			interactionEdit.switchOrder(choiceSerial, 'up');
+			interactionEdit.orderedChoices = interactionEdit.switchOrder(interactionEdit.orderedChoices, choiceSerial, 'up');
 		});
 		
 		$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control ui-icon ui-icon-circle-triangle-s"></span>');
 		$upElt.after($downElt);
 		$downElt.click(function(){
 			var choiceSerial = $(this).attr('id').substr(5);
-			interactionEdit.switchOrder(choiceSerial, 'down');
+			interactionEdit.orderedChoices = interactionEdit.switchOrder(interactionEdit.orderedChoices, choiceSerial, 'down');
 		});
 	}
 }
 
-interactionEdit.switchOrder = function(choiceId, direction){
+interactionEdit.switchOrder = function(list, choiceId, direction){
 	
 	var currentPosition = 0;
-	for(var i=0; i<interactionEdit.orderedChoices.length; i++){
-		if(interactionEdit.orderedChoices[i] == choiceId){
+	for(var i=0; i<list.length; i++){
+		if(list[i] == choiceId){
 			currentPosition = i;
 			break;
 		}
 	}
-			
+	
+	var newOrder = [];
 	switch(direction){
 		case 'up':{
 			//get the previous choice:
 			if(currentPosition>0){
-				$('#'+choiceId).insertBefore('#'+interactionEdit.orderedChoices[currentPosition-1]);
+				$('#'+choiceId).insertBefore('#'+list[currentPosition-1]);
 				// $('#'+choiceId).remove();
-				var newOrder = [];
-				for(var i=0;i<interactionEdit.orderedChoices.length;i++){
+				for(var i=0;i<list.length;i++){
 					if(i == currentPosition-1){
-						newOrder[i] = interactionEdit.orderedChoices[i+1];
+						newOrder[i] = list[i+1];
 					}else if(i == currentPosition){
-						newOrder[i] = interactionEdit.orderedChoices[i-1];
+						newOrder[i] = list[i-1];
 					}else{
-						newOrder[i] = interactionEdit.orderedChoices[i];
+						newOrder[i] = list[i];
 					}
 				}
-				interactionEdit.orderedChoices = newOrder;
 			}
 			break;
 		}
 		case 'down':{
 			//get the previous choice:
-			if(currentPosition<interactionEdit.orderedChoices.length){
-				$('#'+choiceId).insertAfter('#'+interactionEdit.orderedChoices[currentPosition+1]);
+			if(currentPosition<list.length){
+				$('#'+choiceId).insertAfter('#'+list[currentPosition+1]);
 				// $('#'+choiceId).remove();
 				var newOrder = [];
-				for(var i=0;i<interactionEdit.orderedChoices.length;i++){
+				for(var i=0;i<list.length;i++){
 					if(i == currentPosition){
-						newOrder[i] = interactionEdit.orderedChoices[i+1];
+						newOrder[i] = list[i+1];
 					}else if(i == currentPosition+1){
-						newOrder[i] = interactionEdit.orderedChoices[i-1];
+						newOrder[i] = list[i-1];
 					}else{
-						newOrder[i] = interactionEdit.orderedChoices[i];
+						newOrder[i] = list[i];
 					}
 				}
-				interactionEdit.orderedChoices = newOrder;
 			}
 			break;
 		}
@@ -80,6 +78,8 @@ interactionEdit.switchOrder = function(choiceId, direction){
 	
 	//indicates that the interaction has changed:
 	interactionEdit.modifiedInteraction = true;
+	
+	return newOrder;
 }
 
 interactionEdit.sortOrderedChoices = function(list, order){
@@ -263,7 +263,7 @@ interactionEdit.setFormChangeListener = function(target){
 	
 	// $("form").children().unbind('change');//use finely targetted object
 	$("form").children().change(function(){
-		CL('changed', $(this).parents('form').attr('id'));
+		// CL('changed', $(this).parents('form').attr('id'));
 		var $modifiedForm = $(this).parents('form');
 		if($modifiedForm.length){
 			var id = $modifiedForm.attr('id');
@@ -279,23 +279,26 @@ interactionEdit.setFormChangeListener = function(target){
 	return true;
 }
 
-interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClass){
+interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClass, groupSerial){
 	
 	if(!$appendTo || !$appendTo.length){
 		throw 'the append target element do not exists';
 	}
 	
+	var postData = {};
 	if(!interactionSerial && interactionEdit.interactionSerial){
 		var interactionSerial = interactionEdit.interactionSerial;
 	}
+	postData.interactionSerial = interactionSerial;
 	
+	if(groupSerial){
+		postData.groupSerial = groupSerial;
+	}
 	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/addChoice",
-	   data: {
-			'interactionSerial': interactionSerial
-	   },
+	   data: postData,
 	   dataType: 'json',
 	   success: function(r){
 			CL('choice added');
