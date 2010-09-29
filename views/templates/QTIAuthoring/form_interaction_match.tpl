@@ -15,16 +15,16 @@
 			$groupSerials = get_data('groupSerials'); ?>
 			
 		<?foreach($groupSerials as $order => $groupSerial):?>
-		<div id="formContainer_choices_container_<?=$order?>" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
+		<div id="formContainer_choices_container_<?=$groupSerial?>" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
 			<div id="formContainer_choices_<?=$groupSerial?>">
-			<?foreach($formChoices[$order] as $choiceId => $choiceForm):?>
+			<?foreach($formChoices[$groupSerial] as $choiceId => $choiceForm):?>
 				<div id='<?=$choiceId?>' class='formContainer_choice'>
 					<?=$choiceForm?>
 				</div>
 			<?endforeach;?>
 			</div>
 
-			<div id="add_choice_button_<?=$order?>">
+			<div id="add_choice_button_<?=$groupSerial?>">
 				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Add a choice</a>
 			</div>
 		</div>
@@ -38,26 +38,31 @@
 matchInteractionEdit = new Object();
 matchInteractionEdit.setOrderedChoicesButtons = function(doubleList){
 	CD(doubleList, 'doubleList');
-	var length = doubleList.length;
-	for(var j=0; j<length; j++){
+	// var length = doubleList.length;
+	for(var groupSerial in doubleList){
 		// interactionEdit.setOrderedChoicesButtons(doubleList[j]);
-		var list = doubleList[j];
+		var list = doubleList[groupSerial];
 		var total = list.length;
 		for(var i=0; i<total; i++){
+			if(!list[i]){
+				throw 'broken order in array';
+				break;
+			}
+			
 			$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control ui-icon ui-icon-circle-triangle-n"></span>');
 			
 			//get the corresponding group id:
 			$("#a_choicePropOptions_"+list[i]).after($upElt);
-			$upElt.bind('click', {'key':j}, function(e){
+			$upElt.bind('click', {'groupSerial':groupSerial}, function(e){
 				var choiceSerial = $(this).attr('id').substr(3);
-				interactionEdit.orderedChoices[e.data.key] = interactionEdit.switchOrder(interactionEdit.orderedChoices[e.data.key], choiceSerial, 'up');
+				interactionEdit.orderedChoices[e.data.groupSerial] = interactionEdit.switchOrder(interactionEdit.orderedChoices[e.data.groupSerial], choiceSerial, 'up');
 			});
 			
 			$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control ui-icon ui-icon-circle-triangle-s"></span>');
 			$upElt.after($downElt);
-			$downElt.bind('click', {'key':j}, function(e){
-				var choiceSerial = $(this).attr('id').substr(3);
-				interactionEdit.orderedChoices[e.data.key] = interactionEdit.switchOrder(interactionEdit.orderedChoices[e.data.key], choiceSerial, 'down');
+			$downElt.bind('click', {'groupSerial':groupSerial}, function(e){
+				var choiceSerial = $(this).attr('id').substr(5);
+				interactionEdit.orderedChoices[e.data.groupSerial] = interactionEdit.switchOrder(interactionEdit.orderedChoices[e.data.groupSerial], choiceSerial, 'down');
 			});
 		}
 	}
@@ -69,7 +74,7 @@ $(document).ready(function(){
 	interactionEdit.initInteractionFormSubmitter();
 	
 	<?foreach($groupSerials as $order => $groupSerial):?>
-	$('#add_choice_button_<?=$order?>').click(function(){
+	$('#add_choice_button_<?=$groupSerial?>').click(function(){
 		//add a choice to the current interaction:
 		interactionEdit.addChoice(interactionEdit.interactionSerial, $('#formContainer_choices_<?=$groupSerial?>'), 'formContainer_choice', '<?=$groupSerial?>');//need an extra param "groupSerial"
 		return false;
@@ -81,13 +86,13 @@ $(document).ready(function(){
 	
 	//add move up and down button
 	interactionEdit.orderedChoices = [];//double dimension array:
-	var i=0;//i={0,1}
-	<?foreach(get_data('orderedChoices') as $group):?>
-		interactionEdit.orderedChoices[i] = [];
+	// var i=0;//i={0,1}
+	<?foreach(get_data('orderedChoices') as $groupSerial => $group):?>
+		interactionEdit.orderedChoices['<?=$groupSerial?>'] = [];
 		<?foreach($group as $choice):?>
-			interactionEdit.orderedChoices[i].push('<?=$choice->getSerial()?>');
+			interactionEdit.orderedChoices['<?=$groupSerial?>'].push('<?=$choice->getSerial()?>');
 		<?endforeach;?>
-		i++;
+		// i++;
 	<?endforeach;?>
 	
 	matchInteractionEdit.setOrderedChoicesButtons(interactionEdit.orderedChoices);

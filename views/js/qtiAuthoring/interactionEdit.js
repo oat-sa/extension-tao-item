@@ -175,9 +175,22 @@ interactionEdit.saveInteraction = function($myForm){
 	// CL("saving "+$myForm.attr('id'), $myForm.serialize());
 	//serialize the order:
 	var orderedChoices = '';
-	for(var i=0;i<interactionEdit.orderedChoices.length;i++){
-		orderedChoices += '&choiceOrder['+i+']='+interactionEdit.orderedChoices[i];
+	if(interactionEdit.orderedChoices[0]){
+		for(var i=0;i<interactionEdit.orderedChoices.length;i++){
+			orderedChoices += '&choiceOrder['+i+']='+interactionEdit.orderedChoices[i];
+		}
+	}else{
+		//for match and gapmatch interaction:
+		var i = 0;
+		for(var groupSerial in interactionEdit.orderedChoices){
+			orderedChoices += '&choiceOrder'+i+'[groupSerial]='+groupSerial;
+			for(var j=0; j<interactionEdit.orderedChoices[groupSerial].length; j++){
+				orderedChoices += '&choiceOrder'+i+'['+j+']='+interactionEdit.orderedChoices[groupSerial][j];
+			}
+			i++;
+		}
 	}
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveInteraction",

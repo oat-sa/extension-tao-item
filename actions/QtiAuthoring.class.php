@@ -347,8 +347,12 @@ class QtiAuthoring extends CommonModule {
 	
 	//to be called at the same time as edit response
 	public function editInteraction(){
-		$interaction = $this->getCurrentInteraction();
 		
+		
+		
+		$interaction = $this->getCurrentInteraction();
+		// unset($interaction);
+		// echo '<pre>';print_r($_SESSION['ClearFw']);exit;
 		//build the form with its method "toForm"
 		$myForm = $interaction->toForm();
 		
@@ -368,10 +372,11 @@ class QtiAuthoring extends CommonModule {
 			$i = 0;
 			$groupSerials = array();
 			foreach($choices as $groupSerial=>$group){
+				
 				$groupSerials[$i] = $groupSerial;
-				$choiceForms[$i] = array();
+				$choiceForms[$groupSerial] = array();
 				foreach($group as $choice){
-					$choiceForms[$i][$choice->getSerial()] = $choice->toForm()->render();
+					$choiceForms[$groupSerial][$choice->getSerial()] = $choice->toForm()->render();
 				}
 				$i++;
 			}
@@ -404,16 +409,6 @@ class QtiAuthoring extends CommonModule {
 				// var_dump($myForm->getValues());
 				$values = $myForm->getValues();
 				
-				/*
-				if($values['interactionSerial'] != $values['newId']){
-					// check unicity of the new id $values['newId']:
-					$unique = true;
-					if($unique){
-						// save id
-						$this->service->setInteractionId($interaction, $values['newId']);
-					}
-				}*/
-				
 				if(isset($values['interactionIdentifier'])){
 					// die('set identifier');
 					if($values['interactionIdentifier'] != $interaction->getIdentifier()){
@@ -433,25 +428,45 @@ class QtiAuthoring extends CommonModule {
 					unset($values['data']);
 				}
 				
-				if(isset($_POST['choiceOrder'])){
-					$choiceOrder = $_POST['choiceOrder'];
-				}elseif(isset($_POST['choiceOrder0']) && isset($_POST['choiceOrder1'])){
-					$choiceOrder[0] = $_POST['choiceOrder0'];
-					$choiceOrder[1] = $_POST['choiceOrder1'];
-				}
-				$this->service->setInteractionData($interaction, $data, $choiceOrder);
-					
 				unset($values['interactionSerial']);
 				$this->service->setOptions($interaction, $values);
 				
-				$saved  = true;
-				// $group = $this->service->bindProperties($group, $myForm->getValues());
+				if(isset($_POST['choiceOrder'])){
 				
-				// $this->setData('message', __('Interaction saved'));
-				// $this->setData('reload', true);
+					$choiceOrder = $_POST['choiceOrder'];
+					
+				}elseif( isset($_POST['choiceOrder0']) ){//for match and gapmatch interaction
+					
+					$groupOrder0 = $_POST['choiceOrder0'];
+					if(isset($groupOrder0['groupSerial'])){
+						$groupSerial = $groupOrder0['groupSerial'];
+						unset($groupOrder0['groupSerial']);
+						$choiceOrder[$groupSerial] = $groupOrder0;
+					}
+					
+					if(isset($_POST['choiceOrder1'])){//for match interaction only
+						$groupOrder1 = $_POST['choiceOrder1'];
+						if(isset($groupOrder1['groupSerial'])){
+							$groupSerial = $groupOrder1['groupSerial'];
+							unset($groupOrder1['groupSerial']);
+							$choiceOrder[$groupSerial] = $groupOrder1;
+						}
+					}
+					
+				}
+				$this->service->setInteractionData($interaction, $data, $choiceOrder);
+				
+				$saved  = true;
 			}
 		}
-		
+		// $interactionSerial = $interaction->getSerial();
+		// var_dump($this->qtiService->getInteractionBySerial($interactionSerial));
+		// foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
+			// $this->qtiService->getDataBySerial($groupSerial, 'taoItems_models_classes_QTI_Group');
+			
+		// }
+		// echo '<pre>';print_r($_SESSION['ClearFw']);
+		// unset($interaction);
 		echo json_encode(array(
 			'saved' => $saved
 		));
@@ -531,6 +546,7 @@ class QtiAuthoring extends CommonModule {
 	
 	
 	public function editMappingOptions(){
+		exit;
 		$response = $this->getCurrentResponse();
 		
 		$formContainer = new taoItems_actions_QTIform_Mapping($response);
@@ -577,7 +593,7 @@ class QtiAuthoring extends CommonModule {
 	
 	//edit the interaction response:
 	public function editResponse(){
-		// exit;
+		exit;
 		$interaction = $this->getCurrentInteraction();
 		$item = $this->getCurrentItem();
 		$responseProcessing = $item->getResponseProcessing();
