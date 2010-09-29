@@ -167,6 +167,7 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'gapmatch':{
 					//get groups and do the same for each group:
 					$groups = array();//1 or 2 maximum
+					// var_dump('match interaction:', $interaction);
 					foreach($interaction->getGroups() as $groupSerial => $group){
 						//get the order from the interaction data:
 						$order = false;
@@ -186,6 +187,7 @@ class taoItems_models_classes_QtiAuthoringService
 						$returnValue[$group->getSerial()] = array();
 						//get the choice for each group:
 						$choices = $group->getChoices();
+						ksort($choices);
 						foreach($choices as $choiceId){
 							$returnValue[$group->getSerial()][] = $this->qtiService->getDataBySerial($choiceId, 'taoItems_models_classes_QTI_Choice');
 						}
@@ -584,7 +586,7 @@ class taoItems_models_classes_QtiAuthoringService
 		$qtiObject->setIdentifier($identifier);
 	}
 	
-	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
+	public function setInteractionData(taoItems_models_classes_QTI_Interaction &$interaction, $data = '', $choiceOrder=array()){
 		//append the choices id to the interaction data:
 		switch(strtolower($interaction->getType())){
 			case 'choice':
@@ -603,38 +605,62 @@ class taoItems_models_classes_QtiAuthoringService
 				
 				//the old data must contain all groups:
 				$oldData = $interaction->getData();
+				$interactionSerial = $interaction->getSerial();
+				foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
+					//need for reappending the group to the data
+					$data .= "{{$groupSerial}}";
+				}
+				$interaction->setData($data);
+				$interaction->groups = array();
+				// $interaction->setIdentifier('coolOne');
+				// unset($interaction);//save the interaction, before saving the groups
+				
 				foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
 					if(strpos($oldData, "{{$groupSerial}}") !== false){
 						$group = null;
 						$group = $this->qtiService->getDataBySerial($groupSerial, 'taoItems_models_classes_QTI_Group');
 						if(!is_null($group)){
+							// var_dump('before setting choices', $group);
 							
-							//need for reappending the group to the data
-							$data .= "{{$groupSerial}}";
-						
+							$groupData = '';
 							$choices = array();
 							foreach($groupChoiceOrder as $order => $choiceSerial){
 								$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
 								$choices[] = $choice;
+								
 								$group->removeChoice($choice);//remove it from the old data
+								$groupData .= "{{$choiceSerial}}";
 							}
 							//sort only the choices in the group(s)
 							//remove the choices then set them again:
+							// var_dump('setting choices', $group, $choices);
 							$group->setChoices($choices);
+							$group->setData($groupData);
+							$interaction->addGroup($group);
+							// var_dump('after setting choices', $group);
 						}else{
-							throw new Exception("the group with the serial $groupSerial does not exist in the session");
+							throw new Exception("the group with the serial $groupSerial does not exist in session");
 						}
 					}else{
 						throw new Exception("the group with the serial $groupSerial cannot be found in the intial interaction group data");
 					}
 				}
-				$interaction->setData($data);
+				
 				break;
 			}
 			default:{
 				throw new Exception('unknown type of interaction');
 			}
 		}
+		
+		// var_dump('interaction reconstruct', $this->qtiService->getInteractionBySerial($interactionSerial));
+		// $interaction = $this->qtiService->getInteractionBySerial($interactionSerial);
+		// unset($interaction);
+		// var_dump($this->qtiService->getInteractionBySerial($interactionSerial));
+		// foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
+			// $group = $this->qtiService->getDataBySerial($groupSerial, 'taoItems_models_classes_QTI_Group');
+			// var_dump($group);
+		// }
 		
 	}
 	
