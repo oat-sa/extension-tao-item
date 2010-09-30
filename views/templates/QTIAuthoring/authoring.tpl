@@ -132,6 +132,46 @@ var addMatchInteraction = {
 	tooltip: 'add match interaction'
 };
 
+var addInlineChoiceInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('inlinechoice', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add inline choice interaction'
+};
+
+var addTextEntryInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('textentry', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add text entry interaction'
+};
+
+var addExtendedTextInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('extendedtext', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add extended text interaction'
+};
+
+var addHotTextInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('extendedtext', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add extended text interaction'
+};
+
 var saveItemData = {
 	visible : true,
 	className: 'addInteraction',
@@ -140,6 +180,7 @@ var saveItemData = {
 	},
 	tooltip: 'save'
 };
+
 var loadXmlQti = null;
 var exportXmlQti = null;
 
@@ -209,6 +250,10 @@ $(document).ready(function(){
 	  addAssociateInteraction: addAssociateInteraction,
 	  addOrderInteraction: addOrderInteraction,
 	  addMatchInteraction: addMatchInteraction,
+	  addInlineChoiceInteraction: addInlineChoiceInteraction,
+	  addTextEntryInteraction: addTextEntryInteraction,
+	  addExtendedTextInteraction: addExtendedTextInteraction,
+	  addHotTextInteraction: addHotTextInteraction,
 	  saveItemData: saveItemData
     },
     events: {

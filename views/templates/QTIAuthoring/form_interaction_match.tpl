@@ -37,7 +37,7 @@
 <script type="text/javascript">
 matchInteractionEdit = new Object();
 matchInteractionEdit.setOrderedChoicesButtons = function(doubleList){
-	CD(doubleList, 'doubleList');
+	
 	// var length = doubleList.length;
 	for(var groupSerial in doubleList){
 		// interactionEdit.setOrderedChoicesButtons(doubleList[j]);

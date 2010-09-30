@@ -422,6 +422,7 @@ class QtiAuthoring extends CommonModule {
 				unset($values['interactionSerial']);
 				$this->service->setOptions($interaction, $values);
 				
+				$choiceOrder = array();
 				if(isset($_POST['choiceOrder'])){
 				
 					$choiceOrder = $_POST['choiceOrder'];
