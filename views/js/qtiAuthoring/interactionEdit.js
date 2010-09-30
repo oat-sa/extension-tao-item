@@ -1,4 +1,4 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
@@ -38,6 +38,7 @@ interactionEdit.switchOrder = function(list, choiceId, direction){
 	}
 	
 	var newOrder = [];
+	var sorted = false;
 	switch(direction){
 		case 'up':{
 			//get the previous choice:
@@ -53,12 +54,14 @@ interactionEdit.switchOrder = function(list, choiceId, direction){
 						newOrder[i] = list[i];
 					}
 				}
+				
+				sorted = true;
 			}
 			break;
 		}
 		case 'down':{
 			//get the previous choice:
-			if(currentPosition<list.length){
+			if(currentPosition < list.length-1){
 				$('#'+choiceId).insertAfter('#'+list[currentPosition+1]);
 				// $('#'+choiceId).remove();
 				var newOrder = [];
@@ -71,13 +74,20 @@ interactionEdit.switchOrder = function(list, choiceId, direction){
 						newOrder[i] = list[i];
 					}
 				}
+				
+				sorted = true;
 			}
 			break;
 		}
 	}
 	
-	//indicates that the interaction has changed:
-	interactionEdit.modifiedInteraction = true;
+	if(sorted){
+		//indicates that the interaction has changed:
+		interactionEdit.modifiedInteraction = true;
+	}else{
+		//return the old order
+		newOrder = list;
+	}
 	
 	return newOrder;
 }
@@ -329,7 +339,17 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 				interactionEdit.setFormChangeListener('#'+r.choiceSerial);
 				
 				//add to the local choices order array:
-				interactionEdit.orderedChoices.push(r.choiceSerial);
+				//if interaction type is match, save the new choice in one of the group array:
+				if(r.groupSerial){
+					if(interactionEdit.orderedChoices[r.groupSerial]){
+						interactionEdit.orderedChoices[r.groupSerial].push(r.choiceSerial);
+					}else{
+						throw 'the group serial is not defined in the ordered choices array';
+					}
+				}else{
+					interactionEdit.orderedChoices.push(r.choiceSerial);
+				}
+				
 				
 				//rebuild the response grid:
 				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);

@@ -194,6 +194,7 @@ class QtiAuthoring extends CommonModule {
 		$added = false;
 		$choiceSerial = '';
 		$choiceForm = '';
+		$groupSerial = '';
 		
 		$interaction = $this->getCurrentInteraction();
 		if(!is_null($interaction)){
@@ -206,7 +207,7 @@ class QtiAuthoring extends CommonModule {
 			$choice = $this->service->addChoice($interaction, '', null, $group);
 			
 			//return id and form:
-			
+			if(!is_null($group)) $groupSerial = $group->getSerial();
 			$choiceSerial = $choice->getSerial();
 			$choiceForm = $choice->toForm()->render();
 			$added = true;
@@ -215,7 +216,8 @@ class QtiAuthoring extends CommonModule {
 		echo json_encode(array(
 			'added' => $added,
 			'choiceSerial' => $choiceSerial,
-			'choiceForm' => $choiceForm
+			'choiceForm' => $choiceForm,
+			'groupSerial' => $groupSerial
 		));
 	}
 	
@@ -348,22 +350,12 @@ class QtiAuthoring extends CommonModule {
 	//to be called at the same time as edit response
 	public function editInteraction(){
 		
-		
-		
 		$interaction = $this->getCurrentInteraction();
-		// unset($interaction);
-		// echo '<pre>';print_r($_SESSION['ClearFw']);exit;
+		
 		//build the form with its method "toForm"
 		$myForm = $interaction->toForm();
 		
-		
-		//build the choices, no matter the way they shall be displayed (e.g. one/two column(s)), the template shall manage that
-		// $choices = array();
-		// foreach($interaction->getChoices() as $choice){
-			// $choices[$choice->getSerial()] = $choice->toForm()->render();
-		// }
-		
-		//new impl
+		//get the itnteraction's choices
 		$choices = $this->service->getInteractionChoices($interaction);
 		$choiceForms = array();
 		
@@ -387,10 +379,8 @@ class QtiAuthoring extends CommonModule {
 			}
 		}
 		
-		
 		//display the template, according to the type of interaction
 		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
-		// $this->setData('formId', $formName);
 		$this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('formInteraction', $myForm->render());
 		$this->setData('formChoices', $choiceForms);
@@ -400,6 +390,7 @@ class QtiAuthoring extends CommonModule {
 	
 	
 	public function saveInteraction(){
+	
 		$interaction = $this->getCurrentInteraction();
 		
 		$myForm = $interaction->toForm();
@@ -417,11 +408,11 @@ class QtiAuthoring extends CommonModule {
 					unset($values['interactionIdentifier']);
 				}
 				
-				
 				if(isset($values['prompt'])){
 					$interaction->setPrompt($values['prompt']);
 					unset($values['prompt']);
 				}
+				
 				$data = '';
 				if(isset($values['data'])){
 					$data = $values['data'];
@@ -459,14 +450,7 @@ class QtiAuthoring extends CommonModule {
 				$saved  = true;
 			}
 		}
-		// $interactionSerial = $interaction->getSerial();
-		// var_dump($this->qtiService->getInteractionBySerial($interactionSerial));
-		// foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
-			// $this->qtiService->getDataBySerial($groupSerial, 'taoItems_models_classes_QTI_Group');
-			
-		// }
-		// echo '<pre>';print_r($_SESSION['ClearFw']);
-		// unset($interaction);
+		
 		echo json_encode(array(
 			'saved' => $saved
 		));
@@ -546,7 +530,6 @@ class QtiAuthoring extends CommonModule {
 	
 	
 	public function editMappingOptions(){
-		exit;
 		$response = $this->getCurrentResponse();
 		
 		$formContainer = new taoItems_actions_QTIform_Mapping($response);
@@ -579,11 +562,8 @@ class QtiAuthoring extends CommonModule {
 		if($this->hasRequestParameter('responseDataString')){
 			
 			$responseData = json_decode(html_entity_decode($this->getRequestParameter('responseDataString')));
-			// var_dump($interaction, $responseData);
 			
 			$saved = $this->service->saveInteractionResponse($interaction, $responseData);
-			
-			
 		}
 		
 		echo json_encode(array(
@@ -593,7 +573,6 @@ class QtiAuthoring extends CommonModule {
 	
 	//edit the interaction response:
 	public function editResponse(){
-		exit;
 		$interaction = $this->getCurrentInteraction();
 		$item = $this->getCurrentItem();
 		$responseProcessing = $item->getResponseProcessing();
