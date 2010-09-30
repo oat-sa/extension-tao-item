@@ -139,6 +139,24 @@ abstract class taoItems_models_classes_QTI_Data
         $returnValue = (string) '';
 
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 begin
+        
+        $clazz = strtolower(get_class($this));
+    	$type = substr($clazz, strpos($clazz, 'qti_') + 4);
+    	
+        $template  = self::getTemplatePath() . '/xhtml.'.$type.'.tpl.php';
+    	
+        //get the variables to used in the template
+        $variables = array();
+    	$reflection = new ReflectionClass($this);
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$variables[$property->getName()] = $this->{$property->getName()};
+			}
+		}
+		
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $returnValue = $tplRenderer->render();
+        
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 end
 
         return (string) $returnValue;

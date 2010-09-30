@@ -399,6 +399,26 @@ class taoItems_models_classes_QTI_Item
         $returnValue = (string) '';
 
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002388 begin
+        
+        $template  = self::getTemplatePath() . '/xhtml.item.tpl.php';
+        
+    	//get the variables to used in the template
+        $variables = array();
+    	$reflection = new ReflectionClass($this);
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$variables[$property->getName()] = $this->{$property->getName()};
+			}
+		}
+        
+        foreach($this->getInteractions() as $interaction){
+			//build the interactions in the data variable
+			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
+        }	
+		
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+      	$returnValue = $tplRenderer->render();
+        
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002388 end
 
         return (string) $returnValue;

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.09.2010, 14:05:24 with ArgoUML PHP module 
+ * Automatically generated on 30.09.2010, 09:56:53 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -340,6 +340,26 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
+     * Short description of method setGroups
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array groups
+     * @return mixed
+     */
+    public function setGroups($groups)
+    {
+        // section 127-0-1-1-4b2a2e4c:12b61a11fd4:-8000:00000000000025AF begin
+        
+    	$this->groups = array();
+    	foreach($groups as $group){
+    		$this->addGroup($group);
+    	}
+    	
+        // section 127-0-1-1-4b2a2e4c:12b61a11fd4:-8000:00000000000025AF end
+    }
+
+    /**
      * Short description of method addGroup
      *
      * @access public
@@ -477,6 +497,45 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 begin
+        
+        $template  = self::getTemplatePath() . '/xhtml.interaction.tpl.php';
+        
+        //get the variables to used in the template
+        $variables = array();
+    	$reflection = new ReflectionClass($this);
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$variables[$property->getName()] = $this->{$property->getName()};
+			}
+		}
+		
+		//change from camelCase to underscore_case the type of the interaction to be used in the JS
+		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
+		
+   		$variables['data'] = preg_replace("/{prompt}/", "<p class='prompt'>{$this->prompt}</p>", $variables['data']);
+		
+   		//build back the choices in the data variable
+   		if(count($this->getGroups()) > 0){
+   			foreach($this->getGroups() as $group){
+				$variables['data'] = preg_replace("/{".$group->getSerial()."}/", $group->toXHTML(), $variables['data']);
+			}
+			foreach($this->getChoices() as $choice){
+				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
+			}
+   		}
+   		else{	$variables['data'] .= 'testser';
+   			$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='choice_list'>$0</ul>", $variables['data']);
+   			
+   			foreach($this->getChoices() as $choice){
+				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
+			}
+   		}
+   		
+		
+		
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+      	$returnValue = $tplRenderer->render();
+        
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 end
 
         return (string) $returnValue;
