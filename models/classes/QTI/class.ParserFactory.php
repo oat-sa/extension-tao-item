@@ -98,9 +98,9 @@ class taoItems_models_classes_QTI_ParserFactory
         }
         if(!empty($itemData)){
 	        foreach($myItem->getInteractions() as $interation){
-	        	//map the interactions by a identified tag: {interaction-id} 
+	        	//map the interactions by an identified tag: {interaction.serial} 
 	        	$tag = $interation->getType().'Interaction';
-	        	$pattern = "/<{$tag}\b[^>]*>(.*?)<\/{$tag}>/is";
+	        	$pattern = "/<{$tag}\b[^>]*>(.*?)<\/{$tag}>|(<{$tag}\b[^>]*\/>)/is";
 	        	$itemData = preg_replace($pattern, "{{$interaction->getSerial()}}", $itemData, 1);
 	        }
 	        $myItem->setData($itemData);
@@ -255,13 +255,6 @@ class taoItems_models_classes_QTI_ParserFactory
 				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
-						/*foreach($myInteraction->getChoices() as $choice){
-							//remove the choices tags
-				        	$tag = $choice->getType();
-				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
-				        	$interactionData = preg_replace($pattern, "", $interactionData, 1);
-				        }
-       					break;*/
        					
        				default:
 			        	foreach($myInteraction->getChoices() as $choice){

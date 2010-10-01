@@ -5,6 +5,8 @@
 	qti_initParam["<?=$serial?>"] = {
 		id : "<?=$identifier?>",
 		type : "qti_<?=$_type?>_interaction"
-		
+		<?foreach($options as $key => $value):?>
+			, "<?=$key?>" : "<?=$value?>"
+		<?endforeach?>
 	};
 </script>

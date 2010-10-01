@@ -24,12 +24,12 @@ class QTIOutputTestCase extends UnitTestCase {
 	/**
 	 * test the building and exporting out the items
 	 */
-	public function testToQTI(){		
+	public function testToQTI(){
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
-
+		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -39,6 +39,7 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			foreach($item->getInteractions() as $interaction){
 				$this->assertIsA($interaction, 'taoItems_models_classes_QTI_Interaction');
+				
 				
 				foreach($interaction->getChoices() as $choice){
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
@@ -58,12 +59,65 @@ class QTIOutputTestCase extends UnitTestCase {
 			$parserValidator = new taoItems_models_classes_QTI_Parser($tmpFile);
 			
 			$parserValidator->validate();
-			@unlink($tmpFile);
+			;
 			
 			if(!$parserValidator->isValid()){
 				$this->fail($parserValidator->displayErrors());
 			}
-			$this->assertFalse(file_exists($tmpFile));
+			else{
+				@unlink($tmpFile);
+				$this->assertFalse(file_exists($tmpFile));
+			}
+			
+		}
+	}
+	
+	/**
+	 * test the building and exporting out the items
+	 */
+	public function testToXHTML(){
+		
+		taoItems_models_classes_QTI_Data::setPersistance(false);
+
+		$files = array(
+			dirname(__FILE__).'/samples/associate.xml',
+			dirname(__FILE__).'/samples/choice_multiple.xml',
+			dirname(__FILE__).'/samples/choice.xml',
+			dirname(__FILE__).'/samples/order.xml',
+			dirname(__FILE__).'/samples/text_entry.xml',
+			dirname(__FILE__).'/samples/extended_text.xml'
+		);
+		
+		foreach($files as $file){	
+			
+			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
+			$item = $qtiParser->load();
+			
+			$this->assertTrue($qtiParser->isValid());
+			$this->assertNotNull($item);
+			$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
+			
+			foreach($item->getInteractions() as $interaction){
+				$this->assertIsA($interaction, 'taoItems_models_classes_QTI_Interaction');
+				
+				foreach($interaction->getChoices() as $choice){
+					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
+				}
+			}
+			
+			$xhtml =  $item->toXHTML();
+			
+			//test if content has been exported
+			$this->assertFalse(empty($xhtml));
+			
+			//test if it's a valid QTI file
+			$qtiType = str_replace('.xml', '', basename($file));
+			$tmpFile = BASE_PATH.'/views/runtime/'.uniqid('qti_'.$qtiType, true).'.html';
+			file_put_contents($tmpFile, $xhtml);
+			
+			echo "<strong>$qtiType</strong><br/>";
+			echo "$tmpFile<br/><br/>";
+			
 		}
 	}
 	

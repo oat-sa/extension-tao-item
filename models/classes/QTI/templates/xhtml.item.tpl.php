@@ -28,6 +28,6 @@
 	<?=$data?>
 	
 	<!-- validation button -->
-	<!-- <a href="#" id="qti_validate">Validation</a> -->
+	<a href="#" id="qti_validate">Validate</a>
 	</body>
  </html>

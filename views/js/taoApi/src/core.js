@@ -19,14 +19,33 @@ function TaoStack(){
 	 */
 	this.dataSource = new Object();
 	this.dataSource.environment = {
-		'type'		: 'async', 		// (manual|sync|async) 
-		'url' 		: '/tao/',		// the url to the server [NOT for manual type] 
-		'params'	: {	}			// the key/values to send to the server [NOT for manual type] 
+		'type'		: 'async', 					// (manual|sync|async) 
+		'url' 		: '/tao/Api/getContext',	// the url to the server [NOT for manual type] 
+		'params'	: {	}						// the key/values to send to the server [NOT for manual type] 
 	};
 	this.dataSource.settings = {
-		'format'		: 'json',	//only json is supported now
-		'method' 		: 'post',	//HTTP method (get|post) [NOT for manual type] 
-		'load'			: 'onInit' 	// when the source is loaded (onInit|onGet) [onInit required for manual type]
+		'format'		: 'json',		//only json is supported
+		'method' 		: 'post',		//HTTP method (get|post) [NOT for manual type] 
+		'load'			: 'onInit' 		// when the source is loaded (ONLY onInit is currently supported]
+	};
+	
+	/**
+	 * @var {Object} it store the contextual  data (sent by the server on load, or on getting them)   
+	 */
+	this.dataStore = {
+		'token'			: '',
+		'localNamspace' : '',
+		'processUri' 	: '',
+		'item'	 	: {
+			'uri'	: '',
+			'label'	: ''
+		},
+		'subject'	: {
+			'uri'   	: '',
+			'login' 	: '',
+			'firstname' : '',
+			'lastname'  : ''
+		}
 	};
 	
 	/**
@@ -36,8 +55,9 @@ function TaoStack(){
 	 * @see TaoStack.dataSource.environment
 	 * @param {Object} settings 
 	 * @see TaoStack.dataSource.settings
+	 * @param {Object} source if manual data source
 	 */
-	this.initDataSource = function(environment, settings){
+	this.initDataSource = function(environment, settings, source){
 		if($.inArray(environment.type, ['manual','sync','async'])){
 			this.dataSource.environment.type = environment.type;
 			if(this.dataSource.environment.type != 'manual' && environment.url){
@@ -59,13 +79,54 @@ function TaoStack(){
 							this.dataSource.settings.method = settings.method;
 						}
 					}
-					if(settings.load){
-						if(/^onInit|onGet$/i.test(settings.load)){
-							this.dataSource.settings.load = settings.load;
-						}
-					}
 				}
 			}
+			if(this.dataSource.settings.load == 'onInit'){
+				this.loadData(source);
+			}
+		}
+	};
+	
+	/**
+	 * Load the contextual data 
+	 * @param {Object} source : the data ONLY for the manual source
+	 */
+	this.loadData = function(source){
+		
+		/** assign the @param {Object} data to the @param {TaoStack} instance */
+		var populateData = function(instance, data){
+			if($.isPlainObject(data)){
+				for(key in instance.dataStore){
+					if(data[key]){
+						instance.dataStore[key] = data[key];
+					}
+				}
+				if(instance.dataStore.subject){
+					this.setTaoVar(URI.SUBJECT, instance.dataStore.subject);
+				}
+				if(instance.dataStore.item){
+					this.setTaoVar(URI.ITEM, instance.dataStore.item);
+				}
+			}
+		};
+		
+		if(this.dataSource.environment.type == 'manual' && source){		//manual loading
+			populateData(this, source);
+		}
+		else{		//sync|async loading, use an ajax request 
+			
+			var params = this.dataSource.environment.params;
+			var instance = this;
+			$.ajax({
+				'url'  		: this.dataSource.environment.url,
+				'data' 		: params,
+				'type' 		: this.dataSource.settings.method,
+				'async'		: (this.dataSource.environment.type == 'async'),
+				'dataType'  : this.dataSource.settings.format,
+				'success' 	: function(data){
+					populateData(instance, data);
+				}
+			});
 		}
 	};
 	
@@ -74,11 +135,18 @@ function TaoStack(){
 	 */
 	this.push = new Object();
 	this.push.environment = {
-		'url' 		: '/tao/',		// the url to the server
-		'params'	: {	}			// the key/values to send to the server at each communication 
+		'url' 		: '/tao/Api/save',		// the url to the server
+		'params'	: {			// the params to send to the server at each communication 
+		
+			//these parameters comes from the dataStore
+			'token'			: this.dataStore.token,
+			'processUri'	: this.dataStore.processUri,
+			'itemUri'		: this.dataStore.item.uri,
+			'subjectUri'	: this.dataStore.subject.uri
+		}
 	};
 	this.push.settings = {
-		'format'		: 'json',	//only json is supported now
+		'format'		: 'json',	//only json is supported
 		'method' 		: 'post',	//HTTP method to push the data (get|post)
 		'async'			: true,		//if the request is asynchrone 
 		'clearAfter'	: true		//if the variables stacks are cleared once pushed
@@ -99,9 +167,9 @@ function TaoStack(){
 	
 				this.push.environment.url = environment.url;		//set url
 				
-				if($.isPlainObject(environment.params)){	//set parameters
+				if($.isPlainObject(environment.params)){	//ADD parameters
 					for(key in environment.params){
-						if(isScalar(environment.params[key])){
+						if(isScalar(environment.params[key]) && !this.push.environment.params[key]){	//don't edit the common params
 							this.push.environment.params[key] = environment.params[key]; 
 						}
 					}
@@ -128,20 +196,26 @@ function TaoStack(){
 	 */
 	this.push = function(){
 		
-		var data = this.environment.params
-		data['taoVars'] = this.taoVars;
-		data['userVars'] = this.userVars;
+		var params = this.push.environment.params;	//common parameters
 		
+		for (key in this.taoVars){					//tao variables
+			if(/^##NAMESPACE#/.test(key)){
+				key = key.replace('##NAMESPACE#', this.dataStore.localNamespace);
+			}
+			params['taoVars'][key]= this.taoVars[key];
+		}
+		 
+		//push the data to the server
 		var instance = this;
 		$.ajax({
-			'url'  		: this.environment.url,
-			'type' 		: this.pushSettings.method,
-			'async'		: this.pushSettings.async,
-			'data' 		: this.environment.params,
-			'dataType'  : 'json',
+			'url'  		: this.push.environment.url,
+			'data' 		: params,
+			'type' 		: this.push.settings.method,
+			'async'		: this.push.settings.async,
+			'dataType'  : this.push.settings.format,
 			'success' 	: function(data){
 				if(data.saved){
-					if(instance.pushSettings.clearAfter){
+					if(instance.push.settings.clearAfter){
 						instance.taoVars  = new Object();
 						instance.userVars = new Object();
 					}

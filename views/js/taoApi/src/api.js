@@ -1,13 +1,17 @@
 /**
  * TAO API interface.
- * Provides methods to manage items.
+ * Provides functions to manage the communication with a TAO context from an XHTML item.
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- * @package tao
+ * @package taoItems
  *
  */
 
+/**
+ * instanciate the TaoStack object
+ * @see core.js 
+ */
 var taoStack = new TaoStack();
 
 /////////////////////
@@ -32,7 +36,14 @@ function setEndorsement(endorsement){
  * @return {Object} subject
  */
 function getSubject(){
-	//return taoStack.getTaoVar(URI.SUBJECT);
+	return taoStack.getTaoVar(URI.SUBJECT);
+}
+
+/**
+ * @return {Object} subject
+ */
+function getItem(){
+	return taoStack.getTaoVar(URI.ITEM);
 }
 
 
@@ -64,25 +75,47 @@ function setUserVar(key, value){
 /**
  * @param {Event} e
  */
-function setEvent(e){
-}
+function setEvent(e){}
 
 
 /////////////////////////////
 // GENERIS to be defined  //
+///////////////////////////
+
+
+function createVar(){}
+
+
+/////////////////////////////
+// INTERFACE COMMUNICATION//
 ///////////////////////////
 
 
 /**
- * 
+ * @param {Object} environment
+ * @param {Object} settings
  */
-function createVar(){
+function initDataSource(environment, settings){
+	taoStack.initDataSource(environment, settings, null);
+}
+
+/**
+ * @param {Object} environment
+ * @param {Object} settings
+ */
+function initManualDataSource(source){
+	taoStack.initDataSource({type: 'manual'}, null, source);
 }
 
 
-/////////////////////////////
-// GENERIS to be defined  //
-///////////////////////////
+/**
+ * @param {Object} environment
+ * @param {Object} settings
+ */
+function initPush(environment, settings){
+	taoStack.initPush(environment, settings);
+}
+
 
 /**
  * @return {bool}
@@ -90,13 +123,3 @@ function createVar(){
 function push(){
 	taoStack.push();
 }
-
-/**
- * @param {String} url
- * @param {Object} parameters
- */
-function initServer(url, params, settings){
-	taoStack.initEnvironment(url, params, settings);
-}
-
-

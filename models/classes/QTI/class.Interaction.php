@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 30.09.2010, 09:56:53 with ArgoUML PHP module 
+ * Automatically generated on 01.10.2010, 11:58:55 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -320,6 +320,50 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
+     * Short description of method shuffleChoices
+     *
+     * @access protected
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    protected function shuffleChoices()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-4fc32daa:12b6736cfe7:-8000:00000000000025B2 begin
+        
+        $returnValue = $this->data;
+        
+        //get choices order
+        $matchs = array();
+        $max = preg_match_all("/{choice_[a-z0-9]*}/", $returnValue, $matchs);
+        if($max > 0){
+        	$ordered = $matchs[0];
+        	$shuffled = array();
+        	foreach($ordered as $index => $choice){
+        		do { 
+        			$key = mt_rand(0, $max * 10); 
+        		} while(array_key_exists($key, $shuffled));
+	        	$shuffled[$key] = $choice;
+        	}
+        	ksort($shuffled);
+        	
+        	$i = 0;
+        	foreach($shuffled as $sKey => $sChoice){
+        		$returnValue = str_replace($ordered[$i], "{{$sKey}}", $returnValue);
+        		$i++;
+        	}
+        	foreach($shuffled as $sKey => $sChoice){
+        		$returnValue = str_replace("{{$sKey}}", $sChoice, $returnValue);
+        	}
+        }
+        
+        // section 127-0-1-1-4fc32daa:12b6736cfe7:-8000:00000000000025B2 end
+
+        return (string) $returnValue;
+    }
+
+    /**
      * Short description of method getGroups
      *
      * @access public
@@ -498,7 +542,12 @@ class taoItems_models_classes_QTI_Interaction
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 begin
         
-        $template  = self::getTemplatePath() . '/xhtml.interaction.tpl.php';
+   		//check first if there is a template for the given type
+        $template = self::getTemplatePath() . 'interactions/xhtml.' .strtolower($this->type) . '.tpl.php';
+        if(!file_exists($template)){
+        	 //else get the general template
+        	 $template = self::getTemplatePath() . 'xhtml.interaction.tpl.php';
+       }
         
         //get the variables to used in the template
         $variables = array();
@@ -512,6 +561,11 @@ class taoItems_models_classes_QTI_Interaction
 		//change from camelCase to underscore_case the type of the interaction to be used in the JS
 		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
 		
+		//suffle the choices for the runtime if defined in the QTI
+		if( ((bool)$this->getOption('shuffle')) == true){
+			$variables['data'] = $this->shuffleChoices();
+		}
+		
    		$variables['data'] = preg_replace("/{prompt}/", "<p class='prompt'>{$this->prompt}</p>", $variables['data']);
 		
    		//build back the choices in the data variable
@@ -523,8 +577,8 @@ class taoItems_models_classes_QTI_Interaction
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
    		}
-   		else{	$variables['data'] .= 'testser';
-   			$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='choice_list'>$0</ul>", $variables['data']);
+   		else{
+   			$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
    			
    			foreach($this->getChoices() as $choice){
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
