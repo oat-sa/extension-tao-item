@@ -105,29 +105,51 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
+	public function getChoiceTag(taoItems_models_classes_QTI_Choice $choice){
+		$returnValue = '';
+		$returnValue .= "<input type='button' id='{$choice->getSerial()}' class='qti_choice_link' value='{$choice->getType()}'/>";
+		
+		return $returnValue;
+	}
+	
 	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
 		$data = $interaction->getdata();
 		
 		//depending on the type of interaciton, strip the choice identifier or transfor it to editable elt
 		$interactionType = strtolower($interaction->getType());
-		if($interactionType == 'gapmatch'){
-			//transform group reference to clickable choice buttons
-			foreach($interaction->getGroups() as $group){
-				$pattern = "/{{$group->getSerial()}}/";
-				// $data = preg_replace($pattern, $this->getGapmatchTag($interaction), $data, 1);
-				break; //there can only be one..
+		switch($interactionType){
+			case 'gapmatch':{
+				//transform group reference to clickable choice buttons
+				foreach($interaction->getGroups() as $group){
+					$pattern = "/{{$group->getSerial()}}/";
+					// $data = preg_replace($pattern, $this->getGapmatchTag($interaction), $data, 1);
+					break; //there can only be one..
+				}
+				break;
 			}
-		}else if($interactionType == 'match'){
-			foreach($interaction->getGroups() as $group){
-				$pattern = "/{{$group->getSerial()}}/";
-				$data = preg_replace($pattern, '', $data, 1);
+			case 'gapmatch':{
+				foreach($interaction->getGroups() as $group){
+					$pattern = "/{{$group->getSerial()}}/";
+					$data = preg_replace($pattern, '', $data, 1);
+				}
+				break;
 			}
-		}else{
-			foreach($interaction->getChoices() as $choice){
-				$pattern = "/{{$choice->getSerial()}}/";
-				$data = preg_replace($pattern, '', $data, 1);
+			case 'hottext':{
+				foreach($interaction->getChoices() as $choice){
+					$pattern = "/{{$choice->getSerial()}}/";
+					$data = preg_replace($pattern, $this->getChoiceTag($choice), $data, 1);
+				}
+				break;
+			}
+			default:{
+				foreach($interaction->getChoices() as $choice){
+					$pattern = "/{{$choice->getSerial()}}/";
+					$data = preg_replace($pattern, '', $data, 1);
+				}
 			}
 		}
+		
+		return $data;
 	}
 	
 	//return an ordered array of choices:
@@ -142,7 +164,8 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'choice':
 				case 'associate':
 				case 'order':
-				case 'inlinechoice':{
+				case 'inlinechoice':
+				case 'hottext':{
 					$choices = array();
 					foreach($interaction->getChoices() as $choiceId => $choice){
 						//get the order from the interaction data:
@@ -198,8 +221,7 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'textentry':
-				case 'extendedtext':
-				case 'hottext':{
+				case 'extendedtext':{
 					break;
 				}
 				default:{
@@ -228,11 +250,11 @@ class taoItems_models_classes_QtiAuthoringService
 			//clean the interactions' editing elements:
 			foreach($item->getInteractions() as $interaction){
 				//replace the interactions by a identified tag with the authoring elements
-				$pattern0 = $this->getInteractionTag($interaction);
-				// $pattern = "/{$pattern0}/";
-				// $itemData = preg_replace($pattern, "{{$interaction->getSerial()}}", $itemData, 1);
+				$pattern0 = htmlentities($this->getInteractionTag($interaction));
+				var_dump('before', $pattern0, $itemData);
 				$count = 0;
 				$itemData = str_replace($pattern0, "{{$interaction->getSerial()}}", $itemData, $count);
+				var_dump('after', $itemData);exit;
 			}
 			
 			//item saved in session:
@@ -298,8 +320,8 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
-	
-	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $identifier=null, taoItems_models_classes_QTI_Group $group=null){
+	//TODO: place all optionnal and special parameters in the option array
+	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $identifier=null, taoItems_models_classes_QTI_Group $group=null, $interactionData = ''){
 		
 		$returnValue = null;
 		
@@ -353,6 +375,20 @@ class taoItems_models_classes_QtiAuthoringService
 					$group->addChoices(array($choice));//add 1 choice
 					$group->setData($group->getData().'{'.$choice->getSerial().'}');
 				}
+			}else if($interactionType == 'hottext'){
+				//do replacement of the new hottext tag:
+				$count = 0;
+				if(!empty($interactionData)){
+					$interactionData = str_replace("{qti_hottext_new}", "{{$choice->getSerial()}}", $interactionData, $count);
+				}
+				
+				if($count){
+					$interaction->setData($interactionData);
+				}else{
+					//
+					$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
+				}
+				
 			}else{
 				//append the choice to the interaciton's choice list, both in the php object and in the data property:
 				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
@@ -659,10 +695,22 @@ class taoItems_models_classes_QtiAuthoringService
 				break;
 			}
 			case 'textentry':
-			case 'extendedtext':
-			case 'hottext':{
+			case 'extendedtext':{
 				//nothing to do related to choices
+				break;
+			}
+			case 'hottext':{
 				//note for hottext: the chocies of hottext are inline string elements, the order of which are naturally set in the interaction data
+				//clean the choices link tags:
+				foreach($interaction->getChoices() as $choice){
+					//replace the interactions by a identified tag with the authoring elements
+					$count = 0;
+					var_dump('before', $choice, $this->getChoiceTag($choice), $data);
+					$data = str_replace($this->getChoiceTag($choice), "{{$choice->getSerial()}}", $data, $count);
+					var_dump('after', $data, $count);exit;
+				}
+				//item saved in session:
+				$interaction->setData($data);
 				break;
 			}
 			default:{
@@ -731,7 +779,8 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing=null){
 		$returnValue = array();
 		switch(strtolower($interaction->getType())){
-			case 'choice':{
+			case 'choice':
+			case 'hottext':{
 				$choices = array(); 
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
@@ -920,7 +969,8 @@ class taoItems_models_classes_QtiAuthoringService
 			
 			switch(strtolower($interaction->getType())){
 				case 'choice':
-				case 'inlinechoice':{
+				case 'inlinechoice':
+				case 'hottext':{
 					foreach($responseData as $response){
 						$response = (array)$response;
 						//if required identifier not empty:
@@ -947,7 +997,6 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'associate':
 				case 'match':{
-					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;
 						if(!empty($response['choice1']) && !empty($response['choice2'])){
@@ -1038,10 +1087,6 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'extendedtext':{
 					throw new Exception('cannot save a response for such a type of interaction');
-					break;
-				}
-				case 'hottext':{
-					throw new Exception('no implemented yet:');
 					break;
 				}
 				default:{

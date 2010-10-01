@@ -7,10 +7,13 @@
 }
 
 #qtiAuthoring_itemEditor{
-	overflow: scroll;
 }
 
 #itemEditor_wysiwyg{
+	width:68%;
+}
+
+#interactionEditor_wysiwyg{
 	width:68%;
 }
 

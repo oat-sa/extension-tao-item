@@ -143,9 +143,24 @@ class QtiAuthoring extends CommonModule {
 		$saved = false;
 		
 		$itemData = $this->getRequestParameter('itemData');
+		
 		if(!empty($itemData)){
 			//save to qti:
 			$this->service->saveItemData($this->getCurrentItem(), $itemData);
+			$saved = true;
+		}
+		
+		echo json_encode(array(
+			'saved'=>$saved
+		));
+	}
+	
+	public function saveInteractionData(){
+		$saved = false;
+		
+		$interactionData = $this->getRequestParameter('interactionData');
+		if(!empty($interactionData)){
+			$this->service->setInteractionData($this->getCurrentInteraction(), $interactionData);
 			$saved = true;
 		}
 		
@@ -187,6 +202,35 @@ class QtiAuthoring extends CommonModule {
 			'added' => $added,
 			'interactionSerial' => $interactionSerial,
 			'itemData' => html_entity_decode($itemData)
+		));
+	}
+	
+	public function addHotText(){
+		$added = false;
+		$choiceSerial = '';//the hot text basically is a "choice"
+		$textContent = '';
+		
+		$interactionData = urldecode($this->getRequestParameter('interactionData'));
+		// echo "<pre>$interactionData</pre>";
+		
+		$interaction = $this->getCurrentInteraction();
+		
+		$choice = $this->service->addChoice($interaction, '', null, null, $interactionData);
+		
+		if(!is_null($choice)){
+			$interactionData = $this->service->getInteractionData($interaction);//do not convert to html entities...
+			
+			//everything ok:
+			$added = true;
+			$choiceSerial = $choice->getSerial();
+		}
+		
+		
+		echo json_encode(array(
+			'added' => $added,
+			'choiceSerial' => $choiceSerial,
+			'choiceForm' => $choice->toForm()->render(),
+			'interactionData' => html_entity_decode($interactionData)
 		));
 	}
 	
@@ -384,6 +428,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('formInteraction', $myForm->render());
 		$this->setData('formChoices', $choiceForms);
+		$this->setData('interactionData', $this->service->getInteractionData($interaction));
 		$this->setData('orderedChoices', $choices);
 		$this->setView($templateName);
 	}
@@ -414,9 +459,8 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				$data = '';
-				if(isset($values['data'])){
-					$data = $values['data'];
-					unset($values['data']);
+				if($this->hasRequestParameter('data')){
+					$data = $this->getRequestParameter('data');
 				}
 				
 				unset($values['interactionSerial']);

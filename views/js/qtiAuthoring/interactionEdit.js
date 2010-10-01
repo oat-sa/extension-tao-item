@@ -1,7 +1,8 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
+interactionEdit.choices = [];
 interactionEdit.modifiedInteraction = false;
 interactionEdit.modifiedChoices = [];
 interactionEdit.orderedChoices = [];
@@ -201,10 +202,19 @@ interactionEdit.saveInteraction = function($myForm){
 		}
 	}
 	
+	//check if it is required to save data (hotText and gapMatch interactions):
+	var interactionData = '';
+	if(interactionEdit.interactionDataContainer){
+		if($(interactionEdit.interactionDataContainer).length && interactionEdit.interactionEditor.length){
+			//there is a wysiwyg editor that contains the interaciton data:
+				interactionData = '&data='+interactionEdit.interactionEditor.wysiwyg('getContent');
+		}
+	}
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveInteraction",
-	   data: $myForm.serialize()+orderedChoices,
+	   data: $myForm.serialize()+orderedChoices+interactionData,
 	   dataType: 'json',
 	   success: function(r){
 			// $(interactionEdit.interactionFormContent).html(form);
@@ -215,6 +225,67 @@ interactionEdit.saveInteraction = function($myForm){
 			}
 	   }
 	});
+}
+
+interactionEdit.saveInteractionData = function(interactionSerial){
+	if(!interactionSerial){
+		var interactionSerial = interactionEdit.interactionSerial;
+	}
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveInteractionData",
+	   data: {
+			'interactionData': interactionEdit.interactionEditor.wysiwyg('getContent'),
+			'interactionSerial': interactionSerial
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			CL('interaction saved');
+	   }
+	});
+}
+
+interactionEdit.getDeletedChoices = function(one){
+	var deletedChoices = [];
+	var interactionData = $(interactionEdit.interactionDataContainer).val();//TODO: improve with the use of regular expressions:
+	for(var choiceSerial in interactionEdit.choice){
+		if(interactionData.indexOf(choiceSerial)<0){
+			//not found so considered as deleted:
+			deletedChoices.push(choiceSerial);
+			if(one){
+				return deletedChoices;
+			}
+		}
+	}
+	
+	return deletedChoices;
+}
+
+interactionEdit.bindChoiceLinkListener = function(){
+	
+	//destroy all listeners:
+	
+	//reset the choice array:
+	interactionEdit.choiceSerials = [];
+	
+	var links = qtiEdit.getEltInFrame('.qti_choice_link');
+	for(var i in links){
+		
+		var choiceSerial = links[i].attr('id');
+		
+		interactionEdit.choiceSerials[choiceSerial] = choiceSerial;
+		
+		links[i].unbind('click').click(function(){
+			//focus the clicked choice form:
+			
+			//add then remove the highlight class
+			CL('highlighting the choice', $(this).attr('id'));
+		
+		});
+		
+	}
+	
 }
 
 interactionEdit.saveChoice = function($choiceForm){
@@ -326,15 +397,15 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 	   success: function(r){
 			CL('choice added');
 			if(r.added){
-				var newFormElt = $('<div/>');
-				newFormElt.attr('id', r.choiceSerial);
-				newFormElt.attr('class', containerClass);
-				newFormElt.append(r.choiceForm);
-				$appendTo.append(newFormElt);
+				var $newFormElt = $('<div/>');
+				$newFormElt.attr('id', r.choiceSerial);
+				$newFormElt.attr('class', containerClass);
+				$newFormElt.append(r.choiceForm);
+				$appendTo.append($newFormElt);
 				
-				newFormElt.hide();
+				$newFormElt.hide();
 				interactionEdit.initToggleChoiceOptions();
-				newFormElt.show();
+				$newFormElt.show();
 				
 				interactionEdit.setFormChangeListener('#'+r.choiceSerial);
 				
@@ -373,6 +444,50 @@ interactionEdit.deleteChoice = function(choiceSerial){
 				//TODO: need to be optimized: only after the last choice saving
 				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 			}
+	   }
+	});
+}
+
+interactionEdit.addHotText = function(interactionData, interactionSerial, $appendTo){
+	if(!interactionSerial){
+		var interactionSerial = interactionEdit.interactionSerial;
+	}
+
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/addHotText",
+	   data: {
+			'interactionSerial': interactionSerial,
+			'interactionData': interactionData
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			//set the content:
+			interactionEdit.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
+			
+			//then add listener
+			interactionEdit.bindChoiceLinkListener();
+			
+			//add choice form:
+			var $newFormElt = $('<div/>');
+			$newFormElt.attr('id', r.choiceSerial);
+			$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
+			$newFormElt.append(r.choiceForm);
+			
+			//add to parameter
+			if(!$appendTo){
+				var $appendTo = $('#formContainer_choices');
+			}
+			$appendTo.append($newFormElt);
+			
+			$newFormElt.hide();
+			interactionEdit.initToggleChoiceOptions();
+			$newFormElt.show();
+			
+			interactionEdit.setFormChangeListener('#'+r.choiceSerial);
+						
+			//rebuild the response grid:
+			responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 	   }
 	});
 }
