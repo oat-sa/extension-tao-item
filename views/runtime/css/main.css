@@ -16,40 +16,30 @@ p{
 	font-weight:bold;
 }
 
-/* validation button */
-a#qti_validate{
-	position:absolute;
-	left:475px;
+div.qti_item{
 	margin:20px;
-	font-size:13px;
-	font-weight:bold;
-	text-decoration:none;
-	color:#333;
-	border:solid 1px #808080;
-	border-top-color:#9F9F9F;
-	border-left-color:#9F9F9F;
-	padding:5px 7px 5px 7px;
-	background-color:#e9e9e9;
 }
-a#qti_validate:hover{
-	color:#999;
+
+.field_error{
+	background-color:transparent;
+	background-image: url('../img/underline.gif');
+	background-repeat: repeat-x;
+	background-position: bottom;
 }
 
 /* qti widget layout */
-.qti_simple_interaction,.qti_multi_interaction, .qti_order_interaction, .qti_associate_interaction{
-	margin:20px;
+.qti_widget
+{
 	width:500px;
 	border: 2px solid #009933;
 	padding:20px;
 	overflow:hidden;
 }
 
-/* ui element */
+/* choice interaction */
 .qti_simple_interaction ul,.qti_multi_interaction ul, .qti_order_interaction ul{
 	margin:20px 20px 0 20px;
 }
-
-
 
 .qti_simple_interaction li,.qti_multi_interaction li, .qti_order_interaction li{
 	width:450px;
@@ -81,7 +71,7 @@ a#qti_validate:hover{
 	background:url(../img/choice_multi_off.png) no-repeat;
 }
 
-
+/* Order interaction */
 .qti_order_interaction li{
 	border:3px solid #999;
 	margin-bottom:10px;
@@ -94,6 +84,7 @@ a#qti_validate:hover{
 	margin-left:5px;
 }
 
+/* Associate interaction */
 .qti_associate_interaction .qti_choice_list li div{
 	color:#333;
 	font-weight:bold;	
@@ -139,8 +130,6 @@ a#qti_validate:hover{
 	width:30px;
 }
 
-
-
 .qti_association_pair li.ui-state-highlight {
 	position:relative;
 	background:#ccc;
@@ -155,7 +144,6 @@ a#qti_validate:hover{
 	top:-2px;
 	left:-2px;
 }
-
 
 .qti_association_pair li.ui-state-highlight a {
 	text-decoration:none;
@@ -172,4 +160,38 @@ a#qti_validate:hover{
 	position:relative;
 	display:block;
 	background:red;
+}
+
+/* used by text_entry and extended_text interactions */
+input[type='text']{
+	text-align:right;	
+}
+input[type='text'],textarea{
+	border: solid 1px #555;
+	border-bottom-color: #CCC;
+	border-right-color: #CCC;
+}
+textarea{
+	width:400px;
+	height:100px;
+	margin:auto;	
+}
+
+/* validation button */
+a#qti_validate{
+	position:absolute;
+	left:475px;
+	margin:20px;
+	font-size:13px;
+	font-weight:bold;
+	text-decoration:none;
+	color:#333;
+	border:solid 1px #808080;
+	border-top-color:#9F9F9F;
+	border-left-color:#9F9F9F;
+	padding:5px 7px 5px 7px;
+	background-color:#e9e9e9;
+}
+a#qti_validate:hover{
+	color:#999;
 }

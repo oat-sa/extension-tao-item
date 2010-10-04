@@ -7,10 +7,13 @@
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="css/reset.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+	
 	<!-- LIB -->
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	
 	<!-- LIB (required for sort item interaction) -->
 	<script type="text/javascript" src="lib/jquery-ui-1.8.4.custom.min.js"></script>
+	
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript">
@@ -23,11 +26,14 @@
 	</script>
 
 </head>                                             
-	<body>
+<body>
+	<div class="qti_item">
+		<h1><?=$options['title']?></h1>
 	
-	<?=$data?>
-	
-	<!-- validation button -->
-	<a href="#" id="qti_validate">Validate</a>
-	</body>
- </html>
+		<?=$data?>
+		
+		<!-- validation button -->
+		<a href="#" id="qti_validate">Validate</a>
+	</div>
+</body>
+</html>

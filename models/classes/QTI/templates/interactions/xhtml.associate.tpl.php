@@ -1,4 +1,4 @@
-<div id="<?=$identifier?>" class="qti_<?=$_type?>_interaction">
+<div id="<?=$identifier?>" class="qti_widget qti_<?=$_type?>_interaction">
 	<div class="qti_<?=$_type?>_container">
 	<?=$data?>
 	</div>

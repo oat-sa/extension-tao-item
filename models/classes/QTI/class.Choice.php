@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
+ * Automatically generated on 04.10.2010, 12:52:23 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -64,6 +64,41 @@ class taoItems_models_classes_QTI_Choice
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method toXHTML
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toXHTML()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--752f08b1:12b76dcf1f2:-8000:00000000000025B4 begin
+        
+        $template = self::getTemplatePath() . 'choices/xhtml.' .strtolower($this->type) . '.tpl.php';
+        if(!file_exists($template)){
+        	 $template = self::getTemplatePath() . 'xhtml.choice.tpl.php';
+        }
+        
+        //get the variables to used in the template
+        $variables = array(
+        	'identifier'	=> $this->identifier,
+        	'type'			=> $this->type,
+        	'data'			=> $this->data,
+        	'options'		=> $this->options
+        );
+		
+		//parse and render the template
+		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$returnValue = $tplRenderer->render();
+        
+        // section 127-0-1-1--752f08b1:12b76dcf1f2:-8000:00000000000025B4 end
+
+        return (string) $returnValue;
+    }
 
     /**
      * Short description of method toQTI

@@ -12,7 +12,7 @@ function simple_choice(currentObj){
 function multiple_choice(currentObj){
 	var qti_item_id="#"+currentObj["id"];
 	$(qti_item_id).addClass('qti_multi_interaction');
-	$(qti_item_id+" ul li").bind("click",function(){	
+	$(qti_item_id+" ul li").bind("click",function(){
 		if ($(this).hasClass("tabActive")) {
 			$(this).removeClass("tabActive");
 		}
@@ -20,7 +20,7 @@ function multiple_choice(currentObj){
 			if ($(qti_item_id+" ul li.tabActive").length < currentObj["maxChoices"] || currentObj["maxChoices"] == 0) {
 				$(this).addClass("tabActive");
 			}
-		}		
+		}
 	});
 }
 
@@ -178,7 +178,93 @@ function associate(currentObj){
 }
 
 function text_entry(currentObj){
+	var qti_item_id="#"+currentObj["id"];
 	
+	//adapt the field length
+	if(currentObj['expectedLength']){
+		length = parseInt(currentObj['expectedLength']);
+		$(qti_item_id).css('width', (length * 10) + 'px')
+						.attr('maxLength', length);
+	}
+	
+	string_interaction(currentObj);
+}
+
+function extended_text(currentObj){
+	
+	var qti_item_id="#"+currentObj["id"];
+		
+	//usual case: one textarea 
+	if($(qti_item_id).get(0).nodeName.toLowerCase() == 'textarea') {
+		
+		//adapt the field length
+		if(currentObj['expectedLength'] || currentObj['expectedLines']){
+			
+			baseWidth 	= parseInt($(qti_item_id).css('width')) | 400;
+			baseHeight 	= parseInt($(qti_item_id).css('height')) | 100;
+			if(currentObj['expectedLength']){
+				length 		= parseInt(currentObj['expectedLength']);
+				width = length * 10;
+				if( width > baseWidth){
+					height = (width / baseWidth) * 16;
+					if(height  > baseHeight){
+						$(qti_item_id).css('height', height + 'px');
+					}
+				}
+				$(qti_item_id).attr('maxLength', length);
+			}
+			if(currentObj['expectedLines']){
+				$(qti_item_id).css('height', (parseInt(currentObj['expectedLines']) * 16) + 'px');
+			}
+		}
+	
+		string_interaction(currentObj);
+	}
+	
+	//multiple text inputs
+	if($(qti_item_id).get(0).nodeName.toLowerCase() == 'div') {
+		//adapt the fields length
+		if(currentObj['expectedLength']){
+			length = parseInt(currentObj['expectedLength']);
+			$(qti_item_id + " :text").css('width', (length * 10) + 'px')
+										.attr('maxLength', length);
+		}
+		//apply the pattern to all fields
+		if(currentObj['patternMask']){
+			var pattern = new RegExp("/^"+currentObj['patternMask']+"$/");
+			$(qti_item_id  + " :text").change(function(){
+				$(this).removeClass('field-error');
+				if(!pattern.test($(this).val())){
+					$(this).addClass('field-error');
+				}
+			});
+		}
+	}
+}
+
+function string_interaction(currentObj){
+	
+	var qti_item_id="#"+currentObj["id"];
+	
+	//add the error class if the value don't match the given pattern
+	if(currentObj['patternMask']){
+		var pattern = new RegExp("/^"+currentObj['patternMask']+"$/");
+		$(qti_item_id).change(function(){
+			$(this).removeClass('field-error');
+			if(!pattern.test($(this).val())){
+				$(this).addClass('field-error');
+			}
+		});
+	}
+	
+	//create a 2nd field to capture the string if the stringIdentifier has been defined
+	if(currentObj['stringIdentifier']){
+		$(qti_item_id).after("<input type='hidden' id='"+currentObj['stringIdentifier']+"' />");
+		$("#"+currentObj['stringIdentifier']).addClass('qti_text_entry_interaction');
+		$(qti_item_id).change(function(){
+			$("#"+currentObj['stringIdentifier']).val($(this).val());
+		});
+	}
 }
 
 function qti_init(){
@@ -214,12 +300,16 @@ function qti_init_items(initObj){
 			break;
 		case "qti_text_entry_interaction":
 			text_entry(initObj);
+			resultMethod = text_result;
+			break;
+		case "qti_extended_text_interaction":
+			extended_text(initObj);
+			resultMethod = text_result;
 			break;
 	}
 	
 	// validation process
 	$("#qti_validate").bind("click",function(){
-		
 		console.log(resultMethod(initObj['id']));
 	});
 		
@@ -246,6 +336,21 @@ function associate_interaction_result(id){
 	var result = new Array();
 	$("#" + id + " .qti_association_pair").each(function(){
 		result.push([$(this).find('li:first').attr('id'), $(this).find('li:last').attr('id')]);
+	});
+	return result;
+}
+
+function text_result(id){
+	
+	//single mode
+	if($("#" + id ).get(0).nodeName.toLowerCase() != 'div'){
+		return new Array($("#" + id).val());
+	}
+	
+	//multiple mode
+	var result = new Array();
+	$("#" + id + " :text").each(function(){
+		result.push($(this).val());
 	});
 	return result;
 }
