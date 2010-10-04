@@ -100,7 +100,7 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
 		// $returnValue .= "<input type='button' id='{$interaction->getSerial()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
-		$returnValue .= "<input type='button' id='{$interaction->getSerial()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
+		$returnValue .= "<input id=\"{$interaction->getSerial()}\" class=\"qti_interaction_link\" value=\"{$interaction->getType()} Interaction\" type=\"button\"/>";
 		
 		return $returnValue;
 	}
@@ -152,6 +152,25 @@ class taoItems_models_classes_QtiAuthoringService
 		return $data;
 	}
 	
+	public function getInteractionGroups(taoItems_models_classes_QTI_Interaction $interaction){
+		$returnValue = array();
+		
+		if(!is_null($interaction)){
+			switch(strtolower($interaction->getType())){
+				case 'match':
+				case 'gapmatch':{
+					$returnValue = $interaction->getGroups();
+				}
+				default:{
+					throw new Exception('no group accessible');
+				}
+			}
+		}
+		
+		return $returnValue;
+		
+	}
+	
 	//return an ordered array of choices:
 	public function getInteractionChoices(taoItems_models_classes_QTI_Interaction $interaction){
 		
@@ -165,7 +184,7 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'associate':
 				case 'order':
 				case 'inlinechoice':
-				case 'hottext':{
+				case 'gapmatch':{
 					$choices = array();
 					foreach($interaction->getChoices() as $choiceId => $choice){
 						//get the order from the interaction data:
@@ -187,8 +206,7 @@ class taoItems_models_classes_QtiAuthoringService
 					
 					break;
 				}
-				case 'match':
-				case 'gapmatch':{
+				case 'match':{
 					//get groups and do the same for each group:
 					$groups = array();//1 or 2 maximum
 					// var_dump('match interaction:', $interaction);
@@ -221,7 +239,12 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'textentry':
-				case 'extendedtext':{
+				case 'extendedtext':
+				case 'hottext':{
+					//note: hot text interactions do not require ordered choices
+					foreach($interaction->getChoices() as $choiceId => $choice){
+						$returnValue[] = $choice;
+					}
 					break;
 				}
 				default:{
@@ -251,10 +274,10 @@ class taoItems_models_classes_QtiAuthoringService
 			foreach($item->getInteractions() as $interaction){
 				//replace the interactions by a identified tag with the authoring elements
 				$pattern0 = htmlentities($this->getInteractionTag($interaction));
-				var_dump('before', $pattern0, $itemData);
+				// var_dump('before', $this->getInteractionTag($interaction), $pattern0, $itemData);
 				$count = 0;
 				$itemData = str_replace($pattern0, "{{$interaction->getSerial()}}", $itemData, $count);
-				var_dump('after', $itemData);exit;
+				// var_dump('after', $itemData);exit;
 			}
 			
 			//item saved in session:
@@ -705,9 +728,10 @@ class taoItems_models_classes_QtiAuthoringService
 				foreach($interaction->getChoices() as $choice){
 					//replace the interactions by a identified tag with the authoring elements
 					$count = 0;
-					var_dump('before', $choice, $this->getChoiceTag($choice), $data);
+					//TODO: set the change tag regular expression listener
+					// var_dump('before', $choice, $this->getChoiceTag($choice), $data);
 					$data = str_replace($this->getChoiceTag($choice), "{{$choice->getSerial()}}", $data, $count);
-					var_dump('after', $data, $count);exit;
+					// var_dump('after', $data, $count);exit;
 				}
 				//item saved in session:
 				$interaction->setData($data);

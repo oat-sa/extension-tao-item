@@ -345,7 +345,6 @@ $(document).ready(function(){
       copy  : { visible : true },
       paste : { visible : true },
       html  : { visible: true },
-      exam_html: { exec: function() { this.insertHtml('<abbr title="exam">Jam</abbr>') }, visible: true  },
 	  addChoiceInteraction: addChoiceInteraction,
 	  addAssociateInteraction: addAssociateInteraction,
 	  addOrderInteraction: addOrderInteraction,

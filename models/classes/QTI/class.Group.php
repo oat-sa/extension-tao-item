@@ -227,6 +227,15 @@ class taoItems_models_classes_QTI_Group
         $returnValue = null;
 
         // section 10-13-1-39-51571c01:12b7726bac6:-8000:00000000000028D4 begin
+		$choiceType = $this->getType();
+		$choiceFormClass = 'taoItems_actions_QTIform_choice_'.ucfirst($choiceType);
+		if(!class_exists($choiceFormClass)){
+			throw new Exception("the class {$choiceFormClass} does not exist");
+		}else{
+			$formContainer = new $choiceFormClass($this);
+			$myForm = $formContainer->getForm();
+			$returnValue = $myForm;
+		}
         // section 10-13-1-39-51571c01:12b7726bac6:-8000:00000000000028D4 end
 
         return $returnValue;

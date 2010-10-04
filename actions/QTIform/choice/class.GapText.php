@@ -22,14 +22,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @subpackage actions_form
  */
 class taoItems_actions_QTIform_choice_GapText
-    extends taoItems_actions_QTIform_choice_Choice{
+    extends taoItems_actions_QTIform_choice_AssociableChoice{
 	
 	public function initElements(){
 		
 		parent::setCommonElements();
 		
 		//add textbox:
-		$dataElt = tao_helpers_form_FormFactory::getElement('data', 'Textbox');//the widget for an inline choice data is a text box!!
+		$dataElt = tao_helpers_form_FormFactory::getElement('data', 'Textbox');
 		$dataElt->setDescription(__('Value'));
 		$choiceData = $this->choice->getData();
 		if(!empty($choiceData)){
@@ -37,7 +37,7 @@ class taoItems_actions_QTIform_choice_GapText
 		}
 		$this->form->addElement($dataElt);
 		
-		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed'));
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchGroup'));
 	}
 
 }

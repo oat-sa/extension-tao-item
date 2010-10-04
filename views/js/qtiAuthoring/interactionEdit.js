@@ -1,10 +1,12 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
 interactionEdit.choices = [];
+interactionEdit.groups = [];
 interactionEdit.modifiedInteraction = false;
 interactionEdit.modifiedChoices = [];
+interactionEdit.modifiedGroups = [];
 interactionEdit.orderedChoices = [];
 
 interactionEdit.setOrderedChoicesButtons = function(list){
@@ -97,9 +99,20 @@ interactionEdit.sortOrderedChoices = function(list, order){
 	
 }
 
-interactionEdit.toggleChoiceOptions = function($group){
+interactionEdit.toggleChoiceOptions = function($group, options){
 	var groupId = $group.attr('id');
 	if(groupId.indexOf('choicePropOptions') == 0){
+		
+		if(!options){
+			var options = {'delete': true, 'group':true};
+		}else{
+			if(options.delete !== false){
+				options.delete = true;
+			}
+			if(options.group !== false){
+				options.group = true;
+			}
+		}
 		
 		// it is a choice group:
 		if($('#a_'+groupId).length){
@@ -109,52 +122,53 @@ interactionEdit.toggleChoiceOptions = function($group){
 			$('#delete_'+groupId).remove();
 		}
 		
-		var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control ui-icon ui-icon-circle-close"></span>');
-		$group.before($deleteElt);
-		$deleteElt.css('position', 'relative');
-		// deleteElt.css('left',0);
+		if(options.delete){
+			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control ui-icon ui-icon-circle-close"></span>');
+			$group.before($deleteElt);
+			$deleteElt.css('position', 'relative');
+			
+			//add click event listener:
+			$('#delete_'+groupId).click(function(){
+				if(confirm('Do you want to delete the choice?')){
+					var choiceSerial = $(this).attr('id').replace('delete_choicePropOptions_', '');
+					// CL('deleting the choice '+choiceSerial);
+					interactionEdit.deleteChoice(choiceSerial);
+				}
+			});
+		}
 		
-		var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
-		$group.before($buttonElt);
-		
-		// var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
-		// $group.before($buttonElt);
-		
-		//TODO: put into a css file!!
-		$buttonElt.css('position', 'relative');
-		$buttonElt.css('left','18px');
-		$buttonElt.css('top','-16px');
-		
-		$group.css('position', 'relative');
-		$group.css('top','-19px');
-		$group.css('left','20px');
-		$group.width('90%');
-		
-		$group.hide();
-		
-		// $('#a_'+groupId).unbind('click');
-		$('#a_'+groupId).toggle(function(){
-			$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
-			$('#'+groupId).show().effect('slide');
-		},function(){
-			$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
-			$('#'+groupId).hide().effect('fold');
-		});
-		
-		$('#delete_'+groupId).click(function(){
-			if(confirm('Do you want to delete the choice?')){
-				var choiceSerial = $(this).attr('id').replace('delete_choicePropOptions_', '');
-				// CL('deleting the choice '+choiceSerial);
-				interactionEdit.deleteChoice(choiceSerial);
-			}
-		});
+		if(options.group){
+			var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
+			$group.before($buttonElt);
+			
+			//TODO: put into a css file!!
+			$buttonElt.css('position', 'relative');
+			$buttonElt.css('left','18px');
+			$buttonElt.css('top','-16px');
+			
+			$group.css('position', 'relative');
+			$group.css('top','-19px');
+			$group.css('left','20px');
+			$group.width('90%');
+			
+			$group.hide();
+			
+			// $('#a_'+groupId).unbind('click');
+			$('#a_'+groupId).toggle(function(){
+				$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
+				$('#'+groupId).show().effect('slide');
+			},function(){
+				$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
+				$('#'+groupId).hide().effect('fold');
+			});
+		}
 		
 	}
 }
 
-interactionEdit.initToggleChoiceOptions = function(){
+interactionEdit.initToggleChoiceOptions = function(options){
 	$('.form-group').each(function(){
-		interactionEdit.toggleChoiceOptions($(this));
+		interactionEdit.toggleChoiceOptions($(this), options);
 	});
 }
 
@@ -229,27 +243,42 @@ interactionEdit.saveInteraction = function($myForm){
 
 interactionEdit.saveInteractionData = function(interactionSerial){
 	if(!interactionSerial){
-		var interactionSerial = interactionEdit.interactionSerial;
+		if(interactionEdit.interactionSerial){
+			var interactionSerial = interactionEdit.interactionSerial;
+		}else{
+			throw 'no interaction serial found to save the data from';
+			return false;
+		}
+		
 	}
 	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveInteractionData",
-	   data: {
-			'interactionData': interactionEdit.interactionEditor.wysiwyg('getContent'),
-			'interactionSerial': interactionSerial
-	   },
-	   dataType: 'json',
-	   success: function(r){
-			CL('interaction saved');
-	   }
-	});
+	if(interactionEdit.interactionDataContainer){
+		if($(interactionEdit.interactionDataContainer).length && interactionEdit.interactionEditor.length){
+			//save data if and only if the data content exists
+			$.ajax({
+			   type: "POST",
+			   url: "/taoItems/QtiAuthoring/saveInteractionData",
+			   data: {
+					'interactionData': interactionEdit.interactionEditor.wysiwyg('getContent'),
+					'interactionSerial': interactionSerial
+			   },
+			   dataType: 'json',
+			   success: function(r){
+					CL('interaction data saved');
+			   }
+			});
+			
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 interactionEdit.getDeletedChoices = function(one){
 	var deletedChoices = [];
 	var interactionData = $(interactionEdit.interactionDataContainer).val();//TODO: improve with the use of regular expressions:
-	for(var choiceSerial in interactionEdit.choice){
+	for(var choiceSerial in interactionEdit.choices){
 		if(interactionData.indexOf(choiceSerial)<0){
 			//not found so considered as deleted:
 			deletedChoices.push(choiceSerial);
@@ -267,21 +296,21 @@ interactionEdit.bindChoiceLinkListener = function(){
 	//destroy all listeners:
 	
 	//reset the choice array:
-	interactionEdit.choiceSerials = [];
+	interactionEdit.choices = [];
 	
 	var links = qtiEdit.getEltInFrame('.qti_choice_link');
 	for(var i in links){
 		
 		var choiceSerial = links[i].attr('id');
 		
-		interactionEdit.choiceSerials[choiceSerial] = choiceSerial;
+		interactionEdit.choices[choiceSerial] = choiceSerial;
 		
 		links[i].unbind('click').click(function(){
 			//focus the clicked choice form:
+			window.location.hash = '#'+$(this).attr('id');
 			
 			//add then remove the highlight class
-			CL('highlighting the choice', $(this).attr('id'));
-		
+			// CL('highlighting the choice', $(this).attr('id'));
 		});
 		
 	}
@@ -366,6 +395,8 @@ interactionEdit.setFormChangeListener = function(target){
 				interactionEdit.modifiedChoices[id] = 'modified';
 			}else if(id.indexOf('InteractionForm') == 0){
 				interactionEdit.modifiedInteraction = true;
+			}else if(id.indexOf('ChoiceForm_group') == 0){
+				interactionEdit.modifiedGroups[id] = 'modified';
 			}
 		}
 	});
@@ -443,11 +474,15 @@ interactionEdit.deleteChoice = function(choiceSerial){
 				$('#'+choiceSerial).remove();
 				//TODO: need to be optimized: only after the last choice saving
 				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
+				delete interactionEdit.choices[choiceSerial];
+				
+				interactionEdit.saveInteractionData();
 			}
 	   }
 	});
 }
 
+//idem for adding gap in gapmatch
 interactionEdit.addHotText = function(interactionData, interactionSerial, $appendTo){
 	if(!interactionSerial){
 		var interactionSerial = interactionEdit.interactionSerial;
@@ -481,7 +516,7 @@ interactionEdit.addHotText = function(interactionData, interactionSerial, $appen
 			$appendTo.append($newFormElt);
 			
 			$newFormElt.hide();
-			interactionEdit.initToggleChoiceOptions();
+			interactionEdit.initToggleChoiceOptions({'delete':false});
 			$newFormElt.show();
 			
 			interactionEdit.setFormChangeListener('#'+r.choiceSerial);
@@ -490,4 +525,157 @@ interactionEdit.addHotText = function(interactionData, interactionSerial, $appen
 			responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 	   }
 	});
+}
+
+interactionEdit.addGap = function(interactionData, interactionSerial, $appendTo){
+
+	if(!interactionSerial){
+		var interactionSerial = interactionEdit.interactionSerial;
+	}else{
+		interactionEdit.interactionSerial = interactionSerial;
+	}
+
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/addGroup",
+	   data: {
+			'interactionSerial': interactionSerial,
+			'interactionData': interactionData
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			//set the content:
+			interactionEdit.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
+			
+			//then add listener
+			interactionEdit.bindChoiceLinkListener();//ok keep
+			
+			//add choice form:
+			var $newFormElt = $('<div/>');
+			$newFormElt.attr('id', r.choiceSerial);//r.groupSerial
+			$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
+			$newFormElt.append(r.choiceForm);
+			
+			//add to parameter
+			if(!$appendTo){
+				var $appendTo = $('#formContainer_groups');//append to group!
+			}
+			$appendTo.append($newFormElt);
+			
+			$newFormElt.hide();
+			interactionEdit.initToggleChoiceOptions({'delete': false});
+			$newFormElt.show();
+			
+			interactionEdit.setFormChangeListener('#'+r.choiceSerial);
+						
+			//rebuild the response grid:
+			responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
+	   }
+	});
+}
+
+interactionEdit.buildInteractionEditor = function(interactionDataContainerSelector, extraControls){
+	
+	//re-init the interaction editor object: 
+	interactionEdit.interactionEditor = new Object();
+	
+	//interaction data container selector:
+	interactionEdit.interactionDataContainer = interactionDataContainerSelector;
+	
+	var controls = {
+	  strikeThrough : { visible : true },
+	  underline     : { visible : true },
+	  
+	  justifyLeft   : { visible : true },
+	  justifyCenter : { visible : true },
+	  justifyRight  : { visible : true },
+	  justifyFull   : { visible : true },
+	  
+	  indent  : { visible : true },
+	  outdent : { visible : true },
+	  
+	  subscript   : { visible : true },
+	  superscript : { visible : true },
+	  
+	  undo : { visible : true },
+	  redo : { visible : true },
+	  
+	  insertOrderedList    : { visible : true },
+	  insertUnorderedList  : { visible : true },
+	  insertHorizontalRule : { visible : true },
+
+	  h4: {
+			  visible: true,
+			  className: 'h4',
+			  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
+			  arguments: ($.browser.msie || $.browser.safari) ? '<h4>' : 'h4',
+			  tags: ['h4'],
+			  tooltip: 'Header 4'
+	  },
+	  h5: {
+			  visible: true,
+			  className: 'h5',
+			  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
+			  arguments: ($.browser.msie || $.browser.safari) ? '<h5>' : 'h5',
+			  tags: ['h5'],
+			  tooltip: 'Header 5'
+	  },
+	  h6: {
+			  visible: true,
+			  className: 'h6',
+			  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
+			  arguments: ($.browser.msie || $.browser.safari) ? '<h6>' : 'h6',
+			  tags: ['h6'],
+			  tooltip: 'Header 6'
+	  },
+	  cut   : { visible : true },
+	  copy  : { visible : true },
+	  paste : { visible : true },
+	  html  : { visible: true },
+	  addChoiceInteraction: {visible:false},
+	  addAssociateInteraction: {visible:false},
+	  addOrderInteraction: {visible:false},
+	  addMatchInteraction: {visible:false},
+	  addInlineChoiceInteraction: {visible:false},
+	  addTextEntryInteraction: {visible:false},
+	  addExtendedTextInteraction: {visible:false},
+	  addHotTextInteraction: {visible:false},
+	  saveItemData: {visible:false},
+	  saveInteractionData: {
+			visible : true,
+			className: 'addInteraction',
+			exec: function(){
+				interactionEdit.saveInteractionData();
+			},
+			tooltip: 'save interaction data'
+		}
+	};
+	
+	if(extraControls){
+		var controls = $.extend(controls, extraControls);
+	}
+	
+	interactionEdit.interactionEditor = $(interactionEdit.interactionDataContainer).wysiwyg({
+		controls: controls,
+		gridComplete: interactionEdit.bindChoiceLinkListener,
+		events: {
+			  keyup : function(e){
+				if(interactionEdit.getDeletedChoices(true).length > 0){
+					if(!confirm('please confirm deletion of the choice(s)')){
+						// undo:
+						interactionEdit.interactionEditor.wysiwyg('undo');
+					}else{
+						var deletedChoices = interactionEdit.getDeletedChoices();
+						for(var key in deletedChoices){
+							//delete choices one by one:
+							interactionEdit.deleteChoice(deletedChoices[key]);
+						}
+					}
+				}
+			  }
+		}
+	});
+	
+	//the binding require the modified html data to be ready
+	setTimeout(interactionEdit.bindChoiceLinkListener,1000);
 }

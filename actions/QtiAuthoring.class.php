@@ -127,7 +127,7 @@ class QtiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
-		var_dump($currentItem);
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
@@ -404,23 +404,43 @@ class QtiAuthoring extends CommonModule {
 		$choiceForms = array();
 		
 		$interactionType = strtolower($interaction->getType());
-		if($interactionType == 'match' || $interactionType == 'gapmatch'){
-			$i = 0;
-			$groupSerials = array();
-			foreach($choices as $groupSerial=>$group){
-				
-				$groupSerials[$i] = $groupSerial;
-				$choiceForms[$groupSerial] = array();
-				foreach($group as $choice){
-					$choiceForms[$groupSerial][$choice->getSerial()] = $choice->toForm()->render();
+		switch($interactionType){
+			case 'match':{
+				$i = 0;
+				$groupSerials = array();
+				foreach($choices as $groupSerial=>$group){
+					
+					$groupSerials[$i] = $groupSerial;
+					$choiceForms[$groupSerial] = array();
+					foreach($group as $choice){
+						$choiceForms[$groupSerial][$choice->getSerial()] = $choice->toForm()->render();
+					}
+					$i++;
 				}
-				$i++;
+				$this->setData('groupSerials', $groupSerials);
+				break;
 			}
-			$this->setData('groupSerials', $groupSerials);
+			case 'gapmatch':{
+				//get group form:
+				$groupFroms = array();
+				foreach($this->service->getInteractionGroups($interaction) as $group){
+					//order does not matter:
+					$groupFroms[] = $group->toForm()->render();
+				}
+				$this->setData('formGroups', $groupFroms);
+			}
+			default:{
+				//get choice form:
+				foreach($choices as $order=>$choice){
+					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
+				}
+			}
+		}
+		if($interactionType == 'match'){
+			
+		
 		}else{
-			foreach($choices as $order=>$choice){
-				$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
-			}
+			
 		}
 		
 		//display the template, according to the type of interaction
@@ -537,10 +557,18 @@ class QtiAuthoring extends CommonModule {
 		));
 	}
 	
-	
-	public function editChoice(){
-		$choice = $this->getCurrentChoice();
+	public function saveGroup(){
+		$group = $this->getCurrentGroup();
 	}
+	
+	public function addGap(){
+	
+	}
+	
+	
+	// public function editChoice(){
+		// $choice = $this->getCurrentChoice();
+	// }
 	
 	public function editResponseProcessing(){
 	

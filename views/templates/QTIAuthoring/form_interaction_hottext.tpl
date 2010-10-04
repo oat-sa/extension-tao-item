@@ -55,8 +55,8 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	//add adv. & delete button
-	interactionEdit.initToggleChoiceOptions();
+	//add advanced option button but not the delete button
+	interactionEdit.initToggleChoiceOptions({'delete':false});
 	
 	/*
 	//add move up and down button
@@ -74,9 +74,6 @@ $(document).ready(function(){
 	interactionEdit.loadResponseMappingForm();
 	
 	
-	interactionEdit.interactionEditor = new Object();
-	interactionEdit.interactionDataContainer = '#interactionEditor_wysiwyg';
-	
 	var createHotText = {
 		visible : true,
 		className: 'addInteraction',
@@ -88,97 +85,7 @@ $(document).ready(function(){
 		tooltip: 'set hotText'
 	};
 	
-	var saveInteractionData = {
-		visible : true,
-		className: 'addInteraction',
-		exec: function(){
-			interactionEdit.saveInteractionData();
-		},
-		tooltip: 'save interaction data'
-	};
-	
-	
-	interactionEdit.interactionEditor = $(interactionEdit.interactionDataContainer).wysiwyg({
-		controls: {
-			  strikeThrough : { visible : true },
-			  underline     : { visible : true },
-			  
-			  justifyLeft   : { visible : true },
-			  justifyCenter : { visible : true },
-			  justifyRight  : { visible : true },
-			  justifyFull   : { visible : true },
-			  
-			  indent  : { visible : true },
-			  outdent : { visible : true },
-			  
-			  subscript   : { visible : true },
-			  superscript : { visible : true },
-			  
-			  undo : { visible : true },
-			  redo : { visible : true },
-			  
-			  insertOrderedList    : { visible : true },
-			  insertUnorderedList  : { visible : true },
-			  insertHorizontalRule : { visible : true },
-
-			  h4: {
-					  visible: true,
-					  className: 'h4',
-					  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-					  arguments: ($.browser.msie || $.browser.safari) ? '<h4>' : 'h4',
-					  tags: ['h4'],
-					  tooltip: 'Header 4'
-			  },
-			  h5: {
-					  visible: true,
-					  className: 'h5',
-					  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-					  arguments: ($.browser.msie || $.browser.safari) ? '<h5>' : 'h5',
-					  tags: ['h5'],
-					  tooltip: 'Header 5'
-			  },
-			  h6: {
-					  visible: true,
-					  className: 'h6',
-					  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-					  arguments: ($.browser.msie || $.browser.safari) ? '<h6>' : 'h6',
-					  tags: ['h6'],
-					  tooltip: 'Header 6'
-			  },
-			  cut   : { visible : true },
-			  copy  : { visible : true },
-			  paste : { visible : true },
-			  html  : { visible: true },
-			  addChoiceInteraction: {visible:false},
-			  addAssociateInteraction: {visible:false},
-			  addOrderInteraction: {visible:false},
-			  addMatchInteraction: {visible:false},
-			  addInlineChoiceInteraction: {visible:false},
-			  addTextEntryInteraction: {visible:false},
-			  addExtendedTextInteraction: {visible:false},
-			  addHotTextInteraction: {visible:false},
-			  saveItemData: {visible:false},
-			  createHotText: createHotText,
-			  saveInteractionData: saveInteractionData
-			},
-			events: {
-				  keyup : function(e){
-					if(interactionEdit.getDeletedChoices(true).length > 0){
-						if(!confirm('please confirm deletion of the choice(s)')){
-							// undo:
-							interactionEdit.interactionEditor.wysiwyg('undo');
-						}else{
-							var deletedChoices = interactionEdit.getDeletedChoices();
-							for(var key in deletedChoices){
-								//delete choices one by one:
-								interactionEdit.deleteChoice(deletedChoices[key]);
-							}
-						}
-					}
-				  }
-			}
-	});
-	
+	interactionEdit.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText});
 	
 	
 });
