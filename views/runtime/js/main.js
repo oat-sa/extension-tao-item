@@ -267,6 +267,35 @@ function string_interaction(currentObj){
 	}
 }
 
+function hottext(currentObj){
+	
+	//the hottext behavior depends on the maxChoice value
+	var maxChoices = (currentObj['maxChoices']) ? parseInt(currentObj['maxChoices']) : 1;
+	$("#" + currentObj["id"] + " .hottext_choice").click(function(){
+		
+		//no behavior restriction
+		if(maxChoices == 0){
+			$(this).toggleClass('hottext_choice_on');
+			$(this).toggleClass('hottext_choice_off');
+		}
+		
+		//only one selected at a time 
+		if(maxChoices == 1){
+			$("#" + currentObj["id"] + " .hottext_choice").removeClass('hottext_choice_on').addClass('hottext_choice_off');
+			$(this).removeClass('hottext_choice_off').addClass('hottext_choice_on');
+		}
+		
+		//there is only maxChoices selected at a time
+		if(maxChoices > 1){
+			if($("#" + currentObj["id"] + " .hottext_choice_on").length < maxChoices || $(this).hasClass('hottext_choice_on') ){
+				$(this).toggleClass('hottext_choice_on');
+				$(this).toggleClass('hottext_choice_off');
+			}
+		}
+	});
+}
+
+
 function qti_init(){
 	for (var a in qti_initParam){
 		qti_init_items(qti_initParam[a]);
@@ -305,6 +334,13 @@ function qti_init_items(initObj){
 		case "qti_extended_text_interaction":
 			extended_text(initObj);
 			resultMethod = text_result;
+			break;
+		case "qti_inline_choice_interaction":
+			resultMethod = inline_choice_result;
+			break;
+		case "qti_hottext_interaction":
+			hottext(initObj);
+			resultMethod = hottext_result;
 			break;
 	}
 	
@@ -351,6 +387,18 @@ function text_result(id){
 	var result = new Array();
 	$("#" + id + " :text").each(function(){
 		result.push($(this).val());
+	});
+	return result;
+}
+
+function inline_choice_result(id){
+	return $("#" + id).val();
+}
+
+function hottext_result(id){
+	var result = new Array();
+	$("#" + id + " .hottext_choice_on").each(function(){
+		result.push(this.id.replace("/^hottext_choice_/", ''));
 	});
 	return result;
 }

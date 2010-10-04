@@ -2,7 +2,7 @@
 	type="text" 
 	id="<?=$identifier?>" 
 	name="<?=$identifier?>" 
-	class="qti_widget qti_<?=$_type?>_interaction"  />
+	class="qti_<?=$_type?>_interaction"  />
 <script type="text/javascript">
 	qti_initParam["<?=$serial?>"] = {
 		id : "<?=$identifier?>",

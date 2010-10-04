@@ -578,15 +578,14 @@ class taoItems_models_classes_QTI_Interaction
 			}
    		}
    		else{
-   			$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
-   			
+   			if($this->type != 'hottext'){
+   				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
+   			}
    			foreach($this->getChoices() as $choice){
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
    		}
    		
-		
-		
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
         
