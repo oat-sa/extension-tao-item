@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Group.php
+ * TAO - taoItems\models\classes\QTI\class.Group.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 30.09.2010, 09:56:53 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Automatically generated on 04.10.2010, 14:25:36 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,14 +28,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
@@ -51,7 +51,7 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  * Short description of class taoItems_models_classes_QTI_Group
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -77,7 +77,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method getChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
     public function getChoices()
@@ -97,7 +97,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method setChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array choices
      * @return mixed
      */
@@ -115,7 +115,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method addChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array choices
      * @return mixed
      */
@@ -141,7 +141,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method removeChoice
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Choice choice
      * @return boolean
      */
@@ -173,7 +173,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function toQTI()
@@ -213,6 +213,23 @@ class taoItems_models_classes_QTI_Group
         // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:000000000000257F end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toForm
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @return tao_helpers_form_xhtml_Form
+     */
+    public function toForm()
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39-51571c01:12b7726bac6:-8000:00000000000028D4 begin
+        // section 10-13-1-39-51571c01:12b7726bac6:-8000:00000000000028D4 end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Group */
