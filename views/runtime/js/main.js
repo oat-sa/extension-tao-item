@@ -26,12 +26,32 @@ function multiple_choice(currentObj){
 
 function sort(currentObj){
 	var qti_item_id="#"+currentObj["id"];
-	$(qti_item_id+" ul").sortable({
-			revert: true,
-			axis : "y",
-			containment: qti_item_id
-		});
-		$(qti_item_id+" ul, li").disableSelection();
+	
+	
+	var sortableOptions = {
+		revert: true,
+		axis : 'y',
+		containment: qti_item_id,
+		placeholder: 'sort-placeholder',
+		tolerance: 'pointer'
+	};
+	
+	//for an horizontal sortable list
+	$(qti_item_id+" ul li").addClass('sort-vertical');
+	if(currentObj['orientation']){
+		if(currentObj['orientation'] == 'horizontal'){
+			sortableOptions.axis = 'x';
+			sortableOptions.placeholder = 'sort-placeholder-inline';
+			sortableOptions['forcePlaceHolderWidth'] = true;
+			$(qti_item_id+" ul li")
+					.removeClass('sort-vertical')
+						.addClass('sort-horizontal')
+							.css('display', 'inline');
+		}
+	}
+	
+	$(qti_item_id+" ul").sortable(sortableOptions);
+	$(qti_item_id+" ul, li").disableSelection();
 		
 }
 

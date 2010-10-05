@@ -42,9 +42,21 @@ class QTIModelTestCase extends UnitTestCase {
 		//item is saved by destruction 
 		unset($item);
 
+		
 		$savedItem = $this->qtiService->getItemBySerial($serial);
 		$this->assertNotNull($savedItem);
 		$this->assertIsA($savedItem, 'taoItems_models_classes_QTI_Item');
+	
+		foreach($savedItem->getInteractions() as $interaction){
+			foreach($interaction->getChoices() as $choice){
+				$composing = $this->qtiService->getComposingData($choice);
+				$this->assertIsA($composing, 'taoItems_models_classes_QTI_Interaction');
+				$this->assertEqual($interaction->getSerial(), $composing->getSerial());
+				break;
+			}
+			break;
+		}
+		
 		
 		//real remove
 		taoItems_models_classes_QTI_Data::setPersistance(false);
@@ -57,9 +69,10 @@ class QTIModelTestCase extends UnitTestCase {
 	 * test the building of item from all the samples
 	 */
 	public function testSamples(){
+		
 		//check if samples are loaded 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
-//			$file = dirname(__FILE__).'/samples/associate.xml';
+
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -74,9 +87,6 @@ class QTIModelTestCase extends UnitTestCase {
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
 			}
-//			print "<pre>";
-//			print_r($item);
-//			print "</pre>";
 		}
 	}
 	

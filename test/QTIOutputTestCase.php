@@ -81,11 +81,11 @@ class QTIOutputTestCase extends UnitTestCase {
 //			dirname(__FILE__).'/samples/associate.xml',
 //			dirname(__FILE__).'/samples/choice_multiple.xml',
 //			dirname(__FILE__).'/samples/choice.xml',
-//			dirname(__FILE__).'/samples/order.xml',
+			dirname(__FILE__).'/samples/order.xml'//,
 //			dirname(__FILE__).'/samples/text_entry.xml',
 //			dirname(__FILE__).'/samples/extended_text.xml',
 //			dirname(__FILE__).'/samples/inline_choice.xml',
-			dirname(__FILE__).'/samples/hottext.xml'
+//			dirname(__FILE__).'/samples/hottext.xml'
 		);
 		
 		foreach($files as $file){	

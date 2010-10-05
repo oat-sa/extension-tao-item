@@ -152,6 +152,52 @@ class taoItems_models_classes_QTI_Service
         return $returnValue;
     }
 
+    /**
+     * Short description of method getComposingData
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Data composed
+     * @return taoItems_models_classes_QTI_Data
+     */
+    public function getComposingData( taoItems_models_classes_QTI_Data $composed)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-fba198:12b7c55f735:-8000:00000000000025B8 begin
+        
+        if(taoItems_models_classes_QTI_Data::$persist == false){
+        	throw new Exception("The composing data are got from the persistance!");
+        }
+        
+        if(!is_null($composed)){
+        	$tokens = explode('_', get_class($composed));
+        	$objectType = strtolower($tokens[count($tokens) - 1]);
+        	$propertyName = $objectType . 's';
+        	$methodName = 'get'.ucfirst($propertyName);
+        }
+        
+        foreach(taoItems_models_classes_QTI_Data::$_instances as $serial){
+        	$instance = $this->getDataBySerial($serial);
+        	$rObject  = new ReflectionObject($instance);
+        	if($rObject->hasProperty($propertyName)){
+        		foreach($instance->$methodName() as $attribute){
+        			if($attribute->getSerial() == $composed->getSerial()){
+        				$returnValue = $instance;
+        				break;
+        			}
+        		}
+        	}
+        	if(!is_null($returnValue)){
+        		break;
+        	}
+        }
+        
+        // section 127-0-1-1-fba198:12b7c55f735:-8000:00000000000025B8 end
+
+        return $returnValue;
+    }
+
 } /* end of class taoItems_models_classes_QTI_Service */
 
 ?>

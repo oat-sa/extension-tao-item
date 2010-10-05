@@ -144,6 +144,8 @@ class taoItems_models_classes_QTI_Item
     		}
     	}
     	
+    	parent::__wakeup();
+    	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB end
     }
 

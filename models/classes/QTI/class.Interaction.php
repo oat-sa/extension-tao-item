@@ -196,6 +196,9 @@ class taoItems_models_classes_QTI_Interaction
     			$this->groups[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
     		}
     	}
+    	
+    	parent::__wakeup();
+    	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF end
     }
 
@@ -339,6 +342,19 @@ class taoItems_models_classes_QTI_Interaction
         $max = preg_match_all("/{choice_[a-z0-9]*}/", $returnValue, $matchs);
         if($max > 0){
         	$ordered = $matchs[0];
+        	
+        	//get the choices which are fixed 
+        	$fixed = array();
+        	foreach($ordered as $index => $choiceSerial){
+        		$serial = preg_replace(array("/^{/","/}$/"), '', $choiceSerial);
+        		var_dump($serial);
+        		$choice = $this->choices[$serial];
+        		if($choice->getOption('fixed')){
+        			$fixed[] = $index;
+        		}
+        	}
+        	
+        	//shuffle them
         	$shuffled = array();
         	foreach($ordered as $index => $choice){
         		do { 
@@ -347,14 +363,29 @@ class taoItems_models_classes_QTI_Interaction
 	        	$shuffled[$key] = $choice;
         	}
         	ksort($shuffled);
-        	
         	$i = 0;
         	foreach($shuffled as $sKey => $sChoice){
-        		$returnValue = str_replace($ordered[$i], "{{$sKey}}", $returnValue);
+        		if($i != $sKey){
+        			$shuffled[$i] = $sChoice;
+        			unset($shuffled[$sKey]);
+        		}
         		$i++;
         	}
-        	foreach($shuffled as $sKey => $sChoice){
-        		$returnValue = str_replace("{{$sKey}}", $sChoice, $returnValue);
+        	
+        	//replace the fixed choices
+        	foreach($fixed as $index){
+        		$tmpChoice = $shuffled[$index];
+        		$tmpIndexes = array_keys($shuffled, $ordered[$index]);
+        		$tmpIndex = $tmpIndexes[0];
+        		$shuffled[$tmpIndex] = $tmpChoice;
+        		$shuffled[$index] = $ordered[$index];
+        	}
+        	
+        	foreach($shuffled as $i => $sChoice){
+        		$returnValue = str_replace($ordered[$i], "{{$i}}", $returnValue);
+        	}
+        	foreach($shuffled as $i => $sChoice){
+        		$returnValue = str_replace("{{$i}}", $sChoice, $returnValue);
         	}
         }
         

@@ -125,6 +125,14 @@ abstract class taoItems_models_classes_QTI_Data
      */
     protected static $templatesPath = '';
 
+    /**
+     * Short description of attribute _instances
+     *
+     * @access public
+     * @var array
+     */
+    public static $_instances = array();
+
     // --- OPERATIONS ---
 
     /**
@@ -230,6 +238,8 @@ abstract class taoItems_models_classes_QTI_Data
         
     	$this->createSerial();
     	
+    	self::$_instances[] = $this->serial;
+    	
     	try{
     		$this->setIdentifier($identifier);
     	}
@@ -253,26 +263,34 @@ abstract class taoItems_models_classes_QTI_Data
     public function __destruct()
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF begin
-        
-    	if(self::$persist){
-    		//The instance is serialized and saved in the session me before the destruction 
-    		Session::setAttribute(self::PREFIX . $this->serial, serialize($this));
-        }
-        else{
-        	//clean session
-        	if(!empty($this->serial)){
-        		Session::removeAttribute(self::PREFIX . $this->serial);
-        	}
-        	if(!empty($this->id) && !is_null($this->id)){
-        		$ids = Session::getAttribute(self::PREFIX . 'identifiers');
-        		if(is_array($ids)){
-	    			if(isset($ids[$this->identifier])){
-        				unset($ids[$this->identifier]);
-	    				Session::setAttribute(self::PREFIX . 'identifiers', $ids);
-	    			}
-        		}
-        	}
-        }
+       
+	    	
+    		if(self::$persist){
+	    		//The instance is serialized and saved in the session me before the destruction 
+	    		Session::setAttribute(self::PREFIX . $this->serial, serialize($this));
+	        }
+	        else{
+	        	//clean session
+	        	if(!empty($this->serial)){
+	        		Session::removeAttribute(self::PREFIX . $this->serial);
+	        	}
+	        	if(!empty($this->id) && !is_null($this->id)){
+	        		$ids = Session::getAttribute(self::PREFIX . 'identifiers');
+	        		if(is_array($ids)){
+		    			if(isset($ids[$this->identifier])){
+	        				unset($ids[$this->identifier]);
+		    				Session::setAttribute(self::PREFIX . 'identifiers', $ids);
+		    			}
+	        		}
+	        	}
+	        	foreach(self::$_instances as $key => $serial){
+	        		if($serial == $this->serial){
+	        			unset(self::$_instances[$key]);
+	        			break;
+	        		}
+	        	}
+	        }
+	        
         
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF end
     }
@@ -312,6 +330,7 @@ abstract class taoItems_models_classes_QTI_Data
     public function __wakeup()
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 begin
+        
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 end
     }
 
@@ -622,7 +641,7 @@ abstract class taoItems_models_classes_QTI_Data
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string name
-     * @return mixed
+     * @return string
      */
     public function getOption($name)
     {
@@ -636,7 +655,7 @@ abstract class taoItems_models_classes_QTI_Data
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002334 end
 
-        return $returnValue;
+        return (string) $returnValue;
     }
 
     /**
