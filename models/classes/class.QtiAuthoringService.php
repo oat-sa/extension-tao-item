@@ -112,6 +112,13 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
+	public function getGroupTag(taoItems_models_classes_QTI_Group $group){
+		$returnValue = '';
+		$returnValue .= "<input type='button' id='{$group->getSerial()}' class='qti_group_link' value='{$group->getType()}'/>";
+		
+		return $returnValue;
+	}
+	
 	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
 		$data = $interaction->getdata();
 		
@@ -119,17 +126,14 @@ class taoItems_models_classes_QtiAuthoringService
 		$interactionType = strtolower($interaction->getType());
 		switch($interactionType){
 			case 'gapmatch':{
-				//transform group reference to clickable choice buttons
-				foreach($interaction->getGroups() as $group){
-					$pattern = "/{{$group->getSerial()}}/";
-					// $data = preg_replace($pattern, $this->getGapmatchTag($interaction), $data, 1);
-					break; //there can only be one..
+				//replace the "gaps" by their "interaction buttons"
+				foreach($interaction->getGroups() as $gap){
+					$pattern = "/{{$gap->getSerial()}}/";
+					$data = preg_replace($pattern, $this->getGroupTag($gap), $data, 1);
 				}
-				break;
-			}
-			case 'gapmatch':{
-				foreach($interaction->getGroups() as $group){
-					$pattern = "/{{$group->getSerial()}}/";
+				//replace the invisible "choices"
+				foreach($interaction->getChoices() as $choice){
+					$pattern = "/{{$choice->getSerial()}}/";
 					$data = preg_replace($pattern, '', $data, 1);
 				}
 				break;
@@ -160,6 +164,7 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'match':
 				case 'gapmatch':{
 					$returnValue = $interaction->getGroups();
+					break;
 				}
 				default:{
 					throw new Exception('no group accessible');
@@ -331,9 +336,11 @@ class taoItems_models_classes_QtiAuthoringService
 						$interaction->addGroup($newGroup);
 						$interaction->setData($interaction->getData().'{'.$newGroup->getSerial().'}');
 					}
+					break;
 				}
 				case 'gapmatch':{
-					
+					//note: 'groups' == 'gaps' in this case
+					break;
 				}
 			}
 					
@@ -365,7 +372,7 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'gapmatch':{
-					$choiceType = 'gapChoice';
+					$choiceType = 'gapText';
 					break;
 				}
 				case 'inlinechoice':{
@@ -389,11 +396,17 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			
 			$interaction->addChoice($choice);
-			if($interactionType == 'match' || $interactionType == 'gapmatch'){
+			if($interactionType == 'match'){
 				//insert into group: which group?
 				if(is_null($group)){
 					throw new Exception('the group cannot be null');
 				}else{
+					//append to the choice list:
+					$group->addChoices(array($choice));//add 1 choice
+					$group->setData($group->getData().'{'.$choice->getSerial().'}');
+				}
+			}else if($interactionType == 'gapmatch'){
+				foreach($interaction->getGroups() as $group){
 					//append to the choice list:
 					$group->addChoices(array($choice));//add 1 choice
 					$group->setData($group->getData().'{'.$choice->getSerial().'}');
@@ -424,6 +437,42 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
+	public function addGroup(taoItems_models_classes_QTI_Interaction $interaction, $interactionData=''){
+	
+		$returnValue = null;
+		
+		if(!is_null($interaction)){
+			$group = new taoItems_models_classes_QTI_Group();
+			foreach($this->getInteractionChoices($interaction) as $choice){
+				$group->addChoices($choice);
+			}
+			
+			if(strtolower($interaction->getType()) == 'gapmatch'){
+				$group->setType('gap');
+				
+				$count = 0;
+				if(!empty($interactionData)){
+					$interactionData = str_replace("{qti_gap_new}", "{{$group->getSerial()}}", $interactionData, $count);
+				}
+				
+				if($count){
+					$interaction->setData($interactionData);
+				}else{
+					//
+					$interaction->setData($interaction->getData().'{'.$group->getSerial().'}');
+				}
+			}
+				
+			$interaction->addGroup($group);
+			
+			$returnValue = $group;
+		}
+		
+		return $returnValue;
+		
+	}
+	
+	
 	public function editChoiceData(taoItems_models_classes_QTI_Choice $choice, $data=''){
 		if(!is_null($choice)){
 			$choice->setdata($data);
@@ -441,12 +490,28 @@ class taoItems_models_classes_QtiAuthoringService
 		$interaction->removeChoice($choice);
 		
 		//completely remove the choice from the session
-		taoItems_models_classes_QTI_Data::setPersistance(false);
-		unset($choice);
-		taoItems_models_classes_QTI_Data::setPersistance(true);//but not the other variables!
+		$this->destroyQtiObject($choice);
 		
-		//then simulate get+save response data to filter affected variables
+		//then simulate get+save response data to filter affected response variables
 		$this->saveInteractionResponse($interaction, $this->getInteractionResponseData($interaction));
+	}
+	
+	public function deleteGroup(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Group $group){
+		
+		$interaction->removeGroup($group);
+		
+		//completely remove the group from the session
+		$this->destroyQtiObject($group);
+		
+		//then simulate get+save response data to filter affected response variables
+		$this->saveInteractionResponse($interaction, $this->getInteractionResponseData($interaction));
+	}
+	
+	//destroying completely the qti object:
+	public function destroyQtiObject(taoItems_models_classes_QTI_data $qtiObject){
+		taoItems_models_classes_QTI_Data::setPersistance(false);
+		unset($qtiObject);
+		taoItems_models_classes_QTI_Data::setPersistance(true);//but not the other variables!
 	}
 	
     /**
@@ -675,9 +740,8 @@ class taoItems_models_classes_QtiAuthoringService
 				$interaction->setData($data);
 				break;
 			}
-			case 'match':
-			case 'gapmatch':{
-				//append directly yo the group(s):
+			case 'match':{
+				//append directly to the group(s):
 				//note: there must be only one group for 'gapmatch' but two for 'match'
 				
 				//the old data must contain all groups:
@@ -704,10 +768,11 @@ class taoItems_models_classes_QtiAuthoringService
 								$groupData .= "{{$choiceSerial}}";
 							}
 							//sort only the choices in the group(s)
-							//remove the choices then set them again:
 							$group->setChoices($choices);
 							$group->setData($groupData);
-							$interaction->addGroup($group);
+							$interaction->addGroup($group);//overwrite the old version of the group that has the same groupSerial
+							
+							//TODO: replace the block with: $this->setGroupData($group, $groupChoiceOrder, $interaction, false);
 						}else{
 							throw new Exception("the group with the serial $groupSerial does not exist in session");
 						}
@@ -715,6 +780,27 @@ class taoItems_models_classes_QtiAuthoringService
 						throw new Exception("the group with the serial $groupSerial cannot be found in the intial interaction group data");
 					}
 				}
+				break;
+			}
+			case 'gapmatch':{
+				//for THE choice order, get all groups:
+				//for each group, delete not assigned choice from the array, then save the remaining choices, which are on a correct order already:
+				foreach($interaction->getGroups() as $group){
+					//save the "gapText" in the appropriate order:
+					$this->setGroupData($group, $choiceOrder, $interaction, true);
+					
+					//save the "gap" in the interaction data
+					$count = 0;
+					//TODO: set the change tag regular expression listener
+					$data = str_replace($this->getGapTag($group), "{{$group->getSerial()}}", $data, $count);
+				}
+				
+				//save the choices in the interaction data:
+				for($i=0; $i<count($choiceOrder); $i++){
+					$data .= '{'.$choiceOrder[$i].'}';
+				}
+				$interaction->setData($data);
+				
 				break;
 			}
 			case 'textentry':
@@ -743,6 +829,35 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 		
 	}
+	
+	public function setGroupData(taoItems_models_classes_QTI_Group $group, $choiceOrder=array(), taoItems_models_classes_QTI_Interaction $interaction=null, $edit=false){
+		$groupData = ''; //note: group data only contains choices
+		$oldOrder = $group->getChoices();
+		$newOrder = $choiceOrder;
+		foreach($newOrder as $choiceSerial){
+			
+			if($edit){
+				//in the edit mode, delete not assigned choice from the array
+				if(!in_array($choiceSerial, $oldOrder)){
+					unset($newOrder[key($newOrder)]);
+					continue;
+				}
+			}
+			
+			$groupData .= "{{$choiceSerial}}";
+			
+		}
+		
+		//save the new compared and cleaned ordered array:
+		$group->setChoices($newOrder);
+		$group->setData($groupData);
+		if(!is_null($interaction)){
+			//important: if the interaction has been created before, their is need for reassigning the group to it to overwrite the old values in the itneraciton property, overwise, the alod valus will be saved at the destruction of the interaction
+			$interaction->addGroup($group);//important! 
+		}
+		
+	}
+	
 	
 	public function setResponseProcessing(taoItems_models_classes_QTI_Item $item, $type, $customRule=''){
 		

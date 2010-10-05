@@ -1,4 +1,4 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
@@ -552,9 +552,9 @@ interactionEdit.addGap = function(interactionData, interactionSerial, $appendTo)
 			
 			//add choice form:
 			var $newFormElt = $('<div/>');
-			$newFormElt.attr('id', r.choiceSerial);//r.groupSerial
+			$newFormElt.attr('id', r.groupSerial);//r.groupSerial
 			$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
-			$newFormElt.append(r.choiceForm);
+			$newFormElt.append(r.groupForm);
 			
 			//add to parameter
 			if(!$appendTo){
@@ -566,7 +566,7 @@ interactionEdit.addGap = function(interactionData, interactionSerial, $appendTo)
 			interactionEdit.initToggleChoiceOptions({'delete': false});
 			$newFormElt.show();
 			
-			interactionEdit.setFormChangeListener('#'+r.choiceSerial);
+			interactionEdit.setFormChangeListener('#'+r.groupSerial);
 						
 			//rebuild the response grid:
 			responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);

@@ -422,27 +422,27 @@ class QtiAuthoring extends CommonModule {
 			}
 			case 'gapmatch':{
 				//get group form:
-				$groupFroms = array();
+				$groupForms = array();
 				foreach($this->service->getInteractionGroups($interaction) as $group){
 					//order does not matter:
-					$groupFroms[] = $group->toForm()->render();
+					$groupForms[] = $group->toForm($interaction)->render();
 				}
-				$this->setData('formGroups', $groupFroms);
+				$this->setData('formGroups', $groupForms);
+				
+				//get choice forms:
+				foreach($choices as $order=>$choice){
+					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
+				}
+				break;
 			}
 			default:{
-				//get choice form:
+				//get choice forms:
 				foreach($choices as $order=>$choice){
 					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
 				}
 			}
 		}
-		if($interactionType == 'match'){
-			
-		
-		}else{
-			
-		}
-		
+				
 		//display the template, according to the type of interaction
 		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
 		$this->setData('interactionSerial', $interaction->getSerial());
@@ -491,21 +491,14 @@ class QtiAuthoring extends CommonModule {
 				
 					$choiceOrder = $_POST['choiceOrder'];
 					
-				}elseif( isset($_POST['choiceOrder0']) ){//for match and gapmatch interaction
+				}elseif( isset($_POST['choiceOrder0']) && isset($_POST['choiceOrder1'])){//for match interaction
 					
-					$groupOrder0 = $_POST['choiceOrder0'];
-					if(isset($groupOrder0['groupSerial'])){
-						$groupSerial = $groupOrder0['groupSerial'];
-						unset($groupOrder0['groupSerial']);
-						$choiceOrder[$groupSerial] = $groupOrder0;
-					}
-					
-					if(isset($_POST['choiceOrder1'])){//for match interaction only
-						$groupOrder1 = $_POST['choiceOrder1'];
-						if(isset($groupOrder1['groupSerial'])){
-							$groupSerial = $groupOrder1['groupSerial'];
-							unset($groupOrder1['groupSerial']);
-							$choiceOrder[$groupSerial] = $groupOrder1;
+					for($i=0; $i<2; $i++){//TODO: to be tested...
+						$groupOrder = $_POST['choiceOrder'+$i];
+						if(isset($groupOrder['groupSerial'])){
+							$groupSerial = $groupOrder['groupSerial'];
+							unset($groupOrder['groupSerial']);
+							$choiceOrder[$groupSerial] = $groupOrder;
 						}
 					}
 					
@@ -557,19 +550,52 @@ class QtiAuthoring extends CommonModule {
 		));
 	}
 	
+	//save the group properties, specific to gapmatch interaction where a group is considered as a gap:
+	//not called when the choice order has been changed, such changes are done by saving the itneraction data
 	public function saveGroup(){
 		$group = $this->getCurrentGroup();
+		var_dump($group, $_POST);die('saving group');
+		
+		//save the properties:
+		
+		//save selected choices:
+		
+		//save the order:
+		$choiceOrder = array();
+		if(isset($_POST['choiceOrder'])){
+			$choiceOrder = $_POST['choiceOrder'];
+		}
+		$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
+		
+		
 	}
 	
-	public function addGap(){
-	
+	public function addGroup(){
+		$added = false;
+		$groupSerial = '';//a gap basically is a "group", the content of which is by default all available choices in the interaction
+		$textContent = '';
+		
+		$interaction = $this->getCurrentInteraction();
+		$interactionData = urldecode($this->getRequestParameter('interactionData'));
+		
+		$group = $this->service->addGroup($interaction, $interactionData);
+		
+		if(!is_null($group)){
+			$interactionData = $this->service->getInteractionData($interaction);//do not convert to html entities...
+			
+			//everything ok:
+			$added = true;
+			$groupSerial = $group->getSerial();
+		}
+		
+		echo json_encode(array(
+			'added' => $added,
+			'groupSerial' => $groupSerial,
+			'groupForm' => $group->toForm($interaction)->render(),
+			'interactionData' => html_entity_decode($interactionData)
+		));
 	}
-	
-	
-	// public function editChoice(){
-		// $choice = $this->getCurrentChoice();
-	// }
-	
+		
 	public function editResponseProcessing(){
 	
 		$item = $this->getCurrentItem();

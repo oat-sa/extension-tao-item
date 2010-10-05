@@ -42,9 +42,14 @@ abstract class taoItems_actions_QTIform_choice_Choice
      */
     protected $choice = null;
 	
-	public function __construct(taoItems_models_classes_QTI_Choice $choice){
+	protected $formName = 'ChoiceForm_';
+	
+	public function __construct(taoItems_models_classes_QTI_Choice $choice = null){
 		
-		$this->choice = $choice;
+		if(!is_null($choice)){
+			$this->choice = $choice;
+			$this->formName = 'ChoiceForm_'.$this->choice->getSerial();
+		}
 		$returnValue = parent::__construct(array(), array());
 		
 	}
@@ -62,7 +67,7 @@ abstract class taoItems_actions_QTIform_choice_Choice
      */
     public function initForm()
     {
-		$this->form = tao_helpers_form_FormFactory::getForm('ChoiceForm_'.$this->choice->getSerial());
+		$this->form = tao_helpers_form_FormFactory::getForm($this->formName);
 		$this->form->setActions(array(), 'bottom');
 		//no save elt required, all shall be done with ajax request
 		// $saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Save');

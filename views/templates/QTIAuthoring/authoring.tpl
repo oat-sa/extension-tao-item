@@ -272,6 +272,16 @@ var addHotTextInteraction = {
 	tooltip: 'add hot text interaction'
 };
 
+var addGapMatchInteraction = {
+	visible : true,
+	className: 'addInteraction',
+	exec: function(){
+		this.insertHtml('{qti_interaction_new}');
+		qtiEdit.addInteraction('gapMatch', this.getContent(), qtiEdit.itemSerial);
+	},
+	tooltip: 'add gap match interaction'
+};
+
 var saveItemData = {
 	visible : true,
 	className: 'addInteraction',
@@ -283,14 +293,6 @@ var saveItemData = {
 
 var loadXmlQti = null;
 var exportXmlQti = null;
-
-//extend the jwysi obj:
-// $.extend(Wysiwyg, {
-	// undo: function(){
-		// var self = $.data(this, 'wysiwyg');
-		// self.editorDoc.execCommand('undo', false, null);
-	// }
-// });
 		
 $(document).ready(function(){
 
@@ -353,6 +355,7 @@ $(document).ready(function(){
 	  addTextEntryInteraction: addTextEntryInteraction,
 	  addExtendedTextInteraction: addExtendedTextInteraction,
 	  addHotTextInteraction: addHotTextInteraction,
+	  addGapMatchInteraction: addGapMatchInteraction,
 	  saveItemData: saveItemData
     },
     events: {
