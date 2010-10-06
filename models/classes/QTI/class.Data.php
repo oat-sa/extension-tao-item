@@ -331,6 +331,10 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 begin
         
+    	if(!in_array($this->serial, self::$_instances)){
+    		self::$_instances[] = $this->serial;
+    	}
+    	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 end
     }
 

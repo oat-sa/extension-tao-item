@@ -347,7 +347,6 @@ class taoItems_models_classes_QTI_Interaction
         	$fixed = array();
         	foreach($ordered as $index => $choiceSerial){
         		$serial = preg_replace(array("/^{/","/}$/"), '', $choiceSerial);
-        		var_dump($serial);
         		$choice = $this->choices[$serial];
         		if($choice->getOption('fixed')){
         			$fixed[] = $index;

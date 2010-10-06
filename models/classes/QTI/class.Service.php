@@ -177,7 +177,16 @@ class taoItems_models_classes_QTI_Service
         	$methodName = 'get'.ucfirst($propertyName);
         }
         
-        foreach(taoItems_models_classes_QTI_Data::$_instances as $serial){
+        $instances = taoItems_models_classes_QTI_Data::$_instances;
+        foreach(Session::getAttributeNames() as $attrKey){
+        	if(preg_match("/^".taoItems_models_classes_QTI_Data::PREFIX."/", $attrKey)){
+        		if(!in_array($attrKey, $instances)){
+        			$instances[] = $attrKey;
+        		}
+        	}
+        }
+        
+        foreach($instances as $serial){
         	$instance = $this->getDataBySerial($serial);
         	$rObject  = new ReflectionObject($instance);
         	if($rObject->hasProperty($propertyName)){
