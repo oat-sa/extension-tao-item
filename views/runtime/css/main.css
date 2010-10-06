@@ -12,7 +12,7 @@ h1{
 
 p{
 	width:500px;
-	margin:10px 0 20px 0;
+	margin:10px 0 10px 0;
 }
 
 .prompt{
@@ -28,6 +28,14 @@ div.qti_item{
 	background-image: url('../img/underline.gif');
 	background-repeat: repeat-x;
 	background-position: bottom;
+}
+
+.breaker{
+	clear:both;	
+}
+
+.active{
+	border:2px solid #009933 !important;
 }
 
 /* qti widget layout */
@@ -128,7 +136,6 @@ div.qti_item{
 	clear:both;
 	position:relative;
 	margin:20px 0;
-
 }
 
 .qti_association_pair li{
@@ -140,10 +147,6 @@ div.qti_item{
 	text-align:center;
 	font-weight:bold;
 	
-}
-
-.active_pair{
-	border:2px solid #009933 !important;
 }
 
 .qti_link_associate{
@@ -234,6 +237,43 @@ textarea{
 	width:400px;
 	height:100px;
 	margin:auto;	
+}
+
+/* Gap Match */
+
+.qti_gap_match_interaction .qti_choice_list li{
+	color:#333;
+	font-weight:bold;	
+}
+.qti_gap_match_interaction .qti_choice_list li:hover,
+.qti_gap_match_interaction .filled_gap:hover{
+	cursor:move;	
+}
+.qti_gap_match_interaction .qti_choice_list li div{
+	margin:5px 0 5px 15px;
+	line-height:20px;
+	background:#ccc;
+	padding:0 5px;
+	float: left;
+}
+.qti_gap_match_interaction .qti_choice_list{
+	background-color:#eee;
+	border:2px solid #999999;	
+}
+
+.qti_gap_match_interaction{
+	line-height:25px;	
+}
+.qti_gap_match_interaction .gap{
+	border: solid 2px #999999;		
+	background-color:#eee;
+	padding:2px 25px 2px 25px;
+	margin: 0px 5px 0px 5px;
+	font-weight:bold;
+}
+
+.qti_gap_match_interaction .ui-state-highlight{
+	background-color:#ccc;
 }
 
 /* validation button */

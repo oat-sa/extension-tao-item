@@ -137,13 +137,13 @@ function associate(currentObj){
 				if($(ui.helper).parentsUntil("ul").parent().hasClass("qti_choice_list"))
 				{
 					$(ui.helper).css({top:"0",left:"0"});
-					var _matchMax = Number(currentObj["maxMaxes"][$(ui.draggable).parent().attr("id")]["matchMax"])
-					var _current = Number(currentObj["maxMaxes"][$(ui.draggable).parent().attr("id")]["current"]);
+					var _matchMax = Number(currentObj["matchMaxes"][$(ui.draggable).parent().attr("id")]["matchMax"]);
+					var _current = Number(currentObj["matchMaxes"][$(ui.draggable).parent().attr("id")]["current"]);
 				
 					if (_current < _matchMax) {
 						
 						_current++;
-						currentObj["maxMaxes"][$(ui.draggable).parent().attr("id")]["current"]=_current;
+						currentObj["matchMaxes"][$(ui.draggable).parent().attr("id")]["current"]=_current;
 					}
 					if (_current >= _matchMax) {
 						$(ui.draggable).hide();
@@ -174,7 +174,7 @@ function associate(currentObj){
 				
 								
 			},
-			hoverClass: 'active_pair'
+			hoverClass: 'active'
 		});	
 		
 		
@@ -186,13 +186,12 @@ function associate(currentObj){
 					} else {
 						var currentDroppedItemId=$(ui.draggable).parentsUntil("li").parent().attr("id");
 						$(qti_item_id+" #"+currentObj["link"][currentDroppedItemId]+" div").show();
-						currentObj["maxMaxes"][currentObj["link"][currentDroppedItemId]]["current"]--;
+						currentObj["matchMaxes"][currentObj["link"][currentDroppedItemId]]["current"]--;
 						currentObj["link"][currentDroppedItemId]="null";
 					}
 				},
-				hoverClass: 'active_pair'
-			})
-				
+				hoverClass: 'active'
+			});
 		}
 	);	
 }
@@ -315,6 +314,103 @@ function hottext(currentObj){
 	});
 }
 
+function gap_match(currentObj){
+	
+	var qti_item_id = "#" + currentObj["id"];
+	
+	//add the container to the words cloud 
+	$(qti_item_id + " .qti_choice_list").wrap("<div class='qti_gap_match_container'></div>");
+	$(qti_item_id + " .qti_choice_list li").wrapInner("<div></div>");
+	
+	//add breaker
+	$(qti_item_id + " .qti_choice_list li:last").after("<li><div></div></li>");
+	$(qti_item_id + " .qti_choice_list li:last").css('clear', 'both');
+	
+	//manage the cloud height and the words width
+	$(qti_item_id+" .qti_choice_list").height(parseFloat($(".qti_gap_match_container").height()));
+	var maxBoxSize=0;
+	$(qti_item_id+" ul.qti_choice_list li > div").each(function(){	
+		if ($(this).width()>maxBoxSize){
+			maxBoxSize=$(this).width();		
+		}
+	});
+	maxBoxSize = ((parseInt(maxBoxSize)/2) + 5) + 'px';
+	$(qti_item_id+" .gap").css({"padding-left": maxBoxSize, "padding-right": maxBoxSize});
+	
+	//drag element from words cloud
+	$(qti_item_id+" .qti_gap_match_container .qti_choice_list li > div").draggable({
+		drag: function(event, ui){
+			// label go on top of the others elements
+			$(ui.helper).css("z-index","999");			
+		},
+		containment: qti_item_id,
+		revert: true,
+		cursor:"move"
+	});
+		
+	// pair box are droppable
+	$(qti_item_id+" .gap").droppable({
+		drop: function(event, ui){
+			// add class to highlight current dropped item in pair boxes
+			var draggedId = $(ui.draggable).parent().attr("id");
+			
+			if($(this).find("#gap_"+draggedId).length > 0 || /^gap_/.test($(ui.draggable).attr('id'))){
+				return false;
+			}
+
+			if($(this).html() == ''){
+				$(this).css({
+					"padding-left": '5px', 
+					"padding-right": '5px'
+				}).addClass('ui-state-highlight');
+			}
+			
+			// add new element inside the box that received the cloud element
+			$(this).html("<span id='gap_"+draggedId+"' class='filled_gap'>"+$(ui.draggable).text()+"</span>");
+			
+			var _matchMax = Number(currentObj["matchMaxes"][draggedId]["matchMax"]);
+			var _current = Number(currentObj["matchMaxes"][draggedId]["current"]);
+			
+			if (_current < _matchMax) {
+				_current++;
+				currentObj["matchMaxes"][draggedId]["current"] = _current;
+			}
+			if(_current >= _matchMax){
+				$(ui.draggable).hide();
+			}
+			
+			$(qti_item_id+" .filled_gap").draggable({
+				drag: function(event, ui){
+					// label go on top of the others elements
+					$(ui.helper).css("z-index","999");			
+				},
+				stop: function(){
+					var draggedId = $(this).attr("id").replace('gap_', '');
+					var _matchMax = Number(currentObj["matchMaxes"][draggedId]["matchMax"]);
+					var _current = Number(currentObj["matchMaxes"][draggedId]["current"]);
+					if (_current > 0) {
+						currentObj["matchMaxes"][draggedId]["current"] = _current - 1;
+					}
+					
+					$(this).parent().css({
+						"padding-left": maxBoxSize, 
+						"padding-right": maxBoxSize
+					}).removeClass('ui-state-highlight');
+					$(this).remove();
+					if(_current >= _matchMax){
+						$("#"+draggedId+" div").show();
+					}
+				},
+				revert: false,
+				containment: qti_item_id,
+				cursor:"move"
+			});
+			
+		},
+		hoverClass: 'active'
+	});	
+	
+}
 
 function qti_init(){
 	for (var a in qti_initParam){
@@ -361,6 +457,10 @@ function qti_init_items(initObj){
 		case "qti_hottext_interaction":
 			hottext(initObj);
 			resultMethod = hottext_result;
+			break;
+		case "qti_gap_match_interaction":
+			gap_match(initObj);
+			resultMethod = gap_match_result;
 			break;
 	}
 	
@@ -419,6 +519,14 @@ function hottext_result(id){
 	var result = new Array();
 	$("#" + id + " .hottext_choice_on").each(function(){
 		result.push(this.id.replace("/^hottext_choice_/", ''));
+	});
+	return result;
+}
+
+function gap_match_result(id){
+	var result = new Array();
+	$("#" + id + " .filled_gap").each(function(){
+		result.push([$(this).attr('id').replace('gap_', ''), $(this).parent().attr('id')]);
 	});
 	return result;
 }

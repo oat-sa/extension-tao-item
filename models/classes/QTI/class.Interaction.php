@@ -592,12 +592,20 @@ class taoItems_models_classes_QTI_Interaction
 		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
 		
 		//suffle the choices for the runtime if defined in the QTI
-		if( ((bool)$this->getOption('shuffle')) == true){
+		if( $this->getOption('shuffle') === true){
 			$variables['data'] = $this->shuffleChoices();
 		}
 		
    		$variables['data'] = preg_replace("/{prompt}/", "<p class='prompt'>{$this->prompt}</p>", $variables['data']);
-		
+    	switch($this->type){
+   			case 'associate':
+   			case 'choice':
+   			case 'order':
+   			case 'gapMatch':
+   				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
+   				break;
+   		}
+   			
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){
    			foreach($this->getGroups() as $group){
@@ -608,9 +616,6 @@ class taoItems_models_classes_QTI_Interaction
 			}
    		}
    		else{
-   			if($this->type != 'hottext'){
-   				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
-   			}
    			foreach($this->getChoices() as $choice){
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
