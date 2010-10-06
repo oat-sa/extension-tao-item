@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI_Service gives you a central access to the managment methods of the
  * objects
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_models_classes_Service
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('tao/models/classes/class.Service.php');
 
@@ -35,7 +35,7 @@ require_once('tao/models/classes/class.Service.php');
  * objects
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -53,7 +53,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Item instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Item
      */
@@ -74,7 +74,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Interaction instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string serial
      * @return doc_Interaction
      */
@@ -95,7 +95,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Response instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Response
      */
@@ -116,7 +116,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Data child instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string serial
      * @param  string type
      * @return taoItems_models_classes_QTI_Data
@@ -156,7 +156,7 @@ class taoItems_models_classes_QTI_Service
      * Short description of method getComposingData
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Data composed
      * @return taoItems_models_classes_QTI_Data
      */
@@ -177,7 +177,7 @@ class taoItems_models_classes_QTI_Service
         	$methodName = 'get'.ucfirst($propertyName);
         }
         
-        $instances = taoItems_models_classes_QTI_Data::$_instances;
+		$instances = taoItems_models_classes_QTI_Data::$_instances;
         foreach(Session::getAttributeNames() as $attrKey){
         	if(preg_match("/^".taoItems_models_classes_QTI_Data::PREFIX."/", $attrKey)){
         		if(!in_array($attrKey, $instances)){
@@ -188,6 +188,11 @@ class taoItems_models_classes_QTI_Service
         
         foreach($instances as $serial){
         	$instance = $this->getDataBySerial($serial);
+			
+			if(is_null($instance)){
+				//newly constructed object, that has not been saved into session yet.
+				continue;
+			}
         	$rObject  = new ReflectionObject($instance);
         	if($rObject->hasProperty($propertyName)){
         		foreach($instance->$methodName() as $attribute){
@@ -205,6 +210,35 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1-fba198:12b7c55f735:-8000:00000000000025B8 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method saveDataToSession
+     *
+     * @access public
+     * @author firstname and lastname of author, <author@example.org>
+     * @param  Data qtiObject
+     * @return boolean
+     */
+    public function saveDataToSession( taoItems_models_classes_QTI_Data $qtiObject)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-13-1-39-11450a84:12b8101447d:-8000:00000000000028DE begin
+		if(!is_null($qtiObject)){
+			if(taoItems_models_classes_QTI_Data::$persist == false){
+				throw new Exception("Cannot save data to session when persistence is disabled");
+			}else{
+				Session::setAttribute(taoItems_models_classes_QTI_Data::PREFIX . $qtiObject->getSerial(), serialize($qtiObject));
+				$returnValue = true;
+				
+				//need to wakup the object to allow reuse in the rest of the script
+				$qtiObject->__wakeup();
+			}
+		}
+        // section 10-13-1-39-11450a84:12b8101447d:-8000:00000000000028DE end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Service */
