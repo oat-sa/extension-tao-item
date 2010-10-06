@@ -127,7 +127,7 @@ class QtiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
-		// var_dump($currentItem);
+		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
@@ -327,6 +327,7 @@ class QtiAuthoring extends CommonModule {
 		$returnValue = null;
 		if($this->hasRequestParameter('interactionSerial')){
 			$interaction = $this->qtiService->getInteractionBySerial($this->getRequestParameter('interactionSerial'));
+			
 			if(!empty($interaction)){
 				$returnValue = $interaction;
 			}
@@ -453,6 +454,61 @@ class QtiAuthoring extends CommonModule {
 		$this->setView($templateName);
 	}
 	
+	//called on interaction edit form loaded
+	//called when the choices forms need to be reloaded
+	public function editChoices(){
+		
+		$interaction = $this->getCurrentInteraction();
+		
+		//get the itnteraction's choices
+		$choices = $this->service->getInteractionChoices($interaction);
+		$choiceForms = array();
+		
+		$interactionType = strtolower($interaction->getType());
+		switch($interactionType){
+			case 'match':{
+				$i = 0;
+				$groupSerials = array();
+				foreach($choices as $groupSerial=>$group){
+					
+					$groupSerials[$i] = $groupSerial;
+					$choiceForms[$groupSerial] = array();
+					foreach($group as $choice){
+						$choiceForms[$groupSerial][$choice->getSerial()] = $choice->toForm()->render();
+					}
+					$i++;
+				}
+				$this->setData('groupSerials', $groupSerials);
+				break;
+			}
+			case 'gapmatch':{
+				//get group form:
+				$groupForms = array();
+				foreach($this->service->getInteractionGroups($interaction) as $group){
+					//order does not matter:
+					$groupForms[] = $group->toForm($interaction)->render();
+				}
+				$this->setData('formGroups', $groupForms);
+				
+				//get choice forms:
+				foreach($choices as $order=>$choice){
+					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
+				}
+				break;
+			}
+			default:{
+				//get choice forms:
+				foreach($choices as $order=>$choice){
+					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
+				}
+			}
+		}
+		
+		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
+		$this->setData('formChoices', $choiceForms);
+		$this->setData('orderedChoices', $choices);
+		$this->setView($templateName);
+	}
 	
 	public function saveInteraction(){
 	
@@ -574,7 +630,7 @@ class QtiAuthoring extends CommonModule {
 		$added = false;
 		$groupSerial = '';//a gap basically is a "group", the content of which is by default all available choices in the interaction
 		$textContent = '';
-		
+		$interaction = null;
 		$interaction = $this->getCurrentInteraction();
 		$interactionData = urldecode($this->getRequestParameter('interactionData'));
 		
@@ -591,7 +647,7 @@ class QtiAuthoring extends CommonModule {
 		echo json_encode(array(
 			'added' => $added,
 			'groupSerial' => $groupSerial,
-			'groupForm' => $group->toForm($interaction)->render(),
+			'groupForm' => $group->toForm()->render(),
 			'interactionData' => html_entity_decode($interactionData)
 		));
 	}

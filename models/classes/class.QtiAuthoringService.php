@@ -396,6 +396,8 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			
 			$interaction->addChoice($choice);
+			$this->qtiService->saveDataToSession($choice);
+			
 			if($interactionType == 'match'){
 				//insert into group: which group?
 				if(is_null($group)){
@@ -410,7 +412,9 @@ class taoItems_models_classes_QtiAuthoringService
 					//append to the choice list:
 					$group->addChoices(array($choice));//add 1 choice
 					$group->setData($group->getData().'{'.$choice->getSerial().'}');
+					$this->qtiService->saveDataToSession($group);
 				}
+				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
 			}else if($interactionType == 'hottext'){
 				//do replacement of the new hottext tag:
 				$count = 0;
@@ -430,7 +434,7 @@ class taoItems_models_classes_QtiAuthoringService
 				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
 			}
 			
-			
+			$this->qtiService->saveDataToSession($interaction);
 			$returnValue = $choice;
 		}
 		
@@ -442,9 +446,10 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = null;
 		
 		if(!is_null($interaction)){
+			
 			$group = new taoItems_models_classes_QTI_Group();
 			foreach($this->getInteractionChoices($interaction) as $choice){
-				$group->addChoices($choice);
+				$group->addChoices(array($choice));
 			}
 			
 			if(strtolower($interaction->getType()) == 'gapmatch'){
@@ -462,8 +467,12 @@ class taoItems_models_classes_QtiAuthoringService
 					$interaction->setData($interaction->getData().'{'.$group->getSerial().'}');
 				}
 			}
-				
+			
 			$interaction->addGroup($group);
+			
+			//saving group and interaction into session
+			$this->qtiService->saveDataToSession($group);
+			$this->qtiService->saveDataToSession($interaction);
 			
 			$returnValue = $group;
 		}
@@ -785,6 +794,10 @@ class taoItems_models_classes_QtiAuthoringService
 			case 'gapmatch':{
 				//for THE choice order, get all groups:
 				//for each group, delete not assigned choice from the array, then save the remaining choices, which are on a correct order already:
+				if(empty($choiceOrder)){
+					//restore the choice order in case it has not changed
+					$choiceOrder = $this->getInteractionChoices($interaction);
+				}
 				foreach($interaction->getGroups() as $group){
 					//save the "gapText" in the appropriate order:
 					$this->setGroupData($group, $choiceOrder, $interaction, true);
@@ -792,7 +805,7 @@ class taoItems_models_classes_QtiAuthoringService
 					//save the "gap" in the interaction data
 					$count = 0;
 					//TODO: set the change tag regular expression listener
-					$data = str_replace($this->getGapTag($group), "{{$group->getSerial()}}", $data, $count);
+					$data = str_replace($this->getGroupTag($group), "{{$group->getSerial()}}", $data, $count);
 				}
 				
 				//save the choices in the interaction data:
@@ -844,7 +857,7 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 			
-			$groupData .= "{{$choiceSerial}}";
+			$groupData .= "{{$choiceSerial}}";//necessary??
 			
 		}
 		

@@ -32,9 +32,15 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
      */
     protected $interaction = null;
 	
-	public function __construct(taoItems_models_classes_QTI_Choice $choice, taoItems_models_classes_QTI_Interaction $interaction){
+	public function __construct(taoItems_models_classes_QTI_Choice $choice){
+		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$interaction = $qtiService->getComposingData($choice);
+		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
+			$this->interaction = $interaction;
+		}else{
+			throw new Exception('cannot find the parent interaction');
+		}
 		
-		$this->interaction = $interaction;
 		$returnValue = parent::__construct($choice);
 		
 	}
@@ -45,19 +51,27 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'CheckBox');
 		$matchGroupElt->setDescription(__('match group'));
-		$options = array();
-		foreach($this->interaction->getChoices() as $choice){
-			$options[$choice->getSerial()] = $choice->getIdentifier();
-		}
-		$matchGroupElt->setOptions($options);
+		$matchGroupElt->setOptions($this->getMatchGroupOptions());
 		
-		$matchGroups = $choice->getOption('matchGroup');
+		$matchGroups = $this->choice->getOption('matchGroup');
 		if(!empty($matchGroups)){
-			foreach($matchGroups as $choice){
-				$matchGroupElt->setValue($choice->getSerial());
+			foreach($matchGroups as $choiceSerial){
+				$matchGroupElt->setValue($choiceSerial);
 			}
 		}//default empty values indicates to the authoring controller that there is no restriction to the associated choices
 		$this->form->addElement($matchGroupElt);
+		
+	}
+	
+	protected function getMatchGroupOptions(){
+	
+		$options = array();
+		
+		foreach($this->interaction->getChoices() as $choice){
+			$options[$choice->getSerial()] = $choice->getIdentifier();
+		}
+		
+		return $options;
 		
 	}
 

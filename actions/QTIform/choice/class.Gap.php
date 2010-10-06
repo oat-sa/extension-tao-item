@@ -22,7 +22,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @subpackage actions_form
  */
 class taoItems_actions_QTIform_choice_Gap
-    extends taoItems_actions_QTIform_choice_Choice{
+    extends tao_helpers_form_FormContainer{
 	
 	/**
      * the class resource to create the form from
@@ -40,18 +40,38 @@ class taoItems_actions_QTIform_choice_Gap
      */
     protected $interaction = null;
 	
+	protected $formName = 'ChoiceForm_';
+	
 	//the group is a choice here!!
-	public function __construct(taoItems_models_classes_QTI_Group $group, taoItems_models_classes_QTI_Interaction $interaction){
+	public function __construct(taoItems_models_classes_QTI_Group $group){
 		
 		$this->group = $group;
-		$this->formName = 'ChoiceForm_'.$this->group->getSerial();
-		$this->interaction = $interaction;
-		// try{
-			$returnValue = parent::__construct(null);
-		// }catch(Exception $e){
-			// echo $e;
-		// }
+		$this->formName = 'ChoiceForm_'.$this->group->getSerial();//GroupForm...however it is considered as a choice
+		
+		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$interaction = $qtiService->getComposingData($group);
+		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
+			$this->interaction = $interaction;
+		}else{
+			var_dump($group, $interaction);
+			throw new Exception('cannot find the parent interaction');
+		}
+		
+		$returnValue = parent::__construct(array(), array());
 	}
+	
+	/**
+     * The method initForm for all types of choice form
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @return mixed
+     */
+    public function initForm()
+    {
+		$this->form = tao_helpers_form_FormFactory::getForm($this->formName);
+		$this->form->setActions(array(), 'bottom');
+    }
 	
 	public function initElements(){
 		
@@ -90,8 +110,8 @@ class taoItems_actions_QTIform_choice_Gap
 		}
 		$matchGroupElt->setOptions($options);
 		
-		foreach($this->group->getChoices() as $choice){
-			$matchGroupElt->setValue($choice->getSerial());
+		foreach($this->group->getChoices() as $choiceSerial){
+			$matchGroupElt->setValue($choiceSerial);
 		}//the default empty value indicates to the authoring controller that there is no restriction to the associated choices
 				
 		$this->form->addElement($matchGroupElt);

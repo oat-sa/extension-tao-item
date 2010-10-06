@@ -93,11 +93,16 @@ qtiEdit.addInteraction = function(interactionType, itemData, itemSerial){
 }
 
 qtiEdit.deleteInteractions = function(interactionSerials){
-
+	
+	if(!interactionSerials || interactionSerials.length <=0){
+		return false;
+	}
+	
 	var data = '';
 	//prepare the data to be sent:
 	for(var i in interactionSerials){
 		data += 'interactionSerials['+ i +']=' + interactionSerials[i] + '&';
+		delete qtiEdit.interactions[interactionSerials[i]];
 	}
 	data += 'itemSerial=' + qtiEdit.itemSerial;
 	
@@ -122,6 +127,13 @@ qtiEdit.deleteInteractions = function(interactionSerials){
 				
 				//save item data, i.e. validate the changes operated on the item data:
 				qtiEdit.saveItemData();
+				
+			}else{
+			
+				for(var i in interactionSerials){
+					qtiEdit.interactions[interactionSerials[i]] = interactionSerials[i];
+				}
+				
 			}
 			
 	   }

@@ -1,4 +1,4 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
@@ -121,7 +121,7 @@ interactionEdit.toggleChoiceOptions = function($group, options){
 		if($('#delete_'+groupId).length){
 			$('#delete_'+groupId).remove();
 		}
-		
+		CL('delete', options);
 		if(options.delete){
 			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control ui-icon ui-icon-circle-close"></span>');
 			$group.before($deleteElt);
@@ -461,6 +461,8 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 }
 
 interactionEdit.deleteChoice = function(choiceSerial){
+	delete interactionEdit.choices[choiceSerial];
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/deleteChoice",
@@ -474,9 +476,9 @@ interactionEdit.deleteChoice = function(choiceSerial){
 				$('#'+choiceSerial).remove();
 				//TODO: need to be optimized: only after the last choice saving
 				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
-				delete interactionEdit.choices[choiceSerial];
-				
 				interactionEdit.saveInteractionData();
+			}else{
+				interactionEdit.choices[choiceSerial] = choiceSerial;
 			}
 	   }
 	});
@@ -671,6 +673,7 @@ interactionEdit.buildInteractionEditor = function(interactionDataContainerSelect
 							interactionEdit.deleteChoice(deletedChoices[key]);
 						}
 					}
+					return false;
 				}
 			  }
 		}

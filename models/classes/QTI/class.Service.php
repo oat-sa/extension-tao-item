@@ -196,10 +196,12 @@ class taoItems_models_classes_QTI_Service
         	$rObject  = new ReflectionObject($instance);
         	if($rObject->hasProperty($propertyName)){
         		foreach($instance->$methodName() as $attribute){
-        			if($attribute->getSerial() == $composed->getSerial()){
-        				$returnValue = $instance;
-        				break;
-        			}
+					if($attribute instanceof taoItems_models_classes_QTI_Data){
+						if($attribute->getSerial() == $composed->getSerial()){
+							$returnValue = $instance;
+							break;
+						}
+					}
         		}
         	}
         	if(!is_null($returnValue)){

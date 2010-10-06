@@ -369,11 +369,8 @@ $(document).ready(function(){
 				qtiEdit.deleteInteractions(deletedInteractions);
 				
 			}
+			return false;
 		}
-		// if ($('#click-inform:checked').length > 0){
-		  // e.preventDefault();
-		  // alert('You have clicked jWysiwyg content!');
-		// }
 	  }
     }
   });
