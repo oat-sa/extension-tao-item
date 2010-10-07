@@ -193,6 +193,13 @@ class taoItems_models_classes_QTI_Group
 				$variables[$property->getName()] = $this->{$property->getName()};
 			}
 		}
+		
+    	if($this->type != 'gap'){
+        	foreach($this->getChoices() as $choiceSerial){
+				$variables['data'] .= "{{$choiceSerial}}";
+			}
+        }	
+		
 		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
         

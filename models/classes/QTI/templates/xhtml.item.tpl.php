@@ -17,11 +17,9 @@
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript">
-		var data_container = new Object();
 		var qti_initParam  = new Object();
-		data_container.init =qti_initParam;
 		$(document).ready(function(){
-			qti_init();	
+			qti_init(qti_initParam);	
 		});
 	</script>
 
