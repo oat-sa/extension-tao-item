@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
+		<script type="application/javascript" src='http://waterphoenix.local/src/lib/oo/class.js'></script>
+		<script type="application/javascript" src='qti_api.js'></script>
+		<script type="application/javascript">
+			// Corrects vars defined through the responseDeclaration
+			var corrects = [];
+			var correctsSerialized = "[ \
+				{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:['choiceB']} \
+				, {identifier:'RESPONSE3', type:'pair', cardinality:'multiple', values:[['A', 'B'], ['C', 'D']]} \
+			]";
+			corrects = unserializedQTIVariables (correctsSerialized);
+			
+			// Variables defined through user's interactions
+			var variables = [];
+			var variablesSerialized = "[ \
+				{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:['choiceB']} \
+				, {identifier:'RESPONSE2', type:'pair', cardinality:'multiple', values:[['A', 'B'], ['C', 'D']]} \
+				, {identifier:'RESPONSE3', type:'pair', cardinality:'multiple', values:[['C', 'D'], ['A', 'B']]} \
+			]";
+			variables = unserializedQTIVariables (variablesSerialized);
+			
+			// Mapping defined through the responseDeclaration
+			var maps = [];
+			var mapsSerialized = "[ \
+				{identifier:'RESPONSE2', type:'pair', cardinality:'multiple', values:[[['A', 'B'], 1], [['A', 'D'], 0.5]]} \
+			]";
+			maps = unserializedQTIVariables (mapsSerialized, {containerType:'map'});
+			
+			// SET OF RULES
+			var rules = [];
+			rules['match1'] = "match(getVariable('RESPONSE'), getCorrect('RESPONSE'))";
+			rules['match2'] = "match(getVariable('RESPONSE3'), getCorrect('RESPONSE3'))";
+			rules['match3'] = "match(getVariable('RESPONSE3'), getCorrect('RESPONSE3'), true)";
+			rules['map'] = "map(getVariable('RESPONSE2'), getMap('RESPONSE2'))";
+			
+			var evalClientRule = function (ruleName) {
+				var result = eval (rules[ruleName]);
+				console.log (ruleName + ' = ' + result);
+			};
+			var evalServerRule = function (ruleName) {
+				
+			};
+			
+			$(function(){
+				$('button').click(function(){
+					var splitId = this.id.split('_');
+					switch (splitId[0]){
+						case 'cl':
+							evalClientRule (splitId[1]);
+							break;
+						case 'sv':
+							evalServerRule (splitId[1]);
+							break;
+					}
+				});
+			});
+		</script>
+	</head>
+	
+	<body>
+		<table border="1">
+			<tr>
+				<td> Rules </td>
+				<td> Client side </td>
+				<td> Server side </td>
+			</tr>
+			<tr>
+				<td> match (multiple identifier) </td>
+				<td> <button id="cl_match1">client</button> </td>
+				<td> <button id="sv_match1">server</button> </td>
+			</tr>
+			<tr>
+				<td> match (multiple pair unordered) </td>
+				<td> <button id="cl_match2">client</button> </td>
+				<td> <button id="sv_match2">server</button> </td>
+			</tr>
+			<tr>
+				<td> match (multiple pair ordered) </td>
+				<td> <button id="cl_match3">client</button> </td>
+				<td> <button id="sv_match3">server</button> </td>
+			</tr>
+			<tr>
+				<td> map </td>
+				<td> <button id="cl_map">client</button> </td>
+				<td> <button id="sv_map">server</button> </td>
+			</tr>
+		</table>
+		<br/>
+	</body>
+</html>

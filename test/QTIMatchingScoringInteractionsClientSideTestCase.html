@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QUnit Test Suite</title>
+	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
+	<script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
+	<script type="application/javascript" src='http://waterphoenix.local/src/lib/oo/class.js'></script>
+	<script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
+	<script type="application/javascript" src="./qti_labs/client/qti_tools.js"></script>
+	<script type="application/javascript" src="./qti_labs/client/qti_object_model.js"></script>
+	<script type="application/javascript" src="./qti_labs/client/qti_api.js"></script>
+	
+	<!-- -------------------------------------------------------------------------
+	UNIT TESTS
+	--------------------------------------------------------------------------->
+	<script type="application/javascript">
+		test("match_correct | choice.xml", function() {
+			var qtiMatching = new QTIMatching ();
+			var outcomesSerialized ='[{"identifier":"SCORE", "type":"float", "cardinality":"single", "values":[]}]';
+			var outcomesVar = unserializedQTIVariables (outcomesSerialized);
+			qtiMatching.setOutcomes (outcomesVar);
+			var correctsSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"single", "values":["ChoiceA"]}]';
+			var correctsVar = unserializedQTIVariables (correctsSerialized);
+			qtiMatching.setCorrects (correctsVar);
+			var variablesSerialized = "[{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:['ChoiceA']}]";
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			var mapsSerialized = "[{identifier:'RESPONSE4_1', type:'pair', cardinality:'multiple', values:[[['A', 'B'], 1], [['C', 'D'], 0.5], [['E', 'F'], 0.1]]}]";
+			var mapsVar = unserializedQTIVariables (mapsSerialized, {containerType:'map'});
+			qtiMatching.setMaps (mapsVar);
+			
+			var rule = "if(match(getVariable('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);";
+			qtiMatching.setRule (rule);
+			qtiMatching.evalResponseProcessing ();
+			var score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 1, "Correct choice <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+			" );
+			
+			variablesSerialized = "[{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:['ChoiceB']}]";
+			variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			qtiMatching.evalResponseProcessing ();
+			score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 0, "Uncorrect choice <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+			" );
+			
+			variablesSerialized = "[{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:[]}]";
+			variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			qtiMatching.evalResponseProcessing ();
+			score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 0, "Empty response <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+			" );
+		});
+		
+		test("map_response | choice_multiple.xml", function() {
+			var qtiMatching = new QTIMatching ();
+			var outcomesSerialized ='[{"identifier":"SCORE", "type":"integer", "cardinality":"single", "values":[]}]';
+			var outcomesVar = unserializedQTIVariables (outcomesSerialized);
+			qtiMatching.setOutcomes (outcomesVar);
+			var correctsSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"multiple", "values":["H", "O"]}]';
+			var correctsVar = unserializedQTIVariables (correctsSerialized);
+			qtiMatching.setCorrects (correctsVar);
+			var variablesSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"multiple", "values":["H", "O"]}]'
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			var mapsSerialized = "[{identifier:'RESPONSE', type:'identifier', cardinality:'multiple', values:[[['H'], 1], [['O'], 1], [['Cl'], -1]]}]";
+			var mapsVar = unserializedQTIVariables (mapsSerialized, {containerType:'map'});
+			qtiMatching.setMaps (mapsVar);
+			
+			var rule = "if (isNull(getVariable('RESPONSE'))) setOutcomeValue('SCORE', 0); else setOutcomeValue('SCORE', mapResponse(getVariable('RESPONSE'), getMap('RESPONSE')));";
+			qtiMatching.setRule (rule);
+			
+			qtiMatching.evalResponseProcessing ();
+			var score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 2, "Correct choice <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+				map var : "+qtiMatching.getMap('RESPONSE').toJson()+" <br/> \
+			" );
+			
+			qtiMatching.setOutcomeValue('SCORE', 0); //reset score
+			variablesSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"multiple", "values":["H", "Cl", "Cl", "Cl"]}]'
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			qtiMatching.evalResponseProcessing ();
+			score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 0, "1 negative response, 1 good response <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+				map var : "+qtiMatching.getMap('RESPONSE').toJson()+" <br/> \
+			" );
+			
+			qtiMatching.setOutcomeValue('SCORE', 0); //reset score
+			variablesSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"multiple", "values":["H", "Cl", "Cl", "Cl", "O"]}]'
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			qtiMatching.evalResponseProcessing ();
+			score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 1, "1 negative response, 2 good response <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+				map var : "+qtiMatching.getMap('RESPONSE').toJson()+" <br/> \
+			" );
+			
+			qtiMatching.setOutcomeValue('SCORE', 0); //reset score
+			variablesSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"multiple", "values":[]}]'
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			qtiMatching.evalResponseProcessing ();
+			score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 0, "Empty response <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+				map var : "+qtiMatching.getMap('RESPONSE').toJson()+" <br/> \
+			" );
+		});
+
+		test("match_correct | order.xml", function() {
+			var qtiMatching = new QTIMatching ();
+			var outcomesSerialized ='[{"identifier":"SCORE", "type":"integer", "cardinality":"single", "values":[]}]';
+			var outcomesVar = unserializedQTIVariables (outcomesSerialized);
+			qtiMatching.setOutcomes (outcomesVar);
+			var correctsSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"ordered", "values":["DriverC", "DriverA", "DriverB"]}]';
+			var correctsVar = unserializedQTIVariables (correctsSerialized);
+			qtiMatching.setCorrects (correctsVar);
+			var variablesSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"ordered", "values":["DriverC", "DriverA", "DriverB"]}]';
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			
+			var rule = "if(match(getVariable('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);";
+			qtiMatching.setRule (rule);
+			
+			qtiMatching.evalResponseProcessing ();
+			var score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 1, "Correct choice <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+			" );
+
+			qtiMatching.setOutcomeValue('SCORE', 0); //reset score
+			var variablesSerialized = '[{"identifier":"RESPONSE", "type":"identifier", "cardinality":"ordered", "values":["DriverC", "DriverB", "DriverA"]}]';
+			var variablesVar = unserializedQTIVariables (variablesSerialized);
+			qtiMatching.setVariables (variablesVar);
+			qtiMatching.evalResponseProcessing ();
+			score = qtiMatching.getOutcome('SCORE').values[0];
+			equals(score, 0, "Bad choice <br/> \
+				rule : "+ rule +"<br/> \
+				corrrect var : "+qtiMatching.getCorrect('RESPONSE').toJson()+" <br/> \
+				user var : "+qtiMatching.getVariable('RESPONSE').toJson()+" <br/> \
+			" );
+		});
+
+
+	</script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup</div>
+</body>
+</html>
