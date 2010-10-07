@@ -114,7 +114,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getGroupTag(taoItems_models_classes_QTI_Group $group){
 		$returnValue = '';
-		$returnValue .= "<input type='button' id='{$group->getSerial()}' class='qti_group_link' value='{$group->getType()}'/>";
+		$returnValue .= "<input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_group_link\" value=\"{$group->getType()}\"/>";
 		
 		return $returnValue;
 	}
@@ -460,11 +460,16 @@ class taoItems_models_classes_QtiAuthoringService
 					$interactionData = str_replace("{qti_gap_new}", "{{$group->getSerial()}}", $interactionData, $count);
 				}
 				
+				//reappend to the interaction data, the stripped choice data
+				$choicesData = '';
+				foreach($interaction->getChoices() as $choice){
+					$choicesData .= "{{$choice->getSerial()}}";
+				}
+				
 				if($count){
-					$interaction->setData($interactionData);
+					$interaction->setData($interactionData.$choicesData);
 				}else{
-					//
-					$interaction->setData($interaction->getData().'{'.$group->getSerial().'}');
+					$interaction->setData($interaction->getData().'{'.$group->getSerial().'}'.$choicesData);
 				}
 			}
 			
@@ -1003,6 +1008,21 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				break;
 			}
+			case 'gapmatch':{
+				$groups = array();//list of gaps
+				foreach($interaction->getGroups() as $group){
+					$groups[] = $group->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
+				}
+				$returnValue[] = $this->getInteractionResponseColumn(1, 'select', $groups);
+				
+				$choices = array();//list of gapTexts
+				foreach($interaction->getChoices() as $choice){
+					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
+				}
+				$returnValue[] = $this->getInteractionResponseColumn(2, 'select', $choices);
+				
+				break;
+			}
 			case 'inlinechoice':{
 				$choices = array(); 
 				foreach($interaction->getChoices() as $choice){
@@ -1064,6 +1084,32 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
+	private function getInteractionResponseColumn($index, $editType, $choices, $options = array()){
+	
+		$returnValue = array();
+		
+		if(intval($index)>0 && !empty($editType)){
+		
+			$returnValue['name'] = 'choice'.intval($index);
+			$returnValue['edittype'] = $editType;
+			
+			$label = __('Choice').' '.intval($index);
+			if(!empty($options)){
+				if(isset($options['label'])){
+					$label = $options['label'];
+				}
+			}
+			$returnValue['label'] = $label;
+			
+			if(is_array($choices)){
+				$returnValue['values'] = $choices;
+			}
+			
+		}
+		
+		return $returnValue;
+	}
+	
 	//is a template or custome, if a template, which one?
 	public function getResponseProcessingType(taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing = null){
 		$returnValue = '';
@@ -1087,21 +1133,25 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function getInteractionChoiceByIdentifier(taoItems_models_classes_QTI_Interaction $interaction, $identifier){
-	
+		$interactionType = strtolower($interaction->getType());
+		
 		if(!is_null($interaction) && !empty($identifier)){
 			foreach($interaction->getChoices() as $choice){
 				if($choice->getIdentifier() == $identifier){
 					return $choice;
 				}
 			}
-			//search in group as well:
-			foreach($interaction->getGroups() as $group){
-				foreach($interaction->getChoices() as $choice){
-					if($choice->getIdentifier() == $identifier){
-						return $choice;
+			
+			if($interactionType == 'gapmatch'){
+				//search group too to find the "gaps"
+				foreach($interaction->getGroups() as $group){
+					if($group->getIdentifier() == $identifier){
+						return $group;
 					}
 				}
 			}
+			//note: for other types of interaction, there is no need for searching within group as the chocies are attached to the interaction too
+			
 		}
 		
 		return null;
@@ -1148,7 +1198,9 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'associate':
-				case 'match':{
+				case 'match':
+				case 'gapmatch':{
+					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;
 						if(!empty($response['choice1']) && !empty($response['choice2'])){
@@ -1170,7 +1222,7 @@ class taoItems_models_classes_QtiAuthoringService
 							}
 						}
 					}
-					// var_dump($correctResponses,$mapping);
+					// var_dump($correctResponses,$mapping);exit;
 					break;
 				}
 				case 'order':{
@@ -1337,7 +1389,7 @@ class taoItems_models_classes_QtiAuthoringService
 						//set data as not persistent
 						foreach($choiceSerials as $choiceSerial){
 							
-							$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+							$choice = $this->qtiService->getDataBySerial($choiceSerial);//no type check here: could be either a choice or a group
 							if(is_null($choice)){
 								break(2);//important: do not take into account deleted choice
 							}
@@ -1363,7 +1415,7 @@ class taoItems_models_classes_QtiAuthoringService
 						
 						$j = 1;//j<=2
 						foreach($choiceSerials as $choiceSerial){
-							$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+							$choice = $this->qtiService->getDataBySerial($choiceSerial);//no type check: could be either a choice or a group
 							if(is_null($choice)){
 								break(2);//important: do not take into account deleted choice
 							}

@@ -51,14 +51,20 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'CheckBox');
 		$matchGroupElt->setDescription(__('match group'));
-		$matchGroupElt->setOptions($this->getMatchGroupOptions());
+		$matchGroupOption = $this->getMatchGroupOptions();
+		$matchGroupElt->setOptions($matchGroupOption);
 		
 		$matchGroups = $this->choice->getOption('matchGroup');
 		if(!empty($matchGroups)){
 			foreach($matchGroups as $choiceSerial){
 				$matchGroupElt->setValue($choiceSerial);
 			}
-		}//default empty values indicates to the authoring controller that there is no restriction to the associated choices
+		}else{
+			//default empty values indicates to the authoring controller that there is no restriction to the associated choices
+			foreach($matchGroupOption as $choiceSerial=>$choiceIdentifier){
+				$matchGroupElt->setValue($choiceSerial);
+			}
+		}
 		$this->form->addElement($matchGroupElt);
 		
 	}
