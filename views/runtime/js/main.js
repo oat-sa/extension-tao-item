@@ -516,7 +516,55 @@ function QTIWidget(options){
 			hoverClass: 'active'
 		});	
 	};
-
+	
+	this.match = function(){
+		
+		$(qti_item_id + " .choice_list:last").addClass('choice_list_cols');
+		var cols = new Array();
+		$(qti_item_id + " .choice_list_cols li").each(function(){
+			cols.push(this.id);
+		});
+		
+		$(qti_item_id + " .choice_list:first").addClass('choice_list_rows');
+		var rows = new Array();
+		$(qti_item_id + " .choice_list_rows li").each(function(){
+			rows.push(this.id);
+		});
+		
+		$(qti_item_id + " .choice_list_cols").after("<div class='match_node_container'></div>");
+		
+		$(qti_item_id + " .match_node_container").height(parseInt( $(qti_item_id + " .choice_list:first").height()));
+		$(qti_item_id + " .match_node_container").css('left', $(qti_item_id + " .choice_list_rows").width());
+		
+		var i = 0;
+		while(i < rows.length){
+			var xnode = 'xnode_' + rows[i];
+			var j = 0;
+			while(j < cols.length){
+				var ynode = 'ynode_' + cols[j];
+				var node_id = 'match_node_'+i+'_'+j;
+				
+				$(qti_item_id + " .match_node_container").append("<div id='"+node_id+"' class='match_node "+xnode+" "+ynode+"'></div>");
+				
+				left = 0;
+				if(j > 0){
+					p = $("#"+ 'match_node_'+i+'_'+(j-1)).position();
+					left = parseInt(p.left)  + parseInt($("#"+ 'match_node_'+i+'_'+(j-1)).width()) + (10);
+				}
+				$(qti_item_id + " #"+node_id).css({
+					'top' 	: (i * 25) + 'px',
+					'left'	: left + 'px',
+					'width'	: $("#"+ cols[j]).width()
+				});
+				j++;
+			}
+			i++;
+		}
+		$(qti_item_id + " .match_node").click(function(){
+			$(this).toggleClass('tabActive');
+		});
+		
+	};
 }
 
 
@@ -587,6 +635,24 @@ function QTIResultCollector(id){
 	};
 	
 	this.match = function(){
-		return [];
+		var result = new Array();
+		$("#" + id + " .tabActive").each(function(){
+			var subset = new Array();
+			var classes = $(this).attr('class').split(' ');
+			if(classes.length > 0){
+				var i = 0;
+				while(i < classes.length){
+					if(/^xnode_/.test(classes[i])){
+						subset[0] = classes[i].replace('xnode_', '');
+					}
+					if(/^ynode_/.test(classes[i])){
+						subset[1] = classes[i].replace('ynode_', '');
+					}
+					i++;
+				}
+				result.push(subset);
+			}
+		});
+		return result;
 	};
 }

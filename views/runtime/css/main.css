@@ -276,6 +276,44 @@ textarea{
 	background-color:#ccc;
 }
 
+/* Match */
+
+.qti_match_interaction .choice_list li {
+	line-height:25px;
+	padding:0px 5px 0px 5px;
+	font-weight:bold;
+	color:#555;
+	background-color: #eee;
+}
+.qti_match_interaction .choice_list_cols li{
+	display:inline;
+	padding:5px;
+	border-right: solid 1px #ccc;
+}
+.qti_match_interaction .choice_list_rows{
+	float:left;
+	padding-top:25px;
+}
+.qti_match_interaction .match_node_container{
+	position:relative;
+}
+
+.qti_match_interaction .match_node{
+	position:absolute;
+	width:16px;
+	height:25px;
+	padding:0px 5px 0px 5px;
+	background:url(../img/choice_multi_off.png) no-repeat;
+	background-position: center center;
+	cursor:pointer;
+}
+
+.qti_match_interaction .tabActive{
+	background:url(../img/choice_multi_on.png) no-repeat;
+	background-position: center center;
+}
+
+
 /* validation button */
 a#qti_validate{
 	position:absolute;
