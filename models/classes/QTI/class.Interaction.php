@@ -459,7 +459,7 @@ class taoItems_models_classes_QTI_Interaction
      * @param  boolean recursive
      * @return boolean
      */
-    public function removeGroup( core_kernel_classes_Group $group, $recursive = false)
+    public function removeGroup( taoItems_models_classes_QTI_Group $group, $recursive = false)
     {
         $returnValue = (bool) false;
 

@@ -114,7 +114,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getGroupTag(taoItems_models_classes_QTI_Group $group){
 		$returnValue = '';
-		$returnValue .= "<input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_group_link\" value=\"{$group->getType()}\"/>";
+		$returnValue .= "<input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_choice_link\" value=\"{$group->getType()}\"/>";
 		
 		return $returnValue;
 	}

@@ -44,7 +44,7 @@ $(document).ready(function(){
 	//add move up and down button to choices only (not groups!!)
 	interactionEdit.orderedChoices = [];
 	<?foreach(get_data('orderedChoices') as $order => $choice):?>
-	interactionEdit.orderedChoices['<?=$order?>'].push('<?=$choice->getSerial()?>');
+	interactionEdit.orderedChoices[<?=$order?>] = '<?=$choice->getSerial()?>';
 	<?endforeach;?>
 	
 	interactionEdit.setOrderedChoicesButtons(interactionEdit.orderedChoices);

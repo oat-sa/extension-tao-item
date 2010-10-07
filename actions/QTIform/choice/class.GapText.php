@@ -39,6 +39,18 @@ class taoItems_actions_QTIform_choice_GapText
 		
 		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchGroup'));
 	}
+	
+	protected function getMatchGroupOptions(){
+	
+		$options = array();
+		
+		foreach($this->interaction->getGroups() as $group){
+			$options[$group->getSerial()] = $group->getIdentifier();
+		}
+		
+		return $options;
+		
+	}
 
 }
 

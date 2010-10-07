@@ -261,7 +261,8 @@ class QtiAuthoring extends CommonModule {
 			'added' => $added,
 			'choiceSerial' => $choiceSerial,
 			'choiceForm' => $choiceForm,
-			'groupSerial' => $groupSerial
+			'groupSerial' => $groupSerial,
+			'reload' => ($added)?$this->requireChoicesUpdate($interaction):false
 		));
 	}
 	
@@ -305,16 +306,55 @@ class QtiAuthoring extends CommonModule {
 	
 	public function deleteChoice(){
 		$interaction = $this->getCurrentInteraction();
-		$choice = $this->getCurrentChoice();
+		$deleted = false;
+		
+		try{
+			$choice = null;
+			$choice = $this->getCurrentChoice();
+		}catch(Exception $e){}
 		if(!is_null($interaction) && !is_null($choice)){
 			$this->service->deleteChoice($interaction, $choice);
+			$deleted = true;
+		}
+		
+		if(!$deleted){
+			try{
+				//for gapmatch interaction, where a gorup is considered as a choice:
+				$group = null;
+				$group = $this->getCurrentGroup();
+			
+				if(!is_null($interaction) && !is_null($group)){
+					$this->service->deleteGroup($interaction, $group);
+					$deleted = true;
+				}
+			}catch(Exception $e){
+				throw new Exception('cannot delete the choice');
+			}
 		}
 		
 		echo json_encode(array(
-			'deleted' => true
+			'deleted' => $deleted,
+			'reload' => ($deleted)?$this->requireChoicesUpdate($interaction):false
 		));
 	}
 	
+	protected function requireChoicesUpdate(taoItems_models_classes_QTI_Interaction $interaction){
+	
+		$reload = false;
+		
+		if(!is_null($interaction)){
+			switch(strtolower($interaction->getType())){
+				case 'associate':
+				case 'match':
+				case 'gapmatch':{
+					$reload = true;
+					break;
+				}
+			}
+		}
+		
+		return $reload;
+	}
 	
 	//to be used to dynamically update the main itemData editor frame:
 	public function getInteractionTag(){
@@ -504,7 +544,7 @@ class QtiAuthoring extends CommonModule {
 			}
 		}
 		
-		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
+		$templateName = 'QTIAuthoring/form_choices_'.strtolower($interaction->getType()).'.tpl';
 		$this->setData('formChoices', $choiceForms);
 		$this->setData('orderedChoices', $choices);
 		$this->setView($templateName);
@@ -648,7 +688,8 @@ class QtiAuthoring extends CommonModule {
 			'added' => $added,
 			'groupSerial' => $groupSerial,
 			'groupForm' => $group->toForm()->render(),
-			'interactionData' => html_entity_decode($interactionData)
+			'interactionData' => html_entity_decode($interactionData),
+			'reload' => ($added)?$this->requireChoicesUpdate($interaction):false
 		));
 	}
 		

@@ -1,12 +1,15 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
+
+//record all choices of the interaction: (note: gapmatch interaction has choices that are groups in the php model)
 interactionEdit.choices = [];
-interactionEdit.groups = [];
+// interactionEdit.groups = [];
+
 interactionEdit.modifiedInteraction = false;
 interactionEdit.modifiedChoices = [];
-interactionEdit.modifiedGroups = [];
+// interactionEdit.modifiedGroups = [];
 interactionEdit.orderedChoices = [];
 
 interactionEdit.setOrderedChoicesButtons = function(list){
@@ -332,6 +335,8 @@ interactionEdit.saveChoice = function($choiceForm){
 			}else{
 				createInfoMessage(__('The choice has been saved'));
 				delete interactionEdit.modifiedChoices['ChoiceForm_'+r.choiceSerial];
+				
+				//only when the identifier has changed:
 				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
 			}
 	   }
@@ -360,6 +365,32 @@ interactionEdit.loadResponseMappingForm = function(){
 	});
 }
 
+interactionEdit.loadChoicesForm = function(containerSelector){
+	if(!containerSelector){
+		var containerSelector = '';
+		if(interactionEdit.choicesFormContainer){
+			var containerSelector = interactionEdit.choicesFormContainer;
+		}
+	}
+	if($(containerSelector).length){
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/editChoices",
+		   data: {
+				'interactionSerial': interactionEdit.interactionSerial
+		   },
+		   dataType: 'html',
+		   success: function(form){
+				$formContainer = $(containerSelector);
+				$formContainer.html(form);
+				
+				//reload the grid:
+				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
+		   }
+		});
+	}
+	
+}
 
 interactionEdit.saveResponseMappingOptions = function($myForm){
 	$.ajax({
@@ -395,9 +426,9 @@ interactionEdit.setFormChangeListener = function(target){
 				interactionEdit.modifiedChoices[id] = 'modified';
 			}else if(id.indexOf('InteractionForm') == 0){
 				interactionEdit.modifiedInteraction = true;
-			}else if(id.indexOf('ChoiceForm_group') == 0){
+			}/*else if(id.indexOf('ChoiceForm_group') == 0){
 				interactionEdit.modifiedGroups[id] = 'modified';
-			}
+			}*/
 		}
 	});
 	
@@ -428,6 +459,12 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 	   success: function(r){
 			CL('choice added');
 			if(r.added){
+				
+				if(r.reload){
+					interactionEdit.loadChoicesForm();
+					return;
+				}
+				
 				var $newFormElt = $('<div/>');
 				$newFormElt.attr('id', r.choiceSerial);
 				$newFormElt.attr('class', containerClass);
@@ -468,11 +505,18 @@ interactionEdit.deleteChoice = function(choiceSerial){
 	   url: "/taoItems/QtiAuthoring/deleteChoice",
 	   data: {
 			'choiceSerial': choiceSerial,
+			'groupSerial': choiceSerial,
 			'interactionSerial': interactionEdit.interactionSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){
 			if(r.deleted){
+				if(r.reload){
+					//reload form choices
+					interactionEdit.loadChoicesForm();
+					return;
+				}
+			
 				$('#'+choiceSerial).remove();
 				//TODO: need to be optimized: only after the last choice saving
 				responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
@@ -552,6 +596,12 @@ interactionEdit.addGap = function(interactionData, interactionSerial, $appendTo)
 			//then add listener
 			interactionEdit.bindChoiceLinkListener();//ok keep
 			
+			//reload choices form
+			if(r.reload){
+				interactionEdit.loadChoicesForm();
+				return;
+			}
+			
 			//add choice form:
 			var $newFormElt = $('<div/>');
 			$newFormElt.attr('id', r.groupSerial);//r.groupSerial
@@ -572,6 +622,8 @@ interactionEdit.addGap = function(interactionData, interactionSerial, $appendTo)
 						
 			//rebuild the response grid:
 			responseEdit.buildGrid(qtiEdit.responseGrid, interactionEdit.interactionSerial);
+			
+			
 	   }
 	});
 }
