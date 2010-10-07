@@ -334,7 +334,8 @@ class QtiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'deleted' => $deleted,
-			'reload' => ($deleted)?$this->requireChoicesUpdate($interaction):false
+			'reload' => ($deleted)?$this->requireChoicesUpdate($interaction):false,
+			'reloadInteraction' => ($deleted)?$this->requireInteractionUpdate($interaction):false
 		));
 	}
 	
@@ -349,6 +350,24 @@ class QtiAuthoring extends CommonModule {
 				case 'gapmatch':{
 					$reload = true;
 					break;
+				}
+			}
+		}
+		
+		return $reload;
+	}
+	
+	protected function requireInteractionUpdate(taoItems_models_classes_QTI_Interaction $interaction){
+	
+		$reload = false;
+		if($this->getRequestParameter('reloadInteraction')){
+			if(!is_null($interaction)){
+				switch(strtolower($interaction->getType())){
+					case 'hottext':
+					case 'gapmatch':{
+						$reload = true;
+						break;
+					}
 				}
 			}
 		}

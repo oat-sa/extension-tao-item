@@ -682,19 +682,6 @@ class taoItems_models_classes_QtiAuthoringService
 
         return (string) $returnValue;
     }
-	
-	//deprecated...
-	// public function setInteractionId(taoItems_models_classes_QTI_Interaction $interaction, $newId){
-		// if(!is_null($interaction) && !empty($newId)){
-			// try{
-				// $interaction->setId($newId);
-				// $interaction->setId($newId);
-			// }catch(InvalidArgumentException $e){
-				// var_dump($_SESSION);
-				// throw new Exception('the given interaction id already exists');
-			// }
-		// }
-	// }
 		
 	public function setChoiceId(taoItems_models_classes_QTI_Choice $choice, $newId){
 		if(!is_null($choice) && !empty($newId)){
@@ -706,28 +693,32 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 	}
 	
-	public function setOptions(taoItems_models_classes_QTI_Data $data, $newOptions=array()){
+	public function setOptions(taoItems_models_classes_QTI_Data $qtiObject, $newOptions=array()){
 		
-		if(!is_null($data) && !empty($newOptions)){
+		if(!is_null($qtiObject) && !empty($newOptions)){
 		
 			$options = array();
-		
+			
 			foreach($newOptions as $key=>$value){
 				if(is_array($value)){
 					if(count($value)==1 && isset($value[0])){
-						$options[$key] = $value[0];
+					
+						if($value[0] != '') $options[$key] = $value[0];
+						
 					}else if(count($value)>1){
 						$options[$key] = array();
 						foreach($value as $val){
-							$options[$key][] = $val;
+						
+							if($val != '') $options[$key][] = $val;
+							
 						}
 					}
 				}else{
-					$options[$key] = $value;
+					if($value != '') $options[$key] = $value;
 				}
 			}
 			
-			$data->setOptions($options);
+			$qtiObject->setOptions($options);
 		}
 		
 	}

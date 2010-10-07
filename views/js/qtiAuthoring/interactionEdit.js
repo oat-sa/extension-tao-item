@@ -497,8 +497,10 @@ interactionEdit.addChoice = function(interactionSerial, $appendTo, containerClas
 	});
 }
 
-interactionEdit.deleteChoice = function(choiceSerial){
+interactionEdit.deleteChoice = function(choiceSerial, reloadInteraction){
 	delete interactionEdit.choices[choiceSerial];
+	
+	if(!reloadInteraction) var reloadInteraction = false;
 	
 	$.ajax({
 	   type: "POST",
@@ -506,12 +508,16 @@ interactionEdit.deleteChoice = function(choiceSerial){
 	   data: {
 			'choiceSerial': choiceSerial,
 			'groupSerial': choiceSerial,
+			'reloadInteraction': reloadInteraction,
 			'interactionSerial': interactionEdit.interactionSerial
 	   },
 	   dataType: 'json',
 	   success: function(r){
 			if(r.deleted){
-				if(r.reload){
+				if(r.reloadInteraction){
+					qtiEdit.loadInteractionForm(interactionEdit.interactionSerial);
+					return;
+				}else if(r.reload){
 					//reload form choices
 					interactionEdit.loadChoicesForm();
 					return;

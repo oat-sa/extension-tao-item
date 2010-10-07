@@ -50,14 +50,18 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		parent::setCommonElements();
 		
 		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'CheckBox');
-		$matchGroupElt->setDescription(__('match group'));
+		$matchGroupElt->setDescription(__('Match Group'));
 		$matchGroupOption = $this->getMatchGroupOptions();
 		$matchGroupElt->setOptions($matchGroupOption);
 		
 		$matchGroups = $this->choice->getOption('matchGroup');
 		if(!empty($matchGroups)){
-			foreach($matchGroups as $choiceSerial){
-				$matchGroupElt->setValue($choiceSerial);
+			if(is_array($matchGroups)){
+				foreach($matchGroups as $choiceSerial){
+					$matchGroupElt->setValue($choiceSerial);
+				}
+			}else{
+				$matchGroupElt->setValue((string)$matchGroups);
 			}
 		}else{
 			//default empty values indicates to the authoring controller that there is no restriction to the associated choices
@@ -69,15 +73,42 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 	}
 	
-	protected function getMatchGroupOptions(){
+	private function getMatchGroupOptions(){
 	
-		$options = array();
-		
-		foreach($this->interaction->getChoices() as $choice){
-			$options[$choice->getSerial()] = $choice->getIdentifier();
+		$returnValue = array();
+		$groups = $this->interaction->getGroups();
+		if(empty($groups)){
+			foreach($this->interaction->getChoices() as $choice){
+				$returnValue[$choice->getSerial()] = $choice->getIdentifier();
+			}
+		}else{
+			//get the current group:
+			$currentGroupSerial = '';
+			$options = array();
+			foreach($groups as $group){
+				$choices = $group->getChoices();
+				if(in_array($this->choice->getSerial(), $choices)){
+					$currentGroupSerial = $group->getSerial();
+				}else{
+					$options = array_merge($options, $choices);
+				}
+			}
+			if(!empty($currentGroupSerial)){
+				$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+				
+				$options = array_unique($options);
+				foreach($options as $choiceSerial){
+					$choice = $qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+					if(!is_null($choice)){
+						$returnValue[$choice->getSerial()] = $choice->getIdentifier();
+					}
+				}
+				
+			}
 		}
 		
-		return $options;
+		
+		return $returnValue;
 		
 	}
 

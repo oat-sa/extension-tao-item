@@ -134,7 +134,7 @@ class taoItems_models_classes_QTI_Service
 	        	$data = @unserialize(Session::getAttribute($key));
 	        
 	        	if($data === false){
-	        		throw new Exception("Unable to unserialie  session entry identified by $serial");
+	        		throw new Exception("Unable to unserialize session entry identified by $serial");
 	        	}
 	        	if(!empty($type)){
 	        		if( ! $data instanceof $type) {
@@ -178,8 +178,10 @@ class taoItems_models_classes_QTI_Service
         }
         
 		$instances = taoItems_models_classes_QTI_Data::$_instances;
+		
         foreach(Session::getAttributeNames() as $attrKey){
         	if(preg_match("/^".taoItems_models_classes_QTI_Data::PREFIX."/", $attrKey)){
+				$attrKey = str_replace(taoItems_models_classes_QTI_Data::PREFIX,'',$attrKey);
         		if(!in_array($attrKey, $instances)){
         			$instances[] = $attrKey;
         		}
@@ -187,12 +189,16 @@ class taoItems_models_classes_QTI_Service
         }
         
         foreach($instances as $serial){
-        	$instance = $this->getDataBySerial($serial);
+			$instance = null;
+        	try{
+				$instance = $this->getDataBySerial($serial);
+			}catch(Exception $e){}
 			
 			if(is_null($instance)){
-				//newly constructed object, that has not been saved into session yet.
+				//newly constructed object that has not been saved into session yet or wrong variable that failed to be unserialized:
 				continue;
 			}
+			
         	$rObject  = new ReflectionObject($instance);
         	if($rObject->hasProperty($propertyName)){
         		foreach($instance->$methodName() as $attribute){
@@ -204,6 +210,7 @@ class taoItems_models_classes_QTI_Service
 					}
         		}
         	}
+			
         	if(!is_null($returnValue)){
         		break;
         	}

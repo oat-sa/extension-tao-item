@@ -23,7 +23,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @subpackage actions_form
  */
 class taoItems_actions_QTIform_choice_SimpleAssociableChoice
-    extends taoItems_actions_QTIform_choice_Choice{
+    extends taoItems_actions_QTIform_choice_AssociableChoice{
 	
 	public function initElements(){
 		
@@ -48,7 +48,7 @@ class taoItems_actions_QTIform_choice_SimpleAssociableChoice
 		}
 		$this->form->addElement($matchMaxElt);
 		
-		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchMax'));
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchMax', 'matchGroup'));
 	}
 
 }
