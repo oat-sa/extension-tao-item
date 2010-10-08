@@ -223,16 +223,15 @@ var QTIMatching = Class.extend (
  * @param {Object} values
  * @param {Object} options
  */
-var QTIVariableFactory = function(identifier, type, cardinality, values, options){
+var QTIVariableFactory = function (identifier, type, cardinality, values, options){
     var variable = null;
     
     // If the container type is a map
     if (typeof(options) != 'undefined' && options.containerType == 'map') {
         variable = new QTIMap(identifier, type, cardinality, values);
         
-        // If the container type is a variable
-    }
-    else {
+    // If the container type is a variable
+    } else {
         switch (type) {
             case 'directedpair':
                 variable = new QTIPair(identifier, type, cardinality, values, true);
