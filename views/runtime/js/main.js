@@ -16,11 +16,28 @@ function qti_init(qti_initParam){
  */
 function qti_init_interaction(initObj){
 	
+	// Instantiate the qtiMatching class
+	var qtiMatching = new QTIMatching ();
+	// Set the rule with a "Match Temporary Rule" which is compliant with the single choice interaction
+	qtiMatching.setRule ("if(match(getVariable('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
+	// Set "Temporary Correct Variables" 
+	var correctsSerialized = "[{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:['ChoiceA']}]";
+	var correctsVar = unserializedQTIVariables (correctsSerialized);
+	qtiMatching.setCorrects (correctsVar);
+	// Set "Temporary Variables Variables" 
+//	var variablesSerialized = "[{identifier:'RESPONSE', type:'identifier', cardinality:'single', values:['ChoiceA']}]";
+//	var variablesVar = unserializedQTIVariables (variablesSerialized);
+//	qtiMatching.setVariables (variablesVar);
+	// Set "Temporary Outcome Variables" 
+	var outcomeSerialized = "[{identifier:'SCORE', type:'float', cardinality:'single', values:[]}]";
+	var outcomesVar = unserializedQTIVariables (outcomeSerialized);
+	qtiMatching.setOutcomes (outcomesVar);
+	
 	//instantiate the widget class with the given interaction parameters
 	var myQTIWidget = new QTIWidget(initObj);
 	
-	//instantiate the reslut class with the interaction id
-	var myResultCollector = new QTIResultCollector(initObj['id']);
+	//instantiate the result class with the interaction id
+	var myResultCollector = new QTIResultCollector(myQTIWidget);
 	
 	//get the interaction type to identify the method 
 	var typeName = initObj["type"].replace('qti_', '').replace('_interaction', '');
@@ -34,7 +51,21 @@ function qti_init_interaction(initObj){
 	
 	// validation process
 	$("#qti_validate").bind("click",function(){
-		console.log(myResultCollector[typeName].apply());
+		// Get user's data
+		var result = myResultCollector[typeName].apply();
+		console.log (result);
+		
+		// Create QTIVariable according to the user's data
+		var myUserVar = QTIVariableFactory (result.identifier, result.type, result.cardinality, result.values);
+		qtiMatching.setVariables ({'RESPONSE': myUserVar});
+		
+		// eval the response processing
+		try {
+			qtiMatching.evalResponseProcessing ();
+			console.log ('your score : ' +qtiMatching.getOutcome('SCORE').values[0]);
+		}catch (e){ 
+			console.log(e);
+		}
 	});
 		
 }
@@ -568,16 +599,29 @@ function QTIWidget(options){
 }
 
 
-function QTIResultCollector(id){
+/** 
+ * @param {QTIWidget} qtiWidget
+ */
+function QTIResultCollector(myQTIWidget){
 
-	var id = id;
+	var myQTIWidget = myQTIWidget;
+	var id = myQTIWidget.opts['id'];
 	
 	// result process
 	this.choice = function(){
-		var result = new Array();
+		var result = {
+			"identifier"	: "RESPONSE" // Identifier of the response
+			, "cardinality" : myQTIWidget.opts["maxChoices"] << 1 != 2 ? 'multiple' : 'single'
+			, "type"		: "identifier"
+			, "values"		: []
+		};
+		
+		var userData = new Array();
 		$("#" + id + " .tabActive").each(function(){
-			result.push(this.id);
+			userData.push(this.id);
 		});
+		result.values = userData;
+		
 		return result;
 	};
 	
