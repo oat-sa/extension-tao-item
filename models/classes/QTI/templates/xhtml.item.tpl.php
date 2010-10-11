@@ -16,13 +16,16 @@
 	
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src='../../test/qti_labs/client/class.js'></script>
+	<script type="text/javascript" src="../../test/qti_labs/client/qti_tools.js"></script>
+	<script type="text/javascript" src="../../test/qti_labs/client/qti_object_model.js"></script>
+	<script type="text/javascript" src="../../test/qti_labs/client/qti_api.js"></script>
 	<script type="text/javascript">
 		var qti_initParam  = new Object();
 		$(document).ready(function(){
-			qti_init(qti_initParam);	
+			qti_init(qti_initParam);
 		});
 	</script>
-
 </head>                                             
 <body>
 	<div class="qti_item">

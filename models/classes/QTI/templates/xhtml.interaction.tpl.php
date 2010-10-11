@@ -7,6 +7,7 @@
 		type : "qti_<?=$_type?>_interaction"
 		<?foreach($options as $key => $value):?>
 			, "<?=$key?>" : "<?=$value?>"
-		<?endforeach?>
+		<?endforeach?>,
+		testDeLaMorte : 'SUPER TEST DE LA MORTE'
 	};
 </script>
