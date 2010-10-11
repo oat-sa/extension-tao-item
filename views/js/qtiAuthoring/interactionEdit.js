@@ -568,7 +568,7 @@ interactionEdit.addHotText = function(interactionData, interactionSerial, $appen
 			$appendTo.append($newFormElt);
 			
 			$newFormElt.hide();
-			interactionEdit.initToggleChoiceOptions({'delete':false});
+			interactionEdit.initToggleChoiceOptions();//{'delete':false}
 			$newFormElt.show();
 			
 			interactionEdit.setFormChangeListener('#'+r.choiceSerial);
@@ -700,6 +700,9 @@ interactionEdit.buildInteractionEditor = function(interactionDataContainerSelect
 	  addTextEntryInteraction: {visible:false},
 	  addExtendedTextInteraction: {visible:false},
 	  addHotTextInteraction: {visible:false},
+	  addGapMatchInteraction: {visible:false},
+	  createHotText: {visible:false},
+	  createGap: {visible:false},
 	  saveItemData: {visible:false},
 	  saveInteractionData: {
 			visible : true,

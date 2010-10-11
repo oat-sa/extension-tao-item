@@ -73,7 +73,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 	}
 	
-	private function getMatchGroupOptions(){
+	public function getMatchGroupOptions(){
 	
 		$returnValue = array();
 		$groups = $this->interaction->getGroups();

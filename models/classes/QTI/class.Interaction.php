@@ -475,6 +475,12 @@ class taoItems_models_classes_QTI_Interaction
     				}
     			}
     			unset($this->groups[$group->getSerial()]);
+				
+				//remove the group from the interaction data:
+				$data = $this->getData();
+				$data = str_replace("{{$group->getSerial()}}", '', $data);
+				$this->setData($data);
+				
     			$returnValue = true;
     		}
     		
