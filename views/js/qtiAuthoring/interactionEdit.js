@@ -1,4 +1,4 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
 
 interactionEdit = new Object();
 interactionEdit.interactionSerial = '';
@@ -124,7 +124,7 @@ interactionEdit.toggleChoiceOptions = function($group, options){
 		if($('#delete_'+groupId).length){
 			$('#delete_'+groupId).remove();
 		}
-		CL('delete', options);
+		
 		if(options.delete){
 			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control ui-icon ui-icon-circle-close"></span>');
 			$group.before($deleteElt);
@@ -692,6 +692,7 @@ interactionEdit.buildInteractionEditor = function(interactionDataContainerSelect
 	  copy  : { visible : true },
 	  paste : { visible : true },
 	  html  : { visible: true },
+	  
 	  addChoiceInteraction: {visible:false},
 	  addAssociateInteraction: {visible:false},
 	  addOrderInteraction: {visible:false},
@@ -704,6 +705,7 @@ interactionEdit.buildInteractionEditor = function(interactionDataContainerSelect
 	  createHotText: {visible:false},
 	  createGap: {visible:false},
 	  saveItemData: {visible:false},
+	  
 	  saveInteractionData: {
 			visible : true,
 			className: 'addInteraction',

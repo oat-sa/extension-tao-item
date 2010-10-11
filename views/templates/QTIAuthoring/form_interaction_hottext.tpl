@@ -43,6 +43,19 @@ $(document).ready(function(){
 		tooltip: 'set hotText'
 	};
 	
+	// var createHotText = {
+		// visible : true,
+		// className: 'addInteraction',
+		// exec: function(){
+			// var hotText = qtiEdit.itemEditor.wysiwyg('setHotText');
+			// var content = this.getContent();
+			interactionEdit.addHotText(this.getContent(), interactionEdit.interactionSerial, hotText);
+			// CL('content', content);
+			// CL('hotText', hotText);
+		// },
+		// tooltip: 'setHotText'
+	// };
+
 	interactionEdit.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText});
 	
 	interactionEdit.choicesFormContainer = '#formChoices_container';

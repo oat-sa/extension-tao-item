@@ -291,6 +291,16 @@ var saveItemData = {
 	tooltip: 'save'
 };
 
+// var testButton = {
+	// visible : true,
+	// className: 'addInteraction',
+	// exec: function(){
+		// var hotText = qtiEdit.itemEditor.wysiwyg('setHotText');
+		// qtiEdit.addInteraction('gapMatch', this.getContent(), qtiEdit.itemSerial);
+		// CL('content', content);
+	// },
+	// tooltip: 'setHotText'
+// };
 var loadXmlQti = null;
 var exportXmlQti = null;
 		

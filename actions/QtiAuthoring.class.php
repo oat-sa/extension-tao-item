@@ -63,6 +63,8 @@ class QtiAuthoring extends CommonModule {
 					throw new Exception('a new qti item xml cannot be created');
 				}
 			}else{
+				//intermediate state??
+				
 				//import it:
 				// $qtiParser = new taoItems_models_classes_QTI_Parser($itemFile);
 				// $qtiParser->validate();
@@ -75,6 +77,9 @@ class QtiAuthoring extends CommonModule {
 				// if(empty($item)){
 					// throw new Exception('cannot load the item from the file: '.$itemFile);
 				// }
+				
+				
+				
 			}
 		}
 		
@@ -127,7 +132,7 @@ class QtiAuthoring extends CommonModule {
 	public function index(){
 	
 		$currentItem = $this->getCurrentItem();
-		var_dump($currentItem);
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
@@ -806,6 +811,22 @@ class QtiAuthoring extends CommonModule {
 			'colModel' => $columnModel,
 			'data' => $responseData
 		));
+		
+	}
+	
+	public function saveToQti(){
+	
+		if($this->hasRequestParameter('uri')){
+			$itemUri = $this->getRequestParameter('uri');
+			
+			$itemResource = new core_kernel_classes_Resource($itemUri);
+		
+			$itemObject = $this->getCurrentItem();
+			
+			$itemXML = $itemObject->toQti();
+			
+			$itemResource->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $itemXML);
+		}
 		
 	}
 }
