@@ -4,10 +4,10 @@
  */
 function QTIResultCollector(options){
 
+	var _this = this;
+	
 	this.opts = options;
 	this.id = options['id'];
-	
-	var _this = this;
 	
 	// result process
 	this.choice = function(){
@@ -37,6 +37,7 @@ function QTIResultCollector(options){
 
 	this.associate = function(){
 		var result = new Array();
+		
 		$("#" + _this.id + " .qti_association_pair").each(function(){
 			result.push([$(this).find('li:first').attr('id'), $(this).find('li:last').attr('id')]);
 		});

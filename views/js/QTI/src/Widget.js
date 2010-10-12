@@ -1,6 +1,17 @@
 /**
- * The QTIWidget class enables you to build a QTI widget from an XHTML Element and the given options
- * @param {Object} options
+ * TAO QTI API
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @require jquery {@link http://www.jquery.com}
+ */
+
+/**
+ * The QTIWidget class enables you to build a QTI widgets 
+ * from XHTML elements and the given options
+ * @param {Object} options the list of parameters 
  */
 function QTIWidget(options){
 	
@@ -305,7 +316,6 @@ function QTIWidget(options){
 	/**
 	 * Initialize the parametrized behavoir of text input likes widgets 
 	 * It supports now the Regex matching and string cloning 
-	 * @param {Object} currentObj
 	 */
 	this.string_interaction = function(){
 		
@@ -478,27 +488,33 @@ function QTIWidget(options){
 	};
 	
 	/**
-	 * Create a match widget 
+	 * Create a match widget: 
+	 * a matrix of choices to map to each others
 	 */
 	this.match = function(){
 		
+		//define the columns of the matrix from the last choice list
 		$(qti_item_id + " .choice_list:last").addClass('choice_list_cols');
 		var cols = new Array();
 		$(qti_item_id + " .choice_list_cols li").each(function(){
 			cols.push(this.id);
 		});
 		
+		//define the rows of the matrix from the first choice list
 		$(qti_item_id + " .choice_list:first").addClass('choice_list_rows');
 		var rows = new Array();
 		$(qti_item_id + " .choice_list_rows li").each(function(){
 			rows.push(this.id);
 		});
 		
+		//insert the node container (it will contain the nodes of the matrix)
 		$(qti_item_id + " .choice_list_cols").after("<div class='match_node_container'></div>");
 		
+		//make the display adjustment
 		$(qti_item_id + " .match_node_container").height(parseInt( $(qti_item_id + " .choice_list:first").height()));
 		$(qti_item_id + " .match_node_container").css('left', $(qti_item_id + " .choice_list_rows").width());
 		
+		//build all the nodes
 		var i = 0;
 		while(i < rows.length){
 			var xnode = 'xnode_' + rows[i];
@@ -507,8 +523,10 @@ function QTIWidget(options){
 				var ynode = 'ynode_' + cols[j];
 				var node_id = 'match_node_'+i+'_'+j;
 				
+				//a node is a DIV with a ID made from X and Y indexes, and the classes of it's row and column
 				$(qti_item_id + " .match_node_container").append("<div id='"+node_id+"' class='match_node "+xnode+" "+ynode+"'>&nbsp;</div>");
 				
+				//set the position and the size of the node
 				left = 0;
 				if(j > 0){
 					p = $("#"+ 'match_node_'+i+'_'+(j-1)).position();
@@ -526,8 +544,8 @@ function QTIWidget(options){
 		}
 		
 		/**
-		 * Exract the id of the rows and cols from the classes of a node
-		 * @param {jQuery} jElement
+		 * Exract the id from the rows and the columns from the node's classes
+		 * @param {jQuery} jElement the matrix node under the jQuery format
 		 * @return {Object} with xnode an ynode id 
 		 */
 		function getNodeXY(jElement){
@@ -556,6 +574,10 @@ function QTIWidget(options){
 			return {xnode: x, ynode: y};
 		}
 		
+		/**
+		 * Deactivate a node
+		 * @param {jQuery} jElement the matrix node under the jQuery format
+		 */
 		function deactivateNode(jElement){
 			jElement.removeClass('tabActive');
 			associations.splice(associations.indexOf(jElement.attr('id')), 1);
@@ -563,9 +585,12 @@ function QTIWidget(options){
 		
 		var maxAssociations = _this.opts['maxAssociations'];
 		
-		// activate / deactivate node regarding the maxAssociations and the matchMax parameters
+		/*
+		 * Activate / deactivate nodes regarding:
+		 * 	- the maxAssociations options that should'nt be exceeded
+		 *  - the matchMax option of the row and the column
+		 */
 		var associations = new Array();
-		
 		$(qti_item_id + " .match_node").click(function(){
 			
 			var elt =  $(this);	//prevent to many parsing
@@ -578,18 +603,32 @@ function QTIWidget(options){
 					
 					var nodeXY = getNodeXY(elt);
 					
-					rowMatch = _this.opts["matchMaxes"][nodeXY.xnode.id]['matchMax'];
-					colMatch = _this.opts["matchMaxes"][nodeXY.ynode.id]['matchMax'];
-					
+					//test the matchMax of the row choice
+					var rowMatch = _this.opts["matchMaxes"][nodeXY.xnode.id]['matchMax'];
 					if(rowMatch == 1) {
-						$("." + nodeXY.xnode['class']).each(function(){
+						$(qti_item_id + " ." + nodeXY.xnode['class']).each(function(){
 							deactivateNode($(this));
 						});
 					}
+					else if(rowMatch > 1){
+						var rowMatched = $(qti_item_id + " ." + nodeXY.xnode['class'] + ".tabActive").length;
+						if(rowMatched >= rowMatch){
+							return false;
+						}
+					}
+					
+					//test the matchMax of the column choice
+					var colMatch = _this.opts["matchMaxes"][nodeXY.ynode.id]['matchMax'];
 					if(colMatch == 1) {
 						$("." + nodeXY.ynode['class']).each(function(){
 							deactivateNode($(this));
 						});
+					}
+					else if(colMatch > 1){
+						var colMatched = $(qti_item_id + " ." + nodeXY.ynode['class']+ ".tabActive").length;
+						if(colMatched >= colMatch){
+							return false;
+						}
 					}
 					
 					elt.addClass('tabActive');

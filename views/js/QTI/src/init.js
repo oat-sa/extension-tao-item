@@ -1,4 +1,17 @@
 /**
+ * TAO QTI API
+ * 
+ * This script provides the initialization function to build QTI component
+ * from an XHTML source
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @require jquery {@link http://www.jquery.com}
+ */
+
+/**
  * Initialize the QTI environment
  * @param {Object} qti_initParam the parameters of ALL item's interaction
  * @return void
@@ -19,8 +32,8 @@ function qti_init_interaction(initObj){
 	//instantiate the widget class with the given interaction parameters
 	var myQTIWidget = new QTIWidget(initObj);
 	
-	//instantiate the result class with the interaction id
-	var myResultCollector = new QTIResultCollector(myQTIWidget);
+	//instantiate the result class with the given interaction parameters
+	var myResultCollector = new QTIResultCollector(initObj);
 	
 	//get the interaction type to identify the method 
 	var typeName = initObj["type"].replace('qti_', '').replace('_interaction', '');

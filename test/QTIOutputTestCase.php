@@ -78,15 +78,15 @@ class QTIOutputTestCase extends UnitTestCase {
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
 		$files = array(
-			dirname(__FILE__).'/samples/associate.xml',
-			dirname(__FILE__).'/samples/choice_multiple.xml',
-			dirname(__FILE__).'/samples/choice.xml',
-			dirname(__FILE__).'/samples/order.xml',
-			dirname(__FILE__).'/samples/text_entry.xml',
-			dirname(__FILE__).'/samples/extended_text.xml',
-			dirname(__FILE__).'/samples/inline_choice.xml',
-			dirname(__FILE__).'/samples/hottext.xml',
-			dirname(__FILE__).'/samples/gap_match.xml',
+//			dirname(__FILE__).'/samples/associate.xml',
+//			dirname(__FILE__).'/samples/choice_multiple.xml',
+//			dirname(__FILE__).'/samples/choice.xml',
+//			dirname(__FILE__).'/samples/order.xml',
+//			dirname(__FILE__).'/samples/text_entry.xml',
+//			dirname(__FILE__).'/samples/extended_text.xml',
+//			dirname(__FILE__).'/samples/inline_choice.xml',
+//			dirname(__FILE__).'/samples/hottext.xml',
+//			dirname(__FILE__).'/samples/gap_match.xml',
 			dirname(__FILE__).'/samples/match.xml'
 		);
 		

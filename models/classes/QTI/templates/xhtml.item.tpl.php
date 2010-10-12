@@ -15,7 +15,9 @@
 	<script type="text/javascript" src="<?=$rtPath?>lib/jquery-ui-1.8.4.custom.min.js"></script>
 	
 	<!-- JS REQUIRED -->
-	<script type="text/javascript" src="<?=$rtPath?>js/qti.js"></script>
+	<script type="text/javascript" src="<?=$rtPath?>src/Widget.js"></script>
+	<script type="text/javascript" src="<?=$rtPath?>src/ResultCollector.js"></script>
+	<script type="text/javascript" src="<?=$rtPath?>src/init.js"></script>
 	<script type="text/javascript" src='../../test/qti_labs/client/class.js'></script>
 	<script type="text/javascript" src="../../test/qti_labs/client/qti_tools.js"></script>
 	<script type="text/javascript" src="../../test/qti_labs/client/qti_object_model.js"></script>
