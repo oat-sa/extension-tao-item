@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>QTI Item order</title>
+
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="../css/reset.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../css/qti.css" media="screen" />
+	
+	<!-- LIB -->
+	<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
+	
+	<!-- LIB (required for sort item interaction) -->
+	<script type="text/javascript" src="../lib/jquery-ui-1.8.4.custom.min.js"></script>
+	
+	<!-- JS REQUIRED -->
+	<script type="text/javascript" src="../qti.min.js"></script>
+	<script type="text/javascript">
+		var qti_initParam  = new Object();
+		$(document).ready(function(){
+			qti_init(qti_initParam);
+		});
+	</script>
+</head>                                             
+<body>
+	<div class="qti_item">
+		<h1>Grand Prix of Bahrain</h1>
+	
+		<div id="interaction_1" class="qti_widget qti_order_interaction">
+	<p class='prompt'>The following F1 drivers finished on the podium in the first ever Grand Prix of
+                Bahrain. Can you rearrange them into the correct finishing order?</p><ul class='qti_choice_list'><li id="DriverA">Rubens Barrichello</li><li id="DriverB">Jenson Button</li><li id="DriverC">Michael Schumacher</li></ul></div>	
+<script type="text/javascript">
+	qti_initParam["interaction_4cb413bad82ae878731961"] = {
+		id : "interaction_1",
+		type : "qti_order_interaction"
+					, "responseIdentifier" : "RESPONSE"
+					, "shuffle" : "true"
+		,
+		testDeLaMorte : 'SUPER TEST DE LA MORTE'
+	};
+</script>		
+		<!-- validation button -->
+		<a href="#" id="qti_validate">Validate</a>
+	</div>
+</body>
+</html>
