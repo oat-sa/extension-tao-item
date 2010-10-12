@@ -1,5 +1,17 @@
+/**
+ * TAO QTI API
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @require jquery {@link http://www.jquery.com}
+ */
 
 /** 
+ * The QTIResultCollector class collects the user results of a QTI widgets defineby the options
+ * @namespace QTI
+ * @class QTIResultCollector
  * @param {Object} options
  */
 function QTIResultCollector(options){

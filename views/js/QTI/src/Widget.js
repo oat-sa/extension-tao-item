@@ -9,11 +9,14 @@
  */
 
 /**
+ * 
  * The QTIWidget class enables you to build a QTI widgets 
  * from XHTML elements and the given options
+ * @namespace QTI
+ * @class QTIWidget
  * @param {Object} options the list of parameters 
  */
-function QTIWidget(options){
+var QTIWidget = function(options){
 	
 	//keep the current instance pointer
 	var _this = this;
