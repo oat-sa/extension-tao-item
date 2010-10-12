@@ -46,6 +46,9 @@ class QTIParsingTestCase extends UnitTestCase {
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$qtiParser->validate();
 			
+			if(!$qtiParser->isValid())
+				echo $qtiParser->displayErrors();
+			
 			$this->assertTrue($qtiParser->isValid());
 			
 			$item = $qtiParser->load();

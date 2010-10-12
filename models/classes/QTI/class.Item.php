@@ -405,7 +405,7 @@ class taoItems_models_classes_QTI_Item
         $template  = self::getTemplatePath() . '/xhtml.item.tpl.php';
         
     	//get the variables to used in the template
-        $variables = array();
+        $variables = array('rtPath' => BASE_WWW. 'js/QTI/');
     	$reflection = new ReflectionClass($this);
 		foreach($reflection->getProperties() as $property){
 			if(!$property->isStatic()){

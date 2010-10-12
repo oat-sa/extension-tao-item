@@ -86,12 +86,17 @@ class taoItems_models_classes_QTI_Parser
         
         //load it using the SimpleXml library
         $xml = false;
-    	if(is_file($this->uri)){
-        	$xml = simplexml_load_file($this->uri);
-    	}
-    	else{
-    		$xmlContent = tao_helpers_Request::load($this->uri, true);
-    		$xml = simplexml_load_string($xmlContent);
+    	switch($this->sourceType){
+    		case self::SOURCE_FILE:
+    			$xml = simplexml_load_file($this->source);
+    			break;
+    		case self::SOURCE_URL:
+    			$xmlContent = tao_helpers_Request::load($this->source, true);
+    			$xml = simplexml_load_string($xmlContent);
+    			break;
+    		case self::SOURCE_STRING:
+    			$xml = simplexml_load_string($this->source);
+    			break;
     	}
     	
     	if($xml !== false){

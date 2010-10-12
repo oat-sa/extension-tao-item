@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/class.Parser.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 10.09.2010, 14:52:35 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The Parser enables you to load, parse and validate xml content from an xml
+ * Usually used for to load and validate the itemContent  property.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -30,7 +24,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1-64df0e4a:12af6a1640c:-8000:00000000000025A2-constants end
 
 /**
- * Short description of class taoItems_models_classes_Parser
+ * The Parser enables you to load, parse and validate xml content from an xml
+ * Usually used for to load and validate the itemContent  property.
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -45,12 +40,20 @@ class taoItems_models_classes_Parser
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute uri
+     * Short description of attribute source
      *
      * @access protected
      * @var string
      */
-    protected $uri = '';
+    protected $source = '';
+
+    /**
+     * Short description of attribute sourceType
+     *
+     * @access protected
+     * @var int
+     */
+    protected $sourceType = 0;
 
     /**
      * Short description of attribute errors
@@ -68,6 +71,30 @@ class taoItems_models_classes_Parser
      */
     protected $valid = false;
 
+    /**
+     * Short description of attribute SOURCE_FILE
+     *
+     * @access public
+     * @var int
+     */
+    const SOURCE_FILE = 1;
+
+    /**
+     * Short description of attribute SOURCE_URL
+     *
+     * @access public
+     * @var int
+     */
+    const SOURCE_URL = 2;
+
+    /**
+     * Short description of attribute SOURCE_STRING
+     *
+     * @access public
+     * @var int
+     */
+    const SOURCE_STRING = 3;
+
     // --- OPERATIONS ---
 
     /**
@@ -75,17 +102,27 @@ class taoItems_models_classes_Parser
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string uri
+     * @param  string xmlSource
      * @return mixed
      */
-    public function __construct($uri)
+    public function __construct($xmlSource)
     {
         // section 127-0-1-1-64df0e4a:12af6a1640c:-8000:00000000000025B8 begin
         
-    	if(!is_file($uri) && !preg_match("/^http/", $uri)){
-    		throw new Exception("Only regular file or HTTP(s) url are allowed");
+    	
+    	if(preg_match("/^<?xml(.*)>$/", trim($xmlSource))){
+    		$this->sourceType = self::SOURCE_STRING;
     	}
-    	$this->uri = $uri;
+    	else if(preg_match("/^http/", $xmlSource)){
+    		$this->sourceType = self::SOURCE_URL;
+    	}
+    	else if(is_file($xmlSource)){
+    		$this->sourceType = self::SOURCE_FILE;
+    	}
+    	else{
+    		throw new Exception("Only regular file, HTTP(s) url or XML strings are allowed");
+    	}
+    	$this->source = $xmlSource;
     	
         // section 127-0-1-1-64df0e4a:12af6a1640c:-8000:00000000000025B8 end
     }
@@ -109,29 +146,28 @@ class taoItems_models_classes_Parser
         $this->valid = true;
         
         try{
-        	if(is_file($this->uri)){
-        		
-		    	//check file
-		   		if(!file_exists($this->uri)){
-		    		throw new Exception("File {$this->uri} not found.");
-		    	}
-		    	if(!is_readable($this->uri)){
-		    		throw new Exception("Unable to read file {$this->uri}.");
-		    	}
-		   		if(!preg_match("/\.xml$/", basename($this->uri))){
-		    		throw new Exception("Wrong file extension in {$this->uri}, xml extension is expected");
-		    	}
-		   		if(!tao_helpers_File::securityCheck($this->uri)){
-		    		throw new Exception("{$this->uri} seems to contain some security issues");
-		    	}
-        	}
-        	else{
-        		
-        		//only same domain
-        		if(!preg_match("/^".preg_quote(BASE_URL, '/')."/", $this->uri)){
-        			throw new Exception("The given uri must be in the domain {$_SERVER['HTTP_HOST']}");
-        		}
-        		
+        	switch($this->sourceType){
+        		case self::SOURCE_FILE:
+	        		//check file
+			   		if(!file_exists($this->source)){
+			    		throw new Exception("File {$this->source} not found.");
+			    	}
+			    	if(!is_readable($this->source)){
+			    		throw new Exception("Unable to read file {$this->source}.");
+			    	}
+			   		if(!preg_match("/\.xml$/", basename($this->source))){
+			    		throw new Exception("Wrong file extension in {$this->source}, xml extension is expected");
+			    	}
+			   		if(!tao_helpers_File::securityCheck($this->source)){
+			    		throw new Exception("{$this->source} seems to contain some security issues");
+			    	}
+			    	break;
+        		case self::SOURCE_URL:
+	        		//only same domain
+	        		if(!preg_match("/^".preg_quote(BASE_URL, '/')."/", $this->source)){
+	        			throw new Exception("The given uri must be in the domain {$_SERVER['HTTP_HOST']}");
+	        		}
+	        		break;
         	}
         }
         catch(Exception $e){
@@ -153,12 +189,17 @@ class taoItems_models_classes_Parser
 	    		
 		    	$dom = new DomDocument();
 		    	$loadResult = false;
-		    	if(is_file($this->uri)){
-		    		$loadResult = $dom->load($this->uri);
-		    	}
-		    	else{
-		    		$xmlContent = tao_helpers_Request::load($this->uri, true);
-		    		$loadResult = $dom->loadXML($xmlContent);
+		    	switch($this->sourceType){
+		    		case self::SOURCE_FILE:
+		    			$loadResult = $dom->load($this->source);
+		    			break;
+		    		case self::SOURCE_URL:
+		    			$xmlContent = tao_helpers_Request::load($this->source, true);
+		    			$loadResult = $dom->loadXML($xmlContent);
+		    			break;
+		    		case self::SOURCE_STRING:
+		    			$loadResult = $dom->loadXML($this->source);
+		    			break;
 		    	}
 		    	if($loadResult){
 		    		if(!empty($schema)){
