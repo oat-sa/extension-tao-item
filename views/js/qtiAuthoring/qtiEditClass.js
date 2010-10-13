@@ -1,5 +1,5 @@
-// alert('qtiEdit loaded');
-// qtiEdit = new Object();
+alert('qtiEdit loaded');
+
 qtiEdit.instances = [];
 
 function qtiEdit(itemSerial, formContainers){
@@ -8,11 +8,14 @@ function qtiEdit(itemSerial, formContainers){
 		itemDataContainer : '#itemEditor_wysiwyg',
 		interactionFormContent : '#qtiAuthoring_interactionEditor',
 		responseProcessingFormContent : '#qtiAuthoring_processingEditor',
-		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container'
+		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
+		responseGrid: 'qtiAuthoring_response_grid'
 	}
 	
 	if(!formContainers){
 		var formContainers = defaultFormContainers;
+	}else{
+		$.extend(formContainers, defaultFormContainers);
 	}
 	
 	this.interactions = [];
@@ -21,7 +24,7 @@ function qtiEdit(itemSerial, formContainers){
 	this.interactionFormContent = formContainers.interactionFormContent;
 	this.responseProcessingFormContent = formContainers.responseProcessingFormContent;
 	this.responseMappingOptionsFormContainer = formContainers.responseMappingOptionsFormContainer;
-	
+	this.responseGrid = formContainers.responseGrid;
 	// this.responseMappingMode = false;
 	
 	var instance = this;

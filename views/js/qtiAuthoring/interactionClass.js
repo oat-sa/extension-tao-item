@@ -1,4 +1,5 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
+interactionClass.instances = [];
 
 function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer){
 	
@@ -7,7 +8,7 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	
 	this.interactionSerial = interactionSerial;
 	this.relatedItemSerial = relatedItemSerial;
-	this.choicesFormContainer = choicesFormContainer;
+	
 	this.choices = [];
 	this.modifiedInteraction = false;
 	this.modifiedChoices = [];
@@ -18,8 +19,16 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode)
 	this.loadResponseMappingForm();
 	
-	//load choices form
-	this.loadChoicesForm(this.choicesFormContainer);
+	//load choices form if necessary:
+	if(choicesFormContainer) {
+		this.choicesFormContainer = choicesFormContainer;
+		this.loadChoicesForm(this.choicesFormContainer);
+	}else{
+		//immediately set the form change listener (no need to wait for the choice forms)
+		this.setFormChangeListener()
+	}
+	
+	interactionClass.instances[interactionSerial] = this;
 }
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){
@@ -91,6 +100,30 @@ interactionClass.prototype.saveInteraction = function($myForm){
 	});
 }
 
+interactionClass.prototype.saveChoice = function($choiceForm){
+
+	var interaction = this;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveChoice",
+	   data: $choiceForm.serialize(),
+	   dataType: 'json',
+	   success: function(r){
+			
+			if(!r.saved){
+				createErrorMessage(__('The choice cannot be saved'));
+			}else{
+				createInfoMessage(__('The choice has been saved'));
+				delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
+				
+				//only when the identifier has changed:
+				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+			}
+	   }
+	});
+}
+
 interactionClass.prototype.loadResponseMappingForm = function(){
 	var relatedItem = this.getRelatedItem();
 	relatedItem.responseMappingMode = true;
@@ -137,6 +170,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	}
 	var interactionSerial = this.interactionSerial;
 	var relatedItem = this.getRelatedItem(true);
+	var interaction = this;
 	
 	if($(containerSelector).length){
 		$.ajax({
@@ -151,7 +185,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				$formContainer.html(form);
 				
 				//reload the grid:
-				// responseEdit.buildGrid(relatedItem.responseGrid, interactionSerial);
+				new responseClass(relatedItem.responseGrid, interaction);
 		   }
 		});
 	}
@@ -213,7 +247,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				
 				
 				//rebuild the response grid:
-				// responseEdit.buildGrid(qtiEdit.responseGrid, postData.interactionSerial);
+				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
 			}
 	   }
 	});
@@ -407,4 +441,92 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 	}
 	
 	return newOrder;
+}
+
+interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteraction){
+
+	var interaction = this;
+	delete interaction.choices[choiceSerial];
+	
+	if(!reloadInteraction) var reloadInteraction = false;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/deleteChoice",
+	   data: {
+			'choiceSerial': choiceSerial,
+			'groupSerial': choiceSerial,
+			'reloadInteraction': reloadInteraction,
+			'interactionSerial': interaction.interactionSerial
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			if(r.deleted){
+				if(r.reloadInteraction){
+					// var item = interaction.getRelatedItem();
+					interaction.getRelatedItem(true).loadInteractionForm(interaction.interactionSerial);
+					return;
+				}else if(r.reload){
+					//reload form choices
+					interaction.loadChoicesForm();
+					return;
+				}
+			
+				$('#'+choiceSerial).remove();
+				//TODO: need to be optimized: only after the last choice saving
+				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				interaction.saveInteractionData();
+			}else{
+				interaction.choices[choiceSerial] = choiceSerial;
+			}
+	   }
+	});
+}
+
+interactionClass.prototype.saveInteractionData = function(interactionSerial){
+	// if(!interactionSerial){
+		// if(interactionEdit.interactionSerial){
+			// var interactionSerial = interactionEdit.interactionSerial;
+		// }else{
+			// throw 'no interaction serial found to save the data from';
+			// return false;
+		// }
+		
+	// }
+	
+	if(this.interactionDataContainer){
+		if($(this.interactionDataContainer).length && this.interactionEditor.length){
+			//save data if and only if the data content exists
+			$.ajax({
+			   type: "POST",
+			   url: "/taoItems/QtiAuthoring/saveInteractionData",
+			   data: {
+					'interactionData': this.interactionEditor.wysiwyg('getContent'),
+					'interactionSerial': this.interactionSerial
+			   },
+			   dataType: 'json',
+			   success: function(r){
+					CL('interaction data saved');
+			   }
+			});
+			
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+interactionClass.prototype.saveResponseMappingOptions = function($myForm){
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveMappingOptions",
+	   data: $myForm.serialize(),
+	   dataType: 'json',
+	   success: function(r){
+			if(r.saved){
+				createInfoMessage(__('The mapping options has been saved'));
+			}
+	   }
+	});
 }
