@@ -34,23 +34,23 @@
 $(document).ready(function(){
 	$('#add_choice_button').click(function(){
 		//add a choice to the current interaction:
-		interactionEdit.addChoice(interactionEdit.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');//need an extra param "groupSerial"
+		myInteraction.addChoice(myInteraction.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');//need an extra param "groupSerial"
 		return false;
 	});
 	
 	//add adv. & delete button
-	interactionEdit.initToggleChoiceOptions();
+	myInteraction.initToggleChoiceOptions();
 	
 	//add move up and down button to choices only (not groups!!)
-	interactionEdit.orderedChoices = [];
+	myInteraction.orderedChoices = [];
 	<?foreach(get_data('orderedChoices') as $order => $choice):?>
-	interactionEdit.orderedChoices[<?=$order?>] = '<?=$choice->getSerial()?>';
+	myInteraction.orderedChoices[<?=$order?>] = '<?=$choice->getSerial()?>';
 	<?endforeach;?>
 	
-	interactionEdit.setOrderedChoicesButtons(interactionEdit.orderedChoices);
+	myInteraction.setOrderedChoicesButtons(myInteraction.orderedChoices);
 	
 	//add the listener to the form changing 
-	interactionEdit.setFormChangeListener();//all form
+	myInteraction.setFormChangeListener();//all form
 	
 });
 </script>

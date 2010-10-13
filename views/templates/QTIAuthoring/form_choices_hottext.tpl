@@ -20,9 +20,9 @@
 $(document).ready(function(){
 	
 	//add adv. & delete button
-	interactionEdit.initToggleChoiceOptions();//{'delete':false}
+	myInteraction.initToggleChoiceOptions();//{'delete':false}
 	
 	//add the listener to the form changing 
-	interactionEdit.setFormChangeListener();//all form
+	myInteraction.setFormChangeListener();//all form
 });
 </script>

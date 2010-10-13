@@ -1,19 +1,27 @@
-// console.log('util loaded');
+// alert('util loaded');
 
 util = new Object();
+util.debug = true;
+
 
 CL = function(arg1, arg2){
-	if(arg1){
-		if(arg2){
-			console.log(arg1, arg2);
-		}else{
-			console.log(arg1);
+	
+	// if($.browser != 'msie' && util.debug){
+		if(arg1){
+			if(arg2){
+				console.log(arg1, arg2);
+			}else{
+				console.log(arg1);
+			}
 		}
-	}
+	// }
 }
+
 CD = function(object, desc){
-	if(desc){
-		console.log(desc+':');
-	}
-	console.dir(object);
+	// if($.browser != 'msie' && util.debug){
+		if(desc){
+			console.log(desc+':');
+		}
+		console.dir(object);
+	// }
 }

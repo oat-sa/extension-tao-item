@@ -12,15 +12,13 @@
 </div>
 
 <script type="text/javascript">
+var myInteraction = null;
 $(document).ready(function(){
-	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
-	interactionEdit.initInteractionFormSubmitter();
+	try{
+		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, '#formChoices_container');
+	}catch(err){
+		CL('error creating interaction', err);
+	}
 	
-	//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode)
-	interactionEdit.loadResponseMappingForm();
-	
-	//load choices form
-	interactionEdit.choicesFormContainer = '#formChoices_container';
-	interactionEdit.loadChoicesForm(interactionEdit.choicesFormContainer);
 });
 </script>

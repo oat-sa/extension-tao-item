@@ -12,7 +12,7 @@ $(document).ready(function(){
 	$('#qtiAuthoring_mappingEditor').find('.form-submiter').click(function(){
 		var $form = $('#qtiAuthoring_mappingEditor').find('form');
 		if($form.length){
-			interactionEdit.saveResponseMappingOptions($form);
+			myInteraction.saveResponseMappingOptions($form);
 		}
 	});
 

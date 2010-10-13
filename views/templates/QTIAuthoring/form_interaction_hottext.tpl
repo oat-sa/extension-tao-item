@@ -24,43 +24,42 @@
 
 
 <script type="text/javascript">
+var myInteraction = null;
 $(document).ready(function(){
+	try{
+		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, '#formChoices_container');
+	}catch(err){
+		CL('error creating interaction', err);
+	}
 	
-	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
-	interactionEdit.initInteractionFormSubmitter();
-		
-	//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode)
-	interactionEdit.loadResponseMappingForm();
-		
-	var createHotText = {
-		visible : true,
-		className: 'addInteraction',
-		exec: function(){
-			this.insertHtml('{qti_hottext_new}');
-			interactionEdit.addHotText(this.getContent(), interactionEdit.interactionSerial);
-		},
-		tags: ['a'],
-		tooltip: 'set hotText'
-	};
+	try{
+		var createHotText = {
+			visible : true,
+			className: 'addInteraction',
+			exec: function(){
+				this.insertHtml('{qti_hottext_new}');
+				myInteraction.addHotText(this.getContent());
+			},
+			tags: ['a'],
+			tooltip: 'set hotText'
+		};
+		/*
+		var createHotText = {
+			visible : true,
+			className: 'addInteraction',
+			exec: function(){
+				var hotText = qtiEdit.itemEditor.wysiwyg('setHotText');
+				var content = this.getContent();
+				// interactionEdit.addHotText(this.getContent(), interactionEdit.interactionSerial, hotText);
+				CL('content', content);
+				CL('hotText', hotText);
+			},
+			tooltip: 'setHotText'
+		};*/
 	
-	// var createHotText = {
-		// visible : true,
-		// className: 'addInteraction',
-		// exec: function(){
-			// var hotText = qtiEdit.itemEditor.wysiwyg('setHotText');
-			// var content = this.getContent();
-			interactionEdit.addHotText(this.getContent(), interactionEdit.interactionSerial, hotText);
-			// CL('content', content);
-			// CL('hotText', hotText);
-		// },
-		// tooltip: 'setHotText'
-	// };
-
-	interactionEdit.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText});
-	
-	interactionEdit.choicesFormContainer = '#formChoices_container';
-	interactionEdit.loadChoicesForm(interactionEdit.choicesFormContainer);
+		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText});
+	}catch(err){
+		CL('error building interaction data editor', err);
+	}
 });
-
-
 </script>

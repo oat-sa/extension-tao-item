@@ -18,23 +18,26 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	
 	$('#add_choice_button').click(function(){
 		//add a choice to the current interaction:
-		interactionEdit.addChoice(interactionEdit.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');
+		myInteraction.addChoice($('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
 	
 	//add adv. & delete button
-	interactionEdit.initToggleChoiceOptions();
+	myInteraction.initToggleChoiceOptions();
 	
 	//add move up and down button
-	interactionEdit.orderedChoices = [];
+	myInteraction.orderedChoices = [];
 	<?foreach(get_data('orderedChoices') as $choice):?>
-		interactionEdit.orderedChoices.push('<?=$choice->getSerial()?>');
+		myInteraction.orderedChoices.push('<?=$choice->getSerial()?>');
 	<?endforeach;?>
-	interactionEdit.setOrderedChoicesButtons(interactionEdit.orderedChoices);
+	myInteraction.setOrderedChoicesButtons(myInteraction.orderedChoices);
 	
 	//add the listener to the form changing 
-	interactionEdit.setFormChangeListener();//all form
+	myInteraction.setFormChangeListener();//all form
+	
 });
 </script>

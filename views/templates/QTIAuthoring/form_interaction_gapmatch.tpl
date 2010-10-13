@@ -22,26 +22,28 @@
 </div>
 
 <script type="text/javascript">
+var myInteraction = null;
 $(document).ready(function(){
-	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
-	interactionEdit.initInteractionFormSubmitter();
+	try{
+		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, '#formChoices_container');
+	}catch(err){
+		CL('error creating interaction', err);
+	}
+	
+	try{
+		var createGap = {
+			visible : true,
+			className: 'addInteraction',
+			exec: function(){
+				this.insertHtml('{qti_gap_new}');
+				myInteraction.addGap(this.getContent());
+			},
+			tooltip: 'add a gap'
+		};
 		
-	//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode)
-	interactionEdit.loadResponseMappingForm();
-	
-	var createGap = {
-		visible : true,
-		className: 'addInteraction',
-		exec: function(){
-			this.insertHtml('{qti_gap_new}');
-			interactionEdit.addGap(this.getContent(), interactionEdit.interactionSerial);
-		},
-		tooltip: 'add a gap'
-	};
-	
-	interactionEdit.buildInteractionEditor('#interactionEditor_wysiwyg', {'createGap': createGap});
-	
-	interactionEdit.choicesFormContainer = '#formChoices_container';
-	interactionEdit.loadChoicesForm(interactionEdit.choicesFormContainer);
+		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createGap': createGap});
+	}catch(err){
+		CL('error building interaction data editor', err);
+	}
 });
 </script>

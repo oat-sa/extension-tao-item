@@ -395,7 +395,7 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 				}
 				
 				//destroy the response form:
-				responseEdit.destroyGrid(instance.responseGrid);
+				if(responseClass.grid) responseClass.grid.destroyGrid(instance.responseGrid);
 				
 				//save item data, i.e. validate the changes operated on the item data:
 				instance.saveItemData();

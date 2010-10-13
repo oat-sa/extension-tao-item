@@ -265,9 +265,11 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 }
 	
 responseClass.prototype.destroyGrid = function(){
+	
 	if(this.myGrid){
+		
 		if(this.myGrid.length){
-			var selector = this.myGrid.attr('id');
+			var selector = this.myGrid.selector;//$myGrid
 			$(selector).GridUnload(selector);
 		}else{
 			throw 'the grid content has not been found';

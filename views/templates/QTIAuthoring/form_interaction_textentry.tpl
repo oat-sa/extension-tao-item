@@ -9,6 +9,7 @@
 </div>
 
 <script type="text/javascript">
+/*
 $(document).ready(function(){
 	interactionEdit.interactionSerial = '<?=get_data('interactionSerial')?>';
 	interactionEdit.initInteractionFormSubmitter();
@@ -20,5 +21,15 @@ $(document).ready(function(){
 	interactionEdit.loadResponseMappingForm();
 	
 	interactionEdit.modifiedChoices = [];//no choice for such an interaction
+});
+*/
+var myInteraction = null;
+$(document).ready(function(){
+	try{
+		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial);
+	}catch(err){
+		CL('error creating interaction', err);
+	}
+	
 });
 </script>

@@ -614,7 +614,7 @@ class QtiAuthoring extends CommonModule {
 				}elseif( isset($_POST['choiceOrder0']) && isset($_POST['choiceOrder1'])){//for match interaction
 					
 					for($i=0; $i<2; $i++){//TODO: to be tested...
-						$groupOrder = $_POST['choiceOrder'+$i];
+						$groupOrder = $_POST['choiceOrder'.$i];
 						if(isset($groupOrder['groupSerial'])){
 							$groupSerial = $groupOrder['groupSerial'];
 							unset($groupOrder['groupSerial']);
@@ -814,7 +814,7 @@ class QtiAuthoring extends CommonModule {
 		
 	}
 	
-	public function saveToQti(){
+	public function exportToQti(){
 	
 		if($this->hasRequestParameter('uri')){
 			$itemUri = $this->getRequestParameter('uri');

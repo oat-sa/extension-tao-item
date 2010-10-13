@@ -26,29 +26,27 @@ $(document).ready(function(){
 	<?foreach($groupSerials as $order => $groupSerial):?>
 	$('#add_choice_button_<?=$groupSerial?>').click(function(){
 		//add a choice to the current interaction:
-		interactionEdit.addChoice(interactionEdit.interactionSerial, $('#formContainer_choices_<?=$groupSerial?>'), 'formContainer_choice', '<?=$groupSerial?>');//need an extra param "groupSerial"
+		myInteraction.addChoice($('#formContainer_choices_<?=$groupSerial?>'), 'formContainer_choice', '<?=$groupSerial?>');//need an extra param "groupSerial"
 		return false;
 	});
 	<?endforeach;?>
 	
 	//add adv. & delete button
-	interactionEdit.initToggleChoiceOptions();
+	myInteraction.initToggleChoiceOptions();
 	
 	//add move up and down button
-	interactionEdit.orderedChoices = [];//double dimension array:
-	// var i=0;//i={0,1}
+	myInteraction.orderedChoices = [];//double dimension array:
 	<?foreach(get_data('orderedChoices') as $groupSerial => $group):?>
-		interactionEdit.orderedChoices['<?=$groupSerial?>'] = [];
+		myInteraction.orderedChoices['<?=$groupSerial?>'] = [];
 		<?foreach($group as $choice):?>
-			interactionEdit.orderedChoices['<?=$groupSerial?>'].push('<?=$choice->getSerial()?>');
+			myInteraction.orderedChoices['<?=$groupSerial?>'].push('<?=$choice->getSerial()?>');
 		<?endforeach;?>
-		// i++;
 	<?endforeach;?>
 	
-	matchInteractionEdit.setOrderedChoicesButtons(interactionEdit.orderedChoices);
+	myInteraction.setOrderedMatchChoicesButtons(myInteraction.orderedChoices);
 	
 	//add the listener to the form changing 
-	interactionEdit.setFormChangeListener();//all form
+	myInteraction.setFormChangeListener();//all form
 	
 });
 </script>
