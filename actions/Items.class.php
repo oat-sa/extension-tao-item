@@ -154,7 +154,6 @@ class Items extends TaoModule{
 					//get the Xml Schema regarding the item model
 					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 					switch($itemModel->uriResource){
-					/*	case TAO_ITEM_MODEL_QCM: break;*/
 					 	case TAO_ITEM_MODEL_WATERPHENIX: break;
 					 	case TAO_ITEM_MODEL_QTI:
 							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
@@ -235,29 +234,35 @@ class Items extends TaoModule{
 	protected function initPreview(core_kernel_classes_Resource $item, core_kernel_classes_Class $clazz){
 		$previewData = array();
 		try{
-			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-			
-			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
+			if($itemContent instanceof core_kernel_classes_Literal){
 				
 				//the item content url 
 				$contentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($clazz->uriResource), 'preview' => true)));
 				
-				//the runtime
+				//get the runtime
 				$runtime = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-			
-				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
-					$content = trim(file_get_contents($this->service->getTempAuthoringFile($item->uriResource)));
-					//@todo need to fix it in the runtime instead of urlencode 2x
-					$contentUrl = urlencode($contentUrl);
+				
+				//the content works directly with the browser and need to be deployed
+				if(is_null($runtime)){
+					$this->service->deployItem($item);
 				}
 				else{
-					$content = trim((string)$itemContent);
-				}
-				
-				if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
-					$previewData['swf'] 		= BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime;
-					$previewData['contentUrl'] 	= $contentUrl;
+					//the item content is given to the runtime
+					
+					if($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+						$content = trim(file_get_contents($this->service->getTempAuthoringFile($item->uriResource)));
+						//@todo need to fix it in the runtime instead of urlencode 2x
+						$contentUrl = urlencode($contentUrl);
+					}
+					else{
+						$content = trim((string)$itemContent);
+					}
+					
+					if(preg_match("/\.swf$/", (string)$runtime) && !empty($content)){
+						$previewData['swf'] 		= BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime;
+						$previewData['contentUrl'] 	= $contentUrl;
+					}
 				}
 			}
 		}
@@ -368,41 +373,17 @@ class Items extends TaoModule{
 		header("Content-Type: text/xml; charset utf-8");
 		
 		try{
-			$item = $this->getCurrentInstance();
-			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
-				
-				$xml = (string)$itemContent;
-				
-				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
-					if($this->hasRequestParameter('preview')){
-						$xml = file_get_contents($this->service->getTempAuthoringFile($item->uriResource));
-					}
-					else{
-						$fileId = '';
-						if(!empty($xml)){
-							$xmlElt = new SimpleXMLElement($xml);
-							if($xmlElt->root){
-								if(isset($xmlElt->root['reference'])){
-									$fileId = (string)$xmlElt->root['reference'];
-								}
-							}
-						}
-						if(empty($fileId)){
-							$fileId = $item->uriResource;
-						}
-						$xml = file_get_contents($this->service->getAuthoringFile($fileId));
-					}
-				}
-				echo $xml;
-			}
+			//output direclty the itemContent as XML
+			print $this->service->getItemContent($this->getCurrentInstance(), $this->hasRequestParameter('preview'));
+			
 		}
 		catch(Exception $e){
 			//print an empty response
 			echo '<?xml version="1.0" encoding="utf-8" ?>';
 			print $e;
 		}
+		
+		return;
 	}
 	
 	/**

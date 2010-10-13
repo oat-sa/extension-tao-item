@@ -90,7 +90,7 @@ class taoItems_actions_QTIform_ResponseProcessing
 		$this->form->addElement($itemSerialElt);
 		
 		//select box:
-		$typeElt = tao_helpers_form_FormFactory::getElement('responseProcessingType', 'ComboBox');
+		$typeElt = tao_helpers_form_FormFactory::getElement('responseProcessingType', 'Combobox');
 		$typeElt->setDescription(__('Processing type'));
 		$typeElt->setOptions(array(
 			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT) => __('match'),
