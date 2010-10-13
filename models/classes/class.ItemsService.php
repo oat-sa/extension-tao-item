@@ -380,6 +380,39 @@ class taoItems_models_classes_ItemsService
         return (string) $returnValue;
     }
 
+    /**
+     * Check if the Item has on of the itemModel property in the models array
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @param  array models the list of URI of the itemModel to check
+     * @return boolean
+     */
+    public function hasItemModel( core_kernel_classes_Resource $item, $models)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF begin
+        
+        if(!is_null($item)){
+    		try{
+        		$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+	        	if($itemModel instanceof core_kernel_classes_Resource){
+	        		if(in_array($itemModel->uriResource, $models)){
+	        			$returnValue = true;
+	        		}
+	        	}
+        	}
+        	catch(common_Exception $ce){
+        		$returnValue = false;
+        	}
+        }
+        // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF end
+
+        return (bool) $returnValue;
+    }
+
 } /* end of class taoItems_models_classes_ItemsService */
 
 ?>
