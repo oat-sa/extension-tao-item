@@ -1,4 +1,4 @@
-alert('qtiEdit loaded');
+// alert('qtiEdit loaded');
 
 qtiEdit.instances = [];
 
@@ -324,6 +324,37 @@ qtiEdit.getEltInFrame = function(selector){
 	return foundElts;
 }
 
+//the global save function
+qtiEdit.prototype.save = function(itemUri){
+	
+	if(!itemUri) throw 'item uri cannot be empty';
+	
+	//save item data then export to rdf item:
+	var instance = this;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveItem",
+	   data: {
+			'itemData': instance.itemEditor.wysiwyg('getContent'),
+			'itemSerial': instance.itemSerial,
+			'itemUri': itemUri
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			// CL('item saved');
+	   }
+	});
+}
+
+qtiEdit.prototype.preview = function(){
+	// GenerisAction.fullScreen(this.itemSerial, '', '/taoItems/QtiAuthoring/preview');
+	var url = '/taoItems/QtiAuthoring/preview';
+	url += '?itemSerial='+this.itemSerial;
+	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no');
+}
+
+
 qtiEdit.prototype.saveItemData = function(itemSerial){
 	
 	var instance = this;
@@ -387,7 +418,7 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 			
 			if(r.deleted){
 				for(var i in interactionSerials){
-					if(interactionEdit.interactionSerial == interactionSerials[i]){
+					if(instance.interactionSerial == interactionSerials[i]){
 						// destroy the interaction form:
 						$(instance.interactionFormContent).empty();
 					}

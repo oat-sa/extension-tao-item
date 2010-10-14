@@ -24,6 +24,14 @@
 
 <div id="qtiAuthoring_main_container">
 	<div id="qtiAuthoring_left_container">
+	
+		<div id='qtiAuthoring_save_button'>
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Save</a>
+		</div>
+		<div id='qtiAuthoring_preview_button'>
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Preview</a>
+		</div>
+	
 		<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
 				<?=__('Item Editor:')?>
 		</div>
@@ -62,28 +70,7 @@
 </div>
 
 <script type="text/javascript">
-//customized unload function:
-$.jgrid.GridUnload = function(){
-	return this.each(function(){
-		if ( !this.grid ) {return;}
-		var defgrid = {id: $(this).attr('id'),cl: $(this).attr('class')};
-		if (this.p.pager) {
-			$(this.p.pager).empty().removeClass("ui-state-default ui-jqgrid-pager corner-bottom");
-		}
-		var newtable = document.createElement('table');
-		$(newtable).attr({id:defgrid.id});
-		newtable.className = defgrid.cl;
-		var gid = this.id;
-		$(newtable).removeClass("ui-jqgrid-btable");
-		if( $(this.p.pager).parents("#gbox_"+gid).length === 1 ) {
-			$(newtable).insertBefore("#gbox_"+gid).show();
-			$(this.p.pager).insertBefore("#gbox_"+gid);
-		} else {
-			$(newtable).insertBefore("#gbox_"+gid).show();
-		}
-		$("#gbox_"+gid).remove();
-	});
-};
+
 		
 $(document).ready(function(){
 	// console.log('ssds', $.browser);
@@ -96,6 +83,15 @@ $(document).ready(function(){
 		CL('error creating the item', err);
 	}
 	
+	//set the save button:
+	$('#qtiAuthoring_save_button').click(function(){
+		myItem.save('<?=get_data('itemUri')?>');
+	});
+	
+	//set the preview button:
+	$('#qtiAuthoring_preview_button').click(function(){
+		myItem.preview();
+	});
 });
 
 </script>

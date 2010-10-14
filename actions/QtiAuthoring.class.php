@@ -130,12 +130,14 @@ class QtiAuthoring extends CommonModule {
 	}
 
 	public function index(){
-	
+		
+		//required for saving the item in tao:
+		$this->setData('itemUri', tao_helpers_Uri::encode($this->getRequestParameter('instance')));
+		
 		$currentItem = $this->getCurrentItem();
-		// var_dump($currentItem);
+		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
-		// $this->setData('htmlbox_wysiwyg_path', BASE_WWW.'js/HtmlBox_4.0/');//script that is not working
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemData', $itemData);
 		$this->setData('jwysiwyg_path', BASE_WWW.'js/jwysiwyg/');
@@ -169,13 +171,48 @@ class QtiAuthoring extends CommonModule {
 			$saved = true;
 		}
 		
-		echo json_encode(array(
-			'saved'=>$saved
-		));
+		if(tao_helpers_Request::isAjax()){
+			echo json_encode(array(
+				'saved'=>$saved
+			));
+		}else{
+			return $saved;
+		}
 	}
 	
-	public function reviewItem(){
-		//compile the item then display the result...
+	public function saveItem(){
+		$saved = false;
+		
+		if($this->hasRequestParameter('itemUri')){
+			
+			$itemData = $this->getRequestParameter('itemData');
+		
+			if(!empty($itemData)){
+				//save to qti:
+				$this->service->saveItemData($this->getCurrentItem(), $itemData);
+				
+				// $itemUri = tao_helpers_Uri::decode($this->getRequestParameter('itemUri'));
+				$itemResource = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('itemUri')));
+				$itemObject = $this->getCurrentItem();
+				
+				$itemXML = $itemObject->toQti();
+				echo 'itemXML:';
+				echo "<pre>$itemXML";
+				// $itemResource->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $itemXML);
+				
+				// $this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
+			
+			
+				$saved = true;
+			}
+			
+		}
+		
+	}
+	
+	public function preview(){
+		$this->setData('outputFilePath', $this->qtiService->renderItem($this->getCurrentItem()));
+		$this->setView("QTIAuthoring/preview.tpl");
 	}
 	
 	public function addInteraction(){
@@ -814,19 +851,9 @@ class QtiAuthoring extends CommonModule {
 		
 	}
 	
-	public function exportToQti(){
+	public function exportToRdfItem(){
 	
-		if($this->hasRequestParameter('uri')){
-			$itemUri = $this->getRequestParameter('uri');
-			
-			$itemResource = new core_kernel_classes_Resource($itemUri);
 		
-			$itemObject = $this->getCurrentItem();
-			
-			$itemXML = $itemObject->toQti();
-			
-			$itemResource->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $itemXML);
-		}
 		
 	}
 }

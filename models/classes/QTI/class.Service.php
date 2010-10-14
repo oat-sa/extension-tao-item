@@ -117,7 +117,7 @@ class taoItems_models_classes_QTI_Service
         		if($itemService->hasItemModel($rdfItem, array(TAO_ITEM_MODEL_QTI))){
         			
         			//get the QTI xml
-        			$rdfItem->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $qtiItem->toQTI());
+        			$returnValue = $rdfItem->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $qtiItem->toQTI());
         		}
 				
         	}catch(common_Exception $ce){

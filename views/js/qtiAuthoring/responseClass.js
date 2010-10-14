@@ -1,5 +1,27 @@
 // alert('response edit loaded');
 
+//customized unload function:
+$.jgrid.GridUnload = function(){
+	return this.each(function(){
+		if ( !this.grid ) {return;}
+		var defgrid = {id: $(this).attr('id'),cl: $(this).attr('class')};
+		if (this.p.pager) {
+			$(this.p.pager).empty().removeClass("ui-state-default ui-jqgrid-pager corner-bottom");
+		}
+		var newtable = document.createElement('table');
+		$(newtable).attr({id:defgrid.id});
+		newtable.className = defgrid.cl;
+		var gid = this.id;
+		$(newtable).removeClass("ui-jqgrid-btable");
+		if( $(this.p.pager).parents("#gbox_"+gid).length === 1 ) {
+			$(newtable).insertBefore("#gbox_"+gid).show();
+			$(this.p.pager).insertBefore("#gbox_"+gid);
+		} else {
+			$(newtable).insertBefore("#gbox_"+gid).show();
+		}
+		$("#gbox_"+gid).remove();
+	});
+};
 
 responseClass.grid = null;
 

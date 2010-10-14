@@ -834,6 +834,8 @@ class taoItems_models_classes_QtiAuthoringService
 	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
 		$pattern = "/<input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>/i";
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
+		
+		$data = str_replace('<br>', '<br/>', $data);
 		return $data;
 	}
 	

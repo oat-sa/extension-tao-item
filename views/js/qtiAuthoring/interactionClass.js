@@ -1,4 +1,4 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
 interactionClass.instances = [];
 
 function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer){
