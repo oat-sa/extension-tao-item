@@ -84,7 +84,7 @@ abstract class taoItems_actions_QTIform_interaction_Interaction
 		$this->form->addElement($oldIdElt);
 		
 		//id element: need for checking unicity
-		$labelElt = tao_helpers_form_FormFactory::getElement('interactionIdentifier', 'TextBox');
+		$labelElt = tao_helpers_form_FormFactory::getElement('interactionIdentifier', 'Textbox');
 		$labelElt->setDescription(__('Identifier'));
 		$labelElt->setValue($this->interaction->getIdentifier());
 		$this->form->addElement($labelElt);

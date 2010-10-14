@@ -28,7 +28,7 @@ class taoItems_actions_QTIform_choice_HotText
 		
 		parent::setCommonElements();
 		
-		//add textbox:
+		//add Textbox:
 		$dataElt = tao_helpers_form_FormFactory::getElement('data', 'Textbox');//the widget for an inline choice data is a text box!!
 		$dataElt->setDescription(__('Value'));
 		$choiceData = $this->choice->getData();

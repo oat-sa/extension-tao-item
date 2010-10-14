@@ -48,7 +48,7 @@ class taoItems_actions_QTIform_interaction_ChoiceInteraction
 		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
 		$this->setCommonElements();
 				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
+		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
 		$shuffleElt->setDescription(__('Shuffle'));
 		$shuffle = $interaction->getOption('shuffle');
 		$shuffleElt->setOptions(array('true' => ''));
@@ -60,7 +60,7 @@ class taoItems_actions_QTIform_interaction_ChoiceInteraction
 		$this->form->addElement($shuffleElt);
 		
 		//the "maxChoices" attr shall be set automatically?
-		$maxChoiceElt = tao_helpers_form_FormFactory::getElement('maxChoices', 'TextBox');
+		$maxChoiceElt = tao_helpers_form_FormFactory::getElement('maxChoices', 'Textbox');
 		$maxChoiceElt->setDescription(__('Maximum Number of Choice'));
 		//validator: is int??
 		$maxChoices = $interaction->getOption('maxChoices');

@@ -40,7 +40,7 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		
 		parent::setCommonElements();
 		
-		$baseElt = tao_helpers_form_FormFactory::getElement('base', 'TextBox');
+		$baseElt = tao_helpers_form_FormFactory::getElement('base', 'Textbox');
 		$baseElt->setDescription(__('Number base for value interpretation'));
 		//validator: is int??
 		$base = $interaction->getOption('base');
@@ -49,7 +49,7 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		}
 		$this->form->addElement($baseElt);
 		
-		$stringIdentifierElt = tao_helpers_form_FormFactory::getElement('stringIdentifier', 'TextBox');
+		$stringIdentifierElt = tao_helpers_form_FormFactory::getElement('stringIdentifier', 'Textbox');
 		$stringIdentifierElt->setDescription(__('String identifier'));
 		$stringIdentifier = $interaction->getOption('stringIdentifier');
 		if(!empty($stringIdentifier)){
@@ -57,7 +57,7 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		}
 		$this->form->addElement($stringIdentifierElt);
 		
-		$expectedLengthElt = tao_helpers_form_FormFactory::getElement('expectedLength', 'TextBox');
+		$expectedLengthElt = tao_helpers_form_FormFactory::getElement('expectedLength', 'Textbox');
 		$expectedLengthElt->setDescription(__('Expected length'));
 		$expectedLength = $interaction->getOption('expectedLength');
 		if(!empty($expectedLength)){
@@ -65,7 +65,7 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		}
 		$this->form->addElement($expectedLengthElt);
 		
-		$patternMaskElt = tao_helpers_form_FormFactory::getElement('patternMask', 'TextBox');
+		$patternMaskElt = tao_helpers_form_FormFactory::getElement('patternMask', 'Textbox');
 		$patternMaskElt->setDescription(__('Pattern mask'));
 		//validator: is int??
 		$patternMask = $interaction->getOption('patternMask');
@@ -74,7 +74,7 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		}
 		$this->form->addElement($patternMaskElt);
 		
-		$placeHolderTextElt = tao_helpers_form_FormFactory::getElement('placeHolderText', 'TextBox');
+		$placeHolderTextElt = tao_helpers_form_FormFactory::getElement('placeHolderText', 'Textbox');
 		$placeHolderTextElt->setDescription(__('Place holder text'));
 		//validator: is int??
 		$placeHolderText = $interaction->getOption('placeHolderText');

@@ -84,13 +84,13 @@ abstract class taoItems_actions_QTIform_choice_Choice
 		$this->form->addElement($oldIdElt);
 		
 		//id element: need for checking unicity
-		$labelElt = tao_helpers_form_FormFactory::getElement('choiceIdentifier', 'TextBox');
+		$labelElt = tao_helpers_form_FormFactory::getElement('choiceIdentifier', 'Textbox');
 		$labelElt->setDescription(__('Identifier'));
 		$labelElt->setValue($this->choice->getIdentifier());
 		$this->form->addElement($labelElt);
 		
 		//the fixed attribute element
-		$fixedElt = tao_helpers_form_FormFactory::getElement('fixed', 'CheckBox');
+		$fixedElt = tao_helpers_form_FormFactory::getElement('fixed', 'Checkbox');
 		$fixedElt->setDescription(__('Fixed'));
 		$fixedElt->setOptions(array('true' => ''));//empty label because the description of the element is enough
 		$fixed = $this->choice->getOption('fixed');

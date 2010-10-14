@@ -28,7 +28,7 @@ class taoItems_actions_QTIform_choice_GapText
 		
 		parent::setCommonElements();
 		
-		//add textbox:
+		//add Textbox:
 		$dataElt = tao_helpers_form_FormFactory::getElement('data', 'Textbox');
 		$dataElt->setDescription(__('Value'));
 		$choiceData = $this->choice->getData();

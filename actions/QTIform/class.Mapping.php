@@ -80,7 +80,7 @@ class taoItems_actions_QTIform_Mapping
 		$this->form->addElement($responseSerialElt);
 		
 		//default box:
-		$defaultValueElt = tao_helpers_form_FormFactory::getElement('defaultValue', 'TextBox');
+		$defaultValueElt = tao_helpers_form_FormFactory::getElement('defaultValue', 'Textbox');
 		$defaultValueElt->setDescription(__('Default value'));
 		$defaultValue = 0;
 		$mappingDefaultValue = $this->response->getMappingDefaultValue();
@@ -93,10 +93,10 @@ class taoItems_actions_QTIform_Mapping
 		$this->form->addElement($defaultValueElt);
 		
 		//upperbound+lowerbound:
-		$upperBoundElt = tao_helpers_form_FormFactory::getElement('upperBound', 'TextBox');
+		$upperBoundElt = tao_helpers_form_FormFactory::getElement('upperBound', 'Textbox');
 		$upperBoundElt->setDescription(__('Upper bound'));
 		
-		$lowerBoundElt = tao_helpers_form_FormFactory::getElement('lowerBound', 'TextBox');
+		$lowerBoundElt = tao_helpers_form_FormFactory::getElement('lowerBound', 'Textbox');
 		$lowerBoundElt->setDescription(__('Lower bound'));
 		
 		$mappingOptions = $this->response->getOption('mapping');

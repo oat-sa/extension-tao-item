@@ -50,7 +50,7 @@ class taoItems_actions_QTIform_interaction_MatchInteraction
 		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
 		$this->setCommonElements();
 				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
+		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
 		$shuffleElt->setDescription(__('Shuffle'));
 		$shuffle = $interaction->getOption('shuffle');
 		$shuffleElt->setOptions(array('true' => ''));
@@ -62,7 +62,7 @@ class taoItems_actions_QTIform_interaction_MatchInteraction
 		$this->form->addElement($shuffleElt);
 		
 		//the "maxAssociations" attr shall be set automatically?
-		$maxAssocElt = tao_helpers_form_FormFactory::getElement('maxAssociations', 'TextBox');
+		$maxAssocElt = tao_helpers_form_FormFactory::getElement('maxAssociations', 'Textbox');
 		$maxAssocElt->setDescription(__('Maximum Number of associations'));
 		//validator: is int??
 		$maxAssociations = $interaction->getOption('maxAssociations');

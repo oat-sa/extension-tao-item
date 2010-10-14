@@ -195,12 +195,11 @@ class QtiAuthoring extends CommonModule {
 				$itemResource = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('itemUri')));
 				$itemObject = $this->getCurrentItem();
 				
-				$itemXML = $itemObject->toQti();
-				echo 'itemXML:';
-				echo "<pre>$itemXML";
+				// $itemXML = $itemObject->toQti();
+				
 				// $itemResource->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $itemXML);
 				
-				// $this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
+				$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
 			
 			
 				$saved = true;
@@ -208,11 +207,19 @@ class QtiAuthoring extends CommonModule {
 			
 		}
 		
+		if(tao_helpers_Request::isAjax()){
+		
+		}
+		
+		return $saved;
+		
 	}
 	
 	public function preview(){
-		$this->setData('outputFilePath', $this->qtiService->renderItem($this->getCurrentItem()));
-		$this->setView("QTIAuthoring/preview.tpl");
+		// if($this->saveItem()){
+			$this->setData('outputFilePath', $this->qtiService->renderItem($this->getCurrentItem()));
+			$this->setView("QTIAuthoring/preview.tpl");
+		// }
 	}
 	
 	public function addInteraction(){

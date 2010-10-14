@@ -59,7 +59,7 @@ class taoItems_actions_QTIform_interaction_ExtendedtextInteraction
 		$this->setCommonElements();
 				
 		//other elements:		
-		$maxStringsElt = tao_helpers_form_FormFactory::getElement('maxStrings', 'TextBox');
+		$maxStringsElt = tao_helpers_form_FormFactory::getElement('maxStrings', 'Textbox');
 		$maxStringsElt->setDescription(__('Maximum number of separate strings'));
 		//validator: is int??
 		$maxStrings = $interaction->getOption('maxStrings');
@@ -68,7 +68,7 @@ class taoItems_actions_QTIform_interaction_ExtendedtextInteraction
 		}
 		$this->form->addElement($maxStringsElt);
 		
-		$expectedLinesElt = tao_helpers_form_FormFactory::getElement('expectedLines', 'TextBox');
+		$expectedLinesElt = tao_helpers_form_FormFactory::getElement('expectedLines', 'Textbox');
 		$expectedLinesElt->setDescription(__('Expected lines'));
 		$expectedLines = $interaction->getOption('expectedLines');
 		if(!empty($expectedLines)){

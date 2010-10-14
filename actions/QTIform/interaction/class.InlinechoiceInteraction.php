@@ -45,7 +45,7 @@ class taoItems_actions_QTIform_interaction_InlinechoiceInteraction
     {
 		$this->setCommonElements();
 				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
+		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
 		$shuffleElt->setDescription(__('Shuffle'));
 		$shuffle = $this->getInteraction()->getOption('shuffle');
 		$shuffleElt->setOptions(array('true' => ''));

@@ -47,7 +47,7 @@ class taoItems_actions_QTIform_interaction_OrderInteraction
 		
 		$this->setCommonElements();
 				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'CheckBox');
+		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
 		$shuffleElt->setDescription(__('Shuffle'));
 		$shuffle = $interaction->getOption('shuffle');
 		$shuffleElt->setOptions(array('true' => ''));
@@ -59,7 +59,7 @@ class taoItems_actions_QTIform_interaction_OrderInteraction
 		$this->form->addElement($shuffleElt);
 		
 		//the "orientation" attr:
-		$orientationElt = tao_helpers_form_FormFactory::getElement('orientation', 'ComboBox');
+		$orientationElt = tao_helpers_form_FormFactory::getElement('orientation', 'Combobox');
 		$orientationElt->setDescription(__('Orientation'));
 		$orientationElt->setOptions(array(
 			'vertical' => __('vertical'),

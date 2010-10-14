@@ -84,13 +84,13 @@ class taoItems_actions_QTIform_choice_Gap
 		$this->form->addElement($oldIdElt);
 		
 		//id element: need for checking unicity
-		$labelElt = tao_helpers_form_FormFactory::getElement('groupIdentifier', 'TextBox');
+		$labelElt = tao_helpers_form_FormFactory::getElement('groupIdentifier', 'Textbox');
 		$labelElt->setDescription(__('Identifier'));
 		$labelElt->setValue($this->group->getIdentifier());
 		$this->form->addElement($labelElt);
 		
 		//the fixed attribute element
-		$fixedElt = tao_helpers_form_FormFactory::getElement('fixed', 'CheckBox');
+		$fixedElt = tao_helpers_form_FormFactory::getElement('fixed', 'Checkbox');
 		$fixedElt->setDescription(__('Fixed'));
 		$fixedElt->setOptions(array('true' => ''));//empty label because the description of the element is enough
 		$fixed = $this->group->getOption('fixed');
@@ -102,7 +102,7 @@ class taoItems_actions_QTIform_choice_Gap
 		$this->form->addElement($fixedElt);
 		
 		//associable choice special property:
-		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'CheckBox');
+		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'Checkbox');
 		$matchGroupElt->setDescription(__('match group'));
 		$options = array();
 		foreach($this->interaction->getChoices() as $choice){

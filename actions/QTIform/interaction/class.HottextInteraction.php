@@ -47,7 +47,7 @@ class taoItems_actions_QTIform_interaction_HottextInteraction
 		
 		$this->setCommonElements();
 				
-		$maxChoiceElt = tao_helpers_form_FormFactory::getElement('maxChoices', 'TextBox');
+		$maxChoiceElt = tao_helpers_form_FormFactory::getElement('maxChoices', 'Textbox');
 		$maxChoiceElt->setDescription(__('Maximum Number of Choice'));
 		//validator: is int??
 		$maxChoices = $interaction->getOption('maxChoices');

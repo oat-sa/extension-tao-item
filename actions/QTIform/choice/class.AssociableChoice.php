@@ -49,7 +49,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 		parent::setCommonElements();
 		
-		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'CheckBox');
+		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'Checkbox');
 		$matchGroupElt->setDescription(__('Match Group'));
 		$matchGroupOption = $this->getMatchGroupOptions();
 		$matchGroupElt->setOptions($matchGroupOption);
