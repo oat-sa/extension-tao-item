@@ -106,7 +106,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	        $myItem->setData($itemData);
         }
         
-        //extract thee responses
+        //extract the responses
         $responseNodes = $data->xpath("*[name(.) = 'responseDeclaration']");
         foreach($responseNodes as $responseNode){
         	$response = self::buildResponse($responseNode);
@@ -283,7 +283,7 @@ class taoItems_models_classes_QTI_ParserFactory
        	}
         
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002491 end
-
+       	
         return $returnValue;
     }
 
@@ -345,23 +345,47 @@ class taoItems_models_classes_QTI_ParserFactory
        	}
        	unset($options['identifier']);
        	
+       	// identifier and cardinality are compulsory
        	if(!isset($data['identifier'])){
 			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for {$data->getName()}");
+       	}
+    	if(!isset($data['cardinality'])){
+			throw new taoItems_models_classes_QTI_ParsingException("No cardinality found for {$data->getName()}");
+       	}
+       	// baseType is not compulsory for record but we won't use it for now, so we test also baseType attribute
+    	if(!isset($data['baseType'])){
+			throw new taoItems_models_classes_QTI_ParsingException("No baseType found for {$data->getName()}");
        	}
        	
        	$myResponse = new taoItems_models_classes_QTI_Response((string)$data['identifier'], $options);
        	$myResponse->setType($data->getName());
+       	//echo '<pre>'; print_r ($myResponse); echo '</pre>';
        	
-       	//set the correct responses
-       	$correctResponseNodes = $data->xpath("*[name(.) = 'correctResponse']");
-       	$responses = array();
-       	foreach($correctResponseNodes as $correctResponseNode){
-       		foreach($correctResponseNode->value as $value){
-       			$responses[] = (string)$value;
-       		}
-       		break;
+       	// set the correct response
+       	$correctResponsesData = $data->xpath("*[name(.) = 'correctResponse']");
+       	$correctResponseData = isset ($correctResponsesData[0]) ? $correctResponsesData[0] : null;
+       	$correctResponseOptions = array ();
+       	// If a correctResponse has been defined (not compulsory)
+       	if ($correctResponseData != null){
+       		$correctResponseOptions['type'] = $correctResponseData->getName();
+	       	//echo '<pre>'; print_r ($correctResponseData); echo '</pre>';	
+	       	foreach($correctResponseData->attributes() as $key => $value){
+	       		$correctResponseOptions[$key] = (string)$value;
+	       	}
        	}
-       	$myResponse->setCorrectResponses($responses);
+       	// Correct response shares cardinality and baseType with its parent. It is the real variable container!
+       	//(string)$data['identifier'] . '_CorrectResponse'
+		$correctResponse = new taoItems_models_classes_QTI_Variable(null , $options['baseType'], $options['cardinality'], $correctResponseOptions);
+		$myResponse->setCorrectResponse ($correctResponse);
+		//echo '<pre>'; print_r ($correctResponse); echo '</pre>';
+       	
+		// Build correct Response value
+		$correctReponseValueNodes = $correctResponseData->xpath("*[name(.) = 'value']");
+		$correctResponseValues = Array ();
+    	foreach($correctReponseValueNodes as $correctReponseValueNode){
+    		$correctResponseValues[] = new taoItems_models_classes_QTI_Value(null , $options['baseType'], (string)$correctReponseValueNode, array('type'=>$correctReponseValueNode->getName()));
+       	}
+   		$correctResponse->setValues ($correctResponseValues);
        	
        	//set the mapping if defined
        	$mappingNodes = $data->xpath("*[name(.) = 'mapping']");
@@ -399,6 +423,7 @@ class taoItems_models_classes_QTI_ParserFactory
     public static function buildOutcome( SimpleXMLElement $data)
     {
         $returnValue = null;
+//    	echo '<pre>' ; print_r ($data); echo '</pre>';
 
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000249A begin
         
@@ -413,10 +438,21 @@ class taoItems_models_classes_QTI_ParserFactory
        	}
        	
        	$outCome = new taoItems_models_classes_QTI_Outcome((string)$data['identifier'], $options);
-        if(isset($outcome->defaultValue)){
-        	$outCome->setDefaultValue((string)$outcome->defaultValue->value);
+        $outComeDefaultValueNodes = $data->xpath("*[name(.) = 'defaultValue']");
+        if (count($outComeDefaultValueNodes)>0) {
+        	// Build outcome default value variable
+        	$outComeDefaultValue = new taoItems_models_classes_QTI_Variable (null , $options['baseType'], $options['cardinality'], array('type'=>$outComeDefaultValueNodes[0]->getName()));
+        	$outCome->setDefaultValue ($outComeDefaultValue);
+        	
+        	// Get the value of the outcome default value variable
+        	$outComeDefaultValueValueNodes = $outComeDefaultValueNodes[0]->xpath("*[name(.) = 'value']");
+			$outComeDefaultValueValues = Array ();
+	    	foreach($outComeDefaultValueValueNodes as $outComeDefaultValueValueNode){
+	    		$outComeDefaultValueValues[] = new taoItems_models_classes_QTI_Value(null , $options['baseType'], (string)$outComeDefaultValueValueNode, array('type'=>$outComeDefaultValueValueNode->getName()));
+	       	}
+	   		$outComeDefaultValue->setValues ($outComeDefaultValueValues);
         }
-        
+               
         $returnValue = $outCome;
        	
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:000000000000249A end
@@ -438,15 +474,50 @@ class taoItems_models_classes_QTI_ParserFactory
 
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 begin
         
+        $responseProcessing = null;
+        $expressions = array ();
+        
         if(isset($data['template'])){
         	//template processing
-        	 $returnValue = new taoItems_models_classes_QTI_response_Template((string)$data['template']);
+        	$responseProcessing = new taoItems_models_classes_QTI_response_Template((string)$data['template']);       	
         }
         else{
-			//custom rule processing
-        	
+			$responseProcessing = new taoItems_models_classes_QTI_response_Template ();
+			// Response Condition
+			$reponseConditionNodes = $data->xpath("*[name(.) = 'responseCondition']");
+			if (count($reponseConditionNodes)>0){
+				$reponseConditionNode = $reponseConditionNodes[0];
+				// Response If
+				$responseIfNodes = $reponseConditionNode->xpath("*[name(.) = 'responseIf'][1]");
+				if (count($responseIfNodes)>0){
+					if (count($responseIfNodes)>0){
+						$responseIfNode = $responseIfNodes[0];
+						foreach ($responseIfNode->children () as $expression)
+							$expressions[] = self::buildExpression ($expression);
+					}
+				}
+			}
         }
+		
+        echo '<pre>'; print_r ($expressions); echo '</pre>';
+		//echo '<pre>'; print_r ($responseProcessing); echo '</pre>';
         
+        $returnValue = $responseProcessing;
+        
+        // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
+
+        return $returnValue;
+    }
+    
+	public static function buildExpression( SimpleXMLElement $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 begin
+        
+        $expression = null;
+        $expression = new taoItems_models_classes_QTI_Expression ();
+        $returnValue = $expression;
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
 
         return $returnValue;
