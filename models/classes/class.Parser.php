@@ -110,7 +110,7 @@ class taoItems_models_classes_Parser
         // section 127-0-1-1-64df0e4a:12af6a1640c:-8000:00000000000025B8 begin
         
     	
-    	if(preg_match("/^<?xml(.*)>$/", trim($xmlSource))){
+    	if(preg_match("/^<\?xml(.*)?/m", trim($xmlSource))){
     		$this->sourceType = self::SOURCE_STRING;
     	}
     	else if(preg_match("/^http/", $xmlSource)){

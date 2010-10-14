@@ -68,7 +68,7 @@ class taoItems_models_classes_QTI_Service
         	
         	try{
         		
-        		$itemService = tao_models_classes_ServiceFactory::get('taoItems');
+        		$itemService = tao_models_classes_ServiceFactory::get('items');
         		
         		//check if the item is QTI item
         		if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
@@ -346,11 +346,7 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025E4 begin
         
         if(!is_null($item)){
-        	$xhtml =  $item->toXHTML();
-			$outputFile = BASE_PATH.'/views/runtime/'.uniqid('qti_'.$item->getIdentifier(), true).'.html';
-			if(file_put_contents($outputFile, $xhtml)){
-				$returnValue = $outputFile;
-			}
+        	$returnValue =  $item->toXHTML();
         }
 			
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025E4 end

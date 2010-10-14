@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.09.2010, 16:23:32 with ArgoUML PHP module 
+ * Automatically generated on 14.10.2010, 11:46:55 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -86,26 +86,6 @@ class taoItems_actions_form_ItemContentIO
     {
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002598 begin
         
-    	
-    	try{
-			$itemContent = (string)$this->instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-				
-			if(!empty($itemContent)){
-
-				$downloadUrl = _url('getItemContent', null, null, array(
-						'uri' 		=> tao_helpers_Uri::encode($this->instance->uriResource),
-						'classUri' 	=> tao_helpers_Uri::encode($this->clazz->uriResource)
-				));
-				
-				$downloadFileElt = tao_helpers_form_FormFactory::getElement("file_download", 'Free');
-				$downloadFileElt->setValue("<a href='$downloadUrl' class='blink' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml' class='icon'  /> ".__('Download item content')."</a>");
-				$this->form->addElement($downloadFileElt);
-				
-				$this->form->createGroup('export', 'Download', array($downloadFileElt->getName()));
-			}
-		}
-		catch(common_Exception $ce){}
-    	
     	$importFileElt = tao_helpers_form_FormFactory::getElement("file_import", 'AsyncFile');
 		$importFileElt->setDescription(__("Upload the item content (XML format required)"));
 		$importFileElt->addValidators(array(
@@ -134,7 +114,41 @@ class taoItems_actions_form_ItemContentIO
 			$this->form->addElement($instanceUriElt);
 		}
     	
+    	try{
+			$itemContent = (string)$this->instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			if(!empty($itemContent)){
+				$this->addDownloadSection();
+			}
+		}
+		catch(common_Exception $ce){}
+		
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002598 end
+    }
+
+    /**
+     * Short description of method addDownloadSection
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    public function addDownloadSection()
+    {
+        // section 127-0-1-1--86595b6:12baa1eac16:-8000:0000000000002596 begin
+        
+    	if(is_null($this->form->getElement('file_download'))){
+			$downloadUrl = _url('getItemContent', null, null, array(
+					'uri' 		=> tao_helpers_Uri::encode($this->instance->uriResource),
+					'classUri' 	=> tao_helpers_Uri::encode($this->clazz->uriResource)
+			));
+			
+			$downloadFileElt = tao_helpers_form_FormFactory::getElement("file_download", 'Free');
+			$downloadFileElt->setValue("<a href='$downloadUrl' class='blink' target='_blank'><img src='".BASE_WWW."/img/text-xml-file.png' alt='xml' class='icon'  /> ".__('Download item content')."</a>");
+			$this->form->addElement($downloadFileElt);
+			
+			$this->form->createGroup('export', 'Download', array($downloadFileElt->getName()));
+    	}
+        // section 127-0-1-1--86595b6:12baa1eac16:-8000:0000000000002596 end
     }
 
 } /* end of class taoItems_actions_form_ItemContentIO */

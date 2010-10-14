@@ -54,6 +54,22 @@ class taoItems_models_classes_ItemsService
      */
     protected $itemClass = null;
 
+    /**
+     * the instance of the itemModel property
+     *
+     * @access protected
+     * @var Property
+     */
+    protected $itemModelProperty = null;
+
+    /**
+     * the instance of the itemContent property
+     *
+     * @access public
+     * @var Property
+     */
+    public $itemContentProperty = null;
+
     // --- OPERATIONS ---
 
     /**
@@ -69,6 +85,8 @@ class taoItems_models_classes_ItemsService
 		
 		parent::__construct();
 		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
+		$this->itemModelProperty	= new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
+		$this->itemContentProperty	= new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
 		
         // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 end
     }
@@ -294,8 +312,8 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EA begin
         
         if(!is_null($item)){
-    		$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+    		$itemContent = $item->getUniquePropertyValue($this->itemContentProperty);
+			$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
 				
 				$returnValue = (string)$itemContent;
@@ -329,6 +347,29 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
+     * Check if the item has an itemContent Property
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @return boolean
+     */
+    public function hasItemContent( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F6 begin
+        
+        if(!is_null($item)){
+        	$returnValue = !is_null($item->getOnePropertyValue($this->itemContentProperty));
+        }
+        
+        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F6 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Check if the Item has on of the itemModel property in the models array
      *
      * @access public
@@ -345,7 +386,7 @@ class taoItems_models_classes_ItemsService
         
         if(!is_null($item)){
     		try{
-        		$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 	        	if($itemModel instanceof core_kernel_classes_Resource){
 	        		if(in_array($itemModel->uriResource, $models)){
 	        			$returnValue = true;
@@ -359,6 +400,98 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Check if the itemModel has been defined for that item
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @return boolean
+     */
+    public function isItemModelDefined( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F3 begin
+        
+    	if(!is_null($item)){
+			$returnValue = !is_null($item->getOnePropertyValue($this->itemModelProperty));
+		}
+        
+        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F3 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Get the runtime associated to the item model.
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @return core_kernel_classes_Resource
+     */
+    public function getModelRuntime( core_kernel_classes_Resource $item)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F9 begin
+        
+        if(!is_null($item)){
+        	try{
+        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
+				if(!is_null($itemModel)){
+	        		$returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+				}
+			}
+        	catch(common_Exception $ce){}
+        }
+        
+        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F9 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Deploy the item in parameter if the item is "deployable"
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @return string
+     */
+    public function deployItem( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE begin
+        
+        if(!is_null($item)){
+        	
+        	//deploy the QTI Item
+        	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
+
+        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
+        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
+        		
+        		if(!is_null($qtiItem)) {
+        			$output = $qtiService->renderItem($qtiItem);
+        			$fodlerName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+        			if(!is_dir(BASE_PATH.'/views/runtime/'.$fodlerName)){
+        				mkdir(BASE_PATH.'/views/runtime/'.$fodlerName);
+        			}
+        			if(file_put_contents(BASE_PATH.'/views/runtime/'.$fodlerName.'/index.html', $output)){
+        				$returnValue = BASE_WWW.'/runtime/'.$fodlerName.'/index.html';
+        			}
+        		}
+			}
+        }
+        
+        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE end
+
+        return (string) $returnValue;
     }
 
     /**
@@ -460,39 +593,6 @@ class taoItems_models_classes_ItemsService
 		}
 		
         // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method deployItem
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  Resource item
-     * @return string
-     */
-    public function deployItem( core_kernel_classes_Resource $item)
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE begin
-        
-        if(!is_null($item)){
-        	
-        	//deploy the QTI Item
-        	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
-
-        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
-        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
-        		
-        		if(!is_null($qtiItem)) {
-        			$returnValue = $qtiService->renderItem($qtiItem);
-        		}
-			}
-        }
-        
-        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE end
 
         return (string) $returnValue;
     }
