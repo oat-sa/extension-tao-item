@@ -111,7 +111,7 @@ class taoItems_models_classes_QTI_Service
         	
         	try{
         		
-        		$itemService = tao_models_classes_ServiceFactory::get('taoItems');
+        		$itemService = tao_models_classes_ServiceFactory::get('Items');
         		
         		//check if the item is QTI item
         		if($itemService->hasItemModel($rdfItem, array(TAO_ITEM_MODEL_QTI))){
