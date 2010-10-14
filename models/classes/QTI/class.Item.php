@@ -494,7 +494,8 @@ class taoItems_models_classes_QTI_Item
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002493 begin
 		
-		//the base iframe: tpl+js
+		$formContainer = new taoItems_actions_QTIform_AssessmentItem($this);
+		$returnValue = $formContainer->getForm();
 		
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002493 end
 

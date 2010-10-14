@@ -835,6 +835,11 @@ class taoItems_models_classes_QtiAuthoringService
 		$pattern = "/<input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>/i";
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
 		
+		//http://static.php.net/www.php.net/images/php.gif
+		// $patternImg = '/<img([^>]+)>/i';
+		// $replaceImg = '<img\1 />';
+		// $data = preg_replace($patternImg, $replaceImg, $data);
+		
 		$data = str_replace('<br>', '<br/>', $data);
 		return $data;
 	}

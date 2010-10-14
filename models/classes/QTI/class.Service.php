@@ -75,7 +75,7 @@ class taoItems_models_classes_QTI_Service
         			
         			//get the QTI xml
         			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-        			
+					
         			//Parse it and build the QTI_Data_Item
         			$qtiParser = new taoItems_models_classes_QTI_Parser((string)$itemContent);
 					$returnValue = $qtiParser->load();

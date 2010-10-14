@@ -31,15 +31,23 @@
 		<div id='qtiAuthoring_preview_button'>
 			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Preview</a>
 		</div>
-	
+		
+		
+
 		<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
 				<?=__('Item Editor:')?>
 		</div>
 		<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
+			<div id="qtiAuthoring_itemProperties_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin:10px 5px 0px;">
+				<?=__('Item Properties:')?>
+			</div>
+			<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom" style="margin:0px 5px 10px;">
+				<?=get_data('itemForm')?>
+			</div>
+		
 			<div class="ext-home-container ui-state-highlight">
 				<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
 			</div>
-
 		</div>
 
 		<div id='qtiAuthoring_interactionEditor'/>    

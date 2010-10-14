@@ -70,9 +70,6 @@ abstract class taoItems_actions_QTIform_choice_Choice
 		$this->form = tao_helpers_form_FormFactory::getForm($this->formName);
 		$this->form->setActions(array(), 'bottom');
 		//no save elt required, all shall be done with ajax request
-		// $saveElt = tao_helpers_form_FormFactory::getElement('Save', 'Save');
-		// $saveElt->setValue(__('Save'));
-		// $this->form->setActions(array($saveElt), 'top');//put save button on top because the bottom would be the place for the choice editing
 		
     }
 	

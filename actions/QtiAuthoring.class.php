@@ -42,21 +42,24 @@ class QtiAuthoring extends CommonModule {
 			$item = $this->qtiService->getItemBySerial($itemSerial);
 		}else{
 			//try creating a new item:
-			$itemFile = html_entity_decode($this->getRequestParameter('xml'));
+			$itemFile = html_entity_decode($this->getRequestParameter('xml'));//gonna be ignored
 			if(empty($itemFile)){
-			
+				
 				//temp check to allow page reloading without xml file:
-				$itemUri = $this->getRequestParameter('instance');
+				$itemUri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
 				if(!empty($itemUri)){
 					if(isset($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)])){
 						$item = $this->qtiService->getItemBySerial($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)]);
 					}
 				}
-				
 				if(empty($item)){
-					//create a new item object:
-					$item = $this->service->createNewItem($itemIdentifier);
-					$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
+					$itemResource = new core_kernel_classes_Resource($itemUri);
+					$item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
+					if(is_null($item)){
+						//create a new item object:
+						$item = $this->service->createNewItem($itemIdentifier);
+						$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
+					}
 				}
 				
 				if(empty($item)){
@@ -139,6 +142,7 @@ class QtiAuthoring extends CommonModule {
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
+		$this->setData('itemForm', $currentItem->toForm()->render());
 		$this->setData('itemData', $itemData);
 		$this->setData('jwysiwyg_path', BASE_WWW.'js/jwysiwyg/');
 		$this->setData('simplemodal_path', BASE_WWW.'js/simplemodal/');
@@ -499,6 +503,11 @@ class QtiAuthoring extends CommonModule {
 		
 		return $returnValue;
 	}
+	
+	public function editItem(){
+	
+	}
+	
 	
 	//to be called at the same time as edit response
 	public function editInteraction(){
