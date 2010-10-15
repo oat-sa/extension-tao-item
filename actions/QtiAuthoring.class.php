@@ -10,6 +10,8 @@
  
 class QtiAuthoring extends CommonModule {
 	
+	protected $debugMode = false;
+	
 	/**
 	 * constructor: initialize the service and the default data
 	 * @return Delivery
@@ -18,6 +20,7 @@ class QtiAuthoring extends CommonModule {
 		
 		parent::__construct();
 		
+		$this->debugMode = false;
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$this->service = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
 		$this->defaultData();
@@ -47,20 +50,20 @@ class QtiAuthoring extends CommonModule {
 				
 				//temp check to allow page reloading without xml file:
 				$itemUri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
-				if(!empty($itemUri)){
+				if(!empty($itemUri) && $this->debugMode){
 					if(isset($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)])){
 						$item = $this->qtiService->getItemBySerial($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)]);
 					}
 				}
 				if(empty($item)){
-					// $itemResource = new core_kernel_classes_Resource($itemUri);
-					// $item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
-					// if(is_null($item)){
+					$itemResource = new core_kernel_classes_Resource($itemUri);
+					if(!$this->debugMode) $item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
+					if(is_null($item)){
 					
 						//create a new item object:
 						$item = $this->service->createNewItem($itemIdentifier);
 						$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
-					// }
+					}
 				}
 				
 				if(empty($item)){
@@ -139,7 +142,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($this->getRequestParameter('instance')));
 		
 		$currentItem = $this->getCurrentItem();
-		var_dump($currentItem);
+		if($this->debugMode) var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());

@@ -94,11 +94,13 @@ $(document).ready(function(){
 	//set the save button:
 	$('#qtiAuthoring_save_button').click(function(){
 		myItem.save('<?=get_data('itemUri')?>');
+		return false;
 	});
 	
 	//set the preview button:
 	$('#qtiAuthoring_preview_button').click(function(){
 		myItem.preview();
+		return false;
 	});
 });
 
