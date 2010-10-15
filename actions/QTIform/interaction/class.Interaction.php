@@ -65,7 +65,7 @@ abstract class taoItems_actions_QTIform_interaction_Interaction
 		$actions = array();
 		
 		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
-		$saveElt->setValue("<a href='#' class='form-choice-adder' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
+		$saveElt->setValue("<a href='#' class='interaction-form-submitter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
 		$actions[] = $saveElt;
 		
 		$addChoiceElt = tao_helpers_form_FormFactory::getElement('addchoice', 'Free');

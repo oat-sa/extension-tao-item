@@ -33,7 +33,7 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){
 	var instance = this;
-	$(".form-submiter").click(function(){
+	$(".interaction-form-submitter").click(function(){
 		
 		var $myForm = $(this).parents("form");
 		//linearize it and post it:

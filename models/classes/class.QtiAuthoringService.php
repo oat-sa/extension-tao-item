@@ -694,6 +694,8 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function setOptions(taoItems_models_classes_QTI_Data $qtiObject, $newOptions=array()){
 		
+		// var_dump($newOptions);exit;
+		
 		if(!is_null($qtiObject) && !empty($newOptions)){
 		
 			$options = array();
@@ -702,18 +704,18 @@ class taoItems_models_classes_QtiAuthoringService
 				if(is_array($value)){
 					if(count($value)==1 && isset($value[0])){
 					
-						if($value[0] != '') $options[$key] = $value[0];
+						if($value[0] !== '') $options[$key] = $value[0];
 						
 					}else if(count($value)>1){
 						$options[$key] = array();
 						foreach($value as $val){
 						
-							if($val != '') $options[$key][] = $val;
+							if($val !== '') $options[$key][] = $val;
 							
 						}
 					}
 				}else{
-					if($value != '') $options[$key] = $value;
+					if($value !== '') $options[$key] = $value;
 				}
 			}
 			
@@ -1309,7 +1311,7 @@ class taoItems_models_classes_QtiAuthoringService
 		$reponse = $this->getInteractionResponse($interaction);
 		
 		$returnValue = array();
-		$correctResponses = $reponse->getCorrectResponses();
+		$correctResponses = $reponse->getCorrectResponse();
 		$mapping = $reponse->getMapping();
 		
 		$i = 0;

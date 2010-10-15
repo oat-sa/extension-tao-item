@@ -332,14 +332,19 @@ qtiEdit.prototype.save = function(itemUri){
 	//save item data then export to rdf item:
 	var instance = this;
 	
+	//get the item form values:
+	var itemProperties = $('#AssessmentItem_Form').serialize();
+	//could check if an interaction is being edited, so suggest to save it too:
+	if(itemProperties){
+		itemProperties += '&itemData=' + instance.itemEditor.wysiwyg('getContent');
+		itemProperties += '&itemSerial=' + instance.itemSerial;
+		itemProperties += '&itemUri=' + itemUri;
+	}
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveItem",
-	   data: {
-			'itemData': instance.itemEditor.wysiwyg('getContent'),
-			'itemSerial': instance.itemSerial,
-			'itemUri': itemUri
-	   },
+	   data: itemProperties,
 	   dataType: 'json',
 	   success: function(r){
 			// CL('item saved');

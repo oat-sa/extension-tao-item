@@ -53,13 +53,14 @@ class QtiAuthoring extends CommonModule {
 					}
 				}
 				if(empty($item)){
-					$itemResource = new core_kernel_classes_Resource($itemUri);
-					$item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
-					if(is_null($item)){
+					// $itemResource = new core_kernel_classes_Resource($itemUri);
+					// $item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
+					// if(is_null($item)){
+					
 						//create a new item object:
 						$item = $this->service->createNewItem($itemIdentifier);
 						$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
-					}
+					// }
 				}
 				
 				if(empty($item)){
@@ -192,19 +193,27 @@ class QtiAuthoring extends CommonModule {
 			$itemData = $this->getRequestParameter('itemData');
 		
 			if(!empty($itemData)){
-				//save to qti:
-				$this->service->saveItemData($this->getCurrentItem(), $itemData);
-				
-				// $itemUri = tao_helpers_Uri::decode($this->getRequestParameter('itemUri'));
 				$itemResource = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('itemUri')));
 				$itemObject = $this->getCurrentItem();
 				
-				// $itemXML = $itemObject->toQti();
+				//save item properties in the option array:
+				$options = array(
+					'title' => $itemObject->getIdentifier(),
+					'label' => '',
+					'timeDependent' => false,
+					'adaptive' => false
+				);
+				if($this->getRequestParameter('title') != '') $options['title'] = $this->getRequestParameter('title');
+				if($this->hasRequestParameter('label')) $options['label'] = $this->getRequestParameter('label');
+				if(intval($this->getRequestParameter('timeDependent'))) $options['timeDependent'] = true;
+				if(intval($this->getRequestParameter('adaptive'))) $options['adaptive'] = true;
+				$this->service->setOptions($itemObject, $options);
 				
-				// $itemResource->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $itemXML);
+				//save item data:
+				$this->service->saveItemData($this->getCurrentItem(), $itemData);
 				
+				//save to qti:
 				$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-			
 			
 				$saved = true;
 			}
@@ -218,6 +227,8 @@ class QtiAuthoring extends CommonModule {
 		return $saved;
 		
 	}
+	
+	
 	
 	public function preview(){
 		// if($this->saveItem()){

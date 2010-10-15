@@ -59,10 +59,11 @@ class taoItems_actions_QTIform_AssessmentItem
 	
 		$this->form = tao_helpers_form_FormFactory::getForm('AssessmentItem_Form');
 		
-		// $actions = tao_helpers_form_FormFactory::getCommonActions('top', true, false);
-		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
-		$saveElt->setValue("<a href='#' class='form-choice-adder' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
-		$actions[] = $saveElt;
+		$actions = array();
+		
+		// $saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
+		// $saveElt->setValue("<a href='#' class='item-form-submitter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
+		// $actions[] = $saveElt;
 		
 		$this->form->setActions($actions, 'top');
 		$this->form->setActions(array(), 'bottom');
