@@ -27,7 +27,7 @@
 				<action name="meta data" js="GenerisAction.loadMetaData" url="/taoItems/Items/getMetaData"  context="instance" />
 				<action name="create table" url="/taoResults/Results/createTable"  context="class" />
 				<action name="rdf" url="/tao/Export/index"  context="*" /> 
-				<action name="import" url="/tao/Import/index"  context="class" /> 
+				<action name="import" url="/taoItems/ItemImport/index"  context="class" /> 
 			</actions>
 		</section>
 		<section id="items_authoring" name="Authoring" url="/taoItems/Items/authoring" />

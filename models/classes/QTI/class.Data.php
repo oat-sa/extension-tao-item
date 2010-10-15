@@ -647,11 +647,11 @@ abstract class taoItems_models_classes_QTI_Data
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string name
-     * @return string
+     * @return mixed
      */
     public function getOption($name)
     {
-        $returnValue = (string) '';
+        $returnValue = null;
 
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002334 begin
         

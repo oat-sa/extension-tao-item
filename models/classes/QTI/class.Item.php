@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 06.09.2010, 16:00:39 with ArgoUML PHP module 
+ * Automatically generated on 15.10.2010, 09:22:19 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -102,6 +102,28 @@ class taoItems_models_classes_QTI_Item
     protected $outcomes = array();
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string identifier
+     * @param  array options
+     * @return mixed
+     */
+    public function __construct($identifier = null, $options = array())
+    {
+        // section 127-0-1-1-2993bc96:12baebd89c3:-8000:000000000000264D begin
+        
+    	//override the tool options !
+    	$options['toolName'] 	= TAO_NAME;
+    	$options['toolVersion'] = TAO_VERSION;
+    	
+    	parent::__construct($identifier, $options);
+    	
+        // section 127-0-1-1-2993bc96:12baebd89c3:-8000:000000000000264D end
+    }
 
     /**
      * Short description of method __sleep
