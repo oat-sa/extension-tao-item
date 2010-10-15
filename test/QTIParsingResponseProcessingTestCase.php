@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/../includes/common.php';
  * @package taoItems
  * @subpackage test
  */
-class QTIParsingTestCase extends UnitTestCase {
+class QTIParsingResponseProcessingTestCase extends UnitTestCase {
 	
 	protected $qtiService;
 	
@@ -36,7 +36,7 @@ class QTIParsingTestCase extends UnitTestCase {
 		
 		$this->assertTrue($qtiParser->isValid());
 		$item = $qtiParser->load();
-        echo '<pre>'; print_r( $item->getResponseProcessing ()); echo '</pre>';
+   //     echo '<pre>'; print_r( $item->getResponseProcessing ()); echo '</pre>';
 //        echo '<pre>'; print_r ($item); echo '</pre>';
 		
 //		$qtiRes = $item->toQTI ();
