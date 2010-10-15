@@ -104,11 +104,6 @@ class taoItems_models_classes_QTI_response_Template
      */
     protected $file = '';
 
-    
-    protected $responseIf = null;
-    protected $responseElseIf = array ();
-    protected $responseElse = null;
-    
     // --- OPERATIONS ---
 
     /**
@@ -138,33 +133,27 @@ class taoItems_models_classes_QTI_response_Template
      * @param  string uri
      * @return mixed
      */
-    public function __construct( $uri = null)
+    public function __construct($uri)
     {
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 begin
         
-    	if( $uri != null) {
-    		if ($uri != self::MATCH_CORRECT && 
-	    		$uri != self::MAP_RESPONSE && 
-	    		$uri != self::MAP_RESPONSE_POINT){
-    			throw new Exception("Unknown response processing template $uri");
-	    	} else {
-	    		$this->uri = $uri;
-			    $this->file = BASE_PATH . '/models/classes/QTI/data/rptemplates/' . basename($this->uri). '.xml';
-		    	if(!file_exists($this->file)){
-		    		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
-		    	}
-	    	}
+    	if( $uri != self::MATCH_CORRECT && 
+    		$uri != self::MAP_RESPONSE && 
+    		$uri != self::MAP_RESPONSE_POINT ){
+    		throw new Exception("Unknown response processing template $uri");
+    	}
+    	$this->uri = $uri;
+    	
+    	$this->file = BASE_PATH . '/models/classes/QTI/data/rptemplates/' . basename($this->uri). '.xml';
+    	if(!file_exists($this->file)){
+    		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
     	}
     	
     	parent::__construct(null);
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 end
     }
-	
-    public function addResponseIf ( taoItems_models_classes_QTI_Expression $expression ) {
-    	
-    }
-    
+
     /**
      * Short description of method toQTI
      *

@@ -76,7 +76,7 @@ class taoItems_models_classes_QTI_Response
      * @access protected
      * @var array
      */
-    protected $correctResponse = array();
+    protected $correctResponses = array();
 
     /**
      * Short description of attribute mapping
@@ -103,13 +103,13 @@ class taoItems_models_classes_QTI_Response
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
-    public function getCorrectResponse()
+    public function getCorrectResponses()
     {
         $returnValue = array();
 
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002407 begin
         
-        $returnValue = $this->correctResponse;
+        $returnValue = $this->correctResponses;
         
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002407 end
 
@@ -124,14 +124,14 @@ class taoItems_models_classes_QTI_Response
      * @param  array responses
      * @return mixed
      */
-    public function setCorrectResponse($response)
+    public function setCorrectResponses($responses)
     {
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002404 begin
-
-    	if( ! $response instanceof taoItems_models_classes_QTI_Variable){
-    		throw new InvalidArgumentException("wrong entry in reponses list");
+        
+    	if(!is_array($responses)){
+    		$responses = array($responses);
     	}
-    	$this->correctResponse = $response;
+    	$this->correctResponses = $responses;
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002404 end
     }
