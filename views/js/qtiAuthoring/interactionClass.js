@@ -85,7 +85,7 @@ interactionClass.prototype.saveInteraction = function($myForm){
 		}
 	}
 	
-	var instance = this;
+	var interaction = this;
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveInteraction",
@@ -93,8 +93,12 @@ interactionClass.prototype.saveInteraction = function($myForm){
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){
-				createInfoMessage(__('The interaction has been saved'));
-				instance.modifiedInteraction = false;
+				createInfoMessage(__('Modification on interaction applied'));
+				interaction.modifiedInteraction = false;
+				
+				if(r.reloadResponse){
+					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				}
 			}
 	   }
 	});
@@ -114,7 +118,7 @@ interactionClass.prototype.saveChoice = function($choiceForm){
 			if(!r.saved){
 				createErrorMessage(__('The choice cannot be saved'));
 			}else{
-				createInfoMessage(__('The choice has been saved'));
+				createInfoMessage(__('Modification on choice applied'));
 				delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 				
 				//only when the identifier has changed:
@@ -525,7 +529,7 @@ interactionClass.prototype.saveResponseMappingOptions = function($myForm){
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){
-				createInfoMessage(__('The mapping options has been saved'));
+				createInfoMessage(__('The mapping options have been applied'));
 			}
 	   }
 	});

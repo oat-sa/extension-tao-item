@@ -1301,8 +1301,31 @@ class taoItems_models_classes_QtiAuthoringService
 			$interactionResponse->setCorrectResponses($correctResponses);
 			$interactionResponse->setMapping($mapping);//method: unsetMapping + unsetCorrectResponses?
 			
+			//set the required cardinality and basetype attributes:
+			$this->updateInteractionResponse($interaction);
+			
 			$returnValue = true;
 		}
+		return $returnValue;
+	}
+	
+	public function updateInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction){
+		
+		$returnValue = false;
+		
+		if(!is_null($interaction)){
+			$responseOptions = array(
+				'cardinality' => $interaction->getCardinality(),
+				'baseType' => $interaction->getBaseType()
+			);
+			$response = $interaction->getResponse();
+			if(!is_null($response)){
+				$response->setOptions($responseOptions);
+				$returnValue = true;
+			}
+			
+		}
+		
 		return $returnValue;
 	}
 	
@@ -1311,8 +1334,9 @@ class taoItems_models_classes_QtiAuthoringService
 		$reponse = $this->getInteractionResponse($interaction);
 		
 		$returnValue = array();
-		$correctResponses = $reponse->getCorrectResponse();
+		$correctResponses = $reponse->getCorrectResponses();
 		$mapping = $reponse->getMapping();
+		$maxChoices = $interaction->getCardinality(true);
 		
 		$i = 0;
 		$interactionType = strtolower($interaction->getType());
@@ -1356,6 +1380,11 @@ class taoItems_models_classes_QtiAuthoringService
 						}
 						
 						$i++;
+						
+						//delete exceeding correct responses (0 means infinite)
+						if($maxChoices){
+							if($i>=$maxChoices) break;
+						}
 					}
 				}
 				
@@ -1378,6 +1407,7 @@ class taoItems_models_classes_QtiAuthoringService
 			
 				if(!empty($correctResponses)){
 					foreach($correctResponses as $choiceSerialConcat){
+						
 						$choiceSerials = explode(' ', $choiceSerialConcat);
 						
 						$returnValue[$i] = array();
@@ -1402,6 +1432,10 @@ class taoItems_models_classes_QtiAuthoringService
 						}
 						
 						$i++;
+						
+						if($maxChoices){
+							if($i>=$maxChoices) break;//delete exceeding correct responses
+						}
 					}
 				}
 				if(!empty($mapping)){

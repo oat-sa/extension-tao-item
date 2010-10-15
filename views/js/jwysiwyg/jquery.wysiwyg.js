@@ -112,7 +112,7 @@
         };
 
         $.fn.wysiwyg.defaults = {
-                html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
+                html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body style="margin: 0px;">INITIAL_CONTENT</body></html>',
                 formTableHtml: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label><br />Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
                 formImageHtml:'<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="url" value="http://" /></label><label>Image Title: <input type="text" name="imagetitle" value="" /></label><label>Image Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Image" /> <input type="reset" value="Cancel" /></fieldset></form>',
                 formWidth: 440,
@@ -671,6 +671,34 @@
 				undo: function(){
 					var self = $.data(this, 'wysiwyg');
 					self.editorDoc.execCommand('undo', false, null);
+				},
+				
+				setHotText:function(){
+					var self = $.data(this, 'wysiwyg');
+
+					if (self.constructor == Wysiwyg)
+					{
+							var selection = documentSelection.call($(self.editor));
+
+							if (selection && selection.length > 0)
+							{
+									if ($.browser.msie)
+									{
+											self.focus();
+									}
+									self.removeFormat();
+									self.editorDoc.execCommand('delete', false, null);
+									self.insertHtml('{qti_hottext_new}');
+									CL('selection', selection);
+									return selection;
+							}
+							else if (self.options.messages.nonSelection)
+							{
+									alert(self.options.messages.nonSelection);
+							}
+					}
+					return '';
+					
 				}
         });
 
@@ -1081,7 +1109,7 @@
 
                                 if (this.options.rmUnwantedBr)
                                 {
-                                        content = (content.substr(-4) == '<br>') ? content.substr(0, content.length - 4) : content;
+                                        content = (content.substr(-4) == '<br/>') ? content.substr(0, content.length - 4) : content;
                                 }
 
                                 $(this.original).val(content);

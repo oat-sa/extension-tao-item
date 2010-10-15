@@ -28,11 +28,7 @@ responseClass.grid = null;
 function responseClass(tableElementId, interaction){
 
 	if(responseClass.grid){
-		// if(responseEdit.grid.myGrid){
-			// CL('destroy grid');
-			// responseEdit.destroyGrid(tableElementId);
-		// }
-		responseClass.grid.destroyGrid();//only one response grid available at each time.
+		responseClass.grid.destroyGrid();//only one response grid available at a time.
 	}
 	
 	responseClass.grid = this;
@@ -40,6 +36,7 @@ function responseClass(tableElementId, interaction){
 	
 	this.interactionSerial = interaction.interactionSerial;
 	this.currentRowId = null;
+	this.maxChoices = null;
 	
 	$.ajax({
 		url: "/taoItems/QtiAuthoring/editResponse",
@@ -53,6 +50,9 @@ function responseClass(tableElementId, interaction){
 			if (serverResponse.ok){
 				//reset the grid:
 				$('#'+tableElementId).empty();
+				
+				//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
+				if(serverResponse.maxChoices) response.maxChoices = serverResponse.maxChoices;
 				
 				response.buildGrid(tableElementId, serverResponse);
 			}else{
@@ -319,6 +319,7 @@ responseClass.prototype.editGridRow = function(rowId){
 				
 				var repeatedChoice = response.checkRepeatedChoice(response.currentRowId);
 				var repeatedRow =  response.checkRepeatedRow(response.currentRowId);
+				var maxChoicesRespected = response.checkCardinality(response.currentRowId);
 				if(repeatedChoice){
 					alert('There cannot be identical choice in a row.');
 					// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
@@ -328,12 +329,14 @@ responseClass.prototype.editGridRow = function(rowId){
 				}
 				if(repeatedRow){
 					alert('There is already a row with the same choices.');
-					// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
 					response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
 					return false;
 				}
-				// CL('repeatedChoice', repeatedChoice);
-				// CL('repeatedRow', repeatedRow);
+				if(!maxChoicesRespected){
+					alert('Impossible to exceed the maximum number of choices defined in the interaction');
+					response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
+					return false;
+				}
 				
 				response.saveResponseGrid();
 								
@@ -427,4 +430,48 @@ responseClass.prototype.checkRepeatedRow = function(rowId){
 		}
 	}
 	return false;
+}
+
+responseClass.prototype.checkCardinality = function(rowId){
+	
+	if(!this.maxChoices){
+		return true;//infinite choice/association by default
+	}
+	
+	//the number of existing correct response against
+	var thisRowData = this.myGrid.jqGrid('getRowData', rowId);
+	var mappingMode = false;
+	if(thisRowData['correct']){
+		if(thisRowData['correct'] == 'no'){
+			return true;//ok
+		}else{
+			//need for checking
+			mappingMode = true;
+		}
+	}
+	//need for checking:
+	
+	//count the number of existing
+	var allData = this.myGrid.jqGrid('getRowData');
+	var count = 0;
+	for(var i = 0; i<allData.length; i++){
+		if(i == rowId){
+			continue;
+		}
+		
+		var anotherRowData = allData[i];
+		if(mappingMode){
+			if(anotherRowData['correct'] == 'yes') count++;
+		}else{
+			count++;
+		}	
+		
+		i++;
+	}
+	
+	if(count<this.maxChoices){
+		return true;
+	}else{
+		return false;
+	}
 }

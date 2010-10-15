@@ -347,7 +347,9 @@ qtiEdit.prototype.save = function(itemUri){
 	   data: itemProperties,
 	   dataType: 'json',
 	   success: function(r){
-			// CL('item saved');
+			if(r.saved){
+				createInfoMessage(__('The item has been successfully saved'));
+			}
 	   }
 	});
 }

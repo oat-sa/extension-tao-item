@@ -20,7 +20,7 @@ class QtiAuthoring extends CommonModule {
 		
 		parent::__construct();
 		
-		$this->debugMode = false;
+		$this->debugMode = true;
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$this->service = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
 		$this->defaultData();
@@ -224,7 +224,9 @@ class QtiAuthoring extends CommonModule {
 		}
 		
 		if(tao_helpers_Request::isAjax()){
-		
+			echo json_encode(array(
+				'saved' => $saved
+			));
 		}
 		
 		return $saved;
@@ -671,7 +673,28 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				unset($values['interactionSerial']);
+				
+				$reloadResponse = false;
+				foreach($values as $key=>$value){
+					if(preg_match('/^max/', $key)){
+						if($interaction->getOption($key) != $value){
+							$reloadResponse = true;
+						}
+						break;
+					}
+				}
+				
+				//save all options before updating the interaction response
 				$this->service->setOptions($interaction, $values);
+				if($reloadResponse){
+					//update the cardinality, just in case it has been changed:
+					//may require upload of the response form, since the maximum allowed response may have changed!
+					$this->service->updateInteractionResponse($interaction);
+					
+					//costly...
+					//then simulate get+save response data to filter affected response variables
+					$this->service->saveInteractionResponse($interaction, $this->service->getInteractionResponseData($interaction));
+				}
 				
 				$choiceOrder = array();
 				if(isset($_POST['choiceOrder'])){
@@ -697,7 +720,8 @@ class QtiAuthoring extends CommonModule {
 		}
 		
 		echo json_encode(array(
-			'saved' => $saved
+			'saved' => $saved,
+			'reloadResponse' => $reloadResponse
 		));
 		
 	}
@@ -876,7 +900,8 @@ class QtiAuthoring extends CommonModule {
 		echo json_encode(array(
 			'ok' => true,
 			'colModel' => $columnModel,
-			'data' => $responseData
+			'data' => $responseData,
+			'maxChoices' => intval($interaction->getCardinality(true))
 		));
 		
 	}

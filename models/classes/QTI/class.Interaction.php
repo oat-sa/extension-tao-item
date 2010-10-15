@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.10.2010, 12:41:24 with ArgoUML PHP module 
+ * Automatically generated on 15.10.2010, 17:02:23 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -719,16 +719,65 @@ class taoItems_models_classes_QTI_Interaction
      *
      * @access public
      * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @return string
+     * @param  boolean numeric
+     * @return mixed
      */
-    public function getCardinality()
+    public function getCardinality($numeric = false)
     {
-        $returnValue = (string) '';
+        $returnValue = null;
 
         // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 begin
+		//get maximum possibility:
+		switch(strtolower($this->type)){
+			case 'choice':
+			case 'hottext':{
+				$max = intval($this->getOption('maxChoices'));
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max==1)?'single':'multiple';//default=1
+				break;
+			}
+			case 'associate':
+			case 'match':{
+				$max = intval($this->getOption('maxAssociations'));
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max==1)?'single':'multiple';//default=1
+				break;
+			}
+			case 'extendedtext':{
+				//maxStrings + order or not?
+				$cardinality = $this->getOption('cardinality');
+				if($cardinality == 'ordered'){
+					if($numeric) $returnValue = 0;//meaning, infinite
+					else $returnValue = $cardinality;
+					break;
+				}
+				$max = intval($this->getOption('maxStrings'));
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max>1)?'multiple':'single';//optional
+				break;
+			}
+			case 'gapmatch':{
+				//count the number of gap, i.e. "groups" in the interaction:
+				$max = count($this->getGroups());
+				if($numeric) $returnValue = $max;
+				$returnValue = ($max>1)?'multiple':'single';
+			}
+			case 'order':{
+				$returnValue = ($numeric)?0:'ordered';
+				break;
+			}
+			case 'inlinechoice':
+			case 'textentry':{
+				$returnValue = ($numeric)?1:'single';
+				break;
+			}
+			default:{
+				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
+			}
+		}
         // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 end
 
-        return (string) $returnValue;
+        return $returnValue;
     }
 
     /**
@@ -743,6 +792,41 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 begin
+		switch(strtolower($this->type)){
+			case 'choice':
+			case 'order':
+			case 'inlinechoice':
+			case 'hottext':{
+				$returnValue = 'identifier';
+				break;
+			}
+			case 'associate':{
+				$returnValue = 'pair';
+				break;
+			}
+			case 'match':
+			case 'gapmatch':{
+				$returnValue = 'directedPair';
+				break;
+			}
+			case 'textentry':
+			case 'extendedtext':{
+				$returnValue = 'string';
+				$authorizedBaseType = array('string', 'integer', 'float');
+				$response = $this->getResponse();
+				if(!is_null($response)){
+					$baseType = strtolower($this->getOption('baseType'));
+					if(in_array($baseType, $authorizedBaseType)){
+						$returnValue = $baseType;
+					}
+				}
+				break;
+			}
+			default:{
+				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
+			}
+			
+		}
         // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 end
 
         return (string) $returnValue;
