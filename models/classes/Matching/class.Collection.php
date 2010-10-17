@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.10.2010, 23:05:48 with ArgoUML PHP module 
+ * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -56,6 +56,60 @@ abstract class taoItems_models_classes_Matching_Collection
     // --- OPERATIONS ---
 
     /**
+     * Short description of method contain
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Variable var
+     * @return string
+     */
+    public function contain( taoItems_models_classes_Matching_Variable $var)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9A begin
+        
+     	foreach ($this->value as $key=>$value) {
+			$resMatch = null;
+
+			// Different type
+			if ($var->getType() != $value->getType()){
+				$returnValue = null;
+				break;
+			}
+			
+			if ($var->match ($value)){
+				$returnValue = $key;
+				break;
+			}
+        }
+        
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9A end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method isNull
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    public function isNull()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9D begin
+        
+        $returnValue = empty ($this->value);
+        
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9D end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Short description of method length
      *
      * @access public
@@ -73,6 +127,23 @@ abstract class taoItems_models_classes_Matching_Collection
         // section 127-0-1-1-2688e070:12bac090945:-8000:0000000000002966 end
 
         return (int) $returnValue;
+    }
+
+    /**
+     * Short description of method getType
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    public function getType()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002ACC begin
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002ACC end
+
+        return (bool) $returnValue;
     }
 
 } /* end of abstract class taoItems_models_classes_Matching_Collection */

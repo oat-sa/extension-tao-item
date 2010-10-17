@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.10.2010, 23:05:48 with ArgoUML PHP module 
+ * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -32,13 +32,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * Short description of class taoItems_models_classes_Matching_Variable
  *
- * @abstract
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
-abstract class taoItems_models_classes_Matching_Variable
+class taoItems_models_classes_Matching_Variable
 {
     // --- ASSOCIATIONS ---
 
@@ -58,12 +57,19 @@ abstract class taoItems_models_classes_Matching_Variable
     /**
      * Short description of method getType
      *
-     * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
-    public abstract function getType();
+    public function getType()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028BE begin
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028BE end
+
+        return (string) $returnValue;
+    }
 
     /**
      * Short description of method getValue
@@ -121,9 +127,6 @@ abstract class taoItems_models_classes_Matching_Variable
         $returnValue = (bool) false;
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028C1 begin
-        
-        $returnValue = $this->value == null;
-        
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028C1 end
 
         return (bool) $returnValue;
@@ -153,13 +156,16 @@ abstract class taoItems_models_classes_Matching_Variable
     /**
      * Short description of method setValue
      *
-     * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  value
+     * @param  data
      * @return mixed
      */
-    public abstract function setValue(   $value);
+    public function setValue(   $data)
+    {
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000292B begin
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000292B end
+    }
 
     /**
      * Short description of method toJSon
@@ -181,6 +187,6 @@ abstract class taoItems_models_classes_Matching_Variable
         return $returnValue;
     }
 
-} /* end of abstract class taoItems_models_classes_Matching_Variable */
+} /* end of class taoItems_models_classes_Matching_Variable */
 
 ?>

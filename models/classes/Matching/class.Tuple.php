@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.10.2010, 23:05:48 with ArgoUML PHP module 
+ * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -130,18 +130,27 @@ class taoItems_models_classes_Matching_Tuple
         
         // If the cardinality is not the same return false
         if ($this->length() != $tuple->length()){
-        	return false;	
+        	$returnValue = false;
         }
-        
-        // Test if the both tuples have the same content
-        foreach ($this->value as $key=>$elt){
-        	$compareElt = $tuple->getElement ($key);
-        	if ($compareElt == null || !$elt->match ($compareElt)) {
-        		$returnValue = false;
-        		break;
-        	} else {
-        		$returnValue = true;
-        	}
+        else {
+	        // Test if the both tuples have the same content
+	        foreach ($this->value as $key=>$elt){
+	        	$compareElt = $tuple->getElement ($key);
+	        	
+	        	if ($compareElt == null){
+	        		$returnValue = false;
+	        		break;
+	        	} else if ($elt->getType () != $compareElt->getType()){
+	        		throw new Exception ('taoItems_models_classes_Matching_Tuple::match an error occured : types of the elements to match are not the same ['.$elt->getType ().'] and ['.$compareElt->getType().']');
+	        		$returnValue = false;
+	        		break;
+	        	} else if (!$elt->match ($compareElt)){
+	        		$returnValue = false;
+	        		break;
+	        	} else {
+	        		$returnValue = true;
+	        	}
+	        }
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002943 end

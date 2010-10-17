@@ -17,10 +17,9 @@ function pr ($msg){
 }
 
 /**
- * instanciate the maching engine object
- * @see core.js 
+ * The tao matching object
  */
-$taoMatching = new taoItems_models_classes_Matching_Matching ();
+$taoMatching = null;
 
 /////////////////////
 // TAO Matching //
@@ -31,7 +30,8 @@ $taoMatching = new taoItems_models_classes_Matching_Matching ();
  * @return {bool}
  */
 function matching_init () {
-	
+	global $taoMatching;
+	$taoMatching = new taoItems_models_classes_Matching_Matching ();
 }
 
 /**
@@ -63,7 +63,7 @@ function matching_setCorrects ($data) {
  */
 function matching_setMaps ($data) {
 	global $taoMatching;
-	return $taoMatching->setMaps ($data);
+	return $taoMatching->setMaps (json_decode($data));
 }
 
 /**
@@ -89,6 +89,12 @@ function matching_setResponses ($data) {
 function matching_setRule ($rule) {
 	global $taoMatching;
 	$taoMatching->setRule ($rule);
+}
+
+// temporary testing fufnction
+function matching_getRule () {
+	global $taoMatching;
+	return $taoMatching->getRule ();
 }
 
 ?>

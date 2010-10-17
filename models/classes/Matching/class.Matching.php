@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.10.2010, 23:05:48 with ArgoUML PHP module 
+ * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -97,7 +97,82 @@ class taoItems_models_classes_Matching_Matching
      */
     protected $rule = '';
 
+    /**
+     * Short description of attribute whiteFunctionsList
+     *
+     * @access public
+     * @var array
+     */
+    public static $whiteFunctionsList = array();
+
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method parseExpressionRule
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array matches
+     * @return string
+     */
+    public static function parseExpressionRule($matches)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AAB begin
+        
+        $functionName = '';
+		
+		$whiteListedFunction = taoItems_models_classes_Matching_Matching::$whiteFunctionsList[$matches[1]];
+		
+		if (isset($whiteListedFunction)){
+			// Check if the function is mapped
+			if (isset($whiteListedFunction['mappedFunction'])){
+				$functionName = $whiteListedFunction['mappedFunction'];
+			}
+			else{
+				$functionName = $matches[1];
+			}
+			// Check if the function requires a prefix
+			if (!isset($whiteListedFunction['prefix']) || $whiteListedFunction['prefix']){
+				$functionName = '$this->'.$functionName;
+			}
+		} 
+		else {
+			throw new Exception ('taoItems_models_classes_Matching_Matching::parseExpressionRule an error occured : the following expression is unknown '.$matches[1]);
+		}
+		
+		$returnValue = $functionName.' (';
+		
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AAB end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 begin
+		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
+			'and'=>array('mappedFunction'=>'andExpression')
+			, 'equal'=>array()
+			, 'if'=>array('prefix'=>false)
+			, 'isNull'=>array()
+			, 'getCorrect'=>array()
+			, 'getMap'=>array()
+			, 'getResponse'=>array()
+			, 'mapResponse'=>array()
+			, 'match'=>array()
+			, 'setOutcomeValue'=>array()
+		);
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
+    }
 
     /**
      * Eval the stored response processing rule
@@ -185,6 +260,40 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
+     * Short description of method setMaps
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return mixed
+     */
+    public function setMaps(   $data)
+    {
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002918 begin
+        
+        if (gettype($data) != 'array'){
+    		throw new Exception ('taoItems_models_classes_Matching_Matching::setMaps is waiting on an array, a '.gettype($data).' is given. '.$data);
+        }
+
+		foreach ($data as $key=>$map){
+			try {
+				$var =  new taoItems_models_classes_Matching_Map ($map->value);
+				
+				if (isset ($this->maps[$map->identifier]))
+					throw new Exception ('taoItems_models_classes_Matching_Matching::setMaps a map variable with the identifier '.$map->identifier.' exists yet');
+
+				$this->maps[$map->identifier] = $var;
+			}
+			
+			catch (Exception $e){
+				throw $e;
+			}
+		}
+    	
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002918 end
+    }
+
+    /**
      * Short description of method setOutcomes
      *
      * @access public
@@ -265,25 +374,14 @@ class taoItems_models_classes_Matching_Matching
     public function setRule($rule)
     {
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E5 begin
-        $whiteFunctionsList = array (
-			'and'=>array('function'=>'andMatchingExpression')
-			, 'equal'=>array()
-			, 'getCorrect'=>array()
-			, 'getMap'=>array()
-			, 'getResponse'=>array()
-			, 'mapResponse'=>array()
-			, 'match'=>array()
-			, 'setOutcomeValue'=>array()
-		);
+        //implode ('|', array_keys(taoItems_models_classes_Matching_Matching::$whiteFunctionsList))
     	
     	$this->rule = preg_replace_callback (
-				'/('. implode ('|', array_keys($whiteFunctionsList)).')/'
-				, create_function ('$matches', 'global $whiteFunctionsList; return "\$this->".(isset($whiteFunctionsList[$matches[0]]["function"])?$whiteFunctionsList[$matches[0]]["function"]:$matches[0]);' )
+				'/([a-zA-Z_\-1-9]*)[\s]*\(/'
+				, 'taoItems_models_classes_Matching_Matching::parseExpressionRule'
 				, $rule
 			).';';
-		
-		pr ($this->rule);
-			
+
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E5 end
     }
 
@@ -315,12 +413,20 @@ class taoItems_models_classes_Matching_Matching
      * @access protected
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string id
-     * @return mixed
+     * @return taoItems_models_classes_Matching_Map
      */
     protected function getMap($id)
     {
+        $returnValue = null;
+
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EA begin
+        
+        if (isset($this->maps[$id]))
+        	$returnValue = $this->maps[$id];
+        
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EA end
+
+        return $returnValue;
     }
 
     /**
@@ -368,27 +474,13 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * Short description of method setMaps
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  object data
-     * @return mixed
-     */
-    public function setMaps( core_kernel_classes_object $data)
-    {
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002918 begin
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002918 end
-    }
-
-    /**
      * Short description of method getRule
      *
      * @access protected
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
-    protected function getRule()
+  function getRule()
     {
         $returnValue = (string) '';
 
@@ -417,7 +509,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D begin
-        
+                
         if (!isset($expr1))
         	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
         else if (!isset($expr2))
@@ -426,7 +518,7 @@ class taoItems_models_classes_Matching_Matching
         if ($expr1->getType() != $expr2->getType()) { 
         	$returnValue = false;
     	} else {
-        	$returnValue = $expr1->match($expr2);	
+        	$returnValue = $expr1->match($expr2);
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D end
@@ -455,6 +547,85 @@ class taoItems_models_classes_Matching_Matching
 //		$outcome->setValue ($value);
 		
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002927 end
+    }
+
+    /**
+     * Short description of method mapResponse
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Map map
+     * @param  Variable expr
+     * @return double
+     */
+    public function mapResponse( taoItems_models_classes_Matching_Map $map,  taoItems_models_classes_Matching_Variable $expr)
+    {
+        $returnValue = (float) 0.0;
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F begin
+        
+        $returnValue = $map->map ($expr);
+        
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F end
+
+        return (float) $returnValue;
+    }
+
+    /**
+     * Short description of method andExpression
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    public function andExpression()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 begin
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method equal
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    public function equal(   $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA7 begin
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA7 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isNull
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Variable var
+     * @return boolean
+     */
+    public function isNull( taoItems_models_classes_Matching_Variable $var)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 begin
+        
+        $returnValue = $var->isNull();
+        
+        // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_Matching */

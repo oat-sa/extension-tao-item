@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.10.2010, 23:05:48 with ArgoUML PHP module 
+ * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -140,7 +140,11 @@ class taoItems_models_classes_Matching_List
 	        $tempResult = false;
 			
 	        for ($j=0; $j<$list->length(); $j++) {
-	        	if ($this->getElement($i)->match($list->getElement($j))) {
+	        	if ($this->getElement($i)->getType () != $list->getElement($j)->getType()){
+	        		throw new Exception ('taoItems_models_classes_Matching_List::match an error occured : types of the elements to match are not the same ['. $this->getElement($i)->getType () .'] and ['. $list->getElement($j)->getType() .']');
+	        		$returnValue = false;
+	        	} 
+	        	else if ($this->getElement($i)->match($list->getElement($j))) {
 	            	$tempResult = true;
 	                break;
 	            }
@@ -161,10 +165,10 @@ class taoItems_models_classes_Matching_List
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array data
+     * @param  data
      * @return mixed
      */
-    public function setValue($data)
+    public function setValue(   $data)
     {
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002959 begin
 

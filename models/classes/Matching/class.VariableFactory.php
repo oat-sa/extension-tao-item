@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 14.10.2010, 23:05:48 with ArgoUML PHP module 
+ * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -77,7 +77,7 @@ class taoItems_models_classes_Matching_VariableFactory
 		
 		// Create the variable according to its type
 		switch ($type) {
-			//Collection Tuple : our standart define an object as a tuple
+			//Collection Tuple : our standard define an object as a tuple
 			case 'object':
 				$returnValue = new taoItems_models_classes_Matching_Tuple ($varValue);
 				break;
@@ -96,7 +96,7 @@ class taoItems_models_classes_Matching_VariableFactory
 				break;
 				
 			default:
-				throw new Exception ('taoItems_models_classes_Matching_VariableFactory::create variable type unknown '.$variableType.' for '.$varValue);
+				throw new Exception ('taoItems_models_classes_Matching_VariableFactory::create variable type unknown '.$type.' for '.$varValue);
 		}
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028B8 end
 
