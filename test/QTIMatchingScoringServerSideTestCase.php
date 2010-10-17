@@ -15,27 +15,10 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 	/**
 	 * tests initialization
 	 */
-//	public function setUp(){
-//		global $correctsStr, $responsesStr, $outcomesStr;
-//		
-//		TestRunner::initTest();
-//		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
-//	
-//		try{
-//			matching_init ();
-//			matching_setCorrects ($correctsStr);
-//			matching_setResponses ($responsesStr);
-//			matching_setOutcomes ($outcomesStr);
-//			$rule = "if(match(getResponse('SNG_ID_1'), getCorrect('SNG_ID_1'))){ setOutcomeValue('SCORE', 1); } else { setOutcomeValue('SCORE', 0); }";
-//			matching_setRule ($rule);
-//			matching_evaluate ();
-//			$outcomes = matching_getOutcomes ();
-//			pr (json_encode($outcomes));
-//			
-//		}catch (Exception $e){ 
-//			pr ($e->getMessage());
-//		}
-//	}
+	public function setUp(){		
+		TestRunner::initTest();
+		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+	}
 	
 	public function testVariables () {
 		
@@ -97,6 +80,9 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$tpl4 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"0":"TAO", "1":"it\'s so powerfull", "2":"yeah"}'));
 		$this->assertNotNull ($tpl1);
 		$this->assertEqual ($tpl1->getType(), 'tuple');
+		$tmpValue = $tpl1->getValue();
+		$this->assertEqual ($tmpValue[0]->getValue(), 'TAO');
+		$this->assertEqual ($tmpValue[1]->getValue(), 'it\'s so powerfull');
 		$this->assertTrue ($tpl1->match($tpl1));
 		$this->assertFalse ($tpl1->match($tpl2));
 		$this->assertFalse ($tpl1->match($tpl3));
@@ -109,6 +95,9 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$list4 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('["CBA", "Computer Based Assessment", "yeah"]'));
 		$this->assertNotNull ($list1);
 		$this->assertEqual ($list1->getType(), 'list');
+		$tmpValue = $list1->getValue();
+		$this->assertEqual ($tmpValue[0]->getValue(), 'TAO');
+		$this->assertEqual ($tmpValue[1]->getValue(), 'Test Assisté par Ordinateur');
 		$this->assertTrue ($list1->match($list1), 'the lists don\'t match');
 		$this->assertFalse ($list1->match($list2));
 		$this->assertFalse ($list1->match($list3));
@@ -120,13 +109,19 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$listTpl3 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}]'));
 		$listTpl4 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}, {"0":"G", "1":"H"}]'));
 		$listTpl5 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[]'));
+		$listTpl6 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}, {"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]'));
 		$this->assertNotNull ($listTpl1);
 		$this->assertEqual ($listTpl1->getType(), 'list');
+		$tmpValue = $listTpl1->getValue();
+		$tmpValue2 = $tmpValue[0]->getValue();
+		$this->assertEqual ($tmpValue2[0]->getValue(), 'A');
+		$this->assertEqual ($tmpValue2[1]->getValue(), 'B');
 		$this->assertTrue ($listTpl1->match($listTpl1));
 		$this->assertFalse ($listTpl1->match($listTpl2));
 		$this->assertFalse ($listTpl1->match($listTpl3));
 		$this->assertFalse ($listTpl1->match($listTpl4));
 		$this->assertFalse ($listTpl1->match($listTpl5));
+		$this->assertFalse ($listTpl1->match($listTpl6));
 		
 		// list of list (in QTI Multiple Pair)
 		$listList1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"]]'));
@@ -135,257 +130,155 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$listList4 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"]]'));
 		$listList5 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[]'));
 		$listList6 = taoItems_models_classes_Matching_VariableFactory::create (json_decode(''));
+		$listList7 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"], ["A", "B"], ["C", "D"], ["E", "F"]]'));
 		$this->assertNotNull ($listList1);
 		$this->assertEqual ($listList1->getType(), 'list');
+		$tmpValue = $listList1->getValue();
+		$tmpValue2 = $tmpValue[0]->getValue();
+		$this->assertEqual ($tmpValue2[0]->getValue(), 'A');
+		$this->assertEqual ($tmpValue2[1]->getValue(), 'B');		
 		$this->assertTrue ($listList1->match($listList1));
 		$this->assertTrue ($listList1->match($listList2));
 		$this->assertFalse($listList1->match($listList3));
 		$this->assertFalse ($listList1->match($listList4));
 		$this->assertFalse ($listList1->match($listList5));
-		//$this->assertFalse ($listList1->match($listList6)); // Unable to match a List with another type of variable
+		//$this->assertFalse ($listList1->match($listList6)); // Unable to match a List with another type of variable. The Matching engine will make the control
+		$this->assertFalse ($listList1->match($listList7));
+		
+		// Map List
+		$map1 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]'));
+		$this->assertEqual ($map1->map ($listList1), 1.7);
+		$this->assertEqual ($map1->map ($listList2), 1.7);
+		$this->assertEqual ($map1->map ($listList3), 1.5);
+		$this->assertEqual ($map1->map ($listList4), 1.7);
+		$this->assertEqual ($map1->map ($listList5), 0.0);
+		$this->assertEqual ($map1->map ($listList7), 1.7);
+		
+		// Map Tuple
+		$map2 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]'));
+		$this->assertEqual ($map2->map ($listTpl1), 1.7);
+		$this->assertEqual ($map2->map ($listTpl2), 0.0);
+		$this->assertEqual ($map2->map ($listTpl3), 1.5);
+		$this->assertEqual ($map2->map ($listTpl4), 1.7);
+		$this->assertEqual ($map2->map ($listTpl5), 0.0);
+		$this->assertEqual ($map2->map ($listTpl6), 1.7);
+		
+		// Map List BasicType
+		$listStr1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('["TAO", "Test assisté par ordinateur", "CBA in english"]'));
+		$listStr2 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('["TAO", "Test assisté par ordinateur"]'));
+		$map3 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":"TAO", "value":1}, {"key":"Test assisté par ordinateur", "value":0.5}, {"key":"CBA in english", "value":0.2}]'));
+		$this->assertEqual ($map3->map ($listStr1), 1.7);
+		$this->assertEqual ($map3->map ($listStr2), 1.5);
 	}
 	
-//	public function testFactorySingleIdentifierVarCreation () {
-//		global $taoMatching;
-//		$this->sendMessage ("Factory : create single identifier variable");
-//		$correctsStr = '[{"identifier":"RESPONSE", "value":"ID_1"}]';
-//		$responsesStr = '[{"identifier":"RESPONSE", "value":"ID_1"}]';
-//		$outcomesStr = '[{"identifier":"SCORE", "type":"integer"}]';
-//		$rule = "if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))){ setOutcomeValue('SCORE', 1); } else { setOutcomeValue('SCORE', 0); }";
-		
-//		$taoMatching->getCorrect ("SNG_ID_1");
-//		$mySngIdVar = unserializedQTIVariables ($mySngIdVarStr);
-//		
-//		$this->assertIsA ($mySngIdVar, 'QTIVariable', 'The created variable from the following serialized json is well a QTIVariable');
-//		$this->assertEqual ($mySngIdVar->getBaseType(), 'identifier', 'The baseType of the QTIVariable is ok');
-//		$this->assertNotEqual ($mySngIdVar->getCardinality(), 'multiple', 'The cardinality of the QTIVariable is ok');
-//		$this->assertTrue (_match($mySngIdVar->values, array ("ID_1")), 'The values of the QTIVariable is ok');
-//	}
-	
-	/*
-	public function testFactorySingleIdentifierVarCreation () {
-		$this->sendMessage ("Factory : create single identifier variable");
-		$mySngIdVarStr = '{"identifier":"SNG_ID_1", "baseType":"identifier", "cardinality":"single", "values":["ID_1"]}';
-		$mySngIdVar = unserializedQTIVariables ($mySngIdVarStr);
-		
-		$this->assertIsA ($mySngIdVar, 'QTIVariable', 'The created variable from the following serialized json is well a QTIVariable');
-		$this->assertEqual ($mySngIdVar->getBaseType(), 'identifier', 'The baseType of the QTIVariable is ok');
-		$this->assertNotEqual ($mySngIdVar->getCardinality(), 'multiple', 'The cardinality of the QTIVariable is ok');
-		$this->assertTrue (_match($mySngIdVar->values, array ("ID_1")), 'The values of the QTIVariable is ok');
-	}
-	
-	public function testFactoryMultipleIdentifierVarCreation () {
-		$this->sendMessage ("Factory : create multiple identifier variable");
-		$myMulIdVarStr = '{"identifier":"MUL_ID_1", "baseType":"identifier", "cardinality":"multiple", "values":["ID_1", "ID_3", "ID_2"]}';
-		$myMulIdVar = unserializedQTIVariables ($myMulIdVarStr);
-		
-		$this->assertIsA ($myMulIdVar, 'QTIVariable', 'The created variable from the following serialized json is well a QTIVariable');
-		$this->assertEqual ($myMulIdVar->getBaseType(), 'identifier', 'The baseType of the QTIVariable is ok');
-		$this->assertEqual ($myMulIdVar->getCardinality(), 'multiple', 'The cardinality of the QTIVariable is ok');
-		$this->assertTrue (_match($myMulIdVar->values, array ("ID_1", "ID_3", "ID_2")), 'The values of the QTIVariable is ok');
-	}
-	
-	public function testSetVarsAndMatchThem () {
-		global $rules;
-	
-		$qtiMatching = new QTIMatching ();
-	
-		// Set and get User Variables
-		$mySngIdVarStr = '[{"identifier":"SNG_ID_1", "baseType":"identifier", "cardinality":"single", "values":["ID_1"]}]';
-		$qtiMatching->setResponses (unserializedQTIVariables ($mySngIdVarStr));
-		$mySngIdVar = $qtiMatching->getVariable ('SNG_ID_1');
-		$this->assertNotNull ($mySngIdVar);
-		
-		// Set and get Correct Variables
-		$qtiMatching->setCorrects (unserializedQTIVariables ($mySngIdVarStr));
-		$mySngIdVar_2 = $qtiMatching->getCorrect ('SNG_ID_1');
-		$this->assertNotNull ($mySngIdVar_2);
-		
-		// Set and get Rule
-		$qtiMatching->setRule ($rules['match0_1']);
-		$rule = $qtiMatching->getRule ();
-		$this->assertNotNull ($rule);
-		
-		// Eval the rule
-		$this->assertTrue ($qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchSingleIdentifier () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match0_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match0_2']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match0_3']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultipleIdentifier () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match1_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match1_2']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match1_3']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match1_4']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchSinglePair () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match2_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match2_2']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match2_3']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match2_4']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultiplePair () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match3_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match3_2']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match3_3']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match3_4']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultipleDirectedair () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match6_1']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['match6_2']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultipleBoolean () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match7_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultipleInteger () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match8_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultipleFloat () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['match9_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchMultipleString () {
-		global $rules;
-		 public function match( tao_actions_form_List $list)
-		$this->qtiMatching->setRule ($rules['match10_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMatchBaseTypeDiff () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ("match(getVariable('MUL_STR_1'), getVariable('MUL_FLOAT_1'))");
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ("match(getVariable('MUL_FLOAT_1'), getVariable('MUL_INT_1'))");
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ("match(getVariable('MUL_BOOL_1'), getVariable('MUL_INT_1'))");
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ("match(getVariable('MUL_DPAIR_1'), getVariable('MUL_BOOL_1'))");
-		$this->assertError ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testMapMultiplePair () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['map4_1']);
-		$this->assertEqual ($this->qtiMatching->evalResponseProcessing(), 1.6);
-		$this->qtiMatching->setRule ($rules['map4_2']);
-		$this->assertEqual ($this->qtiMatching->evalResponseProcessing(), 1.6);
-		$this->qtiMatching->setRule ($rules['map4_3']);
-		$this->assertEqual ($this->qtiMatching->evalResponseProcessing(), 0);
-		$this->qtiMatching->setRule ($rules['map4_4']);
-		$this->assertEqual ($this->qtiMatching->evalResponseProcessing(), 1.5);
-		$this->qtiMatching->setRule ($rules['map4_5']);
-		$this->assertEqual ($this->qtiMatching->evalResponseProcessing(), 1.6);
-	}
-	
-	public function testSetOutcomeOperator () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['setoutcome5_1']);
-		$this->qtiMatching->evalResponseProcessing();
-		$score = $this->qtiMatching->getOutcome ("SCORE5_1");
-		$this->assertEqual ($score->values[0], 2);
-		
-		$this->qtiMatching->setRule ($rules['setoutcome5_2']);
-		$this->qtiMatching->evalResponseProcessing();
-		$score = $this->qtiMatching->getOutcome ("SCORE5_2");
-		$this->assertEqual ($score->values[0], 1.6);
-	}
-	
-	public function testAndOperator () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['and11_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['and11_2']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['and11_3']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['and11_4']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-	}
-	
-	public function testEqualOperator () {
-		global $rules;
-		
-		$this->qtiMatching->setRule ($rules['equal12_1']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_2']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_3']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_4']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_5']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_6']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_7']);
-		$this->assertTrue ($this->qtiMatching->evalResponseProcessing());
-		$this->qtiMatching->setRule ($rules['equal12_8']);
-		$this->assertFalse ($this->qtiMatching->evalResponseProcessing());
+	/*public function testInitMatchingEngine () {
+		try {
+			global $correctsStr, $responsesStr, $outcomesStr, $mapsStr, $rules;
+			
+			matching_init ();
+			matching_setCorrects ($correctsStr);
+			matching_setMaps ($mapsStr);
+			matching_setResponses ($responsesStr);
+			matching_setOutcomes ($outcomesStr);
+			
+			foreach ($rules as $rule){
+				matching_setRule ($rule);
+				matching_evaluate ();
+			}
+
+			$outcomes = matching_getOutcomes ();
+			
+		}catch (Exception $e){ 
+			pr ($e->getMessage());
+		}
 	}*/
 	
-	public function testIsNullOperator () {
-		global $rules;
+	public function testTemplateResponseProcessingMatchCorrect (){
+		matching_init ();
+		matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":"1"}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":"1"}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 1);
+		
+		matching_init ();
+		matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 1);
 	}
 
+	public function testTemplateResponseProcessingMapResponse (){
+		// string
+		matching_init ();
+		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":"Paris"}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":"paris"}]');
+		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 0.9);
+		
+		// list list (multiple pair)
+		matching_init ();
+		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]');
+		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 1.7);
+		
+		// list list (multiple pair but with reversed result)
+		matching_init ();
+		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]');
+		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 1.7);
+		
+		// list tuple (multiple directedpair)
+		matching_init ();
+		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
+		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 1.7);
+
+		// list tuple (multiple directedpair reversed pair)
+		matching_init ();
+		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
+		matching_setResponses ('[{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]');
+		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]');
+		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_evaluate ();
+		$outcomes = matching_getOutcomes ();
+		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
+	}
 }
 
+/*
 $outcomesStr ='[ 
 		{"identifier":"SCORE", "type":"double"} 
 		, {"identifier":"SCORE5_1", "type":"double"} 
 		, {"identifier":"SCORE5_2", "type":"double"} 
 	]';
 
-$mapsStr = '[{"identifier":"MUL_PAIR_1", "baseType":"pair", "cardinality":"multiple", "value":[[["A", "B"], 1], [["C", "D"], 0.5], [["E", "F"], 0.1]]}]';
+$mapsStr = '[{"identifier":"MUL_PAIR_1", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]';
 
 $correctsStr = '[
 			{"identifier":"SNG_ID_1", "value":"ID_1"} 
@@ -396,7 +289,7 @@ $correctsStr = '[
 			, {"identifier":"RESPONSE1_5", "value":[["A", "B"], ["C", "D"]]} 
 			, {"identifier":"SNG_PAIR_1", "value":["A", "B"]} 
 			, {"identifier":"MUL_PAIR_1", "value":[["A", "B"], ["C", "D"], ["E", "F"]]} 
-			, {"identifier":"MUL_DPAIR_1", "value":[["A", "B"], ["C", "D"], ["E", "F"]]} 
+			, {"identifier":"MUL_DPAIR_1", "value":[{"0":"A", "1":"B"}, {"0":"D", "1":"C"}, {"0":"E", "1":"F"}]} 
 			, {"identifier":"MUL_BOOL_1", "value":[true, false, true, false]} 
 			, {"identifier":"MUL_INT_1", "value":[1, 2, 3, 4]} 
 			, {"identifier":"MUL_FLOAT_1", "value":[1.1, 2.2, 3.3, 4.4]} 
@@ -436,56 +329,57 @@ $responsesStr = '[
 ]';
 
 $rules = array ();
-$rules['match0_1'] = "match(getVariable('SNG_ID_1'), getCorrect('SNG_ID_1'))";
-$rules['match0_2'] = "match(getVariable('SNG_ID_2'), getCorrect('SNG_ID_1'))";
-$rules['match0_3'] = "match(getVariable('SNG_ID_3'), getCorrect('SNG_ID_1'))";
+$rules['match0_1'] = "match(getResponse('SNG_ID_1'), getCorrect('SNG_ID_1'))";
+$rules['match0_2'] = "match(getResponse('SNG_ID_2'), getCorrect('SNG_ID_1'))";
+$rules['match0_3'] = "match(getResponse('SNG_ID_3'), getCorrect('SNG_ID_1'))";
 
-$rules['match1_1'] = "match(getVariable('MUL_ID_1'), getCorrect('MUL_ID_1'))";
-$rules['match1_2'] = "match(getVariable('MUL_ID_2'), getCorrect('MUL_ID_2'))";
-$rules['match1_3'] = "match(getVariable('MUL_ID_3'), getCorrect('MUL_ID_3'))";
-$rules['match1_4'] = "match(getVariable('MUL_ID_4'), getCorrect('MUL_ID_4'))";
+$rules['match1_1'] = "match(getResponse('MUL_ID_1'), getCorrect('MUL_ID_1'))";
+$rules['match1_2'] = "match(getResponse('MUL_ID_2'), getCorrect('MUL_ID_2'))";
+$rules['match1_3'] = "match(getResponse('MUL_ID_3'), getCorrect('MUL_ID_3'))";
+$rules['match1_4'] = "match(getResponse('MUL_ID_4'), getCorrect('MUL_ID_4'))";
 
-$rules['match2_1'] = "match(getVariable('SNG_PAIR_1'), getCorrect('SNG_PAIR_1'))";
-$rules['match2_2'] = "match(getVariable('SNG_PAIR_2'), getCorrect('SNG_PAIR_1'))";
-$rules['match2_3'] = "match(getVariable('SNG_PAIR_3'), getCorrect('SNG_PAIR_1'))";
-$rules['match2_4'] = "match(getVariable('SNG_PAIR_4'), getCorrect('SNG_PAIR_1'))";
+$rules['match2_1'] = "match(getResponse('SNG_PAIR_1'), getCorrect('SNG_PAIR_1'))";
+$rules['match2_2'] = "match(getResponse('SNG_PAIR_2'), getCorrect('SNG_PAIR_1'))";
+$rules['match2_3'] = "match(getResponse('SNG_PAIR_3'), getCorrect('SNG_PAIR_1'))";
+$rules['match2_4'] = "match(getResponse('SNG_PAIR_4'), getCorrect('SNG_PAIR_1'))";
 
-$rules['match3_1'] = "match(getVariable('MUL_PAIR_1'), getCorrect('MUL_PAIR_1'))";
-$rules['match3_2'] = "match(getVariable('MUL_PAIR_2'), getCorrect('MUL_PAIR_1'))";
-$rules['match3_3'] = "match(getVariable('MUL_PAIR_3'), getCorrect('MUL_PAIR_1'))";
-$rules['match3_4'] = "match(getVariable('MUL_PAIR_4'), getCorrect('MUL_PAIR_1'))";
+$rules['match3_1'] = "match(getResponse('MUL_PAIR_1'), getCorrect('MUL_PAIR_1'))";
+$rules['match3_2'] = "match(getResponse('MUL_PAIR_2'), getCorrect('MUL_PAIR_1'))";
+$rules['match3_3'] = "match(getResponse('MUL_PAIR_3'), getCorrect('MUL_PAIR_1'))";
+$rules['match3_4'] = "match(getResponse('MUL_PAIR_4'), getCorrect('MUL_PAIR_1'))";
 
-$rules['map4_1'] = "mapResponse(getVariable('MUL_PAIR_1'), getMap('MUL_PAIR_1'))";
-$rules['map4_2'] = "mapResponse(getVariable('MUL_PAIR_5'), getMap('MUL_PAIR_1'))";
-$rules['map4_3'] = "mapResponse(getVariable('MUL_PAIR_6'), getMap('MUL_PAIR_1'))";
-$rules['map4_4'] = "mapResponse(getVariable('MUL_PAIR_7'), getMap('MUL_PAIR_1'))";
-$rules['map4_5'] = "mapResponse(getVariable('MUL_PAIR_4'), getMap('MUL_PAIR_1'))";
+$rules['map4_1'] = "mapResponse(getMap('MUL_PAIR_1'), getResponse('MUL_PAIR_1'))";
+$rules['map4_2'] = "mapResponse(getMap('MUL_PAIR_1'), getResponse('MUL_PAIR_5'))";
+$rules['map4_3'] = "mapResponse(getMap('MUL_PAIR_1'), getResponse('MUL_PAIR_6'))";
+$rules['map4_4'] = "mapResponse(getMap('MUL_PAIR_1'), getResponse('MUL_PAIR_7'))";
+$rules['map4_5'] = "mapResponse(getMap('MUL_PAIR_1'), getResponse('MUL_PAIR_4'))";
 
-$rules['setoutcome5_1'] = "setOutcomeValue('SCORE5_1', array(2))";
-$rules['setoutcome5_2'] = "setOutcomeValue('SCORE5_2', array(".$rules['map4_5']."))";
+//$rules['setoutcome5_1'] = "setOutcomeValue('SCORE5_1', array(2))";
+//$rules['setoutcome5_2'] = "setOutcomeValue('SCORE5_2', array(".$rules['map4_5']."))";
 
-$rules['match6_1'] = "match(getVariable('MUL_DPAIR_1'), getCorrect('MUL_DPAIR_1'))";
-$rules['match6_2'] = "match(getVariable('MUL_DPAIR_2'), getCorrect('MUL_DPAIR_1'))";
+$rules['match6_1'] = "match(getResponse('MUL_DPAIR_1'), getCorrect('MUL_DPAIR_1'))";
+$rules['match6_2'] = "match(getResponse('MUL_DPAIR_2'), getCorrect('MUL_DPAIR_1'))";
 
-$rules['match7_1'] = "match(getVariable('MUL_BOOL_1'), getCorrect('MUL_BOOL_1'))";
+$rules['match7_1'] = "match(getResponse('MUL_BOOL_1'), getCorrect('MUL_BOOL_1'))";
 
-$rules['match8_1'] = "match(getVariable('MUL_INT_1'), getCorrect('MUL_INT_1'))";
+$rules['match8_1'] = "match(getResponse('MUL_INT_1'), getCorrect('MUL_INT_1'))";
 
-$rules['match9_1'] = "match(getVariable('MUL_FLOAT_1'), getCorrect('MUL_FLOAT_1'))";
+$rules['match9_1'] = "match(getResponse('MUL_FLOAT_1'), getCorrect('MUL_FLOAT_1'))";
 
-$rules['match10_1'] = "match(getVariable('MUL_STR_1'), getCorrect('MUL_STR_1'))";
+$rules['match10_1'] = "match(getResponse('MUL_STR_1'), getCorrect('MUL_STR_1'))";
 
 $rules['and11_1'] = "and(true, true)";
 $rules['and11_2'] = "and(".$rules['match2_4'].", ".$rules['match6_2'].")";
 $rules['and11_3'] = "and(".$rules['match6_1'].", ".$rules['match6_2'].")";
-$rules['and11_4'] = "and(getVariable('SNG_BOOL_1'))";
+$rules['and11_4'] = "and(getResponse('SNG_BOOL_1'))";
 
-$rules['equal12_1'] = "equal(getVariable('SNG_INT_1'), getVariable('SNG_INT_1'))";
-$rules['equal12_2'] = "equal(getVariable('SNG_INT_1'), getVariable('SNG_INT_2'))";
+$rules['equal12_1'] = "equal(getResponse('SNG_INT_1'), getResponse('SNG_INT_1'))";
+$rules['equal12_2'] = "equal(getResponse('SNG_INT_1'), getResponse('SNG_INT_2'))";
 $rules['equal12_3'] = "equal(2, 2)";
 $rules['equal12_4'] = "equal(2, 3)";
-$rules['equal12_5'] = "equal(getVariable('SNG_FLOAT_1'), getVariable('SNG_FLOAT_1'))";
-$rules['equal12_6'] = "equal(getVariable('SNG_FLOAT_1'), getVariable('SNG_FLOAT_2'))";
+$rules['equal12_5'] = "equal(getResponse('SNG_FLOAT_1'), getResponse('SNG_FLOAT_1'))";
+$rules['equal12_6'] = "equal(getResponse('SNG_FLOAT_1'), getResponse('SNG_FLOAT_2'))";
 $rules['equal12_7'] = "equal(2.2, 2.2)";
 $rules['equal12_8'] = "equal(2.2, 3.3)";
+*/
 ?>

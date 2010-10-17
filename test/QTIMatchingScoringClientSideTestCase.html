@@ -5,12 +5,10 @@
 	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
 	<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
 	<script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
-	<script type="application/javascript" src='http://waterphoenix.local/src/lib/oo/class.js'></script>
 	<script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
-	<script type="application/javascript" src="./qti_labs/client/qti_tools.js"></script>
-	<script type="application/javascript" src="./qti_labs/client/object_model.js"></script>
-	<script type="application/javascript" src="./qti_labs/client/tao_matching.js"></script>
-	<script type="application/javascript" src="./qti_labs/client/qti_matching.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.Variable.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.BaseTypeVariable.js"></script>
 	
 	<!-- -------------------------------------------------------------------------
 	QTI DATA
@@ -154,21 +152,23 @@
 	--------------------------------------------------------------------------->
 	<script type="application/javascript">
 
-		test("Factory : create single identifier variable", function() {
-			var qtiMatching = new QTIMatching ();
-			QTIVariableFactory ({"identifier":"SNG_BOOL_1"	, "value":true			});
-			QTIVariableFactory ({"identifier":"SNG_INT_1"	, "value":113			});
-			QTIVariableFactory ({"identifier":"SNG_FLOAT_1"	, "value":3.0			});
-			QTIVariableFactory ({"identifier":"SNG_ID_1"	, "value":"IDENTIFIER"	});
-			QTIVariableFactory ({"identifier":"SNG_STR_1"	, "value":"STRING"		});
-			
+	
+
+//		test("Factory : create single identifier variable", function() {
+//			var qtiMatching = new QTIMatching ();
+//			QTIVariableFactory ({"identifier":"SNG_BOOL_1"	, "value":true			});
+//			QTIVariableFactory ({"identifier":"SNG_INT_1"	, "value":113			});
+//			QTIVariableFactory ({"identifier":"SNG_FLOAT_1"	, "value":3.0			});
+//			QTIVariableFactory ({"identifier":"SNG_ID_1"	, "value":"IDENTIFIER"	});
+//			QTIVariableFactory ({"identifier":"SNG_STR_1"	, "value":"STRING"		});
+//			
 //			var mySngIdVar = unserializedQTIVariables (mySngIdVarStr);
 //			ok (mySngIdVar instanceof QTIVariable, 'The created variable from the following serialized json is well a QTIVariable : <br/>'+mySngIdVarStr+'<br/>');
 //			equals (mySngIdVar.getBaseType(), 'identifier', 'The baseType of the QTIVariable is ok');
 //			equals (mySngIdVar.getCardinality(), 'single', 'The cardinality of the QTIVariable is ok');
 //			ok (_match(mySngIdVar.values, new Array ("ID_1")), 'The values of the QTIVariable is ok');
-		});
-
+//		});
+//
 //		test("Factory : create multiple identifier variable", function() {
 //			var qtiMatching = new QTIMatching ();
 //			var myMulIdVarStr = '{"identifier":"MUL_ID_1", "baseType":"identifier", "cardinality":"multiple", "values":["ID_1", "ID_3", "ID_2"]}';
