@@ -31,8 +31,10 @@ class ItemImport extends Import {
 			$itemService	= tao_models_classes_ServiceFactory::get('items');
 			$qtiService 	= tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
 		
+			$uploadedFile = $formValues['source']['uploaded_file'];
+			
 			//validate the file to import
-			$qtiParser = new taoItems_models_classes_QTI_Parser($formValues['source']['uploaded_file']);
+			$qtiParser = new taoItems_models_classes_QTI_Parser($uploadedFile);
 			$qtiParser->validate();
 
 			if(!$qtiParser->isValid()){
@@ -50,7 +52,7 @@ class ItemImport extends Import {
 						//create the instance
 						$rdfItem = $itemService->createInstance($clazz);
 						
-							if(!is_null($rdfItem)){
+						if(!is_null($rdfItem)){
 							//set the QTI type
 							$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_QTI);
 							
@@ -60,6 +62,8 @@ class ItemImport extends Import {
 								$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
 								$this->setData('message', __('Item imported successfully') . ' : ' .$rdfItem->getLabel());
 								$this->setData('reload', true);
+								
+								@unlink($uploadedFile);
 								
 								return true;
 							}
