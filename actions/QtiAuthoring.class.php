@@ -503,7 +503,7 @@ class QtiAuthoring extends CommonModule {
 			}
 		}else{
 			try{
-				//second change: try getting the response from the interaction, is set in the request parameter
+				//second chance: try getting the response from the interaction, is set in the request parameter
 				$interaction = $this->getCurrentInteraction();
 				if(!empty($interaction)){
 					$response = $this->service->getInteractionResponse($interaction);
@@ -689,7 +689,7 @@ class QtiAuthoring extends CommonModule {
 				if($reloadResponse){
 					//update the cardinality, just in case it has been changed:
 					//may require upload of the response form, since the maximum allowed response may have changed!
-					$this->service->updateInteractionResponse($interaction);
+					$this->service->updateInteractionResponseOptions($interaction);
 					
 					//costly...
 					//then simulate get+save response data to filter affected response variables
@@ -882,6 +882,43 @@ class QtiAuthoring extends CommonModule {
 		));
 	}
 	
+	public function saveResponseProperties(){
+		$saved = false;
+		
+		$response = $this->getCurrentResponse();
+		
+		if(!is_null($response) && $this->hasRequestParameter('baseType')){
+		
+			if($this->hasRequestParameter('baseType')){
+				$this->service->editOptions($response, array('baseType'=>$this->getRequestParameter('baseType')));
+				$saved = true;
+			}
+			
+			if($this->hasRequestParameter('ordered')){
+				if(intval($this->getRequestParameter('ordered')) == 1){
+					$this->service->editOptions($response, array('cardinality'=>'ordered'));
+				}else{
+					//reset the cardinality:
+					$parentInteraction = $this->qtiService->getComposingData($response);
+					if(!is_null($parentInteraction)){
+						$this->service->editOptions($response, array('cardinality' => $parentInteraction->getCardinality() ));
+					}else{
+						throw new Exception('cannot find the parent interaction');
+					}
+					
+				}
+				
+				$saved = true;
+			}
+			
+		}
+		// var_dump($response);
+		
+		echo json_encode(array(
+			'saved' => $saved
+		));
+	}
+	
 	//edit the interaction response:
 	public function editResponse(){
 		$interaction = $this->getCurrentInteraction();
@@ -897,11 +934,18 @@ class QtiAuthoring extends CommonModule {
 			
 		}
 		
+		$xhtmlForm = '';
+		$responseForm = $this->service->getInteractionResponse($interaction)->toForm();
+		if(!is_null($responseForm)){
+			$xhtmlForm = $responseForm->render();
+		}
+		
 		echo json_encode(array(
 			'ok' => true,
 			'colModel' => $columnModel,
 			'data' => $responseData,
-			'maxChoices' => intval($interaction->getCardinality(true))
+			'maxChoices' => intval($interaction->getCardinality(true)),
+			'responseForm' => $xhtmlForm
 		));
 		
 	}

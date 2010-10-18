@@ -215,16 +215,31 @@ class taoItems_models_classes_QTI_Response
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
+     * @return tao_helpers_form_Form
      */
     public function toForm()
     {
-        $returnValue = (string) '';
+        $returnValue = null;
 
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C begin
+		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$interaction = $qtiService->getComposingData($this);
+		if(!$interaction instanceof taoItems_models_classes_QTI_Interaction){
+			throw new Exception('cannot find the parent interaction of the current response');
+		}
+		
+		$responseFormClass = 'taoItems_actions_QTIform_response_'.ucfirst(strtolower($interaction->getType())).'Interaction';
+		if(class_exists($responseFormClass)){
+			$formContainer = new $responseFormClass($this);
+			$myForm = $formContainer->getForm();
+			$returnValue = $myForm;
+		}
+		
+		// if(in_array(strtolower($interaction->getType()), array('textentry', 'extendedtext'))){}
+		
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C end
 
-        return (string) $returnValue;
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Response */

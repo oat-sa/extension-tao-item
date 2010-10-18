@@ -338,7 +338,10 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 			}
-					
+			
+			//add a response object, even though it is empty at the beginning:
+			$this->createInteractionResponse($interaction);
+			
 			$returnValue = $interaction;
 		}
 		
@@ -724,6 +727,30 @@ class taoItems_models_classes_QtiAuthoringService
 		
 	}
 	
+	public function editOptions(taoItems_models_classes_QTI_Data $qtiObject, $newOptions=array()){
+		if(!is_null($qtiObject) && !empty($newOptions)){
+			foreach($newOptions as $key=>$value){
+				if(is_array($value)){
+					if(count($value)==1 && isset($value[0])){
+					
+						if($value[0] !== '') $qtiObject->setOption($key, $value[0]);
+						
+					}else if(count($value)>1){
+					
+						$values = array();
+						foreach($value as $val){
+							if($val !== '') $values[] = $val;
+						}
+						$qtiObject->setOption($key, $values);
+						
+					}
+				}else{
+					if($value !== '') $qtiObject->setOption($key, $value);
+				}
+			}
+		}
+	}
+	
 	public function setData(taoItems_models_classes_QTI_Data $qtiObject, $data = ''){
 		$qtiObject->setData($data);
 	}
@@ -924,11 +951,25 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if(is_null($response)){
 			//create a new one here, with default data model, according to the type of interaction:
-			$response = new taoItems_models_classes_QTI_Response();
-			$interaction->setResponse($response);
+			$this->createInteractionResponse($interaction);
 		}
 		
 		return $response;
+	}
+	
+	public function createInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction){
+		$returnValue = false;
+		
+		$response = new taoItems_models_classes_QTI_Response();
+		$interaction->setResponse($response);
+		
+		//set the default base type and cardinality to the response:
+		$returnValue = $this->updateInteractionResponseOptions($interaction);
+		if(!$returnValue){
+			throw new Exception('the interaction response cannot be updated upon creation');
+		}
+		
+		return $returnValue;
 	}
 	
 	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing=null){
@@ -1038,7 +1079,8 @@ class taoItems_models_classes_QtiAuthoringService
 				
 				break;
 			}
-			case 'textentry':{
+			case 'textentry':
+			case 'extendedtext':{
 				//values = mapping then...
 				$i = 1;
 				$editType = 'text';
@@ -1049,9 +1091,11 @@ class taoItems_models_classes_QtiAuthoringService
 				);
 				break;
 			}
-			case 'extendedtext':{
-				//no correct reponse possible!
-				break;
+			// case 'extendedtext':{//no correct reponse possible!
+				// break;
+			// }
+			default:{
+				throw new Exception("the response column model of the {$interaction->getType()} type interaction has not been implemented yet.");
 			}
 			
 		}
@@ -1302,14 +1346,14 @@ class taoItems_models_classes_QtiAuthoringService
 			$interactionResponse->setMapping($mapping);//method: unsetMapping + unsetCorrectResponses?
 			
 			//set the required cardinality and basetype attributes:
-			$this->updateInteractionResponse($interaction);
+			$this->updateInteractionResponseOptions($interaction);
 			
 			$returnValue = true;
 		}
 		return $returnValue;
 	}
 	
-	public function updateInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction){
+	public function updateInteractionResponseOptions(taoItems_models_classes_QTI_Interaction $interaction){
 		
 		$returnValue = false;
 		

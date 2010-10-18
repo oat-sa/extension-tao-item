@@ -25,7 +25,7 @@ $.jgrid.GridUnload = function(){
 
 responseClass.grid = null;
 
-function responseClass(tableElementId, interaction){
+function responseClass(tableElementId, interaction, responseFormContainer){
 
 	if(responseClass.grid){
 		responseClass.grid.destroyGrid();//only one response grid available at a time.
@@ -37,6 +37,9 @@ function responseClass(tableElementId, interaction){
 	this.interactionSerial = interaction.interactionSerial;
 	this.currentRowId = null;
 	this.maxChoices = null;
+	
+	if(!responseFormContainer){var responseFormContainer='#qtiAuthoring_response_formContainer';}
+	this.responseFormContainer = responseFormContainer;
 	
 	$.ajax({
 		url: "/taoItems/QtiAuthoring/editResponse",
@@ -51,6 +54,10 @@ function responseClass(tableElementId, interaction){
 				//reset the grid:
 				$('#'+tableElementId).empty();
 				
+				//set the response form if needed:
+				$(response.responseFormContainer).html(serverResponse.responseForm);
+				response.initResponseFormSubmitter();
+				
 				//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
 				if(serverResponse.maxChoices) response.maxChoices = serverResponse.maxChoices;
 				
@@ -62,6 +69,31 @@ function responseClass(tableElementId, interaction){
 	});
 	
 	
+}
+
+responseClass.prototype.initResponseFormSubmitter = function(){
+	var instance = this;
+	$(".response-form-submitter").click(function(){
+		
+		var $myForm = $(this).parents("form");
+		//linearize it and post it:
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/saveResponseProperties",
+		   data: $myForm.serialize(),
+		   dataType: 'json',
+		   success: function(r){
+				if(r.saved){
+					createInfoMessage(__('Modification on response applied'));
+					
+					//reload?
+				}
+		   }
+		});
+		
+		//check modified choices then send it as well:
+		return false;
+	});
 }
 
 responseClass.prototype.buildGrid = function(tableElementId, serverResponse){

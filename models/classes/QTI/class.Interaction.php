@@ -256,9 +256,9 @@ class taoItems_models_classes_QTI_Interaction
 
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F3 begin
         
-        if(!empty($id)){
-        	if(array_key_exists($id, $this->choices)){
-        		$returnValue = $this->choices[$id];
+        if(!empty($serial)){
+        	if(array_key_exists($serial, $this->choices)){
+        		$returnValue = $this->choices[$serial];
         	}
         }
         
@@ -760,7 +760,7 @@ class taoItems_models_classes_QTI_Interaction
 				//count the number of gap, i.e. "groups" in the interaction:
 				$max = count($this->getGroups());
 				if($numeric) $returnValue = $max;
-				$returnValue = ($max>1)?'multiple':'single';
+				else $returnValue = ($max>1)?'multiple':'single';
 			}
 			case 'order':{
 				$returnValue = ($numeric)?0:'ordered';

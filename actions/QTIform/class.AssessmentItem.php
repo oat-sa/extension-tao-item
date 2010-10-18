@@ -98,24 +98,24 @@ class taoItems_actions_QTIform_AssessmentItem
 		$labelElt->setValue($this->item->getOption('label'));
 		$this->form->addElement($labelElt);
 		
-		$this->form->addElement($this->createBooleanElement('timeDependent', 'Time dependent', array('no', 'yes')));		
-		$this->form->addElement($this->createBooleanElement('adaptive', '', array('no', 'yes')));
+		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent', array('no', 'yes')));		
+		$this->form->addElement(self::createBooleanElement($this->item, 'adaptive', '', array('no', 'yes')));
 		
 		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxChoices'));
     }
 	
-	public function createBooleanElement($name, $label = '', $boolean = array('false', 'true')){
+	public static function createBooleanElement(taoItems_models_classes_QTI_Data $qtiObject, $optionName, $elementLabel = '', $boolean = array('false', 'true')){
 		
 		if(count($boolean) != 2){
 			throw new Exception('invalid number of elements in boolean array definition');
 		}
-		$boolElt = tao_helpers_form_FormFactory::getElement($name, 'Radiobox');
+		$boolElt = tao_helpers_form_FormFactory::getElement($optionName, 'Radiobox');
 		
-		if(empty($label)) $label = __(ucfirst(strtolower($name)));
-		$boolElt->setDescription($label);
+		if(empty($elementLabel)) $elementLabel = __(ucfirst(strtolower($optionName)));
+		$boolElt->setDescription($elementLabel);
 		$boolElt->setOptions(array(0 => $boolean[0], 1=>$boolean[1]));
 		
-		$optionValue = $this->item->getOption($name);
+		$optionValue = $qtiObject->getOption($optionName);
 		
 		$optionSet = false;
 		if(!empty($optionValue)){

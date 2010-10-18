@@ -25,7 +25,10 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 		this.loadChoicesForm(this.choicesFormContainer);
 	}else{
 		//immediately set the form change listener (no need to wait for the choice forms)
-		this.setFormChangeListener()
+		this.setFormChangeListener();
+		
+		//and load the response form and grid:
+		new responseClass(this.getRelatedItem(true).responseGrid, this);
 	}
 	
 	interactionClass.instances[interactionSerial] = this;

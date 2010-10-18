@@ -265,6 +265,10 @@ class taoItems_models_classes_QTI_Service
         	$objectType = strtolower($tokens[count($tokens) - 1]);
         	$propertyName = $objectType . 's';
         	$methodName = 'get'.ucfirst($propertyName);
+			
+			//singular property name:
+			$singularPropertyName = $objectType;
+        	$singularMethodName = 'get'.ucfirst($singularPropertyName);
         }
         
 		$instances = taoItems_models_classes_QTI_Data::$_instances;
@@ -300,6 +304,14 @@ class taoItems_models_classes_QTI_Service
 					}
         		}
         	}
+			if($rObject->hasProperty($singularPropertyName)){
+				$attribute = $instance->$singularMethodName();
+				if($attribute instanceof taoItems_models_classes_QTI_Data){
+					if($attribute->getSerial() == $composed->getSerial()){
+						$returnValue = $instance;
+					}
+				}
+			}
 			
         	if(!is_null($returnValue)){
         		break;
