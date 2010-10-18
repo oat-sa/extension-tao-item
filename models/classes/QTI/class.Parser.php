@@ -15,11 +15,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Parser
+ * The Parser enables you to load, parse and validate xml content from an xml
+ * Usually used for to load and validate the itemContent  property.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
-require_once('taoItems/models/classes/class.Parser.php');
+require_once('tao/models/classes/class.Parser.php');
 
 /* user defined includes */
 // section 127-0-1-1-26978f63:12a3830d3d3:-8000:000000000000243C-includes begin
@@ -38,7 +39,7 @@ require_once('taoItems/models/classes/class.Parser.php');
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Parser
-    extends taoItems_models_classes_Parser
+    extends tao_models_classes_Parser
 {
     // --- ASSOCIATIONS ---
 

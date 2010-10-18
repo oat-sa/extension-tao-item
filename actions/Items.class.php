@@ -138,7 +138,7 @@ class Items extends TaoModule{
 				if(isset($data['file_import']['uploaded_file'])){
 					
 					//parse and validate the sent file
-					$parser = new taoItems_models_classes_Parser($data['file_import']['uploaded_file']);
+					$parser = new tao_models_classes_Parser($data['file_import']['uploaded_file']);
 					
 					//check if the valdiation should be skipped
 					$validate = true;
