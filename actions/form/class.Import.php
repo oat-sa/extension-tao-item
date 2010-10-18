@@ -76,13 +76,23 @@ class taoItems_actions_form_Import
     	//create file upload form box
 		$fileElt = tao_helpers_form_FormFactory::getElement('source', 'AsyncFile');
 		$fileElt->setDescription(__("Add the source file"));
+    	if(isset($_POST['import_sent_qti'])){
+			$fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+		}
+		else{
+			$fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty', array('message' => '')));
+		}
 		$fileElt->addValidators(array(
-			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
 			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/xml', 'application/xml', 'application/x-xml'), 'extension' => array('xml'))),
 			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 2000000))
 		));
+    	
 		$this->form->addElement($fileElt);
 		$this->form->createGroup('file', __('Upload QTI File'), array('source'));
+		
+		$qtiSentElt = tao_helpers_form_FormFactory::getElement('import_sent_qti', 'Hidden');
+		$qtiSentElt->setValue(1);
+		$this->form->addElement($qtiSentElt);
     	
         // section 127-0-1-1-2993bc96:12baebd89c3:-8000:000000000000268B end
     }
