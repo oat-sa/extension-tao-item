@@ -1,10 +1,6 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
-TAO_MATCHING.VARIABLE = typeof TAO_MATCHING.VARIABLE != 'undefined' ? TAO_MATCHING.VARIABLE : {};
 
-TAO_MATCHING.VARIABLE.VariableFactory = function(){
-}
-
-TAO_MATCHING.VARIABLE.VariableFactory.prototype = {
+TAO_MATCHING.VariableFactory = {
     /**
      * Short description of method create
      *
@@ -12,7 +8,7 @@ TAO_MATCHING.VARIABLE.VariableFactory.prototype = {
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array data
      * @param  string type
-     * @return TAO_MATCHING.VARIABLE.Variable
+     * @return TAO_MATCHING.Variable
      */	
 	create : function (data, pType) {
 		var returnValue = null;
@@ -20,31 +16,51 @@ TAO_MATCHING.VARIABLE.VariableFactory.prototype = {
 		var type = null;
 		
 		// The type has been defined manually
-		if (typeof pType == 'undefined'){	
-			type = typeof data;	
+		if (typeof pType == 'undefined' || pType == null){
+			// We get an object as data
+			if (typeof data == 'object') {
+				// If the data is null, we create a basic type variable with null value
+				if (varValue == null) {
+					type = 'NULL';
+				}
+				// If the data is an array we create a list variable
+				else if (($.isArray(data))) {
+					type = 'list';
+				} 
+				// If the data is an object, our format define this data as a tuple
+				else {
+					type = 'tuple';
+				}
+			}
+			else {
+				type = typeof data;	
+			}	
+		}
+		else {
+			type = pType;
 		}
 		
 		// Create the variable according to its type
 		switch (type) {
 			//Collection Tuple : our standard define an object as a tuple
-			case 'object':
-				returnValue = new TAO_MATCHING.VARIABLE.Tuple (data);
+			case 'tuple':
+				returnValue = new TAO_MATCHING.Tuple (data);
 				break;
 				
 			//Collection List
-			case 'array':
-				returnValue = new TAO_MATCHING.VARIABLE.List (data);
+			case 'list':
+				returnValue = new TAO_MATCHING.List (data);
 				break;
 						
 			case 'boolean':
-			case 'numeric':
+			case 'number':
 			case 'string':
 			case 'NULL':
-				returnValue = new TAO_MATCHING.VARIABLE.BaseTypeVariable (data);
+				returnValue = new TAO_MATCHING.BaseTypeVariable (data);
 				break;
 				
 			default:
-				throw new Exception ('TAO_MATCHING.VARIABLE.VariableFactory::create variable type unknown '+type+' for '+varValue);
+				throw new Error ('TAO_MATCHING.VariableFactory::create variable type unknown '+type+' for '+varValue);
 		}
 		
         return returnValue;

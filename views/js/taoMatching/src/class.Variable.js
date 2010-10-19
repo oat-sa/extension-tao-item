@@ -1,7 +1,6 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
-TAO_MATCHING.VARIABLE = typeof TAO_MATCHING.VARIABLE != 'undefined' ? TAO_MATCHING.VARIABLE : {};
 
-TAO_MATCHING.VARIABLE.Variable = function () {
+TAO_MATCHING.Variable = function () {
 	 /**
      * Short description of attribute value
      *
@@ -11,7 +10,7 @@ TAO_MATCHING.VARIABLE.Variable = function () {
     this.value = null;
 };
 
-TAO_MATCHING.VARIABLE.Variable.prototype = {
+TAO_MATCHING.Variable.prototype = {
     /**
      * Short description of method getType
      *
@@ -45,18 +44,7 @@ TAO_MATCHING.VARIABLE.Variable.prototype = {
      */
     , equal : function (matchingVar)
     {
-		if (! (matchingVar instanceof TAO_MATCHING.VARIABLE.Variable))
-			throw new Error ('TAO_MATCHING.VARIABLE.Variable.equal an error occured : first argument expected type TAO_MATCHING.VARIABLE.Variable, given : '+(typeof matchingVar));
-		
-        var returnValue = false;
-
-        if (this.getType() != matchingVar.getType()){
-        	returnValue = false;
-        } else {
-        	returnValue = this.getValue() == matchingVar.getValue();	
-        }
-        
-        return returnValue;
+		// @abstract
     }
 	
     /**
@@ -81,10 +69,7 @@ TAO_MATCHING.VARIABLE.Variable.prototype = {
      */
     , match : function (matchingVar)
     {
-		if (! (matchingVar instanceof TAO_MATCHING.VARIABLE.Variable))
-			throw new Error ('TAO_MATCHING.VARIABLE.Variable.match an error occured : first argument expected type TAO_MATCHING.VARIABLE.Variable, given : '+(typeof matchingVar));
-		
-		return this.match(matchingVar);
+		// @abstract
     }
 	
     /**

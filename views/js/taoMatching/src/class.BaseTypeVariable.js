@@ -1,19 +1,13 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
-TAO_MATCHING.VARIABLE = typeof TAO_MATCHING.VARIABLE != 'undefined' ? TAO_MATCHING.VARIABLE : {};
 
-TAO_MATCHING.VARIABLE.BaseTypeVariable = function(data){
-	 /**
-     * Short description of attribute value
-     *
-     * @access protected
-     * @var object
-     */
-    this.value = null;
-	
+TAO_MATCHING.BaseTypeVariable = function(data){
+	// Call the parent constructor
+	TAO_MATCHING.Variable.call (this);
+	// Set the value of the variable
 	this.setValue (data);
 }
 
-TAO_MATCHING.VARIABLE.BaseTypeVariable.prototype = {
+TAO_MATCHING.BaseTypeVariable.prototype = {
 	/**
      * Short description of method getType
      *
@@ -27,6 +21,30 @@ TAO_MATCHING.VARIABLE.BaseTypeVariable.prototype = {
     }
 
     /**
+     * Short description of method equal
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Variable var
+     * @return boolean
+     */
+    , equal : function (matchingVar)
+    {
+		if (! (matchingVar instanceof TAO_MATCHING.BaseTypeVariable))
+			throw new Error ('TAO_MATCHING.BaseTypeVariable.equal an error occured : first argument expected type TAO_MATCHING.BaseTypeVariable, given : '+(typeof matchingVar));
+		
+        var returnValue = false;
+
+        if (this.getType() != matchingVar.getType()){
+        	returnValue = false;
+        } else {
+        	returnValue = (this.getValue() == matchingVar.getValue());	
+        }
+        		
+        return returnValue;
+    }
+
+    /**
      * Short description of method isNull
      *
      * @access public
@@ -36,6 +54,22 @@ TAO_MATCHING.VARIABLE.BaseTypeVariable.prototype = {
     , isNull : function ()
     {
         return (this.value == null);
+    }    
+	
+	/**
+     * Short description of method match
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Variable var
+     * @return boolean
+     */
+    , match : function (matchingVar)
+    {
+		if (! (matchingVar instanceof TAO_MATCHING.BaseTypeVariable))
+			throw new Error ('TAO_MATCHING.BaseTypeVariable.match an error occured : first argument expected type TAO_MATCHING.BaseTypeVariable, given : '+(typeof matchingVar));
+		
+		return this.equal(matchingVar);
     }
 
     /**
@@ -51,3 +85,6 @@ TAO_MATCHING.VARIABLE.BaseTypeVariable.prototype = {
         this.value = data;
     }
 };
+
+// Extend the class with its parent properties
+TAO_MATCHING.BaseTypeVariable.prototype = $.extend ({}, TAO_MATCHING.Variable.prototype, TAO_MATCHING.BaseTypeVariable.prototype);
