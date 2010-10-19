@@ -524,6 +524,7 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023FB begin
         
     	$this->response = $response;
+    	$this->options['responseIdentifier'] = $response->getIdentifier();
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023FB end
     }

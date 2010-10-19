@@ -19,6 +19,7 @@
                 if there is none).</p>
         </rubricBlock>
         <hottextInteraction responseIdentifier="RESPONSE" maxChoices="1">
+        	<prompt>test prompt</prompt>
             <p>Sponsors of the Olympic Games <hottext identifier="1">who bought</hottext>
                 advertising time on United States television <hottext identifier="2">includes</hottext>
                 <hottext identifier="3">at least</hottext> a dozen international firms <hottext

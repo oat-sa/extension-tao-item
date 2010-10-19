@@ -1,6 +1,6 @@
 <div id="<?=$identifier?>" class="qti_widget qti_<?=$_type?>_interaction">
 	<?=$data?>
-</div>	
+</div>
 <script type="text/javascript">
 	qti_initParam["<?=$serial?>"] = {
 		id : "<?=$identifier?>",

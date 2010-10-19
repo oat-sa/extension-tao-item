@@ -236,7 +236,7 @@
 	<xsd:attribute name="identifier" type="string.Type" use="required"/>
 	<xsd:attribute name="title" type="string.Type" use="required"/>
 	<xsd:attribute name="label" type="string256.Type" use="optional"/>
-	<xsd:attribute ref="xml:lang"/>
+	<xsd:attribute name="lang" type="string.Type" use="optional" />
 	<xsd:attribute name="adaptive" type="boolean.Type" use="required"/>
 	<xsd:attribute name="timeDependent" type="boolean.Type" use="required"/>
 	<xsd:attribute name="toolName" type="string256.Type" use="optional"/>

@@ -14,7 +14,7 @@
 <?endforeach?>
 	
 	<itemBody>
-	    <?=$data?>
+		<div><?=$data?></div>
 	</itemBody>
 	
 <?if($responseProcessing):?>
