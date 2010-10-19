@@ -45,16 +45,7 @@ class taoItems_actions_QTIform_interaction_InlinechoiceInteraction
     {
 		$this->setCommonElements();
 				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
-		$shuffleElt->setDescription(__('Shuffle'));
-		$shuffle = $this->getInteraction()->getOption('shuffle');
-		$shuffleElt->setOptions(array('true' => ''));
-		if(!empty($shuffle)){
-			if($shuffle === 'true' || $shuffle === true){
-				$shuffleElt->setValue('true');
-			}
-		}
-		$this->form->addElement($shuffleElt);
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($interaction, 'shuffle', __('Shuffle choices')));
     }
 	
 	public function setCommonElements(){

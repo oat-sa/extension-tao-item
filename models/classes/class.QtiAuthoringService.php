@@ -323,18 +323,43 @@ class taoItems_models_classes_QtiAuthoringService
 			
 			//insert the required group immediately:
 			switch($interactionType){
+				case 'choice':{
+					//init mandatory attibute values:
+					$interaction->setOption('shuffle', false);
+					$interaction->setOption('maxChoices', 1);
+					break;
+				}
+				case 'associate':{
+					//init mandatory attibute values:
+					$interaction->setOption('shuffle', false);
+					$interaction->setOption('maxAssociations', 1);
+					break;
+				}
+				case 'order':
+				case 'inlinechoice':{
+					$interaction->setOption('shuffle', false);
+					break;
+				}
 				case 'match':{
-					//adding 2 groups for mathc interaction
+					//adding 2 groups for match interaction
 					for($i=0; $i<2; $i++){
 						$newGroup = new taoItems_models_classes_QTI_Group();
 						$newGroup->setType('simpleMatchSet');
 						$interaction->addGroup($newGroup);
 						$interaction->setData($interaction->getData().'{'.$newGroup->getSerial().'}');
 					}
+					
+					$interaction->setOption('shuffle', false);
 					break;
 				}
 				case 'gapmatch':{
 					//note: 'groups' == 'gaps' in this case
+					$interaction->setOption('shuffle', false);
+					break;
+				}
+				case 'hottext':{
+					//init mandatory attibute values:
+					$interaction->setOption('maxChoices', 1);
 					break;
 				}
 			}
@@ -357,6 +382,7 @@ class taoItems_models_classes_QtiAuthoringService
 			//create a new choice:
 			//determine the type of choice according to the type of the interaction:
 			$choiceType = '';
+			$matchMax = null;
 			$interactionType = strtolower($interaction->getType());
 			switch($interactionType){
 				case 'choice':
@@ -367,10 +393,12 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'associate':
 				case 'match':{
 					$choiceType = 'simpleAssociableChoice';
+					$matchMax = 0;
 					break;
 				}
 				case 'gapmatch':{
 					$choiceType = 'gapText';
+					$matchMax = 0;
 					break;
 				}
 				case 'inlinechoice':{
@@ -392,46 +420,55 @@ class taoItems_models_classes_QtiAuthoringService
 			if(!empty($data)){
 				$choice->setData($data);
 			}
-			
+			if(!is_null($matchMax)){
+				$choice->setOption('matchMax', $matchMax);
+			}
 			$interaction->addChoice($choice);
 			$this->qtiService->saveDataToSession($choice);
 			
-			if($interactionType == 'match'){
-				//insert into group: which group?
-				if(is_null($group)){
-					throw new Exception('the group cannot be null');
-				}else{
-					//append to the choice list:
-					$group->addChoices(array($choice));//add 1 choice
-					$group->setData($group->getData().'{'.$choice->getSerial().'}');
+			switch($interactionType){
+				case 'match':{
+					//insert into group: which group?
+					if(is_null($group)){
+						throw new Exception('the group cannot be null');
+					}else{
+						//append to the choice list:
+						$group->addChoices(array($choice));//add 1 choice
+						$group->setData($group->getData().'{'.$choice->getSerial().'}');
+					}
+					break;
 				}
-			}else if($interactionType == 'gapmatch'){
-				foreach($interaction->getGroups() as $group){
-					//append to the choice list:
-					$group->addChoices(array($choice));//add 1 choice
-					$group->setData($group->getData().'{'.$choice->getSerial().'}');
-					$this->qtiService->saveDataToSession($group);
+				case 'gapmatch':{
+					foreach($interaction->getGroups() as $group){
+						//append to the choice list:
+						$group->addChoices(array($choice));//add 1 choice
+						$group->setData($group->getData().'{'.$choice->getSerial().'}');
+						$this->qtiService->saveDataToSession($group);
+					}
+					$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
+					break;
 				}
-				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
-			}else if($interactionType == 'hottext'){
-				//do replacement of the new hottext tag:
-				$count = 0;
-				if(!empty($interactionData)){
-					$interactionData = str_replace("{qti_hottext_new}", "{{$choice->getSerial()}}", $interactionData, $count);
+				case 'hottext':{
+					//do replacement of the new hottext tag:
+					$count = 0;
+					if(!empty($interactionData)){
+						$interactionData = str_replace("{qti_hottext_new}", "{{$choice->getSerial()}}", $interactionData, $count);
+					}
+					
+					if($count){
+						// $interactionData = $this->filterData($interactionData);
+						// $interaction->setData($interactionData);
+						$this->setInteractionData($interaction, $interactionData);
+					}else{
+						//
+						$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
+					}
+					break;
 				}
-				
-				if($count){
-					// $interactionData = $this->filterData($interactionData);
-					// $interaction->setData($interactionData);
-					$this->setInteractionData($interaction, $interactionData);
-				}else{
-					//
+				default:{
+					//append the choice to the interaciton's choice list, both in the php object and in the data property:
 					$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
 				}
-				
-			}else{
-				//append the choice to the interaciton's choice list, both in the php object and in the data property:
-				$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
 			}
 			
 			$this->qtiService->saveDataToSession($interaction);
@@ -1214,7 +1251,8 @@ class taoItems_models_classes_QtiAuthoringService
 			switch(strtolower($interaction->getType())){
 				case 'choice':
 				case 'inlinechoice':
-				case 'hottext':{
+				case 'hottext':
+				case 'extendedtext':{
 					foreach($responseData as $response){
 						$response = (array)$response;
 						//if required identifier not empty:
@@ -1321,7 +1359,7 @@ class taoItems_models_classes_QtiAuthoringService
 								$responseValue = $response['choice1'];
 								
 								if($response['correct'] === 'yes' || $response['correct'] === true){
-									$correctResponses[] = $responseValue;
+									$correctResponses[0] = $responseValue;//there can only be one correct response...
 								}
 								if(!empty($response['score'])){
 									//0 is considered as empty:
@@ -1329,10 +1367,6 @@ class taoItems_models_classes_QtiAuthoringService
 								}
 						}
 					}
-					break;
-				}
-				case 'extendedtext':{
-					throw new Exception('cannot save a response for such a type of interaction');
 					break;
 				}
 				default:{

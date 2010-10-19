@@ -493,14 +493,13 @@ responseClass.prototype.checkCardinality = function(rowId){
 		
 		var anotherRowData = allData[i];
 		if(mappingMode){
-			if(anotherRowData['correct'] == 'yes') count++;
+			if(anotherRowData['correct'] == 'yes'){
+				count++;
+			}
 		}else{
 			count++;
 		}	
-		
-		i++;
 	}
-	
 	if(count<this.maxChoices){
 		return true;
 	}else{

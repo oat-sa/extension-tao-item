@@ -50,26 +50,9 @@ class taoItems_actions_QTIform_interaction_AssociateInteraction
 		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
 		$this->setCommonElements();
 				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
-		$shuffleElt->setDescription(__('Shuffle'));
-		$shuffle = $interaction->getOption('shuffle');
-		$shuffleElt->setOptions(array('true' => ''));
-		if(!empty($shuffle)){
-			if($shuffle === 'true' || $shuffle === true){
-				$shuffleElt->setValue('true');
-			}
-		}
-		$this->form->addElement($shuffleElt);
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($interaction, 'shuffle', __('Shuffle choices')));
 		
-		//the "maxAssociations" attr shall be set automatically?
-		$maxAssocElt = tao_helpers_form_FormFactory::getElement('maxAssociations', 'Textbox');
-		$maxAssocElt->setDescription(__('Maximum Number of associations'));
-		//validator: is int??
-		$maxAssociations = $interaction->getOption('maxAssociations');
-		if(!empty($maxAssociations)){
-			$maxAssocElt->setValue($maxAssociations);
-		}
-		$this->form->addElement($maxAssocElt);
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($interaction, 'maxAssociations', __('Maximum number of associations')));
 		
 		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxAssociations'));
     }

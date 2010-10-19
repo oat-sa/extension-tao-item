@@ -98,13 +98,13 @@ class taoItems_actions_QTIform_AssessmentItem
 		$labelElt->setValue($this->item->getOption('label'));
 		$this->form->addElement($labelElt);
 		
-		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent', array('no', 'yes')));		
-		$this->form->addElement(self::createBooleanElement($this->item, 'adaptive', '', array('no', 'yes')));
+		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent'));		
+		$this->form->addElement(self::createBooleanElement($this->item, 'adaptive', ''));
 		
 		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxChoices'));
     }
 	
-	public static function createBooleanElement(taoItems_models_classes_QTI_Data $qtiObject, $optionName, $elementLabel = '', $boolean = array('false', 'true')){
+	public static function createBooleanElement(taoItems_models_classes_QTI_Data $qtiObject, $optionName, $elementLabel = '', $boolean = array('no', 'yes')){
 		
 		if(count($boolean) != 2){
 			throw new Exception('invalid number of elements in boolean array definition');
@@ -113,19 +113,32 @@ class taoItems_actions_QTIform_AssessmentItem
 		
 		if(empty($elementLabel)) $elementLabel = __(ucfirst(strtolower($optionName)));
 		$boolElt->setDescription($elementLabel);
-		$boolElt->setOptions(array(0 => $boolean[0], 1=>$boolean[1]));
+		$boolElt->setOptions(array('false' => $boolean[0], 'true'=>$boolean[1]));
 		
 		$optionValue = $qtiObject->getOption($optionName);
 		
-		$optionSet = false;
+		$boolElt->setValue('false');
 		if(!empty($optionValue)){
 			if($optionValue === 'true' || $optionValue === true){
-				$optionSet = true;
+				$boolElt->setValue('true');
 			}
 		}
-		if($optionSet) $boolElt->setValue(1);
 		
 		return $boolElt;
+	}
+	
+	public static function createTextboxElement(taoItems_models_classes_QTI_Data $qtiObject, $optionName, $elementLabel = ''){
+		$textboxElt = tao_helpers_form_FormFactory::getElement($optionName, 'Textbox');
+		if(empty($elementLabel)) $elementLabel = __(ucfirst(strtolower($optionName)));
+		$textboxElt->setDescription($elementLabel);
+		
+		//validator: is int??
+		$value = $qtiObject->getOption($optionName);
+		if(!is_null($value)){
+			$textboxElt->setValue($value);
+		}
+		
+		return $textboxElt;
 	}
 }
 

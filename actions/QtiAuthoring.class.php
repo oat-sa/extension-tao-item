@@ -208,8 +208,8 @@ class QtiAuthoring extends CommonModule {
 				);
 				if($this->getRequestParameter('title') != '') $options['title'] = $this->getRequestParameter('title');
 				if($this->hasRequestParameter('label')) $options['label'] = $this->getRequestParameter('label');
-				if(intval($this->getRequestParameter('timeDependent'))) $options['timeDependent'] = true;
-				if(intval($this->getRequestParameter('adaptive'))) $options['adaptive'] = true;
+				if($this->hasRequestParameter('timeDependent')) $options['timeDependent'] = $this->getRequestParameter('timeDependent');
+				if($this->hasRequestParameter('adaptive')) $options['adaptive'] = $this->getRequestParameter('adaptive');
 				$this->service->setOptions($itemObject, $options);
 				
 				//save item data:
@@ -217,7 +217,7 @@ class QtiAuthoring extends CommonModule {
 				
 				//save to qti:
 				$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-			
+				echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 				$saved = true;
 			}
 			
@@ -237,7 +237,9 @@ class QtiAuthoring extends CommonModule {
 	
 	public function preview(){
 		// if($this->saveItem()){
-			$this->setData('outputFilePath', $this->qtiService->renderItem($this->getCurrentItem()));
+			$output = $this->qtiService->renderItem($this->getCurrentItem());
+			// echo 'output:'.$output;exit;
+			$this->setData('output', $output);
 			$this->setView("QTIAuthoring/preview.tpl");
 		// }
 	}

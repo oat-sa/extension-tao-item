@@ -40,12 +40,12 @@ class taoItems_actions_QTIform_choice_SimpleAssociableChoice
 		}
 		$this->form->addElement($dataElt);
 		
-		$matchMaxElt = tao_helpers_form_FormFactory::getElement('matchMax', 'Textbox');//should be an htmlarea... need to solve the conflict with the 
+		$matchMaxElt = tao_helpers_form_FormFactory::getElement('matchMax', 'Textbox');
 		$matchMaxElt->setDescription(__('Maximal number of matching'));
 		$matchMax = $this->choice->getOption('matchMax');
-		if(!empty($matchMax)){
-			$matchMaxElt->setValue($matchMax);
-		}
+		// if(!empty($matchMax)){
+			$matchMaxElt->setValue($matchMax);//mandatory!
+		// }
 		$this->form->addElement($matchMaxElt);
 		
 		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchMax', 'matchGroup'));

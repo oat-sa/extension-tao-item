@@ -37,7 +37,15 @@ class taoItems_actions_QTIform_choice_GapText
 		}
 		$this->form->addElement($dataElt);
 		
-		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchGroup'));
+		$matchMaxElt = tao_helpers_form_FormFactory::getElement('matchMax', 'Textbox');
+		$matchMaxElt->setDescription(__('Maximal number of matching'));
+		$matchMax = $this->choice->getOption('matchMax');
+		if(!empty($matchMax)){
+			$matchMaxElt->setValue($matchMax);
+		}
+		$this->form->addElement($matchMaxElt);
+		
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchMax', 'matchGroup'));
 	}
 	
 	public function getMatchGroupOptions(){

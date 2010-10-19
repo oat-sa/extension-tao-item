@@ -45,31 +45,13 @@ class taoItems_actions_QTIform_interaction_ChoiceInteraction
     {
 		$interaction = $this->getInteraction();
 		
-		//TODO: group identical form elts in a parent form container class, e.g. block, graphic, etc.
 		$this->setCommonElements();
-				
-		$shuffleElt = tao_helpers_form_FormFactory::getElement('shuffle', 'Checkbox');
-		$shuffleElt->setDescription(__('Shuffle'));
-		$shuffle = $interaction->getOption('shuffle');
-		$shuffleElt->setOptions(array('true' => ''));
-		if(!empty($shuffle)){
-			if($shuffle === 'true' || $shuffle === true){
-				$shuffleElt->setValue('true');
-			}
-		}
-		$this->form->addElement($shuffleElt);
+		
+		//shuffle element:		
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($interaction, 'shuffle', __('Shuffle choices')));
 		
 		//the "maxChoices" attr shall be set automatically?
-		$maxChoiceElt = tao_helpers_form_FormFactory::getElement('maxChoices', 'Textbox');
-		$maxChoiceElt->setDescription(__('Maximum Number of Choice'));
-		//validator: is int??
-		$maxChoices = $interaction->getOption('maxChoices');
-		if(!empty($maxChoices)){
-			$maxChoiceElt->setValue($maxChoices);
-		}
-		$this->form->addElement($maxChoiceElt);
-		
-		// $this->form->createGroup('interactionPropOptions', __('Advanced properties'), array('shuffle', 'maxChoices'));
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($interaction, 'maxChoices', __('Maximum number of choices')));
     }
 	
 	public function setCommonElements(){

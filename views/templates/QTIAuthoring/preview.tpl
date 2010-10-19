@@ -1,1 +1,1 @@
-<? include(get_data('outputFilePath')); ?>
+<?=get_data('output'); ?>
