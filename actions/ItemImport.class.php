@@ -39,7 +39,7 @@ class ItemImport extends Import {
 
 			if(!$qtiParser->isValid()){
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-				$this->setData('importErrors', $qtiParser->displayErrors(true));
+				$this->setData('importErrors', $qtiParser->getErrors());
 			}
 			else{
 				//create a new item instance of the clazz

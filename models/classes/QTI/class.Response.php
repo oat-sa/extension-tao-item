@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.10.2010, 16:25:33 with ArgoUML PHP module 
+ * Automatically generated on 19.10.2010, 17:44:26 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -211,15 +211,49 @@ class taoItems_models_classes_QTI_Response
     }
 
     /**
+     * Short description of method toXHTML
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toXHTML()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--4fa404a7:12bc4fc4a20:-8000:00000000000026DB begin
+        // section 127-0-1-1--4fa404a7:12bc4fc4a20:-8000:00000000000026DB end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method toQTI
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function toQTI()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--4fa404a7:12bc4fc4a20:-8000:00000000000026DD begin
+        // section 127-0-1-1--4fa404a7:12bc4fc4a20:-8000:00000000000026DD end
+
+        return (string) $returnValue;
+    }
+
+    /**
      * Short description of method toForm
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
+     * @return string
      */
     public function toForm()
     {
-        $returnValue = null;
+        $returnValue = (string) '';
 
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C begin
 		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
@@ -239,7 +273,7 @@ class taoItems_models_classes_QTI_Response
 		
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C end
 
-        return $returnValue;
+        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Response */
