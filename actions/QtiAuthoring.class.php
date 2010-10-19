@@ -143,6 +143,7 @@ class QtiAuthoring extends CommonModule {
 		
 		$currentItem = $this->getCurrentItem();
 		if($this->debugMode) var_dump($currentItem);
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
@@ -213,7 +214,7 @@ class QtiAuthoring extends CommonModule {
 				$this->service->setOptions($itemObject, $options);
 				
 				//save item data:
-				$this->service->saveItemData($this->getCurrentItem(), $itemData);
+				$this->service->saveItemData($itemObject, $itemData);
 				
 				//save to qti:
 				$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
@@ -687,7 +688,7 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				//save all options before updating the interaction response
-				$this->service->setOptions($interaction, $values);
+				$this->service->editOptions($interaction, $values);
 				if($reloadResponse){
 					//update the cardinality, just in case it has been changed:
 					//may require upload of the response form, since the maximum allowed response may have changed!
@@ -733,6 +734,7 @@ class QtiAuthoring extends CommonModule {
 		
 		$myForm = $choice->toForm();
 		$saved = false;
+		$identifierUpdated = false;
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 			
@@ -741,6 +743,7 @@ class QtiAuthoring extends CommonModule {
 				if(isset($values['choiceIdentifier'])){
 					if($values['choiceIdentifier'] != $choice->getIdentifier()){
 						$this->service->setIdentifier($choice, $values['choiceIdentifier']);
+						$identifierUpdated = true;
 					}
 					unset($values['choiceIdentifier']);
 				}
@@ -759,7 +762,8 @@ class QtiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'choiceSerial' => $choice->getSerial()
+			'choiceSerial' => $choice->getSerial(),
+			'identifierUpdated' => $identifierUpdated
 		));
 	}
 	

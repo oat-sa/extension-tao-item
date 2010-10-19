@@ -722,16 +722,6 @@ class taoItems_models_classes_QtiAuthoringService
         return (string) $returnValue;
     }
 		
-	public function setChoiceId(taoItems_models_classes_QTI_Choice $choice, $newId){
-		if(!is_null($choice) && !empty($newId)){
-			try{
-				$choice->setId($newId);
-			}catch(InvalidArgumentException $e){
-				throw new Exception('the given choice id already exists');
-			}
-		}
-	}
-	
 	public function setOptions(taoItems_models_classes_QTI_Data $qtiObject, $newOptions=array()){
 		
 		// var_dump($newOptions);exit;
@@ -792,8 +782,47 @@ class taoItems_models_classes_QtiAuthoringService
 		$qtiObject->setData($data);
 	}
 	
-	public function setIdentifier(taoItems_models_classes_QTI_Data $qtiObject, $identifier = ''){
+	public function setIdentifier(taoItems_models_classes_QTI_Data $qtiObject, $identifier){
+		
+		$identifier = preg_replace("/[^a-zA-Z0-9_]{1}/", '', $identifier);
+		$oldIdentifier = $qtiObject->getIdentifier();
+		if($identifier == $oldIdentifier){
+			return true;
+		}
+		
 		$qtiObject->setIdentifier($identifier);
+		
+		if($qtiObject instanceof taoItems_models_classes_QTI_Choice){
+			
+			//update all reference in the response!
+			$interaction = $this->qtiService->getComposingData($qtiObject);
+			$response = $interaction->getResponse();
+			if(is_null($response)){
+				throw new Exception('no response found!');
+			}
+			
+			$correctResponses = $response->getCorrectResponses();
+			foreach($correctResponses as $key=>$choiceConcat){
+				$correctResponses[$key] = preg_replace("/\b{$oldIdentifier}\b/", $identifier, $choiceConcat);
+			}
+			
+			$mappings = $response->getMapping();
+			foreach($mappings as $mapping => $score){
+				$count = 0;
+				$newMapping = preg_replace("/\b{$oldIdentifier}\b/", $identifier, $mapping, -1, $count);
+				if($count){
+					unset($mappings[$mapping]);
+					$mappings[$newMapping] = $score;
+				}
+			}
+			
+			$interaction = null;
+			$response->setCorrectResponses($correctResponses);
+			$response->setMapping($mappings);
+			
+			return true;
+		}
+		
 	}
 	
 	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
@@ -1211,6 +1240,7 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
+	//@return mixed
 	public function getInteractionChoiceByIdentifier(taoItems_models_classes_QTI_Interaction $interaction, $identifier){
 		$interactionType = strtolower($interaction->getType());
 		
@@ -1258,10 +1288,10 @@ class taoItems_models_classes_QtiAuthoringService
 						//if required identifier not empty:
 						if(!empty($response['choice1'])){
 						
-							$choice1 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
+							$choice1 = trim($response['choice1']);
 							if(!is_null($choice1)){
 								
-								$responseValue = $choice1->getSerial();
+								$responseValue = $choice1;
 								
 								if($response['correct'] === 'yes' || $response['correct'] === true){
 									$correctResponses[] = $responseValue;
@@ -1285,11 +1315,11 @@ class taoItems_models_classes_QtiAuthoringService
 						$response = (array)$response;
 						if(!empty($response['choice1']) && !empty($response['choice2'])){
 							
-							$choice1 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice1']);
-							$choice2 = $this->getInteractionChoiceByIdentifier($interaction, $response['choice2']);
+							$choice1 = trim($response['choice1']);
+							$choice2 = trim($response['choice2']);
 							if(!is_null($choice1) && !is_null($choice2)){
 							
-								$responseValue = $choice1->getSerial().' '.$choice2->getSerial();
+								$responseValue = $choice1.' '.$choice2;
 								
 								if($response['correct'] == 'yes' || $response['correct'] === true){
 									$correctResponses[] = $responseValue;
@@ -1319,10 +1349,10 @@ class taoItems_models_classes_QtiAuthoringService
 								$pos = intval(substr($choicePosition, 6));
 								if($pos>0){
 									
-									$choice = $this->getInteractionChoiceByIdentifier($interaction, $choiceValue);
+									$choice = trim($choiceValue);
 									if(!is_null($choice)){
 										//starting from 1... so need (-1):
-										$tempResponseValue[$pos-1] = $choice->getSerial();
+										$tempResponseValue[$pos-1] = $choice;
 									}
 									
 								}
@@ -1398,7 +1428,7 @@ class taoItems_models_classes_QtiAuthoringService
 			);
 			$response = $interaction->getResponse();
 			if(!is_null($response)){
-				$response->setOptions($responseOptions);
+				$this->editOptions($response, $responseOptions);
 				$returnValue = true;
 			}
 			
@@ -1425,12 +1455,12 @@ class taoItems_models_classes_QtiAuthoringService
 					$returnValue[$i] = array();
 					$returnValue[$i]['correct'] = 'yes';
 					$j = 1;
-					foreach($correctResponses as $choiceSerial){
-						$choice = $this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+					foreach($correctResponses as $choiceIdentifier){
+						$choice = $this->getInteractionChoiceByIdentifier($interaction, $choiceIdentifier);
 						if(is_null($choice)){
 							break;//important: do not take into account deleted choice
 						}
-						$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+						$returnValue[$i]["choice{$j}"] = $choiceIdentifier;
 						$j++;
 					}
 					
@@ -1484,29 +1514,29 @@ class taoItems_models_classes_QtiAuthoringService
 			default:{
 			
 				if(!empty($correctResponses)){
-					foreach($correctResponses as $choiceSerialConcat){
+					foreach($correctResponses as $choiceIdentifierConcat){
 						
-						$choiceSerials = explode(' ', $choiceSerialConcat);
+						$choiceIdentifiers = explode(' ', $choiceIdentifierConcat);
 						
 						$returnValue[$i] = array();
 						$returnValue[$i]['correct'] = 'yes';
 						
 						$j = 1;//j<=2
 						//set data as not persistent
-						foreach($choiceSerials as $choiceSerial){
+						foreach($choiceIdentifiers as $choiceIdentifier){
 							
-							$choice = $this->qtiService->getDataBySerial($choiceSerial);//no type check here: could be either a choice or a group
+							$choice = $this->getInteractionChoiceByIdentifier($interaction, $choiceIdentifier);//no type check here: could be either a choice or a group
 							if(is_null($choice)){
 								break(2);//important: do not take into account deleted choice
 							}
-							$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+							$returnValue[$i]["choice{$j}"] = $choiceIdentifier;
 							
 							$j++;
 						}
 						
-						if(isset($mapping[$choiceSerialConcat])){
-							$returnValue[$i]['score'] = $mapping[$choiceSerialConcat];
-							unset($mapping[$choiceSerialConcat]);
+						if(isset($mapping[$choiceIdentifierConcat])){
+							$returnValue[$i]['score'] = $mapping[$choiceIdentifierConcat];
+							unset($mapping[$choiceIdentifierConcat]);
 						}
 						
 						$i++;
@@ -1517,21 +1547,21 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 				}
 				if(!empty($mapping)){
-					foreach($mapping as $choiceSerialConcat => $score){
-						$choiceSerials = explode(' ', $choiceSerialConcat);
+					foreach($mapping as $choiceIdentifierConcat => $score){
+						$choiceIdentifiers = explode(' ', $choiceIdentifierConcat);
 						
 						$returnValue[$i] = array();
 						$returnValue[$i]['correct'] = 'no';
 						
 						$j = 1;//j<=2
-						foreach($choiceSerials as $choiceSerial){
-							$choice = $this->qtiService->getDataBySerial($choiceSerial);//no type check: could be either a choice or a group
+						foreach($choiceIdentifiers as $choiceIdentifier){
+							$choice = $this->getInteractionChoiceByIdentifier($interaction, $choiceIdentifier);//no type check: could be either a choice or a group
 							if(is_null($choice)){
 								break(2);//important: do not take into account deleted choice
 							}
-							$returnValue[$i]["choice{$j}"] = $choice->getIdentifier();
+							$returnValue[$i]["choice{$j}"] = $choiceIdentifier;
 							
-							//add exception for textEntry interaction where the values are the $choiceSerial:
+							//add exception for textEntry interaction where the values are the $choiceIdentifier:
 							
 							$j++;
 						}

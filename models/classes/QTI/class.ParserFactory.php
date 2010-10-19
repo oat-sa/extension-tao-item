@@ -97,9 +97,9 @@ class taoItems_models_classes_QTI_ParserFactory
         	$itemData .= $itemBodyNode->asXml();
         }
         if(!empty($itemData)){
-	        foreach($myItem->getInteractions() as $interation){
+	        foreach($myItem->getInteractions() as $interaction){
 	        	//map the interactions by an identified tag: {interaction.serial} 
-	        	$tag = $interation->getType().'Interaction';
+	        	$tag = $interaction->getType().'Interaction';
 	        	$pattern = "/<{$tag}\b[^>]*>(.*?)<\/{$tag}>|(<{$tag}\b[^>]*\/>)/is";
 	        	$itemData = preg_replace($pattern, "{{$interaction->getSerial()}}", $itemData, 1);
 	        }
@@ -111,7 +111,7 @@ class taoItems_models_classes_QTI_ParserFactory
         foreach($responseNodes as $responseNode){
         	$response = self::buildResponse($responseNode);
         	if(!is_null($response)){
-        		foreach($myItem->getInteractions() as $interation){
+        		foreach($myItem->getInteractions() as $interaction){
         			if($interaction->getOption('responseIdentifier') == $response->getIdentifier()){
         				$interaction->setResponse($response);
         				break;
