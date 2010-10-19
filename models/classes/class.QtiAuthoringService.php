@@ -1336,12 +1336,13 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'order':{
+					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;
 						
 						//find the correct order:
 						$tempResponseValue = array();
-						$responseValue = array();
+						
 						foreach($response as $choicePosition => $choiceValue){
 							//check if it is a choice:
 							if(strpos($choicePosition, 'choice') === 0 ){
@@ -1350,7 +1351,8 @@ class taoItems_models_classes_QtiAuthoringService
 								if($pos>0){
 									
 									$choice = trim($choiceValue);
-									if(!is_null($choice)){
+									// var_dump('pos', $pos, $choice, $choiceValue);
+									if(!empty($choice)){
 										//starting from 1... so need (-1):
 										$tempResponseValue[$pos-1] = $choice;
 									}
@@ -1360,22 +1362,30 @@ class taoItems_models_classes_QtiAuthoringService
 						}
 						
 						//check if order has been breached, i.e. user forgot an intermediate value:
-						for($i=0; $i<count($tempResponseValue); $i++){
-							if(isset($tempResponseValue[$i])){
-								$responseValue[$i] = $tempResponseValue[$i];
-							}else{
-								break;
+						if(!empty($tempResponseValue)){
+							$responseValue = array();
+							for($i=0; $i<count($tempResponseValue); $i++){
+								if(isset($tempResponseValue[$i])){
+									$responseValue[$i] = $tempResponseValue[$i];
+								}else{
+									break;
+								}
 							}
+							$correctResponses = $responseValue;
+							$interactionResponse->setCorrectResponses($correctResponses);
+							return true;
 						}
 						
+						//temporar trick to make it work until the mapping rule is done:
+						/*
+						$response['correct'] = 'yes';
 						if($response['correct'] == 'yes'){
 							//set response array directly:
 							$correctResponses = $responseValue;
-							// $interactionResponse->setCorrectResponses($responseValue);
 						}
 						if(!empty($response['score'])){
 							//partial order... not available yet
-						}
+						}*/
 					}
 					break;
 				}

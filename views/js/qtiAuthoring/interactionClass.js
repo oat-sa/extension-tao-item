@@ -125,7 +125,10 @@ interactionClass.prototype.saveChoice = function($choiceForm){
 				delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 				
 				//only when the identifier has changed:
-				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				if(r.identifierUpdated){
+					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				}
+				
 			}
 	   }
 	});
