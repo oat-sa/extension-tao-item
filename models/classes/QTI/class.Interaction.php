@@ -584,17 +584,11 @@ class taoItems_models_classes_QTI_Interaction
         if(!file_exists($template)){
         	 //else get the general template
         	 $template = self::getTemplatePath() . 'xhtml.interaction.tpl.php';
-       }
+        }
         
-        //get the variables to used in the template
-        $variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
-		
+        $variables 	= $this->extractVariables();
+        $variables['rowOptions'] = json_encode($this->options);
+        
 		//change from camelCase to underscore_case the type of the interaction to be used in the JS
 		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
 		
@@ -603,8 +597,7 @@ class taoItems_models_classes_QTI_Interaction
 			$variables['data'] = $this->shuffleChoices();
 		}
 		
-   		$variables['data'] = preg_replace("/{prompt}/", "<p class='prompt'>{$this->prompt}</p>", $variables['data']);
-    	switch($this->type){
+   		switch($this->type){
    			case 'associate':
    			case 'choice':
    			case 'order':
@@ -655,16 +648,8 @@ class taoItems_models_classes_QTI_Interaction
         	 $template = self::getTemplatePath() . 'qti.interaction.tpl.php';
         }
         
-        //get the variables to used in the template
-        $variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
-		
-		$variables['data'] = preg_replace("/{prompt}/", "<prompt>{$this->prompt}</prompt>", $variables['data']);
+        $variables 	= $this->extractVariables();
+        $variables['rowOptions'] 	= $this->xmlizeOptions();
 		
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){

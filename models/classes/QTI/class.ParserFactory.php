@@ -270,7 +270,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	       		foreach($promptNodes as $promptNode){
 	       			$myInteraction->setPrompt((string)$promptNode);
 	       			$pattern = "/(<prompt\b[^>]*>(.*?)<\/prompt>)|(<prompt\b[^>]*\/>)/is";
-	       			$interactionData = preg_replace($pattern, "{prompt}", $interactionData);
+	       			$interactionData = preg_replace($pattern, "", $interactionData);
 	       		}
 	       		
 	        	$myInteraction->setData($interactionData);
@@ -370,6 +370,13 @@ class taoItems_models_classes_QTI_ParserFactory
        		if(isset($mappingNode['defaultValue'])){
        			$myResponse->setMappingDefaultValue((string)$mappingNode['defaultValue']);
        		}
+       		$mappingOptions = array();
+	       	foreach($mappingNode->attributes() as $key => $value){
+	       		if($key != 'defaultValue'){
+	       			$mappingOptions[$key] = (string)$value;
+	       		}
+	       	}
+	       	$myResponse->setOption('mapping', $mappingOptions);
        		
        		$mapping = array();
        		foreach($mappingNode->mapEntry as $mapEntry){

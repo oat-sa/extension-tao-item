@@ -148,19 +148,13 @@ abstract class taoItems_models_classes_QTI_Data
 
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 begin
         
-        $clazz = strtolower(get_class($this));
-    	$type = substr($clazz, strpos($clazz, 'qti_') + 4);
+        $clazz 	= strtolower(get_class($this));
+    	$type 	= substr($clazz, strpos($clazz, 'qti_') + 4);
     	
-        $template  = self::getTemplatePath() . '/xhtml.'.$type.'.tpl.php';
+        $template  	= self::getTemplatePath() . '/xhtml.'.$type.'.tpl.php';
+    	$variables 	= $this->extractVariables(); 
     	
-        //get the variables to used in the template
-        $variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
+    	$variables['rowOptions'] = $this->xmlizeOptions();
 		
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
         $returnValue = $tplRenderer->render();
@@ -183,19 +177,11 @@ abstract class taoItems_models_classes_QTI_Data
 
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:000000000000415B begin
         
-        $clazz = strtolower(get_class($this));
-    	$type = substr($clazz, strpos($clazz, 'qti_') + 4);
+        $clazz 	= strtolower(get_class($this));
+    	$type 	= substr($clazz, strpos($clazz, 'qti_') + 4);
     	
-        $template  = self::getTemplatePath() . '/qti.'.$type.'.tpl.php';
-    	
-        //get the variables to used in the template
-        $variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
+        $template  	= self::getTemplatePath() . '/qti.'.$type.'.tpl.php';
+    	$variables 	= $this->extractVariables(); 
 		
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
         $returnValue = $tplRenderer->render();
@@ -680,6 +666,78 @@ abstract class taoItems_models_classes_QTI_Data
     	$this->options[$name] = $value;
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002337 end
+    }
+
+    /**
+     * This method enables you to build a string of attributes for an xml node
+     * from the instance options and regarding the option type
+     *
+     * @access protected
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array formalOpts
+     * @param  boolean recursive
+     * @return string
+     */
+    protected function xmlizeOptions($formalOpts = array(), $recursive = false)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-79105b43:12bc86e4da2:-8000:00000000000026D9 begin
+        
+        (!$recursive) ? $options = $this->options : $options = $formalOpts;
+        
+        
+        foreach($options as $key => $value){
+        	if(is_string($value)){
+        		$returnValue .= " $key = '$value' ";
+        	}
+        	if(is_bool($value)){
+        		$returnValue .= " $key = '".(($value)?'true':'false')."' ";
+        	}
+        	if(is_array($value)){
+        		if(count($value) > 0){
+        			$keys = array_keys($value);
+        			if(is_int($keys[0])){	//repeat the attribute key
+		        		foreach($value as $subkey => $subvalue){
+		        			$returnValue .= " $key = '$subvalue' ";
+		        		}
+        			}
+        			else{
+        				$returnValue .= $this->xmlizeOptions($value, true);
+        			}
+        		}
+        	}
+        }
+        
+        // section 127-0-1-1-79105b43:12bc86e4da2:-8000:00000000000026D9 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * This method enables you to extract the attributes 
+     * of the current instances to an associative array
+     *
+     * @access protected
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    protected function extractVariables()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-79105b43:12bc86e4da2:-8000:00000000000026DB begin
+        
+    	$reflection = new ReflectionClass($this);
+		foreach($reflection->getProperties() as $property){
+			if(!$property->isStatic()){
+				$returnValue[$property->getName()] = $this->{$property->getName()};
+			}
+		}
+        
+        // section 127-0-1-1-79105b43:12bc86e4da2:-8000:00000000000026DB end
+
+        return (array) $returnValue;
     }
 
 } /* end of abstract class taoItems_models_classes_QTI_Data */

@@ -1,7 +1,8 @@
-<<?=$type?>Interaction
-	 <?foreach($options as $key => $value):?>
-   		<?=$key?>="<?=$value?>" 
-    <?endforeach?> >
+<<?=$type?>Interaction <?=$rowOptions?>>
+    
+    <?if(!empty($prompt)):?>
+    	<prompt><?=$prompt?></prompt>
+    <?endif?>
 
 	<?=$data?>
             

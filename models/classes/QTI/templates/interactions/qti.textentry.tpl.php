@@ -1,4 +1,1 @@
-<<?=$type?>Interaction
-	 <?foreach($options as $key => $value):?>
-   		<?=$key?>="<?=$value?>" 
-    <?endforeach?> />
+<<?=$type?>Interaction <?=$rowOptions?> />

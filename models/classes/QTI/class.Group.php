@@ -186,13 +186,7 @@ class taoItems_models_classes_QTI_Group
         if(!file_exists($template)){
         	 $template = self::getTemplatePath() . 'xhtml.group.tpl.php';
         }
-    	$variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
+    	$variables = $this->extractVariables();
 		
     	if($this->type != 'gap'){
         	foreach($this->getChoices() as $choiceSerial){
@@ -232,7 +226,8 @@ class taoItems_models_classes_QTI_Group
         	'identifier'	=> $this->identifier,
         	'type'			=> $this->type,
         	'data'			=> $this->data,
-        	'options'		=> $this->options
+        	'options'		=> $this->options,
+        	'rowOptions'	=> $this->xmlizeOptions()
         );
         
         if($this->type == 'simpleMatchSet'){

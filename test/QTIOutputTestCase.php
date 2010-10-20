@@ -29,7 +29,6 @@ class QTIOutputTestCase extends UnitTestCase {
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
-		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -114,7 +113,7 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			//test if it's a valid QTI file
 //			$qtiType = str_replace('.xml', '', basename($file));
-//			$tmpFile = BASE_PATH.'/views/runtime/'.uniqid('qti_'.$qtiType, true).'.html';
+//			$tmpFile = dirname(__FILE__).'/samples/'.uniqid('qti_'.$qtiType, true).'.html';
 //			file_put_contents($tmpFile, $xhtml);
 			
 //			echo "<strong>$qtiType</strong><br/>";

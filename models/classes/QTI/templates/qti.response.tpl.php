@@ -1,7 +1,4 @@
-<responseDeclaration identifier="<?=$identifier?>" 
-<?foreach($options as $key => $value):?>
-   		<?=$key?>="<?=$value?>" 
-    <?endforeach?> >
+<responseDeclaration identifier="<?=$identifier?>" <?=$rowOptions?> >
     
     <?if(count($correctResponses) > 0):?>
         <correctResponse>
@@ -12,7 +9,7 @@
 	<?endif?>
 	
 	<?if(count($mapping) > 0):?>
-        <mapping defaultValue="<?=$mappingDefaultValue?>">
+        <mapping defaultValue="<?=$mappingDefaultValue?>" <?=$mappingOptions?>>
             <?foreach($mapping as $key => $value):?>
             	<mapEntry mapKey="<?=$key?>" mappedValue="<?=$value?>"/>
             <?endforeach?>

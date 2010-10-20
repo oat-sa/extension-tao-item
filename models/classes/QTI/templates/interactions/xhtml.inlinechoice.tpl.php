@@ -2,11 +2,7 @@
 	<?=$data?>
 </select>
 <script type="text/javascript">
-	qti_initParam["<?=$serial?>"] = {
-		id : "<?=$identifier?>",
-		type : "qti_<?=$_type?>_interaction"
-		<?foreach($options as $key => $value):?>
-			, "<?=$key?>" : "<?=$value?>"
-		<?endforeach?>
-	};
+	qti_initParam["<?=$serial?>"] = <?=$rowOptions?>;
+	qti_initParam["<?=$serial?>"]['id'] = "<?=$identifier?>";
+	qti_initParam["<?=$serial?>"]['type'] = "qti_<?=$_type?>_interaction";
 </script>

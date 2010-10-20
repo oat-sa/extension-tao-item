@@ -427,13 +427,9 @@ class taoItems_models_classes_QTI_Item
         $template  = self::getTemplatePath() . '/xhtml.item.tpl.php';
         
     	//get the variables to used in the template
-        $variables = array('rtPath' => BASE_WWW. 'js/QTI/');
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
+        
+    	$variables 	= $this->extractVariables();
+		$variables['rtPath'] = BASE_WWW. 'js/QTI/';
         
         foreach($this->getInteractions() as $interaction){
 			//build the interactions in the data variable
@@ -462,17 +458,10 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000238A begin
         
         $template  = self::getTemplatePath() . '/qti.item.tpl.php';
-        
-        //get the variables to used in the template
-        $variables = array();
-    	$reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$variables[$property->getName()] = $this->{$property->getName()};
-			}
-		}
+    	$variables 	= $this->extractVariables(); 
 		
-		
+		$variables['rowOptions'] = $this->xmlizeOptions();
+    	
 		$variables['response'] = '';
 		$foundResponses = array();
 		foreach($this->getInteractions() as $interaction){

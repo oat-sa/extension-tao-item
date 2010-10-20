@@ -88,7 +88,8 @@ class taoItems_models_classes_QTI_Choice
         	'identifier'	=> $this->identifier,
         	'type'			=> $this->type,
         	'data'			=> $this->data,
-        	'options'		=> $this->options
+        	'options'		=> $this->options,
+        	'rowOptions'	=> json_encode($this->options)
         );
 		
 		//parse and render the template
@@ -124,7 +125,8 @@ class taoItems_models_classes_QTI_Choice
         	'identifier'	=> $this->identifier,
         	'type'			=> $this->type,
         	'data'			=> $this->data,
-        	'options'		=> $this->options
+        	'options'		=> $this->options,
+        	'rowOptions'	=> $this->xmlizeOptions()
         );
 		
 		//parse and render the template
