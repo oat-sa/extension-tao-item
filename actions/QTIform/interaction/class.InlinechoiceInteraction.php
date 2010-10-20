@@ -45,7 +45,7 @@ class taoItems_actions_QTIform_interaction_InlinechoiceInteraction
     {
 		$this->setCommonElements();
 				
-		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($interaction, 'shuffle', __('Shuffle choices')));
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($this->interaction, 'shuffle', __('Shuffle choices')));
     }
 	
 	public function setCommonElements(){

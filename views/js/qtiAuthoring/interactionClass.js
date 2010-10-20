@@ -12,6 +12,7 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	this.choices = [];
 	this.modifiedInteraction = false;
 	this.modifiedChoices = [];
+	this.modifiedGroups = [];
 	this.orderedChoices = [];
 	
 	this.initInteractionFormSubmitter();
@@ -42,6 +43,15 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 		//linearize it and post it:
 		if(instance.modifiedInteraction){
 			instance.saveInteraction($myForm);
+		}
+		
+		for(var groupSerial in instance.modifiedGroups){
+			var $groupForm = $('#'+groupSerial);
+			
+			//linearize+submit:
+			if($groupForm.length){
+				instance.saveGroup($groupForm);
+			}
 		}
 		
 		for(var choiceSerial in instance.modifiedChoices){
@@ -125,7 +135,46 @@ interactionClass.prototype.saveChoice = function($choiceForm){
 				delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 				
 				//only when the identifier has changed:
-				if(r.identifierUpdated){
+				if(r.reload){
+					interaction.loadChoicesForm();
+				}else if(r.identifierUpdated){
+					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				}
+				
+			}
+	   }
+	});
+}
+
+interactionClass.prototype.saveGroup = function($groupForm){
+
+	var interaction = this;
+	//save group order?
+	
+	var choiceOrder = ''
+	var i = 0;
+	for(var order in this.orderedChoices){
+		choiceOrder += '&choiceOrder['+i+']='+this.orderedChoices[order];
+		i++;
+	}
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveGroup",
+	   data: $groupForm.serialize()+choiceOrder,
+	   dataType: 'json',
+	   success: function(r){
+			
+			if(!r.saved){
+				createErrorMessage(__('The choice cannot be saved'));
+			}else{
+				createInfoMessage(__('Modification on choice applied'));
+				delete interaction.modifiedGroups['GroupForm_'+r.choiceSerial];
+				
+				//only when the identifier has changed:
+				if(r.reload){
+					interaction.loadChoicesForm();
+				}else if(r.identifierUpdated){
 					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
 				}
 				
@@ -359,6 +408,8 @@ interactionClass.prototype.setFormChangeListener = function(target){
 				interaction.modifiedChoices[id] = 'modified';//it is a choice form:
 			}else if(id.indexOf('InteractionForm') == 0){
 				interaction.modifiedInteraction = true;
+			}else if(id.indexOf('GroupForm') == 0){
+				interaction.modifiedGroups[id] = 'modified';
 			}
 		}
 	});

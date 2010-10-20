@@ -53,7 +53,7 @@ class taoItems_actions_QTIform_choice_GapText
 		$options = array();
 		
 		foreach($this->interaction->getGroups() as $group){
-			$options[$group->getSerial()] = $group->getIdentifier();
+			$options[$group->getIdentifier()] = $group->getIdentifier();
 		}
 		
 		return $options;

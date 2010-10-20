@@ -46,7 +46,7 @@ class taoItems_actions_QTIform_choice_Gap
 	public function __construct(taoItems_models_classes_QTI_Group $group){
 		
 		$this->group = $group;
-		$this->formName = 'ChoiceForm_'.$this->group->getSerial();//GroupForm...however it is considered as a choice
+		$this->formName = 'GroupForm_'.$this->group->getSerial();//GroupForm...however it is considered as a choice
 		
 		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$interaction = $qtiService->getComposingData($group);
@@ -103,7 +103,7 @@ class taoItems_actions_QTIform_choice_Gap
 		
 		//associable choice special property:
 		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'Checkbox');
-		$matchGroupElt->setDescription(__('match group'));
+		$matchGroupElt->setDescription(__('Match group'));
 		$options = array();
 		foreach($this->interaction->getChoices() as $choice){
 			$options[$choice->getSerial()] = $choice->getIdentifier();

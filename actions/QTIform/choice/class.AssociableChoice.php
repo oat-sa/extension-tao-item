@@ -52,24 +52,27 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		$matchGroupElt = tao_helpers_form_FormFactory::getElement('matchGroup', 'Checkbox');
 		$matchGroupElt->setDescription(__('Match Group'));
 		$matchGroupOption = $this->getMatchGroupOptions();
-		$matchGroupElt->setOptions($matchGroupOption);
+		if(!empty($matchGroupOption)){
+			$matchGroupElt->setOptions($matchGroupOption);
 		
-		$matchGroups = $this->choice->getOption('matchGroup');
-		if(!empty($matchGroups)){
-			if(is_array($matchGroups)){
-				foreach($matchGroups as $choiceSerial){
-					$matchGroupElt->setValue($choiceSerial);
+			$matchGroups = $this->choice->getOption('matchGroup');
+			if(!empty($matchGroups)){
+				if(is_array($matchGroups)){
+					foreach($matchGroups as $choiceIdentifierOrSerial){
+						$matchGroupElt->setValue($choiceIdentifierOrSerial);
+					}
+				}else{
+					$matchGroupElt->setValue((string)$matchGroups);
 				}
 			}else{
-				$matchGroupElt->setValue((string)$matchGroups);
+				//default empty values indicates to the authoring controller that there is no restriction to the associated choices
+				foreach($matchGroupOption as $choiceIdentifierOrSerial=>$choiceIdentifier){
+					$matchGroupElt->setValue($choiceIdentifierOrSerial);
+				}
 			}
-		}else{
-			//default empty values indicates to the authoring controller that there is no restriction to the associated choices
-			foreach($matchGroupOption as $choiceSerial=>$choiceIdentifier){
-				$matchGroupElt->setValue($choiceSerial);
-			}
+			$this->form->addElement($matchGroupElt);
 		}
-		$this->form->addElement($matchGroupElt);
+		
 		
 	}
 	
@@ -78,10 +81,12 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		$returnValue = array();
 		$groups = $this->interaction->getGroups();
 		if(empty($groups)){
+			//associate interaction
 			foreach($this->interaction->getChoices() as $choice){
-				$returnValue[$choice->getSerial()] = $choice->getIdentifier();
+				$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
 			}
 		}else{
+			//match interaction:
 			//get the current group:
 			$currentGroupSerial = '';
 			$options = array();
@@ -100,7 +105,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 				foreach($options as $choiceSerial){
 					$choice = $qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
 					if(!is_null($choice)){
-						$returnValue[$choice->getSerial()] = $choice->getIdentifier();
+						$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
 					}
 				}
 				

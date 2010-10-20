@@ -728,7 +728,6 @@ class QtiAuthoring extends CommonModule {
 		));
 		
 	}
-	
 	public function saveChoice(){
 		$choice = $this->getCurrentChoice();
 		
@@ -760,16 +759,80 @@ class QtiAuthoring extends CommonModule {
 			}
 		}
 		
+		$choiceFormReload = false;
+		if($identifierUpdated){
+			$interaction = $this->qtiService->getComposingData($choice);
+			$choiceFormReload = $this->requireChoicesUpdate($interaction);
+			$interaction->addChoice($choice);
+			$interaction = null;
+		}
+		
 		echo json_encode(array(
 			'saved' => $saved,
 			'choiceSerial' => $choice->getSerial(),
-			'identifierUpdated' => $identifierUpdated
+			'identifierUpdated' => $identifierUpdated,
+			'reload' => $choiceFormReload
 		));
 	}
 	
 	//save the group properties, specific to gapmatch interaction where a group is considered as a gap:
 	//not called when the choice order has been changed, such changes are done by saving the itneraction data
 	public function saveGroup(){
+		$group = $this->getCurrentGroup();
+		
+		$myForm = $group->toForm();
+		$saved = false;
+		$identifierUpdated = false;
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+			
+				$values = $myForm->getValues();
+				
+				if(isset($values['groupIdentifier'])){
+					if($values['groupIdentifier'] != $group->getIdentifier()){
+						$identifierUpdated = $this->service->setIdentifier($group, $values['groupIdentifier']);
+					}
+				}
+				
+				$matchGroup = array();
+				if(!empty($values['matchGroup']) && is_array($values['matchGroup'])){
+					$matchGroup = $values['matchGroup'];
+				}
+				unset($values['matchGroup']);
+				$group->setChoices($matchGroup);
+				
+				$choiceOrder = array();
+				if(isset($_POST['choiceOrder'])){
+					$choiceOrder = $_POST['choiceOrder'];
+				}
+				$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
+				
+				unset($values['groupIdentifier']);
+				$this->service->setOptions($group, $values);
+				
+				$saved = true;
+			}
+		}
+		
+		$choiceFormReload = false;
+		if($identifierUpdated){
+			$interaction = $this->qtiService->getComposingData($group);
+			$choiceFormReload = $this->requireChoicesUpdate($interaction);
+			$interaction->addGroup($group);
+			$interaction = null;
+		}
+		
+		echo json_encode(array(
+			'saved' => $saved,
+			'groupSerial' => $group->getSerial(),
+			'identifierUpdated' => $identifierUpdated,
+			'reload' => $choiceFormReload
+		));
+	}
+	
+	//save the group properties, specific to gapmatch interaction where a group is considered as a gap:
+	//not called when the choice order has been changed, such changes are done by saving the itneraction data
+	/*public function saveGroup(){
 		$group = $this->getCurrentGroup();
 		var_dump($group, $_POST);die('saving group');
 		
@@ -785,7 +848,7 @@ class QtiAuthoring extends CommonModule {
 		$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
 		
 		
-	}
+	}*/
 	
 	public function addGroup(){
 		$added = false;

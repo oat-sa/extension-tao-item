@@ -133,7 +133,7 @@ class taoItems_actions_QTIform_AssessmentItem
 		$textboxElt->setDescription($elementLabel);
 		
 		//validator: is int??
-		$value = $qtiObject->getOption($optionName);
+		$value = (string) $qtiObject->getOption($optionName);
 		if(!is_null($value)){
 			$textboxElt->setValue($value);
 		}

@@ -350,6 +350,7 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 					
 					$interaction->setOption('shuffle', false);
+					$interaction->setOption('maxAssociations', 1);
 					break;
 				}
 				case 'gapmatch':{
@@ -789,10 +790,15 @@ class taoItems_models_classes_QtiAuthoringService
 		if($identifier == $oldIdentifier){
 			return true;
 		}
+		try{
+			$qtiObject->setIdentifier($identifier);
+		}catch(InvalidArgumentException $e){
+			throw new Exception("the choice identifier \"{$identifier}\" is already used");
+			return false;
+		}
 		
-		$qtiObject->setIdentifier($identifier);
-		
-		if($qtiObject instanceof taoItems_models_classes_QTI_Choice){
+		//note: taoItems_models_classes_QTI_Group identifier editable for a "gap" of a gapmatch interaction only
+		if($qtiObject instanceof taoItems_models_classes_QTI_Choice || $qtiObject instanceof taoItems_models_classes_QTI_Group){
 			
 			//update all reference in the response!
 			$interaction = $this->qtiService->getComposingData($qtiObject);
@@ -816,6 +822,23 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 			
+			foreach($interaction->getChoices() as $choice){
+				$matchGroup = $choice->getOption('matchGroup');
+				if(!empty($matchGroup)){
+					if(is_string($matchGroup)){
+						$matchGroup = array($matchGroup);
+					}
+					foreach($matchGroup as $key=>$choiceOrGroupIdentifier){
+						if($choiceOrGroupIdentifier == $oldIdentifier){
+							$matchGroup[$key] = $identifier; //replace by the new identifier
+							$choice->setOption('matchGroup', $matchGroup);
+							$interaction->addChoice($choice);//important: set the choice in the interaction again, to make the changes on the choice option effective.
+							break;//the identifier can exist only once in the list
+						}
+					}
+				}
+			}
+			
 			$interaction = null;
 			$response->setCorrectResponses($correctResponses);
 			$response->setMapping($mappings);
@@ -823,6 +846,7 @@ class taoItems_models_classes_QtiAuthoringService
 			return true;
 		}
 		
+		return false;
 	}
 	
 	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
@@ -889,7 +913,11 @@ class taoItems_models_classes_QtiAuthoringService
 				//for each group, delete not assigned choice from the array, then save the remaining choices, which are on a correct order already:
 				if(empty($choiceOrder)){
 					//restore the choice order in case it has not changed
-					$choiceOrder = $this->getInteractionChoices($interaction);
+					$choiceOrder = array();
+					$choices = $this->getInteractionChoices($interaction);
+					for($i=0; $i<count($choices); $i++){
+						$choiceOrder[] = $choices[$i]->getSerial();
+					}
 				}
 				foreach($interaction->getGroups() as $group){
 					$data = $this->filterData($group, $data);
@@ -897,7 +925,7 @@ class taoItems_models_classes_QtiAuthoringService
 				
 				//save the choices in the interaction data:
 				for($i=0; $i<count($choiceOrder); $i++){
-					$data .= '{'.$choiceOrder[$i]->getSerial().'}';
+					$data .= '{'.$choiceOrder[$i].'}';
 				}
 				$interaction->setData($data);
 				
@@ -943,12 +971,12 @@ class taoItems_models_classes_QtiAuthoringService
 		$groupData = ''; //note: group data only contains choices
 		$oldOrder = $group->getChoices();
 		$newOrder = $choiceOrder;
-		foreach($newOrder as $choiceSerial){
+		foreach($newOrder as $newOrderKey => $choiceSerial){
 			
 			if($edit){
 				//in the edit mode, delete not assigned choice from the array
 				if(!in_array($choiceSerial, $oldOrder)){
-					unset($newOrder[key($newOrder)]);
+					unset($newOrder[$newOrderKey]);
 					continue;
 				}
 			}
