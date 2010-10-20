@@ -73,6 +73,10 @@ class taoItems_actions_form_Import
     {
         // section 127-0-1-1-2993bc96:12baebd89c3:-8000:000000000000268B begin
         
+    	$descElt = tao_helpers_form_FormFactory::getElement('qti_desc', 'Label');
+		$descElt->setValue(__('A QTI item file is an XML file following the QTI standard version 2.0'));
+		$this->form->addElement($descElt);
+    	
     	//create file upload form box
 		$fileElt = tao_helpers_form_FormFactory::getElement('source', 'AsyncFile');
 		$fileElt->setDescription(__("Add the source file"));
@@ -88,7 +92,7 @@ class taoItems_actions_form_Import
 		));
     	
 		$this->form->addElement($fileElt);
-		$this->form->createGroup('file', __('Upload QTI File'), array('source'));
+		$this->form->createGroup('file', __('Upload QTI File'), array('source','qti_desc'));
 		
 		$qtiSentElt = tao_helpers_form_FormFactory::getElement('import_sent_qti', 'Hidden');
 		$qtiSentElt->setValue(1);
