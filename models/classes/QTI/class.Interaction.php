@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.10.2010, 17:02:23 with ArgoUML PHP module 
+ * Automatically generated on 20.10.2010, 16:01:54 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -459,7 +459,7 @@ class taoItems_models_classes_QTI_Interaction
      * @param  boolean recursive
      * @return boolean
      */
-    public function removeGroup( core_kernel_classes_Group $group, $recursive = false)
+    public function removeGroup( taoItems_models_classes_QTI_Group $group, $recursive = false)
     {
         $returnValue = (bool) false;
 

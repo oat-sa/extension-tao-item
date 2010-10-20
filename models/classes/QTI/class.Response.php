@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Response.php
+ * TAO - taoItems\models\classes\QTI\class.Response.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.10.2010, 09:04:24 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Automatically generated on 20.10.2010, 16:01:55 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,21 +28,21 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
 /**
  * include taoItems_models_classes_QTI_Outcome
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
@@ -58,7 +58,7 @@ require_once('taoItems/models/classes/QTI/class.Outcome.php');
  * Short description of class taoItems_models_classes_QTI_Response
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -100,7 +100,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getCorrectResponses
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return array
      */
     public function getCorrectResponses()
@@ -120,7 +120,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setCorrectResponses
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  array responses
      * @return mixed
      */
@@ -140,7 +140,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMapping
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return array
      */
     public function getMapping()
@@ -160,7 +160,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMapping
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  array map
      * @return mixed
      */
@@ -177,7 +177,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMappingDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function getMappingDefaultValue()
@@ -197,7 +197,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMappingDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  string value
      * @return mixed
      */
@@ -214,7 +214,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function toXHTML()
@@ -234,7 +234,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function toQTI()
@@ -267,12 +267,12 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return string
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
     {
-        $returnValue = (string) '';
+        $returnValue = null;
 
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C begin
 		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
@@ -292,7 +292,7 @@ class taoItems_models_classes_QTI_Response
 		
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C end
 
-        return (string) $returnValue;
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Response */
