@@ -375,6 +375,38 @@ class taoItems_models_classes_QTI_Service
         return (string) $returnValue;
     }
 
+    /**
+     * Short description of method loadItemFromFile
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string file
+     * @return taoItems_models_classes_QTI_Item
+     */
+    public function loadItemFromFile($file)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-47db9c49:12bc8da1be4:-8000:00000000000026E6 begin
+        
+        if(is_string($file) && !empty($file)){
+       		
+        	//validate the file to import
+			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
+			$qtiParser->validate();
+
+			if(!$qtiParser->isValid()){
+				throw new Exception($qtiParser->displayErrors());
+			}
+			
+			$returnValue = $qtiParser->load();
+		}
+        
+        // section 127-0-1-1-47db9c49:12bc8da1be4:-8000:00000000000026E6 end
+
+        return $returnValue;
+    }
+
 } /* end of class taoItems_models_classes_QTI_Service */
 
 ?>

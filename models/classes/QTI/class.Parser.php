@@ -3,10 +3,12 @@
 error_reporting(E_ALL);
 
 /**
- * The QTI Parser enables you to parse QTI xml files and build the corresponding
+ * The QTI Parser enables you to parse QTI item xml files and build the
+ * objects
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10010
  * @subpackage models_classes_QTI
  */
 
@@ -31,11 +33,13 @@ require_once('tao/models/classes/class.Parser.php');
 // section 127-0-1-1-26978f63:12a3830d3d3:-8000:000000000000243C-constants end
 
 /**
- * The QTI Parser enables you to parse QTI xml files and build the corresponding
+ * The QTI Parser enables you to parse QTI item xml files and build the
+ * objects
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10010
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Parser
@@ -69,7 +73,7 @@ class taoItems_models_classes_QTI_Parser
     }
 
     /**
-     * load the file content, parse it  and build the QTI_Item
+     * load the file content, parse it  and build the a QTI_Item instance
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

@@ -459,6 +459,64 @@ class taoItems_models_classes_QTI_ParserFactory
         return $returnValue;
     }
 
+    /**
+     * Enables you to build the QTI_Resources from a manifest xml data node
+     * Content Packaging 1.1)
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  SimpleXMLElement source
+     * @return array
+     * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_intgv2p0.html#section10003
+     */
+    public static function getResourcesFromManifest( SimpleXMLElement $source)
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-5c65d02d:12bc97f5116:-8000:00000000000026FB begin
+        
+    	//check of the root tag
+    	if($source->getName() != 'manifest'){
+	       	throw new Exception("incorrect manifest root tag");
+	    }
+	    
+	    $resourceNodes = $source->xpath("//*[name(.)='resource']");
+	    foreach($resourceNodes as $resourceNode){
+	    	$type = (string)$resourceNode['type'];
+	    	if(taoItems_models_classes_QTI_Resource::isAllowed($type)){
+	    		
+	    		$id = (string)$resourceNode['identifier'];
+	    		(isset($resourceNode['href'])) ? $href = (string)$resourceNode['href'] : $href = '';
+	    		
+	    		$auxFiles = array();
+	    		$xmlFiles = array();
+	    		foreach($resourceNode->file as $fileNode){
+	    			$fileHref = (string)$fileNode['href'];
+	    			if(preg_match("/\.xml$/", $fileHref)){
+		    			if(empty($href)){
+		    				$xmlFiles[] = $fileHref;
+		    			}
+	    			}
+	    			else{
+	    				$auxFiles[] = $fileHref;
+	    			}
+	    		}
+	    		
+	    		if(count($xmlFiles) == 1 && empty($href)){
+	    			$href = $xmlFiles[0];
+	    		}
+	    		$resource = new taoItems_models_classes_QTI_Resource($id, $href);
+	    		$resource->setAuxiliaryFiles($auxFiles);
+	    		
+	    		$returnValue[] = $resource;
+	    	}
+	    }
+        
+        // section 127-0-1-1-5c65d02d:12bc97f5116:-8000:00000000000026FB end
+
+        return (array) $returnValue;
+    }
+
 } /* end of class taoItems_models_classes_QTI_ParserFactory */
 
 ?>
