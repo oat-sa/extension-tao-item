@@ -27,7 +27,7 @@ class QTIPackageParsingTestCase extends UnitTestCase {
 	public function testFileParsing(){
 		
 		//check if wrong packages are not validated correctly
-		foreach(glob(dirname(__FILE__).'/samples/wrong/*.zip') as $file){
+		foreach(glob(dirname(__FILE__).'/samples/package/wrong/*.zip') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_PackageParser($file);
 			
@@ -39,7 +39,7 @@ class QTIPackageParsingTestCase extends UnitTestCase {
 		}
 		
 		//check if package samples are valid
-		foreach(glob(dirname(__FILE__).'/samples/*.zip') as $file){
+		foreach(glob(dirname(__FILE__).'/samples/package/*.zip') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_PackageParser($file);
 			$qtiParser->validate();
@@ -52,7 +52,7 @@ class QTIPackageParsingTestCase extends UnitTestCase {
 		
 		
 		//check if wrong manifest files are not validated correctly
-		foreach(glob(dirname(__FILE__).'/samples/wrong/*.xml') as $file){
+		foreach(glob(dirname(__FILE__).'/samples/package/wrong/*.xml') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_ManifestParser($file);
 			
@@ -64,7 +64,7 @@ class QTIPackageParsingTestCase extends UnitTestCase {
 		}
 		
 		//check if manifest samples are valid
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
+		foreach(glob(dirname(__FILE__).'/samples/package/*.xml') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_ManifestParser($file);
 			$qtiParser->validate();
