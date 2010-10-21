@@ -435,7 +435,18 @@ class taoItems_models_classes_QTI_Item
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
         }	
+
+		// If we are in client delivery mode Get the variable relative to the matching
+		$variables["rule"] = $this->responseProcessing->getRule();
 		
+		// Get the outcome variables declaration
+		$outcomes = $this->getOutcomes ();
+		$outcomesJSON = Array ();
+    	foreach ($outcomes as $outcome){
+    		array_push ($outcomesJSON, $outcome->toJSON());
+    	}
+		$variables['outcomes'] = json_encode ($outcomesJSON);
+        
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
         

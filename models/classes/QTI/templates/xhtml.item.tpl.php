@@ -18,14 +18,16 @@
 	<script type="text/javascript" src="<?=$rtPath?>src/Widget.js"></script>
 	<script type="text/javascript" src="<?=$rtPath?>src/ResultCollector.js"></script>
 	<script type="text/javascript" src="<?=$rtPath?>src/init.js"></script>
-	<script type="text/javascript" src='../../test/qti_labs/client/class.js'></script>
-	<script type="text/javascript" src="../../test/qti_labs/client/qti_tools.js"></script>
-	<script type="text/javascript" src="../../test/qti_labs/client/qti_object_model.js"></script>
-	<script type="text/javascript" src="../../test/qti_labs/client/qti_api.js"></script>
+	<script type="text/javascript" src="<?=$rtPath?>../taoMatching/taoMatching.min.js"></script>
 	<script type="text/javascript">
 		var qti_initParam  = new Object();
+		var matching_param = {"mode":"client", "outcomes":[], "corrects":[], "maps":[], "rule":""};
+		matching_param.rule = '<?=$rule?>';
+		matching_param.outcomes = <?=$outcomes?>;
+
 		$(document).ready(function(){
 			qti_init(qti_initParam);
+			matching_init (matching_param);	
 		});
 	</script>
 </head>                                             

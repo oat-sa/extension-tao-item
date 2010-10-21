@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.09.2010, 10:41:33 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Automatically generated on 21.10.2010, 10:46:13 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -28,14 +28,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.php');
 
@@ -51,7 +51,7 @@ require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.
  * Short description of class taoItems_models_classes_QTI_response_Template
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -110,7 +110,7 @@ class taoItems_models_classes_QTI_response_Template
      * Short description of method process
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Response response
      * @param  Outcome score
      * @return boolean
@@ -126,10 +126,34 @@ class taoItems_models_classes_QTI_response_Template
     }
 
     /**
+     * Short description of method getRule
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
+     */
+    public function getRule()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B begin
+        
+        if( $this->uri == self::MATCH_CORRECT )
+			$returnValue = 'if(match(getResponse("RESPONSE"), getCorrect("RESPONSE"))) setOutcomeValue("SCORE", 1); else setOutcomeValue("SCORE", 0);';
+    	
+		else if ( $this->uri == self::MAP_RESPONSE )
+			$returnValue = 'if (isNull(getResponse("RESPONSE"))) { setOutcomeValue("SCORE", 0); } else { setOutcomeValue("SCORE", mapResponse(getMap("RESPONSE"), getResponse("RESPONSE"))); }';
+        
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B end
+
+        return (string) $returnValue;
+    }
+
+    /**
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string uri
      * @return mixed
      */
@@ -158,7 +182,7 @@ class taoItems_models_classes_QTI_response_Template
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toQTI()

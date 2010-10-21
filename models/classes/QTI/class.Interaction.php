@@ -620,6 +620,15 @@ class taoItems_models_classes_QTI_Interaction
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
    		}
+
+   		// @todo use the conditional variable mode (client/server)
+    	// If we are in client delivery mode Get the variable relative to the matching
+		$response = $this->getResponse ();
+		if ($response != null){
+			$variables['options']['responseBaseType'] = $response->getBaseType();
+			$variables['correct'] = json_encode($response->correctToJSON());
+			$variables['map'] =  json_encode($response->mapToJSON());
+		}
    		
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();

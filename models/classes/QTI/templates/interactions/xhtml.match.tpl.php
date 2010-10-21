@@ -18,4 +18,12 @@
 			}<?=($i<count($choices)-1)?',':''?>
 		<?$i++;endforeach?>
 	};
+
+	<?php if (isset($correct)) { ?>
+	matching_param.corrects.push(<?=$correct?>);
+	<?php } ?>
+	
+	<?php if (isset($map)) { ?>
+	matching_param.maps.push(<?=$map?>);
+	<?php } ?>
 </script>

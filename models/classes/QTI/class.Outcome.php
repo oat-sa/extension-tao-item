@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 01.10.2010, 16:28:13 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Automatically generated on 21.10.2010, 10:46:13 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,21 +28,21 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Item
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
 
 /**
  * include taoItems_models_classes_QTI_Response
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Response.php');
 
@@ -58,7 +58,7 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
  * Short description of class taoItems_models_classes_QTI_Outcome
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -84,7 +84,7 @@ class taoItems_models_classes_QTI_Outcome
      * Short description of method getDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getDefaultValue()
@@ -104,7 +104,7 @@ class taoItems_models_classes_QTI_Outcome
      * Short description of method setDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string value
      * @return mixed
      */
@@ -115,6 +115,30 @@ class taoItems_models_classes_QTI_Outcome
     	$this->defaultValue = $value;
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:000000000000241A end
+    }
+
+    /**
+     * get the outcome in JSON format
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    public function toJSON()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1D begin
+        
+        $returnValue = taoItems_models_classes_Matching_VariableFactory::createJSONVariableFromQTIData (
+    		$this->getIdentifier()
+    		, $this->options['cardinality']
+    		, $this->options['baseType']
+    		, $this->getDefaultValue()
+    	);
+        
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1D end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Outcome */

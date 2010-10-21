@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems\models\classes\QTI\class.Response.php
+ * TAO - taoItems/models/classes/QTI/class.Response.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.10.2010, 16:01:55 with ArgoUML PHP module 
+ * Automatically generated on 21.10.2010, 10:46:13 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,21 +28,21 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
 /**
  * include taoItems_models_classes_QTI_Outcome
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
@@ -58,7 +58,7 @@ require_once('taoItems/models/classes/QTI/class.Outcome.php');
  * Short description of class taoItems_models_classes_QTI_Response
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -100,7 +100,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getCorrectResponses
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function getCorrectResponses()
@@ -120,7 +120,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setCorrectResponses
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array responses
      * @return mixed
      */
@@ -140,7 +140,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMapping
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function getMapping()
@@ -160,7 +160,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMapping
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array map
      * @return mixed
      */
@@ -177,7 +177,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMappingDefaultValue
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getMappingDefaultValue()
@@ -197,7 +197,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMappingDefaultValue
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string value
      * @return mixed
      */
@@ -214,7 +214,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toXHTML
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -234,7 +234,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toQTI
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -267,7 +267,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toForm
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -293,6 +293,88 @@ class taoItems_models_classes_QTI_Response
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C end
 
         return $returnValue;
+    }
+
+    /**
+     * get the correct response in JSON format
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    public function correctToJSON()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A17 begin
+        
+        $returnValue = taoItems_models_classes_Matching_VariableFactory::createJSONVariableFromQTIData (
+    		$this->getIdentifier()
+    		, $this->options['cardinality']
+    		, $this->options['baseType']
+    		, $this->correctResponses
+    	);
+        
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A17 end
+
+        return $returnValue;
+    }
+
+    /**
+     * get the mapping in JSON format
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    public function mapToJSON()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A19 begin
+        
+    	$mapping = $this->getMapping();
+    	$returnValue = Array ();
+    	$returnValue['identifier'] = $this->getIdentifier();
+    	$mappingValue = Array ();    	
+    	
+    	// If a mapping has been defined
+    	if (!empty($mapping))
+    	{
+	    	foreach ($mapping as $mapKey=>$mappedValue)
+	    	{
+	    		$mapEntryJSON = Array();
+	    		$mapEntryJSON['value'] = (float) $mappedValue;
+	    		$mapEntryJSON['key'] = taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData  ($mapKey, $this->options['baseType']);
+		    	array_push ($mappingValue, (object) $mapEntryJSON);
+	    	}
+	    	
+	    	$returnValue['value'] = $mappingValue;
+    	}
+        
+    	$returnValue = (object) $returnValue;
+    	
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A19 end
+
+        return $returnValue;
+    }
+
+    /**
+     * get the base type of the response declaration
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
+     */
+    public function getBaseType()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1F begin
+        
+        $returnValue = $this->options['baseType'];
+        
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1F end
+
+        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Response */
