@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.10.2010, 09:22:19 with ArgoUML PHP module 
+ * Automatically generated on 21.10.2010, 12:29:22 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -100,6 +100,14 @@ class taoItems_models_classes_QTI_Item
      * @var array
      */
     protected $outcomes = array();
+
+    /**
+     * Short description of attribute stylesheets
+     *
+     * @access protected
+     * @var array
+     */
+    protected $stylesheets = array();
 
     // --- OPERATIONS ---
 
@@ -412,6 +420,49 @@ class taoItems_models_classes_QTI_Item
     }
 
     /**
+     * Short description of method getStylesheets
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function getStylesheets()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-8cf5183:12bce4ebee2:-8000:000000000000271E begin
+        
+        $returnValue = $this->stylesheets;
+        
+        // section 127-0-1-1-8cf5183:12bce4ebee2:-8000:000000000000271E end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method setStylesheets
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array stylesheets
+     * @return mixed
+     */
+    public function setStylesheets($stylesheets)
+    {
+        // section 127-0-1-1-8cf5183:12bce4ebee2:-8000:0000000000002720 begin
+        
+    	if(is_array($stylesheets)){
+    		foreach($stylesheets as $stylesheet){
+    			if(isset($stylesheet['href']) && isset($stylesheet['title'])){
+    				$this->stylesheets[] = $stylesheet;
+    			}
+    		}
+    	}
+    	
+        // section 127-0-1-1-8cf5183:12bce4ebee2:-8000:0000000000002720 end
+    }
+
+    /**
      * Short description of method toXHTML
      *
      * @access public
@@ -437,13 +488,16 @@ class taoItems_models_classes_QTI_Item
         }	
 
 		// If we are in client delivery mode Get the variable relative to the matching
-		$variables["rule"] = $this->responseProcessing->getRule();
+		$variables["rule"] = '';
+        if(!is_null($this->responseProcessing)){
+			$variables["rule"] = $this->responseProcessing->getRule();
+		}
 		
 		// Get the outcome variables declaration
 		$outcomes = $this->getOutcomes ();
 		$outcomesJSON = Array ();
     	foreach ($outcomes as $outcome){
-    		array_push ($outcomesJSON, $outcome->toJSON());
+    		array_push($outcomesJSON, $outcome->toJSON());
     	}
 		$variables['outcomes'] = json_encode ($outcomesJSON);
         

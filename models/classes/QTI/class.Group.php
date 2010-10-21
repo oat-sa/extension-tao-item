@@ -187,7 +187,7 @@ class taoItems_models_classes_QTI_Group
         	 $template = self::getTemplatePath() . 'xhtml.group.tpl.php';
         }
     	$variables = $this->extractVariables();
-		
+    	
     	if($this->type != 'gap'){
         	foreach($this->getChoices() as $choiceSerial){
 				$variables['data'] .= "{{$choiceSerial}}";

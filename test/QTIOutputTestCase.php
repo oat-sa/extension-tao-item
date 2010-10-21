@@ -115,7 +115,7 @@ class QTIOutputTestCase extends UnitTestCase {
 //			$qtiType = str_replace('.xml', '', basename($file));
 //			$tmpFile = dirname(__FILE__).'/samples/'.uniqid('qti_'.$qtiType, true).'.html';
 //			file_put_contents($tmpFile, $xhtml);
-			
+//			
 //			echo "<strong>$qtiType</strong><br/>";
 //			echo "<iframe src='".str_replace(BASE_PATH, BASE_URL, $tmpFile)."' width='800px' height='500px'></iframe><br/><br/>";
 			

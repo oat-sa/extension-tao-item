@@ -17,6 +17,7 @@
 		<?$i=0;foreach($choices as $choice):?>
 			<?=$choice->getIdentifier()?>: { 
 				matchMax	: <?=($choice->getOption('matchMax') == '') ? 0 : $choice->getOption('matchMax')?>,
+				matchGroup	: <?=($choice->getOption('matchGroup')) ? json_encode(explode(' ',$choice->getOption('matchGroup'))) : "[]"?>,
 				current		: "0"
 			}<?=($i<count($choices)-1)?',':''?>
 		<?$i++;endforeach?>

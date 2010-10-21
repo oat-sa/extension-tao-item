@@ -8,6 +8,11 @@
 	<link rel="stylesheet" type="text/css" href="<?=$rtPath?>css/reset.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="<?=$rtPath?>css/qti.css" media="screen" />
 	
+	<!-- user CSS -->
+	<?foreach($stylesheets as $stylesheet):?>
+		<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
+	<?endforeach?>
+	
 	<!-- LIB -->
 	<script type="text/javascript" src="<?=$rtPath?>lib/jquery/jquery.js"></script>
 	

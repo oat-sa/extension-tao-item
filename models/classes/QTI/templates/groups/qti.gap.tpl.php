@@ -1,1 +1,1 @@
-<gap identifier="<?=$identifier?>" />
+<gap identifier="<?=$identifier?>" <?=$rowOptions?> />

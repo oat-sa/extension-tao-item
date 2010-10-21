@@ -209,6 +209,7 @@ var QTIWidget = function(options){
 					// give a size to the dropped item to overlapp perfectly the pair box
 					$(qti_item_id+" .qti_droppedItem").width($(qti_item_id+" .qti_association_pair li").width());
 					$(qti_item_id+" .qti_droppedItem").height($(qti_item_id+" .qti_association_pair li").height());
+					
 					// give this new element the ability to be dragged
 					$(qti_item_id+" .qti_droppedItem").draggable({
 						drag: function(event, ui){
@@ -446,12 +447,33 @@ var QTIWidget = function(options){
 					return false;
 				}
 	
+				
+				var _matchMax 	= Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
+				var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
+				var _matchGroup = _this.opts["matchMaxes"][draggedId]["matchGroup"];
+				
+				//if the matchGroup of the choice is defined we cancel the drop 
+				if(_matchGroup.length > 0){
+					if($.inArray($(this).attr('id'), _matchGroup) < 0){
+						return false;
+					}
+				}
+				
+				//check too the matchGroup of the gap
+				var _gapMatchGroup = _this.opts["matchMaxes"][$(this).attr('id')]["matchGroup"];
+				if(_gapMatchGroup.length > 0){
+					if($.inArray(draggedId, _gapMatchGroup) < 0){
+						return false;
+					}
+				}
+
 				//remove the old element
 				if($(this).html() != ''){
 					$('.filled_gap', $(this)).each(function(){
 						removeFilledGap($(this));
 					});
 				}
+				
 				$(this).css({
 					"padding-left": '5px', 
 					"padding-right": '5px'
@@ -459,9 +481,6 @@ var QTIWidget = function(options){
 				
 				// add the new element inside the box that received the cloud element
 				$(this).html("<span id='gap_"+draggedId+"' class='filled_gap'>"+$(ui.draggable).text()+"</span>");
-				
-				var _matchMax = Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
-				var _current = Number(_this.opts["matchMaxes"][draggedId]["current"]);
 				
 				if (_current < _matchMax) {
 					_current++;
@@ -592,6 +611,7 @@ var QTIWidget = function(options){
 		 * Activate / deactivate nodes regarding:
 		 * 	- the maxAssociations options that should'nt be exceeded
 		 *  - the matchMax option of the row and the column
+		 *  - the matchGroup option defining who can be associated with who
 		 */
 		var associations = new Array();
 		$(qti_item_id + " .match_node").click(function(){
@@ -605,6 +625,20 @@ var QTIWidget = function(options){
 				if(associations.length < maxAssociations || maxAssociations == 0){
 					
 					var nodeXY = getNodeXY(elt);
+					
+					//check the matchGroup for the current association
+					var _rowMatchGroup = _this.opts["matchMaxes"][nodeXY.xnode.id]['matchGroup'];
+					if(_rowMatchGroup.length > 0){
+						if($.inArray(nodeXY.ynode.id, _rowMatchGroup) < 0){
+							return false;
+						}
+					}
+					var _colMatchGroup = _this.opts["matchMaxes"][nodeXY.ynode.id]['matchGroup'];
+					if(_colMatchGroup.length > 0){
+						if($.inArray(nodeXY.xnode.id, _colMatchGroup) < 0){
+							return false;
+						}
+					}
 					
 					//test the matchMax of the row choice
 					var rowMatch = _this.opts["matchMaxes"][nodeXY.xnode.id]['matchMax'];

@@ -78,6 +78,19 @@ class taoItems_models_classes_QTI_ParserFactory
        	
        	//create the item instance
        	$myItem = new taoItems_models_classes_QTI_Item($itemId, $options);
+       	
+       	//get the stylesheets
+		$styleSheets = array();
+       	$styleSheetNodes = $data->xpath("*[name(.) = 'stylesheet']");
+       	foreach($styleSheetNodes as $styleSheetNode){
+       		$styleSheets[] = array(
+       			'href' 	=> (string)$styleSheetNode['href'],		//mandaory field
+       			'title' => (isset($styleSheetNode['title'])) ? (string)$styleSheetNode['title'] : '', 
+       			'media'	=> (isset($styleSheetNode['media'])) ? (string)$styleSheetNode['media'] : 'screen',
+       			'type'	=> (isset($styleSheetNode['type']))  ? (string)$styleSheetNode['type'] : 'text/css',
+       		);
+       	}
+       	$myItem->setStylesheets($styleSheets);
        
      	//parse the xml to find the interaction nodes
         $interactionNodes = $data->xpath("//*[contains(name(.), 'Interaction')]");
@@ -211,6 +224,9 @@ class taoItems_models_classes_QTI_ParserFactory
        					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
        					$group->setType($gapNode->getName());
        					$group->setChoices($choices);
+       					if(isset($gapNode['matchGroup'])){
+       						$group->setOption('matchGroup', (string)$gapNode['matchGroup']);
+       					}
        					$myInteraction->addGroup($group);
        				}
        				break;

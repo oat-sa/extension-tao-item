@@ -11,6 +11,10 @@
 	<?=$outcome->toQTI()?>
 <?endforeach?>
 	
+	<?foreach($stylesheets as $stylesheet):?>
+		<stylesheet href="<?=$stylesheet['href']?>" title="<?=$stylesheet['title']?>" media="<?=$stylesheet['media']?>" type="<?=$stylesheet['type']?>" />
+	<?endforeach?>
+
 	<itemBody>
 		<div><?=$data?></div>
 	</itemBody>
