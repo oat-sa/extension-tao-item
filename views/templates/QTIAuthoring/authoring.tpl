@@ -23,59 +23,71 @@
 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/qtiAuthoring.css" />
 
 <div id="qtiAuthoring_main_container">
-	<div id="qtiAuthoring_left_container">
-	
-		<div id='qtiAuthoring_save_button'>
-			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Save</a>
-		</div>
-		<div id='qtiAuthoring_preview_button'>
-			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Preview</a>
-		</div>
-		
-		
 
-		<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
-				<?=__('Item Editor:')?>
-		</div>
-		<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
-			<div id="qtiAuthoring_itemProperties_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin:10px 5px 0px;">
-				<?=__('Item Properties:')?>
+	<div id="qtiAuthoring_item_container">
+		<div id="qtiAuthoring_item_left_container">
+		
+			<div id='qtiAuthoring_save_button'>
+				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Save')?></a>
 			</div>
-			<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom" style="margin:0px 5px 10px;">
+			<div id='qtiAuthoring_preview_button'>
+				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Preview')?></a>
+			</div>
+			
+			
+			<div id="qtiAuthoring_processing_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Response processing template editor:')?></div>
+			<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
+			
+			<div id="qtiAuthoring_itemProperties_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Properties:')?></div>
+			<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
 				<?=get_data('itemForm')?>
 			</div>
-		
-			<div class="ext-home-container ui-state-highlight">
-				<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
-			</div>
-		</div>
-
-		<div id='qtiAuthoring_interactionEditor'/>    
-	</div>
-
-	<div id="qtiAuthoring_right_container">
-		
-		<div id="qtiAuthoring_processing_title" class="ui-widget-header ui-corner-top ui-state-default">
-				<?=__('Response processing template editor:')?>
-		</div>
-		<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom">
 			
 		</div>
 		
-		<div id="qtiAuthoring_mapping_container">
+		<div id="qtiAuthoring_item_right_container">
+			<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
+					<?=__('Item Editor:')?>
+			</div>
+			<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
+				
+					<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
+				
+			</div>
+		</div>
+		
+		<div style="clear:both"/>
+	</div>
+	
+	<div id="qtiAuthoring_interaction_container">
+	
+		<div id="qtiAuthoring_interaction_left_container">
+			<div id='qtiAuthoring_interactionEditor'/>   
+		</div>
+		
+		<div id="qtiAuthoring_interaction_right_container">
+			
+			<div id="qtiAuthoring_mapping_container">
+			</div>
+			
+			<div id="qtiAuthoring_response_container">
+			</div>
+			
+			<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
+					<?=__('Response editor:')?>
+			</div>
+			<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
+				<div id="qtiAuthoring_response_formContainer" class="ext-home-container ui-state-highlight_cancel"/>
+				<div class="ext-home-container ui-state-highlight_cancel">
+					<table id="qtiAuthoring_response_grid"></table>
+				</div>
+			</div>
 			
 		</div>
 		
-		<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
-				<?=__('Response editor:')?>
-		</div>
-		<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
-			<div id="qtiAuthoring_response_formContainer" class="ext-home-container ui-state-highlight_cancel"/>
-			<div class="ext-home-container ui-state-highlight_cancel">
-				<table id="qtiAuthoring_response_grid"></table>
-			</div>
-		</div>
+		<div style="clear:both"/>
 	</div>
+	
 </div>
 
 <script type="text/javascript">

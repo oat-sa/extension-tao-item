@@ -64,10 +64,10 @@ class taoItems_actions_QTIform_ResponseProcessing
     {
 		$this->form = tao_helpers_form_FormFactory::getForm('ResponseProcessingForm');
 		
-		$actions = tao_helpers_form_FormFactory::getCommonActions('bottom', true, false);
-		// $addChoiceElt = tao_helpers_form_FormFactory::getElement('addCustomRule', 'Free');
-		// $addChoiceElt->setValue("<a href='#' class='form-choice-adder' ><img src='".TAOBASE_WWW."/img/add.png'  /> ".__('Add a custom rule')."</a>");
-		// $actions[] = $addChoiceElt;
+		$actions = array();
+		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
+		$saveElt->setValue("<a href='#' class='form-submiter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
+		$actions[] = $saveElt;
 		
 		$this->form->setActions(array(), 'top');
 		$this->form->setActions($actions, 'bottom');

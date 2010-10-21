@@ -1,38 +1,39 @@
-
-<div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
+<div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default qti-authoring-form-container">
 		<?=__('Choices editor:')?>
 </div>
-
-<div id="formContainer_groups_container" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
-	<div id="formContainer_groups">
-	<? $formChoices = get_data('formChoices');?>
-	<?foreach($formGroups as $groupSerial => $groupForm):?>
-		<div id='<?=$groupSerial?>' class='formContainer_choice'>
-			<?=$groupForm?>
+<div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
+	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
+		<div id="formContainer_groups">
+		<? $formChoices = get_data('formChoices');?>
+		<?foreach($formGroups as $groupSerial => $groupForm):?>
+			<div id='<?=$groupSerial?>' class='formContainer_choice'>
+				<?=$groupForm?>
+			</div>
+		<?endforeach;?>
 		</div>
-	<?endforeach;?>
 	</div>
-</div>
 
-<div id="formContainer_choices_container" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
-	<div id="formContainer_choices">
-	<?foreach($formChoices as $choiceSerial => $choiceForm):?>
-		<div id='<?=$choiceSerial?>' class='formContainer_choice'>
-			<?=$choiceForm?>
+	<div id="formContainer_choices_container" class="qti-authoring-form-container-column">
+		<div id="formContainer_choices">
+		<?foreach($formChoices as $choiceSerial => $choiceForm):?>
+			<div id='<?=$choiceSerial?>' class='formContainer_choice'>
+				<?=$choiceForm?>
+			</div>
+		<?endforeach;?>
 		</div>
-	<?endforeach;?>
-	</div>
 
-	<div id="add_choice_button">
-		<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"> Add a choice</a>
+		<div id="add_choice_button" class="add_choice_button">
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"> Add a choice</a>
+		</div>
 	</div>
-</div>
-
+	
+	<div style="clear:both" />
+</div>	
 
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('#add_choice_button').click(function(){
+	$('a.form-choice-adder, #add_choice_button').click(function(){
 		//add a choice to the current interaction:
 		myInteraction.addChoice(myInteraction.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');//need an extra param "groupSerial"
 		return false;

@@ -84,51 +84,9 @@ class QtiAuthoring extends CommonModule {
 				// if(empty($item)){
 					// throw new Exception('cannot load the item from the file: '.$itemFile);
 				// }
-				
-				
-				
 			}
 		}
-		
-		
-		/*
-		if($this->hasRequestParameter('instance')){
-			$itemUri = $this->getRequestParameter('instance');
-			$itemSerial = 'qti_item_'.tao_helpers_Uri::getUniqueId(tao_helpers_Uri::decode($this->getRequestParameter('instance')));
-		}elseif($this->hasRequestParameter('itemSerial')){
-			$itemSerial = tao_helpers_Uri::decode($this->getRequestParameter('itemSerial'));
-		}else{
-			throw new Exception('no current id for the item');
-		}
-		
-		$itemFile = $this->getRequestParameter('xml');
-		if(empty($itemFile)){
-			
-			//debug
-			// var_dump(unserialize(Session::getAttribute($itemSerial)));
-			
-			//get item from serialized object in session:
-			$item = $this->qtiService->getItemBySerial($itemSerial);
-			
-			if(is_null($item)){
-				//create a new qti xml file:
-				$item = $this->service->createNewItem($itemUri);//TODO: change variable type
-				if(empty($item)){
-					throw new Exception('a new qti item xml cannot be created');
-				}
-			}
-		}else{
-			//if there is a file in the parameter, overwrite the current item completely
-			//get the item from xml file:
-			$qtiParser = new taoItems_models_classes_QTI_Parser($itemFile);
-			$item = $qtiParser->load();
-			if(empty($item)){
-				throw new Exception('cannot load the item from the file: '.$itemFile);
-			}
-		}
-		*/
-		
-		
+				
 		if(is_null($item)){
 			throw new Exception('there is no item');
 		}
@@ -142,7 +100,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($this->getRequestParameter('instance')));
 		
 		$currentItem = $this->getCurrentItem();
-		if($this->debugMode) var_dump($currentItem);
+		// if($this->debugMode) var_dump($currentItem);
 		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
@@ -829,26 +787,6 @@ class QtiAuthoring extends CommonModule {
 			'reload' => $choiceFormReload
 		));
 	}
-	
-	//save the group properties, specific to gapmatch interaction where a group is considered as a gap:
-	//not called when the choice order has been changed, such changes are done by saving the itneraction data
-	/*public function saveGroup(){
-		$group = $this->getCurrentGroup();
-		var_dump($group, $_POST);die('saving group');
-		
-		//save the properties:
-		
-		//save selected choices:
-		
-		//save the order:
-		$choiceOrder = array();
-		if(isset($_POST['choiceOrder'])){
-			$choiceOrder = $_POST['choiceOrder'];
-		}
-		$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
-		
-		
-	}*/
 	
 	public function addGroup(){
 		$added = false;

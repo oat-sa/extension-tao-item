@@ -1,10 +1,10 @@
 <div id="qtiAuthoring_mapping_title" class="ui-widget-header ui-corner-top ui-state-default">
 		<?=__('Mapping options:')?>
 </div>
-<div id="qtiAuthoring_mappingEditor" class="ui-widget-content ui-corner-bottom">
-	<div class="ext-home-container ui-state-highlight">
+<div id="qtiAuthoring_mappingEditor" class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
+	
 		<?=get_data('form')?>
-	</div>
+	
 </div>
 
 <script type="text/javascript">

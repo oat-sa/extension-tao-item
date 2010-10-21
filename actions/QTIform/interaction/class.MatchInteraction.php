@@ -34,8 +34,23 @@ class taoItems_actions_QTIform_interaction_MatchInteraction
     extends taoItems_actions_QTIform_interaction_BlockInteraction
 {
 
-    //initForm() in the parent class...
-
+	public function initForm()
+    {
+		$interactionType = $this->interaction->getType();
+		$this->form = tao_helpers_form_FormFactory::getForm('InteractionForm_'.strtolower($interactionType).'Interaction');
+		
+		//custom actions only:
+		$actions = array();
+		
+		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
+		$saveElt->setValue("<a href='#' class='interaction-form-submitter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
+		$actions[] = $saveElt;
+				
+		$this->form->setActions($actions, 'top');
+		$this->form->setActions(array(), 'bottom');
+		
+    }
+	
     /**
      * Short description of method initElements
      *

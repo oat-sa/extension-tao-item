@@ -304,7 +304,6 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 					interaction.orderedChoices.push(r.choiceSerial);
 				}
 				
-				
 				//rebuild the response grid:
 				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
 			}
