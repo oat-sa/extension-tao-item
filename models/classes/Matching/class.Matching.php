@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
+ * Automatically generated on 21.10.2010, 10:19:44 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -74,6 +74,14 @@ class taoItems_models_classes_Matching_Matching
     protected $corrects = null;
 
     /**
+     * Short description of attribute maps
+     *
+     * @access protected
+     * @var Map
+     */
+    protected $maps = null;
+
+    /**
      * Short description of attribute outcomes
      *
      * @access protected
@@ -106,6 +114,31 @@ class taoItems_models_classes_Matching_Matching
     public static $whiteFunctionsList = array();
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return mixed
+     */
+    public function __construct()
+    {
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 begin
+		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
+			'and'=>array('mappedFunction'=>'andExpression')
+			, 'equal'=>array()
+			, 'if'=>array('prefix'=>false)
+			, 'isNull'=>array()
+			, 'getCorrect'=>array()
+			, 'getMap'=>array()
+			, 'getResponse'=>array()
+			, 'mapResponse'=>array()
+			, 'match'=>array()
+			, 'setOutcomeValue'=>array()
+		);
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
+    }
 
     /**
      * Short description of method parseExpressionRule
@@ -150,39 +183,15 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * Short description of method __construct
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return mixed
-     */
-    public function __construct()
-    {
-        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 begin
-		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
-			'and'=>array('mappedFunction'=>'andExpression')
-			, 'equal'=>array()
-			, 'if'=>array('prefix'=>false)
-			, 'isNull'=>array()
-			, 'getCorrect'=>array()
-			, 'getMap'=>array()
-			, 'getResponse'=>array()
-			, 'mapResponse'=>array()
-			, 'match'=>array()
-			, 'setOutcomeValue'=>array()
-		);
-        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
-    }
-
-    /**
      * Eval the stored response processing rule
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return core_kernel_classes_Session_void
      */
     public function evaluate()
     {
+        $returnValue = null;
+
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028DA begin
         
 //    	echo 'corrects vars';
@@ -199,6 +208,8 @@ class taoItems_models_classes_Matching_Matching
 		}
 		
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028DA end
+
+        return $returnValue;
     }
 
     /**
@@ -480,7 +491,7 @@ class taoItems_models_classes_Matching_Matching
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
-  function getRule()
+    protected function getRule()
     {
         $returnValue = (string) '';
 

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
+ * Automatically generated on 21.10.2010, 10:19:44 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -98,7 +98,132 @@ class taoItems_models_classes_Matching_VariableFactory
 			default:
 				throw new Exception ('taoItems_models_classes_Matching_VariableFactory::create variable type unknown '.$type.' for '.$varValue);
 		}
+	
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028B8 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method createJSONVariableFromQTIData
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @param  string card
+     * @param  string baseType
+     * @param  values
+     */
+    public function createJSONVariableFromQTIData($id, $card, $baseType,    $values)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A21 begin
+        
+    	$returnValue = Array ();
+    	$returnValue['identifier'] = $id;
+    	$returnValue['value'] = null;
+    	// The value container
+    	$valueContainer = Array ();
+    	
+    	if ($values != null){
+    		foreach ($values as $value){
+	    		$value = taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData  ($value, $baseType);	
+		    	array_push ($valueContainer, $value);
+	    	} 
+	    	
+	    	// If the cardinality is multiple or ordered
+	        switch ($card){
+	        	case 'single':
+	        		if (count($valueContainer)){
+	        			$returnValue['value'] = $valueContainer[0];
+	        		}
+	        		else { 
+	        			$returnValue = null;
+	        		}
+	        		break;
+	        		
+	        	case 'multiple':
+	    			$returnValue['value'] = $valueContainer;
+	    			break;
+	    			
+	        	case 'ordered':
+	        		$returnValue['value'] = (object) $valueContainer;
+	    			break;
+	    	}    	
+    	}else {
+    		$type = "";
+    		// @todo not conform to the matching standard
+    		// used if the values is not set and we need to define a type as well
+    		switch ($baseType){
+    			case "integer":
+    				$type = "integer";
+    				break;
+    			case "float":
+    				$type = "float";
+    				break;
+    			case "identifier":
+    			case "string":
+    				$type = "string";
+    				break;
+    			case "pair":
+    				$type = "list";
+    				break;
+    			case "directedPair":
+    				$type = "tuple";
+    				break;
+    			default:
+    				throw new Exception ("taoItems_models_classes_Matching_VariableFactory::createJSONVariableFromQTIData an error occured while parsing : the type ".$baseType." is unknown");
+    		}
+    		$returnValue['type'] = $type;
+    	}
+
+    	$returnValue = (object) $returnValue;
+        
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A21 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method createJSONValueFromQTIData
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  value
+     * @param  string baseType
+     */
+    public function createJSONValueFromQTIData(   $value, $baseType)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A23 begin
+        
+    	switch ($baseType){
+	    	case "integer":
+    			$returnValue  = (int) $value;
+    			break;
+    		case "float":
+    			$returnValue  = (float) $value;
+    			break;
+    		case "identifier":
+    		case "string":
+    			$returnValue  = $value;
+    			break;
+    			
+    		case "pair":
+    			$returnValue = explode (" ", $value);
+    			break;
+    			
+    		case "directedPair":
+    			$returnValue = (object)explode (" ", $value);
+    			break;
+    			
+    		default :
+    			throw new Exception ("taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData an error occured while parsing : the type ".$baseType." is unknown");
+    	}
+        
+        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A23 end
 
         return $returnValue;
     }

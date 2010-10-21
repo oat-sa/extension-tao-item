@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 17.10.2010, 20:12:55 with ArgoUML PHP module 
+ * Automatically generated on 21.10.2010, 10:19:44 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -127,23 +127,6 @@ abstract class taoItems_models_classes_Matching_Collection
         // section 127-0-1-1-2688e070:12bac090945:-8000:0000000000002966 end
 
         return (int) $returnValue;
-    }
-
-    /**
-     * Short description of method getType
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return boolean
-     */
-    public function getType()
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002ACC begin
-        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002ACC end
-
-        return (bool) $returnValue;
     }
 
 } /* end of abstract class taoItems_models_classes_Matching_Collection */
