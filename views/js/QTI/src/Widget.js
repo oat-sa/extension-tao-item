@@ -181,7 +181,7 @@ var QTIWidget = function(options){
 					
 					
 					// add new element inside the box that received the cloud element
-					$(this).html("<div class='qti_dropped'><div class='qti_droppedItem'>"+$(ui.draggable).text()+"</div></div>");
+					$(this).html("<div class='qti_dropped'><div id='"+$(ui.draggable).parent()[0].id+"' class='qti_droppedItem'>"+$(ui.draggable).text()+"</div></div>");
 					
 					// _this.opts store id of the cloud word to maintain a link
 					_this.opts["link"][$(this).attr("id")]=$(ui.draggable).parent().attr("id");

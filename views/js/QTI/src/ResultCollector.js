@@ -24,79 +24,140 @@ function QTIResultCollector(options){
 	// result process
 	this.choice = function(){
 		var result = {
-			"identifier"	: _this.opts['responseIdentifier'] // Identifier of the response
-			, "cardinality" : _this.opts["maxChoices"] << 1 != 2 ? 'multiple' : 'single'
-			, "type"		: _this.id
-			, "values"		: []
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: (_this.opts["maxChoices"] != 1) ? [] : null
 		};
 		
 		var userData = new Array();
 		$("#" + _this.id + " .tabActive").each(function(){
-			userData.push(this.id);
+			if (_this.opts["maxChoices"] != 1) 
+				result.value.push(this.id);
+			else
+				result.value = this.id;
 		});
-		result.values = userData;
 		
 		return result;
 	};
 	
 	this.order = function (){
-		var result = new Array();
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: new Object()
+		};
+		var i = 0;
+		
 		$("#" + _this.id + " ul.qti_choice_list li").each(function(){
-			result.push(this.id);
+			result.value[i] = this.id;
+			i++;
 		});
 		return result;
 	};
 
 	this.associate = function(){
-		var result = new Array();
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: (_this.opts["maxChoices"] != 1) ? [] : null
+		};
 		
 		$("#" + _this.id + " .qti_association_pair").each(function(){
-			result.push([$(this).find('li:first').attr('id'), $(this).find('li:last').attr('id')]);
+			// The field has not been filled
+			if (!$(this).find('li:first').find('.qti_droppedItem').length){
+				return;
+			}
+			
+			// Get the associated identifier
+			var firstId = $(this).find('li:first').find('.qti_droppedItem')[0].id;
+			var lastId = $(this).find('li:last').find('.qti_droppedItem')[0].id;
+			
+			// create the element following the matching format
+			var elt = null;
+			if (_this.opts.responseBaseType == "pair"){
+				elt = [firstId, lastId];
+			} else if (_this.opts.responseBaseType == "directedPair"){
+				elt = {0:firstId, 1:lastId};
+			}
+			
+			if (_this.opts["maxChoices"] != 1){
+				result.value.push (elt);
+			} else {
+				result.value = elt;
+			}
 		});
+		
 		return result;
 	};
-
+	
+	// @todo Multiple not tested
 	this.text = function(){
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: null
+		};
 		
 		//single mode
 		if($("#" + _this.id ).get(0).nodeName.toLowerCase() != 'div'){
-			return new Array($("#" + id).val());
+			result.value = $("#" + _this.id).val();
+		} 
+		//multiple mode
+		else {
+			result.value = new Array();
+			$("#" + _this.id + " :text").each(function(){
+				result.value.push($(this).val());
+			});	
 		}
 		
-		//multiple mode
-		var result = new Array();
-		$("#" + _this.id + " :text").each(function(){
-			result.push($(this).val());
-		});
 		return result;
 	};
 	this.text_entry = this.text;
 	this.extended_text = this.text;
 
 	this.inline_choice = function(){
-		return [$("#" + _this.id).val()];
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: $("#" + _this.id).val()
+		};
+		return result;
 	};
 
 	this.hottext = function(){
-		var result = new Array();
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: (_this.opts["maxChoices"] != 1) ? [] : null
+		};
 		$("#" + _this.id + " .hottext_choice_on").each(function(){
-			result.push(this.id.replace("/^hottext_choice_/", ''));
+			if (_this.opts["maxChoices"] != 1) 
+				result.value.push(this.id.replace(/^hottext_choice_/, ''));
+			else
+				result.value = this.id.replace(/^hottext_choice_/, '');
 		});
 		return result;
 	};
 
+	// @todo does not work with single cardinality
 	this.gap_match = function(){
-		var result = new Array();
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: (_this.opts["maxChoices"] != 1) ? [] : null
+		};
+		
 		$("#" + _this.id + " .filled_gap").each(function(){
-			result.push([$(this).attr('id').replace('gap_', ''), $(this).parent().attr('id')]);
+			var firstId = $(this).attr('id').replace('gap_', '');
+			var lastId = $(this).parent().attr('id');
+			result.value.push({0:firstId, 1:lastId});
 		});
+		
 		return result;
 	};
 	
+	// @todo does not work with single cardinality
 	this.match = function(){
-		var result = new Array();
+		var result = {
+			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+			, "value"	: []
+		};
+		
 		$("#" + _this.id + " .tabActive").each(function(){
-			var subset = new Array();
+			var subset = new Object();
 			var classes = $(this).attr('class').split(' ');
 			if(classes.length > 0){
 				var i = 0;
@@ -109,7 +170,7 @@ function QTIResultCollector(options){
 					}
 					i++;
 				}
-				result.push(subset);
+				result.value.push(subset);
 			}
 		});
 		return result;

@@ -70,12 +70,8 @@ TAO_MATCHING.Matching.prototype = {
      */
     evaluate : function ()
     {		
-        try {
-			with (this){
-				eval (getRule());	
-			}
-		} catch (e) {
-			throw new Error ('an error occured during the evaluation of the rule : '+e.message);
+		with (this){
+			eval (getRule());	
 		}
     }
 

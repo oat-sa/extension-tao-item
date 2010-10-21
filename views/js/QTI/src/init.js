@@ -52,7 +52,12 @@ function qti_init_interaction(initObj){
 	$("#qti_validate").bind("click",function(){
 		// Get user's data
 		var result = myResultCollector[typeName].apply();
-		console.log (result);
+		// Set the matching engine with the user's data	
+		matching_setResponses ([result]);
+		// Evaluate the response
+		matching_evaluate ();
+		// Get the ouctomes
+		var outcomes = matching_getOutcomes();
+		console.log ('THE OUTCOME VALUE SCORE IS : '  + outcomes['SCORE']['value']);
 	});
-		
 }

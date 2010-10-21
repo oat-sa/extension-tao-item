@@ -47,9 +47,9 @@ function matching_init (params) {
 	if ($.trim(options.rule) != "") {
 		matching_setRule($.trim(options.rule));
 	}
-	else {
-		throw new Error("matching_init an error occured : the rule is empty");
-	}
+//	else {
+//		throw new Error("matching_init an error occured : the rule is empty");
+//	}
 
 	// Set outcomes variables
 	if (options.outcomes.length){
