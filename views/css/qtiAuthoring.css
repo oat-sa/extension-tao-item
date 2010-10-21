@@ -1,8 +1,12 @@
-
 #qtiAuthoring_itemEditor{
 	height: 580px;
 	overflow-x:scroll;
 }
+
+div.xhtml_form div input, div.xhtml_form div select, div.xhtml_form div textarea, div.xhtml_form div.wysiwyg, div.xhtml_form ul.form-elt-list, div.xhtml_form div .form-elt-container {
+	margin-left:45%;
+}
+
 
 #qtiAuthoring_itemEditor > div.wysiwyg{
 	height: 96%;
@@ -27,6 +31,7 @@
 }
 #qtiAuthoring_item_left_container{
 	float:left;
+	height:600px;
 	width:25%;
 	padding:0px;
 }

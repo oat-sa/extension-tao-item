@@ -957,10 +957,120 @@ class QtiAuthoring extends CommonModule {
 		
 	}
 	
-	public function exportToRdfItem(){
-	
+	public function manageStyleSheets(){
+		//create upload form:
+		$item = $this->getCurrentItem();
+		$formContainer = new taoItems_actions_QTIform_CSSuploader($this->getCurrentItem());
+		$myForm = $formContainer->getForm();
 		
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+				$data = $myForm->getValues();
+				
+				if(isset($data['file_import']['uploaded_file'])){
+					//get the file and store it in the proper location:
+					
+					$currentItemCSSfolder = '/';
+					
+					var_dump('uploaded', $data); exit;
+					
+					$href = $currentItemCSSfolder.'';
+					
+					$cssFiles = $item->getStyleSheets();
+					$cssFiles[] = array(
+						'name' => $data['name'],
+						'href' => $href
+					);
+					$item->setStyleSheet($cssFiles);
+				}
+				
+			}
+		}
+		
+		$cssFiles = array();
+		foreach($item->getStyleSheets() as $file){
+			
+			$cssFiles[] = array(
+				'href' => $file['href'],
+				'name' => $file['name']
+			);
+		}
+		
+		
+		$this->setData('formTitle', __('Manage item content'));
+		$this->setData('myForm', $myForm->render());
+		$this->setData('cssFiles', $cssFiles);
+		$this->setView('QTIAuthoring/css_manager.tpl');
+	}
+	
+	protected function listStyleSheets(){
+		$item = $this->getCurrentItem();
+		
+		$cssFiles = array();
+		foreach($item->getStyleSheets() as $file){
+			
+			$cssFiles[] = array(
+				'href' => $file['href'],
+				'name' => $file['name']
+			);
+		}
+		
+		$this->setData('cssFiles', $cssFiles);
+		$this->setView('QTIAuthoring/css_downloader.tpl');
+	}
+	
+	public function deleteStyleSheet(){
+	
+		$deleted = false;
+		
+		$filePath = $this->getCurrentStyleSheet();
+		
+		//get the full path of the file and unlink the file:
+		if($filePath){
+			unlink($filePath);
+			
+			$item = $this->getCurrentItem();
+			$fileName = $this->getRequestParameter('cssName');
+			
+			$files = $item->getStylesheets();
+			foreach($files as $key=>$file){
+				if($file['href'] == $fileName){
+					unset($files[$key]);
+				}
+			}
+			
+			$item->setStylesheets($files);
+			
+			$deleted = true;
+		}
+		
+		json_encode(array('deleted' => $deleted));
 		
 	}
+	
+	public function getStyleSheet(){
+		$fileName = $this->getCurrentStyleSheet();
+		
+		//print it:
+		
+	}
+	
+	public function getCurrentStyleSheet(){
+		$returnValue = '';
+		
+		$item = $this->getCurrentItem();
+		$fileName = $this->getRequestParameter('cssName');
+		
+		$files = $item->getStylesheets();
+		foreach($files as $file){
+			if($file['href'] == $fileName){
+				$returnValue = $fileName;
+			}
+		}
+		
+		return $returnValue;
+	}
+	
+	
 }
 ?>

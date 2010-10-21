@@ -8,6 +8,7 @@ function qtiEdit(itemSerial, formContainers){
 		itemDataContainer : '#itemEditor_wysiwyg',
 		interactionFormContent : '#qtiAuthoring_interactionEditor',
 		responseProcessingFormContent : '#qtiAuthoring_processingEditor',
+		cssFormContent: '#qtiAuthoring_cssManager',
 		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
 		responseGrid: 'qtiAuthoring_response_grid'
 	}
@@ -25,6 +26,7 @@ function qtiEdit(itemSerial, formContainers){
 	this.responseProcessingFormContent = formContainers.responseProcessingFormContent;
 	this.responseMappingOptionsFormContainer = formContainers.responseMappingOptionsFormContainer;
 	this.responseGrid = formContainers.responseGrid;
+	this.cssFormContent = formContainers.cssFormContent;
 	// this.responseMappingMode = false;
 	
 	var instance = this;
@@ -468,6 +470,57 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 	   dataType: 'html',
 	   success: function(form){
 			$(instance.responseProcessingFormContent).html(form);
+	   }
+	});
+}
+
+qtiEdit.prototype.loadStyleSheetForm = function(){
+
+	var instance = this;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/manageStyleSheets",
+	   data: {
+			'itemSerial': this.itemSerial
+	   },
+	   dataType: 'html',
+	   success: function(form){
+			$(instance.cssFormContent).html(form);
+	   }
+	});
+}
+
+qtiEdit.prototype.getStyleSheet = function(cssName){
+	var instance = this;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/getStyleSheet",
+	   data: {
+			'itemSerial': this.itemSerial,
+			'cssName': cssName
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			instance.loadStyleSheetForm();
+	   }
+	});
+}
+
+qtiEdit.prototype.deleteStyleSheet = function(){
+	var instance = this;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/deleteStyleSheet",
+	   data: {
+			'itemSerial': this.itemSerial,
+			'cssName': cssName
+	   },
+	   dataType: 'json',
+	   success: function(r){
+			instance.loadStyleSheetForm();
 	   }
 	});
 }

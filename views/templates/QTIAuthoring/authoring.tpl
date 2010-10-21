@@ -23,18 +23,26 @@
 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/qtiAuthoring.css" />
 
 <div id="qtiAuthoring_main_container">
-
+	<div id='qtiAuthoring_save_button'>
+		<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Save')?></a>
+	</div>
+	<div id='qtiAuthoring_preview_button'>
+		<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Preview')?></a>
+	</div>
+	
 	<div id="qtiAuthoring_item_container">
 		<div id="qtiAuthoring_item_left_container">
-		
-			<div id='qtiAuthoring_save_button'>
-				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Save')?></a>
+			<div id="item_option_accordion">
+				<h3><a href="#"><?=__('Item Properties:')?></a></h3>
+				<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
+					<?=get_data('itemForm')?>
+				</div>
+				<h3><a href="#"><?=__('Response processing template editor:')?></a></h3>
+				<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
+				<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
+				<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"/>
 			</div>
-			<div id='qtiAuthoring_preview_button'>
-				<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Preview')?></a>
-			</div>
-			
-			
+			<!--
 			<div id="qtiAuthoring_processing_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Response processing template editor:')?></div>
 			<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
 			
@@ -42,17 +50,13 @@
 			<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
 				<?=get_data('itemForm')?>
 			</div>
-			
+			-->
 		</div>
 		
 		<div id="qtiAuthoring_item_right_container">
-			<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default">
-					<?=__('Item Editor:')?>
-			</div>
+			<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>
 			<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
-				
-					<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
-				
+				<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
 			</div>
 		</div>
 		
@@ -115,6 +119,12 @@ $(document).ready(function(){
 		myItem.preview();
 		return false;
 	});
+	
+	$( "#item_option_accordion" ).accordion({
+		fillSpace: true
+	});
+	
+	myItem.loadStyleSheetForm();
 });
 
 </script>
