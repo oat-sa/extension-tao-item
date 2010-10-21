@@ -482,6 +482,21 @@ class taoItems_models_classes_ItemsService
         			if(!is_dir(BASE_PATH.'/views/runtime/'.$fodlerName)){
         				mkdir(BASE_PATH.'/views/runtime/'.$fodlerName);
         			}
+        			
+        			//replace relative paths to resources by absolute uris for to help the compilator
+					$matches = array();
+        			if(preg_match_all("/(href|src)\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
+						if(isset($matches[2])){
+							
+							foreach($matches[2] as $relUri){
+								if($relUri != '#' && !preg_match("/^http/", $relUri) ){
+									$absoluteUri = BASE_WWW.'runtime/'.$fodlerName . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
+									$output = str_replace($relUri, $absoluteUri, $output);
+								}
+							}
+						}
+					}
+					
         			if(file_put_contents(BASE_PATH.'/views/runtime/'.$fodlerName.'/index.html', $output)){
         				$returnValue = BASE_WWW.'/runtime/'.$fodlerName.'/index.html';
         			}
