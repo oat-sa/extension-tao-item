@@ -7,465 +7,254 @@
 	<script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
 	<script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.VariableFactory.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Variable.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.BaseTypeVariable.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.Collection.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.List.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.Tuple.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.Map.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/matching_api.js"></script>
 	
 	<!-- -------------------------------------------------------------------------
 	QTI DATA
 	--------------------------------------------------------------------------->
 	<script type="application/javascript">
-//		// Outcomes vars
-//		var outcomes = [];
-//		var outcomesSerialized ='[ \
-//			{"identifier":"SCORE5_1", "type":"float"} \
-//			, {"identifier":"SCORE5_2", "type":"float"} \
-//		]';
-//		outcomes = unserializedQTIVariables (outcomesSerialized);
-//		
-//		// Corrects vars defined through the responseDeclaration
-//		var corrects = [];
-//		var correctsSerialized = '[ \
-//			{"identifier":"SNG_ID_1", "values":"ID_1"} \
-//			, {"identifier":"MUL_ID_1", "values":["ID_1", "ID_2", "ID_3"]} \
-//			, {"identifier":"MUL_ID_2", "values":["ID_1", "ID_2", "ID_3"]} \
-//			, {"identifier":"MUL_ID_3", "values":["ID_1", "ID_2", "ID_3"]} \
-//			, {"identifier":"MUL_ID_4", "values":["ID_1", "ID_2"]} \
-//			, {"identifier":"RESPONSE1_5", "values":[["A", "B"], ["C", "D"]]} \
-//			, {"identifier":"SNG_PAIR_1", "values":["A", "B"]} \
-//			, {"identifier":"MUL_PAIR_1", "values":[["A", "B"], ["C", "D"], ["E", "F"]]} \
-//			, {"identifier":"MUL_DPAIR_1", "values":[["A", "B"], ["C", "D"], ["E", "F"]]} \
-//			, {"identifier":"MUL_BOOL_1", "values":[true, false, true, false]} \
-//			, {"identifier":"MUL_INT_1", "values":[1, 2, 3, 4]} \
-//			, {"identifier":"MUL_FLOAT_1", "values":[1.1, 2.2, 3.3, 4.4]} \
-//			, {"identifier":"MUL_STR_1", "values":["abc", "def", "ghi", "klm"]} \
-//		]';
-//		corrects = unserializedQTIVariables (correctsSerialized);
-//		
-//		// Variables defined through user's interactions
-//		var variables = [];
-//		var variablesSerialized = '[ \
-//			{"identifier":"SNG_ID_1", "values":"ID_1"} \
-//			, {"identifier":"SNG_ID_2", "values":"ID_0"} \
-//			, {"identifier":"SNG_ID_3", "values":null} \
-//			, {"identifier":"MUL_ID_1", "values":["ID_1", "ID_3", "ID_2"]} \
-//			, {"identifier":"MUL_ID_2", "values":["ID_0", "ID_1", "ID_2"]} \
-//			, {"identifier":"MUL_ID_3", "values":["ID_1", "ID_2"]} \
-//			, {"identifier":"MUL_ID_4", "values":["ID_1", "ID_2", "ID_3"]} \
-//			, {"identifier":"SNG_PAIR_1", "values":["A", "B"]} \
-//			, {"identifier":"SNG_PAIR_2", "values":["A", "C"]} \
-//			, {"identifier":"SNG_PAIR_3", "values":null} \
-//			, {"identifier":"SNG_PAIR_4", "values":[["B", "A"]]} \
-//			, {"identifier":"MUL_PAIR_1", "values":[["A", "B"], ["C", "D"], ["E", "F"]]} \
-//			, {"identifier":"MUL_PAIR_2", "values":[["A", "B"], ["Z", "D"], ["E", "F"]]} \
-//			, {"identifier":"MUL_PAIR_3", "values":[["A", "B"], ["Z", "D"]]} \
-//			, {"identifier":"MUL_PAIR_4", "values":[["B", "A"], ["D", "C"], ["F", "E"]]} \
-//			, {"identifier":"MUL_PAIR_5", "values":[["A", "B"], ["C", "D"], ["E", "F"], ["A", "B"], ["C", "D"], ["E", "F"]]} \
-//			, {"identifier":"MUL_PAIR_6", "values":null} \
-//			, {"identifier":"MUL_PAIR_7", "values":[["A", "B"], ["C", "D"]]} \
-//			, {"identifier":"MUL_DPAIR_1", "values":[{0:"A", 1:"B"}, {0:"D", 1:"C"}, {0:"E", 1:"F"}]} \
-//			, {"identifier":"MUL_DPAIR_2", "values":[{0:"A", 1:"B"}, {0:"C", 1:"D"}, {0:"E", 1:"F"}]} \
-//			, {"identifier":"MUL_BOOL_1", "values":[true, false, true, false]} \
-//			, {"identifier":"MUL_INT_1", "values":[1, 2, 3, 4]} \
-//			, {"identifier":"MUL_FLOAT_1", "values":[1.1, 2.2, 3.3, 4.4]} \
-//			, {"identifier":"MUL_STR_1", "values":["abc", "def", "ghi", "klm"]} \
-//			, {"identifier":"SNG_BOOL_1", "values":true} \
-//			, {"identifier":"SNG_INT_1", "values":2} \
-//			, {"identifier":"SNG_INT_2", "values":3} \
-//			, {"identifier":"SNG_FLOAT_1", "values":2.2} \
-//			, {"identifier":"SNG_FLOAT_2", "values":3.3} \
-//		]';
-//		variables = unserializedQTIVariables (variablesSerialized);
-//
-//		// Mapping defined through the responseDeclaration
-//		var maps = [];
-//		var mapsSerialized = '[ \
-//			{"identifier":"MUL_PAIR_1", "baseType":"pair", "cardinality":"multiple", "values":[[["A", "B"], 1], [["C", "D"], 0.5], [["E", "F"], 0.1]]} \
-//		]';
-//		maps = unserializedQTIVariables (mapsSerialized, {containerType:'map'});
-//		
-//		// SET OF RULES
-//		var rules = [];
-//		
-//		rules['match0_1'] = "match(getVariable('SNG_ID_1'), getCorrect('SNG_ID_1'))";
-//		rules['match0_2'] = "match(getVariable('SNG_ID_2'), getCorrect('SNG_ID_1'))";
-//		rules['match0_3'] = "match(getVariable('SNG_ID_3'), getCorrect('SNG_ID_1'))";
-//		
-//		rules['match1_1'] = "match(getVariable('MUL_ID_1'), getCorrect('MUL_ID_1'))";
-//		rules['match1_2'] = "match(getVariable('MUL_ID_2'), getCorrect('MUL_ID_2'))";
-//		rules['match1_3'] = "match(getVariable('MUL_ID_3'), getCorrect('MUL_ID_3'))";
-//		rules['match1_4'] = "match(getVariable('MUL_ID_4'), getCorrect('MUL_ID_4'))";
-//		
-//		rules['match2_1'] = "match(getVariable('SNG_PAIR_1'), getCorrect('SNG_PAIR_1'))";
-//		rules['match2_2'] = "match(getVariable('SNG_PAIR_2'), getCorrect('SNG_PAIR_1'))";
-//		rules['match2_3'] = "match(getVariable('SNG_PAIR_3'), getCorrect('SNG_PAIR_1'))";
-//		rules['match2_4'] = "match(getVariable('SNG_PAIR_4'), getCorrect('SNG_PAIR_1'))";
-//		
-//		rules['match3_1'] = "match(getVariable('MUL_PAIR_1'), getCorrect('MUL_PAIR_1'))";
-//		rules['match3_2'] = "match(getVariable('MUL_PAIR_2'), getCorrect('MUL_PAIR_1'))";
-//		rules['match3_3'] = "match(getVariable('MUL_PAIR_3'), getCorrect('MUL_PAIR_1'))";
-//		rules['match3_4'] = "match(getVariable('MUL_PAIR_4'), getCorrect('MUL_PAIR_1'))";
-//		
-//		rules['map4_1'] = "mapResponse(getVariable('MUL_PAIR_1'), getMap('MUL_PAIR_1'))";
-//		rules['map4_2'] = "mapResponse(getVariable('MUL_PAIR_5'), getMap('MUL_PAIR_1'))";
-//		rules['map4_3'] = "mapResponse(getVariable('MUL_PAIR_6'), getMap('MUL_PAIR_1'))";
-//		rules['map4_4'] = "mapResponse(getVariable('MUL_PAIR_7'), getMap('MUL_PAIR_1'))";
-//		rules['map4_5'] = "mapResponse(getVariable('MUL_PAIR_4'), getMap('MUL_PAIR_1'))";
-//		
-//		rules['setoutcome5_1'] = "setOutcomeValue('SCORE5_1', [2])";
-//		rules['setoutcome5_2'] = "setOutcomeValue('SCORE5_2', ["+rules['map4_5']+"])";
-//		
-//		rules['match6_1'] = "match(getVariable('MUL_DPAIR_1'), getCorrect('MUL_DPAIR_1'))";
-//		rules['match6_2'] = "match(getVariable('MUL_DPAIR_2'), getCorrect('MUL_DPAIR_1'))";
-//		
-//		rules['match7_1'] = "match(getVariable('MUL_BOOL_1'), getCorrect('MUL_BOOL_1'))";
-//		
-//		rules['match8_1'] = "match(getVariable('MUL_INT_1'), getCorrect('MUL_INT_1'))";
-//		
-//		rules['match9_1'] = "match(getVariable('MUL_FLOAT_1'), getCorrect('MUL_FLOAT_1'))";
-//		
-//		rules['match10_1'] = "match(getVariable('MUL_STR_1'), getCorrect('MUL_STR_1'))";
-//		
-//		rules['and11_1'] = "and(true, true)";
-//		rules['and11_2'] = "and("+rules['match2_4']+", "+rules['match6_2']+")";
-//		rules['and11_3'] = "and("+rules['match6_1']+", "+rules['match6_2']+")";
-//		rules['and11_4'] = "and(getVariable('SNG_BOOL_1'))";
-//		
-//		rules['equal12_1'] = "equal(getVariable('SNG_INT_1'), getVariable('SNG_INT_1'))";
-//		rules['equal12_2'] = "equal(getVariable('SNG_INT_1'), getVariable('SNG_INT_2'))";
-//		rules['equal12_3'] = "equal(2, 2)";
-//		rules['equal12_4'] = "equal(2, 3)";
-//		rules['equal12_5'] = "equal(getVariable('SNG_FLOAT_1'), getVariable('SNG_FLOAT_1'))";
-//		rules['equal12_6'] = "equal(getVariable('SNG_FLOAT_1'), getVariable('SNG_FLOAT_2'))";
-//		rules['equal12_7'] = "equal(2.2, 2.2)";
-//		rules['equal12_8'] = "equal(2.2, 3.3)";
-//		
-//		var qtiMatching = new QTIMatching ();
-//		qtiMatching.setResponses (variables);
-//		
-//		qtiMatching.setCorrects (corrects);
-//		qtiMatching.setOutcomes (outcomes);
-//		qtiMatching.setMaps (maps);
+		
+			test("Test the VariableFactory (integer)", function() {
+			var int1 = TAO_MATCHING.VariableFactory.create (1);
+			var int2 = TAO_MATCHING.VariableFactory.create (2);
+			var nullVar = TAO_MATCHING.VariableFactory.create (null);
+			ok (int1 != null, 'Variable not null');
+			equals (int1.getType(), 'number', 'Right type');
+			equals (int1.getValue(), 1, 'Right value');
+			ok (int1.match(int1), 'Match itself');
+			ok (!int1.match(int2), 'Does not match a different integer variable');
+			ok (int1.equal(int1), 'It is equal to itself');
+			ok (!int1.equal(int2), 'It is not equal to a different integer variable');
+			ok (!int1.equal(nullVar), 'It is not equal to a null variable');
+		});
+		
+		test("Test the VariableFactory (float)", function() {
+			var dbl1 = TAO_MATCHING.VariableFactory.create (3.14);
+			var dbl2 = TAO_MATCHING.VariableFactory.create (3.0);
+			var nullVar = TAO_MATCHING.VariableFactory.create (null);
+			ok (dbl1 != null, 'Variable not null');
+			equals (dbl1.getType(), 'number', 'Right type');
+			equals (dbl1.getValue(), 3.14, 'Right value');
+			ok (dbl1.match(dbl1), 'Match itself');
+			ok (!dbl1.match(dbl2), 'Does not match a different float variable');
+			ok (dbl1.equal(dbl1), 'It is equal to itself');
+			ok (!dbl1.equal(dbl2), 'It is not equal to a different float variable');
+			ok (!dbl1.equal(nullVar), 'It is not equal to a null variable');
+		});
+		
+		test("Test the VariableFactory (boolean)", function() {
+			var bool1 = TAO_MATCHING.VariableFactory.create (3.14);
+			var bool2 = TAO_MATCHING.VariableFactory.create (3.0);
+			var nullVar = TAO_MATCHING.VariableFactory.create (null);
+			ok (bool1 != null, 'Variable not null');
+			equals (bool1.getType(), 'number', 'Right type');
+			equals (bool1.getValue(), 3.14, 'Right value');
+			ok (bool1.match(bool1), 'Match itself');
+			ok (!bool1.match(bool2), 'Does not match a different boolean variable');
+			ok (bool1.equal(bool1), 'It is equal to itself');
+			ok (!bool1.equal(bool2), 'It is not equal to a different boolean variable');
+			ok (!bool1.equal(nullVar), 'It is not equal to a null variable');
+		});
+		
+		test("Test the VariableFactory (string)", function() {
+			var str1 = TAO_MATCHING.VariableFactory.create ('TAO');
+			var str2 = TAO_MATCHING.VariableFactory.create ('it\'s so powerfull');
+			var nullVar = TAO_MATCHING.VariableFactory.create (null);
+			ok (str1 != null, 'Variable not null');
+			equals (str1.getType(), 'string', 'Right type');
+			equals (str1.getValue(), 'TAO', 'Right value');
+			ok (str1.match(str1), 'Match itself');
+			ok (!str1.match(str2), 'Does not match a different string variable');
+			ok (str1.equal(str1), 'It is equal to itself');
+			ok (!str1.equal(str2), 'It is not equal to a different string variable');
+			ok (!str1.equal(nullVar), 'It is not equal to a null variable');
+		});
+		
+		test("Test the VariableFactory (list [in QTI Pair])", function() {
+			var list1 = TAO_MATCHING.VariableFactory.create (["TAO", "Test Assisté par Ordinateur"]);
+			var list2 = TAO_MATCHING.VariableFactory.create (["CBA", "Computer Based Assessment"]);
+			var list3 = TAO_MATCHING.VariableFactory.create (["CBA"]);
+			var list4 = TAO_MATCHING.VariableFactory.create (["CBA", "Computer Based Assessment", "yeah"]);
+			var list5 = TAO_MATCHING.VariableFactory.create ([]);
+			var varNull = TAO_MATCHING.VariableFactory.create (null);
+			ok (list1 != null, 'Variable not null');
+			equals (list1.getType(), 'list', 'Right type');
+			var tmpValue = list1.getValue();
+			equals (tmpValue[0].getValue(),  'TAO', 'Right value');
+			equals (tmpValue[1].getValue(), 'Test Assisté par Ordinateur', 'Right value');
+			ok (list1.match(list1), 'Match itself');
+			ok (!list1.match(list2), 'Does not match a different list');
+			ok (!list1.match(list3), 'Does not match a different list');
+			ok (!list1.match(list4), 'Does not match a different list');
+			ok (!list1.match(list5), 'Does not match a different list');
+		});
+		
+		test("Test the VariableFactory (tuple [in QTI DirectedPair])", function() {
+			var tuple1 = TAO_MATCHING.VariableFactory.create ({"0":"TAO", "1":"it\'s so powerfull"});
+			var tuple2 = TAO_MATCHING.VariableFactory.create ({"0":"Yeahhh", "1":"it\'s true"});
+			var tuple3 = TAO_MATCHING.VariableFactory.create ({"0":"TAO"});
+			var tuple4 = TAO_MATCHING.VariableFactory.create ({"0":"TAO", "1":"it\'s so powerfull", "2":"yeah"});
+			ok (tuple1 != null, 'Variable not null');
+			equals (tuple1.getType(), 'tuple', 'Right type');
+			var tmpValue = tuple1.getValue ();
+			equals (tmpValue[0].getValue(), 'TAO', 'Right value');
+			equals (tmpValue[1].getValue(), 'it\'s so powerfull', 'Right value');
+			ok (tuple1.match(tuple1), 'Match itself');
+			ok (!tuple1.match(tuple2), 'Does not match a different tuple');
+			ok (!tuple1.match(tuple3), 'Does not match a different tuple');
+			ok (!tuple1.match(tuple4), 'Does not match a different tuple');
+		});
+		
+		test("Test the VariableFactory (list of list [in QTI Multiple Pair])", function() {
+			var listList1 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"]]);
+			var listList2 = TAO_MATCHING.VariableFactory.create ([["B", "A"], ["D", "C"], ["F", "E"]]);
+			var listList3 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"]]);
+			var listList4 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"]]);
+			var listList5 = TAO_MATCHING.VariableFactory.create ([]);
+			var listList6 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["A", "B"], ["C", "D"], ["E", "F"]]);
+			ok (listList1 != null, 'Variable not null');
+			equals (listList1.getType(), 'list', 'Right type');
+			ok (listList1.match(listList1), 'Match itself');
+			ok (listList1.match(listList2), 'Match a different list with the same content but inversed');
+			ok (!listList1.match(listList3), 'Does not match a different list');
+			ok (!listList1.match(listList4), 'Does not match a different list');
+			ok (!listList1.match(listList5), 'Does not match a different list');
+		});
+		
+		test("Test the VariableFactory (list of tuple [in QTI Multiple DirectedPair])", function() {
+			var listTuple1 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
+			var listTuple2 = TAO_MATCHING.VariableFactory.create ([{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]);
+			var listTuple3 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}]);
+			var listTuple4 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}, {"0":"G", "1":"H"}]);
+			var listTuple5 = TAO_MATCHING.VariableFactory.create ([]);
+			var listTuple6 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}, {"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
+			ok (listTuple1 != null, 'Variable not null');
+			equals (listTuple1.getType(), 'list', 'Right type');
+			ok (listTuple1.match(listTuple1), 'Match itself');
+			ok (!listTuple1.match(listTuple2), 'Does not match a different listTuple');
+			ok (!listTuple1.match(listTuple3), 'Does not match a different listTuple');
+			ok (!listTuple1.match(listTuple4), 'Does not match a different listTuple');
+			ok (!listTuple1.match(listTuple5), 'Does not match a different listTuple');
+		});
+		
+		test("map list of list [in QTI list of pair]", function() {
+			var map1 = new TAO_MATCHING.Map ([{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]);
+			var listList1 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"]]);
+			var listList2 = TAO_MATCHING.VariableFactory.create ([["B", "A"], ["D", "C"], ["F", "E"]]);
+			var listList3 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"]]);
+			var listList4 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"]]);
+			var listList5 = TAO_MATCHING.VariableFactory.create ([]);
+			var listList6 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["A", "B"], ["C", "D"], ["E", "F"]]);
+			equals (map1.map(listList1), 1.7, 'Right mapping');
+			equals (map1.map(listList2), 1.7, 'Right mapping');
+			equals (map1.map(listList3), 1.5, 'Right mapping');
+			equals (map1.map(listList4), 1.7, 'Right mapping');
+			equals (map1.map(listList5), 0.0, 'Right mapping');
+			equals (map1.map(listList6), 1.7, 'Right mapping');
+		});
+		
+		test("map list of tuple [in QTI list of directedpair]", function() {
+			var map2 = new TAO_MATCHING.Map ([{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]);
+			var listTuple1 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
+			var listTuple2 = TAO_MATCHING.VariableFactory.create ([{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]);
+			var listTuple3 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}]);
+			var listTuple4 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}, {"0":"G", "1":"H"}]);
+			var listTuple5 = TAO_MATCHING.VariableFactory.create ([]);
+			var listTuple6 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}, {"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
+			equals (map2.map(listTuple1), 1.7, 'Right mapping');
+			equals (map2.map(listTuple2), 0.0, 'Right mapping');
+			equals (map2.map(listTuple3), 1.5, 'Right mapping');
+			equals (map2.map(listTuple4), 1.7, 'Right mapping');
+			equals (map2.map(listTuple5), 0.0, 'Right mapping');
+			equals (map2.map(listTuple6), 1.7, 'Right mapping');
+		});
+	
+		test("template response processing match_correct", function() {
+			matching_init ({"mode":"client"});
+			matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":"1"}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"1"}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 1);
+			
+			matching_init ({"mode":"client"});
+			matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 1);
+		});
+
+		test("template response processing mapResponse", function() {
+			// string
+			matching_init ({"mode":"client"});
+			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":"Paris"}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"paris"}]);
+			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 0.9);
+			
+			// list list (multiple pair)
+			matching_init ({"mode":"client"});
+			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
+			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 1.7);
+			
+			// list list (multiple pair but with reversed result)
+			matching_init ({"mode":"client"});
+			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]);
+			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 1.7);
+			
+			// list tuple (multiple directedpair)
+			matching_init ({"mode":"client"});
+			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			$outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 1.7);
+	
+			// list tuple (multiple directedpair reversed pair)
+			matching_init ({"mode":"client"});
+			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
+			matching_setCorrects ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]);
+			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]);
+			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"], 0);
+		});
+
 	</script>
 	
-	<!-- -------------------------------------------------------------------------
-	UNIT TESTS
-	--------------------------------------------------------------------------->
-	<script type="application/javascript">
-
-	
-
-//		test("Factory : create single identifier variable", function() {
-//			var qtiMatching = new QTIMatching ();
-//			QTIVariableFactory ({"identifier":"SNG_BOOL_1"	, "value":true			});
-//			QTIVariableFactory ({"identifier":"SNG_INT_1"	, "value":113			});
-//			QTIVariableFactory ({"identifier":"SNG_FLOAT_1"	, "value":3.0			});
-//			QTIVariableFactory ({"identifier":"SNG_ID_1"	, "value":"IDENTIFIER"	});
-//			QTIVariableFactory ({"identifier":"SNG_STR_1"	, "value":"STRING"		});
-//			
-//			var mySngIdVar = unserializedQTIVariables (mySngIdVarStr);
-//			ok (mySngIdVar instanceof QTIVariable, 'The created variable from the following serialized json is well a QTIVariable : <br/>'+mySngIdVarStr+'<br/>');
-//			equals (mySngIdVar.getBaseType(), 'identifier', 'The baseType of the QTIVariable is ok');
-//			equals (mySngIdVar.getCardinality(), 'single', 'The cardinality of the QTIVariable is ok');
-//			ok (_match(mySngIdVar.values, new Array ("ID_1")), 'The values of the QTIVariable is ok');
-//		});
-//
-//		test("Factory : create multiple identifier variable", function() {
-//			var qtiMatching = new QTIMatching ();
-//			var myMulIdVarStr = '{"identifier":"MUL_ID_1", "baseType":"identifier", "cardinality":"multiple", "values":["ID_1", "ID_3", "ID_2"]}';
-//			var myMulIdVar = unserializedQTIVariables (myMulIdVarStr);
-//			ok (myMulIdVar instanceof QTIVariable, 'The created variable from the following serialized json is well a QTIVariable : <br/>'+myMulIdVarStr+'<br/>');
-//			equals (myMulIdVar.getBaseType(), 'identifier', 'The baseType of the QTIVariable is ok');
-//			equals (myMulIdVar.getCardinality(), 'multiple', 'The cardinality of the QTIVariable is ok');
-//			ok (_match(myMulIdVar.values, new Array ("ID_1", "ID_3", "ID_2")), 'The values of the QTIVariable is ok');
-//		});
-//
-//		test("match single identifier", function() {
-//			qtiMatching.setRule (rules['match0_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same single identifier <br/> \
-//				rule : "+ rules['match0_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_ID_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_ID_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match0_2']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Value diff <br/> \
-//				rule : "+ rules['match0_2'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_ID_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_ID_2').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match0_3']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Empty value <br/> \
-//				rule : "+ rules['match0_3'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_ID_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_ID_3').toJson()+" <br/> \
-//			" );
-//		});
-//
-//		test("match multiple identifier", function() {
-//			qtiMatching.setRule (rules['match1_1']);
-//			equals (qtiMatching.evalResponseProcessing (), true, "Same multiple identifier <br/> \
-//				rule : "+ rules['match1_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_ID_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_ID_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match1_2']);
-//			equals (qtiMatching.evalResponseProcessing (), false, "A value of one identifier is diff <br/> \
-//				rule : "+ rules['match1_2'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_ID_2').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_ID_2').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match1_3']);
-//			equals (qtiMatching.evalResponseProcessing (), false, "Diff values length <br/> \
-//				rule : "+ rules['match1_3'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_ID_3').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_ID_3').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match1_4']);
-//			equals (qtiMatching.evalResponseProcessing (), false, "Diff values length <br/> \
-//				rule : "+ rules['match1_4'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_ID_4').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_ID_4').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match single pair", function() {
-//			qtiMatching.setRule (rules['match2_1']);
-//			equals (qtiMatching.evalResponseProcessing (), true, "Same single pair <br/> \
-//				rule : "+ rules['match2_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_PAIR_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match2_2']);
-//			equals (qtiMatching.evalResponseProcessing (), false, "Diff value <br/> \
-//				rule : "+ rules['match2_2'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_PAIR_2').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match2_3']);
-//			equals (qtiMatching.evalResponseProcessing (), false, "Empty value <br/> \
-//				rule : "+ rules['match2_3'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_PAIR_3').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match2_4']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Unordered pair <br/> \
-//				rule : "+ rules['match2_4'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('SNG_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('SNG_PAIR_4').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple pair", function() {
-//			qtiMatching.setRule (rules['match3_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same multiple pair <br/> \
-//				rule : "+ rules['match3_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match3_2']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "A value of one pair is diff <br/> \
-//				rule : "+ rules['match3_2'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_2').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match3_3']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Diff values length <br/> \
-//				rule : "+ rules['match3_3'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_3').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match3_4']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Unordered pair <br/> \
-//				rule : "+ rules['match3_4'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_4').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple directedpair", function() {
-//			qtiMatching.setRule (rules['match6_1']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Same multiple directedpair <br/> \
-//				rule : "+ rules['match6_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_DPAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_DPAIR_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['match6_2']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same multiple directedpair <br/> \
-//				rule : "+ rules['match6_2'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_DPAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_DPAIR_2').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple boolean", function() {
-//			qtiMatching.setRule (rules['match7_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same multiple boolean <br/> \
-//				rule : "+ rules['match7_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_BOOL_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_BOOL_1').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple integer", function() {
-//			qtiMatching.setRule (rules['match8_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same multiple integer <br/> \
-//				rule : "+ rules['match8_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_INT_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_INT_1').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple float", function() {
-//			qtiMatching.setRule (rules['match9_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same multiple float <br/> \
-//				rule : "+ rules['match9_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_FLOAT_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_FLOAT_1').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple string", function() {
-//			qtiMatching.setRule (rules['match10_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Same multiple string <br/> \
-//				rule : "+ rules['match10_1'] +"<br/> \
-//				corrrect var : "+qtiMatching.getCorrect('MUL_STR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_STR_1').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("match multiple 'diff' baseType", function() {
-//			qtiMatching.setRule ("match(qtiMatching.getVariable('MUL_STR_1'), qtiMatching.getVariable('MUL_FLOAT_1'))");
-//			equals(qtiMatching.evalResponseProcessing (), false, "String Vs Float <br/> \
-//				rule : match(qtiMatching.getVariable('MUL_STR_1'), qtiMatching.getVariable('MUL_FLOAT_1')) <br/> \
-//				var1 : "+qtiMatching.getVariable('MUL_STR_1').toJson()+" <br/> \
-//				var2 : "+qtiMatching.getVariable('MUL_FLOAT_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule ("match(qtiMatching.getVariable('MUL_FLOAT_1'), qtiMatching.getVariable('MUL_INT_1'))");
-//			equals(qtiMatching.evalResponseProcessing (), false, "Float Vs Integer <br/> \
-//				rule : match(qtiMatching.getVariable('MUL_FLOAT_1'), qtiMatching.getVariable('MUL_INT_1'))<br/> \
-//				var1 : "+qtiMatching.getVariable('MUL_FLOAT_1').toJson()+" <br/> \
-//				var2 : "+qtiMatching.getVariable('MUL_INT_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule ("match(qtiMatching.getVariable('MUL_BOOL_1'), qtiMatching.getVariable('MUL_INT_1'))");
-//			equals(qtiMatching.evalResponseProcessing (), false, "Integer Vs Boolean <br/> \
-//				rule : match(qtiMatching.getVariable('MUL_BOOL_1'), qtiMatching.getVariable('MUL_INT_1')) <br/> \
-//				var1 : "+qtiMatching.getVariable('MUL_BOOL_1').toJson()+" <br/> \
-//				var2 : "+qtiMatching.getVariable('MUL_INT_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule ("match(qtiMatching.getVariable('MUL_DPAIR_1'), qtiMatching.getVariable('MUL_BOOL_1'))");
-//			equals(qtiMatching.evalResponseProcessing (), false, "Boolean Vs Directedpair <br/> \
-//				rule : match(qtiMatching.getVariable('MUL_DPAIR_1'), qtiMatching.getVariable('MUL_BOOL_1'))<br/> \
-//				var1 : "+qtiMatching.getVariable('MUL_DPAIR_1').toJson()+" <br/> \
-//				var2 : "+qtiMatching.getVariable('MUL_BOOL_1').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("map multiple pair", function() {
-//			qtiMatching.setRule (rules['map4_1']);
-//			equals(qtiMatching.evalResponseProcessing (), 1.6, "Same multiple pair <br/> \
-//				rule : "+ rules['map4_1'] +"<br/> \
-//				map var : "+qtiMatching.getMap('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_1').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['map4_2']);
-//			equals(qtiMatching.evalResponseProcessing (), 1.6, "Reponse doublon <br/> \
-//				rule : "+ rules['map4_2'] +"<br/> \
-//				map var : "+qtiMatching.getMap('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_5').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['map4_3']);
-//			equals(qtiMatching.evalResponseProcessing (), 0, "Empty response <br/> \
-//				rule : "+ rules['map4_3'] +"<br/> \
-//				map var : "+qtiMatching.getMap('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_6').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['map4_4']);
-//			equals(qtiMatching.evalResponseProcessing (), 1.5, "Partial response <br/> \
-//				rule : "+ rules['map4_4'] +"<br/> \
-//				map var : "+qtiMatching.getMap('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_7').toJson()+" <br/> \
-//			" );
-//			qtiMatching.setRule (rules['map4_5']);
-//			equals(qtiMatching.evalResponseProcessing (), 1.6, "Unordered same multiple pair <br/> \
-//				rule : "+ rules['map4_5'] +"<br/> \
-//				map var : "+qtiMatching.getMap('MUL_PAIR_1').toJson()+" <br/> \
-//				user var : "+qtiMatching.getVariable('MUL_PAIR_4').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("setOutcome operator", function() {
-//			qtiMatching.setRule (rules['setoutcome5_1']);
-//			qtiMatching.evalResponseProcessing ();
-//			var outcomeValue5_1 = qtiMatching.getOutcome('SCORE5_1').values;
-//			equals(outcomeValue5_1[0], 2, "Set an outcome value with the value 2<br/> \
-//				rule : "+ rules['setoutcome5_1'] +"<br/> \
-//				outcome var : "+qtiMatching.getOutcome('SCORE5_1').toJson()+" <br/> \
-//			" );
-//			
-//			qtiMatching.setRule (rules['setoutcome5_2']);
-//			qtiMatching.evalResponseProcessing ();
-//			var outcomeValue5_2 = qtiMatching.getOutcome('SCORE5_2').values;
-//			equals(outcomeValue5_2[0], 1.6, "Set an outcome value with the result of a mapResponse expression (map4_5)<br/> \
-//				rule : "+ rules['setoutcome5_2'] +"<br/> \
-//				outcome var : "+qtiMatching.getOutcome('SCORE5_2').toJson()+" <br/> \
-//			" );
-//		});
-//		
-//		test("and operator", function() {
-//			qtiMatching.setRule (rules['and11_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Compare two expressions with the and operator<br/> \
-//				rule : "+ rules['and11_1'] +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['and11_2']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Compare two match expressions (match2_4 Vs match6_2) with the and operator<br/> \
-//				rule : "+ rules['and11_2'] +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['and11_3']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Compare two match expressions (match6_1 Vs match6_2) with the and operator<br/> \
-//				rule : "+ rules['and11_3'] +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['and11_4']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Apply an and function on a variable single boolean<br/> \
-//				rule : "+ rules['and11_4'] +"<br/> \
-//			" );
-//		});
-//		
-//		test("equal operator", function() {
-//			qtiMatching.setRule (rules['equal12_1']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Compare two QTIVariable integers (same values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['equal12_2']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Compare two QTIVariable integers (different values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['equal12_3']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Compare two basic integers (same values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['equal12_4']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Compare two basic integers (different values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			
-//			qtiMatching.setRule (rules['equal12_5']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Compare two QTIVariable floats (same values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['equal12_6']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Compare two QTIVariable floats (different values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['equal12_7']);
-//			equals(qtiMatching.evalResponseProcessing (), true, "Compare two basic floats (same values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//			qtiMatching.setRule (rules['equal12_8']);
-//			equals(qtiMatching.evalResponseProcessing (), false, "Compare two basic floats (different values) with the equal operator<br/> \
-//				rule : "+ qtiMatching.rule +"<br/> \
-//			" );
-//		});
-
-	</script>
 </head>
 <body>
 	<h1 id="qunit-header">QUnit Test Suite</h1>
