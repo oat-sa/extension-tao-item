@@ -284,19 +284,254 @@
 		});
 	
 		test("remote matching engine", function() {
+			
+			// CHOICE
 			var matching_param = {
-				url : "http://tao.local/taoItems/Matching/evaluate"
-				, params : {
-					token : 'TOOOOKEN'
-					, interaction : 'choice'
-					, callback : function () {
-						var outcomes = matching_getOutcomes ();
-						equals (outcomes.SCORE.value, 1, 'Expected Score');
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'choice'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 1) content += 'ok : CHOICE : Expected value<br/>'; else content += 'not ok : CHOICE : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
 					}
 				}
 			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+			matching_evaluate ();
+			
+			
+			// ASSOCIATE
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'associate'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 4) content += 'ok : ASSOCIATE : Expected value<br/>'; else content += 'not ok : ASSOCIATE : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[['A', 'P'], ['C','M'], ['D','L']]}]);
+			matching_evaluate ();
+			
+			
+			// CHOICE MULTIPLE
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'choice_multiple'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 2) content += 'ok : CHOICE MULTIPLE : Expected value<br/>'; else content += 'not ok : CHOICE MULTIPLE : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":['H', 'O']}]);
+			matching_evaluate ();
+			
+			
+			// GAP MATCH
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'gap_match'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 3) content += 'ok : GAP MATCH : Expected value<br/>'; else content += 'not ok : GAP MATCH : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"W" , "1":"G1"}, {"0":"Su" , "1":"G2"}]}]);
+			matching_evaluate ();
+			
+			
+			// MATCH
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'match'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 3) content += 'ok : MATCH : Expected value<br/>'; else content += 'not ok : MATCH : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{
+				"identifier": "RESPONSE", "value": [{
+					"0": "C",
+					"1": "R"
+				}, {
+					"0": "D",
+					"1": "M"
+				}, {
+					"0": "L",
+					"1": "M"
+				}, {
+					"0": "P",
+					"1": "T"
+				}]
+			}]);
+			matching_evaluate ();
+						
+			
+			// ORDER
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'order'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 1) content += 'ok : ORDER : Expected value<br/>'; else content += 'not ok : ORDER : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
+			matching_evaluate ();
+			
+			// HOTTEXT
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'hottext'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 1) content += 'ok : HOTTEXT : Expected value<br/>'; else content += 'not ok : HOTTEXT : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"2"}]);
+			matching_evaluate ();
+			
+			// INLINE CHOICE	
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'inline_choice'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 1) content += 'ok : INLINE CHOICE : Expected value<br/>'; else content += 'not ok : INLINE CHOICE : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"Y"}]);
+			matching_evaluate ();
+			
+			// TEXT ENTRY	
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'text_entry'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 0.5) content += 'ok : TEXT ENTRY : Expected value<br/>'; else content += 'not ok : TEXT ENTRY : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"york"}]);
+			matching_evaluate ();
+			
+			// ORKNEY1	
+			matching_param = {
+				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				, "params" : {
+					"token" : 'TOOOOKEN'
+					, "interactionType" : 'orkney1'
+				}
+				, "options" : {
+					"evaluateCallback" : function (outcomes) {
+						var html = '<ol style="display: block;"> \
+							{CONTENT}\
+							</ol>';
+						var content = '';
+						if (outcomes.SCORE.value == 1) content += 'ok : ORKNEY1 : Expected value<br/>'; else content += 'not ok : ORKNEY1 : Unexpected value<br/>';
+						html = html.replace (/{CONTENT}/, content);
+						$('#qunit-tests li:last').append (html);
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"T"}]);
 			matching_evaluate ();
 		});
 

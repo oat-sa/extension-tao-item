@@ -487,7 +487,7 @@ class taoItems_models_classes_QTI_Item
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
         }	
 
-        // Build the matching initialization parameters function of the item parameters
+        // Build the matching initialization parameters function of the matching engine deploying options (client or server side)
     	if (false) {
 			$corrects = Array ();
 			$maps = Array ();
@@ -514,7 +514,8 @@ class taoItems_models_classes_QTI_Item
 			$variables['outcomes'] = json_encode ($outcomes);
 			$variables["rule"] = $this->responseProcessing->getRule();
 			$variables['matchingEngineServerSide'] = false;
-    	} else {
+    	} 
+    	else {
     		$tmpInteraction = current($this->getInteractions());
     		$variables['url'] = "http://tao.local/taoItems/Matching/evaluate";
     		$variables['params'] = json_encode ( Array ("token"=>"TAOToken::getToken()", "interactionType"=>$tmpInteraction->type) ); 

@@ -27,7 +27,7 @@ class QTIParsingResponseProcessingTestCase extends UnitTestCase {
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 		
 		//check if samples are loaded
-		$file = dirname(__FILE__).'/samples/associate.xml'; 
+		$file = dirname(__FILE__).'/samples/choice_multiple.xml';
 
 		$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 		$qtiParser->validate();
