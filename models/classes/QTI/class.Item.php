@@ -450,7 +450,8 @@ class taoItems_models_classes_QTI_Item
     public function setStylesheets($stylesheets)
     {
         // section 127-0-1-1-8cf5183:12bce4ebee2:-8000:0000000000002720 begin
-        
+		
+        $this->stylesheets = array();
     	if(is_array($stylesheets)){
     		foreach($stylesheets as $stylesheet){
     			if(isset($stylesheet['href']) && isset($stylesheet['title'])){

@@ -1,12 +1,17 @@
+/*uploadify made smaller*/
+div.xhtml_form div.file-uploader .uploadifyQueueItem, .uploadifyQueueItem {
+	width: auto;
+	padding:auto;
+}
+
+div.xhtml_form div.file-uploader .uploadifyProgress, .uploadifyProgress {
+	width: auto;
+}
+
 #qtiAuthoring_itemEditor{
 	height: 580px;
 	overflow-x:scroll;
 }
-
-div.xhtml_form div input, div.xhtml_form div select, div.xhtml_form div textarea, div.xhtml_form div.wysiwyg, div.xhtml_form ul.form-elt-list, div.xhtml_form div .form-elt-container {
-	margin-left:45%;
-}
-
 
 #qtiAuthoring_itemEditor > div.wysiwyg{
 	height: 96%;

@@ -1,38 +1,31 @@
 <div>
-	<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
-		<?=get_data('formTitle')?>
-	</div>
-	<div id="form-container" class="ui-widget-content ui-corner-bottom">
-		<?=get_data('myForm')?>
-	</div>
-</div>
-
-<div>
+<?if(count(get_data('cssFiles'))):?>
+	<?=__('Uploaded style files:')?>
 	<ul id="cssFiles">
 	<?foreach(get_data('cssFiles') as $file):?>
 		<li rel="<?=$file['href']?>">
-			<span><?=$file['name']?></span>
-			<a class="cssFile-delete">delete</a>
-			/<a class="cssFile-download">download</a>
+			<span class="cssFile-title"><?=$file['title']?></span>
+			<a class="cssFile-delete" href="#">delete</a>
+			/<a class="cssFile-download" href="<?=$file['downloadUrl']?>">download</a>
 		</li>
 	<?endforeach;?>
 	</ul>
+<?endif;?>
+</div>
+
+<div>
+	<?=__('Upload new style sheet:')?>
+	<?=get_data('myForm')?>
 </div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#cssFiles > li > a.cssFile-delete').click(function(){
-			var $ul = $('#qtiAuthoring_processingEditor_formContainer').parent('ul');
-			if($ul.length){
-				myItem.deleteStyleSheet($ul.attr('id'));
+		$('a.cssFile-delete').click(function(){
+			var $li = $(this).parent('li');
+			if($li.length){
+				myItem.deleteStyleSheet($li.attr('rel'));
 			}
-		});
-		
-		$('#cssFiles > li > a.cssFile-download').click(function(){
-			var $ul = $('#qtiAuthoring_processingEditor_formContainer').parent('ul');
-			if($ul.length){
-				myItem.getStyleSheet($ul.attr('id'));
-			}
+			return false;
 		});
 	});
 </script>

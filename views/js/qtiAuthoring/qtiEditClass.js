@@ -329,7 +329,7 @@ qtiEdit.getEltInFrame = function(selector){
 //the global save function
 qtiEdit.prototype.save = function(itemUri){
 	
-	if(!itemUri) throw 'item uri cannot be empty';
+	if(!this.itemUri) throw 'item uri cannot be empty';
 	
 	//save item data then export to rdf item:
 	var instance = this;
@@ -340,7 +340,7 @@ qtiEdit.prototype.save = function(itemUri){
 	if(itemProperties){
 		itemProperties += '&itemData=' + instance.itemEditor.wysiwyg('getContent');
 		itemProperties += '&itemSerial=' + instance.itemSerial;
-		itemProperties += '&itemUri=' + itemUri;
+		itemProperties += '&itemUri=' + this.itemUri;
 	}
 	
 	$.ajax({
@@ -474,41 +474,47 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 	});
 }
 
-qtiEdit.prototype.loadStyleSheetForm = function(){
+qtiEdit.prototype.loadStyleSheetForm = function(empty){
 
 	var instance = this;
+	
+	//check if the form is not empty:
+	var post = '';
+	if($('#css_uploader').length && !empty){
+		post = $('#css_uploader').serialize();
+		post += '&itemUri='+this.itemUri;
+	}else{
+		post = {itemSerial: this.itemSerial, itemUri: this.itemUri};
+	}
 	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/manageStyleSheets",
-	   data: {
-			'itemSerial': this.itemSerial
-	   },
+	   data: post,
 	   dataType: 'html',
 	   success: function(form){
 			$(instance.cssFormContent).html(form);
+			var timer = null;
+			if($('#css_uploader').length){
+				$('#css_import-AsyncFileUploader_starter').click(function(){
+					if(timer) clearInterval(timer);
+					var checkComplete = function(){
+						if( $('#css_import').val() != ''){
+							clearInterval(timer);
+							instance.loadStyleSheetForm();
+						}
+					};
+					
+					timer = setInterval(checkComplete, 1000);
+					return false;
+				});
+				
+			}
 	   }
 	});
 }
 
-qtiEdit.prototype.getStyleSheet = function(cssName){
-	var instance = this;
-	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/getStyleSheet",
-	   data: {
-			'itemSerial': this.itemSerial,
-			'cssName': cssName
-	   },
-	   dataType: 'json',
-	   success: function(r){
-			instance.loadStyleSheetForm();
-	   }
-	});
-}
-
-qtiEdit.prototype.deleteStyleSheet = function(){
+qtiEdit.prototype.deleteStyleSheet = function(css_href){
 	var instance = this;
 	
 	$.ajax({
@@ -516,11 +522,14 @@ qtiEdit.prototype.deleteStyleSheet = function(){
 	   url: "/taoItems/QtiAuthoring/deleteStyleSheet",
 	   data: {
 			'itemSerial': this.itemSerial,
-			'cssName': cssName
+			'itemUri': this.itemUri,
+			'css_href': css_href
 	   },
 	   dataType: 'json',
 	   success: function(r){
-			instance.loadStyleSheetForm();
+			if(r.deleted){
+				instance.loadStyleSheetForm(true);
+			}
 	   }
 	});
 }

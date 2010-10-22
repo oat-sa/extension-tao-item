@@ -108,9 +108,12 @@ $(document).ready(function(){
 		CL('error creating the item', err);
 	}
 	
+	//link the qti object to the item rdf resource
+	myItem.itemUri = '<?=get_data('itemUri')?>';
+	
 	//set the save button:
 	$('#qtiAuthoring_save_button').click(function(){
-		myItem.save('<?=get_data('itemUri')?>');
+		myItem.save();
 		return false;
 	});
 	

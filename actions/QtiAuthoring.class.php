@@ -28,6 +28,18 @@ class QtiAuthoring extends CommonModule {
 		taoItems_models_classes_QTI_Data::setPersistance(true);
 	}
 	
+	public function getCurrentItemResource(){
+	
+		$itemResource = null;
+		
+		if($this->hasRequestParameter('itemUri')){
+			$itemResource = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('itemUri')));
+		}else{
+			throw new Exception('no item rsource uri found');
+		}
+		
+		return $itemResource;
+	}
 	/*
 	* get the current item object either from the file or from session or create a new one
 	*/
@@ -101,7 +113,7 @@ class QtiAuthoring extends CommonModule {
 		
 		$currentItem = $this->getCurrentItem();
 		// if($this->debugMode) var_dump($currentItem);
-		// var_dump($currentItem);
+		var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
@@ -150,37 +162,35 @@ class QtiAuthoring extends CommonModule {
 	public function saveItem(){
 		$saved = false;
 		
-		if($this->hasRequestParameter('itemUri')){
-			
-			$itemData = $this->getRequestParameter('itemData');
+		$itemData = $this->getRequestParameter('itemData');
+	
+		if(!empty($itemData)){
 		
-			if(!empty($itemData)){
-				$itemResource = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('itemUri')));
-				$itemObject = $this->getCurrentItem();
-				
-				//save item properties in the option array:
-				$options = array(
-					'title' => $itemObject->getIdentifier(),
-					'label' => '',
-					'timeDependent' => false,
-					'adaptive' => false
-				);
-				if($this->getRequestParameter('title') != '') $options['title'] = $this->getRequestParameter('title');
-				if($this->hasRequestParameter('label')) $options['label'] = $this->getRequestParameter('label');
-				if($this->hasRequestParameter('timeDependent')) $options['timeDependent'] = $this->getRequestParameter('timeDependent');
-				if($this->hasRequestParameter('adaptive')) $options['adaptive'] = $this->getRequestParameter('adaptive');
-				$this->service->setOptions($itemObject, $options);
-				
-				//save item data:
-				$this->service->saveItemData($itemObject, $itemData);
-				
-				//save to qti:
-				$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-				echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-				$saved = true;
-			}
+			$itemResource = $this->getCurrentItemResource();
+			$itemObject = $this->getCurrentItem();
 			
+			//save item properties in the option array:
+			$options = array(
+				'title' => $itemObject->getIdentifier(),
+				'label' => '',
+				'timeDependent' => false,
+				'adaptive' => false
+			);
+			if($this->getRequestParameter('title') != '') $options['title'] = $this->getRequestParameter('title');
+			if($this->hasRequestParameter('label')) $options['label'] = $this->getRequestParameter('label');
+			if($this->hasRequestParameter('timeDependent')) $options['timeDependent'] = $this->getRequestParameter('timeDependent');
+			if($this->hasRequestParameter('adaptive')) $options['adaptive'] = $this->getRequestParameter('adaptive');
+			$this->service->setOptions($itemObject, $options);
+			
+			//save item data:
+			$this->service->saveItemData($itemObject, $itemData);
+			
+			//save to qti:
+			$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
+			echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			$saved = true;
 		}
+			
 		
 		if(tao_helpers_Request::isAjax()){
 			echo json_encode(array(
@@ -960,28 +970,32 @@ class QtiAuthoring extends CommonModule {
 	public function manageStyleSheets(){
 		//create upload form:
 		$item = $this->getCurrentItem();
-		$formContainer = new taoItems_actions_QTIform_CSSuploader($this->getCurrentItem());
+		$formContainer = new taoItems_actions_QTIform_CSSuploader($item);
 		$myForm = $formContainer->getForm();
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				$data = $myForm->getValues();
 				
-				if(isset($data['file_import']['uploaded_file'])){
+				if(isset($data['css_import']['uploaded_file'])){
 					//get the file and store it in the proper location:
+					// $itemResource = $this->getCurrentItemResource();
+					// $folderName = substr($itemResource->uriResource, strpos($itemResource->uriResource, '#') + 1);
+					$baseName = basename($data['css_import']['uploaded_file']);
 					
-					$currentItemCSSfolder = '/';
+					$fileData = $this->getCurrentStyleSheet($baseName);
+					// var_dump('uploaded', $data, $fileData); exit;
 					
-					var_dump('uploaded', $data); exit;
+					if(!empty($fileData)){
+						tao_helpers_File::move($data['css_import']['uploaded_file'], $fileData['path']);
 					
-					$href = $currentItemCSSfolder.'';
-					
-					$cssFiles = $item->getStyleSheets();
-					$cssFiles[] = array(
-						'name' => $data['name'],
-						'href' => $href
-					);
-					$item->setStyleSheet($cssFiles);
+						$cssFiles = $item->getStyleSheets();
+						$cssFiles[] = array(
+							'title' => $data['title'],
+							'href' => $fileData['href']
+						);
+						$item->setStyleSheets($cssFiles);
+					}
 				}
 				
 			}
@@ -992,10 +1006,14 @@ class QtiAuthoring extends CommonModule {
 			
 			$cssFiles[] = array(
 				'href' => $file['href'],
-				'name' => $file['name']
+				'title' => $file['title'],
+				'downloadUrl' => _url('getStyleSheet', null, null, array(
+						'itemSerial' 	=> tao_helpers_Uri::encode($item->getSerial()),
+						'itemUri' 	=> tao_helpers_Uri::encode($this->getCurrentItemResource()->uriResource),
+						'css_href' => $file['href']
+				))
 			);
 		}
-		
 		
 		$this->setData('formTitle', __('Manage item content'));
 		$this->setData('myForm', $myForm->render());
@@ -1003,68 +1021,102 @@ class QtiAuthoring extends CommonModule {
 		$this->setView('QTIAuthoring/css_manager.tpl');
 	}
 	
-	protected function listStyleSheets(){
-		$item = $this->getCurrentItem();
-		
-		$cssFiles = array();
-		foreach($item->getStyleSheets() as $file){
-			
-			$cssFiles[] = array(
-				'href' => $file['href'],
-				'name' => $file['name']
-			);
-		}
-		
-		$this->setData('cssFiles', $cssFiles);
-		$this->setView('QTIAuthoring/css_downloader.tpl');
-	}
-	
 	public function deleteStyleSheet(){
 	
 		$deleted = false;
 		
-		$filePath = $this->getCurrentStyleSheet();
+		$fileData = $this->getCurrentStyleSheet();
 		
 		//get the full path of the file and unlink the file:
-		if($filePath){
-			unlink($filePath);
+		if(!empty($fileData)){
+			tao_helpers_File::remove($fileData['path']);
 			
 			$item = $this->getCurrentItem();
-			$fileName = $this->getRequestParameter('cssName');
 			
 			$files = $item->getStylesheets();
+			// var_dump('$files', $fileData, $files);
 			foreach($files as $key=>$file){
-				if($file['href'] == $fileName){
+				if($file['href'] == $fileData['href']){
 					unset($files[$key]);
 				}
 			}
 			
 			$item->setStylesheets($files);
-			
+			// var_dump($item);
 			$deleted = true;
 		}
 		
-		json_encode(array('deleted' => $deleted));
+		echo json_encode(array('deleted' => $deleted));
 		
 	}
 	
 	public function getStyleSheet(){
-		$fileName = $this->getCurrentStyleSheet();
+		$fileData = $this->getCurrentStyleSheet();
+		if(!empty($fileData)){
+			$fileName = basename($fileData['path']);
 		
-		//print it:
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: public");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Content-Description: File Transfer");
+			header("Content-Type: text/css");
+			header("Content-Disposition: attachment; filename=\"$fileName\"");
+			header("Content-Transfer-Encoding: binary");
+			header("Content-Length: " . filesize($fileData['path']));
+
+			// download
+			// @readfile($file_path);
+			$file = @fopen($fileData['path'], "rb");
+			if ($file) {
+				while ( ! feof($file) ) {
+					print(fread($file, 1024 * 8));
+					flush();
+					if (connection_status() != 0) {
+						@fclose($file);
+						die();
+					}
+				}
+				@fclose($file);
+			}
+		}else{
+			throw new Exception('The style file cannot be found');
+		}
 		
 	}
 	
-	public function getCurrentStyleSheet(){
-		$returnValue = '';
+	public function getCurrentStyleSheet($baseName=''){
+		$returnValue = array();
 		
-		$item = $this->getCurrentItem();
-		$fileName = $this->getRequestParameter('cssName');
+		$itemResource = $this->getCurrentItemResource();
+		$folderName = substr($itemResource->uriResource, strpos($itemResource->uriResource, '#') + 1);
+		$basePath = BASE_PATH.'/views/runtime/'.$folderName.'/';
+		$baseWWW = BASE_WWW.'runtime/'.$folderName.'/';
 		
-		$files = $item->getStylesheets();
-		foreach($files as $file){
-			if($file['href'] == $fileName){
-				$returnValue = $fileName;
+		if(!empty($baseName)){
+			//creation mode:
+			$css_href = 'style/'.$baseName;
+			
+			$returnValue = array(
+				'title' => $baseName,
+				'href' => $css_href,
+				'path' => $basePath.$css_href,
+				'hrefAbsolute' => $baseWWW.$css_href
+			);
+					
+		}else{
+			//get mode:
+			$css_href = $this->getRequestParameter('css_href');
+			if(!empty($css_href)){
+				$files = $this->getCurrentItem()->getStylesheets();
+				foreach($files as $file){
+					if($file['href'] == $css_href){
+						$returnValue = $file;
+						$returnValue['path'] = $basePath.$css_href;
+						$returnValue['hrefAbsolute'] = $baseWWW.$css_href;
+						break;
+					}
+				}
 			}
 		}
 		
