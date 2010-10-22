@@ -400,7 +400,7 @@ class Items extends TaoModule{
 					if(preg_match("/taoItems\//", (string)$authoring)){
 						//temporaly empty the url:
 						$itemContentUrl = '';
-						$this->redirect((string)$authoring.'?xml='.$itemContentUrl.'&instance='.tao_helpers_Uri::encode($item->uriResource, false));
+						$this->redirect((string)$authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false));
 					}
 					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
 					$this->setData('itemContentUrl', $itemContentUrl);
