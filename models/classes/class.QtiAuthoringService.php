@@ -281,7 +281,7 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			
 			//item saved in session:
-			$item->setData($itemData);
+			$item->setData($this->convertToXHTML($itemData));
 		}
 	}
 	
@@ -457,8 +457,6 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 					
 					if($count){
-						// $interactionData = $this->filterData($interactionData);
-						// $interaction->setData($interactionData);
 						$this->setInteractionData($interaction, $interactionData);
 					}else{
 						//
@@ -851,6 +849,8 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
 		
+		$data = $this->convertToXHTML($data);
+		
 		//append the choices id to the interaction data:
 		switch(strtolower($interaction->getType())){
 			case 'choice':
@@ -923,6 +923,7 @@ class taoItems_models_classes_QtiAuthoringService
 					$data = $this->filterData($group, $data);
 				}
 				
+				
 				//save the choices in the interaction data:
 				for($i=0; $i<count($choiceOrder); $i++){
 					$data .= '{'.$choiceOrder[$i].'}';
@@ -963,7 +964,17 @@ class taoItems_models_classes_QtiAuthoringService
 		// $replaceImg = '<img\1 />';
 		// $data = preg_replace($patternImg, $replaceImg, $data);
 		
-		$data = str_replace('<br>', '<br/>', $data);
+		// $data = str_replace('<br>', '<br/>', $data);
+		
+		return $data;
+	}
+	
+	protected function convertToXHTML($data){
+		$html = '<div>' . html_entity_decode($data) . '</div>';
+		$doc = new DOMDocument;
+		$doc->loadHTML($html);
+		$data = substr($doc->saveXML($doc->getElementsByTagName('div')->item(0)), 5, -6);
+		
 		return $data;
 	}
 	

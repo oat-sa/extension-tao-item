@@ -128,7 +128,7 @@ class QtiAuthoring extends CommonModule {
 	public function saveItemData(){
 		$saved = false;
 		
-		$itemData = $this->getRequestParameter('itemData');
+		$itemData = html_entity_decode($this->getRequestParameter('itemData'));
 		
 		if(!empty($itemData)){
 			//save to qti:
@@ -979,12 +979,9 @@ class QtiAuthoring extends CommonModule {
 				
 				if(isset($data['css_import']['uploaded_file'])){
 					//get the file and store it in the proper location:
-					// $itemResource = $this->getCurrentItemResource();
-					// $folderName = substr($itemResource->uriResource, strpos($itemResource->uriResource, '#') + 1);
 					$baseName = basename($data['css_import']['uploaded_file']);
 					
 					$fileData = $this->getCurrentStyleSheet($baseName);
-					// var_dump('uploaded', $data, $fileData); exit;
 					
 					if(!empty($fileData)){
 						tao_helpers_File::move($data['css_import']['uploaded_file'], $fileData['path']);
@@ -1003,12 +1000,11 @@ class QtiAuthoring extends CommonModule {
 		
 		$cssFiles = array();
 		foreach($item->getStyleSheets() as $file){
-			
 			$cssFiles[] = array(
 				'href' => $file['href'],
 				'title' => $file['title'],
 				'downloadUrl' => _url('getStyleSheet', null, null, array(
-						'itemSerial' 	=> tao_helpers_Uri::encode($item->getSerial()),
+						'itemSerial' => tao_helpers_Uri::encode($item->getSerial()),
 						'itemUri' 	=> tao_helpers_Uri::encode($this->getCurrentItemResource()->uriResource),
 						'css_href' => $file['href']
 				))
@@ -1034,7 +1030,7 @@ class QtiAuthoring extends CommonModule {
 			$item = $this->getCurrentItem();
 			
 			$files = $item->getStylesheets();
-			// var_dump('$files', $fileData, $files);
+			
 			foreach($files as $key=>$file){
 				if($file['href'] == $fileData['href']){
 					unset($files[$key]);
@@ -1042,12 +1038,11 @@ class QtiAuthoring extends CommonModule {
 			}
 			
 			$item->setStylesheets($files);
-			// var_dump($item);
+			
 			$deleted = true;
 		}
 		
 		echo json_encode(array('deleted' => $deleted));
-		
 	}
 	
 	public function getStyleSheet(){
