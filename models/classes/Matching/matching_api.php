@@ -55,7 +55,7 @@ function matching_getOutcomes () {
  */
 function matching_setCorrects ($data) {
 	global $taoMatching;
-	return $taoMatching->setCorrects (json_decode($data));
+	return $taoMatching->setCorrects ($data);
 }
 
 /**
@@ -63,7 +63,7 @@ function matching_setCorrects ($data) {
  */
 function matching_setMaps ($data) {
 	global $taoMatching;
-	return $taoMatching->setMaps (json_decode($data));
+	return $taoMatching->setMaps ($data);
 }
 
 /**
@@ -71,7 +71,7 @@ function matching_setMaps ($data) {
  */
 function matching_setOutcomes ($data) {
 	global $taoMatching;
-	return $taoMatching->setOutcomes (json_decode($data));
+	return $taoMatching->setOutcomes ($data);
 }
 
 /**
@@ -79,7 +79,7 @@ function matching_setOutcomes ($data) {
  */
 function matching_setResponses ($data) {
 	global $taoMatching;
-	return $taoMatching->setResponses (json_decode($data));
+	return $taoMatching->setResponses ($data);
 }
 
 

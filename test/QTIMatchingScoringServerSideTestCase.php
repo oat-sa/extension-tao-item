@@ -196,18 +196,18 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 	public function testTemplateResponseProcessingMatchCorrect (){
 		matching_init ();
 		matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":"1"}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":"1"}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":"1"}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":"1"}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 1);
 		
 		matching_init ();
 		matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 1);
@@ -217,10 +217,10 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		// string
 		matching_init ();
 		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":"Paris"}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":"paris"}]');
-		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":"Paris"}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":"paris"}]'));
+		matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0.9);
@@ -228,10 +228,10 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		// list list (multiple pair)
 		matching_init ();
 		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]');
-		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]'));
+		matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 1.7);
@@ -239,10 +239,10 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		// list list (multiple pair but with reversed result)
 		matching_init ();
 		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]');
-		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]'));
+		matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 1.7);
@@ -250,10 +250,10 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		// list tuple (multiple directedpair)
 		matching_init ();
 		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
-		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+		matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 1.7);
@@ -261,10 +261,10 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		// list tuple (multiple directedpair reversed pair)
 		matching_init ();
 		matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-		matching_setCorrects ('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]');
-		matching_setResponses ('[{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]');
-		matching_setMaps ('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]');
-		matching_setOutcomes ('[{"identifier":"SCORE", "type":"double"}]');
+		matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+		matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]'));
+		matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]'));
+		matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
 		matching_evaluate ();
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);

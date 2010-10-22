@@ -90,6 +90,7 @@ class taoItems_models_classes_Matching_VariableFactory
 			case 'boolean':
 			case 'integer':
 			case 'double':
+			case 'float':
 			case 'string':
 			case 'NULL':
 				$returnValue = new taoItems_models_classes_Matching_BaseTypeVariable ($varValue);
@@ -123,6 +124,7 @@ class taoItems_models_classes_Matching_VariableFactory
     	$returnValue = Array ();
     	$returnValue['identifier'] = $id;
     	$returnValue['value'] = null;
+    	
     	// The value container
     	$valueContainer = Array ();
     	

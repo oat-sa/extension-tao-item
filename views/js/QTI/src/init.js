@@ -56,8 +56,5 @@ function qti_init_interaction(initObj){
 		matching_setResponses ([result]);
 		// Evaluate the response
 		matching_evaluate ();
-		// Get the ouctomes
-		var outcomes = matching_getOutcomes();
-		console.log ('THE OUTCOME VALUE SCORE IS : '  + outcomes['SCORE']['value']);
 	});
 }

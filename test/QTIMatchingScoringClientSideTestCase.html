@@ -7,6 +7,7 @@
 	<script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
 	<script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/class.MatchingRemote.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.VariableFactory.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Variable.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.BaseTypeVariable.js"></script>
@@ -14,6 +15,7 @@
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.List.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Tuple.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Map.js"></script>
+	<script type="application/javascript" src="../views/js/taoMatching/src/matching_constant.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/matching_api.js"></script>
 	
 	<!-- -------------------------------------------------------------------------
@@ -21,7 +23,7 @@
 	--------------------------------------------------------------------------->
 	<script type="application/javascript">
 		
-			test("Test the VariableFactory (integer)", function() {
+		test("Test the VariableFactory (integer)", function() {
 			var int1 = TAO_MATCHING.VariableFactory.create (1);
 			var int2 = TAO_MATCHING.VariableFactory.create (2);
 			var nullVar = TAO_MATCHING.VariableFactory.create (null);
@@ -177,80 +179,125 @@
 		});
 	
 		test("template response processing match_correct", function() {
-			matching_init ({"mode":"client"});
-			matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":"1"}]);
+			var matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":"1"}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, rule		: TAO_MATCHING.RULE.MATCH_CORRECT
+				}
+			}
+			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":"1"}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
 			matching_evaluate ();
 			outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 1);
+			equals (outcomes["SCORE"]["value"], 1, 'Expected Score');
 			
-			matching_init ({"mode":"client"});
-			matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, rule		: TAO_MATCHING.RULE.MATCH_CORRECT
+				}
+			}
+			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
 			matching_evaluate ();
 			outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 1);
+			equals (outcomes["SCORE"]["value"], 1, 'Expected Score');
 		});
 
 		test("template response processing mapResponse", function() {
 			// string
-			matching_init ({"mode":"client"});
-			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":"Paris"}]);
+			var matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":"Paris"}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, maps		: [{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]
+					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
+				}
+			}
+			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":"paris"}]);
-			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
 			matching_evaluate ();
 			outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 0.9);
+			equals (outcomes["SCORE"]["value"],  0.9, 'Expected Score');
 			
 			// list list (multiple pair)
-			matching_init ({"mode":"client"});
-			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
+			var matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, maps		: [{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]
+					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
+				}
+			}
+			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
-			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
 			matching_evaluate ();
 			outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 1.7);
-			
+			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
+						
 			// list list (multiple pair but with reversed result)
-			matching_init ({"mode":"client"});
-			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
+			var matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, maps		: [{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]
+					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
+				}
+			}
+			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]);
-			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
 			matching_evaluate ();
 			outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 1.7);
+			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
 			
 			// list tuple (multiple directedpair)
-			matching_init ({"mode":"client"});
-			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			var matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, maps		: [{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]
+					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
+				}
+			}
+			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
-			matching_evaluate ();
-			$outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 1.7);
-	
-			// list tuple (multiple directedpair reversed pair)
-			matching_init ({"mode":"client"});
-			matching_setRule ("if (isNull(getResponse('RESPONSE'))) { setOutcomeValue('SCORE', 0); } else { setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); }");
-			matching_setCorrects ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]);
-			matching_setMaps ([{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]);
-			matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
 			matching_evaluate ();
 			outcomes = matching_getOutcomes ();
-			equals (outcomes["SCORE"]["value"], 0);
+			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
+	
+			// list tuple (multiple directedpair reversed pair)
+			var matching_param = {
+				data : {
+					corrects 	: [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
+					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
+					, maps		: [{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]
+					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
+				}
+			}
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]);
+			matching_evaluate ();
+			outcomes = matching_getOutcomes ();
+			equals (outcomes["SCORE"]["value"],  0, 'Expected Score');
+		});
+	
+		test("remote matching engine", function() {
+			var matching_param = {
+				url : "http://tao.local/taoItems/Matching/evaluate"
+				, params : {
+					token : 'TOOOOKEN'
+					, interaction : 'choice'
+					, callback : function () {
+						var outcomes = matching_getOutcomes ();
+						equals (outcomes.SCORE.value, 1, 'Expected Score');
+					}
+				}
+			};
+			matching_init (matching_param);
+			matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+			matching_evaluate ();
 		});
 
 	</script>

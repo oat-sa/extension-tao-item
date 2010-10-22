@@ -1,7 +1,21 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
-TAO_MATCHING.Matching = function () {
-    /**
+/**
+ * 
+ */
+TAO_MATCHING.Matching = function (pData, pOptions) {
+    var data = {
+		"outcomes" 		: null
+		, "corrects" 	: null
+		, "maps" 		: null
+		, "rule" 		: null
+		, "evaluateCallback" : null
+	}; if (typeof(pData) != 'undefined') $.extend(data, pData);
+    var options = {
+		"evaluateCallback" : null
+	}; if (typeof(pOptions) != 'undefined') $.extend(options, pOptions);
+		
+	/**
      * Short description of attribute corrects
      *
      * @access protected
@@ -42,6 +56,14 @@ TAO_MATCHING.Matching = function () {
     this.rule = '';
 
     /**
+     * Short description of attribute options
+     *
+     * @access public
+     * @var array
+     */
+	this.options = options;
+
+    /**
      * Short description of attribute whiteFunctionsList
      *
      * @access public
@@ -58,7 +80,23 @@ TAO_MATCHING.Matching = function () {
 		, 'mapResponse'		:{}
 		, 'match'			:{}
 		, 'setOutcomeValue'	:{}	
-	};	
+	};
+	
+	if (data.corrects != null) {
+		this.setCorrects (data.corrects);
+	}
+	
+	if (data.outcomes != null) {
+		this.setOutcomes (data.outcomes);
+	}
+	
+	if (data.maps != null) {
+		this.setMaps (data.maps);
+	}
+	
+	if (data.rule != null){
+		this.setRule (data.rule);
+	}
 }
 
 TAO_MATCHING.Matching.prototype = {
@@ -73,6 +111,9 @@ TAO_MATCHING.Matching.prototype = {
 		with (this){
 			eval (getRule());	
 		}
+		
+		if (this.options.evaluateCallback!=null)
+			this.options.evaluateCallback ();
     }
 
 	/**
@@ -99,7 +140,7 @@ TAO_MATCHING.Matching.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
-    , getJSonOutcomes : function ()
+    , outcomesToJSON : function ()
     {
         var returnValue = Array ();
         
@@ -111,6 +152,7 @@ TAO_MATCHING.Matching.prototype = {
 
         return returnValue;
     }
+	
     /**
      * Short description of method getMap
      *
@@ -218,6 +260,7 @@ TAO_MATCHING.Matching.prototype = {
      * @param  expr2
      * @return boolean
      */
+	
     , match : function (expr1, expr2)
     {
         var returnValue = false;

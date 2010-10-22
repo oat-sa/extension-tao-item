@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 21.10.2010, 12:29:22 with ArgoUML PHP module 
+ * Automatically generated on 15.10.2010, 09:22:19 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -487,19 +487,39 @@ class taoItems_models_classes_QTI_Item
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
         }	
 
-		// If we are in client delivery mode Get the variable relative to the matching
-		$variables["rule"] = '';
-        if(!is_null($this->responseProcessing)){
+        // Build the matching initialization parameters function of the item parameters
+    	if (false) {
+			$corrects = Array ();
+			$maps = Array ();
+			$outcomes = Array ();
+	    	$rule = $this->getResponseProcessing ()->getRule();
+			
+	    	// Get all correct responses
+			$interactions = $this->getInteractions();
+			foreach ($interactions as $interaction){
+				array_push ($corrects, $interaction->getResponse ()->correctToJSON());
+				array_push ($maps, $interaction->getResponse ()->mapToJSON());
+			}
+			
+			// Get all outcomes
+			$outcomes = Array ();
+			$outcomesObject = $this->getOutcomes ();
+			foreach ($outcomesObject as $outcome){
+				array_push ($outcomes, $outcome->toJSON());
+			}
+			
+			// Set the template variables
+			$variables['corrects'] = json_encode($corrects);
+			$variables['maps'] =  json_encode($maps);
+			$variables['outcomes'] = json_encode ($outcomes);
 			$variables["rule"] = $this->responseProcessing->getRule();
-		}
-		
-		// Get the outcome variables declaration
-		$outcomes = $this->getOutcomes ();
-		$outcomesJSON = Array ();
-    	foreach ($outcomes as $outcome){
-    		array_push($outcomesJSON, $outcome->toJSON());
+			$variables['matchingEngineServerSide'] = false;
+    	} else {
+    		$tmpInteraction = current($this->getInteractions());
+    		$variables['url'] = "http://tao.local/taoItems/Matching/evaluate";
+    		$variables['params'] = json_encode ( Array ("token"=>"TAOToken::getToken()", "interactionType"=>$tmpInteraction->type) ); 
+			$variables['matchingEngineServerSide'] = true;
     	}
-		$variables['outcomes'] = json_encode ($outcomesJSON);
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();

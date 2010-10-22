@@ -11,9 +11,9 @@ TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
  */
 
 /**
- * The tao matching object
+ * The tao matching engine instance
  */
-TAO_MATCHING.taoMatching = null;
+TAO_MATCHING.engine = null;
 
 /////////////////////
 // TAO Matching //
@@ -28,42 +28,26 @@ TAO_MATCHING.taoMatching = null;
  */
 function matching_init (params) {
 	var options = {
-		mode 		:null
-		, outcomes	:[]
-		, corrects 	:[]
-		, maps 		:[]
-		, rule 		:""
-	}; $.extend (options, params);
+		"url" : null
+		, "params" : null
+		, "data" : null
+		, "format" : "json"
+		, "options" : null
+	}; if (typeof (params) != 'undefined') $.extend (options, params);
 
-	// Test the mode
-	if ($.inArray(options.mode, ["client", "server"]) < 0) {
-		throw new Error("matching_init an error occured : the mode is not well defined. Allowed modes [client/server], " + options.mode + " given");
+	// If the matching will be make with a remote engine
+	if (options.url != null) {
+		TAO_MATCHING.engine = new TAO_MATCHING.MatchingRemote (options.url, options.params, options.options);
 	}
 	
-	// Init the maching engine
-	TAO_MATCHING.taoMatching = new TAO_MATCHING.Matching ();
-
-	// Set the rule
-	if ($.trim(options.rule) != "") {
-		matching_setRule($.trim(options.rule));
+	// If the matching will be make locally
+	else if (options.data != null){
+		TAO_MATCHING.engine = new TAO_MATCHING.Matching (options.data, options.options);
 	}
-//	else {
-//		throw new Error("matching_init an error occured : the rule is empty");
-//	}
-
-	// Set outcomes variables
-	if (options.outcomes.length){
-		matching_setOutcomes (options.outcomes);
-	}
-
-	// Set correct variables
-	if (options.corrects.length){
-		matching_setCorrects (options.corrects);
-	}
-
-	// Set mapping variables
-	if (options.maps.length){
-		matching_setMaps (options.maps);
+	
+	// Else options are not well formed
+	else {
+		throw new Error("matching_init an error occured : the options are not well formed, data or url have to be defined");
 	}
 }
 
@@ -71,7 +55,7 @@ function matching_init (params) {
  * Evaluate the rule
  */
 function matching_evaluate () {
-	return TAO_MATCHING.taoMatching.evaluate ();
+	TAO_MATCHING.engine.evaluate ();
 }
 
 /**
@@ -79,15 +63,14 @@ function matching_evaluate () {
  * @return {JSON}
  */
 function matching_getOutcomes () {
-	return TAO_MATCHING.taoMatching.getJSonOutcomes ();
+	return TAO_MATCHING.engine.outcomesToJSON ();
 }
 
-/**
- * Set the correct responses of the item
+/** Set the correct responses of the item
  * @param {JSON} data The correct responses
  */
 function matching_setCorrects (data) {
-	return TAO_MATCHING.taoMatching.setCorrects (data);
+	TAO_MATCHING.engine.setCorrects (data);
 }
 
 /**
@@ -95,7 +78,7 @@ function matching_setCorrects (data) {
  * @param {JSON} data The map
  */
 function matching_setMaps (data) {
-	return TAO_MATCHING.taoMatching.setMaps (data);
+	TAO_MATCHING.engine.setMaps (data);
 }
 
 /**
@@ -103,7 +86,7 @@ function matching_setMaps (data) {
  * @param {JSON} data The outcome variables
  */
 function matching_setOutcomes (data) {
-	return TAO_MATCHING.taoMatching.setOutcomes (data);
+	TAO_MATCHING.engine.setOutcomes (data);
 }
 
 /**
@@ -111,7 +94,7 @@ function matching_setOutcomes (data) {
  * @param {JSON} data The response variables
  */
 function matching_setResponses (data) {
-	return TAO_MATCHING.taoMatching.setResponses (data);
+	TAO_MATCHING.engine.setResponses (data);
 }
 
 /**
@@ -119,5 +102,5 @@ function matching_setResponses (data) {
  * @param {string} rule The rule
  */
 function matching_setRule (rule) {
-	TAO_MATCHING.taoMatching.setRule (rule);
+	TAO_MATCHING.engine.setRule (rule);
 }

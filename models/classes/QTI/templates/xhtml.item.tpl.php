@@ -25,10 +25,33 @@
 	<script type="text/javascript" src="<?=$rtPath?>src/init.js"></script>
 	<script type="text/javascript" src="<?=$rtPath?>../taoMatching/taoMatching.min.js"></script>
 	<script type="text/javascript">
+
+		var myEvaluateCallbackFunction = function () {
+			// Get the ouctomes
+			var outcomes = matching_getOutcomes();
+			console.log ('THE OUTCOME VALUE SCORE IS : '  + outcomes['SCORE']['value']);
+		}
+	
 		var qti_initParam  = new Object();
-		var matching_param = {"mode":"client", "outcomes":[], "corrects":[], "maps":[], "rule":""};
-		matching_param.rule = '<?=$rule?>';
-		matching_param.outcomes = <?=$outcomes?>;
+		var matching_param = {
+<?php if ($matchingEngineServerSide) { ?>
+			"url" : "<?=isset($url)?$url:'null'?>"
+			, "params" : <?=isset($params)?$params:'null'?>
+<?php } else { ?>
+			"data" : {
+				"outcomes" : <?=isset($outcomes)?$outcomes:'[]'?>
+				, "corrects" : <?=isset($corrects)?$corrects:'[]'?>
+				, "maps" : <?=isset($maps)?$maps:'[]'?>
+				, "rule" : '<?=isset($rule)?$rule:'""'?>'
+			}
+<?php } ?>
+			, "options" : {
+				"evaluateCallback" : function () {
+					myEvaluateCallbackFunction ();
+				}
+			}
+			, "format" : "json"
+		};
 
 		$(document).ready(function(){
 			qti_init(qti_initParam);

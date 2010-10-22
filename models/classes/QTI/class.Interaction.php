@@ -98,7 +98,7 @@ class taoItems_models_classes_QTI_Interaction
      * @access protected
      * @var Response
      */
-    protected $response = null;
+    public $response = null;
 
     /**
      * Short description of attribute groups
@@ -621,13 +621,11 @@ class taoItems_models_classes_QTI_Interaction
 			}
    		}
 
-   		// @todo use the conditional variable mode (client/server)
-    	// If we are in client delivery mode Get the variable relative to the matching
+   		// Give to the template the response base type linked to this interaction
+   		// @todo check if this information is not yet available
 		$response = $this->getResponse ();
 		if ($response != null){
 			$variables['options']['responseBaseType'] = $response->getBaseType();
-			$variables['correct'] = json_encode($response->correctToJSON());
-			$variables['map'] =  json_encode($response->mapToJSON());
 		}
    		
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
