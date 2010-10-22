@@ -481,8 +481,6 @@ class taoItems_models_classes_QTI_Item
     	//get the variables to used in the template
         
     	$variables 	= $this->extractVariables();
-		$variables['rtPath'] = BASE_WWW. 'js/QTI/';
-        
         foreach($this->getInteractions() as $interaction){
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);

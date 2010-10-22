@@ -5,8 +5,8 @@
 	<title>QTI Item <?=$identifier?></title>
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="<?=$rtPath?>css/reset.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="<?=$rtPath?>css/qti.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/reset.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.css" media="screen" />
 	
 	<!-- user CSS -->
 	<?foreach($stylesheets as $stylesheet):?>
@@ -14,16 +14,14 @@
 	<?endforeach?>
 	
 	<!-- LIB -->
-	<script type="text/javascript" src="<?=$rtPath?>lib/jquery/jquery.js"></script>
-	
-	<!-- LIB (required for sort item interaction) -->
-	<script type="text/javascript" src="<?=$rtPath?>lib/jquery-ui-1.8.4.custom.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.custom.min.js"></script>
 	
 	<!-- JS REQUIRED -->
-	<script type="text/javascript" src="<?=$rtPath?>src/Widget.js"></script>
-	<script type="text/javascript" src="<?=$rtPath?>src/ResultCollector.js"></script>
-	<script type="text/javascript" src="<?=$rtPath?>src/init.js"></script>
-	<script type="text/javascript" src="<?=$rtPath?>../taoMatching/taoMatching.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/src/Widget.js"></script>
+	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/src/ResultCollector.js"></script>
+	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/src/init.js"></script>
+	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
 	<script type="text/javascript">
 
 		var myEvaluateCallbackFunction = function () {

@@ -61,13 +61,13 @@ function QTIResultCollector(options){
 		
 		$("#" + _this.id + " .qti_association_pair").each(function(){
 			// The field has not been filled
-			if (!$(this).find('li:first').find('.qti_droppedItem').length){
+			if (!$(this).find('li:first').find('.filled_pair').length){
 				return;
 			}
 			
 			// Get the associated identifier
-			var firstId = $(this).find('li:first').find('.qti_droppedItem')[0].id;
-			var lastId = $(this).find('li:last').find('.qti_droppedItem')[0].id;
+			var firstId = $(this).find('li:first').find('.filled_pair').attr('id').replace('pair_', '');
+			var lastId 	= $(this).find('li:last').find('.filled_pair').attr('id').replace('pair_', '');
 			
 			// create the element following the matching format
 			var elt = null;

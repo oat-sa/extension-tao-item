@@ -3,14 +3,9 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.TemplateRenderer.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 03.09.2010, 15:59:05 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * This class is a simple "search and replace" PHP-Like template renderer. 
+ * It parses a file with php short tags and replace the variables by the
+ * in attributes
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -30,7 +25,9 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:0000000000002592-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_TemplateRenderer
+ * This class is a simple "search and replace" PHP-Like template renderer. 
+ * It parses a file with php short tags and replace the variables by the
+ * in attributes
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -59,6 +56,14 @@ class taoItems_models_classes_QTI_TemplateRenderer
      * @var array
      */
     protected $variables = array();
+
+    /**
+     * Short description of attribute context
+     *
+     * @access protected
+     * @var array
+     */
+    protected static $context = array();
 
     // --- OPERATIONS ---
 
@@ -95,6 +100,28 @@ class taoItems_models_classes_QTI_TemplateRenderer
     }
 
     /**
+     * Short description of method setContext
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array parameters
+     * @param  string prefix
+     * @return mixed
+     */
+    public static function setContext($parameters, $prefix = '')
+    {
+        // section 127-0-1-1-3c043620:12bd493a38b:-8000:000000000000272E begin
+        
+    	self::$context = array();
+    	
+    	foreach($parameters as $key => $value){
+    		self::$context[$prefix . $key] = $value;
+    	}
+    	
+        // section 127-0-1-1-3c043620:12bd493a38b:-8000:000000000000272E end
+    }
+
+    /**
      * Short description of method render
      *
      * @access public
@@ -109,6 +136,7 @@ class taoItems_models_classes_QTI_TemplateRenderer
         
         //extract in the current context the array: 'key' => 'value'  to $key = 'value';
         extract($this->variables);
+        extract(self::$context);
         
         ob_start();
         

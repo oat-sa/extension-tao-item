@@ -122,21 +122,17 @@ var QTIWidget = function(options){
 			// give a size to the words cloud to avoid graphical "jump" when items are dropped
 			$(qti_item_id+" .qti_associate_container .qti_choice_list").height(parseFloat($(".qti_associate_container").height()));
 			
-			// create the pair of box specified in the maxAssociations attribute		
-			for (var a=_this.opts["maxAssociations"];a>0;a--){
+			// create the pair of box specified in the maxAssociations attribute	
+			if(_this.opts["maxAssociations"] > 0) {
+				var pairSize = _this.opts["maxAssociations"];
+			}
+			else{
+				var pairSize = parseInt($(qti_item_id+" .qti_choice_list li").length / 2);
+			}
+			for (var a=pairSize; a>0; a--){
 				var currentPairName=_this.opts["id"]+"_"+a;
 				$(qti_item_id+" .qti_associate_container").after("<ul class='qti_association_pair' id='"+currentPairName+"'><li id='"+currentPairName+"_A"+"'></li><li id='"+currentPairName+"_B"+"'></li></ul>");		
 			}
-			
-			// create an object in the current Object of the item (passed in argument) to store 
-			// infos between the words cloud and the pair list
-			_this.opts["link"]={};
-			
-			// create a label for each drop box from is id
-			// setted to "null" because there is no association when item start
-			$(qti_item_id+" .qti_association_pair li").each(function(){		
-				_this.opts["link"][$(this).attr("id")]="null";
-			});
 			
 			// set the size of the drop box to the max size of the cloud words 
 			$(qti_item_id+" .qti_association_pair li").width(maxBoxSize+4);
@@ -159,9 +155,7 @@ var QTIWidget = function(options){
 				$(qti_item_id+" .qti_link_associate:last").css("left",parseFloat($(this).find("li:first").offset().left)+parseFloat($(this).find("li:first").width())+14);
 			});
 			
-			//
 			$(qti_item_id).height( ($(qti_item_id+" .qti_link_associate:last").offset().top) - $(qti_item_id).offset().top); 
-			
 			
 			//drag element from words cloud
 			$(qti_item_id+" .qti_associate_container .qti_choice_list li > div").draggable({
@@ -170,77 +164,108 @@ var QTIWidget = function(options){
 					$(ui.helper).css("z-index","999");			
 				},
 				containment: qti_item_id,
-				cursor:"move"
+				cursor:"move",
+				revert: true
 			});
+			
+			/**
+			 * remove an element from the filled gap
+			 * @param {jQuery} jElement
+			 */
+			var removeFilledPair = function(jElement){
+				var filledId = jElement.attr("id").replace('pair_', '');
+				var _matchMax = Number(_this.opts["matchMaxes"][filledId]["matchMax"]);
+				var _current = Number(_this.opts["matchMaxes"][filledId]["current"]);
 				
+				if (_current > 0) {
+					_this.opts["matchMaxes"][filledId]["current"] = _current - 1;
+				}
+				jElement.parents('li').removeClass('ui-state-highlight');
+				jElement.remove();
+				if(_current >= _matchMax){
+					$("#"+filledId+" div").show();
+				}
+			};
+			
 			// pair box are droppable
 			$(qti_item_id+" .qti_association_pair li").droppable({
 				drop: function(event, ui){
+					
+					var draggedId = $(ui.draggable).parents().attr('id');
+					
+					//prevent of re-filling the gap and dragging between the gaps
+					if($(this).find("#pair_"+draggedId).length > 0 || /^pair_/.test($(ui.draggable).attr('id'))){
+						return false;
+					}
+					
+					var _matchMax 	= Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
+					var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
+					var _matchGroup = _this.opts["matchMaxes"][draggedId]["matchGroup"];
+					
+					//Check the matchGroup of the dropped item or the opposite in the pair 
+					if(/A$/.test($(this).attr('id'))){
+						 var opposite =$('#' + $(this).attr('id').replace(/_A$/, "_B")).find('.filled_pair:first');
+					}
+					else{
+						var opposite = $('#' + $(this).attr('id').replace(/_B$/, "_A")).find('.filled_pair:first');
+					}
+					if(opposite.length > 0){
+						var oppositeId = opposite.attr('id').replace('pair_', '');
+						if(_matchGroup.length > 0){ 
+							if($.inArray(oppositeId, _matchGroup) < 0){
+								return false;
+							}
+						}
+						
+						var _oppositeMatchGroup = _this.opts["matchMaxes"][oppositeId]["matchGroup"];
+						if(_oppositeMatchGroup.length > 0){
+							if($.inArray(draggedId, _oppositeMatchGroup) < 0){
+								return false;
+							}
+						}
+					}
+					
+					
 					// add class to highlight current dropped item in pair boxes
 					$(this).addClass('ui-state-highlight');
-					
+
+					//remove the old element
+					if($(this).html() != ''){
+						$('.filled_pair', $(this)).each(function(){
+							removeFilledPair($(this));
+						});
+					}
 					
 					// add new element inside the box that received the cloud element
-					$(this).html("<div class='qti_dropped'><div id='"+$(ui.draggable).parent()[0].id+"' class='qti_droppedItem'>"+$(ui.draggable).text()+"</div></div>");
+					$(this).html("<div id='pair_"+draggedId+"' class='filled_pair'>"+$(ui.draggable).text()+"</div>");
 					
-					// _this.opts store id of the cloud word to maintain a link
-					_this.opts["link"][$(this).attr("id")]=$(ui.draggable).parent().attr("id");
+					if (_current < _matchMax) {
+						_current++;
+						_this.opts["matchMaxes"][draggedId]["current"]=_current;
+					}
+					if (_current >= _matchMax) {
+						$(ui.draggable).hide();
+					}
 					
-					if($(ui.helper).parentsUntil("ul").parent().hasClass("qti_choice_list"))
-					{
-						$(ui.helper).css({top:"0",left:"0"});
-						var _matchMax = Number(_this.opts["matchMaxes"][$(ui.draggable).parent().attr("id")]["matchMax"]);
-						var _current = Number(_this.opts["matchMaxes"][$(ui.draggable).parent().attr("id")]["current"]);
-					
-						if (_current < _matchMax) {
-							
-							_current++;
-							_this.opts["matchMaxes"][$(ui.draggable).parent().attr("id")]["current"]=_current;
-						}
-						if (_current >= _matchMax) {
-							$(ui.draggable).hide();
-						}
-		
-					} 
-					else {
-						_this.opts["link"][$(this).attr("id")]=_this.opts["link"][$(ui.draggable).parentsUntil(".ui-droppable").parent().attr("id")];
-						_this.opts["link"][$(ui.draggable).parentsUntil(".ui-droppable").parent().attr("id")]="null";
-					}	
 					// give a size to the dropped item to overlapp perfectly the pair box
-					$(qti_item_id+" .qti_droppedItem").width($(qti_item_id+" .qti_association_pair li").width());
-					$(qti_item_id+" .qti_droppedItem").height($(qti_item_id+" .qti_association_pair li").height());
+					$(qti_item_id+" .filled_pair").width($(qti_item_id+" .qti_association_pair li").width());
+					$(qti_item_id+" .filled_pair").height($(qti_item_id+" .qti_association_pair li").height());
+					$(ui.helper).css({top:"0",left:"0"});
 					
 					// give this new element the ability to be dragged
-					$(qti_item_id+" .qti_droppedItem").draggable({
+					$(qti_item_id+" .filled_pair").draggable({
 						drag: function(event, ui){
 							// element is on top of the other when it's dragged
 							$(this).css("z-index", "999");
 						},
-						stop: function(event, ui) { 		
-							//var currentDroppedItemId=$(ui.helper).parentsUntil("li").parent().attr("id");
-							$(this).parentsUntil(".ui-state-highlight").parent().removeClass('ui-state-highlight');
-							$(this).parent().remove();		
+						stop: function(event, ui) {
+							removeFilledPair($(this));
+							return true;
 						 },
 						 containment: qti_item_id,
 						 cursor:"move"
 					});
-					
-									
-				},
-				hoverClass: 'active'
-			});	
-			
-			$(qti_item_id).droppable({
-				drop: function(event, ui){
-					if($(ui.draggable).parentsUntil("ul").parent().hasClass("qti_choice_list"))
-					{
-						$(ui.draggable).css({top:"0",left:"0"});
-					} else {
-						var currentDroppedItemId=$(ui.draggable).parentsUntil("li").parent().attr("id");
-						$(qti_item_id+" #"+_this.opts["link"][currentDroppedItemId]+" div").show();
-						_this.opts["matchMaxes"][_this.opts["link"][currentDroppedItemId]]["current"]--;
-						_this.opts["link"][currentDroppedItemId]="null";
-					}
+						
 				},
 				hoverClass: 'active'
 			});
@@ -417,20 +442,20 @@ var QTIWidget = function(options){
 		
 		/**
 		 * remove an element from the filled gap
-		 * @param {jQuery} element
+		 * @param {jQuery} jElement
 		 */
-		var removeFilledGap = function(elt){
-			var filledId = elt.attr("id").replace('gap_', '');
+		var removeFilledGap = function(jElement){
+			var filledId = jElement.attr("id").replace('gap_', '');
 			var _matchMax = Number(_this.opts["matchMaxes"][filledId]["matchMax"]);
 			var _current = Number(_this.opts["matchMaxes"][filledId]["current"]);
 			if (_current > 0) {
 				_this.opts["matchMaxes"][filledId]["current"] = _current - 1;
 			}
-			elt.parent().css({
+			jElement.parent().css({
 				"padding-left": maxBoxSize, 
 				"padding-right": maxBoxSize
-			}).removeClass('ui-state-highlight');
-			elt.remove();
+			}).removeClass('dropped_gap');
+			jElement.remove();
 			if(_current >= _matchMax){
 				$("#"+filledId+" div").show();
 			}
@@ -446,13 +471,12 @@ var QTIWidget = function(options){
 				if($(this).find("#gap_"+draggedId).length > 0 || /^gap_/.test($(ui.draggable).attr('id'))){
 					return false;
 				}
-	
 				
 				var _matchMax 	= Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
 				var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
 				var _matchGroup = _this.opts["matchMaxes"][draggedId]["matchGroup"];
 				
-				//if the matchGroup of the choice is defined we cancel the drop 
+				///if the matchGroup of the choice is defined and not found we cancel the drop 
 				if(_matchGroup.length > 0){
 					if($.inArray($(this).attr('id'), _matchGroup) < 0){
 						return false;
@@ -474,10 +498,7 @@ var QTIWidget = function(options){
 					});
 				}
 				
-				$(this).css({
-					"padding-left": '5px', 
-					"padding-right": '5px'
-				}).addClass('ui-state-highlight');
+				$(this).css({'padding-left' : '5px', 'padding-right' : '5px'}).addClass('dropped_gap');
 				
 				// add the new element inside the box that received the cloud element
 				$(this).html("<span id='gap_"+draggedId+"' class='filled_gap'>"+$(ui.draggable).text()+"</span>");
@@ -494,9 +515,11 @@ var QTIWidget = function(options){
 				$(qti_item_id+" .filled_gap").draggable({
 					drag: function(event, ui){
 						// label go on top of the others elements
-						$(ui.helper).css("z-index","999");			
+						$(ui.helper).css("z-index","999");
+						$(this).parent().addClass('ui-state-highlight');
 					},
 					stop: function(){
+						$(this).parent().removeClass('ui-state-highlight');
 						removeFilledGap($(this));
 					},
 					revert: false,

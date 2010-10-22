@@ -30,7 +30,7 @@ class QTIioTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-		foreach(glob(dirname(__FILE__).'/samples/choice.xml') as $file){	
+		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 		
 			$qtiItem = $this->qtiService->loadItemFromFile($file);
 			$this->assertNotNull($qtiItem);
@@ -47,10 +47,13 @@ class QTIioTestCase extends UnitTestCase {
 			
 			//Deploy it
 			$url = $this->itemService->deployItem($rdfItem);
+			
 			$this->assertTrue(!empty($url));
 
-			$folder = dirname(str_replace(BASE_WWW, BASE_PATH . '/views', $url));
+			$folder = dirname(str_replace(BASE_WWW, BASE_PATH . '/views/', $url));
 			$this->assertTrue(is_dir($folder));
+			
+			//echo "<br /><iframe width='800px' height='300px' src='$url'></iframe><br />";
 			
 			$this->assertTrue($this->itemService->deleteItem($rdfItem));
 			@tao_helpers_File::remove($folder, true);

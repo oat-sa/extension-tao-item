@@ -455,20 +455,27 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Deploy the item in parameter if the item is "deployable"
+     * Deploy the item in parameter
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
+     * @param  array parameters
      * @return string
      */
-    public function deployItem( core_kernel_classes_Resource $item)
+    public function deployItem( core_kernel_classes_Resource $item, $parameters = array())
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE begin
         
         if(!is_null($item)){
+        	
+        	//parameters that could not be rewrited
+        	$parameters['root_url'] = ROOT_URL;
+        	$parameters['base_www'] = BASE_WWW;
+        	$parameters['taobase_www'] = TAOBASE_WWW;
+        	
         	
         	//deploy the QTI Item
         	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
@@ -477,10 +484,13 @@ class taoItems_models_classes_ItemsService
         		$qtiItem = $qtiService->getDataItemByRdfItem($item);
         		
         		if(!is_null($qtiItem)) {
+        			
+        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        			
         			$output = $qtiService->renderItem($qtiItem);
-        			$fodlerName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        			if(!is_dir(BASE_PATH.'/views/runtime/'.$fodlerName)){
-        				mkdir(BASE_PATH.'/views/runtime/'.$fodlerName);
+        			$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+        			if(!is_dir(BASE_PATH.'/views/runtime/'.$folderName)){
+        				mkdir(BASE_PATH.'/views/runtime/'.$folderName);
         			}
         			
         			//replace relative paths to resources by absolute uris for to help the compilator
@@ -490,15 +500,17 @@ class taoItems_models_classes_ItemsService
 							
 							foreach($matches[2] as $relUri){
 								if($relUri != '#' && !preg_match("/^http/", $relUri) ){
-									$absoluteUri = BASE_WWW.'runtime/'.$fodlerName . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
+									$absoluteUri = BASE_WWW.'runtime/'.$folderName . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
 									$output = str_replace($relUri, $absoluteUri, $output);
 								}
 							}
 						}
 					}
 					
-        			if(file_put_contents(BASE_PATH.'/views/runtime/'.$fodlerName.'/index.html', $output)){
-        				$returnValue = BASE_WWW.'/runtime/'.$fodlerName.'/index.html';
+					$filePath 	= tao_helpers_File::concat(array(BASE_PATH, "/views/runtime/{$folderName}/index.html"));
+					$fileUrl	= BASE_WWW . "runtime/{$folderName}/index.html";
+        			if(file_put_contents($filePath, $output)){
+        				$returnValue = $fileUrl;
         			}
         		}
 			}

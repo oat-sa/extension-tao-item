@@ -25,7 +25,7 @@ class QTIOutputTestCase extends UnitTestCase {
 	 * test the building and exporting out the items
 	 */
 	public function testToQTI(){
-		return;
+		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
@@ -97,7 +97,6 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			//test if content has been exported
 			$this->assertFalse(empty($xhtml));
-			
 		}
 	}
 

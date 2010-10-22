@@ -161,7 +161,7 @@ div.qti_item{
 	border:2px dashed #999;
 }
 
-.qti_association_pair li.ui-state-highlight .qti_droppedItem {
+.qti_association_pair li.ui-state-highlight .filled_pair {
 	position:absolute;
 	padding:5px;
 	border:2px solid #666;
@@ -271,10 +271,16 @@ textarea{
 	margin: 0px 5px 0px 5px;
 	font-weight:bold;
 }
-
-.qti_gap_match_interaction .ui-state-highlight{
+.qti_gap_match_interaction .dropped_gap{
+	border: solid 2px #666;		
 	background-color:#ccc;
 }
+
+.qti_gap_match_interaction span.ui-state-highlight {
+	background-color:#ccc;
+	border:2px dashed #999;
+}
+
 
 /* Match */
 
