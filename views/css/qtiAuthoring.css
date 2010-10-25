@@ -8,6 +8,7 @@ div.xhtml_form div.file-uploader .uploadifyProgress, .uploadifyProgress {
 	width: auto;
 }
 
+/*html area for the prompt input fields*/
 div.xhtml_form div textarea{
 	width: 63%;
 }
@@ -18,7 +19,24 @@ div.xhtml_form div div.wysiwyg iframe, div.xhtml_form div div.wysiwyg iframe htm
 	width: 100% !important;
 }
 
+/*choice buttons*/
+span.choice-button-delete, span.choice-button-advanced, span.choice-button-up, span.choice-button-down{
+	float: left;
+}
 
+/*advanced choice properties group offset*/
+div.xhtml_form div.form-group{
+	position:relative;
+	left:20px;
+	top:15px;
+	width:85%;
+}
+
+div.formContainer_choice div.xhtml_form form{
+	margin-bottom: 30px;
+}
+
+/*sizing the main containers*/
 #qtiAuthoring_itemEditor{
 	height: 580px;
 	overflow-x:scroll;

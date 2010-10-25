@@ -1,4 +1,4 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 interactionClass.instances = [];
 
 function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer){
@@ -346,9 +346,9 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 		}
 		
 		if(options.delete){
-			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control ui-icon ui-icon-circle-close"></span>');
+			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control choice-button-delete ui-icon ui-icon-circle-close"></span>');
 			$group.before($deleteElt);
-			$deleteElt.css('position', 'relative');
+			// $deleteElt.css('position', 'relative');
 			
 			//add click event listener:
 			$('#delete_'+groupId).click(function(){
@@ -361,18 +361,18 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 		}
 		
 		if(options.group){
-			var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control ui-icon ui-icon-circle-plus"></span>');
+			var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control choice-button-advanced ui-icon ui-icon-circle-plus"></span>');
 			$group.before($buttonElt);
 			
 			//TODO: put into a css file!!
-			$buttonElt.css('position', 'relative');
-			$buttonElt.css('left','18px');
-			$buttonElt.css('top','-16px');
+			// $buttonElt.css('position', 'relative');
+			// $buttonElt.css('left','18px');
+			// $buttonElt.css('top','-16px');
 			
-			$group.css('position', 'relative');
-			$group.css('top','-19px');
-			$group.css('left','20px');
-			$group.width('90%');
+			// $group.css('position', 'relative');
+			// $group.css('top','-19px');
+			// $group.css('left','20px');
+			// $group.width('90%');
 			
 			$group.hide();
 			
@@ -423,16 +423,16 @@ interactionClass.prototype.setOrderedChoicesButtons = function(list){
 	var interaction = this;
 	var total = list.length;
 	for(var i=0; i<total; i++){
-		$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control ui-icon ui-icon-circle-triangle-n"></span>');
+		$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control choice-button-up ui-icon ui-icon-circle-triangle-n"></span>');
 		
 		//get the corresponding group id:
-		$("#a_choicePropOptions_"+list[i]).after($upElt);
+		$("#delete_choicePropOptions_"+list[i]).after($upElt);
 		$upElt.click(function(){
 			var choiceSerial = $(this).attr('id').substr(3);
 			interaction.orderedChoices = interaction.switchOrder(interaction.orderedChoices, choiceSerial, 'up');
 		});
 		
-		$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control ui-icon ui-icon-circle-triangle-s"></span>');
+		$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control choice-button-down ui-icon ui-icon-circle-triangle-s"></span>');
 		$upElt.after($downElt);
 		$downElt.click(function(){
 			var choiceSerial = $(this).attr('id').substr(5);
@@ -485,13 +485,17 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 		}
 	}
 	
+	var $parentFormChoiceContainer = $('#'+choiceId).parents(".formContainer_choices");
 	var newOrder = [];
 	var sorted = false;
 	switch(direction){
 		case 'up':{
 			//get the previous choice:
 			if(currentPosition>0){
+				qtiEdit.destroyHtmlEditor($parentFormChoiceContainer);
 				$('#'+choiceId).insertBefore('#'+list[currentPosition-1]);
+				// qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
+				
 				// $('#'+choiceId).remove();
 				for(var i=0;i<list.length;i++){
 					if(i == currentPosition-1){
@@ -510,7 +514,13 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 		case 'down':{
 			//get the previous choice:
 			if(currentPosition < list.length-1){
-				$('#'+choiceId).insertAfter('#'+list[currentPosition+1]);
+				try{
+					qtiEdit.destroyHtmlEditor($parentFormChoiceContainer);
+					$('#'+choiceId).insertAfter('#'+list[currentPosition+1]);
+					qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
+				}catch(err){
+					
+				}
 				// $('#'+choiceId).remove();
 				var newOrder = [];
 				for(var i=0;i<list.length;i++){

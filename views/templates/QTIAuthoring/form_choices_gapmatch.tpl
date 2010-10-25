@@ -3,10 +3,10 @@
 </div>
 <div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
-		<div id="formContainer_groups">
+		<div id="formContainer_groups" class="formContainer_choices">
 		<? $formChoices = get_data('formChoices');?>
 		<?foreach($formGroups as $groupSerial => $groupForm):?>
-			<div id='<?=$groupSerial?>' class='formContainer_choice'>
+			<div id='<?=$groupSerial?>' class="formContainer_choice">
 				<?=$groupForm?>
 			</div>
 		<?endforeach;?>
@@ -14,9 +14,9 @@
 	</div>
 
 	<div id="formContainer_choices_container" class="qti-authoring-form-container-column">
-		<div id="formContainer_choices">
+		<div id="formContainer_choices" class="formContainer_choices">
 		<?foreach($formChoices as $choiceSerial => $choiceForm):?>
-			<div id='<?=$choiceSerial?>' class='formContainer_choice'>
+			<div id='<?=$choiceSerial?>' class="formContainer_choice">
 				<?=$choiceForm?>
 			</div>
 		<?endforeach;?>

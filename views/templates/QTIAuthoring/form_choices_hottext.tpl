@@ -2,7 +2,7 @@
 		<?=__('Choices editor:')?>
 </div>
 <div id="formContainer_choices_title" class="ui-widget-content ui-corner-bottom formContainer_choices qti-authoring-form-container">
-	<div id="formContainer_choices">
+	<div id="formContainer_choices" class="formContainer_choices">
 	<?foreach(get_data('formChoices') as $choiceId => $choiceForm):?>
 		<div id='<?=$choiceId?>' class='formContainer_choice'>
 			<?=$choiceForm?>

@@ -53,8 +53,6 @@ div.wysiwyg ul.panel li.insertImage { background-position: -80px -80px; }
 div.wysiwyg ul.panel li.html { background-position: -47px -46px; }
 div.wysiwyg ul.panel li.removeFormat { background-position: -80px -63px; }
 
-div.wysiwyg ul.panel li.addInteraction{ background: url('img/application_view_gallery.png'); }
-
 div.wysiwyg ul.panel li.empty { background-position: -64px -80px; }
 
 div.wysiwyg iframe { border: 0;  clear: left; margin: 4px 0 0 1px; }

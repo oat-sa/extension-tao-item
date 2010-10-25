@@ -368,6 +368,21 @@ qtiEdit.mapHtmlEditor = function($container){
 	});
 }
 
+qtiEdit.destroyHtmlEditor = function($container){
+	// CL('$container', $container);
+	$container.find('.qti-html-area').each(function(){
+		// CL('$(this).siblings(".wysiwyg")', $(this).siblings('.wysiwyg'));
+		// if ($(this).css('display') != 'none' && $(this).siblings('.wysiwyg').length){
+			try{
+				$(this).wysiwyg('destroy');
+			}catch(err){
+				
+			}
+			CL('destroyed!!');
+		// }
+	});
+}
+
 qtiEdit.getEltInFrame = function(selector){
 	var foundElts = [];
 	// for each iframe:
