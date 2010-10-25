@@ -8,6 +8,17 @@ div.xhtml_form div.file-uploader .uploadifyProgress, .uploadifyProgress {
 	width: auto;
 }
 
+div.xhtml_form div textarea{
+	width: 63%;
+}
+div.xhtml_form div div.wysiwyg{
+	width: 63% !important;
+}
+div.xhtml_form div div.wysiwyg iframe, div.xhtml_form div div.wysiwyg iframe html{
+	width: 100% !important;
+}
+
+
 #qtiAuthoring_itemEditor{
 	height: 580px;
 	overflow-x:scroll;

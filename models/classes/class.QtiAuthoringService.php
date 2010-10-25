@@ -107,14 +107,14 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getChoiceTag(taoItems_models_classes_QTI_Choice $choice){
 		$returnValue = '';
-		$returnValue .= "<input type='button' id='{$choice->getSerial()}' class='qti_choice_link' value='{$choice->getType()}'/>";
+		$returnValue .= " <input type='button' id='{$choice->getSerial()}' class='qti_choice_link' value='{$choice->getType()}'/>";
 		
 		return $returnValue;
 	}
 	
 	public function getGroupTag(taoItems_models_classes_QTI_Group $group){
 		$returnValue = '';
-		$returnValue .= "<input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_choice_link\" value=\"{$group->getType()}\"/>";
+		$returnValue .= " <input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_choice_link\" value=\"{$group->getType()}\"/> ";
 		
 		return $returnValue;
 	}
@@ -778,7 +778,8 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function setData(taoItems_models_classes_QTI_Data $qtiObject, $data = ''){
-		$qtiObject->setData($data);
+		//
+		$qtiObject->setData($this->convertToXHTML($data));
 	}
 	
 	public function setIdentifier(taoItems_models_classes_QTI_Data $qtiObject, $identifier){

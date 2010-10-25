@@ -243,6 +243,8 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				$formContainer = $(containerSelector);
 				$formContainer.html(form);
 				
+				qtiEdit.mapHtmlEditor($formContainer);
+				
 				//reload the grid:
 				new responseClass(relatedItem.responseGrid, interaction);
 		   }
@@ -291,6 +293,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				$newFormElt.show();
 				
 				interaction.setFormChangeListener('#'+r.choiceSerial);
+				qtiEdit.mapHtmlEditor($newFormElt);
 				
 				//add to the local choices order array:
 				//if interaction type is match, save the new choice in one of the group array:

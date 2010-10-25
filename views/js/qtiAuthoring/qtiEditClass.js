@@ -303,10 +303,69 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 		   dataType: 'html',
 		   success: function(form){
 				$(instance.interactionFormContent).html(form);
+				qtiEdit.mapHtmlEditor($(instance.interactionFormContent));
+				
 		   }
 		});
 	}
 	
+}
+
+qtiEdit.mapHtmlEditor = function($container){
+	//map the wysiwyg editor to the html-area fields
+	$container.find('.qti-html-area').each(function(){
+		if ($(this).css('display') != 'none' && !$(this).siblings('.wysiwyg').length){
+		
+			var controls = {
+			
+			  strikeThrough : { visible : true },
+			  underline     : { visible : true },
+			  
+			  justifyLeft   : { visible : true },
+			  justifyCenter : { visible : true },
+			  justifyRight  : { visible : true },
+			  justifyFull   : { visible : true },
+			  
+			  indent  : { visible : true },
+			  outdent : { visible : true },
+			  
+			  subscript   : { visible : true },
+			  superscript : { visible : true },
+			  
+			  undo : { visible : true },
+			  redo : { visible : true },
+			  
+			  insertOrderedList    : { visible : true },
+			  insertUnorderedList  : { visible : true },
+			  insertHorizontalRule : { visible : true },
+			  cut   : { visible : true },
+			  copy  : { visible : true },
+			  paste : { visible : true },
+			  html  : { visible: false },
+			  h4: { visible: false },
+			  h5: { visible: false },
+			  h6: { visible: false },
+			  
+			  insertTable: { visible: false },
+			  addChoiceInteraction: {visible:false},
+			  addAssociateInteraction: {visible:false},
+			  addOrderInteraction: {visible:false},
+			  addMatchInteraction: {visible:false},
+			  addInlineChoiceInteraction: {visible:false},
+			  addTextEntryInteraction: {visible:false},
+			  addExtendedTextInteraction: {visible:false},
+			  addHotTextInteraction: {visible:false},
+			  addGapMatchInteraction: {visible:false},
+			  createHotText: {visible:false},
+			  createGap: {visible:false},
+			  saveItemData: {visible:false},
+			  saveInteractionData: {visible:false}
+			  
+			};
+		
+			$(this).wysiwyg({controls: controls});
+		}
+	});
 }
 
 qtiEdit.getEltInFrame = function(selector){
