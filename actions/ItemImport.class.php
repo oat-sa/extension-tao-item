@@ -162,8 +162,7 @@ class ItemImport extends Import {
 						$importedItems++;	//item is considered as imported there 
 						
 						//and copy the others resources in the runtime path
-						$deployFolder = dirname(str_replace(BASE_WWW, BASE_PATH.'/views', $mainFile));
-						
+						$deployFolder = dirname(str_replace(BASE_WWW, BASE_PATH.'/views/', $mainFile));
 						if(is_dir($deployFolder)){
 							foreach($resource->getAuxiliaryFiles() as $auxResource){
 								tao_helpers_File::copy($folder . '/'. $auxResource, $deployFolder . '/'. $auxResource, true);

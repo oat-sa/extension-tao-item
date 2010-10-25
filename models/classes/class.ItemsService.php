@@ -211,7 +211,19 @@ class taoItems_models_classes_ItemsService
         // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BB begin
 		
 		if(!is_null($item)){
+			
+			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
+				$folder = BASE_PATH.'/views/runtime/'.substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+				if(is_dir($folder)){
+					tao_helpers_File::remove($folder, true);
+				}
+				else{
+					echo $folder;
+				}
+			}
+			
 			$returnValue = $item->delete();
+			
 		}
 		
         // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BB end
