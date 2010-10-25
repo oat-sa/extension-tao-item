@@ -42,10 +42,46 @@ function getSubject(){
 /**
  * @return {Object} subject
  */
+function getSubjectLogin(){
+	var subject = getSubject();
+	return (subject) ? subject[URI.SUBJETC_LOGIN] : false;
+}
+
+/**
+ * @return {Object} subject
+ */
+function getSubjectName(){
+	var subject = getSubject();
+	return (subject) ? subject[URI.SUBJETC_FIRSTNAME] + ' ' + subject[URI.SUBJETC_LASTNAME] : false;
+}
+
+/**
+ * @return {Object} subject
+ */
 function getItem(){
 	return taoStack.getTaoVar(URI.ITEM);
 }
 
+/**
+ * @return {Object} test
+ */
+function getTest(){
+	return taoStack.getTaoVar(URI.TEST);
+}
+
+/**
+ * @return {Object} delivery
+ */
+function getDelivery(){
+	return taoStack.getTaoVar(URI.DELIVERY);
+}
+
+/**
+ * @return {Object} process execution
+ */
+function getProcessExecution(){
+	return taoStack.getTaoVar(URI.PROCESS);
+}
 
 /////////////////////
 // user variables //

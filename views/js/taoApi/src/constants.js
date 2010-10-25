@@ -12,8 +12,14 @@
  * the ##NAMESPACE# tag means the local namespace 
  */
 const URI = {
-	'ENDORSMENT' 	: '##NAMESPACE#ENDORSMENT',
-	'SUBJECT'		: 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject',
-	'ITEM'			: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
-	'PROCESS'		: 'http://www.tao.lu/middleware/taoqual.rdf#i119010455660544'
+	'LABEL'				: 'http://www.w3.org/2000/01/rdf-schema#label',
+	'ENDORSMENT' 		: '##NAMESPACE#ENDORSMENT',
+	'SUBJECT'			: 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject',
+	'SUBJETC_LOGIN'		: 'http://www.tao.lu/Ontologies/generis.rdf#login',
+	'SUBJETC_FIRSTNAME'	: 'http://www.tao.lu/Ontologies/generis.rdf#userFirstName',
+	'SUBJETC_LASTNAME'	: 'http://www.tao.lu/Ontologies/generis.rdf#userLastName',
+	'ITEM'				: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+	'PROCESS'			: 'http://www.tao.lu/middleware/taoqual.rdf#i119010455660544',
+	'TEST'				: 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test',
+	'DELIVERY'			: 'http://www.tao.lu/Ontologies/TAODelivery.rdf#Delivery'
 }; 

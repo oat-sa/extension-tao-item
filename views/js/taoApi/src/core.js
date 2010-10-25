@@ -32,21 +32,7 @@ function TaoStack(){
 	/**
 	 * @var {Object} it store the contextual  data (sent by the server on load, or on getting them)   
 	 */
-	this.dataStore = {
-		'token'			: '',
-		'localNamspace' : '',
-		'processUri' 	: '',
-		'item'	 	: {
-			'uri'	: '',
-			'label'	: ''
-		},
-		'subject'	: {
-			'uri'   	: '',
-			'login' 	: '',
-			'firstname' : '',
-			'lastname'  : ''
-		}
-	};
+	this.dataStore = new Object();
 	
 	/**
 	 * Initialize and setup the data source.
@@ -233,19 +219,44 @@ function TaoStack(){
 	
 	/**
 	 * @param {String} key
-	 * @return {String|int|float|boolean} value (false if the key is not found)
+	 * @param {boolean} label if you want to retrieve the label instead of the complete Object
+	 * @return {mixed} value (false if the key is not found)
 	 */
-	this.getTaoVar = function(key){
-		return (this.taoVars[key]) ? this.taoVars[key] : false;
+	this.getTaoVar = function(key, label){
+		var value =  (this.taoVars[key]) ? this.taoVars[key] : false;
+		
+		if($.isPlainObject(value)){
+			if( (value.indexOf('uri') > -1 && value.indexOf(URI.LABEL) > -1 && value.length == 2) || label){
+				return value[URI.LABEL];
+			}
+		}
+		return value;
 	};
 	
 	/**
+	 * The set method is restricted to scalar,
+	 * but could be used to reference a property node
+	 * 
 	 * @param {String} key
 	 * @param {String|int|float|boolean} value
+	 * @param {String} [property] the property uri 
 	 */
-	this.setTaoVar = function(key, value){
+	this.setTaoVar = function(key, value, property){
+		
 		if(isScalar(value)){
-			this.taoVars[key] = value;
+		
+			var currentValue =  (this.taoVars[key]) ? this.taoVars[key] : false;
+			if($.isPlainObject(currentValue)){
+				if(property){
+					this.taoVars[key][property] = value;
+				}
+				else if( value.indexOf('uri') > -1 && value.indexOf(URI.LABEL) > -1){
+					this.taoVars[key][URI.LABEL] = value;
+				}
+			}
+			else{
+				this.taoVars[key] = value;
+			}
 		}
 	};
 	
