@@ -1,15 +1,18 @@
 /**
- * TAO API 
+ * TAO API constants file.
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- * @package tao
- *
+ * @package taoItems
+ * @requires jquery >= 1.4.0 {@link http://www.jquery.com}
  */
 
 /**
- * list of common uris
- * the ##NAMESPACE# tag means the local namespace 
+ * This object is used for a convenience translation of URIS
+ * <i>the ##NAMESPACE# tag means the local namespace</i>
+ *  
+ * @var {Object} URI
+ * @constant 
  */
 const URI = {
 	'LABEL'				: 'http://www.w3.org/2000/01/rdf-schema#label',

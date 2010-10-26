@@ -7,12 +7,12 @@
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
- * 
- * @require jquery {@link http://www.jquery.com}
+ * @requires jquery {@link http://www.jquery.com}
  */
 
 /**
  * Initialize the QTI environment
+ * 
  * @namespace QTI
  * @param {Object} qti_initParam the parameters of ALL item's interaction
  * @return void
@@ -25,9 +25,9 @@ function qti_init(qti_initParam){
 
 /**
  * Initialize the widget and the result collection for an interaction
+ * 
  * @namespace QTI
  * @param {Object} initObj the params of the interaction (parts of qti_initParam identified by the interaction id)
- * @return void
  */
 function qti_init_interaction(initObj){
 	

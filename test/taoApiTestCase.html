@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>taoApi Test Suite</title>
+	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
+	<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+	<script type="text/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
+	<script type="text/javascript" src="../../tao/test/qunit/qunit.js"></script>
+	<script type="text/javascript" src="../views/js/taoApi/src/constants.js"></script>
+	<script type="text/javascript" src="../views/js/taoApi/src/core.js"></script>
+	<script type="text/javascript" src="../views/js/taoApi/src/api.js"></script>
+	
+	<script type="text/javascript">
+
+		module("constants");
+
+		test("Test the constants availability", function() {
+			ok( (URI != null), 'the URI constant should not be null');
+			ok( (URI.LABEL != undefined), 'the URhas a LABEL property');
+		});
+	
+		module("core");
+
+		test("Test an instance of the  TaoStack class", function() {
+			var aTaoStack =  new TaoStack();
+			ok( (aTaoStack != null), 'the taoStack instance should not be null');
+			ok( !$.isPlainObject(aTaoStack), 'check if the taoStack is not a plain object');
+			ok( (aTaoStack instanceof TaoStack), 'check the taoStack Class');
+			ok( (typeof(aTaoStack) === 'object'), 'check the taoStack type');
+		});
+
+		test("Test the global TaoStack instance used by the API", function() {
+			
+			ok( (taoStack != undefined), 'the taoStack instance should defined');
+			ok( !$.isPlainObject(taoStack), 'check if the taoStack is not a plain object');
+			ok( (taoStack instanceof TaoStack), 'check the taoStack Class');
+			ok( (typeof(taoStack) === 'object'), 'check the taoStack type');
+		});
+
+		module("dataSource");
+
+		test("Initialize a Manual Data Source", function() {
+			var taoEnv = new Object();
+			taoEnv['token'] = "7114e56cb3b9423314a425500afb41fc56183000";			//the token must comes from the server: taoEnv['token'] = "<? echo $token; ?>";
+			taoEnv['localNamspace'] = "http://tao.localdomain/middleware/mytao.rdf";
+			taoEnv[URI.PROCESS] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123467865"};
+			taoEnv[URI.PROCESS][URI.LABEL] = "Bachelor MATH 2010 SES012";
+/*
+			taoEnv[URI.DELIVERY]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1123467865";
+			taoEnv[URI.DELIVERY][URI.LABEL] = "Bachelor MATH 2010";
+			taoEnv[URI.TEST]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1123876239763";
+			taoEnv[URI.TEST][URI.LABEL] = "ALGEBER 2010";
+			taoEnv[URI.ITEM]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1123468712345";
+			taoEnv[URI.ITEM][URI.LABEL] = "Matrix level 2";
+			taoEnv[URI.SUBJECT]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1284379754048297800";
+			taoEnv[URI.SUBJECT][URI.LABEL] 				= "User_jdoe";
+			taoEnv[URI.SUBJECT][URI.SUBJETC_LOGIN] 		= "jdoe17";
+			taoEnv[URI.SUBJECT][URI.SUBJETC_FIRSTNAME] 	= "John";
+			taoEnv[URI.SUBJECT][URI.SUBJETC_LASTNAME] 	= "Doe";
+*/
+			ok( $.isPlainObject(taoEnv), 'check if the taoEnv is a plain object');
+		});
+		
+	</script>
+	
+</head>
+<body>
+	<h1 id="qunit-header">TAO API Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup</div>
+</body>
+</html>

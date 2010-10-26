@@ -1,28 +1,41 @@
 /**
- * TAO API 
+ * TAO API core.
+ * It provides the tools to set up the environment, 
+ * stock the data and push them to the server 
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- * @package tao
- * 
- * @require jquery >= 1.4.0 {@link http://www.jquery.com}
- *
+ * @package taoItems
+ * @requires jquery >= 1.4.0 {@link http://www.jquery.com}
  */
 
 /**
- * The TaoStack class
+ * The TaoStack class enables you:
+ * - to set up the platform to communicate with 
+ * (it's by default the TAO plateform but could be any other with the same services provided by the server side) 
+ * - to set and get variables created by the user or defined by the platform
+ * - to manage the source of data that the item could need
+ * - to push the communications with the platform
+ *  
+ * @namespace taoApi
+ * @class TaoStack
  */
 function TaoStack(){
 	
 	/**
-	 * @var {Object} the data source 
+	 * This object describes the way the data are accessed 
+	 * @var {Object} dataSource
 	 */
 	this.dataSource = new Object();
+	
+	//default data source environment
 	this.dataSource.environment = {
 		'type'		: 'async', 					// (manual|sync|async) 
 		'url' 		: '/tao/Api/getContext',	// the url to the server [NOT for manual type] 
 		'params'	: {	}						// the key/values to send to the server [NOT for manual type] 
 	};
+	
+	//default data source settings
 	this.dataSource.settings = {
 		'format'		: 'json',		//only json is supported
 		'method' 		: 'post',		//HTTP method (get|post) [NOT for manual type] 
@@ -30,7 +43,8 @@ function TaoStack(){
 	};
 	
 	/**
-	 * @var {Object} it store the contextual  data (sent by the server on load, or on getting them)   
+	 * This object stores the contextual  data (sent by the server on load, or on getting them)   
+	 * @var {Object} dataStore
 	 */
 	this.dataStore = new Object();
 	
@@ -39,12 +53,15 @@ function TaoStack(){
 	 * 
 	 * @param {Object} environment 
 	 * @see TaoStack.dataSource.environment
+	 * 
 	 * @param {Object} settings 
 	 * @see TaoStack.dataSource.settings
+	 * 
 	 * @param {Object} source if manual data source
 	 */
 	this.initDataSource = function(environment, settings, source){
 		if($.inArray(environment.type, ['manual','sync','async'])){
+			
 			this.dataSource.environment.type = environment.type;
 			if(this.dataSource.environment.type != 'manual' && environment.url){
 				if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(url)){	//test url format
@@ -75,12 +92,16 @@ function TaoStack(){
 	
 	/**
 	 * Load the contextual data 
-	 * @param {Object} source : the data ONLY for the manual source
+	 * @param {Object} [source] the data ONLY for the manual source
 	 */
 	this.loadData = function(source){
 		
-		/** assign the @param {Object} data to the @param {TaoStack} instance */
-		var populateData = function(instance, data){
+		/** 
+		 * Assign the 
+		 * @param {Object} data to the 
+		 * @param {TaoStack} instance 
+		 */
+		var populateData = function(data, instance){
 			if($.isPlainObject(data)){
 				for(key in instance.dataStore){
 					if(data[key]){
@@ -96,11 +117,13 @@ function TaoStack(){
 			}
 		};
 		
-		if(this.dataSource.environment.type == 'manual' && source){		//manual loading
-			populateData(this, source);
+		if(this.dataSource.environment.type == 'manual' && source){		
+			//manual loading
+			populateData(source, this);
 		}
-		else{		//sync|async loading, use an ajax request 
+		else{		
 			
+			//sync|async loading, use an ajax request 
 			var params = this.dataSource.environment.params;
 			var instance = this;
 			$.ajax({
@@ -110,7 +133,7 @@ function TaoStack(){
 				'async'		: (this.dataSource.environment.type == 'async'),
 				'dataType'  : this.dataSource.settings.format,
 				'success' 	: function(data){
-					populateData(instance, data);
+					populateData(data, instance);
 				}
 			});
 		}
@@ -121,14 +144,9 @@ function TaoStack(){
 	 */
 	this.push = new Object();
 	this.push.environment = {
-		'url' 		: '/tao/Api/save',		// the url to the server
-		'params'	: {			// the params to send to the server at each communication 
-		
-			//these parameters comes from the dataStore
-			'token'			: this.dataStore.token,
-			'processUri'	: this.dataStore.processUri,
-			'itemUri'		: this.dataStore.item.uri,
-			'subjectUri'	: this.dataStore.subject.uri
+		'url' 		: '/tao/Api/save',					// the url to the server
+		'params'	: {									// the params to send to the server at each communication 
+			'token'	: this.dataStore.token				//these parameters comes from the dataStore
 		}
 	};
 	this.push.settings = {

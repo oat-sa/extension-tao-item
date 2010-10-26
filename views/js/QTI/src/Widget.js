@@ -5,29 +5,36 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
  * 
- * @require jquery {@link http://www.jquery.com}
+ * @requires jquery {@link http://www.jquery.com}
  */
 
 /**
- * 
  * The QTIWidget class enables you to build a QTI widgets 
  * from XHTML elements and the given options
+ * 
  * @namespace QTI
  * @class QTIWidget
- * @param {Object} options the list of parameters 
+ * @property {Object} options the interaction of parameters 
  */
 var QTIWidget = function(options){
 	
 	//keep the current instance pointer
 	var _this = this;
 
+	/**
+	 * To access the widget options 
+	 * @type Object
+	 */
 	this.opts = options;
 
+	//the interaction selector, all elements selected must be inside this element,
+	// to be able to have some interactions in the same item
 	var qti_item_id = "#"+this.opts["id"];
 	
 	/**
 	 * Creates a choice list widget
-	 * @see simple_choice, multiple_choice
+	 * @see QTIWidget#simple_choice
+	 * @see QTIWidget#multiple_choice
 	 */
 	this.choice = function(){
 		var maxChoices =  parseInt(_this.opts["maxChoices"]);
@@ -67,12 +74,15 @@ var QTIWidget = function(options){
 		});
 	};
 	
+	/**
+	 * We use the html <i>select</i> widget,
+	 * the function is listed only to keep the same behavior than the other
+	 */
 	this.inline_choice = function (){};
 
 	/**
 	 * Creates a sortable list widget,
 	 * can be horizontal or vertical regarding the orientation parameter
-	 * @param {Object} currentObj
 	 */
 	this.order = function(){
 		
@@ -273,7 +283,8 @@ var QTIWidget = function(options){
 
 	/**
 	 * Creates a text entry widget
-	 * @see QTIWidget.string_interaction
+	 * 
+	 * @see QTIWidget#string_interaction
 	 */
 	this.text_entry = function (){
 		//adapt the field length
@@ -289,7 +300,8 @@ var QTIWidget = function(options){
 	/**
 	 * Creates a  extended text widget,
 	 * it can be a big text area or a set of text entries regarding the context
-	 * @see QTIWidget.string_interaction
+	 * 
+	 * @see QTIWidget#string_interaction
 	 */
 	this.extended_text = function (){
 		
@@ -375,7 +387,6 @@ var QTIWidget = function(options){
 	 * 	- without restriction, 
 	 *  - one by one and 
 	 *  - N at a time
-	 * 
 	 */
 	this.hottext = function(){
 		
@@ -590,8 +601,9 @@ var QTIWidget = function(options){
 		
 		/**
 		 * Exract the id from the rows and the columns from the node's classes
+		 * 
 		 * @param {jQuery} jElement the matrix node under the jQuery format
-		 * @return {Object} with xnode an ynode id 
+		 * @returns {Object} with xnode an ynode id 
 		 */
 		function getNodeXY(jElement){
 			
@@ -621,6 +633,7 @@ var QTIWidget = function(options){
 		
 		/**
 		 * Deactivate a node
+		 * 
 		 * @param {jQuery} jElement the matrix node under the jQuery format
 		 */
 		function deactivateNode(jElement){

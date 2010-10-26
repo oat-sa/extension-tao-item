@@ -5,23 +5,41 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
  * 
- * @require jquery {@link http://www.jquery.com}
+ * @requires jquery {@link http://www.jquery.com}
  */
 
 /** 
- * The QTIResultCollector class collects the user results of a QTI widgets defineby the options
+ * The QTIResultCollector class collects the user results of a QTI widgets
+ * and return a well formated variable 
+ * <i>(the type of the returned variable is deterministic for the result processing)</i>
+ * 
  * @namespace QTI
  * @class QTIResultCollector
- * @param {Object} options
+ * @property {Object} options the widget parameters
  */
 function QTIResultCollector(options){
 
+	//keep the current instance pointer
 	var _this = this;
 	
+	/**
+	 * The widget options 
+	 * @type Object 
+	 */
 	this.opts = options;
+	
+	/**
+	 * The id of the widget
+	 * @type String
+	 */
 	this.id = options['id'];
 	
-	// result process
+	
+	/**
+	 * Collect the results of a <b>choice</b> widget 
+	 * 
+	 * @returns {Object} the results
+	 */
 	this.choice = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -38,7 +56,13 @@ function QTIResultCollector(options){
 		
 		return result;
 	};
+
 	
+	/**
+	 * Collect the results of an <b>order</b> widget 
+	 * 
+	 * @returns {Object} the results
+	 */
 	this.order = function (){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -53,6 +77,12 @@ function QTIResultCollector(options){
 		return result;
 	};
 
+	
+	/**
+	 * Collect the results of an <b>associate</b> widget 
+	 * 
+	 * @returns {Object} the results
+	 */
 	this.associate = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -87,7 +117,14 @@ function QTIResultCollector(options){
 		return result;
 	};
 	
-	// @todo Multiple not tested
+
+	/**
+	 * Collect the results of text based widget : 
+	 * <b>text_entry</b> and <b>extended_text</b>
+	 * 
+	 * @todo Multiple not tested
+	 * @returns {Object} the results
+	 */
 	this.text = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -108,9 +145,25 @@ function QTIResultCollector(options){
 		
 		return result;
 	};
+	
+	
+	/**
+	 * @see QTIResultCollector#text
+	 */
 	this.text_entry = this.text;
+	
+	
+	/**
+	 * @see QTIResultCollector#text
+	 */
 	this.extended_text = this.text;
 
+	
+	/**
+	 * Collect the results of an <b>inline_choice</b> widget 
+	 * 
+	 * @returns {Object} the results
+	 */
 	this.inline_choice = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -119,6 +172,12 @@ function QTIResultCollector(options){
 		return result;
 	};
 
+	
+	/**
+	 * Collect the results of an <b>hottext</b> widget 
+	 * 
+	 * @returnss {Object} the results
+	 */
 	this.hottext = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -133,7 +192,13 @@ function QTIResultCollector(options){
 		return result;
 	};
 
-	// @todo does not work with single cardinality
+	
+	/**
+	 * Collect the results of an <b>gap_match</b> widget 
+	 * 
+	 * @todo does not work with single cardinality
+	 * @returns {Object} the results
+	 */
 	this.gap_match = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
@@ -149,7 +214,13 @@ function QTIResultCollector(options){
 		return result;
 	};
 	
-	// @todo does not work with single cardinality
+	
+	/**
+	 * Collect the results of a <b>match</b> widget 
+	 * 
+	 * @todo does not work with single cardinality
+	 * @returns {Object} the results
+	 */
 	this.match = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
