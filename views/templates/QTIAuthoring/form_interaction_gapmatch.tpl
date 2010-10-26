@@ -1,23 +1,29 @@
-<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
-		<?=__('Interaction editor:')?>
-</div>
-<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
-	<div class="ext-home-container ui-state-highlight">
-		<?=get_data('formInteraction')?>
-	</div>
-	
-	<div class="ext-home-container">
-		<div id="formInteraction_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
-				<?=__('Interaction content editor:')?>
+<div id="qtiAuthoring_interaction_left_container">
+	<div id="qtiAuthoring_interactionEditor"> 
+
+		<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
+				<?=__('Interaction editor:')?>
 		</div>
-		<div id="formContainer_interaction" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
-			<textarea name="interactionEditor_wysiwyg_name" id="interactionEditor_wysiwyg"><?=get_data('interactionData')?></textarea>
+		<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
+			<div class="ext-home-container ui-state-highlight">
+				<?=get_data('formInteraction')?>
+			</div>
+			
+			<div class="ext-home-container">
+				<div id="formInteraction_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
+						<?=__('Interaction content editor:')?>
+				</div>
+				<div id="formContainer_interaction" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
+					<textarea name="interactionEditor_wysiwyg_name" id="interactionEditor_wysiwyg"><?=get_data('interactionData')?></textarea>
+				</div>
+			</div>
+			
+			<div id="formChoices_container" class="ext-home-container">
+			</div>
+			
 		</div>
+
 	</div>
-	
-	<div id="formChoices_container" class="ext-home-container">
-	</div>
-	
 </div>
 
 <script type="text/javascript">
@@ -46,3 +52,8 @@ $(document).ready(function(){
 	}
 });
 </script>
+
+<div id="qtiAuthoring_interaction_right_container">
+<?include('form_response_container.tpl');?>
+</div>
+<div style="clear:both"/>

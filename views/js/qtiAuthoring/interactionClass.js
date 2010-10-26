@@ -1,10 +1,20 @@
-alert('interaction edit loaded');
+// alert('interaction edit loaded');
 interactionClass.instances = [];
 
-function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer){
+function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer, responseFormContainer){
 	
 	if(!interactionSerial){ throw 'no interaction serial found';}
 	if(!relatedItemSerial){ throw 'no related item serial found';}
+	
+	var defaultResponseFormContainer = {
+		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
+		responseGrid: 'qtiAuthoring_response_grid'
+	};
+	if(!responseFormContainer){
+		var responseFormContainer = defaultResponseFormContainer;
+	}
+	this.responseMappingOptionsFormContainer = responseFormContainer.responseMappingOptionsFormContainer;
+	this.responseGrid = responseFormContainer.responseGrid;
 	
 	this.interactionSerial = interactionSerial;
 	this.relatedItemSerial = relatedItemSerial;
@@ -29,7 +39,7 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 		this.setFormChangeListener();
 		
 		//and load the response form and grid:
-		new responseClass(this.getRelatedItem(true).responseGrid, this);
+		new responseClass(this.responseGrid, this);
 	}
 	
 	interactionClass.instances[interactionSerial] = this;
@@ -110,7 +120,7 @@ interactionClass.prototype.saveInteraction = function($myForm){
 				interaction.modifiedInteraction = false;
 				
 				if(r.reloadResponse){
-					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+					new responseClass(interaction.responseGrid, interaction);
 				}
 			}
 	   }
@@ -138,7 +148,7 @@ interactionClass.prototype.saveChoice = function($choiceForm){
 				if(r.reload){
 					interaction.loadChoicesForm();
 				}else if(r.identifierUpdated){
-					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+					new responseClass(interaction.responseGrid, interaction);
 				}
 				
 			}
@@ -175,7 +185,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 				if(r.reload){
 					interaction.loadChoicesForm();
 				}else if(r.identifierUpdated){
-					new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+					new responseClass(interaction.responseGrid, interaction);
 				}
 				
 			}
@@ -186,6 +196,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 interactionClass.prototype.loadResponseMappingForm = function(){
 	var relatedItem = this.getRelatedItem();
 	relatedItem.responseMappingMode = true;
+	var interacton = this;
 	
 	if(relatedItem){
 		$.ajax({
@@ -197,7 +208,7 @@ interactionClass.prototype.loadResponseMappingForm = function(){
 		   dataType: 'html',
 		   success: function(form){
 				
-				$formContainer = $(relatedItem.responseMappingOptionsFormContainer);
+				$formContainer = $(interacton.responseMappingOptionsFormContainer);
 				$formContainer.html(form);
 				if(relatedItem.responseMappingMode){
 					$formContainer.show();
@@ -228,7 +239,6 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 		}
 	}
 	var interactionSerial = this.interactionSerial;
-	var relatedItem = this.getRelatedItem(true);
 	var interaction = this;
 	
 	if($(containerSelector).length){
@@ -246,7 +256,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				qtiEdit.mapHtmlEditor($formContainer);
 				
 				//reload the grid:
-				new responseClass(relatedItem.responseGrid, interaction);
+				new responseClass(interaction.responseGrid, interaction);
 		   }
 		});
 	}
@@ -308,7 +318,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				}
 				
 				//rebuild the response grid:
-				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				new responseClass(interaction.responseGrid, interaction);
 			}
 	   }
 	});
@@ -420,6 +430,8 @@ interactionClass.prototype.setFormChangeListener = function(target){
 }
 
 interactionClass.prototype.setOrderedChoicesButtons = function(list){
+	 return false;//deactivate it for now
+	 
 	var interaction = this;
 	var total = list.length;
 	for(var i=0; i<total; i++){
@@ -442,6 +454,7 @@ interactionClass.prototype.setOrderedChoicesButtons = function(list){
 }
 
 interactionClass.prototype.setOrderedMatchChoicesButtons = function(doubleList){
+	return false;
 	
 	var interaction = this;
 	
@@ -456,7 +469,7 @@ interactionClass.prototype.setOrderedMatchChoicesButtons = function(doubleList){
 				break;
 			}
 			
-			$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control ui-icon ui-icon-circle-triangle-n"></span>');
+			$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control choice-button-up ui-icon ui-icon-circle-triangle-n"></span>');
 			
 			//get the corresponding group id:
 			$("#a_choicePropOptions_"+list[i]).after($upElt);
@@ -465,7 +478,7 @@ interactionClass.prototype.setOrderedMatchChoicesButtons = function(doubleList){
 				interaction.orderedChoices[e.data.groupSerial] = interaction.switchOrder(interaction.orderedChoices[e.data.groupSerial], choiceSerial, 'up');
 			});
 			
-			$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control ui-icon ui-icon-circle-triangle-s"></span>');
+			$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control choice-button-down ui-icon ui-icon-circle-triangle-s"></span>');
 			$upElt.after($downElt);
 			$downElt.bind('click', {'groupSerial':groupSerial}, function(e){
 				var choiceSerial = $(this).attr('id').substr(5);
@@ -484,7 +497,7 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 			break;
 		}
 	}
-	
+	try{
 	var $parentFormChoiceContainer = $('#'+choiceId).parents(".formContainer_choices");
 	var newOrder = [];
 	var sorted = false;
@@ -494,7 +507,7 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 			if(currentPosition>0){
 				qtiEdit.destroyHtmlEditor($parentFormChoiceContainer);
 				$('#'+choiceId).insertBefore('#'+list[currentPosition-1]);
-				// qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
+				qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
 				
 				// $('#'+choiceId).remove();
 				for(var i=0;i<list.length;i++){
@@ -547,6 +560,9 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 		newOrder = list;
 	}
 	
+	}catch(err){
+		
+	}
 	return newOrder;
 }
 
@@ -581,7 +597,7 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 			
 				$('#'+choiceSerial).remove();
 				//TODO: need to be optimized: only after the last choice saving
-				new responseClass(interaction.getRelatedItem(true).responseGrid, interaction);
+				new responseClass(interaction.responseGrid, interaction);
 				interaction.saveInteractionData();
 			}else{
 				interaction.choices[choiceSerial] = choiceSerial;
@@ -773,7 +789,6 @@ interactionClass.prototype.getDeletedChoices = function(one){
 interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	var interactionSerial = this.interactionSerial;
 	var interaction = this;
-	var relatedItem = interaction.getRelatedItem(true);
 	
 	$.ajax({
 	   type: "POST",
@@ -809,7 +824,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 			interaction.setFormChangeListener('#'+r.choiceSerial);
 					
 			//rebuild the response grid:
-			new responseClass(relatedItem.responseGrid, interaction);
+			new responseClass(interaction.responseGrid, interaction);
 	   }
 	});
 }
@@ -818,7 +833,6 @@ interactionClass.prototype.addGap = function(interactionData, $appendTo){
 
 	var interactionSerial = this.interactionSerial;
 	var interaction = this;
-	var relatedItem = interaction.getRelatedItem(true);
 	
 	$.ajax({
 	   type: "POST",
@@ -860,7 +874,7 @@ interactionClass.prototype.addGap = function(interactionData, $appendTo){
 			interaction.setFormChangeListener('#'+r.groupSerial);
 						
 			//rebuild the response grid:
-			new responseClass(relatedItem.responseGrid, interaction);
+			new responseClass(interaction.responseGrid, interaction);
 			
 			
 	   }

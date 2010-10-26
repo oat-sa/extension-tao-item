@@ -1,14 +1,20 @@
-<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
-		<?=__('Interaction editor:')?>
-</div>
-<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
-	<div class="ext-home-container ui-state-highlight">
-		<?=get_data('formInteraction')?>
-	</div>
+<div id="qtiAuthoring_interaction_left_container">
+	<div id="qtiAuthoring_interactionEditor"> 
+		
+		<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
+				<?=__('Interaction editor:')?>
+		</div>
+		<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
+			<div class="ext-home-container ui-state-highlight">
+				<?=get_data('formInteraction')?>
+			</div>
+			
+			<div id="formChoices_container" class="ext-home-container">
+			</div>
+			
+		</div>
 	
-	<div id="formChoices_container" class="ext-home-container">
 	</div>
-	
 </div>
 
 <script type="text/javascript">
@@ -22,3 +28,8 @@ $(document).ready(function(){
 	
 });
 </script>
+
+<div id="qtiAuthoring_interaction_right_container">
+<?include('form_response_container.tpl');?>
+</div>
+<div style="clear:both"/>

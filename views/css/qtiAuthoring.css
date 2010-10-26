@@ -1,3 +1,34 @@
+#qtiAuthoring_loading{
+	position:absolute;
+	width:100%;
+	height:100%;
+	z-index:1000;
+	background-color:#FFFFFF;
+}
+#qtiAuthoring_loading_message{
+	position:relative;
+	top:45%;
+	left:45%;
+}
+
+
+/*top menu*/
+div.qti-menu-item{
+	float:left;
+	text-align:center;
+	cursor:pointer;
+	padding: 0px 5px;
+}
+div.qti-menu-item a{
+	color:#D1043B;
+	font-weight:bold;
+	text-decoration:none;
+}
+div.qti-menu-item a:hover{
+	color:#FF8C8C;
+	text-decoration:underline;
+}
+
 /*uploadify made smaller*/
 div.xhtml_form div.file-uploader .uploadifyQueueItem, .uploadifyQueueItem {
 	width: auto;
@@ -51,12 +82,12 @@ div.formContainer_choice div.xhtml_form form{
 
 /*sizing the main containers*/
 #qtiAuthoring_itemEditor{
-	height: 580px;
+	height: 560px;
 	overflow-x:scroll;
 }
 
 #qtiAuthoring_itemEditor > div.wysiwyg{
-	height: 96%;
+	height: 95%;
 	padding: 0px 5px;
 	border: none;
 }
@@ -69,6 +100,33 @@ div.formContainer_choice div.xhtml_form form{
 	width:90%;
 }
 
+/*placing top menu*/
+#qtiAuthoring_menu_container{
+	width: 100%;
+	position: relative;
+	height:48px;
+	top:0%;
+	left:0%;
+	/*
+	background-color:#E6E6E6;
+	border-color:#AAAAAA #AAAAAA -moz-use-text-color;
+	border-style:solid solid none;
+	border-width:1px 1px 0;
+	*/
+}
+
+#qtiAuthoring_menu_left_container{
+	float:left;
+	width:25%;
+	padding:0px;
+}
+#qtiAuthoring_menu_right_container{
+	float:left;
+	width:75%;
+	padding:0px;
+}
+
+/*placing item container*/
 #qtiAuthoring_item_container{
 	width: 100%;
 	height: 100%;
@@ -78,23 +136,24 @@ div.formContainer_choice div.xhtml_form form{
 }
 #qtiAuthoring_item_left_container{
 	float:left;
-	height:600px;
+	height:584px;
 	width:25%;
 	padding:0px;
 }
 #qtiAuthoring_item_right_container{
 	float:left;
 	width:75%;
-	padding:0px;
+	padding:1px 0 0;
 }
 
+/*placing interaction container*/
 #qtiAuthoring_interaction_container{
 	width: 100%;
 	height: 100%;
 	position: relative;
 	left:0%;
 	top:100%;
-	padding:2px 5px;
+	margin-top: 10px;
 }
 
 #qtiAuthoring_interaction_left_container{

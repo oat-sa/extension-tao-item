@@ -124,6 +124,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('jwysiwyg_path', BASE_WWW.'js/jwysiwyg/');
 		$this->setData('simplemodal_path', BASE_WWW.'js/simplemodal/');
 		$this->setData('qtiAuthoring_path', BASE_WWW.'js/qtiAuthoring/');
+		$this->setData('qtiAuthoring_img_path', BASE_WWW.'img/qtiAuthoring/');
 		$this->setView("QTIAuthoring/authoring.tpl");
 		// $this->setView("QTIAuthoring/authoring_with_fw.tpl");
 	}

@@ -22,14 +22,37 @@
 <link rel="stylesheet" href="<?=get_data('simplemodal_path')?>jquery.simplemodal.css" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/qtiAuthoring.css" />
 
+<div id="qtiAuthoring_loading">
+	<div id="qtiAuthoring_loading_message">
+		<img src="<?=ROOT_URL?>/tao/views/img/ajax-loader.gif" alt="loading" />
+	</div>
+</div>
+
 <div id="qtiAuthoring_main_container">
-	<div id='qtiAuthoring_save_button'>
-		<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Save')?></a>
-	</div>
-	<div id='qtiAuthoring_preview_button'>
-		<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/save.png"><?=__('Preview')?></a>
-	</div>
 	
+	<div id="qtiAuthoring_menu_container" class="ui-widget-header ui-corner-all">
+		<div id="qtiAuthoring_menu_left_container">
+			<div id="qtiAuthoring_save_button" class="qti-menu-item">
+				<img title="Save" src="<?=get_data('qtiAuthoring_img_path')?>document-save.png"/>
+				<br/>
+				<a href="#">Save</a>
+			</div>
+			
+			<div id="qtiAuthoring_preview_button" class="qti-menu-item">
+				<img title="Preview" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
+				<br/>
+				<a href="#">Preview</a>
+			</div>
+		</div>
+		<div id="qtiAuthoring_menu_right_container">
+			<div id="add_choice_interaction" class="qti-menu-item">
+				<img title="Choice" src="<?=get_data('qtiAuthoring_img_path')?>window-new.png"/>
+				<br/>
+				<a href="#">Choice</a>
+			</div>
+			
+		</div>
+	</div>
 	<div id="qtiAuthoring_item_container">
 		<div id="qtiAuthoring_item_left_container">
 			<div id="item_option_accordion">
@@ -42,15 +65,6 @@
 				<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
 				<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"/>
 			</div>
-			<!--
-			<div id="qtiAuthoring_processing_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Response processing template editor:')?></div>
-			<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
-			
-			<div id="qtiAuthoring_itemProperties_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Properties:')?></div>
-			<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
-				<?=get_data('itemForm')?>
-			</div>
-			-->
 		</div>
 		
 		<div id="qtiAuthoring_item_right_container">
@@ -64,32 +78,6 @@
 	</div>
 	
 	<div id="qtiAuthoring_interaction_container">
-	
-		<div id="qtiAuthoring_interaction_left_container">
-			<div id='qtiAuthoring_interactionEditor'/>   
-		</div>
-		
-		<div id="qtiAuthoring_interaction_right_container">
-			
-			<div id="qtiAuthoring_mapping_container">
-			</div>
-			
-			<div id="qtiAuthoring_response_container">
-			</div>
-			
-			<div id="qtiAuthoring_response_title" class="ui-widget-header ui-corner-top ui-state-default">
-					<?=__('Response editor:')?>
-			</div>
-			<div id="qtiAuthoring_responseEditor" class="ui-widget-content ui-corner-bottom">
-				<div id="qtiAuthoring_response_formContainer" class="ext-home-container ui-state-highlight_cancel"/>
-				<div class="ext-home-container ui-state-highlight_cancel">
-					<table id="qtiAuthoring_response_grid"></table>
-				</div>
-			</div>
-			
-		</div>
-		
-		<div style="clear:both"/>
 	</div>
 	
 </div>
@@ -128,6 +116,8 @@ $(document).ready(function(){
 	});
 	
 	myItem.loadStyleSheetForm();
+	
+	setTimeout(function(){$('#qtiAuthoring_loading').hide();}, 1000);
 });
 
 </script>

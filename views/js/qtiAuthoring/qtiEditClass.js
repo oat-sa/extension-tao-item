@@ -6,7 +6,7 @@ function qtiEdit(itemSerial, formContainers){
 	
 	var defaultFormContainers = {
 		itemDataContainer : '#itemEditor_wysiwyg',
-		interactionFormContent : '#qtiAuthoring_interactionEditor',
+		interactionFormContent : '#qtiAuthoring_interaction_container',
 		responseProcessingFormContent : '#qtiAuthoring_processingEditor',
 		cssFormContent: '#qtiAuthoring_cssManager',
 		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
@@ -277,13 +277,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(){
 		
 		links[i].unbind('click').click(function(){
 			instance.currentInteractionSerial = $(this).attr('id');
-			
 			instance.loadInteractionForm(instance.currentInteractionSerial);
-			try{
-				// responseEdit.buildGrid(instance.responseGrid, instance.currentInteractionSerial);
-			}catch(err){
-				CL('building grid error:', err);
-			}
 		});
 		
 	}
@@ -509,7 +503,7 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 				}
 				
 				//destroy the response form:
-				if(responseClass.grid) responseClass.grid.destroyGrid(instance.responseGrid);
+				// if(responseClass.grid) responseClass.grid.destroyGrid(instance.responseGrid);
 				
 				//save item data, i.e. validate the changes operated on the item data:
 				instance.saveItemData();
