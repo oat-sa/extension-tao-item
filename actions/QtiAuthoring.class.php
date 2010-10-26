@@ -113,16 +113,19 @@ class QtiAuthoring extends CommonModule {
 		
 		$currentItem = $this->getCurrentItem();
 		// if($this->debugMode) var_dump($currentItem);
-		var_dump($currentItem);
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
 		$this->setData('itemData', $itemData);
+		
+		$this->setData('jsFramework_path', BASE_WWW.'js/jsframework/');
 		$this->setData('jwysiwyg_path', BASE_WWW.'js/jwysiwyg/');
 		$this->setData('simplemodal_path', BASE_WWW.'js/simplemodal/');
 		$this->setData('qtiAuthoring_path', BASE_WWW.'js/qtiAuthoring/');
 		$this->setView("QTIAuthoring/authoring.tpl");
+		// $this->setView("QTIAuthoring/authoring_with_fw.tpl");
 	}
 	
 	public function saveItemData(){
