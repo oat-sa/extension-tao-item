@@ -36,7 +36,7 @@ $(document).ready(function(){
 	myInteraction.setOrderedChoicesButtons(myInteraction.orderedChoices);
 	
 	//add the listener to the form changing 
-	myInteraction.setFormChangeListener();//all form
+	// myInteraction.setFormChangeListener();//all form
 	
 });
 </script>

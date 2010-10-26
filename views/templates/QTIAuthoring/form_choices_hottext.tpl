@@ -18,11 +18,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	
 	//add adv. & delete button
 	myInteraction.initToggleChoiceOptions();//{'delete':false}
-	
-	//add the listener to the form changing 
-	myInteraction.setFormChangeListener();//all form
 });
 </script>

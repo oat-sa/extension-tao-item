@@ -254,6 +254,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				$formContainer.html(form);
 				
 				qtiEdit.mapHtmlEditor($formContainer);
+				interaction.setFormChangeListener();
 				
 				//reload the grid:
 				new responseClass(interaction.responseGrid, interaction);
@@ -302,8 +303,9 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				interaction.initToggleChoiceOptions();
 				$newFormElt.show();
 				
-				interaction.setFormChangeListener('#'+r.choiceSerial);
 				qtiEdit.mapHtmlEditor($newFormElt);
+				interaction.setFormChangeListener('#'+r.choiceSerial);
+				
 				
 				//add to the local choices order array:
 				//if interaction type is match, save the new choice in one of the group array:
@@ -411,9 +413,7 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		}
 	}
 	
-	$("form").children().change(function(){
-		
-		var $modifiedForm = $(this).parents('form');
+	var setChanges = function($modifiedForm){
 		if($modifiedForm.length){
 			var id = $modifiedForm.attr('id');
 			if(id.indexOf('ChoiceForm') == 0){
@@ -424,6 +424,18 @@ interactionClass.prototype.setFormChangeListener = function(target){
 				interaction.modifiedGroups[id] = 'modified';
 			}
 		}
+	}
+	
+	$("form").children().change(function(){
+		var $modifiedForm = $(this).parents('form');
+		setChanges($modifiedForm);
+	});
+	
+	$("form").find('iframe').each(function(){
+		var $modifiedForm = $(this).parents('form');
+		$($(this)[0].contentWindow.document).keyup(function(){
+			setChanges($modifiedForm);
+		});
 	});
 	
 	return true;

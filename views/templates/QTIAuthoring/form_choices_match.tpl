@@ -48,8 +48,6 @@ $(document).ready(function(){
 	
 	myInteraction.setOrderedMatchChoicesButtons(myInteraction.orderedChoices);
 	
-	//add the listener to the form changing 
-	myInteraction.setFormChangeListener();//all form
 	
 });
 </script>
