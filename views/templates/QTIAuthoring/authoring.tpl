@@ -1,13 +1,4 @@
-<script language="Javascript" type="text/javascript">
-	// $(document).ready(function(){
-		// if($.browser == 'msie'){
-			// alert('getting script');
-			// $.getScript('/taoItems/views/js/qtiAuthoring/firebug-lite/build/firebug-lite.js', function() {
-			  // console.log('Load was performed.');
-			// });
-		// }
-	// });
-</script>
+
 <!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>firebug-lite/build/firebug-lite.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>
@@ -30,27 +21,21 @@
 
 <div id="qtiAuthoring_main_container">
 	
-	<div id="qtiAuthoring_menu_container" class="ui-widget-header ui-corner-all">
-		<div id="qtiAuthoring_menu_left_container">
+	<div id="qtiAuthoring_menu_container" class="ui-widget-content ui-corner-all">
+		<div id="qtiAuthoring_menu_left_container" class="ui-widget-header ui-corner-all">
 			<div id="qtiAuthoring_save_button" class="qti-menu-item">
-				<img title="Save" src="<?=get_data('qtiAuthoring_img_path')?>document-save.png"/>
+				<img title="<?=__('Save')?>" src="<?=get_data('qtiAuthoring_img_path')?>document-save.png"/>
 				<br/>
-				<a href="#">Save</a>
+				<a href="#"><?=__('Save')?></a>
 			</div>
 			
 			<div id="qtiAuthoring_preview_button" class="qti-menu-item">
-				<img title="Preview" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
+				<img title="<?=__('Preview')?>" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
 				<br/>
-				<a href="#">Preview</a>
+				<a href="#"><?=__('Preview')?></a>
 			</div>
 		</div>
-		<div id="qtiAuthoring_menu_right_container">
-			<div id="add_choice_interaction" class="qti-menu-item">
-				<img title="Choice" src="<?=get_data('qtiAuthoring_img_path')?>window-new.png"/>
-				<br/>
-				<a href="#">Choice</a>
-			</div>
-			
+		<div id="qtiAuthoring_menu_right_container" class="">
 		</div>
 	</div>
 	<div id="qtiAuthoring_item_container">
@@ -68,7 +53,7 @@
 		</div>
 		
 		<div id="qtiAuthoring_item_right_container">
-			<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>
+			<!--<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>-->
 			<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
 				<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
 			</div>
@@ -118,6 +103,69 @@ $(document).ready(function(){
 	myItem.loadStyleSheetForm();
 	
 	setTimeout(function(){$('#qtiAuthoring_loading').hide();}, 1000);
+	
+	
+	// available interactions:
+	var interactionTypes = {
+		choice: {
+			label: 'choice', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		inlinechoice: {
+			label: 'inline choice', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		associate: {
+			label: 'associate', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		order: {
+			label: 'order', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		match: {
+			label: 'match', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		gapmatch: {
+			label: 'gap match', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		textentry: {
+			label: 'text entry', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		extendedtext: {
+			label: 'extended text', 
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		hottext: {
+			label: 'hottext',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		}
+	}
+
+	for(interactionType in interactionTypes){
+		var id = 'add_'+interactionType+'_interaction';
+		$menuItem = $('<div/>');
+		$menuItem.attr('id', id);
+		$menuItem.addClass('qti-menu-item');
+		$menuItem.appendTo($('#qtiAuthoring_menu_right_container'));
+		
+		var label = interactionTypes[interactionType].label;
+		$imgElt = $('<img/>');
+		$imgElt.attr('title', label);
+		$imgElt.attr('src', interactionTypes[interactionType].icon);
+		$menuItem.append($imgElt);
+		$menuItem.append('<br/>');
+		$menuItem.append('<a href="#">'+label+'</a>');
+		
+		$('#qtiAuthoring_itemEditor').find('li.'+id).hide();
+		$menuItem.bind('click', {id:id}, function(e){
+			$('#qtiAuthoring_itemEditor').find('li.'+e.data.id).click();
+		});
+	}
+
 });
 
 </script>

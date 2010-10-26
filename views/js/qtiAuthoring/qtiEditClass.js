@@ -34,7 +34,7 @@ function qtiEdit(itemSerial, formContainers){
 	//init the item's jwysiwyg editor here:
 	var addChoiceInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_choice_interaction',
 		exec: function(){
 			CL('inserting interaction...');
 			//display modal window with the list of available type of interactions
@@ -52,7 +52,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addAssociateInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_associate_interaction',
 		exec: function(){
 			var interactionType = 'associate';
 			this.insertHtml('{qti_interaction_new}');
@@ -63,7 +63,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addOrderInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_order_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('order', this.getContent(), instance.itemSerial);
@@ -73,7 +73,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addMatchInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_match_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('match', this.getContent(), instance.itemSerial);
@@ -83,7 +83,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addInlineChoiceInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_inlinechoice_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('inlineChoice', this.getContent(), instance.itemSerial);
@@ -93,7 +93,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addTextEntryInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_textentry_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('textEntry', this.getContent(), instance.itemSerial);
@@ -103,7 +103,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addExtendedTextInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_extendedtext_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('extendedText', this.getContent(), instance.itemSerial);
@@ -113,7 +113,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addHotTextInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_hottext_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('hotText', this.getContent(), instance.itemSerial);
@@ -123,7 +123,7 @@ function qtiEdit(itemSerial, formContainers){
 
 	var addGapMatchInteraction = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'add_gapmatch_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
 			instance.addInteraction('gapMatch', this.getContent(), instance.itemSerial);
@@ -132,7 +132,7 @@ function qtiEdit(itemSerial, formContainers){
 	};
 
 	var saveItemData = {
-		visible : true,
+		visible : false,
 		className: 'addInteraction',
 		exec: function(){
 			instance.saveItemData();

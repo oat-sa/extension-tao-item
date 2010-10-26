@@ -13,11 +13,34 @@
 
 
 /*top menu*/
+/*placing top menu*/
+#qtiAuthoring_menu_container{
+	width: 100%;
+	position: relative;
+	height:65px;
+	top:0%;
+	left:0%;
+}
+
+#qtiAuthoring_menu_left_container{
+	float:left;
+	width:24.8%;
+	height:98%;
+	padding:0px;
+}
+#qtiAuthoring_menu_right_container{
+	float:left;
+	/*width:74.9%;*/
+	height:98%;
+	padding:0px;
+}
+
 div.qti-menu-item{
 	float:left;
 	text-align:center;
 	cursor:pointer;
 	padding: 0px 5px;
+	width: 60px;
 }
 div.qti-menu-item a{
 	color:#D1043B;
@@ -82,7 +105,7 @@ div.formContainer_choice div.xhtml_form form{
 
 /*sizing the main containers*/
 #qtiAuthoring_itemEditor{
-	height: 560px;
+	height: 580px;
 	overflow-x:scroll;
 }
 
@@ -98,32 +121,6 @@ div.formContainer_choice div.xhtml_form form{
 
 #interactionEditor_wysiwyg{
 	width:90%;
-}
-
-/*placing top menu*/
-#qtiAuthoring_menu_container{
-	width: 100%;
-	position: relative;
-	height:48px;
-	top:0%;
-	left:0%;
-	/*
-	background-color:#E6E6E6;
-	border-color:#AAAAAA #AAAAAA -moz-use-text-color;
-	border-style:solid solid none;
-	border-width:1px 1px 0;
-	*/
-}
-
-#qtiAuthoring_menu_left_container{
-	float:left;
-	width:25%;
-	padding:0px;
-}
-#qtiAuthoring_menu_right_container{
-	float:left;
-	width:75%;
-	padding:0px;
 }
 
 /*placing item container*/
