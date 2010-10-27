@@ -24,7 +24,7 @@ function TaoStack(){
 	
 	/**
 	 * This object describes the way the data are accessed 
-	 * @var {Object} dataSource
+	 * @type {Object} 
 	 */
 	this.dataSource = new Object();
 	
@@ -44,7 +44,7 @@ function TaoStack(){
 	
 	/**
 	 * This object stores the contextual  data (sent by the server on load, or on getting them)   
-	 * @var {Object} dataStore
+	 * @type {Object}
 	 */
 	this.dataStore = new Object();
 	
@@ -60,30 +60,39 @@ function TaoStack(){
 	 * @param {Object} source if manual data source
 	 */
 	this.initDataSource = function(environment, settings, source){
-		if($.inArray(environment.type, ['manual','sync','async'])){
+		if($.inArray(environment.type, ['manual','sync','async']) > -1){
 			
 			this.dataSource.environment.type = environment.type;
-			if(this.dataSource.environment.type != 'manual' && environment.url){
-				if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(url)){	//test url format
-		
-					this.dataSource.environment.url = url;		//set url
-					
-					if($.isPlainObject(environment.params)){	//set parameters
-						for(key in params){
-							if(isScalar(environment.params[key])){
-								this.dataSource.environment.params[key] = environment.params[key]+''; 
-							}
-						}
+			
+			if(this.dataSource.environment.type != 'manual'){
+				
+				//set the source url
+				if(environment.url){
+					if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url format
+						this.dataSource.environment.url = url;		
 					}
 				}
-				if($.isPlainObject(settings)){	//set push settings
-					if(settings.method){
-						if(/^get|post$/i.test(settings.method)){
-							this.dataSource.settings.method = settings.method;
+					
+				//and the parameters to add
+				if($.isPlainObject(environment.params)){	
+					for(key in params){
+						if(isScalar(environment.params[key])){
+							this.dataSource.environment.params[key] = environment.params[key]+''; 
 						}
 					}
 				}
 			}
+			
+			//set the source settings
+			if($.isPlainObject(settings)){	
+				if(settings.method){		//only the method is supported now
+					if(/^get|post$/i.test(settings.method)){
+						this.dataSource.settings.method = settings.method;
+					}
+				}
+			}
+			
+			//load the source
 			if(this.dataSource.settings.load == 'onInit'){
 				this.loadData(source);
 			}
@@ -103,21 +112,25 @@ function TaoStack(){
 		 */
 		var populateData = function(data, instance){
 			if($.isPlainObject(data)){
-				for(key in instance.dataStore){
-					if(data[key]){
+				for(key in data){
+					isTaoVar = false;
+					//for an uri, set the data in the tao variables 
+					for(uriKey in URI){
+						if(URI[uriKey] == key){
+							instance.taoVars[key] = data[key];
+							isTaoVar = true;
+							break;
+						}	
+					}
+					if(!isTaoVar){	//the other in the store
 						instance.dataStore[key] = data[key];
 					}
-				}
-				if(instance.dataStore.subject){
-					this.setTaoVar(URI.SUBJECT, instance.dataStore.subject);
-				}
-				if(instance.dataStore.item){
-					this.setTaoVar(URI.ITEM, instance.dataStore.item);
 				}
 			}
 		};
 		
-		if(this.dataSource.environment.type == 'manual' && source){		
+		if(this.dataSource.environment.type == 'manual' && source != null){		
+			
 			//manual loading
 			populateData(source, this);
 		}
@@ -133,23 +146,28 @@ function TaoStack(){
 				'async'		: (this.dataSource.environment.type == 'async'),
 				'dataType'  : this.dataSource.settings.format,
 				'success' 	: function(data){
-					populateData(data, instance);
+					//we load the data sent back by the remote source, in the FORMAT defined
+				
+					if(data.token){		// the token field is MANDATORY
+						populateData(data, instance);
+					}
 				}
 			});
 		}
 	};
 	
 	/**
-	 * @var {Object} the push data
+	 * The push data
+	 * @type {Object} 
 	 */
-	this.push = new Object();
-	this.push.environment = {
+	this.dataPush = new Object();
+	this.dataPush.environment = {
 		'url' 		: '/tao/Api/save',					// the url to the server
 		'params'	: {									// the params to send to the server at each communication 
 			'token'	: this.dataStore.token				//these parameters comes from the dataStore
 		}
 	};
-	this.push.settings = {
+	this.dataPush.settings = {
 		'format'		: 'json',	//only json is supported
 		'method' 		: 'post',	//HTTP method to push the data (get|post)
 		'async'			: true,		//if the request is asynchrone 
@@ -161,50 +179,53 @@ function TaoStack(){
 	 * Initialize and setup the push.
 	 * 
 	 * @param {Object} environment 
-	 * @see TaoStack.push.environment
+	 * @see TaoStack#dataPush#environment
 	 * @param {Object} settings 
-	 * @see TaoStack.push.settings
+	 * @see TaoStack#dataPush#settings
 	 */
 	this.initPush = function(environment, settings){
+		
 		if(environment.url){
 			if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
-	
-				this.push.environment.url = environment.url;		//set url
-				
-				if($.isPlainObject(environment.params)){	//ADD parameters
-					for(key in environment.params){
-						if(isScalar(environment.params[key]) && !this.push.environment.params[key]){	//don't edit the common params
-							this.push.environment.params[key] = environment.params[key]; 
-						}
-					}
+				this.dataPush.environment.url = environment.url;		//set url
+			}
+		}
+		
+		//ADD parameters
+		if($.isPlainObject(environment.params)){	
+			for(key in environment.params){
+				if(isScalar(environment.params[key]) && !this.dataPush.environment.params[key]){	//don't edit the common params
+					this.dataPush.environment.params[key] = environment.params[key]; 
 				}
-				if($.isPlainObject(settings)){	//set push settings
-					if(settings.method){
-						if(/^get|post$/i.test(settings.method)){
-							this.push.settings.method = settings.method;
-						}
-					}
-					if(settings.async === false){
-						this.push.settings.async = false;
-					}
-					if(settings.clearAfter === false){
-						this.push.settings.clearAfter = false;
-					}
+			}
+		}
+		
+		//set push settings
+		if($.isPlainObject(settings)){	
+			if(settings.method){
+				if(/^get|post$/i.test(settings.method)){
+					this.dataPush.settings.method = settings.method;
 				}
+			}
+			if(settings.async === false){
+				this.dataPush.settings.async = false;
+			}
+			if(settings.clearAfter === false){
+				this.dataPush.settings.clearAfter = false;
 			}
 		}
 	};
 	
 	/**
-	 * push all the data to the server
+	 * push all the data in the stack to the server
 	 */
 	this.push = function(){
 		
-		var params = this.push.environment.params;	//common parameters
+		var params = this.dataPush.environment.params;	//common parameters
 		
 		for (key in this.taoVars){					//tao variables
-			if(/^##NAMESPACE#/.test(key)){
-				key = key.replace('##NAMESPACE#', this.dataStore.localNamespace);
+			if(/^##NAMESPACE#/.test(key) && this.dataStore.localNamespace != undefined){
+				key = key.replace('##NAMESPACE#', this.dataStore.localNamespace);	//replace the localNamespace
 			}
 			params['taoVars'][key]= this.taoVars[key];
 		}
@@ -212,14 +233,18 @@ function TaoStack(){
 		//push the data to the server
 		var instance = this;
 		$.ajax({
-			'url'  		: this.push.environment.url,
+			'url'  		: this.dataPush.environment.url,
 			'data' 		: params,
-			'type' 		: this.push.settings.method,
-			'async'		: this.push.settings.async,
-			'dataType'  : this.push.settings.format,
+			'type' 		: this.dataPush.settings.method,
+			'async'		: this.dataPush.settings.async,
+			'dataType'  : this.dataPush.settings.format,
 			'success' 	: function(data){
-				if(data.saved){
-					if(instance.push.settings.clearAfter){
+				//the server send back the push status as
+				//@example {"saved": true} or {"saved": false} for a json format
+				if(data.saved){		
+					
+					//clear the stack 
+					if(instance.dataPush.settings.clearAfter){
 						instance.taoVars  = new Object();
 						instance.userVars = new Object();
 					}
@@ -231,20 +256,21 @@ function TaoStack(){
 /* TAO Variables */
 	
 	/**
-	 * @var {Object} contains the tao vars 
+	 * The stack container
+	 * @type {Object} 
 	 */
 	this.taoVars = new Object();
 	
 	/**
 	 * @param {String} key
-	 * @param {boolean} label if you want to retrieve the label instead of the complete Object
-	 * @return {mixed} value (false if the key is not found)
+	 * @param {boolean} [label] if you want to retrieve the label instead of the complete Object
+	 * @returns {mixed} value (false if the key is not found)
 	 */
 	this.getTaoVar = function(key, label){
 		var value =  (this.taoVars[key]) ? this.taoVars[key] : false;
 		
 		if($.isPlainObject(value)){
-			if( (value.indexOf('uri') > -1 && value.indexOf(URI.LABEL) > -1 && value.length == 2) || label){
+			if( (value['uri'] != undefined && value[URI.LABEL] != undefined && value.length == 2) || label){
 				return value[URI.LABEL];
 			}
 		}
@@ -256,7 +282,7 @@ function TaoStack(){
 	 * but could be used to reference a property node
 	 * 
 	 * @param {String} key
-	 * @param {String|int|float|boolean} value
+	 * @param {String|number|boolean} value
 	 * @param {String} [property] the property uri 
 	 */
 	this.setTaoVar = function(key, value, property){
@@ -281,13 +307,14 @@ function TaoStack(){
 /* Custom Variables */
 	
 	/**
-	 * @var {Object} contains the user custom vars 
+	 * The user custom variables container 
+	 * @type {Object} 
 	 */
 	this.userVars = new Object();
 	
 	/**
 	 * @param {String} key
-	 * @return {String|int|float|boolean} value (false if the key is not found)
+	 * @returns {String|number|boolean} value (false if the key is not found)
 	 */
 	this.getUserVar = function(key){
 		return (this.userVars[key]) ? this.userVars[key] : false;
@@ -295,7 +322,7 @@ function TaoStack(){
 	
 	/**
 	 * @param {String} key
-	 * @param {String|int|float|boolean} value
+	 * @param {String|number|boolean} value
 	 */
 	this.setUserVar = function(key, value){
 		if(isScalar(value)){
@@ -308,7 +335,7 @@ function TaoStack(){
 /**
  * Utility function to check if a value is a scalar
  * @param {mixed} value
- * @return {bool} true if it's a scalar
+ * @returns {bool} true if it's a scalar
  */
 function isScalar(value){
 	switch((typeof value).toLowerCase()){

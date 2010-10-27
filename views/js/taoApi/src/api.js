@@ -23,6 +23,7 @@ var taoStack = new TaoStack();
 /**
  * Get the endorsment of the item
  * 
+ * @function
  * @namespace taoApi
  * @returns {boolean}
  */
@@ -33,6 +34,7 @@ function getEndorsement(){
 /**
  * Set the endorsment of the item
  * 
+ * @function
  * @namespace taoApi
  * @param {boolean} endorsement
  */
@@ -43,6 +45,7 @@ function setEndorsement(endorsement){
 /**
  * Get the data of the user currently doing the item  (the subject)
  * 
+ * @function
  * @namespace taoApi
  * @returns {Object} all the data related to the subject
  */
@@ -53,6 +56,7 @@ function getSubject(){
 /**
  * Get the login of the subject
  * 
+ * @function
  * @namespace taoApi
  * @returns {String} the subject's login
  */
@@ -64,6 +68,7 @@ function getSubjectLogin(){
 /**
  * Get the name of the subject (firstname and lastname)
  * 
+ * @function
  * @namespace taoApi
  * @returns {Object} the subject's name
  */
@@ -75,6 +80,7 @@ function getSubjectName(){
 /**
  * Get the current item's informations 
  * 
+ * @function
  * @namespace taoApi
  * @returns {Object} the item's data (uri, label)
  */
@@ -86,6 +92,7 @@ function getItem(){
 /**
  * Get the informations of the currently running test 
  * 
+ * @function
  * @namespace taoApi
  * @returns {Object} the test's data (uri, label)
  */
@@ -96,6 +103,7 @@ function getTest(){
 /**
  * Get the informations of the current delivery
  * 
+ * @function
  * @namespace taoApi
  * @returns {Object} the delivery's data (uri, label)
  */
@@ -115,6 +123,7 @@ function getDelivery(){
  * When you call the <code>push()</code> function, the <i>user's variables</i> are sent to the server.
  * It's a way to record some data other than the results and the events.
  * 
+ * @function
  * @namespace taoApi
  * @param {String} key to identify of the variable
  * @param {String|number|boolean} the value of the variable
@@ -126,6 +135,7 @@ function setUserVar(key, value){
 /**
  * Get a previously defined user's variable.
  * 
+ * @function
  * @namespace taoApi
  * @param {String} key the key of the variable you want to retrieve
  * @returns {String|number|boolean}
@@ -141,10 +151,7 @@ function getUserVar(key){
  // EVENTS to be defined  //
 ///////////////////////////
 
-/**
- * @namespace taoApi
- * @param {Event} e
- */
+
 function setEvent(e){}
 
 
@@ -163,11 +170,12 @@ function createVar(){}
 /**
  * Get the communication token (this token is sent at each communication)
  * 
+ * @function
  * @namespace taoApi
  * @returns {String} the token
  */
 function getToken(){
-	return taoStack.getTaoVar('token');
+	return taoStack.dataStore.token;
 }
 
 /**
@@ -175,10 +183,11 @@ function getToken(){
  * You can retrieve this data from either a remote or a manual source.
  * If you don't need to change the default values, don't call this function. 
  * 
+ * @function
  * @namespace taoApi
  * 
  * @param {Object} environment <i>set to null if you want to keep all the default values</i>
- * @param {String] [environment.type = "async"] the datasource type <b>(manual|sync|async)</b> 
+ * @param {String} [environment.type = "async"] the datasource type <b>(manual|sync|async)</b> 
  * @param {String} [environment.url = "/tao/Api/getContext"] the url of the server where the data are sent 
  * @param {Object} [environment.params] the additional parameters to send with the data
  * 
@@ -194,6 +203,7 @@ function initDataSource(environment, settings){
  * This function is a convenience method to add directly the datasource 
  * by writing the data in the source object (JSON) 
  *   
+ * @function
  * @namespace taoApi
  * @param {Object} source
  */
@@ -206,6 +216,7 @@ function initManualDataSource(source){
  * Initialize the push communication.
  * If you don't need to change the default values, don't call this function. 
  * 
+ * @function
  * @namespace taoApi
  * 
  * @param {Object} environment <i>set to null if you want to keep all the default values</i>
@@ -226,7 +237,7 @@ function initPush(environment, settings){
 /**
  * This method enables you to push the data to the server.
  * 
- * 
+ * @function
  * @namespace taoApi
  * @returns {bool}
  */

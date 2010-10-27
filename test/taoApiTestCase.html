@@ -45,20 +45,30 @@
 			taoEnv['localNamspace'] = "http://tao.localdomain/middleware/mytao.rdf";
 			taoEnv[URI.PROCESS] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123467865"};
 			taoEnv[URI.PROCESS][URI.LABEL] = "Bachelor MATH 2010 SES012";
-/*
-			taoEnv[URI.DELIVERY]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1123467865";
+			taoEnv[URI.DELIVERY] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123467865"};
 			taoEnv[URI.DELIVERY][URI.LABEL] = "Bachelor MATH 2010";
-			taoEnv[URI.TEST]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1123876239763";
+			taoEnv[URI.TEST] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123876239763"};
 			taoEnv[URI.TEST][URI.LABEL] = "ALGEBER 2010";
-			taoEnv[URI.ITEM]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1123468712345";
+			taoEnv[URI.ITEM] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123468712345"};
 			taoEnv[URI.ITEM][URI.LABEL] = "Matrix level 2";
-			taoEnv[URI.SUBJECT]['uri'] = "http://tao.localdomain/middleware/mytao.rdf#i1284379754048297800";
+			taoEnv[URI.SUBJECT] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1284379754048297800"};
 			taoEnv[URI.SUBJECT][URI.LABEL] 				= "User_jdoe";
 			taoEnv[URI.SUBJECT][URI.SUBJETC_LOGIN] 		= "jdoe17";
 			taoEnv[URI.SUBJECT][URI.SUBJETC_FIRSTNAME] 	= "John";
 			taoEnv[URI.SUBJECT][URI.SUBJETC_LASTNAME] 	= "Doe";
-*/
+
 			ok( $.isPlainObject(taoEnv), 'check if the taoEnv is a plain object');
+
+			initManualDataSource(taoEnv);
+
+			equals(getSubjectLogin(), "jdoe17", 'Test if the login is set');
+
+			equals(getToken(), "7114e56cb3b9423314a425500afb41fc56183000", 'Test if the token matches');
+
+			setUserVar('tempScore', 14);
+
+			equals(getUserVar('tempScore'), 14, 'Test the user variables');
+			
 		});
 		
 	</script>
