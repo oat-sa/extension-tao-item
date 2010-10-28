@@ -30,9 +30,9 @@ function TaoStack(){
 	
 	//default data source environment
 	this.dataSource.environment = {
-		'type'		: 'async', 					// (manual|sync|async) 
-		'url' 		: '/tao/Api/getContext',	// the url to the server [NOT for manual type] 
-		'params'	: {	}						// the key/values to send to the server [NOT for manual type] 
+		'type'		: 'async', 							// (manual|sync|async) 
+		'url' 		: '/taoResults/Server/initialize',	// the url to the server [NOT for manual type] 
+		'params'	: { }								// the key/values to send to the server [NOT for manual type] 
 	};
 	
 	//default data source settings
@@ -111,19 +111,13 @@ function TaoStack(){
 		 * @param {TaoStack} instance 
 		 */
 		var populateData = function(data, instance){
+			//we filter on what we want
 			if($.isPlainObject(data)){
 				for(key in data){
-					isTaoVar = false;
-					//for an uri, set the data in the tao variables 
 					for(uriKey in URI){
-						if(URI[uriKey] == key){
-							instance.taoVars[key] = data[key];
-							isTaoVar = true;
-							break;
+						if(URI[uriKey] == key ||  $.inArray(key, ['token', 'localNamespace']){
+							instance.dataStore[key] = data[key];
 						}	
-					}
-					if(!isTaoVar){	//the other in the store
-						instance.dataStore[key] = data[key];
 					}
 				}
 			}
@@ -162,7 +156,7 @@ function TaoStack(){
 	 */
 	this.dataPush = new Object();
 	this.dataPush.environment = {
-		'url' 		: '/tao/Api/save',					// the url to the server
+		'url' 		: '/taoResults/Server/save',					// the url to the server
 		'params'	: {									// the params to send to the server at each communication 
 			'token'	: this.dataStore.token				//these parameters comes from the dataStore
 		}
@@ -222,13 +216,22 @@ function TaoStack(){
 	this.push = function(){
 		
 		var params = this.dataPush.environment.params;	//common parameters
+		if(params.token == undefined){
+			params.token = this.dataStore.token;
+		}
+		params['taoVars'] 	= new Object();
+		params['userVars'] 	= this.userVars;
 		
 		for (key in this.taoVars){					//tao variables
 			if(/^##NAMESPACE#/.test(key) && this.dataStore.localNamespace != undefined){
-				key = key.replace('##NAMESPACE#', this.dataStore.localNamespace);	//replace the localNamespace
+				newkey = key.replace('##NAMESPACE', this.dataStore.localNamespace);	//replace the localNamespace
+				params['taoVars'][newkey]= this.taoVars[key];
 			}
-			params['taoVars'][key]= this.taoVars[key];
+			else{
+				params['taoVars'][key]= this.taoVars[key];
+			}
 		}
+		
 		 
 		//push the data to the server
 		var instance = this;
@@ -239,6 +242,8 @@ function TaoStack(){
 			'async'		: this.dataPush.settings.async,
 			'dataType'  : this.dataPush.settings.format,
 			'success' 	: function(data){
+				
+			
 				//the server send back the push status as
 				//@example {"saved": true} or {"saved": false} for a json format
 				if(data.saved){		

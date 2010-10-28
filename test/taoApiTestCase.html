@@ -42,7 +42,7 @@
 		test("Initialize a Manual Data Source", function() {
 			var taoEnv = new Object();
 			taoEnv['token'] = "7114e56cb3b9423314a425500afb41fc56183000";			//the token must comes from the server: taoEnv['token'] = "<? echo $token; ?>";
-			taoEnv['localNamspace'] = "http://tao.localdomain/middleware/mytao.rdf";
+			taoEnv['localNamespace'] = "http://tao.localdomain/middleware/mytao.rdf";
 			taoEnv[URI.PROCESS] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123467865"};
 			taoEnv[URI.PROCESS][URI.LABEL] = "Bachelor MATH 2010 SES012";
 			taoEnv[URI.DELIVERY] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123467865"};
@@ -68,6 +68,10 @@
 			setUserVar('tempScore', 14);
 
 			equals(getUserVar('tempScore'), 14, 'Test the user variables');
+
+			setEndorsment(true);
+
+			push();
 			
 		});
 		

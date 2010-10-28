@@ -27,7 +27,7 @@ var taoStack = new TaoStack();
  * @namespace taoApi
  * @returns {boolean}
  */
-function getEndorsement(){
+function getEndorsment(){
 	return taoStack.getTaoVar(URI.ENDORSMENT);
 }
 
@@ -36,10 +36,10 @@ function getEndorsement(){
  * 
  * @function
  * @namespace taoApi
- * @param {boolean} endorsement
+ * @param {boolean} endorsment
  */
-function setEndorsement(endorsement){
-	taoStack.setTaoVar(URI.ENDORSMENT, (endorsement == true));
+function setEndorsment(endorsment){
+	taoStack.setTaoVar(URI.ENDORSMENT, (endorsment === true));
 }
 
 /**
@@ -145,14 +145,34 @@ function getUserVar(key){
 }
 
 
+  /////////////
+ // EVENTS  //
+/////////////
 
+/**
+ * Log the an <i>eventType</i> bound on <i>elementName</i> by sending the <i>data</i>.
+ * 
+ * @function
+ * @namespace taoApi
+ * @param {String} elementName an HTML tag name
+ * @param {String} eventType a JS User Events
+ * @param {mixed} data any data strucuture you want to trace
+ */
+function logEvent(elementName, eventType, data){
+	feedTrace(elementName, eventType, new Date().getTime(), data);
+}
 
-  ///////////////////////////
- // EVENTS to be defined  //
-///////////////////////////
-
-
-function setEvent(e){}
+/**
+ * Log the a <i>eventName</i> by sending the <i>data</i>
+ * 
+ * @function
+ * @namespace taoApi
+ * @param {String} eventName the name of the custom event
+ * @param {mixed} data 
+ */
+function logCustomEvent(eventName, data){
+	feedTrace('BUSINESS', eventName, new Date().getTime(), data);
+}
 
 
   ////////////////////////////
