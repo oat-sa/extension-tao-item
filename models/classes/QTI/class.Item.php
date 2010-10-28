@@ -481,45 +481,38 @@ class taoItems_models_classes_QTI_Item
     	//get the variables to used in the template
         
     	$variables 	= $this->extractVariables();
-        foreach($this->getInteractions() as $interaction){
+        $interactions = $this->getInteractions();
+        foreach($interactions as $interaction){
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
         }	
 
-        // Build the matching initialization parameters function of the matching engine deploying options (client or server side)
-    	if (false) {
-			$corrects = Array ();
-			$maps = Array ();
-			$outcomes = Array ();
-	    	$rule = $this->getResponseProcessing ()->getRule();
-			
-	    	// Get all correct responses
-			$interactions = $this->getInteractions();
-			foreach ($interactions as $interaction){
-				array_push ($corrects, $interaction->getResponse ()->correctToJSON());
-				array_push ($maps, $interaction->getResponse ()->mapToJSON());
-			}
-			
-			// Get all outcomes
-			$outcomes = Array ();
-			$outcomesObject = $this->getOutcomes ();
-			foreach ($outcomesObject as $outcome){
-				array_push ($outcomes, $outcome->toJSON());
-			}
-			
-			// Set the template variables
-			$variables['corrects'] = json_encode($corrects);
-			$variables['maps'] =  json_encode($maps);
-			$variables['outcomes'] = json_encode ($outcomes);
-			$variables["rule"] = $this->responseProcessing->getRule();
-			$variables['matchingEngineServerSide'] = false;
-    	} 
-    	else {
-    		$tmpInteraction = current($this->getInteractions());
-    		$variables['url'] = "http://tao.local/taoItems/Matching/evaluate";
-    		$variables['params'] = json_encode ( Array ("token"=>"TAOToken::getToken()", "interactionType"=>$tmpInteraction->type) ); 
-			$variables['matchingEngineServerSide'] = true;
-    	}
+        // get Matching parameters (client & server mode)
+		$corrects = Array ();
+		$maps = Array ();
+		$outcomes = Array ();
+    	$rule = $this->getResponseProcessing ()->getRule();
+		
+    	// Get correct responses 
+		foreach ($interactions as $interaction){
+			array_push ($corrects, $interaction->getResponse ()->correctToJSON());
+			array_push ($maps, $interaction->getResponse ()->mapToJSON());
+		}
+		
+		// Get outcomes variables
+		$outcomes = Array ();
+		$outcomesObject = $this->getOutcomes ();
+		foreach ($outcomesObject as $outcome){
+			array_push ($outcomes, $outcome->toJSON());
+		}
+		
+		// Set the template variables associated to the matching
+		$variables['matching_corrects'] = json_encode($corrects);
+		$variables['matching_maps'] =  json_encode($maps);
+		$variables['matching_outcomes'] = json_encode ($outcomes);
+		$variables['matching_rule'] = $this->responseProcessing->getRule();
+		$variables['matching_url'] = "taoItems/Matching/evaluate";
+		$variables['matching_params'] = json_encode ( Array ("token"=>"TAOToken::getToken()") );
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();

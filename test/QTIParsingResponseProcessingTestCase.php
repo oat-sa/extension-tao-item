@@ -21,7 +21,10 @@ class QTIParsingResponseProcessingTestCase extends UnitTestCase {
 		$parameters = array(
 			'root_url' => ROOT_URL,
         	'base_www' => BASE_WWW,
-        	'taobase_www' => TAOBASE_WWW
+        	'taobase_www' => TAOBASE_WWW,
+        	// Tmp matching context
+            'tmp_item_path' => dirname(__FILE__).'/samples/choice_multiple.xml',
+            'delivery_server_mode' => true
 		);
 		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
 		

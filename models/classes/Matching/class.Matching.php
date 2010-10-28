@@ -278,7 +278,7 @@ class taoItems_models_classes_Matching_Matching
      * @param  data
      * @return mixed
      */
-    public function setMaps(   $data)
+    public function setMaps($data)
     {    	
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002918 begin
         

@@ -307,13 +307,17 @@ class taoItems_models_classes_QTI_Response
 
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A17 begin
         
-        $returnValue = taoItems_models_classes_Matching_VariableFactory::createJSONVariableFromQTIData (
-    		$this->getIdentifier()
-    		, $this->options['cardinality']
-    		, $this->options['baseType']
-    		, $this->correctResponses
-    	);
-        
+        $correctResponses = $this->getCorrectResponses();
+        if (count($correctResponses))
+        {
+            $returnValue = taoItems_models_classes_Matching_VariableFactory::createJSONVariableFromQTIData (
+        		$this->getIdentifier()
+        		, $this->options['cardinality']
+        		, $this->options['baseType']
+        		, $this->correctResponses
+        	);
+        }
+               
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A17 end
 
         return $returnValue;
@@ -332,25 +336,28 @@ class taoItems_models_classes_QTI_Response
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A19 begin
         
     	$mapping = $this->getMapping();
-    	$returnValue = Array ();
-    	$returnValue['identifier'] = $this->getIdentifier();
-    	$mappingValue = Array ();    	
-    	
-    	// If a mapping has been defined
-    	if (!empty($mapping))
-    	{
-	    	foreach ($mapping as $mapKey=>$mappedValue)
-	    	{
-	    		$mapEntryJSON = Array();
-	    		$mapEntryJSON['value'] = (float) $mappedValue;
-	    		$mapEntryJSON['key'] = taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData  ($mapKey, $this->options['baseType']);
-		    	array_push ($mappingValue, (object) $mapEntryJSON);
-	    	}
-	    	
-	    	$returnValue['value'] = $mappingValue;
-    	}
-        
-    	$returnValue = (object) $returnValue;
+        if (count ($mapping))
+        {
+            $returnValue = Array ();
+            $returnValue['identifier'] = $this->getIdentifier();
+            $mappingValue = Array ();       
+            
+            // If a mapping has been defined
+            if (!empty($mapping))
+            {
+                foreach ($mapping as $mapKey=>$mappedValue)
+                {
+                    $mapEntryJSON = Array();
+                    $mapEntryJSON['value'] = (float) $mappedValue;
+                    $mapEntryJSON['key'] = taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData  ($mapKey, $this->options['baseType']);
+                    array_push ($mappingValue, (object) $mapEntryJSON);
+                }
+                
+                $returnValue['value'] = $mappingValue;
+            }
+            
+            $returnValue = (object) $returnValue;   
+        }
     	
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A19 end
 

@@ -290,7 +290,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'choice'
+					, "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -314,7 +314,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'associate'
+					, "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/associate.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -338,7 +338,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'choice_multiple'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice_multiple.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -362,7 +362,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'gap_match'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/gap_match.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -386,7 +386,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'match'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/match.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -401,21 +401,7 @@
 				}
 			};
 			matching_init (matching_param);
-			matching_setResponses ([{
-				"identifier": "RESPONSE", "value": [{
-					"0": "C",
-					"1": "R"
-				}, {
-					"0": "D",
-					"1": "M"
-				}, {
-					"0": "L",
-					"1": "M"
-				}, {
-					"0": "P",
-					"1": "T"
-				}]
-			}]);
+			matching_setResponses ([{ "identifier": "RESPONSE", "value": [{ "0": "C", "1": "R" }, {"0": "D", "1": "M" }, { "0": "L", "1": "M" }, { "0": "P", "1": "T" }] }]);
 			matching_evaluate ();
 						
 			
@@ -424,7 +410,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'order'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/order.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -447,7 +433,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'hottext'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/hottext.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -470,7 +456,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'inline_choice'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/inline_choice.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -493,7 +479,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'text_entry'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/text_entry.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -516,7 +502,7 @@
 				"url" : "http://tao.local/taoItems/Matching/evaluate"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "interactionType" : 'orkney1'
+                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/orkney1.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
