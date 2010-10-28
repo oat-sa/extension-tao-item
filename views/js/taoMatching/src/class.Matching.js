@@ -9,7 +9,6 @@ TAO_MATCHING.Matching = function (pData, pOptions) {
 		, "corrects" 	: null
 		, "maps" 		: null
 		, "rule" 		: null
-		, "evaluateCallback" : null
 	}; if (typeof(pData) != 'undefined') $.extend(data, pData);
     var options = {
 		"evaluateCallback" : null
@@ -101,7 +100,7 @@ TAO_MATCHING.Matching = function (pData, pOptions) {
 
 TAO_MATCHING.Matching.prototype = {
     /**
-     * Eval the stored response processing rule
+     * Evaluate the matching rule
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -116,26 +115,8 @@ TAO_MATCHING.Matching.prototype = {
 			this.options.evaluateCallback ();
     }
 
-	/**
-     * Get a correct variable, return null if the variable does not exist
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
-     * @return taoItems_models_classes_Matching_Variable
-     */
-    , getCorrect : function (id)
-    {
-        var returnValue = null;
-
-        if (typeof (this.corrects[id]) != 'undefined')
-        	returnValue = this.corrects[id];
-
-        return returnValue;
-    }
-	
     /**
-     * Short description of method getJSonOutcomes
+     * Get the outcome in the defined JSON format
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -152,137 +133,9 @@ TAO_MATCHING.Matching.prototype = {
 
         return returnValue;
     }
-	
-    /**
-     * Short description of method getMap
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
-     * @return taoItems_models_classes_Matching_Map
-     */
-    , getMap : function (id)
-    {
-        var returnValue = null;
-
-        if (typeof (this.maps[id]) != 'undefined')
-        	returnValue = this.maps[id];
-
-        return returnValue;
-    }
 
     /**
-     * Short description of method getOutcome
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
-     * @return taoItems_models_classes_Matching_Variable
-     */
-    , getOutcome : function (id)
-    {
-        var returnValue = null;
-
-        if (typeof (this.outcomes[id]) != 'undefined')
-        	returnValue = this.outcomes[id];
-
-        return returnValue;
-    }
-
-    /**
-     * Short description of method getResponse
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
-     * @return taoItems_models_classes_Matching_Variable
-     */
-    , getResponse : function (id)
-    {
-        var returnValue = null;
-
-        if (typeof (this.responses[id]) != 'undefined')
-        	returnValue = this.responses[id];
-
-        return returnValue;
-    }
-
-	/**
-     * Short description of method getRule
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return string
-     */
-    , getRule : function ()
-    {
-        return this.rule;
-    }
-
-    /**
-     * Short description of method isNull
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Variable var
-     * @return boolean
-     */
-    , isNull : function (matchingVar)
-    {
-        return matchingVar.isNull();
-    }
-
- 	/**
-     * Short description of method mapResponse
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Map map
-     * @param  Variable expr
-     * @return double
-     */
-    , mapResponse : function (map, matchingVar)
-    {
-		if (! (map instanceof TAO_MATCHING.Map) )
-			throw new Error ('TAO_MATCHING.Matching::mapResponse an error occured : first argument expected type TAO_MATCHING.Map, given : '+(typeof map));
-
-        return map.map (matchingVar);
-    }
-
-    /**
-     * The match operator takes two sub-expressions which must both have the
-     * type and cardinality. The result is a single boolean with a value of true
-     * the two expressions represent the same value and false if they do not.
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  expr1
-     * @param  expr2
-     * @return boolean
-     */
-	
-    , match : function (expr1, expr2)
-    {
-        var returnValue = false;
-                
-        if (typeof (expr1) == 'undefined')
-        	throw new Exception ("TAO_MATCHING.Matching::match error : the first argument does not exist");
-        if (typeof (expr2) == 'undefined')
-        	throw new Exception ("TAO_MATCHING.Matching::match error : the second argument does not exist");
-
-        if (expr1.getType() != expr2.getType()) { 
-        	returnValue = false;
-    	} else {
-        	returnValue = expr1.match(expr2);
-        }
-        
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D end
-
-        return returnValue;
-    }
-
-	/**
-     * Set the correct variables of the item
+     * Set the corrects
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -308,7 +161,7 @@ TAO_MATCHING.Matching.prototype = {
     }
 	
     /**
-     * Set the map variables of the item
+     * Set the mappings
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -333,8 +186,8 @@ TAO_MATCHING.Matching.prototype = {
 		}
     }
 	
-	/**
-     * Set the outcome variables of the item
+    /**
+     * Set the outcomes
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -362,24 +215,7 @@ TAO_MATCHING.Matching.prototype = {
     }
 
     /**
-     * Set the value of an outcome variable
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
-     * @param  value
-     * @return mixed
-     */
-    , setOutcomeValue : function (id, value)
-	{
-        var outcome = this.getOutcome (id);
-        if(outcome == null)
-        	throw new Exception ('TAO_MATCHING.Matching::setOutcomeValue error : the outcome value '+id+' does not exist');
-        outcome.setValue (value);
-    }
-
-	/**
-     * Set the response variables of the item
+     * Set the responses
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -405,7 +241,8 @@ TAO_MATCHING.Matching.prototype = {
     }
 	
     /**
-     * Short description of method setRule
+    /**
+     * Set the matching rule
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -431,4 +268,281 @@ TAO_MATCHING.Matching.prototype = {
 		
 		this.rule = rule;
 	}
+
+    /**
+     * Set the value of an outcome variable
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @param  value
+     * @return mixed
+     */
+    , setOutcomeValue : function (id, value)
+    {
+        var outcome = this.getOutcome (id);
+        if(outcome == null)
+            throw new Exception ('TAO_MATCHING.Matching::setOutcomeValue error : the outcome value '+id+' does not exist');
+        outcome.setValue (value);
+    }
+    
+    /**
+     * Get a correct variable from its identifier
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_Matching_Variable
+     */
+    , getCorrect : function (id)
+    {
+        var returnValue = null;
+
+        if (typeof (this.corrects[id]) != 'undefined')
+            returnValue = this.corrects[id];
+
+        return returnValue;
+    }
+        
+    /**
+     * Get a mapping variable from its identifier
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_Matching_Map
+     */
+    , getMap : function (id)
+    {
+        var returnValue = null;
+
+        if (typeof (this.maps[id]) != 'undefined')
+            returnValue = this.maps[id];
+
+        return returnValue;
+    }
+
+    /**
+     * Get an outcome variable from its identifier
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_Matching_Variable
+     */
+    , getOutcome : function (id)
+    {
+        var returnValue = null;
+
+        if (typeof (this.outcomes[id]) != 'undefined')
+            returnValue = this.outcomes[id];
+
+        return returnValue;
+    }
+
+    /**
+     * Get a response variable from its identifier
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_Matching_Variable
+     */
+    , getResponse : function (id)
+    {
+        var returnValue = null;
+
+        if (typeof (this.responses[id]) != 'undefined')
+            returnValue = this.responses[id];
+
+        return returnValue;
+    }
+
+    /**
+     * Get the matching rule
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
+     */
+    , getRule : function ()
+    {
+        return this.rule;
+    }
+
+    /**
+     * The and operator takes one or more sub-expressions each with a base-type
+     * boolean and single cardinality. The result is a single boolean which is
+     * if all sub-expressions are true and false if any of them are false.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    , and : function(){
+        var result = true;
+        var paramCount = this.and.arguments.length;
+        
+        for (var i = 0; i < paramCount; i++) {
+            var subExp = this.and.arguments[i];
+            subExpValue = null;
+            
+            // QTIVariable sub-expression
+            if (subExp instanceof TAO_MATCHING.BaseTypeVariable) {
+                if (subExp.Type() != 'boolean') {
+                    throw new Error('AND operator requires sub-expressions with single cardinality and boolean baseType');
+                }
+                subExpValue = subExp.getValue();
+            }
+                
+            // ! Basic Boolean sub-expression
+            else 
+                if (typeof subExp != 'boolean') {
+                    throw new Error('AND operator requires sub-expressions with single cardinality and boolean baseType');
+                }
+                // Basic Boolean sub-expression
+                else {
+                    subExpValue = subExp;
+                }
+            
+            result = result && subExpValue;
+        }
+        
+        return result;
+    }
+
+    /**
+     * The equal operator takes two sub-expressions which must both have single
+     * and have a numerical base-type. The result is a single boolean with a
+     * of true if the two expressions are numerically equal and false if they
+     * not.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    , equal : function(subExp1, subExp2){
+        var result = null;
+        var allowedQTITypes = ['float', 'integer', 'duration'];
+        var allowedBasicTypes = ['number'];
+        var value1 = null;
+        var value2 = null;
+        
+        // The first sub-expression is QTIVariable
+        if (subExp1 instanceof TAO_MATCHING.BaseTypeVariable) {
+            if (allowedQTITypes.indexOf(subExp1.getType()) < 0) 
+                throw new Error('EQUAL operator error : the first argument must be numerical baseType');
+            value1 = subExp1.getValue();
+        }
+        // The first expression is not an allowed basic type
+        else 
+            if (allowedBasicTypes.indexOf(typeof subExp1) < 0) {
+            //throw new Error('EQUAL operator error : the first argument must be numerical baseType');
+            }
+            
+            else {
+                value1 = subExp1;
+            }
+        
+        // The second sub-expression is QTIVariable
+        if (subExp2 instanceof QTIVariable) {
+            if (allowedQTITypes.indexOf(subExp2.getBaseType()) < 0) 
+                throw new Error('EQUAL operator error : the second argument must be numerical baseType');
+            //          else if (subExp2.getCardinality() != 'single')
+            //              throw new Error ('EQUAL operator error : the second argument must have a single cardinality');
+            value2 = subExp2.values[0];
+        }
+        // The second expression is not an allowed basic type
+        else 
+            if (allowedBasicTypes.indexOf(typeof subExp2) < 0) {
+                throw new Error('EQUAL operator error : the second argument must be numerical baseType');
+            }
+            
+            else {
+                value2 = subExp2;
+            }
+        
+        if (value1 != null && value2 != null) 
+            result = value1 == value2;
+        
+        return result;
+    } 
+ 
+    /**
+     * The isNull operator takes a sub-expression with any base-type and
+     * The result is a single boolean with a value of true if the sub-expression
+     * NULL and false otherwise.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Variable var
+     * @return boolean
+     */
+    , isNull : function (matchingVar)
+    {
+        return matchingVar.isNull();
+    }
+
+    /**
+     * This expression looks up the value of a responseVariable and then
+     * it using the associated mapping, which must have been declared. The
+     * is a single float. If the response variable has single cardinality then
+     * value returned is simply the mapped target value from the map. If the
+     * variable has single or multiple cardinality then the value returned is
+     * sum of the mapped target values. This expression cannot be applied to
+     * of record cardinality.
+     *
+     * For example, if a mapping associates the identifiers {A,B,C,D} with the
+     * {0,1,0.5,0} respectively then mapResponse will map the single value 'C'
+     * the numeric value 0.5 and the set of values {C,B} to the value 1.5.
+     *
+     * If a container contains multiple instances of the same value then that
+     * is counted once only. To continue the example above {B,B,C} would still
+     * to 1.5 and not 2.5.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Map map
+     * @param  Variable expr
+     * @return double
+     */
+    , mapResponse : function (map, matchingVar)
+    {
+        if (! (map instanceof TAO_MATCHING.Map) )
+            throw new Error ('TAO_MATCHING.Matching::mapResponse an error occured : first argument expected type TAO_MATCHING.Map, given : '+(typeof map));
+
+        return map.map (matchingVar);
+    }
+
+    /**
+     * The match operator takes two sub-expressions which must both have the
+     * type and cardinality. The result is a single boolean with a value of true
+     * the two expressions represent the same value and false if they do not.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    , match : function (expr1, expr2)
+    {
+        var returnValue = false;
+                
+        if (typeof (expr1) == 'undefined')
+            throw new Exception ("TAO_MATCHING.Matching::match error : the first argument does not exist");
+        if (typeof (expr2) == 'undefined')
+            throw new Exception ("TAO_MATCHING.Matching::match error : the second argument does not exist");
+
+        if (expr1.getType() != expr2.getType()) { 
+            returnValue = false;
+        } else {
+            returnValue = expr1.match(expr2);
+        }
+
+        return returnValue;
+    }
+    
 };

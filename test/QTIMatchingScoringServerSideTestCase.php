@@ -171,28 +171,6 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($map3->map ($listStr2), 1.5);
 	}
 	
-	/*public function testInitMatchingEngine () {
-		try {
-			global $correctsStr, $responsesStr, $outcomesStr, $mapsStr, $rules;
-			
-			matching_init ();
-			matching_setCorrects ($correctsStr);
-			matching_setMaps ($mapsStr);
-			matching_setResponses ($responsesStr);
-			matching_setOutcomes ($outcomesStr);
-			
-			foreach ($rules as $rule){
-				matching_setRule ($rule);
-				matching_evaluate ();
-			}
-
-			$outcomes = matching_getOutcomes ();
-			
-		}catch (Exception $e){ 
-			pr ($e->getMessage());
-		}
-	}*/
-	
 	public function testTemplateResponseProcessingMatchCorrect (){
 		matching_init ();
 		matching_setRule ("if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) setOutcomeValue('SCORE', 1); else setOutcomeValue('SCORE', 0);");
@@ -269,6 +247,75 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
 	}
+
+    public function testAndOperator () {
+        matching_init ();
+        matching_setRule ('if (and(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
+        matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+        
+        matching_init ();
+        matching_setRule ('if ( and (match(getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
+        matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+        matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+        
+        matching_init ();
+        matching_setRule ('if ( and (true, match(getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
+        matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]'));
+        matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+    }
+
+    public function testEqualOperator () {
+        matching_init ();
+        matching_setRule ('if (equal(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
+        matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+        
+        /*matching_init ();
+        matching_setRule ('if ( equal (getResponse("RESPONSE"), getCorrect("RESPONSE"))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
+        matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":true'));
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":true'));
+        //matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]'));
+        matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);*/
+    }
+
+    /*public function testInitMatchingEngine () {
+        try {
+            global $correctsStr, $responsesStr, $outcomesStr, $mapsStr, $rules;
+            
+            matching_init ();
+            matching_setCorrects ($correctsStr);
+            matching_setMaps ($mapsStr);
+            matching_setResponses ($responsesStr);
+            matching_setOutcomes ($outcomesStr);
+            
+            foreach ($rules as $rule){
+                matching_setRule ($rule);
+                matching_evaluate ();
+            }
+
+            $outcomes = matching_getOutcomes ();
+            
+        }catch (Exception $e){ 
+            pr ($e->getMessage());
+        }
+    }*/
+
 }
 
 /*
