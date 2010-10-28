@@ -17,6 +17,14 @@ class QTIParsingResponseProcessingTestCase extends UnitTestCase {
 	 */
 	public function setUp(){
 		TestRunner::initTest();
+		
+		$parameters = array(
+			'root_url' => ROOT_URL,
+        	'base_www' => BASE_WWW,
+        	'taobase_www' => TAOBASE_WWW
+		);
+		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+		
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
 	
