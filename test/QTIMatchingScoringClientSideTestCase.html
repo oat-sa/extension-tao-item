@@ -282,7 +282,49 @@
 			outcomes = matching_getOutcomes ();
 			equals (outcomes["SCORE"]["value"],  0, 'Expected Score');
 		});
-	
+
+        test("test and operator]", function() {
+            // Simple true/true
+            var matching_param = {
+                data : {
+                    outcomes  : [{"identifier":"SCORE", "type":"double"}]
+                    , rule      : 'if (and(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                }
+            }
+            matching_init (matching_param);
+            matching_evaluate ();
+            outcomes = matching_getOutcomes ();
+            equals (outcomes["SCORE"]["value"],  1, 'Expected score');
+            
+            // and on a single matching
+            var matching_param = {
+                data : {
+                    corrects    : [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
+                    , outcomes  : [{"identifier":"SCORE", "type":"double"}]
+                    , rule      : 'if ( and (match(getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                }
+            }
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+            matching_evaluate ();
+            outcomes = matching_getOutcomes ();
+            equals (outcomes["SCORE"]["value"],  1, 'Expected score');
+            
+            // and with a true and matching
+            var matching_param = {
+                data : {
+                    corrects    : [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
+                    , outcomes  : [{"identifier":"SCORE", "type":"double"}]
+                    , rule      : 'if ( true, true, and (match(getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                }
+            }
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+            matching_evaluate ();
+            outcomes = matching_getOutcomes ();
+            equals (outcomes["SCORE"]["value"],  1, 'Expected score');
+        });
+
 		test("remote matching engine", function() {
 			
 			// CHOICE
