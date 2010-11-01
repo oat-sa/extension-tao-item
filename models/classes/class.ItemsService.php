@@ -505,7 +505,7 @@ class taoItems_models_classes_ItemsService
         				mkdir(BASE_PATH.'/views/runtime/'.$folderName);
         			}
         			
-        			//replace relative paths to resources by absolute uris for to help the compilator
+        			//replace relative paths to resources by absolute uris to help the compilator
 					$matches = array();
         			if(preg_match_all("/(href|src)\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
 						if(isset($matches[2])){
@@ -523,6 +523,16 @@ class taoItems_models_classes_ItemsService
 					$fileUrl	= BASE_WWW . "runtime/{$folderName}/index.html";
         			if(file_put_contents($filePath, $output)){
         				$returnValue = $fileUrl;
+        			}
+        			
+        			//copy the event.xml if not present
+        			$itemFolder = dirname($filePath);
+        			if(!file_exists($itemFolder.'/events.xml')){
+        				$eventXml = file_get_contents(BASE_PATH.'/data/events_ref.xml');
+        				if(is_string($eventXml) && !empty($eventXml)){
+        					$eventXml = str_replace('{ITEM_URI}', $item->uriResource);
+        					@file_put_contents($itemFolder.'/events.xml', $eventXml);
+        				}
         			}
         		}
 			}

@@ -20,7 +20,8 @@
  * @namespace taoApi
  * @class TaoStack
  */
-function TaoStack(){
+function TaoStack (){
+	
 	
 	/**
 	 * This object describes the way the data are accessed 
@@ -115,7 +116,7 @@ function TaoStack(){
 			if($.isPlainObject(data)){
 				for(key in data){
 					for(uriKey in URI){
-						if(URI[uriKey] == key ||  $.inArray(key, ['token', 'localNamespace']){
+						if(URI[uriKey] == key ||  $.inArray(key, ['token', 'localNamespace']) > -1){
 							instance.dataStore[key] = data[key];
 						}	
 					}
@@ -164,7 +165,7 @@ function TaoStack(){
 	this.dataPush.settings = {
 		'format'		: 'json',	//only json is supported
 		'method' 		: 'post',	//HTTP method to push the data (get|post)
-		'async'			: true,		//if the request is asynchrone 
+		'async'			: false,	//if the request is asynchrone 
 		'clearAfter'	: true		//if the variables stacks are cleared once pushed
 	};
 
@@ -179,17 +180,19 @@ function TaoStack(){
 	 */
 	this.initPush = function(environment, settings){
 		
-		if(environment.url){
-			if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
-				this.dataPush.environment.url = environment.url;		//set url
+		if($.isPlainObject(environment)){
+			if(environment.url){
+				if(/(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/.test(environment.url)){	//test url
+					this.dataPush.environment.url = environment.url;		//set url
+				}
 			}
-		}
-		
-		//ADD parameters
-		if($.isPlainObject(environment.params)){	
-			for(key in environment.params){
-				if(isScalar(environment.params[key]) && !this.dataPush.environment.params[key]){	//don't edit the common params
-					this.dataPush.environment.params[key] = environment.params[key]; 
+			
+			//ADD parameters
+			if($.isPlainObject(environment.params)){	
+				for(key in environment.params){
+					if(isScalar(environment.params[key]) && !this.dataPush.environment.params[key]){	//don't edit the common params
+						this.dataPush.environment.params[key] = environment.params[key]; 
+					}
 				}
 			}
 		}
@@ -234,28 +237,43 @@ function TaoStack(){
 		
 		 
 		//push the data to the server
-		var instance = this;
-		$.ajax({
-			'url'  		: this.dataPush.environment.url,
-			'data' 		: params,
-			'type' 		: this.dataPush.settings.method,
-			'async'		: this.dataPush.settings.async,
-			'dataType'  : this.dataPush.settings.format,
-			'success' 	: function(data){
-				
-			
-				//the server send back the push status as
-				//@example {"saved": true} or {"saved": false} for a json format
-				if(data.saved){		
-					
-					//clear the stack 
-					if(instance.dataPush.settings.clearAfter){
-						instance.taoVars  = new Object();
-						instance.userVars = new Object();
+		if(this.dataPush.settings.async === true){
+			var _instance = this;
+			$.ajax({
+				'url'  		: this.dataPush.environment.url,
+				'data' 		: params,
+				'type' 		: this.dataPush.settings.method,
+				'async'		: true,
+				'dataType'  : this.dataPush.settings.format,
+				'success' 	: function(data){
+	
+					//the server send back the push status as
+					//@example {"saved": true} or {"saved": false} for a json format
+					if(data.saved == true){		
+						//clear the stack 
+						if(_instance.dataPush.settings.clearAfter === true){
+							_instance.taoVars  = new Object();
+							_instance.userVars = new Object();
+						}
 					}
 				}
+			});
+		}
+		else{
+			received = $.parseJSON($.ajax({
+				async		: false,
+				url  		: this.dataPush.environment.url,
+				data 		: params,
+				type 		: this.dataPush.settings.method
+			}).responseText);
+			if(received.saved == true){		
+				//clear the stack 
+				if(this.dataPush.settings.clearAfter === true){
+					this.taoVars  = new Object();
+					this.userVars = new Object();
+				}
 			}
-		});
+		}
 	};
 	
 /* TAO Variables */
@@ -267,12 +285,22 @@ function TaoStack(){
 	this.taoVars = new Object();
 	
 	/**
+	 * Get the value of a TAO varaiable identified by the key
+	 * 
 	 * @param {String} key
 	 * @param {boolean} [label] if you want to retrieve the label instead of the complete Object
 	 * @returns {mixed} value (false if the key is not found)
 	 */
 	this.getTaoVar = function(key, label){
-		var value =  (this.taoVars[key]) ? this.taoVars[key] : false;
+		
+		//we check if the data are 
+		var value =  false;
+		if(this.taoVars[key]){			//set by the taoVar
+			value =  this.taoVars[key];
+		}
+		else if (this.dataStore[key]){	//or comes from the dataStore
+			value =  this.dataStore[key];
+		}
 		
 		if($.isPlainObject(value)){
 			if( (value['uri'] != undefined && value[URI.LABEL] != undefined && value.length == 2) || label){
@@ -294,7 +322,7 @@ function TaoStack(){
 		
 		if(isScalar(value)){
 		
-			var currentValue =  (this.taoVars[key]) ? this.taoVars[key] : false;
+			var currentValue =  this.getTaoVar(key);
 			if($.isPlainObject(currentValue)){
 				if(property){
 					this.taoVars[key][property] = value;
@@ -318,6 +346,8 @@ function TaoStack(){
 	this.userVars = new Object();
 	
 	/**
+	 * Get the value of a previously defined user's custom variable, identified by it's key
+	 * 
 	 * @param {String} key
 	 * @returns {String|number|boolean} value (false if the key is not found)
 	 */
@@ -326,6 +356,10 @@ function TaoStack(){
 	};
 	
 	/**
+	 * The item author can define it's own variables in order to keep them in the stack
+	 * and to send them to the plateform. It's usefull to record cutom field and values
+	 * that have not been taken in consideration but  have a real interest in the item.
+	 * 
 	 * @param {String} key
 	 * @param {String|number|boolean} value
 	 */
@@ -338,19 +372,12 @@ function TaoStack(){
 
 
 /**
- * Utility function to check if a value is a scalar
+ * Utility function to check if a value is a scalar:
+ * (string, integer, float and boolean) 
+ * 
  * @param {mixed} value
  * @returns {bool} true if it's a scalar
  */
 function isScalar(value){
-	switch((typeof value).toLowerCase()){
-		case 'string':
-		case 'number':
-		case 'boolean':
-			return true;
-			
-		default: 
-			return false;
-	}
-	return false;
+	return ($.inArray((typeof value).toLowerCase(), ['string', 'number', 'int', 'float', 'boolean']) > -1);
 }

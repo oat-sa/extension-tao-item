@@ -43,6 +43,57 @@ function setEndorsment(endorsment){
 }
 
 /**
+ * Get the score of the item
+ * 
+ * @function
+ * @namespace taoApi
+ * @returns {String|Number}
+ */
+function getScore(){
+	return taoStack.getTaoVar(URI.SCORE);
+}
+
+/**
+ * Set the final score of the item
+ * 
+ * @function
+ * @namespace taoApi
+ * @param {String|Number} score
+ */
+function setScore(score){
+	if(isScalar(score)){
+		if(typeof(score) == 'boolean'){
+			(score === true) ? score = 1 : score = 0;
+		}
+		taoStack.setTaoVar(URI.SCORE, score);
+	}
+}
+
+/**
+ * Get the values answered by the subject
+ * 
+ * @function
+ * @namespace taoApi
+ * @returns {boolean}
+ */
+function getAnsweredValues(){
+	return taoStack.getTaoVar(URI.LISTNERVALUE);
+}
+
+/**
+ * Set the values answered by the subject.
+ * If the item contains a free text field, 
+ * you can record here the complete response. 
+ * 
+ * @function
+ * @namespace taoApi
+ * @param {boolean} endorsment
+ */
+function setAnsweredValues(values){
+	taoStack.setTaoVar(URI.LISTNERVALUE, values);
+}
+
+/**
  * Get the data of the user currently doing the item  (the subject)
  * 
  * @function
@@ -74,7 +125,10 @@ function getSubjectLogin(){
  */
 function getSubjectName(){
 	var subject = getSubject();
-	return (subject) ? subject[URI.SUBJETC_FIRSTNAME] + ' ' + subject[URI.SUBJETC_LASTNAME] : '';
+	if(subject){
+		return subject[URI.SUBJETC_FIRSTNAME] + ' ' + subject[URI.SUBJETC_LASTNAME];
+	}
+	return '';
 }
 
 /**
@@ -145,42 +199,31 @@ function getUserVar(key){
 }
 
 
-  /////////////
- // EVENTS  //
+/////////////
+// STATES  //
 /////////////
 
 /**
- * Log the an <i>eventType</i> bound on <i>elementName</i> by sending the <i>data</i>.
- * 
- * @function
- * @namespace taoApi
- * @param {String} elementName an HTML tag name
- * @param {String} eventType a JS User Events
- * @param {mixed} data any data strucuture you want to trace
- */
-function logEvent(elementName, eventType, data){
-	feedTrace(elementName, eventType, new Date().getTime(), data);
+* Define the item's state as finished.
+* This state can have some consequences.
+* 
+* @function
+* @namespace taoApi
+*/
+function finish(){
+	$(window).trigger(STATE.ITEM.FINISHED);
 }
 
 /**
- * Log the a <i>eventName</i> by sending the <i>data</i>
- * 
- * @function
- * @namespace taoApi
- * @param {String} eventName the name of the custom event
- * @param {mixed} data 
- */
-function logCustomEvent(eventName, data){
-	feedTrace('BUSINESS', eventName, new Date().getTime(), data);
+* Add a callback that will be executed on finish state.
+* 
+* @function
+* @namespace taoApi
+* @param {function} callback
+*/
+function onFinish(callback){
+	$(window).bind(STATE.ITEM.FINISHED, callback);
 }
-
-
-  ////////////////////////////
- // GENERIS to be defined  //
-////////////////////////////
-
-
-function createVar(){}
 
 
   //////////////////////////////
@@ -201,7 +244,7 @@ function getToken(){
 /**
  * This fuction enables you to set up the data the item need.
  * You can retrieve this data from either a remote or a manual source.
- * If you don't need to change the default values, don't call this function. 
+ * <b>If you don't need to change the default values, don't call this function.</b>
  * 
  * @function
  * @namespace taoApi
@@ -221,7 +264,7 @@ function initDataSource(environment, settings){
 
 /**
  * This function is a convenience method to add directly the datasource 
- * by writing the data in the source object (JSON) 
+ * by writing the data in the source object (JSON) .
  *   
  * @function
  * @namespace taoApi
@@ -234,7 +277,7 @@ function initManualDataSource(source){
 
 /**
  * Initialize the push communication.
- * If you don't need to change the default values, don't call this function. 
+ * <b>If you don't need to change the default values, don't call this function.</b>
  * 
  * @function
  * @namespace taoApi
@@ -259,8 +302,85 @@ function initPush(environment, settings){
  * 
  * @function
  * @namespace taoApi
- * @returns {bool}
  */
 function push(){
 	taoStack.push();
 }
+
+/*
+ * By default, the variables are pushed when the item is finished (STATE.ITEM.FINISHED)
+ */
+$(window).bind(STATE.ITEM.FINISHED, push);
+
+
+
+/////////////
+// EVENTS  //
+/////////////
+
+/**
+* instanciate the EventTracer object
+* @type EventTracer
+*/
+var eventTracer = new EventTracer();
+
+/**
+* Log the an <i>eventType</i> bound on <i>elementName</i> by sending the <i>data</i>.
+* 
+* @function
+* @namespace taoApi
+* @param {String} elementName an HTML tag name
+* @param {String} eventType a JS User Events
+* @param {mixed} data any data strucuture you want to trace
+*/
+function logEvent(elementName, eventType, data){
+	eventTracer.feedTrace(elementName, eventType, new Date().getTime(), data);
+}
+
+/**
+* Log the a <i>eventName</i> by sending the <i>data</i>
+* 
+* @function
+* @namespace taoApi
+* @param {String} eventName the name of the custom event
+* @param {mixed} data 
+*/
+function logCustomEvent(eventName, data){
+	eventTracer.feedTrace('BUSINESS', eventName, new Date().getTime(), data);
+}
+
+/**
+ * Initialize the interfaces communication for the events logging.
+ * The source service defines where and how we retrieve the list of events to catch
+ * The destination service defines where and how we send the catched events 
+ * 
+ * @function
+ * @namespace taoApi
+ * 
+ * @param {Object} source 
+ * @param {String} [source.type = "sync"] the type of source <b>(sync|manual)</b>
+ * @param {Object} [source.data] For the <i>manual</i> source type, set direclty the events list in the data 
+ * @param {String} [source.url = "/taoDelivery/ItemDelivery/getEvents"] For the <i>sync</i> source type, the URL of the remote service
+ * @param {Object} [source.params] the parameters to send to the sync service
+ * @param {String} [source.format = "json"] the data format. <i>Only json is supported in the current version</i> 
+ * @param {String} [source.method = "post"] HTTP method of the sync service <b>(get|post)</b>
+ * 
+ * @param {Object} destination
+ * @param {String} [destination.url = "/taoResults/Server/traceEvents"] the URL of the remote service
+ * @param {Object} [destination.params] the common parameters to send to the service
+ * @param {String} [destination.format = "json"] the data format. <i>Only json is supported in the current version</i> 
+ * @param {String} [destination.method = "post"] HTTP method of the service <b>(get|post)</b>
+ */
+function initEventServices(source, destination){
+	
+	eventTracer.initSourceService(source);
+	
+	eventTracer.initDestinationService(destination);
+}
+
+/*
+ * By default, all the events are sent  when the item is finished (STATE.ITEM.FINISHED)
+ */
+$(window).bind(STATE.ITEM.FINISHED, function(){
+	eventTracer.sendAllFeedTrace_now();
+});

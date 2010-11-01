@@ -11,7 +11,7 @@
  * This object is used for a convenience translation of URIS
  * <i>the ##NAMESPACE# tag means the local namespace</i>
  *  
- * @var {Object} URI
+ * @type {Object}
  * @constant 
  */
 const URI = {
@@ -26,3 +26,15 @@ const URI = {
 	'TEST'				: 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test',
 	'DELIVERY'			: 'http://www.tao.lu/Ontologies/TAODelivery.rdf#Delivery'
 }; 
+
+/**
+ * This object is used for a convenience translation of the differents states
+ *  
+ * @type {Object}
+ * @constant 
+ */
+const STATE = {
+	'ITEM' : {
+		'FINISHED' : 'item_finished'
+	}
+}

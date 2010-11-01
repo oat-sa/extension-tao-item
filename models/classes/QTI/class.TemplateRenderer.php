@@ -137,7 +137,7 @@ class taoItems_models_classes_QTI_TemplateRenderer
         //extract in the current context the array: 'key' => 'value'  to $key = 'value';
         extract($this->variables);
         extract(self::$context);
-        
+      
         ob_start();
         
         include $this->file;
