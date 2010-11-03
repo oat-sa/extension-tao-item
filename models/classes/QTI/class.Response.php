@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 21.10.2010, 10:46:13 with ArgoUML PHP module 
+ * Automatically generated on 03.11.2010, 17:04:17 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -296,7 +296,8 @@ class taoItems_models_classes_QTI_Response
     }
 
     /**
-     * get the correct response in JSON format
+     * get the correct response in JSON format. If no correct response defined
+     * null.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -324,7 +325,7 @@ class taoItems_models_classes_QTI_Response
     }
 
     /**
-     * get the mapping in JSON format
+     * get the mapping in JSON format. If no mapping defined return null.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

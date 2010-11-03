@@ -31,7 +31,18 @@
 	<!-- JS REQUIRED -->
 	
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Matching.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.MatchingRemote.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.VariableFactory.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Variable.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.BaseTypeVariable.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Collection.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.List.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Tuple.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Map.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/matching_constant.js"></script>
+    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/matching_api.js"></script>
+	<!--<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>-->
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/qti.min.js"></script>
 	<script type="text/javascript">
 

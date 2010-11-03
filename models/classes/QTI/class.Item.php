@@ -495,8 +495,15 @@ class taoItems_models_classes_QTI_Item
 		
     	// Get correct responses 
 		foreach ($interactions as $interaction){
-			array_push ($corrects, $interaction->getResponse ()->correctToJSON());
-			array_push ($maps, $interaction->getResponse ()->mapToJSON());
+			$correctJSON = $interaction->getResponse ()->correctToJSON();
+            if ($correctJSON!=null){
+                array_push ($corrects, $correctJSON);
+            }
+            
+            $mapJSON = $interaction->getResponse ()->mapToJSON();
+            if ($mapJSON!=null){
+                array_push ($maps, $mapJSON);   
+            }
 		}
 		
 		// Get outcomes variables

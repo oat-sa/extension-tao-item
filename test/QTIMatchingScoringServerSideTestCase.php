@@ -248,7 +248,30 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
 	}
 
-    public function testAndOperator () {
+    public function testResponseProcessing () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            // Tmp matching context
+            'tmp_item_path' => dirname(__FILE__).'/samples/custom_rule_choice.xml',
+            'delivery_server_mode' => false
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom_rule_choice.xml';
+
+        $qtiParser = new taoItems_models_classes_QTI_Parser($file);
+        //$qtiParser->validate();
+        
+        //$this->assertTrue($qtiParser->isValid());
+        $item = $qtiParser->load();
+        
+        echo $item->toXHTML();
+    }
+
+    /*public function testAndOperator () {
         matching_init ();
         matching_setRule ('if (and(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
         matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
@@ -282,17 +305,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         matching_evaluate ();
         $outcomes = matching_getOutcomes ();
         $this->assertEqual ($outcomes["SCORE"]["value"], 1);
-        
-        /*matching_init ();
-        matching_setRule ('if ( equal (getResponse("RESPONSE"), getCorrect("RESPONSE"))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }');
-        matching_setCorrects (json_decode('[{"identifier":"RESPONSE", "value":true'));
-        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":true'));
-        //matching_setMaps (json_decode('[{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]'));
-        matching_setOutcomes (json_decode('[{"identifier":"SCORE", "type":"double"}]'));
-        matching_evaluate ();
-        $outcomes = matching_getOutcomes ();
-        $this->assertEqual ($outcomes["SCORE"]["value"], 1);*/
-    }
+    }*/
 
     /*public function testInitMatchingEngine () {
         try {

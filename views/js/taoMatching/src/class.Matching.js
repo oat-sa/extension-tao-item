@@ -71,14 +71,16 @@ TAO_MATCHING.Matching = function (pData, pOptions) {
     this.whiteFunctionsList = {
 		'and'				:{'mappedFunction':'andExpression'}
 		, 'equal'			:{}
-		, 'if'				:{'jsFunction' : true}
+		, 'if'				:{'jsFunction':true}
 		, 'isNull'			:{}
 		, 'getCorrect'		:{}
 		, 'getMap'			:{}
 		, 'getResponse'		:{}
 		, 'mapResponse'		:{}
 		, 'match'			:{}
-		, 'setOutcomeValue'	:{}	
+		, 'setOutcomeValue'	:{}
+        , 'variable'        :{'mappedFunction' : 'getResponse'}
+        , 'correct'         :{'mappedFunction' : 'getCorrect'}
 	};
 	
 	if (data.corrects != null) {
@@ -106,7 +108,8 @@ TAO_MATCHING.Matching.prototype = {
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
     evaluate : function ()
-    {		
+    {	
+        console.log (this.getRule());
 		with (this){
 			eval (getRule());	
 		}
@@ -255,19 +258,35 @@ TAO_MATCHING.Matching.prototype = {
 		var self = this;
 		
 		// ohlala tmp tmp tmp
-		var rule2 = rule.replace(/([a-zA-Z_\-1-9]*)[\s]*\(/g 
+		var rule = rule.replace(/([a-zA-Z_\-1-9]*)[\s]*\(/g 
     		, function (str, funcName) {
-				if (typeof (whiteFunctionsList[funcName]) == 'undefined')
-					throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the following expression is unknown '+ funcName);
-				else if (typeof self[funcName] == 'undefined' 
-					&& ! ( typeof whiteFunctionsList[funcName]['jsFunction'] != 'undefined' 
-						&& whiteFunctionsList[funcName]['jsFunction']) )
-					throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the following expression is not yet supported '+ funcName);		
+                // Check if the function is in the white list
+				if (typeof (whiteFunctionsList[funcName]) == 'undefined'){
+    				throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the expression ['+ funcName +'] is unknown ');
+				}
+				// Check if the function has been instantiated by the matching engine
+				else if (typeof self[funcName] == 'undefined') {
+				    // Check if the function has been mapped
+				    if (typeof whiteFunctionsList[funcName]['mappedFunction'] != 'undefined'){
+                        if (typeof self[whiteFunctionsList[funcName]['mappedFunction']] == 'undefined') {
+                            throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the expression ['+ funcName +'] has been mapped to ['+ whiteFunctionsList[funcName]['mappedFunction'] +'] but is not yet instantiated');
+                        }
+				        funcName = whiteFunctionsList[funcName]['mappedFunction'];
+				    } 
+				    // Check if the function is not a native javascript function
+				    else if (typeof whiteFunctionsList[funcName]['jsFunction'] == 'undefined'){
+				        throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the expression ['+ funcName +'] is not yet instantiated');
+				    }
+				}
 				return funcName+' ('; 
     	});
 		
 		this.rule = rule;
 	}
+
+    /* ************************************************************
+     * OPERATOR OPEN SPACE BAR
+     ************************************************************ */
 
     /**
      * Set the value of an outcome variable

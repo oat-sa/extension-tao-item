@@ -7,7 +7,7 @@ error_reporting(E_ALL);
  * element.
  * SimpleXML is used as source to build the model.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -30,7 +30,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * SimpleXML is used as source to build the model.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -47,7 +47,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * Build a QTI_Item from a SimpleXMLElement (the root tag of this element is
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Item
      * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10010
@@ -167,7 +167,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * is an 'interaction' node)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Interaction
      * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
@@ -308,7 +308,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * an 'choice' node)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Choice
      * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
@@ -344,7 +344,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * Short description of method buildResponse
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Response
      * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
@@ -415,7 +415,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * Short description of method buildOutcome
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_Outcome
      */
@@ -451,7 +451,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * Short description of method buildResponseProcessing
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
@@ -463,14 +463,124 @@ class taoItems_models_classes_QTI_ParserFactory
         
         if(isset($data['template'])){
         	//template processing
-        	 $returnValue = new taoItems_models_classes_QTI_response_Template((string)$data['template']);
+        	$returnValue = new taoItems_models_classes_QTI_response_Template((string)$data['template']);
         }
         else{
 			//custom rule processing
-        	
-        }
+			$returnValue = self::buildCustomResponseProcessing($data);
+        }    
         
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
+
+        return $returnValue;
+    }
+
+    public static function buildExpression (SimpleXMLElement $expressionNode) {
+        $returnValue = '';
+        
+        // The factory will create the right expression for us
+        $expression = taoItems_models_classes_QTI_response_ExpressionFactory::create ($expressionNode);
+        $subExpressions = Array();
+        
+        // All sub-expressions of an expression are embedded by this expression
+        foreach ($expressionNode->children() as $subExpressionNode) {
+            $subExpressions[] = self::buildExpression ($subExpressionNode);
+        }
+        $expression->setSubExpressions ($subExpressions);        
+        
+        // If the expression has a value
+        $expressionValue = (string) trim ($expressionNode);
+        if ($expressionValue != ''){
+            $expression->setValue ($expressionValue);
+        }
+        
+        return $expression;
+    }
+
+    public static function buildConditionalExpression( SimpleXMLElement $data){
+        $returnValue = '';
+
+        // A conditional expression part consists of an expression which must have an effective baseType of boolean and single cardinality
+        // It also contains a set of sub-rules. If the expression is true then the sub-rules are processed, otherwise they are 
+        // skipped (including if the expression is NULL) and the following responseElseIf or responseElse parts (if any) are considered instead.
+
+        $returnValue = new taoItems_models_classes_QTI_response_ConditionalExpression ($data->getName(), $data);
+        $actions = array ();
+        
+        // The first subExpression has to be the condition (single cardinality and boolean type)
+        list($conditionNode) = $data->xpath ('*[1]');
+        $condition = self::buildExpression ($conditionNode);
+        $returnValue->setCondition ($condition);
+
+        // The rest of subExpression have to be computed if the condition is filled
+        // These subExpression are responseRule (ResponseCondition, SetOutcomeValue, exitResponse). This code is yet writen, extract the function and avoid doublon
+        for ($i=2; $i<=count($data); $i++) {
+            list($actionNode) = $data->xpath ('*['.$i.']');
+            $actions[]= self::buildExpression ($actionNode);
+        }
+        $returnValue->setActions ($actions);
+        
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method buildCustomResponseProcessing
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  SimpleXMLElement data
+     * @return taoItems_models_classes_QTI_response_ResponseProcessing
+     */
+    public static function buildCustomResponseProcessing( SimpleXMLElement $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D begin
+        
+        // Parse to find the different response rules
+        $responseRules = array ();
+        
+        // Check if response conditions have been defined
+        $responseConditionNodes = $data->xpath("//*[name(.) = 'responseCondition']");
+        
+        foreach($responseConditionNodes as $responseConditionNode) {
+            $responseIf = null;
+            $responseElseIf = array ();
+            $responseElse = array ();
+            
+            $responseCondition = taoItems_models_classes_QTI_response_ExpressionFactory::create ($responseConditionNode);
+            
+            // RESPONSE IF
+            list ($responseIfNode) = $responseConditionNode->xpath("//*[name(.) = 'responseIf']"); // Only one responseIf is allowed
+            if (!empty($responseIfNode)) {
+                $responseIf = self::buildConditionalExpression($responseIfNode);
+            } else {
+                throw new taoItems_models_classes_QTI_ParsingException("responseIf is required in responseCondition");
+            }
+            $responseCondition->setResponseIf ($responseIf);
+            
+            // RESPONSE ELSE IF
+            $responseElseIfNodes = $responseConditionNode->xpath("//*[name(.) = 'responseElseIf']");
+            foreach ($responseElseIfNodes as $responseElseIfNode) {
+                $responseElseIf[] = self::buildConditionalExpression($responseElseIfNode);
+            }
+            $responseCondition->setResponseElseIf ($responseElseIf);
+            
+            // RESPONSE ELSE
+            list($responseElseNode) = $responseConditionNode->xpath("//*[name(.) = 'responseElse']");
+            if (!empty($responseElseNode)) {
+                foreach ($responseElseNode->children() as $node) {
+                    $responseElse[] = self::buildExpression ($node);
+                }
+                $responseCondition->setResponseElse ($responseElse);
+            }
+            
+            $responseRules[] = $responseCondition;   
+        } 
+     
+        $returnValue = new taoItems_models_classes_QTI_response_CustomRule($responseRules);
+     
+        // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D end
 
         return $returnValue;
     }
@@ -480,7 +590,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * Content Packaging 1.1)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement source
      * @return array
      * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_intgv2p0.html#section10003

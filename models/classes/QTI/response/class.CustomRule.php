@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 21.10.2010, 10:46:13 with ArgoUML PHP module 
+ * Automatically generated on 03.11.2010, 16:26:23 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -31,6 +31,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
+
+/**
+ * include taoItems_models_classes_QTI_response_ExpressionFactory
+ *
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/response/class.ExpressionFactory.php');
 
 /**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
@@ -97,9 +104,31 @@ class taoItems_models_classes_QTI_response_CustomRule
         $returnValue = (string) '';
 
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B begin
+        
+        foreach ($this->responseRules as $responseRule){
+            $returnValue .= $responseRule->toJSON();
+        }
+        
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array responseRules
+     * @return mixed
+     */
+    public function __construct($responseRules)
+    {
+        // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6B begin
+        
+        $this->responseRules = $responseRules;
+        
+        // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6B end
     }
 
 } /* end of class taoItems_models_classes_QTI_response_CustomRule */

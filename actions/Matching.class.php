@@ -15,6 +15,10 @@ require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
  */
 class Matching extends Items {
 	
+    /**
+     * Evaluate user's reponses 
+     * @public
+     */
 	public function evaluate () {
 		$params = json_decode($_POST['params'], true);
 		$responses = json_decode($_POST['data']);
