@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - getTest</title>
+		<title>JsDoc Reference - initEventServices</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -252,7 +252,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Function Namespace getTest
+				Function Namespace initEventServices
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -269,7 +269,7 @@ ul.inheritsList
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class getTest.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class initEventServices.">
 				<caption>Function Namespace Summary</caption>
 				<thead>
 					<tr>
@@ -282,9 +282,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/getTest.html#constructor">getTest</a></b>()
+								<b><a href="../symbols/initEventServices.html#constructor">initEventServices</a></b>(source, destination)
 							</div>
-							<div class="description">Get the informations of the currently running test</div>
+							<div class="description">Initialize the interfaces communication for the events logging.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -307,11 +307,13 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>getTest</b>()
+						<b>initEventServices</b>(source, destination)
 				</div>
 				
 				<div class="description">
-					Get the informations of the currently running test
+					Initialize the interfaces communication for the events logging.
+The source service defines where and how we retrieve the list of events to catch
+The destination service defines where and how we send the catched events
 					
 				</div>
 				
@@ -319,16 +321,86 @@ ul.inheritsList
 				
 				
 					
-					
-					
-					
-					
 						<dl class="detailList">
-						<dt class="heading">Returns:</dt>
+						<dt class="heading">Parameters:</dt>
 						
-								<dd><span class="light fixedFont">{Object}</span> the test's data (uri, label)</dd>
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>source</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>source.type</b>
+								<i>Optional, Default:  "sync"</i>
+							</dt>
+								<dd>the type of source <b>(sync|manual)</b></dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>source.data</b>
+								<i>Optional</i>
+							</dt>
+								<dd>For the <i>manual</i> source type, set direclty the events list in the data</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>source.url</b>
+								<i>Optional, Default:  "/taoDelivery/ItemDelivery/getEvents"</i>
+							</dt>
+								<dd>For the <i>sync</i> source type, the URL of the remote service</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>source.params</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the parameters to send to the sync service</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>source.format</b>
+								<i>Optional, Default:  "json"</i>
+							</dt>
+								<dd>the data format. <i>Only json is supported in the current version</i></dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>source.method</b>
+								<i>Optional, Default:  "post"</i>
+							</dt>
+								<dd>HTTP method of the sync service <b>(get|post)</b></dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>destination</b>
+								
+							</dt>
+								<dd></dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>destination.url</b>
+								<i>Optional, Default:  "/taoResults/Server/traceEvents"</i>
+							</dt>
+								<dd>the URL of the remote service</dd>
+						
+							<dt>
+								<span class="light fixedFont">{Object}</span>  <b>destination.params</b>
+								<i>Optional</i>
+							</dt>
+								<dd>the common parameters to send to the service</dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>destination.format</b>
+								<i>Optional, Default:  "json"</i>
+							</dt>
+								<dd>the data format. <i>Only json is supported in the current version</i></dd>
+						
+							<dt>
+								<span class="light fixedFont">{String}</span>  <b>destination.method</b>
+								<i>Optional, Default:  "post"</i>
+							</dt>
+								<dd>HTTP method of the service <b>(get|post)</b></dd>
 						
 						</dl>
+					
+					
+					
+					
 					
 					
 					

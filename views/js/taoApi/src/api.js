@@ -203,28 +203,31 @@ function getUserVar(key){
 // STATES  //
 /////////////
 
-/**
-* Define the item's state as finished.
-* This state can have some consequences.
-* 
-* @function
-* @namespace taoApi
-*/
-function finish(){
-	$(window).trigger(STATE.ITEM.FINISHED);
-}
+if(typeof(finish) != 'function'){
 
-/**
-* Add a callback that will be executed on finish state.
-* 
-* @function
-* @namespace taoApi
-* @param {function} callback
-*/
-function onFinish(callback){
-	$(window).bind(STATE.ITEM.FINISHED, callback);
-}
+	/**
+	* Define the item's state as finished.
+	* This state can have some consequences.
+	* 
+	* @function
+	* @namespace taoApi
+	*/
+	function finish(){
+		$(window).trigger(STATE.ITEM.FINISHED);
+	}
+	
+	/**
+	* Add a callback that will be executed on finish state.
+	* 
+	* @function
+	* @namespace taoApi
+	* @param {function} callback
+	*/
+	function onFinish(callback){
+		$(window).bind(STATE.ITEM.FINISHED, callback);
+	}
 
+}
 
   //////////////////////////////
  // INTERFACE COMMUNICATION  //
@@ -373,9 +376,11 @@ function logCustomEvent(eventName, data){
  */
 function initEventServices(source, destination){
 	
-	eventTracer.initSourceService(source);
+	extendedParams = {params: {token: getToken()}}; 
 	
-	eventTracer.initDestinationService(destination);
+	eventTracer.initSourceService($.extend(true, source, extendedParams));
+	
+	eventTracer.initDestinationService($.extend(true, destination, extendedParams));
 }
 
 /*

@@ -72,9 +72,7 @@ function EventTracer (options){
 		type:	'sync',										// (sync | manual)
 		data:	null,										//if type is manual, contains the data in JSON, else it should be null
 		url:	'/taoDelivery/ItemDelivery/getEvents',		//the url sending the events list
-		params: {											//the common parameters to send to the service
-			token: getToken()								
-		},
+		params: {},											//the common parameters to send to the service
 		method: 'post',										//sending method
 		format: 'json'										//the response format, now ONLY JSON is supported
 	};									
@@ -85,9 +83,7 @@ function EventTracer (options){
 	 */
 	this.destinationService = {
 		url:	'/taoResults/Server/traceEvents',			//the URL where to send the events
-		params: {											//the common parameters to send to the service
-			token: getToken()
-		},
+		params: {},											//the common parameters to send to the service
 		method: 'post',										//sending method
 		format: 'json'										//the response format, now ONLY JSON is supported
 	};
@@ -121,7 +117,7 @@ function EventTracer (options){
 					//ADD parameters
 					if($.isPlainObject(environment.params)){	
 						for(key in environment.params){
-							if(isScalar(environment.params[key]) && !this.sourceService.params[key]){	//don't edit the common params
+							if(isScalar(environment.params[key])){
 								this.sourceService.params[key] = environment.params[key]; 
 							}
 						}
@@ -177,7 +173,7 @@ function EventTracer (options){
 			//ADD parameters
 			if($.isPlainObject(environment.params)){	
 				for(key in environment.params){
-					if(isScalar(environment.params[key]) && !this.destinationService.params[key]){	//don't edit the common params
+					if(isScalar(environment.params[key])){
 						this.destinationService.params[key] = environment.params[key]; 
 					}
 				}

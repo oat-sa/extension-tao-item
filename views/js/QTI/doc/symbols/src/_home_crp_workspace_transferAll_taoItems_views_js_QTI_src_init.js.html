@@ -14,12 +14,12 @@
 <span class='line'>  7</span>  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
 <span class='line'>  8</span>  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
 <span class='line'>  9</span>  * @package taoItems
-<span class='line'> 10</span>  * 
-<span class='line'> 11</span>  * @require jquery {@link http://www.jquery.com}
-<span class='line'> 12</span>  */</span><span class="WHIT">
-<span class='line'> 13</span> 
-<span class='line'> 14</span> </span><span class="COMM">/**
-<span class='line'> 15</span>  * Initialize the QTI environment
+<span class='line'> 10</span>  * @requires jquery {@link http://www.jquery.com}
+<span class='line'> 11</span>  */</span><span class="WHIT">
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="COMM">/**
+<span class='line'> 14</span>  * Initialize the QTI environment
+<span class='line'> 15</span>  * 
 <span class='line'> 16</span>  * @namespace QTI
 <span class='line'> 17</span>  * @param {Object} qti_initParam the parameters of ALL item's interaction
 <span class='line'> 18</span>  * @return void
@@ -32,9 +32,9 @@
 <span class='line'> 25</span> 
 <span class='line'> 26</span> </span><span class="COMM">/**
 <span class='line'> 27</span>  * Initialize the widget and the result collection for an interaction
-<span class='line'> 28</span>  * @namespace QTI
-<span class='line'> 29</span>  * @param {Object} initObj the params of the interaction (parts of qti_initParam identified by the interaction id)
-<span class='line'> 30</span>  * @return void
+<span class='line'> 28</span>  * 
+<span class='line'> 29</span>  * @namespace QTI
+<span class='line'> 30</span>  * @param {Object} initObj the params of the interaction (parts of qti_initParam identified by the interaction id)
 <span class='line'> 31</span>  */</span><span class="WHIT">
 <span class='line'> 32</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">qti_init_interaction</span><span class="PUNC">(</span><span class="NAME">initObj</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 33</span> </span><span class="WHIT">	
@@ -59,7 +59,10 @@
 <span class='line'> 52</span> </span><span class="WHIT">	</span><span class="NAME">$</span><span class="PUNC">(</span><span class="STRN">"#qti_validate"</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="STRN">"click"</span><span class="PUNC">,</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 53</span> </span><span class="WHIT">		</span><span class="COMM">// Get user's data</span><span class="WHIT">
 <span class='line'> 54</span> </span><span class="WHIT">		</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">result</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">myResultCollector</span><span class="PUNC">[</span><span class="NAME">typeName</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">apply</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 55</span> </span><span class="WHIT">		</span><span class="NAME">console.log</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">result</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 56</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'> 57</span> </span><span class="WHIT">		
-<span class='line'> 58</span> </span><span class="PUNC">}</span></pre></body></html>
+<span class='line'> 55</span> </span><span class="WHIT">		</span><span class="COMM">// Set the matching engine with the user's data	</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">		</span><span class="NAME">matching_setResponses</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">[</span><span class="NAME">result</span><span class="PUNC">]</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">		</span><span class="COMM">// Evaluate the response</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">		</span><span class="NAME">matching_evaluate</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 61</span> </span></pre></body></html>

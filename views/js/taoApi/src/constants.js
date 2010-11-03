@@ -14,7 +14,7 @@
  * @type {Object}
  * @constant 
  */
-const URI = {
+const URI = URI || {
 	'LABEL'				: 'http://www.w3.org/2000/01/rdf-schema#label',
 	'ENDORSMENT' 		: '##NAMESPACE#ENDORSMENT',
 	'SUBJECT'			: 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject',
@@ -33,7 +33,7 @@ const URI = {
  * @type {Object}
  * @constant 
  */
-const STATE = {
+const STATE = STATE || {
 	'ITEM' : {
 		'FINISHED' : 'item_finished'
 	}
