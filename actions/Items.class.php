@@ -242,10 +242,25 @@ class Items extends TaoModule{
 			
 			//the content works directly with the browser and need to be deployed
 			if(is_null($runtime)){
-				$previewData = array(
-					'runtime'		=> false,
-					'contentUrl' 	=> $this->service->deployItem($item)
+				
+				$deployParams = array(
+					'delivery_server_mode'	=> false
 				);
+				
+				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+        		$itemPath = BASE_PATH."/views/runtime/{$folderName}/index.html";
+				if(!is_dir(dirname($itemPath))){
+        			mkdir(dirname($itemPath));
+        		}
+        		$itemUrl = BASE_WWW . "runtime/{$folderName}/index.html";
+        		
+        		//deploy the item
+        		if($this->service->deployItem($item, $itemPath, $itemUrl,  $deployParams)){
+        			$previewData = array(
+						'runtime'		=> false,
+						'contentUrl' 	=> $itemUrl
+					);
+        		}
 			}
 			else{
 				//the item content is given to the runtime

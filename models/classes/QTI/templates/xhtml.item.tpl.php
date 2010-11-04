@@ -2,11 +2,11 @@
     // Temporary add item path to the matching vars
     // This vars is useless during a real test, it will exist in the test context
     // to simulate the 'pseudo' real behavior this var is in the ctx 
-    if (isset($matching_params)){
+  /*  if (isset($matching_params)){
         $matching_params = json_decode ($matching_params, true);
         $matching_params['tmp_item_path'] = $ctx_tmp_item_path;
         $matching_params = json_encode ($matching_params);
-    }
+    }*/
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

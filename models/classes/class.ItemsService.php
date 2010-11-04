@@ -477,7 +477,7 @@ class taoItems_models_classes_ItemsService
      * @param  array parameters
      * @return boolean
      */
-    public function deployItem( core_kernel_classes_Resource $item, $path, $url = '', $parameters = array())
+    public function deployItem( core_kernel_classes_Resource $item, $path, $url, $parameters = array())
     {
         $returnValue = (bool) false;
 
@@ -502,10 +502,6 @@ class taoItems_models_classes_ItemsService
         			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         			
         			$output = $qtiService->renderItem($qtiItem);
-        			$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        			if(!is_dir(BASE_PATH.'/views/runtime/'.$folderName)){
-        				mkdir(BASE_PATH.'/views/runtime/'.$folderName);
-        			}
         			
         			//replace relative paths to resources by absolute uris to help the compilator
 					$matches = array();
@@ -514,25 +510,23 @@ class taoItems_models_classes_ItemsService
 							
 							foreach($matches[2] as $relUri){
 								if($relUri != '#' && !preg_match("/^http/", $relUri) ){
-									$absoluteUri = BASE_WWW.'runtime/'.$folderName . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
+									$absoluteUri = dirname($url) . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
 									$output = str_replace($relUri, $absoluteUri, $output);
 								}
 							}
 						}
 					}
 					
-					$filePath 	= tao_helpers_File::concat(array(BASE_PATH, "/views/runtime/{$folderName}/index.html"));
-					$fileUrl	= BASE_WWW . "runtime/{$folderName}/index.html";
-        			if(file_put_contents($filePath, $output)){
-        				$returnValue = $fileUrl;
+        			if(file_put_contents($path, $output)){
+        				$returnValue = true;
         			}
         			
         			//copy the event.xml if not present
-        			$itemFolder = dirname($filePath);
+        			$itemFolder = dirname($path);
         			if(!file_exists($itemFolder.'/events.xml')){
         				$eventXml = file_get_contents(BASE_PATH.'/data/events_ref.xml');
         				if(is_string($eventXml) && !empty($eventXml)){
-        					$eventXml = str_replace('{ITEM_URI}', $item->uriResource);
+        					$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
         					@file_put_contents($itemFolder.'/events.xml', $eventXml);
         				}
         			}
