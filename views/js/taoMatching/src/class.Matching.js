@@ -3,7 +3,7 @@ TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 /**
  * 
  */
-TAO_MATCHING.Matching = function (pData, pOptions) {
+TAO_MATCHING.Matching = function(pData, pOptions) {
     var data = {
 		"outcomes" 		: null
 		, "corrects" 	: null
@@ -79,8 +79,6 @@ TAO_MATCHING.Matching = function (pData, pOptions) {
 		, 'mapResponse'		:{}
 		, 'match'			:{}
 		, 'setOutcomeValue'	:{}
-        , 'variable'        :{'mappedFunction' : 'getResponse'}
-        , 'correct'         :{'mappedFunction' : 'getCorrect'}
 	};
 	
 	if (data.corrects != null) {
@@ -101,21 +99,44 @@ TAO_MATCHING.Matching = function (pData, pOptions) {
 }
 
 TAO_MATCHING.Matching.prototype = {
+    
+    /**
+     * Check if optional paramaters are well formated
+     * @param {string|array|object} options Object to check
+     * @return {array|object} the converted options in the right format
+     */
+    checkOptions : function (options){
+        // Decode the options, if it has been "json string encoded"
+        if (typeof options == 'string') options = eval ('('+options+')');
+        return options;
+    }
+    
     /**
      * Evaluate the matching rule
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
-    evaluate : function ()
+    , evaluate : function()
     {	
-        console.log (this.getRule());
 		with (this){
-			eval (getRule());	
+			eval (getRule());
 		}
 		
 		if (this.options.evaluateCallback!=null)
 			this.options.evaluateCallback ();
+    }
+
+    /**
+     * Get the matching rule
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
+     */
+    , getRule : function()
+    {
+        return this.rule;
     }
 
     /**
@@ -124,7 +145,7 @@ TAO_MATCHING.Matching.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
-    , outcomesToJSON : function ()
+    , outcomesToJSON : function()
     {
         var returnValue = Array ();
         
@@ -145,7 +166,7 @@ TAO_MATCHING.Matching.prototype = {
      * @param  array data
      * @return mixed
      */
-    , setCorrects : function (data)
+    , setCorrects : function(data)
     {
     	if (! $.isArray (data))
     		throw new Error ('TAO_MATCHING.Matching::setCorrects is waiting on an array, a '+ (typeof data) +' is given');
@@ -171,7 +192,7 @@ TAO_MATCHING.Matching.prototype = {
      * @param  data
      * @return mixed
      */
-    , setMaps : function (data)
+    , setMaps : function(data)
     {
 		if (! $.isArray (data))
     		throw new Error ('TAO_MATCHING.Matching::setMaps is waiting on an array, a '+ (typeof data) +' is given');
@@ -197,7 +218,7 @@ TAO_MATCHING.Matching.prototype = {
      * @param  array data
      * @return mixed
      */
-    , setOutcomes : function (data)
+    , setOutcomes : function(data)
     {
     	if (! $.isArray (data))
     		throw new Error ('TAO_MATCHING.Matching::setOutcomes is waiting on an array, a '+ (typeof data) +' is given');
@@ -225,7 +246,7 @@ TAO_MATCHING.Matching.prototype = {
      * @param  array data
      * @return mixed
      */
-    , setResponses : function (data)
+    , setResponses : function(data)
     {
     	if (! $.isArray (data))
     		throw new Error ('TAO_MATCHING.Matching::setResponses is waiting on an array, a '+ (typeof data) +' is given');
@@ -252,14 +273,14 @@ TAO_MATCHING.Matching.prototype = {
      * @param  string rule
      * @return mixed
      */
-    , setRule : function (rule)
+    , setRule : function(rule)
 	{
 		var whiteFunctionsList = this.whiteFunctionsList;
 		var self = this;
 		
 		// ohlala tmp tmp tmp
 		var rule = rule.replace(/([a-zA-Z_\-1-9]*)[\s]*\(/g 
-    		, function (str, funcName) {
+    		, function(str, funcName) {
                 // Check if the function is in the white list
 				if (typeof (whiteFunctionsList[funcName]) == 'undefined'){
     				throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the expression ['+ funcName +'] is unknown ');
@@ -297,11 +318,10 @@ TAO_MATCHING.Matching.prototype = {
      * @param  value
      * @return mixed
      */
-    , setOutcomeValue : function (id, value)
+    , setOutcomeValue : function(identifier, value)
     {
-        var outcome = this.getOutcome (id);
-        if(outcome == null)
-            throw new Exception ('TAO_MATCHING.Matching::setOutcomeValue error : the outcome value '+id+' does not exist');
+        var outcome = this.getOutcome (identifier);
+        if(outcome == null) throw new Error ('TAO_MATCHING.Matching::setOutcomeValue error : the outcome value '+identifier+' does not exist');
         outcome.setValue (value);
     }
     
@@ -313,12 +333,14 @@ TAO_MATCHING.Matching.prototype = {
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
-    , getCorrect : function (id)
+    , getCorrect : function(identifier)
     {
         var returnValue = null;
 
-        if (typeof (this.corrects[id]) != 'undefined')
-            returnValue = this.corrects[id];
+        if (typeof (this.corrects[identifier]) != 'undefined')
+            returnValue = this.corrects[identifier];
+        else
+            throw new Error ('TAO_MATCHING.Matching::getCorrect error : try to reach an unknown correct variable ['+identifier+']');
 
         return returnValue;
     }
@@ -331,12 +353,14 @@ TAO_MATCHING.Matching.prototype = {
      * @param  string id
      * @return taoItems_models_classes_Matching_Map
      */
-    , getMap : function (id)
+    , getMap : function(identifier)
     {
         var returnValue = null;
 
-        if (typeof (this.maps[id]) != 'undefined')
-            returnValue = this.maps[id];
+        if (typeof (this.maps[identifier]) != 'undefined')
+            returnValue = this.maps[identifier];
+        else
+            throw new Error ('TAO_MATCHING.Matching::getMap error : try to reach an unknown mapping variable ['+identifier+']');
 
         return returnValue;
     }
@@ -349,12 +373,14 @@ TAO_MATCHING.Matching.prototype = {
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
-    , getOutcome : function (id)
+    , getOutcome : function(identifier)
     {
         var returnValue = null;
-
-        if (typeof (this.outcomes[id]) != 'undefined')
-            returnValue = this.outcomes[id];
+        
+        if (typeof (this.outcomes[identifier]) != 'undefined')
+            returnValue = this.outcomes[identifier];
+        else
+            throw new Error ('TAO_MATCHING.Matching::getOutcome error : try to reach an unknown outcome variable ['+identifier+']');
 
         return returnValue;
     }
@@ -367,26 +393,16 @@ TAO_MATCHING.Matching.prototype = {
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
-    , getResponse : function (id)
+    , getResponse : function(identifier)
     {
         var returnValue = null;
 
-        if (typeof (this.responses[id]) != 'undefined')
-            returnValue = this.responses[id];
+        if (typeof (this.responses[identifier]) != 'undefined')
+            returnValue = this.responses[identifier];
+        else
+            throw new Error ('TAO_MATCHING.Matching::getResponse error : try to reach an unknown outcome variable ['+identifier+']');
 
         return returnValue;
-    }
-
-    /**
-     * Get the matching rule
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return string
-     */
-    , getRule : function ()
-    {
-        return this.rule;
     }
 
     /**
@@ -398,11 +414,13 @@ TAO_MATCHING.Matching.prototype = {
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return boolean
      */
-    , and : function(){
+    , and : function(options){
         var result = true;
+        options = this.checkOptions(options);
+        
         var paramCount = this.and.arguments.length;
         
-        for (var i = 0; i < paramCount; i++) {
+        for (var i = 1; i < paramCount; i++) {
             var subExp = this.and.arguments[i];
             subExpValue = null;
             
@@ -442,8 +460,10 @@ TAO_MATCHING.Matching.prototype = {
      * @param  expr2
      * @return boolean
      */
-    , equal : function(subExp1, subExp2){
+    , equal : function(options, subExp1, subExp2){
         var result = null;
+        options = this.checkOptions(options);
+         
         var allowedQTITypes = ['float', 'integer', 'duration'];
         var allowedBasicTypes = ['number'];
         var value1 = null;
@@ -499,8 +519,9 @@ TAO_MATCHING.Matching.prototype = {
      * @param  Variable var
      * @return boolean
      */
-    , isNull : function (matchingVar)
+    , isNull : function(options, matchingVar)
     {
+        options = this.checkOptions(options);
         return matchingVar.isNull();
     }
 
@@ -527,12 +548,14 @@ TAO_MATCHING.Matching.prototype = {
      * @param  Variable expr
      * @return double
      */
-    , mapResponse : function (map, matchingVar)
-    {
-        if (! (map instanceof TAO_MATCHING.Map) )
-            throw new Error ('TAO_MATCHING.Matching::mapResponse an error occured : first argument expected type TAO_MATCHING.Map, given : '+(typeof map));
+    , mapResponse : function(options, mappingVar, matchingVar)
+    {        
+        options = this.checkOptions(options);
+        
+        if (! (mappingVar instanceof TAO_MATCHING.Map) )
+            throw new Error ('TAO_MATCHING.Matching::mapResponse an error occured : first argument expected type TAO_MATCHING.mappingVar, given : '+(typeof mappingVar));
 
-        return map.map (matchingVar);
+        return mappingVar.map (matchingVar);
     }
 
     /**
@@ -546,9 +569,10 @@ TAO_MATCHING.Matching.prototype = {
      * @param  expr2
      * @return boolean
      */
-    , match : function (expr1, expr2)
-    {
+    , match : function(options, expr1, expr2)
+    {     
         var returnValue = false;
+        options = this.checkOptions(options);
                 
         if (typeof (expr1) == 'undefined')
             throw new Exception ("TAO_MATCHING.Matching::match error : the first argument does not exist");

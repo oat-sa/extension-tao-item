@@ -35,7 +35,7 @@ function matching_init () {
 }
 
 /**
- * @return {bool}
+ * Evaluate the rule
  */
 function matching_evaluate () {
 	global $taoMatching;
@@ -43,15 +43,16 @@ function matching_evaluate () {
 }
 
 /**
- * @return {bool}
+ * Get the outcomes generated after the rule evaluation
+ * @return {JSON}
  */
 function matching_getOutcomes () {
 	global $taoMatching;
 	return $taoMatching->getJSonOutcomes ();
 }
 
-/**
- * @return {bool}
+/** Set the correct responses of the item
+ * @param {JSON} data The correct responses
  */
 function matching_setCorrects ($data) {
 	global $taoMatching;
@@ -59,7 +60,8 @@ function matching_setCorrects ($data) {
 }
 
 /**
- * @return {bool}
+ * Set the mapping of the item
+ * @param {JSON} data The map
  */
 function matching_setMaps ($data) {
 	global $taoMatching;
@@ -67,7 +69,8 @@ function matching_setMaps ($data) {
 }
 
 /**
- * @return {bool}
+ * Set the outcome variables of the item
+ * @param {JSON} data The outcome variables
  */
 function matching_setOutcomes ($data) {
 	global $taoMatching;
@@ -75,23 +78,28 @@ function matching_setOutcomes ($data) {
 }
 
 /**
- * @return {bool}
+ * Set the user' responses
+ * @param {JSON} data The response variables
  */
 function matching_setResponses ($data) {
 	global $taoMatching;
 	return $taoMatching->setResponses ($data);
 }
 
-
 /**
- * @return {bool}
+ * Set the rule of the item
+ * @param {string} rule The rule
  */
 function matching_setRule ($rule) {
 	global $taoMatching;
 	$taoMatching->setRule ($rule);
 }
 
-// temporary testing fufnction
+/**
+ * get the rule of the item
+ * @param {string} rule The rule
+ * @todo This function is used for test. Remove it in production version
+ */
 function matching_getRule () {
 	global $taoMatching;
 	return $taoMatching->getRule ();

@@ -301,7 +301,7 @@
                 data : {
                     corrects    : [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
                     , outcomes  : [{"identifier":"SCORE", "type":"double"}]
-                    , rule      : 'if ( and (match(getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                    , rule      : 'if ( and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             }
             matching_init (matching_param);
@@ -315,7 +315,7 @@
                 data : {
                     corrects    : [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
                     , outcomes  : [{"identifier":"SCORE", "type":"double"}]
-                    , rule      : 'if ( true, true, and (match(getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                    , rule      : 'if ( true, true, and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             }
             matching_init (matching_param);
@@ -329,15 +329,15 @@
 			
 			// CHOICE
 			var matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice.xml'
+					, "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
 						var html = '<ol style="display: block;"> \
-							{CONTENT}\
+							{CONTENT} \
 							</ol>';
 						var content = '';
 						if (outcomes.SCORE.value == 1) content += 'ok : CHOICE : Expected value<br/>'; else content += 'not ok : CHOICE : Unexpected value<br/>';
@@ -353,10 +353,10 @@
 			
 			// ASSOCIATE
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-					, "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/associate.xml'
+					, "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/associate.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -377,10 +377,10 @@
 			
 			// CHOICE MULTIPLE
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice_multiple.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice_multiple.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -401,10 +401,10 @@
 			
 			// GAP MATCH
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/gap_match.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/gap_match.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -425,10 +425,10 @@
 			
 			// MATCH
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/match.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/match.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -449,10 +449,10 @@
 			
 			// ORDER
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/order.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/order.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -472,10 +472,10 @@
 			
 			// HOTTEXT
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/hottext.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/hottext.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -495,10 +495,10 @@
 			
 			// INLINE CHOICE	
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/inline_choice.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/inline_choice.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -518,10 +518,10 @@
 			
 			// TEXT ENTRY	
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/text_entry.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/text_entry.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {
@@ -541,10 +541,10 @@
 			
 			// ORKNEY1	
 			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluate"
+				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
 				, "params" : {
 					"token" : 'TOOOOKEN'
-                    , "tmp_item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/orkney1.xml'
+                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/orkney1.xml'
 				}
 				, "options" : {
 					"evaluateCallback" : function (outcomes) {

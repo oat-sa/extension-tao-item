@@ -1,14 +1,3 @@
-<?php
-    // Temporary add item path to the matching vars
-    // This vars is useless during a real test, it will exist in the test context
-    // to simulate the 'pseudo' real behavior this var is in the ctx 
-  /*  if (isset($matching_params)){
-        $matching_params = json_decode ($matching_params, true);
-        $matching_params['tmp_item_path'] = $ctx_tmp_item_path;
-        $matching_params = json_encode ($matching_params);
-    }*/
-?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 <head>
@@ -53,17 +42,13 @@
 		}
 	
 		var qti_initParam  = new Object();
+
 		var matching_param = {
 <?php if ($ctx_delivery_server_mode) { ?>
-			"url" : "<?=isset($matching_url)?$ctx_base_www.'../../'.$matching_url:'null'?>"
-			, "params" : <?=isset($matching_params)?$matching_params:'null'?>
+			"url" : "<?=$ctx_base_www.'../../'.$matching['url']?>"
+			, "params" : <?=json_encode($matching['params'])?>
 <?php } else { ?>
-			"data" : {
-				"outcomes" : <?=isset($matching_outcomes)?$matching_outcomes:'[]'?>
-				, "corrects" : <?=isset($matching_corrects)?$matching_corrects:'[]'?>
-				, "maps" : <?=isset($matching_maps)?$matching_maps:'[]'?>
-				, "rule" : '<?=isset($matching_rule)?$matching_rule:'""'?>'
-			}
+			"data" : <?=json_encode($matching['data'])?>
 <?php } ?>
 			, "options" : {
 				"evaluateCallback" : function () {
@@ -75,10 +60,10 @@
 
 		$(document).ready(function(){
 			qti_init(qti_initParam);
-			matching_init(matching_param);	
+			matching_init(matching_param);
 		});
 	</script>
-</head>                                             
+</head>
 <body>
 	<div class="qti_item">
 		<h1><?=$options['title']?></h1>

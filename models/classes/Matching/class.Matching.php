@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 28.10.2010, 18:55:12 with ArgoUML PHP module 
+ * Automatically generated on 04.11.2010, 16:19:06 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -113,6 +113,22 @@ class taoItems_models_classes_Matching_Matching
      */
     public static $whiteFunctionsList = array();
 
+    /**
+     * Short description of attribute MATCH_CORRECT
+     *
+     * @access public
+     * @var string
+     */
+    const MATCH_CORRECT = 'if(match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))) setOutcomeValue("SCORE", 1); else setOutcomeValue("SCORE", 0);';
+
+    /**
+     * Short description of attribute MAP_RESPONSE
+     *
+     * @access public
+     * @var string
+     */
+    const MAP_RESPONSE = 'if(isNull(null, getResponse("RESPONSE"))) { setOutcomeValue("SCORE", 0); } else { setOutcomeValue("SCORE", mapResponse(null, getMap("RESPONSE"), getResponse("RESPONSE"))); }';
+
     // --- OPERATIONS ---
 
     /**
@@ -128,7 +144,7 @@ class taoItems_models_classes_Matching_Matching
 		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
 			'and'=>array('mappedFunction'=>'andExpression')
 			, 'equal'=>array()
-			, 'if'=>array('prefix'=>false)
+			, 'if'=>array('native'=>true)
 			, 'isNull'=>array()
 			, 'getCorrect'=>array()
 			, 'getMap'=>array()
@@ -136,7 +152,8 @@ class taoItems_models_classes_Matching_Matching
 			, 'mapResponse'=>array()
             , 'match'=>array()
             , 'not'=>array()
-			, 'setOutcomeValue'=>array()
+            , 'ordered'=>array()
+            , 'setOutcomeValue'=>array()
 		);
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
     }
@@ -155,27 +172,37 @@ class taoItems_models_classes_Matching_Matching
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AAB begin
         
-        $functionName = '';
+        $functionName = $matches[1];
 		
 		$whiteListedFunction = taoItems_models_classes_Matching_Matching::$whiteFunctionsList[$matches[1]];
 		
-		if (isset($whiteListedFunction)){
-			// Check if the function is mapped
-			if (isset($whiteListedFunction['mappedFunction'])){
-				$functionName = $whiteListedFunction['mappedFunction'];
-			}
-			else{
-				$functionName = $matches[1];
-			}
-			// Check if the function requires a prefix
-			if (!isset($whiteListedFunction['prefix']) || $whiteListedFunction['prefix']){
-				$functionName = '$this->'.$functionName;
-			}
-		} 
-		else {
-			throw new Exception ('taoItems_models_classes_Matching_Matching::parseExpressionRule an error occured : the following expression is unknown '.$matches[1]);
-		}
-		
+        // The function is white listed
+        if (isset($whiteListedFunction))
+        {
+            // The function is a native php function
+            if (isset($whiteListedFunction['native']) && $whiteListedFunction['native']){
+                // Nothing
+            }
+            // Check if the function is present in the matching engine functions pool
+            else {
+                if (!method_exists ('taoItems_models_classes_Matching_Matching', $functionName)) {
+                    // Check if the function has been mapped
+                    if (isset($whiteListedFunction['mappedFunction'])){
+                        // The function has been mapped but the function is not present in the matching engine functions pool
+                        if (!method_exists ('taoItems_models_classes_Matching_Matching', $whiteListedFunction['mappedFunction'])) {
+                            throw new Exception ('taoItems_models_classes_Matching_Matching::parseExpressionRule an error occured, the expression ['. $functionName .'] has been mapped to ['. $whiteListedFunction['mappedFunction'] .'] but is not yet instantiated');
+                        }
+                        $functionName = $whiteListedFunction['mappedFunction'];
+                    }
+                }
+                // Map the function to use it from the matching engine
+                $functionName = '$this->'.$functionName;
+            }
+		} else
+        {
+            throw new Exception ('taoItems_models_classes_Matching_Matching::parseExpressionRule an error occured, the expression ['. $functionName .'] is unknown ');
+        }
+        
 		$returnValue = $functionName.' (';
 		
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AAB end
@@ -195,13 +222,17 @@ class taoItems_models_classes_Matching_Matching
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028DA begin
         
-//    	echo 'corrects vars';
-//    	pr ($this->corrects);
-//    	echo 'responses vars';
-//    	pr ($this->responses);
-//    	echo 'outcomes vars';
-//    	pr ($this->outcomes);
-    	
+        /*echo 'rule';
+        pr ($this->rule);
+    	echo 'corrects vars';
+    	pr ($this->corrects);
+    	echo 'responses vars';
+    	pr ($this->responses);
+        echo 'maps vars';
+        pr ($this->maps);
+        echo 'outcomes vars';
+        pr ($this->outcomes);*/
+        
         try {
 			eval ($this->getRule());
 		} catch (Exception $e) {
@@ -211,6 +242,26 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028DA end
 
         return $returnValue;
+    }
+
+    /**
+     * Get the matching rule
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
+     */
+    protected function getRule()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028F5 begin
+        
+        $returnValue = $this->rule;
+        
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028F5 end
+
+        return (string) $returnValue;
     }
 
     /**
@@ -486,44 +537,27 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * Get the matching rule
-     *
-     * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return string
-     */
-    protected function getRule()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028F5 begin
-        
-        $returnValue = $this->rule;
-        
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028F5 end
-
-        return (string) $returnValue;
-    }
-
-    /**
      * The and operator takes one or more sub-expressions each with a base-type
      * boolean and single cardinality. The result is a single boolean which is
      * if all sub-expressions are true and false if any of them are false.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
      * @return boolean
      */
-    public function andExpression()
+    public function andExpression($options)
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 begin
         
+        $options = json_decode ($options);
+        
         $returnValue = true;
         
         // for each arguments (which are expressions) 
-        for ($i = 0; $i < func_num_args(); ++$i) {
+        for ($i = 1; $i < func_num_args(); ++$i) {
             $subExp = func_get_arg($i);
             $subExpValue = null;
             
@@ -546,77 +580,7 @@ class taoItems_models_classes_Matching_Matching
             $returnValue = $returnValue && $subExpValue;
         }
         
-        
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * This expression looks up the value of a responseVariable and then
-     * it using the associated mapping, which must have been declared. The
-     * is a single float. If the response variable has single cardinality then
-     * value returned is simply the mapped target value from the map. If the
-     * variable has single or multiple cardinality then the value returned is
-     * sum of the mapped target values. This expression cannot be applied to
-     * of record cardinality.
-     *
-     * For example, if a mapping associates the identifiers {A,B,C,D} with the
-     * {0,1,0.5,0} respectively then mapResponse will map the single value 'C'
-     * the numeric value 0.5 and the set of values {C,B} to the value 1.5.
-     *
-     * If a container contains multiple instances of the same value then that
-     * is counted once only. To continue the example above {B,B,C} would still
-     * to 1.5 and not 2.5.
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Map map
-     * @param  Variable expr
-     * @return double
-     */
-    public function mapResponse( taoItems_models_classes_Matching_Map $map,  taoItems_models_classes_Matching_Variable $expr)
-    {
-        $returnValue = (float) 0.0;
-
-        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F begin
-        
-        $returnValue = $map->map ($expr);
-        
-        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F end
-
-        return (float) $returnValue;
-    }
-
-    /**
-     * The match operator takes two sub-expressions which must both have the
-     * type and cardinality. The result is a single boolean with a value of true
-     * the two expressions represent the same value and false if they do not.
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  expr1
-     * @param  expr2
-     * @return boolean
-     */
-    public function match(   $expr1,    $expr2)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D begin
-                
-        if (!isset($expr1))
-        	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
-        else if (!isset($expr2))
-        	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the second argument does not exist");
-
-        if ($expr1->getType() != $expr2->getType()) { 
-        	$returnValue = false;
-    	} else {
-        	$returnValue = $expr1->match($expr2);
-        }
-        
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D end
 
         return (bool) $returnValue;
     }
@@ -629,15 +593,18 @@ class taoItems_models_classes_Matching_Matching
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
      * @param  expr1
      * @param  expr2
      * @return boolean
      */
-    public function equal(   $expr1,    $expr2)
+    public function equal($options,    $expr1,    $expr2)
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA7 begin
+        
+        $options = json_decode ($options);
         
         $allowedBasicTypes = array('integer', 'float', 'double');
         $subExp1Value = null;
@@ -687,18 +654,96 @@ class taoItems_models_classes_Matching_Matching
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
      * @param  Variable var
      * @return boolean
      */
-    public function isNull( taoItems_models_classes_Matching_Variable $var)
+    public function isNull($options,  taoItems_models_classes_Matching_Variable $var)
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 begin
         
+        $options = json_decode ($options);
+        
         $returnValue = $var->isNull();
         
         // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * This expression looks up the value of a responseVariable and then
+     * it using the associated mapping, which must have been declared. The
+     * is a single float. If the response variable has single cardinality then
+     * value returned is simply the mapped target value from the map. If the
+     * variable has single or multiple cardinality then the value returned is
+     * sum of the mapped target values. This expression cannot be applied to
+     * of record cardinality.
+     *
+     * For example, if a mapping associates the identifiers {A,B,C,D} with the
+     * {0,1,0.5,0} respectively then mapResponse will map the single value 'C'
+     * the numeric value 0.5 and the set of values {C,B} to the value 1.5.
+     *
+     * If a container contains multiple instances of the same value then that
+     * is counted once only. To continue the example above {B,B,C} would still
+     * to 1.5 and not 2.5.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
+     * @param  Map map
+     * @param  Variable expr
+     * @return double
+     */
+    public function mapResponse($options,  taoItems_models_classes_Matching_Map $map,  taoItems_models_classes_Matching_Variable $expr)
+    {
+        $returnValue = (float) 0.0;
+
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F begin
+        
+        $options = json_decode ($options);
+        
+        $returnValue = $map->map ($expr);
+        
+        // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F end
+
+        return (float) $returnValue;
+    }
+
+    /**
+     * The match operator takes two sub-expressions which must both have the
+     * type and cardinality. The result is a single boolean with a value of true
+     * the two expressions represent the same value and false if they do not.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    public function match($options,    $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D begin
+
+        $options = json_decode ($options);
+        
+        if (!isset($expr1))
+        	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
+        else if (!isset($expr2))
+        	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the second argument does not exist");
+
+        if ($expr1->getType() != $expr2->getType()) { 
+        	$returnValue = false;
+    	} else {
+        	$returnValue = $expr1->match($expr2);
+        }
+        
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D end
 
         return (bool) $returnValue;
     }
@@ -710,36 +755,79 @@ class taoItems_models_classes_Matching_Matching
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
      * @param  subExp
      * @return boolean
      */
-    public function not(   $subExp)
+    public function not($options,    $subExp)
     {
         $returnValue = (bool) false;
 
         // section 127-0-1-1--7cd26fee:12bf37febcd:-8000:0000000000002A4C begin
         
-            // QTIVariable sub-expression
-            if ($subExp instanceof taoItems_models_classes_Matching_BaseTypeVariable){
-                if ($subExp->getType() != 'boolean') { 
-                    throw new Error('NOT operator requires a sub-expression with single cardinality and boolean baseType');
-                }
-                $subExpValue = $subExp->getValue ();
-            
-            // ! Basic Boolean sub-expression
-            }else if (!is_bool ($subExp)){
-                throw new Error ('NOT operator requires a sub-expression with single cardinality and boolean baseType');
-
-            // Basic Boolean sub-expression
-            }else{
-                $subExpValue = $subExp;
+        $options = json_decode ($options);
+        
+        // QTIVariable sub-expression
+        if ($subExp instanceof taoItems_models_classes_Matching_BaseTypeVariable){
+            if ($subExp->getType() != 'boolean') { 
+                throw new Error('NOT operator requires a sub-expression with single cardinality and boolean baseType');
             }
+            $subExpValue = $subExp->getValue ();
+        
+        // ! Basic Boolean sub-expression
+        }else if (!is_bool ($subExp)){
+            throw new Error ('NOT operator requires a sub-expression with single cardinality and boolean baseType');
+
+        // Basic Boolean sub-expression
+        }else{
+            $subExpValue = $subExp;
+        }
         
         $returnValue = !$subExpValue;
         
         // section 127-0-1-1--7cd26fee:12bf37febcd:-8000:0000000000002A4C end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method ordered
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
+     * @return taoItems_models_classes_Matching_Tuple
+     */
+    public function ordered($options)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 begin
+        
+        //$returnValue = new taoItems_models_classes_Matching_Tuple ();
+        $value = Array ();
+        $counterStrike = 0;
+        
+        // for each arguments (which are expressions)
+        for ($i = 1; $i < func_num_args(); ++$i) {
+            $var = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg($i));
+            if ($var instanceOf taoItems_models_classes_Matching_BaseTypeVariable){
+                $value[$counterStrike] = $var;
+                $counterStrike ++;
+            } else if ($var instanceOf taoItems_models_classes_Matching_Tuple) {
+                
+            }
+        }
+        
+        $returnValue = new taoItems_models_classes_Matching_Tuple ($value);
+        /*echo '<pre>';
+        print_r ($value);
+        print_r ($returnValue);
+        echo '</pre>';
+        */
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 end
+
+        return $returnValue;
     }
 
     /**
@@ -759,8 +847,6 @@ class taoItems_models_classes_Matching_Matching
         if($outcome == null)
         	throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : the outcome value '.$id.' does not exist');
         $outcome->setValue ($value);
-        
-//		$outcome->setValue ($value);
 		
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002927 end
     }

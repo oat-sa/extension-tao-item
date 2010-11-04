@@ -106,7 +106,7 @@ class taoItems_models_classes_QTI_response_CustomRule
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B begin
         
         foreach ($this->responseRules as $responseRule){
-            $returnValue .= $responseRule->toJSON();
+            $returnValue .= $responseRule->getRule();
         }
         
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B end

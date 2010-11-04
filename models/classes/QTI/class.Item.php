@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.10.2010, 09:22:19 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Automatically generated on 04.11.2010, 18:44:52 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,28 +28,28 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
 /**
  * include taoItems_models_classes_QTI_Outcome
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
 /**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.php');
 
@@ -65,7 +65,7 @@ require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.
  * Short description of class taoItems_models_classes_QTI_Item
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -115,7 +115,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -137,7 +137,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __sleep
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function __sleep()
@@ -159,7 +159,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __wakeup
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return mixed
      */
     public function __wakeup()
@@ -183,7 +183,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getInteractions
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function getInteractions()
@@ -203,7 +203,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setInteractions
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array interactions
      * @return mixed
      */
@@ -223,7 +223,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getInteraction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Interaction
      */
@@ -248,7 +248,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method addInteraction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Interaction interaction
      * @return mixed
      */
@@ -267,7 +267,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method removeInteraction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Interaction interaction
      * @return boolean
      */
@@ -293,7 +293,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getResponseProcessing
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
     public function getResponseProcessing()
@@ -313,7 +313,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setResponseProcessing
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  ResponseProcessing rprocessing
      * @return mixed
      */
@@ -330,7 +330,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setOutcomes
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array outcomes
      * @return mixed
      */
@@ -352,7 +352,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getOutcomes
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function getOutcomes()
@@ -372,7 +372,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getOutcome
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Outcome
      */
@@ -397,7 +397,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method removeOutcome
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Outcome outcome
      * @return boolean
      */
@@ -423,7 +423,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getStylesheets
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function getStylesheets()
@@ -443,7 +443,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setStylesheets
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array stylesheets
      * @return mixed
      */
@@ -467,7 +467,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -478,8 +478,7 @@ class taoItems_models_classes_QTI_Item
         
         $template  = self::getTemplatePath() . '/xhtml.item.tpl.php';
         
-    	//get the variables to used in the template
-        
+    	//get the variables to use in the template
     	$variables 	= $this->extractVariables();
         $interactions = $this->getInteractions();
         foreach($interactions as $interaction){
@@ -487,39 +486,12 @@ class taoItems_models_classes_QTI_Item
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
         }	
 
-        // get Matching parameters (client & server mode)
-		$corrects = Array ();
-		$maps = Array ();
-		$outcomes = Array ();
-    	$rule = $this->getResponseProcessing ()->getRule();
-		
-    	// Get correct responses 
-		foreach ($interactions as $interaction){
-			$correctJSON = $interaction->getResponse ()->correctToJSON();
-            if ($correctJSON!=null){
-                array_push ($corrects, $correctJSON);
-            }
-            
-            $mapJSON = $interaction->getResponse ()->mapToJSON();
-            if ($mapJSON!=null){
-                array_push ($maps, $mapJSON);   
-            }
-		}
-		
-		// Get outcomes variables
-		$outcomes = Array ();
-		$outcomesObject = $this->getOutcomes ();
-		foreach ($outcomesObject as $outcome){
-			array_push ($outcomes, $outcome->toJSON());
-		}
-		
-		// Set the template variables associated to the matching
-		$variables['matching_corrects'] = json_encode($corrects);
-		$variables['matching_maps'] =  json_encode($maps);
-		$variables['matching_outcomes'] = json_encode ($outcomes);
-		$variables['matching_rule'] = $this->responseProcessing->getRule();
-		$variables['matching_url'] = "taoItems/Matching/evaluate";
-		$variables['matching_params'] = json_encode ( Array ("token"=>"TAOToken::getToken()") );
+        // get Matching data
+        $matchingData = $this->getMatchingData ();
+		$variables['matching'] = Array();
+        $variables['matching']['data'] = $matchingData;
+        $variables['matching']['url'] = "taoItems/Matching/evaluate";
+        $variables['matching']['params'] = Array ("token"=>"getToken()");
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
@@ -533,7 +505,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -564,8 +536,6 @@ class taoItems_models_classes_QTI_Item
 			}
 		}
 		
-		
-        
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
        
 		//render and clean the xml	        
@@ -581,7 +551,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -596,6 +566,56 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002493 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method getMatchingData
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return array
+     */
+    public function getMatchingData()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B2F begin
+        
+            $returnValue = array (
+                "rule"      =>null,
+                "corrects"  =>Array(),
+                "maps"      =>Array(),
+                "outcomes"  =>Array()
+            );
+            
+            // Get the rule
+            $returnValue["rule"] = $this->getResponseProcessing ()->getRule();
+            
+            // Get the correct responses (correct variables and map variables)
+            $corrects = Array ();
+            $maps = Array ();
+            $interactions = $this->getInteractions();
+            foreach ($interactions as $interaction){
+                $correctJSON = $interaction->getResponse ()->correctToJSON();
+                if ($correctJSON != null) {
+                    array_push ($returnValue["corrects"], $correctJSON);   
+                }
+                
+                $mapJson = $interaction->getResponse ()->mapToJSON();
+                if ($mapJson != null) {
+                    array_push ($returnValue["maps"], $mapJson);   
+                }
+            }
+            
+            // Get the outcome variables
+            $outcomes = $this->getOutcomes ();
+            foreach ($outcomes as $outcome){
+                array_push ($returnValue["outcomes"], $outcome->toJSON());
+            }
+        
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B2F end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Item */

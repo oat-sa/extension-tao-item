@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.11.2010, 16:46:15 with ArgoUML PHP module 
+ * Automatically generated on 04.11.2010, 16:05:00 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -29,11 +29,18 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/models/classes/QTI/response/class.ConditionalExpression.php');
 
 /**
+ * include taoItems_models_classes_QTI_response_ExpressionOperator
+ *
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/response/class.ExpressionOperator.php');
+
+/**
  * include taoItems_models_classes_QTI_response_Expression
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/class.Expression.php');
+require_once('taoItems/models/classes/QTI/response/interface.Expression.php');
 
 /* user defined includes */
 // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A74-includes begin
@@ -52,10 +59,10 @@ require_once('taoItems/models/classes/QTI/response/class.Expression.php');
  * @subpackage models_classes_QTI_response
  */
 class taoItems_models_classes_QTI_response_ResponseCondition
-    extends taoItems_models_classes_QTI_response_Expression
+        implements taoItems_models_classes_QTI_response_Expression
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 0    // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -86,43 +93,36 @@ class taoItems_models_classes_QTI_response_ResponseCondition
     // --- OPERATIONS ---
 
     /**
-     * Short description of method toJSON
+     * Short description of method getRule
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
-    public function toJSON()
+    public function getRule()
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A87 begin
+        // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
         
         // Get the if condition and the associated actions
-        $returnValue = 'if('.$this->responseIf->getCondition()->toJSON().'){';
-        foreach ($this->responseIf->getActions() as $actions) {
-            $returnValue .= $actions->toJSON ().';';
-        }
-        $returnValue .= '}';
+        $returnValue .= $this->responseIf->getRule(); 
         
         // Get the else if conditions and the associated actions
         foreach ($this->responseElseIf as $responseElseIf){
-            $returnValue .= 'else if ('.$responseElseIf->getCondition()->toJSON().'){';
-            foreach ($responseElseIf->getActions() as $actions) {
-                $returnValue .= $actions->toJSON ().';';
-            }
+            $returnValue .= 'else '.$responseElseIf->getRule();
         }
         
         // Get the else actions
         if (!empty($this->responseElse)){
             $returnValue .= 'else {';
             foreach ($this->responseElse as $actions){
-                $returnValue .= $actions->toJSON ().';';
+                $returnValue .= $actions->getRule ().';';
             }
             $returnValue .= '}';
         }
         
-        // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A87 end
+        // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;
     }

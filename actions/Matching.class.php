@@ -13,62 +13,73 @@ require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
  * @todo check if responses variables are compliant to the format
  * @todo return the result of the evaluation if the test/delivery ... has been configured to return the outcomes
  */
-class Matching extends Items {
+class Matching extends Api {
 	
     /**
      * Evaluate user's reponses 
      * @public
      */
-	public function evaluate () {
-		
-		
-		$params = json_decode($_POST['params'], true);
-		$responses = json_decode($_POST['data']);
-		
-		// the xml QTI item
-		$file = $params['tmp_item_path'];
-		
-		// parse the xml to extract data
-		$qtiParser = new taoItems_models_classes_QTI_Parser($file);
-		$item = $qtiParser->load();
-		
-		// Get the rule
-		$rule = $item->getResponseProcessing ()->getRule();
-		
-		// Get the correct responses (correct variables and map variables)
-		$corrects = Array ();
-		$maps = Array ();
-		$interactions = $item->getInteractions();
-		foreach ($interactions as $interaction){
-		    $correctJSON = $interaction->getResponse ()->correctToJSON();
-            if ($correctJSON != null)
-            {
-                array_push ($corrects, $correctJSON);   
+	public function evaluate () 
+	{
+        $itemMatchingData = array ();
+        $responses = json_decode($_POST['data']);
+        
+        if($this->hasRequestParameter('token')){
+            $token = $this->getRequestParameter('token');
+            if($this->authenticate($token)){
+                $this->itemService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_ItemsService");
+                $env = $this->getExecutionEnvironment();
+                $itemURI = $env['TAO_ITEM_CLASS']['uri'];
+                $item = $this->qtiService->getDataItemByRdfItem ($itemURI);
+                $itemMatchingData = $this->itemService->getMatchingData ($itemURI);
             }
-            
-            $mapJson = $interaction->getResponse ()->mapToJSON();
-            if ($mapJson != null) {
-                array_push ($maps, $mapJson);   
-            }
-		}
-		
-		// Get the outcome variables
-		$outcomes = Array ();
-		$outcomesTmp = $item->getOutcomes ();
-		foreach ($outcomesTmp as $outcome){
-			array_push ($outcomes, $outcome->toJSON());
-		}
-		
+        }
+        
 		matching_init ();
-		matching_setRule ($rule);
-		matching_setMaps ($maps);
-		matching_setCorrects ($corrects);
+		matching_setRule ($itemMatchingData["rule"]);
+		matching_setMaps ($itemMatchingData["maps"]);
+		matching_setCorrects ($itemMatchingData["corrects"]);
 		matching_setResponses ($responses);
-		matching_setOutcomes ($outcomes);
+		matching_setOutcomes ($itemMatchingData["outcomes"]);
 		matching_evaluate ();
 		
-		$returValue = matching_getOutcomes ();
-		echo json_encode ($returValue);
+		$returnValue = matching_getOutcomes ();
+		echo json_encode ($returnValue);
 	}
+
+    /**
+     * TESTING TESTING TESTING TESTING
+     * Evaluate user's reponses 
+     * @public
+     */
+    public function evaluateDebug () {
+        // Get parameters
+        $params = json_decode($_POST['params'], true);
+        $responses = json_decode($_POST['data']);
+        if (!isset($params['item_path']))
+            $params['item_path'] = $_GET['item_path'];
+        $file = strpos ('\\', $params['item_path']) != -1 ? urldecode($params['item_path']) : $params['item_path'];
+        
+        // Load the qti items service
+        $this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+        
+        // get the item
+        $item = $this->qtiService->loadItemFromFile ($file);
+
+        // Get matching data
+        $itemMatchingData = $item->getMatchingData ();
+
+        matching_init ();
+        matching_setRule ($itemMatchingData["rule"]);
+        matching_setMaps ($itemMatchingData["maps"]);
+        matching_setCorrects ($itemMatchingData["corrects"]);
+        matching_setResponses ($responses);
+        matching_setOutcomes ($itemMatchingData["outcomes"]);
+        matching_evaluate ();
+
+        $returnValue = matching_getOutcomes ();
+        echo json_encode ($returnValue);
+    }
+
 }
 ?>

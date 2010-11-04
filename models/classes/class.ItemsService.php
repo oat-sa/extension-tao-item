@@ -647,49 +647,23 @@ class taoItems_models_classes_ItemsService
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Item item
+     * @param  Resource uri
      * @return array
      */
-    public function getMatchingData( taoItems_models_classes_QTI_Item $item)
+    public function getMatchingData( core_kernel_classes_Resource $uri)
     {
         $returnValue = array();
-
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 begin
         
-        $returnValue = array (
-            "rule"=>null,
-            "corrects"=>Array(),
-            "maps"=>Array(),
-            "outcomes"=>Array()
-        );
+        $itemClass = $this->getItemClass ($uri);
         
-        // Get the rule
-        $returnValue["rule"] = $item->getResponseProcessing ()->getRule();
-        
-        // Get the correct responses (correct variables and map variables)
-        $corrects = Array ();
-        $maps = Array ();
-        $interactions = $item->getInteractions();
-        foreach ($interactions as $interaction){
-            $correctJSON = $interaction->getResponse ()->correctToJSON();
-            if ($correctJSON != null)
-            {
-                array_push ($returnValue["corrects"], $correctJSON);   
-            }
-            
-            $mapJson = $interaction->getResponse ()->mapToJSON();
-            if ($mapJson != null) {
-                array_push ($returnValue["maps"], $mapJson);   
-            }
+        // If QTI Item
+        if ($itemClass == 'taoItems_models_classes_QTI_Item') {
+            $qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+            $item = $this->qtiService->getDataItemByRdfItem ($uri);
+            $returnValue = $item->getMatchingData ();
         }
-        
-        // Get the outcome variables
-        $outcomes = Array ();
-        $outcomesTmp = $item->getOutcomes ();
-        foreach ($outcomesTmp as $outcome){
-            array_push ($returnValue["outcomes"], $outcome->toJSON());
-        }
-        
+                
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 end
 
         return (array) $returnValue;

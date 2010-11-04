@@ -139,10 +139,10 @@ class taoItems_models_classes_QTI_response_Template
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B begin        
         
         if( $this->uri == self::MATCH_CORRECT )
-			$returnValue = 'if(match(getResponse("RESPONSE"), getCorrect("RESPONSE"))) setOutcomeValue("SCORE", 1); else setOutcomeValue("SCORE", 0);';
+			$returnValue = taoItems_models_classes_Matching_Matching::MATCH_CORRECT;
     	
 		else if ( $this->uri == self::MAP_RESPONSE )
-			$returnValue = 'if (isNull(getResponse("RESPONSE"))) { setOutcomeValue("SCORE", 0); } else { setOutcomeValue("SCORE", mapResponse(getMap("RESPONSE"), getResponse("RESPONSE"))); }';
+			$returnValue = taoItems_models_classes_Matching_Matching::MAP_RESPONSE;
         
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B end
 

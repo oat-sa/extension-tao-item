@@ -475,54 +475,6 @@ class taoItems_models_classes_QTI_ParserFactory
         return $returnValue;
     }
 
-    public static function buildExpression (SimpleXMLElement $expressionNode) {
-        $returnValue = '';
-        
-        // The factory will create the right expression for us
-        $expression = taoItems_models_classes_QTI_response_ExpressionFactory::create ($expressionNode);
-        $subExpressions = Array();
-        
-        // All sub-expressions of an expression are embedded by this expression
-        foreach ($expressionNode->children() as $subExpressionNode) {
-            $subExpressions[] = self::buildExpression ($subExpressionNode);
-        }
-        $expression->setSubExpressions ($subExpressions);        
-        
-        // If the expression has a value
-        $expressionValue = (string) trim ($expressionNode);
-        if ($expressionValue != ''){
-            $expression->setValue ($expressionValue);
-        }
-        
-        return $expression;
-    }
-
-    public static function buildConditionalExpression( SimpleXMLElement $data){
-        $returnValue = '';
-
-        // A conditional expression part consists of an expression which must have an effective baseType of boolean and single cardinality
-        // It also contains a set of sub-rules. If the expression is true then the sub-rules are processed, otherwise they are 
-        // skipped (including if the expression is NULL) and the following responseElseIf or responseElse parts (if any) are considered instead.
-
-        $returnValue = new taoItems_models_classes_QTI_response_ConditionalExpression ($data->getName(), $data);
-        $actions = array ();
-        
-        // The first subExpression has to be the condition (single cardinality and boolean type)
-        list($conditionNode) = $data->xpath ('*[1]');
-        $condition = self::buildExpression ($conditionNode);
-        $returnValue->setCondition ($condition);
-
-        // The rest of subExpression have to be computed if the condition is filled
-        // These subExpression are responseRule (ResponseCondition, SetOutcomeValue, exitResponse). This code is yet writen, extract the function and avoid doublon
-        for ($i=2; $i<=count($data); $i++) {
-            list($actionNode) = $data->xpath ('*['.$i.']');
-            $actions[]= self::buildExpression ($actionNode);
-        }
-        $returnValue->setActions ($actions);
-        
-        return $returnValue;
-    }
-
     /**
      * Short description of method buildCustomResponseProcessing
      *
@@ -641,6 +593,83 @@ class taoItems_models_classes_QTI_ParserFactory
         // section 127-0-1-1-5c65d02d:12bc97f5116:-8000:00000000000026FB end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method buildConditionalExpression
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  SimpleXMLElement data
+     * @return taoItems_models_classes_QTI_response_ConditionalExpression
+     */
+    public static function buildConditionalExpression( SimpleXMLElement $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B31 begin
+        
+        // A conditional expression part consists of an expression which must have an effective baseType of boolean and single cardinality
+        // It also contains a set of sub-rules. If the expression is true then the sub-rules are processed, otherwise they are 
+        // skipped (including if the expression is NULL) and the following responseElseIf or responseElse parts (if any) are considered instead.
+
+        $returnValue = new taoItems_models_classes_QTI_response_ConditionalExpression ();
+        $actions = array ();
+        
+        // The first subExpression has to be the condition (single cardinality and boolean type)
+        list($conditionNode) = $data->xpath ('*[1]');
+        $condition = self::buildExpression ($conditionNode);
+        //echo '<pre>';print_r ($condition);echo '</pre>';
+        $returnValue->setCondition ($condition);
+
+        // The rest of subExpression have to be computed if the condition is filled
+        // These subExpression are responseRule (ResponseCondition, SetOutcomeValue, exitResponse). This code is yet writen, extract the function and avoid doublon
+        for ($i=2; $i<=count($data); $i++) {
+            list($actionNode) = $data->xpath ('*['.$i.']');
+            $actions[]= self::buildExpression ($actionNode);
+        }
+        $returnValue->setActions ($actions);
+        
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B31 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method buildExpression
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  SimpleXMLElement data
+     * @return taoItems_models_classes_QTI_response_Expression
+     */
+    public static function buildExpression( SimpleXMLElement $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B34 begin
+        
+        // The factory will create the right expression for us
+        $expression = taoItems_models_classes_QTI_response_ExpressionFactory::create ($data);
+        $subExpressions = Array();
+        
+        // All sub-expressions of an expression are embedded by this expression
+        foreach ($data->children() as $subExpressionNode) {
+            $subExpressions[] = self::buildExpression ($subExpressionNode);
+        }
+        $expression->setSubExpressions ($subExpressions);        
+        
+        // If the expression has a value
+        $expressionValue = (string) trim ($data);
+        if ($expressionValue != ''){
+            $expression->setValue ($expressionValue);
+        }
+        
+        $returnValue = $expression;
+        
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B34 end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_ParserFactory */

@@ -170,9 +170,15 @@ class taoItems_models_classes_Matching_Tuple
     {
         // section 127-0-1-1-2688e070:12bac090945:-8000:0000000000002952 begin
     	
+    	// @todo be carrefull the set function get only base type variable
+    	
     	$this->value = array();
     	foreach ($data as $key=>$elt){
-    		$this->value[$key] = taoItems_models_classes_Matching_VariableFactory::create ($elt);
+    	    if ($elt instanceOf taoItems_models_classes_Matching_Variable) {
+    	        $this->value[$key] = $elt;
+    	    } else {
+    	        $this->value[$key] = taoItems_models_classes_Matching_VariableFactory::create ($elt);
+    	    }
     	}
     	
         // section 127-0-1-1-2688e070:12bac090945:-8000:0000000000002952 end
