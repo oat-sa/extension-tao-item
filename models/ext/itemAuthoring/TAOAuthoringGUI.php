@@ -524,7 +524,7 @@ class TAOAuthoringGUI {
 		<input type="submit" class="phighlighter" onclick="refreshQCM();" value="'.__('Apply').'">
 		';
 		
-		if(!isset($_SESSION['processUri'])){
+		if(!isset($_SESSION[SESSION_NAMESPACE]['processUri'])){
 			$output.='<input type="submit" class="phighlighter" value="'.__('Save and close').'">';
 		}
 		
