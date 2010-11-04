@@ -43,7 +43,7 @@ function setEndorsment(endorsment){
 }
 
 /**
- * Get the score of the item
+ * Get the score of the item 
  * 
  * @function
  * @namespace taoApi
@@ -70,7 +70,7 @@ function setScore(score){
 }
 
 /**
- * Get the values answered by the subject
+ * Get the values answered by the subject 
  * 
  * @function
  * @namespace taoApi
@@ -199,32 +199,59 @@ function getUserVar(key){
 }
 
 
-/////////////
-// STATES  //
+  /////////////
+ // STATES  //
 /////////////
 
 if(typeof(finish) != 'function'){
 
+	//get the highest context 
+	var _stateContext = window.top || window;
+	
 	/**
-	* Define the item's state as finished.
-	* This state can have some consequences.
-	* 
-	* @function
-	* @namespace taoApi
-	*/
+	 * Define the item's state as finished.
+	 * This state can have some consequences.
+	 * 
+	 * @function
+	 * @namespace taoApi
+	 */
 	function finish(){
-		$(window).trigger(STATE.ITEM.FINISHED);
+		$(_stateContext).trigger(STATE.ITEM.PRE_FINISHED);
+		$(_stateContext).trigger(STATE.ITEM.FINISHED);
+		$(_stateContext).trigger(STATE.ITEM.POST_FINISHED);
 	}
 	
 	/**
-	* Add a callback that will be executed on finish state.
-	* 
-	* @function
-	* @namespace taoApi
-	* @param {function} callback
-	*/
+	 * Add a callback that will be executed on finish state.
+	 * 
+	 * @function
+	 * @namespace taoApi
+	 * @param {function} callback
+	 */
 	function onFinish(callback){
-		$(window).bind(STATE.ITEM.FINISHED, callback);
+		$(_stateContext).bind(STATE.ITEM.FINISHED, callback);
+	}
+	
+	/**
+	 * Add a callback that will be executed on finish but before the other callbacks  
+	 * 
+	 * @function
+	 * @namespace taoApi
+	 * @param {function} callback
+	 */
+	function beforeFinish(callback){
+		$(_stateContext).bind(STATE.ITEM.PRE_FINISHED, callback);
+	}
+	
+	/**
+	 * Add a callback that will be executed on finish but after the other callbacks  
+	 * 
+	 * @function
+	 * @namespace taoApi
+	 * @param {function} callback
+	 */
+	function afterFinish(callback){
+		$(_stateContext).bind(STATE.ITEM.POST_FINISHED, callback);
 	}
 
 }
@@ -311,9 +338,9 @@ function push(){
 }
 
 /*
- * By default, the variables are pushed when the item is finished (STATE.ITEM.FINISHED)
+ * By default, the variables are pushed when the item is finished
  */
-$(window).bind(STATE.ITEM.FINISHED, push);
+beforeFinish(push);
 
 
 
@@ -384,8 +411,8 @@ function initEventServices(source, destination){
 }
 
 /*
- * By default, all the events are sent  when the item is finished (STATE.ITEM.FINISHED)
+ * By default, all the events are sent  when the item is finished
  */
-$(window).bind(STATE.ITEM.FINISHED, function(){
+beforeFinish(function(){
 	eventTracer.sendAllFeedTrace_now();
 });

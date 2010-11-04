@@ -21,7 +21,7 @@
 <span class='line'> 14</span>  * @type {Object}
 <span class='line'> 15</span>  * @constant 
 <span class='line'> 16</span>  */</span><span class="WHIT">
-<span class='line'> 17</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="NAME">URI</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="NAME">URI</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">URI</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 18</span> </span><span class="WHIT">	</span><span class="STRN">'LABEL'</span><span class="WHIT">				</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'http://www.w3.org/2000/01/rdf-schema#label'</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 19</span> </span><span class="WHIT">	</span><span class="STRN">'ENDORSMENT'</span><span class="WHIT"> 		</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'##NAMESPACE#ENDORSMENT'</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'> 20</span> </span><span class="WHIT">	</span><span class="STRN">'SUBJECT'</span><span class="WHIT">			</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject'</span><span class="PUNC">,</span><span class="WHIT">
@@ -40,8 +40,10 @@
 <span class='line'> 33</span>  * @type {Object}
 <span class='line'> 34</span>  * @constant 
 <span class='line'> 35</span>  */</span><span class="WHIT">
-<span class='line'> 36</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="NAME">STATE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="KEYW">const</span><span class="WHIT"> </span><span class="NAME">STATE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">STATE</span><span class="WHIT"> </span><span class="PUNC">||</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'> 37</span> </span><span class="WHIT">	</span><span class="STRN">'ITEM'</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'> 38</span> </span><span class="WHIT">		</span><span class="STRN">'FINISHED'</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'item_finished'</span><span class="WHIT">
-<span class='line'> 39</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'> 40</span> </span><span class="PUNC">}</span></pre></body></html>
+<span class='line'> 38</span> </span><span class="WHIT">		</span><span class="STRN">'PRE_FINISHED'</span><span class="WHIT"> 	</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'pre_item_finished'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">		</span><span class="STRN">'FINISHED'</span><span class="WHIT"> 		</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'item_finished'</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">		</span><span class="STRN">'POST_FINISHED'</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'post_item_finished'</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="PUNC">}</span></pre></body></html>
