@@ -16,7 +16,7 @@ TAO_MATCHING.VariableFactory = {
 		var type = null;
 		
 		// The type has been defined manually
-		if (typeof pType == 'undefined' || pType == null){
+		if (typeof pType == 'undefined' || pType == null) {
 			// We get an object as data
 			if (typeof data == 'object') {
 				// If the data is null, we create a basic type variable with null value
@@ -64,5 +64,18 @@ TAO_MATCHING.VariableFactory = {
 		}
 		
         return returnValue;
+	}
+	
+	, isValidBaseType : function(elt){
+	    var returnValue = false;
+	    
+	    switch (typeof (elt)){
+            case 'boolean':
+            case 'number':
+            case 'string':
+                returnValue = true;
+	    }
+	    
+	    return returnValue;
 	}
 }

@@ -84,6 +84,17 @@ TAO_MATCHING.BaseTypeVariable.prototype = {
     {
         this.value = data;
     }
+    
+    /**
+     * Short description of method toJSon
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    , toJSon : function ()
+    {
+        return this.getValue();
+    }
 };
 
 // Extend the class with its parent properties

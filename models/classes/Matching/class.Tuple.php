@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 21.10.2010, 10:19:44 with ArgoUML PHP module 
+ * Automatically generated on 05.11.2010, 11:59:48 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -159,7 +159,8 @@ class taoItems_models_classes_Matching_Tuple
     }
 
     /**
-     * Short description of method setValue
+     * Set value of the tuple from an array of data. The array of data could be
+     * array of Variables or an array of "base type" variables
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -182,6 +183,22 @@ class taoItems_models_classes_Matching_Tuple
     	}
     	
         // section 127-0-1-1-2688e070:12bac090945:-8000:0000000000002952 end
+    }
+
+    /**
+     * Short description of method toJSon
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    public function toJSon()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B37 begin
+        // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B37 end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_Tuple */

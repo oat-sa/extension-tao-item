@@ -185,7 +185,7 @@
 					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
 					, rule		: TAO_MATCHING.RULE.MATCH_CORRECT
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":"1"}]);
 			matching_evaluate ();
@@ -198,7 +198,7 @@
 					, outcomes	: [{"identifier":"SCORE", "type":"double"}]
 					, rule		: TAO_MATCHING.RULE.MATCH_CORRECT
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
 			matching_evaluate ();
@@ -215,7 +215,7 @@
 					, maps		: [{"identifier":"RESPONSE", "value":[{"key":"Paris", "value":1}, {"key":"paris", "value":0.9}]}]
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":"paris"}]);
 			matching_evaluate ();
@@ -230,7 +230,7 @@
 					, maps		: [{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
 			matching_evaluate ();
@@ -245,7 +245,7 @@
 					, maps		: [{"identifier":"RESPONSE", "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}]
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]);
 			matching_evaluate ();
@@ -260,7 +260,7 @@
 					, maps		: [{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
 			matching_evaluate ();
@@ -275,7 +275,7 @@
 					, maps		: [{"identifier":"RESPONSE", "value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}]
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
-			}
+			};
 			matching_init (matching_param);
 			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]);
 			matching_evaluate ();
@@ -290,7 +290,7 @@
                     outcomes  : [{"identifier":"SCORE", "type":"double"}]
                     , rule      : 'if (and(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
-            }
+            };
             matching_init (matching_param);
             matching_evaluate ();
             outcomes = matching_getOutcomes ();
@@ -303,7 +303,7 @@
                     , outcomes  : [{"identifier":"SCORE", "type":"double"}]
                     , rule      : 'if ( and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
-            }
+            };
             matching_init (matching_param);
             matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
             matching_evaluate ();
@@ -317,7 +317,7 @@
                     , outcomes  : [{"identifier":"SCORE", "type":"double"}]
                     , rule      : 'if ( true, true, and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
-            }
+            };
             matching_init (matching_param);
             matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
             matching_evaluate ();
@@ -325,244 +325,357 @@
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
         });
 
-		test("remote matching engine", function() {
-			
-			// CHOICE
-			var matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-					, "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT} \
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 1) content += 'ok : CHOICE : Expected value<br/>'; else content += 'not ok : CHOICE : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
-			matching_evaluate ();
-			
-			
-			// ASSOCIATE
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-					, "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/associate.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 4) content += 'ok : ASSOCIATE : Expected value<br/>'; else content += 'not ok : ASSOCIATE : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[['A', 'P'], ['C','M'], ['D','L']]}]);
-			matching_evaluate ();
-			
-			
-			// CHOICE MULTIPLE
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice_multiple.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 2) content += 'ok : CHOICE MULTIPLE : Expected value<br/>'; else content += 'not ok : CHOICE MULTIPLE : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":['H', 'O']}]);
-			matching_evaluate ();
-			
-			
-			// GAP MATCH
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/gap_match.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 3) content += 'ok : GAP MATCH : Expected value<br/>'; else content += 'not ok : GAP MATCH : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"W" , "1":"G1"}, {"0":"Su" , "1":"G2"}]}]);
-			matching_evaluate ();
-			
-			
-			// MATCH
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/match.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 3) content += 'ok : MATCH : Expected value<br/>'; else content += 'not ok : MATCH : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{ "identifier": "RESPONSE", "value": [{ "0": "C", "1": "R" }, {"0": "D", "1": "M" }, { "0": "L", "1": "M" }, { "0": "P", "1": "T" }] }]);
-			matching_evaluate ();
-						
-			
-			// ORDER
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/order.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 1) content += 'ok : ORDER : Expected value<br/>'; else content += 'not ok : ORDER : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
-			matching_evaluate ();
-			
-			// HOTTEXT
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/hottext.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 1) content += 'ok : HOTTEXT : Expected value<br/>'; else content += 'not ok : HOTTEXT : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"2"}]);
-			matching_evaluate ();
-			
-			// INLINE CHOICE	
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/inline_choice.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 1) content += 'ok : INLINE CHOICE : Expected value<br/>'; else content += 'not ok : INLINE CHOICE : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"Y"}]);
-			matching_evaluate ();
-			
-			// TEXT ENTRY	
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/text_entry.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 0.5) content += 'ok : TEXT ENTRY : Expected value<br/>'; else content += 'not ok : TEXT ENTRY : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"york"}]);
-			matching_evaluate ();
-			
-			// ORKNEY1	
-			matching_param = {
-				"url" : "http://tao.local/taoItems/Matching/evaluateDebug"
-				, "params" : {
-					"token" : 'TOOOOKEN'
-                    , "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/orkney1.xml'
-				}
-				, "options" : {
-					"evaluateCallback" : function (outcomes) {
-						var html = '<ol style="display: block;"> \
-							{CONTENT}\
-							</ol>';
-						var content = '';
-						if (outcomes.SCORE.value == 1) content += 'ok : ORKNEY1 : Expected value<br/>'; else content += 'not ok : ORKNEY1 : Unexpected value<br/>';
-						html = html.replace (/{CONTENT}/, content);
-						$('#qunit-tests li:last').append (html);
-					}
-				}
-			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"T"}]);
-			matching_evaluate ();
-		});
+        // CREATE COLLECTION OPERATOR
+        test("test createCollection operator]", function() {
+            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_order_partial_scoring.xml';
+            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+                    console.log(data.rule);
+                }
+            });
+            
+            /*var matching_param = {
+                data : {
+                    rule      : 'createCollection(null, "tuple", "A", "B", "C", "D", "E", "F")'
+                }
+            };
+            matching_init (matching_param);
+            matching_evaluate ();*/
+        });
+
+        // REMOTE MATCHING CHOICE.XML
+        asyncTest ('Remote Matching : Choice.xml', function () {
+            var matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING ASSOCIATE.XML
+        asyncTest ('Remote Matching : Associate.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/associate.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 4, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":[['A', 'P'], ['C','M'], ['D','L']]}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING CHOICE MULTIPLE.XML
+        asyncTest ('Remote Matching : ChoiceMultiple.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice_multiple.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 2, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":['H', 'O']}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING GAP MATCH.XML
+        asyncTest ('Remote Matching : GapMatch.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/gap_match.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 3, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"W" , "1":"G1"}, {"0":"Su" , "1":"G2"}]}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING MATCH.XML
+        asyncTest ('Remote Matching : Match.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/match.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 3, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{ "identifier": "RESPONSE", "value": [{ "0": "C", "1": "R" }, {"0": "D", "1": "M" }, { "0": "L", "1": "M" }, { "0": "P", "1": "T" }] }]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING ORDER.XML
+        asyncTest ('Remote Matching : Order.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/order.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING HOTTEXT.XML
+        asyncTest ('Remote Matching : Hottext.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/hottext.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":"2"}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING INLINE CHOICE.XML
+        asyncTest ('Remote Matching : InlineChoice.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/inline_choice.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":"Y"}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING TEXT ENTRY.xml
+        asyncTest ('Remote Matching : TextEntry.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/text_entry.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 0.5, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":"york"}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING TEXT ORKNEY1.xml
+        asyncTest ('Remote Matching : Orkney1.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/orkney1.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":"T"}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE MATCHING CUSTOM MATCH .xml
+        asyncTest ('Remote Matching : CustomMatch.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_match_choice.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE PARSING / CLIENT MATCHING CUSTOM MATCH .xml
+        asyncTest("Remote Parsing / Client Matching : Custom Match", function(){
+            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_match_choice.xml';
+            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+                    var matching_param = {
+                        "data" : data
+                        , "options" : {
+                            "evaluateCallback" : function (outcomes) {
+                                equals (outcomes.SCORE.value, 1, 'Expected Value');
+                                start();
+                            }
+                        }
+                    };
+                    matching_init (matching_param);
+                    matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+                    matching_evaluate ();
+                }
+            });            
+        });
+
+        // REMOTE MATCHING CUSTOM MAP RESPONSE .xml
+        asyncTest ('Remote Matching : CustomMapResponse.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_map_response_choice_multiple.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 2, 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE PARSING / CLIENT MATCHING MAP RESPONSE .xml
+        asyncTest("Remote Parsing / Client Matching : Custom Map Response", function(){
+            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_map_response_choice_multiple.xml';
+            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+                    var matching_param = {
+                        "data" : data
+                        , "options" : {
+                            "evaluateCallback" : function (outcomes) {
+                                equals (outcomes.SCORE.value, 2, 'Expected Value');
+                                start();
+                            }
+                        }
+                    };
+                    matching_init (matching_param);
+                    matching_setResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
+                    matching_evaluate ();
+                }
+            });            
+        });
+
+        // REMOTE MATCHING CUSTOM PARTIAL SCORING.xml
+        asyncTest ('Remote Matching : CustomPartialScoring.xml', function () {
+            matching_param = {
+                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_order_partial_scoring.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        equals (outcomes.SCORE.value, 1 , 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matching_init (matching_param);
+            matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
+            matching_evaluate ();
+        });
+
+        // REMOTE PARSING / CLIENT MATCHING PARTIAL SCORING .xml
+        asyncTest("Remote Parsing / Client Matching : Custom Partial Scoring", function(){
+            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_order_partial_scoring.xml';
+            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+                    var matching_param = {
+                        "data" : data
+                        , "options" : {
+                            "evaluateCallback" : function (outcomes) {
+                                equals (outcomes.SCORE.value, 1, 'Expected Value');
+                                start();
+                            }
+                        }
+                    };
+                    matching_init (matching_param);
+                    matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
+                    matching_evaluate ();
+                }
+            });            
+        });
 	</script>
 	
 </head>

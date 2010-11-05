@@ -68,7 +68,19 @@ class taoItems_models_classes_QTI_response_BaseValue
         // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A98 begin
        
         // JSON ENCODE the value to get quote when quote are required function of the variable base type
-        $returnValue = json_encode($this->value);
+        // not so easy ;)
+        //$returnValue = json_encode($this->value);
+        // @todo make usable for complex variable such as pair, directed pair ..
+        // @todo centralize the management of the options (attributes)
+        $options = Array();
+        /*foreach ($this->options as $key=>$option)
+            $options[$key] = (string) $option;*/
+        
+        $options['type'] = (string)$this->options['baseType'];
+        $returnValue = 'createVariable ('
+            . (count($this->options) ? '"'.addslashes(json_encode($options)).'"' : 'null') .
+            ', '. json_encode ($this->value) .
+        ')';
         
         // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A98 end
 

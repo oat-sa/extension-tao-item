@@ -61,18 +61,19 @@ TAO_MATCHING.MatchingRemote.prototype = {
 		var self = this;
 		var responses = this.responses;
 		
-		var params = $.extend(this.params, {data: JSON.stringify(this.responses) });
+		var requestParams = $.extend({}, this.params, {data: JSON.stringify(this.responses) });
 	
 		$.ajax ({
-			url : this.url
-			, type : 'POST'
-			, async : true
-			, dataType : 'json'
-			, data : params
-			, success	: function (data){
+			url          : this.url
+			, type       : 'POST'
+			, async      : true
+			, dataType   : 'json'
+			, data       : requestParams
+			, success    : function (data){
 				self.outcomes = data;
-				if (self.options.evaluateCallback!=null)
-					self.options.evaluateCallback (data);
+				if (self.options.evaluateCallback!=null){
+                    self.options.evaluateCallback (data);   
+				}
 			}
 		});
     }

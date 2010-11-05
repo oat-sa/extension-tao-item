@@ -491,7 +491,8 @@ class taoItems_models_classes_QTI_Item
 		$variables['matching'] = Array();
         $variables['matching']['data'] = $matchingData;
         $variables['matching']['url'] = "taoItems/Matching/evaluate";
-        $variables['matching']['params'] = Array ("token"=>"getToken()");
+        //$variables['matching']['params'] = Array ("token"=>"getToken()");
+        $variables['matching']['params'] = Array ();
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();

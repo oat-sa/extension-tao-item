@@ -9,14 +9,13 @@ require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
  * @package taoItems
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- * @todo integrate to TAO
- * @todo check if responses variables are compliant to the format
  * @todo return the result of the evaluation if the test/delivery ... has been configured to return the outcomes
  */
 class Matching extends Api {
 	
     /**
      * Evaluate user's reponses 
+     * @todo Check if the data sent by the user are compliant with our standart (and secure) 
      * @public
      */
 	public function evaluate () 
@@ -43,8 +42,6 @@ class Matching extends Api {
 				matching_evaluate ();
 				
 				$returnValue = matching_getOutcomes ();
-				
-				
             }
         }
 		
@@ -58,17 +55,13 @@ class Matching extends Api {
      */
     public function evaluateDebug () {
         // Get parameters
-        $params = json_decode($_POST['params'], true);
-        $responses = json_decode($_POST['data']);
-        if (!isset($params['item_path']))
-            $params['item_path'] = $_GET['item_path'];
-        $file = strpos ('\\', $params['item_path']) != -1 ? urldecode($params['item_path']) : $params['item_path'];
-        
+        $item_path = $this->getRequestParameter('item_path');
+
         // Load the qti items service
         $this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
         
         // get the item
-        $item = $this->qtiService->loadItemFromFile ($file);
+        $item = $this->qtiService->loadItemFromFile ($item_path);
 
         // Get matching data
         $itemMatchingData = $item->getMatchingData ();
@@ -77,12 +70,32 @@ class Matching extends Api {
         matching_setRule ($itemMatchingData["rule"]);
         matching_setMaps ($itemMatchingData["maps"]);
         matching_setCorrects ($itemMatchingData["corrects"]);
-        matching_setResponses ($responses);
+        matching_setResponses (json_decode($_POST['data']));
         matching_setOutcomes ($itemMatchingData["outcomes"]);
         matching_evaluate ();
 
         $returnValue = matching_getOutcomes ();
         echo json_encode ($returnValue);
+    }
+
+    /**
+     * TESTING TESTING TESTING TESTING
+     * Get Item DATA Matching 
+     * @public
+     */
+    public function getItemMatchingDataDebug () {
+        $item_path =  urldecode($this->getRequestParameter('item_path'));
+
+        // Load the qti items service
+        $this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+        
+        // get the item
+        $item = $this->qtiService->loadItemFromFile ($item_path);
+
+        // Get matching data
+        $itemMatchingData = $item->getMatchingData ();
+
+        echo json_encode ($itemMatchingData);
     }
 
 }

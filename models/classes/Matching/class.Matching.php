@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 16:19:06 with ArgoUML PHP module 
+ * Automatically generated on 05.11.2010, 14:12:26 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -143,6 +143,7 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 begin
 		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
 			'and'=>array('mappedFunction'=>'andExpression')
+            , 'createVariable'=>array()
 			, 'equal'=>array()
 			, 'if'=>array('native'=>true)
 			, 'isNull'=>array()
@@ -173,8 +174,12 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AAB begin
         
         $functionName = $matches[1];
-		
-		$whiteListedFunction = taoItems_models_classes_Matching_Matching::$whiteFunctionsList[$matches[1]];
+		$whiteListedFunction = null;
+        
+        // Get the whitelisted function
+        if (isset(taoItems_models_classes_Matching_Matching::$whiteFunctionsList[$matches[1]])){
+            $whiteListedFunction = taoItems_models_classes_Matching_Matching::$whiteFunctionsList[$matches[1]];
+        }
 		
         // The function is white listed
         if (isset($whiteListedFunction))
@@ -770,13 +775,13 @@ class taoItems_models_classes_Matching_Matching
         // QTIVariable sub-expression
         if ($subExp instanceof taoItems_models_classes_Matching_BaseTypeVariable){
             if ($subExp->getType() != 'boolean') { 
-                throw new Error('NOT operator requires a sub-expression with single cardinality and boolean baseType');
+                throw new Exception ('taoItems_models_classes_Matching_Matching::not : NOT operator requires a sub-expression with single cardinality and boolean baseType');
             }
             $subExpValue = $subExp->getValue ();
         
         // ! Basic Boolean sub-expression
         }else if (!is_bool ($subExp)){
-            throw new Error ('NOT operator requires a sub-expression with single cardinality and boolean baseType');
+            throw new Exception ('taoItems_models_classes_Matching_Matching::not : NOT operator requires a sub-expression with single cardinality and boolean baseType');
 
         // Basic Boolean sub-expression
         }else{
@@ -791,40 +796,57 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * Short description of method ordered
+     * Short description of method createVariable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array options
      * @return taoItems_models_classes_Matching_Tuple
      */
-    public function ordered($options)
+    public function createVariable($options)
     {
         $returnValue = null;
 
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 begin
+        $options = json_decode($options);
         
-        //$returnValue = new taoItems_models_classes_Matching_Tuple ();
-        $value = Array ();
-        $counterStrike = 0;
-        
-        // for each arguments (which are expressions)
-        for ($i = 1; $i < func_num_args(); ++$i) {
-            $var = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg($i));
-            if ($var instanceOf taoItems_models_classes_Matching_BaseTypeVariable){
-                $value[$counterStrike] = $var;
-                $counterStrike ++;
-            } else if ($var instanceOf taoItems_models_classes_Matching_Tuple) {
-                
-            }
+        // Type undefined, we are in the case of baseTypeVariable creation (cardinality single)
+        if (!isset($options->type)) {
+            $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
         }
-        
-        $returnValue = new taoItems_models_classes_Matching_Tuple ($value);
-        /*echo '<pre>';
-        print_r ($value);
-        print_r ($returnValue);
-        echo '</pre>';
-        */
+        else 
+        {
+            switch ($options->type){
+                case 'integer':
+                case 'float':
+                case 'string':
+                case 'boolean':
+                    // In all the base type cases create a variable with the first found argument
+                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
+                    break;
+                    
+                case 'tuple':
+                    $values = Array ();
+                    $a = 0;
+                    for ($i = 1; $i < func_num_args(); ++$i, ++$a) {
+                        $values[$a] = func_get_arg($i);
+                    }
+                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create ((object)$values);
+                    break;
+                    
+                case 'list':
+                    $values = Array ();
+                    $a = 0;
+                    for ($i = 1; $i < func_num_args(); ++$i, ++$a) {
+                        $values[$a] = func_get_arg($i);
+                    }
+                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create ($values);
+                    break;
+                    
+                case 'default':
+                    throw new Exception ('taoItems_models_classes_Matching_Matching::createVariable : type unknown ['.$options->type.']');
+            }  
+        }
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 end
 
         return $returnValue;
@@ -842,12 +864,25 @@ class taoItems_models_classes_Matching_Matching
     public function setOutcomeValue($id,    $value)
     {
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002927 begin
-            	
+        
+        // Get the outcome to update    	
         $outcome = $this->getOutcome ($id);
-        if($outcome == null)
-        	throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : the outcome value '.$id.' does not exist');
-        $outcome->setValue ($value);
-		
+        
+        // Update the value of the outcome
+        if($outcome == null){
+            throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : the outcome value '.$id.' does not exist');
+        }
+        if ($value instanceof taoItems_models_classes_Matching_BaseTypeVariable){
+            $outcome->setValue ($value->getValue());
+        }
+        else {
+            if (taoItems_models_classes_Matching_VariableFactory::isValidBaseType ($value)){
+                $outcome->setValue ($value);
+            }else{
+                throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['.gettype($value).']');
+            }
+        }
+        
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002927 end
     }
 

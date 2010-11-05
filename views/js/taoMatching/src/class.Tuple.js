@@ -66,7 +66,7 @@ TAO_MATCHING.Tuple.prototype = {
         		returnValue = false;
         		break;
         	} else if (this.value[key].getType () != compareElt.getType()){
-        		throw new Exception ('TAO_MATCHING::match an error occured : types of the elements to match are not the same ['+ elt.getType () +'] and ['+ compareElt.getType() +']');
+        		throw new Error ('TAO_MATCHING.Tuple::match an error occured : types of the elements to match are not the same ['+ elt.getType () +'] and ['+ compareElt.getType() +']');
         		returnValue = false;
         		break;
         	} else if (!this.value[key].match (compareElt)){
@@ -91,9 +91,18 @@ TAO_MATCHING.Tuple.prototype = {
     , setValue : function (data)
     {
     	this.value = [];
-    	for (var key in data ){
-    		var matchingVar = TAO_MATCHING.VariableFactory.create (data[key]);
-			this.value[key] = matchingVar;
+    	for (var key in data) {
+    	    // If the element is yet a BaseTypeVariable add it to the tuple
+            if (data[key] instanceof TAO_MATCHING.BaseTypeVariable){
+                this.value[key] = data[key];
+            // Else the element have to be a native language variable
+            } else {
+                if (TAO_MATCHING.VariableFactory.isValidBaseType (data[key])){
+                    this.value[key] = TAO_MATCHING.VariableFactory.create (data[key]);
+                } else {
+                    throw new Error ('TAO_MATCHING.Tuple::setValue an error occured : types of the element is not allowed');
+                }
+            }
     	}
     }
 };

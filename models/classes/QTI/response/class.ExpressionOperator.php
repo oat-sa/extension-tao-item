@@ -103,28 +103,35 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
 
         // Get subExpressions
-        $subExpressionsJSON = array();
+        $subExpressionsRules = array();
         foreach ($this->subExpressions as $subExpression){
-            $subExpressionsJSON[] = $subExpression->getRule();
+            $subExpressionsRules[] = $subExpression->getRule();
         }
+        $subExpressionsJSON = implode(',', $subExpressionsRules);
 
+        // Format options
+        $optionsJSON = count($this->options) ? '"'.addslashes(json_encode($this->options)).'"' : 'null';
+        
         // Format rule function of the expression operator
         switch ($this->name) {
-            
             case 'correct':
                 $returnValue = 'getCorrect("'.$this->options['identifier'].'")';
                 break;
             case 'mapResponse':
                 $identifier = $this->options['identifier'];
                 $returnValue = 'mapResponse('
-                    . (count($this->options) ? '"'.addslashes(json_encode($this->options)).'"' : 'null' )
+                    . $optionsJSON
                     .', getMap("'.$identifier.'"), getResponse("'.$identifier.'"))';
+                break;
+            // Ordered is a Creation of Tuple from parameters
+            case 'ordered':
+                $returnValue = 'createVariable("{\"type\":\"tuple\"}", '.$subExpressionsJSON.')';
                 break;
             case 'outcome':
                 $returnValue = 'getOutcome("'.$this->options['identifier'].'")';
                 break;
             case 'setOutcomeValue':
-                $returnValue = 'setOutcomeValue("'.$this->options['identifier'].'", '.implode(',', $subExpressionsJSON).')';
+                $returnValue = 'setOutcomeValue("'.$this->options['identifier'].'", '.$subExpressionsJSON.')';
                 break;
             case 'variable':
                 $returnValue = 'getResponse("'.$this->options['identifier'].'")';
@@ -133,8 +140,8 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
             default:                 
                 $returnValue = 
                     $this->name.'('
-                        . (count($this->options) ? '"'.addslashes(json_encode($this->options)).'"' : 'null' )
-                        . (count($this->subExpressions) ? ', '.implode(',', $subExpressionsJSON) : '')
+                        . $optionsJSON
+                        . ($subExpressionsJSON!="" ? ', '.$subExpressionsJSON : '')
                     .')';
         }
         

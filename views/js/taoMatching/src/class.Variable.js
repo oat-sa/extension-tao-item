@@ -1,5 +1,14 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * Short description of class taoItems_models_classes_Matching_Variable
+ *
+ * @abstract
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package taoItems
+ * @subpackage models_classes_Matching
+ */
 TAO_MATCHING.Variable = function () {
 	 /**
      * Short description of attribute value
@@ -91,8 +100,7 @@ TAO_MATCHING.Variable.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
-    , toJSon : function ()
-    {
-        return this.getValue();
+    , toJSon : function () { 
+        // abstract        
     }
 };

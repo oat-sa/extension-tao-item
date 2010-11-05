@@ -70,7 +70,8 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
      */
     this.whiteFunctionsList = {
 		'and'				:{'mappedFunction':'andExpression'}
-		, 'equal'			:{}
+        , 'createVariable'  :{}
+        , 'equal'           :{}
 		, 'if'				:{'jsFunction':true}
 		, 'isNull'			:{}
 		, 'getCorrect'		:{}
@@ -124,7 +125,7 @@ TAO_MATCHING.Matching.prototype = {
 		}
 		
 		if (this.options.evaluateCallback!=null)
-			this.options.evaluateCallback ();
+			this.options.evaluateCallback (this.outcomes);
     }
 
     /**
@@ -310,6 +311,61 @@ TAO_MATCHING.Matching.prototype = {
      ************************************************************ */
 
     /**
+     * Short description of method createVariable
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
+     * @return taoItems_models_classes_Matching_Tuple
+     */
+    , createVariable : function (options, type) {
+        var returnValue = null;
+        options = this.checkOptions(options);
+                
+        // Type undefined, we are in the case of baseTypeVariable creation (cardinality single)
+        if (typeof(options.type) == 'undefined' ) {
+            returnValue = TAO_MATCHING.VariableFactory.create (this.createVariable.arguments[1]);
+        }
+        else 
+        {
+            switch (options.type){
+                case 'integer':
+                case 'float':
+                case 'string':
+                case 'boolean':
+                    // In all the base type cases create a variable with the first found argument
+                    returnValue = TAO_MATCHING.VariableFactory.create (this.createVariable.arguments[1]);
+                    break;
+                    
+                case 'tuple':
+                    var values = [];
+                    var a = 0;
+                    for (var i = 1; i < this.createVariable.arguments.length; ++i, ++a) {
+                        values[a] = this.createVariable.arguments[i];
+                    }
+                    returnValue = TAO_MATCHING.VariableFactory.create (values);
+                    break;
+                    
+                case 'list':
+                    var values = [];
+                    var a = 0;
+                    for (var i = 1; i < this.createVariable.arguments.length; ++i, ++a) {
+                        values.array_push (this.createVariable.arguments[i]);
+                    }
+                    returnValue = TAO_MATCHING.VariableFactory.create (values);
+                    break;
+                    
+                case 'default':
+                    throw new Error ('TAO_MATCHING.createVariable : type unknown ['+options.type+']');
+            }
+        }
+        
+        //console.log(returnValue.toJSon());
+        
+        return returnValue;
+    }
+
+    /**
      * Set the value of an outcome variable
      *
      * @access public
@@ -321,8 +377,20 @@ TAO_MATCHING.Matching.prototype = {
     , setOutcomeValue : function(identifier, value)
     {
         var outcome = this.getOutcome (identifier);
-        if(outcome == null) throw new Error ('TAO_MATCHING.Matching::setOutcomeValue error : the outcome value '+identifier+' does not exist');
-        outcome.setValue (value);
+        if(outcome == null){
+            throw new Error ('TAO_MATCHING.Matching::setOutcomeValue error : the outcome value '+identifier+' does not exist');
+        }
+        
+        if (value instanceof TAO_MATCHING.BaseTypeVariable){
+            outcome.setValue (value.getValue());
+        }
+        else {
+            if (TAO_MATCHING.VariableFactory.isValidBaseType (value)){
+                outcome.setValue (value);
+            }else{
+                throw new Error ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['+typeof(value)+']');
+            }
+        }
     }
     
     /**

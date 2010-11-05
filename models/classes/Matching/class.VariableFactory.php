@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 16:28:10 with ArgoUML PHP module 
+ * Automatically generated on 05.11.2010, 12:37:27 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -228,6 +228,34 @@ class taoItems_models_classes_Matching_VariableFactory
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A23 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method isValidBaseType
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return boolean
+     */
+    public function isValidBaseType(   $data)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B46 begin
+        
+        switch (gettype ($data)){
+            case 'string':
+            case 'integer':
+            case 'float':
+            case 'double': // only in php
+            case 'boolean':
+                $returnValue = true;
+        }
+        
+        // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B46 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_VariableFactory */
