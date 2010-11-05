@@ -21,7 +21,6 @@
 	<!-- JS REQUIRED -->
 	
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_root_www?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Matching.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.MatchingRemote.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.VariableFactory.js"></script>
