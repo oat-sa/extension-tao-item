@@ -116,10 +116,12 @@ div.formContainer_choice div.xhtml_form form{
 }
 
 #itemEditor_wysiwyg{
+	position: relative;
 	width:90%;
 }
 
 #interactionEditor_wysiwyg{
+	position: relative;
 	width:90%;
 }
 

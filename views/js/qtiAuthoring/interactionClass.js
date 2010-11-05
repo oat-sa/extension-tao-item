@@ -341,8 +341,8 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 		if(!options){
 			var options = {'delete': true, 'group':true};
 		}else{
-			if(options.delete !== false){
-				options.delete = true;
+			if(options['delete'] !== false){
+				options['delete'] = true;
 			}
 			if(options.group !== false){
 				options.group = true;

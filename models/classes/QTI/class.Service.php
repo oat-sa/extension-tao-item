@@ -74,15 +74,17 @@ class taoItems_models_classes_QTI_Service
         		if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
         			
         			//get the QTI xml
-        			$itemContent = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        			$itemContent = (string)$item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 					
-        			//Parse it and build the QTI_Data_Item
-        			$qtiParser = new taoItems_models_classes_QTI_Parser((string)$itemContent);
-					$returnValue = $qtiParser->load();
-					
-					if(!$returnValue->getOption('lang')){
-    					$returnValue->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
-					}
+        			if(!empty($itemContent)){
+	        			//Parse it and build the QTI_Data_Item
+	        			$qtiParser = new taoItems_models_classes_QTI_Parser($itemContent);
+						$returnValue = $qtiParser->load();
+						
+						if(!$returnValue->getOption('lang')){
+	    					$returnValue->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
+						}
+        			}
         		}
 				
         	}catch(common_Exception $ce){

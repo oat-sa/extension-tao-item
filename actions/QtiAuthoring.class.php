@@ -20,7 +20,7 @@ class QtiAuthoring extends CommonModule {
 		
 		parent::__construct();
 		
-		$this->debugMode = true;
+		$this->debugMode = false;
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$this->service = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
 		$this->defaultData();
@@ -58,10 +58,12 @@ class QtiAuthoring extends CommonModule {
 		}else{
 			//try creating a new item:
 			$itemFile = html_entity_decode($this->getRequestParameter('xml'));//gonna be ignored
+			
 			if(empty($itemFile)){
 				
 				//temp check to allow page reloading without xml file:
 				$itemUri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
+				
 				if(!empty($itemUri) && $this->debugMode){
 					if(isset($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)])){
 						$item = $this->qtiService->getItemBySerial($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)]);
@@ -69,9 +71,13 @@ class QtiAuthoring extends CommonModule {
 				}
 				if(empty($item)){
 					$itemResource = new core_kernel_classes_Resource($itemUri);
-					if(!$this->debugMode) $item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
-					if(is_null($item)){
 					
+					if(!$this->debugMode) {
+						$item = $this->qtiService->getDataItemByRdfItem($itemResource);//i1282039875024462900
+					}
+					
+					if(is_null($item)){
+						
 						//create a new item object:
 						$item = $this->service->createNewItem($itemIdentifier);
 						$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
@@ -209,12 +215,18 @@ class QtiAuthoring extends CommonModule {
 	
 	
 	public function preview(){
-		// if($this->saveItem()){
-			$output = $this->qtiService->renderItem($this->getCurrentItem());
-			// echo 'output:'.$output;exit;
-			$this->setData('output', $output);
-			$this->setView("QTIAuthoring/preview.tpl");
-		// }
+		$parameters = array(
+			'root_url' => ROOT_URL,
+        	'base_www' => BASE_WWW,
+        	'taobase_www' => TAOBASE_WWW,
+			'delivery_server_mode' => false
+		);
+		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+		
+		$output = $this->qtiService->renderItem($this->getCurrentItem());
+			
+		$this->setData('output', $output);
+		$this->setView("QTIAuthoring/preview.tpl");
 	}
 	
 	public function addInteraction(){

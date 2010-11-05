@@ -30,7 +30,7 @@ function qtiEdit(itemSerial, formContainers){
 	// this.responseMappingMode = false;
 	
 	var instance = this;
-		
+	
 	//init the item's jwysiwyg editor here:
 	var addChoiceInteraction = {
 		visible : true,
@@ -223,11 +223,15 @@ function qtiEdit(itemSerial, formContainers){
 	});
 	
 	//the binding require the modified html data to be ready
-	setTimeout(function(){instance.bindInteractionLinkListener();},250);
+	instance.itemEditor.wysiwyg('document').ready(function(){
+		setTimeout(function(){instance.bindInteractionLinkListener();}, 3000);
+	});
 	
 	this.loadResponseProcessingForm();
 	
 	qtiEdit.instances[this.itemSerial] = this;
+	
+	
 }
 
 qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSerial){
@@ -267,6 +271,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(){
 	var instance = this;
 	instance.interactionSerials = [];
 	
+	
 	var links = qtiEdit.getEltInFrame('.qti_interaction_link');
 	
 	for(var i in links){
@@ -275,7 +280,8 @@ qtiEdit.prototype.bindInteractionLinkListener = function(){
 		
 		instance.interactions[interactionSerial] = interactionSerial;
 		
-		links[i].unbind('click').click(function(){
+		links[i].click(function(e){
+			e.preventDefault();
 			instance.currentInteractionSerial = $(this).attr('id');
 			instance.loadInteractionForm(instance.currentInteractionSerial);
 		});
