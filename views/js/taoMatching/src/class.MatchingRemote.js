@@ -61,14 +61,14 @@ TAO_MATCHING.MatchingRemote.prototype = {
 		var self = this;
 		var responses = this.responses;
 		
+		var params = $.extend(this.params, {data: JSON.stringify(this.responses) });
+	
 		$.ajax ({
 			url : this.url
 			, type : 'POST'
 			, async : true
-//			, dataType: "json"
-//			, data : {data: self.responses, params: self.params}
 			, dataType : 'json'
-			, data : "data="+JSON.stringify(this.responses)+"&params="+JSON.stringify(self.params)
+			, data : params
 			, success	: function (data){
 				self.outcomes = data;
 				if (self.options.evaluateCallback!=null)

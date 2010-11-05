@@ -654,16 +654,17 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = array();
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 begin
+
+        if(!is_null($uri)){
+        	// If QTI Item
+        	if($this->hasItemModel($uri, array(TAO_ITEM_MODEL_QTI))){
         
-        $itemClass = $this->getItemClass ($uri);
-        
-        // If QTI Item
-        if ($itemClass == 'taoItems_models_classes_QTI_Item') {
-            $qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
-            $item = $this->qtiService->getDataItemByRdfItem ($uri);
-            $returnValue = $item->getMatchingData ();
+            	$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+            	$item = $qtiService->getDataItemByRdfItem ($uri);
+           	 	$returnValue = $item->getMatchingData ();
+        	}
         }
-                
+        
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 end
 
         return (array) $returnValue;

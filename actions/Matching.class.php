@@ -21,29 +21,33 @@ class Matching extends Api {
      */
 	public function evaluate () 
 	{
-        $itemMatchingData = array ();
-        $responses = json_decode($_POST['data']);
+        $returnValue = array();
         
-        if($this->hasRequestParameter('token')){
+        if($this->hasRequestParameter('token') && $this->hasRequestParameter('data')){
             $token = $this->getRequestParameter('token');
             if($this->authenticate($token)){
-                $this->itemService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_ItemsService");
+
+            	$this->itemService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_ItemsService");
+            	
                 $env = $this->getExecutionEnvironment();
-                $itemURI = $env['TAO_ITEM_CLASS']['uri'];
-                $item = $this->qtiService->getDataItemByRdfItem ($itemURI);
-                $itemMatchingData = $this->itemService->getMatchingData ($itemURI);
+                $itemURI = $env[TAO_ITEM_CLASS]['uri'];
+                
+                $itemMatchingData = $this->itemService->getMatchingData (new core_kernel_classes_Resource($itemURI));
+                
+                matching_init ();
+				matching_setRule ($itemMatchingData["rule"]);
+				matching_setMaps ($itemMatchingData["maps"]);
+				matching_setCorrects ($itemMatchingData["corrects"]);
+				matching_setResponses (json_decode($_POST['data']));
+				matching_setOutcomes ($itemMatchingData["outcomes"]);
+				matching_evaluate ();
+				
+				$returnValue = matching_getOutcomes ();
+				
+				
             }
         }
-        
-		matching_init ();
-		matching_setRule ($itemMatchingData["rule"]);
-		matching_setMaps ($itemMatchingData["maps"]);
-		matching_setCorrects ($itemMatchingData["corrects"]);
-		matching_setResponses ($responses);
-		matching_setOutcomes ($itemMatchingData["outcomes"]);
-		matching_evaluate ();
 		
-		$returnValue = matching_getOutcomes ();
 		echo json_encode ($returnValue);
 	}
 

@@ -244,7 +244,7 @@ class Items extends TaoModule{
 			if(is_null($runtime)){
 				
 				$deployParams = array(
-					'delivery_server_mode'	=> false
+					'delivery_server_mode'	=> true
 				);
 				
 				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);

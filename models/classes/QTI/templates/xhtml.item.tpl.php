@@ -16,10 +16,12 @@
 	<!-- LIB -->
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.custom.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json2.js"></script>
 	
 	<!-- JS REQUIRED -->
 	
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_root_www?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Matching.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.MatchingRemote.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.VariableFactory.js"></script>
@@ -39,14 +41,18 @@
 			// Get the ouctomes
 			var outcomes = matching_getOutcomes();
 			console.log ('THE OUTCOME VALUE SCORE IS : '  + outcomes['SCORE']['value']);
-		}
+			
+			finish();
+		};
 	
 		var qti_initParam  = new Object();
-
-		var matching_param = {
+		var matching_param = new Object();
+	
+		$(document).ready(function(){
+			matching_param= {
 <?php if ($ctx_delivery_server_mode) { ?>
-			"url" : "<?=$ctx_base_www.'../../'.$matching['url']?>"
-			, "params" : <?=json_encode($matching['params'])?>
+			"url" : "<?=$ctx_root_url.'/'.$matching['url']?>"
+			, "params" : { "token" : getToken() }
 <?php } else { ?>
 			"data" : <?=json_encode($matching['data'])?>
 <?php } ?>
@@ -58,7 +64,7 @@
 			, "format" : "json"
 		};
 
-		$(document).ready(function(){
+		
 			qti_init(qti_initParam);
 			matching_init(matching_param);
 		});

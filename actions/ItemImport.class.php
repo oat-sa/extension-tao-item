@@ -83,6 +83,8 @@ class ItemImport extends Import {
 	protected function importQTIPACKFile($formValues){
 		if(isset($formValues['source']) && $this->hasSessionAttribute('classUri')){
 			
+			set_time_limit(200);	//the zip extraction is a long process that can exced the 30s timeout
+			
 			//get the item parent class
 			$clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getSessionAttribute('classUri')));
 			
@@ -151,9 +153,19 @@ class ItemImport extends Import {
 					//set the file in the itemContent
 					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
 						
+						$deployParams = array(
+							'delivery_server_mode'	=> false
+						);
+						
+						$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
+        				$itemPath = BASE_PATH."/views/runtime/{$folderName}/index.html";
+						if(!is_dir(dirname($itemPath))){
+		        			mkdir(dirname($itemPath));
+		        		}
+		        		$itemUrl = BASE_WWW . "runtime/{$folderName}/index.html";
+						
 						//we deploy it
-						$mainFile = $itemService->deployItem($rdfItem);
-						if(empty($mainFile)){
+						if(!$itemService->deployItem($rdfItem, $itemPath, $itemUrl, $deployParams)){
 							$this->setData('importErrorTitle', __('An error occured during the import'));
 							$this->setData('importErrors', array(array('message' => __('unable to deploy item'))));
 							break;
@@ -162,12 +174,10 @@ class ItemImport extends Import {
 						$importedItems++;	//item is considered as imported there 
 						
 						//and copy the others resources in the runtime path
-						$deployFolder = dirname(str_replace(BASE_WWW, BASE_PATH.'/views/', $mainFile));
-						if(is_dir($deployFolder)){
-							foreach($resource->getAuxiliaryFiles() as $auxResource){
-								tao_helpers_File::copy($folder . '/'. $auxResource, $deployFolder . '/'. $auxResource, true);
-							}
+						foreach($resource->getAuxiliaryFiles() as $auxResource){
+							tao_helpers_File::copy($folder . '/'. $auxResource, dirname($itemPath) . '/'. $auxResource, true);
 						}
+						
 					}
 				}
 			}
