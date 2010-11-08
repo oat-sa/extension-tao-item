@@ -51,14 +51,14 @@
 			matching_param= {
 <?php if ($ctx_delivery_server_mode) { ?>
 			"url" : "<?=$ctx_root_url.'/'.$matching['url']?>"
-			, "params" : { "token" : getToken() }
+			, "params" : { 
+			     "token" : getToken()
+			}
 <?php } else { ?>
 			"data" : <?=json_encode($matching['data'])?>
 <?php } ?>
 			, "options" : {
-				"evaluateCallback" : function () {
-					myEvaluateCallbackFunction ();
-				}
+				"evaluateCallback" : myEvaluateCallbackFunction
 			}
 			, "format" : "json"
 		};

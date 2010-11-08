@@ -11,8 +11,8 @@ TAO_MATCHING.VariableFactory = {
      * @return TAO_MATCHING.Variable
      */	
 	create : function (data, pType) {
+	    console.log (data);
 		var returnValue = null;
-    	var varValue = data;
 		var type = null;
 		
 		// The type has been defined manually
@@ -20,7 +20,7 @@ TAO_MATCHING.VariableFactory = {
 			// We get an object as data
 			if (typeof data == 'object') {
 				// If the data is null, we create a basic type variable with null value
-				if (varValue == null) {
+				if (data == null) {
 					type = 'NULL';
 				}
 				// If the data is an array we create a list variable
@@ -60,7 +60,7 @@ TAO_MATCHING.VariableFactory = {
 				break;
 				
 			default:
-				throw new Error ('TAO_MATCHING.VariableFactory::create variable type unknown '+type+' for '+varValue);
+				throw new Error ('TAO_MATCHING.VariableFactory::create variable type unknown '+type+' for '+data);
 		}
 		
         return returnValue;

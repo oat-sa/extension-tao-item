@@ -1,3 +1,10 @@
+<?php
+
+require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
+require_once dirname(__FILE__) . '/../includes/common.php';
+define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +29,7 @@
 	QTI DATA
 	--------------------------------------------------------------------------->
 	<script type="application/javascript">
-		
+/*		
 		test("Test the VariableFactory (integer)", function() {
 			var int1 = TAO_MATCHING.VariableFactory.create (1);
 			var int2 = TAO_MATCHING.VariableFactory.create (2);
@@ -324,11 +331,11 @@
             outcomes = matching_getOutcomes ();
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
         });
-
-        // CREATE COLLECTION OPERATOR
-        test("test createCollection operator]", function() {
-            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_order_partial_scoring.xml';
-            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+*/
+        // CREATE VARIABLE OPERATOR (used for the QTI baseValue operator)
+        test("test createVariable operator]", function() {
+            var item_path = '<?=PATH_SAMPLE?>custom/custom_order_partial_scoring.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
                 url : url
@@ -336,25 +343,28 @@
                 , async : true
                 , dataType : 'json'
                 , success   : function (data){
-                    console.log(data.rule);
+                    var matching_param = {
+                        data : {
+                            rule      : data.rule
+                        }
+                    };
+                    console.log (data.rule);
+                    matching_init (matching_param);
+                    matching_setCorrects ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
+                    matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "2":"DriverA", "1":"DriverB"}}]);
+                    matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
+                    matching_evaluate ();
+                    console.dir (matching_getOutcomes()); 
                 }
             });
-            
-            /*var matching_param = {
-                data : {
-                    rule      : 'createCollection(null, "tuple", "A", "B", "C", "D", "E", "F")'
-                }
-            };
-            matching_init (matching_param);
-            matching_evaluate ();*/
         });
-
+/*
         // REMOTE MATCHING CHOICE.XML
         asyncTest ('Remote Matching : Choice.xml', function () {
             var matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>choice.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -371,9 +381,9 @@
         // REMOTE MATCHING ASSOCIATE.XML
         asyncTest ('Remote Matching : Associate.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/associate.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>associate.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -390,9 +400,9 @@
         // REMOTE MATCHING CHOICE MULTIPLE.XML
         asyncTest ('Remote Matching : ChoiceMultiple.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/choice_multiple.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>choice_multiple.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -409,9 +419,9 @@
         // REMOTE MATCHING GAP MATCH.XML
         asyncTest ('Remote Matching : GapMatch.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/gap_match.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>gap_match.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -428,9 +438,9 @@
         // REMOTE MATCHING MATCH.XML
         asyncTest ('Remote Matching : Match.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/match.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>match.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -447,9 +457,9 @@
         // REMOTE MATCHING ORDER.XML
         asyncTest ('Remote Matching : Order.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/order.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>order.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -466,9 +476,9 @@
         // REMOTE MATCHING HOTTEXT.XML
         asyncTest ('Remote Matching : Hottext.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/hottext.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>hottext.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -485,9 +495,9 @@
         // REMOTE MATCHING INLINE CHOICE.XML
         asyncTest ('Remote Matching : InlineChoice.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/inline_choice.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>inline_choice.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -504,9 +514,9 @@
         // REMOTE MATCHING TEXT ENTRY.xml
         asyncTest ('Remote Matching : TextEntry.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/text_entry.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>text_entry.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -523,9 +533,9 @@
         // REMOTE MATCHING TEXT ORKNEY1.xml
         asyncTest ('Remote Matching : Orkney1.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/orkney1.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>orkney1.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -542,9 +552,9 @@
         // REMOTE MATCHING CUSTOM MATCH .xml
         asyncTest ('Remote Matching : CustomMatch.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_match_choice.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_match_choice.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -560,8 +570,8 @@
 
         // REMOTE PARSING / CLIENT MATCHING CUSTOM MATCH .xml
         asyncTest("Remote Parsing / Client Matching : Custom Match", function(){
-            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_match_choice.xml';
-            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+            var item_path = '<?=PATH_SAMPLE?>custom/custom_match_choice.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
                 url : url
@@ -588,9 +598,9 @@
         // REMOTE MATCHING CUSTOM MAP RESPONSE .xml
         asyncTest ('Remote Matching : CustomMapResponse.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_map_response_choice_multiple.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_map_response_choice_multiple.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -606,8 +616,8 @@
 
         // REMOTE PARSING / CLIENT MATCHING MAP RESPONSE .xml
         asyncTest("Remote Parsing / Client Matching : Custom Map Response", function(){
-            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_map_response_choice_multiple.xml';
-            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+            var item_path = '<?=PATH_SAMPLE?>custom/custom_map_response_choice_multiple.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
                 url : url
@@ -634,9 +644,9 @@
         // REMOTE MATCHING CUSTOM PARTIAL SCORING.xml
         asyncTest ('Remote Matching : CustomPartialScoring.xml', function () {
             matching_param = {
-                "url" : "http://tao.local/taoItems/Matching/evaluateDebug"
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_order_partial_scoring.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_order_partial_scoring.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -652,8 +662,8 @@
 
         // REMOTE PARSING / CLIENT MATCHING PARTIAL SCORING .xml
         asyncTest("Remote Parsing / Client Matching : Custom Partial Scoring", function(){
-            var item_path = '/home/frycake/workspace/tao/transferAll/taoItems/test/samples/custom/custom_order_partial_scoring.xml';
-            var url = "http://tao.local/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+            var item_path = '<?=PATH_SAMPLE?>custom/custom_order_partial_scoring.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
                 url : url
@@ -676,6 +686,8 @@
                 }
             });            
         });
+        
+*/
 	</script>
 	
 </head>

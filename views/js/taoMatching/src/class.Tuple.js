@@ -90,6 +90,7 @@ TAO_MATCHING.Tuple.prototype = {
      */
     , setValue : function (data)
     {
+        console.log (data);
     	this.value = [];
     	for (var key in data) {
     	    // If the element is yet a BaseTypeVariable add it to the tuple

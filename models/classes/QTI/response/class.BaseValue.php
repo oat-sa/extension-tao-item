@@ -76,9 +76,29 @@ class taoItems_models_classes_QTI_response_BaseValue
         /*foreach ($this->options as $key=>$option)
             $options[$key] = (string) $option;*/
         
-        $options['type'] = (string)$this->options['baseType'];
+        switch ((string)$this->options['baseType']){
+            case "integer":
+                $options['type'] = "integer";
+                break;
+            case "float":
+                $options['type'] = "float";
+                break;
+            case "identifier":
+            case "string":
+                $options['type'] = "string";
+                break;
+            case "pair":
+                $options['type'] = "list";
+                break;
+            case "directedPair":
+                $options['type'] = "tuple";
+                break;
+            default:
+                throw new Exception ("taoItems_models_classes_QTI_response_BaseValue::getRule an error occured : the type ".(string)$this->options['baseType']." is unknown");
+        }
+
         $returnValue = 'createVariable ('
-            . (count($this->options) ? '"'.addslashes(json_encode($options)).'"' : 'null') .
+            . (count($options) ? '"'.addslashes(json_encode($options)).'"' : 'null') .
             ', '. json_encode ($this->value) .
         ')';
         

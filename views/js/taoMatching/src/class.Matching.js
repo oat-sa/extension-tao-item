@@ -342,7 +342,13 @@ TAO_MATCHING.Matching.prototype = {
                     var a = 0;
                     for (var i = 1; i < this.createVariable.arguments.length; ++i, ++a) {
                         values[a] = this.createVariable.arguments[i];
+                        if (values[a] instanceof TAO_MATCHING.BaseTypeVariable){
+                            console.log('is well a base type variable');
+                        }
                     }
+                    //var tuple = new TAO_MATCHING.Tuple (values);
+                    //console.log (tuple);
+                    
                     returnValue = TAO_MATCHING.VariableFactory.create (values);
                     break;
                     
