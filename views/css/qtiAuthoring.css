@@ -201,3 +201,16 @@ div.qti-authoring-form-container-column{
 
 /* jwysiwyg action buttons: */
 div.wysiwyg ul.panel li.addInteraction{ background: url('../img/qtiAuthoring/application_view_gallery.png'); }
+
+/*style of the img inserting modal box*/
+#simplemodal-container{
+	border: none;
+	background-color: #BBBBBB;
+	color: black;
+}
+
+form.wysiwyg label{
+	text-align: left;
+	margin: 10px 0px;
+}
+

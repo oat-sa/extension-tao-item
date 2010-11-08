@@ -287,29 +287,36 @@
                                 var self = this;
                                 if ($.modal)
                                 {
-                                        $.modal($.fn.wysiwyg.defaults.formImageHtml, {
-                                                onShow: function(dialog)
-                                                {
-                                                        $('input:submit', dialog.data).click(function(e)
-                                                        {
-                                                                e.preventDefault();
-                                                                var szURL = $('input[name="url"]', dialog.data).val();
-                                                                var title = $('input[name="imagetitle"]', dialog.data).val();
-                                                                var description = $('input[name="description"]', dialog.data).val();
-                                                                var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
-                                                                self.insertHtml(img);
-                                                                $.modal.close();
-                                                        });
-                                                        $('input:reset', dialog.data).click(function(e)
-                                                        {
-                                                                e.preventDefault();
-                                                                $.modal.close();
-                                                        });
-                                                },
-                                                maxWidth: $.fn.wysiwyg.defaults.formWidth,
-                                                maxHeight: $.fn.wysiwyg.defaults.formHeight,
-                                                overlayClose: true
-                                        });
+									$.modal($.fn.wysiwyg.defaults.formImageHtml, {
+											onShow: function(dialog)
+											{	
+												if($.fn.fmbind){
+													//add tao file manager
+													$('input[name="url"]').fmbind({type: 'image'}, function(elt, value){
+														$(elt).val(value);
+													});
+												}
+												
+												$('input:submit', dialog.data).click(function(e)
+												{
+														e.preventDefault();
+														var szURL = $('input[name="url"]', dialog.data).val();
+														var title = $('input[name="imagetitle"]', dialog.data).val();
+														var description = $('input[name="description"]', dialog.data).val();
+														var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+														self.insertHtml(img);
+														$.modal.close();
+												});
+												$('input:reset', dialog.data).click(function(e)
+												{
+														e.preventDefault();
+														$.modal.close();
+												});
+											},
+											maxWidth: $.fn.wysiwyg.defaults.formWidth,
+											maxHeight: $.fn.wysiwyg.defaults.formHeight,
+											overlayClose: true
+									});
                                 }
                                 else
                                 {
@@ -875,10 +882,12 @@
                         {
                                 style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '" />';
                         }
-
+						
                         this.editorDoc = innerDocument(this.editor);
                         this.editorDoc_designMode = false;
-
+						
+						
+						
                         this.designMode();
 
                         this.editorDoc.open();
@@ -1020,6 +1029,15 @@
                                 $(self.editorDoc).bind("cut", handler);
                             }
                         }
+						
+						//call the frame ready callback function if required
+						if(this.editorDoc && self.options.events){
+							if(self.options.events.frameReady){
+								$(this.editorDoc).ready(function(){
+									self.options.events.frameReady(self.editorDoc);
+								});
+							}
+						}
                 },
 
                 designMode: function ()

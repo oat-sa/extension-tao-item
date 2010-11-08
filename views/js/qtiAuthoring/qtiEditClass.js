@@ -1,4 +1,5 @@
 // alert('qtiEdit loaded');
+alert('qtiEdit loaded');
 
 qtiEdit.instances = [];
 
@@ -219,20 +220,17 @@ function qtiEdit(itemSerial, formContainers, options){
 				}
 				return false;
 			}
+		  },
+		  frameReady: function(editorDoc){
+			//the binding require the modified html data to be ready
+			instance.bindInteractionLinkListener();
 		  }
 		}
-	});
-	
-	//the binding require the modified html data to be ready
-	instance.itemEditor.wysiwyg('document').ready(function(){
-		instance.bindInteractionLinkListener();
 	});
 	
 	this.loadResponseProcessingForm();
 	
 	qtiEdit.instances[this.itemSerial] = this;
-	
-	
 }
 
 qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSerial){
@@ -264,16 +262,17 @@ qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSeria
 	});
 }
 
-qtiEdit.prototype.bindInteractionLinkListener = function(){
+qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 	
 	//destroy all listeners:
+	
 	
 	//reset the interaction array:
 	var instance = this;
 	instance.interactionSerials = [];
 	
 	
-	var links = qtiEdit.getEltInFrame('.qti_interaction_link');
+	var links = qtiEdit.getEltInFrame('.qti_interaction_link', editorDoc);
 	
 	for(var i in links){
 		
@@ -384,20 +383,28 @@ qtiEdit.destroyHtmlEditor = function($container){
 	});
 }
 
-qtiEdit.getEltInFrame = function(selector){
+qtiEdit.getEltInFrame = function(selector, selectedDocument){
 	var foundElts = [];
-	// for each iframe:
-	$('iframe').each(function(){
 	
-		// get its document
-		$(this).each( function(){
-			var selectedDocument = this.contentWindow.document;
-			$(selector, selectedDocument).each(function(){
-				foundElts.push($(this));  
-			});
+	if(selectedDocument){
+		$(selector, selectedDocument).each(function(){
+			foundElts.push($(this));  
 		});
+	}else{
+		// for each iframe:
+		$('iframe').each(function(){
 		
-	});
+			// get its document
+			$(this).each( function(){
+				var selectedDocument = this.contentWindow.document;
+				$(selector, selectedDocument).each(function(){
+					foundElts.push($(this));  
+				});
+			});
+			
+		});
+	}
+	
 	return foundElts;
 }
 
