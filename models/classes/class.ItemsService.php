@@ -477,7 +477,7 @@ class taoItems_models_classes_ItemsService
      * @param  array parameters
      * @return boolean
      */
-    public function deployItem( core_kernel_classes_Resource $item, $path, $url, $parameters = array())
+    public function deployItem( core_kernel_classes_Resource $item, $path, $url = '', $parameters = array())
     {
         $returnValue = (bool) false;
 
@@ -647,20 +647,21 @@ class taoItems_models_classes_ItemsService
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Resource uri
+     * @param  Resource itemRdf
      * @return array
      */
-    public function getMatchingData( core_kernel_classes_Resource $uri)
+    public function getMatchingData( core_kernel_classes_Resource $itemRdf)
     {
         $returnValue = array();
+
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 begin
 
-        if(!is_null($uri)){
+        if(!is_null($itemRdf)){
         	// If QTI Item
-        	if($this->hasItemModel($uri, array(TAO_ITEM_MODEL_QTI))){
+        	if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
         
             	$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
-            	$item = $qtiService->getDataItemByRdfItem ($uri);
+            	$item = $qtiService->getDataItemByRdfItem ($itemRdf);
            	 	$returnValue = $item->getMatchingData ();
         	}
         }

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.11.2010, 14:12:26 with ArgoUML PHP module 
+ * Automatically generated on 08.11.2010, 15:31:51 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -159,11 +159,30 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
     }
 
-    public function checkOptions ($options){
-        // Decode the options, if it has been "json string encoded"
-        if (gettype($options) == 'string') $options = json_decode ($options);
-        else if ($options == null) $options = (object)Array();
-        return (object) $options;
+    /**
+     * Short description of method checkOptions
+     *
+     * @access private
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return object
+     */
+    private function checkOptions(   $options)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 begin
+        
+        // If json encoded string
+        if (gettype($options) == 'string') $options = (object) json_decode ($options);
+        // If null
+        else if ($options == null) $options = (object) Array();
+        
+        $returnValue = $options;
+        
+        // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 end
+
+        return (object) $returnValue;
     }
 
     /**
@@ -597,6 +616,67 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
+     * Short description of method createVariable
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
+     * @return taoItems_models_classes_Matching_Tuple
+     */
+    public function createVariable($options)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 begin
+        $options = $this->checkOptions ($options);
+        
+        // Type undefined, we are in the case of baseTypeVariable creation (cardinality single)
+        if (!isset($options->type)) {
+            $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
+        }
+        else 
+        {
+            switch ($options->type){
+                // Create a BaseTypeVariable
+                case 'integer':
+                case 'float':
+                case 'string':
+                case 'boolean':
+                    // In all the base type cases create a variable with the first found argument
+                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
+                    break;
+                
+                // Create a Tuple    
+                case 'tuple':
+                    $values = Array ();
+                    $a = 0;
+                    for ($i = 1; $i < func_num_args(); ++$i, ++$a) {
+                        $values[$a] = func_get_arg($i);
+                    }
+                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create ((object)$values);
+                    break;
+                    
+                // Create a List
+                case 'list':
+                    $values = Array ();
+                    $a = 0;
+                    for ($i = 1; $i < func_num_args(); ++$i, ++$a) {
+                        $values[$a] = func_get_arg($i);
+                    }
+                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create ($values);
+                    break;
+                
+                // Type unknown, throw an Exception
+                case 'default':
+                    throw new Exception ('taoItems_models_classes_Matching_Matching::createVariable : type unknown ['.$options->type.']');
+            }  
+        }
+        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 end
+
+        return $returnValue;
+    }
+
+    /**
      * The equal operator takes two sub-expressions which must both have single
      * and have a numerical base-type. The result is a single boolean with a
      * of true if the two expressions are numerically equal and false if they
@@ -792,67 +872,6 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--7cd26fee:12bf37febcd:-8000:0000000000002A4C end
 
         return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method createVariable
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array options
-     * @return taoItems_models_classes_Matching_Tuple
-     */
-    public function createVariable($options)
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 begin
-        $options = $this->checkOptions ($options);
-        
-        // Type undefined, we are in the case of baseTypeVariable creation (cardinality single)
-        if (!isset($options->type)) {
-            $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
-        }
-        else 
-        {
-            switch ($options->type){
-                // Create a BaseTypeVariable
-                case 'integer':
-                case 'float':
-                case 'string':
-                case 'boolean':
-                    // In all the base type cases create a variable with the first found argument
-                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
-                    break;
-                
-                // Create a Tuple    
-                case 'tuple':
-                    $values = Array ();
-                    $a = 0;
-                    for ($i = 1; $i < func_num_args(); ++$i, ++$a) {
-                        $values[$a] = func_get_arg($i);
-                    }
-                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create ((object)$values);
-                    break;
-                    
-                // Create a List
-                case 'list':
-                    $values = Array ();
-                    $a = 0;
-                    for ($i = 1; $i < func_num_args(); ++$i, ++$a) {
-                        $values[$a] = func_get_arg($i);
-                    }
-                    $returnValue = taoItems_models_classes_Matching_VariableFactory::create ($values);
-                    break;
-                
-                // Type unknown, throw an Exception
-                case 'default':
-                    throw new Exception ('taoItems_models_classes_Matching_Matching::createVariable : type unknown ['.$options->type.']');
-            }  
-        }
-        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 end
-
-        return $returnValue;
     }
 
     /**
