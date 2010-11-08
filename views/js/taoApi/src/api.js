@@ -206,7 +206,7 @@ function getUserVar(key){
 if(typeof(finish) != 'function'){
 
 	//get the highest context 
-	var _stateContext = window.top || window;
+	var _stateContext =  window;
 	
 	/**
 	 * Define the item's state as finished.

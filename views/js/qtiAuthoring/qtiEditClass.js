@@ -225,7 +225,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	
 	//the binding require the modified html data to be ready
 	instance.itemEditor.wysiwyg('document').ready(function(){
-		setTimeout(function(){instance.bindInteractionLinkListener();}, 3000);
+		instance.bindInteractionLinkListener();
 	});
 	
 	this.loadResponseProcessingForm();

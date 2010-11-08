@@ -12,15 +12,17 @@
 	<?foreach($stylesheets as $stylesheet):?>
 		<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
 	<?endforeach?>
-	
+
 	<!-- LIB -->
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json2.js"></script>
-	
+
 	<!-- JS REQUIRED -->
 	
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
+	
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Matching.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.MatchingRemote.js"></script>
     <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.VariableFactory.js"></script>
@@ -35,7 +37,7 @@
 	<!--<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>-->
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/qti.min.js"></script>
 	<script type="text/javascript">
-
+	
 		var myEvaluateCallbackFunction = function () {
 			// Get the ouctomes
 			var outcomes = matching_getOutcomes();
@@ -57,13 +59,14 @@
 <?php } else { ?>
 			"data" : <?=json_encode($matching['data'])?>
 <?php } ?>
-			, "options" : {
-				"evaluateCallback" : myEvaluateCallbackFunction
-			}
-			, "format" : "json"
-		};
-
-		
+				, "options" : {
+					"evaluateCallback" : function () {
+						myEvaluateCallbackFunction ();
+					}
+				}
+				, "format" : "json"
+			};
+			
 			qti_init(qti_initParam);
 			matching_init(matching_param);
 		});

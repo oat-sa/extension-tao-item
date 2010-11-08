@@ -14,7 +14,7 @@
  * @type {Object}
  * @constant 
  */
-const URI = URI || {
+const URI = {
 	'LABEL'				: 'http://www.w3.org/2000/01/rdf-schema#label',
 	'ENDORSMENT' 		: '##NAMESPACE#ENDORSMENT',
 	'SUBJECT'			: 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject',
@@ -25,7 +25,7 @@ const URI = URI || {
 	'PROCESS'			: 'http://www.tao.lu/middleware/taoqual.rdf#i119010455660544',
 	'TEST'				: 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test',
 	'DELIVERY'			: 'http://www.tao.lu/Ontologies/TAODelivery.rdf#Delivery'
-}; 
+};
 
 /**
  * This object is used for a convenience translation of the differents states
@@ -33,10 +33,10 @@ const URI = URI || {
  * @type {Object}
  * @constant 
  */
-const STATE = STATE || {
+const STATE = {
 	'ITEM' : {
 		'PRE_FINISHED' 	: 'pre_item_finished',
 		'FINISHED' 		: 'item_finished',
 		'POST_FINISHED' : 'post_item_finished'
 	}
-}
+};
