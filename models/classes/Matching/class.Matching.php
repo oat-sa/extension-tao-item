@@ -159,6 +159,13 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
     }
 
+    public function checkOptions ($options){
+        // Decode the options, if it has been "json string encoded"
+        if (gettype($options) == 'string') $options = json_decode ($options);
+        else if ($options == null) $options = (object)Array();
+        return (object) $options;
+    }
+
     /**
      * Short description of method parseExpressionRule
      *
@@ -556,8 +563,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 begin
-        
-        $options = json_decode ($options);
+        $options = $this->checkOptions ($options);
         
         $returnValue = true;
         
@@ -608,8 +614,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA7 begin
-        
-        $options = json_decode ($options);
+        $options = $this->checkOptions ($options);
         
         $allowedBasicTypes = array('integer', 'float', 'double');
         $subExp1Value = null;
@@ -668,8 +673,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 begin
-        
-        $options = json_decode ($options);
+        $options = $this->checkOptions ($options);
         
         $returnValue = $var->isNull();
         
@@ -707,11 +711,8 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (float) 0.0;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F begin
-        
-        $options = json_decode ($options);
-        
+        $options = $this->checkOptions ($options);
         $returnValue = $map->map ($expr);
-        
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F end
 
         return (float) $returnValue;
@@ -734,8 +735,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D begin
-
-        $options = json_decode ($options);
+        $options = $this->checkOptions ($options);
         
         if (!isset($expr1))
         	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
@@ -769,8 +769,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--7cd26fee:12bf37febcd:-8000:0000000000002A4C begin
-        
-        $options = json_decode ($options);
+        $options = $this->checkOptions ($options);
         
         // QTIVariable sub-expression
         if ($subExp instanceof taoItems_models_classes_Matching_BaseTypeVariable){
@@ -808,7 +807,7 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = null;
 
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 begin
-        $options = json_decode($options);
+        $options = $this->checkOptions ($options);
         
         // Type undefined, we are in the case of baseTypeVariable creation (cardinality single)
         if (!isset($options->type)) {
@@ -817,6 +816,7 @@ class taoItems_models_classes_Matching_Matching
         else 
         {
             switch ($options->type){
+                // Create a BaseTypeVariable
                 case 'integer':
                 case 'float':
                 case 'string':
@@ -824,7 +824,8 @@ class taoItems_models_classes_Matching_Matching
                     // In all the base type cases create a variable with the first found argument
                     $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
                     break;
-                    
+                
+                // Create a Tuple    
                 case 'tuple':
                     $values = Array ();
                     $a = 0;
@@ -834,6 +835,7 @@ class taoItems_models_classes_Matching_Matching
                     $returnValue = taoItems_models_classes_Matching_VariableFactory::create ((object)$values);
                     break;
                     
+                // Create a List
                 case 'list':
                     $values = Array ();
                     $a = 0;
@@ -842,7 +844,8 @@ class taoItems_models_classes_Matching_Matching
                     }
                     $returnValue = taoItems_models_classes_Matching_VariableFactory::create ($values);
                     break;
-                    
+                
+                // Type unknown, throw an Exception
                 case 'default':
                     throw new Exception ('taoItems_models_classes_Matching_Matching::createVariable : type unknown ['.$options->type.']');
             }  

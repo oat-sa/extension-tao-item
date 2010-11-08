@@ -28,8 +28,28 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	<!-- -------------------------------------------------------------------------
 	QTI DATA
 	--------------------------------------------------------------------------->
+	
 	<script type="application/javascript">
-/*		
+        //var testToRun = 'test operator : createVariable (*)';
+        var testToRun = '*';
+
+        var testUnitFct = test;
+        var asynctestUnitFct = asyncTest;
+        test = function (label, func) {
+            if (testToRun == "*"){
+                testUnitFct (label, func);
+            } else if (testToRun == label){
+                testUnitFct (label, func);
+            }
+        }
+        asyncTest = function (label, func) {
+            if (testToRun == "*"){
+                asynctestUnitFct (label, func);
+            } else if (testToRun == label){
+                asynctestUnitFct (label, func);
+            }
+        }
+
 		test("Test the VariableFactory (integer)", function() {
 			var int1 = TAO_MATCHING.VariableFactory.create (1);
 			var int2 = TAO_MATCHING.VariableFactory.create (2);
@@ -193,10 +213,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MATCH_CORRECT
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"1"}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":"1"}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"], 1, 'Expected Score');
 			
 			matching_param = {
@@ -206,10 +226,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MATCH_CORRECT
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"], 1, 'Expected Score');
 		});
 
@@ -223,10 +243,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":"paris"}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":"paris"}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  0.9, 'Expected Score');
 			
 			// list list (multiple pair)
@@ -238,10 +258,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":[["A", "B"], ["C", "D"], ["E", "F"]]}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
 						
 			// list list (multiple pair but with reversed result)
@@ -253,10 +273,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":[["B", "A"], ["D", "C"], ["F", "E"]]}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
 			
 			// list tuple (multiple directedpair)
@@ -268,10 +288,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
 	
 			// list tuple (multiple directedpair reversed pair)
@@ -283,14 +303,14 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 					, rule		: TAO_MATCHING.RULE.MAP_RESPONSE
 				}
 			};
-			matching_init (matching_param);
-			matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]);
-			matching_evaluate ();
-			outcomes = matching_getOutcomes ();
+			matchingInit (matching_param);
+			matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]}]);
+			matchingEvaluate ();
+			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  0, 'Expected Score');
 		});
 
-        test("test and operator]", function() {
+        test("test operator : and]", function() {
             // Simple true/true
             var matching_param = {
                 data : {
@@ -298,9 +318,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     , rule      : 'if (and(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             };
-            matching_init (matching_param);
-            matching_evaluate ();
-            outcomes = matching_getOutcomes ();
+            matchingInit (matching_param);
+            matchingEvaluate ();
+            outcomes = matchingGetOutcomes ();
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
             
             // and on a single matching
@@ -311,10 +331,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     , rule      : 'if ( and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-            matching_evaluate ();
-            outcomes = matching_getOutcomes ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+            matchingEvaluate ();
+            outcomes = matchingGetOutcomes ();
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
             
             // and with a true and matching
@@ -325,40 +345,65 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     , rule      : 'if ( true, true, and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
-            matching_evaluate ();
-            outcomes = matching_getOutcomes ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]);
+            matchingEvaluate ();
+            outcomes = matchingGetOutcomes ();
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
         });
-*/
-        // CREATE VARIABLE OPERATOR (used for the QTI baseValue operator)
-        test("test createVariable operator]", function() {
-            var item_path = '<?=PATH_SAMPLE?>custom/custom_order_partial_scoring.xml';
-            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
-            $.ajax ({
-                url : url
-                , type : 'GET'
-                , async : true
-                , dataType : 'json'
-                , success   : function (data){
-                    var matching_param = {
-                        data : {
-                            rule      : data.rule
-                        }
-                    };
-                    console.log (data.rule);
-                    matching_init (matching_param);
-                    matching_setCorrects ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
-                    matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "2":"DriverA", "1":"DriverB"}}]);
-                    matching_setOutcomes ([{"identifier":"SCORE", "type":"double"}]);
-                    matching_evaluate ();
-                    console.dir (matching_getOutcomes()); 
-                }
-            });
+        // CREATE VARIABLE OPERATOR (the operator used to map the baseValue QTI Expression)
+        test("test operator : createVariable (*)", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            
+            // String
+            var str1 = matching.createVariable(null, 'Driver A');
+            ok (str1 != null, 'Create a not null String Variable');
+            equals (str1.getType(), 'string', 'String Variable get the right type');
+            ok (str1.match(str1), 'String Variable matches itself');
+            var str2 = matching.createVariable(null, 'Driver B');
+            ok (!str1.match(str2), 'String Variable does not match a different String Variable');
+            
+            // Float
+            var float1 = matching.createVariable(null, 3.1415);
+            ok (float1 != null, 'Create a not null Float Variable');
+            equals (float1.getType(), 'number', 'Float Variable get the right type');
+            ok (float1.match(float1), 'Float Variable matches itself');
+            var float2 = matching.createVariable(null, 3.0);
+            ok (!str1.match(str2), 'Float Variable does not match a different Float Variable');
+            
+            // Integer
+            var int1 = matching.createVariable(null, 123456);
+            ok (int1 != null, 'Create a not null Integer Variable');
+            equals (int1.getType(), 'number', 'Integer Variable get the right type');
+            ok (int1.match(int1), 'Integer Variable matches itself');
+            var int2 = matching.createVariable(null, 6543210);
+            ok (!int1.match(int2), 'Integer Variable does not match a different Integer Variable');
+            
+            // Boolean
+            var bool1 = matching.createVariable(null, true);
+            ok (bool1 != null, 'Create a not null Boolean Variable');
+            equals (bool1.getType(), 'boolean', 'Boolean Variable get the right type');
+            ok (bool1.match(bool1), 'Boolean Variable matches itself');
+            var bool2 = matching.createVariable(null, false);
+            ok (!int1.match(bool2), 'Boolean Variable does not match a different Boolean Variable');         
+            
+            // List
+            var list1 = matching.createVariable (null, ["TAO", "Test Assisté par Ordinateur"]);
+            equals (list1.getType(), 'list', 'List Variable get the right type');
+            ok (list1.match(list1), 'List Variable  matches itself');
+            var list2 = matching.createVariable (null, ["CBA", "Computer Based Assessment"]);
+            ok (!list1.match(list2), 'List Variable does not match a different List Variable');
+            
+            // Tuple
+            var tuple1 = matching.createVariable({"type":"tuple"}, matching.createVariable ({"type":"string"}, "DriverC"), matching.createVariable ({"type":"string"}, "DriverB"), matching.createVariable ({"type":"string"}, "DriverA"));
+            ok (tuple1 != null, 'Create a not null Tuple Variable');
+            equals (tuple1.getType(), 'tuple', 'Tuple Variable get the right type');
+            ok (tuple1.match(tuple1), 'Tuple Variable matches itself');
+            var tuple2 = matching.createVariable({"type":"tuple"}, matching.createVariable ({"type":"string"}, "DriverA"), matching.createVariable ({"type":"string"}, "DriverB"), matching.createVariable ({"type":"string"}, "DriverC"));
+            ok (!tuple1.match(tuple2), 'Tuple Variable does not match a different Tuple Variable');          
         });
-/*
+
         // REMOTE MATCHING CHOICE.XML
         asyncTest ('Remote Matching : Choice.xml', function () {
             var matching_param = {
@@ -373,9 +418,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING ASSOCIATE.XML
@@ -392,9 +437,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":[['A', 'P'], ['C','M'], ['D','L']]}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":[['A', 'P'], ['C','M'], ['D','L']]}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING CHOICE MULTIPLE.XML
@@ -411,9 +456,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":['H', 'O']}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":['H', 'O']}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING GAP MATCH.XML
@@ -430,9 +475,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":[{"0":"W" , "1":"G1"}, {"0":"Su" , "1":"G2"}]}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"W" , "1":"G1"}, {"0":"Su" , "1":"G2"}]}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING MATCH.XML
@@ -449,9 +494,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{ "identifier": "RESPONSE", "value": [{ "0": "C", "1": "R" }, {"0": "D", "1": "M" }, { "0": "L", "1": "M" }, { "0": "P", "1": "T" }] }]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{ "identifier": "RESPONSE", "value": [{ "0": "C", "1": "R" }, {"0": "D", "1": "M" }, { "0": "L", "1": "M" }, { "0": "P", "1": "T" }] }]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING ORDER.XML
@@ -468,9 +513,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverA", "2":"DriverB"}}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING HOTTEXT.XML
@@ -487,9 +532,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":"2"}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":"2"}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING INLINE CHOICE.XML
@@ -506,9 +551,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":"Y"}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":"Y"}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING TEXT ENTRY.xml
@@ -525,9 +570,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":"york"}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":"york"}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING TEXT ORKNEY1.xml
@@ -544,9 +589,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":"T"}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":"T"}]);
+            matchingEvaluate ();
         });
 
         // REMOTE MATCHING CUSTOM MATCH .xml
@@ -563,9 +608,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+            matchingEvaluate ();
         });
 
         // REMOTE PARSING / CLIENT MATCHING CUSTOM MATCH .xml
@@ -588,9 +633,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                             }
                         }
                     };
-                    matching_init (matching_param);
-                    matching_setResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
-                    matching_evaluate ();
+                    matchingInit (matching_param);
+                    matchingSetResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
+                    matchingEvaluate ();
                 }
             });            
         });
@@ -609,9 +654,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
+            matchingEvaluate ();
         });
 
         // REMOTE PARSING / CLIENT MATCHING MAP RESPONSE .xml
@@ -634,9 +679,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                             }
                         }
                     };
-                    matching_init (matching_param);
-                    matching_setResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
-                    matching_evaluate ();
+                    matchingInit (matching_param);
+                    matchingSetResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
+                    matchingEvaluate ();
                 }
             });            
         });
@@ -655,9 +700,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     }
                 }
             };
-            matching_init (matching_param);
-            matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
-            matching_evaluate ();
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
+            matchingEvaluate ();
         });
 
         // REMOTE PARSING / CLIENT MATCHING PARTIAL SCORING .xml
@@ -680,14 +725,12 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                             }
                         }
                     };
-                    matching_init (matching_param);
-                    matching_setResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
-                    matching_evaluate ();
+                    matchingInit (matching_param);
+                    matchingSetResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
+                    matchingEvaluate ();
                 }
             });            
         });
-        
-*/
 	</script>
 	
 </head>

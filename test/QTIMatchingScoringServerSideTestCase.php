@@ -171,6 +171,93 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($map3->map ($listStr2), 1.5);
 	}
 	
+    public function testOperatorCreateVariable (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        
+        // String
+        $str1 = $matching->createVariable (null, 'Driver A');
+        $this->assertNotNull ($str1);
+        $this->assertTrue ($str1 instanceOf taoItems_models_classes_Matching_BaseTypeVariable);
+        $this->assertEqual ($str1->getType(), 'string');
+        $this->assertTrue ($str1->match($str1));
+        
+        // Float
+        $dbl1 = $matching->createVariable (null, 3.1415);
+        $this->assertNotNull ($dbl1);
+        $this->assertTrue ($dbl1 instanceOf taoItems_models_classes_Matching_BaseTypeVariable);
+        $this->assertEqual ($dbl1->getType(), 'double');
+        $this->assertTrue ($dbl1->match($dbl1));
+        
+        // Integer
+        $int1 = $matching->createVariable (null, 123456);
+        $this->assertNotNull ($int1);
+        $this->assertTrue ($int1 instanceOf taoItems_models_classes_Matching_BaseTypeVariable);
+        $this->assertEqual ($int1->getType(), 'integer');
+        $this->assertTrue ($int1->match($int1));
+        
+        // Boolean
+        $bool1 = $matching->createVariable (null, true);
+        $this->assertNotNull ($bool1);
+        $this->assertTrue ($bool1 instanceOf taoItems_models_classes_Matching_BaseTypeVariable);
+        $this->assertEqual ($bool1->getType(), 'boolean');
+        $this->assertTrue ($bool1->match($bool1));
+        
+        // List
+        $list1 = $matching->createVariable (null, json_decode('["TAO", "Test Assisté par Ordinateur"]'));
+        $this->assertNotNull ($list1);
+        $this->assertTrue ($list1 instanceOf taoItems_models_classes_Matching_List);
+        $this->assertEqual ($list1->getType(), 'list');
+        $this->assertTrue ($list1->match($list1));
+        
+        $list2 = $matching->createVariable (Array("type"=>"list"), "TAO", "Test Assisté par Ordinateur");
+        $this->assertNotNull ($list2);
+        $this->assertTrue ($list2 instanceOf taoItems_models_classes_Matching_List);
+        $this->assertEqual ($list2->getType(), 'list');
+        $this->assertTrue ($list2->match($list2));
+        
+        $this->assertTrue ($list1->match($list2));
+        
+        $list3 = $matching->createVariable (null, Array("TAO", "Test Assisté par Ordinateur"));
+        $this->assertNotNull ($list3);
+        $this->assertTrue ($list3 instanceOf taoItems_models_classes_Matching_List);
+        $this->assertEqual ($list3->getType(), 'list');
+        $this->assertTrue ($list3->match($list3));
+        
+        $this->assertTrue ($list2->match($list3));
+
+        // Tuple
+        $tuple1 = $matching->createVariable(json_decode('{"type":"tuple"}')
+            , $matching->createVariable (json_decode('{"type":"string"}'), "DriverC")
+            , $matching->createVariable (json_decode('{"type":"string"}'), "DriverB")
+            , $matching->createVariable (json_decode('{"type":"string"}'), "DriverA"));
+        $this->assertNotNull ($tuple1);
+        $this->assertTrue ($tuple1 instanceOf taoItems_models_classes_Matching_Tuple);
+        $this->assertEqual ($tuple1->getType(), 'tuple');
+        $this->assertTrue ($tuple1->match($tuple1));
+        
+        $tuple2 = $matching->createVariable(Array("type"=>"tuple")
+            , $matching->createVariable (Array ("type"=>"string"), "DriverC")
+            , $matching->createVariable (Array ("type"=>"string"), "DriverB")
+            , $matching->createVariable (Array ("type"=>"string"), "DriverA"));
+        $this->assertNotNull ($tuple2);
+        $this->assertTrue ($tuple2 instanceOf taoItems_models_classes_Matching_Tuple);
+        $this->assertEqual ($tuple2->getType(), 'tuple');
+        $this->assertTrue ($tuple2->match($tuple2));
+        
+        $this->assertTrue ($tuple1->match($tuple2));
+        
+        $tuple3 = $matching->createVariable(Array("type"=>"tuple")
+            , "DriverC"
+            , "DriverB"
+            , "DriverA");
+        $this->assertNotNull ($tuple3);
+        $this->assertTrue ($tuple3 instanceOf taoItems_models_classes_Matching_Tuple);
+        $this->assertEqual ($tuple3->getType(), 'tuple');
+        $this->assertTrue ($tuple3->match($tuple3));
+        
+        $this->assertTrue ($tuple2->match($tuple3));
+    }
+    
 	public function testTemplateResponseProcessingMatchCorrect (){
 		matching_init ();
 		matching_setRule (taoItems_models_classes_Matching_Matching::MATCH_CORRECT);
@@ -320,9 +407,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom/custom_order_partial_scoring.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
-        
-        //echo $item->getResponseProcessing()->getRule();
-        
+                
         $matching_data = $item->getMatchingData ();
         matching_init ();
         matching_setRule ($matching_data['rule']);
@@ -334,8 +419,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $outcomes = matching_getOutcomes ();
         $this->assertEqual ($outcomes["SCORE"]["value"], 1);
        
-        //echo $item->toXHTML();
-        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+        echo $item->toXHTML();
+        echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
 }

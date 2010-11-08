@@ -26,7 +26,7 @@ TAO_MATCHING.engine = null;
  * @param {Array} params.maps Collection of maps
  * @param {string} params.rule The rule to use to evaluate the testee
  */
-function matching_init (params) {
+function matchingInit (params) {
 	var options = {
 		"url" : null
 		, "params" : null
@@ -54,7 +54,7 @@ function matching_init (params) {
 /**
  * Evaluate the rule
  */
-function matching_evaluate () {
+function matchingEvaluate () {
 	TAO_MATCHING.engine.evaluate ();
 }
 
@@ -62,7 +62,7 @@ function matching_evaluate () {
  * Get the outcomes generated after the rule evaluation
  * @return {JSON}
  */
-function matching_getOutcomes () {
+function matchingGetOutcomes () {
 	return TAO_MATCHING.engine.outcomesToJSON ();
 }
 
@@ -77,7 +77,7 @@ function matching_setCorrects (data) {
  * Set the mapping of the item
  * @param {JSON} data The map
  */
-function matching_setMaps (data) {
+function matchingSetMaps (data) {
 	TAO_MATCHING.engine.setMaps (data);
 }
 
@@ -85,7 +85,7 @@ function matching_setMaps (data) {
  * Set the outcome variables of the item
  * @param {JSON} data The outcome variables
  */
-function matching_setOutcomes (data) {
+function matchingSetOutcomes (data) {
 	TAO_MATCHING.engine.setOutcomes (data);
 }
 
@@ -93,7 +93,7 @@ function matching_setOutcomes (data) {
  * Set the user' responses
  * @param {JSON} data The response variables
  */
-function matching_setResponses (data) {
+function matchingSetResponses (data) {
 	TAO_MATCHING.engine.setResponses (data);
 }
 
@@ -101,6 +101,6 @@ function matching_setResponses (data) {
  * Set the rule of the item
  * @param {string} rule The rule
  */
-function matching_setRule (rule) {
+function matchingSetRule (rule) {
 	TAO_MATCHING.engine.setRule (rule);
 }

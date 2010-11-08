@@ -53,8 +53,8 @@ function qti_init_interaction(initObj){
 		// Get user's data
 		var result = myResultCollector[typeName].apply();
 		// Set the matching engine with the user's data	
-		matching_setResponses ([result]);
-		// Evaluate the response
-		matching_evaluate ();
+		matchingSetResponses ([result]);
+		// Evaluate the user's response
+		matchingEvaluate ();
 	});
 }

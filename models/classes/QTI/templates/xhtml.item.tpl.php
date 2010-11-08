@@ -1,3 +1,21 @@
+<?php
+// Set the matching parameters functions of the context
+// PREVIEW MODE
+if (isset($ctx_preview_mode) && $ctx_preview_mode) {
+     $template  = dirname(__FILE__).'/matching/js.preview.tpl.php';
+} 
+// SERVER MODE
+else if (isset($ctx_delivery_server_mode) && $ctx_delivery_server_mode){
+     $template  = dirname(__FILE__).'/matching/js.server.tpl.php';
+} 
+// CLIENT MODE
+else {
+     $template  = dirname(__FILE__).'/matching/js.client.tpl.php';
+}
+// Load the Matching template
+$matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $matching);
+?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 <head>
@@ -12,63 +30,26 @@
 	<?foreach($stylesheets as $stylesheet):?>
 		<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
 	<?endforeach?>
-
+	
 	<!-- LIB -->
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json2.js"></script>
-
+	
 	<!-- JS REQUIRED -->
 	
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
-	
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Matching.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.MatchingRemote.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.VariableFactory.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Variable.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.BaseTypeVariable.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Collection.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.List.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Tuple.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/class.Map.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/matching_constant.js"></script>
-    <script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/src/matching_api.js"></script>
-	<!--<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>-->
+	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/qti.min.js"></script>
 	<script type="text/javascript">
-	
-		var myEvaluateCallbackFunction = function () {
-			// Get the ouctomes
-			var outcomes = matching_getOutcomes();
-			console.log ('THE OUTCOME VALUE SCORE IS : '  + outcomes['SCORE']['value']);
-			
-			finish();
-		};
-	
 		var qti_initParam  = new Object();
-		var matching_param = new Object();
+		var matchingParam = new Object();
 	
 		$(document).ready(function(){
-			matching_param= {
-<?php if ($ctx_delivery_server_mode) { ?>
-			"url" : "<?=$ctx_root_url.'/'.$matching['url']?>"
-			, "params" : { 
-			     "token" : getToken()
-			}
-<?php } else { ?>
-			"data" : <?=json_encode($matching['data'])?>
-<?php } ?>
-				, "options" : {
-					"evaluateCallback" : function () {
-						myEvaluateCallbackFunction ();
-					}
-				}
-				, "format" : "json"
-			};
-			
+		    <?= $matchingTplRenderer->render() ?>
 			qti_init(qti_initParam);
-			matching_init(matching_param);
+			matchingInit(matchingParam);
 		});
 	</script>
 </head>

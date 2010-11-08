@@ -109,6 +109,7 @@ TAO_MATCHING.Matching.prototype = {
     checkOptions : function (options){
         // Decode the options, if it has been "json string encoded"
         if (typeof options == 'string') options = eval ('('+options+')');
+        else if (options == null) options = {};
         return options;
     }
     
@@ -326,7 +327,7 @@ TAO_MATCHING.Matching.prototype = {
         if (typeof(options.type) == 'undefined' ) {
             returnValue = TAO_MATCHING.VariableFactory.create (this.createVariable.arguments[1]);
         }
-        else 
+        else
         {
             switch (options.type){
                 case 'integer':
@@ -338,13 +339,10 @@ TAO_MATCHING.Matching.prototype = {
                     break;
                     
                 case 'tuple':
-                    var values = [];
+                    var values = {};
                     var a = 0;
                     for (var i = 1; i < this.createVariable.arguments.length; ++i, ++a) {
                         values[a] = this.createVariable.arguments[i];
-                        if (values[a] instanceof TAO_MATCHING.BaseTypeVariable){
-                            console.log('is well a base type variable');
-                        }
                     }
                     //var tuple = new TAO_MATCHING.Tuple (values);
                     //console.log (tuple);
