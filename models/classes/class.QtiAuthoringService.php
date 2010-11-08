@@ -86,6 +86,7 @@ class taoItems_models_classes_QtiAuthoringService
      */
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
 		$itemData = $item->getData();
+		// $itemData = preg_replace('/(}|>){([^}]+)}/i', '\1&nbsp;{\2}', preg_replace('/{([^}]+)}({|<)/i', '{\1}&nbsp;\2', $itemData));
 		
 		//insert the interaction tags:
 		foreach($item->getInteractions() as $interaction){

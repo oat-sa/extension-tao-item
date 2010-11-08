@@ -2,7 +2,7 @@
 
 qtiEdit.instances = [];
 
-function qtiEdit(itemSerial, formContainers){
+function qtiEdit(itemSerial, formContainers, options){
 	
 	var defaultFormContainers = {
 		itemDataContainer : '#itemEditor_wysiwyg',
@@ -145,6 +145,7 @@ function qtiEdit(itemSerial, formContainers){
 	var instance = this;
 	
 	this.itemEditor = $(this.itemDataContainer).wysiwyg({
+		css: options.css,
 		controls: {
 		  strikeThrough : { visible : true },
 		  underline     : { visible : true },

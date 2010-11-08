@@ -1,3 +1,4 @@
+/*the loading element*/
 #qtiAuthoring_loading{
 	position:absolute;
 	width:100%;
@@ -23,13 +24,14 @@
 }
 
 #qtiAuthoring_menu_left_container{
-	float:left;
+	position:absolute;
 	width:24.8%;
 	height:98%;
 	padding:0px;
 }
 #qtiAuthoring_menu_right_container{
-	float:left;
+	position:absolute;
+	left:25%;
 	/*width:74.9%;*/
 	height:98%;
 	padding:0px;

@@ -74,7 +74,7 @@ $(document).ready(function(){
 	// console.log('ssds', $.browser);
 	try{
 		//global item object
-		myItem = new qtiEdit('<?=get_data('itemSerial')?>');
+		myItem = new qtiEdit('<?=get_data('itemSerial')?>', null, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
 		
 	}catch(err){
 		
@@ -102,7 +102,10 @@ $(document).ready(function(){
 	
 	myItem.loadStyleSheetForm();
 	
-	setTimeout(function(){$('#qtiAuthoring_loading').hide();}, 1000);
+	setTimeout(function(){
+		$('#qtiAuthoring_loading').hide();
+		$('#qtiAuthoring_main_container').show();
+	}, 1000);
 	
 	
 	// available interactions:
