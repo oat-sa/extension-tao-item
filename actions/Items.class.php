@@ -155,7 +155,12 @@ class Items extends TaoModule{
 					//get the Xml Schema regarding the item model
 					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 					switch($itemModel->uriResource){
-					 	case TAO_ITEM_MODEL_WATERPHENIX: break;
+					 	case TAO_ITEM_MODEL_WATERPHENIX: 
+					 		/**@todo add the black schema  */
+					 		break;
+					 	case TAO_ITEM_MODEL_XHTML:
+					 		/**@todo add the XHTML1.1 strict schema  */
+					 		break;
 					 	case TAO_ITEM_MODEL_QTI:
 							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
 							break;

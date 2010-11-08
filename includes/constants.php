@@ -17,6 +17,7 @@ $todefine = array(
 	'TAO_ITEM_MODEL_KOHS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#kohs',
 	'TAO_ITEM_MODEL_CTEST'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest',
 	'TAO_ITEM_MODEL_QTI'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI',
+	'TAO_ITEM_MODEL_XHTML'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML',
 	'TAO_ITEM_MODEL_WATERPHENIX'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#i125933161031263',
 	'TAO_ITEM_MODEL_CAMPUS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#campus',
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',

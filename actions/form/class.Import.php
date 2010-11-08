@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.10.2010, 14:45:54 with ArgoUML PHP module 
+ * Automatically generated on 08.11.2010, 17:20:03 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -58,7 +58,7 @@ class taoItems_actions_form_Import
      * @access protected
      * @var array
      */
-    protected $formats = array('csv' => 'CSV', 'qti' => 'QTI Item', 'qtipack' => 'QTI Package');
+    protected $formats = array('csv' => 'CSV', 'qti' => 'QTI Item', 'qtipack' => 'QTI Package', 'xhtml' => 'XHTML Package');
 
     // --- OPERATIONS ---
 
@@ -88,7 +88,7 @@ class taoItems_actions_form_Import
 		}
 		$fileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/xml', 'application/xml', 'application/x-xml'), 'extension' => array('xml'))),
-			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 2000000))
+			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => self::UPLOAD_MAX))
 		));
     	
 		$this->form->addElement($fileElt);
@@ -127,7 +127,7 @@ class taoItems_actions_form_Import
 		}
 		$fileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('application/zip', 'application/x-zip', 'application/x-zip-compressed', 'application/octet-stream'), 'extension' => array('zip'))),
-			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000))
+			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => self::UPLOAD_MAX))
 		));
     	
 		$this->form->addElement($fileElt);
@@ -138,6 +138,45 @@ class taoItems_actions_form_Import
 		$this->form->addElement($qtiSentElt);
     	
         // section 127-0-1-1-5c65d02d:12bc97f5116:-8000:0000000000002786 end
+    }
+
+    /**
+     * Short description of method initXHTMLElements
+     *
+     * @access protected
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    protected function initXHTMLElements()
+    {
+        // section 127-0-1-1-2d0bb0b3:12c2c41fb7c:-8000:0000000000002858 begin
+        
+    	$descElt = tao_helpers_form_FormFactory::getElement('xhtml_desc', 'Label');
+		$descElt->setValue(__('An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import'));
+		$this->form->addElement($descElt);
+    	
+    	//create file upload form box
+		$fileElt = tao_helpers_form_FormFactory::getElement('source', 'AsyncFile');
+		$fileElt->setDescription(__("Add the source file"));
+    	if(isset($_POST['import_sent_xhtml'])){
+			$fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+		}
+		else{
+			$fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty', array('message' => '')));
+		}
+		$fileElt->addValidators(array(
+			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('application/zip', 'application/x-zip', 'application/x-zip-compressed', 'application/octet-stream'), 'extension' => array('zip'))),
+			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => self::UPLOAD_MAX))
+		));
+    	
+		$this->form->addElement($fileElt);
+		$this->form->createGroup('file', __('Upload an XHTML Package File'), array('xhtml_desc', 'source'));
+		
+		$xhtmlSentElt = tao_helpers_form_FormFactory::getElement('import_sent_xhtml', 'Hidden');
+		$xhtmlSentElt->setValue(1);
+		$this->form->addElement($xhtmlSentElt);
+    	
+        // section 127-0-1-1-2d0bb0b3:12c2c41fb7c:-8000:0000000000002858 end
     }
 
 } /* end of class taoItems_actions_form_Import */
