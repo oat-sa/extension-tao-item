@@ -376,16 +376,6 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 			var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control choice-button-advanced ui-icon ui-icon-circle-plus"></span>');
 			$group.before($buttonElt);
 			
-			//TODO: put into a css file!!
-			// $buttonElt.css('position', 'relative');
-			// $buttonElt.css('left','18px');
-			// $buttonElt.css('top','-16px');
-			
-			// $group.css('position', 'relative');
-			// $group.css('top','-19px');
-			// $group.css('left','20px');
-			// $group.width('90%');
-			
 			$group.hide();
 			
 			// $('#a_'+groupId).unbind('click');

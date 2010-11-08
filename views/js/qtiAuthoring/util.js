@@ -25,3 +25,9 @@ CD = function(object, desc){
 		console.dir(object);
 	// }
 }
+
+util.htmlDecode = function(encodedStr){
+	var decoded = encodeURIComponent(encodedStr);
+	// var decoded = $("<div/>").html(encodedStr).text();
+	return decoded;
+}

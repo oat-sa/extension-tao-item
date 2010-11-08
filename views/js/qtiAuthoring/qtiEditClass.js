@@ -1,5 +1,4 @@
 // alert('qtiEdit loaded');
-alert('qtiEdit loaded');
 
 qtiEdit.instances = [];
 
@@ -408,6 +407,7 @@ qtiEdit.getEltInFrame = function(selector, selectedDocument){
 	return foundElts;
 }
 
+
 //the global save function
 qtiEdit.prototype.save = function(itemUri){
 	
@@ -416,11 +416,12 @@ qtiEdit.prototype.save = function(itemUri){
 	//save item data then export to rdf item:
 	var instance = this;
 	
+
 	//get the item form values:
 	var itemProperties = $('#AssessmentItem_Form').serialize();
 	//could check if an interaction is being edited, so suggest to save it too:
 	if(itemProperties){
-		itemProperties += '&itemData=' + instance.itemEditor.wysiwyg('getContent');
+		itemProperties += '&itemData=' + util.htmlDecode(instance.itemEditor.wysiwyg('getContent'));
 		itemProperties += '&itemSerial=' + instance.itemSerial;
 		itemProperties += '&itemUri=' + this.itemUri;
 	}
@@ -458,7 +459,7 @@ qtiEdit.prototype.saveItemData = function(itemSerial){
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveItemData",
 	   data: {
-			'itemData': instance.itemEditor.wysiwyg('getContent'),
+			'itemData': util.htmlDecode(instance.itemEditor.wysiwyg('getContent')),
 			'itemSerial': itemSerial
 	   },
 	   dataType: 'json',

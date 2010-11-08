@@ -95,6 +95,10 @@ class taoItems_models_classes_QtiAuthoringService
 			$itemData = preg_replace($pattern, $this->getInteractionTag($interaction), $itemData, 1);
 		}
 		
+		//strip the starting and ending <div> tag if exists:
+		$pattern = '/^<div>(.*)<\/div>$/i';
+		$itemData = preg_replace($pattern, '\1', trim($itemData));
+		
 		return $itemData;
 	}
 	
@@ -276,6 +280,8 @@ class taoItems_models_classes_QtiAuthoringService
 	public function saveItemData(taoItems_models_classes_QTI_Item $item, $itemData){
 		if(!is_null($item)){
 			
+			$itemData = html_entity_decode($itemData);
+						
 			//clean the interactions' editing elements:
 			foreach($item->getInteractions() as $interaction){
 				$itemData = $this->filterData($interaction, $itemData);
@@ -312,18 +318,16 @@ class taoItems_models_classes_QtiAuthoringService
 			'graphicgapmatch'
 		);
 		
-		$interactionType = strtolower($interactionType);
-		
-		if(!is_null($item) && in_array($interactionType, $authorizedInteractions)){
+		if(!is_null($item) && in_array(strtolower($interactionType), $authorizedInteractions)){
 			//create interaction:
-			$interaction = new taoItems_models_classes_QTI_Interaction($interactionType);
+			$interaction = new taoItems_models_classes_QTI_Interaction($interactionType);//keep the case sensitivity here!
 			
 			//add to the item object:
 			$item->addInteraction($interaction);
 			// $item->setData($itemData);
 			
 			//insert the required group immediately:
-			switch($interactionType){
+			switch(strtolower($interactionType)){
 				case 'choice':{
 					//init mandatory attibute values:
 					$interaction->setOption('shuffle', false);
