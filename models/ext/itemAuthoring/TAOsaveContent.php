@@ -87,7 +87,7 @@ class TAOsaveContent
 			
 		$item = new core_kernel_classes_Resource($instance);
 		$label = $item->getLabel();
-		$comment =  $item->comment;
+		$comment =  $item->getComment();
 		$script = $instance;
 
 	

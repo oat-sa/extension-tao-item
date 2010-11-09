@@ -491,7 +491,7 @@ class Items extends TaoModule{
 					$data = "<?xml version='1.0' encoding='UTF-8'?>
 								<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
 									<rdfs:LABEL lang='{$lang}'>{$item->getLabel()}</rdfs:LABEL>
-									<rdfs:COMMENT lang='{$lang}'>{$item->comment}</rdfs:COMMENT>
+									<rdfs:COMMENT lang='{$lang}'>{$item->getComment()}</rdfs:COMMENT>
 									{$_SESSION['xml']}
 								</tao:ITEM>";
 					$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $data));

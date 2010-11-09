@@ -226,7 +226,7 @@ function buildXml()
 	$item = new core_kernel_classes_Resource($_POST["instance"]);
 	$xmlHeader="<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID=\"".$item->uriResource."\" xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
 	<rdfs:LABEL lang=\"".$GLOBALS['lang']."\">".$item->getLabel()."</rdfs:LABEL>
-	<rdfs:COMMENT lang=\"".$GLOBALS['lang']."\">".$item->comment."</rdfs:COMMENT>
+	<rdfs:COMMENT lang=\"".$GLOBALS['lang']."\">".$item->getComment()."</rdfs:COMMENT>
 	
 	";
 	$xmlfooter="
