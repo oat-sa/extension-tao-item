@@ -96,8 +96,19 @@ TAO_MATCHING.List.prototype = {
     {
     	this.value = [];
     	for (var i in data ){
-    		var matchingVar = TAO_MATCHING.VariableFactory.create (data[i]);
-			this.value.push (matchingVar);
+    	    // IF the variable the content value is yet a MatchingVariable, add it to the list
+    	    if (TAO_MATCHING.VariableFactory.isMatchingVariable (data[i])){
+    	        this.value.push(data[i]);
+    	    }
+    	    // ELSE if the value content is BaseTypeVariable valid value, create it and add it to the list
+    	    else {
+    	        //console.log (data[i]);
+                //if (TAO_MATCHING.BaseTypeVariable.isValidValue (data[i])){
+                    this.value.push (TAO_MATCHING.VariableFactory.create (data[i]));
+                //} else {
+                //    throw new Error ('TAO_MATCHING.List::setValue an error occured : types of the element is not allowed');
+                //}
+    	    }
     	}
     }
 };

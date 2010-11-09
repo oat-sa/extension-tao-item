@@ -79,25 +79,48 @@ TAO_MATCHING.VariableFactory = {
         
         return returnValue;
 	}
-	
+
     /**
-     * Short description of method isValidBaseType
+     * Short description of method isMatchingVariable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  data
      * @return boolean
-     */
-	, isValidBaseType : function(elt){
+     */	
+	, isMatchingVariable : function (data){
 	    var returnValue = false;
 	    
-	    switch (typeof (elt)){
-            case 'boolean':
-            case 'number':
-            case 'string':
-                returnValue = true;
-	    }
+	    if (data instanceof TAO_MATCHING.BaseTypeVariable
+            || data instanceof TAO_MATCHING.Tuple
+            || data instanceof TAO_MATCHING.List)
+        {
+            returnValue = true;
+        }
 	    
 	    return returnValue;
 	}
+	
+	/**
+	 * 
+	 */
+	 , toNumericBaseType : function (data) {
+	    var returnValue = null;
+	    
+	    // IF the first expression is not a BaseTypeVariable try to create it
+        if (!(data instanceof TAO_MATCHING.BaseTypeVariable)){
+            if (TAO_MATCHING.BaseTypeVariable.isValidValue (data)) {
+                var matchingVar = new TAO_MATCHING.BaseTypeVariable (data);
+                if (matchingVar.isNumerical ()){
+                    returnValue = matchingVar;
+                }
+            }
+        } else {
+            if (data.isNumerical()){
+                returnValue = data;
+            }
+        }
+        
+        return returnValue;
+	 }
 }

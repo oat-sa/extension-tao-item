@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.11.2010, 15:31:51 with ArgoUML PHP module 
+ * Automatically generated on 09.11.2010, 12:35:10 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -149,7 +149,11 @@ class taoItems_models_classes_Matching_Matching
 			, 'isNull'=>array()
 			, 'getCorrect'=>array()
 			, 'getMap'=>array()
-			, 'getResponse'=>array()
+            , 'getResponse'=>array()
+            , 'gt'=>array()
+            , 'gte'=>array()
+            , 'lt'=>array()
+            , 'lte'=>array()
 			, 'mapResponse'=>array()
             , 'match'=>array()
             , 'not'=>array()
@@ -174,15 +178,15 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 begin
         
         // If json encoded string
-        if (gettype($options) == 'string') $options = (object) json_decode ($options);
+        if (gettype($options) == 'string') $options = json_decode ($options);
         // If null
-        else if ($options == null) $options = (object) Array();
+        else if ($options == null) $options = Array();
         
-        $returnValue = $options;
+        $returnValue = (object) $options;
         
         // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 end
 
-        return (object) $returnValue;
+        return $returnValue;
     }
 
     /**
@@ -822,6 +826,9 @@ class taoItems_models_classes_Matching_Matching
         else if (!isset($expr2))
         	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the second argument does not exist");
 
+        //echo '<pre>';print_r($expr1);echo '</pre>';
+        //echo '<pre>';print_r($expr2);echo '</pre>';
+
         if ($expr1->getType() != $expr2->getType()) { 
         	$returnValue = false;
     	} else {
@@ -898,7 +905,7 @@ class taoItems_models_classes_Matching_Matching
             $outcome->setValue ($value->getValue());
         }
         else {
-            if (taoItems_models_classes_Matching_VariableFactory::isValidBaseType ($value)){
+            if (taoItems_models_classes_Matching_BaseTypeVariable::isValidValue ($value)){
                 $outcome->setValue ($value);
             }else{
                 throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['.gettype($value).']');
@@ -906,6 +913,316 @@ class taoItems_models_classes_Matching_Matching
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002927 end
+    }
+
+    /**
+     * Short description of method gt
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    public function gt(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B4A begin
+        
+        $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
+        // IF the first expression is not a numerical base type
+        if ($matchingExpr1 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
+        // IF the second expression is not a numerical base type
+        if ($matchingExpr2 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if ($matchingExpr1->getValue() > $matchingExpr2->getValue()) {
+            $returnValue = true;
+        }
+        
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B4A end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method lt
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    public function lt(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B4F begin
+        
+        $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
+        // IF the first expression is not a numerical base type
+        if ($matchingExpr1 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
+        // IF the second expression is not a numerical base type
+        if ($matchingExpr2 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if ($matchingExpr1->getValue() < $matchingExpr2->getValue()) {
+            $returnValue = true;
+        }
+        
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B4F end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method gte
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    public function gte(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B6B begin
+        
+        $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
+        // IF the first expression is not a numerical base type
+        if ($matchingExpr1 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
+        // IF the second expression is not a numerical base type
+        if ($matchingExpr2 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if ($matchingExpr1->getValue() >= $matchingExpr2->getValue()) {
+            $returnValue = true;
+        }
+        
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B6B end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method lte
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    public function lte(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B70 begin
+        
+        $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
+        // IF the first expression is not a numerical base type
+        if ($matchingExpr1 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
+        // IF the second expression is not a numerical base type
+        if ($matchingExpr2 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if ($matchingExpr1->getValue() <= $matchingExpr2->getValue()) {
+            $returnValue = true;
+        }
+        
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B70 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method product
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return mixed
+     */
+    public function product(   $options)
+    {
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B75 begin
+        
+        $returnValue = null;
+        $options = $this->checkOptions ($options);
+                
+        // for each arguments (which are expressions) 
+        for ($i = 1; $i < func_num_args(); ++$i) {
+            $subExp = func_get_arg($i);
+            
+            $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($subExp);
+            // If the sub expression is not a numerical base type variable
+            if ($matchingSubExp == null){
+                throw new Exception ("TtaoItems_models_classes_Matching_Matching::product an error occured : The [".$i."] expression passed [".$subExp."] to the operator has to be a valid numerical expression with single cardinality");
+            } 
+            // If the sub expression value is null
+            else if ($matchingSubExp->isNull()){
+                $returnValue = null;
+                break;
+            } 
+            // Else compute
+            else {
+                // first pass
+                if ($returnValue==null){
+                    $returnValue = $matchingSubExp->getValue();
+                } 
+                else {
+                    $returnValue *= $matchingSubExp->getValue();
+                }
+            }
+        }
+        
+        return $returnValue;
+        
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B75 end
+    }
+
+    /**
+     * Short description of method substract
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     */
+    public function substract(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B78 begin
+        
+        $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
+        // IF the first expression is not a numerical base type
+        if ($matchingExpr1 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::substract an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
+        // IF the second expression is not a numerical base type
+        if ($matchingExpr2 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::substract an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if ($matchingExpr1->isNull() || $matchingExpr2->isNull()){
+            $returnValue = null;
+        } else {
+            $returnValue = $matchingExpr1->getValue() - $matchingExpr2->getValue();
+        }
+        
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B78 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method divide
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     */
+    public function divide(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B7D begin
+        
+        $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
+        // IF the first expression is not a numerical base type
+        if ($matchingExpr1 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::divide an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
+        // IF the second expression is not a numerical base type
+        if ($matchingExpr2 == null) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::divide an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if ($matchingExpr1->isNull() || $matchingExpr2->isNull() || $matchingExpr2->getValue()===0){
+            $returnValue = null;
+        } else {
+            $returnValue = $matchingExpr1->getValue() / $matchingExpr2->getValue();
+        }
+                
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B7D end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method sum
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     */
+    public function sum(   $options)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B87 begin
+        
+        $options = $this->checkOptions ($options);
+                
+        // for each arguments (which are expressions) 
+        for ($i = 1; $i < func_num_args(); ++$i) {
+            $subExp = func_get_arg($i);
+            
+            $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($subExp);
+            // If the sub expression is not a numerical base type variable
+            if ($matchingSubExp == null){
+                throw new Exception ("TtaoItems_models_classes_Matching_Matching::sum an error occured : The [".$i."] expression passed [".$subExp."] to the operator has to be a valid numerical expression with single cardinality");
+            } 
+            // If the sub expression value is null
+            else if ($matchingSubExp->isNull()){
+                $returnValue = null;
+                break;
+            } 
+            // Else compute
+            else {
+                $returnValue += $matchingSubExp->getValue();
+            }
+        }
+        
+        // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B87 end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_Matching */

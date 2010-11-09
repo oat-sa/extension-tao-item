@@ -174,7 +174,11 @@ class taoItems_models_classes_Matching_List
 
     	$this->value = array();
     	foreach ($data as $key=>$elt){
-    		$this->value[] = taoItems_models_classes_Matching_VariableFactory::create ($elt);
+    	    if ($elt instanceOf taoItems_models_classes_Matching_Variable) {
+                $this->value[$key] = $elt;
+            } else {
+                $this->value[$key] = taoItems_models_classes_Matching_VariableFactory::create ($elt);
+            }
     	}
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002959 end

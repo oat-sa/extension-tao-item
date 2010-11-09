@@ -92,16 +92,16 @@ TAO_MATCHING.Tuple.prototype = {
     {
     	this.value = [];
     	for (var key in data) {
-    	    // If the element is yet a BaseTypeVariable add it to the tuple
-            if (data[key] instanceof TAO_MATCHING.BaseTypeVariable){
+    	    // IF the variable the content value is yet a MatchingVariable, add it to the tuple
+            if (TAO_MATCHING.VariableFactory.isMatchingVariable (data[key])){
                 this.value[key] = data[key];
-            // Else the element have to be a native language variable
+            // ELSE if the value content is BaseTypeVariable valid value, create it and add it to the tuple
             } else {
-                if (TAO_MATCHING.VariableFactory.isValidBaseType (data[key])){
+                //if (TAO_MATCHING.BaseTypeVariable.isValidValue (data[key])){
                     this.value[key] = TAO_MATCHING.VariableFactory.create (data[key]);
-                } else {
-                    throw new Error ('TAO_MATCHING.Tuple::setValue an error occured : types of the element is not allowed');
-                }
+                //} else {
+                //    throw new Error ('TAO_MATCHING.Tuple::setValue an error occured : types of the element is not allowed');
+                //}
             }
     	}
     }

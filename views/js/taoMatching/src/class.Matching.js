@@ -10,6 +10,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 		, "maps" 		: null
 		, "rule" 		: null
 	}; if (typeof(pData) != 'undefined') $.extend(data, pData);
+    
     var options = {
 		"evaluateCallback" : null
 	}; if (typeof(pOptions) != 'undefined') $.extend(options, pOptions);
@@ -71,15 +72,23 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.whiteFunctionsList = {
 		'and'				:{'mappedFunction':'andExpression'}
         , 'createVariable'  :{}
+        , 'divide'          :{}
         , 'equal'           :{}
 		, 'if'				:{'jsFunction':true}
 		, 'isNull'			:{}
 		, 'getCorrect'		:{}
 		, 'getMap'			:{}
 		, 'getResponse'		:{}
-		, 'mapResponse'		:{}
+        , 'gt'              :{}
+        , 'gte'             :{}
+        , 'lt'              :{}
+        , 'lte'             :{}
+        , 'mapResponse'     :{}
 		, 'match'			:{}
-		, 'setOutcomeValue'	:{}
+        , 'product'         :{}
+        , 'setOutcomeValue' :{}
+        , 'substract'       :{}
+        , 'sum'             :{}
 	};
 	
 	if (data.corrects != null) {
@@ -354,7 +363,7 @@ TAO_MATCHING.Matching.prototype = {
                     var values = [];
                     var a = 0;
                     for (var i = 1; i < this.createVariable.arguments.length; ++i, ++a) {
-                        values.array_push (this.createVariable.arguments[i]);
+                        values.push (this.createVariable.arguments[i]);
                     }
                     returnValue = TAO_MATCHING.VariableFactory.create (values);
                     break;
@@ -389,7 +398,7 @@ TAO_MATCHING.Matching.prototype = {
             outcome.setValue (value.getValue());
         }
         else {
-            if (TAO_MATCHING.VariableFactory.isValidBaseType (value)){
+            if (TAO_MATCHING.BaseTypeVariable.isValidValue (value)){
                 outcome.setValue (value);
             }else{
                 throw new Error ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['+typeof(value)+']');
@@ -657,6 +666,240 @@ TAO_MATCHING.Matching.prototype = {
             returnValue = expr1.match(expr2);
         }
 
+        return returnValue;
+    }
+    
+    /**
+     * Short description of method gt
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    , gt : function (options, expr1, expr2)
+    {
+        var returnValue = false;
+        
+        // IF the first expression is not a numerical base type
+        matchingExpr1 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr1);
+        if (matchingExpr1 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The first expression passed ["+expr1+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        // IF the first expression is not a numerical base type
+        matchingExpr2 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr2);
+        if (matchingExpr2 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The second expression passed ["+expr2+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if (matchingExpr1.getValue() > matchingExpr2.getValue()) {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * Short description of method lt
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    , lt : function (options, expr1, expr2)
+    {
+        var returnValue = false;
+        
+        // IF the first expression is not a numerical base type
+        matchingExpr1 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr1);
+        if (matchingExpr1 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The first expression passed ["+expr1+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        // IF the first expression is not a numerical base type
+        matchingExpr2 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr2);
+        if (matchingExpr2 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The second expression passed ["+expr2+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if (matchingExpr1.getValue() < matchingExpr2.getValue()) {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+    
+    /**
+     * Short description of method lt
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    , lte : function (options, expr1, expr2)
+    {
+        var returnValue = false;
+        
+        // IF the first expression is not a numerical base type
+        matchingExpr1 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr1);
+        if (matchingExpr1 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The first expression passed ["+expr1+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        // IF the first expression is not a numerical base type
+        matchingExpr2 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr2);
+        if (matchingExpr2 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The second expression passed ["+expr2+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if (matchingExpr1.getValue() <= matchingExpr2.getValue()) {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+    
+    /**
+     * Short description of method lt
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return boolean
+     */
+    , gte : function (options, expr1, expr2)
+    {
+        var returnValue = false;
+        
+        // IF the first expression is not a numerical base type
+        matchingExpr1 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr1);
+        if (matchingExpr1 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The first expression passed ["+expr1+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        // IF the first expression is not a numerical base type
+        matchingExpr2 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr2);
+        if (matchingExpr2 == null) {
+            throw new Error ("TAO_MATCHING.Matching::gt an error occured : The second expression passed ["+expr2+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if (matchingExpr1.getValue() >= matchingExpr2.getValue()) {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+    
+    , sum : function (options){
+        var returnValue = 0;
+        
+        options = this.checkOptions(options);
+        var paramCount = this.sum.arguments.length;
+        
+        for (var i = 1; i < paramCount; i++) {
+            var subExp = this.sum.arguments[i];
+            var matchingSubExp = TAO_MATCHING.VariableFactory.toNumericBaseType (subExp);
+            if (matchingSubExp == null){
+                throw new Error ("TAO_MATCHING.Matching::sum an error occured : The ["+i+"] expression passed ["+subExp+"] to the operator has to be a valid numerical expression with single cardinality");
+            } else if (matchingSubExp.isNull()){
+                returnValue = null;
+                break;
+            } else {
+                returnValue += matchingSubExp.getValue();
+            }
+        }
+        
+        return returnValue;
+    }
+    
+    , substract : function (options, expr1, expr2){
+        var returnValue = null;
+        
+        // IF the first expression is not a numerical base type
+        matchingExpr1 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr1);
+        if (matchingExpr1 == null) {
+            throw new Error ("TAO_MATCHING.Matching::substract an error occured : The first expression passed ["+expr1+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        // IF the first expression is not a numerical base type
+        matchingExpr2 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr2);
+        if (matchingExpr2 == null) {
+            throw new Error ("TAO_MATCHING.Matching::substract an error occured : The second expression passed ["+expr2+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if (matchingExpr1.getValue() == null || matchingExpr2.getValue() == null){
+            returnValue = null;
+        } else {
+            returnValue = matchingExpr1.getValue() - matchingExpr2.getValue();
+        }
+        
+        return returnValue;
+    }
+    
+    , product : function (options){
+        var returnValue = null;
+        
+        options = this.checkOptions(options);
+        var paramCount = this.product.arguments.length;
+        
+        for (var i = 1; i < paramCount; i++) {
+            var subExp = this.product.arguments[i];
+            var matchingSubExp = TAO_MATCHING.VariableFactory.toNumericBaseType (subExp);
+            // If the sub expression is not a numerical base type variable
+            if (matchingSubExp == null){
+                throw new Error ("TAO_MATCHING.Matching::product an error occured : The ["+i+"] expression passed ["+subExp+"] to the operator has to be a valid numerical expression with single cardinality");
+            } 
+            // If the sub expression value is null
+            else if (matchingSubExp.isNull()){
+                returnValue = null;
+                break;
+            // Else compute
+            } else {
+                // first pass
+                if (returnValue==null){
+                    returnValue = matchingSubExp.getValue();
+                } 
+                else {
+                    returnValue *= matchingSubExp.getValue();
+                }
+            }
+        }
+        
+        return returnValue;
+    }
+    
+    , divide : function (options, expr1, expr2){
+        var returnValue = null;
+        
+        // IF the first expression is not a numerical base type
+        matchingExpr1 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr1);
+        if (matchingExpr1 == null) {
+            throw new Error ("TAO_MATCHING.Matching::substract an error occured : The first expression passed ["+expr1+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+
+        // IF the first expression is not a numerical base type
+        matchingExpr2 = TAO_MATCHING.VariableFactory.toNumericBaseType (expr2);
+        if (matchingExpr2 == null) {
+            throw new Error ("TAO_MATCHING.Matching::substract an error occured : The second expression passed ["+expr2+"] to the operator has to be a valid numerical expression with single cardinality");
+        }
+        
+        if (matchingExpr1.getValue() == null || matchingExpr2.getValue() == null || matchingExpr2.getValue() == 0){
+            returnValue = null;
+        } else {
+            returnValue = matchingExpr1.getValue() / matchingExpr2.getValue();
+        }
+        
         return returnValue;
     }
     

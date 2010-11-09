@@ -1,19 +1,14 @@
 <?php
-// Set the matching parameters functions of the context
+// Load the matching template functions of the context
 // PREVIEW MODE
-if (isset($ctx_preview_mode) && $ctx_preview_mode) {
-     $template  = dirname(__FILE__).'/matching/js.preview.tpl.php';
-} 
+if (isset($ctx_preview_mode) && $ctx_preview_mode) $templateName = "preview"; 
 // SERVER MODE
-else if (isset($ctx_delivery_server_mode) && $ctx_delivery_server_mode){
-     $template  = dirname(__FILE__).'/matching/js.server.tpl.php';
-} 
+else if (isset($ctx_delivery_server_mode) && $ctx_delivery_server_mode) $templateName = "server"; 
 // CLIENT MODE
-else {
-     $template  = dirname(__FILE__).'/matching/js.client.tpl.php';
-}
-// Load the Matching template
-$matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $matching);
+else $templateName = "client"; 
+
+$matchingTemplate  = dirname(__FILE__).'/matching/js.'.$templateName.'.tpl.php';
+$matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchingTemplate, $matching);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

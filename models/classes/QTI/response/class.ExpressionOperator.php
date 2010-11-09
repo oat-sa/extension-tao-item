@@ -123,6 +123,10 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
                     . $optionsJSON
                     .', getMap("'.$identifier.'"), getResponse("'.$identifier.'"))';
                 break;
+            // Multiple is a Creation of List from parameters
+            case 'multiple':
+                $returnValue = 'createVariable("{\"type\":\"list\"}", '.$subExpressionsJSON.')';
+                break;
             // Ordered is a Creation of Tuple from parameters
             case 'ordered':
                 $returnValue = 'createVariable("{\"type\":\"tuple\"}", '.$subExpressionsJSON.')';

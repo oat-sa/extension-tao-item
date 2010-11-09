@@ -95,6 +95,60 @@ TAO_MATCHING.BaseTypeVariable.prototype = {
     {
         return this.getValue();
     }
+       
+    /**
+     * Short description of method isNumerical
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    , isNumerical : function ()
+    {
+        var returnValue = false;
+        
+        if (this.getValue() == null){
+            returnValue = true;
+        } else {
+            switch (this.getType()){
+                case 'number':
+                    returnValue = true;
+            }
+        }        
+
+        return returnValue;
+    }
+    
+};
+
+/**
+ * isValidValue function provide a way to test if a value could be BaseTypeVariable value type compliant
+ *
+ * @access public
+ * @static
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @param  data
+ * @return boolean
+ */
+TAO_MATCHING.BaseTypeVariable.isValidValue = function (data)
+{
+    var returnValue = false;
+    
+    // If the data is null
+    if (data == null){
+        returnValue = true;
+    }
+    else {
+        // If the data has a valid type
+        switch (typeof (data)){
+            case 'boolean':
+            case 'number':
+            case 'string':
+                returnValue = true;
+        }    
+    }
+
+    return returnValue;
 };
 
 // Extend the class with its parent properties

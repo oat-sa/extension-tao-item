@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.11.2010, 11:59:48 with ArgoUML PHP module 
+ * Automatically generated on 08.11.2010, 16:48:50 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -65,7 +65,11 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     public function __construct(   $value)
     {
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028CA begin
-        
+
+        if (! $this->isValidValue($value)){
+            throw new Exception ('taoItems_models_classes_Matching_BaseTypeVariable::_construct an error occured : The value is not a valid value type ['.gettype($value).'], expected [string, boolean, float, integer]');
+        }
+            
         $this->setValue ($value);
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028CA end
@@ -104,7 +108,7 @@ class taoItems_models_classes_Matching_BaseTypeVariable
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB3 begin
         
-        $returnValue = $this->value == null;
+        $returnValue = $this->value === null;
         
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB3 end
 
@@ -143,6 +147,71 @@ class taoItems_models_classes_Matching_BaseTypeVariable
         // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B35 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method isValidValue
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return boolean
+     */
+    public static function isValidValue(   $data)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B54 begin
+        
+        // If the data is null
+        if ($data == null){
+            $returnValue = true;
+        } else {
+            // If the data has a valid type
+            switch (gettype ($data)){
+                case 'string':
+                case 'integer':
+                case 'float':
+                case 'double': // only in php
+                case 'boolean':
+                    $returnValue = true;
+            }
+        }
+        
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B54 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isNumerical
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    public function isNumerical()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B57 begin
+
+        // If the data is null
+        if ($this->getValue() == null){
+            $returnValue = true;
+        } 
+        else {
+            switch ($this->getType()){
+                case 'integer':
+                case 'float':
+                case 'double': // only in php
+                    $returnValue = true;
+            }
+        }
+        
+        // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B57 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_BaseTypeVariable */

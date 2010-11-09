@@ -15,7 +15,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 	/**
 	 * tests initialization
 	 */
-	public function setUp(){		
+	public function setUp(){
 		TestRunner::initTest();
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
@@ -257,7 +257,118 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         
         $this->assertTrue ($tuple2->match($tuple3));
     }
-    
+
+    public function testOperatorGT (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertTrue ($matching->gt (null, 3, 2));
+        $this->assertTrue ($matching->gt (null, 3.14, 1.66));
+        $this->assertFalse($matching->gt (null, 3, 3));
+        $this->assertFalse($matching->gt (null, 2, 3));
+        try {
+            $matching->gt (null, Array(3), 2);
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorLT (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertTrue ($matching->lt (null, 2, 3));
+        $this->assertTrue ($matching->lt (null, 1.66, 3.14));
+        $this->assertFalse ($matching->lt (null, 2, 2));
+        $this->assertFalse ($matching->lt (null, 3, 2));
+        try {
+            $matching->gt (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorGTE (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertTrue ($matching->gte (null, 3, 2));
+        $this->assertTrue ($matching->gte (null, 3.14, 1.66));
+        $this->assertTrue($matching->gte (null, 3, 3));
+        $this->assertFalse($matching->gte (null, 2, 3));
+        try {
+            $matching->gte (null, Array(3), 2);
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorLTE (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertTrue ($matching->lte (null, 2, 3));
+        $this->assertTrue ($matching->lte (null, 1.66, 3.14));
+        $this->assertTrue ($matching->lte (null, 2, 2));
+        $this->assertFalse ($matching->lte (null, 3, 2));
+        try {
+            $matching->gte (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorProduct (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->product (null, 2, 3), 6);
+        $this->assertEqual ($matching->product (null, $matching->createVariable(null, 2), 3), 6);
+        $this->assertEqual ($matching->product (null, $matching->createVariable(null, 2), 3, null), null);
+        $this->assertEqual ($matching->product (null, $matching->createVariable(null, 2), 3, 0), 0);
+        try {
+            $matching->product (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorSum(){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->sum (null, 2, 3), 5);
+        $this->assertEqual ($matching->sum (null, $matching->createVariable(null, 2), 3), 5);
+        $this->assertEqual ($matching->sum (null, $matching->createVariable(null, 2), 3, null), null);
+        $this->assertEqual ($matching->sum (null, $matching->createVariable(null, 2), 3, 0), 5);
+        try {
+            $matching->sum (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorDivide (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->divide (null, 3, 2), 1.5);
+        $this->assertEqual ($matching->divide (null, $matching->createVariable(null, 3), 2), 1.5);
+        $this->assertEqual ($matching->divide (null, $matching->createVariable(null, 3), null), null);
+        $this->assertEqual ($matching->divide (null, $matching->createVariable(null, 3), 0), null);
+        try {
+            $matching->divide (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorSubstract (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->substract (null, 3, 2), 1);
+        $this->assertEqual ($matching->substract (null, $matching->createVariable(null, 3), 2), 1);
+        $this->assertEqual ($matching->substract (null, $matching->createVariable(null, 3), null), null);
+        try {
+            $matching->substract (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
 	public function testTemplateResponseProcessingMatchCorrect (){
 		matching_init ();
 		matching_setRule (taoItems_models_classes_Matching_Matching::MATCH_CORRECT);
@@ -368,8 +479,6 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'root_url' => ROOT_URL,
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
-            // Tmp matching context
-            'tmp_item_path' => dirname(__FILE__).'/samples/custom/custom_map_response_choice_multiple.xml',
             'delivery_server_mode' => true
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
@@ -399,7 +508,6 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             // Tmp matching context
-            'tmp_item_path' => dirname(__FILE__).'/samples/custom/custom_order_partial_scoring.xml',
             'delivery_server_mode' => true
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
@@ -419,8 +527,37 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $outcomes = matching_getOutcomes ();
         $this->assertEqual ($outcomes["SCORE"]["value"], 1);
        
-        echo $item->toXHTML();
-        echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+    }
+
+    public function testCustomMultiplePartialScoring () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom/custom_multiple_partial_scoring.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setMaps ($matching_data['maps']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":["CO","GO","SH"]}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 2);
+       
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
 }

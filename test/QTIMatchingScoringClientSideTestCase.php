@@ -30,8 +30,8 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	--------------------------------------------------------------------------->
 	
 	<script type="application/javascript">
-        //var testToRun = 'test operator : createVariable (*)';
-        var testToRun = '*';
+        var testToRun = 'test operator : divide';
+        //var testToRun = '*';
 
         var testUnitFct = test;
         var asynctestUnitFct = asyncTest;
@@ -353,7 +353,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
         });
 
         // CREATE VARIABLE OPERATOR (the operator used to map the baseValue QTI Expression)
-        test("test operator : createVariable (*)", function() {
+        test("test operator : createVariable (*) (QTI basevalue)", function() {
             var matching = new TAO_MATCHING.Matching ();
             
             // String
@@ -403,7 +403,100 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             var tuple2 = matching.createVariable({"type":"tuple"}, matching.createVariable ({"type":"string"}, "DriverA"), matching.createVariable ({"type":"string"}, "DriverB"), matching.createVariable ({"type":"string"}, "DriverC"));
             ok (!tuple1.match(tuple2), 'Tuple Variable does not match a different Tuple Variable');          
         });
-
+        
+        // GT OPERATOR
+        test("test operator : gt", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            ok (matching.gt (null, 3, 2), 'Expected value');
+            ok (matching.gt (null, 3.14, 1.66), 'Expected value');
+            ok (!matching.gt (null, 3, 3), 'Expected value');
+            ok (!matching.gt (null, 2, 3), 'Expected value');
+            try {
+                matching.gt (null, [3], 2)
+                ok (false, 'Expect exception');
+            }catch (e){
+                ok (true, 'Expected exception');
+            }
+        });
+        
+        // LT OPERATOR
+        test("test operator : lt", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            ok (matching.lt (null, 2, 3), 'Expected value');
+            ok (matching.lt (null, 1.66, 3.14), 'Expected value');
+            ok (!matching.lt (null, 3, 3), 'Expected value');
+            ok (!matching.lt (null, 3, 2), 'Expected value');
+            try {
+                matching.lt (null, [2], 3)
+                ok (false, 'Expect exception');
+            }catch (e){
+                ok (true, 'Expected exception');
+            }
+        });
+        
+        // GTE OPERATOR
+        test("test operator : gte", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            ok (matching.gte (null, 3, 2), 'Expected value');
+            ok (matching.gte (null, 3.14, 1.66), 'Expected value');
+            ok (matching.gte (null, 3, 3), 'Expected value');
+            ok (!matching.gte (null, 2, 3), 'Expected value');
+            try {
+                matching.gte (null, [3], 2)
+                ok (false, 'Expect exception');
+            }catch (e){
+                ok (true, 'Expected exception');
+            }
+        });
+        
+        // LTE OPERATOR
+        test("test operator : lte", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            ok (matching.lte (null, 2, 3), 'Expected value');
+            ok (matching.lte (null, 1.66, 3.14), 'Expected value');
+            ok (matching.lte (null, 3, 3), 'Expected value');
+            ok (!matching.lte (null, 3, 2), 'Expected value');
+            try {
+                matching.lte (null, [2], 3)
+                ok (false, 'Expect exception');
+            }catch (e){
+                ok (true, 'Expected exception');
+            }
+        });
+        
+        // SUM OPERATOR
+        test("test operator : sum", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.sum (null, 2, 3), 5, 'Expected value');
+            equals (matching.sum (null, matching.createVariable(null, 2), 3), 5, 'Expected value');
+            equals (matching.sum (null, matching.createVariable(null, 2), null), null, 'Expected value');
+        });
+        
+        // SUBSTRACT OPERATOR
+        test("test operator : substract", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.substract (null, 3, 2), 1, 'Expected value');
+            equals (matching.substract (null, matching.createVariable(null, 3), 2), 1, 'Expected value');
+            equals (matching.substract (null, matching.createVariable(null, 3), null), null, 'Expected value');
+        });
+        
+        // PRODUCT OPERATOR
+        test("test operator : product", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.product (null, 3, 2), 6, 'Expected value');
+            equals (matching.product (null, matching.createVariable(null, 3), 6), 18, 'Expected value');
+            equals (matching.product (null, matching.createVariable(null, 3), null), null, 'Expected value');
+        });
+        
+        // DIVIDE OPERATOR
+        test("test operator : divide", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.divide (null, 3, 2), 1.5, 'Expected value');
+            equals (matching.divide (null, matching.createVariable(null, 3), 6), 0.5, 'Expected value');
+            equals (matching.divide (null, matching.createVariable(null, 3), null), null, 'Expected value');
+            equals (matching.divide (null, matching.createVariable(null, 3), 0), null, 'Expected value');
+        });
+        
         // REMOTE MATCHING CHOICE.XML
         asyncTest ('Remote Matching : Choice.xml', function () {
             var matching_param = {

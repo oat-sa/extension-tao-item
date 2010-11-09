@@ -26,23 +26,23 @@ TAO_MATCHING.engine = null;
  * @param {Array} params.maps Collection of maps
  * @param {string} params.rule The rule to use to evaluate the testee
  */
-function matchingInit (params) {
-	var options = {
+function matchingInit (pParams) {
+	var params = {
 		"url" : null
 		, "params" : null
 		, "data" : null
 		, "format" : "json"
 		, "options" : null
-	}; if (typeof (params) != 'undefined') $.extend (options, params);
+	}; if (typeof (pParams) != 'undefined') $.extend (params, pParams);
 
 	// If the matching will be make with a remote engine
-	if (options.url != null) {
-		TAO_MATCHING.engine = new TAO_MATCHING.MatchingRemote (options.url, options.params, options.options);
+	if (params.url != null) {
+		TAO_MATCHING.engine = new TAO_MATCHING.MatchingRemote (params.url, params.params, params.options);
 	}
 	
 	// If the matching will be make locally
-	else if (options.data != null){
-		TAO_MATCHING.engine = new TAO_MATCHING.Matching (options.data, options.options);
+	else if (params.data != null){
+		TAO_MATCHING.engine = new TAO_MATCHING.Matching (params.data, params.options);
 	}
 	
 	// Else options are not well formed
