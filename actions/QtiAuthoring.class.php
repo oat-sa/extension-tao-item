@@ -197,7 +197,7 @@ class QtiAuthoring extends CommonModule {
 			
 			//save to qti:
 			$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-			echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			// echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			$saved = true;
 		}
 			

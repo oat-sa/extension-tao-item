@@ -3,20 +3,8 @@
 </div>
 
 <script type="text/javascript">
-	<?if(get_data('responseMappingMode')):?>
-	//set the reponse mapping to true:
-	if(myItem.responseMappingMode){
-		//do nothing:
-	}else{
-		//display the scoring form: //TODO: load it only when necessary:
-		myItem.responseMappingMode = true;
-		$(myItem.responseMappingOptionsFormContainer).show();
-	}
-	<?else:?>
-	myItem.responseMappingMode = false;
-	$(myItem.responseMappingOptionsFormContainer).hide();
-	<?endif;?>
 	
+	myItem.setResponseMappingMode(<?=get_data('responseMappingMode')?>);
 	
 	$(document).ready(function(){
 		$('#qtiAuthoring_processingEditor_formContainer').find('.form-submiter').click(function(){

@@ -401,10 +401,10 @@ responseClass.prototype.saveResponseGrid = function(){
 		dataType: 'json',
 		success: function(response){
 			if (response.saved){
-				
+				createInfoMessage(__('The responses have been updated'));
 			}else{
-			
-			}
+				createErrorMessage(__('The responses cannot be updated'));
+			}	
 		}
 	});
 }

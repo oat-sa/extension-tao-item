@@ -435,13 +435,15 @@ qtiEdit.prototype.save = function(itemUri){
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){
-				createInfoMessage(__('The item has been successfully saved'));
+				createInfoMessage(__('The item has been successfully updated'));
 			}
 	   }
 	});
 }
 
 qtiEdit.prototype.preview = function(){
+	//save the item before previewing?
+	
 	// GenerisAction.fullScreen(this.itemSerial, '', '/taoItems/QtiAuthoring/preview');
 	var url = '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
