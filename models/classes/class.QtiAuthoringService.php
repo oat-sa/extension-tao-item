@@ -1030,6 +1030,8 @@ class taoItems_models_classes_QtiAuthoringService
 				//it is one of the available qti default templates:
 				$responseProcessing = new taoItems_models_classes_QTI_response_Template($type);
 			}else if($type == 'custom'){
+				throw new Exception('custom template is not available yet');
+				
 				//a custom rule:
 				$responseProcessing = new taoItems_models_classes_QTI_response_CustomRule();
 				//parse the rule and assign it to the processing object
@@ -1038,7 +1040,7 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			
 			if(!is_null($responseProcessing)){
-				$item->setResponseProcessing($responseProcessing);
+				$item->setResponseProcessing($responseProcessing);//TODO: destroy from the session the old response processing object?
 				$returnValue = true;
 			}
 		}
@@ -1272,9 +1274,14 @@ class taoItems_models_classes_QtiAuthoringService
 			$template = QTI_RESPONSE_TEMPLATE_MAP_RESPONSE;//default one: QTI_RESPONSE_TEMPLATE_MAP_RESPONSE or QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
 			
 			//method of qti service to get the template:
-			
+			$theTemplate = $responseProcessing->getUri();
+			if(!empty($theTemplate)){
+				$template = $theTemplate;
+			}
 			$returnValue = $template;
+			
 		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_CustomRule){
+		
 			$returnValue = 'custom';
 			
 		}else{

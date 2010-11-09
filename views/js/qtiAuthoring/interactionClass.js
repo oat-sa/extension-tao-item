@@ -43,6 +43,7 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	}
 	
 	interactionClass.instances[interactionSerial] = this;
+	this.getRelatedItem().currentInteraction = this;
 }
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){
@@ -195,7 +196,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 
 interactionClass.prototype.loadResponseMappingForm = function(){
 	var relatedItem = this.getRelatedItem();
-	relatedItem.responseMappingMode = true;
+	// relatedItem.responseMappingMode = true;//for test only!
 	var interacton = this;
 	
 	if(relatedItem){
@@ -285,7 +286,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 	   data: postData,
 	   dataType: 'json',
 	   success: function(r){
-			CL('choice added');
+			// CL('choice added');
 			if(r.added){
 				
 				if(r.reload){

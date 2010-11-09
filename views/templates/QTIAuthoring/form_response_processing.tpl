@@ -5,16 +5,16 @@
 <script type="text/javascript">
 	<?if(get_data('responseMappingMode')):?>
 	//set the reponse mapping to true:
-	if(qtiEdit.responseMappingMode){
+	if(myItem.responseMappingMode){
 		//do nothing:
 	}else{
 		//display the scoring form: //TODO: load it only when necessary:
-		qtiEdit.responseMappingMode = true;
-		$(qtiEdit.responseMappingOptionsFormContainer).show();
+		myItem.responseMappingMode = true;
+		$(myItem.responseMappingOptionsFormContainer).show();
 	}
 	<?else:?>
-	qtiEdit.responseMappingMode = false;
-	$(qtiEdit.responseMappingOptionsFormContainer).hide();
+	myItem.responseMappingMode = false;
+	$(myItem.responseMappingOptionsFormContainer).hide();
 	<?endif;?>
 	
 	
@@ -22,7 +22,7 @@
 		$('#qtiAuthoring_processingEditor_formContainer').find('.form-submiter').click(function(){
 			var $form = $('#qtiAuthoring_processingEditor_formContainer').find('form');
 			if($form.length){
-				qtiEdit.saveResponseProcessing($form);
+				myItem.saveResponseProcessing($form);
 			}
 		});
 	

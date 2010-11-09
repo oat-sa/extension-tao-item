@@ -29,6 +29,8 @@ function qtiEdit(itemSerial, formContainers, options){
 	this.cssFormContent = formContainers.cssFormContent;
 	// this.responseMappingMode = false;
 	
+	this.currentInteraction = null;
+	
 	var instance = this;
 	
 	//init the item's jwysiwyg editor here:
@@ -36,7 +38,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'add_choice_interaction',
 		exec: function(){
-			CL('inserting interaction...');
+			// CL('inserting interaction...');
 			//display modal window with the list of available type of interactions
 			var interactionType = 'choice';
 			
@@ -289,21 +291,20 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 }
 
 qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
-	var instance = this;
+	var self = this;
 	
-	if(instance.itemSerial){
+	if(self.itemSerial){
 		$.ajax({
 		   type: "POST",
 		   url: "/taoItems/QtiAuthoring/editInteraction",
 		   data: {
 				'interactionSerial': interactionSerial,
-				'itemSerial': instance.itemSerial
+				'itemSerial': self.itemSerial
 		   },
 		   dataType: 'html',
 		   success: function(form){
-				$(instance.interactionFormContent).html(form);
-				qtiEdit.mapHtmlEditor($(instance.interactionFormContent));
-				
+				$(self.interactionFormContent).html(form);
+				qtiEdit.mapHtmlEditor($(self.interactionFormContent));
 		   }
 		});
 	}
@@ -367,6 +368,7 @@ qtiEdit.mapHtmlEditor = function($container){
 	});
 }
 
+//TODO: side effect to be fully tested
 qtiEdit.destroyHtmlEditor = function($container){
 	// CL('$container', $container);
 	$container.find('.qti-html-area').each(function(){
@@ -377,7 +379,7 @@ qtiEdit.destroyHtmlEditor = function($container){
 			}catch(err){
 				
 			}
-			CL('destroyed!!');
+			// CL('destroyed!!');
 		// }
 	});
 }
@@ -555,6 +557,46 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 			$(instance.responseProcessingFormContent).html(form);
 	   }
 	});
+}
+
+qtiEdit.prototype.saveResponseProcessing = function($myForm){
+	var self = this;
+	
+	$.ajax({
+	   type: "POST",
+	   url: "/taoItems/QtiAuthoring/saveResponseProcessing",
+	   data: $myForm.serialize(),
+	   dataType: 'json',
+	   success: function(r){
+			if(r.saved){
+				self.setResponseMappingMode(r.responseMappingMode);
+				createInfoMessage(__('The response processing has been saved'));
+			}
+	   }
+	});
+}
+
+qtiEdit.prototype.setResponseMappingMode = function(isMapping){
+	if(isMapping){
+		//set the reponse mapping to true:
+		if(this.responseMappingMode){
+			//nothing to do:
+		}else{
+			//display the scoring form: //TODO: load it only when necessary:
+			this.responseMappingMode = true;
+			$(this.responseMappingOptionsFormContainer).show();
+			
+			//reload the response grid, to update column model:
+			if(this.currentInteraction) new responseClass(this.currentInteraction.responseGrid, this.currentInteraction);
+		}
+	}else{
+		this.responseMappingMode = false;
+		$(this.responseMappingOptionsFormContainer).hide();
+		
+		//reload the response grid, to update column model:
+		if(this.currentInteraction) new responseClass(this.currentInteraction.responseGrid, this.currentInteraction);
+	}
+	
 }
 
 qtiEdit.prototype.loadStyleSheetForm = function(empty){

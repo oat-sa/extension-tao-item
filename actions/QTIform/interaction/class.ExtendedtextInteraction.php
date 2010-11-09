@@ -47,6 +47,7 @@ class taoItems_actions_QTIform_interaction_ExtendedtextInteraction
 		
 		//the prompt field is the interaction's data for a block interaction: an extend text interaction is both a "string" and a "block" interaction
 		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textarea');//should be a text... need to solve the conflict with the 
+		$promptElt->setAttribute('class', 'qti-html-area');
 		$promptElt->setDescription(__('Prompt'));
 		// $promptElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));//no validator required for prompt
 		$interactionData = $this->interaction->getPrompt();

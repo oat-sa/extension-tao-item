@@ -868,8 +868,18 @@ class QtiAuthoring extends CommonModule {
 		$saved = $this->service->setResponseProcessing($item, $responseProcessingType, $customRule);
 		
 		echo json_encode(array(
-			'saved' => $saved
+			'saved' => $saved,
+			'responseMappingMode' => $this->isResponseMappingMode($responseProcessingType)
 		));
+	}
+	
+	protected function isResponseMappingMode($processingType){
+		$responseMappingMode = false;
+		if($processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
+			$responseMappingMode = true;
+		}
+		
+		return $responseMappingMode;
 	}
 	
 	

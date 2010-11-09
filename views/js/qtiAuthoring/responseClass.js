@@ -63,7 +63,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 				
 				response.buildGrid(tableElementId, serverResponse);
 			}else{
-				CL('error in loading the response editing data');
+				throw 'error in loading the response editing data';
 			}
 		}
 	});
@@ -226,7 +226,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	var navGridParamDefault = {
 		search: false,
 		afterRefresh: function(){
-			CL('refreshed');
+			// CL('refreshed');
 			response.destroyGrid();
 			new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
 		},
