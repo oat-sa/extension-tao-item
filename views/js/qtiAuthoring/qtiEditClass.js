@@ -118,7 +118,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		className: 'add_hottext_interaction',
 		exec: function(){
 			this.insertHtml('{qti_interaction_new}');
-			instance.addInteraction('hotText', this.getContent(), instance.itemSerial);
+			instance.addInteraction('hottext', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add hot text interaction'
 	};

@@ -118,7 +118,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($this->getRequestParameter('instance')));
 		
 		$currentItem = $this->getCurrentItem();
-		// if($this->debugMode) var_dump($currentItem);
+		if($this->debugMode) var_dump($currentItem);
 		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
@@ -197,7 +197,7 @@ class QtiAuthoring extends CommonModule {
 			
 			//save to qti:
 			$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-			// echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+			echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 			$saved = true;
 		}
 			
@@ -650,13 +650,13 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				if(isset($values['prompt'])){
-					$interaction->setPrompt($values['prompt']);
+					$interaction->setPrompt($this->service->convertToXHTML($values['prompt']));
 					unset($values['prompt']);
 				}
 				
 				$data = '';
 				if($this->hasRequestParameter('data')){
-					$data = $this->getRequestParameter('data');
+					$data = urldecode($this->getRequestParameter('data'));
 				}
 				
 				unset($values['interactionSerial']);

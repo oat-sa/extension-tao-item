@@ -157,6 +157,10 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 		}
+		// echo $data;
+		// $data = ' <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab  illo inventore    <input type="button" id="choice_4cd9547423f2d792854656" class="qti_choice_link" value="hottext"/>et quasi architecto beatae vitae dicta sunt  explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magniiii</p>  ';
+		// var_dump($data, urlencode($data), urldecode($data), htmlentities($data), html_entity_decode($data), preg_replace('/^<(p|div)>(.*)<\/\1>$/i', '\2', trim($data)));exit;
+		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/i', '\2', trim(html_entity_decode($data)));
 		
 		return $data;
 	}
@@ -429,6 +433,7 @@ class taoItems_models_classes_QtiAuthoringService
 			if(!is_null($matchMax)){
 				$choice->setOption('matchMax', $matchMax);
 			}
+			// var_dump($choice);exit;
 			$interaction->addChoice($choice);
 			$this->qtiService->saveDataToSession($choice);
 			
@@ -925,16 +930,18 @@ class taoItems_models_classes_QtiAuthoringService
 						$choiceOrder[] = $choices[$i]->getSerial();
 					}
 				}
+				//save the choices in the interaction data:
+				$choicesData = '';
+				for($i=0; $i<count($choiceOrder); $i++){
+					$choicesData .= '{'.$choiceOrder[$i].'}';
+				}
+				
+				
 				foreach($interaction->getGroups() as $group){
 					$data = $this->filterData($group, $data);
 				}
 				
-				
-				//save the choices in the interaction data:
-				for($i=0; $i<count($choiceOrder); $i++){
-					$data .= '{'.$choiceOrder[$i].'}';
-				}
-				$interaction->setData($data);
+				$interaction->setData('<p>'.$choicesData.$data.'</p>');
 				
 				break;
 			}
@@ -950,8 +957,7 @@ class taoItems_models_classes_QtiAuthoringService
 					$data = $this->filterData($choice, $data);
 				}
 				
-				//item saved in session:
-				$interaction->setData($data);
+				$interaction->setData('<div>'.$data.'</div>');
 				break;
 			}
 			default:{
@@ -975,10 +981,10 @@ class taoItems_models_classes_QtiAuthoringService
 		return $data;
 	}
 	
-	protected function convertToXHTML($data){
+	public function convertToXHTML($data){
 		$html = '<div>' . html_entity_decode($data) . '</div>';
 		$doc = new DOMDocument;
-		$doc->loadHTML($html);
+		@$doc->loadHTML($html);
 		$data = substr($doc->saveXML($doc->getElementsByTagName('div')->item(0)), 5, -6);
 		
 		return $data;
