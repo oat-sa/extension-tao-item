@@ -212,7 +212,7 @@ class taoItems_models_classes_ItemsService
 		
 		if(!is_null($item)){
 			
-			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
+			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI, TAO_ITEM_MODEL_XHTML))){
 				$folder = BASE_PATH.'/views/runtime/'.substr($item->uriResource, strpos($item->uriResource, '#') + 1);
 				if(is_dir($folder)){
 					tao_helpers_File::remove($folder, true);
