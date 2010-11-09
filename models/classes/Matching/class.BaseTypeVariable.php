@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 08.11.2010, 16:48:50 with ArgoUML PHP module 
+ * Automatically generated on 09.11.2010, 13:38:23 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -210,6 +210,35 @@ class taoItems_models_classes_Matching_BaseTypeVariable
         }
         
         // section 127-0-1-1-d88aba0:12c2bef8126:-8000:0000000000002B57 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method isBoolean
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    public function isBoolean()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B9A begin
+        
+        // If the data is null
+        if ($this->getValue() == null){
+            $returnValue = true;
+        } 
+        else {
+            switch ($this->getType()){
+                case 'boolean':
+                    $returnValue = true;
+            }
+        }
+        
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B9A end
 
         return (bool) $returnValue;
     }

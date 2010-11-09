@@ -24,10 +24,38 @@
 	This Matching API allow you (developer) to use it from client side. 
 	
 	<p>
-		<h2 id="MATCHING_INITIALIZATION">1.1. Initialization</h2>
-		Firstly you need to initialize the matching engine. The matching engine takes several parameters.
-		But only one is compulsory to init the engine, the mode parameter. In client side mode, you have to set
-		this parameter with the value "client".
+		<h1 id="MATCHING_INITIALIZATION">1. Initialization</h1>
+		Firstly you need to initialize the matching engine. The matching can take several parameters.
+		Depending on these parameters the engine will be initialized in client or in server mode.
+		
+		<br/>
+		
+		<h2>1.1.2. Initialization in server mode</h2>
+		By setting the parameter <span class="inline_code">url</span> you will initialize the matching engine in
+		server mode :
+<pre class="code">
+matching_init ({
+  "url"    :   MATCHING_ENGINE_URL
+}); 
+</pre>
+  
+        <h2>1.1.2. Initialization in client mode</h2>
+        By setting the parameter <span class="inline_code">data</span> you will initialize the matching engine in
+        client mode :
+        
+<pre class="code">
+matching_init ({
+    "data"    :   {
+        "rule"          : ""
+        , "corrects"    : Array()
+        , "response"    : Array()
+        , "maps"        : Array()
+    }
+}); 
+</pre>
+		If the parameter url is present then the matching engine will be intialized in server mode, and the evaluation
+		of the rule will be computed in the server. Respectively to initialize the matching engine in client mode
+		you have to pass the data parameter which contains the matching data (rule, correct, mapping ...).
 		<br/> 
 <pre class="code">
 matching_init ({

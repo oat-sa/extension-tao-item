@@ -30,7 +30,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	--------------------------------------------------------------------------->
 	
 	<script type="application/javascript">
-        var testToRun = 'test operator : divide';
+        var testToRun = '*';
         //var testToRun = '*';
 
         var testUnitFct = test;
@@ -315,7 +315,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             var matching_param = {
                 data : {
                     outcomes  : [{"identifier":"SCORE", "type":"double"}]
-                    , rule      : 'if (and(true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                    , rule      : 'if (and(null, true, true)){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             };
             matchingInit (matching_param);
@@ -328,7 +328,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 data : {
                     corrects    : [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
                     , outcomes  : [{"identifier":"SCORE", "type":"double"}]
-                    , rule      : 'if ( and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                    , rule      : 'if ( and (null, match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             };
             matchingInit (matching_param);
@@ -342,7 +342,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 data : {
                     corrects    : [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
                     , outcomes  : [{"identifier":"SCORE", "type":"double"}]
-                    , rule      : 'if ( true, true, and (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
+                    , rule      : 'if ( true, true, and (null, match(null, getResponse("RESPONSE"), getCorrect("RESPONSE")))){ setOutcomeValue("SCORE", 1); } else { setOutcomeValue("SCORE", 0); }'
                 }
             };
             matchingInit (matching_param);
@@ -495,6 +495,44 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.divide (null, matching.createVariable(null, 3), 6), 0.5, 'Expected value');
             equals (matching.divide (null, matching.createVariable(null, 3), null), null, 'Expected value');
             equals (matching.divide (null, matching.createVariable(null, 3), 0), null, 'Expected value');
+        });
+        
+        // ROUND OPERATOR
+        test("test operator : round", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.round (null, 3.4), 3, 'Expected value');
+            equals (matching.round (null, matching.createVariable(null, 3.5)), 4, 'Expected value');
+            equals (matching.round (null, null), null, 'Expected value');
+        });
+        
+        // INTEGER DIVIDE OPERATOR
+        test("test operator : integerDivide", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.integerDivide (null, 3, 2.3), 1, 'Expected value');
+            equals (matching.integerDivide (null, matching.createVariable(null, 3), 2), 2, 'Expected value');
+            equals (matching.integerDivide (null, matching.createVariable(null, 3), null), null, 'Expected value');
+            equals (matching.integerDivide (null, matching.createVariable(null, 3), 0), null, 'Expected value');
+        });
+        
+        // NOT OPERATOR
+        test("test operator : not", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.not (null, true), false, 'Expected value');
+            equals (matching.not (null, matching.createVariable(null, false)), true, 'Expected value');
+            equals (matching.not (null, null), null, 'Expected value');
+        });
+        
+        // OR OPERATOR
+        test("test operator : or", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            equals (matching.or (null, true), true, 'Expected value');
+            equals (matching.or (null, false), false, 'Expected value');
+            equals (matching.or (null, true, false), true, 'Expected value');
+            equals (matching.or (null, matching.createVariable(null, false)), false, 'Expected value');
+            equals (matching.or (null, matching.createVariable(null, true)), true, 'Expected value');
+            equals (matching.or (null, matching.createVariable(null, true, false)), true, 'Expected value');
+            equals (matching.or (null, matching.createVariable(null, false), false), false, 'Expected value');
+            equals (matching.or (null, null), null, 'Expected value');
         });
         
         // REMOTE MATCHING CHOICE.XML

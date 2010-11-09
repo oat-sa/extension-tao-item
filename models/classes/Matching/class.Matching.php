@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 09.11.2010, 12:35:10 with ArgoUML PHP module 
+ * Automatically generated on 09.11.2010, 14:48:08 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -157,7 +157,8 @@ class taoItems_models_classes_Matching_Matching
 			, 'mapResponse'=>array()
             , 'match'=>array()
             , 'not'=>array()
-            , 'ordered'=>array()
+            , 'or'=>array('mappedFunction'=>'orExpression')
+            , 'round'=>array()
             , 'setOutcomeValue'=>array()
 		);
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
@@ -182,6 +183,7 @@ class taoItems_models_classes_Matching_Matching
         // If null
         else if ($options == null) $options = Array();
         
+        // Return options as object
         $returnValue = (object) $options;
         
         // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 end
@@ -586,34 +588,29 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 begin
+        $returnValue = null;
         $options = $this->checkOptions ($options);
-        
-        $returnValue = true;
-        
+
         // for each arguments (which are expressions) 
         for ($i = 1; $i < func_num_args(); ++$i) {
             $subExp = func_get_arg($i);
-            $subExpValue = null;
+            $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toBooleanBaseType ($subExp);
             
-            // QTIVariable sub-expression
-            if ($subExp instanceof taoItems_models_classes_Matching_BaseTypeVariable){
-                if ($subExp->getType() != 'boolean') { 
-                    throw new Error('AND operator requires sub-expressions with single cardinality and boolean baseType');
+            if ($matchingSubExp == null) {
+                throw new Exception ("TtaoItems_models_classes_Matching_Matching::or an error occured : The expression passed [".$matchingSubExp."] to the operator has to be a valid boolean expression with single cardinality");
+            } else {
+                if ($matchingSubExp->isNull()){
+                    $returnValue = null;
+                    break;
+                }else{
+                    if ($returnValue === null){
+                        $returnValue = $matchingSubExp->getValue();
+                    } else {
+                        $returnValue = $returnValue && $matchingSubExp->getValue();
+                    }
                 }
-                $subExpValue = $subExp->getValue ();
-            
-            // ! Basic Boolean sub-expression
-            }else if (!is_bool ($subExp)){
-                throw new Error ('AND operator requires sub-expressions with single cardinality and boolean baseType');
-
-            // Basic Boolean sub-expression
-            }else{
-                $subExpValue = $subExp;
             }
-            
-            $returnValue = $returnValue && $subExpValue;
         }
-        
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA3 end
 
         return (bool) $returnValue;
@@ -841,47 +838,6 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * The not operator takes a single sub-expression with a base-type of
-     * and single cardinality. The result is a single boolean with a value
-     * by the logical negation of the sub-expression's value.
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array options
-     * @param  subExp
-     * @return boolean
-     */
-    public function not($options,    $subExp)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1--7cd26fee:12bf37febcd:-8000:0000000000002A4C begin
-        $options = $this->checkOptions ($options);
-        
-        // QTIVariable sub-expression
-        if ($subExp instanceof taoItems_models_classes_Matching_BaseTypeVariable){
-            if ($subExp->getType() != 'boolean') { 
-                throw new Exception ('taoItems_models_classes_Matching_Matching::not : NOT operator requires a sub-expression with single cardinality and boolean baseType');
-            }
-            $subExpValue = $subExp->getValue ();
-        
-        // ! Basic Boolean sub-expression
-        }else if (!is_bool ($subExp)){
-            throw new Exception ('taoItems_models_classes_Matching_Matching::not : NOT operator requires a sub-expression with single cardinality and boolean baseType');
-
-        // Basic Boolean sub-expression
-        }else{
-            $subExpValue = $subExp;
-        }
-        
-        $returnValue = !$subExpValue;
-        
-        // section 127-0-1-1--7cd26fee:12bf37febcd:-8000:0000000000002A4C end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * The setOutcomeValue sets the value of an outcomeVariable.
      *
      * @access public
@@ -1069,10 +1025,11 @@ class taoItems_models_classes_Matching_Matching
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  options
-     * @return mixed
      */
     public function product(   $options)
     {
+        $returnValue = null;
+
         // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B75 begin
         
         $returnValue = null;
@@ -1107,6 +1064,8 @@ class taoItems_models_classes_Matching_Matching
         return $returnValue;
         
         // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B75 end
+
+        return $returnValue;
     }
 
     /**
@@ -1223,6 +1182,142 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B87 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method integerDivide
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return int
+     */
+    public function integerDivide(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = (int) 0;
+
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B8A begin
+        
+        $returnValue = $this->round (null, $this->divide ($options, $expr1, $expr2));
+        
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B8A end
+
+        return (int) $returnValue;
+    }
+
+    /**
+     * Short description of method round
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr
+     */
+    public function round(   $options,    $expr)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B8F begin
+        $options = $this->checkOptions($options);
+        
+        if ($expr == null) {
+            $returnValue == null;
+        }
+        else{
+            $matchingExpr = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr);
+            // IF the expression is not a numerical base type
+            if ($matchingExpr == null) {
+                throw new Exception ("TtaoItems_models_classes_Matching_Matching::round an error occured : The expression passed [".$expr."] to the operator has to be a valid numerical expression with single cardinality");
+            }else{
+                if ($matchingExpr->isNull()){
+                    $returnValue = null;
+                }else {
+                    $precision = 0; 
+                    if (isset($options->precision)){
+                        $precision = $options->precision;
+                    }
+                    $returnValue = round ($matchingExpr->getValue(), $precision);
+                }
+            }
+        }
+        
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B8F end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method not
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr
+     * @return boolean
+     */
+    public function not(   $options,    $expr)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B93 begin
+        
+        $matchingExpr = taoItems_models_classes_Matching_VariableFactory::toBooleanBaseType ($expr);
+        if ($matchingExpr == null){
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::not an error occured : The expression passed [".$expr."] to the operator has to be a valid boolean expression with single cardinality");
+        } else {
+            $matchingExprValue = $matchingExpr->getValue();
+            if ($matchingExprValue !== null){
+                $returnValue = ! $matchingExprValue;
+            }
+        }
+        
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B93 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method orExpression
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return boolean
+     */
+    public function orExpression(   $options)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B9C begin
+        
+        $options = $this->checkOptions ($options);
+        
+        // for each arguments (which are expressions) 
+        for ($i = 1; $i < func_num_args(); ++$i) {
+            $subExp = func_get_arg($i);
+            $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toBooleanBaseType ($subExp);
+            
+            if ($matchingSubExp == null) {
+                throw new Exception ("TtaoItems_models_classes_Matching_Matching::or an error occured : The expression passed [".$matchingSubExp."] to the operator has to be a valid boolean expression with single cardinality");
+            } else {
+                if ($matchingSubExp->isNull()){
+                    $returnValue = null;
+                    break;
+                }else{
+                    if ($returnValue === null){
+                        $returnValue = $matchingSubExp->getValue();
+                    } else {
+                        $returnValue = $returnValue || $matchingSubExp->getValue();
+                    }
+                }
+            }
+        }
+        
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B9C end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_Matching */

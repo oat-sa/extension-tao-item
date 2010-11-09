@@ -127,6 +127,10 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
             case 'multiple':
                 $returnValue = 'createVariable("{\"type\":\"list\"}", '.$subExpressionsJSON.')';
                 break;
+            // Null is a Creation of empty BaseTypeVariable
+            case 'null':
+                $returnValue = 'createVariable(null, null)';
+                break;
             // Ordered is a Creation of Tuple from parameters
             case 'ordered':
                 $returnValue = 'createVariable("{\"type\":\"tuple\"}", '.$subExpressionsJSON.')';

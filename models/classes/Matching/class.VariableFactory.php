@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 09.11.2010, 11:58:32 with ArgoUML PHP module 
+ * Automatically generated on 09.11.2010, 13:36:54 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -260,6 +260,39 @@ class taoItems_models_classes_Matching_VariableFactory
         }
         
         // section 127-0-1-1-196de192:12c30421176:-8000:0000000000002B82 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method toBooleanBaseType
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return taoItems_models_classes_Matching_BaseTypeVariable
+     */
+    public function toBooleanBaseType(   $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B97 begin
+        
+        // IF the first expression is not a BaseTypeVariable try to create it
+        if (!($data instanceof taoItems_models_classes_Matching_BaseTypeVariable)){
+            if (taoItems_models_classes_Matching_BaseTypeVariable::isValidValue ($data)) {
+                $matchingVar = new taoItems_models_classes_Matching_BaseTypeVariable ($data);
+                if ($matchingVar->isBoolean ()){
+                    $returnValue = $matchingVar;
+                }
+            }
+        } else {
+            if ($data->isBoolean()){
+                $returnValue = $data;
+            }
+        }
+        
+        // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B97 end
 
         return $returnValue;
     }

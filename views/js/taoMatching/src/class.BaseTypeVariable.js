@@ -119,6 +119,29 @@ TAO_MATCHING.BaseTypeVariable.prototype = {
         return returnValue;
     }
     
+    /**
+     * Short description of method isBoolean
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return boolean
+     */
+    , isBoolean : function ()
+    {
+        var returnValue = false;
+        
+        if (this.getValue() == null){
+            returnValue = true;
+        } else {
+            switch (this.getType()){
+                case 'boolean':
+                    returnValue = true;
+            }
+        }        
+
+        return returnValue;
+    }
+    
 };
 
 /**

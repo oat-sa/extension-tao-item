@@ -81,7 +81,7 @@ TAO_MATCHING.VariableFactory = {
 	}
 
     /**
-     * Short description of method isMatchingVariable
+     * Check if the variable is a Matching Variable (deal with javascript)
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -100,14 +100,20 @@ TAO_MATCHING.VariableFactory = {
 	    
 	    return returnValue;
 	}
-	
-	/**
-	 * 
-	 */
-	 , toNumericBaseType : function (data) {
-	    var returnValue = null;
-	    
-	    // IF the first expression is not a BaseTypeVariable try to create it
+    
+    /**
+     * Convert data in numeric BaseTypeVariable.
+     * If the data is not a valid base type value return null.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return taoItems_models_classes_Matching_BaseTypeVariable
+     */
+     , toNumericBaseType : function (data) {
+        var returnValue = null;
+        
+        // IF the first expression is not a BaseTypeVariable try to create it
         if (!(data instanceof TAO_MATCHING.BaseTypeVariable)){
             if (TAO_MATCHING.BaseTypeVariable.isValidValue (data)) {
                 var matchingVar = new TAO_MATCHING.BaseTypeVariable (data);
@@ -122,5 +128,33 @@ TAO_MATCHING.VariableFactory = {
         }
         
         return returnValue;
-	 }
+     }
+    
+    /**
+     * Short description of method toBooleanBaseType
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return taoItems_models_classes_Matching_BaseTypeVariable
+     */
+     , toBooleanBaseType : function (data) {
+        var returnValue = null;
+        
+        // IF the first expression is not a BaseTypeVariable try to create it
+        if (!(data instanceof TAO_MATCHING.BaseTypeVariable)){
+            if (TAO_MATCHING.BaseTypeVariable.isValidValue (data)) {
+                var matchingVar = new TAO_MATCHING.BaseTypeVariable (data);
+                if (matchingVar.isBoolean ()){
+                    returnValue = matchingVar;
+                }
+            }
+        } else {
+            if (data.isBoolean()){
+                returnValue = data;
+            }
+        }
+        
+        return returnValue;
+     }
 }

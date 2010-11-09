@@ -174,6 +174,11 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
     public function testOperatorCreateVariable (){
         $matching = new taoItems_models_classes_Matching_Matching();
         
+        // Null
+        $null = $matching->createVariable (null, null);
+        $this->assertNotNull ($null);
+        $this->assertTrue ($null instanceOf taoItems_models_classes_Matching_BaseTypeVariable);
+        
         // String
         $str1 = $matching->createVariable (null, 'Driver A');
         $this->assertNotNull ($str1);
@@ -363,6 +368,80 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $this->assertEqual ($matching->substract (null, $matching->createVariable(null, 3), null), null);
         try {
             $matching->substract (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorRound (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->round (null, 3.4), 3);
+        $this->assertEqual ($matching->round (null, $matching->createVariable(null, 3.5)), 4);
+        $this->assertEqual ($matching->round (null, null), null);
+        try {
+            $matching->round (null, Array(3.5));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+
+    public function testOperatorIntegerDivide (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->integerDivide (null, 3, 2.3), 1);
+        $this->assertEqual ($matching->integerDivide (null, $matching->createVariable(null, 3), 2), 2);
+        $this->assertEqual ($matching->integerDivide (null, $matching->createVariable(null, 3), null), null);
+        $this->assertEqual ($matching->integerDivide (null, $matching->createVariable(null, 3), 0), null);
+        try {
+            $matching->integerDivide (null, 2, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+    
+    public function testOperatorNot (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->not (null, true), false);
+        $this->assertEqual ($matching->not (null, $matching->createVariable(null, false)), true);
+        $this->assertEqual ($matching->not (null, null), null);
+        try {
+            $matching->not (null, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+    
+    public function testOperatorOr (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->orExpression (null, true, true, true, true), true);
+        $this->assertEqual ($matching->orExpression (null, false, false, false), false);
+        $this->assertEqual ($matching->orExpression (null, false, false, true), true);
+        $this->assertEqual ($matching->orExpression (null, $matching->createVariable(null, true), true, true), true);
+        $this->assertEqual ($matching->orExpression (null, $matching->createVariable(null, false), true, true), true);
+        $this->assertEqual ($matching->orExpression (null, $matching->createVariable(null, false)), false);
+        $this->assertEqual ($matching->orExpression (null, null), null);
+        try {
+            $matching->orExpression (null, Array(3));
+            $this->fail("Exception was expected.");
+        } catch (Exception $e) {
+             $this->pass();
+        }
+    }
+    
+    public function testOperatorAnd (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $this->assertEqual ($matching->andExpression (null, true, true, true, true), true);
+        $this->assertEqual ($matching->andExpression (null, false, false, false), false);
+        $this->assertEqual ($matching->andExpression (null, false, false, true), false);
+        $this->assertEqual ($matching->andExpression (null, $matching->createVariable(null, true), true, true), true);
+        $this->assertEqual ($matching->andExpression (null, $matching->createVariable(null, false), true, true), false);
+        $this->assertEqual ($matching->andExpression (null, $matching->createVariable(null, false)), false);
+        $this->assertEqual ($matching->andExpression (null, null), null);
+        try {
+            $matching->andExpression (null, Array(3));
             $this->fail("Exception was expected.");
         } catch (Exception $e) {
              $this->pass();
