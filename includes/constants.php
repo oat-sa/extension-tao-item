@@ -12,6 +12,7 @@ $todefine = array(
 	'TAO_ITEM_CONTENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent', 
 	'TAO_ITEM_MODEL_RUNTIME_PROPERTY' 	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#SWFFile', 
 	'TAO_ITEM_MODEL_AUTHORING_PROPERTY' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#i12580164649880',
+	'TAO_ITEM_MODEL_DATAFILE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName',
 	'TAO_ITEM_MODEL_QCM'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#QCM',
 	'TAO_ITEM_MODEL_KHOS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#kohs',
 	'TAO_ITEM_MODEL_KOHS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#kohs',

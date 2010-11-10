@@ -114,13 +114,12 @@ class taoItems_actions_form_ItemContentIO
 			$this->form->addElement($instanceUriElt);
 		}
     	
-    	try{
-			$itemContent = (string)$this->instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-			if(!empty($itemContent)){
+    	$itemService = tao_models_classes_ServiceFactory::get('Items');
+		if($itemService->hasItemContent($this->instance)){
+			if(trim($itemService->getItemContent($this->instance)) != ''){
 				$this->addDownloadSection();
 			}
 		}
-		catch(common_Exception $ce){}
 		
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002598 end
     }

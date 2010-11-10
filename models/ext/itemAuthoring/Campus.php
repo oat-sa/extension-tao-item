@@ -217,7 +217,8 @@ function saveItem()
 {
 	$xml = buildXml();
 	$item = new core_kernel_classes_Resource($_POST["instance"]);
-	$item->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $xml);
+	$itemService = tao_models_classes_ServiceFactory::get('Items');
+	$itemService->setItemContent($item, $xml);
 	return $xml;	
 }
 function buildXml()

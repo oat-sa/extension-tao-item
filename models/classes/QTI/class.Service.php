@@ -74,7 +74,7 @@ class taoItems_models_classes_QTI_Service
         		if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
         			
         			//get the QTI xml
-        			$itemContent = (string)$item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        			$itemContent = $itemService->getItemContent($item);
 					
         			if(!empty($itemContent)){
 	        			//Parse it and build the QTI_Data_Item
@@ -122,13 +122,11 @@ class taoItems_models_classes_QTI_Service
         		//check if the item is QTI item
         		if($itemService->hasItemModel($rdfItem, array(TAO_ITEM_MODEL_QTI))){
         			
-        			$itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
-        			
         			//set the current data lang in the item content to keep the integrity
     				$qtiItem->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
         			
         			//get the QTI xml
-        			$returnValue = $rdfItem->editPropertyValues($itemContentProperty, $qtiItem->toQTI());
+        			$returnValue = $itemService->setItemContent($rdfItem, $qtiItem->toQTI());
         		}
 				
         	}catch(common_Exception $ce){

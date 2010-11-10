@@ -95,13 +95,18 @@ class Items extends TaoModule{
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
-				$item = $this->service->bindProperties($item, $myForm->getValues());
+				$properties = $myForm->getValues();
+				unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
+				
+				$item = $this->service->bindProperties($item, $properties);
 				$item = $this->service->setDefaultItemContent($item);
 				
 				$this->setData('message', __('Item saved'));
 				$this->setData('reload', true);
 			}
 		}
+		
+		
 		
 		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 		
@@ -178,7 +183,7 @@ class Items extends TaoModule{
 					
 					if($parser->isValid()){
 						//if the file is valid, we set it as the property of the item
-						$item->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), file_get_contents($data['file_import']['uploaded_file']));
+						$this->service->setItemContent($item, file_get_contents($data['file_import']['uploaded_file']));
 						$formContainer->addDownloadSection();
 						
 						$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
@@ -249,15 +254,15 @@ class Items extends TaoModule{
 			if(is_null($runtime)){
 				
 				$deployParams = array(
-					'delivery_server_mode'	=> true
+					'delivery_server_mode'	=> false
 				);
 				
-				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        		$itemPath = BASE_PATH."/views/runtime/{$folderName}/index.html";
-				if(!is_dir(dirname($itemPath))){
-        			mkdir(dirname($itemPath));
+				$itemFolder = $this->service->getRuntimeFolder($item);
+        		$itemPath = "{$itemFolder}/index.html";
+				if(!is_dir($itemFolder)){
+        			mkdir($itemFolder);
         		}
-        		$itemUrl = BASE_WWW . "runtime/{$folderName}/index.html";
+        		$itemUrl = str_replace(BASE_PATH .'/views', BASE_WWW, $itemPath);
         		
         		//deploy the item
         		if($this->service->deployItem($item, $itemPath, $itemUrl,  $deployParams)){
@@ -271,13 +276,10 @@ class Items extends TaoModule{
 				//the item content is given to the runtime
 				
 				if($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
-					$content = trim(file_get_contents($this->service->getTempAuthoringFile($item->uriResource)));
 					//@todo need to fix it in the runtime instead of urlencode 2x
 					$contentUrl = urlencode($contentUrl);
 				}
-				else{
-					$content = trim((string)$itemContent);
-				}
+				
 				
 				if(preg_match("/\.swf$/", (string)$runtime)){
 					$previewData = array(
@@ -381,7 +383,9 @@ class Items extends TaoModule{
 		catch(Exception $e){
 			//print an empty response
 			echo '<?xml version="1.0" encoding="utf-8" ?>';
+			echo '<exception>';
 			print $e;
+			echo '</exception>';
 		}
 		
 		return;
@@ -401,6 +405,7 @@ class Items extends TaoModule{
 			
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			if($itemModel instanceof core_kernel_classes_Resource){
+				
 				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
 				if($authoring instanceof core_kernel_classes_Literal){
 					
@@ -437,35 +442,6 @@ class Items extends TaoModule{
 	}
 	
 	/**
-	 * Authoring File mappgin service:
-	 * Send into the request the parameters id and/or uri or nothing.
-	 * Must be called via Ajax. 
-	 * Render json response {id: id, uri: uri}
-	 * @return void
-	 */
-	public function getAuthoringFile(){
-		
-		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
-		}
-		
-		$idParam 	= $this->getRequestParameter('id');
-		$uriParam 	= $this->getRequestParameter('uri');
-		
-		$authoringFileData = array();
-		
-		if(!$uriParam){
-			$authoringFileData = $this->service->getAuthoringFile($idParam);
-		}
-		else{
-			$authoringFileData['uri'] 	= $uriParam;
-			$authoringFileData['id'] 	= $this->service->getAuthoringFileIdByUri($uriParam);
-		}
-		
-		echo json_encode($authoringFileData);
-	}
-	
-	/**
 	 * use the xml content in session and set it to the item
 	 * forwarded to the index action 
 	 * @return void
@@ -479,14 +455,8 @@ class Items extends TaoModule{
 			$item = $this->service->getItem($_SESSION['instance']);
 			if($this->service->isItemModelDefined($item)){
 				
-				//WATERPHOENIX
-				if($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
-
-					$fileUri = $this->service->getAuthoringFile($item->uriResource);
-					file_put_contents($fileUri, $_SESSION['xml']);
-				}
 				//CTEST
-				else if ($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_CTEST))){
+				 if ($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_CTEST))){
 					isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
 					$data = "<?xml version='1.0' encoding='UTF-8'?>
 								<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
@@ -494,11 +464,11 @@ class Items extends TaoModule{
 									<rdfs:COMMENT lang='{$lang}'>{$item->getComment()}</rdfs:COMMENT>
 									{$_SESSION['xml']}
 								</tao:ITEM>";
-					$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $data));
+					$item = $this->service->setItemContent($item, $data);
 				}
 				//OTHERS
 				else{
-					$item = $this->service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $_SESSION['xml']));
+					$item = $this->service->setItemContent($item, $_SESSION['xml']);
 				}
 				
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
@@ -516,27 +486,70 @@ class Items extends TaoModule{
 	}
 	
 	/**
-	 * get the temporary authoring file
+	 * Authoring File mappgin service:
+	 * Send into the request the parameters id and/or uri or nothing.
+	 * Must be called via Ajax. 
+	 * Render json response {id: id, uri: uri}
 	 * @return void
 	 */
-	public function loadTempAuthoringFile(){
-		try{
-			echo file_get_contents($this->service->getTempAuthoringFile( $this->getRequestParameter('instance')));
+	public function getAuthoringFile(){
+		
+		if(!tao_helpers_Request::isAjax()){
+			throw new Exception("wrong request mode");
 		}
-		catch(Exception $e){
-			//print an empty response
-			echo '<?xml version="1.0" encoding="utf-8" ?>';
+		
+		$itemUri 	= $this->getRequestParameter('id');
+		$uriParam 	= $this->getRequestParameter('uri');
+		
+		$authoringFileData = array();
+		
+		if(!$uriParam){
+			$authoringFileData = $this->service->getItemFolder($itemUri).'/black.xml';
+			
 		}
+		
+		echo json_encode($authoringFileData);
 	}
 	
 	/**
-	 * save the temporary authoring file
+	 * get the  BLACK/HAWAI  temporary authoring file
+	 * @return void
+	 */
+	public function loadTempAuthoringFile(){
+		header("Content-Type: text/xml; charset utf-8");
+		if($this->hasRequestParameter('instance')){
+			$uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
+			$item = new core_kernel_classes_Resource($uri);
+			$itemFolder = $this->service->getItemFolder($item);
+			if(is_dir($itemFolder)){
+				$tmpFile = $itemFolder.'/tmp_black.xml';
+				if(file_exists($tmpFile)){
+					echo file_get_contents($tmpFile);
+					return;
+				}
+			}
+		}
+		//print an empty response
+		echo '<?xml version="1.0" encoding="utf-8" ?>';
+	}
+	
+	/**
+	 * save the BLACK/HAWAI temporary authoring file
 	 * @return void
 	 */
 	public function saveTempAuthoringFile(){
-		$instance = $this->getRequestParameter('instance');
-		$xml = $this->getRequestParameter('xml');
-		file_put_contents($this->service->getTempAuthoringFile($instance), html_entity_decode($xml));
+		if($this->hasRequestParameter('instance')){
+			$uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
+			$item = new core_kernel_classes_Resource($uri);
+			$itemFolder = $this->service->getItemFolder($item);
+			if(!is_dir($itemFolder)){
+				mkdir($itemFolder);
+			}
+			if(is_dir($itemFolder)){
+				file_put_contents($itemFolder.'/tmp_black.xml', html_entity_decode($xml));
+				
+			}
+		}
 	}
 }
 ?>

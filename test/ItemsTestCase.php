@@ -85,5 +85,36 @@ class ItemsTestCase extends UnitTestCase {
 		
 		$this->assertTrue($subItemClass->delete());
 	}
+	
+	public function testItemContent(){
+		//create an instance of the Item class
+		$itemClass = $this->itemsService->getItemClass();
+		$item = $this->itemsService->createInstance($itemClass, 'test content');
+		$this->assertIsA($item, 'core_kernel_classes_Resource');
+		$this->assertEqual('test content', $item->getLabel());
+		
+		$this->assertFalse($this->itemsService->hasItemContent($item));
+		
+		$itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
+		$this->assertIsA($itemContentProperty, 'core_kernel_classes_Property');
+		
+		$file = core_kernel_classes_File::create('test.txt');
+		$this->assertTrue(core_kernel_classes_File::isFile($file));
+		
+		
+		$this->assertTrue(file_put_contents($file->getAbsolutePath(), 'test') > 0);
+		
+		$item->setPropertyValue($itemContentProperty, $file->uriResource);
+		
+		$content = $item->getOnePropertyValue($itemContentProperty);
+		
+		$this->assertTrue(core_kernel_classes_File::isFile($content));
+		
+		$gotFile = new core_kernel_classes_File($content->uriResource);
+		
+		$this->assertEqual($gotFile->getAbsolutePath(), $file->getAbsolutePath());
+		
+		$this->assertTrue($this->itemsService->deleteItem($item));
+	}
 }
 ?>

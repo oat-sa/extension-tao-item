@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Service methods to manage the Items business models using the RDF API.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -34,7 +34,7 @@ require_once('tao/models/classes/class.GenerisService.php');
  * Service methods to manage the Items business models using the RDF API.
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -76,7 +76,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return void
      */
     public function __construct()
@@ -97,7 +97,7 @@ class taoItems_models_classes_ItemsService
      * If the uri don't reference an item subclass, it returns null
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string uri
      * @return core_kernel_classes_Class
      */
@@ -127,7 +127,7 @@ class taoItems_models_classes_ItemsService
      * check if the class is a or a subclass of an Item
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -158,7 +158,7 @@ class taoItems_models_classes_ItemsService
      * get an item
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string identifier
      * @param  Class itemClazz
      * @param  string mode
@@ -200,7 +200,7 @@ class taoItems_models_classes_ItemsService
      * delete an item
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -212,14 +212,13 @@ class taoItems_models_classes_ItemsService
 		
 		if(!is_null($item)){
 			
-			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI, TAO_ITEM_MODEL_XHTML))){
-				$folder = BASE_PATH.'/views/runtime/'.substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-				if(is_dir($folder)){
-					tao_helpers_File::remove($folder, true);
-				}
-				else{
-					echo $folder;
-				}
+			$itemFolder = $this->getItemFolder($item);
+			if(is_dir($itemFolder)){
+				tao_helpers_File::remove($itemFolder, true);
+			}
+			$runtimeFolder = $this->getRuntimeFolder($item);
+			if(is_dir($runtimeFolder)){
+				tao_helpers_File::remove($runtimeFolder, true);
 			}
 			
 			$returnValue = $item->delete();
@@ -235,7 +234,7 @@ class taoItems_models_classes_ItemsService
      * delete an item class or subclass
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -256,11 +255,59 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
+     * Short description of method getItemFolder
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @return string
+     */
+    public function getItemFolder( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 begin
+        
+        if(!is_null($item)){
+        	$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+        	$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
+        }
+        
+        // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getRuntimeFolder
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @return string
+     */
+    public function getRuntimeFolder( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--2174cec8:12c311b88e7:-8000:0000000000002883 begin
+        
+    	if(!is_null($item)){
+        	$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+        	$returnValue = ROOT_PATH . '/taoItems/views/runtime/' . $folderName;
+        }
+        
+        // section 127-0-1-1--2174cec8:12c311b88e7:-8000:0000000000002883 end
+
+        return (string) $returnValue;
+    }
+
+    /**
      * define the content of item to be inserted by default (to prevent null
      * after creation)
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -270,36 +317,21 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 begin
 		
-		try{
-			$itemContent = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));//it is ok if it is null
-			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-			
-			if($itemModel instanceof core_kernel_classes_Resource){
-				$content = (string)$itemContent;
-				if(trim($content) == ''){
-					switch($itemModel->uriResource){
-						
-						case TAO_ITEM_MODEL_WATERPHENIX:
-							$content = file_get_contents(TAO_ITEM_HAWAI_TPL_FILE);
-							$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
-							
-							$item = $this->bindProperties($item, array(
-								TAO_ITEM_CONTENT_PROPERTY => $content
-							));
-							break;
-						case TAO_ITEM_MODEL_CAMPUS:
-							$content = file_get_contents(TAO_ITEM_CAMPUS_TPL_FILE);
-							$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
-							
-							$item = $this->bindProperties($item, array(
-								TAO_ITEM_CONTENT_PROPERTY => $content
-							));
-							break;
-					}
-				}
+        $content = '';
+  
+		$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
+		if(is_null($itemContent) && $this->isItemModelDefined($item)){
+			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+				$content = file_get_contents(TAO_ITEM_HAWAI_TPL_FILE);
+				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
 			}
+			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_CAMPUS))){
+				$content = file_get_contents(TAO_ITEM_CAMPUS_TPL_FILE);
+				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
+			}
+			$this->setItemContent($item, $content);
 		}
-		catch(Exception $e){}
+		
 		$returnValue = $item;
 		
         // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 end
@@ -312,7 +344,7 @@ class taoItems_models_classes_ItemsService
      * usually an xml string
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @param  boolean preview
      * @return string
@@ -324,30 +356,20 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EA begin
         
         if(!is_null($item)){
-    		$itemContent = $item->getUniquePropertyValue($this->itemContentProperty);
-			$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-			if($itemContent instanceof core_kernel_classes_Literal && $itemModel instanceof core_kernel_classes_Resource){
+        	
+    		$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
+			if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 				
-				$returnValue = (string)$itemContent;
-				
-				if($itemModel->uriResource == TAO_ITEM_MODEL_WATERPHENIX){
-					if($preview){
-						$returnValue = file_get_contents($this->getTempAuthoringFile($item->uriResource));
+				if(core_kernel_classes_File::isFile($itemContent)){
+					if($preview && $this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+						$tmpFile = $this->getItemFolder($item).'/tmp_black.xml';
+						if(file_exists($tmpFile)){
+							$returnValue = file_get_contents($tmpFile);
+						}
 					}
 					else{
-						$fileId = '';
-						if(!empty($xml)){
-							$xmlElt = new SimpleXMLElement($returnValue);
-							if($xmlElt->root){
-								if(isset($xmlElt->root['reference'])){
-									$fileId = (string)$xmlElt->root['reference'];
-								}
-							}
-						}
-						if(empty($fileId)){
-							$fileId = $item->uriResource;
-						}
-						$returnValue = file_get_contents($this->getAuthoringFile($fileId));
+						$file = new core_kernel_classes_File($itemContent->uriResource);
+						$returnValue = file_get_contents($file->getAbsolutePath());
 					}
 				}
 			}
@@ -362,7 +384,7 @@ class taoItems_models_classes_ItemsService
      * Check if the item has an itemContent Property
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -382,10 +404,63 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
+     * Short description of method setItemContent
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @param  string content
+     * @return boolean
+     */
+    public function setItemContent( core_kernel_classes_Resource $item, $content)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-2473cce:12c31050806:-8000:000000000000287C begin
+        
+        if(!is_null($item)){
+        	
+        	if($this->isItemModelDefined($item)){
+
+        		if($this->hasItemContent($item)){
+        			
+        			$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
+        			if(core_kernel_classes_File::isFile($itemContent)){
+        				$file = new core_kernel_classes_File($itemContent->uriResource);
+        				if(file_put_contents($file->getAbsolutePath(), $content) > 0){
+        					 $returnValue = true;
+        				}
+        			}
+        		}
+        		else{
+        		
+	        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
+	        		$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+	        		$itemDir = $this->getItemFolder($item);
+	        		if(!is_dir($itemDir)){
+	        			mkdir($itemDir);
+	        		}
+        	
+	        		$file = core_kernel_classes_File::create($dataFile, $itemDir .'/');
+	        		$item->setPropertyValue($this->itemContentProperty, $file->uriResource);
+	        		
+        			if(file_put_contents($file->getAbsolutePath(), $content) > 0){
+        				 $returnValue = true;
+        			}
+        		}	
+        	}
+        }
+        
+        // section 127-0-1-1-2473cce:12c31050806:-8000:000000000000287C end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Check if the Item has on of the itemModel property in the models array
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @param  array models the list of URI of the itemModel to check
      * @return boolean
@@ -418,7 +493,7 @@ class taoItems_models_classes_ItemsService
      * Check if the itemModel has been defined for that item
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -441,7 +516,7 @@ class taoItems_models_classes_ItemsService
      * Get the runtime associated to the item model.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -470,7 +545,7 @@ class taoItems_models_classes_ItemsService
      * Deploy the item in parameter
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource item
      * @param  string path
      * @param  string url
@@ -543,7 +618,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -565,7 +640,7 @@ class taoItems_models_classes_ItemsService
      * get the item uri linked to the given file
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string uri
      * @return string
      */
@@ -592,7 +667,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -617,7 +692,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the temporary authoring file
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string itemUri
      * @param  boolean fallback
      * @return string
@@ -646,7 +721,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getMatchingData
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Resource itemRdf
      * @return array
      */

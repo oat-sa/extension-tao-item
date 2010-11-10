@@ -31,12 +31,8 @@ if(isset($_POST['itemcontent']) && isset($_POST['instance'])){
 
 	$service = tao_models_classes_ServiceFactory::get('Items');
 	$item = $service->getItem($_POST['instance']);
-	if(!is_null($item)){
-		$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-		if($itemModel instanceof core_kernel_classes_Resource){
-			$service->bindProperties($item, array(TAO_ITEM_CONTENT_PROPERTY => $xml));
-		}
-	}
+	$service->setItemContent($item, $xml);
+	
 }
 
 require('TAOAuthoringGUI.php');

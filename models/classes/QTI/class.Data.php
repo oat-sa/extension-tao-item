@@ -698,9 +698,7 @@ abstract class taoItems_models_classes_QTI_Data
         		if(count($value) > 0){
         			$keys = array_keys($value);
         			if(is_int($keys[0])){	//repeat the attribute key
-		        		foreach($value as $subkey => $subvalue){
-		        			$returnValue .= " $key = '$subvalue' ";
-		        		}
+		        		$returnValue .= " $key = '".implode(' ',array_values($value))."' ";
         			}
         			else{
         				$returnValue .= $this->xmlizeOptions($value, true);
