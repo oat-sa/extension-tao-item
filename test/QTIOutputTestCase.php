@@ -103,6 +103,8 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			$xhtml =  $item->toXHTML();
 			
+			
+			
 			//test if content has been exported
 			$this->assertFalse(empty($xhtml));
 		}
