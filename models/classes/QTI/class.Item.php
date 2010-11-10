@@ -590,7 +590,9 @@ class taoItems_models_classes_QTI_Item
             );
             
             // Get the rule
-            $returnValue["rule"] = $this->getResponseProcessing ()->getRule();
+            if(!is_null($this->getResponseProcessing ())){
+            	$returnValue["rule"] = $this->getResponseProcessing ()->getRule();
+            }
             
             // Get the correct responses (correct variables and map variables)
             $corrects = Array ();
