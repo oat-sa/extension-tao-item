@@ -45,18 +45,27 @@ class QTIioTestCase extends UnitTestCase {
 			
 			$this->assertTrue($this->qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem));
 			
-			//Deploy it
-			$url = $this->itemService->deployItem($rdfItem);
+			$deployParams = array(
+				'delivery_server_mode'	=> false
+			);
 			
-			$this->assertTrue(!empty($url));
-
-			$folder = dirname(str_replace(BASE_WWW, BASE_PATH . '/views/', $url));
-			$this->assertTrue(is_dir($folder));
+			$itemFolder = $this->itemService->getRuntimeFolder($rdfItem);
+        	$itemPath = "{$itemFolder}/index.html";
+			if(!is_dir($itemFolder)){
+        		mkdir($itemFolder);
+        	}
+        	$itemUrl = str_replace(BASE_PATH .'/views', BASE_WWW, $itemPath);
+        	
+        	//deploy the item
+        	$this->assertTrue($this->itemService->deployItem($rdfItem, $itemPath, $itemUrl,  $deployParams));
 			
-			//echo "<br /><iframe width='800px' height='300px' src='$url'></iframe><br />";
+			$this->assertTrue(!empty($itemUrl));
+			$this->assertTrue(is_dir($itemFolder));
 			
-			$this->assertTrue($this->itemService->deleteItem($rdfItem));
-			@tao_helpers_File::remove($folder, true);
+			echo "<br /><iframe width='800px' height='300px' src='$itemUrl'></iframe><br />";
+			
+			//$this->assertTrue($this->itemService->deleteItem($rdfItem));
+			//@tao_helpers_File::remove($itemPath, true);
 		}
 	}
 
