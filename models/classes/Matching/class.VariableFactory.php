@@ -79,11 +79,13 @@ class taoItems_models_classes_Matching_VariableFactory
 		switch ($type) {
 			//Collection Tuple : our standard define an object as a tuple
 			case 'object':
+            case 'tuple':
 				$returnValue = new taoItems_models_classes_Matching_Tuple ($varValue);
 				break;
 				
 			//Collection List
-			case 'array':
+            case 'array':
+            case 'list':
 				$returnValue = new taoItems_models_classes_Matching_List ($varValue);
 				break;
 						
@@ -158,9 +160,12 @@ class taoItems_models_classes_Matching_VariableFactory
     		// @todo not conform to the matching standard
     		// used if the values is not set and we need to define a type as well
     		switch ($baseType){
-    			case "integer":
-    				$type = "integer";
-    				break;
+                case "boolean":
+                    $type = "boolean";
+                    break;
+                case "integer":
+                    $type = "integer";
+                    break;
     			case "float":
     				$type = "float";
     				break;
@@ -202,9 +207,12 @@ class taoItems_models_classes_Matching_VariableFactory
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A23 begin
         
     	switch ($baseType){
-	    	case "integer":
-    			$returnValue  = (int) $value;
-    			break;
+            case "boolean":
+                $returnValue  = (bool) $value;
+                break;
+            case "integer":
+                $returnValue  = (int) $value;
+                break;
     		case "float":
     			$returnValue  = (float) $value;
     			break;

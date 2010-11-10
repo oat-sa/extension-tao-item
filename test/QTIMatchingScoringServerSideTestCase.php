@@ -20,7 +20,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
 	    
-	public function testVariables () {
+	/*public function testVariables () {
 		
 		$null = taoItems_models_classes_Matching_VariableFactory::create (null);
 		
@@ -634,6 +634,43 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         matching_evaluate ();
         $outcomes = matching_getOutcomes ();
         $this->assertEqual ($outcomes["SCORE"]["value"], 2);
+       
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+    }*/
+
+    public function testCustomAllRules () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom/custom_all_rules.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        echo 'rule : ';
+        var_dump($matching_data['rule']);
+        echo 'corrects : ';
+        var_dump($matching_data['corrects']);
+        matching_setCorrects ($matching_data['corrects']);
+        //matching_setMaps ($matching_data['maps']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        //matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":["CO","GO","SH"]}]'));
+        //xdebug_start_trace('/tmp/test.txt', XDEBUG_TRACE_HTML);
+        matching_evaluate ();
+        //xdebug_stop_trace();
+        $outcomes = matching_getOutcomes ();
+        echo 'outcomes : ';
+        var_dump($outcomes);
+        $this->assertEqual ($outcomes["SCORE_INT"]["value"], 1);
        
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';

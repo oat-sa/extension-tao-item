@@ -144,8 +144,10 @@ class taoItems_models_classes_Matching_Matching
 		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
 			'and'=>array('mappedFunction'=>'andExpression')
             , 'createVariable'=>array()
+            , 'divide'=>array()
 			, 'equal'=>array()
-			, 'if'=>array('native'=>true)
+            , 'if'=>array('native'=>true)
+            , 'integerDivide'=>array()
 			, 'isNull'=>array()
 			, 'getCorrect'=>array()
 			, 'getMap'=>array()
@@ -160,6 +162,8 @@ class taoItems_models_classes_Matching_Matching
             , 'or'=>array('mappedFunction'=>'orExpression')
             , 'round'=>array()
             , 'setOutcomeValue'=>array()
+            , 'subtract'=>array()
+            , 'sum'=>array()
 		);
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
     }
@@ -697,41 +701,35 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA7 begin
         $options = $this->checkOptions ($options);
         
-        $allowedBasicTypes = array('integer', 'float', 'double');
-        $subExp1Value = null;
-        $subExp2Value = null;
+        $expr1Value = null;
+        $expr2Value = null;
         
-        // The first sub-expression is QTIVariable
-        if ($subExp1 instanceof taoItems_models_classes_Matching_BaseTypeVariable){
-            if (!in_array($subExp1->getType(), $allowedBasicTypes))
-                 throw new Exception('EQUAL operator error : the first argument must be numerical');
-            $subExp1Value = $subExp1->getValue();
+        // The first expr is a Base Type Variable
+        if ($expr1 instanceof taoItems_models_classes_Matching_BaseTypeVariable){
+            $expr1Value = $expr1->getValue();
         }
-        // The first expression is not an allowed basic type
-        else if (!in_array(gettype($subExp1), $allowedBasicTypes)) {
-            throw new Exception('EQUAL operator error : the first argument must be numerical');
+        // The first expression is not a scalar
+        else if (!is_scalar ($expr1)) {
+            throw new Exception('taoItems_models_classes_Matching_Matching::equal : the first argument must be a scalar');
         }
         else {
-            $subExp1Value = $subExp1;
+            $expr1Value = $expr1;
         }
         
-        // The second sub-expression is QTIVariable
-        if ($subExp2 instanceof taoItems_models_classes_Matching_BaseTypeVariable){
-            if (!in_array($subExp2->getType(), $allowedQTITypes))
-                 throw new Error('EQUAL operator error : the second argument must be numerical');
-            $subExp2Value = $subExp2->values[0];
+        // The second expr is a Base Type Variable
+        if ($expr2 instanceof taoItems_models_classes_Matching_BaseTypeVariable){
+            $expr2Value = $expr2->getValue();
         }
-        // The first expression is not an allowed basic type
-        else if (!in_array(gettype($subExp2), $allowedBasicTypes)) {
-            throw new Error('EQUAL operator error : the first second must be numerical');
+        // The second expr is not a scalar
+        else if (!is_scalar($expr2)) {
+            throw new Error('taoItems_models_classes_Matching_Matching::equal : the second argument must be a scalar');
         }
-        
         else {
-            $subExp2Value = $subExp2;
+            $expr2Value = $expr2;
         }
         
-        if ($subExp1Value!=null && $subExp2Value!=null)         
-            $returnValue = $subExp1Value == $subExp2Value;
+        if ($expr1Value!=null && $expr2Value!=null)         
+            $returnValue = $expr1Value == $expr2Value;
         
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AA7 end
 
@@ -754,10 +752,8 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (bool) false;
 
         // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 begin
-        $options = $this->checkOptions ($options);
-        
-        $returnValue = $var->isNull();
-        
+        $options = $this->checkOptions ($options);        
+        $returnValue = $var->isNull();        
         // section 127-0-1-1--40e88075:12bbb016df2:-8000:00000000000046A6 end
 
         return (bool) $returnValue;
@@ -857,15 +853,15 @@ class taoItems_models_classes_Matching_Matching
         if($outcome == null){
             throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : the outcome value '.$id.' does not exist');
         }
-        if ($value instanceof taoItems_models_classes_Matching_BaseTypeVariable){
+        if ($value instanceof taoItems_models_classes_Matching_Variable){
             $outcome->setValue ($value->getValue());
         }
         else {
-            if (taoItems_models_classes_Matching_BaseTypeVariable::isValidValue ($value)){
+            //if (taoItems_models_classes_Matching_BaseTypeVariable::isValidValue ($value)){
                 $outcome->setValue ($value);
-            }else{
-                throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['.gettype($value).']');
-            }
+            //}else{
+            //    throw new Exception ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['.gettype($value).']');
+            //}
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002927 end
@@ -1077,7 +1073,7 @@ class taoItems_models_classes_Matching_Matching
      * @param  expr1
      * @param  expr2
      */
-    public function substract(   $options,    $expr1,    $expr2)
+    public function subtract(   $options,    $expr1,    $expr2)
     {
         $returnValue = null;
 

@@ -5,6 +5,8 @@ require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
 /**
  * Matching Controller provide actions to match an item
  * 
+ * @deprecated
+ * 
  * @author Cédric Alfonsi, <taosupport@tudor.lu>
  * @package taoItems
  * @subpackage actions
@@ -18,7 +20,7 @@ class Matching extends Api {
      * @todo Check if the data sent by the user are compliant with our standart (and secure) 
      * @public
      */
-	public function evaluate () 
+	/*public function evaluate () 
 	{
         $returnValue = array();
         
@@ -46,7 +48,7 @@ class Matching extends Api {
         }
 		
 		echo json_encode ($returnValue);
-	}
+	}*/
 
     /**
      * TESTING TESTING TESTING TESTING
@@ -54,6 +56,8 @@ class Matching extends Api {
      * @public
      */
     public function evaluateDebug () {
+        $returnValue = null;        
+        
         // Get parameters
         $item_path = $this->getRequestParameter('item_path');
 
@@ -74,7 +78,17 @@ class Matching extends Api {
         matching_setOutcomes ($itemMatchingData["outcomes"]);
         matching_evaluate ();
 
-        $returnValue = matching_getOutcomes ();
+        $outcomes = matching_getOutcomes ();
+        // Check if outcomes are scalar
+        try {
+            foreach ($outcomes as $outcome) {
+                if (! is_scalar($outcome['value'])){
+                    throw new Exception ('taoItems_models_classes_ItemsService::evaluate outcomes are not scalar');
+                }
+            }
+            $returnValue = $outcomes;
+        } catch (Exception $e) { }
+        
         echo json_encode ($returnValue);
     }
 

@@ -221,6 +221,17 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
         // Set the value of the expression and cast it function of the (defined) base type of the variable
         if ($this->options['baseType']){
             switch ($this->options['baseType']){
+                case 'boolean':
+                    if (is_string ($value)){
+                        $this->value = (bool)($value=='true'||$value=='1'?1:0);
+                    }else if (is_bool ($value)){
+                        $this->value = $value;
+                    }else if ($value == null){
+                        $this->value = null;
+                    }else{
+                        throw new Exception ('taoItems_models_classes_QTI_response_ExpressionOperator::setValue : an error occured, the value ['.$value.'] is not a well formed boolean');
+                    }
+                    break;
                 case 'float':
                     $this->value = (float)$value;
                     break;
@@ -230,6 +241,12 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
                 case 'identifier':
                 case 'string':
                     $this->value = (string)$value;
+                    break;
+                case 'pair':
+                    $this->value = taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData($value, 'pair');
+                    break;
+                case 'directedPair':
+                    $this->value = taoItems_models_classes_Matching_VariableFactory::createJSONValueFromQTIData($value, 'directedPair');
                     break;
             }   
         }

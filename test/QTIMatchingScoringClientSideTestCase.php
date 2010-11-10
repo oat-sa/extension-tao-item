@@ -30,7 +30,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	--------------------------------------------------------------------------->
 	
 	<script type="application/javascript">
-        var testToRun = '*';
+        var testToRun = 'Remote Matching : CustomAllRules.xml';
         //var testToRun = '*';
 
         var testUnitFct = test;
@@ -847,6 +847,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 , async : true
                 , dataType : 'json'
                 , success   : function (data){
+                console.log (data.rule);
                     var matching_param = {
                         "data" : data
                         , "options" : {
@@ -861,6 +862,81 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     matchingEvaluate ();
                 }
             });            
+        });
+        
+        // CLIENT MATCHING PARTIAL SCORING (Manual rule injection)
+        test ("CLIENT MATCHING PARTIAL SCORING (Manual rule injection)", function(){
+            var myfunc = ' \
+                if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))) { \
+                    setOutcomeValue("SCORE", 2); \
+                } else if (match(null, getResponse("RESPONSE"), createVariable({"type":"tuple"}, "DriverC", "DriverB", "DriverA"))) { \
+                    setOutcomeValue ("SCORE", 1); \
+                } else { \
+                    setOutcomeValue("SCORE", 0); \
+                }'
+            
+            console.log(myfunc.toString ());
+            
+            var matching_param = {
+                data : {
+                    corrects    : [{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]
+                    , outcomes  : [{"identifier":"SCORE", "type":"double"}]
+                    , rule      : myfunc
+                }
+            };
+            
+            matchingInit (matching_param);
+            matchingSetResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
+            matchingEvaluate (); 
+            var outcomes = matchingGetOutcomes ();
+            equals (outcomes.SCORE.value, 1, 'Expected Value');
+        });
+        
+
+        // REMOTE PARSING / CLIENT MATCHING MAP RESPONSE .xml
+        asyncTest("Remote Parsing / Client Matching : Custom Map Response", function(){
+            var item_path = '<?=PATH_SAMPLE?>custom/custom_map_response_choice_multiple.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+                    var matching_param = {
+                        "data" : data
+                        , "options" : {
+                            "evaluateCallback" : function (outcomes) {
+                                equals (outcomes.SCORE.value, 2, 'Expected Value');
+                                start();
+                            }
+                        }
+                    };
+                    matchingInit (matching_param);
+                    matchingSetResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
+                    matchingEvaluate ();
+                }
+            });            
+        });
+
+        // REMOTE MATCHING CUSTOM PARTIAL SCORING.xml
+        asyncTest ('Remote Matching : CustomAllRules.xml', function () {
+            matching_param = {
+                "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
+                , "params" : {
+                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_all_rules.xml'
+                }
+                , "options" : {
+                    "evaluateCallback" : function (outcomes) {
+                        console.dir (outcomes);
+                        //equals (outcomes.SCORE.value, 1 , 'Expected Value');
+                        start();
+                    }
+                }
+            };
+            matchingInit (matching_param);
+            matchingEvaluate ();
         });
 	</script>
 	

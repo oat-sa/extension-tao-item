@@ -73,25 +73,33 @@ class taoItems_models_classes_QTI_response_BaseValue
         // @todo make usable for complex variable such as pair, directed pair ..
         // @todo centralize the management of the options (attributes)
         $options = Array();
-        /*foreach ($this->options as $key=>$option)
-            $options[$key] = (string) $option;*/
+        $value = null;
         
         switch ((string)$this->options['baseType']){
+            case "boolean":
+                $options['type'] = "boolean";
+                $value = json_encode ($this->value);
+                break;
             case "integer":
                 $options['type'] = "integer";
+                $value = json_encode ($this->value);
                 break;
             case "float":
                 $options['type'] = "float";
+                $value = json_encode ($this->value);
                 break;
             case "identifier":
             case "string":
                 $options['type'] = "string";
+                $value = json_encode ($this->value);
                 break;
             case "pair":
                 $options['type'] = "list";
+                $value = '"'.implode ('","', $this->value).'"';
                 break;
             case "directedPair":
                 $options['type'] = "tuple";
+                $value = '"'.implode ('","', (array)$this->value).'"'; // Méchant casting, won't work with a dictionnary, but with a tuple it is okay
                 break;
             default:
                 throw new Exception ("taoItems_models_classes_QTI_response_BaseValue::getRule an error occured : the type ".(string)$this->options['baseType']." is unknown");
@@ -99,7 +107,7 @@ class taoItems_models_classes_QTI_response_BaseValue
 
         $returnValue = 'createVariable ('
             . (count($options) ? '"'.addslashes(json_encode($options)).'"' : 'null') .
-            ', '. json_encode ($this->value) .
+            ', '. $value .
         ')';
         
         // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A98 end

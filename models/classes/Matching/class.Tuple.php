@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.11.2010, 11:59:48 with ArgoUML PHP module 
+ * Automatically generated on 10.11.2010, 19:53:03 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -173,7 +173,12 @@ class taoItems_models_classes_Matching_Tuple
     	
     	// @todo be carrefull the set function get only base type variable
     	
-    	$this->value = array();
+        $this->value = array();
+        
+    	if ($data == null){
+            return;
+        }
+    	
     	foreach ($data as $key=>$elt){
     	    if ($elt instanceOf taoItems_models_classes_Matching_Variable) {
     	        $this->value[$key] = $elt;
@@ -196,6 +201,13 @@ class taoItems_models_classes_Matching_Tuple
         $returnValue = null;
 
         // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B37 begin
+        
+        $toJSON = Array ();
+        foreach ($this->getValue() as $value){
+            $toJSON[] = $value->toJSon();
+        }
+        $returnValue = json_encode((object)$toJSON);
+        
         // section 127-0-1-1--6df7f690:12c1ba8488c:-8000:0000000000002B37 end
 
         return $returnValue;

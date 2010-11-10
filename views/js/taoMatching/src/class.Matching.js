@@ -91,7 +91,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
         , 'product'         :{}
         , 'round'           :{}
         , 'setOutcomeValue' :{}
-        , 'substract'       :{}
+        , 'subtract'       :{}
         , 'sum'             :{}
 	};
 	
@@ -822,7 +822,7 @@ TAO_MATCHING.Matching.prototype = {
         return returnValue;
     }
     
-    , substract : function (options, expr1, expr2){
+    , subtract : function (options, expr1, expr2){
         var returnValue = null;
         
         // IF the first expression is not a numerical base type
