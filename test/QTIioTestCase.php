@@ -49,7 +49,8 @@ class QTIioTestCase extends UnitTestCase {
 				'delivery_server_mode'	=> false
 			);
 			
-			$itemFolder = $this->itemService->getRuntimeFolder($rdfItem);
+			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
+        	$itemFolder = ROOT_PATH . '/taoItems/views/runtime/' . $folderName;
         	$itemPath = "{$itemFolder}/index.html";
 			if(!is_dir($itemFolder)){
         		mkdir($itemFolder);
@@ -62,7 +63,7 @@ class QTIioTestCase extends UnitTestCase {
 			$this->assertTrue(!empty($itemUrl));
 			$this->assertTrue(is_dir($itemFolder));
 			
-			echo "<br /><iframe width='900px' height='300px' src='$itemUrl'></iframe><br />";
+			echo "<br /><iframe width='900px' height='400px' src='$itemUrl'></iframe><br />";
 			
 			//$this->assertTrue($this->itemService->deleteItem($rdfItem));
 			//@tao_helpers_File::remove($itemPath, true);
