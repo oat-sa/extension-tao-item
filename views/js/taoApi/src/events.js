@@ -71,7 +71,7 @@ function EventTracer (options){
 	this.sourceService = {
 		type:	'sync',										// (sync | manual)
 		data:	null,										//if type is manual, contains the data in JSON, else it should be null
-		url:	'/taoDelivery/ItemDelivery/getEvents',		//the url sending the events list
+		url:	'/taoDelivery/ResultDelivery/getEvents',		//the url sending the events list
 		params: {},											//the common parameters to send to the service
 		method: 'post',										//sending method
 		format: 'json'										//the response format, now ONLY JSON is supported
@@ -82,7 +82,7 @@ function EventTracer (options){
 	 * @type {Object}
 	 */
 	this.destinationService = {
-		url:	'/taoResults/Server/traceEvents',			//the URL where to send the events
+		url:	'/taoDelivery/ResultDelivery/traceEvents',			//the URL where to send the events
 		params: {},											//the common parameters to send to the service
 		method: 'post',										//sending method
 		format: 'json'										//the response format, now ONLY JSON is supported

@@ -17,6 +17,10 @@
 const URI = {
 	'LABEL'				: 'http://www.w3.org/2000/01/rdf-schema#label',
 	'ENDORSMENT' 		: '##NAMESPACE#ENDORSMENT',
+	'SCORE' 			: '##NAMESPACE#SCORE',
+	'SCORE_MIN' 		: '##NAMESPACE#SCORE_MIN',
+	'SCORE_MAX' 		: '##NAMESPACE#SCORE_MAX',
+	'ANSWERED_VALUES'	: '##NAMESPACE#ANSWERED_VALUES',
 	'SUBJECT'			: 'http://www.tao.lu/Ontologies/TAOSubject.rdf#Subject',
 	'SUBJETC_LOGIN'		: 'http://www.tao.lu/Ontologies/generis.rdf#login',
 	'SUBJETC_FIRSTNAME'	: 'http://www.tao.lu/Ontologies/generis.rdf#userFirstName',

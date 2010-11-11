@@ -70,6 +70,39 @@ function setScore(score){
 }
 
 /**
+ * get the score range if defined
+ * 
+ * @function
+ * @namespace taoApi
+ * @returns {Object} with <b>min</b> and <b>max</b> attributes
+ */
+function getScoreRange(){
+	return {
+		'min': taoStack.getTaoVar(URI.SCORE_MIN),
+		'max': taoStack.getTaoVar(URI.SCORE_MAX)
+	};
+}
+
+/**
+ * Set the score range. 
+ * It will be used to calculate the endorsment from the score.
+ * 
+ * @function
+ * @namespace taoApi
+ * @param {String|Number} max
+ * @param {String|Number} [min = 0]
+ */
+function setScoreRange(max, min){
+	if(max != undefined){
+		if(min == undefined){
+			min = 0;
+		}
+		taoStack.setTaoVar(URI.SCORE_MIN, min);
+		taoStack.setTaoVar(URI.SCORE_MAX, max);
+	}
+}
+
+/**
  * Get the values answered by the subject 
  * 
  * @function
@@ -281,7 +314,7 @@ function getToken(){
  * 
  * @param {Object} environment <i>set to null if you want to keep all the default values</i>
  * @param {String} [environment.type = "async"] the datasource type <b>(manual|sync|async)</b> 
- * @param {String} [environment.url = "/tao/Api/getContext"] the url of the server where the data are sent 
+ * @param {String} [environment.url = "/taoDelivery/ResultDelivery/initialize"] the url of the server where the data are sent 
  * @param {Object} [environment.params] the additional parameters to send with the data
  * 
  * @param {Object} settings <i>set to null if you want to keep all the default values</i>
@@ -313,7 +346,7 @@ function initManualDataSource(source){
  * @namespace taoApi
  * 
  * @param {Object} environment <i>set to null if you want to keep all the default values</i>
- * @param {String} [environment.url = "/tao/Api/save"] the url of the server where the data are sent 
+ * @param {String} [environment.url = "/taoDelivery/ResultDelivery/save"] the url of the server where the data are sent 
  * @param {Object} [environment.params] the additional parameters to send with the data
  * 
  * @param {Object} settings <i>set to null if you want to keep all the default values</i>
@@ -390,13 +423,13 @@ function logCustomEvent(eventName, data){
  * @param {Object} source 
  * @param {String} [source.type = "sync"] the type of source <b>(sync|manual)</b>
  * @param {Object} [source.data] For the <i>manual</i> source type, set direclty the events list in the data 
- * @param {String} [source.url = "/taoDelivery/ItemDelivery/getEvents"] For the <i>sync</i> source type, the URL of the remote service
+ * @param {String} [source.url = "/taoDelivery/ResultDelivery/getEvents"] For the <i>sync</i> source type, the URL of the remote service
  * @param {Object} [source.params] the parameters to send to the sync service
  * @param {String} [source.format = "json"] the data format. <i>Only json is supported in the current version</i> 
  * @param {String} [source.method = "post"] HTTP method of the sync service <b>(get|post)</b>
  * 
  * @param {Object} destination
- * @param {String} [destination.url = "/taoResults/Server/traceEvents"] the URL of the remote service
+ * @param {String} [destination.url = "/taoDelivery/ResultDelivery/traceEvents"] the URL of the remote service
  * @param {Object} [destination.params] the common parameters to send to the service
  * @param {String} [destination.format = "json"] the data format. <i>Only json is supported in the current version</i> 
  * @param {String} [destination.method = "post"] HTTP method of the service <b>(get|post)</b>
