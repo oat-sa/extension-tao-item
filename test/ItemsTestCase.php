@@ -63,10 +63,7 @@ class ItemsTestCase extends UnitTestCase {
 		
 		//create instance of subItem
 		$subItemInstanceLabel = 'subItem instance';
-		$subItemInstance = $this->itemsService->createInstance($subItemClass);
-		$this->assertTrue(defined('RDFS_LABEL'));
-		$subItemInstance->removePropertyValues(new core_kernel_classes_Property(RDFS_LABEL));
-		$subItemInstance->setPropertyValue(new core_kernel_classes_Property(RDFS_LABEL), $subItemInstanceLabel);
+		$subItemInstance = $this->itemsService->createInstance($subItemClass, $subItemInstanceLabel);
 		$this->assertIsA($subItemInstance, 'core_kernel_classes_Resource');
 		$this->assertEqual($subItemInstanceLabel, $subItemInstance->getLabel());
 		
@@ -93,6 +90,8 @@ class ItemsTestCase extends UnitTestCase {
 		$this->assertIsA($item, 'core_kernel_classes_Resource');
 		$this->assertEqual('test content', $item->getLabel());
 		
+		$item->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
+		
 		$this->assertFalse($this->itemsService->hasItemContent($item));
 		
 		$itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
@@ -113,6 +112,12 @@ class ItemsTestCase extends UnitTestCase {
 		$gotFile = new core_kernel_classes_File($content->uriResource);
 		
 		$this->assertEqual($gotFile->getAbsolutePath(), $file->getAbsolutePath());
+			
+		$this->assertTrue($this->itemsService->setItemContent($item, 'test 2'));
+		$this->assertEqual('test 2', $this->itemsService->getItemContent($item));
+		
+		$this->assertTrue($this->itemsService->setItemContent($item, 'test FR', 'FR'));
+		$this->assertEqual('test FR', $this->itemsService->getItemContent($item, false, 'FR'));
 		
 		$this->assertTrue($this->itemsService->deleteItem($item));
 	}
