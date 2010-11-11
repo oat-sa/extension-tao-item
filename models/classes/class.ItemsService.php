@@ -601,45 +601,52 @@ class taoItems_models_classes_ItemsService
         	$parameters['base_www'] = BASE_WWW;
         	$parameters['taobase_www'] = TAOBASE_WWW;
         	
-        	
-        	//deploy the QTI Item
-        	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
+        	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI, TAO_ITEM_MODEL_XHTML))){
 
-        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
-        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
+        		$output = '';
         		
-        		if(!is_null($qtiItem)) {
-        			
-        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
-        			
-        			$output = $qtiService->renderItem($qtiItem);
-        			
-        			//replace relative paths to resources by absolute uris to help the compilator
-					$matches = array();
-        			if(preg_match_all("/(href|src)\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
-						if(isset($matches[2])){
-							
-							foreach($matches[2] as $relUri){
-								if($relUri != '#' && !preg_match("/^http/", $relUri) ){
-									$absoluteUri = dirname($url) . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
-									$output = str_replace($relUri, $absoluteUri, $output);
-								}
+        		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
+	        		//for the QTI Item
+	        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
+	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
+	        		
+	        		if(!is_null($qtiItem)) {
+	        			
+	        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+	        			
+	        			$output = $qtiService->renderItem($qtiItem);
+	        			
+	        		}
+        		}
+        		else{
+        			$output	= $this->getItemContent($item);
+        		}
+        		
+        		//replace relative paths to resources by absolute uris to help the compilator
+				$matches = array();
+        		if(preg_match_all("/(href|src)\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
+					if(isset($matches[2])){
+						
+						foreach($matches[2] as $relUri){
+							if($relUri != '#' && !preg_match("/^http/", $relUri) ){
+								$absoluteUri = dirname($url) . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
+								$output = str_replace($relUri, $absoluteUri, $output);
 							}
 						}
 					}
+				}
 					
-        			if(file_put_contents($path, $output)){
-        				$returnValue = true;
-        			}
-        			
-        			//copy the event.xml if not present
-        			$itemFolder = dirname($path);
-        			if(!file_exists($itemFolder.'/events.xml')){
-        				$eventXml = file_get_contents(BASE_PATH.'/data/events_ref.xml');
-        				if(is_string($eventXml) && !empty($eventXml)){
-        					$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
-        					@file_put_contents($itemFolder.'/events.xml', $eventXml);
-        				}
+        		if(file_put_contents($path, $output)){
+        			$returnValue = true;
+        		}
+        		
+        		//copy the event.xml if not present
+        		$itemFolder = dirname($path);
+        		if(!file_exists($itemFolder.'/events.xml')){
+        			$eventXml = file_get_contents(ROOT_PATH.'/taoItems/data/events_ref.xml');
+        			if(is_string($eventXml) && !empty($eventXml)){
+        				$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
+        				@file_put_contents($itemFolder.'/events.xml', $eventXml);
         			}
         		}
 			}

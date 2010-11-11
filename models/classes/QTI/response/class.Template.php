@@ -168,7 +168,7 @@ class taoItems_models_classes_QTI_response_Template
     	}
     	$this->uri = $uri;
     	
-    	$this->file = BASE_PATH . '/models/classes/QTI/data/rptemplates/' . basename($this->uri). '.xml';
+    	$this->file = ROOT_PATH . '/taoItems/models/classes/QTI/data/rptemplates/' . basename($this->uri). '.xml';
     	if(!file_exists($this->file)){
     		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
     	}

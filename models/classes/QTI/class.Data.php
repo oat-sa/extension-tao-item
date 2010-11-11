@@ -357,7 +357,7 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:0000000000002580 begin
         
         if(empty(self::$templatesPath)){
-        	self::$templatesPath = BASE_PATH . '/models/classes/QTI/templates/';
+        	self::$templatesPath = ROOT_PATH . '/taoItems/models/classes/QTI/templates/';
         }
         $returnValue = self::$templatesPath;
         

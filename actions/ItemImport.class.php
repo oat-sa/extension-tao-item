@@ -153,31 +153,14 @@ class ItemImport extends Import {
 					//set the file in the itemContent
 					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
 						
-						$deployParams = array(
-							'delivery_server_mode'	=> false
-						);
-						
 						$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-        				$itemPath = BASE_PATH."/views/runtime/{$folderName}/index.html";
-						if(!is_dir(dirname($itemPath))){
-		        			mkdir(dirname($itemPath));
-		        		}
-		        		$itemUrl = BASE_WWW . "runtime/{$folderName}/index.html";
-						
-						//we deploy it
-						if(!$itemService->deployItem($rdfItem, $itemPath, $itemUrl, $deployParams)){
-							$this->setData('importErrorTitle', __('An error occured during the import'));
-							$this->setData('importErrors', array(array('message' => __('unable to deploy item'))));
-							break;
-						}
 						
 						$importedItems++;	//item is considered as imported there 
 						
 						//and copy the others resources in the runtime path
 						foreach($resource->getAuxiliaryFiles() as $auxResource){
-							tao_helpers_File::copy($folder . '/'. $auxResource, dirname($itemPath) . '/'. $auxResource, true);
+							tao_helpers_File::copy($folder . '/'. $auxResource, BASE_PATH. "/data/$folderName/$auxResource", true);
 						}
-						
 					}
 				}
 			}
@@ -250,7 +233,7 @@ class ItemImport extends Import {
 			$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
 				
 			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-        	$itemPath = BASE_PATH."/views/runtime/{$folderName}";
+        	$itemPath = BASE_PATH."/data/{$folderName}";
         	if(!tao_helpers_File::move($folder, $itemPath)){
         		$this->setData('importErrorTitle', __('Unable to copy the resources'));
 				$this->setData('importErrors', array(array('message' => __('Unable to move')." $folder to $itemPath")));
