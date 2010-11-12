@@ -254,7 +254,8 @@ class Items extends TaoModule{
 			if(is_null($runtime)){
 				
 				$deployParams = array(
-					'delivery_server_mode'	=> false
+					'delivery_server_mode'	=> false,
+					'preview_mode'			=> true
 				);
 				
 				$itemFolder = $this->service->getRuntimeFolder($item);
@@ -279,7 +280,6 @@ class Items extends TaoModule{
 					//@todo need to fix it in the runtime instead of urlencode 2x
 					$contentUrl = urlencode($contentUrl);
 				}
-				
 				
 				if(preg_match("/\.swf$/", (string)$runtime)){
 					$previewData = array(

@@ -597,9 +597,9 @@ class taoItems_models_classes_ItemsService
         if(!is_null($item)){
         	
         	//parameters that could not be rewrited
-        	$parameters['root_url'] = ROOT_URL;
-        	$parameters['base_www'] = BASE_WWW;
-        	$parameters['taobase_www'] = TAOBASE_WWW;
+        	if(!isset($parameters['root_url']))		{ $parameters['root_url'] = ROOT_URL; }
+        	if(!isset($parameters['base_www']))		{ $parameters['base_www'] = BASE_WWW; }
+        	if(!isset($parameters['taobase_www']))	{ $parameters['taobase_www'] = TAOBASE_WWW; }
         	
         	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI, TAO_ITEM_MODEL_XHTML))){
 
