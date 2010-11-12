@@ -9,3 +9,9 @@ matchingParam = {
         }
     }
 };
+
+// validation process (special preview)
+$("#qti_validate").bind("click",function(){
+    // Reinit the matching engine
+    matchingInit (matchingParam);
+});
