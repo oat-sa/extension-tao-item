@@ -14,7 +14,13 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     var options = {
 		"evaluateCallback" : null
 	}; if (typeof(pOptions) != 'undefined') $.extend(options, pOptions);
-		
+	
+	/**
+	 * Turn the matching engine into debug mode
+	 * @type boolean
+	 */
+    this.DEBUG_MODE = false;
+
 	/**
      * Short description of attribute corrects
      *
@@ -72,6 +78,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.whiteFunctionsList = {
 		'and'				:{'mappedFunction':'andExpression'}
         , 'createVariable'  :{}
+        , 'console'         :{}
         , 'divide'          :{}
         , 'equal'           :{}
 		, 'if'				:{'jsFunction':true}
@@ -115,15 +122,45 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 TAO_MATCHING.Matching.prototype = {
     
     /**
+     * Debug the response processing
+     */
+    debugTrace : function (fctName) {
+        var fctArguments = [];
+        
+        var paramCount = this.debugTrace.arguments.length;
+        for (var i = 1; i < paramCount; i++) {
+            fctArguments.push(this.debugTrace.arguments[i]);
+        }
+        
+        console.log ('TRACE');
+        console.log (fctName);
+        console.log (fctArguments);
+        
+        return this[fctName].apply (this, fctArguments);
+        //debugStack.push ({name:fctName, arguments:fctArguments});
+    }
+    
+    /**
      * Check if optional paramaters are well formated
      * @param {string|array|object} options Object to check
      * @return {array|object} the converted options in the right format
      */
-    checkOptions : function (options){
+    , checkOptions : function (options){
         // Decode the options, if it has been "json string encoded"
         if (typeof options == 'string') options = eval ('('+options+')');
         else if (options == null) options = {};
         return options;
+    }
+    
+    /**
+     * DEVELOPEMENT FUNCTION
+     * Debug function to show in the console an object
+     * This function does not work if the document is validated
+     * @todo to remove in production mode
+     */
+    , console : function (options, obj) {
+        console.log(obj);
+        return true;
     }
     
     /**
@@ -133,13 +170,24 @@ TAO_MATCHING.Matching.prototype = {
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
     , evaluate : function()
-    {	
+    {
+        if (this.getRule() == null){
+            throw new Error ('TAO_MATCHING.Matching::evaluate : an error occured : the rule has not been defined');
+        }
+        
 		with (this){
-			eval (getRule());
+	        try {
+                eval (getRule());
+            } catch (e) {
+                if (this.DEBUG_MODE){
+                    console.log (e);   
+                }
+            }
 		}
 		
-		if (this.options.evaluateCallback!=null)
-			this.options.evaluateCallback (this.outcomes);
+		if (this.options.evaluateCallback!=null){
+            this.options.evaluateCallback (this.outcomes);
+		}
     }
 
     /**
@@ -164,7 +212,7 @@ TAO_MATCHING.Matching.prototype = {
     {
         var returnValue = Array ();
         
-        for (var key in this.outcomes){
+        for (var key in this.outcomes) {
         	returnValue[key] = [];
         	returnValue[key]["identifier"] = key;
         	returnValue[key]["value"] = this.outcomes[key].toJSon();
@@ -269,7 +317,7 @@ TAO_MATCHING.Matching.prototype = {
 		for (var key in data) {
 			try {
 				if (typeof this.responses[data[key].identifier] != 'undefined')
-					throw new Error ('TAO_MATCHING.Matching::setResponses a correct variable with the identifier '+ data[key].identifier +' exists yet');
+					throw new Error ('TAO_MATCHING.Matching::setResponses a response variable with the identifier '+ data[key].identifier +' exists yet');
 				var matchingVar = TAO_MATCHING.VariableFactory.create (data[key].value);
 				this.responses[data[key].identifier] = matchingVar;
 			} 
@@ -314,7 +362,12 @@ TAO_MATCHING.Matching.prototype = {
 				        throw new Error ('TAO_MATCHING.Matching::setRule an error occured, the expression ['+ funcName +'] is not yet instantiated');
 				    }
 				}
-				return funcName+' ('; 
+				
+				if (self.DEBUG_MODE && typeof whiteFunctionsList[funcName]['jsFunction'] == 'undefined'){
+				    return 'debugTrace ("' + funcName + '" ,';
+				} else {
+				    return funcName + '(';
+				}
     	});
 		
 		this.rule = rule;
@@ -402,11 +455,11 @@ TAO_MATCHING.Matching.prototype = {
             outcome.setValue (value.getValue());
         }
         else {
-            if (TAO_MATCHING.BaseTypeVariable.isValidValue (value)){
+            //if (TAO_MATCHING.BaseTypeVariable.isValidValue (value)){
                 outcome.setValue (value);
-            }else{
-                throw new Error ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['+typeof(value)+']');
-            }
+            //}else{
+            //    throw new Error ('taoItems_models_classes_Matching_Matching::setOutcomeValue error : unable to set a value of this type ['+typeof(value)+']');
+            //}
         }
     }
     
@@ -540,51 +593,44 @@ TAO_MATCHING.Matching.prototype = {
      * @param  expr2
      * @return boolean
      */
-    , equal : function(options, subExp1, subExp2){
+    , equal : function(options, expr1, expr2){
         var result = null;
         options = this.checkOptions(options);
-         
-        var allowedQTITypes = ['float', 'integer', 'duration'];
-        var allowedBasicTypes = ['number'];
+
         var value1 = null;
         var value2 = null;
         
-        // The first sub-expression is QTIVariable
-        if (subExp1 instanceof TAO_MATCHING.BaseTypeVariable) {
-            if (allowedQTITypes.indexOf(subExp1.getType()) < 0) 
-                throw new Error('EQUAL operator error : the first argument must be numerical baseType');
-            value1 = subExp1.getValue();
+        // The first expression is a Matching BaseTypeVariable
+        if (expr1 instanceof TAO_MATCHING.BaseTypeVariable) {
+            value1 = expr1.getValue();
         }
-        // The first expression is not an allowed basic type
-        else 
-            if (allowedBasicTypes.indexOf(typeof subExp1) < 0) {
-            //throw new Error('EQUAL operator error : the first argument must be numerical baseType');
+        // The first expression is not a Matching BaseTypeVariable
+        else {
+            if (!TAO_MATCHING.Variable.is_scalar(expr1)) {
+                throw new Error('TAO_MATCHING.matching::equal an error occured : the first argument ['+expr1+'] must be a scalar');
             }
-            
             else {
-                value1 = subExp1;
+                value1 = expr1;
             }
-        
-        // The second sub-expression is QTIVariable
-        if (subExp2 instanceof QTIVariable) {
-            if (allowedQTITypes.indexOf(subExp2.getBaseType()) < 0) 
-                throw new Error('EQUAL operator error : the second argument must be numerical baseType');
-            //          else if (subExp2.getCardinality() != 'single')
-            //              throw new Error ('EQUAL operator error : the second argument must have a single cardinality');
-            value2 = subExp2.values[0];
         }
-        // The second expression is not an allowed basic type
-        else 
-            if (allowedBasicTypes.indexOf(typeof subExp2) < 0) {
-                throw new Error('EQUAL operator error : the second argument must be numerical baseType');
-            }
-            
-            else {
-                value2 = subExp2;
-            }
         
-        if (value1 != null && value2 != null) 
-            result = value1 == value2;
+        // The second expression is a Matching BaseTypeVariable
+        if (expr2 instanceof TAO_MATCHING.BaseTypeVariable) {
+            value2 = expr2.getValue();
+        }
+        // The second expression is not a Matching BaseTypeVariable
+        else {
+            if (!TAO_MATCHING.Variable.is_scalar(expr2)) {
+                throw new Error('TAO_MATCHING.matching::equal an error occured : the second argument ['+expr2+'] must be a scalar');
+            }
+            else {
+                value2 = expr2;
+            }    
+        }
+        
+        if (value1 != null && value2 != null) {
+            result = value1 === value2;
+        }
         
         return result;
     } 

@@ -104,3 +104,18 @@ TAO_MATCHING.Variable.prototype = {
         // abstract        
     }
 };
+
+/**
+ * Check if a value is a scalar variable
+ */
+TAO_MATCHING.Variable.is_scalar = function (data) {
+    var returnValue = false;
+    switch (typeof data){
+        case "boolean":
+        case "number":
+        case "string":
+            returnValue = true;
+    }
+    return returnValue;
+};
+
