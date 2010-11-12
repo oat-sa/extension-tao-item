@@ -8,5 +8,11 @@ $files[] = "./src/init.js";
 
 minify_files ($files, "qti.min.js");
 
+$files = array ();
+$files[] = "./css/qti.css";
+$files[] = "./css/reset.css";
+
+minify_files ($files, "qti.min.css");
+
 exit(0);
 ?>
