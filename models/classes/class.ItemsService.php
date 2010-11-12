@@ -609,7 +609,7 @@ class taoItems_models_classes_ItemsService
 	        		//for the QTI Item
 	        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
 	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
-	        		
+	        	//	print_r($qtiItem);exit;
 	        		if(!is_null($qtiItem)) {
 	        			
 	        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');

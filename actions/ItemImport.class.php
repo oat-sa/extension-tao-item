@@ -232,6 +232,8 @@ class ItemImport extends Import {
 			//set the QTI type
 			$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
 				
+			$itemContent = file_get_contents($folder .'/index.html');
+			
 			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
         	$itemPath = BASE_PATH."/data/{$folderName}";
         	if(!tao_helpers_File::move($folder, $itemPath)){
@@ -239,6 +241,8 @@ class ItemImport extends Import {
 				$this->setData('importErrors', array(array('message' => __('Unable to move')." $folder to $itemPath")));
 				return false;
         	}
+        	
+        	$itemService->setItemContent($rdfItem, $itemContent);
 						
 			$this->removeSessionAttribute('classUri');
 			$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));

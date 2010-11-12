@@ -552,7 +552,9 @@ var QTIWidget = function(options){
 		//define the columns of the matrix from the last choice list
 		$(qti_item_id + " .choice_list:last").addClass('choice_list_cols');
 		var cols = new Array();
-		$(qti_item_id + " .choice_list_cols li").each(function(){
+		$(qti_item_id + " .choice_list:last li").each(function(){
+		/*	var content = $(this).html().wrap('div>');
+			$(this).wrapInner('<div class="inline-col" />');*/
 			cols.push(this.id);
 		});
 		

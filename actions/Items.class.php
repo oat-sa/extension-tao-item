@@ -272,6 +272,9 @@ class Items extends TaoModule{
 						'contentUrl' 	=> $itemUrl
 					);
         		}
+        		else{
+        			echo 'unable to deploy item';
+        		}
 			}
 			else{
 				//the item content is given to the runtime

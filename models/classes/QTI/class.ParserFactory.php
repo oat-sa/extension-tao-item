@@ -331,8 +331,12 @@ class taoItems_models_classes_QTI_ParserFactory
        	
        	$myChoice = new taoItems_models_classes_QTI_Choice((string)$data['identifier'], $options);
        	$myChoice->setType($data->getName());
-       	$myChoice->setData((string)$data);
-       	
+       	if(count($data->children()) > 0){
+       		$myChoice->setData((string)$data . $data->children()->asXML());
+       	}
+       	else{
+       		$myChoice->setData((string)$data);
+       	}
        	$returnValue = $myChoice;
         
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002494 end
