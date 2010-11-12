@@ -4,7 +4,11 @@ matchingParam = {
     , "options" : {
         "evaluateCallback" : function () {
             var outcomes = matchingGetOutcomes();
-            window.top.createInfoMessage ('THE OUTCOME VALUE SCORE IS : '  + outcomes['SCORE']['value']);
+            strOutcomes = '';
+            for (var outcomeKey in outcomes){
+                strOutcomes += outcomeKey+ ' = ' +outcomes[outcomeKey]['value'] + '<br/>';
+            }
+            window.top.createInfoMessage ('THE OUTCOME VALUES : <br/> '  + strOutcomes);
             finish();
         }
     }
