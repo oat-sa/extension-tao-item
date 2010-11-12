@@ -1,18 +1,18 @@
 <?php 
-include_once("../../../../tao/lib/jstools/jsmin.php");
+include_once("../../../../tao/lib/jstools/minify.php");
 
-$files = array ();
-$files[] = "./src/Widget.js";
-$files[] = "./src/ResultCollector.js";
-$files[] = "./src/init.js";
+$jsFiles = array ();
+$jsFiles[] = "./src/Widget.js";
+$jsFiles[] = "./src/ResultCollector.js";
+$jsFiles[] = "./src/init.js";
 
-minify_files ($files, "qti.min.js");
+minifyJSFiles ($jsFiles, "qti.min.js");
 
-$files = array ();
-$files[] = "./css/qti.css";
-$files[] = "./css/reset.css";
+$cssFiles = array ();
+$cssFiles[] = "./css/reset.css";
+$cssFiles[] = "./css/qti.css";
 
-minify_files ($files, "./css/qti.min.css");
+minifyCSSFiles ($cssFiles, dirname(__FILE__)."/css/qti.min.css");
 
 exit(0);
 ?>
