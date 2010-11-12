@@ -28,7 +28,7 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 	
 	<!-- LIB -->
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.custom.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.4.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json2.js"></script>
 	
 	<!-- JS REQUIRED -->

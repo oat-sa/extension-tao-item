@@ -12,7 +12,7 @@ $files = array ();
 $files[] = "./css/qti.css";
 $files[] = "./css/reset.css";
 
-minify_files ($files, "qti.min.css");
+minify_files ($files, "./css/qti.min.css");
 
 exit(0);
 ?>

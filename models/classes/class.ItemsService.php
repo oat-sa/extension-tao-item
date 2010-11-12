@@ -640,14 +640,33 @@ class taoItems_models_classes_ItemsService
         			$returnValue = true;
         		}
         		
-        		//copy the event.xml if not present
-        		$itemFolder = dirname($path);
-        		if(!file_exists($itemFolder.'/events.xml')){
-        			$eventXml = file_get_contents(ROOT_PATH.'/taoItems/data/events_ref.xml');
-        			if(is_string($eventXml) && !empty($eventXml)){
-        				$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
-        				@file_put_contents($itemFolder.'/events.xml', $eventXml);
+        		if($returnValue){
+        		
+        			$itemFolder = dirname($path);
+        			
+        			$itemFileName = '';
+	        		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+		        	if(!is_null($itemModel)){
+		        		$itemFileName = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+		        	}
+        			
+        			
+        			//copy the resources
+        			$sourceFolder = $this->getItemFolder($item);
+        			foreach(scandir($sourceFolder) as $file){
+        				if($file != basename($path) && $file != $itemFileName &&$file != '.' && $file != '..'){
+        					tao_helpers_File::copy($sourceFolder.'/'.$file, $itemFolder.'/'.$file, true);
+        				}
         			}
+        			
+	        		//copy the event.xml if not present
+	        		if(!file_exists($itemFolder.'/events.xml')){
+	        			$eventXml = file_get_contents(ROOT_PATH.'/taoItems/data/events_ref.xml');
+	        			if(is_string($eventXml) && !empty($eventXml)){
+	        				$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
+	        				@file_put_contents($itemFolder.'/events.xml', $eventXml);
+	        			}
+	        		}
         		}
 			}
         }
