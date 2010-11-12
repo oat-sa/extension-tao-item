@@ -18,9 +18,9 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 	<title>QTI Item <?=$identifier?></title>
 
 	<!-- CSS -->
-    <!--<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />-->
-    <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/reset.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />
+    <!--<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.css" media="screen" />-->
 
 	<!-- user CSS -->
 	<?foreach($stylesheets as $stylesheet):?>
