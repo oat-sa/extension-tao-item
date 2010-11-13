@@ -238,8 +238,6 @@ function getUserVar(key){
 
 if(typeof(finish) != 'function'){
 
-	//get the highest context 
-	var _stateContext =  window;
 	
 	/**
 	 * Define the item's state as finished.
@@ -249,9 +247,9 @@ if(typeof(finish) != 'function'){
 	 * @namespace taoApi
 	 */
 	function finish(){
-		$(_stateContext).trigger(STATE.ITEM.PRE_FINISHED);
-		$(_stateContext).trigger(STATE.ITEM.FINISHED);
-		$(_stateContext).trigger(STATE.ITEM.POST_FINISHED);
+		$(window).trigger(STATE.ITEM.PRE_FINISHED);
+		$(window).trigger(STATE.ITEM.FINISHED);
+		$(window).trigger(STATE.ITEM.POST_FINISHED);
 	}
 	
 	/**
@@ -262,7 +260,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function onFinish(callback){
-		$(_stateContext).bind(STATE.ITEM.FINISHED, callback);
+		$(window).bind(STATE.ITEM.FINISHED, callback);
 	}
 	
 	/**
@@ -273,7 +271,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function beforeFinish(callback){
-		$(_stateContext).bind(STATE.ITEM.PRE_FINISHED, callback);
+		$(window).bind(STATE.ITEM.PRE_FINISHED, callback);
 	}
 	
 	/**
@@ -284,7 +282,7 @@ if(typeof(finish) != 'function'){
 	 * @param {function} callback
 	 */
 	function afterFinish(callback){
-		$(_stateContext).bind(STATE.ITEM.POST_FINISHED, callback);
+		$(window).bind(STATE.ITEM.POST_FINISHED, callback);
 	}
 
 }
