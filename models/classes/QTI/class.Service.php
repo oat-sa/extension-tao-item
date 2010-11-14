@@ -393,11 +393,11 @@ class taoItems_models_classes_QTI_Service
        		
         	//validate the file to import
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
-			$qtiParser->validate();
+			/*$qtiParser->validate();
 
 			if(!$qtiParser->isValid()){
 				throw new Exception($qtiParser->displayErrors());
-			}
+			}*/
 			
 			$returnValue = $qtiParser->load();
 		}

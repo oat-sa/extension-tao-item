@@ -587,6 +587,7 @@ class taoItems_models_classes_QTI_Interaction
         }
         
         $variables 	= $this->extractVariables();
+        //$variables['data'] = $this->getDataXHTML ();
         $variables['rowOptions'] = json_encode($this->options);
         
 		//change from camelCase to underscore_case the type of the interaction to be used in the JS

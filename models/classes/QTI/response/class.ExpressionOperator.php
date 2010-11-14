@@ -142,7 +142,7 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
                 $returnValue = 'setOutcomeValue("'.$this->options['identifier'].'", '.$subExpressionsJSON.')';
                 break;
             case 'variable':
-                $returnValue = 'getResponse("'.$this->options['identifier'].'")';
+                $returnValue = 'getVariable("'.$this->options['identifier'].'")';
                 break;
             
             default:                 

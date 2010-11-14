@@ -44,6 +44,13 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 		    <?= $matchingTplRenderer->render() ?>
 			qti_init(qti_initParam);
 			matchingInit(matchingParam);
+			
+            // validation process - catch event after all interactions have collected their data
+            $("#qti_validate").bind("click",function(){
+                // Evaluate the user's responses
+                matchingEvaluate ();
+            });
+			
 		});
 	</script>
 </head>

@@ -36,7 +36,8 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+        $file = dirname(__FILE__).'/samples/tags.xml';
+		//foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -74,7 +75,7 @@ class QTIOutputTestCase extends UnitTestCase {
 				$this->assertFalse(file_exists($tmpFile));
 			}
 			
-		}
+		//}
 	}
 	
 	/**
@@ -84,7 +85,8 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+        $file = dirname(__FILE__).'/samples/tags.xml';
+		//foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
@@ -102,12 +104,12 @@ class QTIOutputTestCase extends UnitTestCase {
 			}
 			
 			$xhtml =  $item->toXHTML();
-			
+			echo $xhtml;
 			
 			
 			//test if content has been exported
 			$this->assertFalse(empty($xhtml));
-		}
+		//}
 	}
 
 }

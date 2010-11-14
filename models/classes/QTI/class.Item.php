@@ -479,13 +479,15 @@ class taoItems_models_classes_QTI_Item
         $template  = self::getTemplatePath() . '/xhtml.item.tpl.php';
         
     	//get the variables to use in the template
-    	$variables 	= $this->extractVariables();
+    	$variables = $this->extractVariables();
+        //$variables['data'] = $this->getDataXHTML ();
+        
         $interactions = $this->getInteractions();
         foreach($interactions as $interaction){
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
         }	
-
+                
         // get Matching data
         $matchingData = $this->getMatchingData ();
 		$variables['matching'] = Array();

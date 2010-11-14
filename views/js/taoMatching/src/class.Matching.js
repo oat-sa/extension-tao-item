@@ -19,7 +19,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 	 * Turn the matching engine into debug mode
 	 * @type boolean
 	 */
-    this.DEBUG_MODE = false;
+    this.DEBUG_MODE = true;
 
 	/**
      * Short description of attribute corrects
@@ -85,7 +85,8 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 		, 'isNull'			:{}
 		, 'getCorrect'		:{}
 		, 'getMap'			:{}
-		, 'getResponse'		:{}
+        , 'getResponse'     :{}
+        , 'getVariable'     :{}
         , 'gt'              :{}
         , 'gte'             :{}
         , 'integerDivide'   :{}
@@ -179,8 +180,8 @@ TAO_MATCHING.Matching.prototype = {
 	        try {
                 eval (getRule());
             } catch (e) {
-                if (this.DEBUG_MODE){
-                    console.log (e);   
+                if (DEBUG_MODE){
+                    console.log (e);
                 }
             }
 		}
@@ -310,7 +311,7 @@ TAO_MATCHING.Matching.prototype = {
      * @return mixed
      */
     , setResponses : function(data)
-    {
+    {        
     	if (! $.isArray (data))
     		throw new Error ('TAO_MATCHING.Matching::setResponses is waiting on an array, a '+ (typeof data) +' is given');
 
@@ -363,11 +364,11 @@ TAO_MATCHING.Matching.prototype = {
 				    }
 				}
 				
-				if (self.DEBUG_MODE && typeof whiteFunctionsList[funcName]['jsFunction'] == 'undefined'){
-				    return 'debugTrace ("' + funcName + '" ,';
-				} else {
+				//if (self.DEBUG_MODE && typeof whiteFunctionsList[funcName]['jsFunction'] == 'undefined'){
+				//    return 'debugTrace ("' + funcName + '" ,';
+				//} else {
 				    return funcName + '(';
-				}
+				//}
     	});
 		
 		this.rule = rule;
@@ -519,6 +520,28 @@ TAO_MATCHING.Matching.prototype = {
             returnValue = this.outcomes[identifier];
         else
             throw new Error ('TAO_MATCHING.Matching::getOutcome error : try to reach an unknown outcome variable ['+identifier+']');
+
+        return returnValue;
+    }
+    
+    /**
+     * Get a variab from its identifier
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_Matching_Variable
+     */
+    , getVariable : function(identifier)
+    {
+        var returnValue = null;
+
+        if (typeof (this.responses[identifier]) != 'undefined')
+            returnValue = this.responses[identifier];
+        else if (typeof (this.outcomes[identifier]) != 'undefined')
+            returnValue = this.outcomes[identifier];
+        else
+            throw new Error ('TAO_MATCHING.Matching::getVariable error : try to reach an unknown variable ['+identifier+']');
 
         return returnValue;
     }
@@ -696,7 +719,7 @@ TAO_MATCHING.Matching.prototype = {
      * @return boolean
      */
     , match : function(options, expr1, expr2)
-    {     
+    {
         var returnValue = false;
         options = this.checkOptions(options);
                 
@@ -705,7 +728,7 @@ TAO_MATCHING.Matching.prototype = {
         if (typeof (expr2) == 'undefined')
             throw new Exception ("TAO_MATCHING.Matching::match error : the second argument does not exist");
 
-        if (expr1.getType() != expr2.getType()) { 
+        if (expr1.getType() != expr2.getType()) {
             returnValue = false;
         } else {
             returnValue = expr1.match(expr2);

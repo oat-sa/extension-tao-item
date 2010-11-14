@@ -206,9 +206,9 @@ function QTIResultCollector(options){
 		};
 		
 		$("#" + _this.id + " .filled_gap").each(function(){
-			var firstId = $(this).attr('id').replace('gap_', '');
-			var lastId = $(this).parent().attr('id');
-			result.value.push({0:firstId, 1:lastId});
+			var choiceId = $(this).attr('id').replace('gap_', '');
+			var groupId = $(this).parent().attr('id');
+			result.value.push({0:groupId, 1:choiceId});
 		});
 		
 		return result;

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 09.11.2010, 14:48:08 with ArgoUML PHP module 
+ * Automatically generated on 13.11.2010, 22:51:54 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -152,6 +152,7 @@ class taoItems_models_classes_Matching_Matching
 			, 'getCorrect'=>array()
 			, 'getMap'=>array()
             , 'getResponse'=>array()
+            , 'getVariable'=>array()
             , 'gt'=>array()
             , 'gte'=>array()
             , 'lt'=>array()
@@ -444,7 +445,7 @@ class taoItems_models_classes_Matching_Matching
     public function setResponses($data)
     {
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E2 begin
-            	
+         
         if (gettype($data) != 'array'){
     		throw new Exception ('taoItems_models_classes_Matching_Matching::setReponses is waiting on an array, a '.gettype($data).' is given. '.$data);
         }
@@ -452,9 +453,8 @@ class taoItems_models_classes_Matching_Matching
 		foreach ($data as $key=>$response){
 			try {
 				$var = taoItems_models_classes_Matching_VariableFactory::create ($response->value);
-				
 				if (isset ($this->responses[$response->identifier]))
-					throw new Exception ('taoItems_models_classes_Matching_Matching::setReponses a correct variable with the identifier '.$response->identifier.' exists yet');
+					throw new Exception ('taoItems_models_classes_Matching_Matching::setReponses a response variable with the identifier '.$response->identifier.' exists yet');
 
 				$this->responses[$response->identifier] = $var;
 			}
@@ -492,21 +492,22 @@ class taoItems_models_classes_Matching_Matching
     /**
      * Get a correct variable from its identifier
      *
-     * @access protected
+     * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
-    protected function getCorrect($id)
+    public function getCorrect($id)
     {
         $returnValue = null;
 
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E8 begin
+        // section 127-0-1-1--5e9b2cb2:12c47296979:-8000:0000000000002BDE begin
         
-        if (isset($this->corrects[$id]))
-        	$returnValue = $this->corrects[$id];
+        if (isset($this->corrects[$id])){
+            $returnValue = $this->corrects[$id];
+        }
         
-        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E8 end
+        // section 127-0-1-1--5e9b2cb2:12c47296979:-8000:0000000000002BDE end
 
         return $returnValue;
     }
@@ -551,6 +552,32 @@ class taoItems_models_classes_Matching_Matching
         	$returnValue = $this->outcomes[$id];
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EC end
+
+        return $returnValue;
+    }
+
+    /**
+     * Get a variable from its identifier
+     *
+     * @access protected
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string id
+     * @return taoItems_models_classes_Matching_Variable
+     */
+    protected function getVariable($id)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E8 begin
+        
+        if (isset($this->responses[$id])){
+            $returnValue = $this->responses[$id];
+        }
+        else if (isset($this->outcomes[$id])) {
+            $returnValue = $this->outcomes[$id];
+        }
+        
+        // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028E8 end
 
         return $returnValue;
     }
@@ -1065,7 +1092,7 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * Short description of method substract
+     * Short description of method subtract
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

@@ -11,7 +11,7 @@ require_once dirname(__FILE__) . '/../models/classes/Matching/matching_api.php';
 class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 	
 	protected $qtiService;
-	
+
 	/**
 	 * tests initialization
 	 */
@@ -19,8 +19,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		TestRunner::initTest();
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
-	    
-	/*public function testVariables () {
+
+	public function testVariables () {
 		
 		$null = taoItems_models_classes_Matching_VariableFactory::create (null);
 		
@@ -363,11 +363,11 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 
     public function testOperatorSubstract (){
         $matching = new taoItems_models_classes_Matching_Matching();
-        $this->assertEqual ($matching->substract (null, 3, 2), 1);
-        $this->assertEqual ($matching->substract (null, $matching->createVariable(null, 3), 2), 1);
-        $this->assertEqual ($matching->substract (null, $matching->createVariable(null, 3), null), null);
+        $this->assertEqual ($matching->subtract (null, 3, 2), 1);
+        $this->assertEqual ($matching->subtract (null, $matching->createVariable(null, 3), 2), 1);
+        $this->assertEqual ($matching->subtract (null, $matching->createVariable(null, 3), null), null);
         try {
-            $matching->substract (null, 2, Array(3));
+            $matching->subtract (null, 2, Array(3));
             $this->fail("Exception was expected.");
         } catch (Exception $e) {
              $this->pass();
@@ -535,7 +535,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
-        $file = dirname(__FILE__).'/samples/custom/custom_match_choice.xml';
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_match_choice.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
         
         $matching_data = $item->getMatchingData ();
@@ -563,7 +563,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
-        $file = dirname(__FILE__).'/samples/custom/custom_map_response_choice_multiple.xml';
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_map_response_choice_multiple.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
         
         $matching_data = $item->getMatchingData ();
@@ -592,7 +592,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
-        $file = dirname(__FILE__).'/samples/custom/custom_order_partial_scoring.xml';
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_order_partial_scoring.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
                 
         $matching_data = $item->getMatchingData ();
@@ -605,9 +605,9 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         matching_evaluate ();
         $outcomes = matching_getOutcomes ();
         $this->assertEqual ($outcomes["SCORE"]["value"], 1);
-       
-        //echo $item->toXHTML();
-        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+
+      //echo $item->toXHTML();
+      //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
     public function testCustomMultiplePartialScoring () {
@@ -620,7 +620,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
-        $file = dirname(__FILE__).'/samples/custom/custom_multiple_partial_scoring.xml';
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_multiple_partial_scoring.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
         
         $matching_data = $item->getMatchingData ();
@@ -637,7 +637,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
        
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
-    }*/
+    }
 
     public function testCustomAllRules () {
         $parameters = array(
@@ -649,17 +649,17 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
-        $file = dirname(__FILE__).'/samples/custom/custom_all_rules.xml';
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_all_rules.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
         
         $matching_data = $item->getMatchingData ();
         
         matching_init ();
         matching_setRule ($matching_data['rule']);
-        echo 'rule : ';
-        var_dump($matching_data['rule']);
-        echo 'corrects : ';
-        var_dump($matching_data['corrects']);
+        //echo 'rule : ';
+        //var_dump($matching_data['rule']);
+        //echo 'corrects : ';
+        //var_dump($matching_data['corrects']);
         matching_setCorrects ($matching_data['corrects']);
         //matching_setMaps ($matching_data['maps']);
         matching_setOutcomes ($matching_data['outcomes']);
@@ -668,14 +668,33 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         matching_evaluate ();
         //xdebug_stop_trace();
         $outcomes = matching_getOutcomes ();
-        echo 'outcomes : ';
-        var_dump($outcomes);
+        //echo 'outcomes : ';
+        //var_dump($outcomes);
         $this->assertEqual ($outcomes["SCORE_INT"]["value"], 1);
        
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
-
+    
+    /*public function testCustomAllRules () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom_rule/shakespeare.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+       
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+    }*/
+    
 }
 
 ?>

@@ -61,6 +61,8 @@ TAO_MATCHING.MatchingRemote.prototype = {
 		var self = this;
 		var responses = this.responses;
 		
+		//console.log (this.responses);
+		//console.dir (JSON.stringify(this.responses));
 		var requestParams = $.extend({}, this.params, {data: JSON.stringify(this.responses) });
 	
 		$.ajax ({
@@ -102,6 +104,16 @@ TAO_MATCHING.MatchingRemote.prototype = {
     	if (! $.isArray (data))
     		throw new Error ('TAO_MATCHING.Matching::setResponses is waiting on an array, a '+ (typeof data) +' is given');
 
-		this.responses = data;
+        for (var key in data) {
+            console.log (data[key])
+            try {
+                if (typeof this.responses[data[key].identifier] != 'undefined')
+                    throw new Error ('TAO_MATCHING.Matching::setResponses a response variable with the identifier '+ data[key].identifier +' exists yet');
+                this.responses.push (data[key]);
+            } 
+            catch (e) {
+                throw e;
+            }
+        }
     }
 };

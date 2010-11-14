@@ -129,11 +129,20 @@ class taoItems_models_classes_QTI_Outcome
 
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1D begin
         
+        $outcomeValue = null;
+        if ($this->defaultValue != '') {
+            $outcomeValue = Array($this->defaultValue);
+        } else if ($this->options['baseType'] == 'integer' || $this->options['baseType'] == 'float'){
+            $outcomeValue = Array(0);
+        } else {
+            $outcomeValue = null;
+        }
+        
         $returnValue = taoItems_models_classes_Matching_VariableFactory::createJSONVariableFromQTIData (
     		$this->getIdentifier()
     		, $this->options['cardinality']
     		, $this->options['baseType']
-    		, $this->getDefaultValue()
+    		, $outcomeValue
     	);
         
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1D end

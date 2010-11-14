@@ -232,8 +232,9 @@ class taoItems_models_classes_QTI_ParserFactory
        				break;
        				
        			default :
+                    $interactionData = simplexml_load_string($data->asXML()); 
        				$exp= "*[contains(name(.),'Choice')] | //*[(name(.)='hottext')]";
-       				$choiceNodes = $data->xpath($exp);
+       				$choiceNodes = $interactionData->xpath($exp);
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
 			        	if(!is_null($choice)){
@@ -272,7 +273,7 @@ class taoItems_models_classes_QTI_ParserFactory
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
        					
-       				default:
+       				default:                        
 			        	foreach($myInteraction->getChoices() as $choice){
 				        	//map the choices by a identified tag: {choice-serial}
 				        	$tag = $choice->getType();
@@ -328,15 +329,17 @@ class taoItems_models_classes_QTI_ParserFactory
        	if(!isset($data['identifier'])){
 			throw new taoItems_models_classes_QTI_ParsingException("No identifier found for the choice {$data->getName()}");
        	}
-       	
+            
        	$myChoice = new taoItems_models_classes_QTI_Choice((string)$data['identifier'], $options);
        	$myChoice->setType($data->getName());
+        
        	if(count($data->children()) > 0){
        		$myChoice->setData((string)$data . $data->children()->asXML());
        	}
        	else{
        		$myChoice->setData((string)$data);
        	}
+        
        	$returnValue = $myChoice;
         
         // section 127-0-1-1--12a4f8d3:12a37dedffb:-8000:0000000000002494 end
@@ -497,35 +500,36 @@ class taoItems_models_classes_QTI_ParserFactory
         $responseRules = array ();
         
         // Check if response conditions have been defined
-        $responseConditionNodes = $data->xpath("//*[name(.) = 'responseCondition']");
+        $responseConditionNodes = $data->xpath("*[name(.) = 'responseCondition']");
         
-        foreach($responseConditionNodes as $responseConditionNode) {
+        foreach((array)$responseConditionNodes as $responseConditionNode) {
             $responseIf = null;
             $responseElseIf = array ();
             $responseElse = array ();
             
             $responseCondition = taoItems_models_classes_QTI_response_ExpressionFactory::create ($responseConditionNode);
+                        
+            // RESPONSE IF (1)
+            $responseIfNodes = $responseConditionNode->xpath("*[name(.) = 'responseIf']"); // Only one responseIf is allowed
             
-            // RESPONSE IF
-            list ($responseIfNode) = $responseConditionNode->xpath("//*[name(.) = 'responseIf']"); // Only one responseIf is allowed
-            if (!empty($responseIfNode)) {
-                $responseIf = self::buildConditionalExpression($responseIfNode);
+            if (isset($responseIfNodes[0])) {
+                $responseIf = self::buildConditionalExpression($responseIfNodes[0]);
             } else {
                 throw new taoItems_models_classes_QTI_ParsingException("responseIf is required in responseCondition");
             }
             $responseCondition->setResponseIf ($responseIf);
             
-            // RESPONSE ELSE IF
-            $responseElseIfNodes = $responseConditionNode->xpath("//*[name(.) = 'responseElseIf']");
+            // RESPONSE ELSE IF (*)
+            $responseElseIfNodes = $responseConditionNode->xpath("*[name(.) = 'responseElseIf']");
             foreach ($responseElseIfNodes as $responseElseIfNode) {
                 $responseElseIf[] = self::buildConditionalExpression($responseElseIfNode);
             }
             $responseCondition->setResponseElseIf ($responseElseIf);
             
-            // RESPONSE ELSE
-            list($responseElseNode) = $responseConditionNode->xpath("//*[name(.) = 'responseElse']");
-            if (!empty($responseElseNode)) {
-                foreach ($responseElseNode->children() as $node) {
+            // RESPONSE ELSE (1)
+            $responseElseNodes = $responseConditionNode->xpath("*[name(.) = 'responseElse']");
+            if (isset ($responseElseNodes[0])) {
+                foreach ($responseElseNodes[0]->children() as $node) {
                     $responseElse[] = self::buildExpression ($node);
                 }
                 $responseCondition->setResponseElse ($responseElse);

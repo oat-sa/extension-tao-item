@@ -10,7 +10,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 <head>
 	<title>QUnit Test Suite</title>
 	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
-	<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 	<script type="application/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
 	<script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
@@ -30,9 +30,9 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	--------------------------------------------------------------------------->
 	
 	<script type="application/javascript">
-        var testToRun = 'Remote Matching : CustomAllRules.xml';
-        //var testToRun = '*';
-
+        var testToRun = '*';
+        var testToRun = "Remote Matching : Shakespear.xml";
+        
         var testUnitFct = test;
         var asynctestUnitFct = asyncTest;
         test = function (label, func) {
@@ -473,11 +473,11 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
         });
         
         // SUBSTRACT OPERATOR
-        test("test operator : substract", function() {
+        test("test operator : subtract", function() {
             var matching = new TAO_MATCHING.Matching ();
-            equals (matching.substract (null, 3, 2), 1, 'Expected value');
-            equals (matching.substract (null, matching.createVariable(null, 3), 2), 1, 'Expected value');
-            equals (matching.substract (null, matching.createVariable(null, 3), null), null, 'Expected value');
+            equals (matching.subtract (null, 3, 2), 1, 'Expected value');
+            equals (matching.subtract (null, matching.createVariable(null, 3), 2), 1, 'Expected value');
+            equals (matching.subtract (null, matching.createVariable(null, 3), null), null, 'Expected value');
         });
         
         // PRODUCT OPERATOR
@@ -730,7 +730,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             matching_param = {
                 "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_match_choice.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom_rule/custom_match_choice.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -746,7 +746,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 
         // REMOTE PARSING / CLIENT MATCHING CUSTOM MATCH .xml
         asyncTest("Remote Parsing / Client Matching : Custom Match", function(){
-            var item_path = '<?=PATH_SAMPLE?>custom/custom_match_choice.xml';
+            var item_path = '<?=PATH_SAMPLE?>custom_rule/custom_match_choice.xml';
             var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
@@ -776,7 +776,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             matching_param = {
                 "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_map_response_choice_multiple.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom_rule/custom_map_response_choice_multiple.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -792,7 +792,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 
         // REMOTE PARSING / CLIENT MATCHING MAP RESPONSE .xml
         asyncTest("Remote Parsing / Client Matching : Custom Map Response", function(){
-            var item_path = '<?=PATH_SAMPLE?>custom/custom_map_response_choice_multiple.xml';
+            var item_path = '<?=PATH_SAMPLE?>custom_rule/custom_map_response_choice_multiple.xml';
             var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
@@ -822,7 +822,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             matching_param = {
                 "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_order_partial_scoring.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom_rule/custom_order_partial_scoring.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
@@ -838,7 +838,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 
         // REMOTE PARSING / CLIENT MATCHING PARTIAL SCORING .xml
         asyncTest("Remote Parsing / Client Matching : Custom Partial Scoring", function(){
-            var item_path = '<?=PATH_SAMPLE?>custom/custom_order_partial_scoring.xml';
+            var item_path = '<?=PATH_SAMPLE?>custom_rule/custom_order_partial_scoring.xml';
             var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
@@ -863,39 +863,10 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 }
             });            
         });
-        
-        // CLIENT MATCHING PARTIAL SCORING (Manual rule injection)
-        test ("CLIENT MATCHING PARTIAL SCORING (Manual rule injection)", function(){
-            var myfunc = ' \
-                if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))) { \
-                    setOutcomeValue("SCORE", 2); \
-                } else if (match(null, getResponse("RESPONSE"), createVariable({"type":"tuple"}, "DriverC", "DriverB", "DriverA"))) { \
-                    setOutcomeValue ("SCORE", 1); \
-                } else { \
-                    setOutcomeValue("SCORE", 0); \
-                }'
-            
-            console.log(myfunc.toString ());
-            
-            var matching_param = {
-                data : {
-                    corrects    : [{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]
-                    , outcomes  : [{"identifier":"SCORE", "type":"double"}]
-                    , rule      : myfunc
-                }
-            };
-            
-            matchingInit (matching_param);
-            matchingSetResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
-            matchingEvaluate (); 
-            var outcomes = matchingGetOutcomes ();
-            equals (outcomes.SCORE.value, 1, 'Expected Value');
-        });
-        
 
-        // REMOTE PARSING / CLIENT MATCHING MAP RESPONSE .xml
-        asyncTest("Remote Parsing / Client Matching : Custom Map Response", function(){
-            var item_path = '<?=PATH_SAMPLE?>custom/custom_map_response_choice_multiple.xml';
+        // REMOTE PARSING / CLIENT MATCHING PARTIAL all rules.xml
+        asyncTest("Remote Parsing / Client Matching : Custom All Rules", function(){
+            var item_path = '<?=PATH_SAMPLE?>custom_rule/custom_all_rules.xml';
             var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
 
             $.ajax ({
@@ -908,36 +879,74 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                         "data" : data
                         , "options" : {
                             "evaluateCallback" : function (outcomes) {
-                                equals (outcomes.SCORE.value, 2, 'Expected Value');
+                                equals (outcomes['SCORE_INT'].value, 1, "Expected value");
                                 start();
                             }
                         }
                     };
                     matchingInit (matching_param);
-                    matchingSetResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
                     matchingEvaluate ();
                 }
             });            
         });
 
-        // REMOTE MATCHING CUSTOM PARTIAL SCORING.xml
-        asyncTest ('Remote Matching : CustomAllRules.xml', function () {
+        // REMOTE MATCHING SHAKESPEAR.xml
+        asyncTest ('Remote Matching : Shakespear.xml', function () {
             matching_param = {
                 "url" : "<?=ROOT_URL?>/taoItems/Matching/evaluateDebug"
                 , "params" : {
-                    "item_path" : '<?=PATH_SAMPLE?>custom/custom_all_rules.xml'
+                    "item_path" : '<?=PATH_SAMPLE?>custom_rule/shakespeare.xml'
                 }
                 , "options" : {
                     "evaluateCallback" : function (outcomes) {
-                        console.dir (outcomes);
-                        //equals (outcomes.SCORE.value, 1 , 'Expected Value');
+                        equals (outcomes.SCORE.value, 6 , 'Expected Value');
                         start();
                     }
                 }
             };
+
             matchingInit (matching_param);
+            matchingSetResponses ([
+                {"identifier":"response_1", "value":"choice_1"}
+                ,{"identifier":"response_2","value":"choice_4"}
+                ,{"identifier":"response_3","value":"poet"}
+                ,{"identifier":"response_4","value":"Bard of Avon"}
+                ,{"identifier":"response_5","value":[{"0":"group_1","1":"choice_7"},{"0":"group_2","1":"choice_8"},{"0":"group_3","1":"choice_9"},{"0":"group_4","1":"choice_10"}]}
+                ,{"identifier":"response_6","value":["choice_12","choice_13"]}
+            ]);
             matchingEvaluate ();
         });
+
+        // REMOTE PARSING / CLIENT MATCHING SHAKESPEAR .xml
+        /*asyncTest("Remote Parsing / Client Matching : Custom Partial Scoring", function(){
+            var item_path = '<?=PATH_SAMPLE?>custom_rule/shakespear.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+                    var matching_param = {
+                        "data" : data
+                        , "options" : {
+                            "evaluateCallback" : function (outcomes) {
+                                equals (outcomes.SCORE.value, 1, 'Expected Value');
+                                start();
+                            }
+                        }
+                    };
+                    matchingInit (matching_param);
+                    matchingSetResponses ([
+                        {"identifier":"response_1", "value":"choice_1"}
+                        , {"identifier":"response_2", "value":"choice_4"}
+                    ]);
+                    matchingEvaluate ();
+                }
+            });            
+        });*/
+
 	</script>
 	
 </head>
