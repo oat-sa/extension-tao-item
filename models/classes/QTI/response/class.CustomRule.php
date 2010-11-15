@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.11.2010, 16:26:23 with ArgoUML PHP module 
+ * Automatically generated on 15.11.2010, 16:30:39 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -70,6 +70,14 @@ class taoItems_models_classes_QTI_response_CustomRule
 
 
     // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute responseRules
+     *
+     * @access protected
+     * @var array
+     */
+    protected $responseRules = array();
 
     // --- OPERATIONS ---
 
