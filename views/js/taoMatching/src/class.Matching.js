@@ -19,7 +19,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 	 * Turn the matching engine into debug mode
 	 * @type boolean
 	 */
-    this.DEBUG_MODE = true;
+    this.DEBUG_MODE = false;
 
 	/**
      * Short description of attribute corrects
