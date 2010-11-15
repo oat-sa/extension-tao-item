@@ -115,7 +115,7 @@
 					</inlineChoiceInteraction>
 				</p>
 				<br />
-				<hr size="2" width="100%" />
+				<hr />
 				<br />
 				<p>
 					<i>Shakespeare</i>
@@ -145,12 +145,10 @@
 					other playwright.
 				</p>
 				<br />
-				<hr size="2" width="100%" />
+				<hr />
 				<br />
-				<p>
-
 					<gapMatchInteraction shuffle="true" responseIdentifier="response_5">
-						<p><gapText identifier="choice_7" matchMax="0">Stratford-upon-Avon</gapText><gapText identifier="choice_8" matchMax="2">Anne Hathaway</gapText><gapText identifier="choice_9" matchMax="0">Lord Chamberlain's Men</gapText><gapText identifier="choice_10" matchMax="2">Stratford</gapText>
+						<gapText identifier="choice_7" matchMax="0">Stratford-upon-Avon</gapText><gapText identifier="choice_8" matchMax="2">Anne Hathaway</gapText><gapText identifier="choice_9" matchMax="0">Lord Chamberlain's Men</gapText><gapText identifier="choice_10" matchMax="2">Stratford</gapText>
 							<p> Shakespeare was born and raised in
 								<gap identifier="group_1" /> . At the age of 18, he married
 								<gap identifier="group_2" /> , with whom he had three children: Susanna, and twins Hamnet and Judith. Between 1585 and 1592, he began a successful career in London as an actor, writer, and part owner of a playing company called the
@@ -158,13 +156,10 @@
 								<gap identifier="group_4" /> around 1613, where he died three years later. Few records of Shakespeare's private life survive, and there has been considerable speculation about such matters as his physical appearance, sexuality,
 								<span class="mw-redirect">religious beliefs</span> , and whether the works attributed to him were written by others.
 							</p>
-						</p>
 					</gapMatchInteraction>
-				</p>
 				<br />
-				<hr size="2" width="100%" />
+				<hr />
 				<br />
-				<p>
 					<hottextInteraction maxChoices="2"
 						responseIdentifier="response_6">
 
@@ -191,15 +186,14 @@
 							</div>
 						</div>
 					</hottextInteraction>
-				</p>
 				<br />
-				<hr size="2" width="100%" />
+				<hr />
 				<br />
 				<br />
-				<div align="center">
+				<div>
 					<img
 						src="http://tao.localdomain/filemanager/views/data/240px-Shakespeare.jpg"
-						title="Shakespeare" alt="" height="284" width="221" />
+						 alt="Shakespeare" height="284" width="221" />
 					<br />
 				</div>
 			</div>
