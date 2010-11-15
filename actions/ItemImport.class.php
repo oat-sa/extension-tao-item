@@ -46,6 +46,8 @@ class ItemImport extends Import {
 				//create a new item instance of the clazz
 				if($itemService->isItemClass($clazz)){
 					
+					echo "ok";exit;
+					
 					//load the QTI item from the file
 					$qtiItem = $qtiParser->load();
 					if(!is_null($qtiItem)){

@@ -107,8 +107,14 @@ class taoItems_models_classes_QTI_ParserFactory
         
         $itemData = '';
         foreach($itemBodyNodes as $itemBodyNode){	//the node should be alone
-        	$itemData .= $itemBodyNode->asXml();
+        	if($itemBodyNode->getName() == 'div'){	//prevent a lot of imbricated divs
+        		$itemData .= $itemBodyNode->children()->asXml();
+        	}
+        	else{
+        		$itemData .= $itemBodyNode->asXml();
+        	}
         }
+       
         if(!empty($itemData)){
 	        foreach($myItem->getInteractions() as $interaction){
 	        	//map the interactions by an identified tag: {interaction.serial} 

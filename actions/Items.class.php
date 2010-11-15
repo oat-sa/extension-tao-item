@@ -142,8 +142,27 @@ class Items extends TaoModule{
 				
 				if(isset($data['file_import']['uploaded_file'])){
 					
+					$extension = 'xml';
+					
+					//get the Xml Schema regarding the item model
+					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+					switch($itemModel->uriResource){
+					 	case TAO_ITEM_MODEL_WATERPHENIX: /**@todo add the black schema  */
+					 		break;
+					 	case TAO_ITEM_MODEL_QTI:
+							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
+							break;
+					 	case TAO_ITEM_MODEL_XHTML:
+					 		$extension = 'html';
+					 	default:
+					 		$modelName = strtolower(trim($itemModel->getLabel()));
+					 		$schema = BASE_PATH . "/models/classes/data/{$modelName}/{$modelName}.xsd";
+							break;
+						
+					}
+					
 					//parse and validate the sent file
-					$parser = new tao_models_classes_Parser($data['file_import']['uploaded_file']);
+					$parser = new tao_models_classes_Parser($data['file_import']['uploaded_file'], array('extension' => $extension));
 					
 					//check if the valdiation should be skipped
 					$validate = true;
@@ -156,25 +175,6 @@ class Items extends TaoModule{
 						$parser->forceValidation();
 					}
 					$schema = '';
-					 
-					//get the Xml Schema regarding the item model
-					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-					switch($itemModel->uriResource){
-					 	case TAO_ITEM_MODEL_WATERPHENIX: 
-					 		/**@todo add the black schema  */
-					 		break;
-					 	case TAO_ITEM_MODEL_XHTML:
-					 		/**@todo add the XHTML1.1 strict schema  */
-					 		break;
-					 	case TAO_ITEM_MODEL_QTI:
-							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
-							break;
-					 	default:
-					 		$modelName = strtolower(trim($itemModel->getLabel()));
-					 		$schema = BASE_PATH . "/models/classes/data/{$modelName}/{$modelName}.xsd";
-							break;
-						
-					}
 					 
 					if(!empty($schema)){
 						//run the validation
