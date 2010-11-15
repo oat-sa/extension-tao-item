@@ -97,9 +97,10 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
         , 'not'             :{}
         , 'or'              :{}
         , 'product'         :{}
+        , 'randomInteger'   :{}
         , 'round'           :{}
         , 'setOutcomeValue' :{}
-        , 'subtract'       :{}
+        , 'subtract'        :{}
         , 'sum'             :{}
 	};
 	
@@ -160,7 +161,8 @@ TAO_MATCHING.Matching.prototype = {
      * @todo to remove in production mode
      */
     , console : function (options, obj) {
-        console.log(obj);
+        if (this.DEBUG_MODE)
+            console.log(obj);
         return true;
     }
     
@@ -176,15 +178,15 @@ TAO_MATCHING.Matching.prototype = {
             throw new Error ('TAO_MATCHING.Matching::evaluate : an error occured : the rule has not been defined');
         }
         
-		with (this){
-	        try {
+	    try {
+            with (this){
                 eval (getRule());
-            } catch (e) {
-                if (DEBUG_MODE){
-                    console.log (e);
-                }
             }
-		}
+        } catch (e) {
+            if (this.DEBUG_MODE){
+                this.console (null, e);
+            }
+        }
 		
 		if (this.options.evaluateCallback!=null){
             this.options.evaluateCallback (this.outcomes);
@@ -1065,6 +1067,17 @@ TAO_MATCHING.Matching.prototype = {
             }
         }
         
+        return returnValue;
+    }
+    
+    , randomInteger : function (options){
+        var returnValue = null;
+        options = this.checkOptions (options);
+        
+        var randomNum = Math.random() * (options.max-options.min);
+        // Round to the closest integer and return it
+        returnValue = Math.round(randomNum) + options.min; 
+                
         return returnValue;
     }
     

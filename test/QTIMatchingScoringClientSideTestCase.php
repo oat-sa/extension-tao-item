@@ -31,7 +31,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	
 	<script type="application/javascript">
         var testToRun = '*';
-        var testToRun = "Remote Matching : Shakespear.xml";
+        //var testToRun = "Remote Matching : Shakespear.xml";
         
         var testUnitFct = test;
         var asynctestUnitFct = asyncTest;
