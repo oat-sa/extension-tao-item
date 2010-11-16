@@ -552,11 +552,10 @@ var QTIWidget = function(options){
 		//define the columns of the matrix from the last choice list
 		$(qti_item_id + " .choice_list:last").addClass('choice_list_cols');
 		var cols = new Array();
-		$(qti_item_id + " .choice_list:last li").each(function(){
-		/*	var content = $(this).html().wrap('div>');
-			$(this).wrapInner('<div class="inline-col" />');*/
+		$(qti_item_id + " .choice_list_cols li").each(function(){
 			cols.push(this.id);
 		});
+		
 		
 		//define the rows of the matrix from the first choice list
 		$(qti_item_id + " .choice_list:first").addClass('choice_list_rows');
@@ -569,8 +568,10 @@ var QTIWidget = function(options){
 		$(qti_item_id + " .choice_list_cols").after("<div class='match_node_container'></div>");
 		
 		//make the display adjustment
-		$(qti_item_id + " .match_node_container").height(parseInt( $(qti_item_id + " .choice_list:first").height()));
-		$(qti_item_id + " .match_node_container").css('left', $(qti_item_id + " .choice_list_rows").width());
+		$(qti_item_id + " .match_node_container").height(parseInt( $(qti_item_id + " .choice_list_rows").height()));
+		$(qti_item_id + " .match_node_container").css({
+			'left': $(qti_item_id + " .choice_list_rows").width()
+		});
 		
 		//build all the nodes
 		var i = 0;

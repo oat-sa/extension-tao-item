@@ -17,7 +17,7 @@ div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 
 .field_error {background-color:transparent; background-image: url('../img/underline.gif'); background-repeat: repeat-x; background-position: bottom; }
 
-.breaker {clear:both; 	}
+.breaker {clear:both;}
 
 /* BD #009933 */.active {border:2px solid #009933 !important; }
 
@@ -81,9 +81,9 @@ textarea {width:400px; height:100px; margin:auto; 	}
 
 /* Match */
 /* BD #ccc BG #eee TXT #555 */.qti_match_interaction .choice_list li  {line-height:25px; padding:0px 5px 0px 5px; font-weight:bold; color:#555; background-color: #eee; border: solid 1px #ccc; }
-.qti_match_interaction .choice_list_cols li {display:inline; padding:5px; left:-1px; }
-.qti_match_interaction .choice_list_rows {float:left; padding-top:25px; }
-.qti_match_interaction .match_node_container {position:relative; }
+.qti_match_interaction .choice_list_cols li {padding:5px;float:left;position:relative;}
+.qti_match_interaction .choice_list_rows {float:left; padding-top:35px; margin-bottom:35px;}
+.qti_match_interaction .match_node_container {position:relative; top:35px; margin-bottom:35px;}
 /* BD #ccc */.qti_match_interaction .match_node {position:absolute; width:16px; height:25px; padding:0px 5px 0px 5px; background:url(../img/choice_multi_off.png) no-repeat; background-position: center center; cursor:pointer; border: solid 1px #ccc; }
 /* BD #ccc */.qti_match_interaction .tabActive {background:url(../img/choice_multi_on.png) no-repeat; background-position: center center; }
 .qti_match_interaction {x-overflow: scroll; }
