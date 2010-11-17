@@ -154,6 +154,8 @@ class Items extends TaoModule{
 							break;
 					 	case TAO_ITEM_MODEL_XHTML:
 					 		$extension = 'html';
+					 		$schema = BASE_PATH . '/models/classes/data/xhtml/xhtml.xsd';
+							break;
 					 	default:
 					 		$modelName = strtolower(trim($itemModel->getLabel()));
 					 		$schema = BASE_PATH . "/models/classes/data/{$modelName}/{$modelName}.xsd";
@@ -174,7 +176,6 @@ class Items extends TaoModule{
 					if(!$validate){
 						$parser->forceValidation();
 					}
-					$schema = '';
 					 
 					if(!empty($schema)){
 						//run the validation

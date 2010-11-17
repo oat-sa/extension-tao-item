@@ -86,12 +86,22 @@ class taoItems_actions_form_ItemContentIO
     {
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002598 begin
         
+    	$itemService = tao_models_classes_ServiceFactory::get('Items');
+    	if($itemService->hasItemModel($this->instance, array(TAO_ITEM_MODEL_XHTML))){
+    		$extension 	= array('xhtml', 'html', 'htm');
+    		$mimeType 	= array('text/xml', 'application/xml', 'text/html');
+    	}
+    	else{
+    		$extension 	= array('xml');
+    		$mimeType 	= array('text/xml', 'application/xml');
+    	}
+    	
     	$importFileElt = tao_helpers_form_FormFactory::getElement("file_import", 'AsyncFile');
-		$importFileElt->setDescription(__("Upload the item content (XML format required)"));
+		$importFileElt->setDescription(__("Upload the item content"));
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
 			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),	
-			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/xml', 'application/xml'), 'extension' => array('xml')))
+			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => $mimeType, 'extension' => $extension))
 		));
 		$this->form->addElement($importFileElt);
 		
@@ -114,7 +124,7 @@ class taoItems_actions_form_ItemContentIO
 			$this->form->addElement($instanceUriElt);
 		}
     	
-    	$itemService = tao_models_classes_ServiceFactory::get('Items');
+    	
 		if($itemService->hasItemContent($this->instance)){
 			if(trim($itemService->getItemContent($this->instance)) != ''){
 				$this->addDownloadSection();

@@ -92,7 +92,14 @@ class taoItems_actions_form_Import
 		));
     	
 		$this->form->addElement($fileElt);
-		$this->form->createGroup('file', __('Upload QTI File'), array('source','qti_desc'));
+		
+		
+		$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
+		$disableValidationElt->setDescription("Disable validation");
+		$disableValidationElt->setOptions(array("on" => ""));
+		$this->form->addElement($disableValidationElt);
+		
+		$this->form->createGroup('file', __('Upload QTI File'), array('source','qti_desc', 'disable_validation'));
 		
 		$qtiSentElt = tao_helpers_form_FormFactory::getElement('import_sent_qti', 'Hidden');
 		$qtiSentElt->setValue(1);
@@ -131,7 +138,14 @@ class taoItems_actions_form_Import
 		));
     	
 		$this->form->addElement($fileElt);
-		$this->form->createGroup('file', __('Upload a QTI Package File'), array('qti_desc', 'source'));
+		
+		
+		$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
+		$disableValidationElt->setDescription("Disable validation");
+		$disableValidationElt->setOptions(array("on" => ""));
+		$this->form->addElement($disableValidationElt);
+		
+		$this->form->createGroup('file', __('Upload a QTI Package File'), array('qti_desc', 'source', 'disable_validation'));
 		
 		$qtiSentElt = tao_helpers_form_FormFactory::getElement('import_sent_qti', 'Hidden');
 		$qtiSentElt->setValue(1);
@@ -170,7 +184,13 @@ class taoItems_actions_form_Import
 		));
     	
 		$this->form->addElement($fileElt);
-		$this->form->createGroup('file', __('Upload an XHTML Package File'), array('xhtml_desc', 'source'));
+		
+		$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
+		$disableValidationElt->setDescription("Disable validation");
+		$disableValidationElt->setOptions(array("on" => ""));
+		$this->form->addElement($disableValidationElt);
+		
+		$this->form->createGroup('file', __('Upload an XHTML Package File'), array('xhtml_desc', 'source', 'disable_validation'));
 		
 		$xhtmlSentElt = tao_helpers_form_FormFactory::getElement('import_sent_xhtml', 'Hidden');
 		$xhtmlSentElt->setValue(1);

@@ -600,6 +600,7 @@ class taoItems_models_classes_QTI_Item
             $maps = Array ();
             $interactions = $this->getInteractions();
             foreach ($interactions as $interaction){
+            	if( $interaction->getResponse () != null){
                 $correctJSON = $interaction->getResponse ()->correctToJSON();
                 if ($correctJSON != null) {
                     array_push ($returnValue["corrects"], $correctJSON);   
@@ -609,6 +610,7 @@ class taoItems_models_classes_QTI_Item
                 if ($mapJson != null) {
                     array_push ($returnValue["maps"], $mapJson);   
                 }
+            	}
             }
             
             // Get the outcome variables

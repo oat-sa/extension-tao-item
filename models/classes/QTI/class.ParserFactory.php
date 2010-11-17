@@ -107,12 +107,13 @@ class taoItems_models_classes_QTI_ParserFactory
         
         $itemData = '';
         foreach($itemBodyNodes as $itemBodyNode){	//the node should be alone
-        	if($itemBodyNode->getName() == 'div'){	//prevent a lot of imbricated divs
+        	/*if($itemBodyNode->getName() == 'div'){	//prevent a lot of imbricated divs
         		$itemData .= $itemBodyNode->children()->asXml();
         	}
         	else{
         		$itemData .= $itemBodyNode->asXml();
-        	}
+        	}*/
+        	$itemData .= $itemBodyNode->asXml();
         }
        
         if(!empty($itemData)){

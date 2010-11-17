@@ -17,11 +17,8 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>QTI Item <?=$identifier?></title>
 
-	<!-- CSS 
+	<!-- CSS -->
     <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />
-	-->
-	<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/reset.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.css" media="screen" />
 	<!-- user CSS -->
 	<?foreach($stylesheets as $stylesheet):?>
 		<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
@@ -37,12 +34,9 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
-	<!-- 
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/qti.min.js"></script>
-	 -->
-	 <script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/src/Widget.js"></script>
-	 <script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/src/ResultCollector.js"></script>
-	 <script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/src/init.js"></script>
+	<!--  -->
+	
 	<script type="text/javascript">
 		var qti_initParam  = new Object();
 		var matchingParam = new Object();
@@ -51,7 +45,7 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 		    <?= $matchingTplRenderer->render() ?>
 			qti_init(qti_initParam);
 			matchingInit(matchingParam);
-			
+
             // validation process - catch event after all interactions have collected their data
             $("#qti_validate").bind("click",function(){
                 // Evaluate the user's responses

@@ -34,11 +34,17 @@ class ItemImport extends Import {
 		
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			
+			$forceValid = false;
+			if(isset($formValues['disable_validation'])){
+				$forceValid = true;
+			} 
+			
 			//validate the file to import
 			$qtiParser = new taoItems_models_classes_QTI_Parser($uploadedFile);
+			
 			$qtiParser->validate();
 
-			if(!$qtiParser->isValid()){
+			if(!$qtiParser->isValid() && !$forceValid){
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
 				$this->setData('importErrors', $qtiParser->getErrors());
 			}
@@ -94,6 +100,11 @@ class ItemImport extends Import {
 			
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			
+			$forceValid = false;
+			if(isset($formValues['disable_validation'])){
+				$forceValid = true;
+			} 
+			
 			//load and validate the package
 			$qtiPackageParser = new taoItems_models_classes_QTI_PackageParser($uploadedFile);
 			$qtiPackageParser->validate();
@@ -116,7 +127,7 @@ class ItemImport extends Import {
 			$qtiManifestParser = new taoItems_models_classes_QTI_ManifestParser($folder .'/imsmanifest.xml');
 			$qtiManifestParser->validate();
 			
-			if(!$qtiManifestParser->isValid()){
+			if(!$qtiManifestParser->isValid() && !$forceValid){
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
 				$this->setData('importErrors', $qtiManifestParser->getErrors());
 				return false;
@@ -198,6 +209,10 @@ class ItemImport extends Import {
 			
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			
+			$forceValid = false;
+			if(isset($formValues['disable_validation'])){
+				$forceValid = true;
+			} 
 			//load and validate the package
 			$packageParser = new taoItems_models_classes_XHTML_PackageParser($uploadedFile);
 			$packageParser->validate();
@@ -221,7 +236,7 @@ class ItemImport extends Import {
 			$fileParser = new tao_models_classes_Parser($folder .'/index.html', array('extension' => 'html'));
 			$fileParser->validate(BASE_PATH.'/models/classes/data/xhtml/xhtml.xsd');
 			
-			if(!$fileParser->isValid()){
+			if(!$fileParser->isValid() && !$forceValid){
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
 				$this->setData('importErrors', $fileParser->getErrors());
 				return false;
