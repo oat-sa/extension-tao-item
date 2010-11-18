@@ -836,11 +836,4 @@ class taoItems_models_classes_QTI_Interaction
 
 } /* end of class taoItems_models_classes_QTI_Interaction */
 
-?>/* lost code following: 
-    // section 127-0-1-1--3f4b312:12c5e672d01:-8000:0000000000002C1B begin
-        $this->responseProcessingTemplateUri = $uri;
-    // section 127-0-1-1--3f4b312:12c5e672d01:-8000:0000000000002C1B end
-    // section 127-0-1-1--3f4b312:12c5e672d01:-8000:0000000000002C23 begin
-        $returnValue = $this->responseProcessingTemplateUri;
-    // section 127-0-1-1--3f4b312:12c5e672d01:-8000:0000000000002C23 end
-*/
+?>
