@@ -82,38 +82,50 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 interactionClass.prototype.saveInteraction = function($myForm){
 	//TODO: check unicity of the id:
 	
+	var interactionProperties = $myForm.serializeObject();
+	
+	//filter the prompt html area field:
+	if(interactionProperties.prompt){
+		interactionProperties.prompt = util.htmlEncode(interactionProperties.prompt);
+	}
+	
 	//serialize the order:
 	var orderedChoices = '';
 	if(this.orderedChoices[0]){
+		interactionProperties.choiceOrder = [];
 		for(var i=0;i<this.orderedChoices.length;i++){
-			orderedChoices += '&choiceOrder['+i+']='+this.orderedChoices[i];
+			// orderedChoices += '&choiceOrder['+i+']='+this.orderedChoices[i];
+			interactionProperties.choiceOrder[i] = this.orderedChoices[i];
 		}
 	}else{
 		//for match and gapmatch interaction:
 		var i = 0;
 		for(var groupSerial in this.orderedChoices){
-			orderedChoices += '&choiceOrder'+i+'[groupSerial]='+groupSerial;
+			interactionProperties['choiceOrder'+i] = [];
+			interactionProperties['choiceOrder'+i]['groupSerial'] = groupSerial;
+			// orderedChoices += '&choiceOrder'+i+'[groupSerial]='+groupSerial;
 			for(var j=0; j<this.orderedChoices[groupSerial].length; j++){
-				orderedChoices += '&choiceOrder'+i+'['+j+']='+this.orderedChoices[groupSerial][j];
+				interactionProperties['choiceOrder'+i][j] = this.orderedChoices[groupSerial][j];
+				// orderedChoices += '&choiceOrder'+i+'['+j+']='+this.orderedChoices[groupSerial][j];
 			}
 			i++;
 		}
 	}
 	
 	//check if it is required to save data (hotText and gapMatch interactions):
-	var interactionData = '';
 	if(this.interactionDataContainer){
 		if($(this.interactionDataContainer).length && this.interactionEditor.length){
 			//there is a wysiwyg editor that contains the interaciton data:
-				interactionData = '&data='+this.interactionEditor.wysiwyg('getContent');
+			interactionProperties.data = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
 		}
 	}
 	
 	var interaction = this;
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveInteraction",
-	   data: $myForm.serialize()+orderedChoices+interactionData,
+	   data: interactionProperties,
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){

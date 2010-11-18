@@ -283,16 +283,17 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function saveItemData(taoItems_models_classes_QTI_Item $item, $itemData){
 		if(!is_null($item)){
+			// $itemData = html_entity_decode($itemData);
 			
-			$itemData = html_entity_decode($itemData);
-						
 			//clean the interactions' editing elements:
 			foreach($item->getInteractions() as $interaction){
 				$itemData = $this->filterData($interaction, $itemData);
 			}
 			
+			// $xhtmlData = $this->convertToXHTML($itemData);
+			
 			//item saved in session:
-			$item->setData($this->convertToXHTML($itemData));
+			$item->setData($itemData);
 		}
 	}
 	
@@ -789,7 +790,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function setData(taoItems_models_classes_QTI_Data $qtiObject, $data = ''){
 		//
-		$qtiObject->setData($this->convertToXHTML($data));
+		$qtiObject->setData($data);
 	}
 	
 	public function setIdentifier(taoItems_models_classes_QTI_Data $qtiObject, $identifier){
@@ -860,7 +861,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
 		
-		$data = $this->convertToXHTML($data);
+		// $data = $this->convertToXHTML($data);
 		
 		//append the choices id to the interaction data:
 		switch(strtolower($interaction->getType())){
@@ -941,8 +942,8 @@ class taoItems_models_classes_QtiAuthoringService
 					$data = $this->filterData($group, $data);
 				}
 				
-				$interaction->setData('<p>'.$choicesData.$data.'</p>');
-				
+				// $interaction->setData('<p>'.$choicesData.$data.'</p>');
+				$interaction->setData($choicesData.$data);
 				break;
 			}
 			case 'textentry':
@@ -957,7 +958,8 @@ class taoItems_models_classes_QtiAuthoringService
 					$data = $this->filterData($choice, $data);
 				}
 				
-				$interaction->setData('<div>'.$data.'</div>');
+				// $interaction->setData('<div>'.$data.'</div>');
+				$interaction->setData($data);
 				break;
 			}
 			default:{
@@ -982,12 +984,40 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function convertToXHTML($data){
-		$html = '<div>' . html_entity_decode($data) . '</div>';
-		$doc = new DOMDocument;
-		@$doc->loadHTML($html);
-		$data = substr($doc->saveXML($doc->getElementsByTagName('div')->item(0)), 5, -6);
+		print_r($data);
+		// var_dump('data', $data);
+		$html = '<div>' . $data . '</div>';
+		$doc = new DOMDocument('1.0', 'UTF-8');
+		$doc->encoding = 'UTF-8';
+		$doc->loadHTML($html);
+		$doc->encoding = 'UTF-8';
+		echo '<pre>'; print_r($doc->saveXML());echo '</pre>'; 
+		// var_dump($doc->saveXML($doc->getElementsByTagName('div')->item(0)));
+		// print_r('html');
+		// echo'\n<pre>data';print_r($data);
+		// echo'\n<pre>html';print_r($html);
+		// print_r($doc->saveXML($doc->getElementsByTagName('div')->item(0)));
 		
-		return $data;
+		$data = substr($doc->saveXML($doc->getElementsByTagName('div')->item(0)), 5, -6);
+		// echo'\n<pre>savexml';print_r($data);
+		
+		// $tmp = $data;
+		// $count = 0;
+		// while (mb_detect_encoding($tmp)=="UTF-8"){
+			// $tmp = utf8_decode($tmp);
+			
+			// $count++;
+		// }
+
+		// for ($i = 0; $i < $count-2 ; $i++){
+			// $data = utf8_decode($data);
+			// echo "\n<pre>savexml$i";print_r($data);
+		// }
+		
+		// print_r(utf8_decode($data));
+		// var_dump($count, $data);
+		
+		return utf8_decode($data);
 	}
 	
 	public function setGroupData(taoItems_models_classes_QTI_Group $group, $choiceOrder=array(), taoItems_models_classes_QTI_Interaction $interaction=null, $edit=false){

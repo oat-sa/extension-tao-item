@@ -138,7 +138,7 @@ class QtiAuthoring extends CommonModule {
 	public function saveItemData(){
 		$saved = false;
 		
-		$itemData = html_entity_decode($this->getRequestParameter('itemData'));
+		$itemData = $this->getPostedItemData();
 		
 		if(!empty($itemData)){
 			//save to qti:
@@ -154,7 +154,7 @@ class QtiAuthoring extends CommonModule {
 	public function saveInteractionData(){
 		$saved = false;
 		
-		$interactionData = $this->getRequestParameter('interactionData');
+		$interactionData = $this->getPostedInteractionData();
 		if(!empty($interactionData)){
 			$this->service->setInteractionData($this->getCurrentInteraction(), $interactionData);
 			$saved = true;
@@ -172,8 +172,11 @@ class QtiAuthoring extends CommonModule {
 	public function saveItem(){
 		$saved = false;
 		
-		$itemData = $this->getRequestParameter('itemData');
-	
+		// $itemData = html_entity_decode($this->getRequestParameter('itemData'));
+		$itemData = $this->getPostedItemData();
+		// print_r($itemData);
+		// error_log($itemData);
+		
 		if(!empty($itemData)){
 		
 			$itemResource = $this->getCurrentItemResource();
@@ -229,12 +232,34 @@ class QtiAuthoring extends CommonModule {
 		$this->setView("QTIAuthoring/preview.tpl");
 	}
 	
+	protected function getPostedItemData(){
+		return $this->getPostedData('itemData');
+	}
+	
+	protected function getPostedInteractionData(){
+		return $this->getPostedData('interactionData');
+	}
+	
+	protected function getPostedData($key, $required = false){
+		$returnValue = '';
+		
+		if($this->hasRequestParameter($key)){
+			$returnValue = html_entity_decode(urldecode($this->getRequestParameter($key)), null, "UTF-8");
+		}else{
+			if($required){
+				throw new Exception('the request data "'.$key.'" cannot be found');
+			}
+		}
+		
+		return $returnValue;
+	}
+	
 	public function addInteraction(){
 		$added = false;
 		$interactionSerial = '';
 		
 		$interactionType = $this->getRequestParameter('interactionType');
-		$itemData = urldecode($this->getRequestParameter('itemData'));
+		$itemData = $this->getPostedItemData();
 		// echo "<pre>$itemData</pre>";
 		
 		$item = $this->getCurrentItem();
@@ -266,7 +291,7 @@ class QtiAuthoring extends CommonModule {
 		$choiceSerial = '';//the hot text basically is a "choice"
 		$textContent = '';
 		
-		$interactionData = urldecode($this->getRequestParameter('interactionData'));
+		$interactionData = $this->getPostedInteractionData();
 		// echo "<pre>$interactionData</pre>";
 		
 		$interaction = $this->getCurrentInteraction();
@@ -650,7 +675,7 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				if(isset($values['prompt'])){
-					$interaction->setPrompt($this->service->convertToXHTML($values['prompt']));
+					$interaction->setPrompt($this->getPostedData('prompt'));
 					unset($values['prompt']);
 				}
 				
@@ -820,7 +845,7 @@ class QtiAuthoring extends CommonModule {
 		$textContent = '';
 		$interaction = null;
 		$interaction = $this->getCurrentInteraction();
-		$interactionData = urldecode($this->getRequestParameter('interactionData'));
+		$interactionData = $this->getPostedInteractionData();
 		
 		$group = $this->service->addGroup($interaction, $interactionData);
 		

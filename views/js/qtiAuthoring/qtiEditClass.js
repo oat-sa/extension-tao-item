@@ -241,6 +241,7 @@ qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSeria
 	}
 	
 	var instance = this;
+	itemData = util.htmlEncode(itemData);
 	
 	$.ajax({
 	   type: "POST",
@@ -416,17 +417,13 @@ qtiEdit.prototype.save = function(itemUri){
 	if(!this.itemUri) throw 'item uri cannot be empty';
 	
 	//save item data then export to rdf item:
-	var instance = this;
+	var self = this;
 	
-
-	//get the item form values:
-	var itemProperties = $('#AssessmentItem_Form').serialize();
+	var itemProperties = $('#AssessmentItem_Form').serializeObject();
+	itemProperties.itemSerial = this.itemSerial;
+	itemProperties.itemUri = this.itemUri;
+	itemProperties.itemData = util.htmlEncode(this.itemEditor.wysiwyg('getContent'));
 	//could check if an interaction is being edited, so suggest to save it too:
-	if(itemProperties){
-		itemProperties += '&itemData=' + util.htmlDecode(instance.itemEditor.wysiwyg('getContent'));
-		itemProperties += '&itemSerial=' + instance.itemSerial;
-		itemProperties += '&itemUri=' + this.itemUri;
-	}
 	
 	$.ajax({
 	   type: "POST",
@@ -463,7 +460,7 @@ qtiEdit.prototype.saveItemData = function(itemSerial){
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveItemData",
 	   data: {
-			'itemData': util.htmlDecode(instance.itemEditor.wysiwyg('getContent')),
+			'itemData': util.htmlEncode(instance.itemEditor.wysiwyg('getContent')),
 			'itemSerial': itemSerial
 	   },
 	   dataType: 'json',
