@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 18:44:52 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 12:14:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -46,13 +46,6 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  */
 require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
-/**
- * include taoItems_models_classes_QTI_response_ResponseProcessing
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
- */
-require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.php');
-
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000233F-includes begin
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000233F-includes end
@@ -73,7 +66,7 @@ class taoItems_models_classes_QTI_Item
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -314,15 +307,13 @@ class taoItems_models_classes_QTI_Item
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  ResponseProcessing rprocessing
+     * @param  rprocessing
      * @return mixed
      */
-    public function setResponseProcessing( taoItems_models_classes_QTI_response_ResponseProcessing $rprocessing)
+    public function setResponseProcessing($rprocessing)
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E begin
-        
-    	$this->responseProcessing = $rprocessing;
-    	
+    	$this->responseProcessing = $rprocessing;    	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E end
     }
 
@@ -592,7 +583,7 @@ class taoItems_models_classes_QTI_Item
             
             // Get the rule
             if(!is_null($this->getResponseProcessing ())){
-            	$returnValue["rule"] = $this->getResponseProcessing ()->getRule();
+            	$returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
             }
             
             // Get the correct responses (correct variables and map variables)

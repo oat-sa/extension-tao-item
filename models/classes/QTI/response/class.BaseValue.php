@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 16:05:00 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 11:03:29 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -22,11 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_response_ExpressionOperator
+ * include taoItems_models_classes_QTI_response_Expression
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/class.ExpressionOperator.php');
+require_once('taoItems/models/classes/QTI/response/class.Expression.php');
 
 /* user defined includes */
 // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A77-includes begin
@@ -45,7 +45,7 @@ require_once('taoItems/models/classes/QTI/response/class.ExpressionOperator.php'
  * @subpackage models_classes_QTI_response
  */
 class taoItems_models_classes_QTI_response_BaseValue
-    extends taoItems_models_classes_QTI_response_ExpressionOperator
+    extends taoItems_models_classes_QTI_response_Expression
 {
     // --- ASSOCIATIONS ---
 

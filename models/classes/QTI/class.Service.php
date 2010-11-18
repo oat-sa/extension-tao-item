@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI_Service gives you a central access to the managment methods of the
  * objects
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_models_classes_Service
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('tao/models/classes/class.Service.php');
 
@@ -35,7 +35,7 @@ require_once('tao/models/classes/class.Service.php');
  * objects
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -54,7 +54,7 @@ class taoItems_models_classes_QTI_Service
      * Item as the QTI xml
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Resource item
      * @return taoItems_models_classes_QTI_Item
      */
@@ -102,7 +102,7 @@ class taoItems_models_classes_QTI_Service
      * and saving it in the itemContent prioperty of the RDF Item
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Item qtiItem
      * @param  Resource rdfItem
      * @return boolean
@@ -143,7 +143,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Item instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Item
      */
@@ -164,7 +164,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Interaction instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string serial
      * @return doc_Interaction
      */
@@ -185,7 +185,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Response instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Response
      */
@@ -206,7 +206,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Data child instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string serial
      * @param  string type
      * @return taoItems_models_classes_QTI_Data
@@ -246,7 +246,7 @@ class taoItems_models_classes_QTI_Service
      * Short description of method getComposingData
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Data composed
      * @return taoItems_models_classes_QTI_Data
      */
@@ -261,14 +261,18 @@ class taoItems_models_classes_QTI_Service
         }
         
         if(!is_null($composed)){
-        	$tokens = explode('_', get_class($composed));
-        	$objectType = strtolower($tokens[count($tokens) - 1]);
+            if (is_null ($objectType)){
+                $tokens = explode('_', get_class($composed));
+                $objectType = strtolower($tokens[count($tokens) - 1]);
+            } 
         	$propertyName = $objectType . 's';
         	$methodName = 'get'.ucfirst($propertyName);
 			
 			//singular property name:
 			$singularPropertyName = $objectType;
         	$singularMethodName = 'get'.ucfirst($singularPropertyName);
+            
+            echo ($objectType.' '.$methodName.' '.$singularMethodName);
         }
         
 		$instances = taoItems_models_classes_QTI_Data::$_instances;
@@ -283,13 +287,15 @@ class taoItems_models_classes_QTI_Service
         }
         
         foreach($instances as $serial){
+            if ($serial == 'identifiers') continue;
+            
 			$instance = null;
         	try{
 				$instance = $this->getDataBySerial($serial);
 			}catch(Exception $e){}
 			
 			if(is_null($instance)){
-				//newly constructed object that has not been saved into session yet or wrong variable that failed to be unserialized:
+				// newly constructed object that has not been saved into session yet or wrong variable that failed to be unserialized:
 				continue;
 			}
 			
@@ -327,7 +333,7 @@ class taoItems_models_classes_QTI_Service
      * Short description of method saveDataToSession
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Data qtiObject
      * @return boolean
      */
@@ -356,7 +362,7 @@ class taoItems_models_classes_QTI_Service
      * Build the XHTML/CSS/JS from a QTI_Item to be rendered.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Item item the item to render
      * @return string
      */
@@ -379,7 +385,7 @@ class taoItems_models_classes_QTI_Service
      * Short description of method loadItemFromFile
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string file
      * @return taoItems_models_classes_QTI_Item
      */
@@ -393,11 +399,11 @@ class taoItems_models_classes_QTI_Service
        		
         	//validate the file to import
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
-			/*$qtiParser->validate();
+			$qtiParser->validate();
 
 			if(!$qtiParser->isValid()){
 				throw new Exception($qtiParser->displayErrors());
-			}*/
+			}
 			
 			$returnValue = $qtiParser->load();
 		}

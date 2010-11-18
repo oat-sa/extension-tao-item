@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.11.2010, 12:03:18 with ArgoUML PHP module 
+ * Automatically generated on 16.11.2010, 14:18:07 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -56,37 +56,78 @@ abstract class taoItems_models_classes_Matching_Collection
     // --- OPERATIONS ---
 
     /**
-     * Short description of method contain
+     * Short description of method contains
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Variable var
-     * @return string
+     * @param  array options options.needleType {String} Define if the script has to go through the needle or it must treat it as  scalar variable
+     * @return boolean
      */
-    public function contain( taoItems_models_classes_Matching_Variable $var)
+    public function contains( taoItems_models_classes_Matching_Variable $var, $options = array())
     {
-        $returnValue = (string) '';
+        $returnValue = (bool) false;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9A begin
         
-     	foreach ($this->value as $key=>$value) {
-			$resMatch = null;
-
-			// Different type
-			if ($var->getType() != $value->getType()){
-				$returnValue = null;
-				break;
-			}
-			
-			if ($var->match ($value)){
-				$returnValue = $key;
-				break;
-			}
+        $needleType = 'collection';
+        if (isset($options['needleType'])){
+            $needleType = $options['needleType'];
+        }
+        
+        // If the needle is a Tuple
+        if ($var instanceOf taoItems_models_classes_Matching_Tuple && $needleType == 'collection') {
+            foreach ($var->getValue() as $key => $value) {
+                // A tuple may contains only other Tuple
+                if (! $var->value[$key] instanceOf taoItems_models_classes_Matching_Tuple){
+                    $returnValue = false;
+                    break;
+                }
+                if ($this->value[$key]->match($var->value[$key])){
+                    $returnValue = true;
+                } else {
+                    $returnValue = false;
+                    break;
+                }
+            }
+        }
+        // Else if the needle is a List
+        else if ($var instanceOf taoItems_models_classes_Matching_List && $needleType == 'collection') {
+            foreach ($var->getValue() as $key => $value) {
+                if ($this->contains ($var->value[$key])){
+                    $returnValue = true;
+                } else {
+                    $returnValue = false;
+                    break;
+                }
+            }
+        } 
+        // Else we check if the value is include is the current collection
+        else {
+            try {
+                foreach ($this->getValue() as $key => $value) {                    
+                    // If the needle is not of the same type that an item of the collection (escape)
+                    if ($var->getType() != $this->value[$key]->getType()){
+                        $returnValue = false;
+                        break;
+                    } 
+                    // Else we check if the needle match the current item
+                    else if ($var->match ($this->value[$key])) {
+                        $returnValue = true;
+                        break;
+                    } else {
+                        $returnValue = false;
+                    }
+                }
+            } catch (Exception $e)
+            {
+                var_dump ($e->getMessage()); 
+            }
         }
         
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9A end
 
-        return (string) $returnValue;
+        return (bool) $returnValue;
     }
 
     /**

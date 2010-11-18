@@ -431,6 +431,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         }
     }
     
+    // AND OPERATOR
     public function testOperatorAnd (){
         $matching = new taoItems_models_classes_Matching_Matching();
         $this->assertEqual ($matching->andExpression (null, true, true, true, true), true);
@@ -447,7 +448,117 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
              $this->pass();
         }
     }
+    
+    // CONTAINS OPERATOR
+    public function testOperatorContains () {
+        $matching = new taoItems_models_classes_Matching_Matching();
+        
+        // List
+        $this->assertTrue ($matching->contains (
+            null
+            , $matching->createVariable(null, json_decode('[1,2,3,4]'))
+            , $matching->createVariable(null, json_decode('[1,2,3]'))
+        ));
+        // List
+        $this->assertTrue ($matching->contains (
+            null
+            , $matching->createVariable(null, json_decode('[1,2,3,4]'))
+            , $matching->createVariable(null, json_decode('3'))
+        ));
+        // List of List
+        $this->assertTrue ($matching->contains (
+            null
+            , $matching->createVariable(null, json_decode('[1,2,3,4]'))
+            , $matching->createVariable(null, json_decode('[3,4]'))
+        ));
+        // List of List
+        $this->assertFalse ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[1,2,3,4]'))
+            , $matching->createVariable(null, json_decode('[3]'))
+        ));
+        // List of List
+        $this->assertTrue ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[1,2,3,4]'))
+            , $matching->createVariable(null, json_decode('3'))
+        ));
+        // List of List
+        $this->assertTrue ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[[1,2],[3,4]]'))
+            , $matching->createVariable(null, json_decode('[1,2]'))
+        ));
+        // List of List
+        $this->assertTrue ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[[1,2],[3,4]]'))
+            , $matching->createVariable(null, json_decode('[3,4]'))
+        ));
+        // List of List
+        $this->assertFalse ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[[1,2],[3,4]]'))
+            , $matching->createVariable(null, json_decode('[4,5]'))
+        ));
+        // Tuple
+        $this->assertFalse ($matching->contains (
+            null
+            , $matching->createVariable(null, json_decode('{"0":1, "1":2, "2":3, "3":4}'))
+            , $matching->createVariable(null, json_decode('{"0":1, "3":4}'))
+        ));
+        // List of Tuple
+        $this->assertTrue ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[{"0":1, "1":2}, {"0":3, "1":4}]'))
+            , $matching->createVariable(null, json_decode('{"0":3, "1":4}'))
+        ));
+        // List of Tuple
+        $this->assertFalse ($matching->contains (
+            json_decode('{"needleType":"custom"}')
+            , $matching->createVariable(null, json_decode('[{"0":1, "1":2}, {"0":3, "1":4}]'))
+            , $matching->createVariable(null, json_decode('{"0":4, "1":4}'))
+        ));
+        // List of Tuple
+        $this->assertFalse ($matching->contains (
+            null
+            , $matching->createVariable(null, json_decode('[{"0":1, "1":2}, {"0":3, "1":4}]'))
+            , $matching->createVariable(null, json_decode('{"0":3, "1":4}'))
+        ));
+    }
 
+    // RANDOM INTEGER OPERATOR
+    public function testOperatorRandomInteger () {
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $null = false;
+        $correctRange = true;
+        $i=0;
+        while ($i<100 && !$null && $correctRange){
+            $rand = $matching->randomInteger (Array('min'=>0,'max'=>9));
+            $null = ($rand === null);
+            $correctRange = $rand<=9 && $rand>=0;
+            $i++;
+        }
+        $this->assertFalse ($null);
+        $this->assertTrue ($correctRange);
+    }
+    
+    // RANDOM FLOAT OPERATOR
+    public function testOperatorRandomFloat () {
+        $matching = new taoItems_models_classes_Matching_Matching();
+        $null = false;
+        $correctRange = true;
+        $i=0;
+        while ($i<100 && !$null && $correctRange){
+            $rand = $matching->randomFloat (Array('min'=>0.0,'max'=>9.9));
+            $null = ($rand === null);
+            $correctRange = $rand<=9.9 && $rand>=0.0;
+            $i++;
+        }
+        $this->assertFalse ($null);
+        $this->assertTrue ($correctRange);
+    }
+        
 	public function testTemplateResponseProcessingMatchCorrect (){
 		matching_init ();
 		matching_setRule (taoItems_models_classes_Matching_Matching::MATCH_CORRECT);
@@ -524,6 +635,38 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$outcomes = matching_getOutcomes ();
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
 	}
+
+    public function testMatch () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => true
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/choice.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        //$itemSerial = $item->getSerial ();
+        //$item = null;
+        //$item = $this->qtiService->getItemBySerial ($itemSerial);
+        
+        
+        $matching_data = $item->getMatchingData ();
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setMaps ($matching_data['maps']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":"ChoiceA"}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+        
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+    }
 
     public function testCustomMatch () {
         $parameters = array(

@@ -7,34 +7,70 @@ TAO_MATCHING.Collection = function (data) {
 
 TAO_MATCHING.Collection.prototype = {
 
-	/**
-     * Short description of method contain
+    /**
+     * Short description of method contains
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Variable var
-     * @return string
+     * @param  options options.needleType {String} Define if the script has to go through the needle or it must treat it as  scalar variable
+     * @return boolean
      */
-    contain : function (matchingVar)
+    contains : function (matchingVar, options)
     {
 		var returnValue = null;
+		var needleType = 'collection';
+
+		if (typeof options != 'undefined'){
+		    if (typeof options.needleType != 'undefined'){
+                needleType = options.needleType;
+            }
+		}
 		
-//		if (! (matchingVar instanceof TAO_MATCHING.List) || ! (matchingVar instanceof TAO_MATCHING.Tuple) || ! (matchingVar instanceof TAO_MATCHING.BaseTypeVariable))
-//			throw new Error ('TAO_MATCHING.Collection.contain an error occured : first argument expected type TAO_MATCHING.Variable, given : '+(typeof matchingVar));
-
-     	for (var key in this.value) {
-			// Different type
-			if (matchingVar.getType() != this.value[key].getType()){
-				returnValue = null;
-				break;
-			}
-			
-			if (matchingVar.match (this.value[key])){
-				returnValue = key;
-				break;
-			}
+		// If the needle is a Tuple
+        if (TAO_MATCHING.Variable.isTuple (matchingVar) && needleType == 'collection') {
+            returnValue = false;
+            for (var key in matchingVar.value) {
+                if (this.value[key].match(matchingVar.value[key])){
+                    returnValue = true;
+                }else{
+                    returnValue = false;
+                    break;
+                }
+            }
         }
-
+        // Else if the needle is a List
+        else if (TAO_MATCHING.Variable.isList (matchingVar) && needleType == 'collection') {
+            returnValue = false;
+            for (var key in matchingVar.value) {
+                if (this.contains (matchingVar.value[key]), {"matchingVarList":false}){
+                    returnValue = true;
+                } else {
+                    returnValue = false;
+                    break;
+                }
+            }
+        } 
+        // Else we check if the value is include is the current collection
+        else {
+            returnValue = false;
+            
+            for (var key in this.value) {
+                // If the needle is not of the same type that an item of the collection (escape)
+                if (matchingVar.getType() != this.value[key].getType()){
+                    returnValue = false;
+                    break;
+                } 
+                // Else we check if the needle match the current item
+                else if (matchingVar.match (this.value[key])) {
+                    returnValue = true;
+                    break;
+                } else {
+                    returnValue = false;
+                }
+            }
+        }
+        
         return returnValue;
     }
 

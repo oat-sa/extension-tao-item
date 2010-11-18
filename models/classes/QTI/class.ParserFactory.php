@@ -156,7 +156,7 @@ class taoItems_models_classes_QTI_ParserFactory
         //extract the response processing
         $rpNodes = $data->xpath("*[name(.) = 'responseProcessing']");
         foreach($rpNodes as $rpNode){		//the node should be alone
-        	$rProcessing = self::buildResponseProcessing($rpNode);
+        	$rProcessing = self::buildResponseProcessing($myItem->getInteractions(), $rpNode);
         	if(!is_null($rProcessing)){
         		$myItem->setResponseProcessing($rProcessing);
         	}
@@ -466,23 +466,37 @@ class taoItems_models_classes_QTI_ParserFactory
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array interactions
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
-    public static function buildResponseProcessing( SimpleXMLElement $data)
+    public static function buildResponseProcessing($interactions,  SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 begin
+
+        $templateUri = (string)$data['template'];
+
+        // REQUIRE interactions have been yet parsed
+        // BE CARREFUL The template mode works only with known templates
+        // If the template is unknown keep the same behavior than before
         
         if(isset($data['template'])){
-        	//template processing
-        	$returnValue = new taoItems_models_classes_QTI_response_Template((string)$data['template']);
+            // Get interactions
+            // Set type to all interactions
+            /*foreach ($interactions as $interaction) {
+                $interaction->setResponseProcessingTemplateUri ($templateUri);
+            }*/
+            
+            //template processing
+            //$returnValue = new taoItems_models_classes_QTI_response_TemplateMultiple ($interactions);
+        	$returnValue = new taoItems_models_classes_QTI_response_Template($templateUri);
         }
         else{
 			//custom rule processing
-			$returnValue = self::buildCustomResponseProcessing($data);
-        }    
+			$returnValue = self::buildCustomResponseProcessing ($data);
+        }
         
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
 
@@ -544,7 +558,7 @@ class taoItems_models_classes_QTI_ParserFactory
             
             $responseRules[] = $responseCondition;   
         } 
-     
+          
         $returnValue = new taoItems_models_classes_QTI_response_CustomRule($responseRules);
      
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D end
@@ -656,7 +670,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  SimpleXMLElement data
-     * @return taoItems_models_classes_QTI_response_Expression
+     * @return taoItems_models_classes_QTI_response_Rule
      */
     public static function buildExpression( SimpleXMLElement $data)
     {

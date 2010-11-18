@@ -108,7 +108,7 @@ TAO_MATCHING.Variable.prototype = {
 /**
  * Check if a value is a scalar variable
  */
-TAO_MATCHING.Variable.is_scalar = function (data) {
+TAO_MATCHING.Variable.isScalar = function (data) {
     var returnValue = false;
     switch (typeof data){
         case "boolean":
@@ -116,6 +116,53 @@ TAO_MATCHING.Variable.is_scalar = function (data) {
         case "string":
             returnValue = true;
     }
+    return returnValue;
+};
+
+/**
+ * Check if a data is a collection
+ */
+TAO_MATCHING.Variable.isCollection = function (data) {
+    var returnValue = false;
+    
+    if (typeof data.getType != 'undefined') {
+        switch (data.getType()){
+            case "list":
+            case "tuple":
+                returnValue = true;
+        }
+    }
+    
+    return returnValue;
+};
+
+/**
+ * Check if a data is a list
+ */
+TAO_MATCHING.Variable.isList = function (data) {
+    var returnValue = false;
+    
+    if (typeof data.getType != 'undefined') {
+        if (data.getType() == "list") {
+            returnValue = true;
+        }
+    }
+    
+    return returnValue;
+};
+
+/**
+ * Check if a data is a tuple
+ */
+TAO_MATCHING.Variable.isTuple = function (data) {
+    var returnValue = false;
+    
+    if (typeof data.getType != 'undefined') {
+        if (data.getType() == "tuple") {
+            returnValue = true;
+        }
+    }
+    
     return returnValue;
 };
 

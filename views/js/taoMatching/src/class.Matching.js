@@ -79,6 +79,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 		'and'				:{'mappedFunction':'andExpression'}
         , 'createVariable'  :{}
         , 'console'         :{}
+        , 'contains'        :{}
         , 'divide'          :{}
         , 'equal'           :{}
 		, 'if'				:{'jsFunction':true}
@@ -97,6 +98,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
         , 'not'             :{}
         , 'or'              :{}
         , 'product'         :{}
+        , 'randomFloat'     :{}
         , 'randomInteger'   :{}
         , 'round'           :{}
         , 'setOutcomeValue' :{}
@@ -631,7 +633,7 @@ TAO_MATCHING.Matching.prototype = {
         }
         // The first expression is not a Matching BaseTypeVariable
         else {
-            if (!TAO_MATCHING.Variable.is_scalar(expr1)) {
+            if (!TAO_MATCHING.Variable.isScalar(expr1)) {
                 throw new Error('TAO_MATCHING.matching::equal an error occured : the first argument ['+expr1+'] must be a scalar');
             }
             else {
@@ -645,7 +647,7 @@ TAO_MATCHING.Matching.prototype = {
         }
         // The second expression is not a Matching BaseTypeVariable
         else {
-            if (!TAO_MATCHING.Variable.is_scalar(expr2)) {
+            if (!TAO_MATCHING.Variable.isScalar(expr2)) {
                 throw new Error('TAO_MATCHING.matching::equal an error occured : the second argument ['+expr2+'] must be a scalar');
             }
             else {
@@ -1070,6 +1072,16 @@ TAO_MATCHING.Matching.prototype = {
         return returnValue;
     }
     
+    /**
+     * Selects a random integer from the specified range [min,max] satisfying
+     * + step * n for some integer n. For example, with min=2, max=11 and step=3
+     * values {2,5,8,11} are possible.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return int
+     */
     , randomInteger : function (options){
         var returnValue = null;
         options = this.checkOptions (options);
@@ -1080,5 +1092,62 @@ TAO_MATCHING.Matching.prototype = {
                 
         return returnValue;
     }
+ 
+    /**
+     * Selects a random float from the specified range [min,max].
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return double
+     */
+    , randomFloat : function (options){
+        var returnValue = null;
+        var precision = 2;
+        
+        options = this.checkOptions (options);
+        if (typeof options.precision != 'undefined'){
+            precision = options.precisions
+        }
+        
+        returnValue = parseFloat(
+            Math.min(options.min + (Math.random() * (options.max - options.min)), options.max).toFixed(precision));
+                
+        return returnValue;
+    }
     
+    /**
+     * The contains function takes two sub-expressions. The first one has a
+     * - either list or tuple. The second one could have any base type and could
+     * the same cardinality than the first expression or it could have a single
+     * The result is a single boolean with a value of true if the container
+     * by the first sub-expression contains the value given by the second
+     * and false if it doesn't. Note that the contains operator works
+     * depending on the cardinality of the two sub-expressions. For unordered
+     * the values are compared without regard for ordering, for example, [A,B,C]
+     * [C,A]. Note that [A,B,C] does not contain [B,B] but that [A,B,B,C] does.
+     * ordered containers the second sub-expression must be a strict
+     * within the first. In other words, [A,B,C] does not contain [C,A] but it
+     * contain [B,C].
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return taoItems_models_classes_Matching_bool
+     */
+    , contains : function (options, expr1, expr2){
+        var returnValue = null;
+        options = this.checkOptions (options);
+                
+        if (!TAO_MATCHING.Variable.isCollection(expr1)){
+            throw new Error ("TtaoItems_models_classes_Matching_Matching::contains \
+            an error occured : The operator contains as first argument an expression of type Collection");
+        }
+        
+        returnValue = expr1.contains(expr2, options);
+        
+        return returnValue;
+    }
 };

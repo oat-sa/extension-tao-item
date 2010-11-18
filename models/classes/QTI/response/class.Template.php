@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems\models\classes\QTI\response\class.Template.php
+ * TAO - taoItems/models/classes/QTI/response/class.Template.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 09.11.2010, 09:54:37 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 11:36:36 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -22,22 +22,18 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The QTI_Data class represent the abstract model for all the QTI objects.
- * It contains all the attributes of the different kind of QTI objects.
- * It manages the identifiers and serial creation.
- * It provides the serialisation and persistance methods.
- * And give the interface for the rendering.
- *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- */
-require_once('taoItems/models/classes/QTI/class.Data.php');
-
-/**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.php');
+require_once('taoItems/models/classes/QTI/response/class.ResponseProcessing.php');
+
+/**
+ * include taoItems_models_classes_QTI_response_Rule
+ *
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023A1-includes begin
@@ -51,13 +47,13 @@ require_once('taoItems/models/classes/QTI/response/interface.ResponseProcessing.
  * Short description of class taoItems_models_classes_QTI_response_Template
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
 class taoItems_models_classes_QTI_response_Template
-    extends taoItems_models_classes_QTI_Data
-        implements taoItems_models_classes_QTI_response_ResponseProcessing
+    extends taoItems_models_classes_QTI_response_ResponseProcessing
+        implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
 
@@ -107,44 +103,25 @@ class taoItems_models_classes_QTI_response_Template
     // --- OPERATIONS ---
 
     /**
-     * Short description of method process
-     *
-     * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @param  Response response
-     * @param  Outcome score
-     * @return boolean
-     */
-    public function process( taoItems_models_classes_QTI_Response $response,  taoItems_models_classes_QTI_Outcome $score = null)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002422 begin
-        // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002422 end
-
-        return (bool) $returnValue;
-    }
-
-    /**
      * Short description of method getRule
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getRule()
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B begin
-        
-        if( $this->uri == self::MATCH_CORRECT )
-			$returnValue = taoItems_models_classes_Matching_Matching::MATCH_CORRECT;
-    	
-		else if ( $this->uri == self::MAP_RESPONSE )
-			$returnValue = taoItems_models_classes_Matching_Matching::MAP_RESPONSE;
-        
-        // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1B end
+        // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
+        if( $this->uri == self::MATCH_CORRECT ){
+            $returnValue = taoItems_models_classes_Matching_Matching::MATCH_CORRECT;
+        }
+        else if ( $this->uri == self::MAP_RESPONSE ){
+            $returnValue = taoItems_models_classes_Matching_Matching::MAP_RESPONSE;
+        } 
+             
+        // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;
     }
@@ -153,14 +130,14 @@ class taoItems_models_classes_QTI_response_Template
      * Short description of method __construct
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string uri
      * @return mixed
      */
     public function __construct($uri)
     {
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 begin
-        
+                
     	if( $uri != self::MATCH_CORRECT && 
     		$uri != self::MAP_RESPONSE && 
     		$uri != self::MAP_RESPONSE_POINT ){
@@ -173,7 +150,7 @@ class taoItems_models_classes_QTI_response_Template
     		throw new Exception("Unable to load response processing template {$this->uri} in {$this->file}");
     	}
     	
-    	parent::__construct(null);
+    	parent::__construct();
     	
         // section 127-0-1-1-5ae00f6b:12a36da0066:-8000:0000000000002426 end
     }
@@ -182,7 +159,7 @@ class taoItems_models_classes_QTI_response_Template
      * Short description of method toQTI
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -206,7 +183,7 @@ class taoItems_models_classes_QTI_response_Template
      * Short description of method getUri
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getUri()

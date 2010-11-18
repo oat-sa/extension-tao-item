@@ -92,10 +92,14 @@ class taoItems_models_classes_Matching_Map
     		
     		// If the given var is a collection
     		if ($var instanceOf taoItems_models_classes_Matching_Collection){
-    			if ($var->contain ($mapElt['key'])!=null /* && !isset($mapKeyFound[$mapKey])*/){
-    				$returnValue += $mapElt['value'];
-    				//$mapKeyFound[$mapKey] = true;
-    			}	
+    		    // For each value contained by the matching var to map
+    		    foreach ($var->getValue() as $key => $value) {
+                    // If one match the current map value
+                    if ($value->match ($mapElt['key'])) {
+                        $returnValue += $mapElt['value'];
+                        break;
+                    }
+    		    }
     		}
     		else {
     			if ($var->match ($mapElt['key'])){

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 13.11.2010, 22:51:54 with ArgoUML PHP module 
+ * Automatically generated on 16.11.2010, 13:48:55 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -143,6 +143,7 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 begin
 		taoItems_models_classes_Matching_Matching::$whiteFunctionsList = array (
 			'and'=>array('mappedFunction'=>'andExpression')
+            , 'contains'=>array()
             , 'createVariable'=>array()
             , 'divide'=>array()
 			, 'equal'=>array()
@@ -161,6 +162,8 @@ class taoItems_models_classes_Matching_Matching
             , 'match'=>array()
             , 'not'=>array()
             , 'or'=>array('mappedFunction'=>'orExpression')
+            , 'randomFloat'=>array()
+            , 'randomInteger'=>array()
             , 'round'=>array()
             , 'setOutcomeValue'=>array()
             , 'subtract'=>array()
@@ -183,13 +186,20 @@ class taoItems_models_classes_Matching_Matching
 
         // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 begin
         
-        // If json encoded string
-        if (gettype($options) == 'string') $options = json_decode ($options);
+        // If json encoded string given
+        if (gettype($options) == 'string') {
+            $options = json_decode ($options, true);
+        }
+        // Else object given
+        else if (gettype($options) == 'object'){
+            $options = (array) $options;
+        }
         // If null
-        else if ($options == null) $options = Array();
+        else if ($options == null) {
+            $options = Array();
+        }
         
-        // Return options as object
-        $returnValue = (object) $options;
+        $returnValue = $options;
         
         // section 127-0-1-1-7aeba85b:12c2bdfd93f:-8000:0000000000002B47 end
 
@@ -663,12 +673,12 @@ class taoItems_models_classes_Matching_Matching
         $options = $this->checkOptions ($options);
         
         // Type undefined, we are in the case of baseTypeVariable creation (cardinality single)
-        if (!isset($options->type)) {
+        if (!isset($options['type'])) {
             $returnValue = taoItems_models_classes_Matching_VariableFactory::create (func_get_arg(1));
         }
         else 
         {
-            switch ($options->type){
+            switch ($options['type']){
                 // Create a BaseTypeVariable
                 case 'integer':
                 case 'float':
@@ -700,7 +710,7 @@ class taoItems_models_classes_Matching_Matching
                 
                 // Type unknown, throw an Exception
                 case 'default':
-                    throw new Exception ('taoItems_models_classes_Matching_Matching::createVariable : type unknown ['.$options->type.']');
+                    throw new Exception ('taoItems_models_classes_Matching_Matching::createVariable : type unknown ['.$options['type'].']');
             }  
         }
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B21 end
@@ -1258,8 +1268,8 @@ class taoItems_models_classes_Matching_Matching
                     $returnValue = null;
                 }else {
                     $precision = 0; 
-                    if (isset($options->precision)){
-                        $precision = $options->precision;
+                    if (isset($options['precision'])){
+                        $precision = $options['precision'];
                     }
                     $returnValue = round ($matchingExpr->getValue(), $precision);
                 }
@@ -1302,7 +1312,11 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
-     * Short description of method orExpression
+     * The or operator takes one or more sub-expressions each with a base-type
+     * boolean and single cardinality. The result is a single boolean which is
+     * if any of the sub-expressions are true and false if all of them are
+     * If one or more sub-expressions are NULL and all the others are false then
+     * operator also results in NULL.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -1341,6 +1355,90 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B9C end
 
         return (bool) $returnValue;
+    }
+
+    /**
+     * The contains function takes two sub-expressions. The first one has a
+     * - either list or tuple. The second one could have any base type and could
+     * the same cardinality than the first expression or it could have a single
+     * The result is a single boolean with a value of true if the container
+     * by the first sub-expression contains the value given by the second
+     * and false if it doesn't. Note that the contains operator works
+     * depending on the cardinality of the two sub-expressions. For unordered
+     * the values are compared without regard for ordering, for example, [A,B,C]
+     * [C,A]. Note that [A,B,C] does not contain [B,B] but that [A,B,B,C] does.
+     * ordered containers the second sub-expression must be a strict
+     * within the first. In other words, [A,B,C] does not contain [C,A] but it
+     * contain [B,C].
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @param  expr1
+     * @param  expr2
+     * @return taoItems_models_classes_Matching_bool
+     */
+    public function contains(   $options,    $expr1,    $expr2)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BDC begin
+        
+        $options = $this->checkOptions ($options);
+        
+        if (!($expr1 instanceOf taoItems_models_classes_Matching_Collection)) {
+            throw new Exception ("TtaoItems_models_classes_Matching_Matching::contains an error occured : The operator requires as first argument an expression of type Collection");
+        }
+        
+        $returnValue = $expr1->contains($expr2, $options);
+        
+        // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BDC end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Selects a random integer from the specified range [min,max] satisfying
+     * + step * n for some integer n. For example, with min=2, max=11 and step=3
+     * values {2,5,8,11} are possible.
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return int
+     */
+    public function randomInteger(   $options)
+    {
+        $returnValue = (int) 0;
+
+        // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BE2 begin
+        
+        $returnValue = rand ($options['min'], $options['max']);
+        
+        // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BE2 end
+
+        return (int) $returnValue;
+    }
+
+    /**
+     * Selects a random float from the specified range [min,max].
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  options
+     * @return double
+     */
+    public function randomFloat(   $options)
+    {
+        $returnValue = (float) 0.0;
+
+        // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BE5 begin
+        
+        $returnValue = $options['min']+lcg_value()*(abs($options['max']-$options['min']));
+        
+        // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BE5 end
+
+        return (float) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_Matching_Matching */

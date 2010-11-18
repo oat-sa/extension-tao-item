@@ -105,7 +105,6 @@ TAO_MATCHING.MatchingRemote.prototype = {
     		throw new Error ('TAO_MATCHING.Matching::setResponses is waiting on an array, a '+ (typeof data) +' is given');
 
         for (var key in data) {
-            console.log (data[key])
             try {
                 if (typeof this.responses[data[key].identifier] != 'undefined')
                     throw new Error ('TAO_MATCHING.Matching::setResponses a response variable with the identifier '+ data[key].identifier +' exists yet');

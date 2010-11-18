@@ -535,6 +535,88 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.or (null, null), null, 'Expected value');
         });
         
+        // CONTAINS OPERATOR
+        test("test operator : contains", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            
+            // List
+            equals (matching.contains (null
+                , matching.createVariable(null, [1,2,3,4])
+                , matching.createVariable(null, [1,2,3]))
+            , true, 'Expected value');
+            // List
+            equals (matching.contains (null
+                , matching.createVariable(null, [1,2,3,4])
+                , matching.createVariable(null, 3))
+            , true, 'Expected value');
+            // List of list
+            equals (matching.contains ({"needleType":"custom"}
+                , matching.createVariable(null, [[1,2],[3,4]])
+                , matching.createVariable(null, [3,4]))
+            , true, 'Expected value');
+            // List of list
+            equals (matching.contains ({"needleType":"custom"}
+                , matching.createVariable(null, [[1,2],[3,4]])
+                , matching.createVariable(null, [3]))
+            , false, 'Expected value');
+            // List of list
+            equals (matching.contains (null
+                , matching.createVariable(null, [[1,2],[3,4]])
+                , matching.createVariable(null, 3))
+            , false, 'Expected value');
+            // List of list
+            equals (matching.contains ({"needleType":"custom"}
+                , matching.createVariable(null, [[1,2],[3,4]])
+                , matching.createVariable(null, [4,5]))
+            , false, 'Expected value');
+            // Tuple
+            equals (matching.contains (null
+                , matching.createVariable(null, {0:1, 1:2, 2:3, 3:4})
+                , matching.createVariable(null, {0:1, 3:4}))
+            , true, 'Expected value');
+            // List of tuple
+            equals (matching.contains ({"needleType":"custom"}
+                , matching.createVariable(null, [{0:1, 1:2},{0:3, 1:4}])
+                , matching.createVariable(null, {0:3, 1:4}))
+            , true, 'Expected value');
+        });
+        
+        // RANDOM INTEGER OPERATOR
+        test("test operator : randomInteger", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            var isNull = false;
+            var correctRange = true;
+            var i =0;
+            
+            while (!isNull && correctRange && i<100) {
+                var rand = matching.randomInteger ({"min":0, "max":9});
+                isNull = rand === null;
+                correctRang = rand>=0 && rand<=9;
+                i++;
+            }
+            
+            ok (!isNull, 'Random value not null ['+rand+']');
+            ok (correctRange, 'Random value >= min & <= max');
+        });
+        
+        // RANDOM FLOAT OPERATOR
+        test("test operator : randomInteger", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            var isNull = false;
+            var correctRange = true;
+            var i =0;
+            
+            while (!isNull && correctRange && i<100) {
+                var rand = matching.randomFloat ({"min":0.00, "max":9.99});
+                isNull = rand === null;
+                correctRang = rand>=0.00 && rand<=9.99;
+                i++;
+            }
+            
+            ok (!isNull, 'Random value not null ['+rand+']');
+            ok (correctRange, 'Random value >= min & <= max');
+        });
+        
         // REMOTE MATCHING CHOICE.XML
         asyncTest ('Remote Matching : Choice.xml', function () {
             var matching_param = {
@@ -847,7 +929,6 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 , async : true
                 , dataType : 'json'
                 , success   : function (data){
-                console.log (data.rule);
                     var matching_param = {
                         "data" : data
                         , "options" : {

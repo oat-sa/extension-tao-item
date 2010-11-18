@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 16:05:00 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 11:03:29 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -22,18 +22,18 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_response_ExpressionOperator
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
- */
-require_once('taoItems/models/classes/QTI/response/class.ExpressionOperator.php');
-
-/**
  * include taoItems_models_classes_QTI_response_Expression
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/interface.Expression.php');
+require_once('taoItems/models/classes/QTI/response/class.Expression.php');
+
+/**
+ * include taoItems_models_classes_QTI_response_Rule
+ *
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 
 /* user defined includes */
 // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A76-includes begin
@@ -52,7 +52,7 @@ require_once('taoItems/models/classes/QTI/response/interface.Expression.php');
  * @subpackage models_classes_QTI_response
  */
 class taoItems_models_classes_QTI_response_ConditionalExpression
-        implements taoItems_models_classes_QTI_response_Expression
+        implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
     // generateAssociationEnd :     // generateAssociationEnd : 
@@ -106,10 +106,10 @@ class taoItems_models_classes_QTI_response_ConditionalExpression
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  ExpressionOperator expression
+     * @param  Expression expression
      * @return mixed
      */
-    public function setCondition( taoItems_models_classes_QTI_response_ExpressionOperator $expression)
+    public function setCondition( taoItems_models_classes_QTI_response_Expression $expression)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE9 begin
         $this->condition = $expression;

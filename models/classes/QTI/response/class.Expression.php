@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/response/class.ExpressionOperator.php
+ * TAO - taoItems/models/classes/QTI/response/class.Expression.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 16:05:00 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 11:03:29 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -33,11 +33,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * include taoItems_models_classes_QTI_response_Expression
+ * include taoItems_models_classes_QTI_response_Rule
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/interface.Expression.php');
+require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 
 /* user defined includes */
 // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A70-includes begin
@@ -48,16 +48,16 @@ require_once('taoItems/models/classes/QTI/response/interface.Expression.php');
 // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A70-constants end
 
 /**
- * Short description of class
+ * Short description of class taoItems_models_classes_QTI_response_Expression
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
-class taoItems_models_classes_QTI_response_ExpressionOperator
+class taoItems_models_classes_QTI_response_Expression
     extends taoItems_models_classes_QTI_Data
-        implements taoItems_models_classes_QTI_response_Expression
+        implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
 
@@ -101,7 +101,7 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
         $returnValue = (string) '';
 
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
-
+        
         // Get subExpressions
         $subExpressionsRules = array();
         foreach ($this->subExpressions as $subExpression){
@@ -217,7 +217,6 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
     public function setValue(   $value)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AD8 begin
-
         // Set the value of the expression and cast it function of the (defined) base type of the variable
         if ($this->options['baseType']){
             switch ($this->options['baseType']){
@@ -250,10 +249,9 @@ class taoItems_models_classes_QTI_response_ExpressionOperator
                     break;
             }   
         }
-
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AD8 end
     }
 
-} /* end of class taoItems_models_classes_QTI_response_ExpressionOperator */
+} /* end of class taoItems_models_classes_QTI_response_Expression */
 
 ?>

@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/response/interface.Expression.php
+ * TAO - taoItems/models/classes/QTI/response/interface.Rule.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.11.2010, 16:05:00 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 11:36:36 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -30,14 +30,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AF8-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_response_Expression
+ * Short description of class taoItems_models_classes_QTI_response_Rule
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
-interface taoItems_models_classes_QTI_response_Expression
+interface taoItems_models_classes_QTI_response_Rule
 {
 
 
@@ -52,6 +52,6 @@ interface taoItems_models_classes_QTI_response_Expression
      */
     public function getRule();
 
-} /* end of interface taoItems_models_classes_QTI_response_Expression */
+} /* end of interface taoItems_models_classes_QTI_response_Rule */
 
 ?>
