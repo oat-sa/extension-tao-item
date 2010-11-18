@@ -261,18 +261,14 @@ class taoItems_models_classes_QTI_Service
         }
         
         if(!is_null($composed)){
-            if (is_null ($objectType)){
-                $tokens = explode('_', get_class($composed));
-                $objectType = strtolower($tokens[count($tokens) - 1]);
-            } 
+        	$tokens = explode('_', get_class($composed));
+        	$objectType = strtolower($tokens[count($tokens) - 1]);
         	$propertyName = $objectType . 's';
         	$methodName = 'get'.ucfirst($propertyName);
 			
 			//singular property name:
 			$singularPropertyName = $objectType;
         	$singularMethodName = 'get'.ucfirst($singularPropertyName);
-            
-            echo ($objectType.' '.$methodName.' '.$singularMethodName);
         }
         
 		$instances = taoItems_models_classes_QTI_Data::$_instances;
@@ -287,8 +283,6 @@ class taoItems_models_classes_QTI_Service
         }
         
         foreach($instances as $serial){
-            if ($serial == 'identifiers') continue;
-            
 			$instance = null;
         	try{
 				$instance = $this->getDataBySerial($serial);
