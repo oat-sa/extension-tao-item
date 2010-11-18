@@ -36,14 +36,15 @@ class ItemImport extends Import {
 			
 			$forceValid = false;
 			if(isset($formValues['disable_validation'])){
-				$forceValid = true;
+				if(is_array($formValues['disable_validation'])){
+					$forceValid = true;
+				}
 			} 
 			
 			//validate the file to import
 			$qtiParser = new taoItems_models_classes_QTI_Parser($uploadedFile);
 			
 			$qtiParser->validate();
-
 			if(!$qtiParser->isValid() && !$forceValid){
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
 				$this->setData('importErrors', $qtiParser->getErrors());
@@ -77,6 +78,7 @@ class ItemImport extends Import {
 						}
 					}
 				}
+				$this->setData('message', __('An error occurs during the import'));
 			}
 			return false;
 		}
@@ -102,7 +104,9 @@ class ItemImport extends Import {
 			
 			$forceValid = false;
 			if(isset($formValues['disable_validation'])){
-				$forceValid = true;
+				if(is_array($formValues['disable_validation'])){
+					$forceValid = true;
+				}
 			} 
 			
 			//load and validate the package
@@ -211,8 +215,11 @@ class ItemImport extends Import {
 			
 			$forceValid = false;
 			if(isset($formValues['disable_validation'])){
-				$forceValid = true;
-			} 
+				if(is_array($formValues['disable_validation'])){
+					$forceValid = true;
+				}
+			}
+			
 			//load and validate the package
 			$packageParser = new taoItems_models_classes_XHTML_PackageParser($uploadedFile);
 			$packageParser->validate();
@@ -246,7 +253,7 @@ class ItemImport extends Import {
 			$rdfItem = $itemService->createInstance($clazz);
 			//set the QTI type
 			$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
-				
+			
 			$itemContent = file_get_contents($folder .'/index.html');
 			
 			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
