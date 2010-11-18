@@ -313,7 +313,9 @@ class taoItems_models_classes_QTI_Item
     public function setResponseProcessing($rprocessing)
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E begin
+        
     	$this->responseProcessing = $rprocessing;    	
+        
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000253E end
     }
 
