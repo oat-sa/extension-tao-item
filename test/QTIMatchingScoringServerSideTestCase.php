@@ -822,15 +822,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 
 */
 
-    public function testPatternSeeker () {
-        $parameters = array(
-            'root_url' => ROOT_URL,
-            'base_www' => BASE_WWW,
-            'taobase_www' => TAOBASE_WWW,
-            'delivery_server_mode' => true
-        );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
-        
+    public function testPatternSeeker () {       
         $file = dirname(__FILE__).'/samples/choice.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
         echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';

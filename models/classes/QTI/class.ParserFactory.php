@@ -515,9 +515,10 @@ class taoItems_models_classes_QTI_ParserFactory
             
             // Identify patterns in the custom response processing
             $identifiedPatterns = self::identifyPattern ($data);           
-            
+                        
             // TEMPLATES DRIVEN mode
-            if (count($identifiedPatterns) == count($responseConditionNodes)) {
+            if ((count($interactions) * count($identifiedPatterns) * count($responseConditionNodes)) == pow (count($interactions), 3)) {
+                // tag each response with the uri of the template used to match it
                 foreach ($interactions as $interaction){
                     foreach ($identifiedPatterns as $responseIdentifier=>$identifierPattern){
                         if ($interaction->getResponse()->getIdentifier() == $responseIdentifier){

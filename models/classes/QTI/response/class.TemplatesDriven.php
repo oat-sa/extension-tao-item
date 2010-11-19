@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.11.2010, 15:35:22 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2010, 18:14:07 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -74,6 +74,9 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $returnValue = (string) '';
 
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
+        
+        
+        
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;
@@ -90,6 +93,32 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
     {
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BF9 begin
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BF9 end
+    }
+
+    /**
+     * Short description of method isSupportedTemplate
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string uri
+     * @return taoItems_models_classes_Matching_bool
+     */
+    public static function isSupportedTemplate($uri)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BFD begin
+        
+        $mythoMap = Array (
+            'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct'
+            , 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response'
+        );
+        
+        $returnValue = in_array($uri, $mythoMap);
+        
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BFD end
+
+        return (bool) $returnValue;
     }
 
     /**
@@ -123,53 +152,31 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
     }
 
     /**
-     * Short description of method isSupportedTemplate
+     * Short description of method buildRule
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string uri
-     * @return taoItems_models_classes_Matching_bool
-     */
-    public static function isSupportedTemplate($uri)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BFD begin
-        
-        $mythoMap = Array (
-            QTI_RESPONSE_TEMPLATE_MATCH_CORRECT
-            , QTI_RESPONSE_TEMPLATE_MAP_RESPONSE
-			, QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
-        );
-        
-        $returnValue = in_array($uri, $mythoMap);
-        
-        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BFD end
-
-        return (bool) $returnValue;
-    }
-
-    /**
-     * Short description of method toQTI
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
      * @return string
      */
-    public function toQTI()
+    public function buildRule($uri, $options)
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C06 begin
+        // section 127-0-1-1-630ada71:12c651dbbe8:-8000:0000000000002C03 begin
         
-        /*foreach ($responsesToTpl as $responseIdentifier=>$templateUri){
-            $returnValue .= $this->buildQTI (
-                $templateUri
-                , Array('outcomeIdentifier'=>'SCORE', 'responseIdentifier'=>$responseIdentifier)
-            );
-        }*/
+        if (!isset ($options) || !is_array($options)){
+            $options = array();
+        }
         
-        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C06 end
+        $templateName = substr($uri, strrpos($uri, '/')+1);
+        $matchingTemplate  = dirname(__FILE__).'/rpTemplate/rule.'.$templateName.'.tpl.php';
+
+        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchingTemplate, $options);    
+        $returnValue = $tplRenderer->render();
+        
+        // section 127-0-1-1-630ada71:12c651dbbe8:-8000:0000000000002C03 end
 
         return (string) $returnValue;
     }

@@ -1,0 +1,402 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.org">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+<TITLE>TAO MATCHING API</TITLE>
+</HEAD><BODY BGCOLOR="white" TEXT="black">
+<CENTER>
+<H1>TAO MATCHING API</H1>
+<FONT SIZE="4"><I>Getting Started</I></FONT><BR>
+<FONT SIZE="4">11/10/2010</FONT>
+</CENTER>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+
+  <UL>
+  <LI><A HREF="#toc1">Initialization</A>
+    <UL>
+    <LI><A HREF="#toc2">Server</A>
+    <LI><A HREF="#toc3">Client</A>
+    </UL>
+  <LI><A HREF="#toc4">Variables</A>
+    <UL>
+    <LI><A HREF="#toc5">Definition</A>
+    <LI><A HREF="#toc6">Value format</A>
+      <UL>
+      <LI><A HREF="#toc7">Scalar types</A>
+      <LI><A HREF="#toc8">Container types</A>
+      <LI><A HREF="#toc9">List of containers</A>
+      <LI><A HREF="#toc10">Tuple of containers</A>
+      </UL>
+    </UL>
+  <LI><A HREF="#toc11">Rules</A>
+    <UL>
+    <LI><A HREF="#toc12">Templates</A>
+      <UL>
+      <LI><A HREF="#MatchCorrect">MATCH CORRECT</A>
+      <LI><A HREF="#MapResponse">MAP RESPONSE</A>
+      </UL>
+    <LI><A HREF="#toc15">Custom Rules</A>
+    </UL>
+  <LI><A HREF="#toc16">Examples</A>
+    <UL>
+    <LI><A HREF="#toc17">Template Rules</A>
+      <UL>
+      <LI><A HREF="#toc18">Single choice interaction</A>
+      </UL>
+    <LI><A HREF="#toc19">Custom rules</A>
+      <UL>
+      <LI><A HREF="#toc20">Partial scoring with map response operator</A>
+      </UL>
+    </UL>
+  </UL>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+
+<A NAME="toc1"></A>
+<H1>Initialization</H1>
+
+<P>
+Firstly you need to initialize the matching engine. The matching can take several parameters. Depending on these parameters the engine will be initialized in client mode or in server mode.
+</P>
+
+<A NAME="toc2"></A>
+<H2>Server</H2>
+
+<P>
+By setting the parameter <B>url</B> you will initialize the matching engine in server mode. 
+And by the way provides to you a secure way to evaluate the user's responses.
+</P>
+<P>
+<pre class="code">
+matchingInit ({
+    url         : "YOUR_MATCHING_ENGINE_REMOTE_URL"
+    , params    : {}
+});
+</pre>
+</P>
+<P>
+<U>url</U> (string) : The url of the remote matching engine
+</P>
+<P>
+<U>params</U> (object): You can set as many parameters as you want to the <B>params</B> attribute. These parameters will be sent to the remote matching engine. 
+In TAO environment we use the <B>params</B> attribute to pass to the remote matching engine a token. 
+This token will provide to the remote matching engine a manner to identify the user and its current session. 
+</P>
+
+<H4>Example</H4>
+
+<P>
+<pre class="code">
+matchingInit ({
+    url         : "<A HREF="http://my_tao_plateform.org/taoItems/matching/evaluate">http://my_tao_plateform.org/taoItems/matching/evaluate</A>"
+    , params    : {
+        token   : getToken ()
+    }
+});
+</pre>
+</P>
+
+<A NAME="toc3"></A>
+<H2>Client</H2>
+
+<P>
+By setting the parameter <B>data</B> you will initialize a local matching engine. 
+You can set some matching data directly during the initialization or later through the provided API functions.
+These data will by used by the local matching engine to evaluate the user's responses.
+</P>
+<P>
+<pre class="code">
+matchingInit ({
+    "data"    :   {
+        "rule"          : ""
+        , "corrects"    : []
+        , "maps"        : []
+        , "outcomes"    : []
+        , "responses"   : []
+    }
+});
+</pre>
+</P>
+<P>
+<U>rule</U> (string) : The rule which will be used to evaluate the user's responses
+</P>
+<P>
+<U>corrects</U> (array) : The correct responses of the item
+</P>
+<P>
+<U>maps</U> (array) : The mapping responses of the items
+</P>
+<P>
+<U>outcomes</U> (array) : The outcomes variables of the items
+</P>
+<P>
+<U>responses</U> (array) : The user's responses
+</P>
+
+<H4>Example</H4>
+
+<P>
+By instance for a single choice interaction we will initialize the local matching engine as following.
+</P>
+<P>
+<pre class="code">
+matchingInit ({
+    "data"    :   {
+        "rule"          : TAO_MATCHING.RULE.MATCH_CORRECT
+        , "corrects"    : [{"identifier":"RESPONSE", "value":"identifier1"}]
+        , "outcomes"    : [{"identifier":"SCORE", "type":"double"}]
+    }
+});
+</pre>
+</P>
+<P>
+<U>rule</U> : Here the matching engine will evaluate the user's response with the defined template rule <B>TAO_MATCHING.RULE.MATCH_CORRECT</B>.
+This template rule match the user's responses with user's responses. 
+</P>
+<P>
+<U>corrects</U> : Based on the given correct variable <B>RESPONSE</B> initialized with the value <B>identifier1</B>
+, the rule is waiting on a user's response of type string and with single cardinality. We will see the behavior
+of the template <B>MATCH</B> in this <A HREF="#MatchCorrect">section</A>
+</P>
+<P>
+<U>outcomes</U> : Initialization of an outcome variable identified by <B>SCORE</B> with a type double.
+</P>
+
+<A NAME="toc4"></A>
+<H1>Variables</H1>
+
+<A NAME="toc5"></A>
+<H2>Definition</H2>
+
+<P>
+Corrects, outcomes and responses follow the same format. All three are array containing variables. 
+These variables are object type and they are represented as following :
+</P>
+<P>
+<pre class="code">
+{"identifier":VARIABLE_IDENTIFIER, "value":VARIABLE_VALUE}
+</pre>
+</P>
+<P>
+<U>identifier</U> (string) : Identifier of the variable
+</P>
+<P>
+<U>value</U> (mixed) : Value of the variable
+</P>
+<P>
+<U>type</U> (string) [optional] : Type of the variable (string, float, integer, tuple, list). For the known types if the value has been defined the type is found based on it.
+</P>
+
+<A NAME="toc6"></A>
+<H2>Value format</H2>
+
+<P>
+The value of a variable is represented as following :
+</P>
+
+<A NAME="toc7"></A>
+<H3>Scalar types</H3>
+
+<P>
+<U>string</U> : "my string"
+</P>
+<P>
+<U>float</U> : 3.1415
+</P>
+<P>
+<U>integer</U> : 123456
+</P>
+<P>
+<U>boolean</U> : true 
+</P>
+
+<A NAME="toc8"></A>
+<H3>Container types</H3>
+
+<P>
+<U>list</U> : ["val1", "val2", "val3"]
+</P>
+<P>
+<U>tuple</U> : {"0":"val1", "1":"val2", "2":"val3"}
+</P>
+
+<A NAME="toc9"></A>
+<H3>List of containers</H3>
+
+<P>
+<U>list of list</U> : [ [1,2], [3,4], [5,6] ]
+</P>
+<P>
+<U>list of tuple</U> : [ {"0":1, "1":2}, {"0":3, "1":4}, {"0":5, "1":6} ]
+</P>
+
+<A NAME="toc10"></A>
+<H3>Tuple of containers</H3>
+
+<P>
+Variable creation <B>ok</B>
+</P>
+<P>
+Matching engine support <B>not ok</B>
+</P>
+
+<A NAME="toc11"></A>
+<H1>Rules</H1>
+
+<A NAME="toc12"></A>
+<H2>Templates</H2>
+
+<A NAME="MatchCorrect"></A>
+<H3>MATCH CORRECT</H3>
+
+<P>
+The match correct response processing template uses the match operator to match the value of a response 
+variable RESPONSE with its correct value. It sets the outcome variable SCORE to either 0 or 1 depending 
+on the outcome of the test. A response variable with called RESPONSE must have been declared and have an 
+associated correct value. Similarly, the outcome variable SCORE must also have been declared. The template 
+applies to responses of any baseType and cardinality though bear in mind the limitations of matching more 
+complex data types.
+</P>
+<P>
+<U>template code</U> :
+</P>
+<P>
+<pre class="code">
+if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))){
+    setOutcomeValue("SCORE", 1);
+} else {
+    setOutcomeValue("SCORE", 0);
+}
+</pre>
+</P>
+
+<A NAME="MapResponse"></A>
+<H3>MAP RESPONSE</H3>
+
+<P>
+The map response processing template uses the mapResponse operator to map the value of a response variable 
+RESPONSE onto a value for the outcome SCORE. Both variables must have been declared and RESPONSE must have 
+an associated mapping. The template applies to responses of any baseType and cardinality.
+</P>
+<P>
+<U>template code</U> :
+</P>
+<P>
+<pre class="code">
+if(isNull(null, getResponse("RESPONSE"))) { 
+    setOutcomeValue("SCORE", 0); 
+} else { 
+    setOutcomeValue("SCORE", mapResponse(null, getMap("RESPONSE"), getResponse("RESPONSE"))); 
+}
+</pre>
+</P>
+
+<A NAME="toc15"></A>
+<H2>Custom Rules</H2>
+
+<A NAME="toc16"></A>
+<H1>Examples</H1>
+
+<A NAME="toc17"></A>
+<H2>Template Rules</H2>
+
+<A NAME="toc18"></A>
+<H3>Single choice interaction</H3>
+
+<P>
+<pre class="code">
+matchingSetResponses ([
+    {"identifier":"RESPONSE", "value":"identifier1"}
+]);
+</pre>
+</P>
+<P>
+After the user's responses passed to the matching engine you just have to fire the evaluation by calling the right method 
+</P>
+<P>
+<pre class="code">
+matchingEvaluate ();
+</pre>
+</P>
+<P>
+After the evaluation of the user's response done you could get the outcome variables as following :
+</P>
+<P>
+<pre class="code">
+var outcomes = matchingGetOutcomes ();
+console.log ('the outcome SCORE value : ' + outcomes["SCORE"]["value"]);
+</pre>
+</P>
+<P>
+Result :
+<pre class="code">
+the value of the outcome variable SCORE is : 1
+</pre>
+</P>
+
+<A NAME="toc19"></A>
+<H2>Custom rules</H2>
+
+<A NAME="toc20"></A>
+<H3>Partial scoring with map response operator</H3>
+
+<P>
+Let think about a formula one racing. Where the question could be :
+</P>
+<P>
+<I>The following F1 drivers finished on the podium in the first ever Grand Prix of Bahrain 2005. Can you rearrange them into the correct finishing order?</I>
+</P>
+<P>
+The correct response for this interaction is a tuple of string where the drivers are well ordered. 
+<I>DriverC</I> arrived in first position, <I>DriverB</I> in second position and <I>DriverA</I> in third position.
+The following code represents the expression of this need.
+</P>
+<P>
+<pre class="code">
+var corrects = [
+    {"identifier":"RESPONSE"
+    , "value" : {
+        "0":"DriverC"
+        , "1":"DriverB"
+        , "2":"DriverA" }
+    }
+];
+</pre>
+</P>
+<P>
+The outcomes required by our custom rule is a <B>float</B> with called <B>SCORE</B>
+</P>
+<P>
+<pre class="code">
+var outcomes = [
+    {"identifier":"SCORE" , "type" : "float" }
+];
+</pre>
+</P>
+<P>
+The custom rule we defined to score the user's responses will take care about a partial scoring.
+If the users will not give the exact correct response - DriverC in first position, DriverB in second position
+and DriverA in third position - we will give to the user the half points.
+</P>
+<P>
+<pre class="code">
+var rule = 'if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))) {
+    setOutcomeValue("SCORE", 2);
+} else if (match(null, getResponse("RESPONSE"), createVariable({"type":"tuple"}, "DriverC", "DriverB", "DriverA"))) {
+    setOutcomeValue ("SCORE", 1);
+} else {
+    setOutcomeValue("SCORE", 0);
+}';
+</pre>
+</P>
+
+<!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
+<!-- cmdline: txt2tags -t html -\-toc ./getting_started.t2t -->
+</BODY></HTML>

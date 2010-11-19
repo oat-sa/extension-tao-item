@@ -618,7 +618,20 @@ class taoItems_models_classes_QTI_Item
             
             // Get the rule
             if(!is_null($this->getResponseProcessing ())){
-            	$returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
+                $responseProcessing = $this->getResponseProcessing ();
+                if ( $responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven){
+                    foreach ($this->getInteractions() as $interaction){
+                        $returnValue["rule"] .= $responseProcessing->buildRule (
+                            $interaction->getResponse()->getHowMatch () 
+                            , Array(
+                                'responseIdentifier'=>$interaction->getResponse()->getIdentifier()
+                                , 'outcomeIdentifier'=>'SCORE'
+                            )
+                        );
+                    }
+                } else {
+                    $returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
+                }
             }
             
             // Get the correct responses (correct variables and map variables)
