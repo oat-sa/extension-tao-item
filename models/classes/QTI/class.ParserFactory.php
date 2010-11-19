@@ -485,27 +485,53 @@ class taoItems_models_classes_QTI_ParserFactory
         $returnValue = null;
 
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 begin
-
-        $templateUri = (string)$data['template'];
-
-        // REQUIRE interactions have been yet parsed
-        // BE CARREFUL The template mode works only with known templates
-        // If the template is unknown keep the same behavior than before
         
-        if(isset($data['template'])){
-            // Get interactions
-            // Set type to all interactions
-            /*foreach ($interactions as $interaction) {
-                $interaction->setResponseProcessingTemplateUri ($templateUri);
-            }*/
+        // RP based on TEMPLATE
+        if(isset($data['template']))
+        {
+            $templateUri = (string)$data['template'];
+        
+            // TEMPLATE KNOWN by the system
+            if (taoItems_models_classes_QTI_response_TemplatesDriven::isSupportedTemplate ($templateUri)){
+                // Set the how match attribute of the interactions' response
+                foreach ($interactions as $interaction) {
+                    $interaction->getResponse()->setHowMatch ($templateUri);
+                }
+                $returnValue = new taoItems_models_classes_QTI_response_TemplatesDriven ($templateUri);
+                //echo ($returnValue->buildQTI($templateUri, Array('responseIdentifier'=>'RESPONSE', 'outcomeIdentifier'=>'SCORE')).'<br/>');
+            }
             
-            //template processing
-            //$returnValue = new taoItems_models_classes_QTI_response_TemplateMultiple ($interactions);
-        	$returnValue = new taoItems_models_classes_QTI_response_Template($templateUri);
+            // TEMPLATE UNKNOWN by the system
+            else {
+                $returnValue = new taoItems_models_classes_QTI_response_Template($templateUri);
+            }
+        	
         }
-        else{
-			//custom rule processing
-			$returnValue = self::buildCustomResponseProcessing ($data);
+        
+        // RP based on CUSTOM RULE
+        else {
+            
+            $responseConditionNodes = $data->xpath ("*[name(.) = 'responseCondition']");
+            
+            // Identify patterns in the custom response processing
+            $identifiedPatterns = self::identifyPattern ($data);           
+            
+            // TEMPLATES DRIVEN mode
+            if (count($identifiedPatterns) == count($responseConditionNodes)) {
+                foreach ($interactions as $interaction){
+                    foreach ($identifiedPatterns as $responseIdentifier=>$identifierPattern){
+                        if ($interaction->getResponse()->getIdentifier() == $responseIdentifier){
+                            $interaction->getResponse()->setHowMatch($identifierPattern);
+                        }
+                    }
+                }
+                $returnValue = new taoItems_models_classes_QTI_response_TemplatesDriven ();
+            }
+            
+            // CUSTOM CUSTOM
+            else {
+                $returnValue = self::buildCustomResponseProcessing ($data);
+            }
         }
         
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
@@ -571,7 +597,6 @@ class taoItems_models_classes_QTI_ParserFactory
         
         $returnValue = new taoItems_models_classes_QTI_response_Custom($responseRules);
         $returnValue->setData ($data->asXml());
-        //echo '<pre>';print_r (htmlentities($returnValue->toQTI()));echo '</pre>';
      
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D end
 
@@ -711,6 +736,67 @@ class taoItems_models_classes_QTI_ParserFactory
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B34 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method identifyPattern
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  SimpleXMLElement data
+     * @return array
+     */
+    public static function identifyPattern( SimpleXMLElement $data)
+    {
+        $returnValue = array();
+        
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C02 begin
+        
+        $data = simplexml_load_string($data->asxml());
+        
+        // MATCH CORRECT PATTERN
+        $matchPatternMatchCorrectNodes = $data->xpath ("
+            responseCondition
+            [count(.) = 1]
+            [name(./*[1]) = 'responseIf']
+            [name(./responseIf/*[1]) = 'match']
+            [name(./responseIf/match/*[1]) = 'variable']
+            [name(./responseIf/match/*[2]) = 'correct']
+            [name(./responseIf/*[2]) = 'setOutcomeValue']
+            [name(./responseIf/setOutcomeValue/*[1]) = 'sum']
+            [name(./responseIf/setOutcomeValue/sum/*[1]) = 'variable']
+            [name(./responseIf/setOutcomeValue/sum/*[2]) = 'baseValue']
+        ");
+
+        foreach ($matchPatternMatchCorrectNodes as $node) {
+            // Get the response identifier
+            $subNode = $node->xpath ('responseIf/match/variable');
+            $responseIdentifier = (string)$subNode[0]['identifier'];
+            $returnValue[$responseIdentifier] = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct';
+        }
+        
+        // MAP RESPONSE PATTERN
+        $matchPatternMapResponseNodes = $data->xpath ("
+            responseCondition
+            [count(.) = 1]
+            [name(./responseIf/*[1]) = 'not']
+            [name(./responseIf/not/*[1]) = 'isNull']
+            [name(./responseIf/not/isNull/*[1]) = 'variable']
+            [name(./responseIf/*[2]) = 'setOutcomeValue']
+            [name(./responseIf/setOutcomeValue/*[1]) = 'sum']
+            [name(./responseIf/setOutcomeValue/sum/*[1]) = 'variable']
+            [name(./responseIf/setOutcomeValue/sum/*[2]) = 'mapResponse']
+        ");     
+        foreach ($matchPatternMapResponseNodes as $node) {
+            // Get the response identifier
+            $subNode = $node->xpath ('responseIf/not/isNull/variable');
+            $responseIdentifier = (string)$subNode[0]['identifier'];
+            $returnValue[$responseIdentifier] = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response';
+        }  
+        
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C02 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_ParserFactory */

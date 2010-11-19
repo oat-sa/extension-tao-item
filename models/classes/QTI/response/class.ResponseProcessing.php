@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 12:01:55 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2010, 13:10:42 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -43,20 +43,22 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
 /**
  * Short description of class
  *
+ * @abstract
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
-class taoItems_models_classes_QTI_response_ResponseProcessing
+abstract class taoItems_models_classes_QTI_response_ResponseProcessing
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
+
 
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
 
-} /* end of class taoItems_models_classes_QTI_response_ResponseProcessing */
+} /* end of abstract class taoItems_models_classes_QTI_response_ResponseProcessing */
 
 ?>

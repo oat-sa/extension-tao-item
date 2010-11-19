@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 17:06:31 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2010, 13:12:49 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -111,8 +111,8 @@ class taoItems_models_classes_QTI_response_Custom
     {
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6B begin
         
-        parent::__construct ();
         $this->responseRules = $responseRules;
+        parent::__construct ();
         
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6B end
     }
@@ -130,7 +130,7 @@ class taoItems_models_classes_QTI_response_Custom
 
         // section 127-0-1-1-4f28889c:12c5fba49dc:-8000:0000000000002BE8 begin
         
-        return $this->getData();
+        $returnValue = $this->getData();
         
         // section 127-0-1-1-4f28889c:12c5fba49dc:-8000:0000000000002BE8 end
 

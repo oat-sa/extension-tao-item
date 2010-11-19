@@ -531,9 +531,41 @@ class taoItems_models_classes_QTI_Item
 				}
 			}
 		}
-		
+        
+        // render the responseProcessing
+        $renderedResponseProcessing = '';
+        $responseProcessing = $this->getResponseProcessing();
+        if(isset($responseProcessing)){
+            if($responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven){
+                if (count($this->getInteractions()) == 1) {
+                    foreach($this->getInteractions() as $interaction){
+                        $responseProcessingToRender = new taoItems_models_classes_QTI_response_Template ($interaction->getResponse()->getHowMatch());
+                        $renderedResponseProcessing = $responseProcessingToRender->toQTI();
+                    }
+                }
+                else {
+                    $renderedResponseProcessing .= "<responseProcessing>";
+                    foreach($this->getInteractions() as $interaction){
+                        $renderedResponseProcessing .= 
+                            $responseProcessing->buildQTI(
+                                $interaction->getResponse()->getHowMatch()
+                                , Array(
+                                    'responseIdentifier'=>$interaction->getResponse()->getIdentifier()
+                                    , 'outcomeIdentifier'=>'SCORE'
+                                )
+                            );
+                    }
+                    $renderedResponseProcessing .= "</responseProcessing>";
+                }
+            } else {
+                $renderedResponseProcessing = $responseProcessing->toQTI();
+            } 
+        }
+
+        $variables['renderedResponseProcessing'] = $renderedResponseProcessing;
+        
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
-       
+
 		//render and clean the xml	        
         $xmlElt = simplexml_load_string($tplRenderer->render());
 		$returnValue = $xmlElt->asXml();

@@ -20,6 +20,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
 
+/*
 	public function testVariables () {
 		
 		$null = taoItems_models_classes_Matching_VariableFactory::create (null);
@@ -636,6 +637,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
 	}
 
+
     public function testMatch () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -651,8 +653,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //$itemSerial = $item->getSerial ();
         //$item = null;
         //$item = $this->qtiService->getItemBySerial ($itemSerial);
-        
-        
+                
         $matching_data = $item->getMatchingData ();
         matching_init ();
         matching_setRule ($matching_data['rule']);
@@ -818,7 +819,29 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
-    
+
+*/
+
+    public function testPatternSeeker () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => true
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        $file = dirname(__FILE__).'/samples/choice.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom_rule/shakespeare.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
+    }
+
+
     /*public function testCustomAllRules () {
         $parameters = array(
             'root_url' => ROOT_URL,

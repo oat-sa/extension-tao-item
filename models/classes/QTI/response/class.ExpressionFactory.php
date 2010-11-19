@@ -64,19 +64,19 @@ class taoItems_models_classes_QTI_response_ExpressionFactory
         $expressionName = $data->getName();
         
         //retrieve the expression attributes
-        $options = array();
+        $attributes = array();
         foreach($data->attributes() as $key => $value){
-            $options[$key] = $value;
+            $attributes[$key] = (string)$value;
         }
         
         // Create expression function of its type (If specialization has been done for the expression type)
         $expressionClass = 'taoItems_models_classes_QTI_response_'.ucfirst($expressionName);
         
         if (class_exists($expressionClass)){
-            $expression = new $expressionClass ($expressionName, $options);
+            $expression = new $expressionClass ($expressionName, $attributes);
         }
         else {
-            $expression = new taoItems_models_classes_QTI_response_Expression ($expressionName, $options);
+            $expression = new taoItems_models_classes_QTI_response_Expression ($expressionName, $attributes);
         }
         
         $returnValue = $expression;

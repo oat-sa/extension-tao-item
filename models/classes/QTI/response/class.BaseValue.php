@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 11:03:29 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 19:22:07 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -75,7 +75,7 @@ class taoItems_models_classes_QTI_response_BaseValue
         $options = Array();
         $value = null;
         
-        switch ((string)$this->options['baseType']){
+        switch ($this->attributes['baseType']){
             case "boolean":
                 $options['type'] = "boolean";
                 $value = json_encode ($this->value);
@@ -102,7 +102,7 @@ class taoItems_models_classes_QTI_response_BaseValue
                 $value = '"'.implode ('","', (array)$this->value).'"'; // Méchant casting, won't work with a dictionnary, but with a tuple it is okay
                 break;
             default:
-                throw new Exception ("taoItems_models_classes_QTI_response_BaseValue::getRule an error occured : the type ".(string)$this->options['baseType']." is unknown");
+                throw new Exception ("taoItems_models_classes_QTI_response_BaseValue::getRule an error occured : the type ".$this->attributes['baseType']." is unknown");
         }
 
         $returnValue = 'createVariable ('

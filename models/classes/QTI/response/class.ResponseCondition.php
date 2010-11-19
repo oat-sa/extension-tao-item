@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 11:03:29 with ArgoUML PHP module 
+ * Automatically generated on 18.11.2010, 19:22:07 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -138,7 +138,9 @@ class taoItems_models_classes_QTI_response_ResponseCondition
     public function setResponseIf( taoItems_models_classes_QTI_response_ConditionalExpression $expression)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE0 begin
+        
         $this->responseIf = $expression;
+        
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE0 end
     }
 
@@ -153,7 +155,9 @@ class taoItems_models_classes_QTI_response_ResponseCondition
     public function setResponseElseIf($expressions)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE2 begin
+        
         $this->responseElseIf = $expressions;
+        
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE2 end
     }
 

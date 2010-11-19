@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 16:07:27 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2010, 10:33:30 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -115,14 +115,6 @@ class taoItems_models_classes_QTI_Interaction
      * @var string
      */
     protected $prompt = '';
-
-    /**
-     * Short description of attribute responseProcessingTemplateUri
-     *
-     * @access public
-     * @var string
-     */
-    public $responseProcessingTemplateUri = '';
 
     // --- OPERATIONS ---
 

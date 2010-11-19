@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.11.2010, 17:04:17 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2010, 10:38:33 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -39,13 +39,6 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
-/**
- * include taoItems_models_classes_QTI_Outcome
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
- */
-require_once('taoItems/models/classes/QTI/class.Outcome.php');
-
 /* user defined includes */
 // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000241D-includes begin
 // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000241D-includes end
@@ -66,7 +59,7 @@ class taoItems_models_classes_QTI_Response
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -93,6 +86,14 @@ class taoItems_models_classes_QTI_Response
      * @var string
      */
     protected $mappingDefaultValue = '';
+
+    /**
+     * Short description of attribute howMatch
+     *
+     * @access protected
+     * @var String
+     */
+    protected $howMatch = null;
 
     // --- OPERATIONS ---
 
@@ -383,6 +384,43 @@ class taoItems_models_classes_QTI_Response
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A1F end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getHowMatch
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
+     */
+    public function getHowMatch()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BED begin
+        
+        $returnValue = $this->howMatch;
+        
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BED end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method setHowMatch
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string howMatch
+     * @return mixed
+     */
+    public function setHowMatch($howMatch)
+    {
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BEF begin
+        
+        $this->howMatch = $howMatch;
+        
+        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BEF end
     }
 
 } /* end of class taoItems_models_classes_QTI_Response */

@@ -19,8 +19,6 @@
 		<div><?=$data?></div>
 	</itemBody>
 	
-<?if($responseProcessing):?>
-	<?=$responseProcessing->toQTI()?>
-<?endif?>
+	<?=$renderedResponseProcessing?>
 
 </assessmentItem>

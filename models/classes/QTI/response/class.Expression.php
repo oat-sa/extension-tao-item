@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 11:03:29 with ArgoUML PHP module 
+ * Automatically generated on 19.11.2010, 13:12:49 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -20,17 +20,6 @@ error_reporting(E_ALL);
 if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
-
-/**
- * The QTI_Data class represent the abstract model for all the QTI objects.
- * It contains all the attributes of the different kind of QTI objects.
- * It manages the identifiers and serial creation.
- * It provides the serialisation and persistance methods.
- * And give the interface for the rendering.
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
- */
-require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_response_Rule
@@ -56,7 +45,6 @@ require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
  * @subpackage models_classes_QTI_response
  */
 class taoItems_models_classes_QTI_response_Expression
-    extends taoItems_models_classes_QTI_Data
         implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
@@ -82,10 +70,18 @@ class taoItems_models_classes_QTI_response_Expression
     /**
      * Short description of attribute name
      *
-     * @access public
+     * @access protected
      * @var string
      */
-    public $name = '';
+    protected $name = '';
+
+    /**
+     * Short description of attribute attributes
+     *
+     * @access protected
+     * @var array
+     */
+    protected $attributes = array();
 
     // --- OPERATIONS ---
 
@@ -110,15 +106,15 @@ class taoItems_models_classes_QTI_response_Expression
         $subExpressionsJSON = implode(',', $subExpressionsRules);
 
         // Format options
-        $optionsJSON = count($this->options) ? '"'.addslashes(json_encode($this->options)).'"' : 'null';
+        $optionsJSON = count($this->attributes) ? '"'.addslashes(json_encode($this->attributes)).'"' : 'null';
         
         // Format rule function of the expression operator
         switch ($this->name) {
             case 'correct':
-                $returnValue = 'getCorrect("'.$this->options['identifier'].'")';
+                $returnValue = 'getCorrect("'.$this->attributes['identifier'].'")';
                 break;
             case 'mapResponse':
-                $identifier = $this->options['identifier'];
+                $identifier = $this->attributes['identifier'];
                 $returnValue = 'mapResponse('
                     . $optionsJSON
                     .', getMap("'.$identifier.'"), getResponse("'.$identifier.'"))';
@@ -136,13 +132,13 @@ class taoItems_models_classes_QTI_response_Expression
                 $returnValue = 'createVariable("{\"type\":\"tuple\"}", '.$subExpressionsJSON.')';
                 break;
             case 'outcome':
-                $returnValue = 'getOutcome("'.$this->options['identifier'].'")';
+                $returnValue = 'getOutcome("'.$this->attributes['identifier'].'")';
                 break;
             case 'setOutcomeValue':
-                $returnValue = 'setOutcomeValue("'.$this->options['identifier'].'", '.$subExpressionsJSON.')';
+                $returnValue = 'setOutcomeValue("'.$this->attributes['identifier'].'", '.$subExpressionsJSON.')';
                 break;
             case 'variable':
-                $returnValue = 'getVariable("'.$this->options['identifier'].'")';
+                $returnValue = 'getVariable("'.$this->attributes['identifier'].'")';
                 break;
             
             default:                 
@@ -163,32 +159,18 @@ class taoItems_models_classes_QTI_response_Expression
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string expressionName
-     * @param  array options
-     * @return mixed
-     */
-    public function __construct($expressionName, $options)
-    {
-        // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004900 begin
-        parent::__construct (null, $options);
-        $this->name = $expressionName;
-        // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004900 end
-    }
-
-    /**
-     * Short description of method setAttributes
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  string name
      * @param  array attributes
      * @return mixed
      */
-    public function setAttributes($attributes)
+    public function __construct($name, $attributes)
     {
-        // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AF5 begin
-        // @todo not used
+        // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004900 begin
+        
+        $this->name = $name;
         $this->attributes = $attributes;
-        // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AF5 end
+        
+        // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004900 end
     }
 
     /**
@@ -202,7 +184,9 @@ class taoItems_models_classes_QTI_response_Expression
     public function setSubExpressions($expressions)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AC7 begin
+        
         $this->subExpressions = $expressions;
+        
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AC7 end
     }
 
@@ -217,9 +201,10 @@ class taoItems_models_classes_QTI_response_Expression
     public function setValue(   $value)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AD8 begin
+        
         // Set the value of the expression and cast it function of the (defined) base type of the variable
-        if ($this->options['baseType']){
-            switch ($this->options['baseType']){
+        if ($this->attributes['baseType']){
+            switch ($this->attributes['baseType']){
                 case 'boolean':
                     if (is_string ($value)){
                         $this->value = (bool)($value=='true'||$value=='1'?1:0);
@@ -249,6 +234,7 @@ class taoItems_models_classes_QTI_response_Expression
                     break;
             }   
         }
+
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AD8 end
     }
 
