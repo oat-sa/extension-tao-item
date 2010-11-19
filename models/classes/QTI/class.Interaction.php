@@ -586,7 +586,7 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 begin
-
+        
    		//check first if there is a template for the given type
         $template = self::getTemplatePath() . 'interactions/xhtml.' .strtolower($this->type) . '.tpl.php';
         if(!file_exists($template)){
@@ -610,7 +610,7 @@ class taoItems_models_classes_QTI_Interaction
    			case 'choice':
    			case 'order':
    			case 'gapMatch':
-   				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/i", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
+   				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/mi", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
    				break;
    		}
    			

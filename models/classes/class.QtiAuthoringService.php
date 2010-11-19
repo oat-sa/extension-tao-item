@@ -454,10 +454,18 @@ class taoItems_models_classes_QtiAuthoringService
 					foreach($interaction->getGroups() as $group){
 						//append to the choice list:
 						$group->addChoices(array($choice));//add 1 choice
-						$group->setData($group->getData().'{'.$choice->getSerial().'}');
 						$this->qtiService->saveDataToSession($group);
 					}
-					$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
+					$data = $interaction->getData();
+					$matched = array();
+					if(preg_match_all("/{choice_[a-z0-9]*}/im", $data, $matched) > 0){
+						$lastMatch = $matched[0][count($matched[0]) - 1];
+						$data = str_replace($lastMatch, $lastMatch . '{'.$choice->getSerial().'}', $data);
+					}
+					else{
+						$data = '{'.$choice->getSerial().'}'.$data;
+					}
+					$interaction->setData($data);
 					break;
 				}
 				case 'hottext':{
