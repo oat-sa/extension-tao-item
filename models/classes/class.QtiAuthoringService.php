@@ -1063,24 +1063,17 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if(!is_null($item)){
 			//create a responseProcessing object
-			$responseTemplates = array(
-				QTI_RESPONSE_TEMPLATE_MATCH_CORRECT,
-				QTI_RESPONSE_TEMPLATE_MAP_RESPONSE,
-				QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
-			);
-			
 			$responseProcessing = null;
-			if(in_array($type, $responseTemplates)){
-				//it is one of the available qti default templates:
-				$responseProcessing = new taoItems_models_classes_QTI_response_Template($type);
-			}else if($type == 'custom'){
-				throw new Exception('custom template is not available yet');
-				
-				//a custom rule:
-				$responseProcessing = new taoItems_models_classes_QTI_response_CustomRule();
-				//parse the rule and assign it to the processing object
-			}else{
-				throw new Exception('unknown processing type');
+			switch(strtolower($type)){
+				case 'template':{
+					$responseProcessing = new taoItems_models_classes_QTI_response_TemplatesDriven();
+					break;
+				}
+				case 'custom':
+				case 'customtemplate':{
+					throw new Exceeption("unavailable response processing type {$type}");
+					break;
+				}
 			}
 			
 			if(!is_null($responseProcessing)){
@@ -1091,6 +1084,20 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		return $returnValue;
 	}
+	
+	public function setResponseTemplate(taoItems_models_classes_QTI_Response $response, $templateUri){
+		
+		$returnValue = false;
+		
+		//check if it is one of the available templates:
+		if(taoItems_models_classes_QTI_response_TemplatesDriven::isSupportedTemplate($templateUri)){
+			$response->setHowMatch($templateUri);
+			$returnValue = true;
+		}
+		
+		return $returnValue;
+	}
+	
 	
 	public function getResponseProcessing(taoItems_models_classes_QTI_Item $item){
 		
@@ -1129,7 +1136,7 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
-	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing=null){
+	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = array();
 		switch(strtolower($interaction->getType())){
 			case 'choice':
@@ -1267,18 +1274,26 @@ class taoItems_models_classes_QtiAuthoringService
 				'values' => array('yes', 'no')
 			);
 			
-			try{
-				$responseProcessingType = $this->getResponseProcessingType($responseProcessing);
-			}catch(Exception $e){}
-			
-			if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
-				//mapping:
-				$returnValue[] = array(
-					'name' => 'score',
-					'label' => __('Score'),
-					'edittype' => 'text'
-				);
+			// try{
+				// $responseProcessingType = $this->getResponseProcessingType($responseProcessing);
+			// }catch(Exception $e){}
+			$response = $interaction->getResponse();
+			if(is_null($response)){
+				throw new Exception("no response found for the interaction {$interaction->getIdentifier()}");
+			}else{
+				$responseProcessingType = $response->getHowMatch();
+				if(!empty($responseProcessingType)){
+					if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
+						//mapping:
+						$returnValue[] = array(
+							'name' => 'score',
+							'label' => __('Score'),
+							'edittype' => 'text'
+						);
+					}
+				}
 			}
+			
 		}
 		return $returnValue;
 	}
@@ -1313,20 +1328,17 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getResponseProcessingType(taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing = null){
 		$returnValue = '';
 		
-		if($responseProcessing instanceof taoItems_models_classes_QTI_response_Template){
-			//get the template type:
-			$template = QTI_RESPONSE_TEMPLATE_MAP_RESPONSE;//default one: QTI_RESPONSE_TEMPLATE_MAP_RESPONSE or QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
+		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){
 			
-			//method of qti service to get the template:
-			$theTemplate = $responseProcessing->getUri();
-			if(!empty($theTemplate)){
-				$template = $theTemplate;
-			}
-			$returnValue = $template;
+			$returnValue = 'template';
 			
-		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_CustomRule){
+		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_Custom){
 		
 			$returnValue = 'custom';
+			
+		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_Template){
+		
+			$returnValue = 'customTemplate';
 			
 		}else{
 			// var_dump($responseProcessing);

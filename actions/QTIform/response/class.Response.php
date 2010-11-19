@@ -81,6 +81,19 @@ abstract class taoItems_actions_QTIform_response_Response
 		$serialElt->setValue($this->response->getSerial());
 		$this->form->addElement($serialElt);
 		
+		//set response processing type:
+		//TODO urencode:
+		$availableTemplates = array(
+			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT) => __('correct'),
+			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE) => __('map'),
+			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT) => __('map point'),
+		);
+		$ResponseProcessingTplElt = tao_helpers_form_FormFactory::getElement('processingTemplate', 'Combobox');
+		$ResponseProcessingTplElt->setDescription(__('Processing type'));
+		$ResponseProcessingTplElt->setOptions($availableTemplates);
+		$ResponseProcessingTplElt->setValue($this->response->getHowMatch());
+		$this->form->addElement($ResponseProcessingTplElt);
+		
     }
 	
 }

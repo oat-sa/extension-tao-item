@@ -816,6 +816,7 @@ class QtiAuthoring extends CommonModule {
 				}
 				$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
 				
+				unset($values['groupSerial']);
 				unset($values['groupIdentifier']);
 				$this->service->setOptions($group, $values);
 				
@@ -894,7 +895,7 @@ class QtiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'responseMappingMode' => $this->isResponseMappingMode($responseProcessingType)
+			'responseMode' => $this->isResponseMappingMode($responseProcessingType)
 		));
 	}
 	
@@ -951,39 +952,46 @@ class QtiAuthoring extends CommonModule {
 	}
 	
 	public function saveResponseProperties(){
-		$saved = false;
 		
+		$saved = false;
+		$setResponseMappingMode = false;
 		$response = $this->getCurrentResponse();
 		
-		if(!is_null($response) && $this->hasRequestParameter('baseType')){
-		
+		if(!is_null($response)){
 			if($this->hasRequestParameter('baseType')){
-				$this->service->editOptions($response, array('baseType'=>$this->getRequestParameter('baseType')));
-				$saved = true;
-			}
-			
-			if($this->hasRequestParameter('ordered')){
-				if(intval($this->getRequestParameter('ordered')) == 1){
-					$this->service->editOptions($response, array('cardinality'=>'ordered'));
-				}else{
-					//reset the cardinality:
-					$parentInteraction = $this->qtiService->getComposingData($response);
-					if(!is_null($parentInteraction)){
-						$this->service->editOptions($response, array('cardinality' => $parentInteraction->getCardinality() ));
-					}else{
-						throw new Exception('cannot find the parent interaction');
-					}
-					
+				if($this->hasRequestParameter('baseType')){
+					$this->service->editOptions($response, array('baseType'=>$this->getRequestParameter('baseType')));
+					$saved = true;
 				}
 				
-				$saved = true;
+				if($this->hasRequestParameter('ordered')){
+					if(intval($this->getRequestParameter('ordered')) == 1){
+						$this->service->editOptions($response, array('cardinality'=>'ordered'));
+					}else{
+						//reset the cardinality:
+						$parentInteraction = $this->qtiService->getComposingData($response);
+						if(!is_null($parentInteraction)){
+							$this->service->editOptions($response, array('cardinality' => $parentInteraction->getCardinality() ));
+						}else{
+							throw new Exception('cannot find the parent interaction');
+						}
+						
+					}
+					$saved = true;
+				}
 			}
 			
+			if($this->hasRequestParameter('processingTemplate')){
+				$processingTemplate = tao_helpers_Uri::decode($this->getRequestParameter('processingTemplate'));
+				$saved = $this->service->setResponseTemplate($response, $processingTemplate);
+				if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
+			}
 		}
 		// var_dump($response);
 		
 		echo json_encode(array(
-			'saved' => $saved
+			'saved' => $saved,
+			'setResponseMappingMode' => $setResponseMappingMode
 		));
 	}
 	
@@ -993,23 +1001,34 @@ class QtiAuthoring extends CommonModule {
 		$item = $this->getCurrentItem();
 		$responseProcessing = $item->getResponseProcessing();
 		
-		//get model:
-		$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
-		$responseData = $this->service->getInteractionResponseData($interaction);
-		
-		if(strtolower($interaction->getType()) == 'order'){
-			//special case for order interaction:
-			
-		}
-		
+		$displayGrid = false;
+		$columnModel = array();
+		$responseData = array();
 		$xhtmlForm = '';
 		$responseForm = $this->service->getInteractionResponse($interaction)->toForm();
 		if(!is_null($responseForm)){
 			$xhtmlForm = $responseForm->render();
 		}
+			
+		//check the type...
+		//only display response grid when the response template is templates driven:
+		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){
+			$displayGrid = true;
+		
+			//get model:
+			$columnModel = $this->service->getInteractionResponseColumnModel($interaction);
+			$responseData = $this->service->getInteractionResponseData($interaction);
+			
+			if(strtolower($interaction->getType()) == 'order'){
+				//special case for order interaction:
+				
+			}
+		}
+		
 		
 		echo json_encode(array(
 			'ok' => true,
+			'displayGrid' => $displayGrid,
 			'colModel' => $columnModel,
 			'data' => $responseData,
 			'maxChoices' => intval($interaction->getCardinality(true)),

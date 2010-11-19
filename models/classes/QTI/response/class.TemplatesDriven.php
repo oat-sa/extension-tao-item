@@ -137,8 +137,9 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BFD begin
         
         $mythoMap = Array (
-            'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct'
-            , 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response'
+            QTI_RESPONSE_TEMPLATE_MATCH_CORRECT
+            , QTI_RESPONSE_TEMPLATE_MAP_RESPONSE
+			, QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT
         );
         
         $returnValue = in_array($uri, $mythoMap);

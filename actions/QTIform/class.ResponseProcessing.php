@@ -92,12 +92,7 @@ class taoItems_actions_QTIform_ResponseProcessing
 		//select box:
 		$typeElt = tao_helpers_form_FormFactory::getElement('responseProcessingType', 'Combobox');
 		$typeElt->setDescription(__('Processing type'));
-		$typeElt->setOptions(array(
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT) => __('match'),
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE) => __('map'),
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT) => __('map point'),
-			'custom' => __('custom')
-		));
+		
 		$qtiAuthoringService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
 		try{
 			$type = $qtiAuthoringService->getResponseProcessingType($this->responseProcessing);
@@ -105,6 +100,13 @@ class taoItems_actions_QTIform_ResponseProcessing
 		
 		if(!empty($type)){
 			$this->processingType = $type;
+			$availableOptions = array(
+				'template' => __('template')
+			);
+			if($type == 'custom'||$type == 'customTemplate'){
+				$availableOptions[$type] = __($type);
+			}
+			$typeElt->setOptions($availableOptions);
 			$typeElt->setValue($type);
 		}
 		$this->form->addElement($typeElt);

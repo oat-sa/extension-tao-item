@@ -568,11 +568,26 @@ qtiEdit.prototype.saveResponseProcessing = function($myForm){
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){
-				self.setResponseMappingMode(r.responseMappingMode);
+				self.setResponseMode(r.setResponseMode);
 				createInfoMessage(__('The response processing has been saved'));
 			}
 	   }
 	});
+}
+qtiEdit.prototype.setResponseMode = function(visible){
+	if(visible){
+		if(this.responseMode){
+		
+		}else{
+			this.responseMode = true;
+			//reload the current interaction form entirely, to display the response template
+			if(this.currentInteraction) this.loadInteractionForm(this.currentInteraction.interactionSerial);
+		}
+	}else{
+		this.responseMode = false;
+		//reload the current interaction form entirely, to display the response template
+		if(this.currentInteraction) this.loadInteractionForm(this.currentInteraction.interactionSerial);
+	}
 }
 
 qtiEdit.prototype.setResponseMappingMode = function(isMapping){
@@ -656,4 +671,8 @@ qtiEdit.prototype.deleteStyleSheet = function(css_href){
 			}
 	   }
 	});
+}
+
+qtiEdit.prototype.saveCurrentInteraction = function(){
+	//auto save the current interaction, after confirming the choice to the user:
 }

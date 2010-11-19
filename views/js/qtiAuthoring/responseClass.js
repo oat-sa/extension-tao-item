@@ -51,6 +51,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 		dataType: 'json',
 		success: function(serverResponse){
 			if (serverResponse.ok){
+				
 				//reset the grid:
 				$('#'+tableElementId).empty();
 				
@@ -60,8 +61,10 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 				
 				//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
 				if(serverResponse.maxChoices) response.maxChoices = serverResponse.maxChoices;
-				
-				response.buildGrid(tableElementId, serverResponse);
+					
+				if(serverResponse.displayGrid){
+					response.buildGrid(tableElementId, serverResponse);
+				}
 			}else{
 				throw 'error in loading the response editing data';
 			}
@@ -72,7 +75,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 }
 
 responseClass.prototype.initResponseFormSubmitter = function(){
-	var instance = this;
+	var self = this;
 	$(".response-form-submitter").click(function(){
 		
 		var $myForm = $(this).parents("form");
@@ -86,7 +89,13 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 				if(r.saved){
 					createInfoMessage(__('Modification on response applied'));
 					
-					//reload?
+					// if(r.setResponseMappingMode){
+						//reload the grid, just in case the response template has changed:
+						if(interactionClass.instances[self.interactionSerial]){
+							new responseClass(self.myGrid.attr('id'), interactionClass.instances[self.interactionSerial]);
+						}
+						
+					// }
 				}
 		   }
 		});
