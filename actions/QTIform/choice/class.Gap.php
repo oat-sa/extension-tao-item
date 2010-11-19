@@ -109,10 +109,8 @@ class taoItems_actions_QTIform_choice_Gap
 			$options[$choice->getSerial()] = $choice->getIdentifier();
 		}
 		$matchGroupElt->setOptions($options);
-		
-		foreach($this->group->getChoices() as $choiceSerial){
-			$matchGroupElt->setValue($choiceSerial);
-		}//the default empty value indicates to the authoring controller that there is no restriction to the associated choices
+		//the default empty value indicates to the authoring controller that there is no restriction to the associated choices
+		$matchGroupElt->setValues($this->group->getChoices());
 				
 		$this->form->addElement($matchGroupElt);
 		

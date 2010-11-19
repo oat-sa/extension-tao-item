@@ -714,6 +714,14 @@ abstract class taoItems_models_classes_QTI_Data
         
         if(array_key_exists($name, $this->options)){
         	$returnValue = $this->options[$name];
+        	if(is_string($this->options[$name])){
+        		if($this->options[$name] == 'true'){
+        			$returnValue = true;
+        		}
+        		if($this->options[$name] == 'false'){
+        			$returnValue = false;
+        		}
+        	}
         }
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002334 end

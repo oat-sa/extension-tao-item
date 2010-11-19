@@ -223,17 +223,27 @@ class taoItems_models_classes_QTI_ParserFactory
 			        	$choice = self::buildChoice($choiceNode);
 			        	if(!is_null($choice)){
 			       			$myInteraction->addChoice($choice);
-			       			$choices[] = $choice;
+			       			$choices[$choice->getIdentifier()] = $choice;
 			        	}
        				}
        				$gapNodes = $data->xpath("//*[name(.)='gap']");
        				foreach($gapNodes as $gapNode){
        					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
        					$group->setType($gapNode->getName());
-       					$group->setChoices($choices);
        					if(isset($gapNode['matchGroup'])){
-       						$group->setOption('matchGroup', (string)$gapNode['matchGroup']);
+       						$matchChoice = array();
+       						$group->setOption('matchGroup', explode(' ',(string)$gapNode['matchGroup']));
+       						foreach($group->getOption('matchGroup') as $choiceId){
+       							if(array_key_exists($choiceId, $choices)){
+       								$matchChoice[] = $choices[$choiceId];
+       							}
+       						}
+       						$group->setChoices($matchChoice);
        					}
+       					else{
+       						$group->setChoices($choices);
+       					}
+       					
        					$myInteraction->addGroup($group);
        				}
        				break;

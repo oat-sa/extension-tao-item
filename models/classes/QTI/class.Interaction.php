@@ -586,7 +586,7 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 begin
-        
+
    		//check first if there is a template for the given type
         $template = self::getTemplatePath() . 'interactions/xhtml.' .strtolower($this->type) . '.tpl.php';
         if(!file_exists($template)){
@@ -595,14 +595,13 @@ class taoItems_models_classes_QTI_Interaction
         }
         
         $variables 	= $this->extractVariables();
-        //$variables['data'] = $this->getDataXHTML ();
         $variables['rowOptions'] = json_encode($this->options);
         
 		//change from camelCase to underscore_case the type of the interaction to be used in the JS
 		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
 		
 		//suffle the choices for the runtime if defined in the QTI
-		if( $this->getOption('shuffle') === true){
+		if($this->getOption('shuffle') === true){
 			$variables['data'] = $this->shuffleChoices();
 		}
 		
@@ -622,6 +621,24 @@ class taoItems_models_classes_QTI_Interaction
 			}
 			foreach($this->getChoices() as $choice){
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
+			}
+			
+			//create the matchGroup from the choice list
+			if($this->type == 'gapMatch'){
+				foreach($this->getGroups() as $group){
+					$matchGroup = array();
+					foreach($group->getChoices() as $choiceSerial){
+						foreach($this->getChoices() as $choice){
+							if($choice->getSerial() == $choiceSerial){
+								$matchGroup[] = $choice->getIdentifier();
+								break;
+							}
+						}
+					}
+					if(count($matchGroup) > 0){
+						$group->setOption('matchGroup', $matchGroup);
+					}
+				}
 			}
    		}
    		else{
@@ -669,6 +686,23 @@ class taoItems_models_classes_QTI_Interaction
 		
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){
+   			//create the matchGroup from the choice list
+			if($this->type == 'gapMatch'){
+				foreach($this->getGroups() as $group){
+					$matchGroup = array();
+					foreach($group->getChoices() as $choiceSerial){
+						foreach($this->getChoices() as $choice){
+							if($choice->getSerial() == $choiceSerial){
+								$matchGroup[] = $choice->getIdentifier();
+								break;
+							}
+						}
+					}
+					if(count($matchGroup) > 0){
+						$group->setOption('matchGroup', $matchGroup);
+					}
+				}
+			}
    			foreach($this->getGroups() as $group){
 				$variables['data'] = preg_replace("/{".$group->getSerial()."}/", $group->toQti(), $variables['data']);
 			}

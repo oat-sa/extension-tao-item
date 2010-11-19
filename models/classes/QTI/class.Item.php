@@ -523,6 +523,7 @@ class taoItems_models_classes_QTI_Item
 			
 			//build the response
 			$response = $interaction->getResponse();
+			
 			if(!is_null($response)){
 				if(!in_array($response->getIdentifier(), $foundResponses)){
 					$variables['response'] .= $response->toQTI();
