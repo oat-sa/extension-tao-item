@@ -321,7 +321,6 @@ class taoItems_models_classes_QtiAuthoringService
 			
 			//add to the item object:
 			$item->addInteraction($interaction);
-			// $item->setData($itemData);
 			
 			//insert the required group immediately:
 			switch(strtolower($interactionType)){
@@ -1117,6 +1116,11 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = false;
 		
 		$response = new taoItems_models_classes_QTI_Response();
+		
+		//set the default response template:
+		$this->setResponseTemplate($response, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
+		
+		//set the response to the interaction
 		$interaction->setResponse($response);
 		
 		//set the default base type and cardinality to the response:
