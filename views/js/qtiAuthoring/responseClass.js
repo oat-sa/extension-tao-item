@@ -89,13 +89,13 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 				if(r.saved){
 					createInfoMessage(__('Modification on response applied'));
 					
-					// if(r.setResponseMappingMode){
+					if(r.templateHasChanged){
 						//reload the grid, just in case the response template has changed:
 						if(interactionClass.instances[self.interactionSerial]){
 							new responseClass(self.myGrid.attr('id'), interactionClass.instances[self.interactionSerial]);
 						}
 						
-					// }
+					}
 				}
 		   }
 		});

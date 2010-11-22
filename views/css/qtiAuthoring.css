@@ -199,6 +199,11 @@ div.qti-authoring-form-container-column{
 	width:48%;
 }
 
+/*response editor:*/
+#qtiAuthoring_responseEditor{
+	min-height:300px;
+}
+
 /* jwysiwyg action buttons: */
 div.wysiwyg ul.panel li.addInteraction{ background: url('../img/qtiAuthoring/application_view_gallery.png'); }
 

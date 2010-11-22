@@ -539,21 +539,17 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 
 qtiEdit.prototype.loadResponseProcessingForm = function(){
 	
-	// if(!itemSerial){
-		// var itemSerial = this.itemSerial;
-	// }
-	
-	var instance = this;
+	var self = this;
 	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/editResponseProcessing",
 	   data: {
-			'itemSerial': instance.itemSerial
+			'itemSerial': self.itemSerial
 	   },
 	   dataType: 'html',
 	   success: function(form){
-			$(instance.responseProcessingFormContent).html(form);
+			$(self.responseProcessingFormContent).html(form);
 	   }
 	});
 }
@@ -574,6 +570,8 @@ qtiEdit.prototype.saveResponseProcessing = function($myForm){
 	   }
 	});
 }
+
+//useful for single page interface only: reload interaction form, to reload 
 qtiEdit.prototype.setResponseMode = function(visible){
 	if(visible){
 		if(this.responseMode){

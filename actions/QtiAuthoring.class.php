@@ -874,14 +874,21 @@ class QtiAuthoring extends CommonModule {
 		$formContainer = new taoItems_actions_QTIform_ResponseProcessing($item);
 		$myForm = $formContainer->getForm();
 		
-		// $this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('form', $myForm->render());
 		$processingType = $formContainer->getProcessingType();
-		$responseMappingMode = false;
-		if($processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
-			$responseMappingMode = true;
+		
+		// $responseMappingMode = false;
+		// if($processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $processingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
+			// $responseMappingMode = true;
+		// }
+		// $this->setData('responseMappingMode', $responseMappingMode);//no longer definied in the item response proc:
+		
+		$warningMessage = '';
+		if($processingType != 'template'){
+			$warningMessage = __('The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended.');
 		}
-		$this->setData('responseMappingMode', $responseMappingMode);
+		
+		$this->setData('warningMessage', $warningMessage);
 		$this->setView('QTIAuthoring/form_response_processing.tpl');
 	}
 	
@@ -954,10 +961,12 @@ class QtiAuthoring extends CommonModule {
 	public function saveResponseProperties(){
 		
 		$saved = false;
+		$templateHasChanged = false;
 		$setResponseMappingMode = false;
 		$response = $this->getCurrentResponse();
 		
 		if(!is_null($response)){
+		
 			if($this->hasRequestParameter('baseType')){
 				if($this->hasRequestParameter('baseType')){
 					$this->service->editOptions($response, array('baseType'=>$this->getRequestParameter('baseType')));
@@ -983,6 +992,9 @@ class QtiAuthoring extends CommonModule {
 			
 			if($this->hasRequestParameter('processingTemplate')){
 				$processingTemplate = tao_helpers_Uri::decode($this->getRequestParameter('processingTemplate'));
+				if($response->getHowMatch() != $processingTemplate){
+					$templateHasChanged = true;
+				}
 				$saved = $this->service->setResponseTemplate($response, $processingTemplate);
 				if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
 			}
@@ -991,7 +1003,8 @@ class QtiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'setResponseMappingMode' => $setResponseMappingMode
+			'setResponseMappingMode' => $setResponseMappingMode,
+			'templateHasChanged' => $templateHasChanged
 		));
 	}
 	
@@ -1005,16 +1018,20 @@ class QtiAuthoring extends CommonModule {
 		$columnModel = array();
 		$responseData = array();
 		$xhtmlForm = '';
-		$responseForm = $this->service->getInteractionResponse($interaction)->toForm();
-		if(!is_null($responseForm)){
-			$xhtmlForm = $responseForm->render();
-		}
+		
 			
 		//check the type...
 		//only display response grid when the response template is templates driven:
 		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){
+			
+			//only allow the selection of a template for "templates driven" response processing:
+			$responseForm = $this->service->getInteractionResponse($interaction)->toForm();
+			if(!is_null($responseForm)){
+				$xhtmlForm = $responseForm->render();
+			}
+			
+			//prepare data for the response grid:
 			$displayGrid = true;
-		
 			//get model:
 			$columnModel = $this->service->getInteractionResponseColumnModel($interaction);
 			$responseData = $this->service->getInteractionResponseData($interaction);
@@ -1023,6 +1040,10 @@ class QtiAuthoring extends CommonModule {
 				//special case for order interaction:
 				
 			}
+		}else{
+			$xhtmlForm .= '<b>';
+			$xhtmlForm .= __('The response form is available for templates driven item only.<br/>');
+			$xhtmlForm .= '</b>';
 		}
 		
 		

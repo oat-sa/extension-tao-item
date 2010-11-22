@@ -99,7 +99,7 @@ class taoItems_actions_QTIform_ResponseProcessing
 		}catch(Exception $e){}
 		
 		if(!empty($type)){
-			$this->processingType = $type;
+			$this->processingType = $type;//in array('template', 'custom', 'customTemplate')
 			$availableOptions = array(
 				'template' => __('template')
 			);

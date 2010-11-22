@@ -63,16 +63,8 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = new taoItems_models_classes_QTI_Item($itemIdentifier, array());
 		
 		//add default responseProcessing:
-		$this->setResponseProcessing($returnValue, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
-		
-		// $itemId = tao_helpers_Uri::getUniqueId($itemUri);
-		// if(empty($itemId)){
-			// throw new Exception('wrong format of itemUri given');
-		// }else{
-			// $itemId = 'qti_item_'.$itemId;
-			// $returnValue = new taoItems_models_classes_QTI_Item($itemId, array());
-		// }
-		// var_dump($itemId, $returnValue);
+		$this->setResponseProcessing($returnValue, 'template');
+		$returnValue->setOption('title', 'QTI item');
 		
 		return $returnValue;
 	}
@@ -1071,7 +1063,7 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'custom':
 				case 'customtemplate':{
-					throw new Exceeption("unavailable response processing type {$type}");
+					throw new Exception("unavailable response processing type {$type}");
 					break;
 				}
 			}
