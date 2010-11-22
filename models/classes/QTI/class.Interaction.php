@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.11.2010, 10:33:30 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 22.11.2010, 12:46:38 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include taoItems_models_classes_QTI_Choice
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Choice.php');
 
@@ -35,28 +35,28 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Group
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Group.php');
 
 /**
  * include taoItems_models_classes_QTI_Item
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
 
 /**
  * include taoItems_models_classes_QTI_Response
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Response.php');
 
@@ -72,7 +72,7 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
  * Short description of class taoItems_models_classes_QTI_Interaction
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -122,7 +122,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string type
      * @param  string id
      * @param  array options
@@ -143,7 +143,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method __sleep
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function __sleep()
@@ -168,7 +168,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method __wakeup
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
     public function __wakeup()
@@ -206,7 +206,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setChoices
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array choices
      * @return mixed
      */
@@ -226,7 +226,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getChoices
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getChoices()
@@ -246,7 +246,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getChoice
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Choice
      */
@@ -271,7 +271,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method addChoice
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Choice choice
      * @return mixed
      */
@@ -290,7 +290,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method removeChoice
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Choice choice
      * @return boolean
      */
@@ -326,7 +326,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method shuffleChoices
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     protected function shuffleChoices()
@@ -397,7 +397,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getGroups
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getGroups()
@@ -417,7 +417,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setGroups
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array groups
      * @return mixed
      */
@@ -437,7 +437,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method addGroup
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Group group
      * @return mixed
      */
@@ -454,7 +454,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method removeGroup
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Group group
      * @param  boolean recursive
      * @return boolean
@@ -495,7 +495,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getResponse
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return taoItems_models_classes_QTI_Response
      */
     public function getResponse()
@@ -515,7 +515,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setResponse
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Response response
      * @return mixed
      */
@@ -533,7 +533,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getPrompt
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getPrompt()
@@ -553,7 +553,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setPrompt
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string text
      * @return mixed
      */
@@ -567,10 +567,155 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
+     * Short description of method getCardinality
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  boolean numeric
+     * @return mixed
+     */
+    public function getCardinality($numeric = false)
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 begin
+		//get maximum possibility:
+		switch(strtolower($this->type)){
+			case 'choice':
+			case 'hottext':{
+				$max = intval($this->getOption('maxChoices'));
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max==1)?'single':'multiple';//default=1
+				break;
+			}
+			case 'associate':
+			case 'match':{
+				$max = intval($this->getOption('maxAssociations'));
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max==1)?'single':'multiple';//default=1
+				break;
+			}
+			case 'extendedtext':{
+				//maxStrings + order or not?
+				$cardinality = $this->getOption('cardinality');
+				if($cardinality == 'ordered'){
+					if($numeric) $returnValue = 0;//meaning, infinite
+					else $returnValue = $cardinality;
+					break;
+				}
+				$max = intval($this->getOption('maxStrings'));
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max>1)?'multiple':'single';//optional
+				break;
+			}
+			case 'gapmatch':{
+				//count the number of gap, i.e. "groups" in the interaction:
+				$max = count($this->getGroups());
+				if($numeric) $returnValue = $max;
+				else $returnValue = ($max>1)?'multiple':'single';
+			}
+			case 'order':{
+				$returnValue = ($numeric)?0:'ordered';
+				break;
+			}
+			case 'inlinechoice':
+			case 'textentry':{
+				$returnValue = ($numeric)?1:'single';
+				break;
+			}
+			default:{
+				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
+			}
+		}
+        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getBaseType
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return string
+     */
+    public function getBaseType()
+    {
+        $returnValue = (string) '';
+
+        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 begin
+		switch(strtolower($this->type)){
+			case 'choice':
+			case 'order':
+			case 'inlinechoice':
+			case 'hottext':{
+				$returnValue = 'identifier';
+				break;
+			}
+			case 'associate':{
+				$returnValue = 'pair';
+				break;
+			}
+			case 'match':
+			case 'gapmatch':{
+				$returnValue = 'directedPair';
+				break;
+			}
+			case 'textentry':
+			case 'extendedtext':{
+				$returnValue = 'string';
+				$authorizedBaseType = array('string', 'integer', 'float');
+				$response = $this->getResponse();
+				if(!is_null($response)){
+					$baseType = strtolower($this->getOption('baseType'));
+					if(in_array($baseType, $authorizedBaseType)){
+						$returnValue = $baseType;
+					}
+				}
+				break;
+			}
+			default:{
+				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
+			}
+			
+		}
+        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method isBlock
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return boolean
+     */
+    public function isBlock()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 begin
+        
+        $returnValue = in_array($this->type, array(
+        	'associate', 
+        	'choice', 
+        	'order', 
+        	'match', 
+        	'gapMatch', 
+        	'hottext'
+        ));
+        
+        // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Short description of method toXHTML
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -658,7 +803,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toQTI
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -718,7 +863,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toForm
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -740,124 +885,6 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
 
         return $returnValue;
-    }
-
-    /**
-     * Short description of method getCardinality
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  boolean numeric
-     * @return mixed
-     */
-    public function getCardinality($numeric = false)
-    {
-        $returnValue = null;
-
-        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 begin
-		//get maximum possibility:
-		switch(strtolower($this->type)){
-			case 'choice':
-			case 'hottext':{
-				$max = intval($this->getOption('maxChoices'));
-				if($numeric) $returnValue = $max;
-				else $returnValue = ($max==1)?'single':'multiple';//default=1
-				break;
-			}
-			case 'associate':
-			case 'match':{
-				$max = intval($this->getOption('maxAssociations'));
-				if($numeric) $returnValue = $max;
-				else $returnValue = ($max==1)?'single':'multiple';//default=1
-				break;
-			}
-			case 'extendedtext':{
-				//maxStrings + order or not?
-				$cardinality = $this->getOption('cardinality');
-				if($cardinality == 'ordered'){
-					if($numeric) $returnValue = 0;//meaning, infinite
-					else $returnValue = $cardinality;
-					break;
-				}
-				$max = intval($this->getOption('maxStrings'));
-				if($numeric) $returnValue = $max;
-				else $returnValue = ($max>1)?'multiple':'single';//optional
-				break;
-			}
-			case 'gapmatch':{
-				//count the number of gap, i.e. "groups" in the interaction:
-				$max = count($this->getGroups());
-				if($numeric) $returnValue = $max;
-				else $returnValue = ($max>1)?'multiple':'single';
-			}
-			case 'order':{
-				$returnValue = ($numeric)?0:'ordered';
-				break;
-			}
-			case 'inlinechoice':
-			case 'textentry':{
-				$returnValue = ($numeric)?1:'single';
-				break;
-			}
-			default:{
-				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
-			}
-		}
-        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 end
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method getBaseType
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return string
-     */
-    public function getBaseType()
-    {
-        $returnValue = (string) '';
-
-        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 begin
-		switch(strtolower($this->type)){
-			case 'choice':
-			case 'order':
-			case 'inlinechoice':
-			case 'hottext':{
-				$returnValue = 'identifier';
-				break;
-			}
-			case 'associate':{
-				$returnValue = 'pair';
-				break;
-			}
-			case 'match':
-			case 'gapmatch':{
-				$returnValue = 'directedPair';
-				break;
-			}
-			case 'textentry':
-			case 'extendedtext':{
-				$returnValue = 'string';
-				$authorizedBaseType = array('string', 'integer', 'float');
-				$response = $this->getResponse();
-				if(!is_null($response)){
-					$baseType = strtolower($this->getOption('baseType'));
-					if(in_array($baseType, $authorizedBaseType)){
-						$returnValue = $baseType;
-					}
-				}
-				break;
-			}
-			default:{
-				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
-			}
-			
-		}
-        // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 end
-
-        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Interaction */

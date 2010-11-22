@@ -37,21 +37,43 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 	public function setCommonElements(){
 	
 		$interaction = $this->getInteraction();
+		$response = $interaction->getResponse();
+		$isNumeric = false;
+		if(!is_null($response)){
+			if($response->getOption('baseType') == 'integer' || $response->getOption('baseType') == 'float'){
+				$isNumeric = true;
+			}
+		}
 		
 		parent::setCommonElements();
 		
 		$baseElt = tao_helpers_form_FormFactory::getElement('base', 'Textbox');
 		$baseElt->setDescription(__('Number base for value interpretation'));
-		//validator: is int??
+		$baseElt->addValidator(tao_helpers_form_FormFactory::getValidator('Integer'));
 		$base = $interaction->getOption('base');
-		if(!empty($base)){
-			$baseElt->setValue($base);
+		if(!$isNumeric){
+			$baseElt->addAttribute('disabled', true);
+			if(!empty($base)){
+				$baseElt->setValue($base);
+			}
+		}
+		else{
+			if(!empty($base)){
+				$baseElt->setValue($base);
+			}
+			else{
+				$baseElt->setValue(10);
+			}
 		}
 		$this->form->addElement($baseElt);
 		
 		$stringIdentifierElt = tao_helpers_form_FormFactory::getElement('stringIdentifier', 'Textbox');
 		$stringIdentifierElt->setDescription(__('String identifier'));
 		$stringIdentifier = $interaction->getOption('stringIdentifier');
+		if(!$isNumeric){
+			$stringIdentifierElt->addAttribute('disabled', true);
+		}		
+		
 		if(!empty($stringIdentifier)){
 			$stringIdentifierElt->setValue($stringIdentifier);
 		}
@@ -59,6 +81,7 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		
 		$expectedLengthElt = tao_helpers_form_FormFactory::getElement('expectedLength', 'Textbox');
 		$expectedLengthElt->setDescription(__('Expected length'));
+		$expectedLengthElt->addValidator(tao_helpers_form_FormFactory::getValidator('Integer'));
 		$expectedLength = $interaction->getOption('expectedLength');
 		if(!empty($expectedLength)){
 			$expectedLengthElt->setValue($expectedLength);
@@ -67,7 +90,6 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		
 		$patternMaskElt = tao_helpers_form_FormFactory::getElement('patternMask', 'Textbox');
 		$patternMaskElt->setDescription(__('Pattern mask'));
-		//validator: is int??
 		$patternMask = $interaction->getOption('patternMask');
 		if(!empty($patternMask)){
 			$patternMaskElt->setValue($patternMask);
@@ -76,7 +98,6 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		
 		$placeHolderTextElt = tao_helpers_form_FormFactory::getElement('placeHolderText', 'Textbox');
 		$placeHolderTextElt->setDescription(__('Place holder text'));
-		//validator: is int??
 		$placeHolderText = $interaction->getOption('placeHolderText');
 		if(!empty($placeHolderText)){
 			$placeHolderTextElt->setValue($placeHolderText);

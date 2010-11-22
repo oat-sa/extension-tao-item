@@ -97,8 +97,13 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
 		// $returnValue .= "<input type='button' id='{$interaction->getSerial()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
+		if($interaction->isBlock()){
+			$returnValue .= "<div class='qti_interaction_block'>";
+		}
 		$returnValue .= "<input id=\"{$interaction->getSerial()}\" class=\"qti_interaction_link\" value=\"{$interaction->getType()} Interaction\" type=\"button\"/>";
-		
+		if($interaction->isBlock()){
+			$returnValue .= "</div>";
+		}
 		return $returnValue;
 	}
 	
@@ -970,6 +975,12 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
 		$pattern = "/<input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>/i";
+		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
+			if($qtiObject->isBlock()){
+				$pattern = "/<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?><\/div>/i";
+			}
+		}
+		
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
 		
 		//http://static.php.net/www.php.net/images/php.gif

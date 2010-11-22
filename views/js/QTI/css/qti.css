@@ -15,7 +15,7 @@ ol, ul, li {font-size:14px; }
 
 div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 
-.field_error {background-color:transparent; background-image: url('../img/underline.gif'); background-repeat: repeat-x; background-position: bottom; }
+.field-error {background-color:transparent; background-image: url('../img/underline.gif'); background-repeat: repeat-x; background-position: bottom; }
 
 .breaker {clear:both;}
 
@@ -25,6 +25,7 @@ div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 /* BD #009933 */ .qti_widget {border: 2px solid #009933; padding:20px; margin-bottom:10px; }
 .qti_widget ol, .qti_widget ul {list-style: none; }
 .qti_widget ol, .qti_widget ul, .qti_widget li {margin: 0; padding: 0; border: 0; font-size:100%; }
+.qti_widget .qti_choice_list li .ui-draggable:hover{color:#009933;}
 
 /* choice interaction */
 .qti_simple_interaction ul,.qti_multi_interaction ul, .qti_order_interaction ul {margin:20px 20px 0 20px; }
@@ -81,6 +82,7 @@ textarea {width:400px; height:100px; margin:auto; 	}
 /* Match */
 /* BD #ccc BG #eee TXT #555 */.qti_match_interaction .choice_list li  {line-height:25px; padding:0px 5px 0px 5px; font-weight:bold; color:#555; background-color: #eee; border: solid 1px #ccc; }
 .qti_match_interaction .choice_list_cols li {padding:5px;float:left;position:relative;}
+.qti_match_interaction .choice_list_cols li div{position: absolute; bottom: 0px; padding:5px; left:-1px; font-weight:bold; color:#555; background-color: #eee; border: solid 1px #ccc; vertical-align: middle;}
 .qti_match_interaction .choice_list_rows {float:left; padding-top:35px; margin-bottom:35px;}
 .qti_match_interaction .match_node_container {position:relative; top:35px; margin-bottom:35px;}
 /* BD #ccc */.qti_match_interaction .match_node {position:absolute; width:16px; height:25px; padding:0px 5px 0px 5px; background:url(../img/choice_multi_off.png) no-repeat; background-position: center center; cursor:pointer; border: solid 1px #ccc; }

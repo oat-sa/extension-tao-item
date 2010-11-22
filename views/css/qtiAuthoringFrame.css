@@ -1,4 +1,15 @@
 input {
 	cursor: pointer;
 }
-
+div.qti_interaction_block{
+	display:block;
+	width:99%;
+	text-align:center;
+	height:75px;
+	border: solid #009933 2px;
+	margin:auto;
+	padding-top:10px;
+}
+div.qti_interaction_block input.qti_interaction_link{
+	padding:20px;
+}

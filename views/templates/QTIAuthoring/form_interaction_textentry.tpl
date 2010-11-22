@@ -21,7 +21,16 @@ $(document).ready(function(){
 	}catch(err){
 		CL('error creating interaction', err);
 	}
-	
+	$("input[name=baseType]:radio").die('change').live('change', function(){
+		if($.inArray($(this).val(), ['integer', 'float']) > -1){
+			$("input[name=base]:text").attr('disabled', false);
+			$("input[name=stringIdentifier]:text").attr('disabled', false);
+		}
+		else{
+			$("input[name=base]:text").attr('disabled', true);
+			$("input[name=stringIdentifier]:text").attr('disabled', true);
+		} 
+	});
 });
 </script>
 

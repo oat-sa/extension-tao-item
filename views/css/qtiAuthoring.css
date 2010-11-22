@@ -101,8 +101,11 @@ div.xhtml_form div.form-group{
 	width:85%;
 }
 
-div.formContainer_choice div.xhtml_form form{
+div#formContainer_choices div.xhtml_form form{
 	margin-bottom: 30px;
+}
+div#formContainer_choices span.form-group-control{
+	cursor:pointer;	
 }
 
 /*sizing the main containers*/

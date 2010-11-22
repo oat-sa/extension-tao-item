@@ -43,7 +43,7 @@ function qtiEdit(itemSerial, formContainers, options){
 			var interactionType = 'choice';
 			
 			//insert location of the current interaction in the item:
-			this.insertHtml('{qti_interaction_new}');
+			this.insertHtml("{qti_interaction_new}");
 			
 			
 			//send to request to the server
@@ -57,7 +57,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		className: 'add_associate_interaction',
 		exec: function(){
 			var interactionType = 'associate';
-			this.insertHtml('{qti_interaction_new}');
+			this.insertHtml("{qti_interaction_new}");
 			instance.addInteraction(interactionType, this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add associate interaction'
@@ -67,7 +67,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'add_order_interaction',
 		exec: function(){
-			this.insertHtml('{qti_interaction_new}');
+			this.insertHtml("{qti_interaction_new}");
 			instance.addInteraction('order', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add order interaction'
@@ -77,7 +77,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'add_match_interaction',
 		exec: function(){
-			this.insertHtml('{qti_interaction_new}');
+			this.insertHtml("{qti_interaction_new}");
 			instance.addInteraction('match', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add match interaction'
@@ -117,7 +117,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'add_hottext_interaction',
 		exec: function(){
-			this.insertHtml('{qti_interaction_new}');
+			this.insertHtml("{qti_interaction_new}");
 			instance.addInteraction('hottext', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add hot text interaction'
@@ -127,7 +127,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'add_gapmatch_interaction',
 		exec: function(){
-			this.insertHtml('{qti_interaction_new}');
+			this.insertHtml("{qti_interaction_new}");
 			instance.addInteraction('gapMatch', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add gap match interaction'
@@ -306,6 +306,9 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 		   success: function(form){
 				$(self.interactionFormContent).html(form);
 				qtiEdit.mapHtmlEditor($(self.interactionFormContent));
+				
+				position = $(self.interactionFormContent).position();
+				window.scrollTo(0, parseInt(position.top));
 		   }
 		});
 	}
@@ -444,7 +447,7 @@ qtiEdit.prototype.preview = function(){
 	// GenerisAction.fullScreen(this.itemSerial, '', '/taoItems/QtiAuthoring/preview');
 	var url = '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
-	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no');
+	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=yes');
 }
 
 

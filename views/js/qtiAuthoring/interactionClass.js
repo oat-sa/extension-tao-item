@@ -370,7 +370,7 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 			$('#delete_'+groupId).remove();
 		}
 		
-		if(options.delete){
+		if(options['delete']){
 			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control choice-button-delete ui-icon ui-icon-circle-close"></span>');
 			$group.before($deleteElt);
 			// $deleteElt.css('position', 'relative');
@@ -390,14 +390,10 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 			$group.before($buttonElt);
 			
 			$group.hide();
-			
-			// $('#a_'+groupId).unbind('click');
-			$('#a_'+groupId).toggle(function(){
+			$('#a_'+groupId).bind('click', function(e){
+				e.preventDefault();
 				$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
-				$('#'+groupId).show().effect('slide');
-			},function(){
-				$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
-				$('#'+groupId).hide().effect('fold');
+				$('#'+groupId).toggle();
 			});
 		}
 		

@@ -223,6 +223,7 @@ var QTIWidget = function(options){
 						var oppositeId = opposite.attr('id').replace('pair_', '');
 						if(_matchGroup.length > 0){ 
 							if($.inArray(oppositeId, _matchGroup) < 0){
+								$(this).effect("highlight", {color:'#B02222'}, 2000);
 								return false;
 							}
 						}
@@ -230,6 +231,7 @@ var QTIWidget = function(options){
 						var _oppositeMatchGroup = _this.opts["matchMaxes"][oppositeId]["matchGroup"];
 						if(_oppositeMatchGroup.length > 0){
 							if($.inArray(draggedId, _oppositeMatchGroup) < 0){
+								$(this).effect("highlight", {color:'#B02222'}, 2000);
 								return false;
 							}
 						}
@@ -362,12 +364,15 @@ var QTIWidget = function(options){
 		
 		//add the error class if the value don't match the given pattern
 		if(_this.opts['patternMask']){
-			var pattern = new RegExp("/^"+_this.opts['patternMask']+"$/");
+			var pattern = new RegExp("^"+_this.opts['patternMask']+"$");
+			
 			$(qti_item_id).change(function(){
 				$(this).removeClass('field-error');
+				
 				if(!pattern.test($(this).val())){
 					$(this).addClass('field-error');
 				}
+				
 			});
 		}
 		
@@ -490,6 +495,7 @@ var QTIWidget = function(options){
 				///if the matchGroup of the choice is defined and not found we cancel the drop 
 				if(_matchGroup.length > 0){
 					if($.inArray($(this).attr('id'), _matchGroup) < 0){
+						$(this).effect("highlight", {color:'#B02222'}, 2000);
 						return false;
 					}
 				}
@@ -498,6 +504,7 @@ var QTIWidget = function(options){
 				var _gapMatchGroup = _this.opts["matchMaxes"][$(this).attr('id')]["matchGroup"];
 				if(_gapMatchGroup.length > 0){
 					if($.inArray(draggedId, _gapMatchGroup) < 0){
+						$(this).effect("highlight", {color:'#B02222'}, 2000);
 						return false;
 					}
 				}
@@ -573,10 +580,33 @@ var QTIWidget = function(options){
 			'left': $(qti_item_id + " .choice_list_rows").width()
 		});
 		
+		var maxHeight = 25;
+		$(qti_item_id + " .choice_list_cols li").each(function(){
+			var height = parseInt($(this).height());
+			if(height > maxHeight){
+				maxHeight = height;
+			}
+		});
+		$(qti_item_id + " .choice_list_cols li").each(function(){
+			var li = $(this);
+			li.css('width', li.width());
+			var myDiv = $("<div />").css({
+				'width'		: li.width(),
+				'height'	: maxHeight +'px',
+				'border'	: li.css('border')
+			});
+			li.css('height', '25px');
+			$(this).wrapInner(myDiv)
+		});
+		$(qti_item_id + " .prompt").css('margin-bottom', (maxHeight - 20) + 'px');
+		
 		//build all the nodes
 		var i = 0;
+		var currentHeight = 0;
 		while(i < rows.length){
 			var xnode = 'xnode_' + rows[i];
+			var rowHeight = parseFloat($("#"+ rows[i]).height());
+			
 			var j = 0;
 			while(j < cols.length){
 				var ynode = 'ynode_' + cols[j];
@@ -591,14 +621,16 @@ var QTIWidget = function(options){
 					p = $("#"+ 'match_node_'+i+'_'+(j-1)).position();
 					left = parseInt(p.left)  + parseInt($("#"+ 'match_node_'+i+'_'+(j-1)).width()) + (12);
 				}
-				width =  parseFloat($("#"+ cols[j]).width());
+				var colWidth  = parseFloat($("#"+ cols[j]).width());
 				$(qti_item_id + " #"+node_id).css({
-					'top' 	: ((i * 25) + i * 2 ) + 'px',
+					'top' 	: ((currentHeight) + (i * 2) ) + 'px',
 					'left'	: left + 'px',
-					'width'	: width + 'px'
+					'width'	: colWidth + 'px',
+					'height': rowHeight + 'px'
 				});
 				j++;
 			}
+			currentHeight += rowHeight;
 			i++;
 		}
 		
@@ -669,12 +701,14 @@ var QTIWidget = function(options){
 					var _rowMatchGroup = _this.opts["matchMaxes"][nodeXY.xnode.id]['matchGroup'];
 					if(_rowMatchGroup.length > 0){
 						if($.inArray(nodeXY.ynode.id, _rowMatchGroup) < 0){
+							$(this).effect("highlight", {color:'#B02222'}, 1000);
 							return false;
 						}
 					}
 					var _colMatchGroup = _this.opts["matchMaxes"][nodeXY.ynode.id]['matchGroup'];
 					if(_colMatchGroup.length > 0){
 						if($.inArray(nodeXY.xnode.id, _colMatchGroup) < 0){
+							$(this).effect("highlight", {color:'#B02222'}, 1000);
 							return false;
 						}
 					}
@@ -689,6 +723,7 @@ var QTIWidget = function(options){
 					else if(rowMatch > 1){
 						var rowMatched = $(qti_item_id + " ." + nodeXY.xnode['class'] + ".tabActive").length;
 						if(rowMatched >= rowMatch){
+							$(this).effect("highlight", {color:'#B02222'}, 1000);
 							return false;
 						}
 					}
@@ -703,6 +738,7 @@ var QTIWidget = function(options){
 					else if(colMatch > 1){
 						var colMatched = $(qti_item_id + " ." + nodeXY.ynode['class']+ ".tabActive").length;
 						if(colMatched >= colMatch){
+							$(this).effect("highlight", {color:'#B02222'}, 1000);
 							return false;
 						}
 					}
