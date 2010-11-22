@@ -14,7 +14,7 @@
  * @type {Object}
  * @constant 
  */
-const URI = {
+var URI = {
 	'LABEL'				: 'http://www.w3.org/2000/01/rdf-schema#label',
 	'ENDORSMENT' 		: '##NAMESPACE#ENDORSMENT',
 	'SCORE' 			: '##NAMESPACE#SCORE',
@@ -37,7 +37,7 @@ const URI = {
  * @type {Object}
  * @constant 
  */
-const STATE = {
+var STATE = {
 	'ITEM' : {
 		'PRE_FINISHED' 	: 'pre_item_finished',
 		'FINISHED' 		: 'item_finished',
