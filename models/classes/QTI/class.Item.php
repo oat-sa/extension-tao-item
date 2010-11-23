@@ -272,6 +272,23 @@ class taoItems_models_classes_QTI_Item
         
     	if(!is_null($interaction)){
     		if(isset($this->interactions[$interaction->getSerial()])){
+				//delete interaction response if set:
+				$response = $interaction->getResponse();
+				if(!is_null($response)){
+					$response->_remove();
+				}
+				
+				//delete choices:
+				foreach($interaction->getChoices() as $choice){
+					$choice->_remove();
+				}
+				
+				//delete groups:
+				foreach($interaction->getGroups() as $group){
+					$group->_remove();
+				}
+				
+				//finally, delete the interaction:
     			$interaction->_remove();
     			unset($this->interactions[$interaction->getSerial()]);
     			$returnValue = true;

@@ -215,7 +215,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		colModel: colModel, 
 		rowNum:20, 
 		height:300, 
-		width:'',
+		width:500,
+		autowidth: true,
+		shrinkToFit: false,
 		pager: '#'+tableElementId+'_pager', 
 		sortname: 'choice1', 
 		viewrecords: false, 
@@ -242,7 +244,8 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		editfunc: function(rowId){
 			response.editGridRow(rowId);
 		}
-	}
+	};
+	
 	if(fixedColumn.name && fixedColumn.values){
 		//is fixed, so disable the add and delete row
 		var navGridParamOptions = {add:false, del:false};

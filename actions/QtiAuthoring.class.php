@@ -675,7 +675,7 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				if(isset($values['prompt'])){
-					$interaction->setPrompt($this->getPostedData('prompt'));
+					$this->service->setPrompt($interaction, $this->getPostedData('prompt'));
 					unset($values['prompt']);
 				}
 				

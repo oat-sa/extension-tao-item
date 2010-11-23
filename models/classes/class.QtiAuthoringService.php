@@ -324,9 +324,6 @@ class taoItems_models_classes_QtiAuthoringService
 			//create interaction:
 			$interaction = new taoItems_models_classes_QTI_Interaction($interactionType);//keep the case sensitivity here!
 			
-			//add to the item object:
-			$item->addInteraction($interaction);
-			
 			//insert the required group immediately:
 			switch(strtolower($interactionType)){
 				case 'choice':{
@@ -372,7 +369,10 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			
 			//add a response object, even though it is empty at the beginning:
-			$this->createInteractionResponse($interaction);
+			$this->createInteractionResponse($interaction, $item);
+			
+			//finally, add to the item object:
+			$item->addInteraction($interaction);
 			
 			$returnValue = $interaction;
 		}
@@ -543,21 +543,34 @@ class taoItems_models_classes_QtiAuthoringService
 	public function editChoiceData(taoItems_models_classes_QTI_Choice $choice, $data=''){
 		if(!is_null($choice)){
 			$choice->setdata($data);
-			
 		}
 	}
 	
 	public function deleteInteraction(taoItems_models_classes_QTI_Item $item, taoItems_models_classes_QTI_Interaction $interaction){
-		//add specific method in the item class: deleteInteraction??
+		
 		$item->removeInteraction($interaction);
+		
+		//count the number of remaining interactions:
+		$interactions = $item->getInteractions();
+		
+		if(count($interactions) == 1){
+			foreach($interactions as $anInteraction){
+				$uniqueResponse = $this->getInteractionResponse($anInteraction);
+				// set its response to "RESPONSE":
+				if($uniqueResponse->getIdentifier() != 'RESPONSE'){ 
+					$uniqueResponse->setIdentifier('RESPONSE');
+					$anInteraction->setResponse($uniqueResponse);
+				}
+				break;
+			}
+		}
+		
+		
 	}
 	
 	public function deleteChoice(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Choice $choice){
 		
 		$interaction->removeChoice($choice);
-		
-		//completely remove the choice from the session
-		$this->destroyQtiObject($choice);
 		
 		//then simulate get+save response data to filter affected response variables
 		$this->saveInteractionResponse($interaction, $this->getInteractionResponseData($interaction));
@@ -567,18 +580,8 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		$interaction->removeGroup($group);
 		
-		//completely remove the group from the session
-		$this->destroyQtiObject($group);
-		
 		//then simulate get+save response data to filter affected response variables
 		$this->saveInteractionResponse($interaction, $this->getInteractionResponseData($interaction));
-	}
-	
-	//destroying completely the qti object:
-	public function destroyQtiObject(taoItems_models_classes_QTI_data $qtiObject){
-		taoItems_models_classes_QTI_Data::setPersistance(false);
-		unset($qtiObject);
-		taoItems_models_classes_QTI_Data::setPersistance(true);//but not the other variables!
 	}
 	
     /**
@@ -793,8 +796,13 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function setData(taoItems_models_classes_QTI_Data $qtiObject, $data = ''){
-		//
 		$qtiObject->setData($data);
+	}
+	
+	public function setPrompt($interaction, $prompt=''){
+		//filter required: strip begining and ending <p> and <div> tags:
+		
+		$interaction->setPrompt($prompt);
 	}
 	
 	public function setIdentifier(taoItems_models_classes_QTI_Data $qtiObject, $identifier){
@@ -1123,10 +1131,18 @@ class taoItems_models_classes_QtiAuthoringService
 		return $response;
 	}
 	
-	public function createInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction){
+	public function createInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Item $item = null){
 		$returnValue = false;
 		
-		$response = new taoItems_models_classes_QTI_Response();
+		$identifier = '';
+		if(!is_null($item)){
+			if(count($item->getInteractions())==0){
+				$identifier = 'RESPONSE';
+			}
+		}
+		
+		// var_dump($identifier);
+		$response = new taoItems_models_classes_QTI_Response($identifier);
 		
 		//set the default response template:
 		$this->setResponseTemplate($response, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
