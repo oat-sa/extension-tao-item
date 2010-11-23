@@ -231,12 +231,11 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		gridOptions.width = 500;
 		gridOptions.shrinkToFit = false;
 		gridOptions.autowidth = true;
-		gridOptions.gridComplete = function(){
-			// CL('grid completed');
-			$(window).unbind('resize').bind('resize', function(){
-				CD(this);
-			}
-		};
+		// gridOptions.gridComplete = function(){
+			// $(window).unbind('resize').bind('resize', function(){
+				// CD(this);
+			// }
+		// };
 	}
 	
 	this.myGrid = $("#"+tableElementId).jqGrid(gridOptions);
