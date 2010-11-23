@@ -12,7 +12,8 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 	<script type="application/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
-	<script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
+    <script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/lib/json2.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.MatchingRemote.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.VariableFactory.js"></script>
