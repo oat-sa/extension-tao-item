@@ -305,6 +305,7 @@ class taoItems_models_classes_QTI_Interaction
     			foreach($this->getGroups() as $group){
 					$group->removeChoice($choice);
 				}
+				$choice->_remove();
 				unset($this->choices[$choice->getSerial()]);
 				
 				//remove the choice from the interaction data:
@@ -474,6 +475,7 @@ class taoItems_models_classes_QTI_Interaction
     					$this->removeChoice($choice);
     				}
     			}
+    			$group->_remove();
     			unset($this->groups[$group->getSerial()]);
 				
 				//remove the group from the interaction data:

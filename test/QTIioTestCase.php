@@ -63,10 +63,10 @@ class QTIioTestCase extends UnitTestCase {
 			$this->assertTrue(!empty($itemUrl));
 			$this->assertTrue(is_dir($itemFolder));
 			
-			echo "<br /><iframe width='900px' height='400px' src='$itemUrl'></iframe><br />";
+			//echo "<br /><iframe width='900px' height='400px' src='$itemUrl'></iframe><br />";
 			
-			//$this->assertTrue($this->itemService->deleteItem($rdfItem));
-			//@tao_helpers_File::remove($itemPath, true);
+			$this->assertTrue($this->itemService->deleteItem($rdfItem));
+			@tao_helpers_File::remove($itemPath, true);
 		}
 	}
 

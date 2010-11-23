@@ -57,7 +57,24 @@ class QTIModelTestCase extends UnitTestCase {
 			break;
 		}
 		
+		//try to remove 
+		foreach($savedItem->getInteractions() as $interaction){
+			foreach($interaction->getChoices() as $choice){
+				$choiceSerial = $choice->getSerial();
+				$this->assertNotNull($this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice'));
+				$this->assertTrue($interaction->removeChoice($choice));
+				$this->assertNull($this->qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice'));
+				break;
+			}
+			$interactionSerial = $interaction->getSerial();
+			$this->assertNotNull($this->qtiService->getInteractionBySerial($interactionSerial));
+			$this->assertTrue($savedItem->removeInteraction($interaction));
+			
+			$this->assertNull($this->qtiService->getInteractionBySerial($interactionSerial));
+			break;
+		}
 		
+
 		//real remove
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 		unset($savedItem);

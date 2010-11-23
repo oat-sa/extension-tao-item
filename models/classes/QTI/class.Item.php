@@ -272,6 +272,7 @@ class taoItems_models_classes_QTI_Item
         
     	if(!is_null($interaction)){
     		if(isset($this->interactions[$interaction->getSerial()])){
+    			$interaction->_remove();
     			unset($this->interactions[$interaction->getSerial()]);
     			$returnValue = true;
     		}
@@ -402,6 +403,7 @@ class taoItems_models_classes_QTI_Item
         
 	    if(!is_null($outcome)){
     		if(isset($this->outcomes[$outcome->getSerial()])){
+    			$outcome->_remove();
     			unset($this->outcomes[$outcome->getSerial()]);
     			$returnValue = true;
     		}
