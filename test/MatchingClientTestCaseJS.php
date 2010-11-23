@@ -20,7 +20,6 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
 
-/*
 	public function testVariables () {
 		
 		$null = taoItems_models_classes_Matching_VariableFactory::create (null);
@@ -637,7 +636,9 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
 	}
 
-
+/**
+ *  TEST ON REAL QTI XML
+ */
     public function testMatch () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -820,21 +821,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
-*/
-
-    public function testPatternSeeker () {       
-        $file = dirname(__FILE__).'/samples/choice.xml';
-        $item = $this->qtiService->loadItemFromFile ($file);
-        echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
-        
-        //check if samples are loaded
-        $file = dirname(__FILE__).'/samples/custom_rule/shakespeare.xml';
-        $item = $this->qtiService->loadItemFromFile ($file);
-        echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
-    }
-
-
-    /*public function testCustomAllRules () {
+    /** Test an item with a large coverage of the rules' subset */
+    public function testShakespear () {
         $parameters = array(
             'root_url' => ROOT_URL,
             'base_www' => BASE_WWW,
@@ -848,10 +836,54 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $item = $this->qtiService->loadItemFromFile ($file);
         
         $matching_data = $item->getMatchingData ();
-       
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setMaps ($matching_data['maps']);
+        matching_setResponses (json_decode ('[
+                {"identifier":"response_1", "value":"choice_1"}
+                ,{"identifier":"response_2","value":"choice_4"}
+                ,{"identifier":"response_3","value":"poet"}
+                ,{"identifier":"response_4","value":"Bard of Avon"}
+                ,{"identifier":"response_5","value":[{"0":"group_1","1":"choice_7"},{"0":"group_2","1":"choice_8"},{"0":"group_3","1":"choice_9"},{"0":"group_4","1":"choice_10"}]}
+                ,{"identifier":"response_6","value":["choice_12","choice_13"]}
+            ]')
+        );
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 6);
+
+
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
-    }*/
+    }
+
+    /** Test that the ParserFactory figure out the type of Response Processing for an item */
+    public function testPatternSeeker () {
+        $file = dirname(__FILE__).'/samples/choice.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_TemplatesDriven);
+        //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
+        
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_match_choice.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        // CHECK that choice.xml produces a TemplateDriven Response Processing 
+        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_Custom);
+        //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
+        
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_order_partial_scoring.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        // CHECK that choice.xml produces a TemplateDriven Response Processing 
+        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_Custom);
+        //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom_rule/shakespeare.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_TemplatesDriven);
+        //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
+    }
     
 }
 
