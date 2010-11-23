@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+div#preview-console{
+	width:78%;
+	height:16px;
+	position:absolute;
+	bottom:11px;
+	left:10%;
+	margin:2px;
+	padding:0px;
+	border:solid #c0c0c0 2px; 
+}
+div#preview-console div.console-control{
+	position:relative;
+	width:100%;
+	height:16px;
+	top:0px;
+	background-color:#ddd;
+	text-align: right;	
+	font-size: 12px;
+	font-style: italic;
+	color:#333;
+}
+
+div#preview-console div.console-control span.ui-icon{
+	position:absolute;
+	cursor:pointer;
+	top:0px;
+}
+div#preview-console div.console-control span.ui-icon-circle-close{
+	left:20px;
+}
+div#preview-console div.console-control span.ui-icon-trash{
+	left:40px;
+}
+div#preview-console div.console-content{
+	display:none;
+	opacity:0.8;
+	overflow-y:scroll;
+	background-color:#333;
+	color: #eee;
+	height:134px;
+}
+div#preview-console ul{
+	margin-top:10px;
+	margin-bottom:10px;	
+}
+iframe#preview-container{
+	width:100%;
+	height:100%;
+	border:none;
+} 

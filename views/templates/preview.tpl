@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/preview.css" />
 
 <div class="ui-widget ui-state-default ui-widget-header ui-corner-top container-title" >
 	<?=get_data('previewTitle')?>
@@ -13,12 +14,21 @@
 				<embed src="<?=get_data('swf')?>?localXmlFile=<?=get_data('contentUrl')?>&instance=<?=get_data('instanceUri')?>" quality="high" bgcolor="#ffffff"  width="700" height="600" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 			</object>
 		<?else:?>
-			<iframe  src="<?=get_data('contentUrl')?>"  width='100%' height='100%' border='0'/>
+			<iframe id='preview-container' name="preview-container" src="<?=get_data('contentUrl')?>" />
+			<div id='preview-console'>
+				<div class="console-control">
+					<span class="ui-icon ui-icon-circle-close" title="<?=__('close')?>"></span>
+					<span class="ui-icon ui-icon-circle-plus toggler" title="<?=__('show/hide')?>"></span>
+					<span class="ui-icon ui-icon-trash" title="<?=__('clean up')?>"></span>
+					<?=__('Preview Console')?> 
+				</div>
+				<div class="console-content">
+					<ul></ul>
+				</div>
+			</div>
 		<?endif?>
 	<?else:?>
-		<span style="font-size:28px;">
-		<?=__('PREVIEW BOX')?><br /><br />
-		<?=get_data('previewMsg')?>
-		</span>
+		<h3><?=__('PREVIEW BOX')?></h3>
+		<p><?=get_data('previewMsg')?></p>
 	<?endif?>
 </div>

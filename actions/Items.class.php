@@ -246,8 +246,6 @@ class Items extends TaoModule{
 		$previewData = array();
 				
 		if($this->service->hasItemContent($item) && $this->service->isItemModelDefined($item)){
-			//the item content url 
-			$contentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', array('uri' => urlencode($item->uriResource), 'classUri' => urlencode($clazz->uriResource), 'preview' => true)));
 			
 			//get the runtime
 			$runtime = $this->service->getModelRuntime($item);
@@ -255,31 +253,15 @@ class Items extends TaoModule{
 			//the content works directly with the browser and need to be deployed
 			if(is_null($runtime)){
 				
-				$deployParams = array(
-					'delivery_server_mode'	=> false,
-					'preview_mode'			=> true
+				$previewData = array(
+					'runtime'		=> false,
+					'contentUrl' 	=> _url('runner', 'PreviewApi', 'taoItems', array('uri' => urlencode($item->uriResource)))
 				);
-				
-				$itemFolder = $this->service->getRuntimeFolder($item);
-        		$itemPath = "{$itemFolder}/index.html";
-				if(!is_dir($itemFolder)){
-        			mkdir($itemFolder);
-        		}
-        		$itemUrl = str_replace(BASE_PATH .'/views', BASE_WWW, $itemPath);
-        		
-        		//deploy the item
-        		if($this->service->deployItem($item, $itemPath, $itemUrl,  $deployParams)){
-        			$previewData = array(
-						'runtime'		=> false,
-						'contentUrl' 	=> $itemUrl
-					);
-        		}
-        		else{
-        			echo 'unable to deploy item';
-        		}
 			}
 			else{
 				//the item content is given to the runtime
+				
+				$contentUrl = _url('getItemContent', 'Items', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource), 'classUri' => tao_helpers_Uri::encode($clazz->uriResource), 'preview' => true));
 				
 				if($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
 					//@todo need to fix it in the runtime instead of urlencode 2x
@@ -298,6 +280,8 @@ class Items extends TaoModule{
 		
 		return $previewData;
 	}
+	
+	
 	
 	/**
 	 * Edit a class
@@ -382,15 +366,17 @@ class Items extends TaoModule{
 		
 		try{
 			//output direclty the itemContent as XML
-			print $this->service->getItemContent($this->getCurrentInstance(), $this->hasRequestParameter('preview'));
+			print $this->service->getItemContent($this->getCurrentInstance(), false);
 			
 		}
 		catch(Exception $e){
 			//print an empty response
-			echo '<?xml version="1.0" encoding="utf-8" ?>';
-			echo '<exception>';
-			print $e;
-			echo '</exception>';
+			print '<?xml version="1.0" encoding="utf-8" ?>';
+			if(DEBUG_MODE){
+				print '<exception><![CDATA[';
+				print $e;
+				print ']]></exception>';
+			}
 		}
 		
 		return;
