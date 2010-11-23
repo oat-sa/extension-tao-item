@@ -212,10 +212,7 @@ class QtiAuthoring extends CommonModule {
 		}
 		
 		return $saved;
-		
 	}
-	
-	
 	
 	public function preview(){
 		$parameters = array(

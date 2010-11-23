@@ -1,4 +1,4 @@
-alert('response edit loaded');
+// alert('response edit loaded');
 
 //customized unload function:
 $.jgrid.GridUnload = function(){
@@ -204,7 +204,8 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	
 	//insert the pager:
 	var pagerId = tableElementId + '_pager';
-	$("#"+tableElementId).after('<div id="' + pagerId + '"/>');
+	$myGridElt = $("#"+tableElementId);
+	$myGridElt.after('<div id="' + pagerId + '"/>');
 	
 	var response = this;
 	var gridOptions = {
@@ -231,14 +232,14 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		gridOptions.width = 500;
 		gridOptions.shrinkToFit = false;
 		gridOptions.autowidth = true;
-		// gridOptions.gridComplete = function(){
-			// $(window).unbind('resize').bind('resize', function(){
-				// CD(this);
-			// }
-		// };
+		gridOptions.gridComplete = function(){
+			$(window).unbind('resize').bind('resize', function(){
+				$myGridElt.jqGrid('setGridWidth', $('#qtiAuthoring_responseEditor').width()-10);
+			});
+		};
 	}
 	
-	this.myGrid = $("#"+tableElementId).jqGrid(gridOptions);
+	this.myGrid = $myGridElt.jqGrid(gridOptions);
 	
 	var interactionSerial = this.interactionSerial;
 	
