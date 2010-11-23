@@ -94,7 +94,7 @@ span.choice-button-delete, span.choice-button-advanced, span.choice-button-up, s
 }
 
 /*advanced choice properties group offset*/
-div.xhtml_form div.form-group{
+div.formContainer_choice div.xhtml_form div.form-group{
 	position:relative;
 	left:20px;
 	top:15px;

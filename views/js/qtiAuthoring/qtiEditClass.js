@@ -447,7 +447,7 @@ qtiEdit.prototype.preview = function(){
 	// GenerisAction.fullScreen(this.itemSerial, '', '/taoItems/QtiAuthoring/preview');
 	var url = '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
-	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=yes');
+	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
 }
 
 
