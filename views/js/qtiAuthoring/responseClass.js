@@ -1,4 +1,4 @@
-// alert('response edit loaded');
+alert('response edit loaded');
 
 //customized unload function:
 $.jgrid.GridUnload = function(){
@@ -106,7 +106,8 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 }
 
 responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
-
+	// CD(serverResponse, 'response:');
+	
 	//firstly, get the column models, from the interactionSerial:
 	//label = columName
 	//name = name&index
@@ -206,8 +207,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	$("#"+tableElementId).after('<div id="' + pagerId + '"/>');
 	
 	var response = this;
-	
-	this.myGrid = $("#"+tableElementId).jqGrid({
+	var gridOptions = {
 		url: "/taoItems/QtiAuthoring/saveResponse",
 		editData: {responseId:'aaa'},
 		datatype: "local", 
@@ -215,9 +215,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		colModel: colModel, 
 		rowNum:20, 
 		height:300, 
-		width:500,
-		autowidth: true,
-		shrinkToFit: false,
+		width:'',
 		pager: '#'+tableElementId+'_pager', 
 		sortname: 'choice1', 
 		viewrecords: false, 
@@ -227,9 +225,25 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		onSelectRow: function(id){
 			response.editGridRow(id);
 		}
-	});
+	};
+	
+	if(serverResponse.interactionType == 'order'){
+		gridOptions.width = 500;
+		gridOptions.shrinkToFit = false;
+		gridOptions.autowidth = true;
+		gridOptions.gridComplete = function(){
+			// CL('grid completed');
+			$(window).unbind('resize').bind('resize', function(){
+				CD(this);
+			}
+		};
+	}
+	
+	this.myGrid = $("#"+tableElementId).jqGrid(gridOptions);
 	
 	var interactionSerial = this.interactionSerial;
+	
+	
 	
 	//configure the navigation bar:
 	//afterRefresh
@@ -267,6 +281,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	navGridParam = $.extend(navGridParam, navGridParamOptions, navGridParamDefault);
 	
 	this.myGrid.jqGrid('navGrid', '#'+pagerId, navGridParam); 
+	
 	
 	if(fixedColumn.name && fixedColumn.values){
 		//there is a column that have fixed values, so only keep rows that has the fixed value:

@@ -1,12 +1,10 @@
 // alert('util loaded');
 
 util = new Object();
-util.debug = true;
-
 
 CL = function(arg1, arg2){
 	
-	// if($.browser != 'msie' && util.debug){
+	if(console.log){
 		if(arg1){
 			if(arg2){
 				console.log(arg1, arg2);
@@ -14,24 +12,24 @@ CL = function(arg1, arg2){
 				console.log(arg1);
 			}
 		}
-	// }
+	}
 }
 
 CD = function(object, desc){
-	// if($.browser != 'msie' && util.debug){
+	if(console.log && console.dir){
 		if(desc){
 			console.log(desc+':');
 		}
 		console.dir(object);
-	// }
+	}
 }
 
 util.htmlEncode = function(encodedStr){
 	
-	
 	//<br...> are replaced by <br... />
-	 encodedStr = encodedStr.replace(/<br[^>]*>/ig, '<br />');
+	var encodedStr = encodedStr.replace(/<br[^>]*>/ig, '<br />');
 	 encodedStr = encodedStr.replace(/<hr[^>]*>/ig, '<hr />');
+	 
 	  //<img...> are replaced by <img... />
 	encodedStr = encodedStr.replace(/<img([^>]*)?>/ig,
 		function($0, $1){
@@ -44,6 +42,7 @@ util.htmlEncode = function(encodedStr){
 	return encodedStr;
 }
 
+//custom object serialization method to jQuery:
 $.fn.serializeObject = function()
 {
     var o = {};

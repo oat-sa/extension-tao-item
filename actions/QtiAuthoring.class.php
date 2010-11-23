@@ -1018,7 +1018,7 @@ class QtiAuthoring extends CommonModule {
 		$columnModel = array();
 		$responseData = array();
 		$xhtmlForm = '';
-		
+		$interactionType = strtolower($interaction->getType());
 			
 		//check the type...
 		//only display response grid when the response template is templates driven:
@@ -1036,7 +1036,7 @@ class QtiAuthoring extends CommonModule {
 			$columnModel = $this->service->getInteractionResponseColumnModel($interaction);
 			$responseData = $this->service->getInteractionResponseData($interaction);
 			
-			if(strtolower($interaction->getType()) == 'order'){
+			if($interactionType == 'order'){
 				//special case for order interaction:
 				
 			}
@@ -1050,6 +1050,7 @@ class QtiAuthoring extends CommonModule {
 		echo json_encode(array(
 			'ok' => true,
 			'displayGrid' => $displayGrid,
+			'interactionType' => $interactionType,
 			'colModel' => $columnModel,
 			'data' => $responseData,
 			'maxChoices' => intval($interaction->getCardinality(true)),
