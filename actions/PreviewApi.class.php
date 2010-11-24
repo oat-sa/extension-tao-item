@@ -112,7 +112,7 @@ class PreviewApi extends Api {
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
 				'preview_mode'			=> true,
-				'matching_server'		=> true
+				'matching_server'		=> false
 			);
 				
 			$itemFolder = $this->itemService->getRuntimeFolder($item);

@@ -99,6 +99,14 @@ function matchingSetResponses (data) {
 }
 
 /**
+ * Get the user' responses
+ * @return {Object} The response variables
+ */
+function matchingGetResponses () {
+	return TAO_MATCHING.engine.getResponses();
+}
+
+/**
  * Set the rule of the item
  * @param {string} rule The rule
  */

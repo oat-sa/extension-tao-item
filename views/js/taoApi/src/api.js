@@ -107,10 +107,10 @@ function setScoreRange(max, min){
  * 
  * @function
  * @namespace taoApi
- * @returns {boolean}
+ * @returns {Object}
  */
 function getAnsweredValues(){
-	return taoStack.getTaoVar(URI.LISTNERVALUE);
+	return taoStack.getTaoVar(URI.ANSWERED_VALUES);
 }
 
 /**
@@ -120,10 +120,10 @@ function getAnsweredValues(){
  * 
  * @function
  * @namespace taoApi
- * @param {boolean} endorsment
+ * @param {Object} values
  */
 function setAnsweredValues(values){
-	taoStack.setTaoVar(URI.LISTNERVALUE, values);
+	taoStack.setTaoVar(URI.ANSWERED_VALUES, values);
 }
 
 /**

@@ -115,4 +115,15 @@ TAO_MATCHING.MatchingRemote.prototype = {
             }
         }
     }
+    
+    /**
+     * get the collected responses
+     *
+     * @access public
+     * @return {Array}
+     */
+    , getResponses : function()
+    {        
+    	return this.responses;
+    }
 };

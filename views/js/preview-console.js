@@ -32,8 +32,11 @@ $(document).ready(function(){
 	
 	//attach an updateConsole event
 	previewConsole.bind('updateConsole', function(event, type, message){
-		var hour = timer.getHours() + ':' + ((timer.getMinutes() > 10) ? timer.getMinutes() : '0' +timer.getMinutes());
-		$(this).find('ul').append('<li><b>[' +  hour  + '] ' + type + '</b>: ' + message + '</li>');
+		var hour = timer.getHours();
+		var min	 = timer.getMinutes();
+		var sec	 = timer.getSeconds();
+		var logTime = ((hour>10)? hour : '0'+hour ) + ':' + ((min>10)? min : '0'+min) + ':' + ((sec>10)? sec: '0'+sec);
+		$(this).find('ul').append('<li><b>[' +  logTime  + '] ' + type + '</b>: ' + message + '</li>');
 	});
 	
 	//controls: close console
@@ -106,10 +109,8 @@ $(document).ready(function(){
 				if(data.data){
 					try{
 						var matchingDataList = $.parseJSON(data.data);
-						for(i in matchingDataList){
-							for(key in matchingDataList[i]){
-								message += '<br />' + key + ' = ' + matchingDataList[i][key];
-							}
+						for(key in matchingDataList){
+							message += '<br />' + matchingDataList[key]['identifier'] + ' = ' + matchingDataList[key]['value'];
 						}
 					}catch(exp){ 
 						console.log(exp);

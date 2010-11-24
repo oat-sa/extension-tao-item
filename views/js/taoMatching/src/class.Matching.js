@@ -331,8 +331,19 @@ TAO_MATCHING.Matching.prototype = {
 			}
 		}
     }
-	
+    
     /**
+     * get the collected responses
+     *
+     * @access public
+     * @return {Object}
+     */
+    , getResponses : function()
+    {        
+    	return this.responses;
+    }
+	
+    
     /**
      * Set the matching rule
      *

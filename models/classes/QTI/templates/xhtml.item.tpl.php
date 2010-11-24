@@ -33,6 +33,21 @@
 
             // validation process - catch event after all interactions have collected their data
             $("#qti_validate").bind("click",function(){
+
+            	//push the answered values
+            	var responses = matchingGetResponses();
+            	
+            	var answeredValues = null;
+            	for(key in responses){
+                	if(answeredValues == null){
+                		answeredValues = new Object();
+                	}
+            		answeredValues[responses[key]['identifier']] = responses[key]['value'];
+            	}
+            	if($.isPlainObject(answeredValues)){
+					setAnsweredValues(JSON.stringify(answeredValues));
+            	}
+            	
                 // Evaluate the user's responses
                 matchingEvaluate ();
             });

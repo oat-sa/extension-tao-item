@@ -13,8 +13,18 @@ $(document).ready(function(){
 		var matchingParam = $.extend(<?=get_data('matchingParams')?>, {
 		    "format" : "json", 
 		    "options" : {
-		        "evaluateCallback" : function () {
+		        "evaluateCallback" : function (outcomes) {
 		        	
+		        	var strOutcomes = '';
+		            for (var outcomeKey in outcomes){
+		                strOutcomes += '[ ' + outcomeKey+ ' = ' +outcomes[outcomeKey]['value'] + ' ]';
+		            }
+		             //display the outcomes in the main window
+		           	window.top.createInfoMessage ('THE OUTCOME VALUES : <br/>'  + strOutcomes);
+		            
+		            //and in the preview console
+		            $('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
+		           
 		            finish();
 		        }
 		    }
@@ -26,7 +36,7 @@ $(document).ready(function(){
 		    , "options" : {
 		        "evaluateCallback" : function () {
 		            var outcomes = matchingGetOutcomes();
-		            strOutcomes = '';
+		            var strOutcomes = '';
 		            for (var outcomeKey in outcomes){
 		                strOutcomes += '[ ' + outcomeKey+ ' = ' +outcomes[outcomeKey]['value'] + ' ]';
 		            }
