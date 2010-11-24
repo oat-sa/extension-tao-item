@@ -2,6 +2,8 @@
 require_once('tao/actions/Api.class.php');
 
 /**
+ * the PreviewApi provides methods to preview and execute items 
+ * in a sandbox environment.
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
@@ -10,8 +12,14 @@ require_once('tao/actions/Api.class.php');
  */
 class PreviewApi extends Api {
 	
+	/**
+	 * @var string the same token is exchanged for all the communications
+	 */
 	const AUTH_TOKEN = 'PREVIEW_ME';
 	
+	/**
+	 * @var taoItems_models_classes_ItemService
+	 */
 	protected $itemService;
 	
 	/**
@@ -23,12 +31,12 @@ class PreviewApi extends Api {
 	}
 	
 	/**
-	 * Create an execution environment for the preview
+	 * Create a fake  execution environment for the preview
 	 * @param core_kernel_classes_Resource $item
 	 * @param core_kernel_classes_Resource $user
 	 * @return array
 	 */
-	private function getFakeExecutionEnvironment(core_kernel_classes_Resource $item, core_kernel_classes_Resource $user){
+	private function createFakeExecutionEnvironment(core_kernel_classes_Resource $item, core_kernel_classes_Resource $user){
 		$executionEnvironment = array();
 		if(!is_null($item) && !is_null($user)){	
 		//create a fake  executionEnvironment
@@ -61,10 +69,30 @@ class PreviewApi extends Api {
 					PROPERTY_USER_LASTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LASTNAME))
 				)
 			);
+			Session::setAttribute(self::ENV_VAR_NAME.'_'.tao_helpers_Uri::encode($user->uriResource), $executionEnvironment);
 		}
+		
 		return $executionEnvironment;
 	}
 	
+	/**
+	 * Retrieve the fake execution environment
+	 * @param core_kernel_classes_Resource $user
+	 * @return array
+	 */
+	private function getFakeExecutionEnvironment(core_kernel_classes_Resource $user){
+		$executionEnvironment = array();
+		if(!is_null($user)){
+			$sessionKey =  self::ENV_VAR_NAME . '_' . tao_helpers_Uri::encode($user->uriResource);
+			if(Session::hasAttribute($sessionKey)){
+				$executionEnvironment = Session::getAttribute($sessionKey);
+				if(isset($executionEnvironment['token'])){
+					return $executionEnvironment;
+				}
+			}
+		}
+		return $executionEnvironment;
+	}
 	
 	/**
 	 * Initialize, deploy and display the preview of an item
@@ -83,7 +111,8 @@ class PreviewApi extends Api {
 			//default deployment params
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
-				'preview_mode'			=> true
+				'preview_mode'			=> true,
+				'matching_server'		=> true
 			);
 				
 			$itemFolder = $this->itemService->getRuntimeFolder($item);
@@ -98,60 +127,45 @@ class PreviewApi extends Api {
         		throw new Exception('unable to deploy item');
         	}
         	
-        	$executionEnvironment = $this->getFakeExecutionEnvironment($item, $user);
+        	$executionEnvironment = $this->createFakeExecutionEnvironment($item, $user);
         		
 			// We inject the data directly in the item file
 			try{
 				$doc = new DOMDocument();
 				$doc->loadHTMLFile($itemPath);
 				
-				
-				//initialization of the TAO API
-				$varCode = 'var '.self::ENV_VAR_NAME.' = '.json_encode($executionEnvironment).';';
-				$initAPICode = 'initManualDataSource('.self::ENV_VAR_NAME.');';
-				
-				$saveResult = json_encode(array(
-					'url' 		=> _url('save', 'PreviewApi', 'taoItems'), 
-					'params'	=> array('token' => self::AUTH_TOKEN)
-				));
-				$initAPICode .= "initPush($saveResult, null);";
-				
-				
-				//initialize the events logging
-				$initEventCode = '';
-				if(file_exists($itemFolder .'/events.xml')){
-					$eventService = tao_models_classes_ServiceFactory::get("tao_models_classes_EventsService");
-					$eventData =  json_encode($eventService->getEventList($itemFolder .'/events.xml'));
-					$saveEvent = json_encode(array(
-						'url' 		=> _url('traceEvents', 'PreviewApi', 'taoItems'), 
-						'params'	=> array('token' => self::AUTH_TOKEN)
-					));
-					
-					$initEventCode = "initEventServices({ type: 'manual', data: $eventData}, $saveEvent);";
-				}
-				
-				$clientCode  = '$(document).ready(function(){ '; 
-				$clientCode .= "$varCode \n";
-				$clientCode .= "$initAPICode \n";
-				$clientCode .= "$initEventCode \n";
-				$clientCode .= '});';
-				$scriptElt   = $doc->createElement('script', $clientCode);
-				$scriptElt->setAttribute('type', 'text/javascript');
-				
 				$headNodes = $doc->getElementsByTagName('head');
 				
 				foreach($headNodes as $headNode){
+					
+					$initScriptElt = $doc->createElement('script');
+					$initScriptElt->setAttribute('type', 'text/javascript');
+					
+					$initScriptParams = array(
+						'matching' => ($deployParams['matching_server']) ? 'server' : 'client',
+						'uri' => tao_helpers_Uri::encode($item->uriResource)
+					);
+					
+					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
+					$headNode->appendChild($initScriptElt);
+					
 					$inserted = false;
 					$scriptNodes = $headNode->getElementsByTagName('script');
+					$poisition = 0;
 					if($scriptNodes->length > 0){
 						foreach($scriptNodes as $index => $scriptNode){
 							if($scriptNode->hasAttribute('src')){
-								if(preg_match("/taoApi\.min\.js$/", $scriptNode->getAttribute('src'))){
-									$headNode->insertBefore($scriptElt, $scriptNodes->item($index +1));
-									$inserted = true;
-									break;
+								if(preg_match("/taoApi\.min\.js$/", $scriptNode->getAttribute('src')) ||
+									preg_match("/taoMatching\.min\.js$/", $scriptNode->getAttribute('src'))){
+									if($index > $position){
+										$position = $index;
+									}
 								}
 							}
+						}
+						if($scriptNodes->item($position + 1)){
+							$headNode->insertBefore($initScriptElt, $scriptNodes->item($position + 1));
+							$inserted = true;
 						}
 					}
 					if(!$inserted){
@@ -160,7 +174,12 @@ class PreviewApi extends Api {
 						$taoScriptElt->setAttribute('src', TAO_BASE_WWW.'js/taoApi/taoApi.min.js');
 						$headNode->appendChild($taoScriptElt);
 						
-						$headNode->appendChild($scriptElt);
+						$matchingScriptElt = $doc->createElement('script');
+						$matchingScriptElt->setAttribute('type', 'text/javascript');
+						$matchingScriptElt->setAttribute('src', TAO_BASE_WWW.'js/taoMatching/taoMatching.min.js');
+						$headNode->appendChild($matchingScriptElt);
+						
+						$headNode->appendChild($initScriptElt);
 					}
 					
 					$previewScriptElt = $doc->createElement('script');
@@ -188,17 +207,143 @@ class PreviewApi extends Api {
 		}
 	}
 	
+	/**
+	 * Action to render a dynamic javascript page
+	 * containing the APIs initialization for the current preview execution context
+	 */
+	public function initApis(){
+		if($this->hasRequestParameter('uri')){
+			
+			$item 	= new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
+			$user = $this->userService->getCurrentUser();
+			
+			$executionEnvironment = $this->getExecutionEnvironment($user);
+			if(isset($executionEnvironment['token'])){
+				
+				header('Context-Type', 'application/javascript');
+				
+				//taoApi data source
+				$this->setData('envVarName', self::ENV_VAR_NAME);
+				$this->setData('executionEnvironment', json_encode($executionEnvironment));
+				
+				//taoApi push parameters
+				$this->setData('pushParams', json_encode(array(
+						'url' 		=> _url('save', 'PreviewApi', 'taoItems'), 
+						'params'	=> array('token' => self::AUTH_TOKEN)
+				)));
+				
+				//taoApi events tracing parameters
+				$itemFolder = $this->itemService->getRuntimeFolder($item);
+				if(file_exists($itemFolder .'/events.xml')){
+					$eventService = tao_models_classes_ServiceFactory::get("tao_models_classes_EventsService");
+					$eventData =  $eventService->getEventList($itemFolder .'/events.xml');
+					
+					$this->setData('eventData', json_encode($eventData));
+					$this->setData('eventParams', json_encode(array(
+							'url' 		=> _url('traceEvents', 'PreviewApi', 'taoItems'), 
+							'params'	=> array('token' => self::AUTH_TOKEN)
+					)));
+				}
+
+				//taoMatching
+				$matching_server = false;
+				if($this->hasRequestParameter('matching')){
+					if($this->getRequestParameter('matching') == 'server'){
+						$matching_server = true;
+					}
+				}
+				$this->setData('matchingServer', $matching_server);
+				$matchingParams = array();
+				if($matching_server == true){
+					$matchingParams = array(
+						'url'		=> _url('evaluate', 'PreviewApi', 'taoItems'), 
+						'params'	=> array('token' => self::AUTH_TOKEN)
+					);
+				}
+				else{
+					$this->setData('matchingData', json_encode($this->itemService->getMatchingData($item)));
+				}
+				$this->setData('matchingParams', json_encode($matchingParams));
+				
+				
+				$this->setView('init_api.js.tpl');
+			}
+		}
+		return;
+	}
+	
+	/**
+	 * Server matchting evaluation
+	 * Used to test a server-side matching implemenatation in the previewed item.
+	 */
 	public function evaluate () {
+		$returnValue = array();
 		
+		if($this->hasRequestParameter('token')){
+			if($this->getRequestParameter('token') == self::AUTH_TOKEN){
+				
+				$user = $this->userService->getCurrentUser();
+				$executionEnvironment = $this->getFakeExecutionEnvironment($user);
+				if(isset($executionEnvironment['token'])){
+				
+					$item = new core_kernel_classes_Resource($executionEnvironment[TAO_ITEM_CLASS]['uri']);
+					$itemMatchingData = $this->itemService->getMatchingData($item);
+					
+					matching_init ();
+			        matching_setRule ($itemMatchingData["rule"]);
+			        matching_setMaps ($itemMatchingData["maps"]);
+			        matching_setCorrects ($itemMatchingData["corrects"]);
+			        matching_setResponses (json_decode($_POST['data']));
+			        matching_setOutcomes ($itemMatchingData["outcomes"]);
+			        matching_evaluate ();
+			
+			        $outcomes = matching_getOutcomes ();
+			        // Check if outcomes are scalar
+			        try {
+			            foreach ($outcomes as $outcome) {
+			                if (! is_scalar($outcome['value'])){
+			                    throw new Exception ('taoItems_models_classes_ItemsService::evaluate outcomes are not scalar');
+			                }
+			            }
+			            $returnValue = $outcomes;
+			        } catch (Exception $e) { }
+		        
+				}
+			}
+		}
+        echo json_encode ($returnValue);
 	}
 	
+	/**
+	 * Check the communication from the item
+	 * The token parameter is checked
+	 */
+	protected function checkCommunication(){
+		if($this->hasRequestParameter('token')){
+			if($this->getRequestParameter('token') == self::AUTH_TOKEN){
+				$executionEnvironment = $this->getFakeExecutionEnvironment($this->userService->getCurrentUser());
+				if(isset($executionEnvironment['token'])){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * taoApi save variables action:
+	 * Used to test the taoApi push implemenatation in the previewed item.
+	 */
 	public function save(){
-		echo json_encode(array('saved' => true));
+		echo json_encode(array('saved' => $this->checkCommunication()));
 	}
 	
-	
+	/**
+	 * taoApi trace event action:
+	 * Used to test the taoApi event tracing implemenatation in the previewed item.
+	 */
 	public function traceEvents(){
-		echo json_encode(array('saved' => true));
+		echo json_encode(array('saved' => $this->checkCommunication()));
 	}
 	
 }

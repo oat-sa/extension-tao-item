@@ -88,8 +88,8 @@ $(document).ready(function(){
 						try{
 							var eventData = $.parseJSON(data.events[index]);
 							message += '<br />' + eventData.type + ' on element ' + eventData.name;
-							if(eventData.id != 'noIdD'){
-								message += ' (id : ' + eventData.id +')';
+							if(eventData.id != 'noID'){
+								message += '[id=' + eventData.id +']';
 							}
 						}catch(exp){ 
 							console.log(exp);
@@ -97,6 +97,25 @@ $(document).ready(function(){
 					}
 					message += '<br />'
 					previewConsole.trigger('updateConsole', ['trace events', message]);
+				}
+			}
+			
+			//taoMatching data
+			else if(/evaluate$/.test(settings.url)){
+				var data = unserializeUrl(decodeURIComponent(settings.data));
+				if(data.data){
+					try{
+						var matchingDataList = $.parseJSON(data.data);
+						for(i in matchingDataList){
+							for(key in matchingDataList[i]){
+								message += '<br />' + key + ' = ' + matchingDataList[i][key];
+							}
+						}
+					}catch(exp){ 
+						console.log(exp);
+					}
+					message += '<br />'
+					previewConsole.trigger('updateConsole', ['sent answers', message]);
 				}
 			}
 			

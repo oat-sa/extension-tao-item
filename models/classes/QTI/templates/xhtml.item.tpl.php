@@ -1,16 +1,3 @@
-<?php
-// Load the matching template functions of the context
-// PREVIEW MODE
-if (isset($ctx_preview_mode) && $ctx_preview_mode) $templateName = "preview"; 
-// SERVER MODE
-else if (isset($ctx_delivery_server_mode) && $ctx_delivery_server_mode) $templateName = "server"; 
-// CLIENT MODE
-else $templateName = "client"; 
-
-$matchingTemplate  = dirname(__FILE__).'/matching/js.'.$templateName.'.tpl.php';
-$matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchingTemplate, $matching);
-?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
 <head>
@@ -42,9 +29,7 @@ $matchingTplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchin
 		var matchingParam = new Object();
 	
 		$(document).ready(function(){
-		    <?= $matchingTplRenderer->render() ?>
 			qti_init(qti_initParam);
-			matchingInit(matchingParam);
 
             // validation process - catch event after all interactions have collected their data
             $("#qti_validate").bind("click",function(){
