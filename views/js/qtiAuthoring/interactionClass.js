@@ -1,7 +1,7 @@
 // alert('interaction edit loaded');
 interactionClass.instances = [];
 
-function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer, responseFormContainer){
+function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer, responseFormContainer, responseMappingMode){
 	
 	if(!interactionSerial){ throw 'no interaction serial found';}
 	if(!relatedItemSerial){ throw 'no related item serial found';}
@@ -19,6 +19,8 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	this.interactionSerial = interactionSerial;
 	this.relatedItemSerial = relatedItemSerial;
 	
+	this.responseMappingMode = false;
+			
 	this.choices = [];
 	this.modifiedInteraction = false;
 	this.modifiedChoices = [];
@@ -208,8 +210,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 
 interactionClass.prototype.loadResponseMappingForm = function(){
 	var relatedItem = this.getRelatedItem();
-	// relatedItem.responseMappingMode = true;//for test only!
-	var interacton = this;
+	var interaction = this;
 	
 	if(relatedItem){
 		$.ajax({
@@ -221,9 +222,9 @@ interactionClass.prototype.loadResponseMappingForm = function(){
 		   dataType: 'html',
 		   success: function(form){
 				
-				$formContainer = $(interacton.responseMappingOptionsFormContainer);
+				$formContainer = $(interaction.responseMappingOptionsFormContainer);
 				$formContainer.html(form);
-				if(relatedItem.responseMappingMode){
+				if(interaction.responseMappingMode){
 					$formContainer.show();
 				}else{
 					$formContainer.hide();
@@ -618,6 +619,9 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 }
 
 interactionClass.prototype.saveResponseMappingOptions = function($myForm){
+	
+	var self = this;
+	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveMappingOptions",
@@ -914,6 +918,29 @@ interactionClass.prototype.bindChoiceLinkListener = function(){
 			// CL('highlighting the choice', $(this).attr('id'));
 		});
 		
+	}
+	
+}
+
+interactionClass.prototype.setResponseMappingMode = function(isMapping){
+	if(isMapping){
+		//set the reponse mapping to true:
+		if(this.responseMappingMode){
+			//nothing to do:
+		}else{
+			//display the scoring form: //TODO: load it only when necessary:
+			this.responseMappingMode = true;
+			$(this.responseMappingOptionsFormContainer).show();
+			
+			//reload the response grid, to update column model:
+			new responseClass(this.responseGrid, this);
+		}
+	}else{
+		this.responseMappingMode = false;
+		$(this.responseMappingOptionsFormContainer).hide();
+		
+		//reload the response grid, to update column model:
+		new responseClass(this.responseGrid, this);
 	}
 	
 }

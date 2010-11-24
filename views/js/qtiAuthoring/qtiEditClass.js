@@ -591,29 +591,6 @@ qtiEdit.prototype.setResponseMode = function(visible){
 	}
 }
 
-qtiEdit.prototype.setResponseMappingMode = function(isMapping){
-	if(isMapping){
-		//set the reponse mapping to true:
-		if(this.responseMappingMode){
-			//nothing to do:
-		}else{
-			//display the scoring form: //TODO: load it only when necessary:
-			this.responseMappingMode = true;
-			$(this.responseMappingOptionsFormContainer).show();
-			
-			//reload the response grid, to update column model:
-			if(this.currentInteraction) new responseClass(this.currentInteraction.responseGrid, this.currentInteraction);
-		}
-	}else{
-		this.responseMappingMode = false;
-		$(this.responseMappingOptionsFormContainer).hide();
-		
-		//reload the response grid, to update column model:
-		if(this.currentInteraction) new responseClass(this.currentInteraction.responseGrid, this.currentInteraction);
-	}
-	
-}
-
 qtiEdit.prototype.loadStyleSheetForm = function(empty){
 
 	var instance = this;

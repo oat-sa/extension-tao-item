@@ -90,9 +90,14 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					createInfoMessage(__('Modification on response applied'));
 					
 					if(r.templateHasChanged){
-						//reload the grid, just in case the response template has changed:
-						if(interactionClass.instances[self.interactionSerial]){
-							new responseClass(self.myGrid.attr('id'), interactionClass.instances[self.interactionSerial]);
+						
+						var interaction = interactionClass.instances[self.interactionSerial];
+						if(interaction){
+							//reload the grid, just in case the response template has changed:
+							new responseClass(self.myGrid.attr('id'), interaction);
+							
+							//set the response mapping mode:
+							interaction.setResponseMappingMode(r.setResponseMappingMode);
 						}
 						
 					}
