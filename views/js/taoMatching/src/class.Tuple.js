@@ -3,6 +3,10 @@ TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 TAO_MATCHING.Tuple = function (data) {
 	// Call the parent constructor
 	TAO_MATCHING.Collection.call (this);
+    // The length of the tuple
+    this.count = 0;
+    // The tuple's values
+    this.value = {};
 	// Set the value of the variable
 	this.setValue (data);
 };
@@ -35,6 +39,19 @@ TAO_MATCHING.Tuple.prototype = {
         	return this.value[key];
         }
         return null;
+    }
+
+    /**
+     * Get the length of the tuple
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Tuple tuple
+     * @return boolean
+     */
+    , length : function ()
+    {
+        return this.count;
     }
 
     /**
@@ -90,7 +107,7 @@ TAO_MATCHING.Tuple.prototype = {
      */
     , setValue : function (data)
     {
-    	this.value = [];
+    	this.value = {};
     	for (var key in data) {
     	    // IF the variable the content value is yet a MatchingVariable, add it to the tuple
             if (TAO_MATCHING.VariableFactory.isMatchingVariable (data[key])){
@@ -103,7 +120,19 @@ TAO_MATCHING.Tuple.prototype = {
                 //    throw new Error ('TAO_MATCHING.Tuple::setValue an error occured : types of the element is not allowed');
                 //}
             }
+            this.count ++;
     	}
+    }
+    
+    /**
+     * Short description of method toJSon
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    , toJSon : function ()
+    {
+        return this.getValue();
     }
 };
 

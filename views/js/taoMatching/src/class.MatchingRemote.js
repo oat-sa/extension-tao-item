@@ -84,9 +84,10 @@ TAO_MATCHING.MatchingRemote.prototype = {
      * Short description of method getJSonOutcomes
      *
      * @access public
+     * @param {string} options (not used here but usefull in the local matching engine)
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
-    , outcomesToJSON : function ()
+    , getOutcomes : function (options)
     {
         return this.outcomes;
     }

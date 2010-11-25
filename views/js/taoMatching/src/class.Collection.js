@@ -85,25 +85,10 @@ TAO_MATCHING.Collection.prototype = {
     {
 		if (this.value == null)
 			return true;
-		if (this.value.length == 0)
+		if (this.length() == 0)
         	return true;
 		return false;
     }
-
-    /**
-     * Short description of method length
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return core_kernel_classes_Session_int
-     */
-    , length : function ()
-    {
-        if (this.isNull())
-			return 0;
-		else
-			return this.value.length;
-    }   
 
 };
 

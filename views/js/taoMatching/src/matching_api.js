@@ -64,7 +64,7 @@ function matchingEvaluate () {
  * @return {JSON}
  */
 function matchingGetOutcomes () {
-	return TAO_MATCHING.engine.outcomesToJSON ();
+	return TAO_MATCHING.engine.getOutcomes ({format:'JSON'});
 }
 
 /** Set the correct responses of the item
@@ -103,7 +103,7 @@ function matchingSetResponses (data) {
  * @return {Object} The response variables
  */
 function matchingGetResponses () {
-	return TAO_MATCHING.engine.getResponses();
+	return TAO_MATCHING.engine.getResponses({format:'JSON'});
 }
 
 /**

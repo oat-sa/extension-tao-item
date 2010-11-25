@@ -38,6 +38,19 @@ TAO_MATCHING.List.prototype = {
     }
 
     /**
+     * Get the length of the list
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  Tuple tuple
+     * @return boolean
+     */
+    , length : function ()
+    {
+        return this.value.length;
+    }
+
+    /**
      * Short description of method match
      *
      * @access public
@@ -110,6 +123,17 @@ TAO_MATCHING.List.prototype = {
                 //}
     	    }
     	}
+    }
+    
+    /**
+     * Short description of method toJSon
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     */
+    , toJSon : function ()
+    {
+        return this.getValue();
     }
 };
 
