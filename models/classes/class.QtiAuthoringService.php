@@ -78,7 +78,9 @@ class taoItems_models_classes_QtiAuthoringService
      */
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
 		$itemData = $item->getData();
-		// $itemData = preg_replace('/(}|>){([^}]+)}/i', '\1&nbsp;{\2}', preg_replace('/{([^}]+)}({|<)/i', '{\1}&nbsp;\2', $itemData));
+		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
+		$itemData = preg_replace('/^{/', '&nbsp;{', $itemData);
+		$itemData = preg_replace('/}$/', '}&nbsp;', $itemData);
 		
 		//insert the interaction tags:
 		foreach($item->getInteractions() as $interaction){
@@ -96,9 +98,8 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
-		// $returnValue .= "<input type='button' id='{$interaction->getSerial()}' class='qti_interaction_link' value='{$interaction->getType()} Interaction'/>";
 		if($interaction->isBlock()){
-			$returnValue .= "<div class='qti_interaction_block'>";
+			$returnValue .= "<br/><div class='qti_interaction_block'>";
 		}
 		$returnValue .= "<input id=\"{$interaction->getSerial()}\" class=\"qti_interaction_link\" value=\"{$interaction->getType()} Interaction\" type=\"button\"/>";
 		if($interaction->isBlock()){
@@ -985,18 +986,11 @@ class taoItems_models_classes_QtiAuthoringService
 		$pattern = "/<input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>/i";
 		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
 			if($qtiObject->isBlock()){
-				$pattern = "/<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?><\/div>/i";
+				$pattern = "/(<br(.[^<]*)?>)?<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?><\/div>/i";
 			}
 		}
 		
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
-		
-		//http://static.php.net/www.php.net/images/php.gif
-		// $patternImg = '/<img([^>]+)>/i';
-		// $replaceImg = '<img\1 />';
-		// $data = preg_replace($patternImg, $replaceImg, $data);
-		
-		// $data = str_replace('<br>', '<br/>', $data);
 		
 		return $data;
 	}

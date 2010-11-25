@@ -279,7 +279,7 @@ class QtiAuthoring extends CommonModule {
 		echo json_encode(array(
 			'added' => $added,
 			'interactionSerial' => $interactionSerial,
-			'itemData' => html_entity_decode($itemData)
+			'itemData' => $itemData
 		));
 	}
 	
