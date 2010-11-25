@@ -47,7 +47,7 @@ class QtiAuthoring extends CommonModule {
 		
 		$item = null;
 		
-		$itemUri = '';
+		$itemUri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));;
 		$itemSerial = '';
 		$itemIdentifier = tao_helpers_Uri::getUniqueId($itemUri);//TODO: remove coopling to TAO
 		
@@ -61,9 +61,7 @@ class QtiAuthoring extends CommonModule {
 			
 			if(empty($itemFile)){
 				
-				//temp check to allow page reloading without xml file:
-				$itemUri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
-				
+				//check to allow page reloading without xml file: debug mode on
 				if(!empty($itemUri) && $this->debugMode){
 					if(isset($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)])){
 						$item = $this->qtiService->getItemBySerial($_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)]);
@@ -79,7 +77,7 @@ class QtiAuthoring extends CommonModule {
 					if(is_null($item)){
 						
 						//create a new item object:
-						$item = $this->service->createNewItem($itemIdentifier);
+						$item = $this->service->createNewItem($itemIdentifier, $itemResource->getLabel());
 						$_SESSION['tao_qti_item_uris'][tao_helpers_Uri::getUniqueId($itemUri)] = $item->getSerial();
 					}
 				}

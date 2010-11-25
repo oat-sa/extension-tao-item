@@ -56,7 +56,7 @@ class taoItems_models_classes_QtiAuthoringService
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return taoItems_models_classes_QTI_Item
      */
-	public function createNewItem($itemIdentifier=''){
+	public function createNewItem($itemIdentifier='', $title=''){
 		
 		$returnValue = null;
 		
@@ -64,7 +64,8 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		//add default responseProcessing:
 		$this->setResponseProcessing($returnValue, 'template');
-		$returnValue->setOption('title', 'QTI item');
+		
+		$returnValue->setOption('title', empty($title)?'QTI item':$title);
 		
 		return $returnValue;
 	}
