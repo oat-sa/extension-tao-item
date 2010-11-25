@@ -358,6 +358,7 @@ TAO_MATCHING.Matching.prototype = {
             format : null
         }; if (pOptions != undefined) $.extend(options, pOptions);
         
+        var returnValue = new Object();
         switch (options.format){
             case 'JSON':
                 for (var key in this.responses) {
