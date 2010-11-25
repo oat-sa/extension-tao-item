@@ -825,8 +825,18 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (float) 0.0;
 
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F begin
+        
         $options = $this->checkOptions ($options);
+        
+        if (!isset($map)){
+            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponse error : the first argument [taoItems_models_classes_Matching_Variable] does not exist");
+        }
+        else if (!isset($expr)){
+            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponse error : the second argument [taoItems_models_classes_Matching_Variable] does not exist");
+        }
+        
         $returnValue = $map->map ($expr);
+        
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002A9F end
 
         return (float) $returnValue;
@@ -851,13 +861,15 @@ class taoItems_models_classes_Matching_Matching
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D begin
         $options = $this->checkOptions ($options);
         
-        if (!isset($expr1))
-        	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
-        else if (!isset($expr2))
-        	throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the second argument does not exist");
-
         //echo '<pre>';print_r($expr1);echo '</pre>';
         //echo '<pre>';print_r($expr2);echo '</pre>';
+        
+        if (!isset($expr1)){
+            throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
+        }
+        else if (!isset($expr2)){
+            throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the second argument does not exist");
+        }
 
         if ($expr1->getType() != $expr2->getType()) { 
         	$returnValue = false;
