@@ -58,9 +58,7 @@ TAO_MATCHING.MatchingRemote.prototype = {
      */
     evaluate : function ()
     {
-		var self = this;
-		var responses = this.responses;
-		
+		var self = this;		
 		//console.log (this.responses);
 		//console.dir (JSON.stringify(this.responses));
 		var requestParams = $.extend({}, this.params, {data: JSON.stringify(this.responses) });

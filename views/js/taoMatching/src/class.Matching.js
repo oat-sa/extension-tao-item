@@ -213,12 +213,13 @@ TAO_MATCHING.Matching.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @attributes {JSON} poptions
-     * @attributes {string} poptions.format Define the format of the return [JSON|MatchingRessource]
+     * @attributes {string} poptions.format Define the format of the return [JSON].  If not defined return a set of MatchingVariable objects
      * @return {array}
      */
     , getOutcomes : function (pOptions)
     {
         var returnValue = Array ();
+        
         var options = {
             format : null
         }; if (pOptions != undefined) $.extend(options, pOptions);
@@ -226,9 +227,10 @@ TAO_MATCHING.Matching.prototype = {
         switch (options.format){
             case 'JSON':
                 for (var key in this.outcomes) {
-                    returnValue[key] = [];
-                    returnValue[key]["identifier"] = key;
-                    returnValue[key]["value"] = this.outcomes[key].toJSon();
+                    returnValue[key] = {
+                        "identifier" : key
+                        , "value"    : this.outcomes[key].toJSon()
+                    };
                 }
                 break;
             default:
@@ -349,28 +351,30 @@ TAO_MATCHING.Matching.prototype = {
      *
      * @access public
      * @attribute {JSON} poptions
-     * @attributes {JSON} poptions.format Define the format of the return [JSON|MatchingRessource]
+     * @attributes {string} poptions.format Define the format of the return [JSON].  If not defined return a set of MatchingVariable objects
      * @return {Object}
      */
     , getResponses : function(pOptions)
     {        
+        var returnValue = Array ();
+        
         var options = {
             format : null
         }; if (pOptions != undefined) $.extend(options, pOptions);
         
-        var returnValue = new Object();
         switch (options.format){
             case 'JSON':
                 for (var key in this.responses) {
-                    returnValue[key] = [];
-                    returnValue[key]["identifier"] = key;
-                    returnValue[key]["value"] = this.responses[key].toJSon();
+                    returnValue[key] = {
+                        "identifier" : key
+                        , "value"    : this.responses[key].toJSon()
+                    };
                 }
                 break;
             default:
-                returnValue = this.outcomes;
+                returnValue = this.response;
         }
-    	return this.responses;
+    	return returnValue;
     }
 	
     
