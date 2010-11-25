@@ -128,6 +128,12 @@ class PreviewApi extends Api {
         	}
         	
         	$executionEnvironment = $this->createFakeExecutionEnvironment($item, $user);
+        	
+        	$apis = array(
+				'taoApi'		=> BASE_WWW.'js/taoApi/taoApi.min.js', 
+				'taoMatching'	=> BASE_WWW.'js/taoMatching/taoMatching.min.js', 
+				'wfApi'			=> BASE_URL.'taoDelivery/views/js/taoApi/taoApi.min.js'
+			);
         		
 			// We inject the data directly in the item file
 			try{
@@ -147,7 +153,6 @@ class PreviewApi extends Api {
 					);
 					
 					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
-					$headNode->appendChild($initScriptElt);
 					
 					$inserted = false;
 					$scriptNodes = $headNode->getElementsByTagName('script');
@@ -155,10 +160,12 @@ class PreviewApi extends Api {
 					if($scriptNodes->length > 0){
 						foreach($scriptNodes as $index => $scriptNode){
 							if($scriptNode->hasAttribute('src')){
-								if(preg_match("/taoApi\.min\.js$/", $scriptNode->getAttribute('src')) ||
-									preg_match("/taoMatching\.min\.js$/", $scriptNode->getAttribute('src'))){
-									if($index > $position){
-										$position = $index;
+								foreach(array_keys($apis) as $api){
+									if(preg_match("/$api\.min\.js$/", $scriptNode->getAttribute('src'))){
+										if($index > $position){
+											$position = $index;
+										}
+										break;
 									}
 								}
 							}
@@ -169,15 +176,12 @@ class PreviewApi extends Api {
 						}
 					}
 					if(!$inserted){
-						$taoScriptElt = $doc->createElement('script');
-						$taoScriptElt->setAttribute('type', 'text/javascript');
-						$taoScriptElt->setAttribute('src', TAO_BASE_WWW.'js/taoApi/taoApi.min.js');
-						$headNode->appendChild($taoScriptElt);
-						
-						$matchingScriptElt = $doc->createElement('script');
-						$matchingScriptElt->setAttribute('type', 'text/javascript');
-						$matchingScriptElt->setAttribute('src', TAO_BASE_WWW.'js/taoMatching/taoMatching.min.js');
-						$headNode->appendChild($matchingScriptElt);
+						foreach($apis as $apiUrl){
+							$apiScriptElt = $doc->createElement('script');
+							$apiScriptElt->setAttribute('type', 'text/javascript');
+							$apiScriptElt->setAttribute('src', $apiUrl);
+							$headNode->appendChild($apiScriptElt);
+						}
 						
 						$headNode->appendChild($initScriptElt);
 					}
@@ -220,7 +224,7 @@ class PreviewApi extends Api {
 			$executionEnvironment = $this->getExecutionEnvironment($user);
 			if(isset($executionEnvironment['token'])){
 				
-				header('Context-Type', 'application/javascript');
+				$this->setContentHeader('application/javascript');
 				
 				//taoApi data source
 				$this->setData('envVarName', self::ENV_VAR_NAME);
@@ -264,6 +268,16 @@ class PreviewApi extends Api {
 					$this->setData('matchingData', json_encode($this->itemService->getMatchingData($item)));
 				}
 				$this->setData('matchingParams', json_encode($matchingParams));
+				
+				//wfApi recovery context parameters
+				$this->setData('contextSourceParams', json_encode(array(
+						'url' 		=> _url('retrieveContext', 'PreviewApi', 'taoItems'), 
+						'params'	=> array('token' => self::AUTH_TOKEN)
+				)));
+				$this->setData('contextDestinationParams', json_encode(array(
+						'url' 		=> _url('saveContext', 'PreviewApi', 'taoItems'), 
+						'params'	=> array('token' => self::AUTH_TOKEN)
+				)));
 				
 				
 				$this->setView('init_api.js.tpl');
@@ -344,6 +358,50 @@ class PreviewApi extends Api {
 	 */
 	public function traceEvents(){
 		echo json_encode(array('saved' => $this->checkCommunication()));
+	}
+	
+	/**
+	 * wfApi retrieve context action:
+	 * used to test retrieveing the context recovery during the item preview 
+	 */
+	public function retrieveContext(){
+		$context = array();
+		if($this->checkCommunication()){
+			if(Session::hasAttribute('previewContext')){
+				$context = Session::getAttribute('previewContext');
+			}
+		}
+		echo json_encode($context);
+	}
+	
+	/**
+	 * wfApi save context action:
+	 * used to test saving the context recovery during the item preview 
+	 */
+	public function saveContext(){
+		$saved = false;
+		if($this->checkCommunication() && $this->hasRequestParameter('context')){
+			$context = $this->getRequestParameter('context');
+			if(is_array($context)){
+				if(Session::hasAttribute('previewContext')){
+					$currentContext = Session::getAttribute('previewContext');
+					if(is_array($currentContext)){
+						foreach($context as $key => $value){
+							$currentContext[$key] = $value;
+						}
+						$context = $currentContext;
+					}
+				}
+				Session::setAttribute('previewContext', $context);
+				$saved = Session::hasAttribute('previewContext');						
+			}
+			else if (is_null($context)){
+				//if the data sent are null [set context to null], we remove it  
+				Session::removeAttribute('previewContext');
+				$saved = !Session::hasAttribute('previewContext');	
+			}
+		}
+		echo json_encode(array('saved' => $saved));
 	}
 	
 }

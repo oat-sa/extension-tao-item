@@ -606,7 +606,7 @@ function EventTracer (options){
 			url		: this.destinationService.url,
 			data	: params,
 			type	: this.destinationService.method,
-			async	:true,
+			async	: false,
 			datatype: this.destinationService.format,
 			success : function(data, textStatus){ 
 				_this.sendFeedTraceSucceed(data, textStatus, sent_timeStamp); 

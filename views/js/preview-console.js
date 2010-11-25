@@ -1,5 +1,5 @@
 /**
- * 
+ * Get an url-formated parameters string, parse it and return a JSONized object
  * @param {String} params
  * @return {Object}
  */
@@ -28,9 +28,10 @@ function unserializeUrl(params){
 $(document).ready(function(){
 	var timer = new Date();
 	
+	//get the console element in the top page
 	var previewConsole = $('#preview-console', window.top.document);
 	
-	//attach an updateConsole event
+	//attach an updateConsole event, tobe triggered
 	previewConsole.bind('updateConsole', function(event, type, message){
 		var hour = timer.getHours();
 		var min	 = timer.getMinutes();
@@ -98,9 +99,21 @@ $(document).ready(function(){
 							console.log(exp);
 						}
 					}
-					message += '<br />'
+					message += '<br />';
 					previewConsole.trigger('updateConsole', ['trace events', message]);
 				}
+			}
+			
+			//wfApi saving context 
+			else if(/saveContext$/.test(settings.url)){
+				var data = unserializeUrl(decodeURIComponent(settings.data));
+					for(key in data.context){
+						if(key != 'token'){
+							message += '<br />' + key + ' = ' + data[key];
+						}
+					}
+					message += '<br />';
+					previewConsole.trigger('updateConsole', ['save context', message]);				
 			}
 			
 			//taoMatching data
@@ -115,7 +128,7 @@ $(document).ready(function(){
 					}catch(exp){ 
 						console.log(exp);
 					}
-					message += '<br />'
+					message += '<br />';
 					previewConsole.trigger('updateConsole', ['sent answers', message]);
 				}
 			}

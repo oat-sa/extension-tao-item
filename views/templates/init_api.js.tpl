@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
 	var <?=get_data('envVarName')?> = <?=get_data('executionEnvironment')?>;
 	initManualDataSource(<?=get_data('envVarName')?>);
 
@@ -25,6 +24,10 @@ $(document).ready(function(){
 		            //and in the preview console
 		            $('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
 		           
+		           	// Reset the matching engine
+		            matchingInit (matchingParam);
+		            
+		            // Finish the process
 		            finish();
 		        }
 		    }
@@ -55,4 +58,7 @@ $(document).ready(function(){
 		};
 	<?endif?>
 	matchingInit(matchingParam);
+	
+	initRecoveryContext(<?=get_data('contextSourceParams')?>, <?=get_data('contextDestinationParams')?>);
+	
 });

@@ -29,22 +29,34 @@
 		var matchingParam = new Object();
 	
 		$(document).ready(function(){
+
+			//check if the values have been saved in a context
+			for(interactionId in qti_initParam){
+				if(qti_initParam[interactionId]['responseIdentifier']){
+					qti_initParam[interactionId]['values'] = getRecoveryContext(qti_initParam[interactionId]['responseIdentifier']);
+				}
+			}
+
+			//initialize the QTI widgets
 			qti_init(qti_initParam);
 
             // validation process - catch event after all interactions have collected their data
             $("#qti_validate").bind("click",function(){
 
-            	//push the answered values
+            	//push the answered values 
             	var responses = matchingGetResponses();
-            	
             	var answeredValues = null;
             	for(key in responses){
                 	if(answeredValues == null){
                 		answeredValues = new Object();
                 	}
             		answeredValues[responses[key]['identifier']] = responses[key]['value'];
+
+            		//set the answered values in the context
+            		setRecoveryContext(responses[key]['identifier'], responses[key]['value']);
             	}
             	if($.isPlainObject(answeredValues)){
+                	//set the answered values to the taoApi 
 					setAnsweredValues(JSON.stringify(answeredValues));
             	}
             	
