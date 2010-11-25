@@ -754,7 +754,7 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				if(isset($values['data'])){
-					$this->service->setData($choice, $values['data']);
+					$this->service->setData($choice, $this->getPostedData('data'));
 					unset($values['data']);
 				}
 				

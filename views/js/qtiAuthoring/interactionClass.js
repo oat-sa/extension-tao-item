@@ -143,13 +143,16 @@ interactionClass.prototype.saveInteraction = function($myForm){
 }
 
 interactionClass.prototype.saveChoice = function($choiceForm){
-
+	
+	var choiceProperties = $choiceForm.serializeObject();
+	choiceProperties.data = util.htmlEncode(choiceProperties.data);
+	
 	var interaction = this;
 	
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveChoice",
-	   data: $choiceForm.serialize(),
+	   data: choiceProperties,
 	   dataType: 'json',
 	   success: function(r){
 			
