@@ -49,10 +49,14 @@ function qti_init_interaction(initObj){
 	myQTIWidget[typeName].apply();
 	
 	// validation process
-	$("#qti_validate").bind("click",function(){
+	$("#qti_validate").bind("click",function(e){
+		e.preventDefault();
+		
 		// Get user's data
 		var result = myResultCollector[typeName].apply();
 		// Set the matching engine with the user's data	
-		matchingSetResponses ([result]);
+		if(typeof(matchingSetResponses) == 'function'){
+			matchingSetResponses ([result]);
+		}
 	});
 }

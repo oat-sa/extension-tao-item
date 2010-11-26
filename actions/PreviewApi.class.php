@@ -221,7 +221,7 @@ class PreviewApi extends Api {
 			$item 	= new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 			$user = $this->userService->getCurrentUser();
 			
-			$executionEnvironment = $this->getExecutionEnvironment($user);
+			$executionEnvironment = $this->getFakeExecutionEnvironment($user);
 			if(isset($executionEnvironment['token'])){
 				
 				$this->setContentHeader('application/javascript');
@@ -367,8 +367,11 @@ class PreviewApi extends Api {
 	public function retrieveContext(){
 		$context = array();
 		if($this->checkCommunication()){
-			if(Session::hasAttribute('previewContext')){
-				$context = Session::getAttribute('previewContext');
+			if(isset($_COOKIE['previewContext'])){
+				$currentContext = $_COOKIE['previewContext'];
+				if(is_string($currentContext) && !empty($currentContext)){
+					$context = unserialize($currentContext);
+				}
 			}
 		}
 		echo json_encode($context);
@@ -383,22 +386,19 @@ class PreviewApi extends Api {
 		if($this->checkCommunication() && $this->hasRequestParameter('context')){
 			$context = $this->getRequestParameter('context');
 			if(is_array($context)){
-				if(Session::hasAttribute('previewContext')){
-					$currentContext = Session::getAttribute('previewContext');
-					if(is_array($currentContext)){
+				
+				if(isset($_COOKIE['previewContext'])){
+					$currentContext = $_COOKIE['previewContext'];
+					if(is_string($currentContext) && !empty($currentContext)){
+						$currentContext = unserialize($currentContext);
 						foreach($context as $key => $value){
 							$currentContext[$key] = $value;
 						}
 						$context = $currentContext;
 					}
 				}
-				Session::setAttribute('previewContext', $context);
-				$saved = Session::hasAttribute('previewContext');						
-			}
-			else if (is_null($context)){
-				//if the data sent are null [set context to null], we remove it  
-				Session::removeAttribute('previewContext');
-				$saved = !Session::hasAttribute('previewContext');	
+				//a 10 minutes cookie
+				$saved = setcookie('previewContext', serialize($context), time() + 600 );			
 			}
 		}
 		echo json_encode(array('saved' => $saved));

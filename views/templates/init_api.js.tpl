@@ -18,11 +18,18 @@ $(document).ready(function(){
 		            for (var outcomeKey in outcomes){
 		                strOutcomes += '[ ' + outcomeKey+ ' = ' +outcomes[outcomeKey]['value'] + ' ]';
 		            }
-		             //display the outcomes in the main window
-		           	window.top.createInfoMessage ('THE OUTCOME VALUES : <br/>'  + strOutcomes);
 		            
-		            //and in the preview console
-		            $('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
+		           if($('#preview-console', window.top.document).length > 0){
+			             //display the outcomes in the main window
+			           	window.top.createInfoMessage ('THE OUTCOME VALUES : <br/>'  + strOutcomes);
+			            
+			            //and in the preview console
+			            $('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
+		           	}
+		           	else{
+		           		//outside preview container
+		           		alert(strOutcomes);
+		           	}
 		           
 		           	// Reset the matching engine
 		            matchingInit (matchingParam);
@@ -43,11 +50,18 @@ $(document).ready(function(){
 		            for (var outcomeKey in outcomes){
 		                strOutcomes += '[ ' + outcomeKey+ ' = ' +outcomes[outcomeKey]['value'] + ' ]';
 		            }
-		           //display the outcomes in the main window
-		           window.top.createInfoMessage ('THE OUTCOME VALUES : <br/>'  + strOutcomes);
-		           
-		           //and in the preview console
-		           $('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
+		            
+		            if($('#preview-console', window.top.document).length > 0){
+			           //display the outcomes in the main window
+			           window.top.createInfoMessage ('THE OUTCOME VALUES : <br/>'  + strOutcomes);
+			           
+			           //and in the preview console
+			           $('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
+		           }
+		           else{
+		           		//outside preview container
+		           		alert(strOutcomes);
+		           	}
 		           
 		           // Reset the matching engine
 		           matchingInit (matchingParam);

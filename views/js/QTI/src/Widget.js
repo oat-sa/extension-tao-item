@@ -50,18 +50,34 @@ var QTIWidget = function(options){
 	 * Creates a simple choice list widget
 	 */
 	 this.simple_choice = function (){	
+		
+		//add the main class 
 		$(qti_item_id).addClass('qti_simple_interaction');
+		
+		//change the class to activate the choice on click
 		$(qti_item_id +" ul li").bind("click",function(){	
 			$(qti_item_id+" ul li").removeClass("tabActive");		
 			$(this).addClass("tabActive");					
 		});
+		
+		//set the current value if defined
+		if(_this.opts["values"]){
+			var value = _this.opts["values"];
+			if(typeof(value) == 'string' && value != ''){
+				$(qti_item_id+" ul li#"+value).addClass("tabActive");
+			}
+		}
 	};
 
 	/**
 	 * Creates a multiple choice list widget
 	 */
 	this.multiple_choice = function (){
+		
+		//add the main class 
 		$(qti_item_id).addClass('qti_multi_interaction');
+		
+		//change the class to activate the choices on click
 		$(qti_item_id+" ul li").bind("click",function(){
 			if ($(this).hasClass("tabActive")) {
 				$(this).removeClass("tabActive");
@@ -72,13 +88,39 @@ var QTIWidget = function(options){
 				}
 			}
 		});
+		
+		//set the current values if defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for(i in values){
+					var value = values[i];
+					if(typeof(value) == 'string' && value != ''){
+						$(qti_item_id+" ul li#"+value).addClass("tabActive");
+					}
+					if(typeof(value) == 'object'){
+						if(value.value){
+							$(qti_item_id+" ul li#"+value.value).addClass("tabActive");
+						}
+					}
+				}
+			}
+		}
 	};
 	
 	/**
 	 * We use the html <i>select</i> widget,
 	 * the function is listed only to keep the same behavior than the other
 	 */
-	this.inline_choice = function (){};
+	this.inline_choice = function (){
+		if(_this.opts["values"]){
+			var value = _this.opts["values"];
+			if(typeof(value) == 'string' && value != ''){
+				console.log($(qti_item_id+" option[value='"+value+"']"));
+				$(qti_item_id+" option[value='"+value+"']").attr('selected', true);
+			}
+		}
+	};
 
 	/**
 	 * Creates a sortable list widget,

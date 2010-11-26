@@ -76,10 +76,11 @@ $(document).ready(function(){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
 				for(key in data){
 					if(key != 'token'){
-						message += key + ' => '  + data[key] +'<br />';
+						message += '<br />' + key + ' = '  + data[key] ;
 					}
 				}
 				if(message != ''){
+					message += '<br />';
 					previewConsole.trigger('updateConsole', ['push data', message]);
 				}
 			}
@@ -95,9 +96,7 @@ $(document).ready(function(){
 							if(eventData.id != 'noID'){
 								message += '[id=' + eventData.id +']';
 							}
-						}catch(exp){ 
-							console.log(exp);
-						}
+						}catch(exp){ }
 					}
 					message += '<br />';
 					previewConsole.trigger('updateConsole', ['trace events', message]);
@@ -107,13 +106,25 @@ $(document).ready(function(){
 			//wfApi saving context 
 			else if(/saveContext$/.test(settings.url)){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
-					for(key in data.context){
+					for(key in data){
 						if(key != 'token'){
 							message += '<br />' + key + ' = ' + data[key];
 						}
 					}
 					message += '<br />';
 					previewConsole.trigger('updateConsole', ['save context', message]);				
+			}
+			
+			//wfApi retrieve context 
+			else if(/retrieveContext$/.test(settings.url)){
+				var data = unserializeUrl(decodeURIComponent(settings.data));
+					for(key in data){
+						if(key != 'token'){
+							message += '<br />' + key + ' = ' + data[key];
+						}
+					}
+					message += '<br />';
+					previewConsole.trigger('updateConsole', ['retrieved context', message]);				
 			}
 			
 			//taoMatching data
@@ -135,7 +146,8 @@ $(document).ready(function(){
 			
 			//others requests
 			else{
-				message = settings.type + ' ' + 
+				message = 	'<br />' + 
+							settings.type + ' ' + 
 							settings.url + ' ? ' + 
 							decodeURIComponent(settings.data) + ' => ' +
 							request.responseText;
