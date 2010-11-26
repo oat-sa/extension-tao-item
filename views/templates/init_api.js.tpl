@@ -1,4 +1,5 @@
-$(document).ready(function(){
+$(function (){
+
 	var <?=get_data('envVarName')?> = <?=get_data('executionEnvironment')?>;
 	initManualDataSource(<?=get_data('envVarName')?>);
 

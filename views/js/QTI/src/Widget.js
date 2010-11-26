@@ -116,7 +116,6 @@ var QTIWidget = function(options){
 		if(_this.opts["values"]){
 			var value = _this.opts["values"];
 			if(typeof(value) == 'string' && value != ''){
-				console.log($(qti_item_id+" option[value='"+value+"']"));
 				$(qti_item_id+" option[value='"+value+"']").attr('selected', true);
 			}
 		}
@@ -128,30 +127,97 @@ var QTIWidget = function(options){
 	 */
 	this.order = function(){
 		
-		var sortableOptions = {
-			revert: true,
-			axis : 'y',
-			containment: qti_item_id,
-			placeholder: 'sort-placeholder',
-			tolerance: 'pointer'
-		};
-		
-		//for an horizontal sortable list
-		$(qti_item_id + " ul li").addClass('sort-vertical');
-		if(_this.opts['orientation']){
-			if(_this.opts['orientation'] == 'horizontal'){
-				sortableOptions.axis = 'x';
-				sortableOptions.placeholder = 'sort-placeholder-inline';
-				sortableOptions['forcePlaceHolderWidth'] = true;
-				$(qti_item_id+" ul li")
-						.removeClass('sort-vertical')
-							.addClass('sort-horizontal')
-								.css('display', 'inline');
+		//if the values are defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				
+				//we take the list element corresponding to the given ids 
+				var list = new Array();
+				for(i in values){
+					var value = values[i];
+					if(typeof(value) == 'string' && value != ''){
+						list.push($(qti_item_id+" ul.qti_choice_list li#"+value));
+					}
+					if(typeof(value) == 'object'){
+						if(value.value){
+							list.push($(qti_item_id+" ul.qti_choice_list li#"+value.value));
+						}
+					}
+				}
+				
+				//and we reorder the elements in the list
+				if(list.length == $(qti_item_id+" ul.qti_choice_list li").length && list.length > 0){
+					$(qti_item_id+" ul.qti_choice_list").empty();
+					for(i in list){
+						$(qti_item_id+" ul.qti_choice_list").append(list[i]);
+					}
+				}
 			}
 		}
 		
-		$(qti_item_id+" ul").sortable(sortableOptions);
-		$(qti_item_id+" ul, li").disableSelection();
+		
+		var suffixe="";
+		
+		// test direction
+		if(_this.opts.orientation=="horizontal"){
+			// horizontal sortable options
+			$(qti_item_id+" .qti_choice_list").removeClass("qti_choice_list").addClass("qti_choice_list_horizontal");
+				
+				var sortableOptions = 
+				{
+					placeholder: 'sort-placeholder',
+					axis : 'x',
+					containment: qti_item_id,
+					tolerance: 'pointer',
+					forcePlaceholderSize: true,
+					opacity: 0.8,
+					start:function(event,ui){
+						$(qti_item_id+" .sort-placeholder").width($("#"+ui.helper[0].id).width()+4);
+						$(qti_item_id+" .sort-placeholder").height($("#"+ui.helper[0].id).height()+4);
+						$("#"+ui.helper[0].id).css("top","-4px");
+					},
+					beforeStop:function(event,ui){
+						$("#"+ui.helper[0].id).css("top","0");
+					}			
+				};
+				// create suffix for common treatment
+				suffixe="_horizontal";	
+		} else {
+			// verticale sortable options
+			var sortableOptions = 
+			{
+				placeholder: 'sort-placeholder',
+				axis : 'y',
+				containment: qti_item_id,
+				tolerance: 'pointer',
+				forcePlaceholderSize: true,
+				opacity: 0.8,
+				start:function(event,ui){
+					$(qti_item_id+" .sort-placeholder").width($("#"+ui.helper[0].id).width()+4);
+					$(qti_item_id+" .sort-placeholder").height($("#"+ui.helper[0].id).height()+4);
+					$("#"+ui.helper[0].id).css("top","-4px");
+				},
+				beforeStop:function(event,ui){
+					$("#"+ui.helper[0].id).css("top","0");
+				}			
+			};
+		}
+		//for an horizontal sortable list
+		$(qti_item_id).append("<div class='sizeEvaluator'></div>");
+		$(qti_item_id+" .sizeEvaluator").css("font-size",$(qti_item_id+" .qti_choice_list_horizontal li").css("font-size"));		
+		$(qti_item_id+" .qti_choice_list_horizontal li").each(function(){
+			$(qti_item_id+" .sizeEvaluator").text($(this).text());			
+			var liSize=$(qti_item_id+" .sizeEvaluator").width();	
+			$(this).width(liSize+10);
+		});
+		$(qti_item_id+" .sizeEvaluator").remove();
+		$(qti_item_id+" .qti_choice_list"+suffixe).sortable(sortableOptions);		
+		$(qti_item_id+" .qti_choice_list"+suffixe).disableSelection();
+		
+		// container follow the height dimensions
+		$(qti_item_id).append("<div class='breaker'> </div>");
+		
 	};
 
 	/**
@@ -160,169 +226,219 @@ var QTIWidget = function(options){
 	 */
 	this.associate = function(){
 		
-			// max size of a text box to define target max size
-			// create empty element in order to droppe in any other element of the item
-			$(qti_item_id+" .qti_choice_list li").wrapInner("<div></div>");
-			// calculate max size of a word in the cloud
-			var maxBoxSize=0;
-			$(qti_item_id+" ul.qti_choice_list li > div").each(function(){	
-				if ($(this).width()>maxBoxSize){
-					maxBoxSize=$(this).width();		
-				}
-			});
-					
-			// give a size to the words cloud to avoid graphical "jump" when items are dropped
-			$(qti_item_id+" .qti_associate_container .qti_choice_list").height(parseFloat($(".qti_associate_container").height()));
-			
-			// create the pair of box specified in the maxAssociations attribute	
-			if(_this.opts["maxAssociations"] > 0) {
-				var pairSize = _this.opts["maxAssociations"];
+		// max size of a text box to define target max size
+		// create empty element in order to droppe in any other element of the item
+		$(qti_item_id+" .qti_choice_list li").wrapInner("<div></div>");
+		// calculate max size of a word in the cloud
+		var maxBoxSize=0;
+		$(qti_item_id+" ul.qti_choice_list li > div").each(function(){	
+			if ($(this).width()>maxBoxSize){
+				maxBoxSize=$(this).width();		
 			}
-			else{
-				var pairSize = parseInt($(qti_item_id+" .qti_choice_list li").length / 2);
-			}
-			for (var a=pairSize; a>0; a--){
-				var currentPairName=_this.opts["id"]+"_"+a;
-				$(qti_item_id+" .qti_associate_container").after("<ul class='qti_association_pair' id='"+currentPairName+"'><li id='"+currentPairName+"_A"+"'></li><li id='"+currentPairName+"_B"+"'></li></ul>");		
-			}
-			
-			// set the size of the drop box to the max size of the cloud words 
-			$(qti_item_id+" .qti_association_pair li").width(maxBoxSize+4);
-			
-			// size the whole pair box to center it
-			var pairBoxWidth=0;
-			
-			$(qti_item_id+" .qti_association_pair:first li").each(function(){
-				pairBoxWidth+=$(this).width();
-			});
-			
-			$(qti_item_id+" .qti_association_pair").width(pairBoxWidth+90);
-			$(qti_item_id+" .qti_association_pair").css({position:"relative",margin:"0 auto",top:"10px"});	
-			
-			//place target boxes
-			$(qti_item_id+" .qti_association_pair").each(function(){
-				$(this).after("<div class='qti_link_associate'></div>");
+		});
 				
-				$(qti_item_id+" .qti_link_associate:last").css("top",$(this).offset().top+23);
-				$(qti_item_id+" .qti_link_associate:last").css("left",parseFloat($(this).find("li:first").offset().left)+parseFloat($(this).find("li:first").width())+14);
-			});
+		// give a size to the words cloud to avoid graphical "jump" when items are dropped
+		$(qti_item_id+" .qti_associate_container .qti_choice_list").height(parseFloat($(".qti_associate_container").height()));
+		
+		// create the pair of box specified in the maxAssociations attribute	
+		if(_this.opts["maxAssociations"] > 0) {
+			var pairSize = _this.opts["maxAssociations"];
+		}
+		else{
+			var pairSize = parseInt($(qti_item_id+" .qti_choice_list li").length / 2);
+		}
+		for (var a=pairSize; a>0; a--){
+			var currentPairName=_this.opts["id"]+"_"+a;
+			$(qti_item_id+" .qti_associate_container").after("<ul class='qti_association_pair' id='"+currentPairName+"'><li id='"+currentPairName+"_A"+"'></li><li id='"+currentPairName+"_B"+"'></li></ul>");		
+		}
+		
+		// set the size of the drop box to the max size of the cloud words 
+		$(qti_item_id+" .qti_association_pair li").width(maxBoxSize+4);
+		
+		// size the whole pair box to center it
+		var pairBoxWidth=0;
+		
+		$(qti_item_id+" .qti_association_pair:first li").each(function(){
+			pairBoxWidth+=$(this).width();
+		});
+		
+		$(qti_item_id+" .qti_association_pair").width(pairBoxWidth+90);
+		$(qti_item_id+" .qti_association_pair").css({position:"relative",margin:"0 auto",top:"10px"});	
+		
+		//place target boxes
+		$(qti_item_id+" .qti_association_pair").each(function(){
+			$(this).after("<div class='qti_link_associate'></div>");
 			
-			$(qti_item_id).height( ($(qti_item_id+" .qti_link_associate:last").offset().top) - $(qti_item_id).offset().top); 
+			$(qti_item_id+" .qti_link_associate:last").css("top",$(this).offset().top+23);
+			$(qti_item_id+" .qti_link_associate:last").css("left",parseFloat($(this).find("li:first").offset().left)+parseFloat($(this).find("li:first").width())+14);
+		});
+		
+		$(qti_item_id).height( ($(qti_item_id+" .qti_link_associate:last").offset().top) - $(qti_item_id).offset().top); 
+		
+		//drag element from words cloud
+		$(qti_item_id+" .qti_associate_container .qti_choice_list li > div").draggable({
+			drag: function(event, ui){
+				// label go on top of the others elements
+				$(ui.helper).css("z-index","999");			
+			},
+			containment: qti_item_id,
+			cursor:"move",
+			revert: true
+		});
+		
+		/**
+		 * remove an element from the filled gap
+		 * @param {jQuery} jElement
+		 */
+		var removeFilledPair = function(jElement){
+			var filledId = jElement.attr("id").replace('pair_', '');
+			var _matchMax = Number(_this.opts["matchMaxes"][filledId]["matchMax"]);
+			var _current = Number(_this.opts["matchMaxes"][filledId]["current"]);
 			
-			//drag element from words cloud
-			$(qti_item_id+" .qti_associate_container .qti_choice_list li > div").draggable({
+			if (_current > 0) {
+				_this.opts["matchMaxes"][filledId]["current"] = _current - 1;
+			}
+			jElement.parents('li').removeClass('ui-state-highlight');
+			jElement.remove();
+			if(_current >= _matchMax){
+				$("#"+filledId+" div").show();
+			}
+		};
+		
+		/**
+		 * Fill a pair gap by a cloud element
+		 * @param  {jQuery} jDropped
+		 * @param  {jQuery} jDragged
+		 */
+		var fillPair = function(jDropped, jDragged){
+			// add class to highlight current dropped item in pair boxes
+			jDropped.addClass('ui-state-highlight');
+			
+			var draggedId = jDragged.parents().attr('id');
+			
+			// add new element inside the box that received the cloud element
+			jDropped.html("<div id='pair_"+draggedId+"' class='filled_pair'>"+jDragged.text()+"</div>");
+			
+			// give a size to the dropped item to overlapp perfectly the pair box
+			$(qti_item_id+" #pair_"+draggedId).width($(qti_item_id+" .qti_association_pair li").width());
+			$(qti_item_id+" #pair_"+draggedId).height($(qti_item_id+" .qti_association_pair li").height());
+			
+			var _matchMax 	= Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
+			var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
+			
+			if (_current < _matchMax) {
+				_current++;
+				_this.opts["matchMaxes"][draggedId]["current"]=_current;
+			}
+			if (_current >= _matchMax) {
+				jDragged.hide();
+			}
+			
+			// give this new element the ability to be dragged
+			$(qti_item_id+" #pair_"+draggedId).draggable({
 				drag: function(event, ui){
-					// label go on top of the others elements
-					$(ui.helper).css("z-index","999");			
+					// element is on top of the other when it's dragged
+					$(this).css("z-index", "999");
 				},
-				containment: qti_item_id,
-				cursor:"move",
-				revert: true
+				stop: function(event, ui) {
+					removeFilledPair($(this));
+					return true;
+				 },
+				 containment: qti_item_id,
+				 cursor:"move"
 			});
-			
-			/**
-			 * remove an element from the filled gap
-			 * @param {jQuery} jElement
-			 */
-			var removeFilledPair = function(jElement){
-				var filledId = jElement.attr("id").replace('pair_', '');
-				var _matchMax = Number(_this.opts["matchMaxes"][filledId]["matchMax"]);
-				var _current = Number(_this.opts["matchMaxes"][filledId]["current"]);
+		};
+		
+		// pair box are droppable
+		$(qti_item_id+" .qti_association_pair li").droppable({
+			drop: function(event, ui){
 				
-				if (_current > 0) {
-					_this.opts["matchMaxes"][filledId]["current"] = _current - 1;
+				var draggedId = $(ui.draggable).parents().attr('id');
+				
+				//prevent of re-filling the gap and dragging between the gaps
+				if($(this).find("#pair_"+draggedId).length > 0 || /^pair_/.test($(ui.draggable).attr('id'))){
+					return false;
 				}
-				jElement.parents('li').removeClass('ui-state-highlight');
-				jElement.remove();
-				if(_current >= _matchMax){
-					$("#"+filledId+" div").show();
+				
+				var _matchGroup = _this.opts["matchMaxes"][draggedId]["matchGroup"];
+				
+				//Check the matchGroup of the dropped item or the opposite in the pair 
+				if(/A$/.test($(this).attr('id'))){
+					 var opposite =$('#' + $(this).attr('id').replace(/_A$/, "_B")).find('.filled_pair:first');
 				}
-			};
-			
-			// pair box are droppable
-			$(qti_item_id+" .qti_association_pair li").droppable({
-				drop: function(event, ui){
-					
-					var draggedId = $(ui.draggable).parents().attr('id');
-					
-					//prevent of re-filling the gap and dragging between the gaps
-					if($(this).find("#pair_"+draggedId).length > 0 || /^pair_/.test($(ui.draggable).attr('id'))){
-						return false;
+				else{
+					var opposite = $('#' + $(this).attr('id').replace(/_B$/, "_A")).find('.filled_pair:first');
+				}
+				if(opposite.length > 0){
+					var oppositeId = opposite.attr('id').replace('pair_', '');
+					if(_matchGroup.length > 0){ 
+						if($.inArray(oppositeId, _matchGroup) < 0){
+							$(this).effect("highlight", {color:'#B02222'}, 2000);
+							return false;
+						}
 					}
 					
-					var _matchMax 	= Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
-					var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
-					var _matchGroup = _this.opts["matchMaxes"][draggedId]["matchGroup"];
-					
-					//Check the matchGroup of the dropped item or the opposite in the pair 
-					if(/A$/.test($(this).attr('id'))){
-						 var opposite =$('#' + $(this).attr('id').replace(/_A$/, "_B")).find('.filled_pair:first');
+					var _oppositeMatchGroup = _this.opts["matchMaxes"][oppositeId]["matchGroup"];
+					if(_oppositeMatchGroup.length > 0){
+						if($.inArray(draggedId, _oppositeMatchGroup) < 0){
+							$(this).effect("highlight", {color:'#B02222'}, 2000);
+							return false;
+						}
+					}
+				}
+				
+
+				//remove the old element
+				if($(this).html() != ''){
+					$('.filled_pair', $(this)).each(function(){
+						removeFilledPair($(this));
+					});
+				}
+				$(ui.helper).css({top:"0",left:"0"});
+				
+				//fill the gap
+				fillPair($(this), $(ui.draggable));
+			},
+			hoverClass: 'active'
+		});
+		
+		//if the values are defined
+		if(_this.opts["values"]){
+			var index = 1;
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for(i in values){
+					var pair = values[i];
+					var valA, valB;
+					if(pair.value){
+						if(pair.value[0].value){
+							valA = pair.value[0].value;
+							valB = pair.value[1].value;
+						}
+						else{
+							valA = pair.value[0];
+							valB = pair.value[1];
+						}
 					}
 					else{
-						var opposite = $('#' + $(this).attr('id').replace(/_B$/, "_A")).find('.filled_pair:first');
+						valA = pair[0];
+						valB = pair[1];
 					}
-					if(opposite.length > 0){
-						var oppositeId = opposite.attr('id').replace('pair_', '');
-						if(_matchGroup.length > 0){ 
-							if($.inArray(oppositeId, _matchGroup) < 0){
-								$(this).effect("highlight", {color:'#B02222'}, 2000);
-								return false;
-							}
-						}
-						
-						var _oppositeMatchGroup = _this.opts["matchMaxes"][oppositeId]["matchGroup"];
-						if(_oppositeMatchGroup.length > 0){
-							if($.inArray(draggedId, _oppositeMatchGroup) < 0){
-								$(this).effect("highlight", {color:'#B02222'}, 2000);
-								return false;
-							}
+					
+					if(typeof(valA) == 'string' && valA != ''){
+						if($(qti_item_id+" li#"+valA).length == 1){
+							fillPair($(qti_item_id+"_"+ index+"_A"), $(qti_item_id+" .qti_associate_container .qti_choice_list li#"+valA+" > div"));
 						}
 					}
-					
-					
-					// add class to highlight current dropped item in pair boxes
-					$(this).addClass('ui-state-highlight');
-
-					//remove the old element
-					if($(this).html() != ''){
-						$('.filled_pair', $(this)).each(function(){
-							removeFilledPair($(this));
-						});
+					if(typeof(valB) == 'string' && valB != ''){
+						if($(qti_item_id+" li#"+valB).length == 1){
+							fillPair($(qti_item_id+"_"+ index+"_B"), $(qti_item_id+" .qti_associate_container .qti_choice_list li#"+valB+" > div"));
+						}
 					}
-					
-					// add new element inside the box that received the cloud element
-					$(this).html("<div id='pair_"+draggedId+"' class='filled_pair'>"+$(ui.draggable).text()+"</div>");
-					
-					if (_current < _matchMax) {
-						_current++;
-						_this.opts["matchMaxes"][draggedId]["current"]=_current;
-					}
-					if (_current >= _matchMax) {
-						$(ui.draggable).hide();
-					}
-					
-					// give a size to the dropped item to overlapp perfectly the pair box
-					$(qti_item_id+" .filled_pair").width($(qti_item_id+" .qti_association_pair li").width());
-					$(qti_item_id+" .filled_pair").height($(qti_item_id+" .qti_association_pair li").height());
-					$(ui.helper).css({top:"0",left:"0"});
-					
-					// give this new element the ability to be dragged
-					$(qti_item_id+" .filled_pair").draggable({
-						drag: function(event, ui){
-							// element is on top of the other when it's dragged
-							$(this).css("z-index", "999");
-						},
-						stop: function(event, ui) {
-							removeFilledPair($(this));
-							return true;
-						 },
-						 containment: qti_item_id,
-						 cursor:"move"
-					});
-						
-				},
-				hoverClass: 'active'
-			});
+					index++;
+				}
+			}
+		}
 	};
 
 	/**

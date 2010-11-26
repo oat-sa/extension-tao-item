@@ -5,6 +5,7 @@ $jsFiles = array ();
 $jsFiles[] = "./src/Widget.js";
 $jsFiles[] = "./src/ResultCollector.js";
 $jsFiles[] = "./src/init.js";
+$jsFiles[] = "./src/initTaoApis.js";		//remove this line to use the QTI API without TAO
 
 minifyJSFiles ($jsFiles, "qti.min.js");
 

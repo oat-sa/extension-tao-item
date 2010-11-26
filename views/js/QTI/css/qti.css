@@ -19,6 +19,8 @@ div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 
 .breaker {clear:both;}
 
+.sizeEvaluator{position:absolute;top:-4000px;}
+
 /* BD #009933 */.active {border:2px solid #009933 !important; }
 
 /* qti widget layout */
@@ -37,16 +39,15 @@ div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 .qti_multi_interaction li {background:url(../img/choice_multi_off.png) no-repeat; }
 
 /* Order interaction */
-/* BD #999 BG #eee*/.qti_order_interaction li {border:3px solid #999; margin-bottom:10px; margin-right:5px; padding-top:5px; background:#eee; }
-.qti_order_interaction li.sort-vertical:hover {cursor:move; margin-left:5px; border-color:#666; }
-.qti_order_interaction ul li.sort-horizontal {padding-left:10px; padding-right:10px; }
-/* BD #666 */.qti_order_interaction ul li.sort-horizontal:hover {cursor:move; border-color:#666; }
-/* BD #666 */.qti_order_interaction ul li.sort-placeholder-inline {border: dotted 1px #666; display:inline; padding:5px 25px 5px 25px; }
-/* BD #666 */.qti_order_interaction li.sort-placeholder {border: dotted 1px #666; 	}
+/* BD #999 BG #eee*/.qti_order_interaction li{border:3px solid #999; margin-bottom:10px; margin-right:5px; padding-top:5px; background:#eee;}
+.qti_order_interaction ul.ui-sortable li:hover{cursor:move;}
+/* BD #666 */.qti_order_interaction li.sort-placeholder{border: dotted 1px #666;}
+.qti_choice_list_horizontal{position:relative;}
+.qti_choice_list_horizontal li{float:left;}
 
 /* Associate interaction */
 /* TXT #333 */.qti_associate_interaction .qti_choice_list li div {color:#333; font-weight:bold; 	}
-.qti_associate_interaction .qti_choice_list li:hover, .qti_association_pair li:hover {cursor:move; 	}
+.qti_associate_interaction .qti_choice_list li:hover, .qti_association_pair .filled_pair:hover{cursor:move; }
 /* BG #ccc */.qti_associate_interaction .qti_choice_list li div {float:left; margin:5px 0 5px 15px; line-height:20px; background:#ccc; padding:0 5px; }
 .qti_association_pair {	clear:both; position:relative; margin:20px 0; }
 /* BD #999 */.qti_association_pair li {border:2px solid #999; float:left; margin:10px 15px 10px 15px; padding:5px; height:15px; text-align:center; font-weight:bold; }

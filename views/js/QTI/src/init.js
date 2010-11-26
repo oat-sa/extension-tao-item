@@ -11,6 +11,14 @@
  */
 
 /**
+ * The qti_initParam var is used everywhere in the QTI document to collect the interactions parameters
+ * @example <code>qti_initParam['interaction_serial_1234'] = {id : 'interaction_1', type : 'qti_order_interaction',  responseIdentifier : 'RESPONSE'}</code> 
+ * @namespace QTI
+ * @type {Object}
+ */
+var qti_initParam  	= new Object();
+
+/**
  * Initialize the QTI environment
  * 
  * @namespace QTI

@@ -69,8 +69,8 @@ function QTIResultCollector(options){
 			, "value"	: new Object()
 		};
 		var i = 0;
-		
-		$("#" + _this.id + " ul.qti_choice_list li").each(function(){
+		var listClass = (_this.opts['orientation'] == 'horizontal') ? 'qti_choice_list_horizontal' : 'qti_choice_list';
+		$('#' + _this.id + ' ul.' + listClass + ' li').each(function(){
 			result.value[i] = this.id;
 			i++;
 		});
@@ -96,8 +96,14 @@ function QTIResultCollector(options){
 			}
 			
 			// Get the associated identifier
-			var firstId = $(this).find('li:first').find('.filled_pair').attr('id').replace('pair_', '');
-			var lastId 	= $(this).find('li:last').find('.filled_pair').attr('id').replace('pair_', '');
+			var firstId = '';
+			if($(this).find('li:first').find('.filled_pair').length > 0){
+				firstId = $(this).find('li:first').find('.filled_pair').attr('id').replace('pair_', '');
+			}
+			var lastId 	= '';
+			if($(this).find('li:last').find('.filled_pair').length > 0){
+				lastId = $(this).find('li:last').find('.filled_pair').attr('id').replace('pair_', '');
+			}
 			
 			// create the element following the matching format
 			var elt = null;
