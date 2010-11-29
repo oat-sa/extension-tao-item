@@ -511,6 +511,23 @@ var QTIWidget = function(options){
 					}
 				});
 			}
+			//set the current values if defined
+			if(_this.opts["values"]){
+				var values = _this.opts["values"];
+				if(typeof(values) == 'object' || typeof(values) == 'array'){
+					for(i in values){
+						var value = values[i];
+						if(typeof(value) == 'string' && value != ''){
+							$(qti_item_id+" :text#" + qti_item_id+ "_"+ i).val(value);
+						}
+						if(typeof(value) == 'object'){
+							if(value.value){
+								$(qti_item_id+" :text#" + qti_item_id+ "_"+ i).val(value.value);
+							}
+						}
+					}
+				}
+			}
 		}
 	};
 
@@ -541,6 +558,13 @@ var QTIWidget = function(options){
 			$(qti_item_id).change(function(){
 				$("#"+_this.opts['stringIdentifier']).val($(this).val());
 			});
+		}
+		
+		if(_this.opts["values"]){
+			var value = _this.opts["values"];
+			if(typeof(value) == 'string' && value != ''){
+				$(qti_item_id).val(value);
+			}
 		}
 	};
 
@@ -577,6 +601,26 @@ var QTIWidget = function(options){
 				}
 			}
 		});
+		//set the current values if defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'string' && values != ''){
+				$(qti_item_id + " #hottext_choice_"+values).switchClass('hottext_choice_off', 'hottext_choice_on');
+			}
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for(i in values){
+					var value = values[i];
+					if(typeof(value) == 'string' && value != ''){
+						$(qti_item_id + " #hottext_choice_"+value).switchClass('hottext_choice_off', 'hottext_choice_on');
+					}
+					if(typeof(value) == 'object'){
+						if(value.value){
+							$(qti_item_id + " #hottext_choice_"+value.value).switchClass('hottext_choice_off', 'hottext_choice_on');
+						}
+					}
+				}
+			}
+		}
 	};
 	
 	/**
@@ -615,6 +659,47 @@ var QTIWidget = function(options){
 		});
 		
 		/**
+		 * Fill a gap with an element of the word's cloud
+		 * @param {jQuery} jDropped
+		 * @param {jQuery} jDragged
+		 */
+		var fillGap = function(jDropped, jDragged){
+			
+			var draggedId = jDragged.parent().attr("id");
+			var _matchMax = Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
+			var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
+			
+			jDropped.css({'padding-left' : '5px', 'padding-right' : '5px'}).addClass('dropped_gap');
+			
+			// add the new element inside the box that received the cloud element
+			jDropped.html("<span id='gap_"+draggedId+"' class='filled_gap'>"+jDragged.text()+"</span>");
+			
+			if (_current < _matchMax) {
+				_current++;
+				_this.opts["matchMaxes"][draggedId]["current"] = _current;
+			}
+			if(_current >= _matchMax){
+				jDragged.hide();
+			}
+			
+			//enable to drop it back to remove it from the gap
+			$(qti_item_id+" .filled_gap").draggable({
+				drag: function(event, ui){
+					// label go on top of the others elements
+					$(ui.helper).css("z-index","999");
+					$(this).parent().addClass('ui-state-highlight');
+				},
+				stop: function(){
+					$(this).parent().removeClass('ui-state-highlight');
+					removeFilledGap($(this));
+				},
+				revert: false,
+				containment: qti_item_id,
+				cursor:"move"
+			});
+		};
+		
+		/**
 		 * remove an element from the filled gap
 		 * @param {jQuery} jElement
 		 */
@@ -646,8 +731,6 @@ var QTIWidget = function(options){
 					return false;
 				}
 				
-				var _matchMax 	= Number(_this.opts["matchMaxes"][draggedId]["matchMax"]);
-				var _current 	= Number(_this.opts["matchMaxes"][draggedId]["current"]);
 				var _matchGroup = _this.opts["matchMaxes"][draggedId]["matchGroup"];
 				
 				///if the matchGroup of the choice is defined and not found we cancel the drop 
@@ -674,38 +757,30 @@ var QTIWidget = function(options){
 					});
 				}
 				
-				$(this).css({'padding-left' : '5px', 'padding-right' : '5px'}).addClass('dropped_gap');
-				
-				// add the new element inside the box that received the cloud element
-				$(this).html("<span id='gap_"+draggedId+"' class='filled_gap'>"+$(ui.draggable).text()+"</span>");
-				
-				if (_current < _matchMax) {
-					_current++;
-					_this.opts["matchMaxes"][draggedId]["current"] = _current;
-				}
-				if(_current >= _matchMax){
-					$(ui.draggable).hide();
-				}
-				
-				//enable to drop it back to remove it from the gap
-				$(qti_item_id+" .filled_gap").draggable({
-					drag: function(event, ui){
-						// label go on top of the others elements
-						$(ui.helper).css("z-index","999");
-						$(this).parent().addClass('ui-state-highlight');
-					},
-					stop: function(){
-						$(this).parent().removeClass('ui-state-highlight');
-						removeFilledGap($(this));
-					},
-					revert: false,
-					containment: qti_item_id,
-					cursor:"move"
-				});
+				//fill the gap
+				fillGap($(this), $(ui.draggable));
 				
 			},
 			hoverClass: 'active'
 		});	
+		
+		//if the values are defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for (i in values){
+					var value = values[i];
+					if(value.value){
+						value = value.value;
+					}
+					if(values[i]['count'] == 2){
+						var gap = value['0']['value'];
+						var choice = value['1']['value'];
+						fillGap($(qti_item_id+" .gap#"+gap), $(qti_item_id+" .qti_choice_list li#"+choice+" > div"));
+					}
+				}
+			}
+		}
 	};
 	
 	/**
@@ -754,7 +829,7 @@ var QTIWidget = function(options){
 				'border'	: li.css('border')
 			});
 			li.css('height', '25px');
-			$(this).wrapInner(myDiv)
+			$(this).wrapInner(myDiv);
 		});
 		$(qti_item_id + " .prompt").css('margin-bottom', (maxHeight - 20) + 'px');
 		
@@ -835,25 +910,24 @@ var QTIWidget = function(options){
 		}
 		
 		var maxAssociations = _this.opts['maxAssociations'];
+		var associations = new Array();
 		
-		/*
+		/**
 		 * Activate / deactivate nodes regarding:
 		 * 	- the maxAssociations options that should'nt be exceeded
 		 *  - the matchMax option of the row and the column
 		 *  - the matchGroup option defining who can be associated with who
+		 * @param {jQuery} jElement
 		 */
-		var associations = new Array();
-		$(qti_item_id + " .match_node").click(function(){
+		var selectNode = function(jElement){
 			
-			var elt =  $(this);	//prevent to many parsing
-			
-			if(elt.hasClass('tabActive')){
-				deactivateNode(elt);
+			if(jElement.hasClass('tabActive')){
+				deactivateNode(jElement);
 			}
 			else{
 				if(associations.length < maxAssociations || maxAssociations == 0){
 					
-					var nodeXY = getNodeXY(elt);
+					var nodeXY = getNodeXY(jElement);
 					
 					//check the matchGroup for the current association
 					var _rowMatchGroup = _this.opts["matchMaxes"][nodeXY.xnode.id]['matchGroup'];
@@ -901,10 +975,34 @@ var QTIWidget = function(options){
 						}
 					}
 					
-					elt.addClass('tabActive');
-					associations.push(elt.attr('id'));
+					jElement.addClass('tabActive');
+					associations.push(jElement.attr('id'));
 				}
 			}
+		};
+		
+		//match node on click
+		$(qti_item_id + " .match_node").click(function(){
+			selectNode($(this));
 		});
+		
+		
+		//if the values are defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for (i in values){
+					var value = values[i];
+					if(value.value){
+						value = value.value;
+					}
+					if(values[i]['count'] == 2){
+						var row = value['0']['value'];
+						var col = value['1']['value'];
+						selectNode($(qti_item_id + " .match_node.xnode_"+row+".ynode_"+col));
+					}
+				}
+			}
+		}
 	};
-}
+};
