@@ -3,7 +3,7 @@
 util = new Object();
 
 CL = function(arg1, arg2){
-	if(console && console.log){
+	if(typeof(console)!='undefined' || console!==null){
 		if(console.log){
 			if(arg1){
 				if(arg2){
@@ -17,8 +17,8 @@ CL = function(arg1, arg2){
 }
 
 CD = function(object, desc){
-	if(console){
-		if(console && console.log && console.dir){
+	if(typeof(console)!='undefined' || console!==null){
+		if(console.log && console.dir){
 			if(desc){
 				console.log(desc+':');
 			}
