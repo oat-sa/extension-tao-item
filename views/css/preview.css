@@ -1,4 +1,12 @@
 @CHARSET "UTF-8";
+/* Preview container */ 
+iframe#preview-container{
+	width:100%;
+	height:100%;
+	border:none;
+}
+
+/* Preview console */ 
 div#preview-console{
 	width:78%;
 	height:16px;
@@ -20,7 +28,6 @@ div#preview-console div.console-control{
 	font-style: italic;
 	color:#333;
 }
-
 div#preview-console div.console-control span.ui-icon{
 	position:absolute;
 	cursor:pointer;
@@ -44,8 +51,33 @@ div#preview-console ul{
 	margin-top:10px;
 	margin-bottom:10px;	
 }
-iframe#preview-container{
-	width:100%;
-	height:100%;
-	border:none;
-} 
+
+/* Preview options */ 
+div.container-title{
+	position:relative;
+}
+div.container-title span#preview-options-opener{
+	position:absolute;
+	right:20px;	
+	font-weight:normal;	
+}
+div.container-title span#preview-options-opener:hover{
+	color:#D00239;	
+}
+div.container-title span#preview-options-opener span.ui-icon{
+	float:right;
+}
+div#preview-options{
+	display:none;
+	position:absolute;
+	height:150px;
+	width: 300px;
+	right:10px;
+	z-index:1000;	
+}
+div#preview-options div.xhtml_form form select{
+	margin-left:50%;	
+}
+div#preview-options div.xhtml_form .form_desc{
+	width:50%;	
+}

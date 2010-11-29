@@ -22,8 +22,6 @@ class Items extends TaoModule{
 		parent::__construct();
 		
 		//the service is initialized by default
-		
-
 		$this->service = tao_models_classes_ServiceFactory::get('Items');
 		$this->defaultData();
 		$this->setData('modelDefined', false);
@@ -253,9 +251,27 @@ class Items extends TaoModule{
 			//the content works directly with the browser and need to be deployed
 			if(is_null($runtime)){
 				
+				$options = array(
+					'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
+					'classUri'	=> 	tao_helpers_Uri::encode($itemClass->uriResource),
+					'context'	=> true,
+					'match'		=> 'server'
+				);
+				
+				//create the options form
+				$formContainer = new taoItems_actions_form_PreviewOptions($options);
+				$myForm = $formContainer->getForm();
+				
+				if($myForm->isSubmited()){
+					if($myForm->isValid()){
+						$options = $myForm->getValues();
+					}
+				}
+				$this->setData('optionsForm', $myForm->render());
+				
 				$previewData = array(
 					'runtime'		=> false,
-					'contentUrl' 	=> _url('runner', 'PreviewApi', 'taoItems', array('uri' => urlencode($item->uriResource)))
+					'contentUrl' 	=> _url('runner', 'PreviewApi', 'taoItems', $options)
 				);
 			}
 			else{
