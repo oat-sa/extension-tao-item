@@ -197,7 +197,10 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'associate':
 				case 'order':
 				case 'inlinechoice':
-				case 'gapmatch':{
+				case 'gapmatch':
+				case 'hotspot':
+				case 'graphicorder':
+				case 'graphicassociate':{
 					$choices = array();
 					foreach($interaction->getChoices() as $choiceId => $choice){
 						//get the order from the interaction data:
@@ -219,7 +222,8 @@ class taoItems_models_classes_QtiAuthoringService
 					
 					break;
 				}
-				case 'match':{
+				case 'match':
+				case 'graphicgapmatch':{
 					//get groups and do the same for each group:
 					$groups = array();//1 or 2 maximum
 					// var_dump('match interaction:', $interaction);
@@ -318,6 +322,8 @@ class taoItems_models_classes_QtiAuthoringService
 			'textentry',
 			'extendedtext',
 			'hottext',
+			'hotspot',
+			'graphicorder',
 			'graphicassociate',
 			'graphicgapmatch'
 		);
@@ -363,9 +369,19 @@ class taoItems_models_classes_QtiAuthoringService
 					$interaction->setOption('shuffle', false);
 					break;
 				}
-				case 'hottext':{
+				case 'hottext':
+				case 'hotspot':{
 					//init mandatory attibute values:
 					$interaction->setOption('maxChoices', 1);
+					break;
+				}
+				case 'graphicassociate':{
+					$interaction->setOption('maxAssociations', 1);
+					break;
+				}
+				case 'graphicorder':
+				case 'graphicgapmatch':{
+					//no default options required
 					break;
 				}
 			}
@@ -416,6 +432,18 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'hottext':{
 					$choiceType = 'hottext';
+					break;
+				}
+				case 'hotspot':
+				case 'graphicorder':{
+					$choiceType = 'hotspotChoice';
+					break;
+				}
+				case 'graphicassociate':
+				case 'graphicgapmatch':{
+					//warning: what about the gapimg???
+					$choiceType = 'graphicAssociableChoice';
+					$matchMax = 0;
 					break;
 				}
 				default:{
@@ -1165,7 +1193,8 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = array();
 		switch(strtolower($interaction->getType())){
 			case 'choice':
-			case 'hottext':{
+			case 'hottext':
+			case 'hotspot':{
 				$choices = array(); 
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
@@ -1182,7 +1211,8 @@ class taoItems_models_classes_QtiAuthoringService
 				
 				break;
 			}
-			case 'order':{
+			case 'order':
+			case 'graphicorder':{
 				$choices = array(); 
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant to the user
@@ -1198,7 +1228,8 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				break;
 			}
-			case 'associate':{
+			case 'associate':
+			case 'graphicassociate':{
 				$choices = array(); 
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user

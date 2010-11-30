@@ -146,6 +146,22 @@ $(document).ready(function(){
 		hottext: {
 			label: 'hottext',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		hotspot: {
+			label: 'hotspot',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		graphicorder: {
+			label: 'graphic order',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		graphicassociate: {
+			label: 'graphic associate',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+		},
+		graphicgapmatch: {
+			label: 'graphic gap match',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
 		}
 	}
 

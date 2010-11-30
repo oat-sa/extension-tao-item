@@ -592,14 +592,16 @@ class taoItems_models_classes_QTI_Interaction
 		//get maximum possibility:
 		switch(strtolower($this->type)){
 			case 'choice':
-			case 'hottext':{
+			case 'hottext':
+			case 'hotspot':{
 				$max = intval($this->getOption('maxChoices'));
 				if($numeric) $returnValue = $max;
 				else $returnValue = ($max==1)?'single':'multiple';//default=1
 				break;
 			}
 			case 'associate':
-			case 'match':{
+			case 'match':
+			case 'graphicassociate':{
 				$max = intval($this->getOption('maxAssociations'));
 				if($numeric) $returnValue = $max;
 				else $returnValue = ($max==1)?'single':'multiple';//default=1
@@ -623,8 +625,15 @@ class taoItems_models_classes_QTI_Interaction
 				$max = count($this->getGroups());
 				if($numeric) $returnValue = $max;
 				else $returnValue = ($max>1)?'multiple':'single';
+				break;
 			}
-			case 'order':{
+			case 'graphicgapmatch':{
+				//strange that the standard always specifies "multiple":
+				$returnValue = 'multiple';
+				break;
+			}
+			case 'order':
+			case 'graphicorder':{
 				$returnValue = ($numeric)?0:'ordered';
 				break;
 			}
@@ -634,7 +643,7 @@ class taoItems_models_classes_QTI_Interaction
 				break;
 			}
 			default:{
-				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
+				throw new Exception("the current interaction type \"{$this->type}\" is not available yet");
 			}
 		}
         // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002983 end
@@ -658,16 +667,20 @@ class taoItems_models_classes_QTI_Interaction
 			case 'choice':
 			case 'order':
 			case 'inlinechoice':
-			case 'hottext':{
+			case 'hottext':
+			case 'hotspot':
+			case 'graphicorder':{
 				$returnValue = 'identifier';
 				break;
 			}
-			case 'associate':{
+			case 'associate':
+			case 'graphicassociate':{
 				$returnValue = 'pair';
 				break;
 			}
 			case 'match':
-			case 'gapmatch':{
+			case 'gapmatch':
+			case 'graphicgapmatch':{
 				$returnValue = 'directedPair';
 				break;
 			}
@@ -908,7 +921,19 @@ class taoItems_models_classes_QTI_Interaction
     public function setObject($objectData = array())
     {
         // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 begin
+		// $object = array('type'=>'image/jpg');
+		// if(isset($objectData['data'])){
+			// $object['data'] = $objectData['data'];
+		// }
+		// if(isset($objectData['width'])){
+			// $object['width'] = $objectData['width'];
+		// }
+		// if(isset($objectData['height'])){
+			// $object['height'] = $objectData['height'];
+		// }
+		
 		$this->object = $objectData;
+		
         // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 end
     }
 
