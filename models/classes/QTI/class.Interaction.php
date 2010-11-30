@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Interaction.php
+ * TAO - taoItems\models\classes\QTI\class.Interaction.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 22.11.2010, 12:46:38 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * Automatically generated on 30.11.2010, 10:15:21 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include taoItems_models_classes_QTI_Choice
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Choice.php');
 
@@ -35,28 +35,28 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Group
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Group.php');
 
 /**
  * include taoItems_models_classes_QTI_Item
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
 
 /**
  * include taoItems_models_classes_QTI_Response
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  */
 require_once('taoItems/models/classes/QTI/class.Response.php');
 
@@ -72,7 +72,7 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
  * Short description of class taoItems_models_classes_QTI_Interaction
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -116,13 +116,21 @@ class taoItems_models_classes_QTI_Interaction
      */
     protected $prompt = '';
 
+    /**
+     * Short description of attribute object
+     *
+     * @access protected
+     * @var array
+     */
+    protected $object = array();
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  string type
      * @param  string id
      * @param  array options
@@ -143,7 +151,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method __sleep
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return array
      */
     public function __sleep()
@@ -168,7 +176,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method __wakeup
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return mixed
      */
     public function __wakeup()
@@ -206,7 +214,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  array choices
      * @return mixed
      */
@@ -226,7 +234,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return array
      */
     public function getChoices()
@@ -246,7 +254,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getChoice
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  string serial
      * @return taoItems_models_classes_QTI_Choice
      */
@@ -271,7 +279,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method addChoice
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  Choice choice
      * @return mixed
      */
@@ -290,7 +298,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method removeChoice
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  Choice choice
      * @return boolean
      */
@@ -327,7 +335,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method shuffleChoices
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     protected function shuffleChoices()
@@ -398,7 +406,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getGroups
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return array
      */
     public function getGroups()
@@ -418,7 +426,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setGroups
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  array groups
      * @return mixed
      */
@@ -438,7 +446,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method addGroup
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  Group group
      * @return mixed
      */
@@ -455,7 +463,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method removeGroup
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  Group group
      * @param  boolean recursive
      * @return boolean
@@ -497,7 +505,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getResponse
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return taoItems_models_classes_QTI_Response
      */
     public function getResponse()
@@ -517,7 +525,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setResponse
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  Response response
      * @return mixed
      */
@@ -535,7 +543,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getPrompt
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function getPrompt()
@@ -555,7 +563,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setPrompt
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  string text
      * @return mixed
      */
@@ -572,7 +580,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getCardinality
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @param  boolean numeric
      * @return mixed
      */
@@ -638,7 +646,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getBaseType
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function getBaseType()
@@ -690,7 +698,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method isBlock
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return boolean
      */
     public function isBlock()
@@ -717,7 +725,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function toXHTML()
@@ -805,7 +813,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return string
      */
     public function toQTI()
@@ -865,7 +873,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -887,6 +895,39 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method setObject
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @param  array objectData
+     * @return mixed
+     */
+    public function setObject($objectData = array())
+    {
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 begin
+		$this->object = $objectData;
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 end
+    }
+
+    /**
+     * Short description of method getObject
+     *
+     * @access public
+     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @return array
+     */
+    public function getObject()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C1B begin
+		$returnValue = $this->object;
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C1B end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Interaction */
