@@ -105,6 +105,8 @@ function QTIResultCollector(options){
 				lastId = $(this).find('li:last').find('.filled_pair').attr('id').replace('pair_', '');
 			}
 			
+			
+			
 			// create the element following the matching format
 			var elt = null;
 			if (_this.opts.responseBaseType == "pair"){
@@ -112,6 +114,8 @@ function QTIResultCollector(options){
 			} else if (_this.opts.responseBaseType == "directedPair"){
 				elt = {0:firstId, 1:lastId};
 			}
+			
+			console.log(elt);
 			
 			if (_this.opts["maxChoices"] != 1){
 				result.value.push (elt);

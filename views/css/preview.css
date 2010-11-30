@@ -76,6 +76,7 @@ div#preview-options{
 	width: 300px;
 	right:10px;
 	z-index:1000;	
+	background-color: #fff;
 }
 div#preview-options div.xhtml_form form select{
 	margin-left:50%;	

@@ -1071,6 +1071,12 @@ class taoItems_models_classes_QtiAuthoringService
 			$responseProcessing = null;
 			switch(strtolower($type)){
 				case 'template':{
+					//add a default outcome to work with the reponseProcessing
+					if(count($item->getOutcomes()) == 0){
+						$item->setOutcomes(array(
+							new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'))
+						));
+					}
 					$responseProcessing = new taoItems_models_classes_QTI_response_TemplatesDriven();
 					break;
 				}
@@ -1144,6 +1150,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		//set the response to the interaction
 		$interaction->setResponse($response);
+		
 		
 		//set the default base type and cardinality to the response:
 		$returnValue = $this->updateInteractionResponseOptions($interaction);

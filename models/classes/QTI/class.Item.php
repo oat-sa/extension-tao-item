@@ -585,7 +585,7 @@ class taoItems_models_classes_QTI_Item
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
 
-		//render and clean the xml	        
+		//render and clean the xml	      
         $xmlElt = simplexml_load_string($tplRenderer->render());
 		$returnValue = $xmlElt->asXml();
         

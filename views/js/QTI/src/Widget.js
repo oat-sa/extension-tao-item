@@ -206,9 +206,17 @@ var QTIWidget = function(options){
 		//for an horizontal sortable list
 		$(qti_item_id).append("<div class='sizeEvaluator'></div>");
 		$(qti_item_id+" .sizeEvaluator").css("font-size",$(qti_item_id+" .qti_choice_list_horizontal li").css("font-size"));		
+		
 		$(qti_item_id+" .qti_choice_list_horizontal li").each(function(){
 			$(qti_item_id+" .sizeEvaluator").text($(this).text());			
 			var liSize=$(qti_item_id+" .sizeEvaluator").width();	
+			
+			var liChildren = $(this).children();
+			if(liChildren.length > 0){
+				$.each(liChildren, function(index, elt){
+					liSize += $(elt).width();
+				});
+			}
 			$(this).width(liSize+10);
 		});
 		$(qti_item_id+" .sizeEvaluator").remove();
@@ -238,7 +246,18 @@ var QTIWidget = function(options){
 		});
 				
 		// give a size to the words cloud to avoid graphical "jump" when items are dropped
-		$(qti_item_id+" .qti_associate_container .qti_choice_list").height(parseFloat($(".qti_associate_container").height()));
+		var listHeight = parseInt($(qti_item_id+" .qti_associate_container").height());
+		var liMaxHeight = 0;
+		$(qti_item_id+" .qti_choice_list li > div").each(function(){
+			var liHeight = parseInt($(this).height());
+			if(liHeight > liMaxHeight){
+				liMaxHeight = liHeight;
+			}
+			if(liHeight > listHeight){
+				listHeight = liHeight +10;
+			}
+		});
+		$(qti_item_id+" .qti_associate_container .qti_choice_list").height(listHeight + 10);
 		
 		// create the pair of box specified in the maxAssociations attribute	
 		if(_this.opts["maxAssociations"] > 0) {
@@ -263,6 +282,7 @@ var QTIWidget = function(options){
 		});
 		
 		$(qti_item_id+" .qti_association_pair").width(pairBoxWidth+90);
+		$(qti_item_id+" .qti_association_pair li").height(liMaxHeight);
 		$(qti_item_id+" .qti_association_pair").css({position:"relative",margin:"0 auto",top:"10px"});	
 		
 		//place target boxes
@@ -273,7 +293,7 @@ var QTIWidget = function(options){
 			$(qti_item_id+" .qti_link_associate:last").css("left",parseFloat($(this).find("li:first").offset().left)+parseFloat($(this).find("li:first").width())+14);
 		});
 		
-		$(qti_item_id).height( ($(qti_item_id+" .qti_link_associate:last").offset().top) - $(qti_item_id).offset().top); 
+		$(qti_item_id).height( ($(qti_item_id+" .qti_link_associate:last").offset().top - $(qti_item_id).offset().top ) + liMaxHeight); 
 		
 		//drag element from words cloud
 		$(qti_item_id+" .qti_associate_container .qti_choice_list li > div").draggable({
@@ -317,7 +337,7 @@ var QTIWidget = function(options){
 			var draggedId = jDragged.parents().attr('id');
 			
 			// add new element inside the box that received the cloud element
-			jDropped.html("<div id='pair_"+draggedId+"' class='filled_pair'>"+jDragged.text()+"</div>");
+			jDropped.html("<div id='pair_"+draggedId+"' class='filled_pair'>"+jDragged.html()+"</div>");
 			
 			// give a size to the dropped item to overlapp perfectly the pair box
 			$(qti_item_id+" #pair_"+draggedId).width($(qti_item_id+" .qti_association_pair li").width());

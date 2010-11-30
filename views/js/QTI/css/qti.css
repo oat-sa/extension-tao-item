@@ -27,7 +27,7 @@ div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 /* BD #009933 */ .qti_widget {border: 2px solid #009933; padding:20px; margin-bottom:10px; }
 .qti_widget ol, .qti_widget ul {list-style: none; }
 .qti_widget ol, .qti_widget ul, .qti_widget li {margin: 0; padding: 0; border: 0; font-size:100%; }
-.qti_widget .qti_choice_list li .ui-draggable:hover{color:#009933;}
+.qti_widget .qti_choice_list li .ui-draggable:hover{color:#009933;border-color:#009933;}
 
 /* choice interaction */
 .qti_simple_interaction ul,.qti_multi_interaction ul, .qti_order_interaction ul {margin:20px 20px 0 20px; }
@@ -46,9 +46,9 @@ div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
 .qti_choice_list_horizontal li{float:left;}
 
 /* Associate interaction */
-/* TXT #333 */.qti_associate_interaction .qti_choice_list li div {color:#333; font-weight:bold; 	}
+/* TXT #333 */.qti_associate_interaction .qti_choice_list li div {color:#333; font-weight:bold; border:1px solid #999; }
 .qti_associate_interaction .qti_choice_list li:hover, .qti_association_pair .filled_pair:hover{cursor:move; }
-/* BG #ccc */.qti_associate_interaction .qti_choice_list li div {float:left; margin:5px 0 5px 15px; line-height:20px; background:#ccc; padding:0 5px; }
+/* BG #ccc */.qti_associate_interaction .qti_choice_list li div {float:left; margin:5px 0 0 15px; line-height:20px; background:#ccc; padding:0 5px; }
 .qti_association_pair {	clear:both; position:relative; margin:20px 0; }
 /* BD #999 */.qti_association_pair li {border:2px solid #999; float:left; margin:10px 15px 10px 15px; padding:5px; height:15px; text-align:center; font-weight:bold; }
 /* BD #999 */.qti_link_associate {position:absolute; border-top:2px solid #999; width:30px; }

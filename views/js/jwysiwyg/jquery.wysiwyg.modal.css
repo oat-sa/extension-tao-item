@@ -34,6 +34,9 @@ form.wysiwyg input {
 	-moz-border-radius:0.4em;
 	-khtml-border-radius:0.4em;
 }
+form.wysiwyg input[type=text]{
+	width:30em;	
+}
 form.wysiwyg input:hover, form.wysiwyg input:focus {
 	border-color:#c5c5c5;
 	background:#f6f6f6;

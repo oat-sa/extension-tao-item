@@ -30,11 +30,11 @@ CD = function(object, desc){
 util.htmlEncode = function(encodedStr){
 	
 	//<br...> are replaced by <br... />
-	var encodedStr = encodedStr.replace(/<br[^>]*>/ig, '<br />');
-	 encodedStr = encodedStr.replace(/<hr[^>]*>/ig, '<hr />');
+	var encodedStr = encodedStr.replace(/<br([^>]*)?>/ig, '<br />');
+	 encodedStr = encodedStr.replace(/<hr([^>]*)?>/ig, '<hr />');
 	 
 	  //<img...> are replaced by <img... />
-	encodedStr = encodedStr.replace(/<img([^>]*)?>/ig,
+	encodedStr = encodedStr.replace(/<img([^>]*)?[^\/]>/ig,
 		function($0, $1){
 			return '<img ' + $1 + ' />';
 		});
