@@ -439,6 +439,9 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		$($(this)[0].contentWindow.document).keyup(function(){
 			setChanges($modifiedForm);
 		});
+		$(this).siblings('ul').click(function(){
+			setChanges($modifiedForm);
+		});
 	});
 	
 	return true;
