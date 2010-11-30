@@ -111,9 +111,19 @@ class PreviewApi extends Api {
 			//default deployment params
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
-				'preview_mode'			=> true,
 				'matching_server'		=> false
 			);
+			if($this->hasRequestParameter('match')){
+				if($this->getRequestParameter('match') == 'server'){
+					$deployParams['matching_server'] = true;
+				}
+			}
+			$useContext  = false;
+			if($this->hasRequestParameter('context')){
+				if($this->getRequestParameter('context')){
+					$useContext = true;
+				}
+			}
 				
 			$itemFolder = $this->itemService->getRuntimeFolder($item);
         	$itemPath = "{$itemFolder}/index.html";
@@ -148,8 +158,9 @@ class PreviewApi extends Api {
 					$initScriptElt->setAttribute('type', 'text/javascript');
 					
 					$initScriptParams = array(
-						'matching' => ($deployParams['matching_server']) ? 'server' : 'client',
-						'uri' => tao_helpers_Uri::encode($item->uriResource)
+						'context'	=> $useContext,
+						'matching' 	=> ($deployParams['matching_server']) ? 'server' : 'client',
+						'uri' 		=> tao_helpers_Uri::encode($item->uriResource)
 					);
 					
 					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
@@ -199,15 +210,8 @@ class PreviewApi extends Api {
 				
 			}
 			catch(DOMException $de){
-				if(DEBUG_MODE){
-					throw new Exception(__("An error occured while loading the item: ") . $de);
-				}
-				else{
-					error_log($de->getMessage);		//log the error in the log file and display a common message
-					throw new Exception(__("An error occured while loading the item"));
-				}
+				throw new Exception(__("An error occured while loading the item: ") . $de);
 			}
-        		
 		}
 	}
 	
@@ -270,6 +274,13 @@ class PreviewApi extends Api {
 				$this->setData('matchingParams', json_encode($matchingParams));
 				
 				//wfApi recovery context parameters
+				$disable_context = true;
+				if($this->hasRequestParameter('context')){
+					if($this->getRequestParameter('context')){
+						$disable_context = false;
+					}
+				}
+				$this->setData('disableContext', $disable_context);
 				$this->setData('contextSourceParams', json_encode(array(
 						'url' 		=> _url('retrieveContext', 'PreviewApi', 'taoItems'), 
 						'params'	=> array('token' => self::AUTH_TOKEN)

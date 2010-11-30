@@ -74,6 +74,9 @@ $(function (){
 	<?endif?>
 	matchingInit(matchingParam);
 	
-	initRecoveryContext(<?=get_data('contextSourceParams')?>, <?=get_data('contextDestinationParams')?>);
-	
+	<?if(get_data('disableContext') === true):?>
+		recoveryCtx.enabled = false;
+	<?else:?>
+		initRecoveryContext(<?=get_data('contextSourceParams')?>, <?=get_data('contextDestinationParams')?>);
+	<?endif?>
 });

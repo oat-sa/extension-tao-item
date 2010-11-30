@@ -253,10 +253,14 @@ class Items extends TaoModule{
 				
 				$options = array(
 					'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
-					'classUri'	=> 	tao_helpers_Uri::encode($itemClass->uriResource),
-					'context'	=> true,
-					'match'		=> 'server'
+					'classUri'	=> 	tao_helpers_Uri::encode($clazz->uriResource),
+					'context'	=> false,
+					'match'		=> 'client'
 				);
+				if(Session::hasAttribute('previewOpts')){
+					$options = array_merge($options, Session::getAttribute('previewOpts'));
+				}
+				
 				
 				//create the options form
 				$formContainer = new taoItems_actions_form_PreviewOptions($options);
@@ -264,7 +268,9 @@ class Items extends TaoModule{
 				
 				if($myForm->isSubmited()){
 					if($myForm->isValid()){
-						$options = $myForm->getValues();
+						$previewOpts = $myForm->getValues();
+						$options = array_merge($options, $previewOpts);
+						Session::setAttribute('previewOpts', $previewOpts);
 					}
 				}
 				$this->setData('optionsForm', $myForm->render());

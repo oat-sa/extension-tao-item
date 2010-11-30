@@ -65,7 +65,9 @@ div.container-title span#preview-options-opener:hover{
 	color:#D00239;	
 }
 div.container-title span#preview-options-opener span.ui-icon{
-	float:right;
+	position:absolute;
+	right:-20px;
+	top:0px;
 }
 div#preview-options{
 	display:none;

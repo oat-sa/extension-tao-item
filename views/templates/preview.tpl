@@ -23,6 +23,7 @@
 			<div id='preview-options'>
 				<?=get_data('optionsForm')?>
 			</div>
+			
 			<iframe id='preview-container' name="preview-container" src="<?=get_data('contentUrl')?>" ></iframe>
 			
 			<div id='preview-console'>
