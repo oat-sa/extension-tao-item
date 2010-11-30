@@ -64,12 +64,8 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 				}else{
 					$matchGroupElt->setValue((string)$matchGroups);
 				}
-			}else{
-				//default empty values indicates to the authoring controller that there is no restriction to the associated choices
-				foreach($matchGroupOption as $choiceIdentifierOrSerial=>$choiceIdentifier){
-					$matchGroupElt->setValue($choiceIdentifierOrSerial);
-				}
 			}
+			
 			$this->form->addElement($matchGroupElt);
 		}
 		
