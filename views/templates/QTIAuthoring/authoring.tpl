@@ -4,8 +4,8 @@
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>json2.js"></script>
-<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>/graphic/raphael.js"></script>
-<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>/graphic/qtiShapeEditClass.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>graphic/raphael.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>graphic/qtiShapeEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="<?=get_data('simplemodal_path')?>jquery.simplemodal.js"></script>
 

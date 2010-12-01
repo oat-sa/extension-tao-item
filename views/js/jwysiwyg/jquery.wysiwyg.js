@@ -12,7 +12,7 @@
  */
 
 /*jslint browser: true, forin: true */
-// alert('loaded');
+//alert('loaded');
 (function ($)
 {
         /**
@@ -305,6 +305,9 @@
 														var description = $('input[name="description"]', dialog.data).val();
 														var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
 														self.insertHtml(img);
+														
+														self.saveContent();//line added to update the original textarea
+														
 														$.modal.close();
 												});
 												$('input:reset', dialog.data).click(function(e)
@@ -336,6 +339,9 @@
                                                        var description = $('input[name="description"]', dialog).val();
                                                        var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
                                                        self.insertHtml(img);
+													   
+													   self.saveContent();//line added to update the original textarea
+
                                                        $(dialog).dialog("close");
                                                  });
                                                  $('input:reset', $(this)).click(function(e)
@@ -346,7 +352,6 @@
                                             },
                                             close: function(ev, ui){
         		                                  $(this).dialog("destroy");
-
                                             }
                                         });
                                     }

@@ -436,12 +436,13 @@ interactionClass.prototype.setFormChangeListener = function(target){
 	
 	$("form").find('iframe').each(function(){
 		var $modifiedForm = $(this).parents('form');
-		$($(this)[0].contentWindow.document).keyup(function(){
+		var setChangesfunction = function(){
 			setChanges($modifiedForm);
-		});
-		$(this).siblings('ul').click(function(){
-			setChanges($modifiedForm);
-		});
+		};
+		
+		$($(this)[0].contentWindow.document).click(setChangesfunction);
+		$(this).siblings('ul').click(setChangesfunction);
+		
 	});
 	
 	return true;
@@ -710,6 +711,10 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	  addExtendedTextInteraction: {visible:false},
 	  addHotTextInteraction: {visible:false},
 	  addGapMatchInteraction: {visible:false},
+	  addHotspotInteraction: {visible:false},
+	  addGraphicOrderInteraction: {visible:false},
+	  addGraphicAssociateInteraction: {visible:false},
+	  addGraphicGapMatchInteraction: {visible:false},
 	  createHotText: {visible:false},
 	  createGap: {visible:false},
 	  saveItemData: {visible:false},
