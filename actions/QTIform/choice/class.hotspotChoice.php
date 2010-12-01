@@ -37,6 +37,7 @@ class taoItems_actions_QTIform_choice_HotspotChoice
 		
 		$shapeElt = tao_helpers_form_FormFactory::getElement('shape', 'Combobox');
 		$shapeElt->setDescription(__('Shape'));
+		$shapeElt->setAttribute('class', 'qti-shape');
 		$shapeElt->setOptions(array(
 			'default' => __('default'),
 			'circle' => __('circle'),

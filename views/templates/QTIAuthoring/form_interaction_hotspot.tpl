@@ -8,6 +8,9 @@ $(document).ready(function(){
 		myShapeEditor = new qtiShapesEditClass('formInteraction_object_container', backgroundImagePath);
 		if(myShapeEditor){
 			//map choices to the shape editor:
+			myInteraction.shapeEditor = myShapeEditor;
+			
+			
 			
 		}
 	}

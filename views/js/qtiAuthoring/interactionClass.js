@@ -272,6 +272,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				
 				qtiEdit.initFormElements($formContainer);
 				interaction.setFormChangeListener();
+				interaction.setShapeEditListener();
 				
 				//reload the grid:
 				new responseClass(interaction.responseGrid, interaction);
@@ -280,6 +281,36 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	}
 	
 }
+
+interactionClass.prototype.setShapeEditListener = function(){
+
+	if(this.shapeEditor){
+		//for each choice form, find the shape element:
+		for(var i in this.orderedChoices){
+		
+			var choiceSerial = this.orderedChoices[i];
+			var interaction = this;
+			
+			$qtiShapeCombobox = $('#ChoiceForm_'+choiceSerial).find('.qti-shape').bind('change', {choiceSerial:choiceSerial},function(e){
+				var shape = $(this).val();
+				//delete old shape?
+				if(confirm(__('Changing shape type will delete the old shape, are you sure?'))){
+					interaction.shapeEditor.removeShapeObj(e.data.choiceSerial);
+					interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
+				}
+			});
+			
+			$imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
+			$imageLink.css('cursor', 'pointer');
+			$imageLink.css('margin', '2px');
+			$imageLink.bind('click', {choiceSerial:choiceSerial}, function(e){
+				interaction.shapeEditor.startDrawing(e.data.choiceSerial, $qtiShapeCombobox.val());
+			});
+		}
+	}
+	
+}
+
 
 interactionClass.prototype.addChoice = function($appendTo, containerClass, groupSerial){
 	
