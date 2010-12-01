@@ -678,6 +678,8 @@ var QTIWidget = function(options){
 			cursor:"move"
 		});
 		
+		$(qti_item_id+" .gap").html('&nbsp;');
+		
 		/**
 		 * Fill a gap with an element of the word's cloud
 		 * @param {jQuery} jDropped
@@ -733,7 +735,7 @@ var QTIWidget = function(options){
 			jElement.parent().css({
 				"padding-left": maxBoxSize, 
 				"padding-right": maxBoxSize
-			}).removeClass('dropped_gap');
+			}).removeClass('dropped_gap').html('&nbsp;');
 			jElement.remove();
 			if(_current >= _matchMax){
 				$("#"+filledId+" div").show();

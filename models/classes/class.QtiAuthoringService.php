@@ -78,7 +78,8 @@ class taoItems_models_classes_QtiAuthoringService
      * @return taoItems_models_classes_QTI_Item
      */
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
-		$itemData = $item->getData();
+		$itemData = $this->getFilteredData($item);
+		
 		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
 		$itemData = preg_replace('/^{/', '&nbsp;{', $itemData);
 		$itemData = preg_replace('/}$/', '}&nbsp;', $itemData);
@@ -91,7 +92,7 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 		
 		//strip the starting and ending <div> tag if exists:
-		$pattern = '/^<div>(.*)<\/div>$/i';
+		$pattern = '/^<div>(.*)<\/div>$/im';
 		$itemData = preg_replace($pattern, '\1', trim($itemData));
 		
 		return $itemData;
@@ -124,7 +125,7 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
-		$data = $interaction->getdata();
+		$data = $this->getFilteredData($interaction);
 		
 		//depending on the type of interaciton, strip the choice identifier or transfor it to editable elt
 		$interactionType = strtolower($interaction->getType());
@@ -159,7 +160,7 @@ class taoItems_models_classes_QtiAuthoringService
 		// echo $data;
 		// $data = ' <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab  illo inventore    <input type="button" id="choice_4cd9547423f2d792854656" class="qti_choice_link" value="hottext"/>et quasi architecto beatae vitae dicta sunt  explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magniiii</p>  ';
 		// var_dump($data, urlencode($data), urldecode($data), htmlentities($data), html_entity_decode($data), preg_replace('/^<(p|div)>(.*)<\/\1>$/i', '\2', trim($data)));exit;
-		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/i', '\2', trim(html_entity_decode($data)));
+		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', trim(html_entity_decode($data)));
 		
 		return $data;
 	}
@@ -1778,6 +1779,35 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		return $returnValue;
 	}
+	
+	/**
+	 * Load and filter the data attribute of a QTI instance.
+	 * The relative path to images are replace by the right url.
+	 *  
+	 * @param taoItems_models_classes_QTI_Data $qtiInstance
+	 * @return string the data
+	 */
+	protected function getFilteredData(taoItems_models_classes_QTI_Data $qtiInstance){
+		
+		$returnValue = '';
+		if(!is_null($qtiInstance)){
+			$data =  $qtiInstance->getData();
+			$matches = array();
+			if(preg_match_all("/<(img|object)(.*)?((src|data)\S?=\S?['\"]+([^'\"]*)['\"]+)[^>]*>/", $data, $matches) > 0){
+				if(isset($matches[5])){
+					foreach($matches[5] as $i => $src){
+						if(!preg_match("/^http/", trim($src))){
+							$url =  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode(trim($src))));
+							$data = str_replace($matches[3][$i], "{$matches[4][$i]}='{$url}'", $data);
+						}
+					}
+				}
+			}
+			$returnValue = $data;
+		}
+		return $returnValue;
+	}
+	
 } /* end of class taoItems_models_classes_QtiAuthoringService */
 
 ?>

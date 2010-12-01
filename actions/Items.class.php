@@ -499,6 +499,46 @@ class Items extends TaoModule{
 	}
 	
 	/**
+	 * Load an item external media
+	 * It prevents to get it direclty in the data folder that access is denied
+	 *  
+	 */
+	public function getMediaResource(){
+		
+		if($this->hasRequestParameter('path')){
+		
+			$item = null;
+			if($this->hasRequestParameter('uri') && $this->hasRequestParameter('classUri')){
+				$item = $this->getCurrentInstance();
+			}
+			else if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
+				$classUri = tao_helpers_Uri::decode(Session::getAttribute('classUri'));
+				if($this->service->isItemClass(new core_kernel_classes_Class($classUri))){
+					$item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));
+				}
+			}
+			if(!is_null($item)){
+				
+				$path = $this->getRequestParameter('path');
+				if(!tao_helpers_File::securityCheck($path)){
+					throw new Exception('Unauthorized path '.$path);
+				}
+				
+				$folder 	= $this->service->getItemFolder($item);
+				$resource 	= tao_helpers_File::concat(array($folder, $path));
+				if(file_exists($resource)){
+					$mimeType = tao_helpers_File::getMimeType($resource);
+					//allow only images, video and flash
+					if(preg_match("/^(image|video|application\/x-shockwave-flash)/", $mimeType)){
+						$this->setContentHeader($mimeType);
+						print file_get_contents($resource);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Authoring File mappgin service:
 	 * Send into the request the parameters id and/or uri or nothing.
 	 * Must be called via Ajax. 

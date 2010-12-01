@@ -609,7 +609,7 @@ class taoItems_models_classes_ItemsService
 	        		//for the QTI Item
 	        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
 	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
-	        	//	print_r($qtiItem);exit;
+	        	
 	        		if(!is_null($qtiItem)) {
 	        			
 	        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
@@ -624,7 +624,7 @@ class taoItems_models_classes_ItemsService
         		
         		//replace relative paths to resources by absolute uris to help the compilator
 				$matches = array();
-        		if(preg_match_all("/(href|src)\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
+        		if(preg_match_all("/(href|src|data)\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
 					if(isset($matches[2])){
 						
 						foreach($matches[2] as $relUri){
@@ -858,6 +858,66 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-3d6b7ea7:12c3643ac5e:-8000:0000000000002BB9 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method cloneInstance
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource instance
+     * @param  Class clazz
+     * @return core_kernel_classes_Resource
+     */
+    public function cloneInstance( core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz = null)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--721a46fd:12ca1f35467:-8000:000000000000290E begin
+        
+   		$returnValue = $this->createInstance($clazz);
+		if(!is_null($returnValue)){
+			
+			$itemFolder = $this->getItemFolder($instance);
+			$fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
+			
+			foreach($clazz->getProperties(true) as $property){
+				$range = $property->getRange();
+				if($range->uriResource == CLASS_GENERIS_FILE){
+					foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+						if(core_kernel_classes_File::isFile($propertyValue)){
+							$file = new core_kernel_classes_File($propertyValue->uriResource);
+							$relPath = stristr($file->getAbsolutePath(), $itemFolder);
+							if($relPath !== false){
+								$newPath = tao_helpers_File::concat($this->getItemFolder($returnValue), $relPath);
+								if(tao_helpers_File::copy($file->getAbsolutePath(), $newPath, true)){
+									$newFile = core_kernel_classes_File::create($file->getOnePropertyValue($fileNameProp), $newPath);
+									$returnValue->setPropertyValue($property, $newFile->uriResource);
+								}
+							}
+						}
+					}
+				}
+				else{
+					foreach($instance->getPropertyValues($property) as $propertyValue){
+						$returnValue->setPropertyValue($property, $propertyValue);
+					}
+				}
+			}
+			$label = $instance->getLabel();
+			$cloneLabel = "$label bis";
+			if(preg_match("/bis/", $label)){
+				$cloneNumber = (int)preg_replace("/^(.?)*bis/", "", $label);
+				$cloneNumber++;
+				$cloneLabel = preg_replace("/bis(.?)*$/", "", $label)." bis $cloneNumber" ;
+			}
+			
+			$returnValue->setLabel($cloneLabel);
+		}
+        
+        // section 127-0-1-1--721a46fd:12ca1f35467:-8000:000000000000290E end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */

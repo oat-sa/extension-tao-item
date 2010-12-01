@@ -24,7 +24,7 @@
 				<?=get_data('optionsForm')?>
 			</div>
 			
-			<iframe id='preview-container' name="preview-container" src="<?=get_data('contentUrl')?>" ></iframe>
+			<iframe id='preview-container' name="preview-container" src="<?=get_data('contentUrl')?>" />
 			
 			<div id='preview-console'>
 				<div class="console-control">
@@ -49,6 +49,11 @@
 			$(this).find('span.ui-icon').switchClass(fromClass,toClass);
 			$('#preview-options').toggle();
 		});
+
+		//prevent wrong iframe loading from chrome
+		if($.browser.webkit){
+			$("#preview-container").attr('src', $("#preview-container").attr('src'));
+		}
 	});
 	</script>
 

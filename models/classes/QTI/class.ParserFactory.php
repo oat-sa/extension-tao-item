@@ -351,7 +351,13 @@ class taoItems_models_classes_QTI_ParserFactory
        	$myChoice->setType($data->getName());
         
        	if(count($data->children()) > 0){
-       		$myChoice->setData((string)$data . $data->children()->asXML());
+       		//get the node xml content
+       		$pattern = array("/^<{$data->getName()}([^>]*)?>/i", "/<\/{$data->getName()}([^>]*)?>$/i");
+       		$content = preg_replace($pattern, "", trim($data->asXML()));
+       		if(empty($content)){
+       			$content = (string)$data;
+       		}
+       		$myChoice->setData($content);
        	}
        	else{
        		$myChoice->setData((string)$data);
