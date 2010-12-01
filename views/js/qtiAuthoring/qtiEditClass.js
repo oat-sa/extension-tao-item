@@ -349,7 +349,7 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 		   dataType: 'html',
 		   success: function(form){
 				$(self.interactionFormContent).html(form);
-				qtiEdit.mapHtmlEditor($(self.interactionFormContent));
+				qtiEdit.initFormElements($(self.interactionFormContent));
 				
 				position = $(self.interactionFormContent).position();
 				window.scrollTo(0, parseInt(position.top));
@@ -357,6 +357,25 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 		});
 	}
 	
+}
+
+qtiEdit.initFormElements = function($container){
+	qtiEdit.mapFileManagerField($container);
+	qtiEdit.mapHtmlEditor($container);
+}
+
+qtiEdit.mapFileManagerField = function($container){
+	$container.find('.qti-file-img').each(function(){
+		if($.fn.fmbind){
+			//dynamically change the style:
+			$(this).width('50%');
+			
+			//add tao file manager
+			$(this).fmbind({type: 'image'}, function(elt, value){
+				$(elt).val(value);
+			});
+		}
+	});
 }
 
 qtiEdit.mapHtmlEditor = function($container){

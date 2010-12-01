@@ -910,7 +910,10 @@ class taoItems_models_classes_QtiAuthoringService
 			case 'choice':
 			case 'order':
 			case 'associate':
-			case 'inlinechoice':{
+			case 'inlinechoice':
+			case 'hotspot':
+			case 'graphicorder':
+			case 'graphicassociate':{
 				if(!empty($choiceOrder)){
 					for($i=0; $i<count($choiceOrder); $i++){
 						$data .= '{'.$choiceOrder[$i].'}';

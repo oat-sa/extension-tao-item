@@ -9,8 +9,9 @@
 				<?=get_data('formInteraction')?>
 			</div>
 			
-			<div id="formChoices_container" class="ext-home-container">
-			</div>
+			<div id="formInteraction_object_container" />
+			
+			<div id="formChoices_container" class="ext-home-container"/>
 			
 		</div>
 	

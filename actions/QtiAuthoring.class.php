@@ -576,6 +576,12 @@ class QtiAuthoring extends CommonModule {
 				}
 				break;
 			}
+			//graphic interactions:
+			case 'hotspot':{
+				$object = $interaction->getObject();
+				$this->setData('backgroundImagePath', isset($object['data'])?$object['data']:'');
+				break;
+			}
 			default:{
 				//get choice forms:
 				foreach($choices as $order=>$choice){
@@ -655,7 +661,12 @@ class QtiAuthoring extends CommonModule {
 		$interaction = $this->getCurrentInteraction();
 		
 		$myForm = $interaction->toForm();
+		
 		$saved = false;
+		$reloadResponse = false;
+		$newGraphicObject = array();
+		$errorMessage = '';
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				// var_dump($myForm->getValues());
@@ -669,19 +680,78 @@ class QtiAuthoring extends CommonModule {
 					unset($values['interactionIdentifier']);
 				}
 				
+				//for block interactions
 				if(isset($values['prompt'])){
 					$this->service->setPrompt($interaction, $this->getPostedData('prompt'));
 					unset($values['prompt']);
 				}
 				
+				//for graphic interactions:
+				if(isset($values['object_data'])){
+					$oldObject = $interaction->getObject();
+					
+					//get mime type
+					$imageFilePath = trim($values['object_data']);
+					$mimeType = tao_helpers_File::getMimeType($imageFilePath);
+					// var_dump($mimeType);exit;
+					
+					$validImageType = array(
+						'image/png',
+						'image/jpeg',
+						'image/bmp'
+					);
+					
+					if(in_array($mimeType, $validImageType)){
+					
+						// $newObject = array(
+							// 'data' => trim($values['object_data']),
+							// 'width' => isset($values['object_width'])? intval($values['object_width']):0,
+							// 'height' => isset($values['object_height'])? intval($values['object_height']):0
+						// );
+						
+						$newObject['data'] = $imageFilePath;
+						if(isset($oldObject['data'])){
+							//check if the values have been updated:
+							if($oldObject['data'] != $newObject['data']){
+								$newGraphicObject['data'] = $newObject['data'];
+							}
+						}
+						
+						if(intval($values['object_width'])){
+							$newObject['width'] = intval($values['object_width']);
+							//ok, valid:
+							if(isset($oldObject['width'])){
+								if($oldObject['width'] != $newObject['width']){
+									$newGraphicObject['width'] = $newObject['width'];
+								}
+							}
+						}
+						
+						if(intval($values['object_height'])){
+							$newObject['height'] = intval($values['object_height']);
+							if(isset($oldObject['height'])){
+								if($oldObject['height'] != $newObject['height']){
+									$newGraphicObject['height'] = $newObject['height'];
+								}
+							}
+						}
+						
+						$interaction->setObject($newObject);
+					}else{
+						$errorMessage = 'invalid mime type';
+					}
+					
+				}
+				
+				//hottext and gapmatch interaction:
 				$data = '';
-				if($this->hasRequestParameter('data')){
+				if($this->hasRequestParameter('data')){//the content "data" is not included in the interacion form but with the wysiwyg editor so need to get it this way
 					$data = urldecode($this->getRequestParameter('data'));
 				}
 				
 				unset($values['interactionSerial']);
 				
-				$reloadResponse = false;
+				
 				foreach($values as $key=>$value){
 					if(preg_match('/^max/', $key)){
 						if($interaction->getOption($key) != $value){
@@ -728,7 +798,9 @@ class QtiAuthoring extends CommonModule {
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'reloadResponse' => $reloadResponse
+			'reloadResponse' => $reloadResponse,
+			'newGraphicObject' => $newGraphicObject,
+			'errorMessage' => $errorMessage
 		));
 		
 	}

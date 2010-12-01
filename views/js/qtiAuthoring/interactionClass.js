@@ -270,7 +270,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				$formContainer = $(containerSelector);
 				$formContainer.html(form);
 				
-				qtiEdit.mapHtmlEditor($formContainer);
+				qtiEdit.initFormElements($formContainer);
 				interaction.setFormChangeListener();
 				
 				//reload the grid:
@@ -320,7 +320,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				interaction.initToggleChoiceOptions();
 				$newFormElt.show();
 				
-				qtiEdit.mapHtmlEditor($newFormElt);
+				qtiEdit.initFormElements($newFormElt);
 				interaction.setFormChangeListener('#'+r.choiceSerial);
 				
 				
