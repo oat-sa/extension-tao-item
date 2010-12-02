@@ -32,7 +32,7 @@ class taoItems_actions_QTIform_choice_HotspotChoice
 		//add hotspot label:
 		$labelElt = tao_helpers_form_FormFactory::getElement('hotspotLabel', 'Textbox');
 		$labelElt->setDescription(__('label'));
-		$labelElt->setValue($this->choice->getOption('label'));
+		$labelElt->setValue($this->choice->getOption('hotspotLabel'));
 		$this->form->addElement($labelElt);
 		
 		$shapeElt = tao_helpers_form_FormFactory::getElement('shape', 'Combobox');

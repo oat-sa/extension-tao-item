@@ -83,132 +83,167 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 
 interactionClass.prototype.saveInteraction = function($myForm){
 	//TODO: check unicity of the id:
+	if($myForm.length){
 	
-	var interactionProperties = $myForm.serializeObject();
+		var interactionProperties = $myForm.serializeObject();
 	
-	//filter the prompt html area field:
-	if(interactionProperties.prompt){
-		interactionProperties.prompt = util.htmlEncode(interactionProperties.prompt);
-	}
-	
-	//serialize the order:
-	var orderedChoices = '';
-	if(this.orderedChoices[0]){
-		interactionProperties.choiceOrder = [];
-		for(var i=0;i<this.orderedChoices.length;i++){
-			// orderedChoices += '&choiceOrder['+i+']='+this.orderedChoices[i];
-			interactionProperties.choiceOrder[i] = this.orderedChoices[i];
+		//filter the prompt html area field:
+		if(interactionProperties.prompt){
+			interactionProperties.prompt = util.htmlEncode(interactionProperties.prompt);
 		}
-	}else{
-		//for match and gapmatch interaction:
-		var i = 0;
-		for(var groupSerial in this.orderedChoices){
-			interactionProperties['choiceOrder'+i] = [];
-			interactionProperties['choiceOrder'+i]['groupSerial'] = groupSerial;
-			// orderedChoices += '&choiceOrder'+i+'[groupSerial]='+groupSerial;
-			for(var j=0; j<this.orderedChoices[groupSerial].length; j++){
-				interactionProperties['choiceOrder'+i][j] = this.orderedChoices[groupSerial][j];
-				// orderedChoices += '&choiceOrder'+i+'['+j+']='+this.orderedChoices[groupSerial][j];
+		
+		//serialize the order:
+		var orderedChoices = '';
+		if(this.orderedChoices[0]){
+			interactionProperties.choiceOrder = [];
+			for(var i=0;i<this.orderedChoices.length;i++){
+				// orderedChoices += '&choiceOrder['+i+']='+this.orderedChoices[i];
+				interactionProperties.choiceOrder[i] = this.orderedChoices[i];
 			}
-			i++;
-		}
-	}
-	
-	//check if it is required to save data (hotText and gapMatch interactions):
-	if(this.interactionDataContainer){
-		if($(this.interactionDataContainer).length && this.interactionEditor.length){
-			//there is a wysiwyg editor that contains the interaciton data:
-			interactionProperties.data = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
-		}
-	}
-	
-	var interaction = this;
-	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveInteraction",
-	   data: interactionProperties,
-	   dataType: 'json',
-	   success: function(r){
-			if(r.saved){
-				createInfoMessage(__('Modification on interaction applied'));
-				interaction.modifiedInteraction = false;
-				
-				if(r.reloadResponse){
-					new responseClass(interaction.responseGrid, interaction);
+		}else{
+			//for match and gapmatch interaction:
+			var i = 0;
+			for(var groupSerial in this.orderedChoices){
+				interactionProperties['choiceOrder'+i] = [];
+				interactionProperties['choiceOrder'+i]['groupSerial'] = groupSerial;
+				// orderedChoices += '&choiceOrder'+i+'[groupSerial]='+groupSerial;
+				for(var j=0; j<this.orderedChoices[groupSerial].length; j++){
+					interactionProperties['choiceOrder'+i][j] = this.orderedChoices[groupSerial][j];
+					// orderedChoices += '&choiceOrder'+i+'['+j+']='+this.orderedChoices[groupSerial][j];
 				}
+				i++;
 			}
-	   }
-	});
+		}
+		
+		//check if it is required to save data (hotText and gapMatch interactions):
+		if(this.interactionDataContainer){
+			if($(this.interactionDataContainer).length && this.interactionEditor.length){
+				//there is a wysiwyg editor that contains the interaciton data:
+				interactionProperties.data = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
+			}
+		}
+		
+		var interaction = this;
+		
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/saveInteraction",
+		   data: interactionProperties,
+		   dataType: 'json',
+		   success: function(r){
+				if(r.saved){
+					createInfoMessage(__('Modification on interaction applied'));
+					interaction.modifiedInteraction = false;
+					
+					if(r.reloadResponse){
+						new responseClass(interaction.responseGrid, interaction);
+					}
+					
+					if(r.newGraphicObject){
+						if(r.newGraphicObject.data){
+							interaction.shapeEditor.setBackground(r.newGraphicObject.data);
+						}
+					}
+				}
+		   }
+		});
+	}
+	
 }
 
-interactionClass.prototype.saveChoice = function($choiceForm){
+interactionClass.prototype.saveChoice = function($choiceFormContainer){
 	
-	var choiceProperties = $choiceForm.serializeObject();
-	choiceProperties.data = util.htmlEncode(choiceProperties.data);
+	$choiceForm = null;
 	
-	var interaction = this;
+	if($choiceFormContainer.length){
+		
+		if($choiceFormContainer[0].nodeName.toLowerCase() == 'form'){
+			$choiceForm = $choiceFormContainer;
+		}else{
+			$choiceForm = $choiceFormContainer.find('form');
+		}
+	}
 	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveChoice",
-	   data: choiceProperties,
-	   dataType: 'json',
-	   success: function(r){
-			
-			if(!r.saved){
-				createErrorMessage(__('The choice cannot be saved'));
-			}else{
-				createInfoMessage(__('Modification on choice applied'));
-				delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
-				
-				//only when the identifier has changed:
-				if(r.reload){
-					interaction.loadChoicesForm();
-				}else if(r.identifierUpdated){
-					new responseClass(interaction.responseGrid, interaction);
-				}
-				
+	if($choiceForm){
+		if($choiceForm.length){
+	
+			var choiceProperties = $choiceForm.serializeObject();
+			if(choiceProperties.data){
+				choiceProperties.data = util.htmlEncode(choiceProperties.data);
 			}
-	   }
-	});
+			
+			var interaction = this;
+			
+			$.ajax({
+			   type: "POST",
+			   url: "/taoItems/QtiAuthoring/saveChoice",
+			   data: choiceProperties,
+			   dataType: 'json',
+			   success: function(r){
+					
+					if(!r.saved){
+						createErrorMessage(__('The choice cannot be saved'));
+					}else{
+						createInfoMessage(__('Modification on choice applied'));
+						delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
+						
+						//only when the identifier has changed:
+						if(r.reload){
+							interaction.loadChoicesForm();
+						}else if(r.identifierUpdated){
+							new responseClass(interaction.responseGrid, interaction);
+						}
+						
+					}
+				}
+			});
+			
+		}
+	}
+	
+	
 }
 
 interactionClass.prototype.saveGroup = function($groupForm){
 
-	var interaction = this;
-	//save group order?
+	if($groupForm){
 	
-	var choiceOrder = ''
-	var i = 0;
-	for(var order in this.orderedChoices){
-		choiceOrder += '&choiceOrder['+i+']='+this.orderedChoices[order];
-		i++;
+		var interaction = this;
+		//save group order?
+		
+		var choiceOrder = ''
+		var i = 0;
+		for(var order in this.orderedChoices){
+			choiceOrder += '&choiceOrder['+i+']='+this.orderedChoices[order];
+			i++;
+		}
+		
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/saveGroup",
+		   data: $groupForm.serialize()+choiceOrder,
+		   dataType: 'json',
+		   success: function(r){
+				
+				if(!r.saved){
+					createErrorMessage(__('The choice cannot be saved'));
+				}else{
+					createInfoMessage(__('Modification on choice applied'));
+					delete interaction.modifiedGroups['GroupForm_'+r.choiceSerial];
+					
+					//only when the identifier has changed:
+					if(r.reload){
+						interaction.loadChoicesForm();
+					}else if(r.identifierUpdated){
+						new responseClass(interaction.responseGrid, interaction);
+					}
+					
+				}
+		   }
+		});
+		
 	}
 	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveGroup",
-	   data: $groupForm.serialize()+choiceOrder,
-	   dataType: 'json',
-	   success: function(r){
-			
-			if(!r.saved){
-				createErrorMessage(__('The choice cannot be saved'));
-			}else{
-				createInfoMessage(__('Modification on choice applied'));
-				delete interaction.modifiedGroups['GroupForm_'+r.choiceSerial];
-				
-				//only when the identifier has changed:
-				if(r.reload){
-					interaction.loadChoicesForm();
-				}else if(r.identifierUpdated){
-					new responseClass(interaction.responseGrid, interaction);
-				}
-				
-			}
-	   }
-	});
 }
 
 interactionClass.prototype.loadResponseMappingForm = function(){
@@ -285,13 +320,16 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 interactionClass.prototype.setShapeEditListener = function(){
 
 	if(this.shapeEditor){
+		//add the call back "on drawn" here for the current shapeEditor:
+		
 		//for each choice form, find the shape element:
 		for(var i in this.orderedChoices){
 		
 			var choiceSerial = this.orderedChoices[i];
 			var interaction = this;
 			
-			$qtiShapeCombobox = $('#ChoiceForm_'+choiceSerial).find('.qti-shape').bind('change', {choiceSerial:choiceSerial},function(e){
+			$choiceForm = $('#ChoiceForm_'+choiceSerial);
+			$qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial},function(e){
 				var shape = $(this).val();
 				//delete old shape?
 				if(confirm(__('Changing shape type will delete the old shape, are you sure?'))){
@@ -300,12 +338,24 @@ interactionClass.prototype.setShapeEditListener = function(){
 				}
 			});
 			
+			//append the edit button:
 			$imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
 			$imageLink.css('cursor', 'pointer');
 			$imageLink.css('margin', '2px');
-			$imageLink.bind('click', {choiceSerial:choiceSerial}, function(e){
-				interaction.shapeEditor.startDrawing(e.data.choiceSerial, $qtiShapeCombobox.val());
+			$imageLink.bind('click', {choiceSerial:choiceSerial, shape:$qtiShapeCombobox.val()}, function(e){
+				interaction.shapeEditor.startDrawing(e.data.choiceSerial, e.data.shape);
 			});
+			
+			//check if the coords are not empty, if so, draw the shape:
+			$qtiCoordsInput = $choiceForm.find('input[name=coords]');
+			if($qtiCoordsInput.length){
+				if($qtiCoordsInput.val() && $qtiShapeCombobox.val()){
+					this.shapeEditor.createShape(choiceSerial, 'qti', {data:$qtiCoordsInput.val(), shape:$qtiShapeCombobox.val()});
+					this.shapeEditor.exportShapeToCanvas(choiceSerial);
+				}
+				
+			}
+			
 		}
 	}
 	

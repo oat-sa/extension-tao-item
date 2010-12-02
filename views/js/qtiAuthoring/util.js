@@ -28,21 +28,26 @@ CD = function(object, desc){
 }
 
 util.htmlEncode = function(encodedStr){
-
-	//<br...> are replaced by <br... />
-	var encodedStr = encodedStr.replace(/<br([^>]*)?>/ig, '<br />');
-	 encodedStr = encodedStr.replace(/<hr([^>]*)?>/ig, '<hr />');
-	 
-	//<img...> are replaced by <img... />
-	encodedStr = encodedStr.replace(/(<img([^>]*)?\s?[^\/]>)+/ig,
-		function($0, $1){
-			return $0.replace('>', ' />');
-		});
 	
-	//url encode component:
-	encodedStr = encodeURIComponent(encodedStr);
+	var returnValue = '';
 	
-	return encodedStr;
+	if(encodedStr){
+		//<br...> are replaced by <br... />
+		var encodedStr = encodedStr.replace(/<br([^>]*)?>/ig, '<br />');
+		 encodedStr = encodedStr.replace(/<hr([^>]*)?>/ig, '<hr />');
+		 
+		//<img...> are replaced by <img... />
+		encodedStr = encodedStr.replace(/(<img([^>]*)?\s?[^\/]>)+/ig,
+			function($0, $1){
+				return $0.replace('>', ' />');
+			});
+		
+		//url encode component:
+		returnValue = encodeURIComponent(encodedStr);
+	}
+	
+	
+	return returnValue;
 }
 
 //custom object serialization method to jQuery:

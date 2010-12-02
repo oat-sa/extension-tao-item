@@ -373,6 +373,26 @@ qtiEdit.mapFileManagerField = function($container){
 			//add tao file manager
 			$(this).fmbind({type: 'image'}, function(elt, value){
 				$(elt).val(value);
+				
+				$modifiedForm = $(elt).parents('form');
+				if($modifiedForm.length){
+					//find the active interaction:
+					for(var itemSerial in qtiEdit.instances){
+						var item = qtiEdit.instances[itemSerial];
+					
+						var interaction = item.currentInteraction;
+						if(interaction){
+							var id = $modifiedForm.attr('id');
+							if(id.indexOf('ChoiceForm') == 0){
+								interaction.modifiedChoices[id] = 'modified';//it is a choice form:
+							}else if(id.indexOf('InteractionForm') == 0){
+								interaction.modifiedInteraction = true;
+							}else if(id.indexOf('GroupForm') == 0){
+								interaction.modifiedGroups[id] = 'modified';
+							}
+						}
+					}
+				}
 			});
 		}
 	});
