@@ -44,7 +44,7 @@ class taoItems_actions_QTIform_interaction_GraphicassociateInteraction
     public function initElements()
     {
 		$this->setCommonElements();
-		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($interaction, 'maxAssociations', __('Maximum number of associations')));
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($this->getInteraction(), 'maxAssociations', __('Maximum number of associations')));
     }
 	
 	public function setCommonElements(){

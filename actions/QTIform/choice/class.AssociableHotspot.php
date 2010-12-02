@@ -22,8 +22,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @package tao
  * @subpackage actions_form
  */
-class taoItems_actions_QTIform_choice_HotspotChoice
-    extends taoItems_actions_QTIform_choice_Choice{
+class taoItems_actions_QTIform_choice_AssociableHotspot
+    extends taoItems_actions_QTIform_choice_AssociableChoice{
 	
 	public function initElements(){
 		
@@ -52,7 +52,7 @@ class taoItems_actions_QTIform_choice_HotspotChoice
 		$coordsElt->setValue($this->choice->getOption('coords'));
 		$this->form->addElement($coordsElt);
 		
-		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'hotspotLabel'));
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('hotspotLabel', 'fixed', 'matchGroup'));
 	}
 
 }

@@ -443,7 +443,7 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'graphicassociate':
 				case 'graphicgapmatch':{
 					//warning: what about the gapimg???
-					$choiceType = 'graphicAssociableChoice';
+					$choiceType = 'associableHotspot';
 					$matchMax = 0;
 					break;
 				}
@@ -1195,7 +1195,8 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = array();
-		switch(strtolower($interaction->getType())){
+		$interactionType = strtolower($interaction->getType());
+		switch($interactionType){
 			case 'choice':
 			case 'hottext':
 			case 'hotspot':{
@@ -1324,7 +1325,7 @@ class taoItems_models_classes_QtiAuthoringService
 			
 		}
 		
-		if(strtolower($interaction->getType()) != 'order'){//no mapping allowed for order interaction for the time being
+		if($interactionType != 'order' && $interactionType != 'graphicorder'){//no mapping allowed for order interaction for the time being
 			//check if the response processing is a match or a map type, or a custom one:
 			//correct response (mandatory):
 			$returnValue[] = array(
@@ -1334,9 +1335,6 @@ class taoItems_models_classes_QtiAuthoringService
 				'values' => array('yes', 'no')
 			);
 			
-			// try{
-				// $responseProcessingType = $this->getResponseProcessingType($responseProcessing);
-			// }catch(Exception $e){}
 			$response = $interaction->getResponse();
 			if(is_null($response)){
 				throw new Exception("no response found for the interaction {$interaction->getIdentifier()}");
@@ -1450,7 +1448,8 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'choice':
 				case 'inlinechoice':
 				case 'hottext':
-				case 'extendedtext':{
+				case 'extendedtext':
+				case 'hotspot':{
 					foreach($responseData as $response){
 						$response = (array)$response;
 						//if required identifier not empty:
@@ -1477,7 +1476,9 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'associate':
 				case 'match':
-				case 'gapmatch':{
+				case 'gapmatch':
+				case 'graphicassociate':
+				case 'graphicgapmatch':{
 					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;
@@ -1503,7 +1504,8 @@ class taoItems_models_classes_QtiAuthoringService
 					// var_dump($correctResponses,$mapping);exit;
 					break;
 				}
-				case 'order':{
+				case 'order':
+				case 'graphicorder':{
 					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;

@@ -577,7 +577,10 @@ class QtiAuthoring extends CommonModule {
 				break;
 			}
 			//graphic interactions:
-			case 'hotspot':{
+			case 'hotspot':
+			case 'graphicorder':
+			case 'graphicassociate':
+			case 'graphicgapmatch':{
 				$object = $interaction->getObject();
 				$this->setData('backgroundImagePath', isset($object['data'])?$object['data']:'');
 				break;
@@ -715,6 +718,8 @@ class QtiAuthoring extends CommonModule {
 							if($oldObject['data'] != $newObject['data']){
 								$newGraphicObject['data'] = $newObject['data'];
 							}
+						}else{
+							$newGraphicObject['data'] = $newObject['data'];
 						}
 						
 						if(intval($values['object_width'])){
@@ -724,6 +729,8 @@ class QtiAuthoring extends CommonModule {
 								if($oldObject['width'] != $newObject['width']){
 									$newGraphicObject['width'] = $newObject['width'];
 								}
+							}else{
+								$newGraphicObject['width'] = $newObject['width'];
 							}
 						}
 						
@@ -733,6 +740,8 @@ class QtiAuthoring extends CommonModule {
 								if($oldObject['height'] != $newObject['height']){
 									$newGraphicObject['height'] = $newObject['height'];
 								}
+							}else{
+								$newGraphicObject['height'] = $newObject['height'];
 							}
 						}
 						

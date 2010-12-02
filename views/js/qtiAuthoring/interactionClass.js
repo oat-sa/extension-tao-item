@@ -97,7 +97,6 @@ interactionClass.prototype.saveInteraction = function($myForm){
 		if(this.orderedChoices[0]){
 			interactionProperties.choiceOrder = [];
 			for(var i=0;i<this.orderedChoices.length;i++){
-				// orderedChoices += '&choiceOrder['+i+']='+this.orderedChoices[i];
 				interactionProperties.choiceOrder[i] = this.orderedChoices[i];
 			}
 		}else{
@@ -106,10 +105,8 @@ interactionClass.prototype.saveInteraction = function($myForm){
 			for(var groupSerial in this.orderedChoices){
 				interactionProperties['choiceOrder'+i] = [];
 				interactionProperties['choiceOrder'+i]['groupSerial'] = groupSerial;
-				// orderedChoices += '&choiceOrder'+i+'[groupSerial]='+groupSerial;
 				for(var j=0; j<this.orderedChoices[groupSerial].length; j++){
 					interactionProperties['choiceOrder'+i][j] = this.orderedChoices[groupSerial][j];
-					// orderedChoices += '&choiceOrder'+i+'['+j+']='+this.orderedChoices[groupSerial][j];
 				}
 				i++;
 			}
@@ -141,9 +138,15 @@ interactionClass.prototype.saveInteraction = function($myForm){
 					
 					if(r.newGraphicObject){
 						if(r.newGraphicObject.data){
-							interaction.shapeEditor.setBackground(r.newGraphicObject.data);
+							if(interaction.shapeEditor){
+								interaction.shapeEditor.setBackground(r.newGraphicObject.data);
+							}else{
+								interaction.buildShapeEditor(r.newGraphicObject.data);
+								interaction.setShapeEditListener();
+							}
 						}
 					}
+					
 				}
 		   }
 		});
@@ -317,46 +320,61 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	
 }
 
-interactionClass.prototype.setShapeEditListener = function(){
+interactionClass.prototype.setShapeEditListener = function(choiceSerial){
 
 	if(this.shapeEditor){
-		//add the call back "on drawn" here for the current shapeEditor:
 		
-		//for each choice form, find the shape element:
-		for(var i in this.orderedChoices){
+		var interaction = this;
 		
-			var choiceSerial = this.orderedChoices[i];
-			var interaction = this;
-			
+		//define the function:
+		var setListener = function(choiceSerial){
+		
 			$choiceForm = $('#ChoiceForm_'+choiceSerial);
-			$qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial},function(e){
-				var shape = $(this).val();
-				//delete old shape?
-				if(confirm(__('Changing shape type will delete the old shape, are you sure?'))){
-					interaction.shapeEditor.removeShapeObj(e.data.choiceSerial);
-					interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
-				}
-			});
+			if($choiceForm.length){
 			
-			//append the edit button:
-			$imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
-			$imageLink.css('cursor', 'pointer');
-			$imageLink.css('margin', '2px');
-			$imageLink.bind('click', {choiceSerial:choiceSerial, shape:$qtiShapeCombobox.val()}, function(e){
-				interaction.shapeEditor.startDrawing(e.data.choiceSerial, e.data.shape);
-			});
-			
-			//check if the coords are not empty, if so, draw the shape:
-			$qtiCoordsInput = $choiceForm.find('input[name=coords]');
-			if($qtiCoordsInput.length){
-				if($qtiCoordsInput.val() && $qtiShapeCombobox.val()){
-					this.shapeEditor.createShape(choiceSerial, 'qti', {data:$qtiCoordsInput.val(), shape:$qtiShapeCombobox.val()});
-					this.shapeEditor.exportShapeToCanvas(choiceSerial);
+				$qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial}, function(e){
+					var shape = $(this).val();
+					//delete old shape?
+					if(confirm(__('Changing shape type will delete the old shape, are you sure?'))){
+						interaction.shapeEditor.removeShapeObj(e.data.choiceSerial);
+						interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
+					}
+				});
+				
+				//append the edit button:
+				$imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
+				$imageLink.css('cursor', 'pointer');
+				$imageLink.css('margin', '2px');
+				$imageLink.bind('click', {choiceSerial:choiceSerial, shape:$qtiShapeCombobox.val()}, function(e){
+					interaction.shapeEditor.startDrawing(e.data.choiceSerial, e.data.shape);
+				});
+				
+				//check if the coords are not empty, if so, draw the shape:
+				$qtiCoordsInput = $choiceForm.find('input[name=coords]');
+				if($qtiCoordsInput.length){
+					if($qtiCoordsInput.val() && $qtiShapeCombobox.val()){
+						interaction.shapeEditor.createShape(choiceSerial, 'qti', {data:$qtiCoordsInput.val(), shape:$qtiShapeCombobox.val()});
+						interaction.shapeEditor.exportShapeToCanvas(choiceSerial);
+					}
 				}
 				
+				//finally add the hover/blur
 			}
 			
 		}
+		
+		if(!choiceSerial){
+			//all choices:
+			for(var i in this.orderedChoices){
+				var choiceSerial = this.orderedChoices[i];
+				setListener(choiceSerial);
+			}
+		}else{
+			if(true){
+				setListener(choiceSerial);
+			}
+		}
+		
 	}
 	
 }
@@ -403,7 +421,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				
 				qtiEdit.initFormElements($newFormElt);
 				interaction.setFormChangeListener('#'+r.choiceSerial);
-				
+				interaction.setShapeEditListener(r.choiceSerial);
 				
 				//add to the local choices order array:
 				//if interaction type is match, save the new choice in one of the group array:
@@ -510,12 +528,12 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		}
 	}
 	
-	$("form").children().change(function(){
+	$(target).children().change(function(){
 		var $modifiedForm = $(this).parents('form');
 		setChanges($modifiedForm);
 	});
 	
-	$("form").find('iframe').each(function(){
+	$(target).find('iframe').each(function(){
 		var $modifiedForm = $(this).parents('form');
 		var setChangesfunction = function(){
 			setChanges($modifiedForm);
@@ -696,6 +714,13 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 				}
 			
 				$('#'+choiceSerial).remove();
+				
+				//delete the shape, if exists:
+				if(interaction.shapeEditor){
+					interaction.shapeEditor.removeShapeObj(choiceSerial);
+				}
+				
+				
 				//TODO: need to be optimized: only after the last choice saving
 				new responseClass(interaction.responseGrid, interaction);
 				interaction.saveInteractionData();
@@ -840,6 +865,35 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	setTimeout(function(){interaction.bindChoiceLinkListener();},1000);
 }
 
+
+interactionClass.prototype.buildShapeEditor = function(backgroundImagePath){
+
+	var interaction = this;
+	var myShapeEditor = new qtiShapesEditClass(
+		'formInteraction_object_container', 
+		backgroundImagePath,
+		{
+			onDrawn: function(choiceSerial, shapeObject, self){
+				//export shapeObject to qti:
+				if(choiceSerial && shapeObject){
+					var qtiCoords = self.exportShapeToQti(choiceSerial);
+					if(qtiCoords){
+						$('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
+						//indicate manually that the choice has been modified:
+						interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
+					}
+				}
+			}
+	});
+		
+	if(myShapeEditor){
+		//map choices to the shape editor:
+		this.shapeEditor = myShapeEditor;
+	}
+}
+		
+		
+		
 interactionClass.prototype.saveInteractionData = function(interactionSerial){
 	// if(!interactionSerial){
 		// if(interactionEdit.interactionSerial){
