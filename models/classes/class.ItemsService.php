@@ -887,9 +887,12 @@ class taoItems_models_classes_ItemsService
 					foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
 						if(core_kernel_classes_File::isFile($propertyValue)){
 							$file = new core_kernel_classes_File($propertyValue->uriResource);
-							$relPath = stristr($file->getAbsolutePath(), $itemFolder);
+							$relPath = str_replace($itemFolder, '', $file->getAbsolutePath());
+							$relPath = (preg_replace("/^\//", '',$relPath));
 							if($relPath !== false){
-								$newPath = tao_helpers_File::concat($this->getItemFolder($returnValue), $relPath);
+								
+								$newPath = tao_helpers_File::concat(array($this->getItemFolder($returnValue), $relPath));
+								
 								if(tao_helpers_File::copy($file->getAbsolutePath(), $newPath, true)){
 									$newFile = core_kernel_classes_File::create($file->getOnePropertyValue($fileNameProp), $newPath);
 									$returnValue->setPropertyValue($property, $newFile->uriResource);
