@@ -12,6 +12,9 @@ require_once('tao/actions/Import.class.php');
  */
 class ItemImport extends Import {
 
+	/**
+	 * Constructor used to override the formContainer
+	 */
 	public function __construct(){
 		parent::__construct();
 		$this->formContainer = new taoItems_actions_form_Import();

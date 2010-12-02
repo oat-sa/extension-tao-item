@@ -146,7 +146,7 @@ class taoItems_actions_form_Export
 		}
 		$this->form->addElement($instanceElt);
 		
-    	$nameElt = tao_helpers_form_FormFactory::getElement('name', 'Textbox');
+    	$nameElt = tao_helpers_form_FormFactory::getElement('filename', 'Textbox');
 		$nameElt->setDescription(__('File name'));
 		$nameElt->setValue($fileName);
 		$nameElt->setUnit(".zip");
