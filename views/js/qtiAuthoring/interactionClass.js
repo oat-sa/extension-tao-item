@@ -358,7 +358,13 @@ interactionClass.prototype.setShapeEditListener = function(choiceSerial){
 					}
 				}
 				
-				//finally add the hover/blur
+				//finally add the hover/blur control:
+				$choiceForm.parents('div.formContainer_choice').hover(function(){
+					// var choiceSerial = $(this).attr('id');
+					interaction.shapeEditor.hoverIn($(this).attr('id'));
+				},function(){
+					interaction.shapeEditor.hoverOut($(this).attr('id'));
+				});
 			}
 			
 		}

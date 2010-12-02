@@ -12,7 +12,8 @@
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.modal.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('simplemodal_path')?>jquery.simplemodal.css" type="text/css" />
-<link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/qtiAuthoring.css" />
+<link rel="stylesheet" href="<?=BASE_WWW?>css/qtiAuthoring.css" type="text/css" />
+<link rel="stylesheet" href="<?=get_data('qtiAuthoring_path')?>graphic/qtiShapeEditClass.css" type="text/css" />
 
 <div id="qtiAuthoring_loading">
 	<div id="qtiAuthoring_loading_message">

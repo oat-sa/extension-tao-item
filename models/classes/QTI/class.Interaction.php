@@ -726,7 +726,11 @@ class taoItems_models_classes_QTI_Interaction
         	'order', 
         	'match', 
         	'gapMatch', 
-        	'hottext'
+        	'hottext',
+			'hotspot',
+			'graphicassociate',
+			'graphicorder',
+			'graphicgapmatch'
         ));
         
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end
