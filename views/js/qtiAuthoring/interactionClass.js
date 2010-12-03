@@ -139,11 +139,13 @@ interactionClass.prototype.saveInteraction = function($myForm){
 					if(r.newGraphicObject){
 						if(r.newGraphicObject.data){
 							if(interaction.shapeEditor){
-								interaction.shapeEditor.setBackground(r.newGraphicObject.data);
+								interaction.shapeEditor.setBackground(r.newGraphicObject.data, r.newGraphicObject.width, r.newGraphicObject.height);
 							}else{
 								interaction.buildShapeEditor(r.newGraphicObject.data);
 								interaction.setShapeEditListener();
 							}
+						}else{
+							createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
 						}
 					}
 					
@@ -853,25 +855,29 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 }
 
 
-interactionClass.prototype.buildShapeEditor = function(backgroundImagePath){
-
+interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, options){
+	
+	var defaultOptions = {
+		onDrawn: function(choiceSerial, shapeObject, self){
+			//export shapeObject to qti:
+			if(choiceSerial && shapeObject){
+				var qtiCoords = self.exportShapeToQti(choiceSerial);
+				if(qtiCoords){
+					$('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
+					//indicate manually that the choice has been modified:
+					interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
+				}
+			}
+		}
+	};
+	
+	var shapeEditorOption = $.extend(defaultOptions, options);
 	var interaction = this;
 	var myShapeEditor = new qtiShapesEditClass(
 		'formInteraction_object', 
 		backgroundImagePath,
-		{
-			onDrawn: function(choiceSerial, shapeObject, self){
-				//export shapeObject to qti:
-				if(choiceSerial && shapeObject){
-					var qtiCoords = self.exportShapeToQti(choiceSerial);
-					if(qtiCoords){
-						$('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
-						//indicate manually that the choice has been modified:
-						interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
-					}
-				}
-			}
-	});
+		shapeEditorOption
+	);
 		
 	if(myShapeEditor){
 		//map choices to the shape editor:

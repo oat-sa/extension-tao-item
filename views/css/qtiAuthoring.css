@@ -222,5 +222,5 @@ form.wysiwyg label{
 	margin: 10px 0px;
 }
 
-#formInteraction_object_container {overflow-x:auto;}
-#formInteraction_object {margin:auto;}
+#formInteraction_object_container {overflow:auto;}
+#formInteraction_object {margin:auto;position:relative;}

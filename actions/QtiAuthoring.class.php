@@ -116,7 +116,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($this->getRequestParameter('instance')));
 		
 		$currentItem = $this->getCurrentItem();
-		if($this->debugMode) var_dump($currentItem);
+		// if($this->debugMode) var_dump($currentItem);
 		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
@@ -583,6 +583,8 @@ class QtiAuthoring extends CommonModule {
 			case 'graphicgapmatch':{
 				$object = $interaction->getObject();
 				$this->setData('backgroundImagePath', isset($object['data'])?$object['data']:'');
+				$this->setData('width', isset($object['width'])?$object['width']:'');
+				$this->setData('height', isset($object['height'])?$object['height']:'');
 				break;
 			}
 			default:{
@@ -690,13 +692,21 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				//for graphic interactions:
+				if(intval($values['object_width'])){
+					$newGraphicObject['width'] = intval($values['object_width']);
+				}
+				
+				if(intval($values['object_height'])){
+					$newGraphicObject['height'] = intval($values['object_height']);
+				}
+					
 				if(isset($values['object_data'])){
+				
 					$oldObject = $interaction->getObject();
 					
 					//get mime type
 					$imageFilePath = trim($values['object_data']);
 					$mimeType = tao_helpers_File::getMimeType($imageFilePath);
-					// var_dump($mimeType);exit;
 					
 					$validImageType = array(
 						'image/png',
@@ -711,46 +721,22 @@ class QtiAuthoring extends CommonModule {
 							// 'width' => isset($values['object_width'])? intval($values['object_width']):0,
 							// 'height' => isset($values['object_height'])? intval($values['object_height']):0
 						// );
+						$newGraphicObject['data'] = $imageFilePath;
+						// $newObject['data'] = $imageFilePath;
+						// if(isset($oldObject['data'])){
+							// if($oldObject['data'] != $newObject['data']){
+								// $newGraphicObject['data'] = $newObject['data'];
+							// }
+						// }else{
+							// $newGraphicObject['data'] = $newObject['data'];
+						// }
 						
-						$newObject['data'] = $imageFilePath;
-						if(isset($oldObject['data'])){
-							//check if the values have been updated:
-							if($oldObject['data'] != $newObject['data']){
-								$newGraphicObject['data'] = $newObject['data'];
-							}
-						}else{
-							$newGraphicObject['data'] = $newObject['data'];
-						}
 						
-						if(intval($values['object_width'])){
-							$newObject['width'] = intval($values['object_width']);
-							//ok, valid:
-							if(isset($oldObject['width'])){
-								if($oldObject['width'] != $newObject['width']){
-									$newGraphicObject['width'] = $newObject['width'];
-								}
-							}else{
-								$newGraphicObject['width'] = $newObject['width'];
-							}
-						}
-						
-						if(intval($values['object_height'])){
-							$newObject['height'] = intval($values['object_height']);
-							if(isset($oldObject['height'])){
-								if($oldObject['height'] != $newObject['height']){
-									$newGraphicObject['height'] = $newObject['height'];
-								}
-							}else{
-								$newGraphicObject['height'] = $newObject['height'];
-							}
-						}
-						
-						$interaction->setObject($newObject);
 					}else{
-						$errorMessage = 'invalid mime type';
+						$errorMessage = __('invalid image mime type');
 					}
-					
 				}
+				$interaction->setObject($newGraphicObject);
 				
 				//hottext and gapmatch interaction:
 				$data = '';
