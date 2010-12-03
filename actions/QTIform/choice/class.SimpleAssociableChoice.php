@@ -35,7 +35,7 @@ class taoItems_actions_QTIform_choice_SimpleAssociableChoice
 		$dataElt = tao_helpers_form_FormFactory::getElement('data', 'Textarea');//should be an htmlarea... need to solve the conflict with the 
 		$dataElt->setDescription(__('Value'));
 		$dataElt->setAttribute('class', 'qti-html-area');
-		$choiceData = $this->choice->getData();
+		$choiceData = taoItems_models_classes_QtiAuthoringService::getFilteredData($this->choice);
 		if(!empty($choiceData)){
 			$dataElt->setValue($choiceData);
 		}

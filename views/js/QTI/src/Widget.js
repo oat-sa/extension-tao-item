@@ -200,7 +200,7 @@ var QTIWidget = function(options){
 				},
 				beforeStop:function(event,ui){
 					$("#"+ui.helper[0].id).css("top","0");
-				}			
+				}
 			};
 		}
 		//for an horizontal sortable list
@@ -266,10 +266,12 @@ var QTIWidget = function(options){
 		else{
 			var pairSize = parseInt($(qti_item_id+" .qti_choice_list li").length / 2);
 		}
+		var pairContainer = $("<div class='qti_pair_container'></div>");
 		for (var a=pairSize; a>0; a--){
 			var currentPairName=_this.opts["id"]+"_"+a;
-			$(qti_item_id+" .qti_associate_container").after("<ul class='qti_association_pair' id='"+currentPairName+"'><li id='"+currentPairName+"_A"+"'></li><li id='"+currentPairName+"_B"+"'></li></ul>");		
+			pairContainer.append("<ul class='qti_association_pair' id='"+currentPairName+"'><li id='"+currentPairName+"_A"+"'></li><li id='"+currentPairName+"_B"+"'></li></ul>");		
 		}
+		$(qti_item_id+" .qti_associate_container").after(pairContainer);
 		
 		// set the size of the drop box to the max size of the cloud words 
 		$(qti_item_id+" .qti_association_pair li").width(maxBoxSize+4);
@@ -280,20 +282,18 @@ var QTIWidget = function(options){
 		$(qti_item_id+" .qti_association_pair:first li").each(function(){
 			pairBoxWidth+=$(this).width();
 		});
-		
+		$(qti_item_id+" .qti_pair_container").css({position:"relative",width: ((pairBoxWidth + 20)*2)+30, margin:"0 auto 0 auto",top:"10px"});	
 		$(qti_item_id+" .qti_association_pair").width(pairBoxWidth+90);
 		$(qti_item_id+" .qti_association_pair li").height(liMaxHeight);
-		$(qti_item_id+" .qti_association_pair").css({position:"relative",margin:"0 auto",top:"10px"});	
 		
-		//place target boxes
-		$(qti_item_id+" .qti_association_pair").each(function(){
-			$(this).after("<div class='qti_link_associate'></div>");
+		$.each($(qti_item_id+" .qti_association_pair"), function(index, elt){
+			$(elt).after("<div class='qti_link_associate'></div>");
 			
-			$(qti_item_id+" .qti_link_associate:last").css("top",$(this).offset().top+23);
-			$(qti_item_id+" .qti_link_associate:last").css("left",parseFloat($(this).find("li:first").offset().left)+parseFloat($(this).find("li:first").width())+14);
+			$(qti_item_id+" .qti_link_associate:last").css("top",$(this).position().top + 25);
+			$(qti_item_id+" .qti_link_associate:last").css("left", maxBoxSize + 33);
 		});
-		
-		$(qti_item_id).height( ($(qti_item_id+" .qti_link_associate:last").offset().top - $(qti_item_id).offset().top ) + liMaxHeight); 
+
+		$(qti_item_id).height( ($(qti_item_id+" .qti_association_pair:last").offset().top - $(qti_item_id).offset().top ) + liMaxHeight); 
 		
 		//drag element from words cloud
 		$(qti_item_id+" .qti_associate_container .qti_choice_list li > div").draggable({

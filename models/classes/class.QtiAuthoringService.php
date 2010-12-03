@@ -78,7 +78,7 @@ class taoItems_models_classes_QtiAuthoringService
      * @return taoItems_models_classes_QTI_Item
      */
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
-		$itemData = $this->getFilteredData($item);
+		$itemData = self::getFilteredData($item);
 		
 		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
 		$itemData = preg_replace('/^{/', '&nbsp;{', $itemData);
@@ -125,7 +125,7 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
-		$data = $this->getFilteredData($interaction);
+		$data = self::getFilteredData($interaction);
 		
 		//depending on the type of interaciton, strip the choice identifier or transfor it to editable elt
 		$interactionType = strtolower($interaction->getType());
@@ -1790,7 +1790,7 @@ class taoItems_models_classes_QtiAuthoringService
 	 * @param taoItems_models_classes_QTI_Data $qtiInstance
 	 * @return string the data
 	 */
-	protected function getFilteredData(taoItems_models_classes_QTI_Data $qtiInstance){
+	public static function getFilteredData(taoItems_models_classes_QTI_Data $qtiInstance){
 		
 		$returnValue = '';
 		if(!is_null($qtiInstance)){

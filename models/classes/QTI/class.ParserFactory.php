@@ -187,7 +187,12 @@ class taoItems_models_classes_QTI_ParserFactory
         
         $options = array();
        	foreach($data->attributes() as $key => $value){
-       		$options[$key] = (string)$value;
+       		if($key == "matchGroup") {
+       			$options[$key] = explode(' ', $value);
+       		}
+       		else{
+       			$options[$key] = (string)$value;
+       		}
        	}
        	try{
        		$type = str_replace('Interaction', '', $data->getName());
@@ -339,7 +344,12 @@ class taoItems_models_classes_QTI_ParserFactory
         
         $options = array();
        	foreach($data->attributes() as $key => $value){
-       		$options[$key] = (string)$value;
+       		if($key == "matchGroup") {
+       			$options[$key] = explode(' ', $value);
+       		}
+       		else{
+       			$options[$key] = (string)$value;
+       		}
        	}
        	unset($options['identifier']);
        	
