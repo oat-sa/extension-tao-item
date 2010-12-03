@@ -211,7 +211,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		  insertHorizontalRule : { visible : true },
 
 		  h4: {
-				  visible: true,
+				  visible: false,
 				  className: 'h4',
 				  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
 				  arguments: ($.browser.msie || $.browser.safari) ? '<h4>' : 'h4',
@@ -219,7 +219,7 @@ function qtiEdit(itemSerial, formContainers, options){
 				  tooltip: 'Header 4'
 		  },
 		  h5: {
-				  visible: true,
+				  visible: false,
 				  className: 'h5',
 				  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
 				  arguments: ($.browser.msie || $.browser.safari) ? '<h5>' : 'h5',
@@ -227,7 +227,7 @@ function qtiEdit(itemSerial, formContainers, options){
 				  tooltip: 'Header 5'
 		  },
 		  h6: {
-				  visible: true,
+				  visible: false,
 				  className: 'h6',
 				  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
 				  arguments: ($.browser.msie || $.browser.safari) ? '<h6>' : 'h6',

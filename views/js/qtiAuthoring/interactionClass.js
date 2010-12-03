@@ -501,8 +501,13 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 			$group.hide();
 			$('#a_'+groupId).bind('click', function(e){
 				e.preventDefault();
-				$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
 				$('#'+groupId).toggle();
+			});
+			
+			$('#a_'+groupId).toggle(function(){
+				$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
+			},function(){
+				$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
 			});
 		}
 		
@@ -784,31 +789,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	  insertOrderedList    : { visible : true },
 	  insertUnorderedList  : { visible : true },
 	  insertHorizontalRule : { visible : true },
-
-	  h4: {
-			  visible: true,
-			  className: 'h4',
-			  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-			  arguments: ($.browser.msie || $.browser.safari) ? '<h4>' : 'h4',
-			  tags: ['h4'],
-			  tooltip: 'Header 4'
-	  },
-	  h5: {
-			  visible: true,
-			  className: 'h5',
-			  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-			  arguments: ($.browser.msie || $.browser.safari) ? '<h5>' : 'h5',
-			  tags: ['h5'],
-			  tooltip: 'Header 5'
-	  },
-	  h6: {
-			  visible: true,
-			  className: 'h6',
-			  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-			  arguments: ($.browser.msie || $.browser.safari) ? '<h6>' : 'h6',
-			  tags: ['h6'],
-			  tooltip: 'Header 6'
-	  },
+	  
 	  cut   : { visible : true },
 	  copy  : { visible : true },
 	  paste : { visible : true },
@@ -876,7 +857,7 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath){
 
 	var interaction = this;
 	var myShapeEditor = new qtiShapesEditClass(
-		'formInteraction_object_container', 
+		'formInteraction_object', 
 		backgroundImagePath,
 		{
 			onDrawn: function(choiceSerial, shapeObject, self){

@@ -1629,7 +1629,8 @@ class taoItems_models_classes_QtiAuthoringService
 		$i = 0;
 		$interactionType = strtolower($interaction->getType());
 		switch($interactionType){
-			case 'order':{
+			case 'order':
+			case 'graphicorder':{
 				if(!empty($correctResponses)){
 			
 					$returnValue[$i] = array();
