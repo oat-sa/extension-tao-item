@@ -115,8 +115,6 @@ function QTIResultCollector(options){
 				elt = {0:firstId, 1:lastId};
 			}
 			
-			console.log(elt);
-			
 			if (_this.opts["maxChoices"] != 1){
 				result.value.push (elt);
 			} else {

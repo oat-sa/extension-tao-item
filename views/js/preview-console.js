@@ -137,7 +137,7 @@ $(document).ready(function(){
 							message += '<br />' + matchingDataList[key]['identifier'] + ' = ' + matchingDataList[key]['value'];
 						}
 					}catch(exp){ 
-						console.log(exp);
+						//console.log(exp);
 					}
 					message += '<br />';
 					previewConsole.trigger('updateConsole', ['sent answers', message]);

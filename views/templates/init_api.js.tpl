@@ -1,5 +1,7 @@
 $(function (){
 
+	if(typeof(initPush) != 'undefined'){
+	
 	var <?=get_data('envVarName')?> = <?=get_data('executionEnvironment')?>;
 	initManualDataSource(<?=get_data('envVarName')?>);
 
@@ -8,6 +10,10 @@ $(function (){
 	<?if(get_data('eventData')):?>
 		initEventServices({ type: 'manual', data: <?=get_data('eventData')?>}, <?=get_data('eventParams')?>);
 	<?endif?>
+	
+	}
+	
+	if(typeof(matchingInit) != 'undefined'){
 	
 	<?if(get_data('matchingServer')):?>
 		var matchingParam = $.extend(<?=get_data('matchingParams')?>, {
@@ -72,11 +78,15 @@ $(function (){
 		    }
 		};
 	<?endif?>
-	matchingInit(matchingParam);
 	
+		matchingInit(matchingParam);
+	}
+	
+	if(typeof(recoveryCtx) != 'undefined'){
 	<?if(get_data('disableContext') === true):?>
 		recoveryCtx.enabled = false;
 	<?else:?>
 		initRecoveryContext(<?=get_data('contextSourceParams')?>, <?=get_data('contextDestinationParams')?>);
 	<?endif?>
+	}
 });

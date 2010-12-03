@@ -50,7 +50,7 @@ function qti_init_interaction(initObj){
 	
 	/** @todo remove it in prod ! */
 	if(!myQTIWidget[typeName]){
-		console.log("Error: Unknow widget " + typeName);
+		alert("Error: Unknow widget " + typeName);
 	}
 	
 	//call the widget initialization method
