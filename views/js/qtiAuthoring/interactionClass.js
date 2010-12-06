@@ -322,18 +322,27 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	
 }
 
-interactionClass.prototype.setShapeEditListener = function(choiceSerial){
+interactionClass.prototype.setShapeEditListener = function(target){
 
 	if(this.shapeEditor){
 		
 		var interaction = this;
 		
 		//define the function:
-		var setListener = function(choiceSerial){
-		
-			$choiceForm = $('#ChoiceForm_'+choiceSerial);
-			if($choiceForm.length){
+		var setListener = function($choiceForm){
 			
+			// CL('choiceSerial.length', choiceSerial.length);
+			
+			// $choiceForm = $('#ChoiceForm_'+choiceSerial);
+			// if(!$choiceForm.length){
+				// $choiceForm = $('#GroupForm_'+choiceSerial);
+			// }
+			
+			if($choiceForm.length){
+				var choiceSerial = $choiceForm.attr('id');
+				choiceSerial = choiceSerial.replace('GroupForm_', '');
+				choiceSerial = choiceSerial.replace('ChoiceForm_', '');
+				
 				$qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial}, function(e){
 					var shape = $(this).val();
 					//delete old shape?
@@ -371,15 +380,16 @@ interactionClass.prototype.setShapeEditListener = function(choiceSerial){
 			
 		}
 		
-		if(!choiceSerial){
+		if(!target){
 			//all choices:
-			for(var i in this.orderedChoices){
-				var choiceSerial = this.orderedChoices[i];
-				setListener(choiceSerial);
-			}
+						
+			$('div.formContainer_choice').find('form').each(function(){
+				// CL('choice form found:', $(this).attr('id'));
+				setListener($(this));
+			});
 		}else{
 			if(true){
-				setListener(choiceSerial);
+				setListener($(target));
 			}
 		}
 		
@@ -429,7 +439,7 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 				
 				qtiEdit.initFormElements($newFormElt);
 				interaction.setFormChangeListener('#'+r.choiceSerial);
-				interaction.setShapeEditListener(r.choiceSerial);
+				interaction.setShapeEditListener('#'+r.choiceSerial);
 				
 				//add to the local choices order array:
 				//if interaction type is match, save the new choice in one of the group array:
@@ -983,7 +993,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	});
 }
 
-interactionClass.prototype.addGap = function(interactionData, $appendTo){
+interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 
 	var interactionSerial = this.interactionSerial;
 	var interaction = this;
@@ -997,11 +1007,14 @@ interactionClass.prototype.addGap = function(interactionData, $appendTo){
 	   },
 	   dataType: 'json',
 	   success: function(r){
-			//set the content:
-			interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
 			
-			//then add listener
-			interaction.bindChoiceLinkListener();//ok keep
+			if(interaction.interactionEditor){//gapmatch interaction only
+				//set the content:
+				interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
+			
+				//then add listener
+				interaction.bindChoiceLinkListener();//ok keep
+			} 
 			
 			//reload choices form
 			if(r.reload){
@@ -1026,11 +1039,10 @@ interactionClass.prototype.addGap = function(interactionData, $appendTo){
 			$newFormElt.show();
 			
 			interaction.setFormChangeListener('#'+r.groupSerial);
-						
+			interaction.setShapeEditListener('#'+r.groupSerial);
+			
 			//rebuild the response grid:
 			new responseClass(interaction.responseGrid, interaction);
-			
-			
 	   }
 	});
 }

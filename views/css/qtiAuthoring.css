@@ -104,7 +104,7 @@ div.formContainer_choice div.xhtml_form div.form-group{
 div#formContainer_choices div.xhtml_form form{
 	margin-bottom: 30px;
 }
-div#formContainer_choices span.form-group-control{
+span.form-group-control{
 	cursor:pointer;	
 }
 

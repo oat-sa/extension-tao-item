@@ -419,11 +419,13 @@ class QtiAuthoring extends CommonModule {
 	
 		$reload = false;
 		
+		//basically, interactions that have choices with the "matchgroup" property
 		if(!is_null($interaction)){
 			switch(strtolower($interaction->getType())){
 				case 'associate':
 				case 'match':
-				case 'gapmatch':{
+				case 'gapmatch':
+				case 'graphicgapmatch':{
 					$reload = true;
 					break;
 				}
@@ -436,6 +438,8 @@ class QtiAuthoring extends CommonModule {
 	protected function requireInteractionUpdate(taoItems_models_classes_QTI_Interaction $interaction){
 	
 		$reload = false;
+		
+		//basically, interactions that need a wysiwyg data editor:
 		if($this->getRequestParameter('reloadInteraction')){
 			if(!is_null($interaction)){
 				switch(strtolower($interaction->getType())){
@@ -562,6 +566,7 @@ class QtiAuthoring extends CommonModule {
 				break;
 			}
 			case 'gapmatch':{
+				/*
 				//get group form:
 				$groupForms = array();
 				foreach($this->service->getInteractionGroups($interaction) as $group){
@@ -574,13 +579,21 @@ class QtiAuthoring extends CommonModule {
 				foreach($choices as $order=>$choice){
 					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();
 				}
+				*/
 				break;
 			}
 			//graphic interactions:
+			case 'graphicgapmatch':{
+				$groups = array();
+				foreach($interaction->getGroups() as $group){
+					$groups[] = $group->getSerial();
+				}
+				
+				$this->setData('groups', $groups);
+			}
 			case 'hotspot':
 			case 'graphicorder':
-			case 'graphicassociate':
-			case 'graphicgapmatch':{
+			case 'graphicassociate':{
 				$object = $interaction->getObject();
 				$this->setData('backgroundImagePath', isset($object['data'])?$object['data']:'');
 				$this->setData('width', isset($object['width'])?$object['width']:'');
@@ -632,12 +645,13 @@ class QtiAuthoring extends CommonModule {
 				$this->setData('groupSerials', $groupSerials);
 				break;
 			}
-			case 'gapmatch':{
+			case 'gapmatch':
+			case 'graphicgapmatch':{
 				//get group form:
 				$groupForms = array();
 				foreach($this->service->getInteractionGroups($interaction) as $group){
 					//order does not matter:
-					$groupForms[] = $group->toForm($interaction)->render();
+					$groupForms[$group->getSerial()] = $group->toForm($interaction)->render();
 				}
 				$this->setData('formGroups', $groupForms);
 				

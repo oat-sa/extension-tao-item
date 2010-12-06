@@ -171,7 +171,8 @@ class taoItems_models_classes_QtiAuthoringService
 		if(!is_null($interaction)){
 			switch(strtolower($interaction->getType())){
 				case 'match':
-				case 'gapmatch':{
+				case 'gapmatch':
+				case 'graphicgapmatch':{
 					$returnValue = $interaction->getGroups();
 					break;
 				}
@@ -201,7 +202,8 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'gapmatch':
 				case 'hotspot':
 				case 'graphicorder':
-				case 'graphicassociate':{
+				case 'graphicassociate':
+				case 'graphicgapmatch':{
 					$choices = array();
 					foreach($interaction->getChoices() as $choiceId => $choice){
 						//get the order from the interaction data:
@@ -223,8 +225,7 @@ class taoItems_models_classes_QtiAuthoringService
 					
 					break;
 				}
-				case 'match':
-				case 'graphicgapmatch':{
+				case 'match':{
 					//get groups and do the same for each group:
 					$groups = array();//1 or 2 maximum
 					// var_dump('match interaction:', $interaction);
@@ -440,11 +441,13 @@ class taoItems_models_classes_QtiAuthoringService
 					$choiceType = 'hotspotChoice';
 					break;
 				}
-				case 'graphicassociate':
-				case 'graphicgapmatch':{
-					//warning: what about the gapimg???
+				case 'graphicassociate':{
 					$choiceType = 'associableHotspot';
 					$matchMax = 0;
+					break;
+				}
+				case 'graphicgapmatch':{
+					$choiceType = 'gapImg';
 					break;
 				}
 				default:{
@@ -534,27 +537,33 @@ class taoItems_models_classes_QtiAuthoringService
 				$group->addChoices(array($choice));
 			}
 			
-			if(strtolower($interaction->getType()) == 'gapmatch'){
 			
-				$group->setType('gap');
+			switch(strtolower($interaction->getType())){
+				case 'gapmatch':{
+					$group->setType('gap');
 				
-				$count = 0;
-				if(!empty($interactionData)){
-					$interactionData = str_replace("{qti_gap_new}", "{{$group->getSerial()}}", $interactionData, $count);
+					$count = 0;
+					if(!empty($interactionData)){
+						$interactionData = str_replace("{qti_gap_new}", "{{$group->getSerial()}}", $interactionData, $count);
+					}
+					
+					if($count){
+						$this->setInteractionData($interaction, $interactionData);
+					}else{
+						throw new Exception('Cannot find the new gap location in the interaction data.');
+						//reappend to the interaction data, the stripped choice data
+						// $choicesData = '';
+						// foreach($interaction->getChoices() as $choice){
+							// $choicesData .= "{{$choice->getSerial()}}";
+						// }
+						// $interaction->setData($interaction->getData().'{'.$group->getSerial().'}'.$choicesData);
+					}
+					break;
 				}
-				
-				if($count){
-					$this->setInteractionData($interaction, $interactionData);
-				}else{
-					throw new Exception('Cannot find the new gap location in the interaction data.');
-					//reappend to the interaction data, the stripped choice data
-					// $choicesData = '';
-					// foreach($interaction->getChoices() as $choice){
-						// $choicesData .= "{{$choice->getSerial()}}";
-					// }
-					// $interaction->setData($interaction->getData().'{'.$group->getSerial().'}'.$choicesData);
+				case 'graphicgapmatch':{
+					$group->setType('associableHotspot');
+					break;
 				}
-				
 			}
 			
 			$interaction->addGroup($group);
@@ -914,7 +923,8 @@ class taoItems_models_classes_QtiAuthoringService
 			case 'inlinechoice':
 			case 'hotspot':
 			case 'graphicorder':
-			case 'graphicassociate':{
+			case 'graphicassociate':
+			case 'graphicgapmatch':{
 				if(!empty($choiceOrder)){
 					for($i=0; $i<count($choiceOrder); $i++){
 						$data .= '{'.$choiceOrder[$i].'}';
@@ -1272,7 +1282,8 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				break;
 			}
-			case 'gapmatch':{
+			case 'gapmatch':
+			case 'graphicgapmatch':{
 				$groups = array();//list of gaps
 				foreach($interaction->getGroups() as $group){
 					$groups[] = $group->getIdentifier();//and not serial, since the identifier is the name that is significant for the user

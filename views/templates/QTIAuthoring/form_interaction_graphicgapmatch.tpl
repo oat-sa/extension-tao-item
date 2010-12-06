@@ -9,17 +9,11 @@
 				<?=get_data('formInteraction')?>
 			</div>
 			
-			<div class="ext-home-container">
-				<div id="formInteraction_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
-						<?=__('Interaction content editor:')?>
-				</div>
-				<div id="formContainer_interaction" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
-					<textarea name="interactionEditor_wysiwyg_name" id="interactionEditor_wysiwyg"><?=get_data('interactionData')?></textarea>
-				</div>
+			<div id="formInteraction_object_container">
+				<div id="formInteraction_object" />
 			</div>
 			
-			<div id="formChoices_container" class="ext-home-container">
-			</div>
+			<div id="formChoices_container" class="ext-home-container"/>
 			
 		</div>
 
@@ -35,20 +29,15 @@ $(document).ready(function(){
 		CL('error creating interaction', err);
 	}
 	
-	try{
-		var createGap = {
-			visible : true,
-			className: 'addInteraction',
-			exec: function(){
-				this.insertHtml('{qti_gap_new}');
-				myInteraction.addGroup(this.getContent());
-			},
-			tooltip: 'add a gap'
-		};
+	var backgroundImagePath = "<?=get_data('backgroundImagePath')?>";
+	if(backgroundImagePath){
+		var options = {};
+		var width = "<?=get_data('width')?>";
+		var height = "<?=get_data('height')?>";
+		if(width) options.width = width;
+		if(height) options.height = height;
 		
-		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createGap': createGap});
-	}catch(err){
-		CL('error building interaction data editor', err);
+		myInteraction.buildShapeEditor(backgroundImagePath, options);
 	}
 });
 </script>

@@ -32,7 +32,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
      */
     protected $interaction = null;
 	
-	public function __construct(taoItems_models_classes_QTI_Choice $choice){
+	public function __construct(taoItems_models_classes_QTI_Data $choice){
 		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$interaction = $qtiService->getComposingData($choice);
 		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
@@ -54,15 +54,22 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		$matchGroupOption = $this->getMatchGroupOptions();
 		if(!empty($matchGroupOption)){
 			$matchGroupElt->setOptions($matchGroupOption);
-		
-			$matchGroups = $this->choice->getOption('matchGroup');
-			if(!empty($matchGroups)){
-				if(is_array($matchGroups)){
-					foreach($matchGroups as $choiceIdentifierOrSerial){
-						$matchGroupElt->setValue($choiceIdentifierOrSerial);
+			
+			if($this->choice instanceof taoItems_models_classes_QTI_Choice){
+				$matchGroups = $this->choice->getOption('matchGroup');
+				if(!empty($matchGroups)){
+					if(is_array($matchGroups)){
+						foreach($matchGroups as $choiceIdentifierOrSerial){
+							$matchGroupElt->setValue($choiceIdentifierOrSerial);
+						}
+					}else{
+						$matchGroupElt->setValue((string)$matchGroups);
 					}
-				}else{
-					$matchGroupElt->setValue((string)$matchGroups);
+				}
+			}else if($this->choice instanceof taoItems_models_classes_QTI_Group){
+				foreach($this->choice->getChoices() as $choiceSerial){
+					$choice = taoItems_models_classes_QTI_Service::getDataBySerial($choiceSerial, taoItems_models_classes_QTI_Choice);
+					$matchGroupElt->setValue($choice->getIdentifier());
 				}
 			}
 			
@@ -72,46 +79,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 	}
 	
-	public function getMatchGroupOptions(){
-	
-		$returnValue = array();
-		$groups = $this->interaction->getGroups();
-		if(empty($groups)){
-			//associate interaction
-			foreach($this->interaction->getChoices() as $choice){
-				$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
-			}
-		}else{
-			//match interaction:
-			//get the current group:
-			$currentGroupSerial = '';
-			$options = array();
-			foreach($groups as $group){
-				$choices = $group->getChoices();
-				if(in_array($this->choice->getSerial(), $choices)){
-					$currentGroupSerial = $group->getSerial();
-				}else{
-					$options = array_merge($options, $choices);
-				}
-			}
-			if(!empty($currentGroupSerial)){
-				$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
-				
-				$options = array_unique($options);
-				foreach($options as $choiceSerial){
-					$choice = $qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
-					if(!is_null($choice)){
-						$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
-					}
-				}
-				
-			}
-		}
-		
-		
-		return $returnValue;
-		
-	}
+	protected abstract function getMatchGroupOptions();
 
 }
 

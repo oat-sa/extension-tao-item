@@ -25,6 +25,15 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 class taoItems_actions_QTIform_choice_AssociableHotspot
     extends taoItems_actions_QTIform_choice_AssociableChoice{
 	
+	public function __construct(taoItems_models_classes_QTI_Data $choice){
+		parent::__construct($choice);
+		
+		// if(strtolower($this->interaction->getType()) == 'graphicgapmatch'){
+			// $this->formName = 'GroupForm_'.$this->choice->getSerial();
+		// }
+		
+	}
+	
 	public function initElements(){
 		
 		parent::setCommonElements();
@@ -54,7 +63,17 @@ class taoItems_actions_QTIform_choice_AssociableHotspot
 		
 		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('hotspotLabel', 'fixed', 'matchGroup'));
 	}
-
+	
+	public function getMatchGroupOptions(){
+	
+		$returnValue = array();
+		
+		foreach($this->interaction->getChoices() as $choice){
+			$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
+		}
+				
+		return $returnValue;
+	}
 }
 
 ?>

@@ -44,11 +44,16 @@ abstract class taoItems_actions_QTIform_choice_Choice
 	
 	protected $formName = 'ChoiceForm_';
 	
-	public function __construct(taoItems_models_classes_QTI_Choice $choice = null){
+	public function __construct(taoItems_models_classes_QTI_Data $choice = null){//need flexibility in the parameter type to allow interpretation of a choice as a qti group or a qti choice
 		
 		if(!is_null($choice)){
 			$this->choice = $choice;
-			$this->formName = 'ChoiceForm_'.$this->choice->getSerial();
+			if($choice instanceof taoItems_models_classes_QTI_Group){
+				$this->formName = 'GroupForm_'.$this->choice->getSerial();
+			}else{
+				$this->formName = 'ChoiceForm_'.$this->choice->getSerial();
+			}
+			
 		}
 		$returnValue = parent::__construct(array(), array());
 		
@@ -76,7 +81,11 @@ abstract class taoItems_actions_QTIform_choice_Choice
 	public function setCommonElements(){
 		
 		//add hidden id element, to know what the old id is:
-		$oldIdElt = tao_helpers_form_FormFactory::getElement('choiceSerial', 'Hidden');
+		if($this->choice instanceof taoItems_models_classes_QTI_Group){
+			$oldIdElt = tao_helpers_form_FormFactory::getElement('groupSerial', 'Hidden');
+		}else{
+			$oldIdElt = tao_helpers_form_FormFactory::getElement('choiceSerial', 'Hidden');
+		}
 		$oldIdElt->setValue($this->choice->getSerial());
 		$this->form->addElement($oldIdElt);
 		

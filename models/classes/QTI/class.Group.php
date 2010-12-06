@@ -262,7 +262,7 @@ class taoItems_models_classes_QTI_Group
 
         // section 10-13-1-39-51571c01:12b7726bac6:-8000:00000000000028D4 begin
 		$choiceType = $this->getType();
-		$choiceFormClass = 'taoItems_actions_QTIform_choice_'.ucfirst($choiceType);
+		$choiceFormClass = 'taoItems_actions_QTIform_choice_'.ucfirst($choiceType);//gap for gap match interaction or associableHotspot for graphic gap match interaction
 		if(!class_exists($choiceFormClass)){
 			throw new Exception("the class {$choiceFormClass} does not exist");
 		}else{

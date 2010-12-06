@@ -51,6 +51,51 @@ class taoItems_actions_QTIform_choice_SimpleAssociableChoice
 		
 		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('fixed', 'matchMax', 'matchGroup'));
 	}
+	
+	public function getMatchGroupOptions(){
+	
+		$returnValue = array();
+		switch(strtolower($this->interaction->getType())){
+			case 'associate':{
+				foreach($this->interaction->getChoices() as $choice){
+					$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
+				}
+				break;
+			}
+			case 'match':{
+			
+				$groups = $this->interaction->getGroups();
+				
+				//find the current group:
+				$currentGroupSerial = '';
+				$choicesInAnotherGroup = array();
+				
+				foreach($groups as $group){
+					$choices = $group->getChoices();
+					if(in_array($this->choice->getSerial(), $choices)){
+						$currentGroupSerial = $group->getSerial();
+					}else{
+						$choicesInAnotherGroup = array_merge($choicesInAnotherGroup, $choices);
+					}
+				}
+				if(!empty($currentGroupSerial)){
+					$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+					
+					$choicesInAnotherGroup = array_unique($choicesInAnotherGroup);
+					foreach($choicesInAnotherGroup as $choiceSerial){
+						$choice = $qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+						if(!is_null($choice)){
+							$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
+						}
+					}
+				}
+				break;
+			}
+		}
+				
+		return $returnValue;
+		
+	}
 
 }
 
