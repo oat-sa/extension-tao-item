@@ -214,15 +214,18 @@ class QtiAuthoring extends CommonModule {
 	
 	public function preview(){
 		$parameters = array(
-			'root_url' => ROOT_URL,
-        	'base_www' => BASE_WWW,
-        	'taobase_www' => TAOBASE_WWW,
-			'delivery_server_mode' => false
+			'root_url' 				=> ROOT_URL,
+        	'base_www' 				=> BASE_WWW,
+        	'taobase_www' 			=> TAOBASE_WWW,
+			'delivery_server_mode' 	=> false,
+			'raw_preview'			=> true
 		);
 		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
 		
 		$output = $this->qtiService->renderItem($this->getCurrentItem());
-			
+		
+		$output = taoItems_models_classes_QtiAuthoringService::filteredData($output);
+		
 		$this->setData('output', $output);
 		$this->setView("QTIAuthoring/preview.tpl");
 	}

@@ -21,7 +21,8 @@ class QTIOutputTestCase extends UnitTestCase {
 		$parameters = array(
 			'root_url' => ROOT_URL,
         	'base_www' => BASE_WWW,
-        	'taobase_www' => TAOBASE_WWW
+        	'taobase_www' => TAOBASE_WWW,
+        	'raw_preview'	=> false
 		);
 		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
 		

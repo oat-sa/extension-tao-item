@@ -1805,20 +1805,32 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		$returnValue = '';
 		if(!is_null($qtiInstance)){
-			$data =  $qtiInstance->getData();
-			$matches = array();
-			if(preg_match_all("/<(img|object)(.*)?((src|data)\S?=\S?['\"]+([^'\"]*)['\"]+)[^>]*>/", $data, $matches) > 0){
-				if(isset($matches[5])){
-					foreach($matches[5] as $i => $src){
-						if(!preg_match("/^http/", trim($src))){
-							$url =  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode(trim($src))));
-							$data = str_replace($matches[3][$i], "{$matches[4][$i]}='{$url}'", $data);
-						}
+			$returnValue = self::filteredData($qtiInstance->getData());
+		}
+		return $returnValue;
+	}
+	
+	/**
+	 * Filter the data for the authoring needs
+	 * @param string $data
+	 * @return string
+	 */
+	public static function filteredData($data){
+		$returnValue = '';
+		
+		$returnValue = $data;
+		$matches = array();
+		if(preg_match_all("/<(img|object)(.*)?((src|data)\S?=\S?['\"]+([^'\"]*)['\"]+)[^>]*>/", $returnValue, $matches) > 0){
+			if(isset($matches[5])){
+				foreach($matches[5] as $i => $src){
+					if(!preg_match("/^http/", trim($src))){
+						$url =  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode(trim($src))));
+						$returnValue = str_replace($matches[3][$i], "{$matches[4][$i]}='{$url}'", $returnValue);
 					}
 				}
 			}
-			$returnValue = $data;
 		}
+		
 		return $returnValue;
 	}
 	
