@@ -175,33 +175,31 @@ class QtiAuthoring extends CommonModule {
 		// print_r($itemData);
 		// error_log($itemData);
 		
-		if(!empty($itemData)){
+		$itemObject = $this->getCurrentItem();
+		//save item properties in the option array:
+		$options = array(
+			'title' => $itemObject->getIdentifier(),
+			'label' => '',
+			'timeDependent' => false,
+			'adaptive' => false
+		);
+		if($this->getRequestParameter('title') != '') $options['title'] = $this->getRequestParameter('title');
+		if($this->hasRequestParameter('label')) $options['label'] = $this->getRequestParameter('label');
+		if($this->hasRequestParameter('timeDependent')) $options['timeDependent'] = $this->getRequestParameter('timeDependent');
+		if($this->hasRequestParameter('adaptive')) $options['adaptive'] = $this->getRequestParameter('adaptive');
+		$this->service->setOptions($itemObject, $options);
 		
-			$itemResource = $this->getCurrentItemResource();
-			$itemObject = $this->getCurrentItem();
-			
-			//save item properties in the option array:
-			$options = array(
-				'title' => $itemObject->getIdentifier(),
-				'label' => '',
-				'timeDependent' => false,
-				'adaptive' => false
-			);
-			if($this->getRequestParameter('title') != '') $options['title'] = $this->getRequestParameter('title');
-			if($this->hasRequestParameter('label')) $options['label'] = $this->getRequestParameter('label');
-			if($this->hasRequestParameter('timeDependent')) $options['timeDependent'] = $this->getRequestParameter('timeDependent');
-			if($this->hasRequestParameter('adaptive')) $options['adaptive'] = $this->getRequestParameter('adaptive');
-			$this->service->setOptions($itemObject, $options);
-			
+		if(!empty($itemData)){
 			//save item data:
 			$this->service->saveItemData($itemObject, $itemData);
-			
 			//save to qti:
-			$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-			//echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-			$saved = true;
 		}
-			
+		
+		$itemResource = $this->getCurrentItemResource();
+		$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
+		// print_r($itemObject);
+		// echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+		$saved = true;		
 		
 		if(tao_helpers_Request::isAjax()){
 			echo json_encode(array(
