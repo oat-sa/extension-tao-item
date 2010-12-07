@@ -531,10 +531,17 @@ interactionClass.prototype.setFormChangeListener = function(target){
 	var interaction = this;
 	
 	if(!target){
-		var target = "form";
+		$choiceForm = $('form');//all forms
 	}else{
 		if(!$(target).length){
 			return false;
+		}else{
+			$choiceFormContainer = $(target);
+			if($choiceFormContainer[0].nodeName.toLowerCase() == 'form'){
+				$choiceForm = $choiceFormContainer;
+			}else{
+				$choiceForm = $choiceFormContainer.find('form');
+			}
 		}
 	}
 	
@@ -551,12 +558,12 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		}
 	}
 	
-	$(target).children().change(function(){
+	$choiceForm.children().change(function(){
 		var $modifiedForm = $(this).parents('form');
 		setChanges($modifiedForm);
 	});
 	
-	$(target).find('iframe').each(function(){
+	$choiceForm.find('iframe').each(function(){
 		var $modifiedForm = $(this).parents('form');
 		var setChangesfunction = function(){
 			setChanges($modifiedForm);
