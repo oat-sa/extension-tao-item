@@ -650,7 +650,13 @@
 					    var self = $.data(this, 'wysiwyg');
 						return self.getContent();
                 },
-
+				
+				saveContent: function()
+                {
+					    var self = $.data(this, 'wysiwyg');
+						self.saveContent();
+                },
+				
                 setContent: function (newContent)
                 {
 					    var self = $.data(this, 'wysiwyg');

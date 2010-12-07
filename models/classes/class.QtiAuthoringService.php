@@ -101,7 +101,7 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
 		$returnValue = '';
 		if($interaction->isBlock()){
-			$returnValue .= "<br/><div class='qti_interaction_block'>";
+			$returnValue .= "<br/><div class='qti_interaction_block qti_interaction_box'>";
 		}
 		$returnValue .= "<input id=\"{$interaction->getSerial()}\" class=\"qti_interaction_link\" value=\"{$interaction->getType()} Interaction\" type=\"button\"/>";
 		if($interaction->isBlock()){
@@ -294,6 +294,9 @@ class taoItems_models_classes_QtiAuthoringService
 			foreach($item->getInteractions() as $interaction){
 				$itemData = $this->filterData($interaction, $itemData);
 			}
+			
+			$pattern = "/(<br(.[^<]*)?>)?<div(.[^<]*)?><input(.[^<]*)?{(.*)+}(.[^>]*)?><\/div>/i";
+			$itemData = preg_replace($pattern, '', html_entity_decode($itemData));
 			
 			// $xhtmlData = $this->convertToXHTML($itemData);
 			

@@ -322,16 +322,26 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 	
 	for(var i in links){
 		
-		var interactionSerial = links[i].attr('id');
+		var $interaction = links[i];
+		var interactionSerial = $interaction.attr('id');
 		
 		instance.interactions[interactionSerial] = interactionSerial;
 		
-		links[i].click(function(e){
+		$interaction.click(function(e){
 			e.preventDefault();
 			instance.currentInteractionSerial = $(this).attr('id');
 			instance.loadInteractionForm(instance.currentInteractionSerial);
 		});
 		
+		//append the delete button:
+		$interactionContainer = $interaction.parent('.qti_interaction_box');
+		$deleteButton = $('<a/>').appendTo($interactionContainer);
+		$deleteButton.append('<img src="http://localhost/tao/views/img/cancel.png">');
+		$deleteButton.css('top', 0);
+		$deleteButton.css('float', 'right');
+		$deleteButton.bind('click', {'interactionSerial': interactionSerial}, function(e){
+			instance.deleteInteractions([e.data.interactionSerial]);
+		});
 	}
 }
 
@@ -542,6 +552,9 @@ qtiEdit.prototype.saveItemData = function(itemSerial){
 		var itemSerial = instance.itemSerial;
 	}
 	
+	//make sure that the data is up to date:
+	
+	instance.itemEditor.wysiwyg('saveContent');
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/saveItemData",
@@ -597,15 +610,23 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 			
 			if(r.deleted){
 				for(var i in interactionSerials){
-					if(instance.interactionSerial == interactionSerials[i]){
+					var interactionSerial = interactionSerials[i];
+					if(instance.interactionSerial == interactionSerial){
 						// destroy the interaction form:
 						$(instance.interactionFormContent).empty();
 					}
-					delete instance.interactions[interactionSerials[i]];
+					delete instance.interactions[interactionSerial];
+				
+					//delete:
+					var $interactions = qtiEdit.getEltInFrame('#'+interactionSerial);
+					if($interactions.length){
+						if($interactions[0]){
+							$interactions[0].parent().remove();
+						}
+					}
 				}
 				
-				//destroy the response form:
-				// if(responseClass.grid) responseClass.grid.destroyGrid(instance.responseGrid);
+				//unload the interaction form if needed
 				
 				//save item data, i.e. validate the changes operated on the item data:
 				instance.saveItemData();
