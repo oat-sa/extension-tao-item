@@ -925,18 +925,10 @@ class taoItems_models_classes_QTI_Interaction
     public function setObject($objectData = array())
     {
         // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 begin
-		// $object = array('type'=>'image/jpg');
-		// if(isset($objectData['data'])){
-			// $object['data'] = $objectData['data'];
-		// }
-		// if(isset($objectData['width'])){
-			// $object['width'] = $objectData['width'];
-		// }
-		// if(isset($objectData['height'])){
-			// $object['height'] = $objectData['height'];
-		// }
 		
-		$this->object = $objectData;
+		foreach($objectData as $key=>$value){
+			$this->object[$key] = $value;
+		}
 		
         // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 end
     }
