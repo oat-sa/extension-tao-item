@@ -20,7 +20,8 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	this.relatedItemSerial = relatedItemSerial;
 	
 	this.responseMappingMode = false;
-			
+	this.choiceAutoSave = true;
+	
 	this.choices = [];
 	this.modifiedInteraction = false;
 	this.modifiedChoices = [];
@@ -58,28 +59,35 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 			instance.saveInteraction($myForm);
 		}
 		
-		for(var groupSerial in instance.modifiedGroups){
-			var $groupForm = $('#'+groupSerial);
-			
-			//linearize+submit:
-			if($groupForm.length){
-				instance.saveGroup($groupForm);
-			}
-		}
+		instance.saveModifiedChoices();
 		
-		for(var choiceSerial in instance.modifiedChoices){
-			var $choiceForm = $('#'+choiceSerial);
-			
-			//linearize+submit:
-			if($choiceForm.length){
-				instance.saveChoice($choiceForm);
-			}
-		}
-		
-		//check modified choices then send it as well:
 		return false;
 	});
 }
+
+interactionClass.prototype.saveModifiedChoices = function(){
+
+	for(var groupSerial in this.modifiedGroups){
+		var $groupForm = $('#'+groupSerial);
+		
+		//serialize+submit:
+		if($groupForm.length){
+			this.saveGroup($groupForm);
+		}
+	}
+	
+	for(var choiceSerial in this.modifiedChoices){
+		var $choiceForm = $('#'+choiceSerial);
+		
+		//serialize+submit:
+		if($choiceForm.length){
+			this.saveChoice($choiceForm);
+		}
+	}
+	
+}
+
+
 
 interactionClass.prototype.saveInteraction = function($myForm){
 	//TODO: check unicity of the id:
@@ -400,64 +408,88 @@ interactionClass.prototype.setShapeEditListener = function(target){
 
 interactionClass.prototype.addChoice = function($appendTo, containerClass, groupSerial){
 	
+	var interaction = this;
+	
 	if(!$appendTo || !$appendTo.length){
 		throw 'the append target element do not exists';
 	}
 	
-	var postData = {};
-	postData.interactionSerial = this.interactionSerial;
+	var addChoice = function($appendTo, containerClass, groupSerial){
 	
-	if(groupSerial){
-		postData.groupSerial = groupSerial;
+		var postData = {};
+		postData.interactionSerial = interaction.interactionSerial;
+		
+		if(groupSerial){
+			postData.groupSerial = groupSerial;
+		}
+		
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/addChoice",
+		   data: postData,
+		   dataType: 'json',
+		   success: function(r){
+				// CL('choice added');
+				if(r.added){
+					
+					if(r.reload){
+						interaction.loadChoicesForm();
+						return;
+					}
+					
+					var $newFormElt = $('<div/>');
+					$newFormElt.attr('id', r.choiceSerial);
+					$newFormElt.attr('class', containerClass);
+					$newFormElt.append(r.choiceForm);
+					$appendTo.append($newFormElt);
+					
+					$newFormElt.hide();
+					interaction.initToggleChoiceOptions();
+					$newFormElt.show();
+					
+					qtiEdit.initFormElements($newFormElt);
+					interaction.setFormChangeListener('#'+r.choiceSerial);
+					interaction.setShapeEditListener('#'+r.choiceSerial);
+					
+					//add to the local choices order array:
+					//if interaction type is match, save the new choice in one of the group array:
+					if(r.groupSerial){
+						if(interaction.orderedChoices[r.groupSerial]){
+							interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
+						}else{
+							throw 'the group serial is not defined in the ordered choices array';
+						}
+					}else{
+						interaction.orderedChoices.push(r.choiceSerial);
+					}
+					
+					//rebuild the response grid:
+					new responseClass(interaction.responseGrid, interaction);
+				}
+		   }
+		});
+	
 	}
 	
-	var interaction = this;
-	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/addChoice",
-	   data: postData,
-	   dataType: 'json',
-	   success: function(r){
-			// CL('choice added');
-			if(r.added){
-				
-				if(r.reload){
-					interaction.loadChoicesForm();
-					return;
-				}
-				
-				var $newFormElt = $('<div/>');
-				$newFormElt.attr('id', r.choiceSerial);
-				$newFormElt.attr('class', containerClass);
-				$newFormElt.append(r.choiceForm);
-				$appendTo.append($newFormElt);
-				
-				$newFormElt.hide();
-				interaction.initToggleChoiceOptions();
-				$newFormElt.show();
-				
-				qtiEdit.initFormElements($newFormElt);
-				interaction.setFormChangeListener('#'+r.choiceSerial);
-				interaction.setShapeEditListener('#'+r.choiceSerial);
-				
-				//add to the local choices order array:
-				//if interaction type is match, save the new choice in one of the group array:
-				if(r.groupSerial){
-					if(interaction.orderedChoices[r.groupSerial]){
-						interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
-					}else{
-						throw 'the group serial is not defined in the ordered choices array';
-					}
-				}else{
-					interaction.orderedChoices.push(r.choiceSerial);
-				}
-				
-				//rebuild the response grid:
-				new responseClass(interaction.responseGrid, interaction);
+	if(this.choiceAutoSave){
+		this.saveModifiedChoices();
+		
+		var timer = null;
+		var stopTimer = function(){
+			addChoice($appendTo, containerClass, groupSerial);
+			clearTimeout(timer);
+		}
+		//check every half a second if all choices have been saved:
+		timer = setTimeout(function(){
+			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
+				stopTimer();
 			}
-	   }
-	});
+		}, 500);
+		
+	}else{
+		addChoice($appendTo, containerClass, groupSerial);
+	}
+
 }
 
 interactionClass.prototype.initToggleChoiceOptions = function(options){
@@ -526,6 +558,19 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 	}
 }
 
+interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
+	if($modifiedForm.length){
+		var id = $modifiedForm.attr('id');
+		if(id.indexOf('ChoiceForm') == 0){
+			this.modifiedChoices[id] = 'modified';//it is a choice form:
+		}else if(id.indexOf('InteractionForm') == 0){
+			this.modifiedInteraction = true;
+		}else if(id.indexOf('GroupForm') == 0){
+			this.modifiedGroups[id] = 'modified';
+		}
+	}
+}
+
 interactionClass.prototype.setFormChangeListener = function(target){
 	
 	var interaction = this;
@@ -545,28 +590,15 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		}
 	}
 	
-	var setChanges = function($modifiedForm){
-		if($modifiedForm.length){
-			var id = $modifiedForm.attr('id');
-			if(id.indexOf('ChoiceForm') == 0){
-				interaction.modifiedChoices[id] = 'modified';//it is a choice form:
-			}else if(id.indexOf('InteractionForm') == 0){
-				interaction.modifiedInteraction = true;
-			}else if(id.indexOf('GroupForm') == 0){
-				interaction.modifiedGroups[id] = 'modified';
-			}
-		}
-	}
-	
 	$choiceForm.children().change(function(){
 		var $modifiedForm = $(this).parents('form');
-		setChanges($modifiedForm);
+		interaction.setModifiedChoicesByForm($modifiedForm);
 	});
 	
 	$choiceForm.find('iframe').each(function(){
 		var $modifiedForm = $(this).parents('form');
 		var setChangesfunction = function(){
-			setChanges($modifiedForm);
+			interaction.setModifiedChoicesByForm($modifiedForm);
 		};
 		
 		$($(this)[0].contentWindow.document).click(setChangesfunction);
@@ -849,21 +881,21 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 		controls: controls,
 		gridComplete: this.bindChoiceLinkListener,
 		events: {
-			  keyup : function(e){
-				if(interaction.getDeletedChoices(true).length > 0){
-					if(!confirm('please confirm deletion of the choice(s)')){
-						// undo:
-						interaction.interactionEditor.wysiwyg('undo');
-					}else{
-						var deletedChoices = interaction.getDeletedChoices();
-						for(var key in deletedChoices){
-							//delete choices one by one:
-							interaction.deleteChoice(deletedChoices[key]);
-						}
+		  keyup : function(e){
+			if(interaction.getDeletedChoices(true).length > 0){
+				if(!confirm('please confirm deletion of the choice(s)')){
+					// undo:
+					interaction.interactionEditor.wysiwyg('undo');
+				}else{
+					var deletedChoices = interaction.getDeletedChoices();
+					for(var key in deletedChoices){
+						//delete choices one by one:
+						interaction.deleteChoice(deletedChoices[key]);
 					}
-					return false;
 				}
-			  }
+				return false;
+			}
+		  }
 		}
 	});
 	
@@ -874,22 +906,32 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 
 interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, options){
 	
+	var interaction = this;
+	
 	var defaultOptions = {
 		onDrawn: function(choiceSerial, shapeObject, self){
 			//export shapeObject to qti:
 			if(choiceSerial && shapeObject){
 				var qtiCoords = self.exportShapeToQti(choiceSerial);
 				if(qtiCoords){
-					$('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
-					//indicate manually that the choice has been modified:
-					interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
+					// $('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
+					// interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
+					
+					$choiceGroupForm = $('#'+choiceSerial).find('form');
+					if($choiceGroupForm.length){
+						$choiceGroupForm.find('input[name=coords]').val(qtiCoords);
+						interaction.setModifiedChoicesByForm($choiceGroupForm);
+					}else{
+						//throw 'no choice or group form found';
+					}
+					
 				}
 			}
 		}
 	};
 	
 	var shapeEditorOption = $.extend(defaultOptions, options);
-	var interaction = this;
+	
 	var myShapeEditor = new qtiShapesEditClass(
 		'formInteraction_object', 
 		backgroundImagePath,
@@ -1002,56 +1044,78 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 
 interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 
-	var interactionSerial = this.interactionSerial;
 	var interaction = this;
 	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/addGroup",
-	   data: {
-			'interactionSerial': interactionSerial,
-			'interactionData': interactionData
-	   },
-	   dataType: 'json',
-	   success: function(r){
-			
-			if(interaction.interactionEditor){//gapmatch interaction only
-				//set the content:
-				interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
-			
-				//then add listener
-				interaction.bindChoiceLinkListener();//ok keep
-			} 
-			
-			//reload choices form
-			if(r.reload){
-				interaction.loadChoicesForm();
-				return;
+	var addGroup = function(interactionData, $appendTo){
+	
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/addGroup",
+		   data: {
+				'interactionSerial': interaction.interactionSerial,
+				'interactionData': interactionData
+		   },
+		   dataType: 'json',
+		   success: function(r){
+				
+				if(interaction.interactionEditor){//gapmatch interaction only
+					//set the content:
+					interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
+				
+					//then add listener
+					interaction.bindChoiceLinkListener();//ok keep
+				} 
+				
+				//reload choices form
+				if(r.reload){
+					interaction.loadChoicesForm();
+					return;
+				}
+				
+				//add choice form:
+				var $newFormElt = $('<div/>');
+				$newFormElt.attr('id', r.groupSerial);//r.groupSerial
+				$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
+				$newFormElt.append(r.groupForm);
+				
+				//add to parameter
+				if(!$appendTo){
+					var $appendTo = $('#formContainer_groups');//append to group!
+				}
+				$appendTo.append($newFormElt);
+				
+				$newFormElt.hide();
+				interaction.initToggleChoiceOptions({'delete': false});
+				$newFormElt.show();
+				
+				interaction.setFormChangeListener('#'+r.groupSerial);
+				interaction.setShapeEditListener('#'+r.groupSerial);
+				
+				//rebuild the response grid:
+				new responseClass(interaction.responseGrid, interaction);
+		   }
+		});
+	
+	}
+	
+	if(this.choiceAutoSave){
+		this.saveModifiedChoices();
+		
+		var timer = null;
+		var stopTimer = function(){
+			addGroup(interactionData, $appendTo);
+			clearTimeout(timer);
+		}
+		//check every half a second if all choices have been saved:
+		timer = setTimeout(function(){
+			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
+				stopTimer();
 			}
-			
-			//add choice form:
-			var $newFormElt = $('<div/>');
-			$newFormElt.attr('id', r.groupSerial);//r.groupSerial
-			$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
-			$newFormElt.append(r.groupForm);
-			
-			//add to parameter
-			if(!$appendTo){
-				var $appendTo = $('#formContainer_groups');//append to group!
-			}
-			$appendTo.append($newFormElt);
-			
-			$newFormElt.hide();
-			interaction.initToggleChoiceOptions({'delete': false});
-			$newFormElt.show();
-			
-			interaction.setFormChangeListener('#'+r.groupSerial);
-			interaction.setShapeEditListener('#'+r.groupSerial);
-			
-			//rebuild the response grid:
-			new responseClass(interaction.responseGrid, interaction);
-	   }
-	});
+		}, 500);
+		
+	}else{
+		addGroup(interactionData, $appendTo);
+	}
 }
 
 interactionClass.prototype.bindChoiceLinkListener = function(){
