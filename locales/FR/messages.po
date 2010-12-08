@@ -1,12 +1,6 @@
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
 
-msgid "Add"
-msgstr "Ajouter"
-
-msgid "Add a question"
-msgstr "Ajouter une question"
-
 msgid "An error occured while saving the item"
 msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
 
@@ -19,23 +13,8 @@ msgstr "Editeur"
 msgid "Back"
 msgstr "Retour"
 
-msgid "Cancel"
-msgstr "Annuler"
-
 msgid "Class saved"
 msgstr "Classe enregistrée"
-
-msgid "Comment"
-msgstr "Commentaire"
-
-msgid "DE"
-msgstr "German"
-
-msgid "Date"
-msgstr "Date"
-
-msgid "EN"
-msgstr "English"
 
 msgid "Edit Item"
 msgstr "Modifier un item"
@@ -46,20 +25,8 @@ msgstr "Modifier une classe"
 msgid "Edit item"
 msgstr "Modifier un item"
 
-msgid "Edit item comment"
-msgstr "Modifier les commentaires de l'item"
-
-msgid "FR"
-msgstr "French"
-
-msgid "File Manager"
-msgstr "Gestionnaire de fichier"
-
-msgid "Insert"
-msgstr "Ajouter"
-
-msgid "Item authoring"
-msgstr "Editeur d'item"
+msgid "Item"
+msgstr "Item"
 
 msgid "Item library"
 msgstr "Librairie d'items"
@@ -70,14 +37,8 @@ msgstr "L'item a été enregistré avec succès"
 msgid "Items"
 msgstr "Items"
 
-msgid "LU"
-msgstr "Luxemburgish"
-
 msgid "Manage items"
 msgstr "Gérer les items"
-
-msgid "Meta Data"
-msgstr "Meta-données"
 
 msgid "Not yet available"
 msgstr "Pas encore disponible"
@@ -85,47 +46,17 @@ msgstr "Pas encore disponible"
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
 
-msgid "Parameters"
-msgstr "Paramètres"
-
 msgid "Please select an item before!"
 msgstr "Veuillez choisir un item!"
 
 msgid "Preview"
 msgstr "Afficher"
 
-msgid "Preview available inside the authoring tool"
-msgstr "La prévisualisation est disponible depuis l'éditeur"
-
-msgid "Preview not yet available"
-msgstr "Prévisualisation non disponible"
-
-msgid "Problem content"
-msgstr "Problématique"
-
-msgid "Question"
-msgstr "Question"
-
 msgid "Save"
 msgstr "Enregistrer"
 
-msgid "Save and close"
-msgstr "Sauver et enregistrer"
-
-msgid "TAO Authoring Tool"
-msgstr "Editeur TAO"
-
-msgid "Template"
-msgstr "Modèle"
-
 msgid "The Item module enables the creation and design of items and exercises."
 msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
-
-msgid "User"
-msgstr "Utilisateur"
-
-msgid "and"
-msgstr "et"
 
 msgid "create table"
 msgstr "créer un tableau"
@@ -136,20 +67,11 @@ msgstr "supprimer"
 msgid "duplicate"
 msgstr "dupliquer"
 
-msgid "edit item"
-msgstr "modifier l'item"
-
 msgid "export"
 msgstr "exporter"
 
-msgid "fullscreen preview"
-msgstr "prévisualisation en plein écran"
-
 msgid "import"
 msgstr "importer"
-
-msgid "inquiries"
-msgstr "questions"
 
 msgid "lists"
 msgstr "listes"
@@ -166,936 +88,393 @@ msgstr "nouvelle classe"
 msgid "new item"
 msgstr "nouvel item"
 
-msgid "new property"
-msgstr "nouvelle propriété"
+msgid "no"
+msgstr "non"
 
 msgid "preview"
 msgstr "Afficher"
 
-msgid "propositions"
-msgstr "propositions"
-
-msgid "rdf"
-msgstr "rdf"
-
 msgid "search"
 msgstr "Recharcher"
 
-msgid ""
-msgstr ""
-
-msgid "+partName+"
-msgstr ""
+msgid "yes"
+msgstr "oui"
 
 msgid "A QTI item file is an XML file following the QTI standard version 2.0"
-msgstr ""
+msgstr "Un fichier d'item QTI est un fichier XML suivant le standard QTI version 2.0"
 
 msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
-msgstr ""
-
-msgid "A question material element must have an ID"
-msgstr ""
-
-msgid "A question material element must have an ID, want you generate one automatically ?"
-msgstr ""
+msgstr "Un paquet QTI est une archive ZIP contenant un fichier msmanifest.xml ainsi que les ressources QTI à importer"
 
 msgid "Add a choice"
-msgstr ""
+msgstr "Ajouter un choix"
 
 msgid "Add the source file"
-msgstr ""
+msgstr "Ajouter le fichier source"
 
 msgid "Advanced options"
-msgstr ""
+msgstr "Options avancées"
 
 msgid "Advanced properties"
-msgstr ""
+msgstr "Propriétés avancées"
 
 msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
-msgstr ""
-
-msgid "An answer proposition element must have an ID"
-msgstr ""
+msgstr "Un paquet XHTML est une archive ZIP contenant un fichier index.html au format XHTML 1.0 Transitional ainsi que ses ressources à importer (images, scripts, css, video, etc.)"
 
 msgid "An error occured during the import"
-msgstr ""
+msgstr "Une erreur est survenue durant l'import"
 
 msgid "An error occured while loading the item:"
-msgstr ""
-
-msgid "An error occured while loading the item: "
-msgstr ""
+msgstr "Une erreur est survenue durant le chargement de l'item:"
 
 msgid "An error occurs during the import"
-msgstr ""
-
-msgid "Are you sure ?"
-msgstr ""
-
-msgid "Are you sure you want save the document ?"
-msgstr ""
-
-msgid "Attribute deleted with success"
-msgstr ""
-
-msgid "Attribute inserted with success"
-msgstr ""
-
-msgid "Attribute updated with success"
-msgstr ""
-
-msgid "Authoring Tool has been developped especially for"
-msgstr ""
-
-msgid "Authoring Tool has been developped especially for "
-msgstr ""
-
-msgid "Browser compatibility"
-msgstr ""
-
-msgid "Browser incompatibility"
-msgstr ""
+msgstr "Une erreur est survenue durant l'import"
 
 msgid "Changing shape type will delete the old shape, are you sure?"
-msgstr ""
+msgstr "Changer le type de forme effacera l'ancienne, est-vous certains?"
 
 msgid "Choice"
-msgstr ""
+msgstr "Choix"
 
 msgid "Choices editor:"
-msgstr ""
-
-msgid "Choose a type of item ?"
-msgstr ""
-
-msgid "Choose a type of stimulus ?"
-msgstr ""
-
-msgid "Click to select the node :"
-msgstr ""
+msgstr "Editeur de choix:"
 
 msgid "Client"
-msgstr ""
-
-msgid "Common Templates"
-msgstr ""
-
-msgid "Confirm"
-msgstr ""
+msgstr "Client"
 
 msgid "Content"
-msgstr ""
+msgstr "Contenu"
 
 msgid "Correct Responses"
-msgstr ""
-
-msgid "Create your own SVG ?"
-msgstr ""
-
-msgid "Custom Templates"
-msgstr ""
+msgstr "Réponse correcte"
 
 msgid "Default value"
-msgstr ""
-
-msgid "Delete"
-msgstr ""
+msgstr "Valeur par défaut"
 
 msgid "Delete choice"
-msgstr ""
+msgstr "Supprimer le choix"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Désactivé"
 
 msgid "Do you really want to delete the row?"
-msgstr ""
-
-msgid "Document has been edited"
-msgstr ""
-
-msgid "Document has been saved with success"
-msgstr ""
-
-msgid "Document has been updated with success"
-msgstr ""
+msgstr "Etes-vous certains de vouloir supprimer la ligne?"
 
 msgid "Download item content"
-msgstr ""
-
-msgid "Element removed with success"
-msgstr ""
+msgstr "Téléchager le contenu de l'item"
 
 msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
-msgstr ""
+msgstr "Cela vous permet d'exporter une archive ZIP contenant un dossier par item. Le dossier de chaque item contient un fichier XML principal (les données de l'item) ainsi que ses ressources externes (media, manifests, etc.)"
 
 msgid "Enabled"
-msgstr ""
+msgstr "Activé"
 
 msgid "Error in background file:"
-msgstr ""
-
-msgid "Errors occured during the XML parsing of your document"
-msgstr ""
+msgstr "Erreur de le fichier d'arrière plan:"
 
 msgid "Expected length"
-msgstr ""
+msgstr "Longueur attendue"
 
 msgid "Expected lines"
-msgstr ""
+msgstr "Nombre de lignes"
 
 msgid "Export Options"
-msgstr ""
+msgstr "Options d'export"
 
 msgid "Fake delivery"
-msgstr ""
+msgstr "Fausse passation"
 
 msgid "Fake process"
-msgstr ""
+msgstr "Faux processus"
 
 msgid "Fake test"
-msgstr ""
+msgstr "Faux test"
 
 msgid "File name"
-msgstr ""
+msgstr "Nom du fichier"
 
 msgid "Fixed"
-msgstr ""
+msgstr "Fixé"
 
 msgid "Float"
-msgstr ""
-
-msgid "Follow the wizard to insert the new element"
-msgstr ""
-
-msgid "Follow the wizard to insert the new element ( ' + ns + ':' + tagName + ' )"
-msgstr ""
-
-msgid "For more information about answer proposition, go to the"
-msgstr ""
-
-msgid "For more information about positionning, go to the"
-msgstr ""
-
-msgid "For more information about question material, go to the"
-msgstr ""
-
-msgid "Horizontal ?"
-msgstr ""
-
-msgid "Horizontal Center Align"
-msgstr ""
-
-msgid "Horizontal Left Align"
-msgstr ""
-
-msgid "Horizontal Right Align"
-msgstr ""
-
-msgid "How Many Checkboxes ?"
-msgstr ""
-
-msgid "How Many Columns ?"
-msgstr ""
-
-msgid "How Many Options ?"
-msgstr ""
-
-msgid "How Many Radio Button ?"
-msgstr ""
-
-msgid "How Many Rows ?"
-msgstr ""
-
-msgid "How many radio button(s) ?"
-msgstr ""
+msgstr "Nombre à virgule"
 
 msgid "Identifier"
-msgstr ""
-
-msgid "Image Button"
-msgstr ""
+msgstr "Identifiant"
 
 msgid "Image height"
-msgstr ""
+msgstr "Hauteur de l'image"
 
 msgid "Image label"
-msgstr ""
+msgstr "Intitulé de l'image"
 
 msgid "Image source url"
-msgstr ""
+msgstr "URL Source de l'image"
 
 msgid "Image width"
-msgstr ""
-
-msgid "Insert Component"
-msgstr ""
-
-msgid "Insert Fragment of code"
-msgstr ""
+msgstr "Largeur de l'image"
 
 msgid "Integer"
-msgstr ""
+msgstr "Nombre entier"
 
 msgid "Interaction content editor:"
-msgstr ""
+msgstr "Editeur de contenu des interactions:"
 
 msgid "Interaction editor:"
-msgstr ""
-
-msgid "Item"
-msgstr ""
+msgstr "Editeur d'intéraction"
 
 msgid "Item Editor:"
-msgstr ""
+msgstr "Editeur d'item:"
 
 msgid "Item Properties:"
-msgstr ""
-
-msgid "Item Type"
-msgstr ""
+msgstr "Propriétés de l'item:"
 
 msgid "Item content saved"
-msgstr ""
-
-msgid "Item has been inserted with success"
-msgstr ""
-
-msgid "Item has been updated with success"
-msgstr ""
+msgstr "Le contenu de l'item a été sauvegardé"
 
 msgid "Item imported successfully"
-msgstr ""
+msgstr "Item importé avec succès"
 
 msgid "Item saved"
-msgstr ""
-
-msgid "LEFT PANEL"
-msgstr ""
+msgstr "Item suavegardé"
 
 msgid "Label"
-msgstr ""
+msgstr "Intitulé"
 
 msgid "Lower bound"
-msgstr ""
+msgstr "Limite inférieure"
 
 msgid "Manage item content"
-msgstr ""
+msgstr "Gérer le contenu de l'item"
 
 msgid "Mapping options:"
-msgstr ""
+msgstr "Options d'association:"
 
 msgid "Match Group"
-msgstr ""
+msgstr "Groupe associé"
 
 msgid "Match group"
-msgstr ""
+msgstr "Groupe associé"
 
 msgid "Matching side"
-msgstr ""
+msgstr "Côté associé"
 
 msgid "Maximal number of matching"
-msgstr ""
+msgstr "Nombre maximal d'assocations"
 
 msgid "Maximum number of associations"
-msgstr ""
+msgstr "Nombre maximal d'assocations"
 
 msgid "Maximum number of choices"
-msgstr ""
+msgstr "Nombre maximal de choix"
 
 msgid "Maximum number of separate strings"
-msgstr ""
+msgstr "Nombre maximal de chaînes séparées"
 
 msgid "Modification on choice applied"
-msgstr ""
+msgstr "La modification sur le choix a été appliquée"
 
 msgid "Modification on interaction applied"
-msgstr ""
+msgstr "La modification sur l'intéraction a été appliquée"
 
 msgid "Modification on response applied"
-msgstr ""
-
-msgid "Move"
-msgstr ""
+msgstr "La modification sur la réponse a été appliquée"
 
 msgid "Move Down"
-msgstr ""
+msgstr "Descendre"
 
 msgid "Move Up"
-msgstr ""
-
-msgid "New Element"
-msgstr ""
+msgstr "Monter"
 
 msgid "No user is logged in"
-msgstr ""
+msgstr "Aucun utilisateur authentifié"
 
 msgid "Number base for value interpretation"
-msgstr ""
-
-msgid "Once you finished click on the continue button"
-msgstr ""
-
-msgid "Open Document"
-msgstr ""
+msgstr "Base numérique pour l'interprétation de valeur"
 
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 msgid "Ordered response"
-msgstr ""
-
-msgid "Orient the grid by :"
-msgstr ""
-
-msgid "Orient the grid by : "
-msgstr ""
+msgstr "Réponse ordonné"
 
 msgid "Orientation"
-msgstr ""
+msgstr "Orientation"
 
 msgid "Pattern mask"
-msgstr ""
+msgstr "Masque d'expression régulière"
 
 msgid "Place holder text"
-msgstr ""
+msgstr "texte d'espace réservé"
 
 msgid "Preview Console"
-msgstr ""
-
-msgid "Preview dialog"
-msgstr ""
+msgstr "Moniteur de prévisualisation"
 
 msgid "Processing rule:"
-msgstr ""
+msgstr "Instruction de traitement:"
 
 msgid "Processing type"
-msgstr ""
+msgstr "Type de traitement"
 
 msgid "Prompt"
-msgstr ""
-
-msgid "RIGHT PANEL"
-msgstr ""
+msgstr "Invite"
 
 msgid "Recovery context"
-msgstr ""
-
-msgid "Redo"
-msgstr ""
-
-msgid "Remove Node"
-msgstr ""
-
-msgid "Resize"
-msgstr ""
+msgstr "Restauration du context"
 
 msgid "Response editor:"
-msgstr ""
+msgstr "Editeur de réponse:"
 
 msgid "Response processing template editor:"
-msgstr ""
+msgstr "Editeur de modèles de traietement des réponses:"
 
 msgid "Response variable type"
-msgstr ""
+msgstr "Type de variable de réponse"
 
 msgid "Responses Editor"
-msgstr ""
-
-msgid "SUB PANEL"
-msgstr ""
-
-msgid "Save Document"
-msgstr ""
+msgstr "Editeur de réponse"
 
 msgid "Score"
-msgstr ""
-
-msgid "Select a file"
-msgstr ""
-
-msgid "Select mode disabled"
-msgstr ""
-
-msgid "Select mode enabled"
-msgstr ""
+msgstr "Score"
 
 msgid "Server"
-msgstr ""
-
-msgid "Set Document"
-msgstr ""
-
-msgid "Setting Button"
-msgstr ""
-
-msgid "Setting Button Image"
-msgstr ""
-
-msgid "Setting Button text"
-msgstr ""
-
-msgid "Setting Checkboxes"
-msgstr ""
-
-msgid "Setting Description"
-msgstr ""
-
-msgid "Setting Grid"
-msgstr ""
-
-msgid "Setting Image"
-msgstr ""
-
-msgid "Setting Item"
-msgstr ""
-
-msgid "Setting Label"
-msgstr ""
-
-msgid "Setting Likert Scale"
-msgstr ""
-
-msgid "Setting Radio Group"
-msgstr ""
-
-msgid "Setting Select Box"
-msgstr ""
-
-msgid "Setting Textbox"
-msgstr ""
+msgstr "Serveur"
 
 msgid "Shape"
-msgstr ""
+msgstr "Forme"
 
 msgid "Shuffle choices"
-msgstr ""
-
-msgid "Snippets"
-msgstr ""
-
-msgid "Snippets toolbox"
-msgstr ""
-
-msgid "Step 1"
-msgstr ""
-
-msgid "Step 1 ok. Continue to Step2 or validate the wizard without attributes"
-msgstr ""
-
-msgid "Step 2"
-msgstr ""
-
-msgid "Stimulus Type"
-msgstr ""
+msgstr "Mélanger les choix"
 
 msgid "String"
-msgstr ""
+msgstr "Chaîne de caractère"
 
 msgid "String identifier"
-msgstr ""
+msgstr "Identifiant du texte"
 
 msgid "Stylesheets manager:"
-msgstr ""
-
-msgid "Sure ?"
-msgstr ""
-
-msgid "TAO Team"
-msgstr ""
-
-msgid "Target Button"
-msgstr ""
-
-msgid "Target Checkboxes"
-msgstr ""
-
-msgid "Target Description.ejs"
-msgstr ""
-
-msgid "Target Grid"
-msgstr ""
-
-msgid "Target Image"
-msgstr ""
-
-msgid "Target Label"
-msgstr ""
-
-msgid "Target Radio Group"
-msgstr ""
-
-msgid "Target SVG"
-msgstr ""
-
-msgid "Target Select Box"
-msgstr ""
-
-msgid "Target Text entry"
-msgstr ""
-
-msgid "Target Textbox"
-msgstr ""
-
-msgid "Target a position for the new element"
-msgstr ""
-
-msgid "Target a position for the new snipet"
-msgstr ""
-
-msgid "Target a position for the new snipet ?"
-msgstr ""
-
-msgid "Target a question material"
-msgstr ""
-
-msgid "Target an anwser proposition"
-msgstr ""
-
-msgid "Teams"
-msgstr ""
-
-msgid "Text Button"
-msgstr ""
-
-msgid "Thank you for your understanding,"
-msgstr ""
-
-msgid "The Right Answer"
-msgstr ""
+msgstr "Gestion des feuilles de style:"
 
 msgid "The choice cannot be saved"
-msgstr ""
+msgstr "Le choix ne peux pas être sauvegardé"
 
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
-msgstr ""
-
-msgid "The element cannot be moved at the target placed"
-msgstr ""
-
-msgid "The element has been moved successfully"
-msgstr ""
-
-msgid "The element has been resized successfully"
-msgstr ""
-
-msgid "The element has been successfully duplicated"
-msgstr ""
-
-msgid "The element has been successfully moved"
-msgstr ""
-
-msgid "The element has been successfully removed"
-msgstr ""
-
-msgid "The element(s) have been successfully removed"
-msgstr ""
-
-msgid "The element\'s attribute has been updated successfully"
-msgstr ""
-
-msgid "The elements have been moved successfully"
-msgstr ""
-
-msgid "The elements have been successfully bottom aligned verticaly"
-msgstr ""
-
-msgid "The elements have been successfully centered horizontaly"
-msgstr ""
-
-msgid "The elements have been successfully centered verticaly"
-msgstr ""
-
-msgid "The elements have been successfully left aligned horizontaly"
-msgstr ""
-
-msgid "The elements have been successfully right aligned horizontaly"
-msgstr ""
-
-msgid "The elements have been successfully top aligned verticaly"
-msgstr ""
+msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
 
 msgid "The item has been successfully updated"
-msgstr ""
+msgstr "L'item a été mis à jour avec succès"
 
 msgid "The mapping options have been applied"
-msgstr ""
-
-msgid "The new element ( ' + ns + ':' + tagName + ' )  has been successfully inserted"
-msgstr ""
-
-msgid "The new element has been successfully inserted"
-msgstr ""
+msgstr "Les options d'assocation ont été appliquées avec succès"
 
 msgid "The response form is available for templates driven item only.<br/>"
-msgstr ""
+msgstr "Le formulaire de réponse n'est disponible que pour les items issues de modèles.<br/>"
 
 msgid "The response processing has been saved"
-msgstr ""
+msgstr "Le mode de traitement des réponses a été sauvegardé"
 
 msgid "The responses cannot be updated"
-msgstr ""
+msgstr "Les réponses ne peuvent être mises à jour"
 
 msgid "The responses have been updated"
-msgstr ""
+msgstr "Les réponse ont été mises à jour"
 
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 msgid "Unable to copy the resources"
-msgstr ""
+msgstr "Impossible de copier les ressources"
 
 msgid "Unable to move"
-msgstr ""
-
-msgid "Undo"
-msgstr ""
-
-msgid "Update Attribute"
-msgstr ""
+msgstr "Impossible à déplacer"
 
 msgid "Upload QTI File"
-msgstr ""
+msgstr "Télécharger un fichier QTI"
 
 msgid "Upload a QTI Package File"
-msgstr ""
+msgstr "Télécharger un paquet QTI"
 
 msgid "Upload an XHTML Package File"
-msgstr ""
+msgstr "Télécharger un paquet XHTML"
 
 msgid "Upload new style sheet:"
-msgstr ""
+msgstr "Télécharger une nouvelle feuille de style:"
 
 msgid "Upload the item content"
-msgstr ""
+msgstr "Télécharger le contenu de l'item"
 
 msgid "Upload the style sheet (CSS format required)"
-msgstr ""
+msgstr "Télécharger la feuille de style (le format CSS est obligatoire)"
 
 msgid "Uploaded style files:"
-msgstr ""
+msgstr "Télécharger des feuilles de style:"
 
 msgid "Upper bound"
-msgstr ""
-
-msgid "Use the Workspace View or the Hierarchical View"
-msgstr ""
+msgstr "Limite supérieure"
 
 msgid "Validation has failed"
-msgstr ""
+msgstr "La validation a échouée"
 
 msgid "Validation of the imported file has failed"
-msgstr ""
+msgstr "La validation des fichiers importés a échouée"
 
 msgid "Value"
-msgstr ""
-
-msgid "Vertical ?"
-msgstr ""
-
-msgid "Vertical Bottom Align"
-msgstr ""
-
-msgid "Vertical top Align"
-msgstr ""
-
-msgid "Watch Historic"
-msgstr ""
-
-msgid "What is text of your description ?"
-msgstr ""
-
-msgid "What is the identifier of your item ?"
-msgstr ""
-
-msgid "What is the image of your button ?"
-msgstr ""
-
-msgid "What is the label of your button ?"
-msgstr ""
-
-msgid "What is the labels of the options ?"
-msgstr ""
-
-msgid "What is the labels of your checkboxes ?"
-msgstr ""
-
-msgid "What is the labels of your radio buttons ?"
-msgstr ""
-
-msgid "What is the meaning of your likert scale (left to right) ?"
-msgstr ""
-
-msgid "What is the right answer ?"
-msgstr ""
-
-msgid "What is the text of the radio button(s) ?"
-msgstr ""
-
-msgid "What is the text of your label ?"
-msgstr ""
-
-msgid "What is the url of your image ?"
-msgstr ""
-
-msgid "What orientation ?"
-msgstr ""
-
-msgid "What scale ?"
-msgstr ""
-
-msgid "What type of button ?"
-msgstr ""
-
-msgid "What type of widget ?"
-msgstr ""
-
-msgid "Which Sound you want ?"
-msgstr ""
-
-msgid "Which is the team 1 ?"
-msgstr ""
-
-msgid "Which is the team 2 ?"
-msgstr ""
-
-msgid "Widgets"
-msgstr ""
-
-msgid "Widgets toolbox"
-msgstr ""
-
-msgid "Wizard"
-msgstr ""
-
-msgid "Wizard New Snipet"
-msgstr ""
-
-msgid "Wizard Snippet"
-msgstr ""
-
-msgid "Wizard component"
-msgstr ""
-
-msgid "Wizard not complete : Please select a position for your new widget at Step 1"
-msgstr ""
-
-msgid "You are in selection mode, click to select a node"
-msgstr ""
-
-msgid "You can download the latest version of"
-msgstr ""
-
-msgid "You could disable it by clicking on the button at the right of the main menu"
-msgstr ""
-
-msgid "You could enable it by clicking on the button at the right of the main menu"
-msgstr ""
-
-msgid "Your are editing a widget"
-msgstr ""
-
-msgid "Your are editing an item"
-msgstr ""
-
-msgid "Your are inserting a new element, follow the wizard"
-msgstr ""
-
-msgid "Your are inserting a new item, follow the wizard"
-msgstr ""
-
-msgid "Your are moving an element"
-msgstr ""
-
-msgid "Your are resizing an element"
-msgstr ""
-
-msgid "Your document contains errors"
-msgstr ""
+msgstr "Valeur"
 
 msgid "circle"
-msgstr ""
+msgstr "cercle"
 
 msgid "clean up"
-msgstr ""
+msgstr "nettoyer"
 
 msgid "close"
-msgstr ""
+msgstr "fermer"
 
 msgid "correct"
-msgstr ""
+msgstr "correcte"
 
 msgid "default"
-msgstr ""
+msgstr "par défaut"
 
 msgid "ellipse"
-msgstr ""
-
-msgid "ex: myItemId (alphanumeric characters and _ are allowed)"
-msgstr ""
-
-msgid "has been inserted with success"
-msgstr ""
-
-msgid "here"
-msgstr ""
+msgstr "élipse"
 
 msgid "horizontal"
-msgstr ""
+msgstr "horizontale"
 
 msgid "invalid image mime type"
-msgstr ""
+msgstr "le type MIME de l'image est invalide"
 
 msgid "item imported successfully"
-msgstr ""
+msgstr "item importée avec succès"
 
 msgid "items imported successfully"
-msgstr ""
-
-msgid "label"
-msgstr ""
-
-msgid "label "
-msgstr ""
+msgstr "item importées avec succès"
 
 msgid "map"
-msgstr ""
+msgstr "carte"
 
 msgid "map point"
-msgstr ""
-
-msgid "no"
-msgstr ""
+msgstr "point sur la carte"
 
 msgid "polygon"
-msgstr ""
+msgstr "polygone"
 
 msgid "rectangle"
-msgstr ""
+msgstr "rectangle"
 
 msgid "show/hide"
-msgstr ""
+msgstr "montrer/cacher"
 
 msgid "template"
-msgstr ""
+msgstr "modèle"
 
 msgid "unable to create for imported content"
-msgstr ""
+msgstr "impossible de créer le contenu importé"
 
 msgid "unable to extract archive content, please check your tmp dir"
-msgstr ""
+msgstr "impossible d'extraire le contenu de l'archive"
 
 msgid "vertical"
-msgstr ""
-
-msgid "vertical Center Align"
-msgstr ""
-
-msgid "wiki"
-msgstr ""
-
-msgid "yes"
-msgstr ""
-
-msgid "you can not access this feature as long as you do not finish the current process"
-msgstr ""
+msgstr "vertical"
 
