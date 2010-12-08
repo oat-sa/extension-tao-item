@@ -326,7 +326,9 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		var interactionSerial = $interaction.attr('id');
 		
 		instance.interactions[interactionSerial] = interactionSerial;
-		
+		$interaction.mousedown(function(e){
+			e.preventDefault();
+		});
 		$interaction.click(function(e){
 			e.preventDefault();
 			instance.currentInteractionSerial = $(this).attr('id');
@@ -335,13 +337,31 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		
 		//append the delete button:
 		$interactionContainer = $interaction.parent('.qti_interaction_box');
-		$deleteButton = $('<a/>').appendTo($interactionContainer);
-		$deleteButton.append('<img src="http://localhost/tao/views/img/cancel.png">');
-		$deleteButton.css('top', 0);
-		$deleteButton.css('float', 'right');
+		
+		$deleteButton = $('<span class="qti_interaction_box_delete"></span>').appendTo($interactionContainer);
+		$deleteButton.hide();
 		$deleteButton.bind('click', {'interactionSerial': interactionSerial}, function(e){
 			instance.deleteInteractions([e.data.interactionSerial]);
 		});
+		qtiEdit.makeNoEditable($interaction.parent());
+		
+		$interaction.parent().hover(function(){
+			$(this).children('.qti_interaction_box_delete').show();
+			if($(this).hasClass('qti_interaction_inline')){
+				$(this).css('padding-right', '16px');
+			}
+		},function(){
+			$(this).children('.qti_interaction_box_delete').hide();
+			if($(this).hasClass('qti_interaction_inline')){
+				$(this).css('padding-right', 0);
+			}
+		});
+	}
+}
+
+qtiEdit.makeNoEditable = function($DOMelement){
+	if($DOMelement.length){
+		$DOMelement[0].contentEditable = false;
 	}
 }
 

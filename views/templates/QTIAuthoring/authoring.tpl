@@ -70,7 +70,7 @@
 </div>
 
 <script type="text/javascript">
-
+var authoring_img_url = root_url + "/taoItems/views/img/qtiAuthoring/";
 		
 $(document).ready(function(){
 	// console.log('ssds', $.browser);

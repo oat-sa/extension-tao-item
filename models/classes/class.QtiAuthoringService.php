@@ -80,6 +80,7 @@ class taoItems_models_classes_QtiAuthoringService
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
 		$itemData = self::getFilteredData($item);
 		
+		//inserting white spaces to allow easy item selecting:
 		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
 		$itemData = preg_replace('/^{/', '&nbsp;{', $itemData);
 		$itemData = preg_replace('/}$/', '}&nbsp;', $itemData);
@@ -102,11 +103,14 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = '';
 		if($interaction->isBlock()){
 			$returnValue .= "<br/><div class='qti_interaction_block qti_interaction_box'>";
+		}else{
+			//inline:
+			$returnValue .= "<div class='qti_interaction_inline qti_interaction_box'>";
 		}
 		$returnValue .= "<input id=\"{$interaction->getSerial()}\" class=\"qti_interaction_link\" value=\"{$interaction->getType()} Interaction\" type=\"button\"/>";
-		if($interaction->isBlock()){
+		// if($interaction->isBlock()){
 			$returnValue .= "</div>";
-		}
+		// }
 		return $returnValue;
 	}
 	
@@ -1029,13 +1033,21 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
+		/*
 		$pattern = "/<input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>/i";
 		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
 			if($qtiObject->isBlock()){
-				$pattern = "/(<br(.[^<]*)?>)?<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?><\/div>/i";
+				$pattern = "/(<br(.[^<]*)?>)?<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>((<span(.*)?\/span>)|<span(.[^>]*)?\/>)?<\/div>/i";
 			}
 		}
+		*/
 		
+		$pattern = '/';
+		if($qtiObject->isBlock()){
+			$pattern .= "(<br(.[^<]*)?>)?";
+		}
+		$pattern .= "<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>((<span(.*)?\/span>)|<span(.[^>]*)?\/>)?<\/div>/i";
+			
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
 		
 		return $data;
