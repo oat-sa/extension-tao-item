@@ -1,172 +1,79 @@
-msgid "Item saved"
+msgid "DE"
+msgstr "German"
+
+msgid "EN"
+msgstr "English"
+
+msgid "FR"
+msgstr "French"
+
+msgid "LU"
+msgstr "Luxemburgish"
+
+msgid "+partName+"
 msgstr ""
 
-msgid "Not yet available"
+msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr ""
 
-msgid "Edit Item"
+msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
 msgstr ""
 
-msgid "Class saved"
+msgid "A question material element must have an ID"
 msgstr ""
 
-msgid "Edit a class"
+msgid "A question material element must have an ID, want you generate one automatically ?"
 msgstr ""
 
-msgid "An error occured while saving the item"
-msgstr ""
-
-msgid "Item saved successfully"
-msgstr ""
-
-msgid "Edit item"
-msgstr ""
-
-msgid "Items"
-msgstr ""
-
-msgid "Manage items"
-msgstr ""
-
-msgid "Item library"
-msgstr ""
-
-msgid "search"
-msgstr ""
-
-msgid "new class"
-msgstr ""
-
-msgid "new item"
-msgstr ""
-
-msgid "delete"
-msgstr ""
-
-msgid "duplicate"
-msgstr ""
-
-msgid "move"
-msgstr ""
-
-msgid "preview"
-msgstr ""
-
-msgid "lists"
-msgstr ""
-
-msgid "meta data"
-msgstr ""
-
-msgid "create table"
-msgstr ""
-
-msgid "rdf"
-msgstr ""
-
-msgid "import"
-msgstr ""
-
-msgid "Authoring"
-msgstr ""
-
-msgid "Problem content"
-msgstr ""
-
-msgid "Add a question"
-msgstr ""
-
-msgid "Question"
-msgstr ""
-
-msgid "File Manager"
-msgstr ""
-
-msgid "Template"
-msgstr ""
-
-msgid "Parameters"
-msgstr ""
-
-msgid "Preview"
-msgstr ""
-
-msgid "Apply"
-msgstr ""
-
-msgid "Save and close"
+msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr ""
 
 msgid "Add"
 msgstr ""
 
-msgid "inquiries"
+msgid "Add a choice"
 msgstr ""
 
-msgid "and"
+msgid "Add a question"
 msgstr ""
 
-msgid "propositions"
+msgid "Add the source file"
 msgstr ""
 
-msgid "TAO Authoring Tool"
+msgid "Advanced options"
 msgstr ""
 
-msgid "Browser incompatibility"
+msgid "Advanced properties"
 msgstr ""
 
-msgid "Browser compatibility"
+msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
 msgstr ""
 
-msgid "Authoring Tool has been developped especially for "
+msgid "An answer proposition element must have an ID"
 msgstr ""
 
-msgid "You can download the latest version of"
+msgid "An error occured during the import"
 msgstr ""
 
-msgid "here"
+msgid "An error occured while loading the item:"
 msgstr ""
 
-msgid "Thank you for your understanding,"
+msgid "An error occured while loading the item: "
 msgstr ""
 
-msgid "TAO Team"
+msgid "An error occured while saving the item"
 msgstr ""
 
-msgid "Document has been updated with success"
+msgid "An error occurs during the import"
 msgstr ""
 
-msgid "Your document contains errors"
-msgstr ""
-
-msgid "Document has been edited"
+msgid "Apply"
 msgstr ""
 
 msgid "Are you sure ?"
 msgstr ""
 
-msgid "Sure ?"
-msgstr ""
-
-msgid "Your are editing an item"
-msgstr ""
-
-msgid "Save"
-msgstr ""
-
-msgid "Cancel"
-msgstr ""
-
-msgid "Item has been updated with success"
-msgstr ""
-
-msgid "Your are inserting a new item, follow the wizard"
-msgstr ""
-
-msgid "Insert"
-msgstr ""
-
-msgid "Item has been inserted with success"
+msgid "Are you sure you want save the document ?"
 msgstr ""
 
 msgid "Attribute deleted with success"
@@ -178,289 +85,157 @@ msgstr ""
 msgid "Attribute updated with success"
 msgstr ""
 
-msgid "Target a position for the new element"
+msgid "Authoring"
 msgstr ""
 
-msgid "Use the Workspace View or the Hierarchical View"
+msgid "Authoring Tool has been developped especially for"
 msgstr ""
 
-msgid "For more information about positionning, go to the "
-msgstr ""
-
-msgid "wiki"
-msgstr ""
-
-msgid "Step 1 ok. Continue to Step2 or validate the wizard without attributes"
-msgstr ""
-
-msgid "New Element"
-msgstr ""
-
-msgid "has been inserted with success"
-msgstr ""
-
-msgid "Wizard not complete : Please select a position for your new widget at Step 1"
-msgstr ""
-
-msgid "Your are inserting a new element, follow the wizard"
-msgstr ""
-
-msgid "Target a question material"
-msgstr ""
-
-msgid "For more information about question material, go to the "
-msgstr ""
-
-msgid "A question material element must have an ID, want you generate one automatically ?"
-msgstr ""
-
-msgid "Target an anwser proposition"
-msgstr ""
-
-msgid "For more information about answer proposition, go to the "
-msgstr ""
-
-msgid "An answer proposition element must have an ID"
-msgstr ""
-
-msgid "Once you finished click on the continue button"
-msgstr ""
-
-msgid "Target a position for the new snipet"
-msgstr ""
-
-msgid "Wizard New Snipet"
-msgstr ""
-
-msgid "you can not access this feature as long as you do not finish the current process"
-msgstr ""
-
-msgid "Are you sure you want save the document ?"
-msgstr ""
-
-msgid "Select mode disabled"
-msgstr ""
-
-msgid "You could enable it by clicking on the button at the right of the main menu"
-msgstr ""
-
-msgid "Select mode enabled"
-msgstr ""
-
-msgid "You could disable it by clicking on the button at the right of the main menu"
-msgstr ""
-
-msgid "Document has been saved with success"
-msgstr ""
-
-msgid "Element removed with success"
-msgstr ""
-
-msgid "Your are editing a widget"
-msgstr ""
-
-msgid "yes"
-msgstr ""
-
-msgid "no"
-msgstr ""
-
-msgid "Your are resizing an element"
-msgstr ""
-
-msgid "You are in selection mode, click to select a node"
-msgstr ""
-
-msgid "Your are moving an element"
-msgstr ""
-
-msgid "Click to select the node : "
-msgstr ""
-
-msgid "Target Radio Group"
-msgstr ""
-
-msgid "Target Button"
-msgstr ""
-
-msgid "Setting Button"
-msgstr ""
-
-msgid "What type of button ?"
-msgstr ""
-
-msgid "Text Button"
-msgstr ""
-
-msgid "Image Button"
-msgstr ""
-
-msgid "Setting Button text"
-msgstr ""
-
-msgid "What is the label of your button ?"
-msgstr ""
-
-msgid "Setting Button Image"
-msgstr ""
-
-msgid "What is the image of your button ?"
-msgstr ""
-
-msgid "Target Checkboxes"
-msgstr ""
-
-msgid "Setting Checkboxes"
-msgstr ""
-
-msgid "How Many Checkboxes ?"
-msgstr ""
-
-msgid "What orientation ?"
-msgstr ""
-
-msgid "What is the labels of your checkboxes ?"
-msgstr ""
-
-msgid "Target Grid"
-msgstr ""
-
-msgid "Setting Grid"
-msgstr ""
-
-msgid "How Many Rows ?"
-msgstr ""
-
-msgid "How Many Columns ?"
-msgstr ""
-
-msgid "Orient the grid by : "
-msgstr ""
-
-msgid "Target Image"
-msgstr ""
-
-msgid "Setting Image"
-msgstr ""
-
-msgid "What is the url of your image ?"
-msgstr ""
-
-msgid "Target Label"
-msgstr ""
-
-msgid "Setting Label"
-msgstr ""
-
-msgid "What is the text of your label ?"
-msgstr ""
-
-msgid "Setting Item"
-msgstr ""
-
-msgid "What is the identifier of your item ?"
-msgstr ""
-
-msgid "ex: myItemId (alphanumeric characters and _ are allowed)"
-msgstr ""
-
-msgid "The Right Answer"
-msgstr ""
-
-msgid "What is the right answer ?"
-msgstr ""
-
-msgid "Setting Radio Group"
-msgstr ""
-
-msgid "How Many Radio Button ?"
-msgstr ""
-
-msgid "What is the labels of your radio buttons ?"
-msgstr ""
-
-msgid "Target Select Box"
-msgstr ""
-
-msgid "Setting Select Box"
-msgstr ""
-
-msgid "How Many Options ?"
-msgstr ""
-
-msgid "What is the labels of the options ?"
-msgstr ""
-
-msgid "What type of widget ?"
-msgstr ""
-
-msgid "Step 1"
-msgstr ""
-
-msgid "Target a position for the new snipet ?"
-msgstr ""
-
-msgid "Step 2"
-msgstr ""
-
-msgid "Which Sound you want ?"
-msgstr ""
-
-msgid "Target SVG"
-msgstr ""
-
-msgid "Create your own SVG ?"
-msgstr ""
-
-msgid "Target Textbox"
-msgstr ""
-
-msgid "Setting Textbox"
-msgstr ""
-
-msgid "Teams"
-msgstr ""
-
-msgid "Which is the team 1 ?"
-msgstr ""
-
-msgid "Which is the team 2 ?"
-msgstr ""
-
-msgid "Please select an item before!"
+msgid "Authoring Tool has been developped especially for "
 msgstr ""
 
 msgid "Back"
 msgstr ""
 
-msgid "PREVIEW BOX"
+msgid "Browser compatibility"
 msgstr ""
 
-msgid "The Item module enables the creation and design of items and exercises."
+msgid "Browser incompatibility"
 msgstr ""
 
-msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
+msgid "Cancel"
 msgstr ""
 
-msgid "Item"
+msgid "Changing shape type will delete the old shape, are you sure?"
 msgstr ""
 
-msgid "Preview not yet available"
+msgid "Choice"
 msgstr ""
 
-msgid "edit item"
+msgid "Choices editor:"
 msgstr ""
 
-msgid "new property"
+msgid "Choose a type of item ?"
 msgstr ""
 
-msgid "export"
+msgid "Choose a type of stimulus ?"
 msgstr ""
 
-msgid "Item authoring"
+msgid "Class saved"
 msgstr ""
 
-msgid "Authoring Tool has been developped especially for"
+msgid "Click to select the node :"
+msgstr ""
+
+msgid "Client"
+msgstr ""
+
+msgid "Common Templates"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Correct Responses"
+msgstr ""
+
+msgid "Create your own SVG ?"
+msgstr ""
+
+msgid "Custom Templates"
+msgstr ""
+
+msgid "Default value"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete choice"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Do you really want to delete the row?"
+msgstr ""
+
+msgid "Document has been edited"
+msgstr ""
+
+msgid "Document has been saved with success"
+msgstr ""
+
+msgid "Document has been updated with success"
+msgstr ""
+
+msgid "Download item content"
+msgstr ""
+
+msgid "Edit Item"
+msgstr ""
+
+msgid "Edit a class"
+msgstr ""
+
+msgid "Edit item"
+msgstr ""
+
+msgid "Element removed with success"
+msgstr ""
+
+msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Error in background file:"
+msgstr ""
+
+msgid "Errors occured during the XML parsing of your document"
+msgstr ""
+
+msgid "Expected length"
+msgstr ""
+
+msgid "Expected lines"
+msgstr ""
+
+msgid "Export Options"
+msgstr ""
+
+msgid "Fake delivery"
+msgstr ""
+
+msgid "Fake process"
+msgstr ""
+
+msgid "Fake test"
+msgstr ""
+
+msgid "File Manager"
+msgstr ""
+
+msgid "File name"
+msgstr ""
+
+msgid "Fixed"
+msgstr ""
+
+msgid "Float"
+msgstr ""
+
+msgid "Follow the wizard to insert the new element"
+msgstr ""
+
+msgid "Follow the wizard to insert the new element ( ' + ns + ':' + tagName + ' )"
+msgstr ""
+
+msgid "For more information about answer proposition, go to the"
 msgstr ""
 
 msgid "For more information about positionning, go to the"
@@ -469,24 +244,834 @@ msgstr ""
 msgid "For more information about question material, go to the"
 msgstr ""
 
-msgid "A question material element must have an ID"
+msgid "Horizontal ?"
 msgstr ""
 
-msgid "For more information about answer proposition, go to the"
+msgid "Horizontal Center Align"
 msgstr ""
 
-msgid "Click to select the node :"
+msgid "Horizontal Left Align"
 msgstr ""
 
-msgid "EN"
-msgstr "English"
+msgid "Horizontal Right Align"
+msgstr ""
 
-msgid "FR"
-msgstr "French"
+msgid "How Many Checkboxes ?"
+msgstr ""
 
-msgid "DE"
-msgstr "German"
+msgid "How Many Columns ?"
+msgstr ""
 
-msgid "LU"
-msgstr "Luxemburgish"
+msgid "How Many Options ?"
+msgstr ""
+
+msgid "How Many Radio Button ?"
+msgstr ""
+
+msgid "How Many Rows ?"
+msgstr ""
+
+msgid "How many radio button(s) ?"
+msgstr ""
+
+msgid "Identifier"
+msgstr ""
+
+msgid "Image Button"
+msgstr ""
+
+msgid "Image height"
+msgstr ""
+
+msgid "Image label"
+msgstr ""
+
+msgid "Image source url"
+msgstr ""
+
+msgid "Image width"
+msgstr ""
+
+msgid "Insert"
+msgstr ""
+
+msgid "Insert Component"
+msgstr ""
+
+msgid "Insert Fragment of code"
+msgstr ""
+
+msgid "Integer"
+msgstr ""
+
+msgid "Interaction content editor:"
+msgstr ""
+
+msgid "Interaction editor:"
+msgstr ""
+
+msgid "Item"
+msgstr ""
+
+msgid "Item Editor:"
+msgstr ""
+
+msgid "Item Properties:"
+msgstr ""
+
+msgid "Item Type"
+msgstr ""
+
+msgid "Item authoring"
+msgstr ""
+
+msgid "Item content saved"
+msgstr ""
+
+msgid "Item has been inserted with success"
+msgstr ""
+
+msgid "Item has been updated with success"
+msgstr ""
+
+msgid "Item imported successfully"
+msgstr ""
+
+msgid "Item library"
+msgstr ""
+
+msgid "Item saved"
+msgstr ""
+
+msgid "Item saved successfully"
+msgstr ""
+
+msgid "Items"
+msgstr ""
+
+msgid "LEFT PANEL"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Lower bound"
+msgstr ""
+
+msgid "Manage item content"
+msgstr ""
+
+msgid "Manage items"
+msgstr ""
+
+msgid "Mapping options:"
+msgstr ""
+
+msgid "Match Group"
+msgstr ""
+
+msgid "Match group"
+msgstr ""
+
+msgid "Matching side"
+msgstr ""
+
+msgid "Maximal number of matching"
+msgstr ""
+
+msgid "Maximum number of associations"
+msgstr ""
+
+msgid "Maximum number of choices"
+msgstr ""
+
+msgid "Maximum number of separate strings"
+msgstr ""
+
+msgid "Modification on choice applied"
+msgstr ""
+
+msgid "Modification on interaction applied"
+msgstr ""
+
+msgid "Modification on response applied"
+msgstr ""
+
+msgid "Move"
+msgstr ""
+
+msgid "Move Down"
+msgstr ""
+
+msgid "Move Up"
+msgstr ""
+
+msgid "New Element"
+msgstr ""
+
+msgid "No user is logged in"
+msgstr ""
+
+msgid "Not yet available"
+msgstr ""
+
+msgid "Number base for value interpretation"
+msgstr ""
+
+msgid "Once you finished click on the continue button"
+msgstr ""
+
+msgid "Open Document"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Ordered response"
+msgstr ""
+
+msgid "Orient the grid by :"
+msgstr ""
+
+msgid "Orient the grid by : "
+msgstr ""
+
+msgid "Orientation"
+msgstr ""
+
+msgid "PREVIEW BOX"
+msgstr ""
+
+msgid "Parameters"
+msgstr ""
+
+msgid "Pattern mask"
+msgstr ""
+
+msgid "Place holder text"
+msgstr ""
+
+msgid "Please select an item before!"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Preview Console"
+msgstr ""
+
+msgid "Preview dialog"
+msgstr ""
+
+msgid "Preview not yet available"
+msgstr ""
+
+msgid "Problem content"
+msgstr ""
+
+msgid "Processing rule:"
+msgstr ""
+
+msgid "Processing type"
+msgstr ""
+
+msgid "Prompt"
+msgstr ""
+
+msgid "Question"
+msgstr ""
+
+msgid "RIGHT PANEL"
+msgstr ""
+
+msgid "Recovery context"
+msgstr ""
+
+msgid "Redo"
+msgstr ""
+
+msgid "Remove Node"
+msgstr ""
+
+msgid "Resize"
+msgstr ""
+
+msgid "Response editor:"
+msgstr ""
+
+msgid "Response processing template editor:"
+msgstr ""
+
+msgid "Response variable type"
+msgstr ""
+
+msgid "Responses Editor"
+msgstr ""
+
+msgid "SUB PANEL"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save Document"
+msgstr ""
+
+msgid "Save and close"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "Select a file"
+msgstr ""
+
+msgid "Select mode disabled"
+msgstr ""
+
+msgid "Select mode enabled"
+msgstr ""
+
+msgid "Server"
+msgstr ""
+
+msgid "Set Document"
+msgstr ""
+
+msgid "Setting Button"
+msgstr ""
+
+msgid "Setting Button Image"
+msgstr ""
+
+msgid "Setting Button text"
+msgstr ""
+
+msgid "Setting Checkboxes"
+msgstr ""
+
+msgid "Setting Description"
+msgstr ""
+
+msgid "Setting Grid"
+msgstr ""
+
+msgid "Setting Image"
+msgstr ""
+
+msgid "Setting Item"
+msgstr ""
+
+msgid "Setting Label"
+msgstr ""
+
+msgid "Setting Likert Scale"
+msgstr ""
+
+msgid "Setting Radio Group"
+msgstr ""
+
+msgid "Setting Select Box"
+msgstr ""
+
+msgid "Setting Textbox"
+msgstr ""
+
+msgid "Shape"
+msgstr ""
+
+msgid "Shuffle choices"
+msgstr ""
+
+msgid "Snippets"
+msgstr ""
+
+msgid "Snippets toolbox"
+msgstr ""
+
+msgid "Step 1"
+msgstr ""
+
+msgid "Step 1 ok. Continue to Step2 or validate the wizard without attributes"
+msgstr ""
+
+msgid "Step 2"
+msgstr ""
+
+msgid "Stimulus Type"
+msgstr ""
+
+msgid "String"
+msgstr ""
+
+msgid "String identifier"
+msgstr ""
+
+msgid "Stylesheets manager:"
+msgstr ""
+
+msgid "Sure ?"
+msgstr ""
+
+msgid "TAO Authoring Tool"
+msgstr ""
+
+msgid "TAO Team"
+msgstr ""
+
+msgid "Target Button"
+msgstr ""
+
+msgid "Target Checkboxes"
+msgstr ""
+
+msgid "Target Description.ejs"
+msgstr ""
+
+msgid "Target Grid"
+msgstr ""
+
+msgid "Target Image"
+msgstr ""
+
+msgid "Target Label"
+msgstr ""
+
+msgid "Target Radio Group"
+msgstr ""
+
+msgid "Target SVG"
+msgstr ""
+
+msgid "Target Select Box"
+msgstr ""
+
+msgid "Target Text entry"
+msgstr ""
+
+msgid "Target Textbox"
+msgstr ""
+
+msgid "Target a position for the new element"
+msgstr ""
+
+msgid "Target a position for the new snipet"
+msgstr ""
+
+msgid "Target a position for the new snipet ?"
+msgstr ""
+
+msgid "Target a question material"
+msgstr ""
+
+msgid "Target an anwser proposition"
+msgstr ""
+
+msgid "Teams"
+msgstr ""
+
+msgid "Template"
+msgstr ""
+
+msgid "Text Button"
+msgstr ""
+
+msgid "Thank you for your understanding,"
+msgstr ""
+
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr ""
+
+msgid "The Right Answer"
+msgstr ""
+
+msgid "The choice cannot be saved"
+msgstr ""
+
+msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
+msgstr ""
+
+msgid "The element cannot be moved at the target placed"
+msgstr ""
+
+msgid "The element has been moved successfully"
+msgstr ""
+
+msgid "The element has been resized successfully"
+msgstr ""
+
+msgid "The element has been successfully duplicated"
+msgstr ""
+
+msgid "The element has been successfully moved"
+msgstr ""
+
+msgid "The element has been successfully removed"
+msgstr ""
+
+msgid "The element(s) have been successfully removed"
+msgstr ""
+
+msgid "The element\'s attribute has been updated successfully"
+msgstr ""
+
+msgid "The elements have been moved successfully"
+msgstr ""
+
+msgid "The elements have been successfully bottom aligned verticaly"
+msgstr ""
+
+msgid "The elements have been successfully centered horizontaly"
+msgstr ""
+
+msgid "The elements have been successfully centered verticaly"
+msgstr ""
+
+msgid "The elements have been successfully left aligned horizontaly"
+msgstr ""
+
+msgid "The elements have been successfully right aligned horizontaly"
+msgstr ""
+
+msgid "The elements have been successfully top aligned verticaly"
+msgstr ""
+
+msgid "The item has been successfully updated"
+msgstr ""
+
+msgid "The mapping options have been applied"
+msgstr ""
+
+msgid "The new element ( ' + ns + ':' + tagName + ' )  has been successfully inserted"
+msgstr ""
+
+msgid "The new element has been successfully inserted"
+msgstr ""
+
+msgid "The response form is available for templates driven item only.<br/>"
+msgstr ""
+
+msgid "The response processing has been saved"
+msgstr ""
+
+msgid "The responses cannot be updated"
+msgstr ""
+
+msgid "The responses have been updated"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Unable to copy the resources"
+msgstr ""
+
+msgid "Unable to move"
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Update Attribute"
+msgstr ""
+
+msgid "Upload QTI File"
+msgstr ""
+
+msgid "Upload a QTI Package File"
+msgstr ""
+
+msgid "Upload an XHTML Package File"
+msgstr ""
+
+msgid "Upload new style sheet:"
+msgstr ""
+
+msgid "Upload the item content"
+msgstr ""
+
+msgid "Upload the style sheet (CSS format required)"
+msgstr ""
+
+msgid "Uploaded style files:"
+msgstr ""
+
+msgid "Upper bound"
+msgstr ""
+
+msgid "Use the Workspace View or the Hierarchical View"
+msgstr ""
+
+msgid "Validation has failed"
+msgstr ""
+
+msgid "Validation of the imported file has failed"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Vertical ?"
+msgstr ""
+
+msgid "Vertical Bottom Align"
+msgstr ""
+
+msgid "Vertical top Align"
+msgstr ""
+
+msgid "Watch Historic"
+msgstr ""
+
+msgid "What is text of your description ?"
+msgstr ""
+
+msgid "What is the identifier of your item ?"
+msgstr ""
+
+msgid "What is the image of your button ?"
+msgstr ""
+
+msgid "What is the label of your button ?"
+msgstr ""
+
+msgid "What is the labels of the options ?"
+msgstr ""
+
+msgid "What is the labels of your checkboxes ?"
+msgstr ""
+
+msgid "What is the labels of your radio buttons ?"
+msgstr ""
+
+msgid "What is the meaning of your likert scale (left to right) ?"
+msgstr ""
+
+msgid "What is the right answer ?"
+msgstr ""
+
+msgid "What is the text of the radio button(s) ?"
+msgstr ""
+
+msgid "What is the text of your label ?"
+msgstr ""
+
+msgid "What is the url of your image ?"
+msgstr ""
+
+msgid "What orientation ?"
+msgstr ""
+
+msgid "What scale ?"
+msgstr ""
+
+msgid "What type of button ?"
+msgstr ""
+
+msgid "What type of widget ?"
+msgstr ""
+
+msgid "Which Sound you want ?"
+msgstr ""
+
+msgid "Which is the team 1 ?"
+msgstr ""
+
+msgid "Which is the team 2 ?"
+msgstr ""
+
+msgid "Widgets"
+msgstr ""
+
+msgid "Widgets toolbox"
+msgstr ""
+
+msgid "Wizard"
+msgstr ""
+
+msgid "Wizard New Snipet"
+msgstr ""
+
+msgid "Wizard Snippet"
+msgstr ""
+
+msgid "Wizard component"
+msgstr ""
+
+msgid "Wizard not complete : Please select a position for your new widget at Step 1"
+msgstr ""
+
+msgid "You are in selection mode, click to select a node"
+msgstr ""
+
+msgid "You can download the latest version of"
+msgstr ""
+
+msgid "You could disable it by clicking on the button at the right of the main menu"
+msgstr ""
+
+msgid "You could enable it by clicking on the button at the right of the main menu"
+msgstr ""
+
+msgid "Your are editing a widget"
+msgstr ""
+
+msgid "Your are editing an item"
+msgstr ""
+
+msgid "Your are inserting a new element, follow the wizard"
+msgstr ""
+
+msgid "Your are inserting a new item, follow the wizard"
+msgstr ""
+
+msgid "Your are moving an element"
+msgstr ""
+
+msgid "Your are resizing an element"
+msgstr ""
+
+msgid "Your document contains errors"
+msgstr ""
+
+msgid "and"
+msgstr ""
+
+msgid "circle"
+msgstr ""
+
+msgid "clean up"
+msgstr ""
+
+msgid "close"
+msgstr ""
+
+msgid "correct"
+msgstr ""
+
+msgid "create table"
+msgstr ""
+
+msgid "default"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "duplicate"
+msgstr ""
+
+msgid "edit item"
+msgstr ""
+
+msgid "ellipse"
+msgstr ""
+
+msgid "ex: myItemId (alphanumeric characters and _ are allowed)"
+msgstr ""
+
+msgid "export"
+msgstr ""
+
+msgid "has been inserted with success"
+msgstr ""
+
+msgid "here"
+msgstr ""
+
+msgid "horizontal"
+msgstr ""
+
+msgid "import"
+msgstr ""
+
+msgid "inquiries"
+msgstr ""
+
+msgid "invalid image mime type"
+msgstr ""
+
+msgid "item imported successfully"
+msgstr ""
+
+msgid "items imported successfully"
+msgstr ""
+
+msgid "label"
+msgstr ""
+
+msgid "label "
+msgstr ""
+
+msgid "lists"
+msgstr ""
+
+msgid "map"
+msgstr ""
+
+msgid "map point"
+msgstr ""
+
+msgid "meta data"
+msgstr ""
+
+msgid "move"
+msgstr ""
+
+msgid "new class"
+msgstr ""
+
+msgid "new item"
+msgstr ""
+
+msgid "new property"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "polygon"
+msgstr ""
+
+msgid "preview"
+msgstr ""
+
+msgid "propositions"
+msgstr ""
+
+msgid "rdf"
+msgstr ""
+
+msgid "rectangle"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+msgid "show/hide"
+msgstr ""
+
+msgid "template"
+msgstr ""
+
+msgid "unable to create for imported content"
+msgstr ""
+
+msgid "unable to extract archive content, please check your tmp dir"
+msgstr ""
+
+msgid "vertical"
+msgstr ""
+
+msgid "vertical Center Align"
+msgstr ""
+
+msgid "wiki"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "you can not access this feature as long as you do not finish the current process"
+msgstr ""
 
