@@ -337,20 +337,29 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		
 		//append the delete button:
 		$interactionContainer = $interaction.parent('.qti_interaction_box');
+		$interactionContainer.bind('dragover drop',function(e){
+			e.preventDefault();
+			return false;
+		});
+		qtiEdit.makeNoEditable($interactionContainer);
 		
 		$deleteButton = $('<span class="qti_interaction_box_delete"></span>').appendTo($interactionContainer);
 		$deleteButton.hide();
 		$deleteButton.bind('click', {'interactionSerial': interactionSerial}, function(e){
+			e.preventDefault();
+			$(this).parent().click();
 			if(confirm(__('Please confirm interaction deletion'))){
 				instance.deleteInteractions([e.data.interactionSerial]);
 			}
+			return false;
 		});
-		qtiEdit.makeNoEditable($interaction.parent());
+		// qtiEdit.makeNoEditable($interaction.parent());
+		
 		
 		$interaction.parent().hover(function(){
 			$(this).children('.qti_interaction_box_delete').show();
 			if($(this).hasClass('qti_interaction_inline')){
-				$(this).css('padding-right', '16px');
+				$(this).css('padding-right', '20px');
 			}
 		},function(){
 			$(this).children('.qti_interaction_box_delete').hide();

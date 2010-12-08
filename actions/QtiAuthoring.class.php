@@ -20,7 +20,7 @@ class QtiAuthoring extends CommonModule {
 		
 		parent::__construct();
 		
-		$this->debugMode = false;
+		$this->debugMode = true;
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$this->service = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
 		$this->defaultData();
@@ -172,7 +172,7 @@ class QtiAuthoring extends CommonModule {
 		
 		// $itemData = html_entity_decode($this->getRequestParameter('itemData'));
 		$itemData = $this->getPostedItemData();
-		// print_r($itemData);
+		// print_r($itemData);exit;
 		// error_log($itemData);
 		
 		$itemObject = $this->getCurrentItem();

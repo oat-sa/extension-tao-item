@@ -33,6 +33,7 @@ span.qti_interaction_box_delete{
 	height: 16px;
 	width: 16px;
 	background-image: url("../img/qtiAuthoring/delete.png");
+	background-repeat: no-repeat;
 }
 
 div.qti_interaction_block span.qti_interaction_box_delete {

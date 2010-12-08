@@ -297,7 +297,6 @@ class taoItems_models_classes_QtiAuthoringService
 			//clean the interactions' editing elements:
 			foreach($item->getInteractions() as $interaction){
 				$itemData = $this->filterData($interaction, $itemData);
-				print_r($itemData);
 			}
 				
 			// $xhtmlData = $this->convertToXHTML($itemData);
