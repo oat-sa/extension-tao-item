@@ -254,4 +254,23 @@ function QTIResultCollector(options){
 		});
 		return result;
 	};
+	
+	/**
+	 * Collect the results of an <b>hotspot</b> widget 
+	 * 
+	 * @returns {Object} the results
+	 */
+	this.hotspot = function(){
+		var result = {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: []
+			};
+		$("#" + _this.id + " li.activated").each(function(){
+			if (_this.opts["maxChoices"] != 1) 
+				result.value.push($(this).attr('id'));
+			else
+				result.value = $(this).attr('id');
+		});
+		return result;
+	};
 }

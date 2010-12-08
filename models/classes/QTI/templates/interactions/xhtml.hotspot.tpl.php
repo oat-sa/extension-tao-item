@@ -13,10 +13,18 @@
 	<?if(isset($object['data'])):?>
 	qti_initParam["<?=$serial?>"]['imagePath'] = "<?=$object['data']?>";
 	<?endif?>
-	<?if(isset($object['with'])):?>
-	qti_initParam["<?=$serial?>"]['imageWith'] = "<?=$object['with']?>";
+	<?if(isset($object['width'])):?>
+	qti_initParam["<?=$serial?>"]['imageWidth'] = "<?=$object['width']?>";
 	<?endif?>
 	<?if(isset($object['height'])):?>
 	qti_initParam["<?=$serial?>"]['imageHeight'] = "<?=$object['height']?>";
 	<?endif?>
+	qti_initParam["<?=$serial?>"]['hotspotChoice'] = {
+	<?$i=0; foreach($choices as $choice):?>
+		<?=$choice->getIdentifier()?>: { 
+			shape : "<?=$choice->getOption('shape')?>",
+			coords: "<?=$choice->getOption('coords')?>"
+		}<?=($i<count($choices)-1)?',':''?>
+	<?$i++;endforeach?>
+	}
 </script>

@@ -253,9 +253,32 @@ class taoItems_models_classes_QTI_ParserFactory
        				}
        				break;
        				
+       			case 'hotspot':
+       				$objectNodes = $data->xpath("*[name(.)='object']");
+       				foreach($objectNodes as $objectNode){
+       					$objectData = array();
+       					foreach($objectNode->attributes() as $key => $value){
+       						$objectData[$key] = (string)$value;
+       					}
+       					
+       					if(count($objectNode->children()) > 0){
+				       		//get the node xml content
+				       		$pattern = array("/^<{$objectNode->getName()}([^>]*)?>/i", "/<\/{$data->getName()}([^>]*)?>$/i");
+				       		$content = preg_replace($pattern, "", trim($objectNode->asXML()));
+				       		if(empty($content)){
+				       			$content = (string)$objectNode;
+				       		}
+				       		$objectData['_alt'] = $content;
+				       	}
+				       	else{
+				       		$objectData['_alt'] = (string)$objectNode;
+				       	}
+       					$myInteraction->setObject($objectData);
+       				}
+       				
        			default :
                     $interactionData = simplexml_load_string($data->asXML()); 
-       				$exp= "*[contains(name(.),'Choice')] | //*[(name(.)='hottext')]";
+       				$exp= "*[contains(name(.),'Choice')] | //*[name(.)='hottext']";
        				$choiceNodes = $interactionData->xpath($exp);
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
@@ -295,6 +318,10 @@ class taoItems_models_classes_QTI_ParserFactory
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
        					
+       				case 'hotspot':
+       					$pattern = "/(<object\b[^>]*>(.*?)<\/object>)|(<object\b[^>]*\/>)/is";
+	       				$interactionData = preg_replace($pattern, "", $interactionData);
+	       				
        				default:                        
 			        	foreach($myInteraction->getChoices() as $choice){
 				        	//map the choices by a identified tag: {choice-serial}

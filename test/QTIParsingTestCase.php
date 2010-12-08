@@ -41,7 +41,7 @@ class QTIParsingTestCase extends UnitTestCase {
 		}
 		
 		//check if samples are loaded 
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
+		foreach(glob(dirname(__FILE__).'/samples/hotspot.xml') as $file){
 			
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$qtiParser->validate();

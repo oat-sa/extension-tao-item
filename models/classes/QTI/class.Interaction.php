@@ -776,6 +776,9 @@ class taoItems_models_classes_QTI_Interaction
    			case 'gapMatch':
    				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/mi", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
    				break;
+   			case 'hotspot':
+   				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/mi", "<ul class='qti_hotspot_spotlist'>$0</ul>", $variables['data']);
+   				break;
    		}
    			
    		//build back the choices in the data variable
@@ -875,7 +878,18 @@ class taoItems_models_classes_QTI_Interaction
 		foreach($this->getChoices() as $choice){
 			$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toQti(), $variables['data']);
 		}
-   		
+		
+		if(count($this->object) > 0){
+			(isset($this->object['_alt'])) ? $_alt = $this->object['_alt'] : $_alt = '';
+			$objectAttributes = '';
+			foreach($this->object as $key => $value){
+				if($key != '_alt'){
+					$objectAttributes .= "{$key} = '{$value}' ";
+				}
+			}
+			$variables['object_alt'] = $_alt;
+			$variables['objectAttributes'] = $objectAttributes;
+		}    		
 		
 		//parse and render the template
 		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);

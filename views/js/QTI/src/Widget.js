@@ -23,13 +23,26 @@ var QTIWidget = function(options){
 
 	/**
 	 * To access the widget options 
-	 * @type Object
+	 * @type {Object}
 	 */
 	this.opts = options;
 
 	//the interaction selector, all elements selected must be inside this element,
 	// to be able to have some interactions in the same item
 	var qti_item_id = "#"+this.opts["id"];
+	
+	
+	/**
+	 * the path of that library from an url,
+	 * to access images.
+	 * @type {String}
+	 */
+	this.wwwPath = '';
+	//use the global variable qti_base_www
+	if(typeof(qti_base_www) != 'undefined'){
+		this.wwwPath = qti_base_www;
+	}
+	
 	
 	/**
 	 * Creates a choice list widget
@@ -1026,5 +1039,184 @@ var QTIWidget = function(options){
 				}
 			}
 		}
+	};
+	
+	
+	/**
+	 * Creates a clickable image with hotspots
+	 */
+	this.hotspot = function (){
+		
+		var hotSpotDebug=false;
+
+		//if the values are defined
+		var currentValues = [];
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for (i in values){
+					var value = values[i];
+					if(value.value){
+						value = value.value;
+					}
+					currentValues.push(value);
+				}
+			}
+			if(typeof(values) == 'string'){
+				currentValues.push(values);
+			}
+		}
+		
+		var maxChoices=_this.opts["maxChoices"];
+		var countChoices=0;
+		// offset position
+		$(qti_item_id+" .qti_hotspot_spotlist li").css("display","none");
+		var itemHeight=$(qti_item_id).height();
+		$(qti_item_id).css("height",itemHeight+options.imageHeight);
+		
+		// load image in rapheal area
+		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0],0,0);
+		paper.image(options.imagePath,0,0,options.imageWidth,options.imageHeight);
+		// create hotspot
+		$(qti_item_id+" .qti_hotspot_spotlist li").each(function(){
+			var currentHotSpotShape=_this.opts.hotspotChoice[$(this).attr("id")]["shape"];
+			var currentHotSpotCoords=_this.opts.hotspotChoice[$(this).attr("id")]["coords"].split(",");		
+			// create pointer to validate interaction
+			// map QTI shape to Raphael shape
+			// Depending the shape, options may vary
+			switch(currentHotSpotShape){
+				case "circle":				
+					var currentHotSpotX=Number(currentHotSpotCoords[0]);
+					var currentHotSpotY=Number(currentHotSpotCoords[1]);
+					var currentHotSpotSize=currentHotSpotCoords[2];
+					var currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotSize);			
+					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");
+					var shapeWidth=currentShape.getBBox().width;
+					var shapeHeight=currentShape.getBBox().height;
+					var pointerWidth=10;
+					var pointerHeight=10;
+					var pointer = paper.image(_this.wwwPath + "img/cross.png", currentHotSpotX-(pointerWidth/2), currentHotSpotY-(pointerHeight/2), pointerWidth, pointerHeight);
+					break;
+				case "rect":
+					var currentHotSpotTopX=Number(currentHotSpotCoords[0]);
+					var currentHotSpotTopY=Number(currentHotSpotCoords[1]);
+					var currentHotSpotBottomX=currentHotSpotCoords[2]-currentHotSpotTopX;
+					var currentHotSpotBottomY=currentHotSpotCoords[3]-currentHotSpotTopY;
+					var currentShape=paper[currentHotSpotShape](currentHotSpotTopX,currentHotSpotTopY,currentHotSpotBottomX,currentHotSpotBottomY);
+					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");
+					var shapeWidth=currentShape.getBBox().width;
+					var shapeHeight=currentShape.getBBox().height;
+					var pointerWidth=10;
+					var pointerHeight=10;
+					var pointer = paper.image(_this.wwwPath + "img/cross.png", currentHotSpotTopX+(shapeWidth/2)-(pointerWidth/2), currentHotSpotTopY+(shapeHeight/2)-(pointerHeight/2), pointerWidth, pointerHeight);				
+					break;	
+				case "ellipse":
+					var currentHotSpotX=Number(currentHotSpotCoords[0]);
+					var currentHotSpotY=Number(currentHotSpotCoords[1]);
+					var currentHotSpotHradius=currentHotSpotCoords[2];
+					var currentHotSpotVradius=currentHotSpotCoords[3];
+					var currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotHradius,currentHotSpotVradius);	
+					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");			
+					var pointerWidth=10;
+					var pointerHeight=10;
+					var pointer = paper.image(_this.wwwPath + "img/cross.png", currentHotSpotX-(pointerWidth/2), currentHotSpotY-(pointerHeight/2), pointerWidth, pointerHeight);				
+					break;
+				case "poly":
+					var polyCoords=polyCoordonates(_this.opts.hotspotChoice[$(this).attr("id")]["coords"]);
+					var currentShape=paper["path"](polyCoords);			
+					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");			
+					var shapeWidth=currentShape.getBBox().width;
+					var shapeHeight=currentShape.getBBox().height;
+				 	var pointerCoordonates=pointerPolyCoordonates(_this.opts.hotspotChoice[$(this).attr("id")]["coords"]);
+					var currentHotSpotTopX=Number(pointerCoordonates[0]);
+					var currentHotSpotTopY=Number(pointerCoordonates[1]);
+					var pointerWidth=10;
+					var pointerHeight=10;
+					var pointer = paper.image(_this.wwwPath + "img/cross.png", currentHotSpotTopX+(shapeWidth/2)-(pointerWidth/2), 	currentHotSpotTopY+(shapeHeight/2)-(pointerHeight/2), pointerWidth, pointerHeight);				
+				break;
+			}
+			pointer.attr("opacity","0");
+			currentShape.toFront();	
+			currentShape.attr("fill", "pink");
+			currentShape.attr("fill-opacity", "0");
+			currentShape.attr("stroke-opacity", "0");
+			if (hotSpotDebug) currentShape.attr("stroke-opacity", "1");
+			currentShape.attr("stroke", "blue");	
+			// add a reference to newly created object
+			_this.opts[currentShape.node]=$(this).attr("id");
+			$(currentShape.node).bind("mousedown",{	
+				zis:currentShape,
+				name: $(this).attr("id"), 
+				raphElement:currentShape			
+			},function(e){				
+				var node = $(qti_item_id+" #"+e.data.name);
+				if(node.hasClass('activated')){
+					countChoices-=1;
+					pointer.attr("opacity","0");
+					node.removeClass('activated');
+				}
+				else{
+					if (countChoices>=maxChoices){
+						return;
+					}						
+					countChoices+=1;
+					
+					pointer.attr("opacity","1");
+					paper.safari();
+					node.addClass('activated');
+				}
+			});
+			//trigger the event on load if the value is set
+			if($.inArray($(this).attr("id"), currentValues) > -1){
+				$(currentShape.node).trigger("mousedown", {	
+					zis:currentShape,
+					name: $(this).attr("id"), 
+					raphElement:currentShape			
+				});
+			}
+			
+		});
+	};
+	
+	/**
+	 * Creates a clickable image with hotspots
+	 */
+	this.select_point = function (){
+		
+		var maxChoices=_this.opts["maxChoices"];
+		var countChoices=0;
+		var nameId=0;
+		
+		// offset position
+		$(qti_item_id+" .qti_select_point_interaction_list li").css("display","none");
+		var itemHeight=$(qti_item_id).height();
+		$(qti_item_id).css("height",itemHeight+options.imageHeight);
+		
+		
+		// load image in rapheal area
+		$(qti_item_id+" .qti_select_point_interaction_container").css({"background":"url("+options.image+")", width:options.imageWidth, height:options.imageHeight});
+		
+		$(qti_item_id+" .qti_select_point_interaction_container").bind("click",function(e){
+			
+			var relativeXmouse = e.pageX-5;
+			var relativeYmouse = e.pageY-5;
+			
+			if(countChoices>=maxChoices){
+				return;
+			}
+			
+			countChoices++;
+
+			$(this)
+				.append("<img src='"+this.wwwPath+"img/cross.png' alt='cross' class='select_point_cross' />")
+				.find("img:last")
+				.css({position:"absolute",top:relativeYmouse, left:relativeXmouse})
+				.data('coords', relativeXmouse+','+relativeYmouse)
+				.bind("click",function(e){
+					countChoices--;
+					$(this).remove();
+					return false;
+				});
+		});
 	};
 };
