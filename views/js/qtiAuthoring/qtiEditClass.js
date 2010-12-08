@@ -341,7 +341,9 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		$deleteButton = $('<span class="qti_interaction_box_delete"></span>').appendTo($interactionContainer);
 		$deleteButton.hide();
 		$deleteButton.bind('click', {'interactionSerial': interactionSerial}, function(e){
-			instance.deleteInteractions([e.data.interactionSerial]);
+			if(confirm(__('Please confirm interaction deletion'))){
+				instance.deleteInteractions([e.data.interactionSerial]);
+			}
 		});
 		qtiEdit.makeNoEditable($interaction.parent());
 		
