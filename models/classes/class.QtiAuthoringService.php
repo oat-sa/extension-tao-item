@@ -1035,7 +1035,7 @@ class taoItems_models_classes_QtiAuthoringService
 		if($qtiObject->isBlock()){
 			$pattern .= "(<br(.[^<]*)?>)?";
 		}
-		$pattern .= "<div(.[^<]*)?><input(.[^<]*)?{$qtiObject->getSerial()}(.[^>]*)?>((<span(.*)?\/span>)|<span(.[^>]*)?\/>){1}<\/div>/i";
+		$pattern .= "<div(.[^<]*)?><input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>){1}(<\/div>){1}/i";
 			
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
 		
