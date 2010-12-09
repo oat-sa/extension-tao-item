@@ -1451,7 +1451,7 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 			
-			if($interactionType == 'gapmatch'){
+			if($interactionType == 'gapmatch' || $interactionType == 'graphicgapmatch'){
 				//search group too to find the "gaps"
 				foreach($interaction->getGroups() as $group){
 					if($group->getIdentifier() == $identifier){
