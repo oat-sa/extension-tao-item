@@ -20,7 +20,7 @@ class QtiAuthoring extends CommonModule {
 		
 		parent::__construct();
 		
-		$this->debugMode = true;
+		$this->debugMode = false;
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$this->service = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
 		$this->defaultData();
