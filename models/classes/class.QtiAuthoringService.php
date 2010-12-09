@@ -490,6 +490,7 @@ class taoItems_models_classes_QtiAuthoringService
 						$group->addChoices(array($choice));//add 1 choice
 						$this->qtiService->saveDataToSession($group);
 					}
+					
 					$data = $interaction->getData();
 					$matched = array();
 					if(preg_match_all("/{choice_[a-z0-9]*}/im", $data, $matched) > 0){
@@ -497,8 +498,20 @@ class taoItems_models_classes_QtiAuthoringService
 						$data = str_replace($lastMatch, $lastMatch . '{'.$choice->getSerial().'}', $data);
 					}
 					else{
-						$data = '{'.$choice->getSerial().'}'.$data;
+						$data = '{'.$choice->getSerial().'}'.$data;//make sure the choice tag is placed first in the interaction data
 					}
+					$interaction->setData($data);
+					break;
+				}
+				case 'graphicgapmatch':{
+					foreach($interaction->getGroups() as $group){
+						//append to the choice list:
+						$group->addChoices(array($choice));//add 1 choice
+						$this->qtiService->saveDataToSession($group);
+					}
+					
+					$data = $interaction->getData();
+					$data .= '{'.$choice->getSerial().'}';//choices are appended to the interaction data
 					$interaction->setData($data);
 					break;
 				}
@@ -566,6 +579,12 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'graphicgapmatch':{
 					$group->setType('associableHotspot');
+					
+					$data = $interaction->getData();
+					$data = '{'.$group->getSerial().'}'.$data;//groups are prepended to the interaction data
+					//TODO: better, place it between the last group and the first choice
+					
+					$interaction->setData($data);
 					break;
 				}
 			}

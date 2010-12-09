@@ -149,7 +149,7 @@ interactionClass.prototype.saveInteraction = function($myForm){
 							if(interaction.shapeEditor){
 								interaction.shapeEditor.setBackground(r.newGraphicObject.data, r.newGraphicObject.width, r.newGraphicObject.height);
 							}else{
-								interaction.buildShapeEditor(r.newGraphicObject.data);
+								interaction.buildShapeEditor(r.newGraphicObject.data, {width: r.newGraphicObject.width, height:r.newGraphicObject.height});
 								interaction.setShapeEditListener();
 							}
 						}else{
@@ -207,6 +207,9 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 							new responseClass(interaction.responseGrid, interaction);
 						}
 						
+						if(r.errorMessage){
+							createErrorMessage(r.errorMessage);
+						}
 					}
 				}
 			});
