@@ -728,9 +728,10 @@ class taoItems_models_classes_QTI_Interaction
         	'gapMatch', 
         	'hottext',
 			'hotspot',
-			'graphicassociate',
-			'graphicorder',
-			'graphicgapmatch'
+        	'selectPoint',
+			'graphicAssociate',
+			'graphicOrder',
+			'graphicGapMatch'
         ));
         
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end
@@ -777,6 +778,7 @@ class taoItems_models_classes_QTI_Interaction
    				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/mi", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
    				break;
    			case 'hotspot':
+       		case 'graphicOrder':
    				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/mi", "<ul class='qti_hotspot_spotlist'>$0</ul>", $variables['data']);
    				break;
    		}

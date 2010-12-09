@@ -247,8 +247,9 @@ class taoItems_models_classes_QTI_ParserFactory
        				}
        				break;
        				
-       			case 'selectPoint':
        			case 'hotspot':
+       			case 'selectPoint':
+       			case 'graphicOrder':
        				//get the object
        				$objectNodes = $data->xpath("*[name(.)='object']");
        				foreach($objectNodes as $objectNode){
@@ -314,8 +315,9 @@ class taoItems_models_classes_QTI_ParserFactory
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
        					
-       				case 'selectPoint':
        				case 'hotspot':
+       				case 'selectPoint':
+       				case 'graphicOrder':
        					$pattern = "/(<object\b[^>]*>(.*?)<\/object>)|(<object\b[^>]*\/>)/is";
 	       				$interactionData = preg_replace($pattern, "", $interactionData);
 	       				
