@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.11.2010, 10:38:33 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 09.12.2010, 15:06:54 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,14 +28,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
@@ -51,7 +51,7 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  * Short description of class taoItems_models_classes_QTI_Response
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -80,12 +80,28 @@ class taoItems_models_classes_QTI_Response
     protected $mapping = array();
 
     /**
+     * Short description of attribute areaMapping
+     *
+     * @access protected
+     * @var array
+     */
+    protected $areaMapping = array();
+
+    /**
      * Short description of attribute mappingDefaultValue
      *
      * @access protected
      * @var string
      */
     protected $mappingDefaultValue = '';
+
+    /**
+     * Short description of attribute areaMappingDefaultValue
+     *
+     * @access protected
+     * @var string
+     */
+    protected $areaMappingDefaultValue = '';
 
     /**
      * Short description of attribute howMatch
@@ -101,7 +117,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getCorrectResponses
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getCorrectResponses()
@@ -121,7 +137,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setCorrectResponses
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @param  array responses
      * @return mixed
      */
@@ -141,16 +157,23 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMapping
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @param  string type
      * @return array
      */
-    public function getMapping()
+    public function getMapping($type = '')
     {
         $returnValue = array();
 
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E3 begin
         
-        $returnValue = $this->mapping;
+        if($type == 'area'){
+        	$returnValue = $this->areaMapping;
+        }
+        else{
+        	$returnValue = $this->mapping;
+        }
+        
         
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E3 end
 
@@ -161,15 +184,21 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMapping
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @param  array map
+     * @param  type
      * @return mixed
      */
-    public function setMapping($map)
+    public function setMapping($map, $type = '')
     {
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E5 begin
         
-    	$this->mapping = $map;
+    	if($type == 'area'){
+    		$this->areaMapping = $map;
+    	}
+    	else{
+    		$this->mapping = $map;
+    	}
     	
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E5 end
     }
@@ -178,16 +207,22 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMappingDefaultValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @param  string type
      * @return string
      */
-    public function getMappingDefaultValue()
+    public function getMappingDefaultValue($type = '')
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E8 begin
         
-        $returnValue = $this->mappingDefaultValue;
+        if($type == 'area'){
+        	$returnValue = $this->areaMappingDefaultValue;
+        }
+        else{
+        	$returnValue = $this->mappingDefaultValue;
+        }
         
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E8 end
 
@@ -198,15 +233,21 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMappingDefaultValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @param  string value
+     * @param  string type
      * @return mixed
      */
-    public function setMappingDefaultValue($value)
+    public function setMappingDefaultValue($value, $type = '')
     {
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025EA begin
         
-    	$this->mappingDefaultValue = $value;
+    	if($type == 'area'){
+    		$this->areaMappingDefaultValue = $value;
+    	}
+    	else{
+    		$this->mappingDefaultValue = $value;
+    	}
     	
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025EA end
     }
@@ -215,7 +256,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toXHTML
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -235,7 +276,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toQTI
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -251,8 +292,13 @@ class taoItems_models_classes_QTI_Response
         if(is_array($this->getOption('mapping'))){
         	$variables['mappingOptions'] = $this->xmlizeOptions($this->getOption('mapping'), true);
         }
+    	$variables['areaMappingOptions'] = '';
+        if(is_array($this->getOption('areaMapping'))){
+        	$variables['areaMappingOptions'] = $this->xmlizeOptions($this->getOption('areaMapping'), true);
+        }
         $options = $this->getOptions();
         unset($options['mapping']);
+        unset($options['areaMapping']);
         $variables['rowOptions'] = $this->xmlizeOptions($options, true);
 		
 		//parse and render the template
@@ -268,7 +314,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toForm
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -301,7 +347,7 @@ class taoItems_models_classes_QTI_Response
      * null.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      */
     public function correctToJSON()
     {
@@ -309,6 +355,7 @@ class taoItems_models_classes_QTI_Response
 
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A17 begin
         
+        try{
         $correctResponses = $this->getCorrectResponses();
         if (count($correctResponses))
         {
@@ -319,6 +366,8 @@ class taoItems_models_classes_QTI_Response
         		, $this->correctResponses
         	);
         }
+        }
+        catch(Exception $e){}
                
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A17 end
 
@@ -329,7 +378,7 @@ class taoItems_models_classes_QTI_Response
      * get the mapping in JSON format. If no mapping defined return null.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      */
     public function mapToJSON()
     {
@@ -370,7 +419,7 @@ class taoItems_models_classes_QTI_Response
      * get the base type of the response declaration
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getBaseType()
@@ -390,7 +439,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getHowMatch
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getHowMatch()
@@ -410,7 +459,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setHowMatch
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @param  string howMatch
      * @return mixed
      */

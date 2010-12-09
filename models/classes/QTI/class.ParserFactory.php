@@ -106,14 +106,8 @@ class taoItems_models_classes_QTI_ParserFactory
         $itemBodyNodes = $data->xpath("*[name(.) = 'itemBody']/*");
         
         $itemData = '';
-        foreach($itemBodyNodes as $itemBodyNode){	//the node should be alone
-        	/*if($itemBodyNode->getName() == 'div'){	//prevent a lot of imbricated divs
-        		$itemData .= $itemBodyNode->children()->asXml();
-        	}
-        	else{
+        foreach($itemBodyNodes as $itemBodyNode){	//the node should be alone        
         		$itemData .= $itemBodyNode->asXml();
-        	}*/
-        	$itemData .= $itemBodyNode->asXml();
         }
        
         if(!empty($itemData)){
@@ -253,7 +247,9 @@ class taoItems_models_classes_QTI_ParserFactory
        				}
        				break;
        				
+       			case 'selectPoint':
        			case 'hotspot':
+       				//get the object
        				$objectNodes = $data->xpath("*[name(.)='object']");
        				foreach($objectNodes as $objectNode){
        					$objectData = array();
@@ -318,6 +314,7 @@ class taoItems_models_classes_QTI_ParserFactory
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
        					
+       				case 'selectPoint':
        				case 'hotspot':
        					$pattern = "/(<object\b[^>]*>(.*?)<\/object>)|(<object\b[^>]*\/>)/is";
 	       				$interactionData = preg_replace($pattern, "", $interactionData);
@@ -470,6 +467,33 @@ class taoItems_models_classes_QTI_ParserFactory
        		break;
        	}
        	
+       	//set the areaMapping if defined
+    	$mappingNodes = $data->xpath("*[name(.) = 'areaMapping']");
+       	foreach($mappingNodes as $mappingNode){
+       		
+       		if(isset($mappingNode['defaultValue'])){
+       			$myResponse->setMappingDefaultValue((string)$mappingNode['defaultValue'], 'area');
+       		}
+       		$mappingOptions = array();
+	       	foreach($mappingNode->attributes() as $key => $value){
+	       		if($key != 'defaultValue'){
+	       			$mappingOptions[$key] = (string)$value;
+	       		}
+	       	}
+	       	$myResponse->setOption('areaMapping', $mappingOptions);
+       		
+       		$mapping = array();
+       		foreach($mappingNode->areaMapEntry as $mapEntry){
+       			$mappingAttributes = array();
+       			foreach($mapEntry->attributes() as $key => $value){
+       				$mappingAttributes[(string)$key] = (string)$value;	
+       			}
+       			$mapping[] = $mappingAttributes;
+       		}
+       		$myResponse->setMapping($mapping, 'area');
+       		
+       		break;
+       	}
        	
        	$returnValue = $myResponse;
         

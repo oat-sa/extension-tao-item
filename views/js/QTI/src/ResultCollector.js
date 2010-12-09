@@ -273,4 +273,24 @@ function QTIResultCollector(options){
 		});
 		return result;
 	};
+	
+	/**
+	 * Collect the results of an <b>hotspot</b> widget 
+	 * 
+	 * @returns {Object} the results
+	 */
+	this.select_point = function(){
+		var result = {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: []
+			};
+		$("#" + _this.id + " img.select_point_cross").each(function(){
+			var coords = $(this).data('coords');
+			if (_this.opts["maxChoices"] != 1) 
+				result.value.push(coords);
+			else
+				result.value = coords;
+		});
+		return result;
+	};
 }

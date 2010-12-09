@@ -37,8 +37,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-        //$file = dirname(__FILE__).'/samples/tags.xml';
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+		foreach(glob(dirname(__FILE__).'/samples/select_point.xml') as $file){	
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -49,7 +48,6 @@ class QTIOutputTestCase extends UnitTestCase {
 			foreach($item->getInteractions() as $interaction){
 				$this->assertIsA($interaction, 'taoItems_models_classes_QTI_Interaction');
 				
-				
 				foreach($interaction->getChoices() as $choice){
 					$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 				}
@@ -58,7 +56,6 @@ class QTIOutputTestCase extends UnitTestCase {
 			//test if content has been exported
 			$qti = $item->toQTI();
 			$this->assertFalse(empty($qti));
-			
 
 			//test if it's a valid QTI file
 			$tmpFile = dirname(__FILE__).'/samples/'.uniqid('qti_', true).'.xml';
@@ -76,6 +73,9 @@ class QTIOutputTestCase extends UnitTestCase {
 				$this->assertFalse(file_exists($tmpFile));
 			}
 			
+			print "<pre>";
+			print htmlentities($qti);
+			print "</pre>";
 		}
 	}
 	
@@ -86,7 +86,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-        foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+        foreach(glob(dirname(__FILE__).'/samples/select_point.xml') as $file){	
 		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
@@ -107,6 +107,10 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			//test if content has been exported
 			$this->assertFalse(empty($xhtml));
+			
+			print "<pre>";
+			print htmlentities($xhtml);
+			print "</pre>";
 		}
 	}
 

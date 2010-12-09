@@ -3,8 +3,7 @@
 	<?if(!empty($prompt)):?>
     	<p class="prompt"><?=$prompt?></p>
     <?endif?>
-
-	<?=$data?>
+	<div class="qti_select_point_interaction_container">&nbsp;</div>
 </div>
 <script type="text/javascript">
 	qti_initParam["<?=$serial?>"] = <?=$rowOptions?>;

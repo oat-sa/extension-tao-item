@@ -1179,44 +1179,77 @@ var QTIWidget = function(options){
 	};
 	
 	/**
-	 * Creates a clickable image with hotspots
+	 * Creates a clickable image with free hotspots
 	 */
 	this.select_point = function (){
 		
 		var maxChoices=_this.opts["maxChoices"];
 		var countChoices=0;
-		var nameId=0;
 		
 		// offset position
-		$(qti_item_id+" .qti_select_point_interaction_list li").css("display","none");
 		var itemHeight=$(qti_item_id).height();
-		$(qti_item_id).css("height",itemHeight+options.imageHeight);
+		$(qti_item_id).css("height",itemHeight+_this.opts.imageHeight);
 		
 		
 		// load image in rapheal area
-		$(qti_item_id+" .qti_select_point_interaction_container").css({"background":"url("+options.image+")", width:options.imageWidth, height:options.imageHeight});
+		$(qti_item_id+" .qti_select_point_interaction_container")
+			.css({"background":"url("+_this.opts.imagePath+") no-repeat"})
+			.width(_this.opts.imageWidth + 'px')
+			.height(_this.opts.imageHeight + 'px');
 		
-		$(qti_item_id+" .qti_select_point_interaction_container").bind("click",function(e){
-			
-			var relativeXmouse = e.pageX-5;
-			var relativeYmouse = e.pageY-5;
-			
+		/**
+		 * place an removable image on the selected point
+		 * @param {jQuery} jContainer
+		 * @param {integer} x
+		 * @param {integer} y
+		 */
+		function setPoint(jContainer, x, y){
 			if(countChoices>=maxChoices){
 				return;
 			}
-			
 			countChoices++;
 
-			$(this)
-				.append("<img src='"+this.wwwPath+"img/cross.png' alt='cross' class='select_point_cross' />")
+			jContainer
+				.append("<img src='"+_this.wwwPath+"img/cross.png' alt='cross' class='select_point_cross' />")
 				.find("img:last")
-				.css({position:"absolute",top:relativeYmouse, left:relativeXmouse})
-				.data('coords', relativeXmouse+','+relativeYmouse)
+				.css({position:"absolute", top:y + 'px', left:x + 'px', "cursor":"pointer"})
+				.data('coords', x+','+y)
 				.bind("click",function(e){
 					countChoices--;
 					$(this).remove();
 					return false;
 				});
-		});
+		}
+		
+		//if the values are defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				for (i in values){
+					var value = values[i];
+					if(value.value){
+						value = value.value;
+					}
+					var coords = value.split(',');
+					if(coords.length == 2){
+						setPoint($(qti_item_id+" .qti_select_point_interaction_container"), coords[0], coords[1]);
+					}
+				}
+			}
+			if(typeof(values) == 'string'){
+				var coords = values.split(',');
+				if(coords.length == 2){
+					setPoint($(qti_item_id+" .qti_select_point_interaction_container"), coords[0], coords[1]);
+				}
+			}
+			
+		}
+		
+		//set a point on a click
+		$(qti_item_id+" .qti_select_point_interaction_container").bind("click",function(e){
+			var relativeXmouse = e.pageX-5;
+			var relativeYmouse = e.pageY-5;
+			setPoint($(this),relativeXmouse, relativeYmouse);
+		});		
 	};
 };

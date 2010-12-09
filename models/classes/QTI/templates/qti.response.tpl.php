@@ -15,4 +15,12 @@
             <?endforeach?>
         </mapping>
 	<?endif?>
+	
+	<?if(count($areaMapping) > 0):?>
+        <areaMapping defaultValue="<?=$areaMappingDefaultValue?>" <?=$areaMappingOptions?>>
+            <?foreach($areaMapping as $areaMapEntry):?>
+            	<areaMapEntry <?foreach($areaMapEntry as $key => $value):?><?=$key?>="<?=$value?>" <?endforeach?> />
+            <?endforeach?>
+        </areaMapping>
+	<?endif?>
 </responseDeclaration>
