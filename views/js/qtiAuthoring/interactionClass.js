@@ -362,10 +362,12 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				
 				//append the edit button:
 				$imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
+				$imageLink.attr('title', __('draw it'));
 				$imageLink.css('cursor', 'pointer');
 				$imageLink.css('margin', '2px');
-				$imageLink.bind('click', {choiceSerial:choiceSerial, shape:$qtiShapeCombobox.val()}, function(e){
-					interaction.shapeEditor.startDrawing(e.data.choiceSerial, e.data.shape);
+				$imageLink.bind('click', {choiceSerial:choiceSerial, defaultShape:$qtiShapeCombobox.val()}, function(e){
+					var shape = $(this).siblings('.qti-shape').val();
+					interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
 				});
 				
 				//check if the coords are not empty, if so, draw the shape:
