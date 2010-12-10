@@ -813,6 +813,11 @@ var QTIWidget = function(options){
 						var choice = value['1']['value'];
 						fillGap($(qti_item_id+" .gap#"+gap), $(qti_item_id+" .qti_choice_list li#"+choice+" > div"));
 					}
+					else if( value['0'] && value['1']){
+						var gap = value['0'];
+						var choice = value['1'];
+						fillGap($(qti_item_id+" .gap#"+gap), $(qti_item_id+" .qti_choice_list li#"+choice+" > div"));
+					}
 				}
 			}
 		}
@@ -1034,6 +1039,11 @@ var QTIWidget = function(options){
 					if(values[i]['count'] == 2){
 						var row = value['0']['value'];
 						var col = value['1']['value'];
+						selectNode($(qti_item_id + " .match_node.xnode_"+row+".ynode_"+col));
+					}
+					else if (value['0'] && value['1']){
+						var row = value['0'];
+						var col = value['1'];
 						selectNode($(qti_item_id + " .match_node.xnode_"+row+".ynode_"+col));
 					}
 				}
