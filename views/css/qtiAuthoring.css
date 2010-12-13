@@ -49,9 +49,8 @@ div.qti-menu-item a{
 	font-weight:bold;
 	text-decoration:none;
 }
-div.qti-menu-item a:hover{
+div.qti-menu-item:hover a, div.qti-menu-item a:hover{
 	color:#FF8C8C;
-	text-decoration:underline;
 }
 
 /*uploadify made smaller*/
