@@ -272,6 +272,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		var navGridParamOptions = {
 			addfunc: function(){
 				var newId = response.getUniqueRowId();
+				response.restoreCurrentRow();
 				response.myGrid.jqGrid('addRowData', newId, new Object(), 'last');
 				response.editGridRow(newId);
 			},
@@ -379,36 +380,45 @@ responseClass.prototype.editGridRow = function(rowId){
 			'clientArray',
 			{'optionalData': null},
 			function(){
-				// responseEdit.grid.myGrid.jqGrid('resetSelection');
 				
 				var repeatedChoice = response.checkRepeatedChoice(response.currentRowId);
 				var repeatedRow =  response.checkRepeatedRow(response.currentRowId);
 				var maxChoicesRespected = response.checkCardinality(response.currentRowId);
 				if(repeatedChoice){
 					alert('There cannot be identical choice in a row.');
-					// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
-					// CL('responseEdit.grid.currentRowData', responseEdit.grid.currentRowData);
 					response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
+					response.restoreCurrentRow();
 					return false;
 				}
 				if(repeatedRow){
 					alert('There is already a row with the same choices.');
 					response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
+					response.restoreCurrentRow();
 					return false;
 				}
 				if(!maxChoicesRespected){
 					alert('Impossible to exceed the maximum number of choices defined in the interaction');
 					response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
+					response.restoreCurrentRow();
 					return false;
 				}
 				
 				response.saveResponseGrid();
-								
-				// responseEdit.grid.myGrid.jqGrid('restoreRow',responseEdit.grid.currentRowId);
-				response.myGrid.jqGrid('resetSelection');
+				response.restoreCurrentRow();
+			},
+			null,
+			function(){
+				response.restoreCurrentRow();
 			}
 		); 
 		response.currentRowId = id;
+		
+		//add listener to the input row: on click row...
+		// $('#qtiAuthoring_response_grid')
+		// $(document).not('#qtiAuthoring_response_grid').click(function(){
+		
+		// });
+		
 		
 		//local edit, then systematic global save:
 	}
@@ -419,6 +429,13 @@ responseClass.prototype.getUniqueRowId = function(){
 	return responseData.length;
 }
 
+responseClass.prototype.restoreCurrentRow = function(){
+	if(this.currentRowId){
+		this.myGrid.jqGrid('restoreRow', this.currentRowId);
+		this.myGrid.jqGrid('resetSelection');
+		this.currentRowId = null;
+	}
+}
 
 responseClass.prototype.saveResponseGrid = function(){
 	var responseData = this.myGrid.jqGrid('getRowData');
