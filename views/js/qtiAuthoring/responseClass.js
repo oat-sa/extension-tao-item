@@ -233,7 +233,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		}
 	};
 	
-	if(serverResponse.interactionType == 'order'){
+	if(serverResponse.interactionType == 'order' || serverResponse.interactionType == 'graphicorder'){
 		gridOptions.width = 500;
 		gridOptions.shrinkToFit = false;
 		gridOptions.autowidth = true;
