@@ -117,7 +117,6 @@ class QtiAuthoring extends CommonModule {
 		
 		$currentItem = $this->getCurrentItem();
 		// if($this->debugMode) var_dump($currentItem);
-		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
@@ -824,7 +823,8 @@ class QtiAuthoring extends CommonModule {
 			if($myForm->isValid()){
 			
 				$values = $myForm->getValues();
-								
+				unset($values['choiceSerial']);//choiceSerial to be deleted since only used to get the choice qti object
+				
 				if(isset($values['choiceIdentifier'])){
 					if($values['choiceIdentifier'] != $choice->getIdentifier()){
 						$this->service->setIdentifier($choice, $values['choiceIdentifier']);
@@ -838,7 +838,37 @@ class QtiAuthoring extends CommonModule {
 					unset($values['data']);
 				}
 				
-				unset($values['choiceSerial']);
+				//for graphic interactions:
+				$newGraphicObject = array();
+				if(intval($values['object_width'])){
+					$newGraphicObject['width'] = intval($values['object_width']);
+				}
+				if(intval($values['object_height'])){
+					$newGraphicObject['height'] = intval($values['object_height']);
+				}
+				if(isset($values['object_data'])){
+					//get mime type
+					$imageFilePath = trim($values['object_data']);
+					$mimeType = tao_helpers_File::getMimeType($imageFilePath);
+					
+					$validImageType = array(
+						'image/png',
+						'image/jpeg',
+						'image/bmp'
+					);
+					
+					if(in_array($mimeType, $validImageType)){
+						$newGraphicObject['data'] = $imageFilePath;
+					}else{
+						$errorMessage = __('invalid image mime type for the image file '+$imageFilePath);
+					}
+				}
+				$choice->setObject($newGraphicObject);
+				unset($values['object_width']);
+				unset($values['object_height']);
+				unset($values['object_data']);
+				
+				//finally save the other options:
 				$this->service->setOptions($choice, $values);
 				
 				$saved = true;
@@ -857,7 +887,8 @@ class QtiAuthoring extends CommonModule {
 			'saved' => $saved,
 			'choiceSerial' => $choice->getSerial(),
 			'identifierUpdated' => $identifierUpdated,
-			'reload' => $choiceFormReload
+			'reload' => $choiceFormReload,
+			'errorMessage' => $errorMessage
 		));
 	}
 	
