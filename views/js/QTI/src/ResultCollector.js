@@ -293,4 +293,32 @@ function QTIResultCollector(options){
 		});
 		return result;
 	};
+	
+	/**
+	 * Collect the results of a <b>graphic order</b> widget 
+	 * @returns {Object} the results
+	 */
+	this.graphic_order = function(){
+		var result = {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: new Object()
+			};
+		var orderedElts = $("#" + _this.id).data('order');
+		
+		for( id in orderedElts){
+			var orderedElt = orderedElts[id];
+			if(orderedElt.state != 'empty'){
+				result.value[orderedElt.order] = id;
+			}
+		}
+		return result;
+	};
+	
+	this.upload = function(){
+		var result = {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: []
+			};
+		return result;
+	};
 }

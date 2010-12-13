@@ -86,7 +86,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-        foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+        foreach(glob(dirname(__FILE__).'/samples/graphic_order.xml') as $file){	
 		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();

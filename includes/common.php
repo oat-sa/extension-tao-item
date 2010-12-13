@@ -4,12 +4,11 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * 
  */
- if(isset($_GET['session_id'])){
- 	session_start($_GET['session_id']);
- }
- else{
- 	session_start();
- }
+$request = new Request();
+if($request->hasParameter('session_id')){
+ 	session_id($request->getParameter('session_id'));
+}
+session_start();
 
 
 require_once dirname(__FILE__). '/config.php';

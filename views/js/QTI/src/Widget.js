@@ -43,6 +43,10 @@ var QTIWidget = function(options){
 		this.wwwPath = qti_base_www;
 	}
 	
+	/**
+	 * @type {boolean}
+	 */
+	this.graphicDebug  = false; 
 	
 	/**
 	 * Creates a choice list widget
@@ -1057,8 +1061,6 @@ var QTIWidget = function(options){
 	 */
 	this.hotspot = function (){
 		
-		var hotSpotDebug=false;
-
 		//if the values are defined
 		var currentValues = [];
 		if(_this.opts["values"]){
@@ -1085,7 +1087,7 @@ var QTIWidget = function(options){
 		$(qti_item_id).css("height",itemHeight+options.imageHeight);
 		
 		// load image in rapheal area
-		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0],0,0);
+		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0],0,itemHeight+options.imageHeight);
 		paper.image(options.imagePath,0,0,options.imageWidth,options.imageHeight);
 		// create hotspot
 		$(qti_item_id+" .qti_hotspot_spotlist li").each(function(){
@@ -1100,7 +1102,7 @@ var QTIWidget = function(options){
 					var currentHotSpotY=Number(currentHotSpotCoords[1]);
 					var currentHotSpotSize=currentHotSpotCoords[2];
 					var currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotSize);			
-					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
 					var shapeWidth=currentShape.getBBox().width;
 					var shapeHeight=currentShape.getBBox().height;
 					var pointerWidth=10;
@@ -1113,7 +1115,7 @@ var QTIWidget = function(options){
 					var currentHotSpotBottomX=currentHotSpotCoords[2]-currentHotSpotTopX;
 					var currentHotSpotBottomY=currentHotSpotCoords[3]-currentHotSpotTopY;
 					var currentShape=paper[currentHotSpotShape](currentHotSpotTopX,currentHotSpotTopY,currentHotSpotBottomX,currentHotSpotBottomY);
-					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
 					var shapeWidth=currentShape.getBBox().width;
 					var shapeHeight=currentShape.getBBox().height;
 					var pointerWidth=10;
@@ -1126,7 +1128,7 @@ var QTIWidget = function(options){
 					var currentHotSpotHradius=currentHotSpotCoords[2];
 					var currentHotSpotVradius=currentHotSpotCoords[3];
 					var currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotHradius,currentHotSpotVradius);	
-					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");			
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");			
 					var pointerWidth=10;
 					var pointerHeight=10;
 					var pointer = paper.image(_this.wwwPath + "img/cross.png", currentHotSpotX-(pointerWidth/2), currentHotSpotY-(pointerHeight/2), pointerWidth, pointerHeight);				
@@ -1134,7 +1136,7 @@ var QTIWidget = function(options){
 				case "poly":
 					var polyCoords=polyCoordonates(_this.opts.hotspotChoice[$(this).attr("id")]["coords"]);
 					var currentShape=paper["path"](polyCoords);			
-					if (hotSpotDebug) currentShape.attr("stroke-width", "3px");			
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");			
 					var shapeWidth=currentShape.getBBox().width;
 					var shapeHeight=currentShape.getBBox().height;
 				 	var pointerCoordonates=pointerPolyCoordonates(_this.opts.hotspotChoice[$(this).attr("id")]["coords"]);
@@ -1150,7 +1152,7 @@ var QTIWidget = function(options){
 			currentShape.attr("fill", "pink");
 			currentShape.attr("fill-opacity", "0");
 			currentShape.attr("stroke-opacity", "0");
-			if (hotSpotDebug) currentShape.attr("stroke-opacity", "1");
+			if (_this.graphicDebug) currentShape.attr("stroke-opacity", "1");
 			currentShape.attr("stroke", "blue");	
 			// add a reference to newly created object
 			_this.opts[currentShape.node]=$(this).attr("id");
@@ -1184,7 +1186,6 @@ var QTIWidget = function(options){
 					raphElement:currentShape			
 				});
 			}
-			
 		});
 	};
 	
@@ -1261,5 +1262,211 @@ var QTIWidget = function(options){
 			var relativeYmouse = e.pageY-5;
 			setPoint($(this),relativeXmouse, relativeYmouse);
 		});		
+	};
+	
+	/**
+	 * ordered hot spots
+	 */
+	this.graphic_order = function (){
+
+		
+		//if the values are defined
+		
+		var list = new Array();
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			var list = new Array(values.length);
+			if(typeof(values) == 'object' || typeof(values) == 'array'){
+				
+				//we take the list element corresponding to the given ids 
+				for(index in values){
+					var value = values[index];
+					var index = parseInt(index);
+					if(typeof(value) == 'string' && value != ''){
+						list[index] = value;
+					}
+					if(typeof(value) == 'object'){
+						if(value.value){
+							list[index] = value.value;
+						}
+					}
+				}
+			}
+		}
+		
+        var maxChoices;
+        if (_this.opts["maxChoices"]==undefined)
+        {
+            maxChoices = $(qti_item_id+" .qti_graphic_order_spotlist li").length;
+        } else {
+            maxChoices=_this.opts["maxChoices"];
+        }
+		var countChoices=0;
+		var displayCounter=1;
+		
+		var imageHeight = parseInt(_this.opts.imageHeight);
+		var imageWidth = parseInt(_this.opts.imageWidth);
+		
+        // data
+        var choice_obj=new Object();
+        var shapes = new Object();
+		
+        // offset position
+		$(qti_item_id+" .qti_graphic_order_spotlist li").css("display","none");
+		var itemHeight=$(qti_item_id).height();
+		$(qti_item_id).css("height", itemHeight + imageHeight);
+		
+		// load image in rapheal area
+		var paper=Raphael($(qti_item_id+" .qti_graphic_order_spotlist")[0],0,_this.opts.imageHeight);
+		paper.image(options.imagePath,0,0 , imageWidth, imageHeight);
+		var state_obj=new Object();
+        // create pickup zone
+        $(qti_item_id).append("<ul class='pickup_area'></ul>");
+        for (var a=1;a<=maxChoices;a++){
+           $(qti_item_id+" .pickup_area").append("<li class='choice"+a+"'>"+a+"</li>");
+           choice_obj["choice"+a]={selected:"none"};
+        }
+        // li behavior
+        $(qti_item_id+" .pickup_area li").each(function(e){
+            $(this).bind("click",function(e){
+                    $(qti_item_id+" .pickup_area li").removeClass("selected");
+                    $(this).addClass("selected");
+            });
+        });
+
+        // redim container and pickup area
+        $(qti_item_id+" .pickup_area").width(imageWidth-10-4);
+        var pickup_area_height=$(qti_item_id+" .dummySizer").height();
+        $(qti_item_id).css("height",itemHeight+imageHeight+pickup_area_height+20);
+        // resize container
+        $(qti_item_id).height($(qti_item_id).height()+$(qti_item_id+" .pickup_area").height());
+		// create hotspot
+		$(qti_item_id+" .qti_graphic_order_spotlist li").each(function(){
+			var currentHotSpotShape=_this.opts.graphicOrderChoices[$(this).attr("id")]["shape"];
+			var currentHotSpotCoords=_this.opts.graphicOrderChoices[$(this).attr("id")]["coords"].split(",");		
+			// Depending the shape, options may vary
+			switch(currentHotSpotShape){
+				case "circle":				
+					var currentHotSpotX=Number(currentHotSpotCoords[0]);
+					var currentHotSpotY=Number(currentHotSpotCoords[1]);
+					var currentHotSpotSize=currentHotSpotCoords[2];
+					var currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotSize);			
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
+					
+					break;
+				case "rect":
+					var currentHotSpotTopX=Number(currentHotSpotCoords[0]);
+					var currentHotSpotTopY=Number(currentHotSpotCoords[1]);
+					var currentHotSpotBottomX=currentHotSpotCoords[2]-currentHotSpotTopX;
+					var currentHotSpotBottomY=currentHotSpotCoords[3]-currentHotSpotTopY;
+					var currentShape=paper[currentHotSpotShape](currentHotSpotTopX,currentHotSpotTopY,currentHotSpotBottomX,currentHotSpotBottomY);
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
+								
+					break;	
+				case "ellipse":
+					var currentHotSpotX=Number(currentHotSpotCoords[0]);
+					var currentHotSpotY=Number(currentHotSpotCoords[1]);
+					var currentHotSpotHradius=currentHotSpotCoords[2];
+					var currentHotSpotVradius=currentHotSpotCoords[3];
+					var currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotHradius,currentHotSpotVradius);	
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");			
+								
+					break;
+				case "poly":
+					var polyCoords=polyCoordonates(_this.opts.graphicOrderChoices[$(this).attr("id")]["coords"]);
+					var currentShape=paper["path"](polyCoords);			
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");			
+								
+				break;
+			}
+			
+			shapes[$(this).attr("id")] = currentShape;
+			
+			currentShape.toFront();				
+			currentShape.attr("fill", "pink");
+			currentShape.attr("fill-opacity", "0");
+			currentShape.attr("stroke-opacity", "0");
+			
+			state_obj[$(this).attr("id")]={state:"empty",order:0,numberIn:null,numberOut:null,choiceItemRef:null};
+			
+			if (_this.graphicDebug) currentShape.attr("stroke-opacity", "1");
+			currentShape.attr("stroke", "blue");	
+			// add a reference to newly created object
+			_this.opts[currentShape.node]=$(this).attr("id");
+			$(currentShape.node).bind("mousedown",{	
+				zis: currentShape,
+				name: $(this).attr("id")
+			}, function(e){
+				var elementSelected=$(qti_item_id+" .pickup_area li.selected").length;
+				var displayCounter = parseInt($(qti_item_id+" .pickup_area li.selected").text());
+				if (state_obj[e.data.name].state=="empty" && elementSelected==0) return;
+				if (state_obj[e.data.name].state == "empty" && elementSelected==1) {
+					state_obj[e.data.name].state = "filled";
+					state_obj[e.data.name].order = displayCounter;
+					var shapeCoordonatesWidth = e.data.zis.getBBox().width;
+					var shapeCoordonatesHeight = e.data.zis.getBBox().height;
+					var shapeCoordonatesX = e.data.zis.getBBox().x + (shapeCoordonatesWidth / 2);
+					var shapeCoordonatesY = e.data.zis.getBBox().y + (shapeCoordonatesHeight / 2);	
+					var orderInfo = paper.text(shapeCoordonatesX, shapeCoordonatesY, $(qti_item_id+" .pickup_area li.selected").text());
+					var orderInfo1 = paper.text(shapeCoordonatesX, shapeCoordonatesY, $(qti_item_id+" .pickup_area li.selected").text());
+					state_obj[e.data.name].numberIn=orderInfo;
+					state_obj[e.data.name].numberOut=orderInfo1;
+                    state_obj[e.data.name].choiceItemRef=$(qti_item_id+" .pickup_area li.selected");
+					orderInfo.attr("font-family", "verdana");
+					orderInfo.attr("font-size", 16);
+					orderInfo.attr("font-weight", "bold");
+					orderInfo.attr("fill", "#009933");
+					orderInfo.attr("stroke", "#009933");
+					orderInfo.attr("stroke-width", "3px");
+					orderInfo1.attr("font-family", "verdana");
+					orderInfo1.attr("font-size", 16);
+					orderInfo1.attr("font-weight", "bold");
+					orderInfo1.attr("fill", "#ffffff");
+					currentShape.toFront();
+                    $(qti_item_id+" .pickup_area li.selected").css("visibility","hidden");
+					$(qti_item_id+" .pickup_area li.selected").removeClass("selected");
+				} else {
+					state_obj[e.data.name].numberIn.remove();
+					state_obj[e.data.name].numberOut.remove();
+					state_obj[e.data.name].state="empty";
+					state_obj[e.data.name].choiceItemRef.css("visibility","visible");
+				}			
+				$(qti_item_id).data('order', state_obj);
+			});	
+		});
+		
+		
+		
+		
+		//trigger the event on load if the value is set
+		for(var index = 0; index <list.length; index++){
+			var identifier = list[index];
+			if(identifier != undefined){
+				var choice = $(qti_item_id+" .pickup_area li.choice"+index).addClass('selected');
+				var shape = shapes[identifier];
+				$(shape.node).trigger("mousedown", {	
+					zis:shape,
+					name: value, 
+					raphElement:shape			
+				});
+			}
+		}
+	};
+	
+	this.upload = function(){
+		var opener = $("<span><a href='#'>"+__('Upload File')+"</a></span>");
+		opener.click(function(e){
+			
+			$(this).attr('disabled', true);
+			
+			var url = this.settings.popupUrl ;
+			var popupOpts = "width=350px,height=100px,menubar=no,resizable=yes,status=no,toolbar=no,dependent=yes,left="+e.pageX+",top="+e.pageY;
+			
+			self.window = window.open(url, 'fileuploader', popupOpts);
+			self.window.focus();
+			
+			return false;
+		});
+		$(qti_item_id).append(opener);
 	};
 };
