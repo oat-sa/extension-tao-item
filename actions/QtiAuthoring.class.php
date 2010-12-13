@@ -684,7 +684,6 @@ class QtiAuthoring extends CommonModule {
 		$saved = false;
 		$reloadResponse = false;
 		$newGraphicObject = array();
-		$errorMessage = '';
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
@@ -706,11 +705,11 @@ class QtiAuthoring extends CommonModule {
 				}
 				
 				//for graphic interactions:
-				if(intval($values['object_width'])){
+				if(isset($values['object_width'])){
 					$newGraphicObject['width'] = intval($values['object_width']);
 				}
 				
-				if(intval($values['object_height'])){
+				if(isset($values['object_height'])){
 					$newGraphicObject['height'] = intval($values['object_height']);
 				}
 					
@@ -747,7 +746,7 @@ class QtiAuthoring extends CommonModule {
 						
 						
 					}else{
-						$errorMessage = __('invalid image mime type');
+						$newGraphicObject['errorMessage'] = __('invalid image mime type');
 					}
 				}
 				$interaction->setObject($newGraphicObject);
@@ -808,8 +807,7 @@ class QtiAuthoring extends CommonModule {
 		echo json_encode(array(
 			'saved' => $saved,
 			'reloadResponse' => $reloadResponse,
-			'newGraphicObject' => $newGraphicObject,
-			'errorMessage' => $errorMessage
+			'newGraphicObject' => $newGraphicObject
 		));
 		
 	}

@@ -153,7 +153,9 @@ interactionClass.prototype.saveInteraction = function($myForm){
 								interaction.setShapeEditListener();
 							}
 						}else{
-							createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
+							if(r.newGraphicObject.errorMessage){
+								createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
+							}
 						}
 					}
 					
