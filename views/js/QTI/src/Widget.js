@@ -1241,19 +1241,11 @@ var QTIWidget = function(options){
 					if(value.value){
 						value = value.value;
 					}
-					var coords = value.split(',');
-					if(coords.length == 2){
-						setPoint($(qti_item_id+" .qti_select_point_interaction_container"), coords[0], coords[1]);
+					if(typeof(value) == 'object'){
+						setPoint($(qti_item_id+" .qti_select_point_interaction_container"), value['0'], value['1']);
 					}
 				}
 			}
-			if(typeof(values) == 'string'){
-				var coords = values.split(',');
-				if(coords.length == 2){
-					setPoint($(qti_item_id+" .qti_select_point_interaction_container"), coords[0], coords[1]);
-				}
-			}
-			
 		}
 		
 		//set a point on a click

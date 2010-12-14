@@ -266,10 +266,7 @@ function QTIResultCollector(options){
 				, "value"	: []
 			};
 		$("#" + _this.id + " li.activated").each(function(){
-			if (_this.opts["maxChoices"] != 1) 
-				result.value.push($(this).attr('id'));
-			else
-				result.value = $(this).attr('id');
+			result.value.push($(this).attr('id'));
 		});
 		return result;
 	};
@@ -285,11 +282,11 @@ function QTIResultCollector(options){
 				, "value"	: []
 			};
 		$("#" + _this.id + " img.select_point_cross").each(function(){
-			var coords = $(this).data('coords');
+			var coords = $(this).data('coords').split(',');
 			if (_this.opts["maxChoices"] != 1) 
-				result.value.push(coords);
+				result.value.push({'0': coords[0], '1': coords[1]});
 			else
-				result.value = coords;
+				result.value = {'0': coords[0], '1': coords[1]};
 		});
 		return result;
 	};

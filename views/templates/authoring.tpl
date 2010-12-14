@@ -1,6 +1,5 @@
 <?include(TAO_TPL_PATH . 'header.tpl')?>
 
-
 <?if(get_data('error')):?>
 	<div class="main-container">
 		<div class="ui-state-error ui-corner-all" style="padding:5px;">
