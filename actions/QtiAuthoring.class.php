@@ -596,8 +596,12 @@ class QtiAuthoring extends CommonModule {
 			case 'graphicassociate':{
 				$object = $interaction->getObject();
 				$this->setData('backgroundImagePath', isset($object['data'])?$object['data']:'');
-				$this->setData('width', isset($object['width'])?$object['width']:'');
-				$this->setData('height', isset($object['height'])?$object['height']:'');
+				if(isset($object['width'])){
+					$this->setData('width', (intval($object['width'])>0)?$object['width']:'');
+				}
+				if(isset($object['height'])){
+					$this->setData('height', (intval($object['height'])>0)?$object['height']:'');
+				}
 				break;
 			}
 			default:{
