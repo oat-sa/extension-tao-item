@@ -148,7 +148,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		className: 'add_graphicorder_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
-			instance.addInteraction('graphicorder', this.getContent(), instance.itemSerial);
+			instance.addInteraction('graphicOrder', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add graphic order interaction'
 	};
@@ -158,7 +158,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		className: 'add_graphicassociate_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
-			instance.addInteraction('graphicassociate', this.getContent(), instance.itemSerial);
+			instance.addInteraction('graphicAssociate', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add graphic associate interaction'
 	};
@@ -168,7 +168,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		className: 'add_graphicgapmatch_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
-			instance.addInteraction('graphicgapmatch', this.getContent(), instance.itemSerial);
+			instance.addInteraction('graphicGapMatch', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add hot spot interaction'
 	};
