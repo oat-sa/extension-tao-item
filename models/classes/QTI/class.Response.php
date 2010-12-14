@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 09.12.2010, 15:06:54 with ArgoUML PHP module 
+ * Automatically generated on 14.12.2010, 14:41:20 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,14 +28,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
@@ -51,7 +51,7 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  * Short description of class taoItems_models_classes_QTI_Response
  *
  * @access public
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -114,10 +114,40 @@ class taoItems_models_classes_QTI_Response
     // --- OPERATIONS ---
 
     /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string identifier
+     * @param  array options
+     * @return mixed
+     */
+    public function __construct($identifier = null, $options = array())
+    {
+        // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:000000000000293F begin
+        
+    	if(is_null($identifier)){
+    		parent::__construct($identifier, $options);
+    	}
+    	else{
+    		
+    		/*
+    		 * @todo check the unity of ids by item
+    		 */
+    		$this->createSerial();
+	    	self::$_instances[] = $this->serial;
+			$this->identifier 	= $identifier;    	
+	    	$this->options 		= $options;
+    	}
+    	
+        // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:000000000000293F end
+    }
+
+    /**
      * Short description of method getCorrectResponses
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getCorrectResponses()
@@ -137,7 +167,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setCorrectResponses
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array responses
      * @return mixed
      */
@@ -157,7 +187,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMapping
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string type
      * @return array
      */
@@ -184,7 +214,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMapping
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array map
      * @param  type
      * @return mixed
@@ -207,7 +237,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMappingDefaultValue
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string type
      * @return string
      */
@@ -233,7 +263,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMappingDefaultValue
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string value
      * @param  string type
      * @return mixed
@@ -256,7 +286,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -276,7 +306,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -314,7 +344,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -347,7 +377,7 @@ class taoItems_models_classes_QTI_Response
      * null.
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      */
     public function correctToJSON()
     {
@@ -378,7 +408,7 @@ class taoItems_models_classes_QTI_Response
      * get the mapping in JSON format. If no mapping defined return null.
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      */
     public function mapToJSON()
     {
@@ -419,7 +449,7 @@ class taoItems_models_classes_QTI_Response
      * get the base type of the response declaration
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getBaseType()
@@ -439,7 +469,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getHowMatch
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getHowMatch()
@@ -459,7 +489,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setHowMatch
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string howMatch
      * @return mixed
      */

@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 21.10.2010, 10:46:13 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 14.12.2010, 14:41:20 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -28,23 +28,16 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Item
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
-
-/**
- * include taoItems_models_classes_QTI_Response
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
- */
-require_once('taoItems/models/classes/QTI/class.Response.php');
 
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002347-includes begin
@@ -58,7 +51,7 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
  * Short description of class taoItems_models_classes_QTI_Outcome
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -66,7 +59,7 @@ class taoItems_models_classes_QTI_Outcome
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -81,10 +74,40 @@ class taoItems_models_classes_QTI_Outcome
     // --- OPERATIONS ---
 
     /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string identifier
+     * @param  array options
+     * @return mixed
+     */
+    public function __construct($identifier = null, $options = array())
+    {
+        // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:0000000000002951 begin
+        
+    	if(is_null($identifier)){
+    		parent::__construct($identifier, $options);
+    	}
+    	else{
+    		
+    		/*
+    		 * @todo check the unity of ids by item
+    		 */
+    		$this->createSerial();
+	    	self::$_instances[] = $this->serial;
+			$this->identifier 	= $identifier;    	
+	    	$this->options 		= $options;
+    	}
+    	
+        // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:0000000000002951 end
+    }
+
+    /**
      * Short description of method getDefaultValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getDefaultValue()
@@ -104,7 +127,7 @@ class taoItems_models_classes_QTI_Outcome
      * Short description of method setDefaultValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string value
      * @return mixed
      */
@@ -121,7 +144,7 @@ class taoItems_models_classes_QTI_Outcome
      * get the outcome in JSON format
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      */
     public function toJSON()
     {

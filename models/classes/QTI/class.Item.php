@@ -348,7 +348,8 @@ class taoItems_models_classes_QTI_Item
     public function setOutcomes($outcomes)
     {
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025A4 begin
-        
+    	
+    	$this->outcomes = array();
     	foreach($outcomes as $outcome){
     		if( ! $outcome instanceof taoItems_models_classes_QTI_Outcome){
     			throw new InvalidArgumentException("wrong entry in outcomes list");
@@ -633,10 +634,10 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B2F begin
         
             $returnValue = array (
-                "rule"      =>null,
-                "corrects"  =>Array(),
-                "maps"      =>Array(),
-                "outcomes"  =>Array()
+                "rule"      => null,
+                "corrects"  => array(),
+                "maps"      => array(),
+                "outcomes"  => array()
             );
             
             // BUILD the RP rule
@@ -662,8 +663,8 @@ class taoItems_models_classes_QTI_Item
             }
             
             // Get the correct responses (correct variables and map variables)
-            $corrects = Array ();
-            $maps = Array ();
+            $corrects = array ();
+            $maps = array ();
             $interactions = $this->getInteractions();
             foreach ($interactions as $interaction){
             	if( $interaction->getResponse () != null){

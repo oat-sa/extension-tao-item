@@ -720,18 +720,19 @@ class taoItems_models_classes_QTI_Interaction
 
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 begin
         
-        $returnValue = in_array($this->type, array(
+        $returnValue = in_array(strtolower($this->type), array(
         	'associate', 
         	'choice', 
         	'order', 
         	'match', 
-        	'gapMatch', 
+        	'gapmatch', 
         	'hottext',
 			'hotspot',
-        	'selectPoint',
-			'graphicAssociate',
-			'graphicOrder',
-			'graphicGapMatch'
+        	'selectpoint',
+			'graphicassociate',
+			'graphicorder',
+			'graphicgapmatch',
+        	'upload'
         ));
         
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end
@@ -891,7 +892,7 @@ class taoItems_models_classes_QTI_Interaction
 			}
 			$variables['object_alt'] = $_alt;
 			$variables['objectAttributes'] = $objectAttributes;
-		}    		
+		}
 		
 		//parse and render the template
 		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
