@@ -817,6 +817,8 @@ class QtiAuthoring extends CommonModule {
 		$myForm = $choice->toForm();
 		$saved = false;
 		$identifierUpdated = false;
+		$errorMessage = '';
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 			
@@ -838,10 +840,10 @@ class QtiAuthoring extends CommonModule {
 				
 				//for graphic interactions:
 				$newGraphicObject = array();
-				if(intval($values['object_width'])){
+				if(isset($values['object_width'])){
 					$newGraphicObject['width'] = intval($values['object_width']);
 				}
-				if(intval($values['object_height'])){
+				if(isset($values['object_height'])){
 					$newGraphicObject['height'] = intval($values['object_height']);
 				}
 				if(isset($values['object_data'])){
@@ -886,7 +888,7 @@ class QtiAuthoring extends CommonModule {
 			'choiceSerial' => $choice->getSerial(),
 			'identifierUpdated' => $identifierUpdated,
 			'reload' => $choiceFormReload,
-			'errorMessage' => $errorMessage
+			'errorMessage' => trim($errorMessage)
 		));
 	}
 	
