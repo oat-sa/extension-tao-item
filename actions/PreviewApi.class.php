@@ -111,7 +111,8 @@ class PreviewApi extends Api {
 			//default deployment params
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
-				'matching_server'		=> false
+				'matching_server'		=> false,
+				'qti_base_www'			=> BASE_WWW .'js/QTI/'
 			);
 			if($this->hasRequestParameter('match')){
 				if($this->getRequestParameter('match') == 'server'){

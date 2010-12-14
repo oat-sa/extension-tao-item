@@ -17,7 +17,14 @@
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/raphael.min.js"></script>
 	
-	<script type="text/javascript">var qti_base_www = "<?=$ctx_base_www?>js/QTI/";</script>
+	<?if($hasUpload):?>
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_base_www?>lib/jquery.uploadify/uploadify.css" media="screen" />
+	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.0.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/jquery.uploadify/swfobject.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/AsyncFileUpload.js"></script>
+	<?endif?>
+	
+	<script type="text/javascript">var qti_base_www = "<?=$ctx_qti_base_www?>";</script>
 	
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>

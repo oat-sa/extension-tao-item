@@ -1430,13 +1430,10 @@ var QTIWidget = function(options){
 					state_obj[e.data.name].numberOut.remove();
 					state_obj[e.data.name].state="empty";
 					state_obj[e.data.name].choiceItemRef.css("visibility","visible");
-				}			
+				}
 				$(qti_item_id).data('order', state_obj);
 			});	
 		});
-		
-		
-		
 		
 		//trigger the event on load if the value is set
 		for(var index = 0; index <list.length; index++){
@@ -1444,29 +1441,39 @@ var QTIWidget = function(options){
 			if(identifier != undefined){
 				var choice = $(qti_item_id+" .pickup_area li.choice"+index).addClass('selected');
 				var shape = shapes[identifier];
-				$(shape.node).trigger("mousedown", {	
+				$(shape.node).trigger("mousedown", {
 					zis:shape,
 					name: value, 
-					raphElement:shape			
+					raphElement:shape
 				});
 			}
 		}
 	};
 	
+	/**
+	 * a file upload widget
+	 */
 	this.upload = function(){
-		var opener = $("<span><a href='#'>"+__('Upload File')+"</a></span>");
-		opener.click(function(e){
+		
+		var uploaderElt = $(qti_item_id + '_uploader');
+		if(uploaderElt.length > 0){
 			
-			$(this).attr('disabled', true);
+			var fileExt = '*';
+			if(_this.opts['ext']){
+				if(_this.opts['ext'] != ''){
+					fileExt = '*.' + _this.opts['ext'];
+				}
+			}
 			
-			var url = this.settings.popupUrl ;
-			var popupOpts = "width=350px,height=100px,menubar=no,resizable=yes,status=no,toolbar=no,dependent=yes,left="+e.pageX+",top="+e.pageY;
-			
-			self.window = window.open(url, 'fileuploader', popupOpts);
-			self.window.focus();
-			
-			return false;
-		});
-		$(qti_item_id).append(opener);
+			new AsyncFileUpload(uploaderElt, {
+				"scriptData": {'session_id' : _this.opts['session_id']},
+				"basePath"  : _this.wwwPath,
+				"rootUrl"	: '',
+				"fileDesc"	: 'Allowed files type: ' + fileExt,
+				"fileExt"	: fileExt,
+				"target"	: qti_item_id + '_data',
+				"folder"    : "/"
+			});
+		}
 	};
 };

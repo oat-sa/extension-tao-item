@@ -314,11 +314,14 @@ function QTIResultCollector(options){
 		return result;
 	};
 	
+	/**
+	 * Collect the results of an <b>upload</b> widget *
+	 * @returns {Object} the results
+	 */
 	this.upload = function(){
-		var result = {
+		return {
 				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
-				, "value"	: []
+				, "value"	: $("#" + _this.id +'_data').val()
 			};
-		return result;
 	};
 }

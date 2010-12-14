@@ -492,20 +492,24 @@ class taoItems_models_classes_QTI_Item
         
     	//get the variables to use in the template
     	$variables = $this->extractVariables();
-        //$variables['data'] = $this->getDataXHTML ();
         
+		$variables['hasUpload'] = false;    	
         $interactions = $this->getInteractions();
         foreach($interactions as $interaction){
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
-        }	
+        	if($interaction->getType() == 'upload'){
+        		$variables['hasUpload'] = true;   
+        	}
+        }
                 
         // get Matching data
         $matchingData = $this->getMatchingData ();
-		$variables['matching'] = Array();
+		$variables['matching'] = array();
         $variables['matching']['data'] = $matchingData;
         $variables['matching']['url'] = "/taoDelivery/ResultDelivery/evaluate";
-        $variables['matching']['params'] = Array ();
+        $variables['matching']['params'] = array ();
+        
         
         $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
@@ -663,15 +667,15 @@ class taoItems_models_classes_QTI_Item
             $interactions = $this->getInteractions();
             foreach ($interactions as $interaction){
             	if( $interaction->getResponse () != null){
-                $correctJSON = $interaction->getResponse ()->correctToJSON();
-                if ($correctJSON != null) {
-                    array_push ($returnValue["corrects"], $correctJSON);   
-                }
-                
-                $mapJson = $interaction->getResponse ()->mapToJSON();
-                if ($mapJson != null) {
-                    array_push ($returnValue["maps"], $mapJson);   
-                }
+	                $correctJSON = $interaction->getResponse ()->correctToJSON();
+	                if ($correctJSON != null) {
+	                    array_push ($returnValue["corrects"], $correctJSON);   
+	                }
+	                
+	                $mapJson = $interaction->getResponse ()->mapToJSON();
+	                if ($mapJson != null) {
+	                    array_push ($returnValue["maps"], $mapJson);   
+	                }
             	}
             }
             
