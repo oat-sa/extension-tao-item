@@ -112,6 +112,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $mythoMap = Array (
             'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct'
             , 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response'
+            , 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response_point'
         );
         
         $returnValue = in_array($uri, $mythoMap);

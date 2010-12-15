@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.11.2010, 13:48:55 with ArgoUML PHP module 
+ * Automatically generated on 15.12.2010, 14:29:32 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -20,6 +20,13 @@ error_reporting(E_ALL);
 if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
+
+/**
+ * include taoItems_models_classes_Matching_AreaMap
+ *
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ */
+require_once('taoItems/models/classes/Matching/class.AreaMap.php');
 
 /**
  * include taoItems_models_classes_Matching_Map
@@ -61,7 +68,7 @@ require_once('taoItems/models/classes/Matching/class.VariableFactory.php');
 class taoItems_models_classes_Matching_Matching
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -158,7 +165,8 @@ class taoItems_models_classes_Matching_Matching
             , 'gte'=>array()
             , 'lt'=>array()
             , 'lte'=>array()
-			, 'mapResponse'=>array()
+            , 'mapResponse'=>array()
+            , 'mapResponsePoint'=>array()
             , 'match'=>array()
             , 'not'=>array()
             , 'or'=>array('mappedFunction'=>'orExpression')
@@ -372,6 +380,40 @@ class taoItems_models_classes_Matching_Matching
 		}
     	
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028DC end
+    }
+
+    /**
+     * Short description of method setAreaMaps
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return mixed
+     */
+    public function setAreaMaps(   $data)
+    {
+        // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CD6 begin
+        
+        if (gettype($data) != 'array'){
+            throw new Exception ('taoItems_models_classes_Matching_Matching::setAreaMaps is waiting on an array, a '.gettype($data).' is given. '.$data);
+        }
+
+        foreach ($data as $key=>$map){
+            try {
+                $var =  new taoItems_models_classes_Matching_AreaMap ($map->value);
+                
+                if (isset ($this->maps[$map->identifier]))
+                    throw new Exception ('taoItems_models_classes_Matching_Matching::setMaps a map variable with the identifier '.$map->identifier.' exists yet');
+
+                $this->maps[$map->identifier] = $var;
+            }
+            
+            catch (Exception $e){
+                throw $e;
+            }
+        }
+        
+        // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CD6 end
     }
 
     /**
@@ -1449,6 +1491,38 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = $options['min']+lcg_value()*(abs($options['max']-$options['min']));
         
         // section 127-0-1-1-4b0fb01e:12c5430948f:-8000:0000000000002BE5 end
+
+        return (float) $returnValue;
+    }
+
+    /**
+     * Short description of method mapResponsePoint
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  array options
+     * @param  AreaMap map
+     * @param  Variable expr
+     * @return double
+     */
+    public function mapResponsePoint($options,  taoItems_models_classes_Matching_AreaMap $map,  taoItems_models_classes_Matching_Variable $expr)
+    {
+        $returnValue = (float) 0.0;
+
+        // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CD9 begin
+        
+        $options = $this->checkOptions ($options);
+        
+        if (!isset($map)){
+            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the first argument [taoItems_models_classes_Matching_Variable] does not exist");
+        }
+        else if (!isset($expr)){
+            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the second argument [taoItems_models_classes_Matching_Variable] does not exist");
+        }
+        
+        $returnValue = $map->map ($expr);
+        
+        // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CD9 end
 
         return (float) $returnValue;
     }

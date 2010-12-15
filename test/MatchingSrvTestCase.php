@@ -19,7 +19,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		TestRunner::initTest();
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
-
+/*
 	public function testVariables () {
 		
 		$null = taoItems_models_classes_Matching_VariableFactory::create (null);
@@ -169,6 +169,69 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$map3 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":"TAO", "value":1}, {"key":"Test assisté par ordinateur", "value":0.5}, {"key":"CBA in english", "value":0.2}]'));
 		$this->assertEqual ($map3->map ($listStr1), 1.7);
 		$this->assertEqual ($map3->map ($listStr2), 1.5);
+		
+        // Point (in QTI Directed Pair) 
+        $point1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"0":"102", "1":"113"}'));
+        $this->assertNotNull ($point1);
+        $this->assertEqual ($point1->getType(), 'tuple');
+        $tmpValue = $point1->getValue();
+        $this->assertEqual ($tmpValue[0]->getValue(), '102');
+        $this->assertEqual ($tmpValue[1]->getValue(), '113');
+        $this->assertTrue ($point1->match($point1));
+  
+        // Circle (in QTI Shape associated to area mapping)
+        $circle1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"type":"circle", "center":{"0":102,"1":113},"hradius":8,"vradius":8}'));
+        $this->assertNotNull ($circle1);
+        $this->assertEqual ($circle1->getType(), 'circle');
+        $this->assertEqual ($circle1->getHRadius(), 8);
+        $this->assertEqual ($circle1->getVRadius(), 8);
+        $this->assertEqual ($circle1->getCenter()->getType(), "tuple");
+        $tmpValue = $circle1->getCenter()->getValue();
+        $this->assertEqual ($tmpValue[0]->getValue(), 102);
+        $this->assertEqual ($tmpValue[1]->getValue(), 113);
+        // Check if a point is inside this shape
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":102, "1":113}'));
+        $this->assertTrue($circle1->contains ($point)); 
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":102, "1":105}'));
+        $this->assertTrue($circle1->contains ($point)); 
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":102, "1":104}'));
+        $this->assertFalse($circle1->contains ($point));
+        
+        // Rect (in QTI Shape associated to area mapping)
+        $rect1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"type":"rect", "points":[{"0":0,"1":0}, {"0":0,"1":1}, {"0":1,"1":1}, {"0":1,"1":0}]}'));
+        $this->assertNotNull ($rect1);
+        $this->assertEqual ($rect1->getType(), 'rect');
+        $tmpValue = $rect1->getPoints ();
+        list ($x, $y) = $tmpValue[2]->getValue();
+        $this->assertEqual ($x->getValue(), 1);
+        $this->assertEqual ($y->getValue(), 1);
+        // Check if a point is inside this shape
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0.55, "1":0.55}'));
+        $this->assertTrue($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0.2, "1":0.8}'));
+        $this->assertTrue($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0.9, "1":0.7}'));
+        $this->assertTrue($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0.99, "1":0.77}'));
+        $this->assertTrue($rect1->contains($point));
+        // Limit are not inside (sauf le zero)
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0, "1":0}'));
+        $this->assertTrue($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0, "1":1}'));
+        $this->assertFalse($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":1, "1":1}'));
+        $this->assertFalse($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":1, "1":0}'));
+        $this->assertFalse($rect1->contains($point));
+            // Check if a point is not inside this shape
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":0, "1":2}'));
+        $this->assertFalse($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":2, "1":1}'));
+        $this->assertFalse($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":1, "1":2}'));
+        $this->assertFalse($rect1->contains($point));
+        $point = taoItems_models_classes_Matching_VariableFactory::create(json_decode('{"0":2, "1":0}'));
+        $this->assertFalse($rect1->contains($point));
 	}
 	
     public function testOperatorCreateVariable (){
@@ -636,9 +699,9 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($outcomes["SCORE"]["value"], 0);
 	}
 
-/**
- *  TEST ON REAL QTI XML
- */
+    // ***********************************************
+    // * TEST ON QTI ITEM
+    // ***********************************************
     public function testMatch () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -765,7 +828,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => false,
-        	'raw_preview'	=> false
+            'raw_preview'   => false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -788,7 +851,38 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
-
+*/
+    public function testSelectPoint () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false,
+            'raw_preview'   => false
+        );
+        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/select_point.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setMaps ($matching_data['maps']);
+        matching_setAreaMaps ($matching_data['areaMaps']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":{"0":102, "1":113}}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+       
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+    }
+/*
     public function testCustomAllRules () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -827,7 +921,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
-    /** Test an item with a large coverage of the rules' subset */
+    // Test an item with a large coverage of the rules' subset
     public function testShakespear () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -866,7 +960,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
-    /** Test that the ParserFactory figure out the type of Response Processing for an item */
+    // Test that the ParserFactory figure out the type of Response Processing for an item
     public function testPatternSeeker () {
         $file = dirname(__FILE__).'/samples/choice.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
@@ -891,7 +985,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_TemplatesDriven);
         //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
     }
-    
+    */
 }
 
 ?>

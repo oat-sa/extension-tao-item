@@ -80,6 +80,7 @@ class taoItems_models_classes_Matching_VariableFactory
 			//Collection Tuple : our standard define an object as a tuple
 			case 'object':
             case 'tuple':
+            case 'point':
 				$returnValue = new taoItems_models_classes_Matching_Tuple ($varValue);
 				break;
 				
@@ -88,7 +89,17 @@ class taoItems_models_classes_Matching_VariableFactory
             case 'list':
 				$returnValue = new taoItems_models_classes_Matching_List ($varValue);
 				break;
-						
+
+            // Shape       
+            case 'circle':
+            case 'ellipse':
+                $returnValue = new taoItems_models_classes_Matching_Ellipse ($varValue);
+                break;
+            case 'rect':
+            case 'poly':
+                $returnValue = new taoItems_models_classes_Matching_Poly ($varValue);
+                break;
+
 			case 'boolean':
 			case 'integer':
 			case 'double':
@@ -177,6 +188,7 @@ class taoItems_models_classes_Matching_VariableFactory
     				$type = "list";
     				break;
     			case "directedPair":
+                case "point":
     				$type = "tuple";
     				break;
     			default:
@@ -188,6 +200,58 @@ class taoItems_models_classes_Matching_VariableFactory
     	$returnValue = (object) $returnValue;
         
         // section 127-0-1-1-29d6c9d3:12bcdc75857:-8000:0000000000002A21 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method createJSONValueFromQTIData
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  value
+     * @param  string baseType
+     */
+    public function createJSONShapeFromQTIData($value) {
+        $returnValue = null;
+        
+        $returnValue = Array();
+        $type = $value["shape"];
+        $returnValue["type"] = $type;
+        
+        switch ($type) {
+            case "rect":
+                $points = explode(',', $value["coords"]);
+                $returnValue["points"] = Array (
+                    (object) Array($points[0], $points[1])
+                    , (object) Array($points[2], $points[1])
+                    , (object) Array($points[2], $points[3])
+                    , (object) Array($points[0], $points[3])
+                );
+                break;
+                
+            case "poly":
+                $coords = explode(',', $value["coords"]);
+                $returnValue["points"] = Array();
+                while (count ($coords)) {
+                    array_push ($returnValue["points"], (object) array_splice($coords, 0, 2));
+                }
+                break;
+                
+            case "circle":
+                $points = explode(',', $value["coords"]);
+                $returnValue["center"] = (object) array_slice ($points, 0, 2);
+                $returnValue["hradius"] = $points[2];
+                $returnValue["vradius"] = $points[2];
+                break;
+                
+            case "ellipse":
+                $points = explode(',', $value["coords"]);
+                $returnValue["center"] = (object) array_slice ($points, 0, 2);
+                $returnValue["hradius"] = $points[2];
+                $returnValue["vradius"] = $points[3];
+                break;
+        }
 
         return $returnValue;
     }
@@ -225,7 +289,8 @@ class taoItems_models_classes_Matching_VariableFactory
     			$returnValue = explode (" ", $value);
     			break;
     			
-    		case "directedPair":
+            case "directedPair":
+            case "point":
     			$returnValue = (object)explode (" ", $value);
     			break;
     			

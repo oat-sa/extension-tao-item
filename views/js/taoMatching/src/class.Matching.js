@@ -7,7 +7,8 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     var data = {
 		"outcomes" 		: null
 		, "corrects" 	: null
-		, "maps" 		: null
+        , "maps"        : null
+        , "areaMaps"        : null
 		, "rule" 		: null
 	}; if (typeof(pData) != 'undefined') $.extend(data, pData);
     
@@ -36,6 +37,14 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
      * @var Map
      */
     this.maps = [];
+    
+    /**
+     * Short description of attribute area maps
+     *
+     * @access protected
+     * @var AreaMap
+     */
+    this.areaMaps = [];
 
     /**
      * Short description of attribute outcomes
@@ -85,7 +94,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 		, 'if'				:{'jsFunction':true}
 		, 'isNull'			:{}
 		, 'getCorrect'		:{}
-		, 'getMap'			:{}
+        , 'getMap'          :{}
         , 'getResponse'     :{}
         , 'getVariable'     :{}
         , 'gt'              :{}
@@ -94,6 +103,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
         , 'lt'              :{}
         , 'lte'             :{}
         , 'mapResponse'     :{}
+        , 'mapResponsePoint':{}
         , 'match'           :{}
         , 'not'             :{}
         , 'or'              :{}
@@ -113,10 +123,14 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
 	if (data.outcomes != null) {
 		this.setOutcomes (data.outcomes);
 	}
-	
-	if (data.maps != null) {
-		this.setMaps (data.maps);
-	}
+    
+    if (data.maps != null) {
+        this.setMaps (data.maps);
+    }
+    
+    if (data.areaMaps != null) {
+        this.setAreaMaps (data.areaMaps);
+    }
 	
 	if (data.rule != null){
 		this.setRule (data.rule);
@@ -265,7 +279,7 @@ TAO_MATCHING.Matching.prototype = {
 			}
 		}
     }
-	
+    
     /**
      * Set the mappings
      *
@@ -276,20 +290,47 @@ TAO_MATCHING.Matching.prototype = {
      */
     , setMaps : function(data)
     {
-		if (! $.isArray (data))
-    		throw new Error ('TAO_MATCHING.Matching::setMaps is waiting on an array, a '+ (typeof data) +' is given');
+        if (! $.isArray (data))
+            throw new Error ('TAO_MATCHING.Matching::setMaps is waiting on an array, a '+ (typeof data) +' is given');
 
-		for (var key in data) {
-			try {
-				if (typeof this.maps[data[key].identifier] != 'undefined')
-					throw new Error ('TAO_MATCHING.Matching::setMaps a correct variable with the identifier '+ data[key].identifier +' exists yet');
-				var matchingVar = new TAO_MATCHING.Map (data[key].value);
-				this.maps[data[key].identifier] = matchingVar;
-			} 
-			catch (e) {
-				throw e;
-			}
-		}
+        for (var key in data) {
+            try {
+                if (typeof this.maps[data[key].identifier] != 'undefined')
+                    throw new Error ('TAO_MATCHING.Matching::setMaps a correct variable with the identifier '+ data[key].identifier +' exists yet');
+                var matchingVar = new TAO_MATCHING.Map (data[key].value);
+                this.maps[data[key].identifier] = matchingVar;
+            } 
+            catch (e) {
+                throw e;
+            }
+        }
+    }
+    
+    /**
+     * Set the area mappings
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  data
+     * @return mixed
+     */
+    , setAreaMaps : function(data)
+    {
+        if (! $.isArray (data))
+            throw new Error ('TAO_MATCHING.Matching::setAreaMaps is waiting on an array, a '+ (typeof data) +' is given');
+
+        for (var key in data) {
+            try {
+                if (typeof this.maps[data[key].identifier] != 'undefined')
+                    throw new Error ('TAO_MATCHING.Matching::setAreaMaps a correct variable with the identifier '+ data[key].identifier +' exists yet');
+                
+                var matchingVar = new TAO_MATCHING.AreaMap (data[key].value);
+                this.areaMaps[data[key].identifier] = matchingVar;
+            } 
+            catch (e) {
+                throw e;
+            }
+        }
     }
 	
     /**
@@ -538,15 +579,20 @@ TAO_MATCHING.Matching.prototype = {
      *
      * @access protected
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
+     * @param {string} id
+     * @param {string} type Type of map to get ["area", null]
      * @return taoItems_models_classes_Matching_Map
      */
-    , getMap : function(identifier)
+    , getMap : function(identifier, type)
     {
         var returnValue = null;
-
-        if (typeof (this.maps[identifier]) != 'undefined')
-            returnValue = this.maps[identifier];
+        var targetArray = this.maps;
+        
+        if (type!=undefined){
+            targetArray = this.areaMaps;
+        }
+        if (typeof (targetArray[identifier]) != 'undefined')
+            returnValue = targetArray[identifier];
         else
             throw new Error ('TAO_MATCHING.Matching::getMap error : try to reach an unknown mapping variable ['+identifier+']');
 
@@ -751,6 +797,16 @@ TAO_MATCHING.Matching.prototype = {
         options = this.checkOptions(options);
         
         if (! (mappingVar instanceof TAO_MATCHING.Map) )
+            throw new Error ('TAO_MATCHING.Matching::mapResponse an error occured : first argument expected type TAO_MATCHING.mappingVar, given : '+(typeof mappingVar));
+
+        return mappingVar.map (matchingVar);
+    }
+    
+    , mapResponsePoint : function(options, mappingVar, matchingVar)
+    {        
+        options = this.checkOptions(options);
+        
+        if (! (mappingVar instanceof TAO_MATCHING.AreaMap) )
             throw new Error ('TAO_MATCHING.Matching::mapResponse an error occured : first argument expected type TAO_MATCHING.mappingVar, given : '+(typeof mappingVar));
 
         return mappingVar.map (matchingVar);

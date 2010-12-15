@@ -16,13 +16,17 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
     <script type="application/javascript" src="../views/js/taoMatching/lib/json2.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.MatchingRemote.js"></script>
-	<script type="application/javascript" src="../views/js/taoMatching/src/class.VariableFactory.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.VariableFactory.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Variable.js"></script>
-	<script type="application/javascript" src="../views/js/taoMatching/src/class.BaseTypeVariable.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.BaseTypeVariable.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.Shape.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.Ellipse.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.Poly.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Collection.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.List.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Tuple.js"></script>
-	<script type="application/javascript" src="../views/js/taoMatching/src/class.Map.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.Map.js"></script>
+    <script type="application/javascript" src="../views/js/taoMatching/src/class.AreaMap.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/matching_constant.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/matching_api.js"></script>
 	
@@ -32,7 +36,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	
 	<script type="application/javascript">
         var testToRun = '*';
-        //var testToRun = "Remote Matching : Shakespear.xml";
+        //var testToRun = "Remote Parsing / Client Matching : Select Point";
         
         var testUnitFct = test;
         var asynctestUnitFct = asyncTest;
@@ -173,6 +177,92 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!listTuple1.match(listTuple4), 'Does not match a different listTuple');
 			ok (!listTuple1.match(listTuple5), 'Does not match a different listTuple');
 		});
+        
+        test("Test the VariableFactory (tuple:point [in QTI Point])", function() {
+            var point1 = TAO_MATCHING.VariableFactory.create ({"0":101, "1":112});
+            ok (point1 != null, 'Variable not null');
+            equals (point1.getType(), 'tuple', 'Right type');
+            var tmpValue = point1.getValue ();
+            equals (tmpValue[0].getValue(), 101, 'Right value');
+            equals (tmpValue[1].getValue(), 112, 'Right value');
+            ok (point1.match(point1), 'Match itself');
+        });
+        
+        test("Test the VariableFactory (shape:circle)", function() {
+            var circle1 = TAO_MATCHING.VariableFactory.create ({"type":"circle", "center":{"0":102,"1":113},"hradius":8,"vradius":8});
+            ok (circle1 != null, 'Variable not null');
+            equals (circle1.getType(), 'circle', 'Right type');
+            equals (circle1.hradius, 8, 'Right hradius');
+            equals (circle1.vradius, 8, 'Right vradius');
+            equals (circle1.center.getType(), "tuple", 'Right center type');
+            var tmpValue = circle1.center.getValue();
+            equals (tmpValue[0].getValue(), 102, 'Right center value X');
+            equals (tmpValue[1].getValue(), 113, 'Right center value Y');
+            // Check if a point is inside this shape
+            var point = TAO_MATCHING.VariableFactory.create ({"0":102, "1":113});
+            ok (circle1.contains (point), 'Point in ellipse'); 
+            point = TAO_MATCHING.VariableFactory.create ({"0":102, "1":105});
+            ok (circle1.contains (point), 'Point in ellipse');
+            point = TAO_MATCHING.VariableFactory.create ({"0":102, "1":104});
+            ok (!circle1.contains (point), 'Point in ellipse');            
+        });
+        
+        test("Test the VariableFactory (shape:ellipse)", function() {
+            var ellipse1 = TAO_MATCHING.VariableFactory.create ({"type":"ellipse", "center":{"0":"102","1":"113"},"hradius":"8","vradius":"2"});
+            ok (ellipse1 != null, 'Variable not null');
+            equals (ellipse1.getType(), 'ellipse', 'Right type');
+            equals (ellipse1.hradius, 8, 'Right hradius');
+            equals (ellipse1.vradius, 2, 'Right vradius');
+            equals (ellipse1.center.getType(), "tuple", 'Right center type');
+            var tmpValue = ellipse1.center.getValue();
+            equals (tmpValue[0].getValue(), 102, 'Right center value X');
+            equals (tmpValue[1].getValue(), 113, 'Right center value Y');
+        });
+        
+        test("Test the VariableFactory (shape:rect)", function() {
+            var rect1 = TAO_MATCHING.VariableFactory.create ({"type":"rect", "points":[{"0":0,"1":0}, {"0":0,"1":1}, {"0":1,"1":1}, {"0":1,"1":0}]});
+            ok (rect1 != null, 'Variable not null');
+            equals (rect1.getType(), 'rect', 'Right type');
+            var tmpValue = rect1.points[2].getValue();
+            equals (tmpValue[0].getValue(), 1, 'Right third point value X');
+            equals (tmpValue[1].getValue(), 1, 'Right third point value Y');
+            // Check if a point is inside this shape
+            var point = TAO_MATCHING.VariableFactory.create ({"0":0.55, "1":0.55});
+            ok (rect1.contains (point), 'Point in rect');
+            point = TAO_MATCHING.VariableFactory.create ({"0":0.2, "1":0.8});
+            ok (rect1.contains (point), 'Point in rect');
+            var point = TAO_MATCHING.VariableFactory.create ({"0":0.9, "1":0.7});
+            ok (rect1.contains (point), 'Point in rect');
+            var point = TAO_MATCHING.VariableFactory.create ({"0":0.99, "1":0.77});
+            ok (rect1.contains (point), 'Point in rect');
+            // Limit are not inside (sauf le zero)
+            var point = TAO_MATCHING.VariableFactory.create ({"0":0, "1":0});
+            ok (rect1.contains (point), 'Point in rect');
+            point = TAO_MATCHING.VariableFactory.create ({"0":0, "1":1});
+            ok (!rect1.contains (point), 'Point in rect');
+            var point = TAO_MATCHING.VariableFactory.create ({"0":1, "1":1});
+            ok (!rect1.contains (point), 'Point in rect');
+            var point = TAO_MATCHING.VariableFactory.create ({"0":1, "1":0});
+            ok (!rect1.contains (point), 'Point in rect');
+            // Check if a point is not inside this shape
+            point = TAO_MATCHING.VariableFactory.create ({"0":0, "1":2});
+            ok (!rect1.contains (point), 'Point not in rect');
+            point = TAO_MATCHING.VariableFactory.create ({"0":2, "1":1});
+            ok (!rect1.contains (point), 'Point not in rect');
+            var point = TAO_MATCHING.VariableFactory.create ({"0":1, "1":2});
+            ok (!rect1.contains (point), 'Point not in rect');
+            var point = TAO_MATCHING.VariableFactory.create ({"0":2, "1":0});
+            ok (!rect1.contains (point), 'Point not in rect');
+        });
+        
+        test("Test the VariableFactory (shape:poly)", function() {
+            var poly1 = TAO_MATCHING.VariableFactory.create ({"type":"poly", "points":[{"0":"0","1":"0"}, {"0":"1","1":"1"}, {"0":"0","1":"2"}, {"0":"1","1":"3"}, {"0":"2","1":"2"}, {"0":"3","1":"3"}, {"0":"4","1":"2"}, {"0":"3","1":"1"}, {"0":"4","1":"0"}]});
+            ok (poly1 != null, 'Variable not null');
+            equals (poly1.getType(), 'poly', 'Right type');
+            var tmpValue = poly1.points[5].getValue();
+            equals (tmpValue[0].getValue(), 3, 'Right five point value X');
+            equals (tmpValue[1].getValue(), 3, 'Right five point value Y');
+        });
 		
 		test("map list of list [in QTI list of pair]", function() {
 			var map1 = new TAO_MATCHING.Map ([{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]);
@@ -997,6 +1087,34 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 ,{"identifier":"response_6","value":["choice_12","choice_13"]}
             ]);
             matchingEvaluate ();
+        });
+
+        // REMOTE PARSING / CLIENT MATCHING POINT POINT POINT .xml
+        asyncTest("Remote Parsing / Client Matching : Select Point", function(){
+            var item_path = '<?=PATH_SAMPLE?>select_point.xml';
+            var url = "<?=ROOT_URL?>/taoItems/Matching/getItemMatchingDataDebug?item_path="+encodeURIComponent(item_path);
+
+            $.ajax ({
+                url : url
+                , type : 'GET'
+                , async : true
+                , dataType : 'json'
+                , success   : function (data){
+
+                    var matching_param = {
+                        "data" : data
+                        , "options" : {
+                            "evaluateCallback" : function (outcomes) {
+                                equals (outcomes.SCORE.value, 1, 'Expected Value');
+                                start();
+                            }
+                        }
+                    };
+                    matchingInit (matching_param);
+                    matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"102","1":"113"}]}]);
+                    matchingEvaluate ();
+                }
+            });            
         });
 
         // REMOTE PARSING / CLIENT MATCHING SHAKESPEAR .xml

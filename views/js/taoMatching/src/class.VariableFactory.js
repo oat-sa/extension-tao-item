@@ -21,11 +21,12 @@ TAO_MATCHING.VariableFactory = {
 		else {
             type = TAO_MATCHING.VariableFactory.getType (data);
 		}
-		
+
 		// Create the variable according to its type
 		switch (type) {
 			// Collection Tuple : our standard defines an JSON Object as a tuple
 			case 'tuple':
+			case 'point':
 				returnValue = new TAO_MATCHING.Tuple (data);
 				break;
 				
@@ -34,13 +35,23 @@ TAO_MATCHING.VariableFactory = {
 				returnValue = new TAO_MATCHING.List (data);
 				break;
 			
-			// NAtive language variable types			
+			// Native language variable types			
 			case 'boolean':
 			case 'number':
 			case 'string':
 			case 'NULL':
 				returnValue = new TAO_MATCHING.BaseTypeVariable (data);
 				break;
+
+            // Shape       
+            case 'circle':
+            case 'ellipse':
+                returnValue = new TAO_MATCHING.Ellipse (data);
+                break;
+            case 'rect':
+            case 'poly':
+                returnValue = new TAO_MATCHING.Poly (data);
+                break;
 		
 		    // The type is not supported by the matching API
 			default:
@@ -63,6 +74,10 @@ TAO_MATCHING.VariableFactory = {
             // If the data is null, we create a basic type variable with null value
             if (data == null) {
                 returnValue = 'NULL';
+            }
+            // If a type as been declared
+            else if (data.type!=undefined){
+                returnValue  = data.type;
             }
             // If the data is an array we create a list variable
             else if (($.isArray(data))) {

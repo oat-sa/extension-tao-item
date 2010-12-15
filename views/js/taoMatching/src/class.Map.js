@@ -31,7 +31,6 @@ TAO_MATCHING.Map.prototype = {
                         break;
                     }
                 }
-                
             }
     		else {
     			if (matchingVar.match (this.value[mapKey]['key'])){
@@ -56,7 +55,7 @@ TAO_MATCHING.Map.prototype = {
 		this.value = [];
 	 	for (var i in data){
     		this.value.push ({"value":data[i].value, "key":TAO_MATCHING.VariableFactory.create(data[i].key)});
-    	}  
+    	}
 	}
 };
 

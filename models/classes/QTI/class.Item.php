@@ -637,6 +637,7 @@ class taoItems_models_classes_QTI_Item
                 "rule"      => null,
                 "corrects"  => array(),
                 "maps"      => array(),
+                "areaMaps"      => array(),
                 "outcomes"  => array()
             );
             
@@ -673,10 +674,15 @@ class taoItems_models_classes_QTI_Item
 	                    array_push ($returnValue["corrects"], $correctJSON);   
 	                }
 	                
-	                $mapJson = $interaction->getResponse ()->mapToJSON();
-	                if ($mapJson != null) {
-	                    array_push ($returnValue["maps"], $mapJson);   
-	                }
+                    $mapJson = $interaction->getResponse ()->mapToJSON();
+                    if ($mapJson != null) {
+                        array_push ($returnValue["maps"], $mapJson);   
+                    }
+                    
+                    $areaMapJson = $interaction->getResponse ()->areaMapToJSON();
+                    if ($areaMapJson != null) {
+                        array_push ($returnValue["areaMaps"], $areaMapJson);
+                    }
             	}
             }
             

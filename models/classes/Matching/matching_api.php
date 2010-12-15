@@ -64,8 +64,17 @@ function matching_setCorrects ($data) {
  * @param {JSON} data The map
  */
 function matching_setMaps ($data) {
-	global $taoMatching;
-	return $taoMatching->setMaps ($data);
+    global $taoMatching;
+    return $taoMatching->setMaps ($data);
+}
+
+/**
+ * Set the area mapping of the item
+ * @param {JSON} data The area map
+ */
+function matching_setAreaMaps ($data) {
+    global $taoMatching;
+    return $taoMatching->setAreaMaps ($data);
 }
 
 /**
