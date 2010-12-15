@@ -317,7 +317,8 @@ class PreviewApi extends Api {
 					
 					matching_init ();
 			        matching_setRule ($itemMatchingData["rule"]);
-			        matching_setMaps ($itemMatchingData["maps"]);
+                    matching_setMaps ($itemMatchingData["maps"]);
+                    matching_setAreaMaps ($itemMatchingData["areaMaps"]);
 			        matching_setCorrects ($itemMatchingData["corrects"]);
 			        matching_setResponses (json_decode($_POST['data']));
 			        matching_setOutcomes ($itemMatchingData["outcomes"]);

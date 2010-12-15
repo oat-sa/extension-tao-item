@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.12.2010, 14:29:32 with ArgoUML PHP module 
+ * Automatically generated on 15.12.2010, 15:54:48 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -135,6 +135,14 @@ class taoItems_models_classes_Matching_Matching
      * @var string
      */
     const MAP_RESPONSE = 'if(isNull(null, getResponse("RESPONSE"))) { setOutcomeValue("SCORE", 0); } else { setOutcomeValue("SCORE", mapResponse(null, getMap("RESPONSE"), getResponse("RESPONSE"))); }';
+
+    /**
+     * Short description of attribute areaMaps
+     *
+     * @access protected
+     * @var array
+     */
+    protected $areaMaps = array();
 
     // --- OPERATIONS ---
 
@@ -402,10 +410,10 @@ class taoItems_models_classes_Matching_Matching
             try {
                 $var =  new taoItems_models_classes_Matching_AreaMap ($map->value);
                 
-                if (isset ($this->maps[$map->identifier]))
+                if (isset ($this->areaMaps[$map->identifier]))
                     throw new Exception ('taoItems_models_classes_Matching_Matching::setMaps a map variable with the identifier '.$map->identifier.' exists yet');
 
-                $this->maps[$map->identifier] = $var;
+                $this->areaMaps[$map->identifier] = $var;
             }
             
             catch (Exception $e){
@@ -570,16 +578,23 @@ class taoItems_models_classes_Matching_Matching
      * @access protected
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string id
+     * @param  string type
      * @return taoItems_models_classes_Matching_Map
      */
-    protected function getMap($id)
+    protected function getMap($id, $type)
     {
         $returnValue = null;
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EA begin
         
-        if (isset($this->maps[$id]))
-        	$returnValue = $this->maps[$id];
+        $targetArray = $this->maps;
+        if (isset($type) && $type=="area"){
+            $targetArray = $this->areaMaps;
+        }
+        
+        if (isset($targetArray[$id])){
+        	$returnValue = $targetArray[$id];
+        }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EA end
 
@@ -1510,11 +1525,11 @@ class taoItems_models_classes_Matching_Matching
         $returnValue = (float) 0.0;
 
         // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CD9 begin
-        
+
         $options = $this->checkOptions ($options);
         
         if (!isset($map)){
-            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the first argument [taoItems_models_classes_Matching_Variable] does not exist");
+            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the first argument [taoItems_models_classes_Matching_AreaMap] does not exist");
         }
         else if (!isset($expr)){
             throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the second argument [taoItems_models_classes_Matching_Variable] does not exist");

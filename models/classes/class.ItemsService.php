@@ -832,9 +832,10 @@ class taoItems_models_classes_ItemsService
             if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
                 
                 $itemMatchingData = $this->getMatchingData ($itemRdf);
-        
+                
                 matching_init ();
                 matching_setRule ($itemMatchingData["rule"]);
+                matching_setAreaMaps ($itemMatchingData["areaMaps"]);
                 matching_setMaps ($itemMatchingData["maps"]);
                 matching_setCorrects ($itemMatchingData["corrects"]);
                 matching_setResponses ($responses);
