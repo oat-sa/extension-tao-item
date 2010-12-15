@@ -118,7 +118,7 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1-2993bc96:12baebd89c3:-8000:000000000000264D begin
         
     	//override the tool options !
-    	$options['toolName'] 	= TAO_NAME;
+    	$options['toolName'] 	= PRODUCT_NAME;
     	$options['toolVersion'] = TAO_VERSION;
     	
     	parent::__construct($identifier, $options);

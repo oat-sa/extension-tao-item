@@ -13,7 +13,7 @@ ol, ul, li {font-size:14px; }
 
 .prompt {font-weight:bold; }
 
-div.qti_item {margin:20px; width:80%; margin:10px auto 10px auto; }
+div.qti_item {width:80%; margin:10px auto 70px auto; }
 
 .field-error {background-color:transparent; background-image: url('../img/underline.gif'); background-repeat: repeat-x; background-position: bottom; }
 

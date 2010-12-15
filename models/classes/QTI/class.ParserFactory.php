@@ -250,6 +250,7 @@ class taoItems_models_classes_QTI_ParserFactory
        			case 'hotspot':
        			case 'selectPoint':
        			case 'graphicOrder':
+       			case 'graphicAssociate':
        				//get the object
        				$objectNodes = $data->xpath("*[name(.)='object']");
        				foreach($objectNodes as $objectNode){
@@ -275,7 +276,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				
        			default :
                     $interactionData = simplexml_load_string($data->asXML()); 
-       				$exp= "*[contains(name(.),'Choice')] | //*[name(.)='hottext']";
+       				$exp= "*[contains(name(.),'Choice')] | *[name(.)='associableHotspot'] | //*[name(.)='hottext']";
        				$choiceNodes = $interactionData->xpath($exp);
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
@@ -318,6 +319,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				case 'hotspot':
        				case 'selectPoint':
        				case 'graphicOrder':
+       				case 'graphicAssociate':
        					$pattern = "/(<object\b[^>]*>(.*?)<\/object>)|(<object\b[^>]*\/>)/is";
 	       				$interactionData = preg_replace($pattern, "", $interactionData);
 	       				

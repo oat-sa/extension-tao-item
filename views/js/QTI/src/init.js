@@ -60,6 +60,8 @@ function qti_init_interaction(initObj){
 	$("#qti_validate").bind("click",function(e){
 		e.preventDefault();
 		
+		$('body').css('cursor', 'wait');
+		
 		// Get user's data
 		var result = myResultCollector[typeName].apply();
 		// Set the matching engine with the user's data	
