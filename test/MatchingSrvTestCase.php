@@ -19,7 +19,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
 		TestRunner::initTest();
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}
-/*
+
 	public function testVariables () {
 		
 		$null = taoItems_models_classes_Matching_VariableFactory::create (null);
@@ -180,7 +180,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $this->assertTrue ($point1->match($point1));
   
         // Circle (in QTI Shape associated to area mapping)
-        $circle1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"type":"circle", "center":{"0":102,"1":113},"hradius":8,"vradius":8}'));
+        $circle1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"type":"circle", "center":{"0":102,"1":113},"hradius":8,"vradius":8}'), "circle");
         $this->assertNotNull ($circle1);
         $this->assertEqual ($circle1->getType(), 'circle');
         $this->assertEqual ($circle1->getHRadius(), 8);
@@ -198,7 +198,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $this->assertFalse($circle1->contains ($point));
         
         // Rect (in QTI Shape associated to area mapping)
-        $rect1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"type":"rect", "points":[{"0":0,"1":0}, {"0":0,"1":1}, {"0":1,"1":1}, {"0":1,"1":0}]}'));
+        $rect1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('{"type":"rect", "points":[{"0":0,"1":0}, {"0":0,"1":1}, {"0":1,"1":1}, {"0":1,"1":0}]}'), "rect");
         $this->assertNotNull ($rect1);
         $this->assertEqual ($rect1->getType(), 'rect');
         $tmpValue = $rect1->getPoints ();
@@ -851,7 +851,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
-*/
+
     public function testSelectPoint () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -878,11 +878,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         matching_evaluate ();
         $outcomes = matching_getOutcomes ();
         $this->assertEqual ($outcomes["SCORE"]["value"], 1);
-       
-        //echo $item->toXHTML();
-        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
-/*
+
     public function testCustomAllRules () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -985,7 +982,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_TemplatesDriven);
         //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
     }
-    */
+
 }
 
 ?>

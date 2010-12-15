@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 15.12.2010, 15:54:48 with ArgoUML PHP module 
+ * Automatically generated on 15.12.2010, 16:31:34 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -581,7 +581,7 @@ class taoItems_models_classes_Matching_Matching
      * @param  string type
      * @return taoItems_models_classes_Matching_Map
      */
-    protected function getMap($id, $type)
+    protected function getMap($id, $type = null)
     {
         $returnValue = null;
 
