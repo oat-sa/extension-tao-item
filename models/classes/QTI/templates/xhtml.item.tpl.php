@@ -24,7 +24,12 @@
 	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/AsyncFileUpload.js"></script>
 	<?endif?>
 	
-	<script type="text/javascript">var qti_base_www = "<?=$ctx_qti_base_www?>";</script>
+	<script type="text/javascript">
+		var qti_base_www = "<?=$ctx_qti_base_www?>";
+		<?if($ctx_debug):?>	
+		var qti_debug = true;
+		<?endif?>
+	</script>
 	
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
@@ -34,14 +39,16 @@
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/qti.min.js"></script>
 </head>
-<body >
+<body>
 	<div id='<?=$identifier?>' class="qti_item">
 		<h1><?=$options['title']?></h1>
 	
 		<?=$data?>
 		
 		<!-- validation button -->
-		<a href="#" id="qti_validate">Validate</a>
+		<div class="qti_control">
+			<a href="#" id="qti_validate">Validate</a>
+		</div>
 	</div>
 </body>
 </html>

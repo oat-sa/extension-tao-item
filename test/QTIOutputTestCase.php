@@ -19,10 +19,12 @@ class QTIOutputTestCase extends UnitTestCase {
 		TestRunner::initTest();
 		
 		$parameters = array(
-			'root_url' => ROOT_URL,
-        	'base_www' => BASE_WWW,
-        	'taobase_www' => TAOBASE_WWW,
-        	'raw_preview'	=> false
+			'root_url' 		=> ROOT_URL,
+        	'base_www' 		=> BASE_WWW,
+        	'taobase_www' 	=> TAOBASE_WWW,
+			'qti_base_www'	=> BASE_WWW .'js/QTI/',
+        	'raw_preview'	=> false,
+        	'debug'			=> false
 		);
 		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
 		
@@ -86,7 +88,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-        foreach(glob(dirname(__FILE__).'/samples/graphic_order.xml') as $file){	
+        foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();

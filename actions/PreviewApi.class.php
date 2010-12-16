@@ -112,11 +112,18 @@ class PreviewApi extends Api {
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
 				'matching_server'		=> false,
-				'qti_base_www'			=> BASE_WWW .'js/QTI/'
+				'qti_base_www'			=> BASE_WWW .'js/QTI/',
+				
 			);
 			if($this->hasRequestParameter('match')){
 				if($this->getRequestParameter('match') == 'server'){
 					$deployParams['matching_server'] = true;
+				}
+			}
+			$debugMode = false;
+			if($this->hasRequestParameter('debug')){
+				if($this->getRequestParameter('debug')){
+					$deployParams['debug'] = true;
 				}
 			}
 			$useContext  = false;
@@ -161,6 +168,7 @@ class PreviewApi extends Api {
 					$initScriptParams = array(
 						'context'	=> $useContext,
 						'matching' 	=> ($deployParams['matching_server']) ? 'server' : 'client',
+						'debug'		=> $debugMode,
 						'uri' 		=> tao_helpers_Uri::encode($item->uriResource)
 					);
 					

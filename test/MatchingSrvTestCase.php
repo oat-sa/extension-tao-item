@@ -708,7 +708,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => true,
-        	'raw_preview'	=> false
+        	'raw_preview'	=> false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -740,7 +741,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => true,
-        	'raw_preview'	=> false
+        	'raw_preview'	=> false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -769,7 +771,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => true,
-        	'raw_preview'	=> false
+        	'raw_preview'	=> false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -799,7 +802,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'taobase_www' => TAOBASE_WWW,
             // Tmp matching context
             'delivery_server_mode' => true,
-        	'raw_preview'	=> false
+        	'raw_preview'	=> false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -828,7 +832,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => false,
-            'raw_preview'   => false
+            'raw_preview'   => false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -858,7 +863,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => false,
-            'raw_preview'   => false
+            'raw_preview'   => false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -886,7 +892,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => false,
-        	'raw_preview'	=> false
+        	'raw_preview'	=> false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         
@@ -925,7 +932,8 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'base_www' => BASE_WWW,
             'taobase_www' => TAOBASE_WWW,
             'delivery_server_mode' => false,
-        	'raw_preview'	=> false
+        	'raw_preview'	=> false,
+        	'debug'			=> false
         );
         taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
         

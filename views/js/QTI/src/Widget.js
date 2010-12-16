@@ -47,6 +47,15 @@ var QTIWidget = function(options){
 	 * @type {boolean}
 	 */
 	this.graphicDebug  = false; 
+	//use the global variable qti_debug
+	if(typeof(qti_debug) != 'undefined'){
+		this.graphicDebug = qti_debug;
+	}
+	
+	
+//
+// CHOICE
+//
 	
 	/**
 	 * Creates a choice list widget
@@ -109,21 +118,25 @@ var QTIWidget = function(options){
 		//set the current values if defined
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for(i in values){
 					var value = values[i];
 					if(typeof(value) == 'string' && value != ''){
 						$(qti_item_id+" ul li#"+value).addClass("tabActive");
 					}
-					if(typeof(value) == 'object'){
-						if(value.value){
-							$(qti_item_id+" ul li#"+value.value).addClass("tabActive");
-						}
-					}
+//					if(typeof(value) == 'object'){
+//						if(value.value){
+//							$(qti_item_id+" ul li#"+value.value).addClass("tabActive");
+//						}
+//					}
 				}
 			}
 		}
 	};
+
+//
+//	INLINE CHOICE
+//
 	
 	/**
 	 * We use the html <i>select</i> widget,
@@ -138,6 +151,11 @@ var QTIWidget = function(options){
 		}
 	};
 
+//
+//	ORDER
+//
+	
+	
 	/**
 	 * Creates a sortable list widget,
 	 * can be horizontal or vertical regarding the orientation parameter
@@ -147,7 +165,7 @@ var QTIWidget = function(options){
 		//if the values are defined
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				
 				//we take the list element corresponding to the given ids 
 				var list = new Array();
@@ -155,11 +173,6 @@ var QTIWidget = function(options){
 					var value = values[i];
 					if(typeof(value) == 'string' && value != ''){
 						list.push($(qti_item_id+" ul.qti_choice_list li#"+value));
-					}
-					if(typeof(value) == 'object'){
-						if(value.value){
-							list.push($(qti_item_id+" ul.qti_choice_list li#"+value.value));
-						}
 					}
 				}
 				
@@ -244,6 +257,10 @@ var QTIWidget = function(options){
 		$(qti_item_id).append("<div class='breaker'> </div>");
 		
 	};
+	
+//
+//	ASSOCIATE
+//
 
 	/**
 	 * Creates a pair association widget, 
@@ -284,7 +301,7 @@ var QTIWidget = function(options){
 			var pairSize = parseInt($(qti_item_id+" .qti_choice_list li").length / 2);
 		}
 		var pairContainer = $("<div class='qti_pair_container'></div>");
-		for (var a=pairSize; a>0; a--){
+		for (var a=1; a<=pairSize; a++){
 			var currentPairName=_this.opts["id"]+"_"+a;
 			pairContainer.append("<ul class='qti_association_pair' id='"+currentPairName+"'><li id='"+currentPairName+"_A"+"'></li><li id='"+currentPairName+"_B"+"'></li></ul>");		
 		}
@@ -443,40 +460,32 @@ var QTIWidget = function(options){
 		if(_this.opts["values"]){
 			var index = 1;
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for(i in values){
 					var pair = values[i];
-					var valA, valB;
-					if(pair.value){
-						if(pair.value[0].value){
-							valA = pair.value[0].value;
-							valB = pair.value[1].value;
+					if(pair.length == 2){
+						var valA = pair[0];
+						if(typeof(valA) == 'string' && valA != ''){
+							if($(qti_item_id+" li#"+valA).length == 1){
+								fillPair($(qti_item_id+"_"+ index+"_A"), $(qti_item_id+" .qti_associate_container .qti_choice_list li#"+valA+" > div"));
+							}
 						}
-						else{
-							valA = pair.value[0];
-							valB = pair.value[1];
+						var valB = pair[1];
+						if(typeof(valB) == 'string' && valB != ''){
+							if($(qti_item_id+" li#"+valB).length == 1){
+								fillPair($(qti_item_id+"_"+ index+"_B"), $(qti_item_id+" .qti_associate_container .qti_choice_list li#"+valB+" > div"));
+							}
 						}
+						index++;
 					}
-					else{
-						valA = pair[0];
-						valB = pair[1];
-					}
-					
-					if(typeof(valA) == 'string' && valA != ''){
-						if($(qti_item_id+" li#"+valA).length == 1){
-							fillPair($(qti_item_id+"_"+ index+"_A"), $(qti_item_id+" .qti_associate_container .qti_choice_list li#"+valA+" > div"));
-						}
-					}
-					if(typeof(valB) == 'string' && valB != ''){
-						if($(qti_item_id+" li#"+valB).length == 1){
-							fillPair($(qti_item_id+"_"+ index+"_B"), $(qti_item_id+" .qti_associate_container .qti_choice_list li#"+valB+" > div"));
-						}
-					}
-					index++;
 				}
 			}
 		}
 	};
+	
+//
+//	TEXT ENTRY
+//
 
 	/**
 	 * Creates a text entry widget
@@ -493,6 +502,10 @@ var QTIWidget = function(options){
 		
 		_this.string_interaction();
 	};
+	
+//
+//	EXTENDED TEXT
+//
 
 	/**
 	 * Creates a  extended text widget,
@@ -551,16 +564,11 @@ var QTIWidget = function(options){
 			//set the current values if defined
 			if(_this.opts["values"]){
 				var values = _this.opts["values"];
-				if(typeof(values) == 'object' || typeof(values) == 'array'){
+				if(typeof(values) == 'object'){
 					for(i in values){
 						var value = values[i];
 						if(typeof(value) == 'string' && value != ''){
 							$(qti_item_id+" :text#" + qti_item_id+ "_"+ i).val(value);
-						}
-						if(typeof(value) == 'object'){
-							if(value.value){
-								$(qti_item_id+" :text#" + qti_item_id+ "_"+ i).val(value.value);
-							}
 						}
 					}
 				}
@@ -584,7 +592,6 @@ var QTIWidget = function(options){
 				if(!pattern.test($(this).val())){
 					$(this).addClass('field-error');
 				}
-				
 			});
 		}
 		
@@ -604,6 +611,10 @@ var QTIWidget = function(options){
 			}
 		}
 	};
+	
+//
+//	HOTTEXT
+//
 
 	/**
 	 * Creates a  hottext widget,
@@ -644,21 +655,20 @@ var QTIWidget = function(options){
 			if(typeof(values) == 'string' && values != ''){
 				$(qti_item_id + " #hottext_choice_"+values).switchClass('hottext_choice_off', 'hottext_choice_on');
 			}
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for(i in values){
 					var value = values[i];
 					if(typeof(value) == 'string' && value != ''){
 						$(qti_item_id + " #hottext_choice_"+value).switchClass('hottext_choice_off', 'hottext_choice_on');
 					}
-					if(typeof(value) == 'object'){
-						if(value.value){
-							$(qti_item_id + " #hottext_choice_"+value.value).switchClass('hottext_choice_off', 'hottext_choice_on');
-						}
-					}
 				}
 			}
 		}
 	};
+	
+//
+//	GAP MATCH
+//
 	
 	/**
 	 * Creates a  gap match widget			
@@ -806,18 +816,10 @@ var QTIWidget = function(options){
 		//if the values are defined
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for (i in values){
 					var value = values[i];
-					if(value.value){
-						value = value.value;
-					}
-					if(values[i]['count'] == 2){
-						var gap = value['0']['value'];
-						var choice = value['1']['value'];
-						fillGap($(qti_item_id+" .gap#"+gap), $(qti_item_id+" .qti_choice_list li#"+choice+" > div"));
-					}
-					else if( value['0'] && value['1']){
+					if( value['0'] && value['1']){
 						var gap = value['0'];
 						var choice = value['1'];
 						fillGap($(qti_item_id+" .gap#"+gap), $(qti_item_id+" .qti_choice_list li#"+choice+" > div"));
@@ -826,6 +828,10 @@ var QTIWidget = function(options){
 			}
 		}
 	};
+	
+//
+//	MATCH
+//
 	
 	/**
 	 * Create a match widget: 
@@ -1034,18 +1040,10 @@ var QTIWidget = function(options){
 		//if the values are defined
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for (i in values){
 					var value = values[i];
-					if(value.value){
-						value = value.value;
-					}
-					if(values[i]['count'] == 2){
-						var row = value['0']['value'];
-						var col = value['1']['value'];
-						selectNode($(qti_item_id + " .match_node.xnode_"+row+".ynode_"+col));
-					}
-					else if (value['0'] && value['1']){
+					if (value['0'] && value['1']){
 						var row = value['0'];
 						var col = value['1'];
 						selectNode($(qti_item_id + " .match_node.xnode_"+row+".ynode_"+col));
@@ -1055,6 +1053,9 @@ var QTIWidget = function(options){
 		}
 	};
 	
+//
+//	HOTSPOT
+//
 	
 	/**
 	 * Creates a clickable image with hotspots
@@ -1065,13 +1066,9 @@ var QTIWidget = function(options){
 		var currentValues = [];
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for (i in values){
-					var value = values[i];
-					if(value.value){
-						value = value.value;
-					}
-					currentValues.push(value);
+					currentValues.push( values[i]);
 				}
 			}
 			if(typeof(values) == 'string'){
@@ -1188,6 +1185,10 @@ var QTIWidget = function(options){
 			}
 		});
 	};
+
+//
+//	SELECT POINT
+//
 	
 	/**
 	 * Creates a clickable image with free hotspots
@@ -1215,16 +1216,18 @@ var QTIWidget = function(options){
 		 * @param {integer} y
 		 */
 		function setPoint(jContainer, x, y){
-			if(countChoices>=maxChoices){
+			if(countChoices>=maxChoices && maxChoices!=0){
 				return;
 			}
 			countChoices++;
+			
+			var offset = jContainer.offset();
 
 			jContainer
 				.append("<img src='"+_this.wwwPath+"img/cross.png' alt='cross' class='select_point_cross' />")
 				.find("img:last")
 				.css({position:"absolute", top:y + 'px', left:x + 'px', "cursor":"pointer"})
-				.data('coords', x+','+y)
+				.data('coords', parseInt(x - offset.left)  + ',' + parseInt(y  - offset.top))
 				.bind("click",function(e){
 					countChoices--;
 					$(this).remove();
@@ -1232,29 +1235,34 @@ var QTIWidget = function(options){
 				});
 		}
 		
+		var containerArea = $(qti_item_id+" .qti_select_point_interaction_container");
+		
 		//if the values are defined
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				for (i in values){
 					var value = values[i];
-					if(value.value){
-						value = value.value;
-					}
 					if(typeof(value) == 'object'){
-						setPoint($(qti_item_id+" .qti_select_point_interaction_container"), value['0'], value['1']);
+						if(value['0'] && value['1']){
+							setPoint(containerArea, containerArea.offset().left +parseInt(value['0']), containerArea.offset().top + parseInt(value['1']));
+						}
 					}
 				}
 			}
 		}
 		
 		//set a point on a click
-		$(qti_item_id+" .qti_select_point_interaction_container").bind("click",function(e){
+		containerArea.bind("click",function(e){
 			var relativeXmouse = e.pageX-5;
 			var relativeYmouse = e.pageY-5;
 			setPoint($(this),relativeXmouse, relativeYmouse);
 		});		
 	};
+	
+//
+//	GRAPHIC HOTSPOT
+// 
 	
 	/**
 	 * ordered hot spots
@@ -1263,12 +1271,11 @@ var QTIWidget = function(options){
 
 		
 		//if the values are defined
-		
 		var list = new Array();
 		if(_this.opts["values"]){
 			var values = _this.opts["values"];
 			var list = new Array(values.length);
-			if(typeof(values) == 'object' || typeof(values) == 'array'){
+			if(typeof(values) == 'object'){
 				
 				//we take the list element corresponding to the given ids 
 				for(index in values){
@@ -1277,18 +1284,12 @@ var QTIWidget = function(options){
 					if(typeof(value) == 'string' && value != ''){
 						list[index] = value;
 					}
-					if(typeof(value) == 'object'){
-						if(value.value){
-							list[index] = value.value;
-						}
-					}
 				}
 			}
 		}
 		
         var maxChoices;
-        if (_this.opts["maxChoices"]==undefined)
-        {
+        if (_this.opts["maxChoices"]==undefined){
             maxChoices = $(qti_item_id+" .qti_graphic_order_spotlist li").length;
         } else {
             maxChoices=_this.opts["maxChoices"];
@@ -1310,7 +1311,7 @@ var QTIWidget = function(options){
 		
 		// load image in rapheal area
 		var paper=Raphael($(qti_item_id+" .qti_graphic_order_spotlist")[0],0,_this.opts.imageHeight);
-		paper.image(options.imagePath,0,0 , imageWidth, imageHeight);
+		paper.image(_this.opts.imagePath,0,0 , imageWidth, imageHeight);
 		var state_obj=new Object();
         // create pickup zone
         $(qti_item_id).append("<ul class='pickup_area'></ul>");
@@ -1435,11 +1436,404 @@ var QTIWidget = function(options){
 				var shape = shapes[identifier];
 				$(shape.node).trigger("mousedown", {
 					zis:shape,
-					name: value, 
+					name: identifier, 
 					raphElement:shape
 				});
 			}
 		}
+	};
+
+	
+//
+//	GRAPHIC ASSOCIATE
+// 
+
+    /**
+	 * Creates a clickable image with hotspots
+	 */
+	this.graphic_associate = function (){
+	
+		var countChoices=_this.opts["maxAssociations"];
+	    var pointsPair=new Array();
+	    
+	    var imageHeight = parseInt(_this.opts.imageHeight);
+		var imageWidth = parseInt(_this.opts.imageWidth);
+	    
+		// offset position
+		$(qti_item_id+" .qti_graphic_associate_spotlist li").css("display","none");
+		var itemHeight=$(qti_item_id).height();
+		$(qti_item_id).css("height",itemHeight+imageHeight);
+		
+        // load image in rapheal area
+		var paper=Raphael($(qti_item_id+" .qti_graphic_associate_spotlist")[0],0,_this.opts.imageHeight);
+		paper.image(_this.opts.imagePath,0,0,imageWidth,imageHeight);
+		
+		var model_obj=new Object();
+        var line_ref_obj=new Object();
+            
+        // display max link or inifinite
+        if (_this.opts["maxAssociations"]>0){
+          $(qti_item_id+" .link_counter").text(_this.opts["maxAssociations"]);
+        } else {
+           $(qti_item_id+" .link_counter").html("<span class='infiniteSize'>∞</span>");
+        }
+
+        // red cross
+        var deleteButton=paper.image(_this.wwwPath+"img/delete.png",0,0,14,14);
+        deleteButton.attr("opacity","0");
+            
+        // create hotspot
+        $(qti_item_id+" .qti_graphic_associate_spotlist li").each(function(){
+        	
+			var currentHotSpotShape		= _this.opts.graphicAssociateChoices[$(this).attr("id")]["shape"];
+			var currentHotSpotCoords	= _this.opts.graphicAssociateChoices[$(this).attr("id")]["coords"].split(",");
+	        var currentHotSpotX, currentHotSpotY, currentHotSpotSize, currentHotSpotTopX, currentHotSpotTopY;
+	        var currentHotSpotBottomX, currentHotSpotBottomY, currentHotSpotHradius, currentHotSpotVradius;
+	        var pointerSize=3, pointer, pointerCoordonates;
+	        var polyCoords;
+	        var currentShape;
+	        var shapeWidth, shapeHeight;
+       
+			switch(currentHotSpotShape){
+				case "circle":
+					currentHotSpotX=Number(currentHotSpotCoords[0]);
+					currentHotSpotY=Number(currentHotSpotCoords[1]);
+					currentHotSpotSize=currentHotSpotCoords[2];
+					currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotSize);
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
+	                pointer = paper.circle(currentHotSpotX, currentHotSpotY, pointerSize);
+	                break;
+				case "rect":
+					currentHotSpotTopX=Number(currentHotSpotCoords[0]);
+					currentHotSpotTopY=Number(currentHotSpotCoords[1]);
+					currentHotSpotBottomX=currentHotSpotCoords[2]-currentHotSpotTopX;
+					currentHotSpotBottomY=currentHotSpotCoords[3]-currentHotSpotTopY;
+					currentShape=paper[currentHotSpotShape](currentHotSpotTopX,currentHotSpotTopY,currentHotSpotBottomX,currentHotSpotBottomY);
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
+	                shapeWidth=currentShape.getBBox().width;
+					shapeHeight=currentShape.getBBox().height;
+					pointer = paper.circle(currentHotSpotTopX+(shapeWidth/2), currentHotSpotTopY+(shapeHeight/2), pointerSize);
+	                break;
+				case "ellipse":
+					currentHotSpotX=Number(currentHotSpotCoords[0]);
+					currentHotSpotY=Number(currentHotSpotCoords[1]);
+					currentHotSpotHradius=currentHotSpotCoords[2];
+					currentHotSpotVradius=currentHotSpotCoords[3];
+					currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotHradius,currentHotSpotVradius);
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
+					pointer = paper.circle(currentHotSpotX, currentHotSpotY, pointerSize);
+	                break;
+				case "poly":
+					polyCoords=polyCoordonates(_this.opts.graphicAssociateChoices[$(this).attr("id")]["coords"]);
+					currentShape=paper["path"](polyCoords);
+					if (_this.graphicDebug) currentShape.attr("stroke-width", "3px");
+					shapeWidth=currentShape.getBBox().width;
+					shapeHeight=currentShape.getBBox().height;
+				 	pointerCoordonates=pointerPolyCoordonates(_this.opts.graphicAssociateChoices[$(this).attr("id")]["coords"]);
+					currentHotSpotTopX=Number(pointerCoordonates[0]);
+					currentHotSpotTopY=Number(pointerCoordonates[1]);
+					pointer = paper.circle(currentHotSpotTopX+(shapeWidth/2), currentHotSpotTopY+(shapeHeight/2), pointerSize);
+	                break;
+			}
+
+	        var maxSubLink=_this.opts.graphicAssociateChoices[$(this).attr("id")]["matchMax"];
+	
+	        model_obj[$(this).attr("id")] = { 
+	        		pointer			: pointer,
+	        		ref				: currentShape,
+	        		pointerState	: "hidden",
+	        		linkRelation	: {},
+	        		maxSubLinkLength: maxSubLink
+	        };
+	        pointer.attr("fill","black");
+			pointer.attr("opacity","0");
+			currentShape.toFront();
+			currentShape.attr("fill", "pink");
+			currentShape.attr("fill-opacity", "0");
+			currentShape.attr("stroke-opacity", "0");
+	                    
+			if (_this.graphicDebug) currentShape.attr("stroke-opacity", "1");
+	                    
+			currentShape.attr("stroke", "blue");
+                    
+			// add a reference to newly created object
+			_this.opts[currentShape.node]=$(this).attr("id");
+			$(currentShape.node).bind("mousedown",{
+					zis			: currentShape,
+					name		: $(this).attr("id"),
+		            pair		: pointsPair,
+		            zepointer	: pointer
+				}, function(e){
+
+	                for (var i in line_ref_obj){
+	                	line_ref_obj[i].attr("stroke","black");
+	                }
+	
+	                $(deleteButton.node).unbind("mousedown");
+	
+	                var pointer=e.data.zepointer;
+	                deleteButton.attr("opacity","0");
+	                pointer.attr("fill","red");
+	                pointer.attr("stroke","white");
+	                if (e.data.pair.length<1){
+	                    e.data.pair.push(e.data.name);
+	
+	                    var currentLinkLength=displayedSubLink(model_obj[e.data.name].linkRelation);
+	                    var maxLinkAvalaible=model_obj[e.data.name].maxSubLinkLength-currentLinkLength;
+	                    
+	                    if(model_obj[e.data.name].maxSubLinkLength<1){
+	                        $(qti_item_id+" .sub_counter").html("<span class='infiniteSize'>∞</span>");
+	                    } 
+	                    else {
+	                    	$(qti_item_id+" .sub_counter").text(maxLinkAvalaible);
+	                    }
+	                } 
+	                else {
+	                    e.data.pair.push(e.data.name);
+	                    
+	                    // store bilateral relation
+                        var startId=e.data.pair[0];
+                        var endId=e.data.pair[1];
+	                    
+	                    //define begin and end point
+	                    var startPointer=model_obj[e.data.pair[0]].pointer;
+	                    var endPointer=model_obj[e.data.pair[1]].pointer;
+	                    var relation=e.data.pair[0]+' '+e.data.pair[1];
+	                    var targetRelation=e.data.pair[1]+' '+e.data.pair[0];
+	
+	                    // avoid double click on same pointer
+	                    if (startPointer==endPointer) {
+	                        startPointer.attr("fill","black");
+	                        startPointer.attr("stroke","black");
+	                        endPointer.attr("fill","black");
+	                        endPointer.attr("stroke","black");
+	                        hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+	                        emptyArray(e.data.pair);
+	                        $(qti_item_id+" .sub_counter").text("");
+	                        startPointer.attr("opacity","0");
+	                        return;
+	                    }
+	
+	                    // block if maxAssociations are reached
+	                    if (countChoices==0 && _this.opts["maxAssociations"]!=0){
+	                        startPointer.attr("fill","black");
+	                        startPointer.attr("stroke","black");
+	                        endPointer.attr("fill","black");
+	                        endPointer.attr("stroke","black");
+	                        hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+	                        emptyArray(e.data.pair);
+	                        return;
+	                    }
+	                    // verify maxSubLink
+	                    var subLinkLength=displayedSubLink(model_obj[e.data.pair[0]].linkRelation);
+	                    var targetSubLinkLength=displayedSubLink(model_obj[e.data.pair[1]].linkRelation);
+	                    // block max sub relation
+	                    // case infinite
+	                    if (model_obj[e.data.pair[0]].maxSubLinkLength==0){
+	                        if ((targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength){
+	                           startPointer.attr("fill","black");
+	                           startPointer.attr("stroke","black");
+	                           endPointer.attr("fill","black");
+	                           endPointer.attr("stroke","black");
+	                           hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+	                           emptyArray(e.data.pair);
+	                           return;
+	                        }
+	
+	                    } else 
+	                    // case finite sublink length
+	                    if (subLinkLength>=model_obj[e.data.pair[0]].maxSubLinkLength || (targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength){
+	                         if (model_obj[e.data.pair[1]].maxSubLinkLength!=0){
+	                             // empty current pair
+	                             startPointer.attr("fill","black");
+	                             startPointer.attr("stroke","black");
+	                             endPointer.attr("fill","black");
+	                             endPointer.attr("stroke","black");
+	                             hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+	                             emptyArray(e.data.pair);
+	                             return;
+	                        }
+	                    }
+	                    // bug peux plus creer de sublien (a tester)
+	                    if (model_obj[e.data.pair[0]].linkRelation[relation]!=undefined){
+	                        emptyArray(e.data.pair);
+	                        return;
+	                    }
+	                    var startPointX=startPointer.getBBox().x+startPointer.getBBox().width/2;
+	                    var startPointY=startPointer.getBBox().y+startPointer.getBBox().width/2;
+	                    var endPointX=endPointer.getBBox().x+endPointer.getBBox().width/2;
+	                    var endPointY=endPointer.getBBox().y+endPointer.getBBox().width/2;
+	                    var drawingPath="M"+startPointX+" "+startPointY+"L"+endPointX+" "+endPointY;
+	                    // trace line between dots
+	                    var line=paper.path(drawingPath);
+	
+	                    // black pointer
+	                    startPointer.attr("fill","black");
+	                    startPointer.attr("stroke","black");
+	                    endPointer.attr("fill","black");
+	                    endPointer.attr("stroke","black");
+	                    
+	                    model_obj[startId].linkRelation[relation]={};
+	                    model_obj[startId].linkRelation[relation].lineRef=line;
+	                    model_obj[startId].linkRelation[relation].endRef=endPointer;
+	
+	                    model_obj[endId].linkRelation[targetRelation]={};
+	                    model_obj[endId].linkRelation[targetRelation].lineRef=line;
+	                    model_obj[endId].linkRelation[targetRelation].endRef=startPointer;
+	
+	                    line_ref_obj[relation]=line;
+	                    var pairs = [];
+	                    for(aPair in line_ref_obj){
+	                    	pairs.push(aPair);
+	                    }
+	                    $(qti_item_id).data('pairs', pairs);
+	                    
+	                    emptyArray(e.data.pair);
+	                    
+	                    var pairOfPoints=e.data.pair;
+	
+	                     // click on line
+	                     $(line.node).bind("mousedown",{
+		                    	 zeline 	: line,
+		                    	 centerX	: (startPointX+endPointX)/2,
+		                    	 centerY	: (startPointY+endPointY)/2,
+		                    	 zerelation :relation
+	                    	 }, function(e){
+	
+	                           	var localRelation=e.data.zerelation;
+	                            var localLine=e.data.zeline;
+	
+	                            // color all line in black
+	                            for (var i in line_ref_obj){
+	                                line_ref_obj[i].attr("stroke","black");
+	                            }
+	
+	                            deleteButton.attr("opacity","1");
+	                            deleteButton.attr("x",e.data.centerX-7);
+                                deleteButton.attr("y",e.data.centerY-7);
+	                            deleteButton.toFront();
+	
+	                            $(deleteButton.node).bind("mousedown",{zisbutton:deleteButton}, function(e){
+	                            	
+	                                delete model_obj[startId].linkRelation[relation];
+	                                delete model_obj[endId].linkRelation[targetRelation];
+	
+	                                localLine.remove();
+	                                e.data.zisbutton.attr("opacity","0");
+	
+	                                if (_this.opts["maxAssociations"]>0 && countChoices < _this.opts["maxAssociations"]){
+	                                	countChoices++;
+	                                	$(qti_item_id+" .link_counter").text(countChoices);
+	                                }
+	                                
+	                                hideSinglePoint(model_obj, startId, endId, startPointer, endPointer);
+	                                
+	                                delete line_ref_obj[localRelation];
+	
+	                                emptyArray(pairOfPoints);
+	                                
+	                                line_ref_obj[relation]=line;
+	                                var pairs = [];
+	                                for(aPair in line_ref_obj){
+	                                	pairs.push(aPair);
+	                                }
+	                                $(qti_item_id).data('pairs', pairs);
+	                                
+	                                $(this).unbind("mousedown");
+	                            });
+	                            
+	                            var line=e.data.zeline;
+	                            line.attr("stroke","red");
+	                            
+	                            $(this).unbind("mousedown");
+	                     });
+	
+	                    // link counter displayed (except if _this.opts["maxAssociations"]=0)
+	                    if (_this.opts["maxAssociations"]>0){
+	                    	countChoices--;
+	                        $(qti_item_id+" .link_counter").text(countChoices);
+	                     }
+	                     e.data.zis.toFront();
+	                }
+	
+	                model_obj[e.data.name].pointer.attr("opacity","1");
+	                model_obj[e.data.name].pointerState="show";
+	                 
+	                for (var t in model_obj){
+	                     model_obj[t].ref.toFront();
+	                }
+				});
+		});
+        
+        //set the values if defined
+		if(_this.opts["values"]){
+			var values = _this.opts["values"];
+			if(typeof(values) == 'object'){
+				for(index in values){
+					var value = values[index];
+					if(typeof(value) == 'object'){
+						if(value.length == 2){
+							//create a pair by triggering the clicks 
+							var startShape = model_obj[value[0]]['ref'];
+							if(startShape){
+								$(startShape.node).trigger("mousedown",{
+									zis			: startShape,
+									name		: value[0],
+						            pair		: pointsPair,
+						            zepointer	: model_obj[value[0]]['pointer']
+								});
+							
+								var endShape = model_obj[value[1]]['ref'];
+								if(endShape){
+									$(endShape.node).trigger("mousedown",{
+										zis			: endShape,
+										name		: value[1],
+							            pair		: pointsPair,
+							            zepointer	: model_obj[value[1]]['pointer']
+									});
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		function hideSinglePoint(obj, startId, endId, startPointer, endPointer){
+           var rela=0;
+           // hide points alone
+           for (var z in obj[startId].linkRelation){
+           rela++;
+           }
+            var relb=0;
+            for (var e in obj[endId].linkRelation){
+            relb++;
+            }
+            if (rela<1) startPointer.attr("opacity","0");
+            if (relb<1) endPointer.attr("opacity","0");
+        }
+	
+	 	function emptyArray(aRay){
+	        while (aRay.length>0){
+	            aRay.pop();
+	        }
+	    }
+
+	    function displayedLink(objai){
+	        var xx=0;
+	        for (var a in objai){
+	            if (displayedSubLink(objai[a].linkRelation)>0)xx++;
+	        }
+	        return xx;
+	    }
+
+	    function displayedSubLink(objai){
+	        var i=0;
+	        for (var a in objai){
+	           i++;
+	        }
+	        return i;
+	    }
 	};
 	
 	/**

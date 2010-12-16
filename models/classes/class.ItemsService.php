@@ -600,7 +600,8 @@ class taoItems_models_classes_ItemsService
         	if(!isset($parameters['root_url']))		{ $parameters['root_url'] = ROOT_URL; }
         	if(!isset($parameters['base_www']))		{ $parameters['base_www'] = BASE_WWW; }
         	if(!isset($parameters['taobase_www']))	{ $parameters['taobase_www'] = TAOBASE_WWW; }
-        	$parameters['raw_preview'] = false;
+        	if(!isset($parameters['debug']))		{ $parameters['debug'] = false; }
+        	if(!isset($parameters['raw_preview']))	{ $parameters['raw_preview'] = false; }
         	
         	
         	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI, TAO_ITEM_MODEL_XHTML))){
@@ -613,8 +614,6 @@ class taoItems_models_classes_ItemsService
 	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
 	        	
 	        		if(!is_null($qtiItem)) {
-	        			
-	        			
 	        			
 	        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
 	        			

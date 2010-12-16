@@ -116,6 +116,18 @@ class taoItems_actions_form_PreviewOptions
     	}
     	$this->form->addElement($matchElt);
     	
+    	//recovery context element
+    	$debugElt = tao_helpers_form_FormFactory::getElement('debug', 'Combobox');
+    	$debugElt->setDescription(__('Debug Mode'));
+    	$debugElt->setOptions(array(
+    		0		=> __('Disabled'),
+    		1		=> __('Enabled')
+    	));
+    	if(isset($debugElt->data['debug'])){
+   			$debugElt->setValue($this->data['debug']);
+    	}
+    	$this->form->addElement($debugElt);
+    	
     	//add an hidden elt for the class uri
 		$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');
 		$classUriElt->setValue($this->data['classUri']);

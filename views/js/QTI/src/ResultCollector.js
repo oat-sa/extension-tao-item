@@ -312,6 +312,26 @@ function QTIResultCollector(options){
 	};
 	
 	/**
+	 * Collect the results of a <b>graphic associate</b> widget 
+	 * @returns {Object} the results
+	 */
+	this.graphic_associate = function(){
+		var result = {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: []
+			};
+		var pairs = $("#" + _this.id).data('pairs');
+		for(i in pairs){
+			var pair = pairs[i].split(' ');
+			if(pair.length == 2){
+				result.value.push(pair);
+			}
+		}
+		return result;
+	};
+	
+	
+	/**
 	 * Collect the results of an <b>upload</b> widget *
 	 * @returns {Object} the results
 	 */

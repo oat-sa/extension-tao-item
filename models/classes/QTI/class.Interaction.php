@@ -780,6 +780,7 @@ class taoItems_models_classes_QTI_Interaction
    				break;
    			case 'hotspot':
        		case 'graphicOrder':
+       		case 'graphicAssociate':
    				$variables['data'] = preg_replace("/{choice_[a-z0-9]*}(.*){choice_[a-z0-9]*}/mi", "<ul class='qti_{$variables['_type']}_spotlist'>$0</ul>", $variables['data']);
    				break;
    		}

@@ -215,7 +215,9 @@ class QtiAuthoring extends CommonModule {
         	'base_www' 				=> BASE_WWW,
         	'taobase_www' 			=> TAOBASE_WWW,
 			'delivery_server_mode' 	=> false,
-			'raw_preview'			=> true
+			'raw_preview'			=> true,
+			'debug'					=> true,
+        	'debug'					=> false
 		);
 		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
 		

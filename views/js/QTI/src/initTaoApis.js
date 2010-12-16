@@ -34,18 +34,25 @@ $(document).ready(function(){
         	//push the answered values 
         	var responses = matchingGetResponses();
         	var answeredValues = null;
+        	var size = 0;
         	for(key in responses){
             	if(answeredValues == null){
             		answeredValues = new Object();
             	}
         		answeredValues[responses[key]['identifier']] = responses[key]['value'];
-
+        		size++;
         		//set the answered values in the context
         		setRecoveryContext(responseToId[responses[key]['identifier']], JSON.stringify(responses[key]['value']));
         	}
         	if($.isPlainObject(answeredValues)){
-            	//set the answered values to the taoApi 
-				setAnsweredValues(JSON.stringify(answeredValues));
+            	
+        		//set the answered values to the taoApi 
+				if(size == 1 && answeredValues['RESPONSE']){
+					setAnsweredValues(JSON.stringify(answeredValues['RESPONSE']));
+				}
+				else{
+					setAnsweredValues(JSON.stringify(answeredValues));
+				}
         	}
         	
             // Evaluate the user's responses
