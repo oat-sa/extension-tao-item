@@ -133,7 +133,17 @@ TAO_MATCHING.List.prototype = {
      */
     , toJSon : function ()
     {
-        return this.getValue();
+        var returnValue = Array ();
+        
+        for (var i in this.value) {
+            var tmpValue = this.value[i];
+            if (TAO_MATCHING.VariableFactory.isMatchingVariable(tmpValue)){
+                tmpValue = tmpValue.toJSon();
+            }
+            returnValue [i] = tmpValue
+        }
+        
+        return returnValue;
     }
 };
 

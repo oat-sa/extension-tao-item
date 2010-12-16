@@ -415,10 +415,10 @@ TAO_MATCHING.Matching.prototype = {
             default:
                 returnValue = this.response;
         }
+        
     	return returnValue;
     }
 	
-    
     /**
      * Set the matching rule
      *

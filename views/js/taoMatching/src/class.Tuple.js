@@ -131,8 +131,19 @@ TAO_MATCHING.Tuple.prototype = {
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      */
     , toJSon : function ()
-    {
-        return this.getValue();
+    {        
+        var returnValue = {};
+        
+        for (var i in this.value) {
+            var tmpValue = this.value[i];
+            
+            if (TAO_MATCHING.VariableFactory.isMatchingVariable(tmpValue)){
+                tmpValue = tmpValue.toJSon();
+            }
+            returnValue[i] = tmpValue;
+        }
+        
+        return returnValue;
     }
 };
 
