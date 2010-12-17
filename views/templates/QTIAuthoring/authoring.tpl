@@ -3,11 +3,11 @@
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionClass.js"></script>
-<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>json2.js"></script>
-<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>graphic/lib/raphael.js"></script>
-<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>graphic/qtiShapeEditClass.js"></script>
-<script type="text/javascript" src="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.js"></script>
-<script type="text/javascript" src="<?=get_data('simplemodal_path')?>jquery.simplemodal.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/json2.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/raphael.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiShapeEditClass.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/jwysiwyg/jquery.wysiwyg.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/simplemodal/jquery.simplemodal.js"></script>
 
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('jwysiwyg_path')?>jquery.wysiwyg.modal.css" type="text/css" />
