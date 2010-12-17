@@ -4,6 +4,6 @@
     	<prompt><?=$prompt?></prompt>
     <?endif?>
 
-	<?=$data?>
+	<div><?=$data?></div>
        
 </<?=$type?>Interaction>

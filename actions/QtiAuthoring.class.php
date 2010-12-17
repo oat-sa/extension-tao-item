@@ -116,7 +116,7 @@ class QtiAuthoring extends CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($this->getRequestParameter('instance')));
 		
 		$currentItem = $this->getCurrentItem();
-		// if($this->debugMode) var_dump($currentItem);
+		if($this->debugMode) var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
@@ -197,7 +197,7 @@ class QtiAuthoring extends CommonModule {
 		$itemResource = $this->getCurrentItemResource();
 		$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
 		// print_r($itemObject);
-		// echo '<pre>'.$itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+		// echo $itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 		$saved = true;		
 		
 		if(tao_helpers_Request::isAjax()){
@@ -906,6 +906,8 @@ class QtiAuthoring extends CommonModule {
 		$myForm = $group->toForm();
 		$saved = false;
 		$identifierUpdated = false;
+		$newIdentifier = '';
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 			
@@ -913,6 +915,7 @@ class QtiAuthoring extends CommonModule {
 				
 				if(isset($values['groupIdentifier'])){
 					if($values['groupIdentifier'] != $group->getIdentifier()){
+						$newIdentifier = $values['groupIdentifier'];
 						$identifierUpdated = $this->service->setIdentifier($group, $values['groupIdentifier']);
 					}
 				}
@@ -950,6 +953,7 @@ class QtiAuthoring extends CommonModule {
 			'saved' => $saved,
 			'groupSerial' => $group->getSerial(),
 			'identifierUpdated' => $identifierUpdated,
+			'newIdentifier' => $newIdentifier,
 			'reload' => $choiceFormReload
 		));
 	}

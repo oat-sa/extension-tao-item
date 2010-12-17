@@ -55,9 +55,9 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 		
 		var $myForm = $(this).parents("form");
 		//linearize it and post it:
-		if(instance.modifiedInteraction){
+		// if(instance.modifiedInteraction){
 			instance.saveInteraction($myForm);
-		}
+		// }
 		
 		instance.saveModifiedChoices();
 		
@@ -167,8 +167,9 @@ interactionClass.prototype.saveInteraction = function($myForm){
 }
 
 interactionClass.prototype.saveChoice = function($choiceFormContainer){
-	
-	$choiceForm = null;
+
+	var _this = this;
+	var $choiceForm = null;
 	
 	if($choiceFormContainer.length){
 		
@@ -184,6 +185,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 	
 			var choiceProperties = $choiceForm.serializeObject();
 			if(choiceProperties.data){
+				var choiceData = choiceProperties.data;//keep un altered data string
 				choiceProperties.data = util.htmlEncode(choiceProperties.data);
 			}
 			
@@ -206,8 +208,18 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 						if(r.reload){
 							interaction.loadChoicesForm();
 						}else if(r.identifierUpdated){
+							//reload the response grid tu update the identifier
 							new responseClass(interaction.responseGrid, interaction);
 						}
+						
+						//for hotspot interaction, update the input value:
+						if(_this.interactionEditor && choiceData){
+							$choiceInputs = qtiEdit.getEltInFrame('#'+choiceProperties.choiceSerial);
+							if($choiceInputs.length){
+								$choiceInputs[0].val(choiceData);
+							}
+						}
+						
 						
 						if(r.errorMessage){
 							createErrorMessage(r.errorMessage);
@@ -236,6 +248,8 @@ interactionClass.prototype.saveGroup = function($groupForm){
 			i++;
 		}
 		
+		var groupProperties = 
+		
 		$.ajax({
 		   type: "POST",
 		   url: "/taoItems/QtiAuthoring/saveGroup",
@@ -247,11 +261,20 @@ interactionClass.prototype.saveGroup = function($groupForm){
 					createErrorMessage(__('The choice cannot be saved'));
 				}else{
 					createInfoMessage(__('Modification on choice applied'));
-					delete interaction.modifiedGroups['GroupForm_'+r.choiceSerial];
+					delete interaction.modifiedGroups['GroupForm_'+r.groupSerial];
 					
 					//only when the identifier has changed:
 					if(r.reload){
 						interaction.loadChoicesForm();
+						
+						//for gap match interaction:
+						if(r.identifierUpdated && r.newIdentifier && interaction.interactionEditor){
+							$groupInputs = qtiEdit.getEltInFrame('#'+r.groupSerial);
+							if($groupInputs.length){
+								$groupInputs[0].val(r.newIdentifier);
+							}
+						}
+						
 					}else if(r.identifierUpdated){
 						new responseClass(interaction.responseGrid, interaction);
 					}
@@ -817,7 +840,7 @@ interactionClass.prototype.saveResponseMappingOptions = function($myForm){
 	});
 }
 
-interactionClass.prototype.buildInteractionEditor = function(interactionDataContainerSelector, extraControls){
+interactionClass.prototype.buildInteractionEditor = function(interactionDataContainerSelector, extraControls, options){
 	
 	//re-init the interaction editor object: 
 	this.interactionEditor = new Object();
@@ -884,7 +907,14 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 		var controls = $.extend(controls, extraControls);
 	}
 	
+	if(!options){
+		options = {
+			css: ''
+		}
+	}
+	
 	this.interactionEditor = $(this.interactionDataContainer).wysiwyg({
+		css: options.css,
 		controls: controls,
 		gridComplete: this.bindChoiceLinkListener,
 		events: {
@@ -902,6 +932,9 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 				}
 				return false;
 			}
+		  },
+		  frameReady: function(editorDoc){
+			interaction.bindChoiceLinkListener();
 		  }
 		}
 	});

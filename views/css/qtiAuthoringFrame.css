@@ -40,4 +40,8 @@ div.qti_interaction_block span.qti_interaction_box_delete {
 	right: 10px;
 	top: 10px;
 }
+
+div.qti_choice_box {
+	display:inline;
+}
 /*div.qti_interaction_block span.qti_interaction_box_delete {margin-right: 10px;}*/

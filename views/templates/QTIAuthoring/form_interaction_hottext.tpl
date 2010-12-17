@@ -61,7 +61,7 @@ $(document).ready(function(){
 			tooltip: 'setHotText'
 		};*/
 	
-		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText});
+		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText}, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
 	}catch(err){
 		CL('error building interaction data editor', err);
 	}

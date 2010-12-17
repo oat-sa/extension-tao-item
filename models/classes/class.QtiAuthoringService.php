@@ -108,22 +108,32 @@ class taoItems_models_classes_QtiAuthoringService
 			$returnValue .= "<div class='qti_interaction_inline qti_interaction_box'>";
 		}
 		$returnValue .= "<input id=\"{$interaction->getSerial()}\" class=\"qti_interaction_link\" value=\"{$interaction->getType()} Interaction\" type=\"button\"/>";
-		// if($interaction->isBlock()){
-			$returnValue .= "</div>";
-		// }
+		$returnValue .= "</div>";
+		
 		return $returnValue;
 	}
 	
+	//for hot text interaction only
 	public function getChoiceTag(taoItems_models_classes_QTI_Choice $choice){
+		
+		$choiceData = trim(strip_tags($choice->getData()));
+		$value = (!empty($choiceData))?$choiceData:'{empty}';
+		
 		$returnValue = '';
-		$returnValue .= " <input type='button' id='{$choice->getSerial()}' class='qti_choice_link' value='{$choice->getType()}'/>";
+		$returnValue .= "<div class='qti_choice_box'>";
+		$returnValue .= "<input type='button' id='{$choice->getSerial()}' class='qti_choice_link' value='{$value}'/>";
+		$returnValue .= "<span />";
+		$returnValue .= "</div>";
 		
 		return $returnValue;
 	}
 	
 	public function getGroupTag(taoItems_models_classes_QTI_Group $group){
 		$returnValue = '';
-		$returnValue .= " <input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_choice_link\" value=\"{$group->getType()}\"/> ";
+		$returnValue .= "<div class='qti_choice_box'>";
+		$returnValue .= "<input type=\"button\" id=\"{$group->getSerial()}\" class=\"qti_choice_link\" value=\"{$group->getIdentifier()}\"/>";
+		$returnValue .= "<span />";
+		$returnValue .= "</div>";
 		
 		return $returnValue;
 	}
@@ -1051,8 +1061,10 @@ class taoItems_models_classes_QtiAuthoringService
 	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
 	
 		$pattern = '/';
-		if($qtiObject->isBlock()){
-			$pattern .= "(<br(.[^<]*)?>)?";
+		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
+			if($qtiObject->isBlock()){
+				$pattern .= "(<br(.[^<]*)?>)?";
+			}
 		}
 		$pattern .= "<div(.[^<]*)?><input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>){1}(<\/div>){1}/i";
 			
@@ -1513,7 +1525,7 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'gapmatch':
 				case 'graphicassociate':
 				case 'graphicgapmatch':{
-					// var_dump($responseData);
+					
 					foreach($responseData as $response){
 						$response = (array)$response;
 						if(!empty($response['choice1']) && !empty($response['choice2'])){
@@ -1535,7 +1547,7 @@ class taoItems_models_classes_QtiAuthoringService
 							}
 						}
 					}
-					// var_dump($correctResponses,$mapping);exit;
+					
 					break;
 				}
 				case 'order':

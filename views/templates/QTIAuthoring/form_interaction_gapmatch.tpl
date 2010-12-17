@@ -46,7 +46,7 @@ $(document).ready(function(){
 			tooltip: 'add a gap'
 		};
 		
-		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createGap': createGap});
+		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createGap': createGap}, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
 	}catch(err){
 		CL('error building interaction data editor', err);
 	}
