@@ -59,7 +59,7 @@ abstract class taoItems_actions_QTIform_interaction_Interaction
     public function initForm()
     {
 		$interactionType = $this->interaction->getType();
-		$this->form = tao_helpers_form_FormFactory::getForm('InteractionForm_'.strtolower($interactionType).'Interaction');
+		$this->form = tao_helpers_form_FormFactory::getForm('InteractionForm');
 		
 		//custom actions only:
 		$actions = array();

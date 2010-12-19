@@ -118,7 +118,6 @@ class QtiAuthoring extends CommonModule {
 		$currentItem = $this->getCurrentItem();
 		if($this->debugMode) var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
-		
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
 		$this->setData('itemData', $itemData);
@@ -709,11 +708,13 @@ class QtiAuthoring extends CommonModule {
 				
 				//for graphic interactions:
 				if(isset($values['object_width'])){
-					$newGraphicObject['width'] = intval($values['object_width']);
+					if(intval($values['object_width'])) $newGraphicObject['width'] = intval($values['object_width']);
+					unset($values['object_width']);
 				}
 				
 				if(isset($values['object_height'])){
-					$newGraphicObject['height'] = intval($values['object_height']);
+					if(intval($values['object_height'])) $newGraphicObject['height'] = intval($values['object_height']);
+					unset($values['object_height']);
 				}
 					
 				if(isset($values['object_data'])){
@@ -731,26 +732,12 @@ class QtiAuthoring extends CommonModule {
 					);
 					
 					if(in_array($mimeType, $validImageType)){
-					
-						// $newObject = array(
-							// 'data' => trim($values['object_data']),
-							// 'width' => isset($values['object_width'])? intval($values['object_width']):0,
-							// 'height' => isset($values['object_height'])? intval($values['object_height']):0
-						// );
 						$newGraphicObject['data'] = $imageFilePath;
-						// $newObject['data'] = $imageFilePath;
-						// if(isset($oldObject['data'])){
-							// if($oldObject['data'] != $newObject['data']){
-								// $newGraphicObject['data'] = $newObject['data'];
-							// }
-						// }else{
-							// $newGraphicObject['data'] = $newObject['data'];
-						// }
-						
-						
 					}else{
 						$newGraphicObject['errorMessage'] = __('invalid image mime type');
 					}
+					
+					unset($values['object_data']);
 				}
 				$interaction->setObject($newGraphicObject);
 				
@@ -844,10 +831,12 @@ class QtiAuthoring extends CommonModule {
 				//for graphic interactions:
 				$newGraphicObject = array();
 				if(isset($values['object_width'])){
-					$newGraphicObject['width'] = intval($values['object_width']);
+					if(intval($values['object_width'])) $newGraphicObject['width'] = intval($values['object_width']);
+					unset($values['object_width']);
 				}
 				if(isset($values['object_height'])){
-					$newGraphicObject['height'] = intval($values['object_height']);
+					if(intval($values['object_height'])) $newGraphicObject['height'] = intval($values['object_height']);
+					unset($values['object_height']);
 				}
 				if(isset($values['object_data'])){
 					//get mime type
@@ -867,8 +856,6 @@ class QtiAuthoring extends CommonModule {
 					}
 				}
 				$choice->setObject($newGraphicObject);
-				unset($values['object_width']);
-				unset($values['object_height']);
 				unset($values['object_data']);
 				
 				//finally save the other options:

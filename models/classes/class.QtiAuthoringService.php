@@ -85,16 +85,15 @@ class taoItems_models_classes_QtiAuthoringService
 		$itemData = preg_replace('/^{/', '&nbsp;{', $itemData);
 		$itemData = preg_replace('/}$/', '}&nbsp;', $itemData);
 		
+		//strip the starting and ending <div> tag if exists:
+		$itemData = preg_replace('/^<div>(.*)<\/div>$/ims', '\1', trim($itemData));
+		
 		//insert the interaction tags:
 		foreach($item->getInteractions() as $interaction){
 			//replace the interactions by a identified tag with the authoring elements
 			$pattern = "/{{$interaction->getSerial()}}/";
 			$itemData = preg_replace($pattern, $this->getInteractionTag($interaction), $itemData, 1);
 		}
-		
-		//strip the starting and ending <div> tag if exists:
-		$pattern = '/^<div>(.*)<\/div>$/im';
-		$itemData = preg_replace($pattern, '\1', trim($itemData));
 		
 		return $itemData;
 	}
@@ -155,6 +154,7 @@ class taoItems_models_classes_QtiAuthoringService
 					$pattern = "/{{$choice->getSerial()}}/";
 					$data = preg_replace($pattern, '', $data, 1);
 				}
+				$data = preg_replace("/^<div>(.*)?<\/div>$/ims", '\1', trim($data), 1);
 				break;
 			}
 			case 'hottext':{
@@ -1030,8 +1030,8 @@ class taoItems_models_classes_QtiAuthoringService
 				foreach($interaction->getGroups() as $group){
 					$data = $this->filterData($group, $data);
 				}
+				$data = '<div>'.$data.'</div>';
 				
-				// $interaction->setData('<p>'.$choicesData.$data.'</p>');
 				$interaction->setData($choicesData.$data);
 				break;
 			}
