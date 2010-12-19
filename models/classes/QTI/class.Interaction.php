@@ -825,7 +825,7 @@ class taoItems_models_classes_QTI_Interaction
 			$variables['options']['responseBaseType'] = $response->getBaseType();
 		}
    		
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
         
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 end
@@ -896,7 +896,7 @@ class taoItems_models_classes_QTI_Interaction
 		}
 		
 		//parse and render the template
-		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
         
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 end

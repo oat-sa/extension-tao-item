@@ -144,7 +144,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $templateName = substr($uri, strrpos($uri, '/')+1);
         $matchingTemplate  = dirname(__FILE__).'/rpTemplate/qti.'.$templateName.'.tpl.php';
 
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchingTemplate, $options);    
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($matchingTemplate, $options);    
         $returnValue = $tplRenderer->render();
         
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BF7 end
@@ -174,7 +174,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $templateName = substr($uri, strrpos($uri, '/')+1);
         $matchingTemplate  = dirname(__FILE__).'/rpTemplate/rule.'.$templateName.'.tpl.php';
 
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($matchingTemplate, $options);    
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($matchingTemplate, $options);    
         $returnValue = $tplRenderer->render();
         
         // section 127-0-1-1-630ada71:12c651dbbe8:-8000:0000000000002C03 end

@@ -156,7 +156,7 @@ abstract class taoItems_models_classes_QTI_Data
     	
     	$variables['rowOptions'] = $this->xmlizeOptions();
 		
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
         $returnValue = $tplRenderer->render();
         
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 end
@@ -183,7 +183,7 @@ abstract class taoItems_models_classes_QTI_Data
         $template  	= self::getTemplatePath() . '/qti.'.$type.'.tpl.php';
     	$variables 	= $this->extractVariables(); 
 		
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
         $returnValue = $tplRenderer->render();
         
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:000000000000415B end

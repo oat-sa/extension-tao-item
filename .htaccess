@@ -1,14 +1,17 @@
 Options +FollowSymLinks
 RewriteEngine On
 
-RewriteCond %{REQUEST_METHOD} ^GET$
-RewriteCond %{REQUEST_URI} (.*)/taoItems/Items/eXULiS.swf$ [NC]
-RewriteRule ^(.*)$ ../taoItems/models/ext/itemRuntime/eXULiS.swf [L]
+#RewriteCond %{REQUEST_METHOD} ^GET$
+#RewriteCond %{REQUEST_URI} (.*)/taoItems/Items/eXULiS.swf$ [NC]
+#RewriteRule ^(.*)$ ../taoItems/models/ext/itemRuntime/eXULiS.swf [L]
+
+#RewriteCond %{REQUEST_METHOD} ^GET$
+#RewriteCond %{REQUEST_URI} (.*)/taoItems/SaSItems/eXULiS.swf$ [NC]
+#RewriteRule ^(.*)$ ../taoItems/models/ext/itemRuntime/eXULiS.swf [L]
 
 RewriteCond %{REQUEST_METHOD} ^GET$
-RewriteCond %{REQUEST_URI} (.*)/taoItems/SaSItems/eXULiS.swf$ [NC]
+RewriteCond %{REQUEST_URI} (.*)/taoItems/PreviewApi/eXULiS.swf$ [NC]
 RewriteRule ^(.*)$ ../taoItems/models/ext/itemRuntime/eXULiS.swf [L]
-
 
 #rewrite the old item saving method 
 RewriteCond %{REQUEST_METHOD} ^POST$

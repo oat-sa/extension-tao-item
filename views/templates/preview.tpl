@@ -12,7 +12,13 @@
 <div class="ui-widget ui-widget-content">
 	<?if(get_data('preview')):?>
 		<?if(get_data('runtime')):?>
-			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="700" height="600" id="tao_item" align="middle">
+			<script type="text/javascript">
+				function setScore(score){alert('score ' +score)};
+				function setEndorsment(end){alert('end ' +end)};
+				function setUserVar(arg1, arg2){alert(arg1 + ' ' +arg2)};
+			</script>
+			
+			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="700" height="600" id="tao_item" align="middle">
 				<param name="allowScriptAccess" value="sameDomain" />
 				<param name="movie" value="<?=get_data('swf')?>?localXmlFile=<?=get_data('contentUrl')?>&instance=<?=get_data('instanceUri')?>" />
 				<param name="quality" value="high" />

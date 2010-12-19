@@ -28,7 +28,7 @@ class QTIParsingResponseProcessingTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
 		);
-		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+		taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 		
 		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 	}

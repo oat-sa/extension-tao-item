@@ -246,10 +246,10 @@ class Items extends TaoModule{
 		if($this->service->hasItemContent($item) && $this->service->isItemModelDefined($item)){
 			
 			//get the runtime
-			$runtime = $this->service->getModelRuntime($item);
+			//$runtime = $this->service->getModelRuntime($item);
 			
 			//the content works directly with the browser and need to be deployed
-			if(is_null($runtime)){
+			//if(is_null($runtime)){
 				
 				$options = array(
 					'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
@@ -260,7 +260,6 @@ class Items extends TaoModule{
 				if(Session::hasAttribute('previewOpts')){
 					$options = array_merge($options, Session::getAttribute('previewOpts'));
 				}
-				
 				
 				//create the options form
 				$formContainer = new taoItems_actions_form_PreviewOptions($options);
@@ -279,11 +278,12 @@ class Items extends TaoModule{
 					'runtime'		=> false,
 					'contentUrl' 	=> _url('runner', 'PreviewApi', 'taoItems', $options)
 				);
-			}
+			/*}
 			else{
 				//the item content is given to the runtime
 				
-				$contentUrl = _url('getItemContent', 'Items', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource), 'classUri' => tao_helpers_Uri::encode($clazz->uriResource), 'preview' => true));
+				$contentUrl = urlencode(
+				_url('getItemContent', 'Items', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource), 'classUri' => tao_helpers_Uri::encode($clazz->uriResource), 'preview' => true)));
 				
 				if($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
 					//@todo need to fix it in the runtime instead of urlencode 2x
@@ -297,7 +297,7 @@ class Items extends TaoModule{
 						'contentUrl' 	=> $contentUrl
 					);
 				}
-			}
+			}*/
 		}
 		
 		return $previewData;
@@ -384,11 +384,15 @@ class Items extends TaoModule{
 	 */
 	public function getItemContent(){
 		
-		header("Content-Type: text/xml; charset utf-8");
+		$this->setContentHeader('text/xml');
 		
 		try{
 			//output direclty the itemContent as XML
-			print $this->service->getItemContent($this->getCurrentInstance(), false);
+			$preview = false;
+			if($this->hasRequestParameter('preview')){
+				$preview = (bool)$this->getRequestParameter('preview');
+			}
+			print $this->service->getItemContent($this->getCurrentInstance(), $preview);
 			
 		}
 		catch(Exception $e){

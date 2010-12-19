@@ -215,7 +215,7 @@ class QtiAuthoring extends CommonModule {
 			'debug'					=> true,
         	'debug'					=> false
 		);
-		taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+		taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 		
 		$output = $this->qtiService->renderItem($this->getCurrentItem());
 		

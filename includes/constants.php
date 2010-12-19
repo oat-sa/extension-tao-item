@@ -24,9 +24,16 @@ $todefine = array(
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
 	'TAO_ITEM_HAWAI_TPL_FILE'	 		=> BASE_PATH.'/data/black_ref.xml',
 	'TAO_ITEM_CAMPUS_TPL_FILE'	 		=> BASE_PATH.'/data/campus_ref.xml',
-	'QTI_RESPONSE_TEMPLATE_MATCH_CORRECT' => 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct',
-	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE' => 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response',
-	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT' => 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response_point'
+	
+	'QTI_RESPONSE_TEMPLATE_MATCH_CORRECT' 		=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct',
+	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE' 		=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response',
+	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT' 	=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response_point',
+
+	'TAO_ITEM_MODEL_STATUS_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus',
+	'TAO_ITEM_MODEL_STATUS_STABLE' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable',
+	'TAO_ITEM_MODEL_STATUS_DEPRECATED'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated',
+	'TAO_ITEM_MODEL_STATUS_DEV' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment',
+	'TAO_ITEM_MODEL_STATUS_EXPERIMENTAL'=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental'
 );
 foreach($todefine as $constName => $constValue){
 	if(!defined($constName)){

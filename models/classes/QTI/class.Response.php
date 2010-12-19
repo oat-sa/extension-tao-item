@@ -332,7 +332,7 @@ class taoItems_models_classes_QTI_Response
         $variables['rowOptions'] = $this->xmlizeOptions($options, true);
 		
 		//parse and render the template
-		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
         
         // section 127-0-1-1--4fa404a7:12bc4fc4a20:-8000:00000000000026DD end

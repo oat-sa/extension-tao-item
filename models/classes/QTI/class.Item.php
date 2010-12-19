@@ -512,7 +512,7 @@ class taoItems_models_classes_QTI_Item
         $variables['matching']['params'] = array ();
         
         
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002388 end
@@ -588,7 +588,7 @@ class taoItems_models_classes_QTI_Item
 
         $variables['renderedResponseProcessing'] = $renderedResponseProcessing;
         
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 
 		//render and clean the xml	      
         $xmlElt = simplexml_load_string($tplRenderer->render());

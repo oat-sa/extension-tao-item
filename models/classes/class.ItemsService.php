@@ -578,6 +578,44 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
+     * Short description of method hasModelStatus
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  Resource item
+     * @param  array status
+     * @return boolean
+     */
+    public function hasModelStatus( core_kernel_classes_Resource $item, $status)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--203e680b:12cfebcad50:-8000:00000000000029C2 begin
+        
+    	if(!is_null($item)){
+    		if(!is_array($status) && is_string($status)){
+    			$status = array($status);
+    		}
+    		try{
+        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
+        		if($itemModel instanceof core_kernel_classes_Resource){
+	        		$itemModelStatus = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY));
+        			if(in_array($itemModelStatus->uriResource, $status)){
+	        			$returnValue = true;
+	        		}
+	        	}
+        	}
+        	catch(common_Exception $ce){
+        		$returnValue = false;
+        	}
+        }
+        
+        // section 127-0-1-1--203e680b:12cfebcad50:-8000:00000000000029C2 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Deploy the item in parameter
      *
      * @access public
@@ -597,14 +635,26 @@ class taoItems_models_classes_ItemsService
         if(!is_null($item)){
         	
         	//parameters that could not be rewrited
-        	if(!isset($parameters['root_url']))		{ $parameters['root_url'] = ROOT_URL; }
-        	if(!isset($parameters['base_www']))		{ $parameters['base_www'] = BASE_WWW; }
-        	if(!isset($parameters['taobase_www']))	{ $parameters['taobase_www'] = TAOBASE_WWW; }
-        	if(!isset($parameters['debug']))		{ $parameters['debug'] = false; }
-        	if(!isset($parameters['raw_preview']))	{ $parameters['raw_preview'] = false; }
+        	if(!isset($parameters['root_url']))		{ $parameters['root_url'] 		= ROOT_URL; }
+        	if(!isset($parameters['base_www']))		{ $parameters['base_www'] 		= BASE_WWW; }
+        	if(!isset($parameters['taobase_www']))	{ $parameters['taobase_www'] 	= TAOBASE_WWW; }
+        	if(!isset($parameters['debug']))		{ $parameters['debug'] 			= false; }
+        	if(!isset($parameters['raw_preview']))	{ $parameters['raw_preview'] 	= false; }
+        	
+        	taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
+        	
+        	$deployableItems = array(
+        		TAO_ITEM_MODEL_KOHS,
+        		TAO_ITEM_MODEL_CTEST,
+        		TAO_ITEM_MODEL_WATERPHENIX,
+        		TAO_ITEM_MODEL_QTI,
+        		TAO_ITEM_MODEL_XHTML
+        	);
         	
         	
-        	if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI, TAO_ITEM_MODEL_XHTML))){
+        	if($this->hasItemModel($item, $deployableItems)){
+        		
+        		$itemFolder = dirname($path);
 
         		$output = '';
         		
@@ -614,12 +664,35 @@ class taoItems_models_classes_ItemsService
 	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
 	        	
 	        		if(!is_null($qtiItem)) {
-	        			
-	        			taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
-	        			
 	        			$output = $qtiService->renderItem($qtiItem);
-	        			
 	        		}
+        		}
+        		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_KOHS, TAO_ITEM_MODEL_CTEST, TAO_ITEM_MODEL_WATERPHENIX))){
+        			
+        			$uri 		= tao_helpers_Uri::encode($item->uriResource);
+        			$clazz 		= $this->getClass($item);
+        			$clazzUri	= tao_helpers_Uri::encode($clazz->uriResource);
+        			
+        			
+	        		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+						$itemContent = $this->getItemContent($item, true);
+					}
+					else{
+						$itemContent = $this->getItemContent($item, false);
+					}
+        			
+					$dataFile = $itemFolder.'/data.xml';
+					file_put_contents($dataFile, $itemContent);
+					
+        			$variables = array(
+        				'label' 		=> $item->getLabel(),
+        				'uri'			=> $uri,
+        				'runtime'		=> BASE_URL . '/models/ext/itemRuntime/'. $this->getModelRuntime($item),
+        				'contentUrl'	=> urlencode(str_replace(ROOT_PATH, ROOT_URL, $dataFile))
+        			);
+        			$templateRenderer = new taoItems_models_classes_TemplateRenderer(ROOT_PATH.'/taoItems/views/templates/swf_container_ref.tpl.php', $variables);
+        			$output	= $templateRenderer->render();
+        			
         		}
         		else{
         			$output	= $this->getItemContent($item);
@@ -638,21 +711,18 @@ class taoItems_models_classes_ItemsService
 						}
 					}
 				}
-					
+				
         		if(file_put_contents($path, $output)){
         			$returnValue = true;
         		}
         		
         		if($returnValue){
         		
-        			$itemFolder = dirname($path);
-        			
         			$itemFileName = '';
 	        		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
 		        	if(!is_null($itemModel)){
 		        		$itemFileName = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 		        	}
-        			
         			
         			//copy the resources
         			$sourceFolder = $this->getItemFolder($item);

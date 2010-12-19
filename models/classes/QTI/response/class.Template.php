@@ -168,7 +168,7 @@ class taoItems_models_classes_QTI_response_Template
 
         // section 127-0-1-1--5fc6d28e:12aec61bbe9:-8000:00000000000025A8 begin
         
-        $tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer(
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer(
         		self::getTemplatePath() . '/qti.rptemplate.tpl.php', 
         		array('uri' => $this->uri)
         	);

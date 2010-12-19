@@ -124,11 +124,6 @@ var QTIWidget = function(options){
 					if(typeof(value) == 'string' && value != ''){
 						$(qti_item_id+" ul li#"+value).addClass("tabActive");
 					}
-//					if(typeof(value) == 'object'){
-//						if(value.value){
-//							$(qti_item_id+" ul li#"+value.value).addClass("tabActive");
-//						}
-//					}
 				}
 			}
 		}

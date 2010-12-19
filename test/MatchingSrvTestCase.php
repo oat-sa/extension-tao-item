@@ -711,7 +711,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/choice.xml';
@@ -744,7 +744,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/custom_match_choice.xml';
@@ -774,7 +774,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/custom_map_response_choice_multiple.xml';
@@ -805,7 +805,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/custom_order_partial_scoring.xml';
@@ -835,7 +835,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'raw_preview'   => false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/custom_multiple_partial_scoring.xml';
@@ -866,7 +866,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
             'raw_preview'   => false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/select_point.xml';
@@ -895,7 +895,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/custom_all_rules.xml';
@@ -935,7 +935,7 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         	'raw_preview'	=> false,
         	'debug'			=> false
         );
-        taoItems_models_classes_QTI_TemplateRenderer::setContext($parameters, 'ctx_');
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
         
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/shakespeare.xml';

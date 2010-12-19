@@ -150,7 +150,7 @@ class PreviewApi extends Api {
         	$apis = array(
 				'taoApi'		=> BASE_WWW.'js/taoApi/taoApi.min.js', 
 				'taoMatching'	=> BASE_WWW.'js/taoMatching/taoMatching.min.js', 
-				'wfApi'			=> BASE_URL.'taoDelivery/views/js/taoApi/taoApi.min.js'
+				'wfApi'			=> ROOT_URL.'/wfEngine/views/js/wfApi/wfApi.min.js'
 			);
         		
 			// We inject the data directly in the item file

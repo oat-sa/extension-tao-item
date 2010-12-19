@@ -108,7 +108,7 @@ class taoItems_models_classes_QTI_Choice
         );
 		
 		//parse and render the template
-		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
         
         // section 127-0-1-1--752f08b1:12b76dcf1f2:-8000:00000000000025B4 end
@@ -145,7 +145,7 @@ class taoItems_models_classes_QTI_Choice
         );
 		
 		//parse and render the template
-		$tplRenderer = new taoItems_models_classes_QTI_TemplateRenderer($template, $variables);
+		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:00000000000023E1 end
