@@ -517,18 +517,20 @@ var QTIWidget = function(options){
 			//adapt the field length
 			if(_this.opts['expectedLength'] || _this.opts_this.opts['expectedLines']){
 				
-				baseWidth 	= parseInt($(qti_item_id).css('width')) | 400;
-				baseHeight 	= parseInt($(qti_item_id).css('height')) | 100;
+				var baseWidth 	= parseInt($(qti_item_id).css('width')) | 400;
+				var baseHeight 	= parseInt($(qti_item_id).css('height')) | 100;
 				if(_this.opts['expectedLength']){
-					length 		= parseInt(_this.opts['expectedLength']);
-					width = length * 10;
-					if( width > baseWidth){
-						height = (width / baseWidth) * 16;
-						if(height  > baseHeight){
-							$(qti_item_id).css('height', height + 'px');
+					var expectedLength 		= parseInt(_this.opts['expectedLength']) ;
+					if(expectedLength > 0){
+						var width = expectedLength * 10;
+						if( width > baseWidth){
+							var height = (width / baseWidth) * 16;
+							if(height  > baseHeight){
+								$(qti_item_id).css('height', height + 'px');
+							}
 						}
+						$(qti_item_id).attr('maxLength', length);
 					}
-					$(qti_item_id).attr('maxLength', length);
 				}
 				if(_this.opts['expectedLines']){
 					$(qti_item_id).css('height', (parseInt(_this.opts['expectedLines']) * 16) + 'px');
@@ -542,9 +544,11 @@ var QTIWidget = function(options){
 		if($(qti_item_id).get(0).nodeName.toLowerCase() == 'div') {
 			//adapt the fields length
 			if(_this.opts['expectedLength']){
-				length = parseInt(_this.opts['expectedLength']);
-				$(qti_item_id + " :text").css('width', (length * 10) + 'px')
-											.attr('maxLength', length);
+				var expectedLength 		= parseInt(_this.opts['expectedLength']) ;
+				if(expectedLength > 0){
+					$(qti_item_id + " :text").css('width', (expectedLength * 10) + 'px')
+											.attr('maxLength', expectedLength);
+				}
 			}
 			//apply the pattern to all fields
 			if(_this.opts['patternMask']){
