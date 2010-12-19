@@ -3,17 +3,12 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Outcome.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 14.12.2010, 14:41:20 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * An outcome is a data build in item output. The SCORE is one of the most
+ * outcomes.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
  * @subpackage models_classes_QTI
  */
 
@@ -33,9 +28,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * include taoItems_models_classes_QTI_Item
+ * The QTI_Item object represent the assessmentItem.
+ * It's the main QTI object, it contains all the other objects and is the main
+ * point
+ * to render a complete item.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
 
@@ -48,11 +47,13 @@ require_once('taoItems/models/classes/QTI/class.Item.php');
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002347-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Outcome
+ * An outcome is a data build in item output. The SCORE is one of the most
+ * outcomes.
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Outcome

@@ -91,6 +91,32 @@ class Items extends TaoModule{
 		$formContainer = new taoItems_actions_form_Item($itemClass, $item);
 		$myForm = $formContainer->getForm();
 		
+		/*
+		 * crapy way to add the status of the ite model
+		 * @todo set this in the taoItems_actions_form_Item
+		 */
+		$deprecatedOptions = array();
+		$statusProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY);
+		$itemModelElt = $myForm->getElement(tao_helpers_Uri::encode(TAO_ITEM_MODEL_PROPERTY));
+		$options = $itemModelElt->getOptions();
+		foreach($options as $optUri => $optLabel){
+			$model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
+			$status = $model->getOnePropertyValue($statusProperty);
+			$statusLabel = trim($status->getLabel());
+			if(!empty($statusLabel)){
+				$options[$optUri] = $optLabel . " ($statusLabel)";
+			}
+			if($status->uriResource == TAO_ITEM_MODEL_STATUS_DEPRECATED){
+				$deprecatedOptions[] = $optUri;
+			}
+		}
+		$itemModelElt->setOptions($options);
+		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
+		
+		$warningElt = tao_helpers_form_FormFactory::getElement("warning","Label");
+		$warningElt->setValue(__("The migration scripts for the deprecated items will be provided soon"));
+		$myForm->addElement($warningElt);
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -105,21 +131,20 @@ class Items extends TaoModule{
 			}
 		}
 		
-		
-		
 		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 		
 		$modelDefined = $this->service->isItemModelDefined($item);
-		if(!$modelDefined){
+		$isDeprecated =  $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
+		if(!$modelDefined || $isDeprecated){
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
 		$this->setData('modelDefined', $modelDefined);
-		
+		$this->setData('isDeprecated', $isDeprecated);
 		
 		$this->setData('formTitle', __('Edit Item'));
 		$this->setData('myForm', $myForm->render());
 		
-		$this->setView('form.tpl');
+		$this->setView('item_form.tpl');
 	}
 	
 	/**

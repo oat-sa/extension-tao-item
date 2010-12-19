@@ -3,17 +3,14 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Item.php
+ * The QTI_Item object represent the assessmentItem.
+ * It's the main QTI object, it contains all the other objects and is the main
+ * point
+ * to render a complete item.
  *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 18.11.2010, 12:14:55 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  * @subpackage models_classes_QTI
  */
 
@@ -28,21 +25,21 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Interaction
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
 /**
  * include taoItems_models_classes_QTI_Outcome
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
@@ -55,11 +52,15 @@ require_once('taoItems/models/classes/QTI/class.Outcome.php');
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000233F-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Item
+ * The QTI_Item object represent the assessmentItem.
+ * It's the main QTI object, it contains all the other objects and is the main
+ * point
+ * to render a complete item.
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Item
@@ -71,7 +72,7 @@ class taoItems_models_classes_QTI_Item
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute interactions
+     * Item's interactions
      *
      * @access protected
      * @var array
@@ -79,7 +80,7 @@ class taoItems_models_classes_QTI_Item
     protected $interactions = array();
 
     /**
-     * Short description of attribute responseProcessing
+     * Item's reponse processing
      *
      * @access protected
      * @var ResponseProcessing
@@ -87,7 +88,7 @@ class taoItems_models_classes_QTI_Item
     protected $responseProcessing = null;
 
     /**
-     * Short description of attribute outcomes
+     * Item's outcomes
      *
      * @access protected
      * @var array
@@ -95,7 +96,7 @@ class taoItems_models_classes_QTI_Item
     protected $outcomes = array();
 
     /**
-     * Short description of attribute stylesheets
+     * Item's stylesheets
      *
      * @access protected
      * @var array
@@ -108,7 +109,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -130,7 +131,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __sleep
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function __sleep()
@@ -152,7 +153,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __wakeup
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
     public function __wakeup()
@@ -176,7 +177,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getInteractions
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getInteractions()
@@ -196,7 +197,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setInteractions
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array interactions
      * @return mixed
      */
@@ -216,7 +217,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getInteraction
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Interaction
      */
@@ -241,7 +242,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method addInteraction
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Interaction interaction
      * @return mixed
      */
@@ -260,7 +261,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method removeInteraction
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Interaction interaction
      * @return boolean
      */
@@ -304,7 +305,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getResponseProcessing
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
     public function getResponseProcessing()
@@ -324,7 +325,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setResponseProcessing
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  rprocessing
      * @return mixed
      */
@@ -341,7 +342,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setOutcomes
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array outcomes
      * @return mixed
      */
@@ -364,7 +365,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getOutcomes
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getOutcomes()
@@ -384,7 +385,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getOutcome
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Outcome
      */
@@ -409,7 +410,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method removeOutcome
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  Outcome outcome
      * @return boolean
      */
@@ -436,7 +437,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getStylesheets
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getStylesheets()
@@ -456,7 +457,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setStylesheets
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array stylesheets
      * @return mixed
      */
@@ -480,7 +481,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toXHTML
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -524,7 +525,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toQTI
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -603,7 +604,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toForm
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -624,7 +625,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getMatchingData
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getMatchingData()

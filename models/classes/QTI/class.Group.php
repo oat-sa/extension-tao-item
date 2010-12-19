@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Group.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 06.10.2010, 10:37:20 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * A group is an concept to enable choice logical grouping (ordering). 
+ * It use when there is distinct choices groups in an interaction.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -20,6 +14,14 @@ error_reporting(E_ALL);
 if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
+
+/**
+ * A choice is a kind of interaction's proposition.
+ *
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
+ */
+require_once('taoItems/models/classes/QTI/class.Choice.php');
 
 /**
  * The QTI_Data class represent the abstract model for all the QTI objects.
@@ -33,9 +35,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * include taoItems_models_classes_QTI_Interaction
+ * The QTI's interactions are the way the user interact with the system. The
+ * will be rendered into widgets to enable the user to answer to the item.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
@@ -48,7 +52,8 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
 // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002546-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Group
+ * A group is an concept to enable choice logical grouping (ordering). 
+ * It use when there is distinct choices groups in an interaction.
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -59,7 +64,7 @@ class taoItems_models_classes_QTI_Group
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 

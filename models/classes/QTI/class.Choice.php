@@ -3,17 +3,11 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems\models\classes\QTI\class.Choice.php
+ * A choice is a kind of interaction's proposition.
  *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 30.11.2010, 10:15:18 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
- *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  * @subpackage models_classes_QTI
  */
 
@@ -28,21 +22,23 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_Group
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Group.php');
 
 /**
- * include taoItems_models_classes_QTI_Interaction
+ * The QTI's interactions are the way the user interact with the system. The
+ * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
@@ -55,11 +51,12 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002345-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Choice
+ * A choice is a kind of interaction's proposition.
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Choice
@@ -84,7 +81,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method toXHTML
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -120,7 +117,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method toQTI
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -157,7 +154,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method toForm
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -185,7 +182,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method setObject
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array objectData
      * @return mixed
      */
@@ -204,7 +201,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method getObject
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getObject()

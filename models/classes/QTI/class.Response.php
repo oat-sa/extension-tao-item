@@ -3,17 +3,12 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/class.Response.php
+ * A response is on object associated to an interactino containing which are the
+ * response into the interaction choices and the score regarding the answers
  *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 15.12.2010, 13:17:08 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
- *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  * @subpackage models_classes_QTI
  */
 
@@ -28,14 +23,16 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * include taoItems_models_classes_QTI_Interaction
+ * The QTI's interactions are the way the user interact with the system. The
+ * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
@@ -48,11 +45,13 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
 // section 127-0-1-1--4be859a6:12a33452171:-8000:000000000000241D-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Response
+ * A response is on object associated to an interactino containing which are the
+ * response into the interaction choices and the score regarding the answers
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Response
@@ -117,7 +116,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -147,7 +146,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getCorrectResponses
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return array
      */
     public function getCorrectResponses()
@@ -167,7 +166,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setCorrectResponses
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array responses
      * @return mixed
      */
@@ -187,7 +186,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMapping
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string type
      * @return array
      */
@@ -214,7 +213,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMapping
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  array map
      * @param  type
      * @return mixed
@@ -237,7 +236,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMappingDefaultValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string type
      * @return string
      */
@@ -263,7 +262,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMappingDefaultValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string value
      * @param  string type
      * @return mixed
@@ -286,7 +285,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toXHTML
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -306,7 +305,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toQTI
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -344,7 +343,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toForm
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -377,7 +376,7 @@ class taoItems_models_classes_QTI_Response
      * null.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      */
     public function correctToJSON()
     {
@@ -408,7 +407,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method areaMapToJson
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      */
     public function areaMapToJson()
     {
@@ -451,7 +450,7 @@ class taoItems_models_classes_QTI_Response
      * get the mapping in JSON format. If no mapping defined return null.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      */
     public function mapToJSON()
     {
@@ -492,7 +491,7 @@ class taoItems_models_classes_QTI_Response
      * get the base type of the response declaration
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getBaseType()
@@ -512,7 +511,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getHowMatch
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function getHowMatch()
@@ -532,7 +531,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setHowMatch
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string howMatch
      * @return mixed
      */

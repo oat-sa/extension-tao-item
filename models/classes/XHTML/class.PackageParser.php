@@ -3,14 +3,11 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/XHTML/class.PackageParser.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 08.11.2010, 17:43:14 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The XHTML parser enable you to validate the format and extract an XHTML
+ * An XHTML package is valide when it's a zip archive containing at it's root a
+ * file with the XHTML Transitional doctype, validate and well formed.
+ * The external resources (media, css, scripts, images, etc.) in the package are
+ * too.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -38,7 +35,11 @@ require_once('tao/models/classes/class.Parser.php');
 // section 127-0-1-1-2d0bb0b3:12c2c41fb7c:-8000:0000000000002869-constants end
 
 /**
- * Short description of class taoItems_models_classes_XHTML_PackageParser
+ * The XHTML parser enable you to validate the format and extract an XHTML
+ * An XHTML package is valide when it's a zip archive containing at it's root a
+ * file with the XHTML Transitional doctype, validate and well formed.
+ * The external resources (media, css, scripts, images, etc.) in the package are
+ * too.
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>

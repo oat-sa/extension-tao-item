@@ -114,10 +114,10 @@
 <span class='line'>107</span>  * 
 <span class='line'>108</span>  * @function
 <span class='line'>109</span>  * @namespace taoApi
-<span class='line'>110</span>  * @returns {boolean}
+<span class='line'>110</span>  * @returns {Object}
 <span class='line'>111</span>  */</span><span class="WHIT">
 <span class='line'>112</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">getAnsweredValues</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>113</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">taoStack.getTaoVar</span><span class="PUNC">(</span><span class="NAME">URI.LISTNERVALUE</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">taoStack.getTaoVar</span><span class="PUNC">(</span><span class="NAME">URI.ANSWERED_VALUES</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>114</span> </span><span class="PUNC">}</span><span class="WHIT">
 <span class='line'>115</span> 
 <span class='line'>116</span> </span><span class="COMM">/**
@@ -127,10 +127,10 @@
 <span class='line'>120</span>  * 
 <span class='line'>121</span>  * @function
 <span class='line'>122</span>  * @namespace taoApi
-<span class='line'>123</span>  * @param {boolean} endorsment
+<span class='line'>123</span>  * @param {Object} values
 <span class='line'>124</span>  */</span><span class="WHIT">
 <span class='line'>125</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">setAnsweredValues</span><span class="PUNC">(</span><span class="NAME">values</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>126</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.setTaoVar</span><span class="PUNC">(</span><span class="NAME">URI.LISTNERVALUE</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">values</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.setTaoVar</span><span class="PUNC">(</span><span class="NAME">URI.ANSWERED_VALUES</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">values</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
 <span class='line'>127</span> </span><span class="PUNC">}</span><span class="WHIT">
 <span class='line'>128</span> 
 <span class='line'>129</span> </span><span class="COMM">/**
@@ -245,215 +245,213 @@
 <span class='line'>238</span> 
 <span class='line'>239</span> </span><span class="KEYW">if</span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="PUNC">(</span><span class="NAME">finish</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'function'</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
 <span class='line'>240</span> 
-<span class='line'>241</span> </span><span class="WHIT">	</span><span class="COMM">//get the highest context </span><span class="WHIT">
-<span class='line'>242</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">_stateContext</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">  </span><span class="NAME">window</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>243</span> </span><span class="WHIT">	
-<span class='line'>244</span> 	</span><span class="COMM">/**
-<span class='line'>245</span> 	 * Define the item's state as finished.
-<span class='line'>246</span> 	 * This state can have some consequences.
-<span class='line'>247</span> 	 * 
-<span class='line'>248</span> 	 * @function
-<span class='line'>249</span> 	 * @namespace taoApi
-<span class='line'>250</span> 	 */</span><span class="WHIT">
-<span class='line'>251</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">finish</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>252</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">_stateContext</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.PRE_FINISHED</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>253</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">_stateContext</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.FINISHED</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>254</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">_stateContext</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.POST_FINISHED</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>255</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>256</span> </span><span class="WHIT">	
-<span class='line'>257</span> 	</span><span class="COMM">/**
-<span class='line'>258</span> 	 * Add a callback that will be executed on finish state.
-<span class='line'>259</span> 	 * 
-<span class='line'>260</span> 	 * @function
-<span class='line'>261</span> 	 * @namespace taoApi
-<span class='line'>262</span> 	 * @param {function} callback
-<span class='line'>263</span> 	 */</span><span class="WHIT">
-<span class='line'>264</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">onFinish</span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>265</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">_stateContext</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.FINISHED</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>266</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>267</span> </span><span class="WHIT">	
-<span class='line'>268</span> 	</span><span class="COMM">/**
-<span class='line'>269</span> 	 * Add a callback that will be executed on finish but before the other callbacks  
-<span class='line'>270</span> 	 * 
-<span class='line'>271</span> 	 * @function
-<span class='line'>272</span> 	 * @namespace taoApi
-<span class='line'>273</span> 	 * @param {function} callback
-<span class='line'>274</span> 	 */</span><span class="WHIT">
-<span class='line'>275</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">beforeFinish</span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>276</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">_stateContext</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.PRE_FINISHED</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>277</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>278</span> </span><span class="WHIT">	
-<span class='line'>279</span> 	</span><span class="COMM">/**
-<span class='line'>280</span> 	 * Add a callback that will be executed on finish but after the other callbacks  
-<span class='line'>281</span> 	 * 
-<span class='line'>282</span> 	 * @function
-<span class='line'>283</span> 	 * @namespace taoApi
-<span class='line'>284</span> 	 * @param {function} callback
-<span class='line'>285</span> 	 */</span><span class="WHIT">
-<span class='line'>286</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">afterFinish</span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>287</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">_stateContext</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.POST_FINISHED</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>288</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">	
+<span class='line'>242</span> 	</span><span class="COMM">/**
+<span class='line'>243</span> 	 * Define the item's state as finished.
+<span class='line'>244</span> 	 * This state can have some consequences.
+<span class='line'>245</span> 	 * 
+<span class='line'>246</span> 	 * @function
+<span class='line'>247</span> 	 * @namespace taoApi
+<span class='line'>248</span> 	 */</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">finish</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>250</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.PRE_FINISHED</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>251</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.FINISHED</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">trigger</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.POST_FINISHED</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">	
+<span class='line'>255</span> 	</span><span class="COMM">/**
+<span class='line'>256</span> 	 * Add a callback that will be executed on finish state.
+<span class='line'>257</span> 	 * 
+<span class='line'>258</span> 	 * @function
+<span class='line'>259</span> 	 * @namespace taoApi
+<span class='line'>260</span> 	 * @param {function} callback
+<span class='line'>261</span> 	 */</span><span class="WHIT">
+<span class='line'>262</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">onFinish</span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>263</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.FINISHED</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>264</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>265</span> </span><span class="WHIT">	
+<span class='line'>266</span> 	</span><span class="COMM">/**
+<span class='line'>267</span> 	 * Add a callback that will be executed on finish but before the other callbacks  
+<span class='line'>268</span> 	 * 
+<span class='line'>269</span> 	 * @function
+<span class='line'>270</span> 	 * @namespace taoApi
+<span class='line'>271</span> 	 * @param {function} callback
+<span class='line'>272</span> 	 */</span><span class="WHIT">
+<span class='line'>273</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">beforeFinish</span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.PRE_FINISHED</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">	
+<span class='line'>277</span> 	</span><span class="COMM">/**
+<span class='line'>278</span> 	 * Add a callback that will be executed on finish but after the other callbacks  
+<span class='line'>279</span> 	 * 
+<span class='line'>280</span> 	 * @function
+<span class='line'>281</span> 	 * @namespace taoApi
+<span class='line'>282</span> 	 * @param {function} callback
+<span class='line'>283</span> 	 */</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">	</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">afterFinish</span><span class="PUNC">(</span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>285</span> </span><span class="WHIT">		</span><span class="NAME">$</span><span class="PUNC">(</span><span class="NAME">window</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">bind</span><span class="PUNC">(</span><span class="NAME">STATE.ITEM.POST_FINISHED</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">callback</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>286</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>287</span> 
+<span class='line'>288</span> </span><span class="PUNC">}</span><span class="WHIT">
 <span class='line'>289</span> 
-<span class='line'>290</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>291</span> 
-<span class='line'>292</span> </span><span class="WHIT">  </span><span class="COMM">//////////////////////////////</span><span class="WHIT">
-<span class='line'>293</span> </span><span class="WHIT"> </span><span class="COMM">// INTERFACE COMMUNICATION  //</span><span class="WHIT">
-<span class='line'>294</span> </span><span class="COMM">//////////////////////////////</span><span class="WHIT">
-<span class='line'>295</span> 
-<span class='line'>296</span> </span><span class="COMM">/**
-<span class='line'>297</span>  * Get the communication token (this token is sent at each communication)
-<span class='line'>298</span>  * 
-<span class='line'>299</span>  * @function
-<span class='line'>300</span>  * @namespace taoApi
-<span class='line'>301</span>  * @returns {String} the token
-<span class='line'>302</span>  */</span><span class="WHIT">
-<span class='line'>303</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">getToken</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>304</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">taoStack.dataStore.token</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>305</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>306</span> 
-<span class='line'>307</span> </span><span class="COMM">/**
-<span class='line'>308</span>  * This fuction enables you to set up the data the item need.
-<span class='line'>309</span>  * You can retrieve this data from either a remote or a manual source.
-<span class='line'>310</span>  * &lt;b>If you don't need to change the default values, don't call this function.&lt;/b>
-<span class='line'>311</span>  * 
-<span class='line'>312</span>  * @function
-<span class='line'>313</span>  * @namespace taoApi
-<span class='line'>314</span>  * 
-<span class='line'>315</span>  * @param {Object} environment &lt;i>set to null if you want to keep all the default values&lt;/i>
-<span class='line'>316</span>  * @param {String} [environment.type = "async"] the datasource type &lt;b>(manual|sync|async)&lt;/b> 
-<span class='line'>317</span>  * @param {String} [environment.url = "/taoDelivery/ResultDelivery/initialize"] the url of the server where the data are sent 
-<span class='line'>318</span>  * @param {Object} [environment.params] the additional parameters to send with the data
-<span class='line'>319</span>  * 
-<span class='line'>320</span>  * @param {Object} settings &lt;i>set to null if you want to keep all the default values&lt;/i>
-<span class='line'>321</span>  * @param {String} [settings.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
-<span class='line'>322</span>  * @param {String} [settings.method = "post"] HTTP method to push the data &lt;b>(get|post)&lt;/b>
-<span class='line'>323</span>  */</span><span class="WHIT">
-<span class='line'>324</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initDataSource</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>325</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.initDataSource</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>326</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>327</span> 
-<span class='line'>328</span> </span><span class="COMM">/**
-<span class='line'>329</span>  * This function is a convenience method to add directly the datasource 
-<span class='line'>330</span>  * by writing the data in the source object (JSON) .
-<span class='line'>331</span>  *   
-<span class='line'>332</span>  * @function
-<span class='line'>333</span>  * @namespace taoApi
-<span class='line'>334</span>  * @param {Object} source
-<span class='line'>335</span>  */</span><span class="WHIT">
-<span class='line'>336</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initManualDataSource</span><span class="PUNC">(</span><span class="NAME">source</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>337</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.initDataSource</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">type</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'manual'</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>338</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>339</span> 
-<span class='line'>340</span> 
-<span class='line'>341</span> </span><span class="COMM">/**
-<span class='line'>342</span>  * Initialize the push communication.
-<span class='line'>343</span>  * &lt;b>If you don't need to change the default values, don't call this function.&lt;/b>
-<span class='line'>344</span>  * 
-<span class='line'>345</span>  * @function
-<span class='line'>346</span>  * @namespace taoApi
-<span class='line'>347</span>  * 
-<span class='line'>348</span>  * @param {Object} environment &lt;i>set to null if you want to keep all the default values&lt;/i>
-<span class='line'>349</span>  * @param {String} [environment.url = "/taoDelivery/ResultDelivery/save"] the url of the server where the data are sent 
-<span class='line'>350</span>  * @param {Object} [environment.params] the additional parameters to send with the data
-<span class='line'>351</span>  * 
-<span class='line'>352</span>  * @param {Object} settings &lt;i>set to null if you want to keep all the default values&lt;/i>
-<span class='line'>353</span>  * @param {String} [settings.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
-<span class='line'>354</span>  * @param {String} [settings.method = "post"] HTTP method to push the data &lt;b>(get|post)&lt;/b>
-<span class='line'>355</span>  * @param {boolean}[settings.async = true]	if the request is asynchronous
-<span class='line'>356</span>  * @param {boolean}[settings.clearAfter= true]	if the variables stacks are cleared once the push is done
-<span class='line'>357</span>  */</span><span class="WHIT">
-<span class='line'>358</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initPush</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>359</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.initPush</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>360</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>361</span> 
-<span class='line'>362</span> 
-<span class='line'>363</span> </span><span class="COMM">/**
-<span class='line'>364</span>  * This method enables you to push the data to the server.
-<span class='line'>365</span>  * 
-<span class='line'>366</span>  * @function
-<span class='line'>367</span>  * @namespace taoApi
-<span class='line'>368</span>  */</span><span class="WHIT">
-<span class='line'>369</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">push</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>370</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.push</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>371</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>372</span> 
-<span class='line'>373</span> </span><span class="COMM">/*
-<span class='line'>374</span>  * By default, the variables are pushed when the item is finished
-<span class='line'>375</span>  */</span><span class="WHIT">
-<span class='line'>376</span> </span><span class="NAME">beforeFinish</span><span class="PUNC">(</span><span class="NAME">push</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>290</span> </span><span class="WHIT">  </span><span class="COMM">//////////////////////////////</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT"> </span><span class="COMM">// INTERFACE COMMUNICATION  //</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="COMM">//////////////////////////////</span><span class="WHIT">
+<span class='line'>293</span> 
+<span class='line'>294</span> </span><span class="COMM">/**
+<span class='line'>295</span>  * Get the communication token (this token is sent at each communication)
+<span class='line'>296</span>  * 
+<span class='line'>297</span>  * @function
+<span class='line'>298</span>  * @namespace taoApi
+<span class='line'>299</span>  * @returns {String} the token
+<span class='line'>300</span>  */</span><span class="WHIT">
+<span class='line'>301</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">getToken</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">taoStack.dataStore.token</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>304</span> 
+<span class='line'>305</span> </span><span class="COMM">/**
+<span class='line'>306</span>  * This fuction enables you to set up the data the item need.
+<span class='line'>307</span>  * You can retrieve this data from either a remote or a manual source.
+<span class='line'>308</span>  * &lt;b>If you don't need to change the default values, don't call this function.&lt;/b>
+<span class='line'>309</span>  * 
+<span class='line'>310</span>  * @function
+<span class='line'>311</span>  * @namespace taoApi
+<span class='line'>312</span>  * 
+<span class='line'>313</span>  * @param {Object} environment &lt;i>set to null if you want to keep all the default values&lt;/i>
+<span class='line'>314</span>  * @param {String} [environment.type = "async"] the datasource type &lt;b>(manual|sync|async)&lt;/b> 
+<span class='line'>315</span>  * @param {String} [environment.url = "/taoDelivery/ResultDelivery/initialize"] the url of the server where the data are sent 
+<span class='line'>316</span>  * @param {Object} [environment.params] the additional parameters to send with the data
+<span class='line'>317</span>  * 
+<span class='line'>318</span>  * @param {Object} settings &lt;i>set to null if you want to keep all the default values&lt;/i>
+<span class='line'>319</span>  * @param {String} [settings.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
+<span class='line'>320</span>  * @param {String} [settings.method = "post"] HTTP method to push the data &lt;b>(get|post)&lt;/b>
+<span class='line'>321</span>  */</span><span class="WHIT">
+<span class='line'>322</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initDataSource</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>323</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.initDataSource</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>325</span> 
+<span class='line'>326</span> </span><span class="COMM">/**
+<span class='line'>327</span>  * This function is a convenience method to add directly the datasource 
+<span class='line'>328</span>  * by writing the data in the source object (JSON) .
+<span class='line'>329</span>  *   
+<span class='line'>330</span>  * @function
+<span class='line'>331</span>  * @namespace taoApi
+<span class='line'>332</span>  * @param {Object} source
+<span class='line'>333</span>  */</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initManualDataSource</span><span class="PUNC">(</span><span class="NAME">source</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>335</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.initDataSource</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">type</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">'manual'</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>337</span> 
+<span class='line'>338</span> 
+<span class='line'>339</span> </span><span class="COMM">/**
+<span class='line'>340</span>  * Initialize the push communication.
+<span class='line'>341</span>  * &lt;b>If you don't need to change the default values, don't call this function.&lt;/b>
+<span class='line'>342</span>  * 
+<span class='line'>343</span>  * @function
+<span class='line'>344</span>  * @namespace taoApi
+<span class='line'>345</span>  * 
+<span class='line'>346</span>  * @param {Object} environment &lt;i>set to null if you want to keep all the default values&lt;/i>
+<span class='line'>347</span>  * @param {String} [environment.url = "/taoDelivery/ResultDelivery/save"] the url of the server where the data are sent 
+<span class='line'>348</span>  * @param {Object} [environment.params] the additional parameters to send with the data
+<span class='line'>349</span>  * 
+<span class='line'>350</span>  * @param {Object} settings &lt;i>set to null if you want to keep all the default values&lt;/i>
+<span class='line'>351</span>  * @param {String} [settings.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
+<span class='line'>352</span>  * @param {String} [settings.method = "post"] HTTP method to push the data &lt;b>(get|post)&lt;/b>
+<span class='line'>353</span>  * @param {boolean}[settings.async = true]	if the request is asynchronous
+<span class='line'>354</span>  * @param {boolean}[settings.clearAfter= true]	if the variables stacks are cleared once the push is done
+<span class='line'>355</span>  */</span><span class="WHIT">
+<span class='line'>356</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initPush</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>357</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.initPush</span><span class="PUNC">(</span><span class="NAME">environment</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">settings</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>358</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>359</span> 
+<span class='line'>360</span> 
+<span class='line'>361</span> </span><span class="COMM">/**
+<span class='line'>362</span>  * This method enables you to push the data to the server.
+<span class='line'>363</span>  * 
+<span class='line'>364</span>  * @function
+<span class='line'>365</span>  * @namespace taoApi
+<span class='line'>366</span>  */</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">push</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="WHIT">	</span><span class="NAME">taoStack.push</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>370</span> 
+<span class='line'>371</span> </span><span class="COMM">/*
+<span class='line'>372</span>  * By default, the variables are pushed when the item is finished
+<span class='line'>373</span>  */</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="NAME">beforeFinish</span><span class="PUNC">(</span><span class="NAME">push</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>375</span> 
+<span class='line'>376</span> 
 <span class='line'>377</span> 
-<span class='line'>378</span> 
-<span class='line'>379</span> 
+<span class='line'>378</span> </span><span class="COMM">/////////////</span><span class="WHIT">
+<span class='line'>379</span> </span><span class="COMM">// EVENTS  //</span><span class="WHIT">
 <span class='line'>380</span> </span><span class="COMM">/////////////</span><span class="WHIT">
-<span class='line'>381</span> </span><span class="COMM">// EVENTS  //</span><span class="WHIT">
-<span class='line'>382</span> </span><span class="COMM">/////////////</span><span class="WHIT">
-<span class='line'>383</span> 
-<span class='line'>384</span> </span><span class="COMM">/**
-<span class='line'>385</span> * instanciate the EventTracer object
-<span class='line'>386</span> * @type EventTracer
-<span class='line'>387</span> */</span><span class="WHIT">
-<span class='line'>388</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eventTracer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">EventTracer</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>389</span> 
-<span class='line'>390</span> </span><span class="COMM">/**
-<span class='line'>391</span> * Log the an &lt;i>eventType&lt;/i> bound on &lt;i>elementName&lt;/i> by sending the &lt;i>data&lt;/i>.
-<span class='line'>392</span> * 
-<span class='line'>393</span> * @function
-<span class='line'>394</span> * @namespace taoApi
-<span class='line'>395</span> * @param {String} elementName an HTML tag name
-<span class='line'>396</span> * @param {String} eventType a JS User Events
-<span class='line'>397</span> * @param {mixed} data any data strucuture you want to trace
-<span class='line'>398</span> */</span><span class="WHIT">
-<span class='line'>399</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">logEvent</span><span class="PUNC">(</span><span class="NAME">elementName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>400</span> </span><span class="WHIT">	</span><span class="NAME">eventTracer.feedTrace</span><span class="PUNC">(</span><span class="NAME">elementName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>401</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>402</span> 
-<span class='line'>403</span> </span><span class="COMM">/**
-<span class='line'>404</span> * Log the a &lt;i>eventName&lt;/i> by sending the &lt;i>data&lt;/i>
-<span class='line'>405</span> * 
-<span class='line'>406</span> * @function
-<span class='line'>407</span> * @namespace taoApi
-<span class='line'>408</span> * @param {String} eventName the name of the custom event
-<span class='line'>409</span> * @param {mixed} data 
-<span class='line'>410</span> */</span><span class="WHIT">
-<span class='line'>411</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">logCustomEvent</span><span class="PUNC">(</span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>412</span> </span><span class="WHIT">	</span><span class="NAME">eventTracer.feedTrace</span><span class="PUNC">(</span><span class="STRN">'BUSINESS'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>413</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>414</span> 
-<span class='line'>415</span> </span><span class="COMM">/**
-<span class='line'>416</span>  * Initialize the interfaces communication for the events logging.
-<span class='line'>417</span>  * The source service defines where and how we retrieve the list of events to catch
-<span class='line'>418</span>  * The destination service defines where and how we send the catched events 
-<span class='line'>419</span>  * 
-<span class='line'>420</span>  * @function
-<span class='line'>421</span>  * @namespace taoApi
-<span class='line'>422</span>  * 
-<span class='line'>423</span>  * @param {Object} source 
-<span class='line'>424</span>  * @param {String} [source.type = "sync"] the type of source &lt;b>(sync|manual)&lt;/b>
-<span class='line'>425</span>  * @param {Object} [source.data] For the &lt;i>manual&lt;/i> source type, set direclty the events list in the data 
-<span class='line'>426</span>  * @param {String} [source.url = "/taoDelivery/ResultDelivery/getEvents"] For the &lt;i>sync&lt;/i> source type, the URL of the remote service
-<span class='line'>427</span>  * @param {Object} [source.params] the parameters to send to the sync service
-<span class='line'>428</span>  * @param {String} [source.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
-<span class='line'>429</span>  * @param {String} [source.method = "post"] HTTP method of the sync service &lt;b>(get|post)&lt;/b>
-<span class='line'>430</span>  * 
-<span class='line'>431</span>  * @param {Object} destination
-<span class='line'>432</span>  * @param {String} [destination.url = "/taoDelivery/ResultDelivery/traceEvents"] the URL of the remote service
-<span class='line'>433</span>  * @param {Object} [destination.params] the common parameters to send to the service
-<span class='line'>434</span>  * @param {String} [destination.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
-<span class='line'>435</span>  * @param {String} [destination.method = "post"] HTTP method of the service &lt;b>(get|post)&lt;/b>
-<span class='line'>436</span>  */</span><span class="WHIT">
-<span class='line'>437</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initEventServices</span><span class="PUNC">(</span><span class="NAME">source</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">destination</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>438</span> </span><span class="WHIT">	
-<span class='line'>439</span> 	</span><span class="NAME">extendedParams</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">params</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">token</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">getToken</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">}</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT"> 
-<span class='line'>440</span> 	
-<span class='line'>441</span> 	</span><span class="NAME">eventTracer.initSourceService</span><span class="PUNC">(</span><span class="NAME">$.extend</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">extendedParams</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>442</span> </span><span class="WHIT">	
-<span class='line'>443</span> 	</span><span class="NAME">eventTracer.initDestinationService</span><span class="PUNC">(</span><span class="NAME">$.extend</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">destination</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">extendedParams</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>444</span> </span><span class="PUNC">}</span><span class="WHIT">
-<span class='line'>445</span> 
-<span class='line'>446</span> </span><span class="COMM">/*
-<span class='line'>447</span>  * By default, all the events are sent  when the item is finished
-<span class='line'>448</span>  */</span><span class="WHIT">
-<span class='line'>449</span> </span><span class="NAME">beforeFinish</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
-<span class='line'>450</span> </span><span class="WHIT">	</span><span class="NAME">eventTracer.sendAllFeedTrace_now</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>451</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
-<span class='line'>452</span> </span></pre></body></html>
+<span class='line'>381</span> 
+<span class='line'>382</span> </span><span class="COMM">/**
+<span class='line'>383</span> * instanciate the EventTracer object
+<span class='line'>384</span> * @type EventTracer
+<span class='line'>385</span> */</span><span class="WHIT">
+<span class='line'>386</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">eventTracer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">EventTracer</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>387</span> 
+<span class='line'>388</span> </span><span class="COMM">/**
+<span class='line'>389</span> * Log the an &lt;i>eventType&lt;/i> bound on &lt;i>elementName&lt;/i> by sending the &lt;i>data&lt;/i>.
+<span class='line'>390</span> * 
+<span class='line'>391</span> * @function
+<span class='line'>392</span> * @namespace taoApi
+<span class='line'>393</span> * @param {String} elementName an HTML tag name
+<span class='line'>394</span> * @param {String} eventType a JS User Events
+<span class='line'>395</span> * @param {mixed} data any data strucuture you want to trace
+<span class='line'>396</span> */</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">logEvent</span><span class="PUNC">(</span><span class="NAME">elementName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="WHIT">	</span><span class="NAME">eventTracer.feedTrace</span><span class="PUNC">(</span><span class="NAME">elementName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventType</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>400</span> 
+<span class='line'>401</span> </span><span class="COMM">/**
+<span class='line'>402</span> * Log the a &lt;i>eventName&lt;/i> by sending the &lt;i>data&lt;/i>
+<span class='line'>403</span> * 
+<span class='line'>404</span> * @function
+<span class='line'>405</span> * @namespace taoApi
+<span class='line'>406</span> * @param {String} eventName the name of the custom event
+<span class='line'>407</span> * @param {mixed} data 
+<span class='line'>408</span> */</span><span class="WHIT">
+<span class='line'>409</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">logCustomEvent</span><span class="PUNC">(</span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>410</span> </span><span class="WHIT">	</span><span class="NAME">eventTracer.feedTrace</span><span class="PUNC">(</span><span class="STRN">'BUSINESS'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">eventName</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Date</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">getTime</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>411</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>412</span> 
+<span class='line'>413</span> </span><span class="COMM">/**
+<span class='line'>414</span>  * Initialize the interfaces communication for the events logging.
+<span class='line'>415</span>  * The source service defines where and how we retrieve the list of events to catch
+<span class='line'>416</span>  * The destination service defines where and how we send the catched events 
+<span class='line'>417</span>  * 
+<span class='line'>418</span>  * @function
+<span class='line'>419</span>  * @namespace taoApi
+<span class='line'>420</span>  * 
+<span class='line'>421</span>  * @param {Object} source 
+<span class='line'>422</span>  * @param {String} [source.type = "sync"] the type of source &lt;b>(sync|manual)&lt;/b>
+<span class='line'>423</span>  * @param {Object} [source.data] For the &lt;i>manual&lt;/i> source type, set direclty the events list in the data 
+<span class='line'>424</span>  * @param {String} [source.url = "/taoDelivery/ResultDelivery/getEvents"] For the &lt;i>sync&lt;/i> source type, the URL of the remote service
+<span class='line'>425</span>  * @param {Object} [source.params] the parameters to send to the sync service
+<span class='line'>426</span>  * @param {String} [source.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
+<span class='line'>427</span>  * @param {String} [source.method = "post"] HTTP method of the sync service &lt;b>(get|post)&lt;/b>
+<span class='line'>428</span>  * 
+<span class='line'>429</span>  * @param {Object} destination
+<span class='line'>430</span>  * @param {String} [destination.url = "/taoDelivery/ResultDelivery/traceEvents"] the URL of the remote service
+<span class='line'>431</span>  * @param {Object} [destination.params] the common parameters to send to the service
+<span class='line'>432</span>  * @param {String} [destination.format = "json"] the data format. &lt;i>Only json is supported in the current version&lt;/i> 
+<span class='line'>433</span>  * @param {String} [destination.method = "post"] HTTP method of the service &lt;b>(get|post)&lt;/b>
+<span class='line'>434</span>  */</span><span class="WHIT">
+<span class='line'>435</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">initEventServices</span><span class="PUNC">(</span><span class="NAME">source</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">destination</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>436</span> </span><span class="WHIT">	
+<span class='line'>437</span> 	</span><span class="NAME">extendedParams</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">params</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="NAME">token</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">getToken</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">}</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT"> 
+<span class='line'>438</span> 	
+<span class='line'>439</span> 	</span><span class="NAME">eventTracer.initSourceService</span><span class="PUNC">(</span><span class="NAME">$.extend</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">source</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">extendedParams</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>440</span> </span><span class="WHIT">	
+<span class='line'>441</span> 	</span><span class="NAME">eventTracer.initDestinationService</span><span class="PUNC">(</span><span class="NAME">$.extend</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">destination</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">extendedParams</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>442</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>443</span> 
+<span class='line'>444</span> </span><span class="COMM">/*
+<span class='line'>445</span>  * By default, all the events are sent  when the item is finished
+<span class='line'>446</span>  */</span><span class="WHIT">
+<span class='line'>447</span> </span><span class="NAME">beforeFinish</span><span class="PUNC">(</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>448</span> </span><span class="WHIT">	</span><span class="NAME">eventTracer.sendAllFeedTrace_now</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>449</span> </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>450</span> </span></pre></body></html>

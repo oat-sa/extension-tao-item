@@ -5,61 +5,64 @@
 	<title>QTI Item associate</title>
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="../css/reset.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="../css/qti.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="../css/qti.min.css" media="screen" />
 	
 	<!-- LIB -->
-	<script type="text/javascript" src="../lib/jquery/jquery.js"></script>
-	
-	<!-- LIB (required for sort item interaction) -->
+	<script type="text/javascript" src="../lib/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="../lib/jquery-ui-1.8.4.custom.min.js"></script>
 	
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="../qti.min.js"></script>
-	<script type="text/javascript">
-		var qti_initParam  = new Object();
-		$(document).ready(function(){
-			qti_init(qti_initParam);
-		});
-	</script>
 </head>                                             
 <body>
-	<div class="qti_item">
+	<div id="associate" class="qti_item">
+
 		<h1>Shakespearian Rivals</h1>
 	
 		<div id="interaction_1" class="qti_widget qti_associate_interaction">
-	<div class="qti_associate_container">
-	<p class='prompt'>Hidden in this list of characters from famous Shakespeare plays are three pairs
-                of rivals. Can you match each character to his adversary?</p><ul class='qti_choice_list'><li id="A">Antonio</li><li id="C">Capulet</li><li id="D">Demetrius</li><li id="L">Lysander</li><li id="M">Montague</li><li id="P">Prospero</li></ul>	</div>
-</div>	
-<script type="text/javascript">
-	qti_initParam["interaction_4cb413baaf60e785141618"] = {
-		id 					: "interaction_1",
-		type 				: "qti_associate_interaction",
-		responseIdentifier 	: "RESPONSE",
-		maxAssociations		: 3,
-		matchMaxes			: {
-					A: { 
-				matchMax	: 1,
-				current		: "0"
-			},					C: { 
-				matchMax	: 1,
-				current		: "0"
-			},					D: { 
-				matchMax	: 1,
-				current		: "0"
-			},					L: { 
-				matchMax	: 1,
-				current		: "0"
-			},					M: { 
-				matchMax	: 1,
-				current		: "0"
-			},					P: { 
-				matchMax	: 1,
-				current		: "0"
-			}				}
-	};
-</script>		
+
+			<div class="qti_associate_container">
+				<p class='prompt'>Hidden in this list of characters from famous Shakespeare plays are three pairs
+			                of rivals. Can you match each character to his adversary?</p>
+			    <ul class='qti_choice_list'>
+			    	<li id="A">Antonio</li>
+			    	<li id="C">Capulet</li>
+			    	<li id="D">Demetrius</li>
+			    	<li id="L">Lysander</li>
+			    	<li id="M">Montague</li>
+			    	<li id="P">Prospero</li>
+			    </ul>	
+    		</div>
+		</div>	
+		<script type="text/javascript">
+			qti_initParam["interaction_4cb413baaf60e785141618"] = {
+					id 					: "interaction_1",
+					type 				: "qti_associate_interaction",
+					responseIdentifier 	: "RESPONSE",
+					maxAssociations		: 3,
+					responseBaseType	: "pair",
+				matchMaxes			: {
+							A: { 
+						matchMax	: 1,
+						current		: "0"
+					},					C: { 
+						matchMax	: 1,
+						current		: "0"
+					},					D: { 
+						matchMax	: 1,
+						current		: "0"
+					},					L: { 
+						matchMax	: 1,
+						current		: "0"
+					},					M: { 
+						matchMax	: 1,
+						current		: "0"
+					},					P: { 
+						matchMax	: 1,
+						current		: "0"
+					}				}
+			};
+		</script>		
 		<!-- validation button -->
 		<a href="#" id="qti_validate">Validate</a>
 	</div>

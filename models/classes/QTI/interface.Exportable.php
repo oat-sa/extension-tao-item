@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/interface.Exportable.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 08.09.2010, 10:31:46 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * By implementing the exportable interface, the object must export it's data to
+ * formats defined here.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
@@ -30,7 +24,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004158-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_Exportable
+ * By implementing the exportable interface, the object must export it's data to
+ * formats defined here.
  *
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -44,7 +39,7 @@ interface taoItems_models_classes_QTI_Exportable
     // --- OPERATIONS ---
 
     /**
-     * Short description of method toXHTML
+     * Export the data in XHTML format
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -53,7 +48,7 @@ interface taoItems_models_classes_QTI_Exportable
     public function toXHTML();
 
     /**
-     * Short description of method toQTI
+     * EXport the data in the QTI XML format
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -62,11 +57,11 @@ interface taoItems_models_classes_QTI_Exportable
     public function toQTI();
 
     /**
-     * Short description of method toForm
+     * EXport the data into TAO's objects Form
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return tao_helpers_form_Form
+     * @return tao_helpers_form_xhtml_Form
      */
     public function toForm();
 
