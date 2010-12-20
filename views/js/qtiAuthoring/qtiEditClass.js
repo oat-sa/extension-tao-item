@@ -568,10 +568,10 @@ qtiEdit.prototype.save = function(itemUri){
 
 qtiEdit.prototype.preview = function(){
 	//save the item before previewing?
-	
-	// GenerisAction.fullScreen(this.itemSerial, '', '/taoItems/QtiAuthoring/preview');
-	var url = '/taoItems/QtiAuthoring/preview';
-	url += '?itemSerial='+this.itemSerial;
+	var url = '/taoItems/Items/preview';
+	url += '?uri='+this.itemUri;
+	url += '&classUri='+this.itemClassUri;
+	url += '&previewTitle='+__('QTI item preview');
 	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
 }
 

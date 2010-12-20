@@ -85,6 +85,7 @@ $(document).ready(function(){
 	
 	//link the qti object to the item rdf resource
 	myItem.itemUri = '<?=get_data('itemUri')?>';
+	myItem.itemClassUri = '<?=get_data('itemClassUri')?>';
 	
 	//set the save button:
 	$('#qtiAuthoring_save_button').click(function(){
@@ -118,7 +119,7 @@ $(document).ready(function(){
 		},
 		inlinechoice: {
 			label: 'inline choice', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_extendedText.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_inlineChoice.png"
 		},
 		associate: {
 			label: 'associate', 
