@@ -41,6 +41,9 @@ var QTIWidget = function(options){
 	//use the global variable qti_base_www
 	if(typeof(qti_base_www) != 'undefined'){
 		this.wwwPath = qti_base_www;
+		if(!/\/$/.test(this.wwwPath) && this.wwwPath != ''){
+			this.wwwPath += '/';
+		}
 	}
 	
 	/**
