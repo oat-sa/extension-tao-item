@@ -825,7 +825,7 @@ class taoItems_models_classes_QTI_Interaction
 		if ($response != null){
 			$variables['options']['responseBaseType'] = $response->getBaseType();
 		}
-   		
+		
         $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
         

@@ -47,7 +47,11 @@
 		
 		<!-- validation button -->
 		<div class="qti_control">
+		<?if($ctx_raw_preview):?>
+			<a href="#" id="qti_validate" style="visibility:hidden;">Validate</a>
+		<?else:?>
 			<a href="#" id="qti_validate">Validate</a>
+		<?endif?>
 		</div>
 	</div>
 </body>

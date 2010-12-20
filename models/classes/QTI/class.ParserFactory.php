@@ -192,9 +192,11 @@ class taoItems_models_classes_QTI_ParserFactory
        		$type = str_replace('Interaction', '', $data->getName());
        		$myInteraction = new taoItems_models_classes_QTI_Interaction($type, null, $options);
        	
+       		//build the interaction regarding it's type
        		switch($type){
        			
        			case 'match':
+       				//extract simpleMatchSet choices
        				$matchSetNodes = $data->xpath("//*[name(.) = 'simpleMatchSet']");
        				foreach($matchSetNodes as $matchSetNode){
        					$choiceNodes = $matchSetNode->xpath("*[name(.) = 'simpleAssociableChoice']");
@@ -206,6 +208,7 @@ class taoItems_models_classes_QTI_ParserFactory
 				        		$choices[] = $choice;
 				        	}
 	       				}
+	       				//and create group with the sets
        					if(count($choices) > 0){
        						$group = new taoItems_models_classes_QTI_Group();
        						$group->setType($matchSetNode->getName());
@@ -216,6 +219,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				break;
        				
        			case 'gapMatch':
+       				//create choices with the gapText nodes
        				$choiceNodes = $data->xpath("//*[name(.)='gapText']");
        				$choices = array();
        				foreach($choiceNodes as $choiceNode){
@@ -225,6 +229,7 @@ class taoItems_models_classes_QTI_ParserFactory
 			       			$choices[$choice->getIdentifier()] = $choice;
 			        	}
        				}
+       				//create a group with each gap node (this a particular use of the group)
        				$gapNodes = $data->xpath("//*[name(.)='gap']");
        				foreach($gapNodes as $gapNode){
        					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
@@ -251,7 +256,8 @@ class taoItems_models_classes_QTI_ParserFactory
        			case 'selectPoint':
        			case 'graphicOrder':
        			case 'graphicAssociate':
-       				//get the object
+       				
+       				//extract the media object tag
        				$objectNodes = $data->xpath("*[name(.)='object']");
        				foreach($objectNodes as $objectNode){
        					$objectData = array();
@@ -275,6 +281,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				}
        				
        			default :
+       				//parse, extract and build the choice nodes contained in the interaction
                     $interactionData = simplexml_load_string($data->asXML()); 
        				$exp= "*[contains(name(.),'Choice')] | *[name(.)='associableHotspot'] | //*[name(.)='hottext']";
        				$choiceNodes = $interactionData->xpath($exp);
@@ -290,6 +297,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	       	//extract the interaction structure to separate the structural/style content to the interaction content 
 	        $interactionNodes = $data->children();
 	        
+	        //get the interaction data
 	        $interactionData = '';
 	        foreach($interactionNodes as $interactionNode){
 	        	$interactionData .= $interactionNode->asXml();
@@ -333,13 +341,25 @@ class taoItems_models_classes_QTI_ParserFactory
 				        break;
 		        
 	       		}
+	       		
+	       		//extract the prompt tag to the attribute
+	       		$promptData = '';
 	       		$promptNodes = $data->xpath("//*[name(.) = 'prompt']");
 	       		foreach($promptNodes as $promptNode){
-	       			$myInteraction->setPrompt((string)$promptNode);
-	       			$pattern = "/(<prompt\b[^>]*>(.*?)<\/prompt>)|(<prompt\b[^>]*\/>)/is";
-	       			$interactionData = preg_replace($pattern, "", $interactionData);
+		       		if(count($promptNode->children()) > 0){
+			       		$promptData .= preg_replace(array("/^<prompt([^>]*)?>/i", "/<\/prompt([^>]*)?>$/i"), "", trim($promptNode->asXML()));
+		       		}
+		       		else{
+		       			$promptData .= (string)$promptNode;
+		       		}
 	       		}
+	       		$myInteraction->setPrompt($promptData);
 	       		
+	       		//remove the prompt from the data string 
+	       		$pattern = "/(<prompt\b[^>]*>(.*?)<\/prompt>)|(<prompt\b[^>]*\/>)/is";
+	       		$interactionData = preg_replace($pattern, "", $interactionData);
+	       			
+	       		//set the data string 
 	        	$myInteraction->setData($interactionData);
 	        }
        		
