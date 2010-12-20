@@ -102,13 +102,16 @@ class Items extends TaoModule{
 		foreach($options as $optUri => $optLabel){
 			$model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
 			$status = $model->getOnePropertyValue($statusProperty);
-			$statusLabel = trim($status->getLabel());
+			$statusLabel = (!is_null($status))?trim($status->getLabel()):'';
 			if(!empty($statusLabel)){
 				$options[$optUri] = $optLabel . " ($statusLabel)";
 			}
-			if($status->uriResource == TAO_ITEM_MODEL_STATUS_DEPRECATED){
-				$deprecatedOptions[] = $optUri;
+			if(!is_null($status)){
+				if($status->uriResource == TAO_ITEM_MODEL_STATUS_DEPRECATED){
+					$deprecatedOptions[] = $optUri;
+				}
 			}
+			
 		}
 		$itemModelElt->setOptions($options);
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
