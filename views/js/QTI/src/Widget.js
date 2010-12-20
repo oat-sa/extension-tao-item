@@ -1275,7 +1275,7 @@ var QTIWidget = function(options){
 	};
 	
 //
-//	GRAPHIC HOTSPOT
+//	GRAPHIC ORDER
 // 
 	
 	/**
@@ -1887,3 +1887,36 @@ var QTIWidget = function(options){
 		}
 	};
 };
+
+/*
+ * Utilities
+ */
+
+function pointerPolyCoordonates(path){
+	var pathArray=new Array();
+	pathArray=path.split(",");
+	return [pathArray[0],pathArray[1]]	
+}
+
+function polyCoordonates(path){
+	var pathArray=new Array();
+	pathArray=path.split(",");
+	var pathArrayLength=pathArray.length;		
+	// autoClose if needed
+	if ((pathArray[0]!=pathArray[pathArrayLength-2]) && (pathArray[1]!=pathArray[pathArrayLength-1])){
+		pathArray.push(pathArray[0]);
+		pathArray.push(pathArray[1]);
+	}		
+	// move to first point
+	pathArray[0]="M"+pathArray[0];		
+	for (var a=1;a<pathArrayLength;a++){
+		if (isPair(a)){
+			pathArray[a]="L"+pathArray[a];
+		}
+	}		
+	return pathArray.join(" ");		
+}
+
+function isPair(nombre){
+	return ((nombre-1)%2);
+}
