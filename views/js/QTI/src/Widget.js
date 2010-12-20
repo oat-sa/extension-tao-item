@@ -1077,14 +1077,18 @@ var QTIWidget = function(options){
 		
 		var maxChoices=_this.opts["maxChoices"];
 		var countChoices=0;
+		
+		var imageHeight = parseInt( _this.opts["imageHeight"]);
+		var imageWidth	= parseInt( _this.opts["imageWidth"]);
+		
 		// offset position
 		$(qti_item_id+" .qti_hotspot_spotlist li").css("display","none");
-		var itemHeight=$(qti_item_id).height();
-		$(qti_item_id).css("height",itemHeight+options.imageHeight);
+		var itemHeight= parseInt($(qti_item_id).height());
+		$(qti_item_id).css("height",itemHeight+imageHeight);
 		
 		// load image in rapheal area
-		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0],0,itemHeight+options.imageHeight);
-		paper.image(options.imagePath,0,0,options.imageWidth,options.imageHeight);
+		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0],0,itemHeight+imageHeight);
+		paper.image(_this.opts.imagePath,0,0,imageWidth,imageHeight);
 		// create hotspot
 		$(qti_item_id+" .qti_hotspot_spotlist li").each(function(){
 			var currentHotSpotShape=_this.opts.hotspotChoice[$(this).attr("id")]["shape"];
@@ -1197,16 +1201,19 @@ var QTIWidget = function(options){
 		var maxChoices=_this.opts["maxChoices"];
 		var countChoices=0;
 		
+		var imageHeight = parseInt(_this.opts.imageHeight);
+		var imageWidth  = parseInt(_this.opts.imageWidth);
+		
 		// offset position
-		var itemHeight=$(qti_item_id).height();
-		$(qti_item_id).css("height",itemHeight+_this.opts.imageHeight);
+		var itemHeight= parseInt($(qti_item_id).height());
+		$(qti_item_id).css("height",itemHeight+imageHeight);
 		
 		
 		// load image in rapheal area
 		$(qti_item_id+" .qti_select_point_interaction_container")
 			.css({"background":"url("+_this.opts.imagePath+") no-repeat"})
-			.width(_this.opts.imageWidth + 'px')
-			.height(_this.opts.imageHeight + 'px');
+			.width(imageWidth + 'px')
+			.height(imageHeight + 'px');
 		
 		/**
 		 * place an removable image on the selected point
@@ -1305,7 +1312,7 @@ var QTIWidget = function(options){
 		
         // offset position
 		$(qti_item_id+" .qti_graphic_order_spotlist li").css("display","none");
-		var itemHeight=$(qti_item_id).height();
+		var itemHeight= parseInt($(qti_item_id).height());
 		$(qti_item_id).css("height", itemHeight + imageHeight);
 		
 		// load image in rapheal area
@@ -1460,7 +1467,7 @@ var QTIWidget = function(options){
 	    
 		// offset position
 		$(qti_item_id+" .qti_graphic_associate_spotlist li").css("display","none");
-		var itemHeight=$(qti_item_id).height();
+		var itemHeight= parseInt($(qti_item_id).height());
 		$(qti_item_id).css("height",itemHeight+imageHeight);
 		
         // load image in rapheal area

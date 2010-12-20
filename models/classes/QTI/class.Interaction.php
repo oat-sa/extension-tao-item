@@ -818,7 +818,7 @@ class taoItems_models_classes_QTI_Interaction
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
    		}
-
+   		
    		// Give to the template the response base type linked to this interaction
    		// @todo check if this information is not yet available
 		$response = $this->getResponse ();

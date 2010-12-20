@@ -6,16 +6,13 @@
 	<script type="text/javascript" src="../lib/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="../taoApi.min.js"></script>
 	<script type="text/javascript">
-
 	/*
 	 * We want to wait until the API is configured 
 	 * because (for example) we need first the subject name 
 	 */
 	initDataSource({type: 'sync'}, null);
 
-	/*
-	 * And we want the user wait too befor he goes to the next item
-	 */
+	//And we want the user wait too befor he goes to the next item
 	initPush(null, {'async' : true});
 	 
 	$(document).ready(function(){
@@ -23,16 +20,25 @@
 		$("#header").text("Hello " + getSubjectName());
 
 		$("#next").click(function(){
+			setAnsweredValues($('#answer').val());
+			if($('#answer').val() == ''){
+				setEndorsment(false);
+				setScore(0);
+			}
+			else{
+				setEndorsment(true);
+				setScore(1);
+			}
 			return push();	//if the push fails, the click is ignored
 		});
 	});	
-	
 	</script>
 </head>
 <body>
 	<div id="header"></div>
 	<div>
 		<h2>AN ITEM</h2>
+		Please enter something : <input id="answer" type="text" value="" />
 	</div>
 	<input type="button" id="next" value="go next" />
 </body>

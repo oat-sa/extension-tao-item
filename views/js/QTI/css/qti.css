@@ -11,7 +11,7 @@ ol, ul, li {font-size:14px; }
 .prompt {font-weight:bold; }
 .field-error {background-color:transparent; background-image: url('../img/underline.gif'); background-repeat: repeat-x; background-position: bottom; }
 .breaker {clear:both;}
-.sizeEvaluator{position:absolute;top:-4000px;}
+.sizeEvaluator{position:absolute;top:-4000px;overflow:hidden;}
 /* BD #009933 */.active {border:2px solid #009933 !important; }
 
 /* qti widgets layout */
