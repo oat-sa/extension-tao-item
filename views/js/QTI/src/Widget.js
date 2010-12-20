@@ -1083,11 +1083,16 @@ var QTIWidget = function(options){
 		
 		// offset position
 		$(qti_item_id+" .qti_hotspot_spotlist li").css("display","none");
-		var itemHeight= parseInt($(qti_item_id).height());
+		var itemHeight	= parseInt($(qti_item_id).height());
 		$(qti_item_id).css("height",itemHeight+imageHeight);
 		
+		var canvasWidth = parseInt($(qti_item_id).width());
+		if(imageWidth > canvasWidth){
+			canvasWidth = imageWidth;
+		}
+		
 		// load image in rapheal area
-		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0],0,itemHeight+imageHeight);
+		var paper=Raphael($(qti_item_id+" .qti_hotspot_spotlist")[0], canvasWidth, itemHeight+imageHeight);
 		paper.image(_this.opts.imagePath,0,0,imageWidth,imageHeight);
 		// create hotspot
 		$(qti_item_id+" .qti_hotspot_spotlist li").each(function(){
@@ -1315,8 +1320,13 @@ var QTIWidget = function(options){
 		var itemHeight= parseInt($(qti_item_id).height());
 		$(qti_item_id).css("height", itemHeight + imageHeight);
 		
+		var canvasWidth = parseInt($(qti_item_id).width());
+		if(imageWidth > canvasWidth){
+			canvasWidth = imageWidth;
+		}
+		
 		// load image in rapheal area
-		var paper=Raphael($(qti_item_id+" .qti_graphic_order_spotlist")[0],0,_this.opts.imageHeight);
+		var paper=Raphael($(qti_item_id+" .qti_graphic_order_spotlist")[0], canvasWidth,_this.opts.imageHeight);
 		paper.image(_this.opts.imagePath,0,0 , imageWidth, imageHeight);
 		var state_obj=new Object();
         // create pickup zone
@@ -1470,8 +1480,13 @@ var QTIWidget = function(options){
 		var itemHeight= parseInt($(qti_item_id).height());
 		$(qti_item_id).css("height",itemHeight+imageHeight);
 		
+		var canvasWidth = parseInt($(qti_item_id).width());
+		if(imageWidth > canvasWidth){
+			canvasWidth = imageWidth;
+		}
+		
         // load image in rapheal area
-		var paper=Raphael($(qti_item_id+" .qti_graphic_associate_spotlist")[0],0,_this.opts.imageHeight);
+		var paper=Raphael($(qti_item_id+" .qti_graphic_associate_spotlist")[0], canvasWidth, _this.opts.imageHeight);
 		paper.image(_this.opts.imagePath,0,0,imageWidth,imageHeight);
 		
 		var model_obj=new Object();
