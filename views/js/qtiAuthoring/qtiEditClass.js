@@ -164,7 +164,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 	
 	var addGraphicGapMatchInteraction = {
-		visible : true,
+		visible : false,
 		className: 'add_graphicgapmatch_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");

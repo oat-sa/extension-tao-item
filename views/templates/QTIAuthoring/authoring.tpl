@@ -114,55 +114,51 @@ $(document).ready(function(){
 	var interactionTypes = {
 		choice: {
 			label: 'choice', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_choice.png"
 		},
 		inlinechoice: {
 			label: 'inline choice', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_extendedText.png"
 		},
 		associate: {
 			label: 'associate', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_associate.png"
 		},
 		order: {
 			label: 'order', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_order.png"
 		},
 		match: {
 			label: 'match', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_match.png"
 		},
 		gapmatch: {
 			label: 'gap match', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_gapMatch.png"
 		},
 		textentry: {
 			label: 'text entry', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_textentry.png"
 		},
 		extendedtext: {
 			label: 'extended text', 
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_extendedText.png"
 		},
 		hottext: {
 			label: 'hottext',
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_hottext.png"
 		},
 		hotspot: {
 			label: 'hotspot',
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_hotspot.png"
 		},
 		graphicorder: {
 			label: 'graphic order',
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_graphicOrder.png"
 		},
 		graphicassociate: {
 			label: 'graphic associate',
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
-		},
-		graphicgapmatch: {
-			label: 'graphic gap match',
-			icon:"<?=get_data('qtiAuthoring_img_path')?>window-new.png"
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_graphicAssociate.png"
 		}
 	}
 
