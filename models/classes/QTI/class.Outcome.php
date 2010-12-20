@@ -91,13 +91,9 @@ class taoItems_models_classes_QTI_Outcome
     		parent::__construct($identifier, $options);
     	}
     	else{
-    		
-    		/*
-    		 * @todo check the unity of ids by item
-    		 */
     		$this->createSerial();
 	    	self::$_instances[] = $this->serial;
-			$this->identifier 	= $identifier;    	
+			$this->setIdentifier($identifier, false);   	
 	    	$this->options 		= $options;
     	}
     	

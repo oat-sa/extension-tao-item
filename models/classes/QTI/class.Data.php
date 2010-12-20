@@ -19,7 +19,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Exportable
+ * By implementing the exportable interface, the object must export it's data to
+ * formats defined here.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
@@ -136,7 +137,7 @@ abstract class taoItems_models_classes_QTI_Data
     // --- OPERATIONS ---
 
     /**
-     * Short description of method toXHTML
+     * Export the data in XHTML format
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -165,7 +166,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method toQTI
+     * EXport the data in the QTI XML format
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -192,7 +193,7 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method toForm
+     * EXport the data into TAO's objects Form
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -235,7 +236,7 @@ abstract class taoItems_models_classes_QTI_Data
     	
     	$this->options = $options;
 
-    	// section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 end
+        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 end
     }
 
     /**
@@ -421,9 +422,10 @@ abstract class taoItems_models_classes_QTI_Data
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @param  string id
+     * @param  boolean unique
      * @return mixed
      */
-    public function setIdentifier($id)
+    public function setIdentifier($id, $unique = true)
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F begin
     	
@@ -440,8 +442,10 @@ abstract class taoItems_models_classes_QTI_Data
     			$ids = array($ids);
     		}
     	}
-    	if(in_array($id, $ids)){
-    		throw new InvalidArgumentException("Id $id is already in use");
+    	if($unique){
+	    	if(in_array($id, $ids)){
+	    		throw new InvalidArgumentException("Id $id is already in use");
+	    	}
     	}
 		
     	if(!empty($this->identifier)){
