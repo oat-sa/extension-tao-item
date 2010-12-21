@@ -595,8 +595,6 @@ class taoItems_models_classes_QTI_Item
         $xmlElt = simplexml_load_string($tplRenderer->render());
 		$returnValue = $xmlElt->asXml();
         
-        print_r ($returnValue);
-        
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000238A end
 
         return (string) $returnValue;
