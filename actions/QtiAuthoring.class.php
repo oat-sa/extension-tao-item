@@ -170,10 +170,7 @@ class QtiAuthoring extends CommonModule {
 	public function saveItem(){
 		$saved = false;
 		
-		// $itemData = html_entity_decode($this->getRequestParameter('itemData'));
 		$itemData = $this->getPostedItemData();
-		// print_r($itemData);exit;
-		// error_log($itemData);
 		
 		$itemObject = $this->getCurrentItem();
 		//save item properties in the option array:
@@ -197,8 +194,7 @@ class QtiAuthoring extends CommonModule {
 		
 		$itemResource = $this->getCurrentItemResource();
 		$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-		// print_r($itemObject);
-		// echo $itemResource->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+		
 		$saved = true;		
 		
 		if(tao_helpers_Request::isAjax()){
@@ -290,7 +286,6 @@ class QtiAuthoring extends CommonModule {
 		$textContent = '';
 		
 		$interactionData = $this->getPostedInteractionData();
-		// echo "<pre>$interactionData</pre>";
 		
 		$interaction = $this->getCurrentInteraction();
 		
@@ -347,7 +342,6 @@ class QtiAuthoring extends CommonModule {
 	
 	
 	public function deleteInteractions(){
-		// var_dump($this->getCurrentItem(), $this->getRequestParameter('interactionSerials'));
 		
 		$deleted = false;
 		
@@ -706,11 +700,9 @@ class QtiAuthoring extends CommonModule {
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				// var_dump($myForm->getValues());
 				$values = $myForm->getValues();
 				
 				if(isset($values['interactionIdentifier'])){
-					// die('set identifier');
 					if($values['interactionIdentifier'] != $interaction->getIdentifier()){
 						$this->service->setIdentifier($interaction, $values['interactionIdentifier']);
 					}
@@ -1039,7 +1031,7 @@ class QtiAuthoring extends CommonModule {
 		$response = $this->getCurrentResponse();
 		
 		$formContainer = new taoItems_actions_QTIform_Mapping($response);
-		// var_dump($formContainer->getForm()->render());
+		
 		$this->setData('form', $formContainer->getForm()->render());
 		$this->setView('QTIAuthoring/form_response_mapping.tpl');
 		
@@ -1118,7 +1110,6 @@ class QtiAuthoring extends CommonModule {
 				if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
 			}
 		}
-		// var_dump($response);
 		
 		echo json_encode(array(
 			'saved' => $saved,

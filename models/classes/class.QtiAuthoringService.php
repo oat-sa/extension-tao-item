@@ -171,9 +171,6 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 		}
-		// echo $data;
-		// $data = ' <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab  illo inventore    <input type="button" id="choice_4cd9547423f2d792854656" class="qti_choice_link" value="hottext"/>et quasi architecto beatae vitae dicta sunt  explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magniiii</p>  ';
-		// var_dump($data, urlencode($data), urldecode($data), htmlentities($data), html_entity_decode($data), preg_replace('/^<(p|div)>(.*)<\/\1>$/i', '\2', trim($data)));exit;
 		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', trim(html_entity_decode($data)));
 		
 		return $data;
@@ -242,7 +239,6 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'match':{
 					//get groups and do the same for each group:
 					$groups = array();//1 or 2 maximum
-					// var_dump('match interaction:', $interaction);
 					foreach($interaction->getGroups() as $groupSerial => $group){
 						//get the order from the interaction data:
 						$order = false;
@@ -478,7 +474,6 @@ class taoItems_models_classes_QtiAuthoringService
 			if(!is_null($matchMax)){
 				$choice->setOption('matchMax', $matchMax);
 			}
-			// var_dump($choice);exit;
 			$interaction->addChoice($choice);
 			$this->qtiService->saveDataToSession($choice);
 			
@@ -814,8 +809,6 @@ class taoItems_models_classes_QtiAuthoringService
 		
 	public function setOptions(taoItems_models_classes_QTI_Data $qtiObject, $newOptions=array()){
 		
-		// var_dump($newOptions);exit;
-		
 		if(!is_null($qtiObject) && !empty($newOptions)){
 		
 			$options = array();
@@ -1074,38 +1067,13 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function convertToXHTML($data){
-		print_r($data);
-		// var_dump('data', $data);
 		$html = '<div>' . $data . '</div>';
 		$doc = new DOMDocument('1.0', 'UTF-8');
 		$doc->encoding = 'UTF-8';
 		$doc->loadHTML($html);
 		$doc->encoding = 'UTF-8';
-		echo '<pre>'; print_r($doc->saveXML());echo '</pre>'; 
-		// var_dump($doc->saveXML($doc->getElementsByTagName('div')->item(0)));
-		// print_r('html');
-		// echo'\n<pre>data';print_r($data);
-		// echo'\n<pre>html';print_r($html);
-		// print_r($doc->saveXML($doc->getElementsByTagName('div')->item(0)));
 		
 		$data = substr($doc->saveXML($doc->getElementsByTagName('div')->item(0)), 5, -6);
-		// echo'\n<pre>savexml';print_r($data);
-		
-		// $tmp = $data;
-		// $count = 0;
-		// while (mb_detect_encoding($tmp)=="UTF-8"){
-			// $tmp = utf8_decode($tmp);
-			
-			// $count++;
-		// }
-
-		// for ($i = 0; $i < $count-2 ; $i++){
-			// $data = utf8_decode($data);
-			// echo "\n<pre>savexml$i";print_r($data);
-		// }
-		
-		// print_r(utf8_decode($data));
-		// var_dump($count, $data);
 		
 		return utf8_decode($data);
 	}
@@ -1212,15 +1180,15 @@ class taoItems_models_classes_QtiAuthoringService
 	public function createInteractionResponse(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Item $item = null){
 		$returnValue = false;
 		
-		$identifier = '';
+		$identifier = null;
 		if(!is_null($item)){
 			if(count($item->getInteractions())==0){
 				$identifier = 'RESPONSE';
 			}
 		}
-		
-		// var_dump($identifier);
+		//var_dump(Session::getAttribute('qti_identifiers'));
 		$response = new taoItems_models_classes_QTI_Response($identifier);
+		//var_dump($response);
 		
 		//set the default response template:
 		$this->setResponseTemplate($response, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
@@ -1362,9 +1330,6 @@ class taoItems_models_classes_QtiAuthoringService
 				);
 				break;
 			}
-			// case 'extendedtext':{//no correct reponse possible!
-				// break;
-			// }
 			default:{
 				throw new Exception("the response column model of the {$interaction->getType()} type interaction has not been implemented yet.");
 			}
@@ -1445,7 +1410,6 @@ class taoItems_models_classes_QtiAuthoringService
 			$returnValue = 'customTemplate';
 			
 		}else{
-			// var_dump($responseProcessing);
 			throw new Exception('invalid type of response processing');
 		}
 		
@@ -1552,7 +1516,6 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'order':
 				case 'graphicorder':{
-					// var_dump($responseData);
 					foreach($responseData as $response){
 						$response = (array)$response;
 						
@@ -1567,7 +1530,6 @@ class taoItems_models_classes_QtiAuthoringService
 								if($pos>0){
 									
 									$choice = trim($choiceValue);
-									// var_dump('pos', $pos, $choice, $choiceValue);
 									if(!empty($choice)){
 										//starting from 1... so need (-1):
 										$tempResponseValue[$pos-1] = $choice;
