@@ -210,7 +210,7 @@ function QTIResultCollector(options){
 	this.gap_match = function(){
 		var result = {
 			"identifier": _this.opts['responseIdentifier'] // Identifier of the response
-			, "value"	: (_this.opts["maxChoices"] != 1) ? [] : null
+			, "value"	: []
 		};
 		
 		$("#" + _this.id + " .filled_gap").each(function(){
@@ -218,6 +218,10 @@ function QTIResultCollector(options){
 			var groupId = $(this).parent().attr('id');
 			result.value.push({0:groupId, 1:choiceId});
 		});
+		
+		if ($.isArray(result.value) && result.value.length == 1) {
+		    result.value = result.value.shift();
+		}
 		
 		return result;
 	};
