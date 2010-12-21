@@ -241,6 +241,7 @@ class taoItems_models_classes_QTI_Group
         }
         
         if($this->type != 'gap'){
+        	$variables['data'] = '';
         	foreach($this->getChoices() as $choiceSerial){
 				$variables['data'] .= "{{$choiceSerial}}";
 			}
