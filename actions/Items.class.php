@@ -625,6 +625,7 @@ class Items extends TaoModule{
 	public function saveTempAuthoringFile(){
 		if($this->hasRequestParameter('instance')){
 			$uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
+            $xml = $this->getRequestParameter('xml');
 			$item = new core_kernel_classes_Resource($uri);
 			$itemFolder = $this->service->getItemFolder($item);
 			if(!is_dir($itemFolder)){

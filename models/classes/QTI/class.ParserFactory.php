@@ -197,7 +197,7 @@ class taoItems_models_classes_QTI_ParserFactory
        			
        			case 'match':
        				//extract simpleMatchSet choices
-       				$matchSetNodes = $data->xpath("//*[name(.) = 'simpleMatchSet']");
+       				$matchSetNodes = $data->xpath("*[name(.) = 'simpleMatchSet']");
        				foreach($matchSetNodes as $matchSetNode){
        					$choiceNodes = $matchSetNode->xpath("*[name(.) = 'simpleAssociableChoice']");
        					$choices = array();
@@ -220,7 +220,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				
        			case 'gapMatch':
        				//create choices with the gapText nodes
-       				$choiceNodes = $data->xpath("//*[name(.)='gapText']");
+       				$choiceNodes = $data->xpath("*[name(.)='gapText']");
        				$choices = array();
        				foreach($choiceNodes as $choiceNode){
 			        	$choice = self::buildChoice($choiceNode);
@@ -230,7 +230,7 @@ class taoItems_models_classes_QTI_ParserFactory
 			        	}
        				}
        				//create a group with each gap node (this a particular use of the group)
-       				$gapNodes = $data->xpath("//*[name(.)='gap']");
+       				$gapNodes = $data->xpath(".//*[name(.)='gap']");
        				foreach($gapNodes as $gapNode){
        					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
        					$group->setType($gapNode->getName());
@@ -344,7 +344,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	       		
 	       		//extract the prompt tag to the attribute
 	       		$promptData = '';
-	       		$promptNodes = $data->xpath("//*[name(.) = 'prompt']");
+	       		$promptNodes = $data->xpath("*[name(.) = 'prompt']");
 	       		foreach($promptNodes as $promptNode){
 		       		if(count($promptNode->children()) > 0){
 			       		$promptData .= preg_replace(array("/^<prompt([^>]*)?>/i", "/<\/prompt([^>]*)?>$/i"), "", trim($promptNode->asXML()));
