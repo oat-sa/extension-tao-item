@@ -598,7 +598,19 @@ class QtiAuthoring extends CommonModule {
 			case 'graphicorder':
 			case 'graphicassociate':{
 				$object = $interaction->getObject();
-				$this->setData('backgroundImagePath', isset($object['data'])?$object['data']:'');
+				
+				$bgImagePath = '';
+				if(isset($object['data'])){
+					if(!empty($object['data'])){
+						$bgImagePath = trim($object['data']);
+						//in case of relative path, we use the service  
+						if(!preg_match("/^http/", $bgImagePath)){
+							$bgImagePath =  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode($bgImagePath)));
+						}
+					}
+				}
+				$this->setData('backgroundImagePath',$bgImagePath);
+				
 				if(isset($object['width'])){
 					$this->setData('width', (intval($object['width'])>0)?$object['width']:'');
 				}
