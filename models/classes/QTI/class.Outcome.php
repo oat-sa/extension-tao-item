@@ -87,7 +87,7 @@ class taoItems_models_classes_QTI_Outcome
     {
         // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:0000000000002951 begin
         
-    	if(is_null($identifier)){
+    	if(is_null($identifier) || empty($identifier)){
     		parent::__construct($identifier, $options);
     	}
     	else{
