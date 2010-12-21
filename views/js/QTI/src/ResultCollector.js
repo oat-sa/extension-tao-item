@@ -270,8 +270,12 @@ function QTIResultCollector(options){
 				, "value"	: []
 			};
 		$("#" + _this.id + " li.activated").each(function(){
-			result.value.push($(this).attr('id'));
+			if (_this.opts["maxChoices"] != 1) 
+				result.value.push($(this).attr('id'));
+			else
+				result.value = $(this).attr('id');
 		});
+		
 		return result;
 	};
 	
