@@ -348,13 +348,14 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		$deleteButton.hide();
 		$deleteButton.bind('click', {'interactionSerial': interactionSerial}, function(e){
 			e.preventDefault();
-			$(this).parent().click();
 			if(confirm(__('Please confirm interaction deletion'))){
 				instance.deleteInteractions([e.data.interactionSerial]);
 			}
 			return false;
 		});
-		// qtiEdit.makeNoEditable($interaction.parent());
+		$deleteButton.mousedown(function(e){
+			e.preventDefault();
+		});
 		
 		
 		$interaction.parent().hover(function(){
@@ -373,7 +374,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 
 qtiEdit.makeNoEditable = function($DOMelement){
 	if($DOMelement.length){
-		$DOMelement[0].contentEditable = false;
+		$DOMelement[0].contenteditable = 'false';
 	}
 }
 
