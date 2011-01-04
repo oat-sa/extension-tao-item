@@ -659,7 +659,8 @@ class taoItems_models_classes_ItemsService
         		$output = '';
         		
         		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
-	        		//for the QTI Item
+	        		
+        			//for the QTI Item
 	        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
 	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
 	        	
@@ -956,20 +957,25 @@ class taoItems_models_classes_ItemsService
 			$fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
 			
 			foreach($clazz->getProperties(true) as $property){
+				
+				if($property->uriResource == RDFS_TYPE){
+					continue;
+				}
+				
 				$range = $property->getRange();
+				
 				if($range->uriResource == CLASS_GENERIS_FILE){
+					
 					foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
 						if(core_kernel_classes_File::isFile($propertyValue)){
 							$file = new core_kernel_classes_File($propertyValue->uriResource);
-							$relPath = str_replace($itemFolder, '', $file->getAbsolutePath());
-							$relPath = (preg_replace("/^\//", '',$relPath));
-							if($relPath !== false){
-								
+							$relPath = basename($file->getAbsolutePath());
+							if(!empty($relPath)){
 								$newPath = tao_helpers_File::concat(array($this->getItemFolder($returnValue), $relPath));
-								
-								if(tao_helpers_File::copy($file->getAbsolutePath(), $newPath, true)){
-									$newFile = core_kernel_classes_File::create($file->getOnePropertyValue($fileNameProp), $newPath);
-									$returnValue->setPropertyValue($property, $newFile->uriResource);
+								tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
+								if(file_exists($newPath)){
+									$newFile = core_kernel_classes_File::create((string)$file->getOnePropertyValue($fileNameProp), dirname($newPath).'/');
+									$returnValue->setPropertyValue($this->itemContentProperty, $newFile->uriResource);
 								}
 							}
 						}
