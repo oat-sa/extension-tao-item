@@ -1662,7 +1662,8 @@ class taoItems_models_classes_QtiAuthoringService
 				
 				break;
 			}
-			case 'textentry':{
+			case 'textentry':
+			case 'extendedtext':{
 				if(!empty($correctResponses)){
 					foreach($correctResponses as $response){
 						
