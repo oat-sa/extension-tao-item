@@ -135,7 +135,7 @@ class taoItems_actions_form_Export
     	}
     	
     	$descElt = tao_helpers_form_FormFactory::getElement('xml_desc', 'Label');
-		$descElt->setValue(__('Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)'));
+		$descElt->setValue(__("Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"));
 		$this->form->addElement($descElt);
     	
     	$instanceElt = tao_helpers_form_FormFactory::getElement('instances', 'Checkbox');

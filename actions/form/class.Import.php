@@ -74,7 +74,7 @@ class taoItems_actions_form_Import
         // section 127-0-1-1-2993bc96:12baebd89c3:-8000:000000000000268B begin
         
     	$descElt = tao_helpers_form_FormFactory::getElement('qti_desc', 'Label');
-		$descElt->setValue(__('A QTI item file is an XML file following the QTI standard version 2.0'));
+		$descElt->setValue(__('A QTI item file is an XML file following the version 2.0 of the QTI standard.'));
 		$this->form->addElement($descElt);
     	
     	//create file upload form box
@@ -120,7 +120,7 @@ class taoItems_actions_form_Import
         // section 127-0-1-1-5c65d02d:12bc97f5116:-8000:0000000000002786 begin
         
     	$descElt = tao_helpers_form_FormFactory::getElement('qti_desc', 'Label');
-		$descElt->setValue(__('A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import'));
+		$descElt->setValue(__('A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import.'));
 		$this->form->addElement($descElt);
     	
     	//create file upload form box
@@ -166,7 +166,7 @@ class taoItems_actions_form_Import
         // section 127-0-1-1-2d0bb0b3:12c2c41fb7c:-8000:0000000000002858 begin
         
     	$descElt = tao_helpers_form_FormFactory::getElement('xhtml_desc', 'Label');
-		$descElt->setValue(__('An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import'));
+		$descElt->setValue(__('An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.).'));
 		$this->form->addElement($descElt);
     	
     	//create file upload form box
