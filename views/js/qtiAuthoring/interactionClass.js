@@ -19,7 +19,8 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	this.interactionSerial = interactionSerial;
 	this.relatedItemSerial = relatedItemSerial;
 	
-	this.responseMappingMode = false;
+	var responseMappingMode = false;//default:false
+	this.setResponseMappingMode(responseMappingMode);
 	this.choiceAutoSave = true;
 	
 	this.choices = [];
@@ -47,6 +48,8 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	
 	interactionClass.instances[interactionSerial] = this;
 	this.getRelatedItem().currentInteraction = this;
+	
+	
 }
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){

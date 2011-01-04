@@ -49,21 +49,29 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 			'itemSerial': interaction.getRelatedItem(true).itemSerial
 		},
 		dataType: 'json',
-		success: function(serverResponse){
-			if (serverResponse.ok){
+		success: function(r){
+			if (r.ok){
 				
 				//reset the grid:
 				$('#'+tableElementId).empty();
 				
 				//set the response form if needed:
-				$(response.responseFormContainer).html(serverResponse.responseForm);
+				$(response.responseFormContainer).html(r.responseForm);
 				response.initResponseFormSubmitter();
 				
 				//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
-				if(serverResponse.maxChoices) response.maxChoices = serverResponse.maxChoices;
+				if(r.maxChoices) response.maxChoices = r.maxChoices;
 					
-				if(serverResponse.displayGrid){
-					response.buildGrid(tableElementId, serverResponse);
+				if(r.displayGrid){
+					response.buildGrid(tableElementId, r);
+				}
+				
+				if(r.setResponseMappingMode){
+					var interaction = interactionClass.instances[response.interactionSerial];
+					if(interaction){
+						//set the response mapping mode:
+						interaction.setResponseMappingMode(r.setResponseMappingMode);
+					}
 				}
 			}else{
 				throw 'error in loading the response editing data';

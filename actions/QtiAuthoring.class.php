@@ -1092,6 +1092,8 @@ class QtiAuthoring extends CommonModule {
 						$parentInteraction = $this->qtiService->getComposingData($response);
 						if(!is_null($parentInteraction)){
 							$this->service->editOptions($response, array('cardinality' => $parentInteraction->getCardinality() ));
+							// taoItems_models_classes_QTI_Service::saveDataToSession($parentInteraction);
+							$parentInteraction = null;//destroy it!
 						}else{
 							throw new Exception('cannot find the parent interaction');
 						}
@@ -1107,6 +1109,7 @@ class QtiAuthoring extends CommonModule {
 					$templateHasChanged = true;
 				}
 				$saved = $this->service->setResponseTemplate($response, $processingTemplate);
+				// var_dump($response);
 				if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
 			}
 		}
@@ -1125,6 +1128,7 @@ class QtiAuthoring extends CommonModule {
 		$responseProcessing = $item->getResponseProcessing();
 		
 		$displayGrid = false;
+		$isResponseMappingMode = false;
 		$columnModel = array();
 		$responseData = array();
 		$xhtmlForm = '';
@@ -1135,7 +1139,8 @@ class QtiAuthoring extends CommonModule {
 		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){
 			
 			//only allow the selection of a template for "templates driven" response processing:
-			$responseForm = $this->service->getInteractionResponse($interaction)->toForm();
+			$response = $this->service->getInteractionResponse($interaction);
+			$responseForm = $response->toForm();
 			if(!is_null($responseForm)){
 				$xhtmlForm = $responseForm->render();
 			}
@@ -1150,11 +1155,15 @@ class QtiAuthoring extends CommonModule {
 				//special case for order interaction:
 				
 			}
+			
+			// $responseProcessingType = $response->getHowMatch();
+			$isResponseMappingMode = $this->isResponseMappingMode($response->getHowMatch());
 		}else{
 			$xhtmlForm .= '<b>';
 			$xhtmlForm .= __('The response form is available for templates driven item only.<br/>');
 			$xhtmlForm .= '</b>';
 		}
+		
 		
 		
 		echo json_encode(array(
@@ -1163,6 +1172,7 @@ class QtiAuthoring extends CommonModule {
 			'interactionType' => $interactionType,
 			'colModel' => $columnModel,
 			'data' => $responseData,
+			'setResponseMappingMode' => $isResponseMappingMode,
 			'maxChoices' => intval($interaction->getCardinality(true)),
 			'responseForm' => $xhtmlForm
 		));
