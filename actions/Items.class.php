@@ -236,21 +236,41 @@ class Items extends TaoModule{
 	 * @return void
 	 */
 	public function preview(){
+		
+		$this->setData('preview', false);
+		$this->setData('previewMsg', __("Not yet available"));
+		
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
 		
-		$previewData = $this->initPreview($item, $itemClass);
-		
-		if(count($previewData) == 0){
-			$this->setData('preview', false);
-			$this->setData('previewMsg', __("Not yet available"));
-		}
-		else{
+		if($this->service->hasItemContent($item) && $this->service->isItemModelDefined($item)){
 			$this->setData('preview', true);
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
-			foreach($previewData as $key => $value){
-				$this->setData($key, $value);
+			
+			$options = array(
+				'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
+				'classUri'	=> 	tao_helpers_Uri::encode($itemClass->uriResource),
+				'context'	=> false,
+				'match'		=> 'client'
+			);
+			
+			if(Session::hasAttribute('previewOpts')){
+				$options = array_merge($options, Session::getAttribute('previewOpts'));
 			}
+			
+			//create the options form
+			$formContainer = new taoItems_actions_form_PreviewOptions($options);
+			$myForm = $formContainer->getForm();
+			if($myForm->isSubmited()){
+				if($myForm->isValid()){
+					$previewOpts = $myForm->getValues();
+					$options = array_merge($options, $previewOpts);
+					Session::setAttribute('previewOpts', $previewOpts);
+				}
+			}
+			$this->setData('optionsForm', $myForm->render());
+			
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+			$this->setData('previewUrl', _url('runner', 'PreviewApi', 'taoItems', $options));
 		}
 		
 		$previewTitle = __('Preview');
@@ -263,72 +283,48 @@ class Items extends TaoModule{
 	}
 	
 	/**
-	 * get the data from the item used to run the preview 
+	 * Display directly the content of the preview, outside any container
+	 */
+	public function fullScreenPreview(){
+		
+		$itemClass = $this->getCurrentClass();
+		$item = $this->getCurrentInstance();
+		
+		$previewUrl = $this->getPreviewUrl($item, $itemClass);
+		if(is_null($previewUrl)){
+			echo  __("Not yet available");
+		}
+		else{
+			$this->redirect($previewUrl);
+		}
+	}
+	
+	/**
+	 * Get the Url with right options to run the preview
 	 * @param core_kernel_classes_Resource $item
 	 * @param core_kernel_classes_Class    $clazz
-	 * @return array 
+	 * @return string|null 
 	 */
-	protected function initPreview(core_kernel_classes_Resource $item, core_kernel_classes_Class $clazz){
-		$previewData = array();
+	protected function getPreviewUrl(core_kernel_classes_Resource $item, core_kernel_classes_Class $clazz){
+		
+		$previewUrl = null;
 				
 		if($this->service->hasItemContent($item) && $this->service->isItemModelDefined($item)){
 			
-			//get the runtime
-			//$runtime = $this->service->getModelRuntime($item);
+			$options = array(
+				'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
+				'classUri'	=> 	tao_helpers_Uri::encode($clazz->uriResource),
+				'context'	=> false,
+				'match'		=> 'client'
+			);
+			if(Session::hasAttribute('previewOpts')){
+				$options = array_merge($options, Session::getAttribute('previewOpts'));
+			}
 			
-			//the content works directly with the browser and need to be deployed
-			//if(is_null($runtime)){
-				
-				$options = array(
-					'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
-					'classUri'	=> 	tao_helpers_Uri::encode($clazz->uriResource),
-					'context'	=> false,
-					'match'		=> 'client'
-				);
-				if(Session::hasAttribute('previewOpts')){
-					$options = array_merge($options, Session::getAttribute('previewOpts'));
-				}
-				
-				//create the options form
-				$formContainer = new taoItems_actions_form_PreviewOptions($options);
-				$myForm = $formContainer->getForm();
-				
-				if($myForm->isSubmited()){
-					if($myForm->isValid()){
-						$previewOpts = $myForm->getValues();
-						$options = array_merge($options, $previewOpts);
-						Session::setAttribute('previewOpts', $previewOpts);
-					}
-				}
-				$this->setData('optionsForm', $myForm->render());
-				
-				$previewData = array(
-					'runtime'		=> false,
-					'contentUrl' 	=> _url('runner', 'PreviewApi', 'taoItems', $options)
-				);
-			/*}
-			else{
-				//the item content is given to the runtime
-				
-				$contentUrl = urlencode(
-				_url('getItemContent', 'Items', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource), 'classUri' => tao_helpers_Uri::encode($clazz->uriResource), 'preview' => true)));
-				
-				if($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
-					//@todo need to fix it in the runtime instead of urlencode 2x
-					$contentUrl = urlencode($contentUrl);
-				}
-				
-				if(preg_match("/\.swf$/", (string)$runtime)){
-					$previewData = array(
-						'runtime'		=> true,
-						'swf'			=>  BASE_URL.'/models/ext/itemRuntime/'.(string)$runtime,
-						'contentUrl' 	=> $contentUrl
-					);
-				}
-			}*/
+			$previewUrl =  _url('runner', 'PreviewApi', 'taoItems', $options);
 		}
 		
-		return $previewData;
+		return $previewUrl;
 	}
 	
 	
