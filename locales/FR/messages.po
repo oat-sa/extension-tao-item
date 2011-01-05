@@ -326,7 +326,7 @@ msgid "Response editor:"
 msgstr "Editeur de réponse:"
 
 msgid "Response processing template editor:"
-msgstr "Editeur de modèles de traietement des réponses:"
+msgstr "Editeur de modèles de traitement des réponses:"
 
 msgid "Response variable type"
 msgstr "Type de variable de réponse"
