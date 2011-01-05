@@ -3,11 +3,19 @@
 error_reporting(E_ALL);
 
 /**
- * This container initialize the qti item form:
+ * TAO - taoItems\actions\QTIform\interaction\class.StringInteraction.php
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 05.01.2011, 11:32:50 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10297
+ * @subpackage actions_QTIform_interaction
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -15,27 +23,51 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * This class provide a container for a specific form instance.
- * It's subclasses instanciate a form and it's elements to be used as a
+ * include taoItems_actions_QTIform_interaction_Interaction
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
-require_once('tao/helpers/form/class.FormContainer.php');
+require_once('taoItems/actions/QTIform/interaction/class.Interaction.php');
+
+/* user defined includes */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005089-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005089-includes end
+
+/* user defined constants */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005089-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005089-constants end
 
 /**
- * This container initialize the login form.
+ * Short description of class
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10297
+ * @subpackage actions_QTIform_interaction
  */
-abstract class taoItems_actions_QTIform_interaction_StringInteraction
+class taoItems_actions_QTIform_interaction_StringInteraction
     extends taoItems_actions_QTIform_interaction_Interaction
 {
-	
-	public function setCommonElements(){
-	
+    // --- ASSOCIATIONS ---
+
+
+    // --- ATTRIBUTES ---
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method setCommonElements
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return mixed
+     */
+    public function setCommonElements()
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000508E begin
+		
 		$interaction = $this->getInteraction();
 		$response = $interaction->getResponse();
 		$isNumeric = false;
@@ -104,7 +136,22 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		}
 		$this->form->addElement($placeHolderTextElt);
 		
-	}
-}
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000508E end
+    }
+
+    /**
+     * Short description of method newOperation
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return mixed
+     */
+    public function newOperation()
+    {
+        // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F66 begin
+        // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F66 end
+    }
+
+} /* end of class taoItems_actions_QTIform_interaction_StringInteraction */
 
 ?>

@@ -3,11 +3,19 @@
 error_reporting(E_ALL);
 
 /**
- * This container initialize the qti item form:
+ * TAO - taoItems\actions\QTIform\choice\class.Choice.php
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 05.01.2011, 11:32:50 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
+ * @subpackage actions_QTIform_choice
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -18,33 +26,64 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * This class provide a container for a specific form instance.
  * It's subclasses instanciate a form and it's elements to be used as a
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  */
 require_once('tao/helpers/form/class.FormContainer.php');
 
+/* user defined includes */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FE7-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FE7-includes end
+
+/* user defined constants */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FE7-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FE7-constants end
+
 /**
- * This container initialize the login form.
+ * Short description of class taoItems_actions_QTIform_choice_Choice
  *
+ * @abstract
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
+ * @subpackage actions_QTIform_choice
  */
 abstract class taoItems_actions_QTIform_choice_Choice
     extends tao_helpers_form_FormContainer
 {
-	
-	/**
-     * the class resource to create the form from
+    // --- ASSOCIATIONS ---
+
+
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute choice
      *
      * @access protected
-     * @var Choice
+     * @var Data
      */
     protected $choice = null;
-	
-	protected $formName = 'ChoiceForm_';
-	
-	public function __construct(taoItems_models_classes_QTI_Data $choice = null){//need flexibility in the parameter type to allow interpretation of a choice as a qti group or a qti choice
+
+    /**
+     * Short description of attribute formName
+     *
+     * @access protected
+     * @var string
+     */
+    protected $formName = 'ChoiceForm_';
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Data choice
+     */
+    public function __construct( taoItems_models_classes_QTI_Data $choice = null)
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FF4 begin
 		
 		if(!is_null($choice)){
 			$this->choice = $choice;
@@ -57,28 +96,35 @@ abstract class taoItems_actions_QTIform_choice_Choice
 		}
 		$returnValue = parent::__construct(array(), array());
 		
-	}
-   
-	public function getChoice(){
-		return $this->choice;
-	}
-	
-	/**
-     * The method initForm for all types of choice form
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FF4 end
+    }
+
+    /**
+     * Short description of method initForm
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @return mixed
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      */
     public function initForm()
     {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FF6 begin
+		
 		$this->form = tao_helpers_form_FormFactory::getForm($this->formName);
 		$this->form->setActions(array(), 'bottom');
 		//no save elt required, all shall be done with ajax request
 		
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FF6 end
     }
-	
-	public function setCommonElements(){
+
+    /**
+     * Short description of method setCommonElements
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     */
+    public function setCommonElements()
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FFE begin
 		
 		//add hidden id element, to know what the old id is:
 		if($this->choice instanceof taoItems_models_classes_QTI_Group){
@@ -107,8 +153,27 @@ abstract class taoItems_actions_QTIform_choice_Choice
 		}
 		$this->form->addElement($fixedElt);
 		
-	}
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FFE end
+    }
 
-}
+    /**
+     * Short description of method getChoice
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return taoItems_models_classes_QTI_Data
+     */
+    public function getChoice()
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005001 begin
+		$returnValue = $this->choice;
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005001 end
+
+        return $returnValue;
+    }
+
+} /* end of abstract class taoItems_actions_QTIform_choice_Choice */
 
 ?>

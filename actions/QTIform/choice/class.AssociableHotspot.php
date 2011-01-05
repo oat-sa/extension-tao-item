@@ -3,11 +3,19 @@
 error_reporting(E_ALL);
 
 /**
- * This container initialize the qti HotspotChoice form:
+ * TAO - taoItems\actions\QTIform\choice\class.AssociableHotspot.php
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 05.01.2011, 11:32:47 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10317
+ * @subpackage actions_QTIform_choice
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -15,26 +23,49 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * This container initialize the HotspotChoice form.
+ * include taoItems_actions_QTIform_choice_AssociableChoice
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10257
+ */
+require_once('taoItems/actions/QTIform/choice/class.AssociableChoice.php');
+
+/* user defined includes */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005052-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005052-includes end
+
+/* user defined constants */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005052-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005052-constants end
+
+/**
+ * Short description of class taoItems_actions_QTIform_choice_AssociableHotspot
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10317
+ * @subpackage actions_QTIform_choice
  */
 class taoItems_actions_QTIform_choice_AssociableHotspot
-    extends taoItems_actions_QTIform_choice_AssociableChoice{
-	
-	public function __construct(taoItems_models_classes_QTI_Data $choice){
-		parent::__construct($choice);
-		
-		// if(strtolower($this->interaction->getType()) == 'graphicgapmatch'){
-			// $this->formName = 'GroupForm_'.$this->choice->getSerial();
-		// }
-		
-	}
-	
-	public function initElements(){
+    extends taoItems_actions_QTIform_choice_AssociableChoice
+{
+    // --- ASSOCIATIONS ---
+
+
+    // --- ATTRIBUTES ---
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method initElements
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     */
+    public function initElements()
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005053 begin
 		
 		parent::setCommonElements();
 		
@@ -62,18 +93,32 @@ class taoItems_actions_QTIform_choice_AssociableHotspot
 		$this->form->addElement($coordsElt);
 		
 		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('hotspotLabel', 'fixed', 'matchGroup'));
-	}
 	
-	public function getMatchGroupOptions(){
-	
-		$returnValue = array();
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005053 end
+    }
+
+    /**
+     * Short description of method getMatchGroupOptions
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getMatchGroupOptions()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005055 begin
 		
 		foreach($this->interaction->getChoices() as $choice){
 			$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
 		}
-				
-		return $returnValue;
-	}
-}
+		
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005055 end
+
+        return (array) $returnValue;
+    }
+
+} /* end of class taoItems_actions_QTIform_choice_AssociableHotspot */
 
 ?>

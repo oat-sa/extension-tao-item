@@ -3,11 +3,19 @@
 error_reporting(E_ALL);
 
 /**
- * This container initialize the qti choice form:
+ * TAO - taoItems\actions\QTIform\choice\class.AssociableChoice.php
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 05.01.2011, 11:32:51 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10257
+ * @subpackage actions_QTIform_choice
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -15,24 +23,60 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
+ * include taoItems_actions_QTIform_choice_Choice
  *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
+ */
+require_once('taoItems/actions/QTIform/choice/class.Choice.php');
+
+/* user defined includes */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005013-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005013-includes end
+
+/* user defined constants */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005013-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005013-constants end
+
+/**
+ * Short description of class taoItems_actions_QTIform_choice_AssociableChoice
+ *
+ * @abstract
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package taoItems
- * @subpackage actions_form
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10257
+ * @subpackage actions_QTIform_choice
  */
 abstract class taoItems_actions_QTIform_choice_AssociableChoice
-    extends taoItems_actions_QTIform_choice_Choice{
-	
-	/**
-     * the class resource to create the form from
+    extends taoItems_actions_QTIform_choice_Choice
+{
+    // --- ASSOCIATIONS ---
+
+
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute interaction
      *
      * @access protected
-     * @var interaction
+     * @var Interaction
      */
     protected $interaction = null;
-	
-	public function __construct(taoItems_models_classes_QTI_Data $choice){
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Data choice
+     */
+    public function __construct( taoItems_models_classes_QTI_Data $choice)
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005014 begin
+		
 		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
 		$interaction = $qtiService->getComposingData($choice);
 		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
@@ -43,9 +87,18 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		
 		$returnValue = parent::__construct($choice);
 		
-	}
-	
-	public function setCommonElements(){
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005014 end
+    }
+
+    /**
+     * Short description of method setCommonElements
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     */
+    public function setCommonElements()
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000501A begin
 		
 		parent::setCommonElements();
 		
@@ -76,11 +129,19 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 			$this->form->addElement($matchGroupElt);
 		}
 		
-		
-	}
-	
-	protected abstract function getMatchGroupOptions();
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000501A end
+    }
 
-}
+    /**
+     * Short description of method getMatchGroupOptions
+     *
+     * @abstract
+     * @access protected
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    protected abstract function getMatchGroupOptions();
+
+} /* end of abstract class taoItems_actions_QTIform_choice_AssociableChoice */
 
 ?>

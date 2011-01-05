@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems\actions\QTIform\response\class.HotspotInteraction.php
+ * TAO - taoItems\actions\QTIform\response\class.PositionobjectInteraction.php
  *
  * $Id$
  *
@@ -30,12 +30,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/actions/QTIform/response/class.Response.php');
 
 /* user defined includes */
-// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050EC-includes begin
-// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050EC-includes end
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050FE-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050FE-includes end
 
 /* user defined constants */
-// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050EC-constants begin
-// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050EC-constants end
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050FE-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050FE-constants end
 
 /**
  * Short description of class
@@ -45,7 +45,7 @@ require_once('taoItems/actions/QTIform/response/class.Response.php');
  * @package taoItems
  * @subpackage actions_QTIform_response
  */
-class taoItems_actions_QTIform_response_HotspotInteraction
+class taoItems_actions_QTIform_response_PositionobjectInteraction
     extends taoItems_actions_QTIform_response_Response
 {
     // --- ASSOCIATIONS ---
@@ -64,11 +64,11 @@ class taoItems_actions_QTIform_response_HotspotInteraction
      */
     public function initElements()
     {
-        // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050ED begin
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050FF begin
 		parent::setCommonElements();
-        // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050ED end
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050FF end
     }
 
-} /* end of class taoItems_actions_QTIform_response_HotspotInteraction */
+} /* end of class taoItems_actions_QTIform_response_PositionobjectInteraction */
 
 ?>

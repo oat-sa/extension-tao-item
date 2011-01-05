@@ -3,11 +3,18 @@
 error_reporting(E_ALL);
 
 /**
- * This container initialize the qti item form:
+ * TAO - taoItems\actions\QTIform\class.ResponseProcessing.php
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- * @package tao
- * @subpackage actions_form
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 05.01.2011, 11:32:48 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @subpackage actions_QTIform
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -18,50 +25,97 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * This class provide a container for a specific form instance.
  * It's subclasses instanciate a form and it's elements to be used as a
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  */
 require_once('tao/helpers/form/class.FormContainer.php');
 
+/* user defined includes */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC8-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC8-includes end
+
+/* user defined constants */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC8-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC8-constants end
+
 /**
- * This container initialize the login form.
+ * Short description of class taoItems_actions_QTIform_ResponseProcessing
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
- * @package tao
- * @subpackage actions_form
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @subpackage actions_QTIform
  */
 class taoItems_actions_QTIform_ResponseProcessing
     extends tao_helpers_form_FormContainer
 {
-	
-	/**
-     * the class resource to create the form from
+    // --- ASSOCIATIONS ---
+
+
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute responseProcessing
      *
      * @access protected
-     * @var responseProcessing
+     * @var ResponseProcessing
      */
     protected $responseProcessing = null;
-	protected $item = null;
-	protected $processingType = '';
-	
-	public function __construct(taoItems_models_classes_QTI_Item $item){
+
+    /**
+     * Short description of attribute item
+     *
+     * @access protected
+     * @var Item
+     */
+    protected $item = null;
+
+    /**
+     * Short description of attribute processingType
+     *
+     * @access protected
+     * @var string
+     */
+    protected $processingType = '';
+
+    /**
+     * Short description of attribute newAttr
+     *
+     * @access public
+     * @var Integer
+     */
+    public $newAttr = null;
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Item item
+     */
+    public function __construct( taoItems_models_classes_QTI_Item $item)
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FD3 begin
+		
 		$this->item = $item;
 		
 		$this->responseProcessing = $item->getResponseProcessing();
-		// var_dump($item, $this->responseProcessing);
 		$returnValue = parent::__construct(array(), array('option1' => ''));
 		
-	}
-	
-	/**
-     * The method initForm for all type of interaction form
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FD3 end
+    }
+
+    /**
+     * Short description of method initForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return mixed
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      */
     public function initForm()
     {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FDA begin
+		
 		$this->form = tao_helpers_form_FormFactory::getForm('ResponseProcessingForm');
 		
 		$actions = array();
@@ -72,17 +126,18 @@ class taoItems_actions_QTIform_ResponseProcessing
 		$this->form->setActions(array(), 'top');
 		$this->form->setActions($actions, 'bottom');
 		
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FDA end
     }
-	
-	public function getResponseProcessing(){
-		return $this->responseProcessing;
-	}
-	
-	public function getProcessingType(){
-		return $this->processingType;
-	}
-	
-	public function initElements(){
+
+    /**
+     * Short description of method initElements
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     */
+    public function initElements()
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FDC begin
 		
 		//add hidden id element, to know what the old id is:
 		$itemSerialElt = tao_helpers_form_FormFactory::getElement('itemSerial', 'Hidden');
@@ -119,8 +174,46 @@ class taoItems_actions_QTIform_ResponseProcessing
 			$ruleElt->setValue($this->responseProcessing->getIdentifier());
 			$this->form->addElement($ruleElt);
 		}
-	
-	}
-}
+		
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FDC end
+    }
+
+    /**
+     * Short description of method getResponseProcessing
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return taoItems_models_classes_QTI_response_ResponseProcessing
+     */
+    public function getResponseProcessing()
+    {
+        $returnValue = null;
+
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FDF begin
+		$returnValue = $this->responseProcessing;
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FDF end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getProcessingType
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return string
+     */
+    public function getProcessingType()
+    {
+        $returnValue = (string) '';
+
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FE2 begin
+		$returnValue = $this->processingType;
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FE2 end
+
+        return (string) $returnValue;
+    }
+
+} /* end of class taoItems_actions_QTIform_ResponseProcessing */
 
 ?>

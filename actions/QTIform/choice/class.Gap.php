@@ -3,11 +3,19 @@
 error_reporting(E_ALL);
 
 /**
- * This container initialize the qti choice form:
+ * TAO - taoItems\actions\QTIform\choice\class.Gap.php
  *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @package tao
- * @subpackage actions_form
+ * $Id$
+ *
+ * This file is part of TAO.
+ *
+ * Automatically generated on 05.01.2011, 11:32:48 with ArgoUML PHP module 
+ * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @package taoItems
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10286
+ * @subpackage actions_QTIform_choice
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -15,35 +23,74 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
+ * This class provide a container for a specific form instance.
+ * It's subclasses instanciate a form and it's elements to be used as a
+ *
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ */
+require_once('tao/helpers/form/class.FormContainer.php');
+
+/* user defined includes */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000502C-includes begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000502C-includes end
+
+/* user defined constants */
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000502C-constants begin
+// section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000502C-constants end
+
+/**
+ * Short description of class taoItems_actions_QTIform_choice_Gap
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package taoItems
- * @subpackage actions_form
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10286
+ * @subpackage actions_QTIform_choice
  */
 class taoItems_actions_QTIform_choice_Gap
-    extends tao_helpers_form_FormContainer{
-	
-	/**
-     * the class resource to create the form from
+    extends tao_helpers_form_FormContainer
+{
+    // --- ASSOCIATIONS ---
+
+
+    // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute group
      *
      * @access protected
-     * @var group
+     * @var Group
      */
     protected $group = null;
-	
-	/**
-     * the class resource to create the form from
+
+    /**
+     * Short description of attribute interaction
      *
      * @access protected
-     * @var interaction
+     * @var Interaction
      */
     protected $interaction = null;
-	
-	protected $formName = 'ChoiceForm_';
-	
-	//the group is a choice here!!
-	public function __construct(taoItems_models_classes_QTI_Group $group){
+
+    /**
+     * Short description of attribute formName
+     *
+     * @access protected
+     * @var string
+     */
+    protected $formName = 'ChoiceForm_';
+
+    // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  Group group
+     */
+    public function __construct( taoItems_models_classes_QTI_Group $group)
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000503A begin
 		
 		$this->group = $group;
 		$this->formName = 'GroupForm_'.$this->group->getSerial();//GroupForm...however it is considered as a choice
@@ -58,24 +105,35 @@ class taoItems_actions_QTIform_choice_Gap
 		}
 		
 		$returnValue = parent::__construct(array(), array());
-	}
-	
-	/**
-     * The method initForm for all types of choice form
+		
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000503A end
+    }
+
+    /**
+     * Short description of method initForm
      *
      * @access public
-     * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
-     * @return mixed
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      */
     public function initForm()
     {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000503C begin
+		
 		$this->form = tao_helpers_form_FormFactory::getForm($this->formName);
 		$this->form->setActions(array(), 'bottom');
-    }
-	
-	public function initElements(){
 		
-		// parent::setCommonElements();//not applicable here!
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000503C end
+    }
+
+    /**
+     * Short description of method initElements
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     */
+    public function initElements()
+    {
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000503E begin
 		
 		//reimplement the matchGroup element with the group:
 		//add hidden id element, to know what the old id is:
@@ -115,8 +173,10 @@ class taoItems_actions_QTIform_choice_Gap
 		$this->form->addElement($matchGroupElt);
 		
 		$this->form->createGroup('choicePropOptions_'.$this->group->getSerial(), __('Advanced properties'), array('fixed', 'matchGroup'));
-	}
+		
+        // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000503E end
+    }
 
-}
+} /* end of class taoItems_actions_QTIform_choice_Gap */
 
 ?>
