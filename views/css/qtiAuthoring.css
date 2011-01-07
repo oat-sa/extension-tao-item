@@ -87,6 +87,17 @@ div.xhtml_form div div.wysiwyg iframe, div.xhtml_form div div.wysiwyg iframe htm
 	width: 100% !important;
 }
 
+div.wysiwyg iframe.wysiwyg-item{ 
+	width: 100%;
+	height: 100%;
+	margin: 4px 0 0;
+}
+
+div.wysiwyg iframe.wysiwyg-htmlarea{
+	min-height: 100px;
+	height: 100px;
+}
+
 /*choice buttons*/
 span.choice-button-delete, span.choice-button-advanced, span.choice-button-up, span.choice-button-down{
 	float: left;
@@ -110,13 +121,18 @@ span.form-group-control{
 /*sizing the main containers*/
 #qtiAuthoring_itemEditor{
 	height: 580px;
-	overflow-x:scroll;
+	overflow:auto;
+	padding-left:3px;
 }
 
 #qtiAuthoring_itemEditor > div.wysiwyg{
 	height: 95%;
-	padding: 0px 5px;
+	padding: 0px 0px;
 	border: none;
+}
+
+#qtiAuthoring_itemEditor > div.wysiwyg > ul.panel {
+	width:98%;
 }
 
 #itemEditor_wysiwyg{
@@ -146,7 +162,7 @@ span.form-group-control{
 #qtiAuthoring_item_right_container{
 	float:left;
 	width:75%;
-	padding:1px 0 0;
+	padding:0px 0 0;
 }
 
 /*placing interaction container*/
@@ -163,6 +179,11 @@ span.form-group-control{
 	float:left;
 	width:60%;
 }
+
+#item_option_accordion{
+	margin-right:2px
+}
+
 
 #qtiAuthoring_interaction_right_container{
 	float:left;

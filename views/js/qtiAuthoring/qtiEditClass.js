@@ -188,6 +188,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	
 	this.itemEditor = $(this.itemDataContainer).wysiwyg({
 		css: options.css,
+		iFrameClass: 'wysiwyg-item',
 		controls: {
 		  strikeThrough : { visible : true },
 		  underline     : { visible : true },
@@ -256,7 +257,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		events: {
 		  keyup : function(e){
 			if(instance.getDeletedInteractions(true).length > 0){
-				if(!confirm('please confirm deletion of the interaction')){
+				if(!confirm(__('please confirm deletion of the interaction'))){
 					instance.itemEditor.wysiwyg('undo');
 				}else{
 					var deletedInteractions = instance.getDeletedInteractions();
@@ -493,7 +494,10 @@ qtiEdit.mapHtmlEditor = function($container){
 			  
 			};
 		
-			$(this).wysiwyg({controls: controls});
+			$(this).wysiwyg({
+				iFrameClass: 'wysiwyg-htmlarea',
+				controls: controls
+			});
 		}
 	});
 }
