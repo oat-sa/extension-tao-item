@@ -239,6 +239,7 @@ class QtiAuthoring extends CommonModule {
 		
 		if($this->hasRequestParameter($key)){
 			$returnValue = html_entity_decode(urldecode($this->getRequestParameter($key)), null, "UTF-8");
+			$returnValue = str_replace('&', '&amp;', $returnValue);
 		}else{
 			if($required){
 				throw new Exception('the request data "'.$key.'" cannot be found');
