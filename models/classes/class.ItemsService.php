@@ -327,12 +327,13 @@ class taoItems_models_classes_ItemsService
 			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
 				$content = file_get_contents(TAO_ITEM_HAWAI_TPL_FILE);
 				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
+				$this->setItemContent($item, $content);
 			}
 			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_CAMPUS))){
 				$content = file_get_contents(TAO_ITEM_CAMPUS_TPL_FILE);
 				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
+				$this->setItemContent($item, $content);
 			}
-			$this->setItemContent($item, $content);
 		}
 		
 		$returnValue = $item;
