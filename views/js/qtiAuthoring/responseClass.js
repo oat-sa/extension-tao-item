@@ -217,7 +217,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	
 	//insert the pager:
 	var pagerId = tableElementId + '_pager';
-	$myGridElt = $("#"+tableElementId);
+	var $myGridElt = $("#"+tableElementId);
 	$myGridElt.after('<div id="' + pagerId + '"/>');
 	
 	var response = this;
@@ -229,13 +229,18 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		colModel: colModel, 
 		rowNum:20, 
 		height:300, 
-		width:'',
+		width:500,
 		pager: '#'+tableElementId+'_pager', 
 		sortname: 'choice1', 
 		viewrecords: false, 
 		sortorder: "asc", 
 		caption: __("Responses Editor"),
-		gridComplete: function(){},
+		gridComplete: function(){
+			response.resizeGrid();
+			$(window).unbind('resize').bind('resize', function(){
+				response.resizeGrid();
+			});
+		},
 		onSelectRow: function(id){
 			response.editGridRow(id);
 		}
@@ -245,13 +250,8 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		gridOptions.width = 500;
 		gridOptions.shrinkToFit = false;
 		gridOptions.autowidth = true;
-		gridOptions.gridComplete = function(){
-			$(window).unbind('resize').bind('resize', function(){
-				$myGridElt.jqGrid('setGridWidth', $('#qtiAuthoring_responseEditor').width()-10);
-			});
-		};
 	}
-	
+		
 	this.myGrid = $myGridElt.jqGrid(gridOptions);
 	
 	var interactionSerial = this.interactionSerial;
@@ -356,7 +356,20 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	
 	this.fixedColumn = fixedColumn;
 	
+	this.resizeGrid();
+	$(window).unbind('resize').bind('resize', function(){
+		response.resizeGrid();
+	});
+			
 	return this;
+}
+
+responseClass.prototype.resizeGrid = function(){
+	if(this.myGrid){
+		if(this.myGrid.length){
+			this.myGrid.jqGrid('setGridWidth', $('#qtiAuthoring_responseEditor').width()-10);
+		}
+	}
 }
 	
 responseClass.prototype.destroyGrid = function(){
