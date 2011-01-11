@@ -1,4 +1,5 @@
 // alert('qtiEdit loaded');
+// alert('t1');
 
 qtiEdit.instances = [];
 
@@ -270,6 +271,8 @@ function qtiEdit(itemSerial, formContainers, options){
 		  frameReady: function(editorDoc){
 			//the binding require the modified html data to be ready
 			instance.bindInteractionLinkListener();
+			
+			editorDoc.body.focus();
 		  }
 		}
 	});
@@ -335,6 +338,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 			instance.currentInteractionSerial = $(this).attr('id');
 			instance.loadInteractionForm(instance.currentInteractionSerial);
 		});
+		qtiEdit.makeNoEditable($interaction);
 		
 		//append the delete button:
 		$interactionContainer = $interaction.parent('.qti_interaction_box');
@@ -357,7 +361,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		$deleteButton.mousedown(function(e){
 			e.preventDefault();
 		});
-		
+		qtiEdit.makeNoEditable($deleteButton);
 		
 		$interaction.parent().hover(function(){
 			$(this).children('.qti_interaction_box_delete').show();

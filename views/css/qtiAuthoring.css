@@ -1,17 +1,6 @@
 /*the loading element*/
-#qtiAuthoring_loading{
-	position:absolute;
-	width:100%;
-	height:100%;
-	z-index:1000;
-	background-color:#FFFFFF;
-}
-#qtiAuthoring_loading_message{
-	position:relative;
-	top:45%;
-	left:45%;
-}
-
+#qtiAuthoring_loading{position:absolute; width:99%; height:99%; z-index:1000; background-color:#FFFFFF;}
+#qtiAuthoring_loading_message{position:relative; top:45%; left:45%; width:150px;}
 
 /*top menu*/
 /*placing top menu*/
