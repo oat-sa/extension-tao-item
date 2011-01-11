@@ -635,7 +635,7 @@ class taoItems_models_classes_QTI_Interaction
 			}
 			case 'order':
 			case 'graphicorder':{
-				$returnValue = ($numeric)?0:'ordered';
+				$returnValue = ($numeric)?1:'ordered';
 				break;
 			}
 			case 'inlinechoice':

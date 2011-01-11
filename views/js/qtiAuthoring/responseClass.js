@@ -35,7 +35,8 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 	var response = this;
 	
 	this.interactionSerial = interaction.interactionSerial;
-	this.currentRowId = null;
+	
+	this.currentRowId = -1;
 	this.maxChoices = null;
 	
 	if(!responseFormContainer){var responseFormContainer='#qtiAuthoring_response_formContainer';}
@@ -210,8 +211,6 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		}
 	}
 	
-	// CL('colNames', colNames);
-	// CL('colModel', colModel);
 	this.colNames = colNames;
 	this.colModel = colModel;
 	
@@ -246,6 +245,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		}
 	};
 	
+	this.interactionType = serverResponse.interactionType;
 	if(serverResponse.interactionType == 'order' || serverResponse.interactionType == 'graphicorder'){
 		gridOptions.width = 500;
 		gridOptions.shrinkToFit = false;
@@ -264,7 +264,6 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	var navGridParamDefault = {
 		search: false,
 		afterRefresh: function(){
-			// CL('refreshed');
 			response.destroyGrid();
 			new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
 		},
@@ -283,11 +282,23 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				response.restoreCurrentRow();
 				response.myGrid.jqGrid('addRowData', newId, new Object(), 'last');
 				response.editGridRow(newId);
+				
+				var maxChoices = parseInt(response.maxChoices);
+				if((response.interactionType == 'order'|| response.interactionType == 'graphicorder') && maxChoices && response.myGrid.getGridParam("records") >= maxChoices){
+					//disable row adding:
+					response.disableRowAdding();
+				}
 			},
 			delfunc: function(rowId){
 				if(confirm(__("Do you really want to delete the row?"))){
 					response.myGrid.jqGrid('delRowData', rowId);
 					response.saveResponseGrid();
+					
+					var maxChoices = parseInt(response.maxChoices);
+					if((response.interactionType == 'order'|| response.interactionType == 'graphicorder') && maxChoices && response.myGrid.getGridParam("records") < maxChoices){
+						//enable row adding:
+						response.enableRowAdding();
+					}
 				}
 			}
 		};
@@ -343,7 +354,6 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				
 			}
 			
-			// CL('added row:', theRow)
 			//add row:
 			this.myGrid.jqGrid('addRowData', i, theRow);	
 		}
@@ -388,8 +398,7 @@ responseClass.prototype.destroyGrid = function(){
 responseClass.prototype.editGridRow = function(rowId){
 	var id = rowId;
 	var response = this;
-	
-	if(id && id!=='' && id!==this.currentRowId){
+	if(id>=0 && id!=='' && id!==this.currentRowId){
 		this.myGrid.jqGrid('restoreRow',this.currentRowId);
 		this.currentRowData = this.myGrid.jqGrid('getRowData', id);
 		this.myGrid.jqGrid(
@@ -451,10 +460,10 @@ responseClass.prototype.getUniqueRowId = function(){
 }
 
 responseClass.prototype.restoreCurrentRow = function(){
-	if(this.currentRowId){
+	if(this.currentRowId >= 0){
 		this.myGrid.jqGrid('restoreRow', this.currentRowId);
 		this.myGrid.jqGrid('resetSelection');
-		this.currentRowId = null;
+		this.currentRowId = -1;
 	}
 }
 
@@ -574,5 +583,21 @@ responseClass.prototype.checkCardinality = function(rowId){
 		return true;
 	}else{
 		return false;
+	}
+}
+
+responseClass.prototype.disableRowAdding = function(){
+	if(this.myGrid){
+		if(this.myGrid.attr){
+			$('#add_'+this.myGrid.attr('id')).hide();
+		}
+	}
+}
+
+responseClass.prototype.enableRowAdding = function(){
+	if(this.myGrid){
+		if(this.myGrid.attr){
+			$('#add_'+this.myGrid.attr('id')).show();
+		}
 	}
 }
