@@ -142,12 +142,33 @@ abstract class taoItems_actions_QTIform_response_Response
 		$this->form->addElement($serialElt);
 		
 		//set response processing type:
-		//TODO urencode:
+		$mapKey = tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE);
+		$mapPointKey = tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT);
+		
 		$availableTemplates = array(
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT) => __('correct'),
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE) => __('map'),
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT) => __('map point'),
+			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT) => __('correct')
 		);
+		
+		//get interaction type:
+		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
+		$interaction = $qtiService->getComposingData($this->response);
+		if(!is_null($interaction)){
+			switch(strtolower($interaction->getType())){
+				case 'order':
+				case 'graphicorder':{
+					break;
+				}
+				case 'selectpoint';
+				case 'positionobject':{
+					$availableTemplates[$mapPointKey] = __('map point');
+					break;
+				}
+				default:{
+					$availableTemplates[$mapKey] = __('map');
+				}
+			}
+		}
+		
 		$ResponseProcessingTplElt = tao_helpers_form_FormFactory::getElement('processingTemplate', 'Combobox');
 		$ResponseProcessingTplElt->setDescription(__('Processing type'));
 		$ResponseProcessingTplElt->setOptions($availableTemplates);
