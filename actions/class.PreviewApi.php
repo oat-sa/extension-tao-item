@@ -1,6 +1,4 @@
 <?php 
-require_once('tao/actions/Api.class.php');
-
 /**
  * the PreviewApi provides methods to preview and execute items 
  * in a sandbox environment.
@@ -10,7 +8,7 @@ require_once('tao/actions/Api.class.php');
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-class PreviewApi extends Api {
+class taoItems_actions_PreviewApi extends tao_actions_Api {
 	
 	/**
 	 * @var string the same token is exchanged for all the communications

@@ -13,7 +13,7 @@ require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @todo return the result of the evaluation if the test/delivery ... has been configured to return the outcomes
  */
-class Matching extends Api {
+class taoItems_actions_Matching extends tao_actions_Api {
 	
     /**
      * Evaluate user's reponses 

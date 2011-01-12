@@ -1,6 +1,4 @@
 <?php
-require_once('tao/actions/Export.class.php');
-
 /**
  * This controller provide the actions to export items 
  * 
@@ -10,7 +8,7 @@ require_once('tao/actions/Export.class.php');
  * @subpackage action
  *
  */
-class ItemExport extends Export {
+class taoItems_actions_ItemExport extends tao_actions_Export {
 
 	/**
 	 * constructor used to override the formContainer

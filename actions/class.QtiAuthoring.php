@@ -8,7 +8,7 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
  
-class QtiAuthoring extends CommonModule {
+class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	
 	protected $debugMode = false;
 	

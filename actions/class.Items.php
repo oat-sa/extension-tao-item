@@ -11,7 +11,7 @@ require_once('tao/actions/TaoModule.class.php');
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-class Items extends TaoModule{
+class taoItems_actions_Items extends tao_actions_TaoModule{
 	
 	/**
 	 * constructor: initialize the service and the default data

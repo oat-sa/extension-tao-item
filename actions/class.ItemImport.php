@@ -1,6 +1,4 @@
 <?php
-require_once('tao/actions/Import.class.php');
-
 /**
  * This controller provide the actions to import items 
  * 
@@ -10,7 +8,7 @@ require_once('tao/actions/Import.class.php');
  * @subpackage action
  *
  */
-class ItemImport extends Import {
+class taoItems_actions_ItemImport extends tao_actions_Import {
 
 	/**
 	 * Constructor used to override the formContainer
