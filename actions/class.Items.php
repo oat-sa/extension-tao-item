@@ -1,8 +1,5 @@
 <?php
 
-require_once('tao/actions/CommonModule.class.php');
-require_once('tao/actions/TaoModule.class.php');
-
 /**
  * Items Controller provide actions performed from url resolution
  * 
