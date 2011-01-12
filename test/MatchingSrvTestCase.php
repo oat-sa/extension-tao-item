@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
 require_once dirname(__FILE__) . '/../includes/common.php';
-require_once dirname(__FILE__) . '/../models/classes/Matching/matching_api.php';
+//require_once dirname(__FILE__) . '/../models/classes/Matching/matching_api.php';
 
 /**
  * @author Cédric Alfonsi, <taosupport@tudor.lu>
