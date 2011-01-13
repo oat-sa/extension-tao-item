@@ -26,6 +26,7 @@
 	
 	<script type="text/javascript">
 		var qti_base_www = "<?=$ctx_qti_base_www?>";
+		var root_url = "<?=$ctx_root_url?>";
 		<?if($ctx_debug):?>	
 		var qti_debug = true;
 		<?endif?>

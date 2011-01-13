@@ -324,7 +324,7 @@ class taoItems_models_classes_ItemsService
   
 		$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
 		if(is_null($itemContent) && $this->isItemModelDefined($item)){
-			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
 				$content = file_get_contents(TAO_ITEM_HAWAI_TPL_FILE);
 				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
 				$this->setItemContent($item, $content);
@@ -377,7 +377,7 @@ class taoItems_models_classes_ItemsService
 			if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 				
 				if(core_kernel_classes_File::isFile($itemContent)){
-					if($preview && $this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+					if($preview && $this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
 						$tmpFile = $this->getItemFolder($item).'/tmp_black.xml';
 						if(file_exists($tmpFile)){
 							$returnValue = file_get_contents($tmpFile);
@@ -647,11 +647,10 @@ class taoItems_models_classes_ItemsService
         	$deployableItems = array(
         		TAO_ITEM_MODEL_KOHS,
         		TAO_ITEM_MODEL_CTEST,
-        		TAO_ITEM_MODEL_WATERPHENIX,
+        		TAO_ITEM_MODEL_HAWAI,
         		TAO_ITEM_MODEL_QTI,
         		TAO_ITEM_MODEL_XHTML
         	);
-        	
         	
         	if($this->hasItemModel($item, $deployableItems)){
         		
@@ -669,14 +668,14 @@ class taoItems_models_classes_ItemsService
 	        			$output = $qtiService->renderItem($qtiItem);
 	        		}
         		}
-        		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_KOHS, TAO_ITEM_MODEL_CTEST, TAO_ITEM_MODEL_WATERPHENIX))){
+        		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_KOHS, TAO_ITEM_MODEL_CTEST, TAO_ITEM_MODEL_HAWAI))){
         			
         			$uri 		= tao_helpers_Uri::encode($item->uriResource);
         			$clazz 		= $this->getClass($item);
         			$clazzUri	= tao_helpers_Uri::encode($clazz->uriResource);
         			
         			
-	        		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_WATERPHENIX))){
+	        		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
 						$itemContent = $this->getItemContent($item, true);
 					}
 					else{

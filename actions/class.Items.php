@@ -171,7 +171,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 					//get the Xml Schema regarding the item model
 					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 					switch($itemModel->uriResource){
-					 	case TAO_ITEM_MODEL_WATERPHENIX: /**@todo add the black schema  */
+					 	case TAO_ITEM_MODEL_HAWAI: /**@todo add the black schema  */
 					 		break;
 					 	case TAO_ITEM_MODEL_QTI:
 							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
@@ -267,6 +267,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 			$this->setData('optionsForm', $myForm->render());
 			
 			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+			
+			//this is this url that will contains the preview
+			//@see taoItems_actions_PreviewApi
 			$this->setData('previewUrl', _url('runner', 'PreviewApi', 'taoItems', $options));
 		}
 		

@@ -29,7 +29,8 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 	}
 	
 	/**
-	 * Create a fake  execution environment for the preview
+	 * Create a fake  execution environment for the preview, 
+	 * 
 	 * @param core_kernel_classes_Resource $item
 	 * @param core_kernel_classes_Resource $user
 	 * @return array
@@ -93,7 +94,10 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 	}
 	
 	/**
-	 * Initialize, deploy and display the preview of an item
+	 * The runner is the containter called to :
+	 * 	- Initialize the environment and the parameters, inject the Apis into the item
+	 *  - Deploy the item: generate the item files
+	 *  - Display the previewed item
 	 */
 	public function runner(){
 		if($this->hasRequestParameter('uri')){
@@ -113,6 +117,9 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				'qti_base_www'			=> BASE_WWW .'js/QTI/',
 				
 			);
+			
+			//Initialize the deployment parameters
+			
 			if($this->hasRequestParameter('match')){
 				if($this->getRequestParameter('match') == 'server'){
 					$deployParams['matching_server'] = true;
@@ -130,7 +137,9 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 					$useContext = true;
 				}
 			}
-				
+			
+			//Prepare folders for the deployment
+			
 			$itemFolder = $this->itemService->getRuntimeFolder($item);
         	$itemPath = "{$itemFolder}/index.html";
 			if(!is_dir($itemFolder)){
@@ -138,28 +147,38 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
         	}
         	$itemUrl = str_replace(BASE_PATH .'/views', BASE_WWW, $itemPath);
         		
-        	//deploy the item
+        	
+        	//Deploy the item, will create the html file in itemPath available from itemUrl
+        	
         	if(!$this->itemService->deployItem($item, $itemPath, $itemUrl,  $deployParams)){
         		throw new Exception('unable to deploy item');
         	}
         	
+        	//Create the sandbox
         	$executionEnvironment = $this->createFakeExecutionEnvironment($item, $user);
         	
+        	
+        		
+			// We inject the data directly in the deployed item file
+			
         	$apis = array(
 				'taoApi'		=> BASE_WWW.'js/taoApi/taoApi.min.js', 
 				'taoMatching'	=> BASE_WWW.'js/taoMatching/taoMatching.min.js', 
 				'wfApi'			=> ROOT_URL.'/wfEngine/views/js/wfApi/wfApi.min.js'
 			);
-        		
-			// We inject the data directly in the item file
 			try{
+				
+				//we parse the DOM of the item (it must be well formed and valid)
 				$doc = new DOMDocument();
 				$doc->loadHTMLFile($itemPath);
 				
+				//inject the apis 
 				$headNodes = $doc->getElementsByTagName('head');
 				
 				foreach($headNodes as $headNode){
 					
+					//Inject the initialisation script
+					//@see taoItems_actions_PreviewApi::iniApis
 					$initScriptElt = $doc->createElement('script');
 					$initScriptElt->setAttribute('type', 'text/javascript');
 					
@@ -167,10 +186,13 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 						'context'	=> $useContext,
 						'matching' 	=> ($deployParams['matching_server']) ? 'server' : 'client',
 						'debug'		=> $debugMode,
-						'uri' 		=> tao_helpers_Uri::encode($item->uriResource)
+						'uri' 		=> tao_helpers_Uri::encode($item->uriResource),
+						'time'		=> time()	//to prevent caching
 					);
 					
+					//the url of the init script
 					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
+					
 					
 					$inserted = false;
 					$scriptNodes = $headNode->getElementsByTagName('script');
@@ -193,6 +215,8 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 							$inserted = true;
 						}
 					}
+					
+					//If the common apis havn't been declared in the header, we had them
 					if(!$inserted){
 						foreach($apis as $apiUrl){
 							$apiScriptElt = $doc->createElement('script');
@@ -204,6 +228,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 						$headNode->appendChild($initScriptElt);
 					}
 					
+					//we inject too the preview-console
 					$previewScriptElt = $doc->createElement('script');
 					$previewScriptElt->setAttribute('type', 'text/javascript');
 					$previewScriptElt->setAttribute('src', BASE_WWW.'js/preview-console.js');
@@ -212,8 +237,12 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 					break;
 				}
 				
-				//render the item
+				/*
+				 * Render of the item by printing the HTML, 
+				 * so be carefull with the URLs inside the item
+				 */
 				echo $doc->saveHTML();
+				
 				
 			}
 			catch(DOMException $de){

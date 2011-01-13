@@ -8,6 +8,9 @@
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.4.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
+	<script type="text/javascript">
+		var root_url = "<?=$ctx_root_url?>";
+	</script>
 	
 	<!-- JS REQUIRED -->
 	<?if(!$ctx_raw_preview):?>

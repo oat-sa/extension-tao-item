@@ -15,6 +15,8 @@
  */
 var taoStack = new TaoStack();
 
+var root_url = root_url || '';
+
   ////////////////////
  // TAO  variables //
 ////////////////////

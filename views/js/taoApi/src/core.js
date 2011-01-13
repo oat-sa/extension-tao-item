@@ -32,7 +32,7 @@ function TaoStack (){
 	//default data source environment
 	this.dataSource.environment = {
 		'type'		: 'async', 							// (manual|sync|async) 
-		'url' 		: '/taoDelivery/ResultDelivery/initialize',	// the url to the server [NOT for manual type] 
+		'url' 		: root_url + '/taoDelivery/ResultDelivery/initialize',	// the url to the server [NOT for manual type] 
 		'params'	: { }								// the key/values to send to the server [NOT for manual type] 
 	};
 	
@@ -157,7 +157,7 @@ function TaoStack (){
 	 */
 	this.dataPush = new Object();
 	this.dataPush.environment = {
-		'url' 		: '/taoDelivery/ResultDelivery/save',					// the url to the server
+		'url' 		: root_url + '/taoDelivery/ResultDelivery/save',					// the url to the server
 		'params'	: {									// the params to send to the server at each communication 
 			'token'	: this.dataStore.token				//these parameters comes from the dataStore
 		}
