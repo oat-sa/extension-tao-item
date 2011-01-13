@@ -25,7 +25,7 @@ require_once('tao/models/classes/class.GenerisService.php');
 /* user defined includes */
 // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-includes begin
 
-require (dirname(__FILE__).'/Matching/matching_api.php');
+require_once (dirname(__FILE__).'/Matching/matching_api.php');
 
 // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-includes end
 

@@ -14,5 +14,7 @@
 	qti_initParam["<?=$serial?>"]['id'] = "<?=$identifier?>";
 	qti_initParam["<?=$serial?>"]['type'] = "qti_<?=$_type?>_interaction";
 	qti_initParam["<?=$serial?>"]['session_id'] = "<?=session_id()?>";
+	<?if(isset($options['type'])):?>
 	qti_initParam["<?=$serial?>"]['ext'] = "<?=tao_helpers_File::getExtention($options['type'])?>";
+	<?endif?>
 </script>
