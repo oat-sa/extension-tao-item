@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.01.2011, 11:32:50 with ArgoUML PHP module 
+ * Automatically generated on 13.01.2011, 09:33:58 with ArgoUML PHP module 
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
@@ -41,13 +41,14 @@ require_once('taoItems/actions/QTIform/interaction/class.Interaction.php');
 /**
  * Short description of class
  *
+ * @abstract
  * @access public
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10297
  * @subpackage actions_QTIform_interaction
  */
-class taoItems_actions_QTIform_interaction_StringInteraction
+abstract class taoItems_actions_QTIform_interaction_StringInteraction
     extends taoItems_actions_QTIform_interaction_Interaction
 {
     // --- ASSOCIATIONS ---
@@ -152,6 +153,6 @@ class taoItems_actions_QTIform_interaction_StringInteraction
         // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F66 end
     }
 
-} /* end of class taoItems_actions_QTIform_interaction_StringInteraction */
+} /* end of abstract class taoItems_actions_QTIform_interaction_StringInteraction */
 
 ?>
