@@ -433,6 +433,31 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	}
 	
 	/**
+	 * Download the content of the item in parameter
+	 */
+	public function downloadItemContent(){
+		
+		$instance = $this->getCurrentInstance();
+		if($this->service->isItemModelDefined($instance)){
+
+        	$itemModel = $instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+			
+			$itemContent = $this->service->getItemContent($instance, false);
+			$size = strlen($itemContent);
+			
+			$this->setContentHeader('text/xml');
+			header("Content-Length: $size");
+			header("Content-Disposition: attachment; filename=\"{$dataFile}\"");
+			header("Expires: 0");
+			header("Cache-Control: no-cache, must-revalidate");
+			header("Pragma: no-cache");
+			print $itemContent;
+			return;
+		}
+	}
+	
+	/**
 	 * Item Authoring tool loader action
 	 * @return void
 	 */

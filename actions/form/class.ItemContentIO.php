@@ -146,7 +146,7 @@ class taoItems_actions_form_ItemContentIO
         // section 127-0-1-1--86595b6:12baa1eac16:-8000:0000000000002596 begin
         
     	if(is_null($this->form->getElement('file_download'))){
-			$downloadUrl = _url('getItemContent', null, null, array(
+			$downloadUrl = _url('downloadItemContent', null, null, array(
 					'uri' 		=> tao_helpers_Uri::encode($this->instance->uriResource),
 					'classUri' 	=> tao_helpers_Uri::encode($this->clazz->uriResource)
 			));
