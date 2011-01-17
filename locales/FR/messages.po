@@ -236,7 +236,7 @@ msgid "Item imported successfully"
 msgstr "Item importé avec succès"
 
 msgid "Item saved"
-msgstr "Item suavegardé"
+msgstr "Item sauvegardé"
 
 msgid "Label"
 msgstr "Intitulé"
