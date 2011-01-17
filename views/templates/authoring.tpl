@@ -3,7 +3,7 @@
 <?if(get_data('error')):?>
 	<div class="main-container">
 		<div class="ui-state-error ui-corner-all" style="padding:5px;">
-			<?=__('Please select an item before!')?>
+			<?=__('Please select first the item type!')?>
 		</div>
 		<br />
 		<span class="ui-widget ui-state-default ui-corner-all" style="padding:5px;">
