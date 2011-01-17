@@ -1,110 +1,11 @@
-msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
-
-msgid "An error occured while saving the item"
-msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
-
-msgid "Apply"
-msgstr "Appliquer"
-
-msgid "Authoring"
-msgstr "Editeur"
-
-msgid "Back"
-msgstr "Retour"
-
-msgid "Class saved"
-msgstr "Classe enregistrée"
-
-msgid "Edit Item"
-msgstr "Modifier un item"
-
-msgid "Edit a class"
-msgstr "Modifier une classe"
-
-msgid "Edit item"
-msgstr "Modifier un item"
-
-msgid "Item"
-msgstr "Item"
-
-msgid "Item library"
-msgstr "Librairie d'items"
-
-msgid "Item saved successfully"
-msgstr "L'item a été enregistré avec succès"
-
-msgid "Items"
-msgstr "Items"
-
-msgid "Manage items"
-msgstr "Gérer les items"
-
-msgid "Not yet available"
-msgstr "Pas encore disponible"
-
-msgid "PREVIEW BOX"
-msgstr "Prévisualisation"
-
-msgid "Please select an item before!"
-msgstr "Veuillez choisir un item!"
-
-msgid "Preview"
-msgstr "Afficher"
-
-msgid "Save"
-msgstr "Enregistrer"
-
-msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
-
-msgid "create table"
-msgstr "créer un tableau"
-
-msgid "delete"
-msgstr "supprimer"
-
-msgid "duplicate"
-msgstr "dupliquer"
-
-msgid "export"
-msgstr "exporter"
-
-msgid "import"
-msgstr "importer"
-
-msgid "lists"
-msgstr "listes"
-
-msgid "meta data"
-msgstr "Métadonnée"
-
-msgid "move"
-msgstr "déplacer"
-
-msgid "new class"
-msgstr "nouvelle classe"
-
-msgid "new item"
-msgstr "nouvel item"
-
-msgid "no"
-msgstr "non"
-
-msgid "preview"
-msgstr "Afficher"
-
-msgid "search"
-msgstr "Recharcher"
-
-msgid "yes"
-msgstr "oui"
-
 msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr "Un fichier d'item QTI est un fichier XML suivant le standard QTI version 2.0"
 
 msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
 msgstr "Un paquet QTI est une archive ZIP contenant un fichier msmanifest.xml ainsi que les ressources QTI à importer"
+
+msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
+msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
 
 msgid "Add a choice"
 msgstr "Ajouter un choix"
@@ -124,11 +25,20 @@ msgstr "Un paquet XHTML est une archive ZIP contenant un fichier index.html au f
 msgid "An error occured during the import"
 msgstr "Une erreur est survenue durant l'import"
 
-msgid "An error occured while loading the item:"
-msgstr "Une erreur est survenue durant le chargement de l'item:"
+msgid "An error occured while saving the item"
+msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
 
 msgid "An error occurs during the import"
 msgstr "Une erreur est survenue durant l'import"
+
+msgid "Apply"
+msgstr "Appliquer"
+
+msgid "Authoring"
+msgstr "Editeur"
+
+msgid "Back"
+msgstr "Retour"
 
 msgid "Changing shape type will delete the old shape, are you sure?"
 msgstr "Changer le type de forme effacera l'ancienne, est-vous certains?"
@@ -138,6 +48,9 @@ msgstr "Choix"
 
 msgid "Choices editor:"
 msgstr "Editeur de choix:"
+
+msgid "Class saved"
+msgstr "Classe enregistrée"
 
 msgid "Client"
 msgstr "Client"
@@ -162,6 +75,15 @@ msgstr "Etes-vous certains de vouloir supprimer la ligne?"
 
 msgid "Download item content"
 msgstr "Téléchager le contenu de l'item"
+
+msgid "Edit Item"
+msgstr "Modifier un item"
+
+msgid "Edit a class"
+msgstr "Modifier une classe"
+
+msgid "Edit item"
+msgstr "Modifier un item"
 
 msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
 msgstr "Cela vous permet d'exporter une archive ZIP contenant un dossier par item. Le dossier de chaque item contient un fichier XML principal (les données de l'item) ainsi que ses ressources externes (media, manifests, etc.)"
@@ -223,6 +145,9 @@ msgstr "Editeur de contenu des interactions:"
 msgid "Interaction editor:"
 msgstr "Editeur d'intéraction"
 
+msgid "Item"
+msgstr "Item"
+
 msgid "Item Editor:"
 msgstr "Editeur d'item:"
 
@@ -235,8 +160,17 @@ msgstr "Le contenu de l'item a été sauvegardé"
 msgid "Item imported successfully"
 msgstr "Item importé avec succès"
 
+msgid "Item library"
+msgstr "Librairie d'items"
+
 msgid "Item saved"
 msgstr "Item sauvegardé"
+
+msgid "Item saved successfully"
+msgstr "L'item a été enregistré avec succès"
+
+msgid "Items"
+msgstr "Items"
 
 msgid "Label"
 msgstr "Intitulé"
@@ -246,6 +180,9 @@ msgstr "Limite inférieure"
 
 msgid "Manage item content"
 msgstr "Gérer le contenu de l'item"
+
+msgid "Manage items"
+msgstr "Gérer les items"
 
 msgid "Mapping options:"
 msgstr "Options d'association:"
@@ -289,6 +226,9 @@ msgstr "Monter"
 msgid "No user is logged in"
 msgstr "Aucun utilisateur authentifié"
 
+msgid "Not yet available"
+msgstr "Pas encore disponible"
+
 msgid "Number base for value interpretation"
 msgstr "Base numérique pour l'interprétation de valeur"
 
@@ -301,11 +241,20 @@ msgstr "Réponse ordonné"
 msgid "Orientation"
 msgstr "Orientation"
 
+msgid "PREVIEW BOX"
+msgstr "Prévisualisation"
+
 msgid "Pattern mask"
 msgstr "Masque d'expression régulière"
 
 msgid "Place holder text"
 msgstr "texte d'espace réservé"
+
+msgid "Please select an item before!"
+msgstr "Veuillez choisir un item!"
+
+msgid "Preview"
+msgstr "Afficher"
 
 msgid "Preview Console"
 msgstr "Moniteur de prévisualisation"
@@ -334,6 +283,9 @@ msgstr "Type de variable de réponse"
 msgid "Responses Editor"
 msgstr "Editeur de réponse"
 
+msgid "Save"
+msgstr "Enregistrer"
+
 msgid "Score"
 msgstr "Score"
 
@@ -354,6 +306,9 @@ msgstr "Identifiant du texte"
 
 msgid "Stylesheets manager:"
 msgstr "Gestion des feuilles de style:"
+
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
 
 msgid "The choice cannot be saved"
 msgstr "Le choix ne peux pas être sauvegardé"
@@ -433,14 +388,29 @@ msgstr "fermer"
 msgid "correct"
 msgstr "correcte"
 
+msgid "create table"
+msgstr "créer un tableau"
+
 msgid "default"
 msgstr "par défaut"
+
+msgid "delete"
+msgstr "supprimer"
+
+msgid "duplicate"
+msgstr "dupliquer"
 
 msgid "ellipse"
 msgstr "élipse"
 
+msgid "export"
+msgstr "exporter"
+
 msgid "horizontal"
 msgstr "horizontale"
+
+msgid "import"
+msgstr "importer"
 
 msgid "invalid image mime type"
 msgstr "le type MIME de l'image est invalide"
@@ -451,17 +421,41 @@ msgstr "item importée avec succès"
 msgid "items imported successfully"
 msgstr "item importées avec succès"
 
+msgid "lists"
+msgstr "listes"
+
 msgid "map"
 msgstr "carte"
 
 msgid "map point"
 msgstr "point sur la carte"
 
+msgid "meta data"
+msgstr "Métadonnée"
+
+msgid "move"
+msgstr "déplacer"
+
+msgid "new class"
+msgstr "nouvelle classe"
+
+msgid "new item"
+msgstr "nouvel item"
+
+msgid "no"
+msgstr "non"
+
 msgid "polygon"
 msgstr "polygone"
 
+msgid "preview"
+msgstr "Afficher"
+
 msgid "rectangle"
 msgstr "rectangle"
+
+msgid "search"
+msgstr "Recharcher"
 
 msgid "show/hide"
 msgstr "montrer/cacher"
@@ -477,4 +471,49 @@ msgstr "impossible d'extraire le contenu de l'archive"
 
 msgid "vertical"
 msgstr "vertical"
+
+msgid "yes"
+msgstr "oui"
+
+msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgstr "Un fichier QTI est un fichier au format XML conforme à la version 2.0 du standard QTI."
+
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
+
+msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
+
+msgid "An error occured while loading the item:"
+msgstr "Une erreur est survenue durant le chargement de l'item:"
+
+msgid "An error occured while loading the item: "
+msgstr "Une erreur est survenue durant le chargement de l'item: "
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
+msgstr "Cliquer sur un ligne pour éditer, ensuite tapez \"Entrer\" pour valider ou \"Echape\" pour annuler les changements."
+
+msgid "Debug Mode"
+msgstr "Mode de déboguage"
+
+msgid "Delete interaction"
+msgstr "Supprimer l'intéraction"
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
+msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
+
+msgid "Please confirm interaction deletion"
+msgstr "Veuillez confirmer la suppression de l'intéraction"
+
+msgid "Please select first the item type!"
+msgstr "Veuillez d'abord sélectionner un type d'item!"
+
+msgid "The migration scripts for the deprecated items will be provided soon"
+msgstr ""
+
+msgid "draw it"
+msgstr "déssinez"
+
+msgid "please confirm deletion of the interaction"
+msgstr "veuillez confirmer la suppression de l'intéraction"
 

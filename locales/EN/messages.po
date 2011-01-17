@@ -1,112 +1,16 @@
-msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr ""
-
-msgid "An error occured while saving the item"
-msgstr ""
-
-msgid "Apply"
-msgstr ""
-
-msgid "Authoring"
-msgstr ""
-
-msgid "Back"
-msgstr ""
-
-msgid "Class saved"
-msgstr ""
-
-msgid "Edit Item"
-msgstr ""
-
-msgid "Edit a class"
-msgstr ""
-
-msgid "Edit item"
-msgstr ""
-
-msgid "Item"
-msgstr ""
-
-msgid "Item library"
-msgstr ""
-
-msgid "Item saved"
-msgstr ""
-
-msgid "Item saved successfully"
-msgstr ""
-
-msgid "Items"
-msgstr ""
-
-msgid "Manage items"
-msgstr ""
-
-msgid "Not yet available"
-msgstr ""
-
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Please select an item before!"
-msgstr ""
-
-msgid "Preview"
-msgstr ""
-
-msgid "Save"
-msgstr ""
-
-msgid "The Item module enables the creation and design of items and exercises."
-msgstr ""
-
-msgid "create table"
-msgstr ""
-
-msgid "delete"
-msgstr ""
-
-msgid "duplicate"
-msgstr ""
-
-msgid "export"
-msgstr ""
-
-msgid "import"
-msgstr ""
-
-msgid "lists"
-msgstr ""
-
-msgid "meta data"
-msgstr ""
-
-msgid "move"
-msgstr ""
-
-msgid "new class"
-msgstr ""
-
-msgid "new item"
-msgstr ""
-
-msgid "no"
-msgstr ""
-
-msgid "preview"
-msgstr ""
-
-msgid "search"
-msgstr ""
-
-msgid "yes"
-msgstr ""
-
 msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr ""
 
+msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgstr ""
+
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgstr ""
+
 msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
+msgstr ""
+
+msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr ""
 
 msgid "Add a choice"
@@ -124,13 +28,31 @@ msgstr ""
 msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
 msgstr ""
 
+msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
+
 msgid "An error occured during the import"
 msgstr ""
 
 msgid "An error occured while loading the item:"
 msgstr ""
 
+msgid "An error occured while loading the item: "
+msgstr ""
+
+msgid "An error occured while saving the item"
+msgstr ""
+
 msgid "An error occurs during the import"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Authoring"
+msgstr ""
+
+msgid "Back"
 msgstr ""
 
 msgid "Changing shape type will delete the old shape, are you sure?"
@@ -142,6 +64,12 @@ msgstr ""
 msgid "Choices editor:"
 msgstr ""
 
+msgid "Class saved"
+msgstr ""
+
+msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
+msgstr ""
+
 msgid "Client"
 msgstr ""
 
@@ -151,10 +79,16 @@ msgstr ""
 msgid "Correct Responses"
 msgstr ""
 
+msgid "Debug Mode"
+msgstr ""
+
 msgid "Default value"
 msgstr ""
 
 msgid "Delete choice"
+msgstr ""
+
+msgid "Delete interaction"
 msgstr ""
 
 msgid "Disabled"
@@ -166,10 +100,22 @@ msgstr ""
 msgid "Download item content"
 msgstr ""
 
+msgid "Edit Item"
+msgstr ""
+
+msgid "Edit a class"
+msgstr ""
+
+msgid "Edit item"
+msgstr ""
+
 msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
 msgstr ""
 
 msgid "Enabled"
+msgstr ""
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
 msgstr ""
 
 msgid "Error in background file:"
@@ -226,6 +172,9 @@ msgstr ""
 msgid "Interaction editor:"
 msgstr ""
 
+msgid "Item"
+msgstr ""
+
 msgid "Item Editor:"
 msgstr ""
 
@@ -238,6 +187,18 @@ msgstr ""
 msgid "Item imported successfully"
 msgstr ""
 
+msgid "Item library"
+msgstr ""
+
+msgid "Item saved"
+msgstr ""
+
+msgid "Item saved successfully"
+msgstr ""
+
+msgid "Items"
+msgstr ""
+
 msgid "Label"
 msgstr ""
 
@@ -245,6 +206,9 @@ msgid "Lower bound"
 msgstr ""
 
 msgid "Manage item content"
+msgstr ""
+
+msgid "Manage items"
 msgstr ""
 
 msgid "Mapping options:"
@@ -289,6 +253,9 @@ msgstr ""
 msgid "No user is logged in"
 msgstr ""
 
+msgid "Not yet available"
+msgstr ""
+
 msgid "Number base for value interpretation"
 msgstr ""
 
@@ -301,10 +268,25 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
+msgid "PREVIEW BOX"
+msgstr ""
+
 msgid "Pattern mask"
 msgstr ""
 
 msgid "Place holder text"
+msgstr ""
+
+msgid "Please confirm interaction deletion"
+msgstr ""
+
+msgid "Please select an item before!"
+msgstr ""
+
+msgid "Please select first the item type!"
+msgstr ""
+
+msgid "Preview"
 msgstr ""
 
 msgid "Preview Console"
@@ -334,6 +316,9 @@ msgstr ""
 msgid "Responses Editor"
 msgstr ""
 
+msgid "Save"
+msgstr ""
+
 msgid "Score"
 msgstr ""
 
@@ -355,6 +340,9 @@ msgstr ""
 msgid "Stylesheets manager:"
 msgstr ""
 
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr ""
+
 msgid "The choice cannot be saved"
 msgstr ""
 
@@ -365,6 +353,9 @@ msgid "The item has been successfully updated"
 msgstr ""
 
 msgid "The mapping options have been applied"
+msgstr ""
+
+msgid "The migration scripts for the deprecated items will be provided soon"
 msgstr ""
 
 msgid "The response form is available for templates driven item only.<br/>"
@@ -433,13 +424,31 @@ msgstr ""
 msgid "correct"
 msgstr ""
 
+msgid "create table"
+msgstr ""
+
 msgid "default"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "draw it"
+msgstr ""
+
+msgid "duplicate"
 msgstr ""
 
 msgid "ellipse"
 msgstr ""
 
+msgid "export"
+msgstr ""
+
 msgid "horizontal"
+msgstr ""
+
+msgid "import"
 msgstr ""
 
 msgid "invalid image mime type"
@@ -451,16 +460,43 @@ msgstr ""
 msgid "items imported successfully"
 msgstr ""
 
+msgid "lists"
+msgstr ""
+
 msgid "map"
 msgstr ""
 
 msgid "map point"
 msgstr ""
 
+msgid "meta data"
+msgstr ""
+
+msgid "move"
+msgstr ""
+
+msgid "new class"
+msgstr ""
+
+msgid "new item"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "please confirm deletion of the interaction"
+msgstr ""
+
 msgid "polygon"
 msgstr ""
 
+msgid "preview"
+msgstr ""
+
 msgid "rectangle"
+msgstr ""
+
+msgid "search"
 msgstr ""
 
 msgid "show/hide"
@@ -476,5 +512,8 @@ msgid "unable to extract archive content, please check your tmp dir"
 msgstr ""
 
 msgid "vertical"
+msgstr ""
+
+msgid "yes"
 msgstr ""
 

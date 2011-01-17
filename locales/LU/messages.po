@@ -4,12 +4,6 @@ msgstr "D'Item Ersteller kënnen op eng Lëscht vun Viirlagen zréckgraifen wéi
 msgid "An error occured while saving the item"
 msgstr "Beim Spaicheren vum Item gouf et e Fehler"
 
-msgid "Apply"
-msgstr ""
-
-msgid "Authoring"
-msgstr ""
-
 msgid "Back"
 msgstr "Zréck"
 
@@ -21,12 +15,6 @@ msgstr "Item editéiren"
 
 msgid "Edit a class"
 msgstr "Klass editéiren"
-
-msgid "Edit item"
-msgstr ""
-
-msgid "Item"
-msgstr ""
 
 msgid "Item library"
 msgstr "Item Sammlung"
@@ -43,9 +31,6 @@ msgstr "Itemen"
 msgid "Manage items"
 msgstr "Itemen verwalten"
 
-msgid "Not yet available"
-msgstr ""
-
 msgid "PREVIEW BOX"
 msgstr "Viirbléck Këscht"
 
@@ -54,9 +39,6 @@ msgstr "W.e.g. sicht fier d'éischt een Item eraus!"
 
 msgid "Preview"
 msgstr "Viirbléck"
-
-msgid "Save"
-msgstr ""
 
 msgid "The Item module enables the creation and design of items and exercises."
 msgstr "Den Item Modul erlaabt d'Erstellen an formatéiren vun Itemen an Aufgaben"
@@ -73,17 +55,8 @@ msgstr "duplizéiren"
 msgid "export"
 msgstr "exportéiren"
 
-msgid "import"
-msgstr ""
-
-msgid "lists"
-msgstr ""
-
 msgid "meta data"
 msgstr "Meta Daten"
-
-msgid "move"
-msgstr ""
 
 msgid "new class"
 msgstr "nei Klass"
@@ -91,19 +64,19 @@ msgstr "nei Klass"
 msgid "new item"
 msgstr "neien Item"
 
-msgid "no"
-msgstr ""
-
 msgid "preview"
 msgstr "Viirbléck"
 
 msgid "search"
 msgstr "sichen"
 
-msgid "yes"
+msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr ""
 
-msgid "A QTI item file is an XML file following the QTI standard version 2.0"
+msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgstr ""
+
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
 msgstr ""
 
 msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
@@ -124,13 +97,25 @@ msgstr ""
 msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
 msgstr ""
 
+msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
+
 msgid "An error occured during the import"
 msgstr ""
 
 msgid "An error occured while loading the item:"
 msgstr ""
 
+msgid "An error occured while loading the item: "
+msgstr ""
+
 msgid "An error occurs during the import"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Authoring"
 msgstr ""
 
 msgid "Changing shape type will delete the old shape, are you sure?"
@@ -142,6 +127,9 @@ msgstr ""
 msgid "Choices editor:"
 msgstr ""
 
+msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
+msgstr ""
+
 msgid "Client"
 msgstr ""
 
@@ -151,10 +139,16 @@ msgstr ""
 msgid "Correct Responses"
 msgstr ""
 
+msgid "Debug Mode"
+msgstr ""
+
 msgid "Default value"
 msgstr ""
 
 msgid "Delete choice"
+msgstr ""
+
+msgid "Delete interaction"
 msgstr ""
 
 msgid "Disabled"
@@ -166,10 +160,16 @@ msgstr ""
 msgid "Download item content"
 msgstr ""
 
+msgid "Edit item"
+msgstr ""
+
 msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
 msgstr ""
 
 msgid "Enabled"
+msgstr ""
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
 msgstr ""
 
 msgid "Error in background file:"
@@ -224,6 +224,9 @@ msgid "Interaction content editor:"
 msgstr ""
 
 msgid "Interaction editor:"
+msgstr ""
+
+msgid "Item"
 msgstr ""
 
 msgid "Item Editor:"
@@ -289,6 +292,9 @@ msgstr ""
 msgid "No user is logged in"
 msgstr ""
 
+msgid "Not yet available"
+msgstr ""
+
 msgid "Number base for value interpretation"
 msgstr ""
 
@@ -305,6 +311,12 @@ msgid "Pattern mask"
 msgstr ""
 
 msgid "Place holder text"
+msgstr ""
+
+msgid "Please confirm interaction deletion"
+msgstr ""
+
+msgid "Please select first the item type!"
 msgstr ""
 
 msgid "Preview Console"
@@ -332,6 +344,9 @@ msgid "Response variable type"
 msgstr ""
 
 msgid "Responses Editor"
+msgstr ""
+
+msgid "Save"
 msgstr ""
 
 msgid "Score"
@@ -365,6 +380,9 @@ msgid "The item has been successfully updated"
 msgstr ""
 
 msgid "The mapping options have been applied"
+msgstr ""
+
+msgid "The migration scripts for the deprecated items will be provided soon"
 msgstr ""
 
 msgid "The response form is available for templates driven item only.<br/>"
@@ -436,10 +454,16 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+msgid "draw it"
+msgstr ""
+
 msgid "ellipse"
 msgstr ""
 
 msgid "horizontal"
+msgstr ""
+
+msgid "import"
 msgstr ""
 
 msgid "invalid image mime type"
@@ -451,10 +475,22 @@ msgstr ""
 msgid "items imported successfully"
 msgstr ""
 
+msgid "lists"
+msgstr ""
+
 msgid "map"
 msgstr ""
 
 msgid "map point"
+msgstr ""
+
+msgid "move"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "please confirm deletion of the interaction"
 msgstr ""
 
 msgid "polygon"
@@ -476,5 +512,8 @@ msgid "unable to extract archive content, please check your tmp dir"
 msgstr ""
 
 msgid "vertical"
+msgstr ""
+
+msgid "yes"
 msgstr ""
 
