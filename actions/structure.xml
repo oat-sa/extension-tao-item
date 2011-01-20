@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE extension SYSTEM "../../tao/doc/structure.dtd">
 <extension name="Items" url="/taoItems/Items/index" level="0">
+	<description>Create and design items and exercises.</description>
 	<sections>
 		<section id="manage_items" name="Manage items" url="/taoItems/Items/index">
 			<trees>
