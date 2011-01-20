@@ -1661,10 +1661,47 @@ class taoItems_models_classes_QtiAuthoringService
 	public static function filteredData($data){
 		$returnValue = '';
 		
+		
 		$returnValue = $data;
-		$matches = array();
-		if(preg_match_all("/<(img|object)(.*)?((src|data)\S?=\S?['\"]+([^'\"]*)['\"]+)[^>]*>/", $returnValue, $matches) > 0){
+		
+		try{	//Parse data and replace img src by the media service URL
+			$doc = new DOMDocument;
+			if($doc->loadHTML($data)){
+				$updated = false;
+				$tags 		= array('img', 'object');
+				$srcAttr 	= array('src', 'data');
+				$xpath = new DOMXpath($doc);
+				$query = implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
+				foreach($xpath->query($query) as $element) {
+					foreach($srcAttr as $attr){
+						if($element->hasAttribute($attr)){
+				      		$source = trim($element->getAttribute($attr));
+				      		if(!preg_match("/^http/", $source)){
+								$updated = true;
+				      			$element->setAttribute($attr,  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode($source))));
+				      		}
+					    }
+					}
+				}
+			
+			}
+			
+			if($updated){
+				$returnValue = $doc->saveHTML();
+			}
+		}
+		catch(DOMException $de){
+			print $de;
+		}	
+		
+		/*$matches = array();
+		$pattern = "/<img[^>]+>/i";
+		if(preg_match_all($pattern, $returnValue, $matches) > 0){
+			print "<pre>";print_r($matches);print "</pre>";
+			
+			$pattern = "/(src|data)\S?=\S?(['\"]+[^'\"]+['\"]+)+/i";
 			if(isset($matches[5])){
+				
 				foreach($matches[5] as $i => $src){
 					if(!preg_match("/^http/", trim($src))){
 						$url =  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode(trim($src))));
@@ -1672,7 +1709,7 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 				}
 			}
-		}
+		}*/
 		
 		return $returnValue;
 	}
