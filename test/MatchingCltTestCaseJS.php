@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/../../generis/common/inc.extension.php';
-require_once dirname(__FILE__) . '/../includes/common.php';
+include_once dirname(__FILE__) . '/bootstrap.php';
 define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 ?>
 
