@@ -4,8 +4,7 @@
  * @todo REMOVE THIS AND REDIRECT DIRECTLY TO A VALID ACTION
  */
 
-require_once(dirname(__FILE__).'/../../../../generis/common/inc.extension.php');
-require_once(dirname(__FILE__).'/../../../includes/common.php');
+require_once(dirname(__FILE__).'/../../../includes/raw_start.php');
 require_once(ROOT_PATH.'/tao/helpers/class.Uri.php');
 
 /* BRIDGE WITH THE LEGACY FORMS */

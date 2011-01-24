@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
-include_once dirname(__FILE__) . '/bootstrap.php';
+include_once dirname(__FILE__) . '/../includes/raw_start.php';
 if(!function_exists('matching_init')){
 	require_once dirname(__FILE__) . '/../models/classes/Matching/matching_api.php';
 }
