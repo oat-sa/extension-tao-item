@@ -1,4 +1,5 @@
-<!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>firebug-lite/build/firebug-lite.js"></script>-->
+<!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>firebug-lite/build/firebug-lite.js"></script>
+<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>
@@ -36,35 +37,51 @@
 				<br/>
 				<a href="#"><?=__('Preview')?></a>
 			</div>
+			
+			<div id="qtiAuthoring_item_editor_button" class="qti-menu-item">
+				<img title="<?=__('Return to item editor')?>" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
+				<br/>
+				<a href="#"><?=__('Item Editor')?></a>
+			</div>
 		</div>
 		<div id="qtiAuthoring_menu_right_container" class="">
 		</div>
 	</div>
-	<div id="qtiAuthoring_item_container">
-		<div id="qtiAuthoring_item_left_container">
-			<div id="item_option_accordion">
-				<h3><a href="#"><?=__('Item Properties:')?></a></h3>
-				<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
-					<?=get_data('itemForm')?>
-				</div>
-				<h3><a href="#"><?=__('Response processing template editor:')?></a></h3>
-				<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
-				<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
-				<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"/>
-			</div>
-		</div>
-		
-		<div id="qtiAuthoring_item_right_container">
-			<!--<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>-->
-			<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
-				<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
-			</div>
-		</div>
-		
-		<div style="clear:both"/>
-	</div>
 	
-	<div id="qtiAuthoring_interaction_container">
+	<div id="tabs-qti">
+	
+		<ul id="tabs-qti-menu">
+			<li><a href="#qtiAuthoring_item_container"></a></li>
+			<li><a href="#qtiAuthoring_interaction_container"></a></li>
+		</ul>
+		
+		<div id="qtiAuthoring_item_container">
+			<div id="qtiAuthoring_item_left_container">
+				<div id="item_option_accordion">
+					<h3><a href="#"><?=__('Item Properties:')?></a></h3>
+					<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
+						<?=get_data('itemForm')?>
+					</div>
+					<h3><a href="#"><?=__('Response processing template editor:')?></a></h3>
+					<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
+					<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
+					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"/>
+				</div>
+			</div>
+			
+			<div id="qtiAuthoring_item_right_container">
+				<!--<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>-->
+				<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
+					<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
+				</div>
+			</div>
+			
+			<div style="clear:both"/>
+		</div>
+		
+		<div id="qtiAuthoring_interaction_container">
+		</div>
+	
 	</div>
 	
 </div>
@@ -73,13 +90,33 @@
 var authoring_img_url = root_url + "/taoItems/views/img/qtiAuthoring/";
 		
 $(document).ready(function(){
-	// console.log('ssds', $.browser);
+
+	//init interface:
+	$myTab = $("#tabs-qti");
+	$myTab.tabs({
+	   select: function(event, ui) {
+			CL('tab index', ui.index);
+			if(ui.index == 0){
+				//reload the item editor:
+				// if(confirm('save?')){
+					return true;
+				// }
+			}else if(ui.index == 1){
+				return true;
+			}
+			
+			return false;
+	   }
+	});
+	
+	$('#tabs-qti-menu').hide();
+	$('#qtiAuthoring_item_editor_button').hide();
+	
+	//init item editor:
 	try{
 		//global item object
 		myItem = new qtiEdit('<?=get_data('itemSerial')?>', null, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
-		
 	}catch(err){
-		
 		CL('error creating the item', err);
 	}
 	
@@ -104,12 +141,7 @@ $(document).ready(function(){
 	});
 	
 	myItem.loadStyleSheetForm();
-	
-	setTimeout(function(){
-		$('#qtiAuthoring_loading').hide();
-		$('#qtiAuthoring_main_container').show();
-	}, 1000);
-	
+
 	
 	// available interactions:
 	var interactionTypes = {
@@ -183,6 +215,11 @@ $(document).ready(function(){
 			$('#qtiAuthoring_itemEditor').find('li.'+e.data.id).click();
 		});
 	}
+	
+	setTimeout(function(){
+		$('#qtiAuthoring_loading').hide();
+		$('#qtiAuthoring_main_container').show();
+	}, 1000);
 
 });
 

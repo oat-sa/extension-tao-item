@@ -42,6 +42,8 @@ div.qti-menu-item:hover a, div.qti-menu-item a:hover{
 	color:#FF8C8C;
 }
 
+#tabs-qti{padding:0px;border:0 none;}
+
 /*uploadify made smaller*/
 div.xhtml_form div.file-uploader .uploadifyQueueItem, .uploadifyQueueItem {
 	width: auto;
@@ -135,12 +137,13 @@ span.form-group-control{
 }
 
 /*placing item container*/
-#qtiAuthoring_item_container{
+div#qtiAuthoring_item_container.ui-tabs-panel.ui-widget-content{
 	width: 100%;
 	height: 100%;
 	position: relative;
-	top:0%;
-	left:0%;
+	top:0;
+	left:0;
+	padding:0;
 }
 #qtiAuthoring_item_left_container{
 	float:left;
@@ -155,13 +158,13 @@ span.form-group-control{
 }
 
 /*placing interaction container*/
-#qtiAuthoring_interaction_container{
+div#qtiAuthoring_interaction_container.ui-tabs-panel.ui-widget-content{
 	width: 100%;
 	height: 100%;
 	position: relative;
-	left:0%;
-	top:100%;
+	left:0;
 	margin-top: 10px;
+	padding:0;
 }
 
 #qtiAuthoring_interaction_left_container{

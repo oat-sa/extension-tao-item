@@ -358,9 +358,10 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 			}
 			return false;
 		});
-		$deleteButton.mousedown(function(e){
+		$deleteButton.bind('mousedown contextmenu',function(e){
 			e.preventDefault();
 		});
+		
 		qtiEdit.makeNoEditable($deleteButton);
 		
 		$interaction.parent().hover(function(){
@@ -400,7 +401,9 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 				qtiEdit.initFormElements($(self.interactionFormContent));
 				
 				position = $(self.interactionFormContent).position();
-				window.scrollTo(0, parseInt(position.top));
+				
+				// window.scrollTo(0, parseInt(position.top));
+				if($myTab) $myTab.tabs("select" , 1);
 		   }
 		});
 	}

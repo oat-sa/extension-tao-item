@@ -54,9 +54,10 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){
 	var instance = this;
+	var $myForm = null;
 	$(".interaction-form-submitter").click(function(){
 		
-		var $myForm = $(this).parents("form");
+		$myForm = $(this).parents("form");
 		//linearize it and post it:
 		// if(instance.modifiedInteraction){
 			instance.saveInteraction($myForm);
@@ -66,6 +67,15 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 		
 		return false;
 	});
+	
+	$('#qtiAuthoring_item_editor_button').unbind('click').bind('click', function(){
+		$(".interaction-form-submitter").click();
+		if($myTab) $myTab.tabs("select" , 0);
+		$(this).hide();
+		$('#qtiAuthoring_menu_right_container').show();
+	}).show();
+	
+	$('#qtiAuthoring_menu_right_container').hide();
 }
 
 interactionClass.prototype.saveModifiedChoices = function(){
