@@ -1664,35 +1664,38 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		$returnValue = $data;
 		
-		try{	//Parse data and replace img src by the media service URL
-			$doc = new DOMDocument;
-			if($doc->loadHTML($data)){
+		if(!empty($data)){
+			try{//Parse data and replace img src by the media service URL
 				$updated = false;
-				$tags 		= array('img', 'object');
-				$srcAttr 	= array('src', 'data');
-				$xpath = new DOMXpath($doc);
-				$query = implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
-				foreach($xpath->query($query) as $element) {
-					foreach($srcAttr as $attr){
-						if($element->hasAttribute($attr)){
-				      		$source = trim($element->getAttribute($attr));
-				      		if(!preg_match("/^http/", $source)){
-								$updated = true;
-				      			$element->setAttribute($attr,  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode($source))));
-				      		}
-					    }
+				$doc = new DOMDocument;
+				if($doc->loadHTML($data)){
+					
+					$tags 		= array('img', 'object');
+					$srcAttr 	= array('src', 'data');
+					$xpath = new DOMXpath($doc);
+					$query = implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
+					foreach($xpath->query($query) as $element) {
+						foreach($srcAttr as $attr){
+							if($element->hasAttribute($attr)){
+								$source = trim($element->getAttribute($attr));
+								if(!preg_match("/^http/", $source)){
+									$updated = true;
+									$element->setAttribute($attr,  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode($source))));
+								}
+							}
+						}
 					}
+				
 				}
-			
+				
+				if($updated){
+					$returnValue = $doc->saveHTML();
+				}
 			}
-			
-			if($updated){
-				$returnValue = $doc->saveHTML();
-			}
+			catch(DOMException $de){
+				// print $de;
+			}	
 		}
-		catch(DOMException $de){
-			print $de;
-		}	
 		
 		/*$matches = array();
 		$pattern = "/<img[^>]+>/i";
