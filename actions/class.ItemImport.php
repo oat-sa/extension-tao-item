@@ -165,12 +165,18 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 						else{
 							$this->setData('importErrors', array(array('message' => sprintf(__("Unable to load QTI resource with href = '%s'"), $resource->getItemFile()))));
 						}
+						
+						// An error occured. We should rollback the knowledge base for this item.
+						$rdfItem->delete();
 						break;
 					}
 					
 					if(is_null($qtiItem) || is_null($rdfItem)){
 						$this->setData('importErrorTitle', __('An error occured during the import'));
 						$this->setData('importErrors', array(array('message' => __('unable to create for imported content'))));
+						
+						// An error occured. We should rollback the knowledge base.
+						$rdfItem->delete();
 						break;
 					}
 					//set the QTI type
@@ -190,7 +196,10 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					}
 				}
 			}
-			if(count($resources) == $importedItems && count($resources) > 0){
+			
+			$totalItems = count($resources);
+			
+			if($totalItems == $importedItems && $totalItems > 0){
 				
 				$this->removeSessionAttribute('classUri');
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
@@ -203,7 +212,8 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				return true;
 			}
 			else{
-				$this->setData('message', __('No items were imported'));
+				// Display how many items were imported.
+				$this->setData('message', sprintf(__('%d items of %d imported successfuly'), $importedItems, $totalItems));
 			}
 		}
 		return false;
