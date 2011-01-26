@@ -154,7 +154,17 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					}
 					catch(Exception $e){
 						$this->setData('importErrorTitle', __('An error occured during the import'));
-						$this->setData('importErrors', array(array('message' => $e->getMessage())));
+						
+						// The QTI File at $folder/$resource->itemFile cannot be loaded.
+						// Is this because 
+						// - the file referenced by the manifest does not exists in the archive ?
+						// - the file exists but cannot be parsed ?
+						if(file_exists($folder . '/' . $resource->getItemFile())){
+							$this->setData('importErrors', array(array('message' => $e->getMessage())));
+						}
+						else{
+							$this->setData('importErrors', array(array('message' => sprintf(__("Unable to load QTI resource with href = '%s'"), $resource->getItemFile()))));
+						}
 						break;
 					}
 					
@@ -180,7 +190,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					}
 				}
 			}
-			if(count($resources) == $importedItems){
+			if(count($resources) == $importedItems && count($resources) > 0){
 				
 				$this->removeSessionAttribute('classUri');
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
@@ -191,6 +201,9 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
 				
 				return true;
+			}
+			else{
+				$this->setData('message', __('No items were imported'));
 			}
 		}
 		return false;

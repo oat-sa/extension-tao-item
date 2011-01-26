@@ -156,14 +156,18 @@ class taoItems_models_classes_QTI_Service
         if(is_string($file) && !empty($file)){
        		
         	//validate the file to import
-			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
-			$qtiParser->validate();
+			try{
+				$qtiParser = new taoItems_models_classes_QTI_Parser($file);
+				$qtiParser->validate();
 
-			if(!$qtiParser->isValid()){
-				throw new Exception($qtiParser->displayErrors());
+				if(!$qtiParser->isValid()){
+					throw new Exception($qtiParser->displayErrors());
+				}
+				
+				$returnValue = $qtiParser->load();
+			}catch(Exception $e){
+				throw new Exception("Unable to load file ${file}.");
 			}
-			
-			$returnValue = $qtiParser->load();
 		}
         
         // section 127-0-1-1-47db9c49:12bc8da1be4:-8000:00000000000026E6 end
