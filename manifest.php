@@ -4,26 +4,22 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * 
  */
-	return array(
-		'name' => 'TAO Items',
-		'description' => 'TAO Items extensions http://www.tao.lu',
-		'additional' => array(
-			'version' => '1.2',
-			'author' => 'CRP Henri Tudor',
-			'dependances' => array(),
-			'install' => array( 
-				'sql' => dirname(__FILE__). '/model/ontology/TAOItem.sql',
-				'php' => dirname(__FILE__). '/install/install.php'
-			),
-
-			'model' => array('http://www.tao.lu/Ontologies/TAOItem.rdf'),
-			'classLoaderPackages' => array( 
-				dirname(__FILE__).'/actions/',
-				dirname(__FILE__).'/helpers/'
-			 )
-
-				
-			
-		)
-	);
+return array(
+	'name' => 'taoItems',
+	'description' => 'the TAO Items extension provides the item creation, authoring and managment',
+	'additional' => array(
+		'version' => '2.0',
+		'author' => 'CRP Henri Tudor',
+		'dependances' => array('tao'),
+		'models' => 'http://www.tao.lu/Ontologies/TAOItem.rdf',
+		'install' => array( 
+			'php' => dirname(__FILE__). '/install/install.php',
+			'rdf' => dirname(__FILE__). '/models/ontology/taoitem.rdf'
+		),
+		'classLoaderPackages' => array( 
+			dirname(__FILE__).'/actions/',
+			dirname(__FILE__).'/helpers/'
+		 )
+	)
+);
 ?>
