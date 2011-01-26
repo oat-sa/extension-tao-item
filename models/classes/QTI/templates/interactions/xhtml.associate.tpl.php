@@ -1,4 +1,4 @@
-<div id="<?=$identifier?>" class="qti_widget qti_<?=$_type?>_interaction">
+<div id="<?=$identifier?>" class="qti_widget qti_<?=$_type?>_interaction <?=$class?>">
 	<div class="qti_<?=$_type?>_container">
 		<?if(!empty($prompt)):?>
 	    	<p class="prompt"><?=$prompt?></p>

@@ -1,4 +1,4 @@
-<select id="<?=$identifier?>" name="<?=$identifier?>" class="qti_<?=$_type?>_interaction">
+<select id="<?=$identifier?>" name="<?=$identifier?>" class="qti_<?=$_type?>_interaction <?=$class?>">
 	<?=$data?>
 </select>
 <script type="text/javascript">

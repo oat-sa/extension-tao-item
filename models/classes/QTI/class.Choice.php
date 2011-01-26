@@ -101,6 +101,7 @@ class taoItems_models_classes_QTI_Choice
         	'type'			=> $this->type,
         	'data'			=> $this->data,
         	'options'		=> $this->options,
+        	'class'			=> (isset($this->options['class'])) ? $this->options['class'] : '',
         	'rowOptions'	=> json_encode($this->options)
         );
 		

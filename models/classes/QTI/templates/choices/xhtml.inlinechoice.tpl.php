@@ -1,1 +1,1 @@
-<option value="<?=$identifier?>"><?=$data?></option>
+<option value="<?=$identifier?>" class="<?=$class?>"><?=$data?></option>

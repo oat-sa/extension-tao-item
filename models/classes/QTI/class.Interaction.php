@@ -765,6 +765,11 @@ class taoItems_models_classes_QTI_Interaction
         $variables 	= $this->extractVariables();
         $variables['rowOptions'] = json_encode($this->options);
         
+        $variables['class'] = '';
+        if(isset($this->options['class'])){
+        	$variables['class'] = $this->options['class'];
+        }
+        
 		//change from camelCase to underscore_case the type of the interaction to be used in the JS
 		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
 		
