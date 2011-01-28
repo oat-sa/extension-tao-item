@@ -95,7 +95,6 @@ $(document).ready(function(){
 	$myTab = $("#tabs-qti");
 	$myTab.tabs({
 	   select: function(event, ui) {
-			CL('tab index', ui.index);
 			if(ui.index == 0){
 				//reload the item editor:
 				// if(confirm('save?')){

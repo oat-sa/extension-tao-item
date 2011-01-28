@@ -80,7 +80,15 @@ div.xhtml_form div div.wysiwyg iframe, div.xhtml_form div div.wysiwyg iframe htm
 
 div.wysiwyg iframe.wysiwyg-item{ 
 	width: 100%;
+	min-height: 500px;
 	height: 100%;
+	margin: 4px 0 0;
+}
+
+div.wysiwyg iframe.wysiwyg-interaction{ 
+	width: 100%;
+	min-height: 100px;
+	height: 150px;
 	margin: 4px 0 0;
 }
 

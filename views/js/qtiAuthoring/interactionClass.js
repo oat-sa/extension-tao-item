@@ -927,6 +927,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	}
 	
 	this.interactionEditor = $(this.interactionDataContainer).wysiwyg({
+		iFrameClass: 'wysiwyg-interaction',
 		css: options.css,
 		controls: controls,
 		gridComplete: this.bindChoiceLinkListener,
@@ -998,19 +999,7 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 }
 		
 		
-		
-interactionClass.prototype.saveInteractionData = function(interactionSerial){
-	// if(!interactionSerial){
-		// if(interactionEdit.interactionSerial){
-			// var interactionSerial = interactionEdit.interactionSerial;
-		// }else{
-			// throw 'no interaction serial found to save the data from';
-			// return false;
-		// }
-		
-	// }
-	
-	var interactionSerial = this.interactionSerial;
+interactionClass.prototype.saveInteractionData = function(){
 	
 	if(this.interactionDataContainer){
 		if($(this.interactionDataContainer).length && this.interactionEditor.length){
@@ -1020,11 +1009,11 @@ interactionClass.prototype.saveInteractionData = function(interactionSerial){
 			   url: "/taoItems/QtiAuthoring/saveInteractionData",
 			   data: {
 					'interactionData': this.interactionEditor.wysiwyg('getContent'),
-					'interactionSerial': interactionSerial
+					'interactionSerial': this.interactionSerial
 			   },
 			   dataType: 'json',
 			   success: function(r){
-					CL('interaction data saved');
+					createInfoMessage(__('Interaction data saved.'));
 			   }
 			});
 			
