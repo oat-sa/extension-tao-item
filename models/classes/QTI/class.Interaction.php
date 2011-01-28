@@ -890,6 +890,7 @@ class taoItems_models_classes_QTI_Interaction
 			$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toQti(), $variables['data']);
 		}
 		
+		//object tag used in the graphic interactions
 		if(count($this->object) > 0){
 			(isset($this->object['_alt'])) ? $_alt = $this->object['_alt'] : $_alt = '';
 			$objectAttributes = '';
@@ -897,6 +898,9 @@ class taoItems_models_classes_QTI_Interaction
 				if($key != '_alt'){
 					$objectAttributes .= "{$key} = '{$value}' ";
 				}
+			}
+			if(!isset($this->object['type'])){
+				$objectAttributes.= " type='' ";	//type attr mandatory
 			}
 			$variables['object_alt'] = $_alt;
 			$variables['objectAttributes'] = $objectAttributes;

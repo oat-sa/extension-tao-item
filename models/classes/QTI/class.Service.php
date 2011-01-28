@@ -166,7 +166,7 @@ class taoItems_models_classes_QTI_Service
 				
 				$returnValue = $qtiParser->load();
 			}catch(Exception $e){
-				throw new Exception("Unable to load file ${file}.");
+				throw new Exception("Unable to load file ${file} caused  by " . $e->getMessage());
 			}
 		}
         
