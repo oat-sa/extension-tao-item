@@ -37,14 +37,15 @@
 				<br/>
 				<a href="#"><?=__('Preview')?></a>
 			</div>
-			
-			<div id="qtiAuthoring_item_editor_button" class="qti-menu-item">
-				<img title="<?=__('Return to item editor')?>" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
-				<br/>
-				<a href="#"><?=__('Item Editor')?></a>
-			</div>
 		</div>
 		<div id="qtiAuthoring_menu_right_container" class="">
+			<div id="qtiAuthoring_item_editor_button" class="qti-menu-item qti-menu-item-wide">
+				<img title="<?=__('Return to item editor')?>" src="<?=get_data('qtiAuthoring_img_path')?>return.png"/>
+				<br/>
+				<a href="#"><?=__('Return to item editor')?></a>
+			</div>
+			<div id="qtiAuthoring_menu_interactions" class="">
+			</div>
 		</div>
 	</div>
 	
@@ -199,7 +200,7 @@ $(document).ready(function(){
 		$menuItem = $('<div/>');
 		$menuItem.attr('id', id);
 		$menuItem.addClass('qti-menu-item');
-		$menuItem.appendTo($('#qtiAuthoring_menu_right_container'));
+		$menuItem.appendTo($('#qtiAuthoring_menu_interactions'));
 		
 		var label = interactionTypes[interactionType].label;
 		$imgElt = $('<img/>');

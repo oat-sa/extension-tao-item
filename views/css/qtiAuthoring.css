@@ -41,6 +41,9 @@ div.qti-menu-item a{
 div.qti-menu-item:hover a, div.qti-menu-item a:hover{
 	color:#FF8C8C;
 }
+div.qti-menu-item-wide{
+	width: 100px;
+}
 
 #tabs-qti{padding:0px;border:0 none;}
 

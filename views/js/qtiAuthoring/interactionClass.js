@@ -72,10 +72,10 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 		$(".interaction-form-submitter").click();
 		if($myTab) $myTab.tabs("select" , 0);
 		$(this).hide();
-		$('#qtiAuthoring_menu_right_container').show();
+		$('#qtiAuthoring_menu_interactions').show();
 	}).show();
 	
-	$('#qtiAuthoring_menu_right_container').hide();
+	$('#qtiAuthoring_menu_interactions').hide();
 }
 
 interactionClass.prototype.saveModifiedChoices = function(){

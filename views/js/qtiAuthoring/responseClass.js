@@ -368,7 +368,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	
 	this.resizeGrid();
 	$(window).unbind('resize').bind('resize', function(){
-		response.resizeGrid();
+		if($(response.responseFormContainer).is(":visible")){
+			response.resizeGrid();
+		}
 	});
 			
 	return this;
