@@ -67,7 +67,29 @@ class taoItems_actions_QTIform_interaction_SliderInteraction
     public function initElements()
     {
         // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F77 begin
-        // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F77 end
+		parent::setCommonElements();
+		$interaction = $this->getInteraction();
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($interaction, 'lowerBound', __('Lower bound')));//mendatory 0
+        $this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($interaction, 'upperBound', __('Upper bound')));//mendatory 10
+        $this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($interaction, 'step', __('Step')));
+        $this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($interaction, 'stepLabel', __('Step label display')));//false
+		
+		$orientationElt = tao_helpers_form_FormFactory::getElement('orientation', 'Combobox');
+		$orientationElt->setDescription(__('Orientation'));
+		$orientationElt->setOptions(array(
+			'vertical' => __('vertical'),
+			'horizontal' => __('horizontal')
+		));
+		$orientation = $interaction->getOption('orientation');
+		if(!empty($orientation)){
+			if($orientation === 'vertical' || $orientation === 'horizontal'){
+				$orientationElt->setValue($orientation);
+			}
+		}
+		$this->form->addElement($orientationElt);
+
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createBooleanElement($interaction, 'reverse', __('Reverse rendering')));//false		
+		// section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F77 end
     }
 
 } /* end of class taoItems_actions_QTIform_interaction_SliderInteraction */

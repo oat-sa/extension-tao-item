@@ -68,6 +68,13 @@ class taoItems_actions_QTIform_interaction_PositionobjectInteraction
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050B5 begin
 		parent::setCommonElements();
+		$this->form->addElement(taoItems_actions_QTIform_AssessmentItem::createTextboxElement($this->getInteraction(), 'maxChoices', __('Maximum number of choices')));
+        
+		//object???
+		
+		//centre point???
+		
+		
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050B5 end
     }
 
