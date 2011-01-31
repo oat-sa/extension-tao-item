@@ -367,18 +367,17 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	this.fixedColumn = fixedColumn;
 	
 	this.resizeGrid();
-	$(window).unbind('resize').bind('resize', function(){
-		if($(response.responseFormContainer).is(":visible")){
-			response.resizeGrid();
-		}
-	});
+	var resizeFunction = function(){
+		if(response) response.resizeGrid();
+	}
+	$(window).unbind('resize', resizeFunction).bind('resize', resizeFunction);
 			
 	return this;
 }
 
 responseClass.prototype.resizeGrid = function(){
 	if(this.myGrid){
-		if(this.myGrid.length){
+		if(this.myGrid.length && $(this.responseFormContainer).is(":visible")){
 			this.myGrid.jqGrid('setGridWidth', $('#qtiAuthoring_responseEditor').width()-10);
 		}
 	}

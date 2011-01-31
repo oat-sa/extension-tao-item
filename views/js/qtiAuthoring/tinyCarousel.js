@@ -1,5 +1,5 @@
 tinyCarousel.instances = [];
-function tinyCarousel(container, content, next, prev, total){
+function tinyCarousel(container, content, next, prev, options){
 
 	// var defaultOptions = {
 		// total:<?=$total?>,
@@ -12,29 +12,58 @@ function tinyCarousel(container, content, next, prev, total){
 	// };
 	
 	this.current = 0;
-	this.total = parseInt(total);
+	this.options = options;
+	// this.total = parseInt(total);
 	this.container = container;
 	this.content = content;
+	
+	//count the number of elements in container:
+	var total = null;
+	if(!total){
+		this.total = $(this.content).children('div').length;
+		if(this.total){
+			var $refElt = $($(this.content).children('div')[0]);
+			this.stepWidth = parseInt($refElt.width()); 
+			// this.stepWidth += parseInt($refElt.css('border-left')); 
+			// this.stepWidth += parseInt($refElt.css('border-right')); 
+			this.stepWidth += parseInt($refElt.css('padding-left'));
+			this.stepWidth += parseInt($refElt.css('padding-right'));
+			// this.stepWidth += parseInt($refElt.css('margin-left'));
+			// this.stepWidth += parseInt($refElt.css('margin-right'));
+				
+			this.contentWidth = this.total * this.stepWidth;
+			
+			$(this.content).width(this.contentWidth);
+			$(this.container).css('overflow', 'hidden');
+		}
+	}else{
+		this.total = total;
+	}
+	
+	
+	
 	this.nextButton = next;
 	this.prevButton = prev;
 	var self = this;
 	$(this.prevButton).click(function(){
 		self.prev();
-	}).hide();
+	}).css('visibility', 'hidden');
 	
 	$(this.nextButton).click(function(){
 		self.next();
-	}).hide();
+	}).css('visibility', 'hidden');
 	
 	// this.options = defaultOptions;
 	this.init = function(){
 		this.contentWidth = $(this.content).width();
 		this.containerWidth = $(this.container).width();
 		if(this.contentWidth && this.containerWidth){
-			this.stepWidth = this.contentWidth/this.total;
+		
+			if(!this.stepWidth) this.stepWidth = this.contentWidth/this.total;
+			
 			// Math.round
 			if(this.contentWidth > this.containerWidth){
-				$(this.nextButton).show();
+				$(this.nextButton).css('visibility', 'visible');
 			}
 			
 		}
@@ -67,24 +96,21 @@ function tinyCarousel(container, content, next, prev, total){
 	}
 	
 	this.updateButtonVisibility = function(){
-		console.log(this);
+		
 		var extraSteps = ($(this.content).width()-$(this.container).width())/this.stepWidth;
-		console.log('remain', extraSteps);
+				
 		if(this.current >= this.total - extraSteps){
-			$(this.nextButton).hide();
+			$(this.nextButton).css('visibility', 'hidden');
 		}else{
-			$(this.nextButton).show();
+			$(this.nextButton).css('visibility', 'visible');
 		}
 		
 		if(this.current <= 0){
-			$(this.prevButton).hide();
+			$(this.prevButton).css('visibility', 'hidden');
 		}else{
-			$(this.prevButton).show();
+			$(this.prevButton).css('visibility', 'visible');
 		}
 	}
-	
-	//'resize', self.update
-	// 
 	
 	this.init();
 	tinyCarousel.instances[this.container] = this;

@@ -1,6 +1,7 @@
 <!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>firebug-lite/build/firebug-lite.js"></script>
 <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>tinyCarousel.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionClass.js"></script>
@@ -44,7 +45,17 @@
 				<br/>
 				<a href="#"><?=__('Return to item editor')?></a>
 			</div>
-			<div id="qtiAuthoring_menu_interactions" class="">
+			
+			<div id="qtiAuthoring_menu_interactions">
+				<div id ="qti-carousel-prev" class="qti-carousel-button">
+					<img id="qti-carousel-prev-button" title="<?=__('Prev')?>" src="<?=get_data('qtiAuthoring_img_path')?>go-previous-view.png"/>
+				</div>
+				<div id ="qti-carousel-container">
+					<div id ="qti-carousel-content"/>
+				</div>
+				<div id ="qti-carousel-next" class="qti-carousel-button">
+					<img id="qti-carousel-next-button" title="<?=__('Next')?>" src="<?=get_data('qtiAuthoring_img_path')?>go-next-view.png"/>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -200,7 +211,7 @@ $(document).ready(function(){
 		$menuItem = $('<div/>');
 		$menuItem.attr('id', id);
 		$menuItem.addClass('qti-menu-item');
-		$menuItem.appendTo($('#qtiAuthoring_menu_interactions'));
+		$menuItem.appendTo($('#qti-carousel-content'));
 		
 		var label = interactionTypes[interactionType].label;
 		$imgElt = $('<img/>');
@@ -215,6 +226,12 @@ $(document).ready(function(){
 			$('#qtiAuthoring_itemEditor').find('li.'+e.data.id).click();
 		});
 	}
+	
+	//init interactions button carousel:
+	var qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
+	$(window).unbind('resize').resize(function(){
+		qtiInteractionCarousel.update();
+	});
 	
 	setTimeout(function(){
 		$('#qtiAuthoring_loading').hide();

@@ -23,6 +23,7 @@
 	left:25%;
 	height:98%;
 	padding:0px;
+	width: 75%;
 }
 
 div.qti-menu-item{
@@ -44,6 +45,13 @@ div.qti-menu-item:hover a, div.qti-menu-item a:hover{
 div.qti-menu-item-wide{
 	width: 100px;
 }
+
+#qti-carousel-prev{float:left;}
+#qti-carousel-next{float:right;}
+#qti-carousel-container{float:left;width:95%;}
+div.qti-carousel-button {height:100%;width:2%;}
+div.qti-carousel-button img{top:23px; cursor:pointer; position:relative;}
+
 
 #tabs-qti{padding:0px;border:0 none;}
 
