@@ -30,7 +30,7 @@ function tinyCarousel(container, content, next, prev, options){
 			this.stepWidth += parseInt($refElt.css('padding-right'));
 			// this.stepWidth += parseInt($refElt.css('margin-left'));
 			// this.stepWidth += parseInt($refElt.css('margin-right'));
-				
+						
 			this.contentWidth = this.total * this.stepWidth;
 			
 			$(this.content).width(this.contentWidth);
@@ -62,9 +62,10 @@ function tinyCarousel(container, content, next, prev, options){
 			if(!this.stepWidth) this.stepWidth = this.contentWidth/this.total;
 			
 			// Math.round
-			if(this.contentWidth > this.containerWidth){
-				$(this.nextButton).css('visibility', 'visible');
-			}
+			// if(this.contentWidth > this.containerWidth){
+				// $(this.nextButton).css('visibility', 'visible');
+			// }
+			this.updateButtonVisibility();
 			
 		}
 	}	
@@ -75,7 +76,9 @@ function tinyCarousel(container, content, next, prev, options){
 			this.updateButtonVisibility();
 			
 			if(this.stepWidth){
-				var newMarginLeft = parseInt($(this.content).css('margin-left'))+this.stepWidth;
+				var currentMarginLeft = parseInt($(this.content).css('margin-left'));
+				if(!currentMarginLeft) currentMarginLeft = 0;
+				var newMarginLeft = currentMarginLeft + this.stepWidth;
 				$(this.content).css('margin-left', parseInt(newMarginLeft)+'px');
 			}
 			
@@ -88,7 +91,9 @@ function tinyCarousel(container, content, next, prev, options){
 			this.updateButtonVisibility();
 			
 			if(this.stepWidth){
-				var newMarginLeft = parseInt($(this.content).css('margin-left'))-this.stepWidth;
+				var currentMarginLeft = parseInt($(this.content).css('margin-left'));
+				if(!currentMarginLeft) currentMarginLeft = 0;
+				var newMarginLeft = currentMarginLeft - this.stepWidth;
 				$(this.content).css('margin-left', parseInt(newMarginLeft)+'px');
 			}
 			
@@ -99,7 +104,7 @@ function tinyCarousel(container, content, next, prev, options){
 		
 		var extraSteps = ($(this.content).width()-$(this.container).width())/this.stepWidth;
 				
-		if(this.current >= this.total - extraSteps){
+		if(this.current >= extraSteps){
 			$(this.nextButton).css('visibility', 'hidden');
 		}else{
 			$(this.nextButton).css('visibility', 'visible');

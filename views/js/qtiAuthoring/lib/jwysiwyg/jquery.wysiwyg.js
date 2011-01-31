@@ -798,12 +798,12 @@
                                 if (newX === 0 && element.cols)
                                 {
                                         newX = (element.cols * 8) + 21;
-										element.cols = 0;
+										element.cols = 1;
                                 }
                                 if (newY === 0 && element.rows)
                                 {
                                         newY = (element.rows * 16) + 16;
-										element.rows = 0;
+										element.rows = 1;
                                 }
                                 this.editor = $(location.protocol == 'https:' ? '<iframe src="javascript:false;"></iframe>' : '<iframe></iframe>').attr('frameborder', '0');
 								if (options.iFrameClass)

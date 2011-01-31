@@ -64,7 +64,12 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 				if(r.maxChoices) response.maxChoices = r.maxChoices;
 					
 				if(r.displayGrid){
-					response.buildGrid(tableElementId, r);
+					try{
+						response.buildGrid(tableElementId, r);
+					}catch(err){
+						// alert('Building response grid exception: '+err);
+						CL('Building response grid exception: '+err);
+					}
 				}
 				
 				if(r.setResponseMappingMode){
@@ -218,7 +223,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	var pagerId = tableElementId + '_pager';
 	var $myGridElt = $("#"+tableElementId);
 	$myGridElt.after('<div id="' + pagerId + '"/>');
-	
+	 
 	var response = this;
 	var gridOptions = {
 		url: "/taoItems/QtiAuthoring/saveResponse",
@@ -236,8 +241,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		caption: __("Responses Editor"),
 		gridComplete: function(){
 			response.resizeGrid();
-			$(window).unbind('resize').bind('resize', function(){
-				response.resizeGrid();
+			$(window).bind('resize', function(e){
+				e.preventDefault();
+				if(response) response.resizeGrid();
 			});
 		},
 		onSelectRow: function(id){
@@ -251,9 +257,12 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		gridOptions.shrinkToFit = false;
 		gridOptions.autowidth = true;
 	}
-		
-	this.myGrid = $myGridElt.jqGrid(gridOptions);
 	
+	try{	
+		this.myGrid = $myGridElt.jqGrid(gridOptions);
+	}catch(err){
+		throw 'jgGrid constructor exception: '+err;
+	}
 	var interactionSerial = this.interactionSerial;
 	
 	
@@ -304,73 +313,80 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		};
 	}
 	navGridParam = $.extend(navGridParam, navGridParamOptions, navGridParamDefault);
-	
-	this.myGrid.jqGrid('navGrid', '#'+pagerId, navGridParam); 
-	
-	
-	if(fixedColumn.name && fixedColumn.values){
-		//there is a column that have fixed values, so only keep rows that has the fixed value:
-		for(var i=0; i<fixedColumn.values.length; i++){
-		
-			var theValue = fixedColumn.values[i];
+	try{
+		this.myGrid.jqGrid('navGrid', '#'+pagerId, navGridParam); 
+	}catch(err){
+		throw 'jgGrid navigator constructor exception: '+err;
+	}
+	 
+	try{
+		if(fixedColumn.name && fixedColumn.values){
+			//there is a column that have fixed values, so only keep rows that has the fixed value:
+			for(var i=0; i<fixedColumn.values.length; i++){
 			
-			//find the corresponding row with such a value
-			var theRow = null;
-			for(var j=0; j<serverResponse.data.length; j++){
-				var aRow = serverResponse.data[j];
-				if(aRow[fixedColumn.name] == theValue){
-					theRow = aRow;
-					break;
-				}
-			}
-			
-			if(!theRow){
-				theRow = new Object();
-				//create the default row from the column model:
-				for(var k=0; k<serverResponse.colModel.length; k++){
-					var colElt = serverResponse.colModel[k];
-					var val = null;
-					if(colElt.name == fixedColumn.name){
-						val = theValue;
-					}else if(colElt.values){
-						switch(colElt.edittype){
-							case 'checkbox':{
-								val = colElt.values[1];//take the "false" variable
-								break;
-							}
-							case 'select':{
-								for(var key in colElt.values){
-									val = colElt.values[key];
-									break;
-								}
-								break;
-							}
-						}
-					}else{
-						val = '';
+				var theValue = fixedColumn.values[i];
+				
+				//find the corresponding row with such a value
+				var theRow = null;
+				for(var j=0; j<serverResponse.data.length; j++){
+					var aRow = serverResponse.data[j];
+					if(aRow[fixedColumn.name] == theValue){
+						theRow = aRow;
+						break;
 					}
-					theRow[colElt.name] = val;
 				}
 				
+				if(!theRow){
+					theRow = new Object();
+					//create the default row from the column model:
+					for(var k=0; k<serverResponse.colModel.length; k++){
+						var colElt = serverResponse.colModel[k];
+						var val = null;
+						if(colElt.name == fixedColumn.name){
+							val = theValue;
+						}else if(colElt.values){
+							switch(colElt.edittype){
+								case 'checkbox':{
+									val = colElt.values[1];//take the "false" variable
+									break;
+								}
+								case 'select':{
+									for(var key in colElt.values){
+										val = colElt.values[key];
+										break;
+									}
+									break;
+								}
+							}
+						}else{
+							val = '';
+						}
+						theRow[colElt.name] = val;
+					}
+					
+				}
+				
+				//add row:
+				this.myGrid.jqGrid('addRowData', i, theRow);	
 			}
-			
-			//add row:
-			this.myGrid.jqGrid('addRowData', i, theRow);	
+		}else{
+			//insert all row in it:
+			for(var j=0; j<serverResponse.data.length; j++){
+				this.myGrid.jqGrid('addRowData', j, serverResponse.data[j]);	
+			}
 		}
-	}else{
-		//insert all row in it:
-		for(var j=0; j<serverResponse.data.length; j++){
-			this.myGrid.jqGrid('addRowData', j, serverResponse.data[j]);	
-		}
+	}
+	catch(err){
+		throw 'jgGrid adding row exception: '+err;
 	}
 	
 	this.fixedColumn = fixedColumn;
 	
-	this.resizeGrid();
-	var resizeFunction = function(){
-		if(response) response.resizeGrid();
-	}
-	$(window).unbind('resize', resizeFunction).bind('resize', resizeFunction);
+	// this.resizeGrid();
+	// $(window).bind('resize', function(e){
+		// e.preventDefault();
+		// if(response) response.resizeGrid();
+	// });
 			
 	return this;
 }

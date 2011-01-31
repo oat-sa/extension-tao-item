@@ -400,7 +400,7 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 				$(self.interactionFormContent).html(form);
 				qtiEdit.initFormElements($(self.interactionFormContent));
 				
-				position = $(self.interactionFormContent).position();
+				var position = $(self.interactionFormContent).position();
 				
 				// window.scrollTo(0, parseInt(position.top));
 				if($myTab) $myTab.tabs("select" , 1);
