@@ -594,7 +594,9 @@ class taoItems_models_classes_QTI_Interaction
 		switch(strtolower($this->type)){
 			case 'choice':
 			case 'hottext':
-			case 'hotspot':{
+			case 'hotspot':
+			case 'selectpoint':
+			case 'positionobject':{
 				$max = intval($this->getOption('maxChoices'));
 				if($numeric) $returnValue = $max;
 				else $returnValue = ($max==1)?'single':'multiple';//default=1
@@ -639,7 +641,10 @@ class taoItems_models_classes_QTI_Interaction
 				break;
 			}
 			case 'inlinechoice':
-			case 'textentry':{
+			case 'textentry':
+			case 'slider':
+			case 'upload':
+			case 'endattempt':{
 				$returnValue = ($numeric)?1:'single';
 				break;
 			}
@@ -698,6 +703,31 @@ class taoItems_models_classes_QTI_Interaction
 				}
 				break;
 			}
+			case 'slider':{
+				$returnValue = 'float';//default: float
+				$authorizedBaseType = array('integer', 'float');
+				$response = $this->getResponse();
+				if(!is_null($response)){
+					$baseType = strtolower($this->getOption('baseType'));
+					if(in_array($baseType, $authorizedBaseType)){
+						$returnValue = $baseType;
+					}
+				}
+				break;
+			}
+			case 'upload':{
+				$returnValue = 'file';
+				break;
+			}
+			case 'endattempt':{
+				$returnValue = 'boolean';
+				break;
+			}
+			case 'selectpoint':
+			case 'positionobject':{
+				$returnValue = 'point';
+				break;
+			}
 			default:{
 				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
 			}
@@ -734,7 +764,8 @@ class taoItems_models_classes_QTI_Interaction
 			'graphicassociate',
 			'graphicorder',
 			'graphicgapmatch',
-        	'upload'
+        	'upload',
+			'slider'
         ));
         
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end

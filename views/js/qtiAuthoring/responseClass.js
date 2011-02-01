@@ -40,52 +40,53 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 	this.maxChoices = null;
 	
 	if(!responseFormContainer){var responseFormContainer='#qtiAuthoring_response_formContainer';}
-	this.responseFormContainer = responseFormContainer;
 	
-	$.ajax({
-		url: "/taoItems/QtiAuthoring/editResponse",
-		type: "POST",
-		data: {
-			'interactionSerial': this.interactionSerial,
-			'itemSerial': interaction.getRelatedItem(true).itemSerial
-		},
-		dataType: 'json',
-		success: function(r){
-			if (r.ok){
-				
-				//reset the grid:
-				$('#'+tableElementId).empty();
-				
-				//set the response form if needed:
-				$(response.responseFormContainer).html(r.responseForm);
-				response.initResponseFormSubmitter();
-				
-				//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
-				if(r.maxChoices) response.maxChoices = r.maxChoices;
+	if($(responseFormContainer).length){
+		this.responseFormContainer = responseFormContainer;
+	
+		$.ajax({
+			url: "/taoItems/QtiAuthoring/editResponse",
+			type: "POST",
+			data: {
+				'interactionSerial': this.interactionSerial,
+				'itemSerial': interaction.getRelatedItem(true).itemSerial
+			},
+			dataType: 'json',
+			success: function(r){
+				if (r.ok){
 					
-				if(r.displayGrid){
-					try{
-						response.buildGrid(tableElementId, r);
-					}catch(err){
-						// alert('Building response grid exception: '+err);
-						CL('Building response grid exception: '+err);
+					//reset the grid:
+					$('#'+tableElementId).empty();
+					
+					//set the response form if needed:
+					$(response.responseFormContainer).html(r.responseForm);
+					response.initResponseFormSubmitter();
+					
+					//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
+					if(r.maxChoices) response.maxChoices = r.maxChoices;
+						
+					if(r.displayGrid){
+						try{
+							response.buildGrid(tableElementId, r);
+						}catch(err){
+							// alert('Building response grid exception: '+err);
+							CL('Building response grid exception: '+err);
+						}
 					}
-				}
-				
-				if(r.setResponseMappingMode){
-					var interaction = interactionClass.instances[response.interactionSerial];
-					if(interaction){
-						//set the response mapping mode:
-						interaction.setResponseMappingMode(r.setResponseMappingMode);
+					
+					if(r.setResponseMappingMode){
+						var interaction = interactionClass.instances[response.interactionSerial];
+						if(interaction){
+							//set the response mapping mode:
+							interaction.setResponseMappingMode(r.setResponseMappingMode);
+						}
 					}
+				}else{
+					throw 'error in loading the response editing data';
 				}
-			}else{
-				throw 'error in loading the response editing data';
 			}
-		}
-	});
-	
-	
+		});
+	}
 }
 
 responseClass.prototype.initResponseFormSubmitter = function(){
@@ -212,6 +213,12 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				fixedColumn.name = colElt.name;
 				fixedColumn.values = colElt.values;
 				
+				break;
+			}
+			case 'point':
+			case 'shape':{
+				alert('select a point or draw a shape');
+				break;
 			}
 		}
 	}

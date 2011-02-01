@@ -1,4 +1,4 @@
-<?include('form_interaction_with_choiceform.tpl');?>
+<?include('form_interaction_without_choiceform.tpl');?>
 
 <div id="qtiAuthoring_interaction_right_container">
 <?include('form_response_container.tpl');?>

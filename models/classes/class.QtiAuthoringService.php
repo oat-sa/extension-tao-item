@@ -267,13 +267,21 @@ class taoItems_models_classes_QtiAuthoringService
 					
 					break;
 				}
-				case 'textentry':
-				case 'extendedtext':
 				case 'hottext':{
 					//note: hot text interactions do not require ordered choices
 					foreach($interaction->getChoices() as $choiceId => $choice){
 						$returnValue[] = $choice;
 					}
+					break;
+				}
+				case 'textentry':
+				case 'extendedtext':
+				case 'selectpoint':
+				case 'positionobject':
+				case 'slider':
+				case 'upload':
+				case 'endattempt':{
+					//no choices allowed
 					break;
 				}
 				default:{
@@ -337,7 +345,12 @@ class taoItems_models_classes_QtiAuthoringService
 			'hotspot',
 			'graphicorder',
 			'graphicassociate',
-			'graphicgapmatch'
+			'graphicgapmatch',
+			'selectpoint',
+			'positionobject',
+			'upload',
+			'slider',
+			'endattempt'
 		);
 		
 		if(!is_null($item) && in_array(strtolower($interactionType), $authorizedInteractions)){
@@ -382,7 +395,9 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'hottext':
-				case 'hotspot':{
+				case 'hotspot':
+				case 'selectpoint':
+				case 'positionobject':{
 					//init mandatory attibute values:
 					$interaction->setOption('maxChoices', 1);
 					break;
@@ -394,6 +409,17 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'graphicorder':
 				case 'graphicgapmatch':{
 					//no default options required
+					break;
+				}
+				case 'slider':{
+					$interaction->setOption('lowerBound', 0);
+					$interaction->setOption('upperBound', 10);//arbitray
+					$interaction->setOption('stepLabel', false);
+					$interaction->setOption('reverse', false);
+					break;
+				}
+				case 'endattempt':{
+					$interaction->setOption('title', __('end attempt now'));
 					break;
 				}
 			}
@@ -874,7 +900,12 @@ class taoItems_models_classes_QtiAuthoringService
 				break;
 			}
 			case 'textentry':
-			case 'extendedtext':{
+			case 'extendedtext':
+			case 'slider':
+			case 'upload':
+			case 'endattempt':
+			case 'selectpoint':
+			case 'positionobject':{
 				//nothing to do related to choices
 				break;
 			}
@@ -904,7 +935,8 @@ class taoItems_models_classes_QtiAuthoringService
 				$pattern .= "(<br(.[^<]*)?>)?";
 			}
 		}
-		$pattern .= "<div(.[^<]*)?><input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";
+		/*$pattern .= "<div(.[^<]*)?><input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";*/
+		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";
 			
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
 		
@@ -1164,7 +1196,8 @@ class taoItems_models_classes_QtiAuthoringService
 				break;
 			}
 			case 'textentry':
-			case 'extendedtext':{
+			case 'extendedtext':
+			case 'slider':{
 				//values = mapping then...
 				$i = 1;
 				$editType = 'text';
@@ -1175,8 +1208,20 @@ class taoItems_models_classes_QtiAuthoringService
 				);
 				break;
 			}
+			case 'selectpoint':
+			case 'positionobject':{
+				$i = 1;
+				$editType = 'point';//or shape...???
+				$returnValue[] = array(
+					'name' => 'choice'.$i,
+					'label' => __('coordinate'),
+					'edittype' => $editType
+				);
+				break;
+			}
 			default:{
-				throw new Exception("the response column model of the {$interaction->getType()} type interaction has not been implemented yet.");
+				throw new Exception("the response column model of the interaction type {$interaction->getType()} is not applicable.");
+				//note: upload and endattempt interactions have no response content
 			}
 			
 		}
@@ -1304,7 +1349,10 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'inlinechoice':
 				case 'hottext':
 				case 'extendedtext':
-				case 'hotspot':{
+				case 'hotspot':
+				case 'textentry':
+				case 'slider':{
+				
 					foreach($responseData as $response){
 						$response = (array)$response;
 						//if required identifier not empty:
@@ -1412,26 +1460,6 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 					break;
 				}
-				case 'textentry':{
-					//there can only be one correct response:
-					foreach($responseData as $response){
-						$response = (array)$response;
-						//if required identifier not empty:
-						if(!empty($response['choice1'])){
-							//record directly the string from $response['choice1']
-								$responseValue = $response['choice1'];
-								
-								if($response['correct'] === 'yes' || $response['correct'] === true){
-									$correctResponses[0] = $responseValue;//there can only be one correct response...
-								}
-								if(!empty($response['score'])){
-									//0 is considered as empty:
-									$mapping[$responseValue] = $response['score'];//float
-								}
-						}
-					}
-					break;
-				}
 				default:{
 					throw new Exception('invalid interaction type for response saving');
 				}
@@ -1445,6 +1473,7 @@ class taoItems_models_classes_QtiAuthoringService
 			//set the required cardinality and basetype attributes:
 			$this->updateInteractionResponseOptions($interaction);
 			
+			var_dump($interactionResponse);
 			$returnValue = true;
 		}
 		return $returnValue;
@@ -1502,13 +1531,11 @@ class taoItems_models_classes_QtiAuthoringService
 					//note 2: there is no possible direct score mapping against correct response order: as a consequence, only the response tlp match can work for the time being
 				}
 				
-				
-				//case of mapping here:
-				
 				break;
 			}
 			case 'textentry':
-			case 'extendedtext':{
+			case 'extendedtext':
+			case 'slider':{
 				if(!empty($correctResponses)){
 					foreach($correctResponses as $response){
 						

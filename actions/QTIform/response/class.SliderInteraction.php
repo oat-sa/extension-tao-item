@@ -65,6 +65,24 @@ class taoItems_actions_QTIform_response_SliderInteraction
     public function initElements()
     {
         // section 10-13-1-39--1553ee98:12ddcd3839e:-8000:000000000000300E begin
+		parent::setCommonElements();
+		
+		$baseTypeElt = tao_helpers_form_FormFactory::getElement('baseType', 'Radiobox');
+		$baseTypeElt->setDescription(__('Response variable type'));
+		$options = array(
+			'integer' => __('Integer'),
+			'float' => __('Float')
+		);
+		$baseTypeElt->setOptions($options);
+		$baseType = $this->response->getOption('baseType');
+		if(!empty($baseType)){
+			if(in_array($baseType, array_keys($options))){
+				$baseTypeElt->setValue($baseType);
+			}else{
+				$baseTypeElt->setValue('integer');
+			}
+		}
+		$this->form->addElement($baseTypeElt);
         // section 10-13-1-39--1553ee98:12ddcd3839e:-8000:000000000000300E end
     }
 

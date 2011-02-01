@@ -1,5 +1,4 @@
 // alert('qtiEdit loaded');
-// alert('t1');
 
 qtiEdit.instances = [];
 
@@ -165,13 +164,63 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 	
 	var addGraphicGapMatchInteraction = {
-		visible : false,
+		visible : true,
 		className: 'add_graphicgapmatch_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
 			instance.addInteraction('graphicGapMatch', this.getContent(), instance.itemSerial);
 		},
 		tooltip: 'add hot spot interaction'
+	};
+	
+	var addSelectPointInteraction = {
+		visible : true,
+		className: 'add_selectpoint_interaction',
+		exec: function(){
+			this.insertHtml("{qti_interaction_new}");
+			instance.addInteraction('selectPoint', this.getContent(), instance.itemSerial);
+		},
+		tooltip: 'add select point interaction'
+	};
+	
+	var addPositionObjectInteraction = {
+		visible : true,
+		className: 'add_positionobject_interaction',
+		exec: function(){
+			this.insertHtml("{qti_interaction_new}");
+			instance.addInteraction('positionObject', this.getContent(), instance.itemSerial);
+		},
+		tooltip: 'add position object interaction'
+	};
+	
+	var addSliderInteraction = {
+		visible : true,
+		className: 'add_slider_interaction',
+		exec: function(){
+			this.insertHtml("{qti_interaction_new}");
+			instance.addInteraction('slider', this.getContent(), instance.itemSerial);
+		},
+		tooltip: 'add slider interaction'
+	};
+	
+	var addUploadInteraction = {
+		visible : true,
+		className: 'add_fileupload_interaction',
+		exec: function(){
+			this.insertHtml("{qti_interaction_new}");
+			instance.addInteraction('upload', this.getContent(), instance.itemSerial);
+		},
+		tooltip: 'add file upload interaction'
+	};
+	
+	var addEndAttemptInteraction = {
+		visible : true,
+		className: 'add_endattempt_interaction',
+		exec: function(){
+			this.insertHtml("{qti_interaction_new}");
+			instance.addInteraction('endAttempt', this.getContent(), instance.itemSerial);
+		},
+		tooltip: 'add end attempt interaction'
 	};
 	
 	var saveItemData = {
@@ -253,6 +302,11 @@ function qtiEdit(itemSerial, formContainers, options){
 		  addGraphicOrderInteraction: addGraphicOrderInteraction,
 		  addGraphicAssociateInteraction: addGraphicAssociateInteraction,
 		  addGraphicGapMatchInteraction: addGraphicGapMatchInteraction,
+		  addSelectPointInteraction: addSelectPointInteraction,
+		  addPositionObjectInteraction: addPositionObjectInteraction,
+		  addSliderInteraction: addSliderInteraction,
+		  addUploadInteraction: addUploadInteraction,
+		  addEndAttemptInteraction: addEndAttemptInteraction,
 		  saveItemData: saveItemData
 		},
 		events: {
