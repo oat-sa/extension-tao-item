@@ -42,14 +42,6 @@
 		</location>
 	</service>
 	<service>
-		<name>Item full editor</name>
-		<description>Full edit form: edit item properties and preview item</description>
-		<location url="/taoItems/SaSItems/editItem">
-			<param key="uri" value="^itemUri" />
-			<param key="classUri" value="^itemClassUri" />
-		</location>
-	</service>
-	<service>
 		<name>Item class editor</name>
 		<description>Edit a Item (sub)class: add/edit/delete class properties</description>
 		<location url="/taoItems/SaSItems/editItemClass">
