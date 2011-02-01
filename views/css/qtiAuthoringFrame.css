@@ -1,6 +1,11 @@
+body.wysiwyg{
+	margin: 5px 2px;
+}
+
 input{
 	cursor: pointer;
 }
+
 div.qti_interaction_block{
 	display:block;
 	width:99%;
@@ -10,6 +15,7 @@ div.qti_interaction_block{
 	margin:auto;
 	padding-top:10px;
 	position:relative;
+	cursor: default;
 }
 
 div.qti_interaction_inline{
@@ -19,6 +25,7 @@ div.qti_interaction_inline{
 	margin:none;
 	padding:2px 1px 2px 1px;
 	position:relative;
+	cursor: default;
 }
 
 div.qti_interaction_block input.qti_interaction_link{
@@ -43,5 +50,11 @@ div.qti_interaction_block span.qti_interaction_box_delete {
 
 div.qti_choice_box {
 	display:inline;
+	text-align:center;
+	border: solid #009933 2px;
+	margin:none;
+	padding:2px 1px 2px 1px;
+	position:relative;
+	cursor: pointer;
 }
 /*div.qti_interaction_block span.qti_interaction_box_delete {margin-right: 10px;}*/

@@ -380,7 +380,22 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 
 qtiEdit.makeNoEditable = function($DOMelement){
 	if($DOMelement.length){
-		$DOMelement[0].contenteditable = 'false';
+		// $DOMelement[0].contenteditable = 'false';
+		
+		$DOMelement.focus(function(e){
+			//CL('try removing focus');
+			if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+			$(this).blur();
+		});
+		
+		$DOMelement.keydown(function(){
+			//CL('key downed');
+		});
+		$DOMelement.bind('mousedown contextmenu keypress keydown', function(e){
+			//CL(e);
+			if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+			return false;
+		});
 	}
 }
 

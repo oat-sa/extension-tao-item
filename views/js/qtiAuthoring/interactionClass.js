@@ -930,31 +930,29 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 		iFrameClass: 'wysiwyg-interaction',
 		css: options.css,
 		controls: controls,
-		gridComplete: this.bindChoiceLinkListener,
 		events: {
-		  keyup : function(e){
-			if(interaction.getDeletedChoices(true).length > 0){
-				if(!confirm('please confirm deletion of the choice(s)')){
-					// undo:
-					interaction.interactionEditor.wysiwyg('undo');
-				}else{
-					var deletedChoices = interaction.getDeletedChoices();
-					for(var key in deletedChoices){
-						//delete choices one by one:
-						interaction.deleteChoice(deletedChoices[key]);
+			keyup : function(e){
+				if(interaction.getDeletedChoices(true).length > 0){
+					if(!confirm('please confirm deletion of the choice(s)')){
+						// undo:
+						interaction.interactionEditor.wysiwyg('undo');
+					}else{
+						var deletedChoices = interaction.getDeletedChoices();
+						for(var key in deletedChoices){
+							//delete choices one by one:
+							interaction.deleteChoice(deletedChoices[key]);
+						}
 					}
+					return false;
 				}
-				return false;
+			},
+			frameReady: function(editorDoc){
+				interaction.bindChoiceLinkListener();
+				editorDoc.body.focus();
 			}
-		  },
-		  frameReady: function(editorDoc){
-			interaction.bindChoiceLinkListener();
-		  }
 		}
 	});
 	
-	//the binding require the modified html data to be ready
-	setTimeout(function(){interaction.bindChoiceLinkListener();},1000);
 }
 
 
@@ -1050,7 +1048,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	   url: "/taoItems/QtiAuthoring/addHotText",
 	   data: {
 			'interactionSerial': interactionSerial,
-			'interactionData': interactionData
+			'interactionData': util.htmlEncode(interaction.interactionEditor.wysiwyg('getContent'))
 	   },
 	   dataType: 'json',
 	   success: function(r){
@@ -1140,6 +1138,9 @@ interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 	
 	}
 	
+	//get directly interaction data from the editor:
+	var interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
+	
 	if(this.choiceAutoSave){
 		this.saveModifiedChoices();
 		
@@ -1161,7 +1162,7 @@ interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 }
 
 interactionClass.prototype.bindChoiceLinkListener = function(){
-	
+		
 	//destroy all listeners:
 	
 	//reset the choice array:
@@ -1182,6 +1183,12 @@ interactionClass.prototype.bindChoiceLinkListener = function(){
 			// CL('highlighting the choice', $(this).attr('id'));
 		});
 		
+		qtiEdit.makeNoEditable(links[i]);
+		// CL("links[i].parent('div')", links[i].parent('div'));
+		qtiEdit.makeNoEditable(links[i].parent('div'));
+		links[i].parent('div').click(function(e){
+			e.preventDefault();
+		});
 	}
 	
 }

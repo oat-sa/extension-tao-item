@@ -41,7 +41,7 @@ $(document).ready(function(){
 			className: 'addInteraction',
 			exec: function(){
 				this.insertHtml('{qti_gap_new}');
-				myInteraction.addGroup(this.getContent());
+				myInteraction.addGroup();
 			},
 			tooltip: 'add a gap'
 		};

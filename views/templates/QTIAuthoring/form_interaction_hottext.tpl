@@ -42,7 +42,7 @@ $(document).ready(function(){
 			className: 'addInteraction',
 			exec: function(){
 				this.insertHtml('{qti_hottext_new}');
-				myInteraction.addHotText(this.getContent());
+				myInteraction.addHotText();
 			},
 			tags: ['a'],
 			tooltip: 'set hotText'
