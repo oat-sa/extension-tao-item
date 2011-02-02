@@ -122,6 +122,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$currentItem = $this->getCurrentItem();
 		if($this->debugMode) var_dump($currentItem);
+		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
@@ -605,7 +606,9 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			}
 			case 'hotspot':
 			case 'graphicorder':
-			case 'graphicassociate':{
+			case 'graphicassociate':
+			case 'selectpoint':
+			case 'positionobject':{
 				$object = $interaction->getObject();
 				
 				$bgImagePath = '';

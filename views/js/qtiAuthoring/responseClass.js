@@ -1,4 +1,4 @@
-// alert('response edit loaded');
+alert('response edit loaded');
 
 //customized unload function:
 $.jgrid.GridUnload = function(){
@@ -377,10 +377,22 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				this.myGrid.jqGrid('addRowData', i, theRow);	
 			}
 		}else{
+			var interaction = interactionClass.instances[response.interactionSerial];
+			
 			//insert all row in it:
-			for(var j=0; j<serverResponse.data.length; j++){
-				this.myGrid.jqGrid('addRowData', j, serverResponse.data[j]);	
+			var dataLength = serverResponse.data.length
+			for(var j=0; j<dataLength; j++){
+				var data = serverResponse.data[j];
+				this.myGrid.jqGrid('addRowData', j, data);
+				
+				if(interaction && data.shape && data.coordinates){
+					var shapeId = j+'_shape';
+					interaction.shapeEditor.createShape(shapeId, 'qti', {data: data.coordinates, shape: data.shape});
+					interaction.shapeEditor.exportShapeToCanvas(shapeId);
+				}	
 			}
+			
+			
 		}
 	}
 	catch(err){
@@ -429,7 +441,88 @@ responseClass.prototype.editGridRow = function(rowId){
 			'editRow',
 			id,
 			true,
-			null, 
+			function(id){
+				if(id>=0){
+					//for select point and position object interaction only:
+					var editingRow = response.myGrid.jqGrid('getRowData', id);
+					if(response.currentRowData && editingRow.shape && editingRow.coordinates){
+					
+						var shapeId = id+'_shape';
+						var $shapeElt = response.myGrid.find('#'+shapeId);
+						var $coordElt = response.myGrid.find('#'+id+'_coordinates');
+						var $correctElt = response.myGrid.find('#'+id+'_correct');
+						var interaction = interactionClass.instances[response.interactionSerial];
+						
+						$correctElt.change(function(){
+							var hideOptionFunction = function($optionElt){
+								$optionElt.hide();
+								// $optionElt.
+							}
+							var showOptionFunction = function($optionElt){
+								$optionElt.show();
+								// $optionElt.
+							}
+							if($correctElt.is(':checked')){
+								$shapeElt.val('point');
+								$shapeElt.find('option').each(function(){
+									if($(this).val() == 'point'){
+										showOptionFunction($(this));
+									}else{
+										hideOptionFunction($(this));
+									}
+								});
+							}else{
+								$shapeElt.val('circle');
+								$shapeElt.find('option').each(function(){
+									if($(this).val() == 'point'){
+										hideOptionFunction($(this));
+									}else{
+										showOptionFunction($(this));
+									}
+								});
+							}
+						}).change();
+						
+						if(interaction && $coordElt.length && $shapeElt.length){
+						
+							var shapeDrawingFunction = function(e){
+								// $(this).attr('disabled', 'disabled');
+								// e.preventDefault();
+								
+								// CL("response.myGrid.find('#'+id+'_shape')", response.myGrid.find('#'+id+'_shape'));
+								var shape = $shapeElt.val();
+								if(interaction.shapeEditor && shape){
+									interaction.shapeEditor.startDrawing(shapeId, shape);
+									interaction.shapeEditor.drawn(function(currentId, shapeObject, self){
+										//export shapeObject to qti:
+										if(currentId && shapeObject){
+											var qtiCoords = self.exportShapeToQti(currentId);
+											if(qtiCoords){
+												//update it!
+												$coordElt.val(qtiCoords);
+											}
+										}
+									});
+								}
+								
+							}
+							
+							$coordElt.bind('focus', shapeDrawingFunction);
+							$shapeElt.bind('change', shapeDrawingFunction);
+							
+							$coordElt.keyup(function(){
+								var shape = $shapeElt.val();
+								var qtiCoords = $coordElt.val();
+								if(qtiCoords && shape){
+									interaction.shapeEditor.createShape(shapeId, 'qti', {data: qtiCoords, shape: shape});
+									interaction.shapeEditor.exportShapeToCanvas(shapeId);
+								}
+							});
+						
+						}
+					}
+				}
+			}, 
 			null, 
 			'clientArray',
 			{'optionalData': null},

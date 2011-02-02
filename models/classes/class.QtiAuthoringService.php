@@ -1183,40 +1183,35 @@ class taoItems_models_classes_QtiAuthoringService
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
 				}
-				
-				$i = 1;
-				$editType = 'select';
-				$returnValue[] = array(
-					'name' => 'choice'.$i,
-					'label' => __('Choice').' '.$i,
-					'edittype' => $editType,
-					'values' => $choices
-				);
-				
+				$returnValue[] = $this->getInteractionResponseColumn(1, 'select', $choices);
 				break;
 			}
 			case 'textentry':
 			case 'extendedtext':
 			case 'slider':{
 				//values = mapping then...
-				$i = 1;
-				$editType = 'text';
-				$returnValue[] = array(
-					'name' => 'choice'.$i,
-					'label' => __('Choice').' '.$i,
-					'edittype' => $editType
-				);
+				// $i = 1;
+				// $editType = 'text';
+				// $returnValue[] = array(
+					// 'name' => 'choice'.$i,
+					// 'label' => __('Choice').' '.$i,
+					// 'edittype' => $editType
+				// );
+				$returnValue[] = $this->getInteractionResponseColumn(1, 'text');
 				break;
 			}
 			case 'selectpoint':
 			case 'positionobject':{
-				$i = 1;
-				$editType = 'point';//or shape...???
-				$returnValue[] = array(
-					'name' => 'choice'.$i,
-					'label' => __('coordinate'),
-					'edittype' => $editType
+				$selectOptions = array(
+					'point' => __('Point'),
+					'circle' => __('Circle'),
+					'ellipse' => __('Ellipse'),
+					'rect' => __('Rectangle'),
+					'poly' => __('Polygon'),
+					'default' => __('Full image')
 				);
+				$returnValue[] = $this->getInteractionResponseColumn(1, 'select', $selectOptions, array('label'=>__('Shape'), 'name'=>'shape'));
+				$returnValue[] = $this->getInteractionResponseColumn(2, 'text', null, array('label'=>__('Coordinates'), 'name'=>'coordinates'));
 				break;
 			}
 			default:{
@@ -1257,14 +1252,19 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
-	private function getInteractionResponseColumn($index, $editType, $choices, $options = array()){
+	private function getInteractionResponseColumn($index, $editType, $choices = array(), $options = array()){
 	
 		$returnValue = array();
 		
 		if(intval($index)>0 && !empty($editType)){
-		
-			$returnValue['name'] = 'choice'.intval($index);
+			
 			$returnValue['edittype'] = $editType;
+			
+			$name = 'choice'.intval($index);
+			if(isset($options['name']) && !empty($options['name'])){
+				$name = $options['name'];
+			}
+			$returnValue['name'] = $name;
 			
 			$label = __('Choice').' '.intval($index);
 			if(!empty($options)){
@@ -1274,7 +1274,7 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			$returnValue['label'] = $label;
 			
-			if(is_array($choices)){
+			if(is_array($choices) && !empty($choices)){
 				$returnValue['values'] = $choices;
 			}
 			
@@ -1343,6 +1343,7 @@ class taoItems_models_classes_QtiAuthoringService
 			//sort the key, according to the type of interaction:
 			$correctResponses = array();
 			$mapping = array();
+			$mappingType = '';
 			
 			switch(strtolower($interaction->getType())){
 				case 'choice':
@@ -1460,6 +1461,39 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 					break;
 				}
+				case 'selectpoint':
+				case 'positionobject':{
+					$mappingType = 'area';
+					foreach($responseData as $response){
+						$response = (array)$response;
+						if(!empty($response['shape']) && !empty($response['coordinates'])){
+							
+							$shape = strtolower(trim($response['shape']));
+							$coordinates = trim($response['coordinates']);
+							if(!is_null($shape) && !is_null($coordinates)){
+							
+								if(($response['correct'] == 'yes' || $response['correct'] === true) && $shape == 'point'){
+									$coords = explode($coordinates, ',');
+									if(count($coords)>=2){
+										$coords = array_map('trim', $coords);
+										$correctResponses[] = $coords[0].' '.$coords[1];
+									}
+								}
+								
+								if(!empty($response['score'])){
+									$mapping[] = array(
+										'shape' => $shape,
+										'coords' => $coordinates,
+										'mappedValue' => $response['score']
+									);
+								}
+								
+							}
+						}
+					}
+					
+					break;
+				}
 				default:{
 					throw new Exception('invalid interaction type for response saving');
 				}
@@ -1468,12 +1502,11 @@ class taoItems_models_classes_QtiAuthoringService
 			//set correct responses & mapping
 			//note: do not check if empty or not to allow erasing the values
 			$interactionResponse->setCorrectResponses($correctResponses);
-			$interactionResponse->setMapping($mapping);//method: unsetMapping + unsetCorrectResponses?
+			$interactionResponse->setMapping($mapping, $mappingType);//method: unsetMapping + unsetCorrectResponses?
 			
 			//set the required cardinality and basetype attributes:
 			$this->updateInteractionResponseOptions($interaction);
 			
-			var_dump($interactionResponse);
 			$returnValue = true;
 		}
 		return $returnValue;
@@ -1571,6 +1604,49 @@ class taoItems_models_classes_QtiAuthoringService
 					}
 				}
 				
+				break;
+			}
+			case 'selectpoint':
+			case 'positionobject':{
+				
+				if(!empty($correctResponses)){
+					foreach($correctResponses as $response){
+						
+						$response = explode(' ', $response);
+						$response = array_map('trim', $response);
+						if(count($response)==2){
+							
+							$returnValue[$i] = array(
+								'shape' => 'point',
+								'coordinates' => $response[0].', '.$response[1],
+								'correct' => 'yes'
+							);
+							
+							$i++;
+							
+							//delete exceeding correct responses (0 means infinite)
+							if($maxChoices){
+								if($i>=$maxChoices) break;
+							}
+							
+						}
+					}
+				}
+				$areaMapping = $reponse->getMapping('area');
+				if(!empty($areaMapping)){
+					foreach($areaMapping as $mapping){
+						
+						$returnValue[$i] = array(
+							'shape' => $mapping['shape'],
+							'coordinates' => $mapping['coords'],
+							'correct' => 'no',
+							'score' => $mapping['mappedValue']
+						);
+						
+						$i++;
+					}
+				}
+			
 				break;
 			}
 			default:{
