@@ -355,7 +355,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if(!is_null($item) && in_array(strtolower($interactionType), $authorizedInteractions)){
 			//create interaction:
-			$interaction = new taoItems_models_classes_QTI_Interaction($interactionType);//keep the case sensitivity here!
+			$interaction = new taoItems_models_classes_QTI_Interaction($interactionType);//keep the case here!
 			
 			//insert the required group immediately:
 			switch(strtolower($interactionType)){

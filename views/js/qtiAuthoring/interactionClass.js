@@ -617,6 +617,7 @@ interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
 interactionClass.prototype.setFormChangeListener = function(target){
 	
 	var interaction = this;
+	var $choiceForm = null;
 	
 	if(!target){
 		$choiceForm = $('form');//all forms

@@ -232,13 +232,13 @@ $(document).ready(function(){
 
 	for(interactionType in interactionTypes){
 		var id = 'add_'+interactionType+'_interaction';
-		$menuItem = $('<div/>');
+		var $menuItem = $('<div/>');
 		$menuItem.attr('id', id);
 		$menuItem.addClass('qti-menu-item');
 		$menuItem.appendTo($('#qti-carousel-content'));
 		
 		var label = interactionTypes[interactionType].label;
-		$imgElt = $('<img/>');
+		var $imgElt = $('<img/>');
 		$imgElt.attr('title', label);
 		$imgElt.attr('src', interactionTypes[interactionType].icon);
 		$menuItem.append($imgElt);
