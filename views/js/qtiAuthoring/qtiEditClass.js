@@ -494,7 +494,7 @@ qtiEdit.mapFileManagerField = function($container){
 			$(this).fmbind({type: 'image'}, function(elt, value){
 				$(elt).val(value);
 				
-				$modifiedForm = $(elt).parents('form');
+				var $modifiedForm = $(elt).parents('form');
 				if($modifiedForm.length){
 					//find the active interaction:
 					for(var itemSerial in qtiEdit.instances){

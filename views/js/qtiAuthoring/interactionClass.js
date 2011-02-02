@@ -314,7 +314,7 @@ interactionClass.prototype.loadResponseMappingForm = function(){
 		   dataType: 'html',
 		   success: function(form){
 				
-				$formContainer = $(interaction.responseMappingOptionsFormContainer);
+				var $formContainer = $(interaction.responseMappingOptionsFormContainer);
 				$formContainer.html(form);
 				if(interaction.responseMappingMode){
 					$formContainer.show();
@@ -356,7 +356,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 		   },
 		   dataType: 'html',
 		   success: function(form){
-				$formContainer = $(containerSelector);
+				var $formContainer = $(containerSelector);
 				$formContainer.html(form);
 				
 				qtiEdit.initFormElements($formContainer);
@@ -392,7 +392,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				choiceSerial = choiceSerial.replace('GroupForm_', '');
 				choiceSerial = choiceSerial.replace('ChoiceForm_', '');
 				
-				$qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial}, function(e){
+				var $qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial}, function(e){
 					var shape = $(this).val();
 					//delete old shape?
 					if(confirm(__('Changing shape type will delete the old shape, are you sure?'))){
@@ -402,7 +402,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				});
 				
 				//append the edit button:
-				$imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
+				var $imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
 				$imageLink.attr('title', __('draw it'));
 				$imageLink.css('cursor', 'pointer');
 				$imageLink.css('margin', '2px');
@@ -412,7 +412,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				});
 				
 				//check if the coords are not empty, if so, draw the shape:
-				$qtiCoordsInput = $choiceForm.find('input[name=coords]');
+				var $qtiCoordsInput = $choiceForm.find('input[name=coords]');
 				if($qtiCoordsInput.length){
 					if($qtiCoordsInput.val() && $qtiShapeCombobox.val()){
 						interaction.shapeEditor.createShape(choiceSerial, 'qti', {data:$qtiCoordsInput.val(), shape:$qtiShapeCombobox.val()});
@@ -625,7 +625,7 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		if(!$(target).length){
 			return false;
 		}else{
-			$choiceFormContainer = $(target);
+			var $choiceFormContainer = $(target);
 			if($choiceFormContainer[0].nodeName.toLowerCase() == 'form'){
 				$choiceForm = $choiceFormContainer;
 			}else{
@@ -970,7 +970,7 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 					// $('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
 					// interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
 					
-					$choiceGroupForm = $('#'+choiceSerial).find('form');
+					var $choiceGroupForm = $('#'+choiceSerial).find('form');
 					if($choiceGroupForm.length){
 						$choiceGroupForm.find('input[name=coords]').val(qtiCoords);
 						interaction.setModifiedChoicesByForm($choiceGroupForm);
