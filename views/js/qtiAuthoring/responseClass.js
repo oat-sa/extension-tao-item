@@ -286,8 +286,10 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	var navGridParamDefault = {
 		search: false,
 		afterRefresh: function(){
+			//CL('refreshing');
 			response.destroyGrid();
 			new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
+			//CL('refreshed');
 		},
 		editfunc: function(rowId){
 			response.editGridRow(rowId);
@@ -430,10 +432,10 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		this.bindShapeEventListeners();
 	}
 	// this.resizeGrid();
-	// $(window).bind('resize', function(e){
-		// e.preventDefault();
-		// if(response) response.resizeGrid();
-	// });
+	$(window).bind('resize', function(e){
+		e.preventDefault();
+		if(responseClass.grid) responseClass.grid.resizeGrid();
+	});
 			
 	return this;
 }
@@ -475,7 +477,7 @@ responseClass.prototype.destroyGrid = function(){
 }
 
 responseClass.prototype.editGridRow = function(rowId){
-	var id = rowId;
+	var id = parseInt(rowId);
 	
 	if(id>=0 && id!=='' && id!==this.currentRowId){
 		
@@ -493,7 +495,7 @@ responseClass.prototype.editGridRow = function(rowId){
 				if(id>=0){
 					//for select point and position object interaction only:
 					var editingRow = response.myGrid.jqGrid('getRowData', id);
-					if(response.currentRowData && editingRow.shape && editingRow.coordinates){
+					if(response.areaMapping && response.currentRowData && editingRow.shape && editingRow.coordinates){
 					
 						var shapeId = id+'_shape';
 						var $shapeElt = response.myGrid.find('#'+shapeId);

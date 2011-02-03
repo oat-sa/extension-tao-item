@@ -102,8 +102,8 @@ class taoItems_actions_QTIform_Mapping
 		$saveElt->setValue("<a href='#' class='form-submiter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
 		$actions[] = $saveElt;
 		
-		$this->form->setActions(array(), 'top');
-		$this->form->setActions($actions, 'bottom');
+		$this->form->setActions(array(), 'bottom');
+		$this->form->setActions($actions, 'top');
 		
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC3 end
     }

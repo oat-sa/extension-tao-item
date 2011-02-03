@@ -873,13 +873,15 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$validImageType = array(
 						'image/png',
 						'image/jpeg',
+						'image/gif',
 						'image/bmp'
 					);
 					
 					if(in_array($mimeType, $validImageType)){
 						$newGraphicObject['data'] = $imageFilePath;
 					}else{
-						$errorMessage = __('invalid image mime type for the image file '+$imageFilePath);
+						$errorMessage = __('invalid image mime type for the image file '.$imageFilePath);
+						// $saved = false;
 					}
 				}
 				$choice->setObject($newGraphicObject);
@@ -905,7 +907,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'choiceSerial' => $choice->getSerial(),
 			'identifierUpdated' => $identifierUpdated,
 			'reload' => $choiceFormReload,
-			'errorMessage' => trim($errorMessage)
+			'errorMessage' => (string)$errorMessage
 		));
 	}
 	

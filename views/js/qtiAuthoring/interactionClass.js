@@ -227,7 +227,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 						
 						//for hotspot interaction, update the input value:
 						if(_this.interactionEditor && choiceData){
-							$choiceInputs = qtiEdit.getEltInFrame('#'+choiceProperties.choiceSerial);
+							var $choiceInputs = qtiEdit.getEltInFrame('#'+choiceProperties.choiceSerial);
 							if($choiceInputs.length){
 								$choiceInputs[0].val(choiceData);
 							}
@@ -1140,7 +1140,8 @@ interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 	}
 	
 	//get directly interaction data from the editor:
-	var interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
+	var interactionData = '';
+	if(interactionData) util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
 	
 	if(this.choiceAutoSave){
 		this.saveModifiedChoices();
