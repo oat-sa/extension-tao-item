@@ -1203,12 +1203,12 @@ class taoItems_models_classes_QtiAuthoringService
 			case 'selectpoint':
 			case 'positionobject':{
 				$selectOptions = array(
-					'point' => __('Point'),
-					'circle' => __('Circle'),
-					'ellipse' => __('Ellipse'),
-					'rect' => __('Rectangle'),
-					'poly' => __('Polygon'),
-					'default' => __('Full image')
+					'point' => 'point',
+					'circle' => 'circle',
+					'ellipse' => 'ellipse',
+					'rect' => 'rect',
+					'poly' => 'poly',
+					'default' => 'default'
 				);
 				$returnValue[] = $this->getInteractionResponseColumn(1, 'select', $selectOptions, array('label'=>__('Shape'), 'name'=>'shape'));
 				$returnValue[] = $this->getInteractionResponseColumn(2, 'text', null, array('label'=>__('Coordinates'), 'name'=>'coordinates'));
@@ -1448,7 +1448,7 @@ class taoItems_models_classes_QtiAuthoringService
 							return true;
 						}
 						
-						//temporar trick to make it work until the mapping rule is done:
+						//temporary trick to make it work until the mapping rule is done:
 						/*
 						$response['correct'] = 'yes';
 						if($response['correct'] == 'yes'){
@@ -1473,7 +1473,7 @@ class taoItems_models_classes_QtiAuthoringService
 							if(!is_null($shape) && !is_null($coordinates)){
 							
 								if(($response['correct'] == 'yes' || $response['correct'] === true) && $shape == 'point'){
-									$coords = explode($coordinates, ',');
+									$coords = explode(',', $coordinates);
 									if(count($coords)>=2){
 										$coords = array_map('trim', $coords);
 										$correctResponses[] = $coords[0].' '.$coords[1];
@@ -1491,7 +1491,6 @@ class taoItems_models_classes_QtiAuthoringService
 							}
 						}
 					}
-					
 					break;
 				}
 				default:{

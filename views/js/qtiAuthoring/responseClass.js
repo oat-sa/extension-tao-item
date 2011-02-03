@@ -1,4 +1,4 @@
-alert('response edit loaded');
+// alert('response edit loaded');
 
 //customized unload function:
 $.jgrid.GridUnload = function(){
@@ -126,6 +126,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 }
 
 responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
+	
 	// CD(serverResponse, 'response:');
 	
 	//firstly, get the column models, from the interactionSerial:
@@ -158,6 +159,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		colModel[i].name = colElt.name;
 		colModel[i].index = colElt.name;
 		colModel[i].editable = true;//all field is editable by default (except "fixed" column and id)
+		if(colElt.name == 'shape'){
+			this.areaMapping = true;
+		}
 		
 		switch(colElt.edittype){
 			case 'checkbox':{
@@ -215,11 +219,6 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				
 				break;
 			}
-			case 'point':
-			case 'shape':{
-				alert('select a point or draw a shape');
-				break;
-			}
 		}
 	}
 	
@@ -254,9 +253,16 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 			});
 		},
 		onSelectRow: function(id){
+			response.test = 'test1'
+			// CD(response, 'selet row and editing');
+			
 			response.editGridRow(id);
+			
+			
+			// CD(response, 'after response');
 		}
 	};
+	
 	
 	this.interactionType = serverResponse.interactionType;
 	if(serverResponse.interactionType == 'order' || serverResponse.interactionType == 'graphicorder'){
@@ -304,6 +310,10 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 					//disable row adding:
 					response.disableRowAdding();
 				}
+				
+				if(response.areaMapping){
+					response.bindShapeEventListeners();
+				}
 			},
 			delfunc: function(rowId){
 				if(confirm(__("Do you really want to delete the row?"))){
@@ -325,7 +335,20 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	}catch(err){
 		throw 'jgGrid navigator constructor exception: '+err;
 	}
-	 
+	
+	var interaction = null;
+	
+	if(this.areaMapping){
+		interaction = interactionClass.instances[response.interactionSerial];
+		
+		//detroy all shapes
+		if(interaction && interaction.shapeEditor){
+			for(shapeId in interaction.shapeEditor.shapes){
+				interaction.shapeEditor.removeShapeObj(shapeId);
+			}
+		}
+	}	
+	
 	try{
 		if(fixedColumn.name && fixedColumn.values){
 			//there is a column that have fixed values, so only keep rows that has the fixed value:
@@ -377,7 +400,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				this.myGrid.jqGrid('addRowData', i, theRow);	
 			}
 		}else{
-			var interaction = interactionClass.instances[response.interactionSerial];
+			
 			
 			//insert all row in it:
 			var dataLength = serverResponse.data.length
@@ -385,11 +408,13 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 				var data = serverResponse.data[j];
 				this.myGrid.jqGrid('addRowData', j, data);
 				
-				if(interaction && data.shape && data.coordinates){
+				if(this.areaMapping && interaction && data.shape && data.coordinates && interaction.shapeEditor){
 					var shapeId = j+'_shape';
 					interaction.shapeEditor.createShape(shapeId, 'qti', {data: data.coordinates, shape: data.shape});
 					interaction.shapeEditor.exportShapeToCanvas(shapeId);
-				}	
+				}else{
+					if(this.areaMapping) throw 'wrong response data format for area mapping';
+				}
 			}
 			
 			
@@ -401,6 +426,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	
 	this.fixedColumn = fixedColumn;
 	
+	if(this.areaMapping){
+		this.bindShapeEventListeners();
+	}
 	// this.resizeGrid();
 	// $(window).bind('resize', function(e){
 		// e.preventDefault();
@@ -408,6 +436,21 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	// });
 			
 	return this;
+}
+
+responseClass.prototype.bindShapeEventListeners = function(){
+	if(this.areaMapping){
+		var interaction = interactionClass.instances[this.interactionSerial];
+		if(interaction){
+			this.myGrid.find('tr').unbind('mouseenter mouseleave').hover(function(){
+				interaction.shapeEditor.hoverIn($(this).attr('id')+'_shape');
+			},function(){
+				interaction.shapeEditor.hoverOut($(this).attr('id')+'_shape');
+			});
+		}
+	}
+	
+	
 }
 
 responseClass.prototype.resizeGrid = function(){
@@ -433,10 +476,15 @@ responseClass.prototype.destroyGrid = function(){
 
 responseClass.prototype.editGridRow = function(rowId){
 	var id = rowId;
-	var response = this;
+	
 	if(id>=0 && id!=='' && id!==this.currentRowId){
-		this.myGrid.jqGrid('restoreRow',this.currentRowId);
+		
+		// this.myGrid.jqGrid('restoreRow',this.currentRowId);//restore the previously edited row
+		this.restoreCurrentRow(this.currentRowId);
+		
 		this.currentRowData = this.myGrid.jqGrid('getRowData', id);
+		
+		var response = this;
 		this.myGrid.jqGrid(
 			'editRow',
 			id,
@@ -451,64 +499,85 @@ responseClass.prototype.editGridRow = function(rowId){
 						var $shapeElt = response.myGrid.find('#'+shapeId);
 						var $coordElt = response.myGrid.find('#'+id+'_coordinates');
 						var $correctElt = response.myGrid.find('#'+id+'_correct');
+						var $scoreElt = response.myGrid.find('#'+id+'_score');
 						var interaction = interactionClass.instances[response.interactionSerial];
 						
-						$correctElt.change(function(){
-							var hideOptionFunction = function($optionElt){
-								$optionElt.hide();
-								// $optionElt.
-							}
-							var showOptionFunction = function($optionElt){
-								$optionElt.show();
-								// $optionElt.
-							}
-							if($correctElt.is(':checked')){
-								$shapeElt.val('point');
-								$shapeElt.find('option').each(function(){
-									if($(this).val() == 'point'){
-										showOptionFunction($(this));
-									}else{
-										hideOptionFunction($(this));
-									}
-								});
-							}else{
-								$shapeElt.val('circle');
-								$shapeElt.find('option').each(function(){
-									if($(this).val() == 'point'){
-										hideOptionFunction($(this));
-									}else{
-										showOptionFunction($(this));
-									}
-								});
-							}
-						}).change();
-						
 						if(interaction && $coordElt.length && $shapeElt.length){
-						
+							
+							interaction.shapeEditor.drawn(function(currentId, shapeObject, self){
+								//export shapeObject to qti:
+								// CD(shapeObject, 'drawn');
+								if(currentId && shapeObject){
+									var qtiCoords = self.exportShapeToQti(currentId);
+									if(qtiCoords){
+										//update it!
+										$coordElt.val(qtiCoords);
+									}
+								}
+							});
+									
 							var shapeDrawingFunction = function(e){
 								// $(this).attr('disabled', 'disabled');
 								// e.preventDefault();
 								
-								// CL("response.myGrid.find('#'+id+'_shape')", response.myGrid.find('#'+id+'_shape'));
 								var shape = $shapeElt.val();
 								if(interaction.shapeEditor && shape){
 									interaction.shapeEditor.startDrawing(shapeId, shape);
-									interaction.shapeEditor.drawn(function(currentId, shapeObject, self){
-										//export shapeObject to qti:
-										if(currentId && shapeObject){
-											var qtiCoords = self.exportShapeToQti(currentId);
-											if(qtiCoords){
-												//update it!
-												$coordElt.val(qtiCoords);
-											}
-										}
-									});
 								}
 								
 							}
 							
+							var correctCheckedFunction = function(){
+								var hideOptionFunction = function($optionElt){
+									$optionElt.hide();
+									// $optionElt.
+								}
+								var showOptionFunction = function($optionElt){
+									$optionElt.show();
+									// $optionElt.
+								}
+								
+								if($correctElt.is(':checked')){
+									$shapeElt.val('point');
+									$shapeElt.find('option').each(function(){
+										if($(this).val() == 'point'){
+											showOptionFunction($(this));
+										}else{
+											hideOptionFunction($(this));
+										}
+									});
+									$scoreElt.val('').attr('disabled', 'disabled');
+								}else{
+									$shapeElt.val('circle');
+									$shapeElt.find('option').each(function(){
+										if($(this).val() == 'point'){
+											hideOptionFunction($(this));
+										}else{
+											showOptionFunction($(this));
+										}
+									});
+									$scoreElt.removeAttr('disabled');
+								}
+								
+							}
+							
+							$correctElt.change(function(){
+								$coordElt.val('');
+								interaction.shapeEditor.removeShapeObj(shapeId);
+								correctCheckedFunction();
+								shapeDrawingFunction();
+							});
+							
+							//execute the function immediately to allow immediate drawing capability
+							correctCheckedFunction();
+							shapeDrawingFunction();
+								
 							$coordElt.bind('focus', shapeDrawingFunction);
-							$shapeElt.bind('change', shapeDrawingFunction);
+							$shapeElt.bind('change', function(){
+								$coordElt.val('');
+								interaction.shapeEditor.removeShapeObj(shapeId);
+								shapeDrawingFunction();
+							});
 							
 							$coordElt.keyup(function(){
 								var shape = $shapeElt.val();
@@ -554,11 +623,16 @@ responseClass.prototype.editGridRow = function(rowId){
 				response.restoreCurrentRow();
 			},
 			null,
-			function(){
-				response.restoreCurrentRow();
+			function(rowId){
+				// CD(response, 'after response 1');
+				response.restoreCurrentRow(rowId);
+				// CD(response, 'after response 2');
 			}
 		); 
 		response.currentRowId = id;
+		response.bbb = 'CCC';
+		this.currentRowId = id;
+		// CD(this, 'this');
 		
 		//add listener to the input row: on click row...
 		// $('#qtiAuthoring_response_grid')
@@ -576,11 +650,30 @@ responseClass.prototype.getUniqueRowId = function(){
 	return responseData.length;
 }
 
-responseClass.prototype.restoreCurrentRow = function(){
-	if(this.currentRowId >= 0){
-		this.myGrid.jqGrid('restoreRow', this.currentRowId);
+responseClass.prototype.restoreCurrentRow = function(rowId){
+	// CL('try restoring row', this.currentRowId);
+	
+	if(parseInt(this.currentRowId) >= 0){
+		
+		if(!rowId) rowId = this.currentRowId;
+		this.myGrid.jqGrid('restoreRow', rowId);
+		
+		var currentRowData = this.myGrid.jqGrid('getRowData', rowId);
+		//redraw the shape here!
+		if(currentRowData.shape && currentRowData.coordinates){
+			var interaction = interactionClass.instances[this.interactionSerial];
+			if(interaction){
+				var shapeId = rowId+'_shape';
+				interaction.shapeEditor.createShape(shapeId, 'qti', {data: currentRowData.coordinates, shape: currentRowData.shape});
+				interaction.shapeEditor.exportShapeToCanvas(shapeId);
+			}
+		}
+		
 		this.myGrid.jqGrid('resetSelection');
-		this.currentRowId = -1;
+		this.currentRowId = -2;
+		
+	}else{
+		// CL('restoring failed');
 	}
 }
 
