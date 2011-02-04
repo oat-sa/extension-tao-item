@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Items Controller provide actions performed from url resolution
  * 
@@ -577,14 +576,19 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 					throw new Exception('Unauthorized path '.$path);
 				}
 				
+				
+				
 				$folder 	= $this->service->getItemFolder($item);
 				$resource 	= tao_helpers_File::concat(array($folder, $path));
 				if(file_exists($resource)){
+					
 					$mimeType = tao_helpers_File::getMimeType($resource);
+					
 					//allow only images, video and flash
 					if(preg_match("/^(image|video|application\/x-shockwave-flash)/", $mimeType)){
-						$this->setContentHeader($mimeType);
-						print file_get_contents($resource);
+						
+						header("Content-Type: $mimeType; charset utf-8");
+						print trim(file_get_contents($resource));
 					}
 				}
 			}
