@@ -1767,6 +1767,7 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = $data;
 		
 		if(!empty($data)){
+			$data = str_replace('&', '&amp;', $data);
 			try{//Parse data and replace img src by the media service URL
 				$updated = false;
 				$doc = new DOMDocument;

@@ -189,6 +189,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		if(!empty($itemData)){
 			//save item data:
+		
 			$this->service->saveItemData($itemObject, $itemData);
 			//save to qti:
 		}
@@ -255,6 +256,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				),
 				'UTF8'
 			);
+			
+			
 		}else{
 			if($required){
 				throw new Exception('the request data "'.$key.'" cannot be found');
@@ -767,13 +770,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					unset($values['object_data']);
 				}
 				$interaction->setObject($newGraphicObject);
-				
-				//hottext and gapmatch interaction:
-				$data = '';
-				if($this->hasRequestParameter('data')){//the content "data" is not included in the interacion form but with the wysiwyg editor so need to get it this way
-					$data = urldecode($this->getRequestParameter('data'));
-				}
-				
+												
 				unset($values['interactionSerial']);
 				
 				
@@ -815,7 +812,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					}
 					
 				}
-				$this->service->setInteractionData($interaction, $data, $choiceOrder);
+				$this->service->setInteractionData($interaction, $this->getPostedInteractionData(), $choiceOrder);
 				
 				$saved  = true;
 			}

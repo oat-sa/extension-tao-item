@@ -431,7 +431,8 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	if(this.areaMapping){
 		this.bindShapeEventListeners();
 	}
-	// this.resizeGrid();
+	
+	this.resizeGrid();
 	$(window).bind('resize', function(e){
 		e.preventDefault();
 		if(responseClass.grid) responseClass.grid.resizeGrid();

@@ -137,7 +137,7 @@ interactionClass.prototype.saveInteraction = function($myForm){
 		if(this.interactionDataContainer){
 			if($(this.interactionDataContainer).length && this.interactionEditor.length){
 				//there is a wysiwyg editor that contains the interaciton data:
-				interactionProperties.data = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
+				interactionProperties.interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
 			}
 		}
 		
@@ -1012,7 +1012,7 @@ interactionClass.prototype.saveInteractionData = function(){
 			   type: "POST",
 			   url: "/taoItems/QtiAuthoring/saveInteractionData",
 			   data: {
-					'interactionData': this.interactionEditor.wysiwyg('getContent'),
+					'interactionData': util.htmlEncode(this.interactionEditor.wysiwyg('getContent')),
 					'interactionSerial': this.interactionSerial
 			   },
 			   dataType: 'json',
