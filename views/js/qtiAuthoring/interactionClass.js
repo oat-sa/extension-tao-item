@@ -903,6 +903,11 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	  addGraphicOrderInteraction: {visible:false},
 	  addGraphicAssociateInteraction: {visible:false},
 	  addGraphicGapMatchInteraction: {visible:false},
+	  addSelectPointInteraction: {visible:false},
+	  addPositionObjectInteraction: {visible:false},
+	  addSliderInteraction: {visible:false},
+	  addUploadInteraction: {visible:false},
+	  addEndAttemptInteraction: {visible:false},
 	  createHotText: {visible:false},
 	  createGap: {visible:false},
 	  saveItemData: {visible:false},
@@ -1141,7 +1146,7 @@ interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 	
 	//get directly interaction data from the editor:
 	var interactionData = '';
-	if(interactionData) util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
+	if(this.interactionEditor) interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
 	
 	if(this.choiceAutoSave){
 		this.saveModifiedChoices();
