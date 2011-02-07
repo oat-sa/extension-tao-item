@@ -31,6 +31,7 @@ $todefine = array(
 	'TAO_ITEM_MODEL_STATUS_STABLE' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable',
 	'TAO_ITEM_MODEL_STATUS_DEPRECATED'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated',
 	'TAO_ITEM_MODEL_STATUS_DEV' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment',
-	'TAO_ITEM_MODEL_STATUS_EXPERIMENTAL'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental'
+	'TAO_ITEM_MODEL_STATUS_EXPERIMENTAL'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental',
+	'TAO_ITEM_EXPORTERS_DIR'	=> BASE_PATH.'/models/ext/itemExport'
 );
 ?>

@@ -1795,27 +1795,11 @@ class taoItems_models_classes_QtiAuthoringService
 					$returnValue = $doc->saveHTML();
 				}
 			}
-			catch(DOMException $de){
-				// print $de;
+			catch(DOMException $de){ 
+				//we render it anyway
 			}	
 		}
 		
-		/*$matches = array();
-		$pattern = "/<img[^>]+>/i";
-		if(preg_match_all($pattern, $returnValue, $matches) > 0){
-			print "<pre>";print_r($matches);print "</pre>";
-			
-			$pattern = "/(src|data)\S?=\S?(['\"]+[^'\"]+['\"]+)+/i";
-			if(isset($matches[5])){
-				
-				foreach($matches[5] as $i => $src){
-					if(!preg_match("/^http/", trim($src))){
-						$url =  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode(trim($src))));
-						$returnValue = str_replace($matches[3][$i], "{$matches[4][$i]}='{$url}'", $returnValue);
-					}
-				}
-			}
-		}*/
 		
 		return $returnValue;
 	}

@@ -48,54 +48,63 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 					throw new Exception('Unauthorized file name');
 				}
 				
-				$zipAchive = new ZipArchive();
-				if($zipAchive->open($path, ZipArchive::CREATE) !== true){
+				$zipArchive = new ZipArchive();
+				if($zipArchive->open($path, ZipArchive::CREATE) !== true){
 					throw new Exception('Unable to create archive at '.$path);
 				}
+				
 				foreach($instances as $instance){
 					$item = $itemService->getItem($instance);
-					$folder = $itemService->getItemFolder($item);
+					$className = $this->loadItemExporter($item);
 					
-					$this->addFolder($zipAchive, $folder, basename($folder));
+					$exporter = new $className($item, $zipArchive);
+					$exporter->export();
 				}
 				
-				$zipAchive->close();
+				$zipArchive->close();
 			}
 		}
 	}
 	
 	/**
-	 * Utility function to add recursively a folder to an archive, 
-	 * 
-	 * @see ItemExport::exportXMlData
-	 * @param ZipArchive $zipAchive
-	 * @param string $folder
-	 * @param string $relPath
-	 * @return boolean
+	 * Load the ItemExporter class related to the model of a given Item. For instance, if you provide
+	 * an $item with a item model named 'myItemModel', this method will try to load the class
+	 * taoItems/models/ext/ItemExporter/class.myItemModel.php and add it to the global
+	 * class loader.
+	 *
+	 * @param core_kernel_classes_Resource $item The item for which you want to load the ItemExporter.
+	 * @return string the class name of the loaded ItemExporter.
 	 */
-	private function addFolder(ZipArchive $zipAchive, $folder, $relPath){
-		
-		$done = 0;
-		
-		$content = scandir($folder);
-		foreach($content as $file){
-			if(!preg_match("/^\./", $file)){
-				$filePath = tao_helpers_File::concat(array($folder, $file));
-				$fileRelPath = tao_helpers_File::concat(array($relPath, $file));
-				if(is_dir($filePath)){
-					if($zipAchive->addEmptyDir($filePath, $fileRelPath)){
-						$done++;
-					}
-					$this->addFolder($zipAchive, $filePath, $fileRelPath);
-				}
-				else{
-					if($zipAchive->addFile($filePath, $fileRelPath)){
-						$done++;
-					}
-				}
+	private function loadItemExporter(core_kernel_classes_Resource $item) {
+		$returnValue = null;
+	
+		// Try to load a class into the Exporters directory. If it cannot be loaded, load the default one.
+		// An item exporter class name is directly related to its item model label in the knwoledge base. If they are spaces (' '),
+		// it should be replaced by *nothing* in the class name. e.g. 'My Item Model' becomes 'MyItemModel'. The class name and file
+		// must be suffixed by ItemExporter. For a QTI Item Model we would have:
+		// - file name: class.QTIItemExporter.php
+		// - class name: QTIItemExporter
+		$itemService = tao_models_classes_ServiceFactory::get('Items');
+		$itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
+
+		try {
+			$itemModel = $item->getUniquePropertyValue($itemModelProperty);
+
+			// As a reminder, str_replace is UTF-8 safe !
+			$itemModelLabel = $itemModel->getLabel();
+			$expectedClassName = 'taoItems_models_classes_exporter_'.str_replace(' ', '', $itemModelLabel) . 'ItemExporter';
+			
+			if (!class_exists($expectedClassName, true)) {
+				throw new Exception ("No custom Item Exporter for '${itemModelLabel}' Item Model.");
 			}
 		}
-		return (count($content == $done));
+		catch (Exception $e) {
+			$expectedClassName = 'taoItems_models_classes_exporter_DefaultItemExporter';
+		}
+		
+		$returnValue = $expectedClassName;
+		
+		return $returnValue;
 	}
 }
 ?>
