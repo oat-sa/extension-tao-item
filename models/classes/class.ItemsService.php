@@ -541,7 +541,17 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F3 begin
         
     	if(!is_null($item)){
-			$returnValue = !is_null($item->getOnePropertyValue($this->itemModelProperty));
+    		
+    		$model = $item->getOnePropertyValue($this->itemModelProperty);
+    	 	if ($model instanceof core_kernel_classes_Literal){
+    			if(strlen((string)$model) > 0){
+    				$returnValue = true;
+    			}
+    		}
+    		else if(!is_null($model)){
+				$returnValue = true;
+    		}
+    		
 		}
         
         // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F3 end

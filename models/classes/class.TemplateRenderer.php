@@ -144,6 +144,11 @@ class taoItems_models_classes_TemplateRenderer
         $returnValue = ob_get_contents();
         
         ob_end_clean();
+        
+        //clean the extracted variables
+        foreach(array_merge($this->variables, self::$context) as $key => $name){
+        	unset($$key);
+        }
        
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A5 end
 

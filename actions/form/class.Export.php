@@ -140,6 +140,7 @@ class taoItems_actions_form_Export
     	
     	$instanceElt = tao_helpers_form_FormFactory::getElement('instances', 'Checkbox');
     	$instanceElt->setDescription(__('Items'));
+    	$instanceElt->setAttribute('checkAll', true);
 		$instanceElt->setOptions(tao_helpers_Uri::encodeArray($options, tao_helpers_Uri::ENCODE_ARRAY_KEYS));
     	foreach(array_keys($options) as $value){
 			$instanceElt->setValue($value);
@@ -153,7 +154,7 @@ class taoItems_actions_form_Export
 		$nameElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
     	$this->form->addElement($nameElt);
     	
-    	$this->form->createGroup('options', __('Export Options'), array('xml_desc','instances', 'name'));
+    	$this->form->createGroup('options', __('Export Options'), array('xml_desc','instances'));
     	
         // section 127-0-1-1-70b2308e:12ca2398ae8:-8000:000000000000293C end
     }
