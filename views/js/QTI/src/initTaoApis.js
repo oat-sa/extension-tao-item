@@ -7,7 +7,7 @@
  * @package taoItems
  * @requires jquery {@link http://www.jquery.com}
  */
-$(document).ready(function(){
+$(window).load(function(){
 
 	var matchingParam 	= new Object();
 	var responseToId	= new Object();

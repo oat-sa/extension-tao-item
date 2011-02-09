@@ -425,7 +425,7 @@ var QTIWidget = function(options){
 					var oppositeId = opposite.attr('id').replace('pair_', '');
 					if(_matchGroup.length > 0){ 
 						if($.inArray(oppositeId, _matchGroup) < 0){
-							$(this).effect("highlight", {color:'#B02222'}, 2000);
+							$(this).effect("highlight", {color:'#B02222'}, 1000);
 							return false;
 						}
 					}
@@ -433,7 +433,7 @@ var QTIWidget = function(options){
 					var _oppositeMatchGroup = _this.opts["matchMaxes"][oppositeId]["matchGroup"];
 					if(_oppositeMatchGroup.length > 0){
 						if($.inArray(draggedId, _oppositeMatchGroup) < 0){
-							$(this).effect("highlight", {color:'#B02222'}, 2000);
+							$(this).effect("highlight", {color:'#B02222'}, 1000);
 							return false;
 						}
 					}
@@ -787,7 +787,7 @@ var QTIWidget = function(options){
 				///if the matchGroup of the choice is defined and not found we cancel the drop 
 				if(_matchGroup.length > 0){
 					if($.inArray($(this).attr('id'), _matchGroup) < 0){
-						$(this).effect("highlight", {color:'#B02222'}, 2000);
+						$(this).effect("highlight", {color:'#B02222'}, 1000);
 						return false;
 					}
 				}
@@ -796,7 +796,7 @@ var QTIWidget = function(options){
 				var _gapMatchGroup = _this.opts["matchMaxes"][$(this).attr('id')]["matchGroup"];
 				if(_gapMatchGroup.length > 0){
 					if($.inArray(draggedId, _gapMatchGroup) < 0){
-						$(this).effect("highlight", {color:'#B02222'}, 2000);
+						$(this).effect("highlight", {color:'#B02222'}, 1000);
 						return false;
 					}
 				}
