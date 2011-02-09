@@ -16,18 +16,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 	public function __construct(){
 		parent::__construct();
 		
-		$data = array();
-		if($this->hasRequestParameter('classUri')){
-			if(trim($this->getRequestParameter('classUri')) != ''){
-				$data['class'] = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getRequestParameter('classUri')));
-			}
-		}
-		if($this->hasRequestParameter('uri') && $this->hasRequestParameter('classUri')){
-			if(trim($this->getRequestParameter('uri')) != ''){
-				$data['item'] = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
-			}
-		}
-		$this->formContainer = new taoItems_actions_form_Export($data);
+		$this->formContainer = new taoItems_actions_form_Export($this->formData);
 	}
 	
 	/**

@@ -75,25 +75,6 @@ class taoItems_actions_form_Export
         
     	parent::initElements();
     	
-    	if(isset($this->data['item'])){
-    		$item = $this->data['item'];
-    		if($item instanceof core_kernel_classes_Resource){
-				//add an hidden elt for the instance Uri
-				$uriElt = tao_helpers_form_FormFactory::getElement('uri', 'Hidden');
-				$uriElt->setValue($item->uriResource);
-				$this->form->addElement($uriElt);
-    		}	
-    	}
-    	if(isset($this->data['class'])){
-    		$class = $this->data['class'];
-    		if($class instanceof core_kernel_classes_Class){
-    			//add an hidden elt for the class uri
-				$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');
-				$classUriElt->setValue($class->uriResource);
-				$this->form->addElement($classUriElt);
-    		}	
-    	}
-    	
         // section 127-0-1-1-2c41a4d:12ca27f7d37:-8000:0000000000002921 end
     }
 
@@ -112,8 +93,8 @@ class taoItems_actions_form_Export
 		
 		$fileName = '';
     	$options = array();
-    	if(isset($this->data['item'])){
-    		$item = $this->data['item'];
+    	if(isset($this->data['instance'])){
+    		$item = $this->data['instance'];
     		if($item instanceof core_kernel_classes_Resource){
     			$fileName = strtolower(tao_helpers_Display::textCleaner($item->getLabel()));
     			$options[$item->uriResource] = $item->getLabel();
@@ -137,6 +118,13 @@ class taoItems_actions_form_Export
     	$descElt = tao_helpers_form_FormFactory::getElement('xml_desc', 'Label');
 		$descElt->setValue(__("Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"));
 		$this->form->addElement($descElt);
+		
+		$nameElt = tao_helpers_form_FormFactory::getElement('filename', 'Textbox');
+		$nameElt->setDescription(__('File name'));
+		$nameElt->setValue($fileName);
+		$nameElt->setUnit(".zip");
+		$nameElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+    	$this->form->addElement($nameElt);
     	
     	$instanceElt = tao_helpers_form_FormFactory::getElement('instances', 'Checkbox');
     	$instanceElt->setDescription(__('Items'));
@@ -147,14 +135,9 @@ class taoItems_actions_form_Export
 		}
 		$this->form->addElement($instanceElt);
 		
-    	$nameElt = tao_helpers_form_FormFactory::getElement('filename', 'Textbox');
-		$nameElt->setDescription(__('File name'));
-		$nameElt->setValue($fileName);
-		$nameElt->setUnit(".zip");
-		$nameElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
-    	$this->form->addElement($nameElt);
     	
-    	$this->form->createGroup('options', __('Export Options'), array('xml_desc','instances'));
+    	
+    	$this->form->createGroup('options', __('Export Options'), array('xml_desc', 'filename', 'instances'));
     	
         // section 127-0-1-1-70b2308e:12ca2398ae8:-8000:000000000000293C end
     }
