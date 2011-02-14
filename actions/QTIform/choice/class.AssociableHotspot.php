@@ -92,7 +92,13 @@ class taoItems_actions_QTIform_choice_AssociableHotspot
 		$coordsElt->setValue($this->choice->getOption('coords'));
 		$this->form->addElement($coordsElt);
 		
-		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('hotspotLabel', 'fixed', 'matchGroup'));
+		$matchMaxElt = tao_helpers_form_FormFactory::getElement('matchMax', 'Textbox');
+		$matchMaxElt->setDescription(__('Maximal number of matching'));
+		$matchMax = (string) $this->choice->getOption('matchMax');
+		$matchMaxElt->setValue($matchMax);
+		$this->form->addElement($matchMaxElt);
+		
+		$this->form->createGroup('choicePropOptions_'.$this->choice->getSerial(), __('Advanced properties'), array('hotspotLabel', 'fixed', 'matchMax', 'matchGroup'));
 	
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005053 end
     }
@@ -110,9 +116,21 @@ class taoItems_actions_QTIform_choice_AssociableHotspot
 
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005055 begin
 		
-		foreach($this->interaction->getChoices() as $choice){
-			$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
+		switch(strtolower($this->interaction->getType())){
+			case 'graphicassociate':{
+				foreach($this->interaction->getChoices() as $choice){
+					$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
+				}
+				break;
+			}
+			case 'graphicgapmatch':{
+				foreach($this->interaction->getGroups() as $group){
+					$returnValue[$group->getIdentifier()] = $group->getIdentifier();
+				}
+				break;
+			}
 		}
+		
 		
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005055 end
 

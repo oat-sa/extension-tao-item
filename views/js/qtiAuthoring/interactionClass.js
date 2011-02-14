@@ -292,6 +292,10 @@ interactionClass.prototype.saveGroup = function($groupForm){
 						new responseClass(interaction.responseGrid, interaction);
 					}
 					
+					if(r.errorMessage){
+						createErrorMessage(r.errorMessage);
+					}
+					
 				}
 		   }
 		});
@@ -954,7 +958,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 			},
 			frameReady: function(editorDoc){
 				interaction.bindChoiceLinkListener();
-				editorDoc.body.focus();
+				// editorDoc.body.focus();
 			}
 		}
 	});

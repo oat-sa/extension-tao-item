@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * A group is an concept to enable choice logical grouping (ordering). 
  * It use when there is distinct choices groups in an interaction.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * A choice is a kind of interaction's proposition.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  */
 require_once('taoItems/models/classes/QTI/class.Choice.php');
@@ -30,7 +30,7 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
@@ -38,7 +38,7 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * The QTI's interactions are the way the user interact with the system. The
  * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
@@ -56,7 +56,7 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  * It use when there is distinct choices groups in an interaction.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -76,13 +76,21 @@ class taoItems_models_classes_QTI_Group
      */
     protected $choices = array();
 
+    /**
+     * Short description of attribute object
+     *
+     * @access protected
+     * @var array
+     */
+    protected $object = array();
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method getChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @return array
      */
     public function getChoices()
@@ -102,7 +110,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method setChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  array choices
      * @return mixed
      */
@@ -120,7 +128,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method addChoices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  array choices
      * @return mixed
      */
@@ -146,7 +154,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method removeChoice
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @param  Choice choice
      * @return boolean
      */
@@ -178,7 +186,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @return string
      */
     public function toXHTML()
@@ -212,7 +220,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @return string
      */
     public function toQTI()
@@ -260,7 +268,7 @@ class taoItems_models_classes_QTI_Group
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -280,6 +288,41 @@ class taoItems_models_classes_QTI_Group
         // section 10-13-1-39-51571c01:12b7726bac6:-8000:00000000000028D4 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method setObject
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @param  array objectData
+     * @return mixed
+     */
+    public function setObject($objectData = array())
+    {
+        // section 10-13-1-39--4576219e:12e23cf927e:-8000:0000000000003064 begin
+		foreach($objectData as $key=>$value){
+			$this->object[$key] = $value;
+		}
+        // section 10-13-1-39--4576219e:12e23cf927e:-8000:0000000000003064 end
+    }
+
+    /**
+     * Short description of method getObject
+     *
+     * @access public
+     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @return array
+     */
+    public function getObject()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--4576219e:12e23cf927e:-8000:000000000000306F begin
+		$returnValue = $this->object;
+        // section 10-13-1-39--4576219e:12e23cf927e:-8000:000000000000306F end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Group */

@@ -477,13 +477,10 @@ class taoItems_models_classes_QtiAuthoringService
 					$choiceType = 'hotspotChoice';
 					break;
 				}
-				case 'graphicassociate':{
+				case 'graphicassociate':
+				case 'graphicgapmatch':{
 					$choiceType = 'associableHotspot';
 					$matchMax = 0;
-					break;
-				}
-				case 'graphicgapmatch':{
-					$choiceType = 'gapImg';
 					break;
 				}
 				default:{
@@ -609,7 +606,7 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				case 'graphicgapmatch':{
-					$group->setType('associableHotspot');
+					$group->setType('gapImg');
 					
 					$data = $interaction->getData();
 					$data = '{'.$group->getSerial().'}'.$data;//groups are prepended to the interaction data
