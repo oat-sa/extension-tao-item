@@ -313,7 +313,7 @@ function QTIResultCollector(options){
 		for( id in orderedElts){
 			var orderedElt = orderedElts[id];
 			if(orderedElt.state != 'empty'){
-				result.value[orderedElt.order] = id;
+				result.value[parseInt(orderedElt.order)-1] = id;
 			}
 		}
 		return result;
