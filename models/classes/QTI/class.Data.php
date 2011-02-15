@@ -773,7 +773,8 @@ abstract class taoItems_models_classes_QTI_Data
         
         foreach($options as $key => $value){
         	if(is_string($value) || is_numeric($value)){
-        		$returnValue .= " $key = '$value' ";
+				// str_replace is unicode safe...
+        		$returnValue .= " $key = '" . str_replace(array('&', '<', '>', '\'', '"'), array('&amp;', '&lt;', '&gt;', '&apos;', '&quot;'), $value) . "' ";
         	}
         	if(is_bool($value)){
         		$returnValue .= " $key = '".(($value)?'true':'false')."' ";
