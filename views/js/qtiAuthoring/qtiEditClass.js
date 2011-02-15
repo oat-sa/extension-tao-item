@@ -241,7 +241,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		iFrameClass: 'wysiwyg-item',
 		controls: {
 		  strikeThrough : { visible : true },
-		  underline     : { visible : true },
+		  underline     : { visible : false },
 		  
 		  justifyLeft   : { visible : true },
 		  justifyCenter : { visible : true },

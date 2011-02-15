@@ -336,7 +336,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$interaction = $this->getCurrentInteraction();
 		if(!is_null($interaction)){
 			try{
-				//not null in case of a match, gapmatch or graphicgapmatch interaction:
+				//not null in case of a match or gapmatch interaction:
 				$group = null;
 				$group = $this->getCurrentGroup();
 			}catch(Exception $e){}
@@ -441,7 +441,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				case 'associate':
 				case 'match':
 				case 'gapmatch':
-				case 'graphicassociate':
 				case 'graphicgapmatch':{
 					$reload = true;
 					break;
@@ -748,7 +747,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					unset($values['object_height']);
 				}
 				
-				$errorMessage = '';
+				$errorMessage = '';				
 				if(isset($values['object_data'])){
 				
 					$oldObject = $interaction->getObject();
@@ -772,12 +771,10 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					unset($values['object_data']);
 				}
 				$interaction->setObject($newGraphicObject);
-				
-				if(!empty($errorMessage)) $newGraphicObject['errorMessage'] = $errorMessage;
+				if(!empty($errorMessage)) $newGraphicObject['errorMessage'] = $errorMessage;								
 				
 				unset($values['interactionSerial']);
-				
-				
+								
 				foreach($values as $key=>$value){
 					if(preg_match('/^max/', $key)){
 						if($interaction->getOption($key) != $value){
@@ -835,6 +832,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$myForm = $choice->toForm();
 		$saved = false;
 		$identifierUpdated = false;
+		$errorMessage = '';
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
@@ -854,67 +852,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$this->service->setData($choice, $this->getPostedData('data'));
 					unset($values['data']);
 				}
-				
-				
-				
-				//finally save the other options:
-				$this->service->setOptions($choice, $values);
-				
-				$saved = true;
-			}
-		}
-		
-		$choiceFormReload = false;
-		if($identifierUpdated){
-			$interaction = $this->qtiService->getComposingData($choice);
-			$choiceFormReload = $this->requireChoicesUpdate($interaction);
-			$interaction->addChoice($choice);
-			$interaction = null;
-		}
-		
-		echo json_encode(array(
-			'saved' => $saved,
-			'choiceSerial' => $choice->getSerial(),
-			'identifierUpdated' => $identifierUpdated,
-			'reload' => $choiceFormReload
-		));
-	}
-	
-	//save the group properties, specific to gapmatch interaction where a group is considered as a gap:
-	//not called when the choice order has been changed, such changes are done by saving the itneraction data
-	public function saveGroup(){
-		$group = $this->getCurrentGroup();
-		
-		$myForm = $group->toForm();
-		$saved = false;
-		$identifierUpdated = false;
-		$newIdentifier = '';
-		$errorMessage = '';
-		
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-			
-				$values = $myForm->getValues();
-				
-				if(isset($values['groupIdentifier'])){
-					if($values['groupIdentifier'] != $group->getIdentifier()){
-						$newIdentifier = $values['groupIdentifier'];
-						$identifierUpdated = $this->service->setIdentifier($group, $values['groupIdentifier']);
-					}
-				}
-				
-				$matchGroup = array();
-				if(!empty($values['matchGroup']) && is_array($values['matchGroup'])){
-					$matchGroup = $values['matchGroup'];
-				}
-				unset($values['matchGroup']);
-				$group->setChoices($matchGroup);
-				
-				$choiceOrder = array();
-				if(isset($_POST['choiceOrder'])){
-					$choiceOrder = $_POST['choiceOrder'];
-				}
-				$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
 				
 				//for graphic interactions:
 				$newGraphicObject = array();
@@ -945,8 +882,75 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 						// $saved = false;
 					}
 				}
-				$group->setObject($newGraphicObject);
+				$choice->setObject($newGraphicObject);
 				unset($values['object_data']);
+				
+				//finally save the other options:
+				$this->service->setOptions($choice, $values);
+				
+				$saved = true;
+			}
+		}
+		
+		$choiceFormReload = false;
+		if($identifierUpdated){
+			$interaction = $this->qtiService->getComposingData($choice);
+			$choiceFormReload = $this->requireChoicesUpdate($interaction);
+			$interaction->addChoice($choice);
+			$interaction = null;
+		}
+		
+		echo json_encode(array(
+			'saved' => $saved,
+			'choiceSerial' => $choice->getSerial(),
+			'identifierUpdated' => $identifierUpdated,
+			'reload' => $choiceFormReload,
+			'errorMessage' => (string)$errorMessage
+		));
+	}
+	
+	//save the group properties, specific to gapmatch interaction where a group is considered as a gap:
+	//not called when the choice order has been changed, such changes are done by saving the itneraction data
+	public function saveGroup(){
+		$group = $this->getCurrentGroup();
+		$interaction = $this->qtiService->getComposingData($group);
+		
+		$myForm = $group->toForm();
+		$saved = false;
+		$identifierUpdated = false;
+		$newIdentifier = '';
+		
+		if($myForm->isSubmited()){
+			if($myForm->isValid()){
+			
+				$values = $myForm->getValues();
+				
+				if(isset($values['groupIdentifier'])){
+					if($values['groupIdentifier'] != $group->getIdentifier()){
+						$newIdentifier = $values['groupIdentifier'];
+						$identifierUpdated = $this->service->setIdentifier($group, $values['groupIdentifier']);
+					}
+				}
+				
+				$matchGroup = array();
+				//var_dump($matchGroup, $group);
+				if(!empty($values['matchGroup']) && is_array($values['matchGroup'])){
+					foreach($values['matchGroup'] as $choiceIdentifier){
+						$choice = $this->service->getInteractionChoiceByIdentifier($interaction, $choiceIdentifier);
+						if(!is_null($choice)){
+							$matchGroup[] = $choice->getSerial();
+						}
+					}
+				}
+				unset($values['matchGroup']);
+				$group->setChoices($matchGroup);
+				
+				
+				$choiceOrder = array();
+				if(isset($_POST['choiceOrder'])){
+					$choiceOrder = $_POST['choiceOrder'];
+				}
+				$this->service->setGroupData($group, $choiceOrder, null, true);//the 3rd parameter interaction is not required as the method only depends on the group
 				
 				unset($values['groupSerial']);
 				unset($values['groupIdentifier']);
@@ -958,19 +962,19 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$choiceFormReload = false;
 		if($identifierUpdated){
-			$interaction = $this->qtiService->getComposingData($group);
+			
 			$choiceFormReload = $this->requireChoicesUpdate($interaction);
 			$interaction->addGroup($group);
-			$interaction = null;
+			
 		}
+		$interaction = null;
 		
 		echo json_encode(array(
 			'saved' => $saved,
 			'groupSerial' => $group->getSerial(),
 			'identifierUpdated' => $identifierUpdated,
 			'newIdentifier' => $newIdentifier,
-			'reload' => $choiceFormReload,
-			'errorMessage' => (string)$errorMessage
+			'reload' => $choiceFormReload
 		));
 	}
 	
@@ -1000,7 +1004,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'reload' => ($added)?$this->requireChoicesUpdate($interaction):false
 		));
 	}
-	
+		
 	public function editResponseProcessing(){
 	
 		$item = $this->getCurrentItem();
@@ -1132,7 +1136,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$templateHasChanged = true;
 				}
 				$saved = $this->service->setResponseTemplate($response, $processingTemplate);
-				// var_dump($response);
 				if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
 			}
 		}

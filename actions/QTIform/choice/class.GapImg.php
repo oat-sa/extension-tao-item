@@ -130,8 +130,8 @@ class taoItems_actions_QTIform_choice_GapImg
         $returnValue = array();
 
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000504F begin
-		foreach($this->interaction->getChoices() as $choice){
-			$returnValue[$choice->getIdentifier()] = $choice->getIdentifier();
+		foreach($this->interaction->getGroups() as $group){
+			$returnValue[$group->getIdentifier()] = $group->getIdentifier();
 		}
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:000000000000504F end
 

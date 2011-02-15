@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * A choice is a kind of interaction's proposition.
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  * @subpackage models_classes_QTI
@@ -22,15 +22,14 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * A group is an concept to enable choice logical grouping (ordering). 
- * It use when there is distinct choices groups in an interaction.
+ * include taoItems_models_classes_QTI_Group
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Group.php');
 
@@ -38,7 +37,7 @@ require_once('taoItems/models/classes/QTI/class.Group.php');
  * The QTI's interactions are the way the user interact with the system. The
  * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
@@ -55,7 +54,7 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  * A choice is a kind of interaction's proposition.
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  * @subpackage models_classes_QTI
@@ -68,13 +67,21 @@ class taoItems_models_classes_QTI_Choice
 
     // --- ATTRIBUTES ---
 
+    /**
+     * Short description of attribute object
+     *
+     * @access public
+     * @var array
+     */
+    public $object = array();
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method toXHTML
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -111,7 +118,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method toQTI
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -148,7 +155,7 @@ class taoItems_models_classes_QTI_Choice
      * Short description of method toForm
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -170,6 +177,43 @@ class taoItems_models_classes_QTI_Choice
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:000000000000249B end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method setObject
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array objectData
+     * @return mixed
+     */
+    public function setObject($objectData = array())
+    {
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C23 begin
+		
+		foreach($objectData as $key=>$value){
+			$this->object[$key] = $value;
+		}
+		
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C23 end
+    }
+
+    /**
+     * Short description of method getObject
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function getObject()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C2D begin
+		$returnValue = $this->object;
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C2D end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Choice */

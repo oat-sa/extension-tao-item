@@ -123,6 +123,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 				foreach($this->choice->getChoices() as $choiceSerial){
 					$choice = taoItems_models_classes_QTI_Service::getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
 					$matchGroupElt->setValue($choice->getIdentifier());
+					// $matchGroupElt->setValue($choiceSerial);
 				}
 			}
 			

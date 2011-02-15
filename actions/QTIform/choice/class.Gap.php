@@ -164,12 +164,16 @@ class taoItems_actions_QTIform_choice_Gap
 		$matchGroupElt->setDescription(__('Match group'));
 		$options = array();
 		foreach($this->interaction->getChoices() as $choice){
-			$options[$choice->getSerial()] = $choice->getIdentifier();
+			$options[$choice->getIdentifier()] = $choice->getIdentifier();
 		}
 		$matchGroupElt->setOptions($options);
 		//the default empty value indicates to the authoring controller that there is no restriction to the associated choices
-		$matchGroupElt->setValues($this->group->getChoices());
-				
+		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		foreach($this->group->getChoices() as $choiceSerial){
+			$choice = $qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
+			$matchGroupElt->setValue($choice->getIdentifier());
+		}
+		
 		$this->form->addElement($matchGroupElt);
 		
 		$this->form->createGroup('choicePropOptions_'.$this->group->getSerial(), __('Advanced properties'), array('fixed', 'matchGroup'));

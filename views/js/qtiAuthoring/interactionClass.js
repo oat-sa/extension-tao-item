@@ -292,10 +292,6 @@ interactionClass.prototype.saveGroup = function($groupForm){
 						new responseClass(interaction.responseGrid, interaction);
 					}
 					
-					if(r.errorMessage){
-						createErrorMessage(r.errorMessage);
-					}
-					
 				}
 		   }
 		});
@@ -869,7 +865,11 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	var interaction = this;
 	var controls = {
 	  strikeThrough : { visible : true },
-	  underline     : { visible : true },
+	  underline     : { visible : false },
+	  
+	  h1 : { visible : false },
+	  h2 : { visible : false },
+	  h3 : { visible : false },
 	  
 	  justifyLeft   : { visible : true },
 	  justifyCenter : { visible : true },
@@ -958,7 +958,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 			},
 			frameReady: function(editorDoc){
 				interaction.bindChoiceLinkListener();
-				// editorDoc.body.focus();
+				editorDoc.body.focus();
 			}
 		}
 	});
