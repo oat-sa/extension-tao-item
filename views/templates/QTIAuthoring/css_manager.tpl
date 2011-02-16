@@ -4,14 +4,18 @@
 	<ul id="cssFiles">
 	<?foreach(get_data('cssFiles') as $file):?>
 		<li rel="<?=$file['href']?>">
-			<span class="cssFile-title"><?=$file['title']?></span>
-			<a class="cssFile-delete" href="#">delete</a>
-			/<a class="cssFile-download" href="<?=$file['downloadUrl']?>">download</a>
+			<span class="cssFile-title" title="<?=$file['title']?>"><?=$file['title']?></span>
+			<a class="cssFile-delete cssFile-button" title="<?=__('delete')?>" href="#"><span class="ui-icon ui-icon-circle-close"></span></a>
+			<a class="cssFile-download cssFile-button" title="<?=__('download')?>" href="<?=$file['downloadUrl']?>"><span class="ui-icon ui-icon-circle-arrow-s"></span></a>
 		</li>
 	<?endforeach;?>
 	</ul>
+	
+	<hr size="1" width="100%">
 <?endif;?>
 </div>
+
+
 
 <div>
 	<?=__('Upload new style sheet:')?>

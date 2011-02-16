@@ -119,6 +119,7 @@ class taoItems_actions_QTIform_CSSuploader
 		$this->form->addElement($labelElt);
 		
 		$importFileElt = tao_helpers_form_FormFactory::getElement("css_import", 'AsyncFile');
+		$importFileElt->setAttribute('auto', false);
 		$importFileElt->setDescription(__("Upload the style sheet (CSS format required)"));
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),

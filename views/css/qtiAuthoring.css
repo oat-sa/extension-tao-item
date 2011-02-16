@@ -55,6 +55,10 @@ div.qti-carousel-button img{top:23px; cursor:pointer; position:relative;}
 
 #tabs-qti{padding:0px;border:0 none;}
 
+ul#cssFiles li {padding-right:10%;}
+ul#cssFiles li span.cssFile-title{width:80%;}
+ul#cssFiles a.cssFile-button{float:right;margin-right:5px;cursor:pointer;}
+
 /*uploadify made smaller*/
 div.xhtml_form div.file-uploader .uploadifyQueueItem, .uploadifyQueueItem {
 	width: auto;
@@ -255,3 +259,5 @@ form.wysiwyg label{
 
 #formInteraction_object_container {overflow:auto;}
 #formInteraction_object {margin:auto;position:relative;}
+
+img.shapeEditorPencil {cursor:pointer;margin:2px;position:relative;top:5px;}

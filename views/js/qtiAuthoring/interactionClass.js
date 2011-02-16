@@ -402,10 +402,9 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				});
 				
 				//append the edit button:
-				var $imageLink = $('<img src="/taoItems/views/img/qtiAuthoring/application_view_gallery.png"/>').insertAfter($qtiShapeCombobox);
+				var $imageLink = $('<img src="'+img_url+'pencil.png"/>').insertAfter($qtiShapeCombobox);
 				$imageLink.attr('title', __('draw it'));
-				$imageLink.css('cursor', 'pointer');
-				$imageLink.css('margin', '2px');
+				$imageLink.addClass('shapeEditorPencil');
 				$imageLink.bind('click', {choiceSerial:choiceSerial, defaultShape:$qtiShapeCombobox.val()}, function(e){
 					var shape = $(this).siblings('.qti-shape').val();
 					interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);

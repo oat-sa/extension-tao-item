@@ -1223,10 +1223,10 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					
 					if(!empty($fileData)){
 						tao_helpers_File::move($data['css_import']['uploaded_file'], $fileData['path']);
-					
+												
 						$cssFiles = $item->getStyleSheets();
 						$cssFiles[] = array(
-							'title' => $data['title'],
+							'title' => empty($data['title'])?$data['css_import']['name']:$data['title'],
 							'href' => $fileData['href']
 						);
 						$item->setStyleSheets($cssFiles);
