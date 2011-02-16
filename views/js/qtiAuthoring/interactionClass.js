@@ -866,9 +866,9 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	  strikeThrough : { visible : true },
 	  underline     : { visible : false },
 	  
-	  h1 : { visible : false },
-	  h2 : { visible : false },
-	  h3 : { visible : false },
+	  h1 : { visible : true },
+	  h2 : { visible : true },
+	  h3 : { visible : true },
 	  
 	  justifyLeft   : { visible : true },
 	  justifyCenter : { visible : true },

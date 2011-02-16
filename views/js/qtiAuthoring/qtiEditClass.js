@@ -184,7 +184,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 	
 	var addPositionObjectInteraction = {
-		visible : true,
+		visible : false,
 		className: 'add_positionobject_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
@@ -526,7 +526,7 @@ qtiEdit.mapHtmlEditor = function($container){
 			var controls = {
 			
 			  strikeThrough : { visible : true },
-			  underline     : { visible : true },
+			  underline     : { visible : false },
 			  
 			  justifyLeft   : { visible : true },
 			  justifyCenter : { visible : true },
@@ -549,11 +549,15 @@ qtiEdit.mapHtmlEditor = function($container){
 			  copy  : { visible : true },
 			  paste : { visible : true },
 			  html  : { visible: false },
+			  h1: { visible: false },
+			  h2: { visible: false },
+			  h3: { visible: false },
 			  h4: { visible: false },
 			  h5: { visible: false },
 			  h6: { visible: false },
 			  
 			  insertTable: { visible: false },
+			  			  
 			  addChoiceInteraction: {visible:false},
 			  addAssociateInteraction: {visible:false},
 			  addOrderInteraction: {visible:false},
@@ -563,11 +567,19 @@ qtiEdit.mapHtmlEditor = function($container){
 			  addExtendedTextInteraction: {visible:false},
 			  addHotTextInteraction: {visible:false},
 			  addGapMatchInteraction: {visible:false},
+			  addHotspotInteraction: {visible:false},
+			  addGraphicOrderInteraction: {visible:false},
+			  addGraphicAssociateInteraction: {visible:false},
+			  addGraphicGapMatchInteraction: {visible:false},
+			  addSelectPointInteraction: {visible:false},
+			  addPositionObjectInteraction: {visible:false},
+			  addSliderInteraction: {visible:false},
+			  addUploadInteraction: {visible:false},
+			  addEndAttemptInteraction: {visible:false},
 			  createHotText: {visible:false},
 			  createGap: {visible:false},
 			  saveItemData: {visible:false},
 			  saveInteractionData: {visible:false}
-			  
 			};
 		
 			$(this).wysiwyg({
