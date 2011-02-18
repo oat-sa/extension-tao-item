@@ -173,7 +173,7 @@ interactionClass.prototype.saveInteraction = function($myForm){
 					}
 					
 				}
-		   }
+		    }
 		});
 	}
 	
@@ -442,7 +442,10 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				setListener($(target));
 			}
 		}
-		
+		//$('#canvas_formInteraction_object').css('z-index', '10');
+		// $('#canvas_formInteraction_object').bind('click mousedown', function(e){
+			// CL('right ', e.type);
+		// });
 	}
 	
 }
