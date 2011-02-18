@@ -189,7 +189,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		if(!empty($itemData)){
 			//save item data:
-		
+			// print_r($itemData);
 			$this->service->saveItemData($itemObject, $itemData);
 			//save to qti:
 		}
@@ -240,29 +240,43 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$returnValue = '';
 		
 		if($this->hasRequestParameter($key)){
+		
 			$returnValue = html_entity_decode(urldecode($this->getRequestParameter($key)), null, "UTF-8");
-			$returnValue = str_replace('&', '&amp;', $returnValue);
-			
-			$tidy = new tidy();
-			$returnValue = $tidy->repairString (
-				$returnValue,
-				array(
-					'output-xhtml' => true,
-					'show-body-only' => true,
-					'quote-nbsp' => false,
-					'indent' => 'auto',
-					'uppercase-attributes' => false,
-					'uppercase-tags' => false
-				),
-				'UTF8'
-			);
-			
+			$returnValue = $_POST[$key];
+			$returnValue = $this->cleanPostedData($returnValue);
 			
 		}else{
 			if($required){
 				throw new Exception('the request data "'.$key.'" cannot be found');
 			}
 		}
+		
+		return $returnValue;
+	}
+	
+	protected function cleanPostedData($data){
+		
+		$returnValue = '';
+		
+		$returnValue = $data;
+		// $returnValue = str_replace('&', '&amp;', $returnValue);
+		
+		$tidy = new tidy();
+		$returnValue = $tidy->repairString (
+			$returnValue,
+			array(
+				'output-xhtml' => true,
+				'numeric-entities' => true,
+				'show-body-only' => true,
+				'quote-nbsp' => false,
+				'indent' => 'auto',
+				'preserve-entities' => false,
+				'quote-ampersand' => true,
+				'uppercase-attributes' => false,
+				'uppercase-tags' => false
+			),
+			'UTF8'
+		);
 		
 		return $returnValue;
 	}
@@ -647,7 +661,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('formInteraction', $myForm->render());
 		$this->setData('formChoices', $choiceForms);
-		$this->setData('interactionData', $this->service->getInteractionData($interaction));
+		$this->setData('interactionData', $this->service->getInteractionData($interaction));		
+		//$this->setData('interactionData', html_entity_decode($this->service->getInteractionData($interaction)));
 		$this->setData('orderedChoices', $choices);
 		$this->setView($templateName);
 	}

@@ -156,7 +156,8 @@ util.htmlEncode = function(encodedStr){
 			});
 		
 		//url encode component:
-		returnValue = encodeURIComponent(encodedStr);
+		returnValue = encodedStr;
+		// returnValue = encodeURIComponent(encodedStr);
 	}
 	
 	

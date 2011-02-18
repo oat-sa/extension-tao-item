@@ -79,6 +79,7 @@ class taoItems_models_classes_QtiAuthoringService
      */
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
 		$itemData = self::getFilteredData($item);
+		// print_r($itemData);
 		
 		//inserting white spaces to allow easy item selecting:
 		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
@@ -314,6 +315,7 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 				
 			// $xhtmlData = $this->convertToXHTML($itemData);
+			// print_r($itemData);
 			
 			//item saved in session:
 			$item->setData($itemData);
@@ -940,8 +942,8 @@ class taoItems_models_classes_QtiAuthoringService
 		/*$pattern .= "<div(.[^<]*)?><input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";*/
 		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";
 			
-		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
-		
+		// $data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
+		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", $data);
 		return $data;
 	}
 	
@@ -1118,7 +1120,7 @@ class taoItems_models_classes_QtiAuthoringService
 				for($i=1;$i<=count($choices);$i++){
 					$returnValue[] = array(
 						'name' => 'choice'.$i,
-						'label' => __('Choice').' '.$i,
+						'label' => $i,
 						'edittype' => $editType,
 						'values' => $choices
 					);
@@ -1769,7 +1771,23 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = $data;
 		
 		if(!empty($data)){
-			$data = str_replace('&', '&amp;', $data);
+			// $data = str_replace('&', '&amp;', $data);
+			$tidy = new tidy();
+			$data = $tidy->repairString (
+				$data,
+				array(
+					'output-xhtml' => true,
+					// 'numeric-entities' => true,
+					'show-body-only' => true,
+					'quote-nbsp' => false,
+					'indent' => 'auto',
+					'preserve-entities' => false,
+					'quote-ampersand' => true,
+					'uppercase-attributes' => false,
+					'uppercase-tags' => false
+				),
+				'UTF8'
+			);
 			try{//Parse data and replace img src by the media service URL
 				$updated = false;
 				$doc = new DOMDocument;
