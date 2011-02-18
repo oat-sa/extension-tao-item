@@ -940,8 +940,7 @@ class taoItems_models_classes_QTI_Interaction
 		//parse and render the template
 		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
-        $returnValue = str_replace('&', '&amp;', $returnValue);
-		
+
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 end
 
         return (string) $returnValue;
