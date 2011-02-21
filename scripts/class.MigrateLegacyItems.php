@@ -101,8 +101,10 @@ class taoItems_scripts_MigrateLegacyItems
     {
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D6E begin
         
-    	$this->qcm2Qti($this->parameters['input']);
-    	
+    	$result = $this->qcm2Qti($this->parameters['input']);
+    	if(isset($this->parameters['output'])){
+    		file_put_contents($this->parameters['output'], $result);
+    	}
     	
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D6E end
     }
@@ -213,7 +215,7 @@ class taoItems_scripts_MigrateLegacyItems
 	    	$inqueries = array();
 	    	foreach($xpath->query("//tao:INQUIRY") as $inquery){
 	    		$added = false;
-	    		if($inquery->getAttribute('order')){
+	    		if($inquery->hasAttribute('order')){
 	    			$order = (int)$inquery->getAttribute('order');
 	    			if(!array_key_exists($order, $inqueries)){
 	    				$inqueries[(int)$inquery->getAttribute('order')] = $inquery;
@@ -221,7 +223,12 @@ class taoItems_scripts_MigrateLegacyItems
 	    			}
 	    		}
 	    		if(!$added){
-	    			$inqueries[max(array_keys($inqueries)) + 1] = $inquery;
+	    			foreach(array_keys($inqueries) as $index){
+	    				if(!isset($inqueries[$index + 1])){
+	    					$inqueries[$index + 1] = $inquery; 
+	    					break;
+	    				}
+	    			}
 	    		}
 	    	}
 	    	ksort($inqueries);
@@ -244,7 +251,7 @@ class taoItems_scripts_MigrateLegacyItems
 	    		
 	    		
 	    		$choices = array();
-	    		foreach($xpath->query("//tao:PROPOSITION", $inquery) as $proposition){
+	    		foreach($xpath->query(".//tao:PROPOSITION", $inquery) as $proposition){
 	    			$identifier = null;
 	    			if($proposition->hasAttribute('Id')){
 	    				$identifier = $proposition->getAttribute('Id');
@@ -252,7 +259,7 @@ class taoItems_scripts_MigrateLegacyItems
 	    			
 	    			$choice = new taoItems_models_classes_QTI_Choice($identifier);
 		    		$choice->setType('simpleChoice');
-		    		
+		    		 
 		    		$choice->setData($proposition->nodeValue);
 		    		
 	    			$added = false;
@@ -264,7 +271,12 @@ class taoItems_scripts_MigrateLegacyItems
 		    			}
 		    		}
 		    		if(!$added){
-		    			$choices[max(array_keys($inqueries)) + 1] = $choice;
+		    			foreach(array_keys($choices) as $index){
+		    				if(!isset($choices[$index + 1])){
+		    					$choices[$index + 1] = $choice; 
+		    					break;
+		    				}
+		    			}
 		    		}
 	    		}
 	    		ksort($choices);
@@ -278,14 +290,75 @@ class taoItems_scripts_MigrateLegacyItems
 	    		$interactions[] = $interaction;
 	    	}
 	    	
-	    	$qtiItem->setInteractions($interactions);
-	   	 	$data = '';
-	    	foreach($interactions as $interaction){
-	    		$data .= '{'.$interaction->getSerial().'}';	
+	    	
+	    	$data = '';
+	    	foreach($xpath->query("tao:ITEMPRESENTATION") as $presentationNode){
+	    		foreach($xpath->query("./xul/box[@id='itemContainer_box']", $presentationNode) as $containerNode){
+	    			foreach($containerNode->childNodes as $child){
+	    				
+	    				switch(strtolower($child->nodeName)){
+	    					case 'image':
+	    						if($child->hasAttribute('src')){
+	    							$data .= "<img src='".$child->getAttribute('src')."'";
+									if($child->hasAttribute('width')){
+										$data .= " width='".$child->getAttribute('width')."'";
+									}  
+	    							if($child->hasAttribute('height')){
+										$data .= " height='".$child->getAttribute('height')."'";
+									}  							
+	    							$data .= " />";
+	    						}
+	    						break;
+	    					case 'label':
+	    						if($child->hasAttribute('value') && $child->hasAttribute('id') && strtolower($child->getAttribute('id')) == 'problem_textbox'){
+	    							$multi = false;
+	    							if($child->hasAttribute('multiline') && strtolower($child->getAttribute('multiline')) == 'true'){
+	    								$multi = true;	
+	    							}
+	    							
+	    							if($multi){
+	    								$data .= "<div>";
+	    							}
+	    							else{
+	    								$data .= "<span>";
+	    							}
+	    							
+	    							$data .= html_entity_decode($child->getAttribute('value'));
+									 							
+	    							if($multi){
+	    								$data .= "</div>";
+	    							}
+	    							else{
+	    								$data .= "</span>";
+	    							}
+	    						}
+	    						break;
+	    					case 'box':
+	    						if($child->hasAttribute('id') && strtolower($child->getAttribute('id')) == 'inquirycontainer_box'){
+		    						foreach($interactions as $interaction){
+							    		$data .= '{'.$interaction->getSerial().'}';	
+							    	}
+	    						}
+	    						break;
+	    				}
+	    			}
+	    		}
 	    	}
+	    	
+	   	 	
+	    	$qtiItem->setInteractions($interactions);
 	    	$qtiItem->setData($data);
 	    		
-	    	print_r($qtiItem);
+	    	
+			(count($qtiItem->getInteractions())<=1) ? $responseId = 'RESPONSE' : $responseId = null;
+			
+			foreach($qtiItem->getInteractions() as $interaction){
+				$response = new taoItems_models_classes_QTI_Response($responseId);
+				$response->setHowMatch(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
+				$interaction->setResponse($response);
+	    	}
+	    	
+	    	$returnValue = $qtiItem->toQTI();
     	}
     	catch(DomainException $de){
 			self::err($de, true);    		
