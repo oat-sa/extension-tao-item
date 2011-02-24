@@ -769,22 +769,16 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					
 					//get mime type
 					$imageFilePath = trim($values['object_data']);
-					$mimeType = tao_helpers_File::getMimeType($imageFilePath);
-					
-					$validImageType = array(
-						'image/png',
-						'image/jpeg',
-						'image/bmp'
-					);
-					
-					if(in_array($mimeType, $validImageType)){
+					$imgProperties = $this->getImageProperties($imageFilePath);
+					if(!empty($imgProperties)){
 						$newGraphicObject['data'] = $imageFilePath;
+						$newGraphicObject['type'] = $imgProperties['mime'];
 					}else{
 						$errorMessage = __('invalid image mime type');
 					}
-					
 					unset($values['object_data']);
 				}
+				
 				$interaction->setObject($newGraphicObject);
 				if(!empty($errorMessage)) $newGraphicObject['errorMessage'] = $errorMessage;								
 				
@@ -841,6 +835,52 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		));
 		
 	}
+	
+	private function getImageProperties($imageFilePath){
+		
+		$returnValue = array();
+		
+		if(!empty($imageFilePath)){
+		
+			if(!preg_match("/^http/", $imageFilePath)){
+				if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
+					$itemService = tao_models_classes_ServiceFactory::get('Items');
+					$classUri = tao_helpers_Uri::decode(Session::getAttribute('classUri'));
+					if($itemService->isItemClass(new core_kernel_classes_Class($classUri))){
+						$item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));
+						if(!is_null($item)){
+							$folder 	= $itemService->getItemFolder($item);
+							$imageFilePath 	= tao_helpers_File::concat(array($folder, $imageFilePath));
+						}
+					}
+				}
+				//try building the absolute path
+				// $item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));
+				// $itemId = '';
+				// if(stripos($itemUri,"#")>0){
+					// $itemId = substr($itemUri, stripos($itemUri,"#")+1);
+				// }
+				// $path = BASE_URL."/data/{$itemId}";
+				// $path .= substr($imageFilePath,0,1)=='/'?'':'/';
+				// $imageFilePath = $path.$imageFilePath;
+			}
+			
+			if(file_exists($imageFilePath)){
+				$mimeType = tao_helpers_File::getMimeType($imageFilePath);
+				$validImageType = array(
+					'image/png',
+					'image/jpeg',
+					'image/bmp'
+				);
+				if(in_array($mimeType, $validImageType)){
+					$returnValue['mime'] = $mimeType;
+				}
+			}
+		}
+		
+		return $returnValue;
+	}
+	
 	public function saveChoice(){
 		$choice = $this->getCurrentChoice();
 		
@@ -879,26 +919,22 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					unset($values['object_height']);
 				}
 				if(isset($values['object_data'])){
+				
+					// $oldObject = $choice->getObject();
+					
 					//get mime type
 					$imageFilePath = trim($values['object_data']);
-					$mimeType = tao_helpers_File::getMimeType($imageFilePath);
-					
-					$validImageType = array(
-						'image/png',
-						'image/jpeg',
-						'image/gif',
-						'image/bmp'
-					);
-					
-					if(in_array($mimeType, $validImageType)){
+					$imgProperties = $this->getImageProperties($imageFilePath);
+					if(!empty($imgProperties)){
 						$newGraphicObject['data'] = $imageFilePath;
+						$newGraphicObject['type'] = $imgProperties['mime'];
 					}else{
 						$errorMessage = __('invalid image mime type for the image file '.$imageFilePath);
-						// $saved = false;
 					}
+					unset($values['object_data']);
 				}
 				$choice->setObject($newGraphicObject);
-				unset($values['object_data']);
+				// unset($values['object_data']);
 				
 				//finally save the other options:
 				$this->service->setOptions($choice, $values);
