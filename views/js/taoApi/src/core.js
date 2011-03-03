@@ -25,6 +25,7 @@ function TaoStack (){
 	
 	/**
 	 * This object describes the way the data are accessed 
+	 * @fieldOf TaoStack
 	 * @type {Object} 
 	 */
 	this.dataSource = new Object();
@@ -44,13 +45,16 @@ function TaoStack (){
 	};
 	
 	/**
-	 * This object stores the contextual  data (sent by the server on load, or on getting them)   
+	 * This object stores the contextual  data (sent by the server on load, or on getting them)
+	 * @fieldOf TaoStack   
 	 * @type {Object}
 	 */
 	this.dataStore = new Object();
 	
 	/**
 	 * Initialize and setup the data source.
+	 * 
+	 * @methodOf TaoStack
 	 * 
 	 * @param {Object} environment 
 	 * @see TaoStack.dataSource.environment
@@ -102,6 +106,7 @@ function TaoStack (){
 	
 	/**
 	 * Load the contextual data 
+	 * @methodOf TaoStack
 	 * @param {Object} [source] the data ONLY for the manual source
 	 */
 	this.loadData = function(source){
@@ -153,6 +158,7 @@ function TaoStack (){
 	
 	/**
 	 * The push data
+	 * @fieldOf TaoStack
 	 * @type {Object} 
 	 */
 	this.dataPush = new Object();
@@ -172,6 +178,8 @@ function TaoStack (){
 		
 	/**
 	 * Initialize and setup the push.
+	 * 
+	 * @methodOf TaoStack
 	 * 
 	 * @param {Object} environment 
 	 * @see TaoStack#dataPush#environment
@@ -215,6 +223,7 @@ function TaoStack (){
 	
 	/**
 	 * push all the data in the stack to the server
+	 * @methodOf TaoStack
 	 */
 	this.push = function(){
 		
@@ -280,12 +289,15 @@ function TaoStack (){
 	
 	/**
 	 * The stack container
+	 * @fieldOf TaoStack
 	 * @type {Object} 
 	 */
 	this.taoVars = new Object();
 	
 	/**
 	 * Get the value of a TAO varaiable identified by the key
+	 * 
+	 * @methodOf TaoStack
 	 * 
 	 * @param {String} key
 	 * @param {boolean} [label] if you want to retrieve the label instead of the complete Object
@@ -314,6 +326,8 @@ function TaoStack (){
 	 * The set method is restricted to scalar,
 	 * but could be used to reference a property node
 	 * 
+	 * @methodOf TaoStack
+	 * 
 	 * @param {String} key
 	 * @param {String|number|boolean} value
 	 * @param {String} [property] the property uri 
@@ -341,12 +355,15 @@ function TaoStack (){
 	
 	/**
 	 * The user custom variables container 
+	 * @fieldOf TaoStack
 	 * @type {Object} 
 	 */
 	this.userVars = new Object();
 	
 	/**
 	 * Get the value of a previously defined user's custom variable, identified by it's key
+	 * 
+	 * @methodOf TaoStack
 	 * 
 	 * @param {String} key
 	 * @returns {String|number|boolean} value (false if the key is not found)
@@ -359,6 +376,8 @@ function TaoStack (){
 	 * The item author can define it's own variables in order to keep them in the stack
 	 * and to send them to the plateform. It's usefull to record cutom field and values
 	 * that have not been taken in consideration but  have a real interest in the item.
+	 * 
+	 * @methodOf TaoStack
 	 * 
 	 * @param {String} key
 	 * @param {String|number|boolean} value

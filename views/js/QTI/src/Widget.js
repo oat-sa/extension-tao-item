@@ -23,6 +23,7 @@ var QTIWidget = function(options){
 
 	/**
 	 * To access the widget options 
+	 * @fieldOf QTIWidget
 	 * @type {Object}
 	 */
 	this.opts = options;
@@ -35,6 +36,7 @@ var QTIWidget = function(options){
 	/**
 	 * the path of that library from an url,
 	 * to access images.
+	 * @fieldOf QTIWidget
 	 * @type {String}
 	 */
 	this.wwwPath = '';
@@ -47,6 +49,7 @@ var QTIWidget = function(options){
 	}
 	
 	/**
+	 * @fieldOf QTIWidget
 	 * @type {boolean}
 	 */
 	this.graphicDebug  = false; 
@@ -64,6 +67,7 @@ var QTIWidget = function(options){
 	 * Creates a choice list widget
 	 * @see QTIWidget#simple_choice
 	 * @see QTIWidget#multiple_choice
+	 * @methodOf QTIWidget
 	 */
 	this.choice = function(){
 		var maxChoices =  parseInt(_this.opts["maxChoices"]);
@@ -77,6 +81,7 @@ var QTIWidget = function(options){
 
 	/**
 	 * Creates a simple choice list widget
+	 * @methodOf QTIWidget
 	 */
 	 this.simple_choice = function (){	
 		
@@ -100,6 +105,7 @@ var QTIWidget = function(options){
 
 	/**
 	 * Creates a multiple choice list widget
+	 * @methodOf QTIWidget
 	 */
 	this.multiple_choice = function (){
 		
@@ -139,6 +145,7 @@ var QTIWidget = function(options){
 	/**
 	 * We use the html <i>select</i> widget,
 	 * the function is listed only to keep the same behavior than the other
+	 * @methodOf QTIWidget
 	 */
 	this.inline_choice = function (){
 		if(_this.opts["values"]){
@@ -157,6 +164,7 @@ var QTIWidget = function(options){
 	/**
 	 * Creates a sortable list widget,
 	 * can be horizontal or vertical regarding the orientation parameter
+	 * @methodOf QTIWidget
 	 */
 	this.order = function(){
 		
@@ -263,6 +271,7 @@ var QTIWidget = function(options){
 	/**
 	 * Creates a pair association widget, 
 	 * where words are dragged from a cloud to pair boxes
+	 * @methodOf QTIWidget
 	 */
 	this.associate = function(){
 		
@@ -489,6 +498,7 @@ var QTIWidget = function(options){
 	 * Creates a text entry widget
 	 * 
 	 * @see QTIWidget#string_interaction
+	 * @methodOf QTIWidget
 	 */
 	this.text_entry = function (){
 		//adapt the field length
@@ -510,6 +520,7 @@ var QTIWidget = function(options){
 	 * it can be a big text area or a set of text entries regarding the context
 	 * 
 	 * @see QTIWidget#string_interaction
+	 * @methodOf QTIWidget
 	 */
 	this.extended_text = function (){
 		
@@ -581,6 +592,7 @@ var QTIWidget = function(options){
 	/**
 	 * Initialize the parametrized behavoir of text input likes widgets 
 	 * It supports now the Regex matching and string cloning 
+	 * @methodOf QTIWidget
 	 */
 	this.string_interaction = function(){
 		
@@ -624,6 +636,7 @@ var QTIWidget = function(options){
 	 * 	- without restriction, 
 	 *  - one by one and 
 	 *  - N at a time
+	 *  @methodOf QTIWidget
 	 */
 	this.hottext = function(){
 		
@@ -673,7 +686,8 @@ var QTIWidget = function(options){
 //
 	
 	/**
-	 * Creates a  gap match widget			
+	 * Creates a  gap match widget	
+	 * @methodOf QTIWidget		
 	 */
 	this.gap_match = function(){
 		
@@ -838,6 +852,7 @@ var QTIWidget = function(options){
 	/**
 	 * Create a match widget: 
 	 * a matrix of choices to map to each others
+	 * @methodOf QTIWidget
 	 */
 	this.match = function(){
 		
@@ -924,6 +939,7 @@ var QTIWidget = function(options){
 		 * 
 		 * @param {jQuery} jElement the matrix node under the jQuery format
 		 * @returns {Object} with xnode an ynode id 
+		 * @methodOf QTIWidget
 		 */
 		function getNodeXY(jElement){
 			
@@ -955,6 +971,7 @@ var QTIWidget = function(options){
 		 * Deactivate a node
 		 * 
 		 * @param {jQuery} jElement the matrix node under the jQuery format
+		 * @methodOf QTIWidget
 		 */
 		function deactivateNode(jElement){
 			jElement.removeClass('tabActive');
@@ -1061,6 +1078,7 @@ var QTIWidget = function(options){
 	
 	/**
 	 * Creates a clickable image with hotspots
+	 * @methodOf QTIWidget
 	 */
 	this.hotspot = function (){
 		
@@ -1203,6 +1221,7 @@ var QTIWidget = function(options){
 	
 	/**
 	 * Creates a clickable image with free hotspots
+	 * @methodOf QTIWidget
 	 */
 	this.select_point = function (){
 		
@@ -1280,6 +1299,7 @@ var QTIWidget = function(options){
 	
 	/**
 	 * ordered hot spots
+	 * @methodOf QTIWidget
 	 */
 	this.graphic_order = function (){
 
@@ -1469,6 +1489,7 @@ var QTIWidget = function(options){
 
     /**
 	 * Creates a clickable image with hotspots
+	 * @methodOf QTIWidget
 	 */
 	this.graphic_associate = function (){
 	
@@ -1862,6 +1883,7 @@ var QTIWidget = function(options){
 	
 	/**
 	 * a file upload widget
+	 * @methodOf QTIWidget
 	 */
 	this.upload = function(){
 		
@@ -1891,13 +1913,20 @@ var QTIWidget = function(options){
 /*
  * Utilities
  */
-
+/**
+ * Get the pointer of a poly shape reagrding it's path
+ * @function
+ */
 function pointerPolyCoordonates(path){
 	var pathArray=new Array();
 	pathArray=path.split(",");
-	return [pathArray[0],pathArray[1]]	
+	return [pathArray[0],pathArray[1]];
 }
-
+/**
+ * Get the corrdinates of a poly shape reagrding it's path
+ * @param path 
+ * @returns 
+ */
 function polyCoordonates(path){
 	var pathArray=new Array();
 	pathArray=path.split(",");
@@ -1917,6 +1946,12 @@ function polyCoordonates(path){
 	return pathArray.join(" ");		
 }
 
-function isPair(nombre){
-	return ((nombre-1)%2);
+/**
+ * Check if number is pair or not
+ * @function
+ * @param nombre the number
+ * @returns {Number}
+ */
+function isPair(number){
+	return ((number-1)%2);
 }

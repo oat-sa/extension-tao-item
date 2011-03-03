@@ -17,16 +17,18 @@ var taoStack = new TaoStack();
 
 var root_url = root_url || '';
 
+/** @namespace taoApi */
+
   ////////////////////
  // TAO  variables //
 ////////////////////
+
 
 
 /**
  * Get the endorsment of the item
  * 
  * @function
- * @namespace taoApi
  * @returns {boolean}
  */
 function getEndorsment(){
@@ -37,7 +39,6 @@ function getEndorsment(){
  * Set the endorsment of the item
  * 
  * @function
- * @namespace taoApi
  * @param {boolean} endorsment
  */
 function setEndorsment(endorsment){
@@ -48,7 +49,6 @@ function setEndorsment(endorsment){
  * Get the score of the item 
  * 
  * @function
- * @namespace taoApi
  * @returns {String|Number}
  */
 function getScore(){
@@ -59,7 +59,6 @@ function getScore(){
  * Set the final score of the item
  * 
  * @function
- * @namespace taoApi
  * @param {String|Number} score
  */
 function setScore(score){
@@ -75,7 +74,6 @@ function setScore(score){
  * get the score range if defined
  * 
  * @function
- * @namespace taoApi
  * @returns {Object} with <b>min</b> and <b>max</b> attributes
  */
 function getScoreRange(){
@@ -90,7 +88,6 @@ function getScoreRange(){
  * It will be used to calculate the endorsment from the score.
  * 
  * @function
- * @namespace taoApi
  * @param {String|Number} max
  * @param {String|Number} [min = 0]
  */
@@ -108,7 +105,6 @@ function setScoreRange(max, min){
  * Get the values answered by the subject 
  * 
  * @function
- * @namespace taoApi
  * @returns {Object}
  */
 function getAnsweredValues(){
@@ -121,7 +117,6 @@ function getAnsweredValues(){
  * you can record here the complete response. 
  * 
  * @function
- * @namespace taoApi
  * @param {Object} values
  */
 function setAnsweredValues(values){
@@ -132,7 +127,6 @@ function setAnsweredValues(values){
  * Get the data of the user currently doing the item  (the subject)
  * 
  * @function
- * @namespace taoApi
  * @returns {Object} all the data related to the subject
  */
 function getSubject(){
@@ -143,7 +137,6 @@ function getSubject(){
  * Get the login of the subject
  * 
  * @function
- * @namespace taoApi
  * @returns {String} the subject's login
  */
 function getSubjectLogin(){
@@ -155,7 +148,6 @@ function getSubjectLogin(){
  * Get the name of the subject (firstname and lastname)
  * 
  * @function
- * @namespace taoApi
  * @returns {Object} the subject's name
  */
 function getSubjectName(){
@@ -170,7 +162,6 @@ function getSubjectName(){
  * Get the current item's informations 
  * 
  * @function
- * @namespace taoApi
  * @returns {Object} the item's data (uri, label)
  */
 function getItem(){
@@ -182,7 +173,6 @@ function getItem(){
  * Get the informations of the currently running test 
  * 
  * @function
- * @namespace taoApi
  * @returns {Object} the test's data (uri, label)
  */
 function getTest(){
@@ -193,7 +183,6 @@ function getTest(){
  * Get the informations of the current delivery
  * 
  * @function
- * @namespace taoApi
  * @returns {Object} the delivery's data (uri, label)
  */
 function getDelivery(){
@@ -213,7 +202,6 @@ function getDelivery(){
  * It's a way to record some data other than the results and the events.
  * 
  * @function
- * @namespace taoApi
  * @param {String} key to identify of the variable
  * @param {String|number|boolean} the value of the variable
  */
@@ -225,7 +213,6 @@ function setUserVar(key, value){
  * Get a previously defined user's variable.
  * 
  * @function
- * @namespace taoApi
  * @param {String} key the key of the variable you want to retrieve
  * @returns {String|number|boolean}
  */
@@ -246,7 +233,6 @@ if(typeof(finish) != 'function'){
 	 * This state can have some consequences.
 	 * 
 	 * @function
-	 * @namespace taoApi
 	 */
 	function finish(){
 		$(window).trigger(STATE.ITEM.PRE_FINISHED);
@@ -258,7 +244,6 @@ if(typeof(finish) != 'function'){
 	 * Add a callback that will be executed on finish state.
 	 * 
 	 * @function
-	 * @namespace taoApi
 	 * @param {function} callback
 	 */
 	function onFinish(callback){
@@ -269,7 +254,6 @@ if(typeof(finish) != 'function'){
 	 * Add a callback that will be executed on finish but before the other callbacks  
 	 * 
 	 * @function
-	 * @namespace taoApi
 	 * @param {function} callback
 	 */
 	function beforeFinish(callback){
@@ -280,7 +264,6 @@ if(typeof(finish) != 'function'){
 	 * Add a callback that will be executed on finish but after the other callbacks  
 	 * 
 	 * @function
-	 * @namespace taoApi
 	 * @param {function} callback
 	 */
 	function afterFinish(callback){
@@ -297,7 +280,6 @@ if(typeof(finish) != 'function'){
  * Get the communication token (this token is sent at each communication)
  * 
  * @function
- * @namespace taoApi
  * @returns {String} the token
  */
 function getToken(){
@@ -310,7 +292,6 @@ function getToken(){
  * <b>If you don't need to change the default values, don't call this function.</b>
  * 
  * @function
- * @namespace taoApi
  * 
  * @param {Object} environment <i>set to null if you want to keep all the default values</i>
  * @param {String} [environment.type = "async"] the datasource type <b>(manual|sync|async)</b> 
@@ -330,7 +311,6 @@ function initDataSource(environment, settings){
  * by writing the data in the source object (JSON) .
  *   
  * @function
- * @namespace taoApi
  * @param {Object} source
  */
 function initManualDataSource(source){
@@ -343,7 +323,6 @@ function initManualDataSource(source){
  * <b>If you don't need to change the default values, don't call this function.</b>
  * 
  * @function
- * @namespace taoApi
  * 
  * @param {Object} environment <i>set to null if you want to keep all the default values</i>
  * @param {String} [environment.url = "/taoDelivery/ResultDelivery/save"] the url of the server where the data are sent 
@@ -364,7 +343,6 @@ function initPush(environment, settings){
  * This method enables you to push the data to the server.
  * 
  * @function
- * @namespace taoApi
  */
 function push(){
 	taoStack.push();
@@ -391,7 +369,6 @@ var eventTracer = new EventTracer();
 * Log the an <i>eventType</i> bound on <i>elementName</i> by sending the <i>data</i>.
 * 
 * @function
-* @namespace taoApi
 * @param {String} elementName an HTML tag name
 * @param {String} eventType a JS User Events
 * @param {mixed} data any data strucuture you want to trace
@@ -404,7 +381,6 @@ function logEvent(elementName, eventType, data){
 * Log the a <i>eventName</i> by sending the <i>data</i>
 * 
 * @function
-* @namespace taoApi
 * @param {String} eventName the name of the custom event
 * @param {mixed} data 
 */
@@ -418,7 +394,6 @@ function logCustomEvent(eventName, data){
  * The destination service defines where and how we send the catched events 
  * 
  * @function
- * @namespace taoApi
  * 
  * @param {Object} source 
  * @param {String} [source.type = "sync"] the type of source <b>(sync|manual)</b>

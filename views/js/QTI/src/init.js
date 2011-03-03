@@ -21,7 +21,6 @@ var qti_initParam  	= new Object();
 /**
  * Initialize the QTI environment
  * 
- * @namespace QTI
  * @param {Object} qti_initParam the parameters of ALL item's interaction
  * @return void
  */
@@ -34,7 +33,6 @@ function qti_init(qti_initParam){
 /**
  * Initialize the widget and the result collection for an interaction
  * 
- * @namespace QTI
  * @param {Object} initObj the params of the interaction (parts of qti_initParam identified by the interaction id)
  */
 function qti_init_interaction(initObj){

@@ -22,18 +22,21 @@ function EventTracer (options){
 	
 	/**
 	 * array of events arrays
+	 * @fieldOf EventTracer
 	 * @type {Array}
 	 */
 	this.eventPool = new Array();// 
 	
 	/**
 	 * array of strings
+	 * @fieldOf EventTracer
 	 * @type {Array}
 	 */
 	this.eventsToBeSend = new  Array();
 	
 	/**
 	 * The tracer common options
+	 * @fieldOf EventTracer
 	 * @type {Object}
 	 */
 	this.opts = {
@@ -54,18 +57,21 @@ function EventTracer (options){
 	
 	/**
 	 * the list of events to be catched
+	 * @fieldOf EventTracer
 	 * @type {Object}
 	 */
 	this.EVENTS_TO_CATCH = new Object();
 	
 	/**
 	 * the list of attributes to be catched
+	 * @fieldOf EventTracer
 	 * @type {Object}
 	 */
 	this.ATTRIBUTES_TO_CATCH = new Array();
 
 	/**
 	 * The parameters defining how and where to load the events list to catch
+	 * @fieldOf EventTracer
 	 * @type {Object}
 	 */
 	this.sourceService = {
@@ -79,6 +85,7 @@ function EventTracer (options){
 	
 	/**
 	 * The parameters defining how and where to send the events
+	 * @fieldOf EventTracer
 	 * @type {Object}
 	 */
 	this.destinationService = {
@@ -91,7 +98,7 @@ function EventTracer (options){
 	/**
 	 * Initialize the service interface for the source service: 
 	 * how and where we retrieve the events to catch
-	 *  
+	 * @methodOf EventTracer
 	 * @param {Object} environment
 	 */
 	this.initSourceService = function(environment){
@@ -160,7 +167,7 @@ function EventTracer (options){
 	/**
 	 * Initialize the service interface forthe destination service:  
 	 * how and where we send the catched events
-	 *  
+	 * @methodOf EventTracer
 	 * @param {Object} environment
 	 */
 	this.initDestinationService = function(environment){
@@ -188,6 +195,7 @@ function EventTracer (options){
 	
 	/**
 	* @description record events of interaction between interviewee and the test
+	* @methodOf EventTracer
 	* @param {Object} data event type list
 	* @returns {Object} the events to catch
 	*/
@@ -233,6 +241,7 @@ function EventTracer (options){
 	
 	/**
 	* @description bind platform events
+	* @methodOf EventTracer
 	*/
 	this.bind_platform = function()
 	{
@@ -246,6 +255,7 @@ function EventTracer (options){
 	
 	/**
 	 * @description unbind platform events
+	 * @methodOf EventTracer
 	 */
 	this.unbind_platform = function()
 	{
@@ -256,6 +266,7 @@ function EventTracer (options){
 	
 	/**
 	 * @description set all information from the event to the pLoad
+	 * @methodOf EventTracer
 	 * @param {event} e dom event triggered
 	 * @param {Object} pload callback function called when 'ok' clicked
 	 */
@@ -280,8 +291,8 @@ function EventTracer (options){
 
 
 	/**
-	* @function
 	* @description set all information from the target dom element to the pLoad
+	* @methodOf EventTracer
 	* @param {event} e dom event triggered
 	* @param {Object} pload callback function called when 'ok' clicked
 	*/
@@ -340,8 +351,8 @@ function EventTracer (options){
 	};
 
 	/**
-	* @function
 	* @description set wanted information from the event to the pLoad
+	* @methodOf EventTracer
 	* @param {event} e dom event triggered
 	* @param {Object} pload callback function called when 'ok' clicked
 	*/
@@ -366,6 +377,7 @@ function EventTracer (options){
 
 	/**
 	 * @description return true if the event passed is a business event
+	 * @methodOf EventTracer
 	 * @param {event} e dom event triggered
 	 * @returns {boolean}
 	 */
@@ -375,6 +387,7 @@ function EventTracer (options){
 
 	/**
 	 * @description controler that send events to feedtrace
+	 * @methodOf EventTracer
 	 * @param {event} e dom event triggered
 	 */
 	this.eventStation = function (e){
@@ -428,6 +441,7 @@ function EventTracer (options){
 	/**
 	 * @description in the API to allow the unit creator to send events himself to the event log record events of interaction between interviewee and the test
 	 * @example feedTrace('BUSINESS','start_drawing',getGlobalTime(), {'unitTime':getUnitTime()});
+	 * @methodOf EventTracer
 	 * @param {String} target_tag element type receiving the event.
 	 * @param {String} event_type type of event being catched
 	 * @param {Object} pLoad object containing various information about the event. you may put whatever you need in it.
@@ -467,6 +481,7 @@ function EventTracer (options){
 
 	/**
 	 * @description prepare one block of stored traces for being sent
+	 * @methodOf EventTracer
 	 */
 	this.prepareFeedTrace = function()
 	{
@@ -486,6 +501,7 @@ function EventTracer (options){
 	/**
 	 * @description send one block of traces (non blocking)
 	 * Does send the content of eventsToBeSend[0] to the server
+	 * @methodOf EventTracer
 	 */
 	this.sendFeedTrace = function ()
 	{
@@ -509,8 +525,8 @@ function EventTracer (options){
 	};
 
 	/**
-	* @function
 	* @description success callback after traces sent. does affinate the size of traces package sent
+	* @methodOf EventTracer
 	* @param {String} data response from server
 	* @param {String} textStatus status of request
 	* @param {int} sent_timeStamp time the request was sent
@@ -537,6 +553,7 @@ function EventTracer (options){
 
 	/**
 	 * @description the request took too much time, we increase the size of traces package, to have less frequent requests
+	 * @methodOf EventTracer
 	 */
 	this.increaseEventsPoolSize = function ()
 	{
@@ -548,6 +565,7 @@ function EventTracer (options){
 
 	/**
 	 * @description the request was fast enough, we increase the frequency of requests by reducing the size of traces package
+	 * @methodOf EventTracer
 	 */
 	this.reduceEventsPoolSize = function ()
 	{
@@ -558,8 +576,8 @@ function EventTracer (options){
 	};
 
 	/**
-	* @function
 	* @description callback function after request failed (TODO)
+	* @methodOf EventTracer
 	* @param {ressource} xhr ajax request ressource
 	* @param {String} errorString error message
 	* @param {exception} [exception] exception object thrown
@@ -577,8 +595,8 @@ function EventTracer (options){
 	/* no callback on success
 	used when business events catched*/
 	/**
-	* @function
 	* @description send all traces with a blocking function
+	* @methodOf EventTracer
 	*/
 	this.sendAllFeedTrace_now = function ()
 	{
@@ -622,7 +640,7 @@ function EventTracer (options){
  
 /**
  * @description bind every non bubbling events to dom elements.
- * @function
+ * @methodOf EventTracer
  */
 jQuery.fn.bindDom = function(eventTracer)
 {
@@ -636,7 +654,7 @@ jQuery.fn.bindDom = function(eventTracer)
 
 /**
  * @description unbind platform events
- * @function
+ * @methodOf EventTracer
  */
 jQuery.fn.unBindDom = function(eventTracer)
 {

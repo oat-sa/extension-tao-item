@@ -24,12 +24,14 @@ function QTIResultCollector(options){
 	
 	/**
 	 * The widget options 
+	 * @fieldOf QTIResultCollector
 	 * @type Object 
 	 */
 	this.opts = options;
 	
 	/**
 	 * The id of the widget
+	 * @fieldOf QTIResultCollector
 	 * @type String
 	 */
 	this.id = options['id'];
@@ -37,7 +39,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of a <b>choice</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.choice = function(){
@@ -60,7 +62,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>order</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.order = function (){
@@ -80,7 +82,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>associate</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.associate = function(){
@@ -129,7 +131,7 @@ function QTIResultCollector(options){
 	/**
 	 * Collect the results of text based widget : 
 	 * <b>text_entry</b> and <b>extended_text</b>
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @todo Multiple not tested
 	 * @returns {Object} the results
 	 */
@@ -156,12 +158,14 @@ function QTIResultCollector(options){
 	
 	
 	/**
+	 * @methodOf QTIResultCollector
 	 * @see QTIResultCollector#text
 	 */
 	this.text_entry = this.text;
 	
 	
 	/**
+	 * @methodOf QTIResultCollector
 	 * @see QTIResultCollector#text
 	 */
 	this.extended_text = this.text;
@@ -169,7 +173,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>inline_choice</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.inline_choice = function(){
@@ -183,7 +187,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>hottext</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returnss {Object} the results
 	 */
 	this.hottext = function(){
@@ -203,7 +207,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>gap_match</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @todo does not work with single cardinality
 	 * @returns {Object} the results
 	 */
@@ -229,7 +233,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of a <b>match</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @todo does not work with single cardinality
 	 * @returns {Object} the results
 	 */
@@ -261,7 +265,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>hotspot</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.hotspot = function(){
@@ -281,7 +285,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of an <b>hotspot</b> widget 
-	 * 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.select_point = function(){
@@ -301,6 +305,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of a <b>graphic order</b> widget 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.graphic_order = function(){
@@ -321,6 +326,7 @@ function QTIResultCollector(options){
 	
 	/**
 	 * Collect the results of a <b>graphic associate</b> widget 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.graphic_associate = function(){
@@ -340,7 +346,8 @@ function QTIResultCollector(options){
 	
 	
 	/**
-	 * Collect the results of an <b>upload</b> widget *
+	 * Collect the results of an <b>upload</b> widget 
+	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
 	 */
 	this.upload = function(){
