@@ -854,28 +854,24 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 						}
 					}
 				}
-				//try building the absolute path
-				// $item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));
-				// $itemId = '';
-				// if(stripos($itemUri,"#")>0){
-					// $itemId = substr($itemUri, stripos($itemUri,"#")+1);
-				// }
-				// $path = BASE_URL."/data/{$itemId}";
-				// $path .= substr($imageFilePath,0,1)=='/'?'':'/';
-				// $imageFilePath = $path.$imageFilePath;
 			}
 			
-			if(file_exists($imageFilePath)){
+			if (@fclose(@fopen($imageFilePath, "r"))){//check if file remotely exists, might be improved with cURL
+
 				$mimeType = tao_helpers_File::getMimeType($imageFilePath);
 				$validImageType = array(
 					'image/png',
 					'image/jpeg',
 					'image/bmp'
 				);
+				
 				if(in_array($mimeType, $validImageType)){
 					$returnValue['mime'] = $mimeType;
 				}
+				
 			}
+			
+			
 		}
 		
 		return $returnValue;
