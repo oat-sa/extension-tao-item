@@ -1770,6 +1770,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		$returnValue = $data;
 		
+		$data = trim($data);
 		if(!empty($data)){
 			// $data = str_replace('&', '&amp;', $data);
 			$tidy = new tidy();
@@ -1788,6 +1789,7 @@ class taoItems_models_classes_QtiAuthoringService
 				),
 				'UTF8'
 			);
+			
 			try{//Parse data and replace img src by the media service URL
 				$updated = false;
 				$doc = new DOMDocument;

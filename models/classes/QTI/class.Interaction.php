@@ -571,7 +571,23 @@ class taoItems_models_classes_QTI_Interaction
     public function setPrompt($text)
     {
         // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002575 begin
-        
+        $tidy = new tidy();
+		$text = $tidy->repairString (
+			$text,
+			array(
+				'output-xhtml' => true,
+				'numeric-entities' => true,
+				'show-body-only' => true,
+				'quote-nbsp' => false,
+				'indent' => 'auto',
+				'preserve-entities' => false,
+				'quote-ampersand' => true,
+				'uppercase-attributes' => false,
+				'uppercase-tags' => false
+			),
+			'UTF8'
+		);
+		
     	$this->prompt = $text;
     	
         // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002575 end

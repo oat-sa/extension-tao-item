@@ -590,6 +590,23 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000232C begin
         
+		$tidy = new tidy();
+		$data = $tidy->repairString (
+			$data,
+			array(
+				'output-xhtml' => true,
+				'numeric-entities' => true,
+				'show-body-only' => true,
+				'quote-nbsp' => false,
+				'indent' => 'auto',
+				'preserve-entities' => false,
+				'quote-ampersand' => true,
+				'uppercase-attributes' => false,
+				'uppercase-tags' => false
+			),
+			'UTF8'
+		);
+		
     	$this->data = $data;
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000232C end
