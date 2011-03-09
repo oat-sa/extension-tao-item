@@ -6,7 +6,8 @@ new taoItems_scripts_MigrateLegacyItems(array(
 	'required'	=> array(
 		array('input'),
 		array('input', 'uri'),
-		array('input', 'addResource')
+		array('input', 'addResource'),
+		array('input', 'output', 'pack')
 	),
 	'parameters' => array(
 		array(
@@ -39,6 +40,12 @@ new taoItems_scripts_MigrateLegacyItems(array(
 			'type' 			=> 'string',
 			'shortcut'		=> 'c',
 			'description' 	=> 'the RDFS class where to add the resource'
+		),
+		array(
+			'name' 			=> 'pack',
+			'type' 			=> 'boolean',
+			'shortcut'		=> 'p',
+			'description' 	=> 'Create a package'
 		)
 	)
 ));

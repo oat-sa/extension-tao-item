@@ -64,7 +64,7 @@ class taoItems_scripts_MigrateLegacyItems
      * Short description of attribute qtiItem
      *
      * @access private
-     * @var Item
+     * @var taoItems_models_classes_QTI_Item
      */
     private $qtiItem = null;
 
@@ -126,12 +126,16 @@ class taoItems_scripts_MigrateLegacyItems
     	if ((isset($this->inputFormat['uri'])  || isset($this->parameters['addResource'])) && is_null($this->item )){
     		self::err("Unable to create/retrieve item");
     	}
-   		if(isset($this->parameters['output'])){
+    	if(isset($this->parameters['output'])){
     		$this->outputDir = $this->parameters['output'];
     	}
-    	else{
+    	else if(is_null($this->item)){
     		$this->outputDir = dirname($this->parameters['input']);
     	}
+    	else{
+    		$this->outputDir = sys_get_temp_dir();
+    	}
+    	$this->outputDir = preg_replace("/\/$/", '',trim($this->outputDir));
     	
         // section 127-0-1-1--5d5119d4:12e3924f2ec:-8000:0000000000002D81 end
     }
@@ -147,10 +151,43 @@ class taoItems_scripts_MigrateLegacyItems
     {
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D6E begin
         
-    	$result = $this->qcm2Qti($this->parameters['input']);
-    	$filename = 'qti-'.basename($this->parameters['input']);
-    	file_put_contents($this->outputDir. '/'.$filename, $result);
-    	print_r($this->styles);
+    	$resultContent = $this->qcm2Qti($this->parameters['input']);
+    	
+    	$filename = substr(basename($this->parameters['input']), 0, strripos(basename($this->parameters['input']), '.'));
+    	
+    	//create the QTI file
+    	$qtiFilename = 'qti-'.$filename.'.xml';
+    	$qtiFile = $this->outputDir. '/'.$qtiFilename;
+    	file_put_contents($qtiFile, $resultContent);
+    	if(!file_exists($qtiFile)){
+    		$this->err("Unable to create $qtiFile", true);
+    	}
+    	
+    	//create a package
+    	if(isset($this->parameters['pack']) && $this->parameters['pack'] == true){
+    		$path = $this->outputDir. '/'.$filename.'.zip';
+    		
+    		$zipArchive = new ZipArchive();
+			if($zipArchive->open($path, ZipArchive::CREATE) !== true){
+				$this->err('Unable to create archive at '.$path);
+			}
+			$zipArchive->addFile($this->outputDir. '/'.$qtiFilename, $qtiFilename);
+			$relMedias = array();
+			foreach($this->medias as $mediaPath){
+				$relPath = str_replace(realpath($this->outputDir).'/', '', $mediaPath);
+				$zipArchive->addFile($mediaPath, $relPath);
+				$relMedias[] = $relPath;
+			}
+            $templateRenderer = new taoItems_models_classes_TemplateRenderer(BASE_PATH.'/models/classes/QTI/templates/imsmanifest.tpl.php', array(
+				'qtiItem' 				=> $this->qtiItem,
+				'qtiFilePath'			=> $qtiFilename,
+				'medias'				=> $relMedias,
+				'manifestIdentifier'	=> 'QTI-MANIFEST-'.tao_helpers_Display::textCleaner($this->qtiItem->getIdentifier(), '-')
+        	));
+        	$zipArchive->addFromString('imsmanifest.xml', $templateRenderer->render());
+			
+			$zipArchive->close();
+    	}
     	
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D6E end
     }
@@ -298,7 +335,6 @@ class taoItems_scripts_MigrateLegacyItems
 		    		}
 		    		
 		    		$interactions[] = $interaction;
-	    		
 		    	}
 		    }
 	    	
@@ -364,8 +400,46 @@ class taoItems_scripts_MigrateLegacyItems
 	    	$this->qtiItem->setInteractions($interactions);
 	    	$this->qtiItem->setData($data);
 			
+	    	$this->createStyleSheet();
+	    
+	    	$output = $this->qtiItem->toQTI();
 	    	
-	    	$returnValue = $this->qtiItem->toQTI();
+	    	$resDirName = 'res-'.$this->qtiItem->getSerial();
+        	$resDirPattern = "/".preg_quote($resDirName, '/')."/";
+        	$relativeBase = dirname($this->parameters['input']);
+	    	
+	    	//retrieve and format all the external medias (images, videos)
+	    	$matches = array();
+			if(preg_match_all("/(href|src|data|\['imagePath'\])\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
+				if(isset($matches[2])){
+					foreach($matches[2] as $uri){
+						
+						if(preg_match("/^http:\/\//", $uri) ){
+							$mediaData = '';
+							try{
+							 	$mediaData = tao_helpers_Request::load($uri);
+							}
+							catch(Exception $e){
+								continue;	
+							}
+							if(!empty($mediaData)){
+								$this->createMedia(basename($uri), $mediaData);
+							}
+						}
+						else if($uri != '#' && !preg_match($resDirPattern, $uri)){
+							$file = realpath($relativeBase.'/'.$uri);
+							if(file_exists($file)){
+								$this->createMedia(basename($file), file_get_contents($file));
+								$mediaPath = $this->medias[basename($file)];
+								$relPath = str_replace(realpath($this->outputDir).'/', '', $mediaPath);
+								$output = str_replace($uri, $relPath, $output);
+							}
+						}
+					}
+				}
+			}
+			
+			$returnValue = $output;
     	}
     	catch(DomainException $de){
 			self::err($de, true);    		
@@ -608,7 +682,17 @@ class taoItems_scripts_MigrateLegacyItems
         // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E81 begin
         
     	if(count($this->styles) > 0){
-    		$this->createMedia('style.css', implode("\n", $this->styles));
+    		if($this->createMedia('style.css', implode("\n", $this->styles))){
+    			if(isset($this->medias['style.css'])){
+	    			$styleSheet = basename(dirname($this->medias['style.css'])).'/style.css';
+	    			$this->qtiItem->setStylesheets(array(array(
+	    				'title'=> 'style.css',
+	    				'media'=> 'screen',
+	    				'href' => $styleSheet,
+	    				'type' => 'text/css'
+	    			)));
+    			}
+    		}
     	}
     	
         // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E81 end
@@ -629,7 +713,17 @@ class taoItems_scripts_MigrateLegacyItems
 
         // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E83 begin
         
-        $dirName = 'res-';
+        $dirName = 'res-'.$this->qtiItem->getSerial();
+        $resDir = $this->outputDir.'/'.$dirName;
+        if(!is_dir($resDir)){
+        	mkdir($resDir);
+        }
+        if(file_put_contents($resDir.'/'.$name, $content)){
+        	$this->medias[$name] = realpath($resDir.'/'.$name);
+        	if(file_exists($this->medias[$name])){
+        		$returnValue = true;
+        	}
+        }
         
         // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E83 end
 
