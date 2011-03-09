@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.02.2011, 16:45:07 with ArgoUML PHP module 
+ * Automatically generated on 09.03.2011, 15:11:24 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -60,6 +60,46 @@ class taoItems_scripts_MigrateLegacyItems
      */
     private $item = null;
 
+    /**
+     * Short description of attribute qtiItem
+     *
+     * @access private
+     * @var Item
+     */
+    private $qtiItem = null;
+
+    /**
+     * Short description of attribute outputDir
+     *
+     * @access private
+     * @var string
+     */
+    private $outputDir = '';
+
+    /**
+     * Short description of attribute styles
+     *
+     * @access private
+     * @var array
+     */
+    private $styles = array();
+
+    /**
+     * Short description of attribute medias
+     *
+     * @access private
+     * @var array
+     */
+    private $medias = array();
+
+    /**
+     * Short description of attribute xpath
+     *
+     * @access private
+     * @var DOMXPath
+     */
+    private $xpath = null;
+
     // --- OPERATIONS ---
 
     /**
@@ -73,7 +113,7 @@ class taoItems_scripts_MigrateLegacyItems
     {
         // section 127-0-1-1--5d5119d4:12e3924f2ec:-8000:0000000000002D81 begin
         
-    if(isset($this->inputFormat['uri'])){
+    	if(isset($this->inputFormat['uri'])){
     		$this->item = $this->getResource($this->parameters['uri']);
     	}
     	if(is_null($this->item) && isset($this->parameters['addResource']) && $this->parameters['addResource'] === true){
@@ -85,6 +125,12 @@ class taoItems_scripts_MigrateLegacyItems
     	}
     	if ((isset($this->inputFormat['uri'])  || isset($this->parameters['addResource'])) && is_null($this->item )){
     		self::err("Unable to create/retrieve item");
+    	}
+   		if(isset($this->parameters['output'])){
+    		$this->outputDir = $this->parameters['output'];
+    	}
+    	else{
+    		$this->outputDir = dirname($this->parameters['input']);
     	}
     	
         // section 127-0-1-1--5d5119d4:12e3924f2ec:-8000:0000000000002D81 end
@@ -102,9 +148,9 @@ class taoItems_scripts_MigrateLegacyItems
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D6E begin
         
     	$result = $this->qcm2Qti($this->parameters['input']);
-    	if(isset($this->parameters['output'])){
-    		file_put_contents($this->parameters['output'], $result);
-    	}
+    	$filename = 'qti-'.basename($this->parameters['input']);
+    	file_put_contents($this->outputDir. '/'.$filename, $result);
+    	print_r($this->styles);
     	
         // section 127-0-1-1--39e3a8dd:12e33ba6c22:-8000:0000000000002D6E end
     }
@@ -187,7 +233,7 @@ class taoItems_scripts_MigrateLegacyItems
 	    try{
 		    $dom = new DOMDocument();
 		    $dom->load($inputFile);
-	    	$xpath = new DOMXPath($dom);
+	    	$this->xpath = new DOMXPath($dom);
 		    	
 		    //create default structure
 		    $itemIdentifier = null;
@@ -196,24 +242,28 @@ class taoItems_scripts_MigrateLegacyItems
 		    }
 		    
 		    $label = '';
-		    foreach($xpath->query("rdfs:LABEL") as $labelNode){
+		    foreach($this->xpath->query("rdfs:LABEL") as $labelNode){
 		    	$label = $labelNode->nodeValue;
 		    	break;
 		    }
-		    
-		    $qtiItem = new taoItems_models_classes_QTI_Item($itemIdentifier, array('title' => $label));
+		    $options = array(
+		    	'title' 		=> $label,
+		    	'adaptive'		=> 'false',
+		    	'timeDependent' => 'false'
+		    );
+		    $this->qtiItem = new taoItems_models_classes_QTI_Item($itemIdentifier, $options);
 			
 			//add default responseProcessing:
-			$qtiItem->setOutcomes(array(
+			$this->qtiItem->setOutcomes(array(
 				new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'))
 			));
-			$qtiItem->setResponseProcessing(
+			$this->qtiItem->setResponseProcessing(
 				new taoItems_models_classes_QTI_response_TemplatesDriven()
 			);
 		
-	    	
+	    	//get inqueries in the right order in the legacy doc ( inquery => interaction)
 	    	$inqueries = array();
-	    	foreach($xpath->query("//tao:INQUIRY") as $inquery){
+	    	foreach($this->xpath->query("//tao:INQUIRY") as $inquery){
 	    		$added = false;
 	    		if($inquery->hasAttribute('order')){
 	    			$order = (int)$inquery->getAttribute('order');
@@ -233,67 +283,30 @@ class taoItems_scripts_MigrateLegacyItems
 	    	}
 	    	ksort($inqueries);
 	    	
+	    	
+	    	(count($inqueries)<=1) ? $responseId = 'RESPONSE' : $responseId = null;
+	    	
+	    	//build interactions from the inqueries
 	    	$interactions = array();
 	    	foreach($inqueries as $inquery){
 	    		
-				$interaction  = new taoItems_models_classes_QTI_Interaction('choice');
-	    		foreach($xpath->query("tao:QUESTION", $inquery) as $question){
-	    			$interaction->setPrompt($question->nodeValue);
-	    		}
-	    		foreach($xpath->query("tao:PROPOSITIONTYPE") as $propositionType){
-	    			if(preg_match("/^Exclusive/i", trim($propositionType->nodeValue))){
-	    				$interaction->setOption("maxChoice", 1);
-	    			}
-	    			if(preg_match("/^Multiple/i", trim($propositionType->nodeValue))){
-	    				$interaction->setOption("maxChoice", 0);
-	    			}
-	    		}
-	    		
-	    		
-	    		$choices = array();
-	    		foreach($xpath->query(".//tao:PROPOSITION", $inquery) as $proposition){
-	    			$identifier = null;
-	    			if($proposition->hasAttribute('Id')){
-	    				$identifier = $proposition->getAttribute('Id');
-	    			}
+	    		$interaction = $this->inquery2Interaction($inquery);
+		    	if(!is_null($interaction)){
 	    			
-	    			$choice = new taoItems_models_classes_QTI_Choice($identifier);
-		    		$choice->setType('simpleChoice');
-		    		 
-		    		$choice->setData($proposition->nodeValue);
+		    		if(!is_null($responseId)){
+		    			$interaction->getResponse()->setIdentifier($responseId);
+		    		}
 		    		
-	    			$added = false;
-		    		if($proposition->getAttribute('order')){
-		    			$order = (int)$proposition->getAttribute('order');
-		    			if(!array_key_exists($order, $choices)){
-		    				$choices[(int)$proposition->getAttribute('order')] = $choice;
-		    				$added = true;
-		    			}
-		    		}
-		    		if(!$added){
-		    			foreach(array_keys($choices) as $index){
-		    				if(!isset($choices[$index + 1])){
-		    					$choices[$index + 1] = $choice; 
-		    					break;
-		    				}
-		    			}
-		    		}
-	    		}
-	    		ksort($choices);
-	    		$interaction->setChoices($choices);
+		    		$interactions[] = $interaction;
 	    		
-	    		$data = '';
-	    		foreach($choices as $choice){
-	    			$data .= '{'.$choice->getSerial().'}';	
-	    		}
-	    		$interaction->setData($data);
-	    		$interactions[] = $interaction;
-	    	}
+		    	}
+		    }
 	    	
 	    	
+	    	//create the Item's data from the ITEMPRESENTATION 
 	    	$data = '';
-	    	foreach($xpath->query("tao:ITEMPRESENTATION") as $presentationNode){
-	    		foreach($xpath->query("./xul/box[@id='itemContainer_box']", $presentationNode) as $containerNode){
+	    	foreach($this->xpath->query("tao:ITEMPRESENTATION") as $presentationNode){
+	    		foreach($this->xpath->query("./xul/box[@id='itemContainer_box']", $presentationNode) as $containerNode){
 	    			foreach($containerNode->childNodes as $child){
 	    				
 	    				switch(strtolower($child->nodeName)){
@@ -305,8 +318,10 @@ class taoItems_scripts_MigrateLegacyItems
 									}  
 	    							if($child->hasAttribute('height')){
 										$data .= " height='".$child->getAttribute('height')."'";
-									}  							
-	    							$data .= " />";
+									}  				
+									$alt = basename($child->getAttribute('src'));
+									$alt = substr($alt, 0, strripos($alt, '.'));
+	    							$data .= " alt='$alt' />";
 	    						}
 	    						break;
 	    					case 'label':
@@ -323,7 +338,7 @@ class taoItems_scripts_MigrateLegacyItems
 	    								$data .= "<span>";
 	    							}
 	    							
-	    							$data .= html_entity_decode($child->getAttribute('value'));
+	    							$data .= $this->cleanUp($child->getAttribute('value'));
 									 							
 	    							if($multi){
 	    								$data .= "</div>";
@@ -346,27 +361,279 @@ class taoItems_scripts_MigrateLegacyItems
 	    	}
 	    	
 	   	 	
-	    	$qtiItem->setInteractions($interactions);
-	    	$qtiItem->setData($data);
-	    		
-	    	
-			(count($qtiItem->getInteractions())<=1) ? $responseId = 'RESPONSE' : $responseId = null;
+	    	$this->qtiItem->setInteractions($interactions);
+	    	$this->qtiItem->setData($data);
 			
-			foreach($qtiItem->getInteractions() as $interaction){
-				$response = new taoItems_models_classes_QTI_Response($responseId);
-				$response->setHowMatch(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
-				$interaction->setResponse($response);
-	    	}
 	    	
-	    	$returnValue = $qtiItem->toQTI();
+	    	$returnValue = $this->qtiItem->toQTI();
     	}
     	catch(DomainException $de){
 			self::err($de, true);    		
     	}
-        
+    	
         // section 127-0-1-1--5d5119d4:12e3924f2ec:-8000:0000000000002D78 end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method inquery2Interaction
+     *
+     * @access private
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  DOMNode inquery
+     * @return taoItems_models_classes_QTI_Interaction
+     */
+    private function inquery2Interaction( DOMNode $inquery)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E6E begin
+        
+    	foreach($this->xpath->query(".//tao:PROPOSITIONTYPE", $inquery) as $propositionType){
+			if(preg_match("/^Exclusive Choice$/i", trim($propositionType->nodeValue))){
+   				$returnValue = $this->inquery2ChoiceInteraction($inquery);
+   			}
+   			else if(preg_match("/^Multiple Choice$/i", trim($propositionType->nodeValue))){
+   				$returnValue = $this->inquery2ChoiceInteraction($inquery, true);
+   			}
+   			else if(preg_match("/^Text$/i", trim($propositionType->nodeValue))){
+    			$returnValue = $this->inquery2TextInteraction($inquery);
+    		}
+    	}
+        
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E6E end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method inquery2ChoiceInteraction
+     *
+     * @access private
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  DOMNode inquery
+     * @param  boolean multiple
+     * @return taoItems_models_classes_QTI_Interaction
+     */
+    private function inquery2ChoiceInteraction( DOMNode $inquery, $multiple = false)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E72 begin
+        
+        $interaction  = new taoItems_models_classes_QTI_Interaction('choice');
+    	if($multiple){
+    		$interaction->setOption("maxChoices", '0');
+    	}
+    	else{
+    		$interaction->setOption("maxChoices", '1');
+    	}
+    	
+    	foreach($this->xpath->query("tao:QUESTION", $inquery) as $question){
+    		$interaction->setPrompt($this->cleanUp($question->nodeValue));
+   		}
+		    		
+    	//get the proposition of an inquery (proposition => choice)
+    	$hasOrder = false;
+    	$choices = array();
+    	foreach($this->xpath->query(".//tao:PROPOSITION", $inquery) as $proposition){
+    		$identifier = null;
+    		if($proposition->hasAttribute('Id')){
+    			$identifier = $proposition->getAttribute('Id');
+    		}
+    		
+    		$choice = new taoItems_models_classes_QTI_Choice($identifier);
+	    	$choice->setType('simpleChoice');
+	    	 
+	    	$choice->setData($this->cleanUp($proposition->nodeValue));
+	    		
+    		$added = false;
+	    	if($proposition->hasAttribute('order')){
+	    		$hasOrder = true;
+	    		$order = (int)$proposition->getAttribute('order');
+	    		if(!array_key_exists($order, $choices)){
+	    			$choices[(int)$proposition->getAttribute('order')] = $choice;
+	    			$added = true;
+	    		}
+	    	}
+	    	if(!$added){
+	    		foreach(array_keys($choices) as $index){
+	    			if(!isset($choices[$index + 1])){
+	    				$choices[$index + 1] = $choice; 
+	    				break;
+	    			}
+	    		}
+	    	}
+    	}
+    	ksort($choices);
+    	$interaction->setChoices($choices);
+    		    		
+   		if(!$hasOrder){
+   			$interaction->setOption('shuffle', 'true');
+   		}
+   		else{
+    		$interaction->setOption('shuffle', 'false');
+    	}
+    		
+    	$data = '';
+   		foreach($choices as $choice){
+   			$data .= '{'.$choice->getSerial().'}';	
+   		}
+   		$interaction->setData($data);
+   		
+   		//build the response
+    	$correctResponses = array();
+    	foreach($this->xpath->query(".//tao:HASANSWER", $inquery) as $answer){
+    		$vector = (string)$answer->nodeValue;
+    		for($i=0; $i < strlen($vector); $i++){
+    			if($vector[$i] == '1' && isset($choices[$i])){
+    				$correctChoice = $choices[$i];
+    				if($correctChoice instanceof taoItems_models_classes_QTI_Choice){
+    					$correctResponses[] = $correctChoice->getIdentifier();
+    				}
+    			}
+    		}
+    	}
+    		
+    	$options = array('baseType' => 'identifier');
+    	(count($correctResponses) > 1) ? $options['cardinality'] = 'multiple' :  $options['cardinality'] = 'single';
+    		
+    	$response = new taoItems_models_classes_QTI_Response(null, $options);
+		$response->setHowMatch(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
+		$response->setCorrectResponses($correctResponses);
+		$interaction->setResponse($response);
+    		
+    	$returnValue = $interaction;
+        
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E72 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method inquery2TextInteraction
+     *
+     * @access private
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  DOMNode inquery
+     * @return taoItems_models_classes_QTI_Interaction
+     */
+    private function inquery2TextInteraction( DOMNode $inquery)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E7B begin
+        
+        $interaction  = new taoItems_models_classes_QTI_Interaction('extendedText');
+    	
+    	foreach($this->xpath->query("tao:QUESTION", $inquery) as $question){
+    		$interaction->setPrompt($this->cleanUp($question->nodeValue));
+   		}
+   		
+   		$returnValue = $interaction;
+        
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E7B end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method cleanUp
+     *
+     * @access private
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string htmlString
+     * @return string
+     */
+    private function cleanUp($htmlString)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E7E begin
+        
+    	$htmlString = html_entity_decode($htmlString, ENT_COMPAT, 'UTF-8');
+    	
+    	$tidy = new tidy();
+    	$cleaned = $tidy->repairString($htmlString, array(
+				'output-xhtml'			=> true,
+				'alt-text' 				=> true,
+				'quote-nbsp' 			=> true,
+				'indent' 				=> 'auto',
+				'preserve-entities' 	=> true,
+				'quote-ampersand' 		=> true,
+				'uppercase-attributes' 	=> false,
+				'uppercase-tags' 		=> false,
+				'clean'					=> true,
+				'join-styles'			=> false,
+    			'hide-comments'			=> true
+			),
+		'UTF8');
+		
+
+		$stylePattern = "/^(.*)?\s?{(.*)?}$/";
+		
+    	$xml = simplexml_load_string($cleaned); 
+		foreach($xml->xpath("//*[name(.) = 'style']") as $styleNode){
+			$styleContents = explode("\n",(string)$styleNode);
+			foreach($styleContents as $styleRule){
+				if(preg_match($stylePattern, trim($styleRule))){
+					$this->styles[] = trim($styleRule);
+				}
+			}
+		}
+    	foreach($xml->xpath("//*[name(.) = 'body']") as $bodyNode){
+    		if(count($bodyNode->children()) > 0){
+	       		$returnValue .= preg_replace(array("/^<body([^>]*)?>/i", "/<\/body([^>]*)?>$/i"), "", trim($bodyNode->asXML()));
+       		}
+       		else{
+       			$returnValue .= (string)$bodyNode;
+       		}
+		}
+        
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E7E end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method createStyleSheet
+     *
+     * @access private
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return mixed
+     */
+    private function createStyleSheet()
+    {
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E81 begin
+        
+    	if(count($this->styles) > 0){
+    		$this->createMedia('style.css', implode("\n", $this->styles));
+    	}
+    	
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E81 end
+    }
+
+    /**
+     * Short description of method createMedia
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  string name
+     * @param  string content
+     * @return boolean
+     */
+    public function createMedia($name, $content)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E83 begin
+        
+        $dirName = 'res-';
+        
+        // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E83 end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_scripts_MigrateLegacyItems */

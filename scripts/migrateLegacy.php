@@ -2,9 +2,9 @@
 require_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 new taoItems_scripts_MigrateLegacyItems(array(
-	'min'		=> 2,
+	'min'		=> 1,
 	'required'	=> array(
-		array('input', 'output'),
+		array('input'),
 		array('input', 'uri'),
 		array('input', 'addResource')
 	),
@@ -18,9 +18,9 @@ new taoItems_scripts_MigrateLegacyItems(array(
 		),
 		array(
 			'name' 			=> 'output',
-			'type' 			=> 'path',
+			'type' 			=> 'dir',
 			'shortcut'		=> 'o',
-			'description'	=> 'the output file to save the new item'
+			'description'	=> 'the output directory to save the new item, by default the same than the input'
 		),
 		array(
 			'name' 			=> 'uri',
