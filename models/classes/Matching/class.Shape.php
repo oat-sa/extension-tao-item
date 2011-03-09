@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.Shape.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 15.12.2010, 13:43:09 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Shape represents the different shapres managed by the tao 
+ * matching api.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -30,7 +24,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C9C-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_Shape
+ * Shape represents the different shapres managed by the tao 
+ * matching api.
  *
  * @abstract
  * @access public
@@ -46,7 +41,7 @@ abstract class taoItems_models_classes_Matching_Shape
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute type
+     * Type of the shape [poly, rect, ellipse, circle]
      *
      * @access protected
      * @var string
@@ -56,7 +51,7 @@ abstract class taoItems_models_classes_Matching_Shape
     // --- OPERATIONS ---
 
     /**
-     * Short description of method getType
+     * Get the type of the shape
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -76,11 +71,11 @@ abstract class taoItems_models_classes_Matching_Shape
     }
 
     /**
-     * Short description of method setType
+     * set the type of the shape
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string type
+     * @param  string type The type can be [poly,rect,ellipse,circle]
      * @return mixed
      */
     public function setType($type)

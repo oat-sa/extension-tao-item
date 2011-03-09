@@ -1,5 +1,17 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * @class
+ * 
+ * A special class used to create a mapping from a source set of 
+ * any baseType to a single float.
+ *
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ * 
+ * @constructor 
+ */
 TAO_MATCHING.Map = function (data) {
 	// Set the value of the variable
 	this.setValue (data);
@@ -7,8 +19,14 @@ TAO_MATCHING.Map = function (data) {
 
 TAO_MATCHING.Map.prototype = {
     /**
-     * Short description of method map
-     *
+     * This function looks up the value of a given 
+     * Variable and then transforms it using the associated 
+     * mapping. The result is a single float. If the given variable 
+     * has single cardinality then the value returned is simply the 
+     * mapped target value from the map.
+     * If the response variable has  multiple cardinality then the 
+     * value returned is the sum of the mapped target values.
+     * 
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Variable var
@@ -44,7 +62,7 @@ TAO_MATCHING.Map.prototype = {
 	}
 	
     /**
-     * Short description of method setValue
+     * Set the value of the map
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.Collection.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 16.11.2010, 14:18:07 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Collection is an abstract class which represents
+ * the variables "collection".
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +16,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Variable
+ * Variable is an abstract class which is the representation 
+ * of all the variables managed by the system
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +32,8 @@ require_once('taoItems/models/classes/Matching/class.Variable.php');
 // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000295D-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_Collection
+ * Collection is an abstract class which represents
+ * the variables "collection".
  *
  * @abstract
  * @access public
@@ -56,7 +52,7 @@ abstract class taoItems_models_classes_Matching_Collection
     // --- OPERATIONS ---
 
     /**
-     * Short description of method contains
+     * Check if the collection contains the given element.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -131,7 +127,7 @@ abstract class taoItems_models_classes_Matching_Collection
     }
 
     /**
-     * Short description of method isNull
+     * check if the variable is null
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -151,7 +147,7 @@ abstract class taoItems_models_classes_Matching_Collection
     }
 
     /**
-     * Short description of method length
+     * Get the length of the collection
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

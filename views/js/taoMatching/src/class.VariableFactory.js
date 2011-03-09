@@ -1,15 +1,27 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * @class
+ * 
+ * The class variable factory provide to developpers a set of usefull function
+ * the variable creation process
+ *
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ */
 TAO_MATCHING.VariableFactory = {
+
     /**
-     * Short description of method create
+     * Create a variable functions of the given data.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array data
-     * @param  string type
+     * @param  array data Data of the variable (the value)
+     * @param  string type The type is optional, if it is not defined the data will
+define the type of the variable
      * @return TAO_MATCHING.Variable
-     */	
+     */
 	create : function (data, pType) {
 		var returnValue = null;
 		var type = null;
@@ -62,9 +74,10 @@ TAO_MATCHING.VariableFactory = {
 	}
 	
 	/** 
-	 * Define the type of a given JSON Variable Object
-	 * @params {}
-	 * @return
+	 * Define the type of data from the data value
+	 * @params {object} data Get the type of these data
+	 * @return string
+	 * @private
 	 */
 	, getType : function (data){
 	    var returnValue = null;
@@ -100,7 +113,7 @@ TAO_MATCHING.VariableFactory = {
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
+     * @param object data Check if the given data is a variable of the matching api 
      * @return boolean
      */	
 	, isMatchingVariable : function (data){
@@ -122,8 +135,8 @@ TAO_MATCHING.VariableFactory = {
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
-     * @return taoItems_models_classes_Matching_BaseTypeVariable
+     * @param  data Data to convert
+     * @return TAO_MATCHING.BaseTypeVariable
      */
      , toNumericBaseType : function (data) {
         var returnValue = null;
@@ -145,14 +158,15 @@ TAO_MATCHING.VariableFactory = {
         return returnValue;
      }
     
-    /**
-     * Short description of method toBooleanBaseType
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
-     * @return taoItems_models_classes_Matching_BaseTypeVariable
-     */
+     /**
+      * Convert data in boolean BaseTypeVariable.
+      * If the data is not a valid base type value return null.
+      *
+      * @access public
+      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+      * @param  data Data to convert
+      * @return  TAO_MATCHING.BaseTypeVariable
+      */
      , toBooleanBaseType : function (data) {
         var returnValue = null;
         

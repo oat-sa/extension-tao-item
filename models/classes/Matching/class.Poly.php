@@ -3,14 +3,10 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.Poly.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 15.12.2010, 14:07:05 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Poly represents a polygon managed by the tao matching api.
+ * A polygon hosts a list points. 
+ * A point is represented on the system by a "Tuple Variable"
+ * of two integers.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +18,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Shape
+ * Shape represents the different shapres managed by the tao 
+ * matching api.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +34,10 @@ require_once('taoItems/models/classes/Matching/class.Shape.php');
 // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CBA-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_Poly
+ * Poly represents a polygon managed by the tao matching api.
+ * A polygon hosts a list points. 
+ * A point is represented on the system by a "Tuple Variable"
+ * of two integers.
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -53,7 +53,7 @@ class taoItems_models_classes_Matching_Poly
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute points
+     * List of points which form the polygon
      *
      * @access protected
      * @var array
@@ -63,11 +63,12 @@ class taoItems_models_classes_Matching_Poly
     // --- OPERATIONS ---
 
     /**
-     * Short description of method contains
+     * Check if the polygon contains a point
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Variable var
+     * @param  Variable var The point to find.
+The point is represented by a "Tuple Variable" of two integers.
      * @return boolean
      */
     public function contains( taoItems_models_classes_Matching_Variable $var)
@@ -121,7 +122,7 @@ class taoItems_models_classes_Matching_Poly
     }
 
     /**
-     * Short description of method getPoints
+     * Get all the points of the polygon
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

@@ -1,0 +1,123 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="NAME">TAO_MATCHING</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="NAME">TAO_MATCHING</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">TAO_MATCHING</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>  2</span> 
+<span class='line'>  3</span> </span><span class="COMM">/**
+<span class='line'>  4</span>  * Matching API interface.
+<span class='line'>  5</span>  * Provides functions to manage the communication with a the TAO matching engine from an XHTML item.
+<span class='line'>  6</span>  * 
+<span class='line'>  7</span>  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+<span class='line'>  8</span>  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+<span class='line'>  9</span>  * @package taoItems
+<span class='line'> 10</span>  *
+<span class='line'> 11</span>  */</span><span class="WHIT">
+<span class='line'> 12</span> 
+<span class='line'> 13</span> </span><span class="COMM">/**
+<span class='line'> 14</span>  * The tao matching engine instance
+<span class='line'> 15</span>  */</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT"> 
+<span class='line'> 17</span> </span><span class="NAME">TAO_MATCHING.engine</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 18</span> 
+<span class='line'> 19</span> </span><span class="COMM">/////////////////////</span><span class="WHIT">
+<span class='line'> 20</span> </span><span class="COMM">// TAO Matching //</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="COMM">///////////////////</span><span class="WHIT">
+<span class='line'> 22</span> 
+<span class='line'> 23</span> </span><span class="COMM">/**
+<span class='line'> 24</span>  * Init the TAO Matching Engine
+<span class='line'> 25</span>  * @param {JSON} params Set of optional parameters used to init the matching engine
+<span class='line'> 26</span>  * @param {Array} params.corrects Collection of correct responses
+<span class='line'> 27</span>  * @param {Array} params.maps Collection of maps
+<span class='line'> 28</span>  * @param {string} params.rule The rule to use to evaluate the testee
+<span class='line'> 29</span>  */</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingInit</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pParams</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">params</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">		</span><span class="STRN">"url"</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">		</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"params"</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">		</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"data"</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">		</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"format"</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">"json"</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">		</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"options"</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">typeof</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pParams</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="STRN">'undefined'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="NAME">$.extend</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pParams</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> 
+<span class='line'> 39</span> </span><span class="WHIT">	</span><span class="COMM">// If the matching will be make with a remote engine</span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">	</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params.url</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">		</span><span class="NAME">TAO_MATCHING.engine</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">TAO_MATCHING.MatchingRemote</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params.url</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">params.params</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">params.options</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">	
+<span class='line'> 44</span> 	</span><span class="COMM">// If the matching will be make locally</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">	</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params.data</span><span class="WHIT"> </span><span class="PUNC">!=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">		</span><span class="NAME">TAO_MATCHING.engine</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">TAO_MATCHING.Matching</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">params.data</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">params.options</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">	
+<span class='line'> 49</span> 	</span><span class="COMM">// Else options are not well formed</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">	</span><span class="KEYW">else</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">		</span><span class="KEYW">throw</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">Error</span><span class="PUNC">(</span><span class="STRN">"matching_init an error occured : the options are not well formed, data or url have to be defined"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 54</span> 
+<span class='line'> 55</span> </span><span class="COMM">/**
+<span class='line'> 56</span>  * Evaluate the rule
+<span class='line'> 57</span>  */</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingEvaluate</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">	</span><span class="NAME">TAO_MATCHING.engine.evaluate</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 61</span> 
+<span class='line'> 62</span> </span><span class="COMM">/**
+<span class='line'> 63</span>  * Get the outcomes generated after the rule evaluation
+<span class='line'> 64</span>  * @return {JSON}
+<span class='line'> 65</span>  */</span><span class="WHIT">
+<span class='line'> 66</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingGetOutcomes</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">TAO_MATCHING.engine.getOutcomes</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">format</span><span class="PUNC">:</span><span class="STRN">'JSON'</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 69</span> 
+<span class='line'> 70</span> </span><span class="COMM">/** Set the correct responses of the item
+<span class='line'> 71</span>  * @param {JSON} data The correct responses
+<span class='line'> 72</span>  */</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matching_setCorrects</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">	</span><span class="NAME">TAO_MATCHING.engine.setCorrects</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 76</span> 
+<span class='line'> 77</span> </span><span class="COMM">/**
+<span class='line'> 78</span>  * Set the mapping of the item
+<span class='line'> 79</span>  * @param {JSON} data The map
+<span class='line'> 80</span>  */</span><span class="WHIT">
+<span class='line'> 81</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingSetMaps</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="WHIT">	</span><span class="NAME">TAO_MATCHING.engine.setMaps</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 84</span> 
+<span class='line'> 85</span> </span><span class="COMM">/**
+<span class='line'> 86</span>  * Set the outcome variables of the item
+<span class='line'> 87</span>  * @param {JSON} data The outcome variables
+<span class='line'> 88</span>  */</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingSetOutcomes</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 90</span> </span><span class="WHIT">	</span><span class="NAME">TAO_MATCHING.engine.setOutcomes</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 91</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 92</span> 
+<span class='line'> 93</span> </span><span class="COMM">/**
+<span class='line'> 94</span>  * Set the user' responses
+<span class='line'> 95</span>  * @param {JSON} data The response variables
+<span class='line'> 96</span>  */</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingSetResponses</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">	</span><span class="NAME">TAO_MATCHING.engine.setResponses</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">data</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>100</span> 
+<span class='line'>101</span> </span><span class="COMM">/**
+<span class='line'>102</span>  * Get the user' responses
+<span class='line'>103</span>  * @return {Object} The response variables
+<span class='line'>104</span>  */</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingGetResponses</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">	</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">TAO_MATCHING.engine.getResponses</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">format</span><span class="PUNC">:</span><span class="STRN">'JSON'</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>107</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>108</span> 
+<span class='line'>109</span> </span><span class="COMM">/**
+<span class='line'>110</span>  * Set the rule of the item
+<span class='line'>111</span>  * @param {string} rule The rule
+<span class='line'>112</span>  */</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">matchingSetRule</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">rule</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">	</span><span class="NAME">TAO_MATCHING.engine.setRule</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">rule</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>116</span> </span></pre></body></html>

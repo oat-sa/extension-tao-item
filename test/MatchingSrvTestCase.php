@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
+
 if(!function_exists('matching_init')){
 	require_once dirname(__FILE__) . '/../models/classes/Matching/matching_api.php';
 }
@@ -9,7 +10,7 @@ if(!function_exists('matching_init')){
  * @package taoItems
  * @subpackage test
  */
-class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
+class MatchingScoringServerSideTestCase extends UnitTestCase {
 	
 	protected $qtiService;
 
@@ -858,6 +859,39 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
 
+	public function testGraphicOrder () {
+        $parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => true,
+        	'raw_preview'	=> false,
+        	'debug'			=> false
+        );
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/graphic_order.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        //$itemSerial = $item->getSerial ();
+        //$item = null;
+        //$item = $this->qtiService->getItemBySerial ($itemSerial);
+                
+        $matching_data = $item->getMatchingData ();
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setMaps ($matching_data['maps']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setResponses (json_decode('[{"identifier":"RESPONSE", "value":{"0":"A", "1":"D", "2":"C", "3":"B"}}]'));
+        matching_evaluate ();
+        $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+        
+        //echo $item->toXHTML();
+        //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
+    }
+
     public function testSelectPoint () {
         $parameters = array(
             'root_url' => ROOT_URL,
@@ -992,6 +1026,6 @@ class QTIOMatchingScoringServerSideTestCase extends UnitTestCase {
         //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
     }
 
-}
+} 
 
 ?>

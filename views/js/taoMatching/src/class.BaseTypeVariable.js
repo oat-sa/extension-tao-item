@@ -1,5 +1,19 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * @class
+ * 
+ * BaseTypeVariable represents the scalar variables
+ * managed by the system.
+ *
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ * @extends TAO_MATCHING.Variable
+ * 
+ * @constructor 
+ * @param object value Value of the variable
+ */
 TAO_MATCHING.BaseTypeVariable = function(data){
 	// Call the parent constructor
 	TAO_MATCHING.Variable.call (this);
@@ -8,24 +22,24 @@ TAO_MATCHING.BaseTypeVariable = function(data){
 }
 
 TAO_MATCHING.BaseTypeVariable.prototype = {
-	/**
-     * Short description of method getType
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return string
-     */
+	    /**
+	     * Get the type of the variable
+	     *
+	     * @access public
+	     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+	     * @return string
+	     */
     getType : function ()
     {
         return (typeof this.value);
     }
 
     /**
-     * Short description of method equal
+     * Compare the variable with an other
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Variable var
+     * @param  Variable var Variable to compare
      * @return boolean
      */
     , equal : function (matchingVar)
@@ -50,6 +64,7 @@ TAO_MATCHING.BaseTypeVariable.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return boolean
+     * @see Variable
      */
     , isNull : function ()
     {

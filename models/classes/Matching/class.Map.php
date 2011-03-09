@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.Map.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 05.11.2010, 11:59:48 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * A special class used to create a mapping from a source set of 
+ * any baseType to a single float.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -30,7 +24,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002947-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_Map
+ * A special class used to create a mapping from a source set of 
+ * any baseType to a single float.
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -72,7 +67,13 @@ class taoItems_models_classes_Matching_Map
     }
 
     /**
-     * Short description of method map
+     * This function looks up the value of a given 
+     * Variable and then transforms it using the associated 
+     * mapping. The result is a single float. If the given variable 
+     * has single cardinality then the value returned is simply the 
+     * mapped target value from the map.
+     * If the response variable has  multiple cardinality then the 
+     * value returned is the sum of the mapped target values.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -115,7 +116,7 @@ class taoItems_models_classes_Matching_Map
     }
 
     /**
-     * Short description of method setValue
+     * Set the value of the map.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

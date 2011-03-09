@@ -1,5 +1,19 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * @class
+ * 
+ * List represents the collection list as managed by the the
+ * tao matching api
+ * 
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ * @extends TAO_MATCHING.Collection
+ * 
+ * @constructor 
+ * @param  array data data used to construct the tuple
+ */
 TAO_MATCHING.List = function (data) {
 	// Call the parent constructor
 	TAO_MATCHING.Collection.call (this);
@@ -10,7 +24,7 @@ TAO_MATCHING.List = function (data) {
 TAO_MATCHING.List.prototype = { 
 
     /**
-     * Short description of method getType
+     * Get the type of the variable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -27,7 +41,7 @@ TAO_MATCHING.List.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  int key
-     * @return taoItems_models_classes_Matching_Variable
+     * @return TAO_MATCHING.Variable
      */
     , getElement : function (key)
     {
@@ -51,7 +65,7 @@ TAO_MATCHING.List.prototype = {
     }
 
     /**
-     * Short description of method match
+     * Match a list with another
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -98,7 +112,8 @@ TAO_MATCHING.List.prototype = {
     }
 
     /**
-     * Short description of method setValue
+     * Set value of the list from an array of data. The array of data could be
+     * array of Variables or an array of "base type" variables
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -126,7 +141,14 @@ TAO_MATCHING.List.prototype = {
     }
     
     /**
-     * Short description of method toJSon
+     * Export the variable in jSon format.
+     * {
+     *     "identifier":"myVariableIdentifier",
+     *     "value": [
+     *         "myVar1"
+     *         "myVar2"
+     *     ]
+     * }
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

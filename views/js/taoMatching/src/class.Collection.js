@@ -1,19 +1,32 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * @class
+ * 
+ * Collection is an abstract class which represents
+ * the variables "collection".
+ * 
+ * @abstract
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ * @extends TAO_MATCHING.Variable
+ * 
+ * @constructor 
+ */
 TAO_MATCHING.Collection = function (data) {
 	// Call the parent constructor
 	TAO_MATCHING.Variable.call (this);
 };
 
 TAO_MATCHING.Collection.prototype = {
-
     /**
-     * Short description of method contains
+     * Check if the collection contains the given element.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Variable var
-     * @param  options options.needleType {String} Define if the script has to go through the needle or it must treat it as  scalar variable
+     * @param  array options options.needleType {String} Define if the script has to go through the needle or it must treat it as  scalar variable
      * @return boolean
      */
     contains : function (matchingVar, options)
@@ -73,14 +86,14 @@ TAO_MATCHING.Collection.prototype = {
         
         return returnValue;
     }
-
-    /**
-     * Short description of method isNull
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return boolean
-     */
+	
+	/**
+	 * check if the variable is null
+	 *
+	 * @access public
+	 * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+	 * @return boolean
+	 */
     , isNull : function ()
     {
 		if (this.value == null)

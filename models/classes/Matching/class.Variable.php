@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.Variable.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 05.11.2010, 12:04:44 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Variable is an abstract class which is the representation 
+ * of all the variables managed by the system
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -30,7 +24,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028BA-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_Variable
+ * Variable is an abstract class which is the representation 
+ * of all the variables managed by the system
  *
  * @abstract
  * @access public
@@ -46,7 +41,7 @@ abstract class taoItems_models_classes_Matching_Variable
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute value
+     * Value of the variable
      *
      * @access protected
      * @var object
@@ -56,7 +51,7 @@ abstract class taoItems_models_classes_Matching_Variable
     // --- OPERATIONS ---
 
     /**
-     * Short description of method getType
+     * Get the type of the variable
      *
      * @abstract
      * @access public
@@ -66,7 +61,7 @@ abstract class taoItems_models_classes_Matching_Variable
     public abstract function getType();
 
     /**
-     * Short description of method getValue
+     * Get the value of the variable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -85,11 +80,11 @@ abstract class taoItems_models_classes_Matching_Variable
     }
 
     /**
-     * Short description of method equal
+     * Check if the variable is equal to another
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Variable var
+     * @param  Variable var The variable to compare
      * @return boolean
      */
     public function equal( taoItems_models_classes_Matching_Variable $var)
@@ -110,7 +105,7 @@ abstract class taoItems_models_classes_Matching_Variable
     }
 
     /**
-     * Short description of method isNull
+     * check if the variable is null
      *
      * @abstract
      * @access public
@@ -120,7 +115,9 @@ abstract class taoItems_models_classes_Matching_Variable
     public abstract function isNull();
 
     /**
-     * Short description of method match
+     * Match a variable to another. This function does not match a 
+     * strict equality. In the case of array the match function will 
+     * check it the two arrays have the same value.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -141,18 +138,18 @@ abstract class taoItems_models_classes_Matching_Variable
     }
 
     /**
-     * Short description of method setValue
+     * Set the value of the variable
      *
      * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
+     * @param  data The value to set
      * @return mixed
      */
     public abstract function setValue(   $data);
 
     /**
-     * Short description of method toJSon
+     * Export the variable in jSon format.
      *
      * @abstract
      * @access public

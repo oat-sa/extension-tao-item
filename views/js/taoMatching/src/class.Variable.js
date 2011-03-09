@@ -1,13 +1,17 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
 /**
- * Short description of class taoItems_models_classes_Matching_Variable
+ * @class
+ * Variable is an abstract class which is the representation 
+ * of all the variables managed by the system
  *
  * @abstract
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
- * @package taoItems
- * @subpackage models_classes_Matching
+ * @todo is* function are still usefull ? Implementation are not coherent between the functions
+ * @package TAO_MATCHING
+ * 
+ * @constructor 
  */
 TAO_MATCHING.Variable = function () {
 	 /**
@@ -21,8 +25,9 @@ TAO_MATCHING.Variable = function () {
 
 TAO_MATCHING.Variable.prototype = {
     /**
-     * Short description of method getType
+     * Get the type of the variable
      *
+     * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
@@ -32,23 +37,23 @@ TAO_MATCHING.Variable.prototype = {
 		// @abstract
     }
 
-    /**
-     * Short description of method getValue
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     */
+	/**
+	 * Get the value of the variable
+	 *
+	 * @access public
+	 * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+	 */
     , getValue : function ()
     {
         return this.value;
     }
 
     /**
-     * Short description of method equal
+     * Check if the variable is equal to another
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Variable var
+     * @param  Variable var The variable to compare
      * @return boolean
      */
     , equal : function (matchingVar)
@@ -57,8 +62,9 @@ TAO_MATCHING.Variable.prototype = {
     }
 	
     /**
-     * Short description of method isNull
+     * check if the variable is null
      *
+     * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return boolean
@@ -69,12 +75,15 @@ TAO_MATCHING.Variable.prototype = {
 	}
 	
     /**
-     * Short description of method match
+     * Match a variable to another. This function does not match a 
+     * strict equality. In the case of array the match function will 
+     * check it the two arrays have the same value.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Variable var
      * @return boolean
+     * @abstract
      */
     , match : function (matchingVar)
     {
@@ -82,11 +91,12 @@ TAO_MATCHING.Variable.prototype = {
     }
 	
     /**
-     * Short description of method setValue
+     * Set the value of the variable
      *
+     * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
+     * @param  data The value to set
      * @return mixed
      */
     , setValue : function (data)
@@ -95,10 +105,18 @@ TAO_MATCHING.Variable.prototype = {
     }
 	
     /**
-     * Short description of method toJSon
+     * Export the variable in jSon format.
+     * <pre>
+     * {
+     *     "identifier":"myVariableIdentifier",
+     *     "value":true
+     * }
+     * </pre>
      *
+     * @abstract
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @return string
      */
     , toJSon : function () { 
         // abstract        
@@ -106,7 +124,10 @@ TAO_MATCHING.Variable.prototype = {
 };
 
 /**
- * Check if a value is a scalar variable
+ * Check if a value is a scalar value
+ * @param {object} data Data to check
+ * @return boolean
+ * @static
  */
 TAO_MATCHING.Variable.isScalar = function (data) {
     var returnValue = false;
@@ -120,7 +141,10 @@ TAO_MATCHING.Variable.isScalar = function (data) {
 };
 
 /**
- * Check if a data is a collection
+ * Check if a value is a collection value
+ * @param {object} data Data to check
+ * @return boolean
+ * @static
  */
 TAO_MATCHING.Variable.isCollection = function (data) {
     var returnValue = false;
@@ -137,7 +161,10 @@ TAO_MATCHING.Variable.isCollection = function (data) {
 };
 
 /**
- * Check if a data is a list
+ * Check if a value is a list value
+ * @param {object} data Data to check
+ * @return boolean
+ * @static
  */
 TAO_MATCHING.Variable.isList = function (data) {
     var returnValue = false;
@@ -152,7 +179,10 @@ TAO_MATCHING.Variable.isList = function (data) {
 };
 
 /**
- * Check if a data is a tuple
+ * Check if a value is a tuple value
+ * @param {object} data Data to check
+ * @return boolean
+ * @static
  */
 TAO_MATCHING.Variable.isTuple = function (data) {
     var returnValue = false;

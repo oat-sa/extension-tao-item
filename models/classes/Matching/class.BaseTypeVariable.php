@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.BaseTypeVariable.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 09.11.2010, 13:38:23 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * BaseTypeVariable represents the scalar variables
+ * managed by the system.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +16,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Variable
+ * Variable is an abstract class which is the representation 
+ * of all the variables managed by the system
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +32,8 @@ require_once('taoItems/models/classes/Matching/class.Variable.php');
 // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028C4-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_BaseTypeVariable
+ * BaseTypeVariable represents the scalar variables
+ * managed by the system.
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -76,7 +72,7 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method getType
+     * Get the type of the variable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -96,11 +92,12 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method isNull
+     * check if the variable is null
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return boolean
+     * @see Variable
      */
     public function isNull()
     {
@@ -116,12 +113,13 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method setValue
+     * Set the value of the variable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  value
      * @return mixed
+     * @see Variable
      */
     public function setValue(   $value)
     {
@@ -133,10 +131,15 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method toJSon
+     * Export the variable in jSon format.
+     * {
+     *     "identifier":"myVariableIdentifier",
+     *     "value":true
+     * }
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @see Variable
      */
     public function toJSon()
     {
@@ -150,7 +153,8 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method isValidValue
+     * Test if a value is compliant with the types managed
+     * by the BaseType Variable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -184,7 +188,7 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method isNumerical
+     * Check if the variable is numerical
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -215,7 +219,7 @@ class taoItems_models_classes_Matching_BaseTypeVariable
     }
 
     /**
-     * Short description of method isBoolean
+     * check if the variable is boolean
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

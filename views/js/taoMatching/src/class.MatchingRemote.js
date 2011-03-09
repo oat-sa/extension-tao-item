@@ -1,7 +1,19 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
 /**
+ * @class
  * 
+ * Matching class provides a bridge from the client to the server side Matching engine.
+ *
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ * 
+ * @constructor 
+ * @param string url Url of the remote matching engine.
+ * @params array params Array of parameters to pass to the remote engine [optional]
+ * @params array pOptions Optional parameters
+ * @params function pOptions.evaluateCallback Fire this callback when the evaluation has been done
  */
 TAO_MATCHING.MatchingRemote = function (url, params, pOptions) {
 	var options = {

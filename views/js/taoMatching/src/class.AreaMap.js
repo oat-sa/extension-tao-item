@@ -1,5 +1,19 @@
 TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
 
+/**
+ * @class
+ * 
+ * A special class used to create a mapping from a source set of 
+ * point values to a target set of float values. When mapping 
+ * containers the result is the sum of the mapped values from
+ * the target set
+ *
+ * @access public
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @package TAO_MATCHING
+ * 
+ * @constructor 
+ */
 TAO_MATCHING.AreaMap = function (data) {
     // Set the value of the variable
     this.setValue (data);
@@ -7,7 +21,12 @@ TAO_MATCHING.AreaMap = function (data) {
 
 TAO_MATCHING.AreaMap.prototype = {
     /**
-     * Short description of method map
+     * This function looks up the value of a given Variable
+     * that must be of type point, and transforms it 
+     * using the associated areaMapping. The transformation 
+     * is similar to map function of the Map class except that the 
+     * points are tested against each area in turn. When mapping 
+     * containers each area can be mapped once only.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

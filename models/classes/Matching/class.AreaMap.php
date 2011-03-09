@@ -3,14 +3,10 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.AreaMap.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 15.12.2010, 13:27:50 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * A special class used to create a mapping from a source set of 
+ * point values to a target set of float values. When mapping 
+ * containers the result is the sum of the mapped values from
+ * the target set
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +18,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Shape
+ * Shape represents the different shapres managed by the tao 
+ * matching api.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +34,10 @@ require_once('taoItems/models/classes/Matching/class.Shape.php');
 // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C84-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_AreaMap
+ * A special class used to create a mapping from a source set of 
+ * point values to a target set of float values. When mapping 
+ * containers the result is the sum of the mapped values from
+ * the target set
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -79,7 +79,12 @@ class taoItems_models_classes_Matching_AreaMap
     }
 
     /**
-     * Short description of method map
+     * This function looks up the value of a given Variable
+     * that must be of type point, and transforms it 
+     * using the associated areaMapping. The transformation 
+     * is similar to map function of the Map class except that the 
+     * points are tested against each area in turn. When mapping 
+     * containers each area can be mapped once only.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -123,7 +128,7 @@ class taoItems_models_classes_Matching_AreaMap
     }
 
     /**
-     * Short description of method setValue
+     * Set the value of the area map.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

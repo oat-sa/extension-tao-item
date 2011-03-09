@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.Ellipse.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 15.12.2010, 13:51:39 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Ellipse represents ellipse managed by the tao matching api.
+ * Ellipse is used to represent ellipse and circle.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +16,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Shape
+ * Shape represents the different shapres managed by the tao 
+ * matching api.
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +32,8 @@ require_once('taoItems/models/classes/Matching/class.Shape.php');
 // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002CAB-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_Ellipse
+ * Ellipse represents ellipse managed by the tao matching api.
+ * Ellipse is used to represent ellipse and circle.
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -53,7 +49,7 @@ class taoItems_models_classes_Matching_Ellipse
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute center
+     * Center of the Ellipse
      *
      * @access protected
      * @var Tuple
@@ -61,7 +57,7 @@ class taoItems_models_classes_Matching_Ellipse
     protected $center = null;
 
     /**
-     * Short description of attribute hradius
+     * Horizontal radius of the ellipse
      *
      * @access protected
      * @var Integer
@@ -69,7 +65,7 @@ class taoItems_models_classes_Matching_Ellipse
     protected $hradius = null;
 
     /**
-     * Short description of attribute vradius
+     * Vertical radius of the ellipse
      *
      * @access protected
      * @var Integer
@@ -99,12 +95,14 @@ class taoItems_models_classes_Matching_Ellipse
     }
 
     /**
-     * Short description of method contains
+     * Check if the polygon contains a point
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  Variable var
      * @return boolean
+     * @see The point to find.
+The point is represented by a "Tuple Variable" of two integers.
      */
     public function contains( taoItems_models_classes_Matching_Variable $var)
     {
@@ -125,7 +123,7 @@ class taoItems_models_classes_Matching_Ellipse
     }
 
     /**
-     * Short description of method getHRadius
+     * Get the horizontal radius
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -145,7 +143,7 @@ class taoItems_models_classes_Matching_Ellipse
     }
 
     /**
-     * Short description of method getVRadius
+     * Get the vertical radius
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -165,7 +163,7 @@ class taoItems_models_classes_Matching_Ellipse
     }
 
     /**
-     * Short description of method getCenter
+     * Get the center point
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

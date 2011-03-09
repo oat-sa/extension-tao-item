@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.List.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 10.11.2010, 19:53:03 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * List represents the collection list as managed by the the
+ * tao matching api
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +16,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Collection
+ * Collection is an abstract class which represents
+ * the variables "collection".
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +32,8 @@ require_once('taoItems/models/classes/Matching/class.Collection.php');
 // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002939-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_List
+ * List represents the collection list as managed by the the
+ * tao matching api
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -59,7 +55,7 @@ class taoItems_models_classes_Matching_List
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array data
+     * @param  array data data used to construct the tuple
      * @return mixed
      */
     public function __construct($data)
@@ -72,11 +68,12 @@ class taoItems_models_classes_Matching_List
     }
 
     /**
-     * Short description of method getType
+     * Get the type of the variable
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
+     * @see Variable
      */
     public function getType()
     {
@@ -115,12 +112,13 @@ class taoItems_models_classes_Matching_List
     }
 
     /**
-     * Short description of method match
+     * Match a list with an other
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  List list
      * @return boolean
+     * @see Variable
      */
     public function match( taoItems_models_classes_Matching_List $list)
     {
@@ -161,12 +159,14 @@ class taoItems_models_classes_Matching_List
     }
 
     /**
-     * Short description of method setValue
+     * Set value of the list from an array of data. The array of data could be
+     * array of Variables or an array of "base type" variables
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  data
      * @return mixed
+     * @see Variable
      */
     public function setValue(   $data)
     {
@@ -190,7 +190,14 @@ class taoItems_models_classes_Matching_List
     }
 
     /**
-     * Short description of method toJSon
+     * Export the variable in jSon format.
+     * {
+     *     "identifier":"myVariableIdentifier",
+     *     "value": [
+     *         "myVar1"
+     *         "myVar2"
+     *     ]
+     * }
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

@@ -3,14 +3,8 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/Matching/class.VariableFactory.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 09.11.2010, 13:36:54 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * The class variable factory provide to developpers a set 
+ * of usefull functions arround the variables creation process
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
@@ -22,7 +16,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_Matching_Variable
+ * Variable is an abstract class which is the representation 
+ * of all the variables managed by the system
  *
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
@@ -37,7 +32,8 @@ require_once('taoItems/models/classes/Matching/class.Variable.php');
 // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028B7-constants end
 
 /**
- * Short description of class taoItems_models_classes_Matching_VariableFactory
+ * The class variable factory provide to developpers a set 
+ * of usefull functions arround the variables creation process
  *
  * @access public
  * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
@@ -54,12 +50,13 @@ class taoItems_models_classes_Matching_VariableFactory
     // --- OPERATIONS ---
 
     /**
-     * Short description of method create
+     * Create a variable functions of the given data.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array data
-     * @param  string type
+     * @param  array data Data of the variable (the value)
+     * @param  string type The type is optional, if it is not defined the data will
+define the type of the variable
      * @return taoItems_models_classes_Matching_Variable
      */
     public static function create($data, $type = null)
@@ -119,16 +116,16 @@ class taoItems_models_classes_Matching_VariableFactory
     }
 
     /**
-     * Short description of method createJSONVariableFromQTIData
+     * Create a jSon Variable from QTI data
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  string id
-     * @param  string card
+     * @param  string id Identifier of the variable
+     * @param  string card Cardinality of the variable [single, multiple, ordered]
      * @param  string baseType
-     * @param  values
+     * @param  values Value of the variable
      */
-    public function createJSONVariableFromQTIData($id, $card, $baseType,    $values)
+    public static function createJSONVariableFromQTIData($id, $card, $baseType,    $values)
     {
         $returnValue = null;
 
@@ -205,66 +202,14 @@ class taoItems_models_classes_Matching_VariableFactory
     }
 
     /**
-     * Short description of method createJSONValueFromQTIData
+     * Create jSon value from QTI data
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  value
-     * @param  string baseType
+     * @param  value Data to convert
+     * @param  string baseType Type of the QTI data
      */
-    public function createJSONShapeFromQTIData($value) {
-        $returnValue = null;
-        
-        $returnValue = Array();
-        $type = $value["shape"];
-        $returnValue["type"] = $type;
-        
-        switch ($type) {
-            case "rect":
-                $points = explode(',', $value["coords"]);
-                $returnValue["points"] = Array (
-                    (object) Array($points[0], $points[1])
-                    , (object) Array($points[2], $points[1])
-                    , (object) Array($points[2], $points[3])
-                    , (object) Array($points[0], $points[3])
-                );
-                break;
-                
-            case "poly":
-                $coords = explode(',', $value["coords"]);
-                $returnValue["points"] = Array();
-                while (count ($coords)) {
-                    array_push ($returnValue["points"], (object) array_splice($coords, 0, 2));
-                }
-                break;
-                
-            case "circle":
-                $points = explode(',', $value["coords"]);
-                $returnValue["center"] = (object) array_slice ($points, 0, 2);
-                $returnValue["hradius"] = $points[2];
-                $returnValue["vradius"] = $points[2];
-                break;
-                
-            case "ellipse":
-                $points = explode(',', $value["coords"]);
-                $returnValue["center"] = (object) array_slice ($points, 0, 2);
-                $returnValue["hradius"] = $points[2];
-                $returnValue["vradius"] = $points[3];
-                break;
-        }
-
-        return $returnValue;
-    }
-
-    /**
-     * Short description of method createJSONValueFromQTIData
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  value
-     * @param  string baseType
-     */
-    public function createJSONValueFromQTIData(   $value, $baseType)
+    public static function createJSONValueFromQTIData(   $value, $baseType)
     {
         $returnValue = null;
 
@@ -309,10 +254,10 @@ class taoItems_models_classes_Matching_VariableFactory
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
+     * @param  data Data to convert
      * @return taoItems_models_classes_Matching_BaseTypeVariable
      */
-    public function toNumericBaseType(   $data)
+    public static function toNumericBaseType(   $data)
     {
         $returnValue = null;
 
@@ -338,14 +283,15 @@ class taoItems_models_classes_Matching_VariableFactory
     }
 
     /**
-     * Short description of method toBooleanBaseType
+     * Convert data in boolean BaseTypeVariable.
+     * If the data is not a valid base type value return null.
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  data
+     * @param  data Data to convert
      * @return taoItems_models_classes_Matching_BaseTypeVariable
      */
-    public function toBooleanBaseType(   $data)
+    public static function toBooleanBaseType(   $data)
     {
         $returnValue = null;
 
@@ -366,6 +312,62 @@ class taoItems_models_classes_Matching_VariableFactory
         }
         
         // section 127-0-1-1-7e272ec4:12c307f74c9:-8000:0000000000002B97 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Create a jSon shape from QTI data
+     *
+     * @access public
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @param  value
+     */
+    public static function createJSONShapeFromQTIData(   $value)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-42a22512:12e9b2a4d3c:-8000:0000000000002CFA begin
+        
+    $returnValue = Array();
+        $type = $value["shape"];
+        $returnValue["type"] = $type;
+        
+        switch ($type) {
+            case "rect":
+                $points = explode(',', $value["coords"]);
+                $returnValue["points"] = Array (
+                    (object) Array($points[0], $points[1])
+                    , (object) Array($points[2], $points[1])
+                    , (object) Array($points[2], $points[3])
+                    , (object) Array($points[0], $points[3])
+                );
+                break;
+                
+            case "poly":
+                $coords = explode(',', $value["coords"]);
+                $returnValue["points"] = Array();
+                while (count ($coords)) {
+                    array_push ($returnValue["points"], (object) array_splice($coords, 0, 2));
+                }
+                break;
+                
+            case "circle":
+                $points = explode(',', $value["coords"]);
+                $returnValue["center"] = (object) array_slice ($points, 0, 2);
+                $returnValue["hradius"] = $points[2];
+                $returnValue["vradius"] = $points[2];
+                break;
+                
+            case "ellipse":
+                $points = explode(',', $value["coords"]);
+                $returnValue["center"] = (object) array_slice ($points, 0, 2);
+                $returnValue["hradius"] = $points[2];
+                $returnValue["vradius"] = $points[3];
+                break;
+        }
+        
+        // section 127-0-1-1-42a22512:12e9b2a4d3c:-8000:0000000000002CFA end
 
         return $returnValue;
     }
