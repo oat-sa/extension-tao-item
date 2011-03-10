@@ -40,7 +40,8 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.DEBUG_MODE = false;
 
 	/**
-     * Short description of attribute corrects
+     * Corrects will be used to store the values expected as
+     * good response
      *
      * @access private
      * @var Variable
@@ -48,7 +49,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.corrects = [];
 	
     /**
-     * Short description of attribute maps
+     * maps will store a mapping used to map scalar variables
      *
      * @access private
      * @var Map
@@ -56,7 +57,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.maps = [];
     
     /**
-     * Short description of attribute area maps
+     * areaMaps will store a mapping used to map points
      *
      * @access private
      * @var AreaMap
@@ -64,7 +65,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.areaMaps = [];
 
     /**
-     * Short description of attribute outcomes
+     * Outcomes will be used to store the defined outcome variables
      *
      * @access private
      * @var Variable
@@ -72,7 +73,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.outcomes = [];
 
     /**
-     * Short description of attribute responses
+     * Responses will store the user's response variables
      *
      * @access private
      * @var Variable
@@ -80,7 +81,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
     this.responses = [];
 
     /**
-     * Short description of attribute rule
+     * Rule will be used to store the rule used to score the user's responses
      *
      * @access private
      * @var string
@@ -239,7 +240,7 @@ TAO_MATCHING.Matching.prototype = {
     }
 
     /**
-     * Get the outcome in the defined JSON format
+     * Get the outcome variables
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>

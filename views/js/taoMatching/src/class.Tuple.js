@@ -12,7 +12,7 @@ TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
  * @extends TAO_MATCHING.Collection
  * 
  * @constructor 
- * @param  data data used to construct the tuple
+ * @param array data data used to construct the tuple
  */
 TAO_MATCHING.Tuple = function (data) {
 	// Call the parent constructor
@@ -45,7 +45,7 @@ TAO_MATCHING.Tuple.prototype = {
 	 * @access public
 	 * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
 	 * @param  string key
-	 * @return TAO_MATCHING.Variable
+	 * @return {TAO_MATCHING.Variable}
 	 */
     , getElement : function (key)
     {
@@ -60,8 +60,7 @@ TAO_MATCHING.Tuple.prototype = {
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Tuple tuple
-     * @return boolean
+     * @return integer
      */
     , length : function ()
     {
@@ -73,7 +72,7 @@ TAO_MATCHING.Tuple.prototype = {
      *
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Tuple tuple
+     * @param  {TAO_MATCHING.Tuple} tuple
      * @return boolean
      */
     , match : function (tuple)
@@ -118,7 +117,6 @@ TAO_MATCHING.Tuple.prototype = {
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  data
-     * @return mixed
      */
     , setValue : function (data)
     {
@@ -141,6 +139,7 @@ TAO_MATCHING.Tuple.prototype = {
     
     /**
      * Export the variable in jSon format.
+     * <pre>
      * {
      *     "identifier":"myVariableIdentifier",
      *     "value": {
@@ -148,10 +147,11 @@ TAO_MATCHING.Tuple.prototype = {
      *         , "1" : "myVar2"
      *     }
      * }
+     * </pre>
      *
+     * @return jSon
      * @access public
      * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @see Variable
      */
     , toJSon : function ()
     {        

@@ -21,7 +21,7 @@ TAO_MATCHING.MatchingRemote = function (url, params, pOptions) {
 	}; if (typeof (pOptions) != 'undefined') $.extend (options, pOptions);
 	
     /**
-     * Short description of attribute outcomes
+     * Outcomes will be used to store the defined outcome variables
      *
      * @access protected
      * @var Variable
@@ -29,7 +29,7 @@ TAO_MATCHING.MatchingRemote = function (url, params, pOptions) {
     this.outcomes = [];
 
     /**
-     * Short description of attribute responses
+     * Responses will store the user's response variables
      *
      * @access protected
      * @var Variable
@@ -37,7 +37,7 @@ TAO_MATCHING.MatchingRemote = function (url, params, pOptions) {
     this.responses = [];
 	
    	/**
-     * Short description of attribute url
+     * Url of the remote matching engine
      *
      * @access protected
      * @var Variable
@@ -45,7 +45,7 @@ TAO_MATCHING.MatchingRemote = function (url, params, pOptions) {
     this.url = url;
 	
    	/**
-     * Short description of attribute params
+     * Parameters to pass to remote matching engine
      *
      * @access protected
      * @var Variable
@@ -53,9 +53,9 @@ TAO_MATCHING.MatchingRemote = function (url, params, pOptions) {
     this.params = params;
 	
    	/**
-     * Short description of attribute options
+     * Options of the client bridge
      *
-     * @access protected
+     * @access private
      * @var Variable
      */
     this.options = options;
@@ -91,7 +91,7 @@ TAO_MATCHING.MatchingRemote.prototype = {
     }
 	
     /**
-     * Short description of method getJSonOutcomes
+     * Get the outcome variables 
      *
      * @access public
      * @param {string} options (not used here but usefull in the local matching engine)
@@ -128,7 +128,7 @@ TAO_MATCHING.MatchingRemote.prototype = {
     }
     
     /**
-     * get the collected responses
+     * Get the collected responses
      *
      * @access public
      * @return {Array}
