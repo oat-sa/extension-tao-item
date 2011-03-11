@@ -11,13 +11,10 @@
 
 /**
  * instanciate the TaoStack object
- * @see TaoStack
  */
 var taoStack = new TaoStack();
 
 var root_url = root_url || '';
-
-/** @namespace taoApi */
 
   ////////////////////
  // TAO  variables //

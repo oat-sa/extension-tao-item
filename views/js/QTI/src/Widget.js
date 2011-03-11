@@ -12,7 +12,6 @@
  * The QTIWidget class enables you to build a QTI widgets 
  * from XHTML elements and the given options
  * 
- * @namespace QTI
  * @class QTIWidget
  * @property {Object} options the interaction of parameters 
  */

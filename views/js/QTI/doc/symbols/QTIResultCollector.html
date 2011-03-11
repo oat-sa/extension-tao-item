@@ -1,1072 +1,1305 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="generator" content="JsDoc Toolkit" />
-		
-		<title>JsDoc Reference - QTIResultCollector</title>
+		<meta charset="utf-8"></meta>
+		<meta name="generator" content="JsDoc Toolkit"></meta>
+		<title>QTIResultCollector | JsDoc Reference</title>
 
-		<style type="text/css">
-			/* default.css */
-body
-{
-	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
-	width: 800px;
-}
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
+		<meta name="mobileoptimized" content="0"></meta>
+	
+		<link rel="stylesheet" href="../css/all.css" media="all"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="only screen and (max-width: 660px)"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="handheld"></link>
+		<link rel="stylesheet" href="../css/screen.css" media="screen and (min-width: 661px)"></link>
+        <link rel="stylesheet" href="../css/jstree.css" media="screen and (min-width: 661px)"></link>
 
-.header
-{
-	clear: both;
-	background-color: #ccc;
-	padding: 8px;
-}
+		<script src="../javascript/all.js"></script>
+		<script src="../javascript/jquery-1.5.min.js"></script>
+		<script src="../javascript/jquery.jstree.js"></script>
+        <script type="application/javascript">
+        $(function(){
+            // Get the menu reference in the url
+            var ref = null;
+            var regexS = "ref=(.*)[#&]*";
+            var regex = new RegExp( regexS );
+            var results = regex.exec( window.location.href );
+            if (results!=null){
+                ref = results[1];
+            }
 
-h1
-{
-	font-size: 150%;
-	font-weight: bold;
-	padding: 0;
-	margin: 1em 0 0 .3em;
-}
-
-hr
-{
-	border: none 0;
-	border-top: 1px solid #7F8FB1;
-	height: 1px;
-}
-
-pre.code
-{
-	display: block;
-	padding: 8px;
-	border: 1px dashed #ccc;
-}
-
-#index
-{
-	margin-top: 24px;
-	float: left;
-	width: 160px;
-	position: absolute;
-	left: 8px;
-	background-color: #F3F3F3;
-	padding: 8px;
-}
-
-#content
-{
-	margin-left: 190px;
-	width: 600px;
-}
-
-.classList
-{
-	list-style-type: none;
-	padding: 0;
-	margin: 0 0 0 8px;
-	font-family: arial, sans-serif;
-	font-size: 1em;
-	overflow: auto;
-}
-
-.classList li
-{
-	padding: 0;
-	margin: 0 0 8px 0;
-}
-
-.summaryTable { width: 100%; }
-
-h1.classTitle
-{
-	font-size:170%;
-	line-height:130%;
-}
-
-h2 { font-size: 110%; }
-caption, div.sectionTitle
-{
-	background-color: #7F8FB1;
-	color: #fff;
-	font-size:130%;
-	text-align: left;
-	padding: 2px 6px 2px 6px;
-	border: 1px #7F8FB1 solid;
-}
-
-div.sectionTitle { margin-bottom: 8px; }
-.summaryTable thead { display: none; }
-
-.summaryTable td
-{
-	vertical-align: top;
-	padding: 4px;
-	border-bottom: 1px #7F8FB1 solid;
-	border-right: 1px #7F8FB1 solid;
-}
-
-/*col#summaryAttributes {}*/
-.summaryTable td.attributes
-{
-	border-left: 1px #7F8FB1 solid;
-	width: 140px;
-	text-align: right;
-}
-
-td.attributes, .fixedFont
-{
-	line-height: 15px;
-	color: #002EBE;
-	font-family: "Courier New",Courier,monospace;
-	font-size: 13px;
-}
-
-.summaryTable td.nameDescription
-{
-	text-align: left;
-	font-size: 13px;
-	line-height: 15px;
-}
-
-.summaryTable td.nameDescription, .description
-{
-	line-height: 15px;
-	padding: 4px;
-	padding-left: 4px;
-}
-
-.summaryTable { margin-bottom: 8px; }
-
-ul.inheritsList
-{
-	list-style: square;
-	margin-left: 20px;
-	padding-left: 0;
-}
-
-.detailList {
-	margin-left: 20px; 
-	line-height: 15px;
-}
-.detailList dt { margin-left: 20px; }
-
-.detailList .heading
-{
-	font-weight: bold;
-	padding-bottom: 6px;
-	margin-left: 0;
-}
-
-.light, td.attributes, .light a:link, .light a:visited
-{
-	color: #777;
-	font-style: italic;
-}
-
-.fineprint
-{
-	text-align: right;
-	font-size: 10px;
-}
-		</style>
+            
+            // Load the jstree menu
+            $('#ClassMenu').jstree({
+        		"plugins" : [ "themes", "html_data", "ui" ] 
+			    , "themes" : {
+				    "theme" : "default",
+				    "dots" : true,
+				    "icons" : false
+			    }
+            })
+            // When an element is selected
+            .bind("select_node.jstree", function (e, ui) {
+                // same ref, ref null
+                if (($(ui.args[0]).parent())[0].id == ref 
+                    || ($(ui.args[0]).parent())[0].id == ''){ 
+                    return; 
+                }
+                // Redirect
+                window.location.href = $(ui.args[0])
+                    .attr('href')+"?ref="
+                    +($(ui.args[0]).parent())[0].id;
+            })
+            // When the jstree is loaded
+            .bind("loaded.jstree", function (event, data) {
+                // If a reference has been found in the url, select it on the jstree
+                if (ref!=null){
+                    $.jstree._reference($('#ClassMenu'))
+                        .select_node ($('#'+ref)[0]);
+                }
+            });
+    	});
+        </script>
+		<!--[if lt IE 9]>
+			<script src="../javascript/html5.js"></script>
+		<![endif]-->
 	</head>
 
 	<body>
-<!-- ============================== header ================================= -->	
-		<!-- begin static/header.html -->
-		<div id="header">
-</div>
-		<!-- end static/header.html -->
 
-<!-- ============================== classes index ============================ -->
-		<div id="index">
-			<!-- begin publish.classesIndex -->
-			<div align="center"><a href="../index.html">Class Index</a>
-| <a href="../files.html">File Index</a></div>
-<hr />
-<h2>Classes</h2>
-<ul class="classList">
+
+
+<div class="index">
+	<div class="menu">
+        
+        <div style="width:100px; height:69px; background-image:url('../css/taoLogo.png');">&nbsp;</div>
+		<div class="indexLinks">
+			<a href="../index.html">Classes</a>
+			<a href="../files.html">Files</a>
+		</div>
 	
-	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
-	
-	<li><a href="../symbols/qti_initParam.html">qti_initParam</a></li>
-	
-	<li><a href="../symbols/QTIResultCollector.html">QTIResultCollector</a></li>
-	
-	<li><a href="../symbols/QTIWidget.html">QTIWidget</a></li>
-	
-</ul>
-<hr />
-			<!-- end publish.classesIndex -->
+		<h2 class="heading1">Classes</h2>
+		
+		<input type="text" name="classFilter" class="classFilter" id="ClassFilter" placeholder="Filter"></input>
+		
+		<nav id="ClassMenu" style="width:100%; overflow-x:auto;">
+			<ul class="classList" id="ClassList">
+                <li>
+                    <a href="#">main</a>
+                    <ul>
+				        
+					        <li id="menuRef0"><a href="../symbols/_global_.html">_global_</a>
+                                <ul>
+                                    
+                                        
+                                    
+                                        
+                                    
+                                </ul>
+                            </li>
+				        
+                        
+                            <li id=menuRef1><a href="../symbols/QTIResultCollector.html">QTIResultCollector</a></li>
+                        
+                            <li id=menuRef2><a href="../symbols/QTIWidget.html">QTIWidget</a></li>
+                        
+                    </ul>
+                </li>
+			</ul>
+		</nav>
+	</div>
+	<div class="fineprint" style="clear:both">
+		
+		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2<br />
+		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
+		Generated on: 2011-2-11 17:22
+	</div>
+</div>
+
+<div class="index indexStatic"></div>
+
+<div class="content">
+	<div class="innerContent">
+		<h1 class="classTitle">
+			
+			Class <span>QTIResultCollector</span>
+		</h1>
+		
+		<div class="intro">
+			<p class="description summary">
+				QTIResultCollector
+			</p>
+				
+			
+				<ul class="summary">
+					
+					
+					
+						<li>Defined in: <a href="../symbols/src/_home_crp_workspace_transferAll_taoItems_views_js_QTI_src_ResultCollector.js.html">ResultCollector.js</a></li>
+					
+						
+				</ul>
+			
 		</div>
 		
-		<div id="content">
-<!-- ============================== class title ============================ -->
-			<h1 class="classTitle">
-				
-				Namespace QTIResultCollector
-			</h1>
-
-<!-- ============================== class summary ========================== -->			
-			<p class="description">
-				
-				
-			
-				QTI
-				
-				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_home_crp_workspace_transferAll_taoItems_views_js_QTI_src_ResultCollector.js.html">ResultCollector.js</a>.
-				
-			</p>
-
-<!-- ============================== constructor summary ==================== -->			
-			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class QTIResultCollector.">
-				<caption>Namespace Summary</caption>
-				<thead>
-					<tr>
-						<th scope="col">Constructor Attributes</th>
-						<th scope="col">Constructor Name and Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="attributes">&nbsp;</td>
-						<td class="nameDescription" >
-							<div class="fixedFont">
-								<b><a href="../symbols/QTIResultCollector.html#constructor">QTIResultCollector</a></b>
-							</div>
-							<div class="description">The QTIResultCollector class collects the user results of a QTI widgets
+		
+			<div class="props">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class QTIResultCollector.">
+					<caption class="sectionTitle">Class Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Constructor Attributes</th>
+							<th scope="col">Constructor Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription" >
+								<div class="fixedFont">
+									<b><a href="../symbols/QTIResultCollector.html#constructor">QTIResultCollector</a></b>(options)
+								</div>
+								<div class="description">The QTIResultCollector class collects the user results of a QTI widgets
 and return a well formated variable 
 <i>(the type of the returned variable is deterministic for the result processing)</i></div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-
-<!-- ============================== properties summary ===================== -->
-			
-				
-				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class QTIResultCollector.">
-					<caption>Field Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Field Attributes</th>
-							<th scope="col">Field Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.id">id</a></b>
-								</div>
-								<div class="description">The id of the widget</div>
 							</td>
 						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.options">options</a></b>
-								</div>
-								<div class="description">the widget parameters</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">
-								QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.opts">opts</a></b>
-								</div>
-								<div class="description">The widget options</div>
-							</td>
-						</tr>
-					
 					</tbody>
 				</table>
-				
-				
-				
+			</div>
+		
+		
+		
 			
-
-<!-- ============================== methods summary ======================== -->
 			
+				<div class="props">
+					<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class QTIResultCollector.">
+						<caption class="sectionTitle">Field Summary</caption>
+						
+						<thead>
+							<tr>
+								<th scope="col">Field Attributes</th>
+								<th scope="col">Field Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.id">id</a></b>
+										</div>
+										<div class="description">The id of the widget</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.options">options</a></b>
+										</div>
+										<div class="description">the widget parameters</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.opts">opts</a></b>
+										</div>
+										<div class="description">The widget options</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			
+			
+			
+		
+<!--
+#### METHODS SUMMARY
+-->
+		
+			
+			
+			<div class="props">
+				<h2 class="sectionTitle">Method Summary</h2>
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class QTIResultCollector.">
-					<caption>Method Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Method Attributes</th>
-							<th scope="col">Method Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.associate">associate</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>associate</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.choice">choice</a></b>()
-								</div>
-								<div class="description">Collect the results of a <b>choice</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.extended_text">extended_text</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.gap_match">gap_match</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>gap_match</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.graphic_associate">graphic_associate</a></b>()
-								</div>
-								<div class="description">Collect the results of a <b>graphic associate</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.graphic_order">graphic_order</a></b>()
-								</div>
-								<div class="description">Collect the results of a <b>graphic order</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.hotspot">hotspot</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>hotspot</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.hottext">hottext</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>hottext</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.inline_choice">inline_choice</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>inline_choice</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.match">match</a></b>()
-								</div>
-								<div class="description">Collect the results of a <b>match</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.order">order</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>order</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.select_point">select_point</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>hotspot</b> widget</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.text">text</a></b>()
-								</div>
-								<div class="description">Collect the results of text based widget : 
+					<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class QTIResultCollector.">
+						<thead>
+							<tr>
+								<th scope="col">Method Attributes</th>
+								<th scope="col">Method Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+							
+								<tr
+									 class='item0'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.associate">associate</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>associate</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item1'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.choice">choice</a></b>()
+										</div>
+										<div class="description">Collect the results of a <b>choice</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item2'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.extended_text">extended_text</a></b>()
+										</div>
+										<div class="description"></div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item3'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.gap_match">gap_match</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>gap_match</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item4'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.graphic_associate">graphic_associate</a></b>()
+										</div>
+										<div class="description">Collect the results of a <b>graphic associate</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item5'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.graphic_order">graphic_order</a></b>()
+										</div>
+										<div class="description">Collect the results of a <b>graphic order</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item6'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.hotspot">hotspot</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>hotspot</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item7'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.hottext">hottext</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>hottext</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item8'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.inline_choice">inline_choice</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>inline_choice</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item9'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.match">match</a></b>()
+										</div>
+										<div class="description">Collect the results of a <b>match</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item10'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.order">order</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>order</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item11'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.select_point">select_point</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>hotspot</b> widget</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item12'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.text">text</a></b>()
+										</div>
+										<div class="description">Collect the results of text based widget : 
 <b>text_entry</b> and <b>extended_text</b></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.text_entry">text_entry</a></b>()
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.upload">upload</a></b>()
-								</div>
-								<div class="description">Collect the results of an <b>upload</b> widget</div>
-							</td>
-						</tr>
-					
-					</tbody>
-				</table>
-				
-				
+									</td>
+								</tr>
+							
+								<tr
+									 class='item13'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.text_entry">text_entry</a></b>()
+										</div>
+										<div class="description"></div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item14'
+								>
+									<td class="attributes">&lt;static&gt; &nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">QTIResultCollector.<b><a href="../symbols/QTIResultCollector.html#.upload">upload</a></b>()
+										</div>
+										<div class="description">Collect the results of an <b>upload</b> widget</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
 				
 			
-<!-- ============================== events summary ======================== -->
-			
-
-<!-- ============================== constructor details ==================== -->		
-			
-			<div class="details"><a name="constructor"> </a>
-				<div class="sectionTitle">
-					Namespace Detail
-				</div>
 				
-				<div class="fixedFont">
-						<b>QTIResultCollector</b>
-				</div>
-				
-				<div class="description">
-					The QTIResultCollector class collects the user results of a QTI widgets
+			</div>
+		
+		
+<!--
+#### EVENTS SUMMARY
+-->
+		
+<!--
+#### CONSTRUCTOR DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle" id="constructor">
+						Class Detail
+					</h2>
+					
+					<div class="fixedFont">
+						<b>QTIResultCollector</b>(options)
+					</div>
+					
+					<div class="description">
+						The QTIResultCollector class collects the user results of a QTI widgets
 and return a well formated variable 
 <i>(the type of the returned variable is deterministic for the result processing)</i>
-					
-				</div>
-				
-				
-				
-				
-					
-						<dl class="detailList">
-						<dt class="heading">Parameters:</dt>
 						
-							<dt>
-								 <b>options</b>
-								
-							</dt>
+					</div>
+					
+					
+				
+					
+						<dl class="detailList params">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									 <b>options</b>
+									
+								</dt>
 								<dd></dd>
-						
+							
 						</dl>
 					
 					
 					
-					
-					
-					
-					
-
+				</div>
 			</div>
-			
-
-<!-- ============================== field details ========================== -->		
-			
-				<div class="sectionTitle">
-					Field Detail
-				</div>
-				
-					<a name=".id"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{String}</span>
-					<span class="light">QTIResultCollector.</span><b>id</b>
-					
-					</div>
-					<div class="description">
-						The id of the widget
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".options"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>options</b>
-					
-					</div>
-					<div class="description">
-						the widget parameters
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".opts"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>opts</b>
-					
-					</div>
-					<div class="description">
-						The widget options
-						
-						
-					</div>
-					
-					
-
-						
-						
-						
-						
-
-					
-				
-			
-
-<!-- ============================== method details ========================= -->		
-			
-				<div class="sectionTitle">
-					Method Detail
-				</div>
-				
-					<a name=".associate"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>associate</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>associate</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".choice"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>choice</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of a <b>choice</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".extended_text"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">QTIResultCollector.</span><b>extended_text</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">See:</dt>
-							
-								<dd><a href="../symbols/QTIResultCollector.html#.text">QTIResultCollector#text</a></dd>
-							
-							</dl>
-						
-
-					<hr />
-				
-					<a name=".gap_match"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>gap_match</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>gap_match</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".graphic_associate"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>graphic_associate</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of a <b>graphic associate</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".graphic_order"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>graphic_order</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of a <b>graphic order</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".hotspot"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>hotspot</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>hotspot</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".hottext"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">QTIResultCollector.</span><b>hottext</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>hottext</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".inline_choice"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>inline_choice</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>inline_choice</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".match"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>match</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of a <b>match</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".order"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>order</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>order</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".select_point"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>select_point</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>hotspot</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".text"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>text</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of text based widget : 
-<b>text_entry</b> and <b>extended_text</b>
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".text_entry"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">QTIResultCollector.</span><b>text_entry</b>()
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">See:</dt>
-							
-								<dd><a href="../symbols/QTIResultCollector.html#.text">QTIResultCollector#text</a></dd>
-							
-							</dl>
-						
-
-					<hr />
-				
-					<a name=".upload"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					<span class="light">{Object}</span>
-					<span class="light">QTIResultCollector.</span><b>upload</b>()
-					
-					</div>
-					<div class="description">
-						Collect the results of an <b>upload</b> widget
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd><span class="light fixedFont">{Object}</span> the results</dd>
-							
-							</dl>
-						
-						
-						
-
-					
-				
-			
-			
-<!-- ============================== event details ========================= -->		
-			
-			
-			<hr />
-		</div>
-
 		
-<!-- ============================== footer ================================= -->
-		<div class="fineprint" style="clear:both">
-			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Mar 03 2011 10:48:55 GMT+0100 (CET)
-		</div>
+<!--
+#### FIELD DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Field Detail
+					</h2>
+					
+					
+						<div class="fixedFont heading" id=".id">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							<span class="light">{String}</span>
+							
+							<span class="light">QTIResultCollector.</span><b>id</b>							
+						</div>
+						
+						<div class="description">
+							The id of the widget
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".options">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							<span class="light">{Object}</span>
+							
+							<span class="light">QTIResultCollector.</span><b>options</b>							
+						</div>
+						
+						<div class="description">
+							the widget parameters
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id=".opts">
+							<span class='lighter'>
+							&lt;static&gt; 
+							</span>
+							
+							<span class="light">{Object}</span>
+							
+							<span class="light">QTIResultCollector.</span><b>opts</b>							
+						</div>
+						
+						<div class="description">
+							The widget options
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						
+					
+				</div>
+			</div>
+		
+<!--
+#### METHOD DETAILS
+-->		
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Method Detail
+					</h2>
+					
+					<ul class="methodDetail" id="MethodDetail">
+						
+						
+							<li 
+								 class='item0'
+							>
+								<div class="fixedFont heading" id=".associate">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>associate</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>associate</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item1'
+							>
+								<div class="fixedFont heading" id=".choice">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>choice</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of a <b>choice</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item2'
+							>
+								<div class="fixedFont heading" id=".extended_text">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									
+									
+									<span class="light">QTIResultCollector.</span><b>extended_text</b>()
+								</div>
+								
+								<div class="description">
+									
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/QTIResultCollector.html#.text">QTIResultCollector#text</a></dd>
+											
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item3'
+							>
+								<div class="fixedFont heading" id=".gap_match">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>gap_match</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>gap_match</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item4'
+							>
+								<div class="fixedFont heading" id=".graphic_associate">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>graphic_associate</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of a <b>graphic associate</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item5'
+							>
+								<div class="fixedFont heading" id=".graphic_order">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>graphic_order</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of a <b>graphic order</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item6'
+							>
+								<div class="fixedFont heading" id=".hotspot">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>hotspot</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>hotspot</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item7'
+							>
+								<div class="fixedFont heading" id=".hottext">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									
+									
+									<span class="light">QTIResultCollector.</span><b>hottext</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>hottext</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item8'
+							>
+								<div class="fixedFont heading" id=".inline_choice">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>inline_choice</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>inline_choice</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item9'
+							>
+								<div class="fixedFont heading" id=".match">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>match</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of a <b>match</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item10'
+							>
+								<div class="fixedFont heading" id=".order">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>order</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>order</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item11'
+							>
+								<div class="fixedFont heading" id=".select_point">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>select_point</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>hotspot</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item12'
+							>
+								<div class="fixedFont heading" id=".text">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>text</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of text based widget : 
+<b>text_entry</b> and <b>extended_text</b>
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item13'
+							>
+								<div class="fixedFont heading" id=".text_entry">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									
+									
+									<span class="light">QTIResultCollector.</span><b>text_entry</b>()
+								</div>
+								
+								<div class="description">
+									
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">See:</dt>
+											
+												<dd><a href="../symbols/QTIResultCollector.html#.text">QTIResultCollector#text</a></dd>
+											
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item14'
+							>
+								<div class="fixedFont heading" id=".upload">
+									<span class='lighter'>
+									&lt;static&gt; 
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<span class="light">QTIResultCollector.</span><b>upload</b>()
+								</div>
+								
+								<div class="description">
+									Collect the results of an <b>upload</b> widget
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> the results</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								
+							</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+		
+<!--
+#### EVENT DETAILS
+-->		
+		
+	</div>
+</div>
+		<script type="text/javascript">
+			wbos.CssTools.MediaQueryFallBack.LoadCss('../css/screen.css', '../css/handheld.css', 660)
+			codeview.classFilter.Init()
+		</script>
 	</body>
 </html>
+

@@ -13,7 +13,6 @@
  * and return a well formated variable 
  * <i>(the type of the returned variable is deterministic for the result processing)</i>
  * 
- * @namespace QTI
  * @class QTIResultCollector
  * @property {Object} options the widget parameters
  */

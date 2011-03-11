@@ -17,7 +17,6 @@
  * - to manage the source of data that the item could need
  * - to push the communications with the platform
  *  
- * @namespace taoApi
  * @class TaoStack
  */
 function TaoStack (){

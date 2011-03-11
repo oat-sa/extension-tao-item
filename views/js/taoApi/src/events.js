@@ -11,7 +11,6 @@
 
 /**
  *  
- * @namespace taoApi
  * @class EventTracer
  * @property {Object} [options] 
  */
