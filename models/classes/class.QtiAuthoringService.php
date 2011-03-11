@@ -1765,21 +1765,22 @@ class taoItems_models_classes_QtiAuthoringService
 	 * @return string
 	 */
 	public static function filteredData($data){
+	
 		$returnValue = '';
-		
 		
 		$returnValue = $data;
 		
 		$data = trim($data);
+		
 		if(!empty($data)){
-			// $data = str_replace('&', '&amp;', $data);
+			
 			$tidy = new tidy();
 			$data = $tidy->repairString (
 				$data,
 				array(
 					'output-xhtml' => true,
-					// 'numeric-entities' => true,
-					'show-body-only' => true,
+					'doctype' => 'transitional',
+					'show-body-only' => false,
 					'quote-nbsp' => false,
 					'indent' => 'auto',
 					'preserve-entities' => false,
@@ -1789,6 +1790,8 @@ class taoItems_models_classes_QtiAuthoringService
 				),
 				'UTF8'
 			);
+			
+			$data = preg_replace('/<a(.[^>]*)?id="qti_validate"(.[^>]*)?>(.[^<]*)?<\/a>/im', '', $data);
 			
 			try{//Parse data and replace img src by the media service URL
 				$updated = false;
