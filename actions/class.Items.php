@@ -576,10 +576,14 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 					throw new Exception('Unauthorized path '.$path);
 				}
 				
+				if(preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
+					//check if the file is linked to the file manager
+					$resource = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH . '/filemanager/views/data/', $path);
+				}else{
+					$folder 	= $this->service->getItemFolder($item);
+					$resource 	= tao_helpers_File::concat(array($folder, $path));
+				}			
 				
-				
-				$folder 	= $this->service->getItemFolder($item);
-				$resource 	= tao_helpers_File::concat(array($folder, $path));
 				if(file_exists($resource)){
 					
 					$mimeType = tao_helpers_File::getMimeType($resource);
