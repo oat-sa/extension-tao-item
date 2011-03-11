@@ -716,7 +716,14 @@ class taoItems_models_classes_ItemsService
 						
 						foreach($matches[2] as $relUri){
 							if($relUri != '#' && !preg_match("/^http/", $relUri) ){
-								$absoluteUri = dirname($url) . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
+							
+								if(preg_match('/(.)+\/filemanager\/views\/data\//i', $relUri)){
+									//check if the file is contained in the file manager
+									$absoluteUri = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_URL . '/filemanager/views/data/', $relUri);
+								}else{
+									$absoluteUri = dirname($url) . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
+								}
+								
 								$output = str_replace($relUri, $absoluteUri, $output);
 							}
 						}
