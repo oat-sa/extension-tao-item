@@ -1791,6 +1791,7 @@ class taoItems_models_classes_QtiAuthoringService
 				'UTF8'
 			);
 			
+			//remove the buggy and useless qti_validate tag in internal preview
 			$data = preg_replace('/<a(.[^>]*)?id="qti_validate"(.[^>]*)?>(.[^<]*)?<\/a>/im', '', $data);
 			
 			try{//Parse data and replace img src by the media service URL

@@ -232,8 +232,95 @@ function qtiEdit(itemSerial, formContainers, options){
 		tooltip: 'save'
 	};
 
-	var loadXmlQti = null;
-	var exportXmlQti = null;
+	var addMedia = {
+		visible : true,
+		className: 'addInteraction',
+		exec: function(){
+			var self = this;
+			var formDataHtml = '<form class="wysiwyg"><fieldset><legend>Insert Media</legend><label>Media URL: <input type="text" name="url" value="http://" /></label><label>Media Title: <input type="text" name="imagetitle" value="" /></label><label>Media Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Media" /> <input type="reset" value="Cancel" /></fieldset></form>';
+			if ($.modal){
+				$.modal(formDataHtml, {
+					onShow: function(dialog)
+					{	
+						if($.fn.fmbind){
+							//add tao file manager
+							$('input[name="url"]').fmbind({type: 'file'}, function(elt, value){
+								$(elt).val(value);
+							});
+						}
+						
+						$('input:submit', dialog.data).click(function(e)
+						{
+							e.preventDefault();
+							var szURL = $('input[name="url"]', dialog.data).val();
+							var title = $('input[name="imagetitle"]', dialog.data).val();
+							var description = $('input[name="description"]', dialog.data).val();
+							var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+							self.insertHtml(img);
+							
+							self.saveContent();//line added to update the original textarea
+							
+							$.modal.close();
+						});
+						$('input:reset', dialog.data).click(function(e)
+						{
+							e.preventDefault();
+							$.modal.close();
+						});
+					},
+					maxWidth: $.fn.wysiwyg.defaults.formWidth,
+					maxHeight: $.fn.wysiwyg.defaults.formHeight,
+					overlayClose: true
+				});
+			}else{
+				 if ($.fn.dialog){
+					var dialog = $(formDataHtml).appendTo('body');
+					dialog.dialog({
+						modal: true,
+						width: $.fn.wysiwyg.defaults.formWidth,
+						height: $.fn.wysiwyg.defaults.formHeight,
+						open: function(ev, ui)
+						{
+							 $('input:submit', $(this)).click(function(e)
+							 {
+							   e.preventDefault();
+							   var szURL = $('input[name="url"]', dialog).val();
+							   var title = $('input[name="imagetitle"]', dialog).val();
+							   var description = $('input[name="description"]', dialog).val();
+							   var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+							   self.insertHtml(img);
+							   
+							   self.saveContent();//line added to update the original textarea
+
+							   $(dialog).dialog("close");
+							 });
+							 $('input:reset', $(this)).click(function(e)
+								{
+										e.preventDefault();
+										$(dialog).dialog("close");
+								});
+						},
+						close: function(ev, ui){
+							  $(this).dialog("destroy");
+						}
+					});
+				}else{
+					// if ($.browser.msie){
+						// this.focus();
+						// this.editorDoc.execCommand('insertImage', true, null);
+					// }
+					// else{
+						// var szURL = prompt('URL', 'http://');
+						// if (szURL && szURL.length > 0){
+							// this.editorDoc.execCommand('insertImage', false, szURL);
+						// }
+					// }
+				}
+			}
+		},
+		tooltip: 'insert media'
+	};
+	
 	var instance = this;
 	
 	this.itemEditor = $(this.itemDataContainer).wysiwyg({
@@ -261,30 +348,8 @@ function qtiEdit(itemSerial, formContainers, options){
 		  insertUnorderedList  : { visible : true },
 		  insertHorizontalRule : { visible : true },
 
-		  h4: {
-				  visible: false,
-				  className: 'h4',
-				  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-				  arguments: ($.browser.msie || $.browser.safari) ? '<h4>' : 'h4',
-				  tags: ['h4'],
-				  tooltip: 'Header 4'
-		  },
-		  h5: {
-				  visible: false,
-				  className: 'h5',
-				  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-				  arguments: ($.browser.msie || $.browser.safari) ? '<h5>' : 'h5',
-				  tags: ['h5'],
-				  tooltip: 'Header 5'
-		  },
-		  h6: {
-				  visible: false,
-				  className: 'h6',
-				  command: ($.browser.msie || $.browser.safari) ? 'formatBlock' : 'heading',
-				  arguments: ($.browser.msie || $.browser.safari) ? '<h6>' : 'h6',
-				  tags: ['h6'],
-				  tooltip: 'Header 6'
-		  },
+		  addMedia : addMedia,
+		  
 		  cut   : { visible : true },
 		  copy  : { visible : true },
 		  paste : { visible : true },
