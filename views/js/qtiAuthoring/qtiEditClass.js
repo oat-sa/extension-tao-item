@@ -1,4 +1,4 @@
-alert('qtiEdit loaded');
+// alert('qtiEdit loaded');
 
 qtiEdit.instances = [];
 
@@ -244,12 +244,17 @@ function qtiEdit(itemSerial, formContainers, options){
 				
 				$.modal(formDataHtml, {
 					onShow: function(dialog){
+						var mediaType = '';
 						if($.fn.fmbind){
 							//add tao file manager
 							$('input[name="url"]').fmbind({type: 'file'}, function(elt, value, mediaData){
 								$(elt).val(value);
-								// $('input[name="mediaHeight"]').val(mediaData.height);
-								// $('input[name="mediaWidth"]').val(mediaData.width);
+								if(mediaData){
+									if(mediaData.height) $('input[name="mediaHeight"]').val(mediaData.height);
+									if(mediaData.width) $('input[name="mediaWidth"]').val(mediaData.width);
+									if(mediaData.type) mediaType = mediaData.type;
+								}
+								
 							});
 						}
 						
@@ -261,7 +266,7 @@ function qtiEdit(itemSerial, formContainers, options){
 							var description = $('input[name="description"]', dialog.data).val();
 							
 							var objectEltHtml='';
-							objectEltHtml = "<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "'><img src='' alt='"+description+"' title='"+description+"'/></object>";
+							objectEltHtml = "<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "' type='"+mediaType+"'><div class='qti-wysiwyg-mediabox' height='" + height+ "' width='" + width + "'><img  src='"+img_url+"media-display.png' alt='"+description+"' title='"+description+"'/></div></object>";
 							
 							self.insertHtml(objectEltHtml);
 							
@@ -277,7 +282,10 @@ function qtiEdit(itemSerial, formContainers, options){
 					},
 					maxWidth: $.fn.wysiwyg.defaults.formWidth,
 					maxHeight: $.fn.wysiwyg.defaults.formHeight,
-					overlayClose: true
+					overlayClose: true,
+					containerCss:{
+						minHeight: '315px'
+					}
 				});
 			}else{
 				
@@ -295,7 +303,7 @@ function qtiEdit(itemSerial, formContainers, options){
 								var height = $('input[name="mediaHeight"]', dialog).val();
 								var width = $('input[name="mediaWidth"]', dialog).val();
 								var description = $('input[name="description"]', dialog).val();
-								var objectEltHtml="<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "' /><img src='' alt='"+description+"' title='"+description+"'/></object>";
+								var objectEltHtml="<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "' type='"+mediaType+"'><img src='' alt='"+description+"' title='"+description+"'/></object>";
 								self.insertHtml(objectEltHtml);
 							   
 							   self.saveContent();//line added to update the original textarea

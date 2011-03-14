@@ -58,3 +58,5 @@ div.qti_choice_box {
 	cursor: pointer;
 }
 /*div.qti_interaction_block span.qti_interaction_box_delete {margin-right: 10px;}*/
+
+div.qti-wysiwyg-mediabox{border:medium solid black; position:relative; height:30px; width:30px; text-align:center}
