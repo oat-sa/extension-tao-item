@@ -466,12 +466,13 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 		   },
 		   dataType: 'html',
 		   success: function(form){
+				$(self.interactionFormContent).empty();
 				$(self.interactionFormContent).html(form);
 				qtiEdit.initFormElements($(self.interactionFormContent));
 				
-				var position = $(self.interactionFormContent).position();
-				
+				// var position = $(self.interactionFormContent).position();
 				// window.scrollTo(0, parseInt(position.top));
+				
 				if($myTab) $myTab.tabs("select" , 1);
 		   }
 		});
@@ -741,12 +742,22 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 						$(instance.interactionFormContent).empty();
 					}
 					delete instance.interactions[interactionSerial];
-				
+					
+					
 					//delete:
 					var $interactions = qtiEdit.getEltInFrame('#'+interactionSerial);
 					if($interactions.length){
+						
 						if($interactions[0]){
-							$interactions[0].parent().remove();
+							
+							// _dump($interactions[0].parent()[0].childNodes);
+							// CD($interactions[0].parent(), 'interatiocn to delete');
+							// CL('('+$interactions[0].parent()[0].tagName+')'+$interactions[0].parent()[0].innerHtml);
+							
+							$interactionBlock = $interactions[0].parent();
+							$interactionBlock.empty();
+							$interactionBlock.detach();
+							// $interactionBlock.remove('div');
 						}
 					}
 				}
