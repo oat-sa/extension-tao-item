@@ -93,6 +93,7 @@ div.qti-authoring-form-container-column{float: left;width:48%;}
 
 /* jwysiwyg action buttons: */
 div.wysiwyg ul.panel li.addInteraction{ background: url('../img/qtiAuthoring/application_view_gallery.png'); }
+div.wysiwyg ul.panel li.addMedia{ background: url('../img/qtiAuthoring/media-add.png'); }
 
 /*style of the img inserting modal box*/
 #simplemodal-container{border: none;background-color: #BBBBBB;color: black;}

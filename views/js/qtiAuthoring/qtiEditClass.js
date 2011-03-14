@@ -1,4 +1,4 @@
-// alert('qtiEdit loaded');
+alert('qtiEdit loaded');
 
 qtiEdit.instances = [];
 
@@ -234,36 +234,43 @@ function qtiEdit(itemSerial, formContainers, options){
 
 	var addMedia = {
 		visible : true,
-		className: 'addInteraction',
+		className: 'addMedia',
 		exec: function(){
+			
 			var self = this;
-			var formDataHtml = '<form class="wysiwyg"><fieldset><legend>Insert Media</legend><label>Media URL: <input type="text" name="url" value="http://" /></label><label>Media Title: <input type="text" name="imagetitle" value="" /></label><label>Media Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Media" /> <input type="reset" value="Cancel" /></fieldset></form>';
+			var formDataHtml = '<form class="wysiwyg"><fieldset><legend>Insert Media</legend>';
+			formDataHtml += '<label>Media URL: <input type="text" name="url" value="http://" /></label><label>Media height: <input type="text" name="mediaHeight" value="" /></label><label>Media width: <input type="text" name="mediaWidth" value="" /></label><label>Media Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Media" /> <input type="reset" value="Cancel" /></fieldset></form>';
 			if ($.modal){
+				
 				$.modal(formDataHtml, {
-					onShow: function(dialog)
-					{	
+					onShow: function(dialog){
 						if($.fn.fmbind){
 							//add tao file manager
-							$('input[name="url"]').fmbind({type: 'file'}, function(elt, value){
+							$('input[name="url"]').fmbind({type: 'file'}, function(elt, value, mediaData){
 								$(elt).val(value);
+								// $('input[name="mediaHeight"]').val(mediaData.height);
+								// $('input[name="mediaWidth"]').val(mediaData.width);
 							});
 						}
 						
-						$('input:submit', dialog.data).click(function(e)
-						{
+						$('input:submit', dialog.data).click(function(e){
 							e.preventDefault();
-							var szURL = $('input[name="url"]', dialog.data).val();
-							var title = $('input[name="imagetitle"]', dialog.data).val();
+							var mediaURL = $('input[name="url"]', dialog.data).val();
+							var height = $('input[name="mediaHeight"]', dialog.data).val();
+							var width = $('input[name="mediaWidth"]', dialog.data).val();
 							var description = $('input[name="description"]', dialog.data).val();
-							var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
-							self.insertHtml(img);
+							
+							var objectEltHtml='';
+							objectEltHtml = "<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "'><img src='' alt='"+description+"' title='"+description+"'/></object>";
+							
+							self.insertHtml(objectEltHtml);
 							
 							self.saveContent();//line added to update the original textarea
 							
 							$.modal.close();
 						});
-						$('input:reset', dialog.data).click(function(e)
-						{
+						
+						$('input:reset', dialog.data).click(function(e){
 							e.preventDefault();
 							$.modal.close();
 						});
@@ -273,32 +280,32 @@ function qtiEdit(itemSerial, formContainers, options){
 					overlayClose: true
 				});
 			}else{
+				
 				 if ($.fn.dialog){
 					var dialog = $(formDataHtml).appendTo('body');
 					dialog.dialog({
 						modal: true,
 						width: $.fn.wysiwyg.defaults.formWidth,
 						height: $.fn.wysiwyg.defaults.formHeight,
-						open: function(ev, ui)
-						{
-							 $('input:submit', $(this)).click(function(e)
-							 {
+						open: function(ev, ui){
+							 $('input:submit', $(this)).click(function(e){
+							   
 							   e.preventDefault();
-							   var szURL = $('input[name="url"]', dialog).val();
-							   var title = $('input[name="imagetitle"]', dialog).val();
-							   var description = $('input[name="description"]', dialog).val();
-							   var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
-							   self.insertHtml(img);
+								var mediaURL = $('input[name="url"]', dialog).val();
+								var height = $('input[name="mediaHeight"]', dialog).val();
+								var width = $('input[name="mediaWidth"]', dialog).val();
+								var description = $('input[name="description"]', dialog).val();
+								var objectEltHtml="<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "' /><img src='' alt='"+description+"' title='"+description+"'/></object>";
+								self.insertHtml(objectEltHtml);
 							   
 							   self.saveContent();//line added to update the original textarea
 
 							   $(dialog).dialog("close");
 							 });
-							 $('input:reset', $(this)).click(function(e)
-								{
-										e.preventDefault();
-										$(dialog).dialog("close");
-								});
+							 $('input:reset', $(this)).click(function(e){
+								e.preventDefault();
+								$(dialog).dialog("close");
+							});
 						},
 						close: function(ev, ui){
 							  $(this).dialog("destroy");
@@ -317,6 +324,7 @@ function qtiEdit(itemSerial, formContainers, options){
 					// }
 				}
 			}
+			
 		},
 		tooltip: 'insert media'
 	};
