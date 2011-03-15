@@ -290,13 +290,7 @@ class taoItems_scripts_MigrateLegacyItems
 		    );
 		    $this->qtiItem = new taoItems_models_classes_QTI_Item($itemIdentifier, $options);
 			
-			//add default responseProcessing:
-			$this->qtiItem->setOutcomes(array(
-				new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'))
-			));
-			$this->qtiItem->setResponseProcessing(
-				new taoItems_models_classes_QTI_response_TemplatesDriven()
-			);
+			
 		
 	    	//get inqueries in the right order in the legacy doc ( inquery => interaction)
 	    	$inqueries = array();
@@ -329,11 +323,9 @@ class taoItems_scripts_MigrateLegacyItems
 	    		
 	    		$interaction = $this->inquery2Interaction($inquery);
 		    	if(!is_null($interaction)){
-	    			
-		    		if(!is_null($responseId)){
+		    		if(!is_null($responseId) && !is_null($interaction->getResponse())){
 		    			$interaction->getResponse()->setIdentifier($responseId);
 		    		}
-		    		
 		    		$interactions[] = $interaction;
 		    	}
 		    }
@@ -361,7 +353,7 @@ class taoItems_scripts_MigrateLegacyItems
 	    						}
 	    						break;
 	    					case 'label':
-	    						if($child->hasAttribute('value') && $child->hasAttribute('id') && strtolower($child->getAttribute('id')) == 'problem_textbox'){
+	    						if($child->hasAttribute('value') && $child->hasAttribute('id') && preg_match("/^problem_textbox/", strtolower($child->getAttribute('id')))){
 	    							$multi = false;
 	    							if($child->hasAttribute('multiline') && strtolower($child->getAttribute('multiline')) == 'true'){
 	    								$multi = true;	
@@ -395,7 +387,24 @@ class taoItems_scripts_MigrateLegacyItems
 	    			}
 	    		}
 	    	}
+	    	$hasResponse = false;
+	    	foreach($this->qtiItem->getInteractions() as $interaction){
+	    		if(!is_null($interaction->getResponse())){
+	    			$hasResponse = true;
+	    			break;
+	    		}
+	    	}
 	    	
+	    	//add default responseProcessing:
+			$this->qtiItem->setOutcomes(array(
+				new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'))
+			));
+	
+			if($hasResponse){
+				$this->qtiItem->setResponseProcessing(
+					new taoItems_models_classes_QTI_response_TemplatesDriven()
+				);
+			}
 	   	 	
 	    	$this->qtiItem->setInteractions($interactions);
 	    	$this->qtiItem->setData($data);
@@ -605,6 +614,14 @@ class taoItems_scripts_MigrateLegacyItems
     		$interaction->setPrompt($this->cleanUp($question->nodeValue));
    		}
    		
+   		$options = array(
+   			'baseType' 		=> 'string',
+   			'cardinality' 	=> 'multiple'
+   		);
+    		
+    	$response = new taoItems_models_classes_QTI_Response(null, $options);
+   		$interaction->setResponse($response);
+   		
    		$returnValue = $interaction;
         
         // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E7B end
@@ -648,11 +665,12 @@ class taoItems_scripts_MigrateLegacyItems
 		$stylePattern = "/^(.*)?\s?{(.*)?}$/";
 		
     	$xml = simplexml_load_string($cleaned); 
+    	$styleRules = array();
 		foreach($xml->xpath("//*[name(.) = 'style']") as $styleNode){
 			$styleContents = explode("\n",(string)$styleNode);
 			foreach($styleContents as $styleRule){
 				if(preg_match($stylePattern, trim($styleRule))){
-					$this->styles[] = trim($styleRule);
+					$styleRules[] = trim($styleRule);
 				}
 			}
 		}
@@ -665,6 +683,16 @@ class taoItems_scripts_MigrateLegacyItems
        		}
 		}
         
+		foreach($styleRules as  $styleRule){
+			$class = uniqid('c');
+			
+			$tokens = explode(' ',$styleRule);
+			$oldClass=  str_replace('span.', '', trim($tokens[0]));
+			
+			$this->styles[] = str_replace('span.'.$oldClass, 'span.'.$class, $styleRule);
+			$returnValue = str_replace('class="'.$oldClass.'"', 'class="'.$class.'"', $returnValue);
+		}
+		
         // section 127-0-1-1--77ddac51:12e9ae2b491:-8000:0000000000002E7E end
 
         return (string) $returnValue;
