@@ -30,7 +30,7 @@ TAO_MATCHING.Collection.prototype = {
      * @return boolean
      */
     contains : function (matchingVar, options)
-    {
+    {    
 		var returnValue = null;
 		var needleType = 'collection';
 
@@ -56,7 +56,7 @@ TAO_MATCHING.Collection.prototype = {
         else if (TAO_MATCHING.Variable.isList (matchingVar) && needleType == 'collection') {
             returnValue = false;
             for (var key in matchingVar.value) {
-                if (this.contains (matchingVar.value[key]), {"matchingVarList":false}){
+                if (this.contains (matchingVar.value[key])){
                     returnValue = true;
                 } else {
                     returnValue = false;
@@ -83,6 +83,7 @@ TAO_MATCHING.Collection.prototype = {
                 }
             }
         }
+        
         
         return returnValue;
     }
