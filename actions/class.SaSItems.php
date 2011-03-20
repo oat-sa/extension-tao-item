@@ -149,5 +149,6 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		$this->setData('itemProperties', $properties);
 		$this->setView('view.tpl');
 	}
+	
 }
 ?>
