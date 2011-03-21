@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -22,7 +22,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * By implementing the exportable interface, the object must export it's data to
  * formats defined here.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/interface.Exportable.php');
 
@@ -43,7 +43,7 @@ require_once('taoItems/models/classes/QTI/interface.Exportable.php');
  *
  * @abstract
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -140,7 +140,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Export the data in XHTML format
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -169,7 +169,7 @@ abstract class taoItems_models_classes_QTI_Data
      * EXport the data in the QTI XML format
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -196,7 +196,7 @@ abstract class taoItems_models_classes_QTI_Data
      * EXport the data into TAO's objects Form
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -214,7 +214,7 @@ abstract class taoItems_models_classes_QTI_Data
      * a human readable identifier will be created)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -244,7 +244,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Be carefull to the assignment in the loops!!!
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return mixed
      */
     public function __destruct()
@@ -289,7 +289,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Gives the list of attributes to serialize by reflection.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function __sleep()
@@ -314,7 +314,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method __wakeup
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return mixed
      */
     public function __wakeup()
@@ -332,7 +332,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Enable or disable the persistance mode.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  boolean enabled
      * @return mixed
      */
@@ -349,7 +349,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getTemplatePath
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public static function getTemplatePath()
@@ -372,7 +372,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the serial number
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getSerial()
@@ -395,7 +395,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the identifier
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getIdentifier()
@@ -420,7 +420,7 @@ abstract class taoItems_models_classes_QTI_Data
      * If the parameter already exists a InvalidArgumentException is thrown.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string id
      * @param  boolean unique
      * @return mixed
@@ -466,7 +466,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Create a unique identifier, based on the kind of instance.
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return mixed
      */
     protected function createIdentifier()
@@ -507,7 +507,7 @@ abstract class taoItems_models_classes_QTI_Data
      * create a unique serial number
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return mixed
      */
     protected function createSerial()
@@ -525,7 +525,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getType
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getType()
@@ -545,7 +545,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setType
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string type
      * @return mixed
      */
@@ -562,7 +562,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the data
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getData()
@@ -582,30 +582,33 @@ abstract class taoItems_models_classes_QTI_Data
      * set the data
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string data
+     * @param  boolean cleanup
      * @return mixed
      */
-    public function setData($data)
+    public function setData($data, $cleanup = true)
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000232C begin
         
-		$tidy = new tidy();
-		$data = $tidy->repairString (
-			$data,
-			array(
-				'output-xhtml' => true,
-				'numeric-entities' => true,
-				'show-body-only' => true,
-				'quote-nbsp' => false,
-				'indent' => 'auto',
-				'preserve-entities' => false,
-				'quote-ampersand' => true,
-				'uppercase-attributes' => false,
-				'uppercase-tags' => false
-			),
-			'UTF8'
-		);
+    	if ($cleanup){
+			$tidy = new tidy();
+			$data = $tidy->repairString (
+				$data,
+				array(
+					'output-xhtml' => true,
+					'numeric-entities' => true,
+					'show-body-only' => true,
+					'quote-nbsp' => false,
+					'indent' => 'auto',
+					'preserve-entities' => false,
+					'quote-ampersand' => true,
+					'uppercase-attributes' => false,
+					'uppercase-tags' => false
+				),
+				'UTF8'
+			);
+    	}
 		
     	$this->data = $data;
     	
@@ -616,7 +619,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getDataXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return string
      */
     public function getDataXHTML()
@@ -673,7 +676,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setDataXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string data
      * @return mixed
      */
@@ -687,7 +690,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the options
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     public function getOptions()
@@ -707,7 +710,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set the options
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array options
      * @return mixed
      */
@@ -724,7 +727,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get an options by it's name
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string name
      * @return mixed
      */
@@ -755,7 +758,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set an option
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  string name
      * @param  string value
      * @return mixed
@@ -774,7 +777,7 @@ abstract class taoItems_models_classes_QTI_Data
      * from the instance options and regarding the option type
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @param  array formalOpts
      * @param  boolean recursive
      * @return string
@@ -819,7 +822,7 @@ abstract class taoItems_models_classes_QTI_Data
      * of the current instances to an associative array
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return array
      */
     protected function extractVariables()
@@ -844,7 +847,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method _remove
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
      * @return boolean
      */
     public function _remove()

@@ -688,7 +688,7 @@ class taoItems_models_classes_QTI_ParserFactory
         }
         
         $returnValue = new taoItems_models_classes_QTI_response_Custom($responseRules);
-        $returnValue->setData ($data->asXml());
+        $returnValue->setData ($data->asXml(), false);
      
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D end
 
