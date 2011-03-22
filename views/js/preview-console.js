@@ -57,11 +57,11 @@ $(document).ready(function(){
 		previewConsole.find('div.console-content').toggle();
 		if($(this).hasClass('ui-icon-circle-minus')){
 			previewConsole.height('16px');
-			$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
+			$(this).removeClass('ui-icon-circle-minus').addClass('ui-icon-circle-plus');
 		}
 		else{
 			previewConsole.height('150px');
-			$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
+			$(this).removeClass('ui-icon-circle-plus').addClass('ui-icon-circle-minus');
 		}
 		return false;
 	});
