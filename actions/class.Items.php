@@ -589,7 +589,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 					$mimeType = tao_helpers_File::getMimeType($resource);
 					
 					//allow only images, video and flash
-					if(preg_match("/^(image|video|application\/x-shockwave-flash)/", $mimeType)){
+					if(preg_match("/^(image|video|audio|application\/x-shockwave-flash)/", $mimeType)){
 						
 						header("Content-Type: $mimeType; charset utf-8");
 						print trim(file_get_contents($resource));

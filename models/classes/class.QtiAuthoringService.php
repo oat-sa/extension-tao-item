@@ -1814,7 +1814,6 @@ class taoItems_models_classes_QtiAuthoringService
 							}
 						}
 					}
-				
 				}
 				
 				if($updated){
