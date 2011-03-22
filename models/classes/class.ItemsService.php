@@ -678,20 +678,17 @@ class taoItems_models_classes_ItemsService
 	        			$output = $qtiService->renderItem($qtiItem);
 	        		}
         		}
-        		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_KOHS, TAO_ITEM_MODEL_CTEST, TAO_ITEM_MODEL_HAWAI))){
+        		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
+        			$output	= $this->getItemContent($item);
+        		}
+        		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_KOHS, TAO_ITEM_MODEL_CTEST))){
         			
         			$uri 		= tao_helpers_Uri::encode($item->uriResource);
         			$clazz 		= $this->getClass($item);
         			$clazzUri	= tao_helpers_Uri::encode($clazz->uriResource);
         			
-        			
-	        		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
-						$itemContent = $this->getItemContent($item, true);
-					}
-					else{
-						$itemContent = $this->getItemContent($item, false);
-					}
-        			
+					$itemContent = $this->getItemContent($item, false);
+					
 					$dataFile = $itemFolder.'/data.xml';
 					file_put_contents($dataFile, $itemContent);
 					

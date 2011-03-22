@@ -90,7 +90,7 @@
     <rdfs:label xml:lang="EN"><![CDATA[HAWAI]]></rdfs:label>
     <rdfs:seeAlso xml:lang="EN"/>
     <rdfs:isDefinedBy xml:lang="EN"/>
-    <item:DataFileName><![CDATA[black.xml]]></item:DataFileName>
+    <item:DataFileName><![CDATA[index.xhtml]]></item:DataFileName>
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#campus">
