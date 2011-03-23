@@ -111,6 +111,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
         , 'equal'           :{}
 		, 'if'				:{'jsFunction':true}
 		, 'isNull'			:{}
+		, 'for'				:{'jsFunction':true}
 		, 'getCorrect'		:{}
         , 'getMap'          :{}
         , 'getResponse'     :{}
