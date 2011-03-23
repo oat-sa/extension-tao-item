@@ -841,7 +841,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$returnValue = array();
 		
 		if(!empty($imageFilePath)){
-		
+			
 			if(!preg_match("/^http/", $imageFilePath)){
 				if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
 					$itemService = tao_models_classes_ServiceFactory::get('Items');
@@ -857,12 +857,15 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			}
 			
 			if (@fclose(@fopen($imageFilePath, "r"))){//check if file remotely exists, might be improved with cURL
-
+				
 				$mimeType = tao_helpers_File::getMimeType($imageFilePath);
 				$validImageType = array(
 					'image/png',
 					'image/jpeg',
-					'image/bmp'
+					'image/bmp',
+					'image/gif',
+					'image/vnd.microsoft.icon',
+					'image/tiff'
 				);
 				
 				if(in_array($mimeType, $validImageType)){
@@ -870,7 +873,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				}
 				
 			}
-			
 			
 		}
 		

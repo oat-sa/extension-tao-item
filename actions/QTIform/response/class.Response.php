@@ -98,7 +98,7 @@ abstract class taoItems_actions_QTIform_response_Response
 		$actions = array();
 		
 		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
-		$saveElt->setValue("<a href='#' class='response-form-submitter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
+		$saveElt->setValue("<a href='#' class='response-form-submitter' ><img src='".BASE_WWW."img/qtiAuthoring/update.png'  /> ".__('Update response modifications')."</a>");
 		$actions[] = $saveElt;
 		
 		$this->form->setActions($actions, 'top');

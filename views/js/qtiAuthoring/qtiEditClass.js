@@ -588,7 +588,7 @@ qtiEdit.mapFileManagerField = function($container){
 							if(id.indexOf('ChoiceForm') == 0){
 								interaction.modifiedChoices[id] = 'modified';//it is a choice form:
 							}else if(id.indexOf('InteractionForm') == 0){
-								interaction.modifiedInteraction = true;
+								interaction.setModifiedInteraction(true);
 							}else if(id.indexOf('GroupForm') == 0){
 								interaction.modifiedGroups[id] = 'modified';
 							}
@@ -727,18 +727,30 @@ qtiEdit.prototype.save = function(itemUri){
 	itemProperties.itemUri = this.itemUri;
 	itemProperties.itemData = util.htmlEncode(this.itemEditor.wysiwyg('getContent'));
 	//could check if an interaction is being edited, so suggest to save it too:
+	var saveItemFunction = function(){
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/saveItem",
+		   data: itemProperties,
+		   dataType: 'json',
+		   success: function(r){
+				if(r.saved){
+					createInfoMessage(__('The item has been successfully updated'));
+				}
+		   }
+		});
+	}
 	
-	$.ajax({
-	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveItem",
-	   data: itemProperties,
-	   dataType: 'json',
-	   success: function(r){
-			if(r.saved){
-				createInfoMessage(__('The item has been successfully updated'));
+	if(this.currentInteraction){
+		if(this.currentInteraction.modifiedInteraction){
+			if(confirm(__('the current interaction has been modified but not updated yet,\n do you want to do so before saving your item?'))){
+				this.saveCurrentInteraction(saveItemFunction);
+				return;
 			}
-	   }
-	});
+		}
+	}
+	
+	saveItemFunction();
 }
 
 qtiEdit.prototype.preview = function(){
@@ -747,7 +759,20 @@ qtiEdit.prototype.preview = function(){
 	var url = '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
 	
-	window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+	var openUrlFunction = function(){
+		window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+	}
+	
+	if(this.currentInteraction){
+		if(this.currentInteraction.modifiedInteraction){
+			if(confirm(__('the current interaction has been modified but not updated yet,\n do you want to do so before previewing your item?'))){
+				this.saveCurrentInteraction(openUrlFunction);
+				return;
+			}
+		}
+	}
+	
+	openUrlFunction();
 }
 
 
@@ -972,6 +997,24 @@ qtiEdit.prototype.deleteStyleSheet = function(css_href){
 	});
 }
 
-qtiEdit.prototype.saveCurrentInteraction = function(){
+qtiEdit.prototype.saveCurrentInteraction = function(callback){
 	//auto save the current interaction, after confirming the choice to the user:
+	
+	if(this.currentInteraction){
+		var interaction = this.currentInteraction;
+		$(".interaction-form-submitter").click();
+		
+		var timer = null;
+		var stopTimer = function(){
+			callback();
+			window.clearInterval(timer);
+		}
+		//check every half a second if all choices have been saved:
+		timer = window.setInterval(function(){
+			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length && !interaction.modifiedInteraction){
+				stopTimer();
+			}
+		}, 500);
+	}
+	
 }

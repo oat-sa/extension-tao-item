@@ -120,7 +120,7 @@ class taoItems_actions_QTIform_ResponseProcessing
 		
 		$actions = array();
 		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
-		$saveElt->setValue("<a href='#' class='form-submiter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
+		$saveElt->setValue("<a href='#' class='form-submiter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Update Response Parameters')."</a>");
 		$actions[] = $saveElt;
 		
 		$this->form->setActions(array(), 'top');

@@ -62,6 +62,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					$(response.responseFormContainer).html(r.responseForm);
 					response.initResponseFormSubmitter();
 					
+						
 					//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
 					if(r.maxChoices) response.maxChoices = r.maxChoices;
 						
@@ -75,11 +76,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					}
 					
 					if(r.setResponseMappingMode){
-						var interaction = interactionClass.instances[response.interactionSerial];
-						if(interaction){
-							//set the response mapping mode:
-							interaction.setResponseMappingMode(r.setResponseMappingMode);
-						}
+						response.loadResponseMappingForm();
 					}
 				}else{
 					throw 'error in loading the response editing data';
@@ -89,10 +86,37 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 	}
 }
 
+responseClass.prototype.loadResponseMappingForm = function(){
+	var interaction = interactionClass.instances[this.interactionSerial];
+	var _this = this;
+	if(interaction){
+		$.ajax({
+		   type: "POST",
+		   url: "/taoItems/QtiAuthoring/editMappingOptions",
+		   data: {
+				'interactionSerial': interaction.interactionSerial
+		   },
+		   dataType: 'html',
+		   success: function(form){
+				if(!$('#qtiAuthoring_mappingEditor').length){
+					$(_this.responseFormContainer).after(form);
+					$('#qtiAuthoring_mappingEditor').find('.form-toolbar').hide();
+					interaction.setResponseMappingMode(true);
+				}
+				
+		   }
+		});
+	}
+}
+
 responseClass.prototype.initResponseFormSubmitter = function(){
 	var self = this;
 	$(".response-form-submitter").click(function(){
 		
+		//auto save the mapping options values
+		$('#qtiAuthoring_mappingEditor').find('.form-submiter').click();
+		
+		//save the data pf the response
 		var $myForm = $(this).parents("form");
 		//linearize it and post it:
 		$.ajax({
@@ -103,7 +127,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 		   success: function(r){
 				if(r.saved){
 					createInfoMessage(__('Modification on response applied'));
-					
+										
 					if(r.templateHasChanged){
 						
 						var interaction = interactionClass.instances[self.interactionSerial];
@@ -244,7 +268,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		sortname: 'choice1', 
 		viewrecords: false, 
 		sortorder: "asc", 
-		caption: __("Responses Editor"),
+		caption: __("Responses Grid"),
 		gridComplete: function(){
 			response.resizeGrid();
 			$(window).bind('resize', function(e){
@@ -654,7 +678,6 @@ responseClass.prototype.getUniqueRowId = function(){
 }
 
 responseClass.prototype.restoreCurrentRow = function(rowId){
-	// CL('try restoring row', this.currentRowId);
 	
 	if(parseInt(this.currentRowId) >= 0){
 		
