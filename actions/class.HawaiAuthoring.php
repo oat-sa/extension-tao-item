@@ -16,17 +16,17 @@ class taoItems_actions_HawaiAuthoring extends tao_actions_CommonModule {
 	public function __construct(){
 		
 		parent::__construct();
-		$this->itemService = tao_models_classes_ServiceFactory::get("Items");
+		$this->itemService = tao_models_classes_ServiceFactory::get('Items');
 	}
 	
 	/**
 	 * Save hawai item content
 	 */
 	public function saveItemContent() {
-		if($this->hasRequestParameter("xml") && $this->hasRequestParameter("isntance")){
-			$item = $this->itemService->getItem($this->getRequestParameter("isntance"));
+		if($this->hasRequestParameter("xml") && $this->hasRequestParameter("instance")){
+			$item = $this->itemService->getItem($this->getRequestParameter("instance"));
 			if(!is_null($item) && $this->itemService->isItemModelDefined($item)){
-				$item = $this->itemService->setItemContent($item, $data);
+				$item = $this->itemService->setItemContent($item, $_POST["xml"]);
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
 				$message = __('Item saved successfully');
 				if(tao_helpers_Context::check('STANDALONE_MODE')){

@@ -681,6 +681,7 @@ class taoItems_models_classes_ItemsService
         		
         		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
         			
+        			// Temporary replace
         			$output	= $this->getItemContent($item);
 					$output = str_replace ('<xhtml:', '<', $output);
 					$output = str_replace ('</xhtml:', '</', $output);
