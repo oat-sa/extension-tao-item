@@ -101,7 +101,7 @@ abstract class taoItems_actions_QTIform_interaction_Interaction
 		$actions = array();
 		
 		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
-		$saveElt->setValue("<a href='#' class='interaction-form-submitter' ><img src='".BASE_WWW."img/qtiAuthoring/update.png'  /> ".__('Update interaction modifications')."</a>");
+		$saveElt->setValue("<a href='#' class='interaction-form-submitter' ><img src='".BASE_WWW."img/qtiAuthoring/update.png'  /> ".__('Update interaction & choices modifications')."</a>");
 		$actions[] = $saveElt;
 		
 		$this->form->setActions($actions, 'top');

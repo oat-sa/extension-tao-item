@@ -932,12 +932,13 @@ class taoItems_models_classes_QtiAuthoringService
 		$pattern = '/';
 		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
 			if($qtiObject->isBlock()){
-				$pattern .= "(<br(.[^<]*)?>)\n?";
+				$pattern .= "(<br(.[^<]*)?>([\n\s])*)?";
 			}
 		}
-		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/im";
+		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/ims";
 		
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", $data);
+		
 		return $data;
 	}
 	
