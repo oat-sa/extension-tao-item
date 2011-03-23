@@ -55,6 +55,39 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 		}
 	}
 	
+	protected function exportIMSCPData($formValues){
+		if($this->hasRequestParameter('filename')){
+			$instances = $formValues['instances'];
+			if(count($instances) > 0){
+				
+				$itemService = tao_models_classes_ServiceFactory::get('Items');
+				
+				$folder = $this->getExportPath();
+				$fileName = $formValues['filename'].'_'.time().'.zip';
+				$path = tao_helpers_File::concat(array($folder, $fileName));
+				if(!tao_helpers_File::securityCheck($path, true)){
+					throw new Exception('Unauthorized file name');
+				}
+				
+				$zipArchive = new ZipArchive();
+				if($zipArchive->open($path, ZipArchive::CREATE) !== true){
+					throw new Exception('Unable to create archive at '.$path);
+				}
+				
+				foreach($instances as $instance){
+					$item = $itemService->getItem($instance);
+					if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
+						
+						$exporter = new taoItems_models_classes_exporter_QTIPackedItemExporter($item, $zipArchive);
+						$exporter->export();
+					}
+				}
+				
+				$zipArchive->close();
+			}
+		}
+	}
+	
 	/**
 	 * Load the ItemExporter class related to the model of a given Item. For instance, if you provide
 	 * an $item with a item model named 'myItemModel', this method will try to load the class
