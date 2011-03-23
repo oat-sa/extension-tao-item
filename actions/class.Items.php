@@ -121,6 +121,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 				
 				$properties = $myForm->getValues();
 				unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
+				unset($properties['warning']);
 				
 				$item = $this->service->bindProperties($item, $properties);
 				$item = $this->service->setDefaultItemContent($item);

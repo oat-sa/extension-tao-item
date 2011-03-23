@@ -528,7 +528,7 @@ var QTIWidget = function(options){
 		if($(qti_item_id).get(0).nodeName.toLowerCase() == 'textarea') {
 			
 			//adapt the field length
-			if(_this.opts['expectedLength'] || _this.opts_this.opts['expectedLines']){
+			if(_this.opts['expectedLength'] || _this.opts['expectedLines']){
 				
 				var baseWidth 	= parseInt($(qti_item_id).css('width')) | 400;
 				var baseHeight 	= parseInt($(qti_item_id).css('height')) | 100;
