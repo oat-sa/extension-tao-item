@@ -678,9 +678,17 @@ class taoItems_models_classes_ItemsService
 	        			$output = $qtiService->renderItem($qtiItem);
 	        		}
         		}
+        		
         		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
+        			
         			$output	= $this->getItemContent($item);
+					$output = str_replace ('<xhtml:', '<', $output);
+					$output = str_replace ('</xhtml:', '</', $output);
+					$output = str_replace ('<![CDATA[', '', $output);
+					$output = str_replace (']]>', '', $output);
+					
         		}
+        		
         		else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_KOHS, TAO_ITEM_MODEL_CTEST))){
         			
         			$uri 		= tao_helpers_Uri::encode($item->uriResource);

@@ -514,9 +514,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	public function saveItemContent(){
 		
 		$message = __('An error occured while saving the item');
-		
+
 		if(isset($_SESSION['instance']) && isset($_SESSION['xml'])){
-		
+
 			$item = $this->service->getItem($_SESSION['instance']);
 			if($this->service->isItemModelDefined($item)){
 				
