@@ -125,6 +125,7 @@ class taoItems_models_classes_QTI_Service
         			//set the current data lang in the item content to keep the integrity
     				$qtiItem->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
         			
+    				
         			//get the QTI xml
         			$returnValue = $itemService->setItemContent($rdfItem, $qtiItem->toQTI());
         		}

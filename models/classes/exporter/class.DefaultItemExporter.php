@@ -3,7 +3,9 @@ class taoItems_models_classes_exporter_DefaultItemExporter extends taoItems_mode
 
 	public function export() {
 		$location = $this->getItemLocation();
-		$this->addFile($location, basename($location));
+		if(is_dir(realpath($location))){
+			$this->addFile($location, basename($location));
+		}
 	}
 	
 }

@@ -9,42 +9,43 @@ class taoItems_models_classes_exporter_QTIItemExporter extends taoItems_models_c
 		
 		//add the data location
 		$location = $this->getItemLocation();
-		$this->addFile($location, basename($location));
-		
-		//get the local resources and add them
-		$addedResources = 0;
-		$resources = $this->getResources();
-		
-		foreach($resources as $resource){
-			$resourceLocation = str_replace(ROOT_URL, ROOT_PATH, $resource);
-			if(file_exists($resourceLocation)){
-				$this->addFile($resourceLocation, basename($location).'/res/'.basename($resourceLocation));
-				$addedResources++;
-			}
-			//in case of dynamic media service
-			else if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $resource)){
-				$path = urldecode(substr($resource, strpos($resource, '?path=') + 6));
-				$path = substr($path, 0, strrpos($path, '&'));
-				if(preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
-					//check if the file is linked to the file manager
-					$resourceLocation = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH . '/filemanager/views/data/', $path);
+		if(is_dir(realpath($location))){
+			$this->addFile($location, basename($location));
+			
+			//get the local resources and add them
+			$addedResources = 0;
+			$resources = $this->getResources();
+			
+			foreach($resources as $resource){
+				$resourceLocation = str_replace(ROOT_URL, ROOT_PATH, $resource);
+				if(file_exists($resourceLocation)){
 					$this->addFile($resourceLocation, basename($location).'/res/'.basename($resourceLocation));
 					$addedResources++;
 				}
+				//in case of dynamic media service
+				else if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $resource)){
+					$path = urldecode(substr($resource, strpos($resource, '?path=') + 6));
+					$path = substr($path, 0, strrpos($path, '&'));
+					if(preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
+						//check if the file is linked to the file manager
+						$resourceLocation = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH . '/filemanager/views/data/', $path);
+						$this->addFile($resourceLocation, basename($location).'/res/'.basename($resourceLocation));
+						$addedResources++;
+					}
+				}
 			}
-		}
-		
-		//change the content of the item XML by linking the local resources 
-		if($addedResources > 0){
 			
-			$dataFile = (string) $this->getItemModel()->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-			$content = $this->getItemService()->getItemContent($this->getItem());
-			foreach($resources as $resource){
-				$content = str_replace(dirname($resource), 'res', $content);
+			//change the content of the item XML by linking the local resources 
+			if($addedResources > 0){
+				
+				$dataFile = (string) $this->getItemModel()->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+				$content = $this->getItemService()->getItemContent($this->getItem());
+				foreach($resources as $resource){
+					$content = str_replace(dirname($resource), 'res', $content);
+				}
+				$this->getZip()->addFromString( basename($location).'/'.$dataFile, $content);
 			}
-			$this->getZip()->addFromString( basename($location).'/'.$dataFile, $content);
 		}
-		
 	}
 	
 	/**

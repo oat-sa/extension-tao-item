@@ -192,12 +192,14 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			// print_r($itemData);
 			$this->service->saveItemData($itemObject, $itemData);
 			//save to qti:
+			
+			
+			
 		}
 		
 		$itemResource = $this->getCurrentItemResource();
-		$this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
+		$saved = $this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
 		
-		$saved = true;		
 		
 		if(tao_helpers_Request::isAjax()){
 			echo json_encode(array(
@@ -277,6 +279,38 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			),
 			'UTF8'
 		);
+		
+		try{//Parse data and replace img src by the media service URL
+			$updated = false;
+			$doc = new DOMDocument;
+			if($doc->loadHTML($returnValue)){
+				
+				$tags 		= array('img', 'object');
+				$srcAttr 	= array('src', 'data');
+				$xpath 		= new DOMXpath($doc);
+				$query 		= implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
+				foreach($xpath->query($query) as $element) {
+					foreach($srcAttr as $attr){
+						if($element->hasAttribute($attr)){
+							$source = trim($element->getAttribute($attr));
+							if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $source)){
+								$path = urldecode(substr($source, strpos($source, '?path=') + 6));
+								$path = substr($path, 0, strrpos($path, '&'));
+								$element->setAttribute($attr,  $path);
+								$updated = true;
+							}
+						}
+					}
+				}
+			}
+			
+			if($updated){
+				$returnValue = $doc->saveHTML();
+			}
+		}
+		catch(DOMException $de){ 
+			//we render it anyway
+		}	
 		
 		return $returnValue;
 	}

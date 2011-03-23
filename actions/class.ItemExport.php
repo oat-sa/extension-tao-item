@@ -26,6 +26,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 	protected function exportXMLData($formValues){
 		if($this->hasRequestParameter('filename')){
 			$instances = $formValues['instances'];
+			
 			if(count($instances) > 0){
 				
 				$itemService = tao_models_classes_ServiceFactory::get('Items');
@@ -44,10 +45,12 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 				
 				foreach($instances as $instance){
 					$item = $itemService->getItem($instance);
-					$className = $this->loadItemExporter($item);
-					
-					$exporter = new $className($item, $zipArchive);
-					$exporter->export();
+					if(!is_null($item)){
+						$className = $this->loadItemExporter($item);
+						
+						$exporter = new $className($item, $zipArchive);
+						$exporter->export();
+					}
 				}
 				
 				$zipArchive->close();
