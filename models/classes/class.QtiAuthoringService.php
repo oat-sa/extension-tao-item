@@ -307,15 +307,11 @@ class taoItems_models_classes_QtiAuthoringService
 	
 	public function saveItemData(taoItems_models_classes_QTI_Item $item, $itemData){
 		if(!is_null($item)){
-			// $itemData = html_entity_decode($itemData);
 			
 			//clean the interactions' editing elements:
 			foreach($item->getInteractions() as $interaction){
 				$itemData = $this->filterData($interaction, $itemData);
 			}
-				
-			// $xhtmlData = $this->convertToXHTML($itemData);
-			// print_r($itemData);
 			
 			//item saved in session:
 			$item->setData($itemData);
@@ -936,13 +932,11 @@ class taoItems_models_classes_QtiAuthoringService
 		$pattern = '/';
 		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
 			if($qtiObject->isBlock()){
-				$pattern .= "(<br(.[^<]*)?>)?";
+				$pattern .= "(<br(.[^<]*)?>)\n?";
 			}
 		}
-		/*$pattern .= "<div(.[^<]*)?><input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";*/
-		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/i";
-			
-		// $data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", html_entity_decode($data));
+		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/im";
+		
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", $data);
 		return $data;
 	}
