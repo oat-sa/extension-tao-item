@@ -116,7 +116,7 @@ class taoItems_models_classes_XHTML_PackageParser
 				else{
 					//check if the manifest is there
 					if($zip->locateName("index.html") === false){
-						throw new Exception("A QTI package must contains a imsmanifest.xml file");
+						throw new Exception("A Open Web Item package must contains a index.html file at the root of the archive");
 					}
 					
 					$this->valid = true;

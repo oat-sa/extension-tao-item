@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 06.12.2010, 11:58:16 with ArgoUML PHP module 
+ * Automatically generated on 23.03.2011, 23:54:38 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage actions_form
  */
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * This container initialize the import form.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  */
 require_once('tao/actions/form/class.Import.php');
 
@@ -40,7 +40,7 @@ require_once('tao/actions/form/class.Import.php');
  * Short description of class taoItems_actions_form_Import
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
  * @package taoItems
  * @subpackage actions_form
  */
@@ -58,7 +58,7 @@ class taoItems_actions_form_Import
      * @access protected
      * @var array
      */
-    protected $formats = array('csv' => 'CSV', 'rdf' => 'RDF', 'qti' => 'QTI Item', 'qtipack' => 'QTI Package', 'xhtml' => 'XHTML Package');
+    protected $formats = array('csv' => 'CSV', 'rdf' => 'RDF', 'qti' => 'QTI Item', 'qtipack' => 'QTI Package', 'xhtml' => 'Open Web Item Package');
 
     // --- OPERATIONS ---
 
@@ -66,7 +66,7 @@ class taoItems_actions_form_Import
      * Short description of method initQTIElements
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
     protected function initQTIElements()
@@ -112,7 +112,7 @@ class taoItems_actions_form_Import
      * Short description of method initQTIPACKElements
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
     protected function initQTIPACKElements()
@@ -158,7 +158,7 @@ class taoItems_actions_form_Import
      * Short description of method initXHTMLElements
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
      * @return mixed
      */
     protected function initXHTMLElements()
@@ -166,7 +166,7 @@ class taoItems_actions_form_Import
         // section 127-0-1-1-2d0bb0b3:12c2c41fb7c:-8000:0000000000002858 begin
         
     	$descElt = tao_helpers_form_FormFactory::getElement('xhtml_desc', 'Label');
-		$descElt->setValue(__('An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.).'));
+		$descElt->setValue(__('An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.).'));
 		$this->form->addElement($descElt);
     	
     	//create file upload form box
@@ -190,7 +190,7 @@ class taoItems_actions_form_Import
 		$disableValidationElt->setOptions(array("on" => ""));
 		$this->form->addElement($disableValidationElt);
 		
-		$this->form->createGroup('file', __('Upload an XHTML Package File'), array('xhtml_desc', 'source', 'disable_validation'));
+		$this->form->createGroup('file', __('Upload an Open Web Item Package File'), array('xhtml_desc', 'source', 'disable_validation'));
 		
 		$xhtmlSentElt = tao_helpers_form_FormFactory::getElement('import_sent_xhtml', 'Hidden');
 		$xhtmlSentElt->setValue(1);

@@ -116,8 +116,8 @@
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
     <rdf:value xml:lang="EN"/>
-    <rdfs:comment xml:lang="EN"><![CDATA[XHTML Items model]]></rdfs:comment>
-    <rdfs:label xml:lang="EN"><![CDATA[XHTML]]></rdfs:label>
+    <rdfs:comment xml:lang="EN"><![CDATA[Open Web Items model]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[Open Web Item]]></rdfs:label>
     <rdfs:seeAlso xml:lang="EN"/>
     <rdfs:isDefinedBy xml:lang="EN"/>
     <item:DataFileName><![CDATA[index.html]]></item:DataFileName>

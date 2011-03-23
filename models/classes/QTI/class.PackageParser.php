@@ -114,7 +114,7 @@ class taoItems_models_classes_QTI_PackageParser
 				else{
 					//check if the manifest is there
 					if($zip->locateName("imsmanifest.xml") === false){
-						throw new Exception("A QTI package must contains a imsmanifest.xml file");
+						throw new Exception("A QTI package must contains a imsmanifest.xml file  at the root of the archive");
 					}
 					
 					$this->valid = true;
