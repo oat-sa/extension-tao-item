@@ -1671,10 +1671,11 @@ var QTIWidget = function(options){
 	                    // verify maxSubLink
 	                    var subLinkLength=displayedSubLink(model_obj[e.data.pair[0]].linkRelation);
 	                    var targetSubLinkLength=displayedSubLink(model_obj[e.data.pair[1]].linkRelation);
+	                   
 	                    // block max sub relation
 	                    // case infinite
 	                    if (model_obj[e.data.pair[0]].maxSubLinkLength==0){
-	                        if ((targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength){
+	                        if ((targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength && model_obj[e.data.pair[1]].maxSubLinkLength != 0){
 	                           startPointer.attr("fill","black");
 	                           startPointer.attr("stroke","black");
 	                           endPointer.attr("fill","black");
