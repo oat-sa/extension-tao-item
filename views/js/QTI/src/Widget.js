@@ -500,6 +500,9 @@ var QTIWidget = function(options){
 	 * @methodOf QTIWidget
 	 */
 	this.text_entry = function (){
+		
+		console.log(_this.opts);
+		
 		//adapt the field length
 		if(_this.opts['expectedLength']){
 			length = parseInt(_this.opts['expectedLength']);

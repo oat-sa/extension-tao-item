@@ -142,13 +142,33 @@ function QTIResultCollector(options){
 		
 		//single mode
 		if($("#" + _this.id ).get(0).nodeName.toLowerCase() != 'div'){
-			result.value = $("#" + _this.id).val();
+			switch(_this.opts['baseType']){
+				case "integer":
+					result.value = parseInt($("#" + _this.id).val());
+					break;
+				case "float":
+					result.value = parseFloat($("#" + _this.id).val());
+					break;
+				case "string":
+				default:
+					result.value = $("#" + _this.id).val();
+			}
 		} 
 		//multiple mode
 		else {
 			result.value = new Array();
 			$("#" + _this.id + " :text").each(function(){
-				result.value.push($(this).val());
+				switch(_this.opts['baseType']){
+				case "integer":
+					result.value.push(parseInt($("#" + _this.id).val()));
+					break;
+				case "float":
+					result.value.push(parseFloat($("#" + _this.id).val()));
+					break;
+				case "string":
+				default:
+					result.value.push($("#" + _this.id).val());
+			}
 			});	
 		}
 		
