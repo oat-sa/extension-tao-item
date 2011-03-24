@@ -522,6 +522,10 @@
                                         $(this.original).hide();
 										$(this.editor).parent().css('height', '95%');
 										$(this.editor).show();
+										
+										if(this.options.events.unsetHTMLview){
+											this.options.events.unsetHTMLview(this.editorDoc);
+										}
                                 }
                                 else
                                 {
@@ -535,6 +539,10 @@
 										}).show();
 										$ed.hide();
 										$(this.editor).parent().css('height', 'auto');
+										
+										if(this.options.events.setHTMLview){
+											this.options.events.setHTMLview(this.editorDoc);
+										}
                                 }
 
                                 this.viewHTML = !(this.viewHTML);

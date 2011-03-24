@@ -409,6 +409,9 @@ function qtiEdit(itemSerial, formContainers, options){
 			instance.bindInteractionLinkListener();
 			
 			editorDoc.body.focus();
+		  },
+		  unsetHTMLview: function(){
+			instance.bindInteractionLinkListener();
 		  }
 		}
 	});
