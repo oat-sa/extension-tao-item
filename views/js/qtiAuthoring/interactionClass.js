@@ -932,7 +932,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	  saveItemData: {visible:false},
 	  
 	  saveInteractionData: {
-			visible : true,
+			visible : false,//currently deactivated
 			className: 'addInteraction',
 			exec: function(){
 				interaction.saveInteractionData();
@@ -975,6 +975,9 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 				interaction.bindChoiceLinkListener();
 				editorDoc.body.focus();
 			}
+		},
+		frameReady: function(editorDoc){
+
 		}
 	});
 	

@@ -14,7 +14,9 @@
 						<?=__('Interaction content editor:')?>
 				</div>
 				<div id="formContainer_interaction" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
+					<span class="interactionEditor_wysiwyg_instruction"><?=__('To insert a "gap" in your interaction, set focus on the desired place in the editor below then click on the "add gap" button ')?></span><img src="<?=BASE_WWW?>img/qtiAuthoring/add_gap.png" title ="add gap button" alt=""/>.
 					<textarea name="interactionEditor_wysiwyg_name" id="interactionEditor_wysiwyg"><?=get_data('interactionData')?></textarea>
+					<div id="interactionEditor_wysiwyg_addChoice"></div>
 				</div>
 			</div>
 			
@@ -38,7 +40,7 @@ $(document).ready(function(){
 	try{
 		var createGap = {
 			visible : true,
-			className: 'addInteraction',
+			className: 'addGap',
 			exec: function(){
 				this.insertHtml('{qti_gap_new}');
 				myInteraction.addGroup();

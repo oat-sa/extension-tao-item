@@ -129,9 +129,9 @@ abstract class taoItems_actions_QTIform_interaction_StringInteraction
 		}
 		$this->form->addElement($patternMaskElt);
 		
-		$placeHolderTextElt = tao_helpers_form_FormFactory::getElement('placeHolderText', 'Textbox');
+		$placeHolderTextElt = tao_helpers_form_FormFactory::getElement('placeholderText', 'Textbox');
 		$placeHolderTextElt->setDescription(__('Place holder text'));
-		$placeHolderText = $interaction->getOption('placeHolderText');
+		$placeHolderText = $interaction->getOption('placeholderText');
 		if(!empty($placeHolderText)){
 			$placeHolderTextElt->setValue($placeHolderText);
 		}

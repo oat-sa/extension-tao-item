@@ -93,6 +93,8 @@ div.qti-authoring-form-container-column{float: left;width:48%;}
 
 /* jwysiwyg action buttons: */
 div.wysiwyg ul.panel li.addInteraction{ background: url('../img/qtiAuthoring/application_view_gallery.png'); }
+div.wysiwyg ul.panel li.addGap{ background: url('../img/qtiAuthoring/add_gap.png'); }
+div.wysiwyg ul.panel li.addHottext{ background: url('../img/qtiAuthoring/add_hottext.png'); }
 div.wysiwyg ul.panel li.addMedia{ background: url('../img/qtiAuthoring/media-add.png'); }
 object div.qti-wysiwyg-mediabox{background: url('../img/qtiAuthoring/media-display.png');}
 
@@ -107,3 +109,5 @@ form.wysiwyg label{text-align: left;margin: 10px 0px;}
 img.shapeEditorPencil {cursor:pointer;margin:2px;position:relative;top:5px;}
 
 .form-submitter-emphasis {text-decoration:blink;}
+
+div#formContainer_interaction div.wysiwyg{margin-top:10px;}
