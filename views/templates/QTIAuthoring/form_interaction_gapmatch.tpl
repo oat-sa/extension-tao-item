@@ -45,7 +45,8 @@ $(document).ready(function(){
 				this.insertHtml('{qti_gap_new}');
 				myInteraction.addGroup();
 			},
-			tooltip: 'add a gap'
+			tooltip: 'add a gap',
+			groupIndex: 12
 		};
 		
 		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createGap': createGap}, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});

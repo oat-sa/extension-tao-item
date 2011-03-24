@@ -520,18 +520,21 @@
                                 {
                                         this.setContent($(this.original).val());
                                         $(this.original).hide();
+										$(this.editor).parent().css('height', '95%');
 										$(this.editor).show();
                                 }
                                 else
                                 {
 									    var $ed = $(this.editor);
                                         this.saveContent();
+										
                                         $(this.original).css({
                                                 width:  $(this.element).outerWidth() - 6,
 												height: $(this.element).height() - $(this.panel).height() - 6,
 												resize: 'none'
 										}).show();
 										$ed.hide();
+										$(this.editor).parent().css('height', 'auto');
                                 }
 
                                 this.viewHTML = !(this.viewHTML);

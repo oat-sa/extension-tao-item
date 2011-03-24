@@ -47,7 +47,8 @@ $(document).ready(function(){
 				myInteraction.addHotText();
 			},
 			tags: ['a'],
-			tooltip: 'set a hot text'
+			tooltip: 'set a hot text',
+			groupIndex: 12
 		};
 	
 		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText}, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});

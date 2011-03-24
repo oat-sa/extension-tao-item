@@ -334,7 +334,8 @@ function qtiEdit(itemSerial, formContainers, options){
 			}
 			
 		},
-		tooltip: 'insert media'
+		tooltip: 'insert media',
+		groupIndex: 2
 	};
 	
 	var instance = this;
