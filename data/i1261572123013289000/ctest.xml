@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='http://taostable.localdomain/middleware/taotrans_12.rdf#i1261572123013289000' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
+	<rdfs:LABEL lang='EN'>CTest Item</rdfs:LABEL>
+	<rdfs:COMMENT lang='EN'></rdfs:COMMENT>
+	<CTInfos>
+		<Text>The TAO project is an Open Source Computer Based Asses{sment} Platform. The TAO pla{tform} provides to all the actors of the ent{ire} computer-based assessment process a comprehensive set of functionalities enabling the creation, the manage{ment}, and the delivery of electronic assessments.</Text>
+		<Timer>30</Timer>
+		<Words></Words>
+		<Ports></Ports>
+		<Coords></Coords>
+		<Undo></Undo>
+	</CTInfos>
+</tao:ITEM>
