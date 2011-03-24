@@ -1,10 +1,6 @@
 Options +FollowSymLinks
 RewriteEngine On
 
-RewriteCond %{REQUEST_METHOD} ^GET$
-RewriteCond %{REQUEST_URI} (.*)/taoItems/PreviewApi/eXULiS.swf$ [NC]
-RewriteRule ^(.*)$ ../taoItems/models/ext/itemRuntime/eXULiS.swf [L]
-
 #rewrite the old item saving method 
 RewriteCond %{REQUEST_METHOD} ^POST$
 RewriteCond %{REQUEST_URI} (.*)/taoItems/SaSItems/index.php [NC]

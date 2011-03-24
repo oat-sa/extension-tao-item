@@ -13,7 +13,7 @@
 >
   <rdf:Description rdf:about="lg"/>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#i1261571812010328500">
-    <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#i125933161031263"/>
+    <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Hawai"/>
     <item:ItemContent rdf:resource="LOCAL_NAMESPACE#i1296490050055730300"/>
     <rdf:type xml:lang="EN" rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
     <rdfs:label><![CDATA[Hawai Item]]></rdfs:label>
@@ -59,9 +59,9 @@
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296490050055730300">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
-    <rdfs:label><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/black.xml]]></rdfs:label>
-    <rdfs:comment><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/black.xml]]></rdfs:comment>
+    <rdfs:label><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/index.xhtml]]></rdfs:label>
+    <rdfs:comment><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/index.xhtml]]></rdfs:comment>
     <generis:FilePath><![CDATA[{ROOT_PATH}taoItems/data/i1261571812010328500/]]></generis:FilePath>
-    <generis:FileName><![CDATA[black.xml]]></generis:FileName>
+    <generis:FileName><![CDATA[index.xhtml]]></generis:FileName>
   </rdf:Description>
 </rdf:RDF>
