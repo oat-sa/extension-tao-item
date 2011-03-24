@@ -78,8 +78,8 @@ class taoItems_models_classes_QtiAuthoringService
      * @return taoItems_models_classes_QTI_Item
      */
 	public function getItemData(taoItems_models_classes_QTI_Item $item){
+	
 		$itemData = self::getFilteredData($item);
-		// print_r($itemData);
 		
 		//inserting white spaces to allow easy item selecting:
 		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
@@ -100,7 +100,9 @@ class taoItems_models_classes_QtiAuthoringService
 	}
 	
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
+	
 		$returnValue = '';
+		
 		if($interaction->isBlock()){
 			$returnValue .= "<br/><div class='qti_interaction_block qti_interaction_box'>";
 		}else{
@@ -1064,7 +1066,6 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 		//var_dump(Session::getAttribute('qti_identifiers'));
 		$response = new taoItems_models_classes_QTI_Response($identifier);
-		//var_dump($response);
 		
 		//set the default response template:
 		$this->setResponseTemplate($response, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);

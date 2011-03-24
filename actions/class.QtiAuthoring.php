@@ -122,7 +122,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$currentItem = $this->getCurrentItem();
 		if($this->debugMode) var_dump($currentItem);
-		// var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
@@ -131,7 +130,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('qtiAuthoring_path', BASE_WWW.'js/qtiAuthoring/');
 		$this->setData('qtiAuthoring_img_path', BASE_WWW.'img/qtiAuthoring/');
 		$this->setView("QTIAuthoring/authoring.tpl");
-		// $this->setView("QTIAuthoring/authoring_with_fw.tpl");
 	}
 	
 	public function saveItemData(){
@@ -260,57 +258,62 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$returnValue = '';
 		
-		$returnValue = $data;
-		// $returnValue = str_replace('&', '&amp;', $returnValue);
+		$returnValue = trim($data);
 		
-		$tidy = new tidy();
-		$returnValue = $tidy->repairString (
-			$returnValue,
-			array(
-				'output-xhtml' => true,
-				'numeric-entities' => true,
-				'show-body-only' => true,
-				'quote-nbsp' => false,
-				'indent' => 'auto',
-				'preserve-entities' => false,
-				'quote-ampersand' => true,
-				'uppercase-attributes' => false,
-				'uppercase-tags' => false
-			),
-			'UTF8'
-		);
+		if(!empty($returnValue)){
 		
-		try{//Parse data and replace img src by the media service URL
-			$updated = false;
-			$doc = new DOMDocument;
-			if($doc->loadHTML($returnValue)){
-				
-				$tags 		= array('img', 'object');
-				$srcAttr 	= array('src', 'data');
-				$xpath 		= new DOMXpath($doc);
-				$query 		= implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
-				foreach($xpath->query($query) as $element) {
-					foreach($srcAttr as $attr){
-						if($element->hasAttribute($attr)){
-							$source = trim($element->getAttribute($attr));
-							if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $source)){
-								$path = urldecode(substr($source, strpos($source, '?path=') + 6));
-								$path = substr($path, 0, strrpos($path, '&'));
-								$element->setAttribute($attr,  $path);
-								$updated = true;
+			$tidy = new tidy();
+			$returnValue = $tidy->repairString (
+				$returnValue,
+				array(
+					'output-xhtml' => true,
+					'numeric-entities' => true,
+					'show-body-only' => true,
+					'quote-nbsp' => false,
+					'indent' => 'auto',
+					'preserve-entities' => false,
+					'quote-ampersand' => true,
+					'uppercase-attributes' => false,
+					'uppercase-tags' => false
+				),
+				'UTF8'
+			);
+			
+			if(!empty($returnValue)){
+				try{//Parse data and replace img src by the media service URL
+					$updated = false;
+					$doc = new DOMDocument;
+					if($doc->loadHTML($returnValue)){
+						
+						$tags 		= array('img', 'object');
+						$srcAttr 	= array('src', 'data');
+						$xpath 		= new DOMXpath($doc);
+						$query 		= implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
+						foreach($xpath->query($query) as $element) {
+							foreach($srcAttr as $attr){
+								if($element->hasAttribute($attr)){
+									$source = trim($element->getAttribute($attr));
+									if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $source)){
+										$path = urldecode(substr($source, strpos($source, '?path=') + 6));
+										$path = substr($path, 0, strrpos($path, '&'));
+										$element->setAttribute($attr,  $path);
+										$updated = true;
+									}
+								}
 							}
 						}
 					}
+					
+					if($updated){
+						$returnValue = $doc->saveHTML();
+					}
 				}
+				catch(DOMException $de){ 
+					//we render it anyway
+				}	
 			}
-			
-			if($updated){
-				$returnValue = $doc->saveHTML();
-			}
+		
 		}
-		catch(DOMException $de){ 
-			//we render it anyway
-		}	
 		
 		return $returnValue;
 	}
@@ -321,7 +324,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$interactionType = $this->getRequestParameter('interactionType');
 		$itemData = $this->getPostedItemData();
-		// echo "<pre>$itemData</pre>";
 		
 		$item = $this->getCurrentItem();
 		if(!empty($interactionType)){
@@ -1016,7 +1018,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				}
 				
 				$matchGroup = array();
-				//var_dump($matchGroup, $group);
 				if(!empty($values['matchGroup']) && is_array($values['matchGroup'])){
 					foreach($values['matchGroup'] as $choiceIdentifier){
 						$choice = $this->service->getInteractionChoiceByIdentifier($interaction, $choiceIdentifier);

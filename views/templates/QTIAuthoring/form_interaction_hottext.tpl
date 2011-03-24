@@ -15,7 +15,7 @@
 						<?=__('Interaction content editor:')?>
 				</div>
 				<div id="formContainer_interaction" class="ui-widget-content ui-corner-bottom formContainer_choices" style="padding:15px;">
-					<span class="interactionEditor_wysiwyg_instruction"><?=__('To insert a "hot text" in your interaction, set focus on the desired place then click on the "set hot text" button ')?></span><img src="<?=BASE_WWW?>img/qtiAuthoring/add_hottext.png" title ="set hot text button" alt=""/>.
+					<span class="interactionEditor_wysiwyg_instruction"><?=__('To insert a "hot text" in your interaction, set focus on the desired place in the editor below then click on the "set hot text" button ')?></span><img src="<?=BASE_WWW?>img/qtiAuthoring/add_hottext.png" title ="set hot text button" alt=""/>.
 					<textarea name="interactionEditor_wysiwyg_name" id="interactionEditor_wysiwyg"><?=get_data('interactionData')?></textarea>
 					<div id="interactionEditor_wysiwyg_addChoice"></div>
 				</div>

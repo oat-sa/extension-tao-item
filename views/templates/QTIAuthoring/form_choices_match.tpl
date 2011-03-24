@@ -15,9 +15,10 @@
 		</div>
 
 		<div id="add_choice_button_<?=$groupSerial?>" class="add_choice_button">
-			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"> Add a choice</a>
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"><?=__(' Add a choice to group ').intval($order+1)?></a>
 		</div>
 	</div>
+	
 	<?endforeach;?>
 	<div style="clear:both">
 </div>	
