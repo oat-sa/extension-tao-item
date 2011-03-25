@@ -1311,7 +1311,9 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 						$cssFiles = $item->getStyleSheets();
 						$cssFiles[] = array(
 							'title' => empty($data['title'])?$data['css_import']['name']:$data['title'],
-							'href' => $fileData['href']
+							'href' => $fileData['href'],
+							'type' => 'text/css',
+							'media' => 'qti item body'
 						);
 						$item->setStyleSheets($cssFiles);
 					}
@@ -1407,7 +1409,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$itemResource = $this->getCurrentItemResource();
 		$folderName = substr($itemResource->uriResource, strpos($itemResource->uriResource, '#') + 1);
-		$basePath = BASE_PATH.'/views/runtime/'.$folderName.'/';
+		$basePath = BASE_PATH.'/data/'.$folderName.'/';
 		$baseWWW = BASE_WWW.'runtime/'.$folderName.'/';
 		
 		if(!empty($baseName)){
@@ -1415,9 +1417,10 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$css_href = 'style/'.$baseName;
 			
 			$returnValue = array(
-				'title' => $baseName,
 				'href' => $css_href,
-				'path' => $basePath.$css_href,
+				'type' => 'text/css',
+				'title' => $baseName,
+				'path' => $basePath.$css_href,				
 				'hrefAbsolute' => $baseWWW.$css_href
 			);
 					

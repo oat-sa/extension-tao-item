@@ -717,6 +717,9 @@ qtiEdit.getEltInFrame = function(selector, selectedDocument){
 	return foundElts;
 }
 
+qtiEdit.createInfoMessage = function(message){
+	createInfoMessage('<img src="'+img_url+'ok.png" alt="" style="float:left;margin-right:10px;"/>'+message);
+}
 
 //the global save function
 qtiEdit.prototype.save = function(itemUri){
@@ -739,7 +742,7 @@ qtiEdit.prototype.save = function(itemUri){
 		   dataType: 'json',
 		   success: function(r){
 				if(r.saved){
-					createInfoMessage(__('The item has been successfully updated'));
+					qtiEdit.createInfoMessage(__('The item has been successfully updated'));
 				}
 		   }
 		});
@@ -918,7 +921,7 @@ qtiEdit.prototype.saveResponseProcessing = function($myForm){
 	   success: function(r){
 			if(r.saved){
 				self.setResponseMode(r.setResponseMode);
-				createInfoMessage(__('The response processing has been saved'));
+				qtiEdit.createInfoMessage(__('The response processing has been saved'));
 			}
 	   }
 	});

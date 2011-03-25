@@ -126,7 +126,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 		   dataType: 'json',
 		   success: function(r){
 				if(r.saved){
-					createInfoMessage(__('Modification on response applied'));
+					qtiEdit.createInfoMessage(__('Modification on response applied'));
 										
 					if(r.templateHasChanged){
 						
@@ -716,7 +716,7 @@ responseClass.prototype.saveResponseGrid = function(){
 		dataType: 'json',
 		success: function(response){
 			if (response.saved){
-				createInfoMessage(__('The responses have been updated'));
+				qtiEdit.createInfoMessage(__('The responses have been updated'));
 			}else{
 				createErrorMessage(__('The responses cannot be updated'));
 			}	

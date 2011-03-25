@@ -175,7 +175,7 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 		   dataType: 'json',
 		   success: function(r){
 				if(r.saved){
-					createInfoMessage(__('Modification(s) on interaction has been updated'));
+					qtiEdit.createInfoMessage(__('Modification(s) on interaction has been updated'));
 					interaction.setModifiedInteraction(false);
 					
 					if(r.reloadResponse){
@@ -239,7 +239,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 					if(!r.saved){
 						createErrorMessage(__('The choice cannot be saved'));
 					}else{
-						createInfoMessage(__('Modification on choice applied'));
+						qtiEdit.createInfoMessage(__('Modification on choice applied'));
 						delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 						
 						//only when the identifier has changed:
@@ -298,7 +298,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 				if(!r.saved){
 					createErrorMessage(__('The choice cannot be saved'));
 				}else{
-					createInfoMessage(__('Modification on choice applied'));
+					qtiEdit.createInfoMessage(__('Modification on choice applied'));
 					delete interaction.modifiedGroups['GroupForm_'+r.groupSerial];
 					
 					//only when the identifier has changed:
@@ -863,7 +863,7 @@ interactionClass.prototype.saveResponseMappingOptions = function($myForm){
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){
-				createInfoMessage(__('The mapping options have been updated'));
+				qtiEdit.createInfoMessage(__('The mapping options have been updated'));
 			}
 	   }
 	});
@@ -1039,7 +1039,7 @@ interactionClass.prototype.saveInteractionData = function(){
 			   },
 			   dataType: 'json',
 			   success: function(r){
-					createInfoMessage(__('Interaction data saved.'));
+					qtiEdit.createInfoMessage(__('Interaction data saved.'));
 			   }
 			});
 			
