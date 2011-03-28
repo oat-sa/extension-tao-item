@@ -634,7 +634,7 @@ qtiEdit.mapHtmlEditor = function($container){
 			  cut   : { visible : true },
 			  copy  : { visible : true },
 			  paste : { visible : true },
-			  html  : { visible: false },
+			  html  : { visible: true },
 			  h1: { visible: false },
 			  h2: { visible: false },
 			  h3: { visible: false },
@@ -742,7 +742,7 @@ qtiEdit.prototype.save = function(itemUri){
 		   dataType: 'json',
 		   success: function(r){
 				if(r.saved){
-					qtiEdit.createInfoMessage(__('The item has been successfully updated'));
+					qtiEdit.createInfoMessage(__('The item has been successfully saved'));
 				}
 		   }
 		});
@@ -750,7 +750,7 @@ qtiEdit.prototype.save = function(itemUri){
 	
 	if(this.currentInteraction){
 		if(this.currentInteraction.modifiedInteraction){
-			if(confirm(__('the current interaction has been modified but not updated yet,\n do you want to do so before saving your item?'))){
+			if(confirm(__('The current interaction has been modified but the modifications has not been updated yet,\n do you want to do update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)'))){
 				this.saveCurrentInteraction(saveItemFunction);
 				return;
 			}
@@ -772,7 +772,7 @@ qtiEdit.prototype.preview = function(){
 	
 	if(this.currentInteraction){
 		if(this.currentInteraction.modifiedInteraction){
-			if(confirm(__('the current interaction has been modified but not updated yet,\n do you want to do so before previewing your item?'))){
+			if(confirm(__('The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?'))){
 				this.saveCurrentInteraction(openUrlFunction);
 				return;
 			}

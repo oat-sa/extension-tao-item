@@ -80,7 +80,7 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 		var relatedItem = _this.getRelatedItem();
 		if(relatedItem){
 			if(_this.modifiedInteraction){
-				if(confirm(__('the current interaction has been modified but not updated yet,\ndo you want to do so before returning to the item editor?\n(otherwise, the modifications are lost)'))){
+				if(confirm(__('The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)'))){
 					relatedItem.saveCurrentInteraction(switchTabFunction);
 					return;
 				}

@@ -1,6 +1,6 @@
 <div>
 <?if(count(get_data('cssFiles'))):?>
-	<?=__('Uploaded style files:')?>
+	<?=__('Attached style sheets:')?>
 	<ul id="cssFiles">
 	<?foreach(get_data('cssFiles') as $file):?>
 		<li rel="<?=$file['href']?>">
@@ -18,7 +18,7 @@
 
 
 <div>
-	<?=__('Upload new style sheet:')?>
+	<?=__('Add a new stylesheet:')?>
 	<?=get_data('myForm')?>
 </div>
 
