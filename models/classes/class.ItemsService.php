@@ -717,11 +717,10 @@ class taoItems_models_classes_ItemsService
         		
         		//replace relative paths to resources by absolute uris to help the compilator
 				$matches = array();
-        		if(preg_match_all("/(href|src|data|\['imagePath'\])\s*=\s*[\"\'](.+?)[\"\']/is", $output, $matches) > 0){
+        		if(preg_match_all("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](.+?)[\"\']/i", $output, $matches) > 0){
 					if(isset($matches[2])){
-						
 						foreach($matches[2] as $relUri){
-							if($relUri != '#' && !preg_match("/^http/", $relUri) ){
+							if(trim($relUri) != '' && !preg_match("/^#/", $relUri) && !preg_match("/^http/", $relUri)){
 							
 								if(preg_match('/(.)+\/filemanager\/views\/data\//i', $relUri)){
 									//check if the file is contained in the file manager
