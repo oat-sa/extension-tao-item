@@ -489,10 +489,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 						$this->setData('type', 'php');
 					}
 					if(preg_match("/taoItems\//", (string)$authoring)){
-						//temporaly empty the url:
-						$itemContentUrl = '';
-						$this->redirect((string)$authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false));
+						$this->redirect((string)$authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
 					}
+
 					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
 					$this->setData('itemContentUrl', $itemContentUrl);
 					
@@ -583,13 +582,14 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 				}else{
 					$folder 	= $this->service->getItemFolder($item);
 					$resource 	= tao_helpers_File::concat(array($folder, $path));
-				}			
+				}
+				
 				
 				if(file_exists($resource)){
 					
 					$mimeType = tao_helpers_File::getMimeType($resource);
 					
-					//allow only images, video and flash
+					//allow only images, video, flash (and css?)
 					if(preg_match("/^(image|video|audio|application\/x-shockwave-flash)/", $mimeType)){
 						
 						header("Content-Type: $mimeType; charset utf-8");

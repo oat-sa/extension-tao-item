@@ -91,7 +91,7 @@ div.qti-authoring-form-container-column{float: left;width:48%;}
 /*response editor:*/
 #qtiAuthoring_responseEditor{min-height:300px;}
 
-/* jwysiwyg action buttons: */
+/*jwysiwyg action buttons: */
 div.wysiwyg ul.panel li.addInteraction{ background: url('../img/qtiAuthoring/application_view_gallery.png'); }
 div.wysiwyg ul.panel li.addGap{ background: url('../img/qtiAuthoring/add_gap.png'); }
 div.wysiwyg ul.panel li.addHottext{ background: url('../img/qtiAuthoring/add_hottext.png'); }
@@ -110,4 +110,11 @@ img.shapeEditorPencil {cursor:pointer;margin:2px;position:relative;top:5px;}
 
 .form-submitter-emphasis {text-decoration:blink;}
 
+/*Add space before mapped wysiwyg editor*/
 div#formContainer_interaction div.wysiwyg{margin-top:10px;}
+
+/*Adjust padding to add spaces in the accordion form*/
+div#item_option_accordion.ui-accordion div.ui-accordion-content{padding:1em;}
+form#ResponseProcessingForm div label {width:45%;}
+form#ResponseProcessingForm div select {margin-left:45%;}
+form#ResponseProcessingForm div.form-toolbar {top:10px;}

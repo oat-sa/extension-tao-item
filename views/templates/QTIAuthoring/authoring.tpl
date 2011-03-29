@@ -40,7 +40,7 @@
 				<a href="#"><?=__('Preview')?></a>
 			</div>
 		</div>
-		<div id="qtiAuthoring_menu_right_container" class="">
+		<div id="qtiAuthoring_menu_right_container">
 			<div id="qtiAuthoring_item_editor_button" class="qti-menu-item qti-menu-item-wide">
 				<img title="<?=__('Return to item editor')?>" src="<?=get_data('qtiAuthoring_img_path')?>return.png"/>
 				<br/>
@@ -52,7 +52,7 @@
 					<img id="qti-carousel-prev-button" title="<?=__('Prev')?>" src="<?=get_data('qtiAuthoring_img_path')?>go-previous-view.png"/>
 				</div>
 				<div id ="qti-carousel-container">
-					<div id ="qti-carousel-content"/>
+					<div id ="qti-carousel-content"></div>
 				</div>
 				<div id ="qti-carousel-next" class="qti-carousel-button">
 					<img id="qti-carousel-next-button" title="<?=__('Next')?>" src="<?=get_data('qtiAuthoring_img_path')?>go-next-view.png"/>
@@ -76,9 +76,9 @@
 						<?=get_data('itemForm')?>
 					</div>
 					<h3><a href="#"><?=__('Response processing template editor:')?></a></h3>
-					<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"/>
+					<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"></div>
 					<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
-					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"/>
+					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"></div>
 				</div>
 			</div>
 			
@@ -89,7 +89,7 @@
 				</div>
 			</div>
 			
-			<div style="clear:both"/>
+			<div style="clear:both"></div>
 		</div>
 		
 		<div id="qtiAuthoring_interaction_container">
