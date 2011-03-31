@@ -750,7 +750,7 @@ qtiEdit.prototype.save = function(itemUri){
 	
 	if(this.currentInteraction){
 		if(this.currentInteraction.modifiedInteraction){
-			if(confirm(__('The current interaction has been modified but the modifications has not been updated yet,\n do you want to do update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)'))){
+			if(confirm(__('The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)'))){
 				this.saveCurrentInteraction(saveItemFunction);
 				return;
 			}
