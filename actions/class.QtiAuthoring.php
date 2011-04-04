@@ -235,6 +235,22 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setView("QTIAuthoring/preview.tpl");
 	}
 	
+	public function debug(){
+		$itemObject = $this->getCurrentItem();
+		$sessionData = array();
+		if(isset($_SESSION['ClearFw'])){
+			foreach($_SESSION['ClearFw'] as $key => $value){
+				if(preg_match('/^qti_/', $key)){
+					$sessionData[$key] = $value;
+				}
+			}
+		}
+		
+		$this->setData('itemObject', $itemObject);
+		$this->setData('sessionData', $sessionData);
+		$this->setView("QTIAuthoring/debug.tpl");
+	}
+	
 	protected function getPostedItemData(){
 		return $this->getPostedData('itemData');
 	}

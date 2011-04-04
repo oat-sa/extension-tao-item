@@ -39,6 +39,12 @@
 				<br/>
 				<a href="#"><?=__('Preview')?></a>
 			</div>
+			
+			<div id="qtiAuthoring_debug_button" class="qti-menu-item">
+				<img title="<?=__('Debug')?>" src="<?=get_data('qtiAuthoring_img_path')?>bug.png"/>
+				<br/>
+				<a href="#"><?=__('Debug')?></a>
+			</div>
 		</div>
 		<div id="qtiAuthoring_menu_right_container">
 			<div id="qtiAuthoring_item_editor_button" class="qti-menu-item qti-menu-item-wide">
@@ -144,6 +150,12 @@ $(document).ready(function(){
 	//set the preview button:
 	$('#qtiAuthoring_preview_button').click(function(){
 		myItem.preview();
+		return false;
+	});
+	
+	//set debug button
+	$('#qtiAuthoring_debug_button').click(function(){
+		myItem.debug();
 		return false;
 	});
 	

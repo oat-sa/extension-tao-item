@@ -1,0 +1,17 @@
+div#debugWindow{
+	margin:auto;
+	border: solid #ccc 1px;
+}
+div#debugWindow fieldset{
+	border: solid #B3D0DC 1px;
+	margin:10px;
+}
+div#debugWindow fieldset legend{
+	font-weight: bold;
+	color:#5196B3;
+}
+div#debugWindow pre{
+	background-color:#e0e0e0;
+	margin:10px;
+	text-align:left;
+}

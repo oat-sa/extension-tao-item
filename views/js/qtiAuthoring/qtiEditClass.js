@@ -767,7 +767,7 @@ qtiEdit.prototype.preview = function(){
 	url += '?itemSerial='+this.itemSerial;
 	
 	var openUrlFunction = function(){
-		window.open(url, 'tao', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+		window.open(url, 'QTI authoring - light preview', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
 	}
 	
 	if(this.currentInteraction){
@@ -780,6 +780,10 @@ qtiEdit.prototype.preview = function(){
 	}
 	
 	openUrlFunction();
+}
+
+qtiEdit.prototype.debug = function(){
+	window.open('/taoItems/QtiAuthoring/debug?itemSerial='+this.itemSerial, 'QTI authoring - debug', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
 }
 
 
