@@ -390,7 +390,7 @@ var QTIWidget = function(options){
 				_current++;
 				_this.opts["matchMaxes"][draggedId]["current"]=_current;
 			}
-			if (_current >= _matchMax) {
+			if (_current >= _matchMax && _matchMax > 0) {
 				jDragged.hide();
 			}
 			
