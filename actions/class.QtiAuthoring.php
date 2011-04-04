@@ -111,6 +111,20 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	}
 
 	public function index(){
+		if($this->debugMode){
+			$this->setData('debugMode', true);
+		}else{
+			$this->setData('debugMode', false);
+			
+			//clear the QTI session data before doing anything else:
+			if(isset($_SESSION['ClearFw'])){
+				foreach($_SESSION['ClearFw'] as $key => $value){
+					if(preg_match('/^'.taoItems_models_classes_QTI_Data::PREFIX.'/', $key)){
+						unset($_SESSION['ClearFw'][$key]);
+					}
+				}
+			}
+		}
 		
 		//required for saving the item in tao:
 		$itemUri = $this->getRequestParameter('instance');
@@ -121,7 +135,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('itemClassUri', tao_helpers_Uri::encode((!is_null($itemClass))?$itemClass->uriResource:''));
 		
 		$currentItem = $this->getCurrentItem();
-		if($this->debugMode) var_dump($currentItem);
 		$itemData = $this->service->getItemData($currentItem);
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
@@ -237,18 +250,25 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	
 	public function debug(){
 		$itemObject = $this->getCurrentItem();
+		
+		$this->setData('itemObject', $itemObject);
+		$this->setData('sessionData', $this->getQTIsessionData());
+		$this->setView("QTIAuthoring/debug.tpl");
+	}
+	
+	protected function getQTIsessionData(){
+	
 		$sessionData = array();
+		
 		if(isset($_SESSION['ClearFw'])){
 			foreach($_SESSION['ClearFw'] as $key => $value){
-				if(preg_match('/^qti_/', $key)){
+				if(preg_match('/^'.taoItems_models_classes_QTI_Data::PREFIX.'/', $key)){
 					$sessionData[$key] = $value;
 				}
 			}
 		}
 		
-		$this->setData('itemObject', $itemObject);
-		$this->setData('sessionData', $sessionData);
-		$this->setView("QTIAuthoring/debug.tpl");
+		return $sessionData;
 	}
 	
 	protected function getPostedItemData(){

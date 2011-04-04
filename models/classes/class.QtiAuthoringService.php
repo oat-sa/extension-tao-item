@@ -751,12 +751,8 @@ class taoItems_models_classes_QtiAuthoringService
 		if($identifier == $oldIdentifier){
 			return true;
 		}
-		try{
-			$qtiObject->setIdentifier($identifier);
-		}catch(InvalidArgumentException $e){
-			throw new Exception("the choice identifier \"{$identifier}\" is already used");
-			return false;
-		}
+		
+		$qtiObject->setIdentifier($identifier);
 		
 		//note: taoItems_models_classes_QTI_Group identifier editable for a "gap" of a gapmatch interaction only
 		if($qtiObject instanceof taoItems_models_classes_QTI_Choice || $qtiObject instanceof taoItems_models_classes_QTI_Group){

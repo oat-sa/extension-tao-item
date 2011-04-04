@@ -444,7 +444,7 @@ abstract class taoItems_models_classes_QTI_Data
     	}
     	if($unique){
 	    	if(in_array($id, $ids)){
-	    		throw new InvalidArgumentException("Id $id is already in use");
+	    		throw new InvalidArgumentException("The identifier \"{$id}\" is already in use");
 	    	}
     	}
 		
