@@ -162,12 +162,17 @@ class taoItems_models_classes_QTI_Service
 				$qtiParser->validate();
 
 				if(!$qtiParser->isValid()){
-					throw new Exception($qtiParser->displayErrors());
+					throw new taoItems_models_classes_QTI_ParsingException($qtiParser->displayErrors());
 				}
 				
 				$returnValue = $qtiParser->load();
-			}catch(Exception $e){
-				throw new Exception("Unable to load file ${file} caused  by " . $e->getMessage());
+				
+			}
+			catch(taoItems_models_classes_QTI_ParsingException $pe){
+				throw new taoItems_models_classes_QTI_ParsingException($pe->getMessage());
+			}
+			catch(Exception $e){
+				throw new Exception("Unable to load file {$file} caused  by {$e->getMessage()}");
 			}
 		}
         

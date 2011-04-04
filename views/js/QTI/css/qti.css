@@ -38,7 +38,7 @@ ol, ul, li {font-size:14px; }
 /* Order interaction */
 /* BD #999 BG #eee*/.qti_order_interaction li{border:3px solid #999; margin-bottom:10px; margin-right:5px; padding-top:5px; background:#eee;}
 .qti_order_interaction ul.ui-sortable li:hover{cursor:move;}
-/* BD #666 */.qti_order_interaction li.sort-placeholder{border: dotted 1px #666;}
+/* BD #666 */.qti_order_interaction li.sort-placeholder{border: dashed 2px #666;}
 .qti_choice_list_horizontal{position:relative;}
 .qti_choice_list_horizontal li{float:left;}
 

@@ -109,12 +109,11 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					$forceValid = true;
 				}
 			} 
-			
 			//load and validate the package
 			$qtiPackageParser = new taoItems_models_classes_QTI_PackageParser($uploadedFile);
 			$qtiPackageParser->validate();
 
-			if(!$qtiPackageParser->isValid()){
+			if(!$qtiPackageParser->isValid() && !$forceValid){
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
 				$this->setData('importErrors', $qtiPackageParser->getErrors());
 				return false;
@@ -149,10 +148,17 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					//create a new item in the model
 					$rdfItem = $itemService->createInstance($clazz, $resource->getIdentifier());
 					
+					$qtiItem = null;
 					try{//load the QTI_Item from the item file
 						$qtiItem = $qtiService->loadItemFromFile($folder . '/'. $resource->getItemFile());
 					}
+					catch(taoItems_models_classes_QTI_ParsingException $pe){
+						if(!$forceValid){
+							$this->setData('importErrors', array(array('message' => $pe->getMessage())));
+						}
+					}
 					catch(Exception $e){
+						
 						$this->setData('importErrorTitle', __('An error occured during the import'));
 						
 						// The QTI File at $folder/$resource->itemFile cannot be loaded.
@@ -173,25 +179,29 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					
 					if(is_null($qtiItem) || is_null($rdfItem)){
 						$this->setData('importErrorTitle', __('An error occured during the import'));
-						$this->setData('importErrors', array(array('message' => __('unable to create for imported content'))));
+						$this->setData('importErrors', array(array('message' => __('Unable to create the item for the content '.$resource->getIdentifier().' , from file '.$resource->getItemFile()))));
 						
 						// An error occured. We should rollback the knowledge base.
 						$rdfItem->delete();
-						break;
+						if(!$forceValid){
+							break;
+						}
 					}
-					//set the QTI type
-					$rdfItem->setPropertyValue($itemModelProperty, TAO_ITEM_MODEL_QTI);
-					
-					//set the file in the itemContent
-					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
+					else{
+						//set the QTI type
+						$rdfItem->setPropertyValue($itemModelProperty, TAO_ITEM_MODEL_QTI);
 						
-						$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-						
-						$importedItems++;	//item is considered as imported there 
-						
-						//and copy the others resources in the runtime path
-						foreach($resource->getAuxiliaryFiles() as $auxResource){
-							tao_helpers_File::copy($folder . '/'. $auxResource, BASE_PATH. "/data/$folderName/$auxResource", true);
+						//set the file in the itemContent
+						if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
+							
+							$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
+							
+							$importedItems++;	//item is considered as imported there 
+							
+							//and copy the others resources in the runtime path
+							foreach($resource->getAuxiliaryFiles() as $auxResource){
+								tao_helpers_File::copy($folder . '/'. $auxResource, BASE_PATH. "/data/$folderName/$auxResource", true);
+							}
 						}
 					}
 				}

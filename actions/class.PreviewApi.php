@@ -416,9 +416,16 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 		$context = array();
 		if($this->checkCommunication()){
 			if(isset($_COOKIE['previewContext'])){
+
+				$executionEnvironment = $this->getFakeExecutionEnvironment($this->userService->getCurrentUser());
+				$itemUri = $executionEnvironment[TAO_ITEM_CLASS]['uri'];
+				
 				$currentContext = $_COOKIE['previewContext'];
 				if(is_string($currentContext) && !empty($currentContext)){
-					$context = unserialize($currentContext);
+					$currentContext = unserialize($currentContext);
+					if(isset($currentContext[$itemUri])){
+						$context = $currentContext[$itemUri];
+					}
 				}
 			}
 		}
@@ -432,21 +439,24 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 	public function saveContext(){
 		$saved = false;
 		if($this->checkCommunication() && $this->hasRequestParameter('context')){
+			
+			$executionEnvironment = $this->getFakeExecutionEnvironment($this->userService->getCurrentUser());
+			$itemUri = $executionEnvironment[TAO_ITEM_CLASS]['uri'];
+			
 			$context = $this->getRequestParameter('context');
 			if(is_array($context)){
-				
+				$currentContext = array();
 				if(isset($_COOKIE['previewContext'])){
 					$currentContext = $_COOKIE['previewContext'];
 					if(is_string($currentContext) && !empty($currentContext)){
 						$currentContext = unserialize($currentContext);
-						foreach($context as $key => $value){
-							$currentContext[$key] = $value;
-						}
-						$context = $currentContext;
 					}
 				}
-				//a 10 minutes cookie
-				$saved = setcookie('previewContext', serialize($context), time() + 600 );			
+				foreach($context as $key => $value){
+					$currentContext[$itemUri][$key] = $value;
+				}
+				//a 1 hour cookie
+				$saved = setcookie('previewContext', serialize($currentContext), time() + 3600 );			
 			}
 		}
 		echo json_encode(array('saved' => $saved));
