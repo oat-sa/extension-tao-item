@@ -1,5 +1,4 @@
 <responseDeclaration identifier="<?=$identifier?>" <?=$rowOptions?> >
-    
     <?if(count($correctResponses) > 0):?>
         <correctResponse>
             <?foreach($correctResponses as $value):?>

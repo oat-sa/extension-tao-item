@@ -592,8 +592,12 @@ class taoItems_models_classes_QTI_Item
         $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 
 		//render and clean the xml	      
-        $xmlElt = simplexml_load_string($tplRenderer->render());
-		$returnValue = $xmlElt->asXml();
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+        $dom->preserveWhiteSpace = false;
+        $dom->validateOnParse = false;
+        $dom->loadXML($tplRenderer->render());
+        $returnValue = $dom->saveXML();
         
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000238A end
 
