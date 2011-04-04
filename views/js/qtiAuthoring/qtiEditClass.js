@@ -786,6 +786,12 @@ qtiEdit.prototype.debug = function(){
 	window.open('/taoItems/QtiAuthoring/debug?itemSerial='+this.itemSerial, 'QTI authoring - debug', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
 }
 
+qtiEdit.prototype['export'] = function(){
+	//when the export action is transformed into a service:
+	//window.open('/taoItems/ItemExport/index?uri='+this.itemUri+'&classUri='+this.itemClassUri, 'QTI authoring - item export', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+	
+	window.open('/taoItems/Items/downloadItemContent?uri='+this.itemUri+'&classUri='+this.itemClassUri, 'QTI authoring - item export', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+}
 
 qtiEdit.prototype.saveItemData = function(itemSerial){
 	

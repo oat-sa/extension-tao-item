@@ -40,6 +40,12 @@
 				<a href="#"><?=__('Preview')?></a>
 			</div>
 			
+			<div id="qtiAuthoring_export_button" class="qti-menu-item">
+				<img title="<?=__('Export')?>" src="<?=ROOT_URL?>/tao/views/img/actions/export.png"/>
+				<br/>
+				<a href="#"><?=__('Export')?></a>
+			</div>
+			
 			<div id="qtiAuthoring_debug_button" class="qti-menu-item">
 				<img title="<?=__('Debug')?>" src="<?=get_data('qtiAuthoring_img_path')?>bug.png"/>
 				<br/>
@@ -158,6 +164,12 @@ $(document).ready(function(){
 		myItem.debug();
 		return false;
 	});
+	
+	$('#qtiAuthoring_export_button').click(function(){
+		myItem.export();
+		return false;
+	});
+	
 	
 	$( "#item_option_accordion" ).accordion({
 		fillSpace: true
