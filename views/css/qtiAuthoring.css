@@ -121,3 +121,6 @@ form#ResponseProcessingForm div.form-toolbar {top:10px;}
 
 div.wysiwyg div{padding:0;margin:0;}
 div.wysiwyg iframe{margin:0;}
+
+/*overwrite the xhmlt_form placement:*/
+div.xhtml_form div.form-toolbar {margin: 5px 5px 15px 2px;}

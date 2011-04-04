@@ -5,7 +5,7 @@
 				<?=__('Interaction editor:')?>
 		</div>
 		<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
-			<div class="ext-home-container ui-state-highlight">
+			<div id="formInteraction_content_form_body" class="ext-home-container">
 				<?=get_data('formInteraction')?>
 			</div>
 			
@@ -15,8 +15,15 @@
 			
 			<div id="formChoices_container" class="ext-home-container"/>
 			
+			<div id="formInteraction_content_form_bottom" class="ext-home-container">
+				<div class="xhtml_form">
+					<div id="formInteraction_content_form_bottom_button" class="form-toolbar">
+					</div>
+				</div>
+			</div>
 		</div>
-	
+		
+		
 	</div>
 </div>
 
@@ -29,5 +36,9 @@ $(document).ready(function(){
 		CL('error creating interaction', err);
 	}
 	
+	$('.interaction-form-submitter').clone().appendTo('#formInteraction_content_form_bottom_button').click(function(e){
+		e.preventDefault();
+		$('#formInteraction_content_form_body').find('.interaction-form-submitter').click();
+	});
 });
 </script>

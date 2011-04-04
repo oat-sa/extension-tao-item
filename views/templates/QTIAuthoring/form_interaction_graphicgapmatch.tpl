@@ -15,6 +15,13 @@
 			
 			<div id="formChoices_container" class="ext-home-container"/>
 			
+			<div id="formInteraction_content_form_bottom" class="ext-home-container">
+				<div class="xhtml_form">
+					<div id="formInteraction_content_form_bottom_button" class="form-toolbar">
+					</div>
+				</div>
+			</div>
+			
 		</div>
 
 	</div>
@@ -39,6 +46,11 @@ $(document).ready(function(){
 		
 		myInteraction.buildShapeEditor(backgroundImagePath, options);
 	}
+	
+	$('.interaction-form-submitter').clone().appendTo('#formInteraction_content_form_bottom_button').click(function(e){
+		e.preventDefault();
+		$('#formInteraction_content_form_body').find('.interaction-form-submitter').click();
+	});
 });
 </script>
 

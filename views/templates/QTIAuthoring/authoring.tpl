@@ -35,9 +35,9 @@
 			</div>
 			
 			<div id="qtiAuthoring_preview_button" class="qti-menu-item">
-				<img title="<?=__('Preview')?>" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
+				<img title="<?=__('Light preview')?>" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
 				<br/>
-				<a href="#"><?=__('Preview')?></a>
+				<a href="#"><?=__('Light preview')?></a>
 			</div>
 			
 			<div id="qtiAuthoring_export_button" class="qti-menu-item">
@@ -285,7 +285,7 @@ $(document).ready(function(){
 		$('#qtiAuthoring_loading').hide();
 		$('#qtiAuthoring_main_container').show();
 	}, 1000);
-
+	
 });
 
 </script>
