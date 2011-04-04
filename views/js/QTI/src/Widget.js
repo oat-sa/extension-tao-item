@@ -646,21 +646,28 @@ var QTIWidget = function(options){
 			
 			//no behavior restriction
 			if(maxChoices == 0){
-				$(this).toggleClass('hottext_choice_on');
-				$(this).toggleClass('hottext_choice_off');
+				$(this).toggleClass('hottext_choice_on')
+						.toggleClass('hottext_choice_off');
 			}
 			
 			//only one selected at a time 
 			if(maxChoices == 1){
-				$(qti_item_id + " .hottext_choice").removeClass('hottext_choice_on').addClass('hottext_choice_off');
-				$(this).removeClass('hottext_choice_off').addClass('hottext_choice_on');
+				if($(qti_item_id + " .hottext_choice").length == 1){
+					$(this).toggleClass('hottext_choice_on')
+						.toggleClass('hottext_choice_off');
+				}
+				else{
+					$(qti_item_id + " .hottext_choice").removeClass('hottext_choice_on').addClass('hottext_choice_off');
+					$(this).removeClass('hottext_choice_off').addClass('hottext_choice_on');
+				}
+				
 			}
 			
 			//there is only maxChoices selected at a time
 			if(maxChoices > 1){
 				if($(qti_item_id + " .hottext_choice_on").length < maxChoices || $(this).hasClass('hottext_choice_on') ){
-					$(this).toggleClass('hottext_choice_on');
-					$(this).toggleClass('hottext_choice_off');
+					$(this).toggleClass('hottext_choice_on')
+							.toggleClass('hottext_choice_off');
 				}
 			}
 		});
