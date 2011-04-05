@@ -164,6 +164,16 @@ util.htmlEncode = function(encodedStr){
 	return returnValue;
 }
 
+
+util.getMediaResource = function(backgroundImagePath){
+	
+	if(backgroundImagePath && backgroundImagePath.substring(0,4) != 'http'){
+		backgroundImagePath = root_url + '/taoItems/Items/getMediaResource?path='+encodeURIComponent(backgroundImagePath);
+	}
+	
+	return backgroundImagePath;
+}
+
 //custom object serialization method to jQuery:
 $.fn.serializeObject = function()
 {

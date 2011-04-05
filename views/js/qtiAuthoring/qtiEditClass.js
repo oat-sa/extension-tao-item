@@ -572,12 +572,27 @@ qtiEdit.initFormElements = function($container){
 
 qtiEdit.mapFileManagerField = function($container){
 	$container.find('.qti-file-img').each(function(){
+		
+		var imgPath = $(elt).val();
+		if(imgPath){
+			
+		
+		}
+		
 		if($.fn.fmbind){
 			//dynamically change the style:
 			$(this).width('50%');
 			
 			//add tao file manager
-			$(this).fmbind({type: 'image'}, function(elt, value){
+			$(this).fmbind({type: 'image'}, function(elt, value, mediaData){
+				
+				var height = 0;
+				var width = 0;
+				if(mediaData){
+					if(mediaData.height) height = mediaData.height;
+					if(mediaData.width) width = mediaData.width;
+				}
+				
 				$(elt).val(value);
 				
 				var $modifiedForm = $(elt).parents('form');
@@ -599,6 +614,34 @@ qtiEdit.mapFileManagerField = function($container){
 						}
 					}
 				}
+				
+				if(height) $modifiedForm.find('input#object_height').val(height);
+				if(width) $modifiedForm.find('input#object_width').val(width);
+				
+				if($(elt).hasClass('qti-with-preview') && width && height){
+					var maxHeight = 150;
+					var maxWidth = 150;
+					var ratioBase = width/height;
+					if(Math.max(width, height)<150){
+						//no need to resize
+					}else{
+						//resize to the maximum lenght:
+						if(height>width){
+							height = maxHeight;
+							width = height*ratioBase;
+						}else{
+							width = maxWidth;
+							height = width/ratioBase;
+						}
+					}
+					//insert the image preview
+					var $previewElt = $(elt).parent().find('div.qti-img-preview');
+					if(!$previewElt.length){
+						$previewElt = $('<div class="qti-img-preview">').appendTo($(elt).parent());
+					}
+					$previewElt.empty().html('<img src="'+util.getMediaResource(value)+'" style="width:'+width+'px;height:'+height+'px;" title="preview" alt="no preview available"/>');
+				}
+				
 			});
 		}
 	});
