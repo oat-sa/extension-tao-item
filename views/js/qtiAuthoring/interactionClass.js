@@ -1,4 +1,4 @@
-// alert('interaction edit loaded');
+alert('interaction edit loaded');
 interactionClass.instances = [];
 
 function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer, responseFormContainer, responseMappingMode){
@@ -228,7 +228,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 			}
 			
 			var interaction = this;
-			
+			// CL('interaction.modifiedChoices before', interaction.modifiedChoices);
 			$.ajax({
 			   type: "POST",
 			   url: "/taoItems/QtiAuthoring/saveChoice",
@@ -242,12 +242,16 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 						qtiEdit.createInfoMessage(__('Modification on choice applied'));
 						delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 						
-						//only when the identifier has changed:
-						if(r.reload){
-							interaction.loadChoicesForm();
-						}else if(r.identifierUpdated){
-							//reload the response grid tu update the identifier
-							new responseClass(interaction.responseGrid, interaction);
+						//only if it is the last updated choice!
+						if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
+							// CL('interaction.modifiedChoices', interaction.modifiedChoices);
+							//only when the identifier has changed:
+							if(r.reload){
+								interaction.loadChoicesForm();
+							}else if(r.identifierUpdated){
+								//reload the response grid tu update the identifier
+								new responseClass(interaction.responseGrid, interaction);
+							}
 						}
 						
 						//for hotspot interaction, update the input value:
@@ -464,7 +468,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 }
 
 
-interactionClass.prototype.addChoice = function($appendTo, containerClass, groupSerial){
+interactionClass.prototype.addChoice = function(number, $appendTo, containerClass, groupSerial){
 	
 	var interaction = this;
 	
@@ -533,7 +537,12 @@ interactionClass.prototype.addChoice = function($appendTo, containerClass, group
 		
 		var timer = null;
 		var stopTimer = function(){
-			addChoice($appendTo, containerClass, groupSerial);
+			if(!number){
+				number = 1;
+			}
+			for(var i=0;i<number;i++){
+				addChoice($appendTo, containerClass, groupSerial);
+			}
 			clearTimeout(timer);
 		}
 		//check every half a second if all choices have been saved:
@@ -1110,7 +1119,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	});
 }
 
-interactionClass.prototype.addGroup = function(interactionData, $appendTo){
+interactionClass.prototype.addGroup = function(number, interactionData, $appendTo){
 
 	var interaction = this;
 	
@@ -1175,7 +1184,12 @@ interactionClass.prototype.addGroup = function(interactionData, $appendTo){
 		
 		var timer = null;
 		var stopTimer = function(){
-			addGroup(interactionData, $appendTo);
+			if(!number){
+				number = 1;
+			}
+			for(var i=0;i<number;i++){
+				addGroup(interactionData, $appendTo);
+			}
 			clearTimeout(timer);
 		}
 		//check every half a second if all choices have been saved:

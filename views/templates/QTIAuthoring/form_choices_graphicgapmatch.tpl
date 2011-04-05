@@ -14,6 +14,8 @@
 		
 		<div id="add_group_button" class="add_choice_button">
 			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"><?=__('Add a choice')?></a>
+			<?=__('quantity')?>
+			<input id="add_group_number" type="text" size="1" maxLength="2" value="1"/>
 		</div>
 	</div>
 
@@ -27,7 +29,9 @@
 		</div>
 
 		<div id="add_choice_button" class="add_choice_button">
-			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"><?=__('Add a choice')?></a>
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"> <?=__('Add choice')?></a>
+			<?=__('quantity')?>
+			<input id="add_choice_number" type="text" size="1" maxLength="2" value="1"/>
 		</div>
 	</div>
 	
@@ -37,15 +41,27 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$('a.form-choice-adder, #add_choice_button').click(function(){
+	$('a.form-choice-adder, #add_choice_button a').click(function(){
+		var number = 1;
+		var val = parseInt($("#add_choice_number").val());
+		if(val){
+			number = val;
+		}
+		
 		//add a choice to the current interaction:
-		myInteraction.addChoice(myInteraction.interactionSerial, $('#formContainer_choices'), 'formContainer_choice');
+		myInteraction.addChoice(number, $('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
 	
 	$('#add_group_button').click(function(){
+		var number = 1;
+		var val = parseInt($("#add_group_number").val());
+		if(val){
+			number = val;
+		}
+		
 		//add a choice to the current interaction:
-		myInteraction.addGroup('', $('#formContainer_groups'));
+		myInteraction.addGroup(number,'', $('#formContainer_groups'));
 		return false;
 	});
 	

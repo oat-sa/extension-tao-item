@@ -15,7 +15,9 @@
 		</div>
 
 		<div id="add_choice_button_<?=$groupSerial?>" class="add_choice_button">
-			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"><?=__(' Add a choice to group ').intval($order+1)?></a>
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"> <?=__('Add choice to group').' '.intval($order+1)?></a>
+			<?=__('quantity')?>
+			<input id="add_choice_number_<?=$order?>" type="text" size="1" maxLength="2" value="1"/>
 		</div>
 	</div>
 	
@@ -28,9 +30,16 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	<?foreach($groupSerials as $order => $groupSerial):?>
-	$('#add_choice_button_<?=$groupSerial?>').click(function(){
+	$('#add_choice_button_<?=$groupSerial?> a').click(function(){
+		var number = 1;
+		
+		var val = parseInt($("#add_choice_number_<?=$order?>").val());
+		if(val){
+			number = val;
+		}
+		
 		//add a choice to the current interaction:
-		myInteraction.addChoice($('#formContainer_choices_<?=$groupSerial?>'), 'formContainer_choice', '<?=$groupSerial?>');//need an extra param "groupSerial"
+		myInteraction.addChoice(number, $('#formContainer_choices_<?=$groupSerial?>'), 'formContainer_choice', '<?=$groupSerial?>');//need an extra param "groupSerial"
 		return false;
 	});
 	<?endforeach;?>
