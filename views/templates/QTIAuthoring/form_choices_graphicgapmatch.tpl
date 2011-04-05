@@ -5,6 +5,7 @@
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_groups" class="formContainer_choices">
 		<? $formChoices = get_data('formChoices');?>
+		<div class="choices-column-header"><?=__('Associable hotspots')?></div>
 		<?foreach($formGroups as $groupSerial => $groupForm):?>
 			<div id='<?=$groupSerial?>' class="formContainer_choice">
 				<?=$groupForm?>
@@ -13,7 +14,7 @@
 		</div>
 		
 		<div id="add_group_button" class="add_choice_button">
-			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"><?=__('Add a choice')?></a>
+			<a href="#"><img src="<?=ROOT_URL?>/tao/views/img/add.png"><?=__('Add choice')?></a>
 			<?=__('quantity')?>
 			<input id="add_group_number" type="text" size="1" maxLength="2" value="1"/>
 		</div>
@@ -21,6 +22,7 @@
 
 	<div id="formContainer_choices_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_choices" class="formContainer_choices">
+		<div class="choices-column-header"><?=__('Gap images')?></div>
 		<?foreach($formChoices as $choiceSerial => $choiceForm):?>
 			<div id='<?=$choiceSerial?>' class="formContainer_choice">
 				<?=$choiceForm?>
@@ -53,7 +55,7 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$('#add_group_button').click(function(){
+	$('#add_group_button a').click(function(){
 		var number = 1;
 		var val = parseInt($("#add_group_number").val());
 		if(val){

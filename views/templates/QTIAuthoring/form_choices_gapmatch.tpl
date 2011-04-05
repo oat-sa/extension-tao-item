@@ -5,6 +5,7 @@
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_groups" class="formContainer_choices">
 		<? $formChoices = get_data('formChoices');?>
+		<div class="choices-column-header"><?=__('Gaps')?></div>
 		<?foreach($formGroups as $groupSerial => $groupForm):?>
 			<div id='<?=$groupSerial?>' class="formContainer_choice">
 				<?=$groupForm?>
@@ -14,6 +15,8 @@
 	</div>
 
 	<div id="formContainer_choices_container" class="qti-authoring-form-container-column">
+		<div class="choices-column-header"><?=__('Choices')?></div>
+		
 		<div id="formContainer_choices" class="formContainer_choices">
 		<?foreach($formChoices as $choiceSerial => $choiceForm):?>
 			<div id='<?=$choiceSerial?>' class="formContainer_choice">

@@ -1,6 +1,6 @@
 /*the loading element*/
 #qtiAuthoring_loading{position:absolute; width:100%; height:100%; z-index:1000; background-color:#FFFFFF;}
-#qtiAuthoring_loading_message{position:relative; top:45%; left:45%; width:150px;}
+#qtiAuthoring_loading_message{position:relative; top:45%; left:45%; width:150px;z-index:1000;}
 
 /*top menu*/
 /*placing top menu*/
@@ -124,3 +124,5 @@ div.wysiwyg iframe{margin:0;}
 
 /*overwrite the xhmlt_form placement:*/
 div.xhtml_form div.form-toolbar {margin: 5px 5px 15px 2px;}
+
+div.choices-column-header {font-size:1.5em;padding:10px 0px;text-align:center;}

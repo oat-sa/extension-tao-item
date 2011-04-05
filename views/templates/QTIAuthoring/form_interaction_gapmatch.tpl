@@ -5,7 +5,7 @@
 				<?=__('Interaction editor:')?>
 		</div>
 		<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
-			<div class="ext-home-container ui-state-highlight">
+			<div id="formInteraction_content_form_body" class="ext-home-container">
 				<?=get_data('formInteraction')?>
 			</div>
 			

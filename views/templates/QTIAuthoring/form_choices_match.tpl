@@ -6,6 +6,7 @@
 <div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
 	<?foreach($groupSerials as $order => $groupSerial):?>
 	<div id="formContainer_choices_container_<?=$groupSerial?>" class="formContainer_choices qti-authoring-form-container-column">
+		<div class="choices-column-header"><?=__('Choice group').' '.intval($order+1)?></div>
 		<div id="formContainer_choices_<?=$groupSerial?>" class="qti-authoring-form-container">
 		<?foreach($formChoices[$groupSerial] as $choiceId => $choiceForm):?>
 			<div id='<?=$choiceId?>' class='formContainer_choice'>

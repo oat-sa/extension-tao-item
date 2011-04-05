@@ -164,7 +164,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 	
 	var addGraphicGapMatchInteraction = {
-		visible : false,
+		visible : true,
 		className: 'add_graphicgapmatch_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
@@ -194,7 +194,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 	
 	var addSliderInteraction = {
-		visible : false,
+		visible : true,
 		className: 'add_slider_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
@@ -214,7 +214,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 	
 	var addEndAttemptInteraction = {
-		visible : false,
+		visible : true,
 		className: 'add_endattempt_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
