@@ -1,1 +1,1 @@
-<?include('form_interaction_hotspot.tpl');?>
+<?include('form_interaction_graphicgapmatch.tpl');?>
