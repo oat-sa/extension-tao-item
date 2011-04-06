@@ -571,12 +571,51 @@ qtiEdit.initFormElements = function($container){
 }
 
 qtiEdit.mapFileManagerField = function($container){
+
 	$container.find('.qti-file-img').each(function(){
 		
-		var imgPath = $(elt).val();
-		if(imgPath){
-			
+		var displayPreview = function(elt, imagePath, width, height){
+			if($(elt).hasClass('qti-with-preview') && width && height){
+				var maxHeight = 150;
+				var maxWidth = 150;
+				var baseRatio = width/height;
+				var previewDescription = '';
+				if(Math.max(width, height)<150){
+					//no need to resize
+					previewDescription = __('preview (1:1)');
+				}else{
+					//resize to the maximum lenght:
+					previewDescription = __('preview (real size:')+' '+width+'px*'+height+'px)';
+					if(height>width){
+						height = maxHeight;
+						width = height*baseRatio;
+					}else{
+						width = maxWidth;
+						height = width/baseRatio;
+					}
+				}
+				
+				//insert the image preview
+				var $parentElt = $(elt).parent();
+				var $previewElt = $parentElt.find('div.qti-img-preview');
+				if(!$previewElt.length){
+					
+					$previewElt = $('<div class="qti-img-preview">').appendTo($parentElt);
+				}
+				// var $descriptionElt = $();
+				$previewElt.empty().html('<img src="'+util.getMediaResource(imagePath)+'" style="width:'+width+'px;height:'+height+'px;" title="preview" alt="no preview available"/>');
+				$previewElt.append('<br/><span class="qti-img-preview-label">'+previewDescription+'</span>');
+			}
+		}
 		
+		var imgPath = $(this).val();
+		if(imgPath){
+			//check if the weight and height are defined:
+			var $modifiedForm = $(this).parents('form');
+			var height = parseInt($modifiedForm.find('input#object_height').val());
+			var width = parseInt($modifiedForm.find('input#object_width').val());
+			
+			if($(this).hasClass('qti-with-preview') && width && height) displayPreview(this, imgPath, width, height);
 		}
 		
 		if($.fn.fmbind){
@@ -584,7 +623,7 @@ qtiEdit.mapFileManagerField = function($container){
 			$(this).width('50%');
 			
 			//add tao file manager
-			$(this).fmbind({type: 'image'}, function(elt, value, mediaData){
+			$(this).fmbind({type: 'image'}, function(elt, imgPath, mediaData){
 				
 				var height = 0;
 				var width = 0;
@@ -593,7 +632,7 @@ qtiEdit.mapFileManagerField = function($container){
 					if(mediaData.width) width = mediaData.width;
 				}
 				
-				$(elt).val(value);
+				$(elt).val(imgPath);
 				
 				var $modifiedForm = $(elt).parents('form');
 				if($modifiedForm.length){
@@ -618,33 +657,12 @@ qtiEdit.mapFileManagerField = function($container){
 				if(height) $modifiedForm.find('input#object_height').val(height);
 				if(width) $modifiedForm.find('input#object_width').val(width);
 				
-				if($(elt).hasClass('qti-with-preview') && width && height){
-					var maxHeight = 150;
-					var maxWidth = 150;
-					var ratioBase = width/height;
-					if(Math.max(width, height)<150){
-						//no need to resize
-					}else{
-						//resize to the maximum lenght:
-						if(height>width){
-							height = maxHeight;
-							width = height*ratioBase;
-						}else{
-							width = maxWidth;
-							height = width/ratioBase;
-						}
-					}
-					//insert the image preview
-					var $previewElt = $(elt).parent().find('div.qti-img-preview');
-					if(!$previewElt.length){
-						$previewElt = $('<div class="qti-img-preview">').appendTo($(elt).parent());
-					}
-					$previewElt.empty().html('<img src="'+util.getMediaResource(value)+'" style="width:'+width+'px;height:'+height+'px;" title="preview" alt="no preview available"/>');
-				}
+				displayPreview(elt, imgPath, width, height);
 				
 			});
 		}
 	});
+	
 }
 
 qtiEdit.mapHtmlEditor = function($container){
@@ -721,16 +739,13 @@ qtiEdit.mapHtmlEditor = function($container){
 
 //TODO: side effect to be fully tested
 qtiEdit.destroyHtmlEditor = function($container){
-	// CL('$container', $container);
 	$container.find('.qti-html-area').each(function(){
-		// CL('$(this).siblings(".wysiwyg")', $(this).siblings('.wysiwyg'));
 		// if ($(this).css('display') != 'none' && $(this).siblings('.wysiwyg').length){
 			try{
 				$(this).wysiwyg('destroy');
 			}catch(err){
 				
 			}
-			// CL('destroyed!!');
 		// }
 	});
 }
