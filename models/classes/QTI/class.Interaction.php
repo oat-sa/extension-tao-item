@@ -17,9 +17,10 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_Choice
+ * A choice is a kind of interaction's proposition.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  */
 require_once('taoItems/models/classes/QTI/class.Choice.php');
 
@@ -35,7 +36,8 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * include taoItems_models_classes_QTI_Group
+ * A group is an concept to enable choice logical grouping (ordering). 
+ * It use when there is distinct choices groups in an interaction.
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  */
@@ -53,9 +55,11 @@ require_once('taoItems/models/classes/QTI/class.Group.php');
 require_once('taoItems/models/classes/QTI/class.Item.php');
 
 /**
- * include taoItems_models_classes_QTI_Response
+ * A response is on object associated to an interactino containing which are the
+ * response into the interaction choices and the score regarding the answers
  *
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  */
 require_once('taoItems/models/classes/QTI/class.Response.php');
 
@@ -86,7 +90,7 @@ class taoItems_models_classes_QTI_Interaction
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute choices
+     * The choices associated to the interactions
      *
      * @access protected
      * @var array
@@ -94,7 +98,7 @@ class taoItems_models_classes_QTI_Interaction
     protected $choices = array();
 
     /**
-     * Short description of attribute response
+     * The response of the interaction
      *
      * @access protected
      * @var Response
@@ -102,7 +106,8 @@ class taoItems_models_classes_QTI_Interaction
     protected $response = null;
 
     /**
-     * Short description of attribute groups
+     * The choices' groups of the interactions 
+     * (give a grouped and ordered view of the choices)
      *
      * @access protected
      * @var array
@@ -110,7 +115,7 @@ class taoItems_models_classes_QTI_Interaction
     protected $groups = array();
 
     /**
-     * Short description of attribute prompt
+     * Interaction stimulus data
      *
      * @access protected
      * @var string
@@ -118,7 +123,7 @@ class taoItems_models_classes_QTI_Interaction
     protected $prompt = '';
 
     /**
-     * Short description of attribute object
+     * Media object, used in graphic interactions
      *
      * @access protected
      * @var array
@@ -128,7 +133,8 @@ class taoItems_models_classes_QTI_Interaction
     // --- OPERATIONS ---
 
     /**
-     * Short description of method __construct
+     * Instantiate a new interaction of the given type
+     * If the id is null, a unique identifier is generated
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -149,7 +155,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method __sleep
+     * used to the self persistency
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -174,7 +180,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method __wakeup
+     * used to the self persitancy
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -212,7 +218,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method setChoices
+     * Set the list of choices
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -232,7 +238,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getChoices
+     * Get the interaction's choices
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -252,7 +258,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getChoice
+     * Get a choice identified by the serial
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -277,7 +283,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method addChoice
+     * Add a choice to the interaction
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -296,7 +302,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method removeChoice
+     * Remove a choice from the interaction
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -333,7 +339,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method shuffleChoices
+     * Shuffle the order of the choices
      *
      * @access protected
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -404,7 +410,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getGroups
+     * Get the interaction's groups
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -424,7 +430,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method setGroups
+     * Define the interaction's groups
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -444,7 +450,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method addGroup
+     * Add a  group to the interaction
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -461,7 +467,8 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method removeGroup
+     * Remove a group from the interaction
+     * If recursive is set to true, it will remove the group's choices
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -503,7 +510,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getResponse
+     * Get the response linked to the interaction
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -523,7 +530,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method setResponse
+     * Define the interaction's response
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -541,7 +548,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getPrompt
+     * Get the prompt data
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -561,7 +568,7 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method setPrompt
+     * Define the prompt data
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -594,7 +601,8 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getCardinality
+     * Retrieve the interaction cardinality
+     * (single, multiple or ordered)
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -674,7 +682,9 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method getBaseType
+     * Get the interaction base type:
+     * integer, string, identifier, pair, directedPair
+     * float, boolean or point
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -755,7 +765,44 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method isBlock
+     * Short description of method setObject
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @param  array objectData
+     * @return mixed
+     */
+    public function setObject($objectData = array())
+    {
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 begin
+		
+		foreach($objectData as $key=>$value){
+			$this->object[$key] = $value;
+		}
+		
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 end
+    }
+
+    /**
+     * Short description of method getObject
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return array
+     */
+    public function getObject()
+    {
+        $returnValue = array();
+
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C1B begin
+		$returnValue = $this->object;
+        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C1B end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Check if the interaction is a block or an inline interaction
      *
      * @access public
      * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
@@ -785,6 +832,33 @@ class taoItems_models_classes_QTI_Interaction
         ));
         
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Check if the interaction is graphical
+     * (use of images/SVG as working area)
+     *
+     * @access public
+     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @return boolean
+     */
+    public function isGraphic()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--30b98426:12f25041f87:-8000:0000000000002F03 begin
+        
+         $returnValue = in_array(strtolower($this->type), array(
+        	'selectpoint',
+			'graphicassociate',
+			'graphicorder',
+			'graphicgapmatch',
+         	'hotspot'
+         ));
+        
+        // section 127-0-1-1--30b98426:12f25041f87:-8000:0000000000002F03 end
 
         return (bool) $returnValue;
     }
@@ -988,43 +1062,6 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
 
         return $returnValue;
-    }
-
-    /**
-     * Short description of method setObject
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  array objectData
-     * @return mixed
-     */
-    public function setObject($objectData = array())
-    {
-        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 begin
-		
-		foreach($objectData as $key=>$value){
-			$this->object[$key] = $value;
-		}
-		
-        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 end
-    }
-
-    /**
-     * Short description of method getObject
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return array
-     */
-    public function getObject()
-    {
-        $returnValue = array();
-
-        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C1B begin
-		$returnValue = $this->object;
-        // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C1B end
-
-        return (array) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Interaction */

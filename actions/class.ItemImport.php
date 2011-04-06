@@ -152,11 +152,13 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					try{//load the QTI_Item from the item file
 						$qtiItem = $qtiService->loadItemFromFile($folder . '/'. $resource->getItemFile());
 					}
-					catch(taoItems_models_classes_QTI_ParsingException $pe){
+					/*catch(taoItems_models_classes_QTI_ParsingException $pe){
 						if(!$forceValid){
 							$this->setData('importErrors', array(array('message' => $pe->getMessage())));
+							$rdfItem->delete();
+							break;
 						}
-					}
+					}*/
 					catch(Exception $e){
 						
 						$this->setData('importErrorTitle', __('An error occured during the import'));

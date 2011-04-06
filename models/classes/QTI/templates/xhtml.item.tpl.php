@@ -6,6 +6,10 @@
 
 	<!-- CSS -->
     <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />
+	<?if($hasSlider):?>
+	<link rel="stylesheet" type="text/css"  src="<?=$ctx_taobase_www?>css/css/custom-theme/jquery-ui-1.8.custom.css"></script>
+	<?endif?>
+	
 	<!-- user CSS -->
 	<?foreach($stylesheets as $stylesheet):?>
 		<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
@@ -15,7 +19,10 @@
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.4.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/raphael.min.js"></script>
+	<?if($hasGraphics):?>
+	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/raphael.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/raphael-collision.min.js"></script>
+	<?endif?>
 	
 	<?if($hasUpload):?>
 	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_base_www?>lib/jquery.uploadify/uploadify.css" media="screen" />

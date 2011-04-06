@@ -1999,6 +1999,138 @@ var QTIWidget = function(options){
 			});
 		}
 	};
+	
+	/**
+	 * a slider widget
+	 * @methodOf QTIWidget
+	 */
+	this.slider = function(){
+		
+		$(qti_item_id).append("<input type='hidden' id='qti_slider_value' />")
+						.append("<div class='qti_slider'></div>")
+							.append("<div class='qti_slider_label'></div>");
+		
+		var containerWidth = parseInt($(qti_item_id).width());
+		
+		var min 		= parseInt(_this.opts['lowerBound']);
+		var max 		= parseInt(_this.opts['upperBound']);
+		var step 		= parseInt(_this.opts['step']);
+		var stepLabel 	= (_this.opts['stepLabel'] === true);
+		var reverse 	= (_this.opts['reverse'] === true);
+		var orientation = 'horizontal';
+		if($.inArray(_this.opts['orientation'], ['horizontal', 'vertical']) > -1){
+			orientation = _this.opts['orientation'];
+		}
+		
+		//calculate the slider size
+		var sliderSize = ((max - min) / step) * 20;
+		
+		if(orientation == 'horizontal'){
+			if(sliderSize > containerWidth){
+				sliderSize = containerWidth - 20;
+			}
+			$(qti_item_id).addClass('qti_slider_horizontal');
+			$(qti_item_id+' .qti_slider').width(sliderSize+'px');
+			$(qti_item_id+' .qti_slider_label').width((sliderSize + 40)+'px');
+		}
+		else{
+			var maxHeight = 300;
+			if(sliderSize > maxHeight){
+				sliderSize = maxHeight;
+			}
+			$(qti_item_id).addClass('qti_slider_vertical');
+			$(qti_item_id+' .qti_slider').height(sliderSize+'px');
+			$(qti_item_id+' .qti_slider_label').height((sliderSize + 20)+'px');
+		}
+		
+		if(!stepLabel){
+			var displayMin = min;
+			var displayMax = max;
+			if(reverse){
+				displayMin = max;
+				displayMax = min;
+			}
+			$(qti_item_id+' .qti_slider_label')
+				.append("<span class='slider_min'>"+displayMin+"</span>")
+					.append("<span class='slider_max'>"+displayMax+"</span>");
+			
+		}
+		else{
+			var stepSpacing = 20;
+			var displayRatio = 1;
+			if((max * 20) > sliderSize){
+				do{
+					stepSpacing = (sliderSize / (max / displayRatio));
+					displayRatio++;
+				}while(stepSpacing < 25);
+				displayRatio--;
+			}
+			
+			console.log({
+				'sliderSize' 	: sliderSize,
+				'min'			: min,
+				'max'			: max,
+				'step'			: step,
+				'stepSpacing'	: stepSpacing,
+				'displayRatio'	: displayRatio	
+			});
+			
+			for(var i = min; i <= max; i += (step * displayRatio)){
+				var displayIndex = i;
+				if(reverse){
+					displayIndex = max - i;
+				}
+				var $iStep = $("<span>"+displayIndex+"</span>");
+				if(orientation == 'horizontal'){
+					$iStep.css({left: ((i / displayRatio)  * stepSpacing) + 'px'});
+				}
+				else{
+					$iStep.css({top: ((i / displayRatio)  * stepSpacing) + 'px'});
+				}
+				$(qti_item_id+' .qti_slider_label').append($iStep);
+			}
+			//always add the last step
+			if(i < max){	
+				$(qti_item_id+' .qti_slider_label span:last').remove();
+				var displayMax = max;
+				if(reverse){
+					displayMax = min;
+				}
+				var $iStep = $("<span>"+displayMax+"</span>");
+				if(orientation == 'horizontal'){
+					$iStep.css({right:'0px'});
+				}
+				else{
+					$iStep.css({bottom:'0px'});
+				}
+				$(qti_item_id+' .qti_slider_label').append($iStep);
+			}
+		}
+		
+		var $sliderVal = $("#qti_slider_value");
+		
+		//create the slider
+		$(qti_item_id+' .qti_slider').slider({
+			value:	0,
+			min: 	min,
+			max: 	max,
+			step: 	step,
+			orientation: orientation,
+			slide: function( event, ui ) {
+				var val = ui.value;
+				if( (reverse && orientation == 'horizontal') || (!reverse && orientation == 'vertical') ){
+					val = max - ui.value;
+				}
+				$sliderVal.val(  val );
+			}
+		});
+		
+		var val = min;
+		if( (reverse && orientation == 'horizontal') || (!reverse && orientation == 'vertical') ){
+			val = max;
+		}
+		$sliderVal.val(  val );
+	};
 };
 
 /*

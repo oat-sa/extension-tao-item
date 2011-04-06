@@ -495,14 +495,25 @@ class taoItems_models_classes_QTI_Item
     	//get the variables to use in the template
     	$variables = $this->extractVariables();
         
-		$variables['hasUpload'] = false;    	
+    	//these variables enables to get only the needed resources
+		$variables['hasUpload'] 	= false;    
+		$variables['hasGraphics'] 	= false;	
+		$variables['hasSlider']		= false;
+		
         $interactions = $this->getInteractions();
         foreach($interactions as $interaction){
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toXHTML(), $variables['data']);
-        	if($interaction->getType() == 'upload'){
+        	
+			if($interaction->getType() == 'upload'){
         		$variables['hasUpload'] = true;   
         	}
+        	if($interaction->getType() == 'slider'){
+        		$variables['hasSlider'] = true;   
+        	}
+       		if(!$variables['hasGraphics']){
+				$variables['hasGraphics'] = $interaction->isGraphic();
+			}
         }
                 
         // get Matching data
@@ -537,12 +548,11 @@ class taoItems_models_classes_QTI_Item
         $template  = self::getTemplatePath() . '/qti.item.tpl.php';
     	$variables 	= $this->extractVariables(); 
 		
-		$variables['rowOptions'] = $this->xmlizeOptions();
-    	
-		$variables['response'] = '';
+		$variables['rowOptions']  	= $this->xmlizeOptions();
+		$variables['response'] 		= '';
 		$foundResponses = array();
 		foreach($this->getInteractions() as $interaction){
-			
+
 			//build the interactions in the data variable
 			$variables['data'] = preg_replace("/{".$interaction->getSerial()."}/", $interaction->toQti(), $variables['data']);
 			
