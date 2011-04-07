@@ -7,7 +7,7 @@
 	<!-- CSS -->
     <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />
 	<?if($hasSlider):?>
-	<link rel="stylesheet" type="text/css"  src="<?=$ctx_taobase_www?>css/css/custom-theme/jquery-ui-1.8.custom.css"></script>
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_taobase_www?>css/custom-theme/jquery-ui-1.8.custom.css" />
 	<?endif?>
 	
 	<!-- user CSS -->

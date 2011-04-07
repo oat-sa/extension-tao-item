@@ -54,9 +54,6 @@ class QTIParsingTestCase extends UnitTestCase {
 			$item = $qtiParser->load();
 			
 			$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
-			
-//			print "<pre>";
-//			print_r($item);
 		}
 	}
 	
@@ -81,6 +78,7 @@ class QTIParsingTestCase extends UnitTestCase {
 				$this->assertIsA($choice, 'taoItems_models_classes_QTI_Choice');
 			}
 		}
+	
 	}
 	
 }

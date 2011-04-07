@@ -363,6 +363,18 @@ function QTIResultCollector(options){
 		return result;
 	};
 	
+	/**
+	 * Collect the results of an <b>slider</b> widget 
+	 * @methodOf QTIResultCollector
+	 * @returns {Object} the results
+	 */
+	this.slider = function(){
+		return {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: parseInt($("#" + _this.id +' #qti_slider_value').val())
+			};
+	};
+	
 	
 	/**
 	 * Collect the results of an <b>upload</b> widget 
@@ -370,9 +382,19 @@ function QTIResultCollector(options){
 	 * @returns {Object} the results
 	 */
 	this.upload = function(){
+		var value = 0;
+		switch(_this.opts['baseType']){
+			case "float": 
+				value = parseFloat( $("#" + _this.id +'_data').val());
+				break;
+			case "integer":
+			default:
+				value = parseInt( $("#" + _this.id +'_data').val());
+		}
+		
 		return {
 				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
-				, "value"	: $("#" + _this.id +'_data').val()
+				, "value"	: value
 			};
 	};
 }

@@ -2006,12 +2006,14 @@ var QTIWidget = function(options){
 	 */
 	this.slider = function(){
 		
+		//add the containers
 		$(qti_item_id).append("<input type='hidden' id='qti_slider_value' />")
 						.append("<div class='qti_slider'></div>")
 							.append("<div class='qti_slider_label'></div>");
 		
 		var containerWidth = parseInt($(qti_item_id).width());
 		
+		//get the options
 		var min 		= parseInt(_this.opts['lowerBound']);
 		var max 		= parseInt(_this.opts['upperBound']);
 		var step 		= parseInt(_this.opts['step']);
@@ -2022,7 +2024,7 @@ var QTIWidget = function(options){
 			orientation = _this.opts['orientation'];
 		}
 		
-		//calculate the slider size
+		//calculate and adapt the slider size
 		var sliderSize = ((max - min) / step) * 20;
 		
 		if(orientation == 'horizontal'){
@@ -2043,6 +2045,7 @@ var QTIWidget = function(options){
 			$(qti_item_id+' .qti_slider_label').height((sliderSize + 20)+'px');
 		}
 		
+		//mark the bounds
 		if(!stepLabel){
 			var displayMin = min;
 			var displayMax = max;
@@ -2056,6 +2059,9 @@ var QTIWidget = function(options){
 			
 		}
 		else{
+			//add a label to the steps, 
+			//if there not the place we calculate the better interval
+			
 			var stepSpacing = 20;
 			var displayRatio = 1;
 			if((max * 20) > sliderSize){
@@ -2065,17 +2071,8 @@ var QTIWidget = function(options){
 				}while(stepSpacing < 25);
 				displayRatio--;
 			}
-			
-			console.log({
-				'sliderSize' 	: sliderSize,
-				'min'			: min,
-				'max'			: max,
-				'step'			: step,
-				'stepSpacing'	: stepSpacing,
-				'displayRatio'	: displayRatio	
-			});
-			
-			for(var i = min; i <= max; i += (step * displayRatio)){
+			var i = 0;
+			for(i = min; i <= max; i += (step * displayRatio)){
 				var displayIndex = i;
 				if(reverse){
 					displayIndex = max - i;
@@ -2089,9 +2086,12 @@ var QTIWidget = function(options){
 				}
 				$(qti_item_id+' .qti_slider_label').append($iStep);
 			}
+			
 			//always add the last step
-			if(i < max){	
-				$(qti_item_id+' .qti_slider_label span:last').remove();
+			if(i != max){	
+				if(i < max){
+					$(qti_item_id+' .qti_slider_label span:last').remove();
+				}
 				var displayMax = max;
 				if(reverse){
 					displayMax = min;
@@ -2107,11 +2107,25 @@ var QTIWidget = function(options){
 			}
 		}
 		
+		//the input that has always the slider value
 		var $sliderVal = $("#qti_slider_value");
+		
+		//set the start value
+		var val = min;
+		if( (reverse && orientation == 'horizontal') || (!reverse && orientation == 'vertical') ){
+			val = max;
+		}
+		//get the current value if defined
+		if(_this.opts["values"]){
+			if(typeof(_this.opts["values"]) == 'string' && _this.opts["values"] != ''){
+				val = _this.opts["values"];
+			}
+		}
+		console.log('ok')
 		
 		//create the slider
 		$(qti_item_id+' .qti_slider').slider({
-			value:	0,
+			value:	val,
 			min: 	min,
 			max: 	max,
 			step: 	step,
@@ -2124,11 +2138,6 @@ var QTIWidget = function(options){
 				$sliderVal.val(  val );
 			}
 		});
-		
-		var val = min;
-		if( (reverse && orientation == 'horizontal') || (!reverse && orientation == 'vertical') ){
-			val = max;
-		}
 		$sliderVal.val(  val );
 	};
 };
@@ -2136,6 +2145,7 @@ var QTIWidget = function(options){
 /*
  * Utilities
  */
+
 /**
  * Get the pointer of a poly shape reagrding it's path
  * @function
