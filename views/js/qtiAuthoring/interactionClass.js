@@ -890,6 +890,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	var controls = {
 	  strikeThrough : { visible : true },
 	  underline     : { visible : false },
+	  insertTable 	: { visible : false },
 	  
 	  h1 : { visible : true },
 	  h2 : { visible : true },

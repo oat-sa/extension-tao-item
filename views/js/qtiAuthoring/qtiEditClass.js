@@ -346,6 +346,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		controls: {
 		  strikeThrough : { visible : true },
 		  underline     : { visible : false },
+		  insertTable 	: { visible : false },
 		  
 		  justifyLeft   : { visible : true },
 		  justifyCenter : { visible : true },
@@ -674,6 +675,7 @@ qtiEdit.mapHtmlEditor = function($container){
 			
 			  strikeThrough : { visible : true },
 			  underline     : { visible : false },
+			  insertTable 	: { visible : false },
 			  
 			  justifyLeft   : { visible : true },
 			  justifyCenter : { visible : true },
@@ -819,7 +821,11 @@ qtiEdit.prototype.save = function(itemUri){
 }
 
 qtiEdit.prototype.preview = function(){
-	//save the item before previewing?
+	
+	//full preview require item saving before preview:
+	// var url = '/taoItems/Items/preview';
+	// url += '?uri='+this.itemUri;
+	// url += '&classUri='+this.itemClassUri;
 	
 	var url = '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;

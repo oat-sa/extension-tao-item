@@ -120,7 +120,7 @@
         $.fn.wysiwyg.defaults = {
                 html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">STYLE_SHEET</head><body>INITIAL_CONTENT</body></html>',
                 formTableHtml: '<form class="wysiwyg"><fieldset><legend>Insert table</legend><label>Count of columns: <input type="text" name="colCount" value="3" /></label><label><br />Count of rows: <input type="text" name="rowCount" value="3" /></label><input type="submit" class="button" value="Insert table" /> <input type="reset" value="Cancel" /></fieldset></form>',
-                formImageHtml:'<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="url" value="http://" /></label><label>Image Title: <input type="text" name="imagetitle" value="" /></label><label>Image Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Image" /> <input type="reset" value="Cancel" /></fieldset></form>',
+                formImageHtml:'<form class="wysiwyg"><fieldset><legend>Insert Image</legend><label>Image URL: <input type="text" name="url" value="http://" /></label><label>Image Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Image" /> <input type="reset" value="Cancel" /></fieldset></form>',
                 formWidth: 440,
                 formHeight: 270,
                 tableFiller: 'Lorem ipsum',
@@ -285,7 +285,7 @@
                         exec: function ()
                         {
                                 var self = this;
-                                if ($.modal)
+                                if (false)
                                 {
 									$.modal($.fn.wysiwyg.defaults.formImageHtml, {
 											onShow: function(dialog)
@@ -301,9 +301,8 @@
 												{
 														e.preventDefault();
 														var szURL = $('input[name="url"]', dialog.data).val();
-														var title = $('input[name="imagetitle"]', dialog.data).val();
 														var description = $('input[name="description"]', dialog.data).val();
-														var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+														var img="<img src='" + szURL + "' alt='" + description + "' />";
 														self.insertHtml(img);
 														
 														self.saveContent();//line added to update the original textarea
@@ -331,13 +330,19 @@
                                             height: $.fn.wysiwyg.defaults.formHeight,
                                             open: function(ev, ui)
                                             {
+												if($.fn.fmbind){
+													//add tao file manager
+													$('input[name="url"]').fmbind({type: 'image'}, function(elt, value){
+														$(elt).val(value);
+													});
+												}
+												
                                                  $('input:submit', $(this)).click(function(e)
                                                  {
                                                        e.preventDefault();
                                                        var szURL = $('input[name="url"]', dialog).val();
-                                                       var title = $('input[name="imagetitle"]', dialog).val();
                                                        var description = $('input[name="description"]', dialog).val();
-                                                       var img="<img src='" + szURL + "' title='" + title + "' alt='" + description + "' />";
+                                                       var img="<img src='" + szURL + "' alt='" + description + "' />";
                                                        self.insertHtml(img);
 													   
 													   self.saveContent();//line added to update the original textarea
