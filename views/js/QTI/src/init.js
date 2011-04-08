@@ -37,7 +37,7 @@ function qti_init(qti_initParam){
 function qti_init_interaction(initObj){
 	
 	//instantiate the widget class with the given interaction parameters
-	var myQTIWidget = new QTIWidget(initObj);
+	var myQTIWidgetFactory = new QTIWidgetFactory(initObj);
 	
 	//instantiate the result class with the given interaction parameters
 	var myResultCollector = new QTIResultCollector(initObj);
@@ -45,13 +45,8 @@ function qti_init_interaction(initObj){
 	//get the interaction type to identify the method 
 	var typeName = initObj["type"].replace('qti_', '').replace('_interaction', '');
 	
-	/** @todo remove it in prod ! */
-	if(!myQTIWidget[typeName]){
-		alert("Error: Unknow widget " + typeName);
-	}
-	
 	//call the widget initialization method
-	myQTIWidget[typeName].apply();
+	myQTIWidgetFactory.build(typeName);
 	
 	// validation process
 	$("#qti_validate").bind("click",function(e){

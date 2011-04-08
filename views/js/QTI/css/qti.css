@@ -99,6 +99,13 @@ textarea {width:400px; height:100px; margin:auto; 	}
 /* TXT #009933 BD #666 */.sub_counter{font-size:16px;padding-left:35px;padding-top:5px;font-weight:bold;color:#009933;margin-top:15px;border:2px solid #666;width:110px;height: 25px;background:url(../img/sublink.png) no-repeat;}
 .infiniteSize{font-size:24px;}
 
+/* Graphic Gap Match */
+/* BD #999 BG #eee */ .qti_graphic_gap_match_interaction .qti_graphic_gap_match_spotlist{background-color:#eee; border:2px solid #999; padding:5px; }
+.qti_graphic_gap_match_interaction .qti_graphic_gap_match_spotlist li {float:left;margin-right:5px;}
+/* TXT #009933 BD #CCC */.qti_graphic_gap_match_interaction .qti_graphic_gap_match_spotlist li > div{font-family:Verdana;color:#009933; border:1px solid #CCC;font-weight:bold;cursor:pointer;font-size:16px;padding:2px;}
+.qti_graphic_gap_match_interaction .svg-container{position:relative;}
+.qti_graphic_gap_match_interaction .svg-container .filled_gap{position:absolute;padding:2px;}
+
 /* Slider */
 .qti_slider_interaction{padding:15px;}
 /* TXT #009933 */.qti_slider_label span{color:#009933; font-weight:bold;position:absolute;}

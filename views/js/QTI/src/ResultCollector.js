@@ -364,6 +364,28 @@ function QTIResultCollector(options){
 	};
 	
 	/**
+	 * Collect the results of a <b>graphic gap match</b> widget 
+	 * @methodOf QTIResultCollector
+	 * @returns {Object} the results
+	 */
+	this.graphic_gap_match = function(){
+		var result = {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: []
+			};
+		
+		$("#" + _this.id + " .filled_gap").each(function(){
+			var filledId = $(this).attr("id").replace('gap_', '').split('_');
+			result.value.push({0:filledId[0], 1:filledId[1]});
+		});
+		
+		if ($.isArray(result.value) && result.value.length == 1) {
+		    result.value = result.value.shift();
+		}
+		return result;
+	};
+	
+	/**
 	 * Collect the results of an <b>slider</b> widget 
 	 * @methodOf QTIResultCollector
 	 * @returns {Object} the results
