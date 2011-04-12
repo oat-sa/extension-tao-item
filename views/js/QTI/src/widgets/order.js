@@ -1,4 +1,15 @@
 /**
+ * Order widgets: order and graphic order QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries raphael {@link http://raphaeljs.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -12,6 +23,7 @@ var QTIWidget = QTIWidget || {};
  * Creates a sortable list widget,
  * can be horizontal or vertical regarding the orientation parameter
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.order = function(ctx){
 	
@@ -128,8 +140,10 @@ QTIWidget.order = function(ctx){
 //
 
 /**
- * ordered hot spots
+ * Create a graphic order widget 
+ * where you order hot spots on a background image
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.graphic_order = function (ctx){
 

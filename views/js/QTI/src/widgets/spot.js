@@ -1,4 +1,15 @@
 /**
+ * Spots widgets: hottext, hotspot and select point QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries raphael {@link http://raphaeljs.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -14,6 +25,7 @@ var QTIWidget = QTIWidget || {};
  *  - one by one and 
  *  - N at a time
  *  @methodOf QTIWidget
+ *  @param {Object} ctx the QTIWidget context
  */
 QTIWidget.hottext = function(ctx){
 		
@@ -242,6 +254,7 @@ QTIWidget.hotspot = function (ctx){
 /**
  * Creates a clickable image with free hotspots
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.select_point = function (ctx){
 	

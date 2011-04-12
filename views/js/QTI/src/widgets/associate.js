@@ -1,4 +1,15 @@
 /**
+ * Associate widgets: associate and graphic associate QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries raphael {@link http://raphaeljs.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -9,9 +20,10 @@ var QTIWidget = QTIWidget || {};
 //
 
 /**
- * Creates a pair association widget, 
+ * Creates a pair association widget :
  * where words are dragged from a cloud to pair boxes
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.associate = function(ctx){
 		
@@ -236,8 +248,11 @@ QTIWidget.associate = function(ctx){
 //
 
 /**
- * Creates a clickable image with hotspots
+ * Creates a graphic associate interaction :
+ * make links between spots
+ * 
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.graphic_associate = function (ctx){
 

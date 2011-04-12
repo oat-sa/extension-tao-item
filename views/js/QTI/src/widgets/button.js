@@ -1,4 +1,15 @@
 /**
+ * Buttons like widgets: slider and upload QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries jquery.uploadify {@link http://www.uploadify.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -8,8 +19,9 @@ var QTIWidget = QTIWidget || {};
 //
 
 /**
- * a slider widget
+ * Creates a slider widget
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.slider = function(ctx){
 	
@@ -153,8 +165,10 @@ QTIWidget.slider = function(ctx){
 //
 
 /**
- * a file upload widget
+ * Creates a file upload widget
+ * @see AsyncFileUpload
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.upload = function(ctx){
 	

@@ -1,4 +1,15 @@
 /**
+ * Text widgets: text entry and extended text QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries raphael {@link http://raphaeljs.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -12,6 +23,7 @@ var QTIWidget = QTIWidget || {};
  * 
  * @see QTIWidget#string_interaction
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.text_entry = function (ctx){
 	
@@ -35,6 +47,7 @@ QTIWidget.text_entry = function (ctx){
  * 
  * @see QTIWidget#string_interaction
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.extended_text = function (ctx){
 	
@@ -107,6 +120,7 @@ QTIWidget.extended_text = function (ctx){
  * Initialize the parametrized behavoir of text input likes widgets 
  * It supports now the Regex matching and string cloning 
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.string_interaction = function(ctx){
 	

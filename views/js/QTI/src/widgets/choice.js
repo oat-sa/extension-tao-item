@@ -1,4 +1,15 @@
 /**
+ * Choices widgets: simple, multiple and inline choice QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries raphael {@link http://raphaeljs.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -11,6 +22,7 @@ var QTIWidget = QTIWidget || {};
  * @see QTIWidget#simple_choice
  * @see QTIWidget#multiple_choice
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.choice = function(ctx){
 
@@ -27,6 +39,7 @@ QTIWidget.choice = function(ctx){
 /**
  * Creates a simple choice list widget
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.simple_choice = function (ctx){	
 		
@@ -51,6 +64,7 @@ QTIWidget.simple_choice = function (ctx){
 /**
  * Creates a multiple choice list widget
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.multiple_choice = function (ctx){
 	
@@ -91,6 +105,7 @@ QTIWidget.multiple_choice = function (ctx){
  * We use the html <i>select</i> widget,
  * the function is listed only to keep the same behavior than the other
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.inline_choice = function (ctx){
 	if(this.opts["values"]){

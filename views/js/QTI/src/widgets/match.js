@@ -1,4 +1,15 @@
 /**
+ * Match widgets: gap match, graphic gap match and match QTI's interactions
+ * 
+ * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
+ * @package taoItems
+ * 
+ * @requires jquery {@link http://www.jquery.com}
+ * @requries raphael {@link http://raphaeljs.com/}
+ */
+
+/**
  * @namespace QTIWidget
  */
 var QTIWidget = QTIWidget || {};
@@ -9,8 +20,10 @@ var QTIWidget = QTIWidget || {};
 //
 
 /**
- * Creates a  gap match widget	
+ * Creates a  gap match widget:
+ * A text where you place some words into gaps
  * @methodOf QTIWidget		
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.gap_match = function(ctx){
 	
@@ -176,6 +189,7 @@ QTIWidget.gap_match = function(ctx){
  * Create a match widget: 
  * a matrix of choices to map to each others
  * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.match = function(ctx){
 	
@@ -400,7 +414,10 @@ QTIWidget.match = function(ctx){
 //
 
 /**
- * 
+ * Create a graphic gap match widget: 
+ * a background image where you place others images on pre-defined shapes
+ * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.graphic_gap_match = function (ctx){
 	
@@ -508,8 +525,10 @@ QTIWidget.graphic_gap_match = function (ctx){
 				
 				shapes[identifier].attr({
 					"stroke-opacity": "0",
-					"stroke-width"	: "0"
+					"stroke-width"	: "0",
+					"fill-opacity"	: "0"
 				});
+				shapes[identifier].toFront();
 				if (ctx.graphicDebug){
 					shapes[identifier].attr({
 						"stroke-width"	: "3px",
@@ -521,23 +540,50 @@ QTIWidget.graphic_gap_match = function (ctx){
 			}
 		}
 		
+		/**
+		 * Detect if the pointer is inside a shape of the raphShape SVG Element
+		 * 
+		 * @param {Event} event
+		 * 
+		 * @param {Object} 	params
+		 * @param {Raphael} [params.raphShape]
+		 * @param {Array} 	[params.collisables]
+		 * @param {Float} 	[params.offsetLeft = 0]
+		 * @param {Float} 	[params.offsetTop = 0]
+		 * 
+ 		 * @return {Boolean}
+		 */
+		var detectMouseCollision = function(event, params){
+			return raphaelcollision(
+					params.raphShape, 
+					params.collisables,  
+					event.pageX - ((params.offsetLeft) ?  params.offsetLeft : 0), 
+					event.pageY - ((params.offsetTop ) ?  params.offsetTop  : 0)
+			);
+		};
+		
 		var collisables = [];
 		for(i in shapes){
 			collisables.push(shapes[i]);
 		}
+		var offset = $(ctx.qti_item_id+' .svg-container').offset();
+		
+		var collisionContext = {
+			raphShape 	: paper,
+			collisables	: collisables,
+			offsetLeft : offset.left,
+			offsetTop : offset.top	
+		};
 		
 		//the all image is droppable
 		$(ctx.qti_item_id+' .svg-container').droppable({
+			accept: ctx.qti_item_id + " .qti_graphic_gap_match_spotlist li > div",
 			drop: function(event, ui){
 				var draggedId = $(ui.draggable).parent().attr("id");
 				
-				var offset = $(this).offset();
-				var x = event.pageX - offset.left;
-				var y = event.pageY - offset.top;
-				
 				//detect if the mouse is inside a shape
-				var result = raphaelcollision(paper, collisables,  x, y);
-				if(result.length > 0){
+				var result = detectMouseCollision(event, collisionContext);
+				if(result.length > 0) {
 					fillGap($(this), $(ui.draggable), result[0][2].id, result[0][2]);
 				}
 			}
@@ -560,6 +606,41 @@ QTIWidget.graphic_gap_match = function (ctx){
 			return false;
 		}
 		
+		//if the matchGroup of the choice is defined and not found we cancel the drop 
+		var _matchGroup = ctx.opts["matchMaxes"][draggedId]["matchGroup"];
+		if(_matchGroup.length > 0){
+			if($.inArray(gapId, _matchGroup) < 0){
+				raphShape.animate({
+					"fill-opacity" : 1,
+					"fill":'red'
+				}, 500);
+				setTimeout(function(){
+					raphShape.animate({
+						"fill-opacity" :0
+					}, 400);
+				}, 500);
+				return false;
+			}
+		}
+		
+		//check too the matchGroup of the gap
+		var _gapMatchGroup = ctx.opts["matchMaxes"][gapId]["matchGroup"];
+		if(_gapMatchGroup.length > 0){
+			if($.inArray(draggedId, _gapMatchGroup) < 0){
+				raphShape.animate({
+					"fill-opacity" : 1,
+					"fill":'red'
+				}, 500);
+				setTimeout(function(){
+					raphShape.animate({
+						"fill-opacity" :0
+					}, 400);
+				}, 500);
+				return false;
+			}
+		}
+		
+		//check the matchMax of the element
 		var _matchMax 	= Number(ctx.opts["matchMaxes"][draggedId]["matchMax"]);
 		var _current 	= Number(ctx.opts["matchMaxes"][draggedId]["current"]);
 		
