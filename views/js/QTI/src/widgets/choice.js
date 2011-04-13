@@ -108,8 +108,8 @@ QTIWidget.multiple_choice = function (ctx){
  * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.inline_choice = function (ctx){
-	if(this.opts["values"]){
-		var value = this.opts["values"];
+	if(ctx.opts["values"]){
+		var value = ctx.opts["values"];
 		if(typeof(value) == 'string' && value != ''){
 			$(ctx.qti_item_id+" option[value='"+value+"']").attr('selected', true);
 		}
