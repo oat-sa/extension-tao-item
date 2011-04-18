@@ -256,6 +256,7 @@ class taoItems_models_classes_QTI_ParserFactory
        			case 'selectPoint':
        			case 'graphicOrder':
        			case 'graphicAssociate':
+       			case 'graphicGapMatch':
        				
        				//extract the media object tag
        				$objectNodes = $data->xpath("*[name(.)='object']");
@@ -279,7 +280,49 @@ class taoItems_models_classes_QTI_ParserFactory
 				       	}
        					$myInteraction->setObject($objectData);
        				}
+       			
+       			case 'graphicGapMatch':
        				
+       				//create choices with the gapImg nodes
+       				$choiceNodes = $data->xpath("*[name(.)='gapImg']");
+       				$choices = array();
+       				foreach($choiceNodes as $choiceNode){
+			        	$choice = self::buildChoice($choiceNode);
+			        	if(!is_null($choice)){
+			       			$myInteraction->addChoice($choice);
+			       			$choices[$choice->getIdentifier()] = $choice;
+			        	}
+       				}
+       				//create a group with each gap node (this a particular use of the group)
+       				$gapNodes = $data->xpath(".//*[name(.)='associableHotspot']");
+       				foreach($gapNodes as $gapNode){
+       					$group = new taoItems_models_classes_QTI_Group((string)$gapNode['identifier']);
+       					$group->setType($gapNode->getName());
+       					if(isset($gapNode['matchGroup'])){
+       						$matchChoice = array();
+       						$group->setOption('matchGroup', explode(' ',(string)$gapNode['matchGroup']));
+       						foreach($group->getOption('matchGroup') as $choiceId){
+       							if(array_key_exists($choiceId, $choices)){
+       								$matchChoice[] = $choices[$choiceId];
+       							}
+       						}
+       						$group->setChoices($matchChoice);
+       					}
+       					else{
+       						$group->setChoices($choices);
+       					}
+       					if(isset($gapNode['matchMax'])){
+       						$group->setOption('matchMax', (int)$gapNode['matchMax']);
+       					}
+       					if(isset($gapNode['shape'])){
+       						$group->setOption('shape', (string)$gapNode['shape']);
+       					}
+       					if(isset($gapNode['coords'])){
+       						$group->setOption('coords', (string)$gapNode['coords']);
+       					}
+       					$myInteraction->addGroup($group);
+       				}
+       				break;
        			default :
        				//parse, extract and build the choice nodes contained in the interaction
                     $interactionData = simplexml_load_string($data->asXML()); 
@@ -328,6 +371,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				case 'selectPoint':
        				case 'graphicOrder':
        				case 'graphicAssociate':
+       				case 'graphicGapMatch':
        					$pattern = "/(<object\b[^>]*>(.*?)<\/object>)|(<object\b[^>]*\/>)/is";
 	       				$interactionData = preg_replace($pattern, "", $interactionData);
 	       				
@@ -407,7 +451,32 @@ class taoItems_models_classes_QTI_ParserFactory
             
        	$myChoice = new taoItems_models_classes_QTI_Choice((string)$data['identifier'], $options);
        	$myChoice->setType($data->getName());
-        
+       	
+       	if($myChoice->getType() == 'gapImg'){
+       		
+       		//extract the media object tag
+       		$objectNodes = $data->xpath("*[name(.)='object']");
+       		foreach($objectNodes as $objectNode){
+       			$objectData = array();
+       			foreach($objectNode->attributes() as $key => $value){
+       					$objectData[$key] = (string)$value;
+       			}
+       					
+       			if(count($objectNode->children()) > 0){
+					//get the node xml content
+				    $pattern = array("/^<{$objectNode->getName()}([^>]*)?>/i", "/<\/{$data->getName()}([^>]*)?>$/i");
+				    $content = preg_replace($pattern, "", trim($objectNode->asXML()));
+				    if(empty($content)){
+				    	$content = (string)$objectNode;
+				    }
+				    $objectData['_alt'] = $content;
+				}
+				else{
+					$objectData['_alt'] = (string)$objectNode;
+				}
+       			$myChoice->setObject($objectData);
+       		}
+       	}
        	if(count($data->children()) > 0){
        		//get the node xml content
        		$pattern = array("/^<{$data->getName()}([^>]*)?>/i", "/<\/{$data->getName()}([^>]*)?>$/i");

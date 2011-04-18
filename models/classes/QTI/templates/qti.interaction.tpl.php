@@ -3,7 +3,7 @@
     <?if(!empty($prompt)):?>
     	<prompt><?=$prompt?></prompt>
     <?endif?>
-     <?if(count($object) > 0):?>
+     <?if(isset($object['data'])):?>
      	<?if(trim($object_alt) == ''):?>
      		<object <?=$objectAttributes?> />
      	<?else:?>

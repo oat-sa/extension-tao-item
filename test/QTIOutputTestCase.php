@@ -36,7 +36,7 @@ class QTIOutputTestCase extends UnitTestCase {
 	 * test the building and exporting out the items
 	 */
 	public function testToQTI(){
-		
+		return;
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
@@ -81,11 +81,11 @@ class QTIOutputTestCase extends UnitTestCase {
 	 * test the building and exporting out the items
 	 */
 	public function testToXHTML(){
-		//return;
+		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 		$doc = new DOMDocument();
 		$doc->validateOnParse = true;
-        foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+        foreach(glob(dirname(__FILE__).'/samples/graphic_gap_match.xml') as $file){	
 		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
@@ -104,6 +104,9 @@ class QTIOutputTestCase extends UnitTestCase {
 			
 			//test if content has been exported
 			$xhtml =  $item->toXHTML();
+			print "<pre>";
+			print(htmlentities($xhtml));
+			print "</pre>";
 			$this->assertFalse(empty($xhtml));
 			
 			try{

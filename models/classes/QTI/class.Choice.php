@@ -102,7 +102,8 @@ class taoItems_models_classes_QTI_Choice
         	'data'			=> $this->data,
         	'options'		=> $this->options,
         	'class'			=> (isset($this->options['class'])) ? $this->options['class'] : '',
-        	'rowOptions'	=> json_encode($this->options)
+        	'rowOptions'	=> json_encode($this->options),
+        	'object' 		=> $this->object
         );
 		
 		//parse and render the template
@@ -133,6 +134,7 @@ class taoItems_models_classes_QTI_Choice
         	 $template = self::getTemplatePath() . 'qti.choice.tpl.php';
         }
         
+        
         //get the variables to used in the template
         $variables = array(
         	'identifier'	=> $this->identifier,
@@ -142,6 +144,23 @@ class taoItems_models_classes_QTI_Choice
         	'rowOptions'	=> $this->xmlizeOptions()
         );
 		
+    	//object tag used in the graphic interactions
+		if(count($this->object) > 0){
+			$variables['object'] = $this->object;
+			(isset($this->object['_alt'])) ? $_alt = $this->object['_alt'] : $_alt = '';
+			$objectAttributes = '';
+			foreach($this->object as $key => $value){
+				if($key != '_alt'){
+					$objectAttributes .= "{$key} = '{$value}' ";
+				}
+			}
+			if(!isset($this->object['type'])){
+				$objectAttributes.= " type='' ";	//type attr mandatory
+			}
+			$variables['object_alt'] = $_alt;
+			$variables['objectAttributes'] = $objectAttributes;
+		}
+        
 		//parse and render the template
 		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
