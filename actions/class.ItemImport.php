@@ -126,6 +126,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
 				return false;
 			}
+			
 				
 			//load and validate the manifest
 			$qtiManifestParser = new taoItems_models_classes_QTI_ManifestParser($folder .'/imsmanifest.xml');
@@ -152,13 +153,6 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					try{//load the QTI_Item from the item file
 						$qtiItem = $qtiService->loadItemFromFile($folder . '/'. $resource->getItemFile());
 					}
-					/*catch(taoItems_models_classes_QTI_ParsingException $pe){
-						if(!$forceValid){
-							$this->setData('importErrors', array(array('message' => $pe->getMessage())));
-							$rdfItem->delete();
-							break;
-						}
-					}*/
 					catch(Exception $e){
 						
 						$this->setData('importErrorTitle', __('An error occured during the import'));
@@ -200,9 +194,16 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 							
 							$importedItems++;	//item is considered as imported there 
 							
+							
+							$subpath = preg_quote(dirname($resource->getItemFile()), '/');
+							
 							//and copy the others resources in the runtime path
 							foreach($resource->getAuxiliaryFiles() as $auxResource){
-								tao_helpers_File::copy($folder . '/'. $auxResource, BASE_PATH. "/data/$folderName/$auxResource", true);
+								$auxPath = $auxResource;
+								if(preg_match("/^i[0-9]*/", $subpath)){
+									$auxPath = preg_replace("/^$subpath\//", '', $auxResource);
+								}
+								tao_helpers_File::copy($folder . '/'. $auxResource, BASE_PATH. "/data/$folderName/$auxPath", true);
 							}
 						}
 					}

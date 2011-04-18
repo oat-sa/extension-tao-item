@@ -124,7 +124,7 @@ class taoItems_actions_QTIform_CSSuploader
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
 			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),	
-			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/css'), 'extension' => array('css')))
+			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/css', 'text/plain'), 'extension' => array('css')))
 		));
 		$this->form->addElement($importFileElt);
 		
