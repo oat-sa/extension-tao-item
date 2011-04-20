@@ -70,10 +70,10 @@ class QTIOutputTestCase extends UnitTestCase {
 			if(!$parserValidator->isValid()){
 				$this->fail($parserValidator->displayErrors());
 			}
-			else{
-				@unlink($tmpFile);
-				$this->assertFalse(file_exists($tmpFile));
-			}
+			
+			@unlink($tmpFile);
+			$this->assertFalse(file_exists($tmpFile));
+			
 		}
 	}
 	
