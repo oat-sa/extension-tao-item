@@ -169,7 +169,7 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 		
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/saveInteraction",
+		   url: root_url + "/taoItems/QtiAuthoring/saveInteraction",
 		   data: interactionProperties,
 		   // async: async,
 		   dataType: 'json',
@@ -231,7 +231,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 			// CL('interaction.modifiedChoices before', interaction.modifiedChoices);
 			$.ajax({
 			   type: "POST",
-			   url: "/taoItems/QtiAuthoring/saveChoice",
+			   url: root_url + "/taoItems/QtiAuthoring/saveChoice",
 			   data: choiceProperties,
 			   dataType: 'json',
 			   success: function(r){
@@ -294,7 +294,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 		
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/saveGroup",
+		   url: root_url + "/taoItems/QtiAuthoring/saveGroup",
 		   data: $groupForm.serialize()+choiceOrder,
 		   dataType: 'json',
 		   success: function(r){
@@ -336,7 +336,7 @@ interactionClass.prototype.loadResponseMappingForm = function(){
 	if(relatedItem){
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/editMappingOptions",
+		   url: root_url + "/taoItems/QtiAuthoring/editMappingOptions",
 		   data: {
 				'interactionSerial': this.interactionSerial
 		   },
@@ -380,7 +380,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	if($(containerSelector).length){
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/editChoices",
+		   url: root_url + "/taoItems/QtiAuthoring/editChoices",
 		   data: {
 				'interactionSerial': interactionSerial
 		   },
@@ -487,7 +487,7 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 		
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/addChoice",
+		   url: root_url + "/taoItems/QtiAuthoring/addChoice",
 		   data: postData,
 		   dataType: 'json',
 		   success: function(r){
@@ -867,7 +867,7 @@ interactionClass.prototype.saveResponseMappingOptions = function($myForm){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveMappingOptions",
+	   url: root_url + "/taoItems/QtiAuthoring/saveMappingOptions",
 	   data: $myForm.serialize(),
 	   dataType: 'json',
 	   success: function(r){
@@ -1042,7 +1042,7 @@ interactionClass.prototype.saveInteractionData = function(){
 			//save data if and only if the data content exists
 			$.ajax({
 			   type: "POST",
-			   url: "/taoItems/QtiAuthoring/saveInteractionData",
+			   url: root_url + "/taoItems/QtiAuthoring/saveInteractionData",
 			   data: {
 					'interactionData': util.htmlEncode(this.interactionEditor.wysiwyg('getContent')),
 					'interactionSerial': this.interactionSerial
@@ -1083,7 +1083,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/addHotText",
+	   url: root_url + "/taoItems/QtiAuthoring/addHotText",
 	   data: {
 			'interactionSerial': interactionSerial,
 			'interactionData': util.htmlEncode(interaction.interactionEditor.wysiwyg('getContent'))
@@ -1128,7 +1128,7 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 	
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/addGroup",
+		   url: root_url + "/taoItems/QtiAuthoring/addGroup",
 		   data: {
 				'interactionSerial': interaction.interactionSerial,
 				'interactionData': interactionData

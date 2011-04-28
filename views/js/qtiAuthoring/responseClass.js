@@ -45,7 +45,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 		this.responseFormContainer = responseFormContainer;
 	
 		$.ajax({
-			url: "/taoItems/QtiAuthoring/editResponse",
+			url: root_url + "/taoItems/QtiAuthoring/editResponse",
 			type: "POST",
 			data: {
 				'interactionSerial': this.interactionSerial,
@@ -92,7 +92,7 @@ responseClass.prototype.loadResponseMappingForm = function(){
 	if(interaction){
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/editMappingOptions",
+		   url: root_url + "/taoItems/QtiAuthoring/editMappingOptions",
 		   data: {
 				'interactionSerial': interaction.interactionSerial
 		   },
@@ -121,7 +121,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 		//linearize it and post it:
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/saveResponseProperties",
+		   url: root_url + "/taoItems/QtiAuthoring/saveResponseProperties",
 		   data: $myForm.serialize(),
 		   dataType: 'json',
 		   success: function(r){
@@ -710,7 +710,7 @@ responseClass.prototype.saveResponseGrid = function(){
 	//save to server:
 	//global processUri value
 	$.ajax({
-		url: "/taoItems/QtiAuthoring/saveResponse",
+		url: root_url + "/taoItems/QtiAuthoring/saveResponse",
 		type: "POST",
 		data: {'interactionSerial': this.interactionSerial, "responseDataString": responseDataString},
 		dataType: 'json',

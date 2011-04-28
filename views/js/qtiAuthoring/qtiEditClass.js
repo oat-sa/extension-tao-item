@@ -433,7 +433,7 @@ qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSeria
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/addInteraction",
+	   url: root_url + "/taoItems/QtiAuthoring/addInteraction",
 	   data: {
 			'interactionType': interactionType,
 			'itemData': itemData,
@@ -545,7 +545,7 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 	if(self.itemSerial){
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/editInteraction",
+		   url: root_url + "/taoItems/QtiAuthoring/editInteraction",
 		   data: {
 				'interactionSerial': interactionSerial,
 				'itemSerial': self.itemSerial
@@ -797,7 +797,7 @@ qtiEdit.prototype.save = function(itemUri){
 	var saveItemFunction = function(){
 		$.ajax({
 		   type: "POST",
-		   url: "/taoItems/QtiAuthoring/saveItem",
+		   url: root_url + "/taoItems/QtiAuthoring/saveItem",
 		   data: itemProperties,
 		   dataType: 'json',
 		   success: function(r){
@@ -823,11 +823,12 @@ qtiEdit.prototype.save = function(itemUri){
 qtiEdit.prototype.preview = function(){
 	
 	//full preview require item saving before preview:
-	// var url = '/taoItems/Items/preview';
+	// var url = root_url + '/taoItems/Items/preview';
 	// url += '?uri='+this.itemUri;
 	// url += '&classUri='+this.itemClassUri;
+	// url += '&itemSerial='+this.itemSerial;
 	
-	var url = '/taoItems/QtiAuthoring/preview';
+	var url = root_url + '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
 	
 	var openUrlFunction = function(){
@@ -870,7 +871,7 @@ qtiEdit.prototype.saveItemData = function(itemSerial){
 	instance.itemEditor.wysiwyg('saveContent');
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveItemData",
+	   url: root_url + "/taoItems/QtiAuthoring/saveItemData",
 	   data: {
 			'itemData': util.htmlEncode(instance.itemEditor.wysiwyg('getContent')),
 			'itemSerial': itemSerial
@@ -916,7 +917,7 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/deleteInteractions",
+	   url: root_url + "/taoItems/QtiAuthoring/deleteInteractions",
 	   data: data,
 	   dataType: 'json',
 	   success: function(r){
@@ -973,7 +974,7 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/editResponseProcessing",
+	   url: root_url + "/taoItems/QtiAuthoring/editResponseProcessing",
 	   data: {
 			'itemSerial': self.itemSerial
 	   },
@@ -989,7 +990,7 @@ qtiEdit.prototype.saveResponseProcessing = function($myForm){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/saveResponseProcessing",
+	   url: root_url + "/taoItems/QtiAuthoring/saveResponseProcessing",
 	   data: $myForm.serialize(),
 	   dataType: 'json',
 	   success: function(r){
@@ -1033,7 +1034,7 @@ qtiEdit.prototype.loadStyleSheetForm = function(empty){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/manageStyleSheets",
+	   url: root_url + "/taoItems/QtiAuthoring/manageStyleSheets",
 	   data: post,
 	   dataType: 'html',
 	   success: function(form){
@@ -1063,7 +1064,7 @@ qtiEdit.prototype.deleteStyleSheet = function(css_href){
 	
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/deleteStyleSheet",
+	   url: root_url + "/taoItems/QtiAuthoring/deleteStyleSheet",
 	   data: {
 			'itemSerial': this.itemSerial,
 			'itemUri': this.itemUri,
