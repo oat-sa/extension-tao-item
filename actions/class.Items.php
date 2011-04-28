@@ -489,7 +489,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 						$this->setData('type', 'php');
 					}
 					if(preg_match("/taoItems\//", (string)$authoring)){
-						$this->redirect((string)$authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
+						$this->redirect(ROOT_URL.(string)$authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
 					}
 
 					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
