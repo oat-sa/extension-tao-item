@@ -176,8 +176,10 @@ class taoItems_models_classes_ItemsService
 		if(is_null($itemClazz) && $mode == 'uri'){
 			try{
 				$resource = new core_kernel_classes_Resource($identifier);
-				$itemType = $resource->getUniquePropertyValue(new core_kernel_classes_Property( RDF_TYPE ));
-				$itemClazz = new core_kernel_classes_Class($itemType->uriResource);
+				foreach($resource->getType as $type){
+					$itemClazz = $type;
+					break;
+				}
 			}
 			catch(Exception $e){}
 		}

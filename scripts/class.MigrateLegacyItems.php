@@ -237,8 +237,7 @@ class taoItems_scripts_MigrateLegacyItems
         $returnValue = new core_kernel_classes_Resource($uri);
         
         $isItem = false;
-        $types = $returnValue->getPropertyValuesCollection(new core_kernel_classes_Property(RDF_TYPE));
-        foreach($types->getIterator() as $type){
+        foreach($returnValue->getType() as $type){
         	if($itemService->isItemClass($type)){
         			 $isItem = true;
         			 break;

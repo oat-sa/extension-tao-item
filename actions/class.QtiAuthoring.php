@@ -131,8 +131,10 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($itemUri));
 		
 		$itemResource = new core_kernel_classes_Resource($itemUri);
-		$itemClass = $itemResource->getOnePropertyValue(new core_kernel_classes_Property(RDF_TYPE));
-		$this->setData('itemClassUri', tao_helpers_Uri::encode((!is_null($itemClass))?$itemClass->uriResource:''));
+		foreach($itemResource->getType() as $itemClass){
+			$this->setData('itemClassUri', tao_helpers_Uri::encode((!is_null($itemClass))?$itemClass->uriResource:''));
+			break;
+		}
 		
 		$currentItem = $this->getCurrentItem();
 		$itemData = $this->service->getItemData($currentItem);
