@@ -176,7 +176,7 @@ class taoItems_models_classes_ItemsService
 		if(is_null($itemClazz) && $mode == 'uri'){
 			try{
 				$resource = new core_kernel_classes_Resource($identifier);
-				foreach($resource->getType as $type){
+				foreach($resource->getType() as $type){
 					$itemClazz = $type;
 					break;
 				}
