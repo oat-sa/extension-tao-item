@@ -29,12 +29,12 @@
 			height="550"  
 			align="middle">
 				<param name="allowScriptAccess" value="sameDomain" />
-				<param name="movie" value="<?=$runtime?>?localXmlFile=<?=$contentUrl?>&instance=<?=$uri?>" />
+				<param name="movie" value="<?=$runtime?>?localXmlFile=<?=$contentUrl?>&amp;instance=<?=$uri?>" />
 				<param name="quality" value="high" />
 				<param name="bgcolor" value="#ffffff" />
 				<param name="wmode" value="transparent" />
 				<embed 
-					src="<?=$runtime?>?localXmlFile=<?=$contentUrl?>&instance=<?=$uri?>" 
+					src="<?=$runtime?>?localXmlFile=<?=$contentUrl?>&amp;instance=<?=$uri?>" 
 					quality="high" 
 					bgcolor="#ffffff"  
 					width="700" 
