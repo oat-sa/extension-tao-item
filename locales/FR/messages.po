@@ -1,6 +1,12 @@
 msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr "Un fichier d'item QTI est un fichier XML suivant le standard QTI version 2.0"
 
+msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgstr "Un fichier QTI est un fichier au format XML conforme à la version 2.0 du standard QTI."
+
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
+
 msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
 msgstr "Un paquet QTI est une archive ZIP contenant un fichier msmanifest.xml ainsi que les ressources QTI à importer"
 
@@ -22,8 +28,14 @@ msgstr "Propriétés avancées"
 msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
 msgstr "Un paquet XHTML est une archive ZIP contenant un fichier index.html au format XHTML 1.0 Transitional ainsi que ses ressources à importer (images, scripts, css, video, etc.)"
 
+msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
+
 msgid "An error occured during the import"
 msgstr "Une erreur est survenue durant l'import"
+
+msgid "An error occured while loading the item:"
+msgstr "Une erreur est survenue durant le chargement de l'item:"
 
 msgid "An error occured while saving the item"
 msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
@@ -52,6 +64,9 @@ msgstr "Editeur de choix:"
 msgid "Class saved"
 msgstr "Classe enregistrée"
 
+msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
+msgstr "Cliquer sur un ligne pour éditer, ensuite tapez "Entrer" pour valider ou "Echape" pour annuler les changements."
+
 msgid "Client"
 msgstr "Client"
 
@@ -61,11 +76,17 @@ msgstr "Contenu"
 msgid "Correct Responses"
 msgstr "Réponse correcte"
 
+msgid "Debug Mode"
+msgstr "Mode de déboguage"
+
 msgid "Default value"
 msgstr "Valeur par défaut"
 
 msgid "Delete choice"
 msgstr "Supprimer le choix"
+
+msgid "Delete interaction"
+msgstr "Supprimer l'intéraction"
 
 msgid "Disabled"
 msgstr "Désactivé"
@@ -90,6 +111,9 @@ msgstr "Cela vous permet d'exporter une archive ZIP contenant un dossier par ite
 
 msgid "Enabled"
 msgstr "Activé"
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
+msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
 
 msgid "Error in background file:"
 msgstr "Erreur de le fichier d'arrière plan:"
@@ -250,8 +274,14 @@ msgstr "Masque d'expression régulière"
 msgid "Place holder text"
 msgstr "texte d'espace réservé"
 
+msgid "Please confirm interaction deletion"
+msgstr "Veuillez confirmer la suppression de l'intéraction"
+
 msgid "Please select an item before!"
 msgstr "Veuillez choisir un item!"
+
+msgid "Please select first the item type!"
+msgstr "Veuillez d'abord sélectionner un type d'item!"
 
 msgid "Preview"
 msgstr "Afficher"
@@ -397,6 +427,9 @@ msgstr "par défaut"
 msgid "delete"
 msgstr "supprimer"
 
+msgid "draw it"
+msgstr "déssinez"
+
 msgid "duplicate"
 msgstr "dupliquer"
 
@@ -445,6 +478,9 @@ msgstr "nouvel item"
 msgid "no"
 msgstr "non"
 
+msgid "please confirm deletion of the interaction"
+msgstr "veuillez confirmer la suppression de l'intéraction"
+
 msgid "polygon"
 msgstr "polygone"
 
@@ -475,45 +511,9 @@ msgstr "vertical"
 msgid "yes"
 msgstr "oui"
 
-msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
-msgstr "Un fichier QTI est un fichier au format XML conforme à la version 2.0 du standard QTI."
-
-msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
-msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
-
-msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
-
-msgid "An error occured while loading the item:"
-msgstr "Une erreur est survenue durant le chargement de l'item:"
-
-msgid "An error occured while loading the item: "
-msgstr "Une erreur est survenue durant le chargement de l'item: "
-
-msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
-msgstr "Cliquer sur un ligne pour éditer, ensuite tapez \"Entrer\" pour valider ou \"Echape\" pour annuler les changements."
-
-msgid "Debug Mode"
-msgstr "Mode de déboguage"
-
-msgid "Delete interaction"
-msgstr "Supprimer l'intéraction"
-
-msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
-msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
-
-msgid "Please confirm interaction deletion"
-msgstr "Veuillez confirmer la suppression de l'intéraction"
-
-msgid "Please select first the item type!"
-msgstr "Veuillez d'abord sélectionner un type d'item!"
+msgid "Full preview"
+msgstr ""
 
 msgid "The migration scripts for the deprecated items will be provided soon"
 msgstr ""
-
-msgid "draw it"
-msgstr "déssinez"
-
-msgid "please confirm deletion of the interaction"
-msgstr "veuillez confirmer la suppression de l'intéraction"
 

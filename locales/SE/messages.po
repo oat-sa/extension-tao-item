@@ -37,9 +37,6 @@ msgstr "Ett fel uppstod under importen"
 msgid "An error occured while loading the item:"
 msgstr "Ett fel uppstod medan frågan laddades"
 
-msgid "An error occured while loading the item: "
-msgstr "Ett fel uppstod medan frågan laddades"
-
 msgid "An error occured while saving the item"
 msgstr "Ett fel uppstod medan frågan sparades"
 
@@ -66,9 +63,6 @@ msgstr "Valredigerare:"
 
 msgid "Class saved"
 msgstr "Klass sparad"
-
-msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
-msgstr "Klicka på en rad för att redigera. Tryck sedan på "enter" för att verifiera eller "escape" för att upphäva förändringarna."
 
 msgid "Client"
 msgstr "Klient"
@@ -516,4 +510,7 @@ msgstr "vertikal"
 
 msgid "yes"
 msgstr "ja"
+
+msgid "Full preview"
+msgstr ""
 

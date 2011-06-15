@@ -106,9 +106,6 @@ msgstr ""
 msgid "An error occured while loading the item:"
 msgstr ""
 
-msgid "An error occured while loading the item: "
-msgstr ""
-
 msgid "An error occurs during the import"
 msgstr ""
 
@@ -125,9 +122,6 @@ msgid "Choice"
 msgstr ""
 
 msgid "Choices editor:"
-msgstr ""
-
-msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
 msgstr ""
 
 msgid "Client"
@@ -200,6 +194,9 @@ msgid "Fixed"
 msgstr ""
 
 msgid "Float"
+msgstr ""
+
+msgid "Full preview"
 msgstr ""
 
 msgid "Identifier"
