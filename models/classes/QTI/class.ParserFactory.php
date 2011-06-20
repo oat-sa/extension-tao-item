@@ -251,13 +251,7 @@ class taoItems_models_classes_QTI_ParserFactory
        					$myInteraction->addGroup($group);
        				}
        				break;
-       				
-       			case 'hotspot':
-       			case 'selectPoint':
-       			case 'graphicOrder':
-       			case 'graphicAssociate':
        			case 'graphicGapMatch':
-       				
        				//extract the media object tag
        				$objectNodes = $data->xpath("*[name(.)='object']");
        				foreach($objectNodes as $objectNode){
@@ -280,9 +274,7 @@ class taoItems_models_classes_QTI_ParserFactory
 				       	}
        					$myInteraction->setObject($objectData);
        				}
-       			
-       			case 'graphicGapMatch':
-       				
+                                
        				//create choices with the gapImg nodes
        				$choiceNodes = $data->xpath("*[name(.)='gapImg']");
        				$choices = array();
@@ -322,7 +314,33 @@ class taoItems_models_classes_QTI_ParserFactory
        					}
        					$myInteraction->addGroup($group);
        				}
-       				break;
+       				break;	
+       			case 'hotspot':
+       			case 'selectPoint':
+       			case 'graphicOrder':
+       			case 'graphicAssociate':
+       				//extract the media object tag
+       				$objectNodes = $data->xpath("*[name(.)='object']");
+       				foreach($objectNodes as $objectNode){
+       					$objectData = array();
+       					foreach($objectNode->attributes() as $key => $value){
+       						$objectData[$key] = (string)$value;
+       					}
+       					
+       					if(count($objectNode->children()) > 0){
+				       		//get the node xml content
+				       		$pattern = array("/^<{$objectNode->getName()}([^>]*)?>/i", "/<\/{$data->getName()}([^>]*)?>$/i");
+				       		$content = preg_replace($pattern, "", trim($objectNode->asXML()));
+				       		if(empty($content)){
+				       			$content = (string)$objectNode;
+				       		}
+				       		$objectData['_alt'] = $content;
+				       	}
+				       	else{
+				       		$objectData['_alt'] = (string)$objectNode;
+				       	}
+       					$myInteraction->setObject($objectData);
+       				}
        			default :
        				//parse, extract and build the choice nodes contained in the interaction
                     $interactionData = simplexml_load_string($data->asXML()); 
