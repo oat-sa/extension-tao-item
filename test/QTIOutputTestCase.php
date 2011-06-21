@@ -39,7 +39,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 
-		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
 			
@@ -60,7 +60,7 @@ class QTIOutputTestCase extends UnitTestCase {
 			$this->assertFalse(empty($qti));
 
 			//test if it's a valid QTI file
-			$tmpFile = dirname(__FILE__).'/samples/'.uniqid('qti_', true).'.xml';
+			$tmpFile = dirname(__FILE__).'/samples/tmp/'.uniqid('qti_', true).'.xml';
 			file_put_contents($tmpFile, $qti);
 			$this->assertTrue(file_exists($tmpFile));
 			
@@ -70,9 +70,10 @@ class QTIOutputTestCase extends UnitTestCase {
 			if(!$parserValidator->isValid()){
 				$this->fail($parserValidator->displayErrors());
 			}
-			
-			@unlink($tmpFile);
-			$this->assertFalse(file_exists($tmpFile));
+                        
+                        @unlink($tmpFile);
+                        $this->assertFalse(file_exists($tmpFile));
+                        
 			
 		}
 	}
@@ -85,11 +86,10 @@ class QTIOutputTestCase extends UnitTestCase {
 		taoItems_models_classes_QTI_Data::setPersistance(false);
 		$doc = new DOMDocument();
 		$doc->validateOnParse = true;
-        foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
+                foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 		
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
 			$item = $qtiParser->load();
-			
 			
 			$this->assertTrue($qtiParser->isValid());
 			$this->assertNotNull($item);

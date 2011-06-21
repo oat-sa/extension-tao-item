@@ -1,0 +1,1 @@
+<associableHotspot identifier="<?=$identifier?>" <?=$rowOptions?> />

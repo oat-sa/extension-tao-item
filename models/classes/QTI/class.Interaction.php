@@ -987,7 +987,7 @@ class taoItems_models_classes_QTI_Interaction
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){
    			//create the matchGroup from the choice list
-			if($this->type == 'gapMatch'){
+			if($this->type == 'gapMatch' || $this->type == 'graphicGapMatch'){
 				foreach($this->getGroups() as $group){
 					$matchGroup = array();
 					foreach($group->getChoices() as $choiceSerial){

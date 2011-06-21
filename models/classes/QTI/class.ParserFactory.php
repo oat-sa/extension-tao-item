@@ -343,7 +343,7 @@ class taoItems_models_classes_QTI_ParserFactory
        				}
        			default :
        				//parse, extract and build the choice nodes contained in the interaction
-                    $interactionData = simplexml_load_string($data->asXML()); 
+                                $interactionData = simplexml_load_string($data->asXML()); 
        				$exp= "*[contains(name(.),'Choice')] | *[name(.)='associableHotspot'] | //*[name(.)='hottext']";
        				$choiceNodes = $interactionData->xpath($exp);
        				foreach($choiceNodes as $choiceNode){
@@ -367,7 +367,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	        	
 				switch($type){
 					
-       				case 'match':
+       				case 'match':{
        					foreach($myInteraction->getGroups() as $group){
        						//map the group by a identified tag: {group-serial}
        						$tag = $group->getType();
@@ -376,32 +376,32 @@ class taoItems_models_classes_QTI_ParserFactory
        					}
 						
        					break;
-       					
+       				}	
        				case 'gapMatch':
+                                case 'graphicGapMatch':{
 						foreach($myInteraction->getGroups() as $group){
        						//map the group by a identified tag: {group-serial}
        						$tag = $group->getType();
 				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 				        	$interactionData = preg_replace($pattern, "{{$group->getSerial()}}", $interactionData, 1);
        					}
-       					
+       				}	
        				case 'hotspot':
        				case 'selectPoint':
        				case 'graphicOrder':
-       				case 'graphicAssociate':
-       				case 'graphicGapMatch':
+       				case 'graphicAssociate':{
+       				
        					$pattern = "/(<object\b[^>]*>(.*?)<\/object>)|(<object\b[^>]*\/>)/is";
 	       				$interactionData = preg_replace($pattern, "", $interactionData);
-	       				
-       				default:                        
+	       			}	
+       				default:{                        
 			        	foreach($myInteraction->getChoices() as $choice){
 				        	//map the choices by a identified tag: {choice-serial}
 				        	$tag = $choice->getType();
 				        	$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 				        	$interactionData = preg_replace($pattern, "{{$choice->getSerial()}}", $interactionData, 1);
 				        }
-				        break;
-		        
+                                }
 	       		}
 	       		
 	       		//extract the prompt tag to the attribute

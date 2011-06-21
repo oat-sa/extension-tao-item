@@ -240,16 +240,16 @@ class taoItems_models_classes_QTI_Group
         	$variables['identifier'] = false;
         }
         
-        if($this->type != 'gap'){
+        if($this->type != 'gap' && $this->type != 'associableHotspots'){//associableHotspots in graphic gap match interactions are groups
         	$variables['data'] = '';
         	foreach($this->getChoices() as $choiceSerial){
-				$variables['data'] .= "{{$choiceSerial}}";
-			}
+                        $variables['data'] .= "{{$choiceSerial}}";
+                }
         }
-		
-		//parse and render the template
-		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
-		$returnValue = $tplRenderer->render();
+	
+        //parse and render the template
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
+        $returnValue = $tplRenderer->render();
         
         // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:000000000000257F end
 
