@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * A response is on object associated to an interactino containing which are the
  * response into the interaction choices and the score regarding the answers
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  * @subpackage models_classes_QTI
@@ -23,7 +23,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
@@ -31,7 +31,7 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * The QTI's interactions are the way the user interact with the system. The
  * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
@@ -49,7 +49,7 @@ require_once('taoItems/models/classes/QTI/class.Interaction.php');
  * response into the interaction choices and the score regarding the answers
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  * @subpackage models_classes_QTI
@@ -90,17 +90,9 @@ class taoItems_models_classes_QTI_Response
      * Short description of attribute mappingDefaultValue
      *
      * @access protected
-     * @var string
+     * @var double
      */
-    protected $mappingDefaultValue = '';
-
-    /**
-     * Short description of attribute areaMappingDefaultValue
-     *
-     * @access protected
-     * @var string
-     */
-    protected $areaMappingDefaultValue = '';
+    protected $mappingDefaultValue = 0.0;
 
     /**
      * Short description of attribute howMatch
@@ -116,7 +108,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -142,7 +134,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getCorrectResponses
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
     public function getCorrectResponses()
@@ -162,7 +154,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setCorrectResponses
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array responses
      * @return mixed
      */
@@ -182,7 +174,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMapping
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string type
      * @return array
      */
@@ -209,7 +201,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setMapping
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array map
      * @param  type
      * @return mixed
@@ -232,47 +224,35 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getMappingDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string type
-     * @return string
+     * @author firstname and lastname of author, <author@example.org>
+     * @return double
      */
-    public function getMappingDefaultValue($type = '')
+    public function getMappingDefaultValue()
     {
-        $returnValue = (string) '';
+        $returnValue = (float) 0.0;
 
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E8 begin
         
-        if($type == 'area'){
-        	$returnValue = $this->areaMappingDefaultValue;
-        }
-        else{
-        	$returnValue = $this->mappingDefaultValue;
-        }
+        $returnValue = $this->mappingDefaultValue;
         
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025E8 end
 
-        return (string) $returnValue;
+        return (float) $returnValue;
     }
 
     /**
      * Short description of method setMappingDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string value
-     * @param  string type
+     * @author firstname and lastname of author, <author@example.org>
+     * @param  double value
      * @return mixed
      */
-    public function setMappingDefaultValue($value, $type = '')
+    public function setMappingDefaultValue($value)
     {
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025EA begin
         
-    	if($type == 'area'){
-    		$this->areaMappingDefaultValue = $value;
-    	}
-    	else{
-    		$this->mappingDefaultValue = $value;
-    	}
+    	$this->mappingDefaultValue = $value;
     	
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025EA end
     }
@@ -281,7 +261,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function toXHTML()
@@ -301,7 +281,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function toQTI()
@@ -339,7 +319,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -372,7 +352,7 @@ class taoItems_models_classes_QTI_Response
      * null.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      */
     public function correctToJSON()
     {
@@ -403,7 +383,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method areaMapToJson
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      */
     public function areaMapToJson()
     {
@@ -419,6 +399,13 @@ class taoItems_models_classes_QTI_Response
             //var_dump ($mapping);
             $returnValue = Array ();
             $returnValue['identifier'] = $this->getIdentifier();
+            $returnValue['defaultValue'] = $this->mappingDefaultValue;
+            if (isset($this->options['areaMapping']['lowerBound'])){
+           		$returnValue['lowerBound'] = $this->options['areaMapping']['lowerBound'];
+            }
+            if (isset($this->options['areaMapping']['upperBound'])){
+            	$returnValue['upperBound'] = $this->options['areaMapping']['upperBound'];
+            }
             $mappingValue = Array ();       
             
             // If a mapping has been defined
@@ -446,7 +433,7 @@ class taoItems_models_classes_QTI_Response
      * get the mapping in JSON format. If no mapping defined return null.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      */
     public function mapToJSON()
     {
@@ -459,6 +446,13 @@ class taoItems_models_classes_QTI_Response
         {
             $returnValue = Array ();
             $returnValue['identifier'] = $this->getIdentifier();
+            $returnValue['defaultValue'] = $this->mappingDefaultValue;
+            if (isset($this->options['areaMapping']['lowerBound'])){
+            	$returnValue['lowerBound'] = $this->options['mapping']['lowerBound'];
+            }
+            if (isset($this->options['areaMapping']['upperBound'])){
+            	$returnValue['upperBound'] = $this->options['mapping']['upperBound'];
+            }
             $mappingValue = Array ();       
             
             // If a mapping has been defined
@@ -487,7 +481,7 @@ class taoItems_models_classes_QTI_Response
      * get the base type of the response declaration
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function getBaseType()
@@ -507,7 +501,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method getHowMatch
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function getHowMatch()
@@ -527,7 +521,7 @@ class taoItems_models_classes_QTI_Response
      * Short description of method setHowMatch
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string howMatch
      * @return mixed
      */

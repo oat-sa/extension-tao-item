@@ -82,7 +82,6 @@ $(function (){
 		    }
 		};
 	<?endif?>
-	
 		matchingInit(matchingParam);
 	}
 	

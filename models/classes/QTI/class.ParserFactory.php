@@ -559,7 +559,7 @@ class taoItems_models_classes_QTI_ParserFactory
        	foreach($mappingNodes as $mappingNode){
        		
        		if(isset($mappingNode['defaultValue'])){
-       			$myResponse->setMappingDefaultValue((string)$mappingNode['defaultValue']);
+       			$myResponse->setMappingDefaultValue(floatval((string)$mappingNode['defaultValue']));
        		}
        		$mappingOptions = array();
 	       	foreach($mappingNode->attributes() as $key => $value){
@@ -567,6 +567,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	       			$mappingOptions[$key] = (string)$value;
 	       		}
 	       	}
+	       	//var_dump($mappingOptions);
 	       	$myResponse->setOption('mapping', $mappingOptions);
        		
        		$mapping = array();
@@ -583,7 +584,7 @@ class taoItems_models_classes_QTI_ParserFactory
        	foreach($mappingNodes as $mappingNode){
        		
        		if(isset($mappingNode['defaultValue'])){
-       			$myResponse->setMappingDefaultValue((string)$mappingNode['defaultValue'], 'area');
+       			$myResponse->setMappingDefaultValue(floatval((string)$mappingNode['defaultValue']));
        		}
        		$mappingOptions = array();
 	       	foreach($mappingNode->attributes() as $key => $value){

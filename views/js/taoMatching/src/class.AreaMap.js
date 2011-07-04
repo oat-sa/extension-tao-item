@@ -35,7 +35,7 @@ TAO_MATCHING.AreaMap.prototype = {
      */
     map : function (matchingVar) {
         var returnValue = 0.0;
-        var mapKeyFound = [];
+        var mapEntriesFound = [];
                 
         // for each map element, check if it is represented in the given variable
         for (var mapKey in this.value) {
@@ -44,18 +44,36 @@ TAO_MATCHING.AreaMap.prototype = {
             if (matchingVar instanceof TAO_MATCHING.Tuple) {
                 if (this.value[mapKey].key.contains (matchingVar)){
                     returnValue = this.value[mapKey].value;
+    				mapEntriesFound.push(mapKey);
                 }
             } 
             // Collection of points
             else if (matchingVar instanceof TAO_MATCHING.List) {
+            	var found = false;
                 for (var varKey in matchingVar.value) {
                     // If one match the current map value
-                    if (this.value[mapKey].key.contains (matchingVar.value[varKey])){
-                        returnValue += this.value[mapKey].value;
+                    if (this.value[mapKey].key.contains (matchingVar.value[varKey])) {
+                        mapEntriesFound.push(varKey);
+                        if (!found){ // Stop at the first value found (IMS QTI Standart requirement)
+                        	returnValue += this.value[mapKey]['value'];
+                        	found = true;
+                        }
                     }
                 }
             }
         }
+        
+        // If a defaultValue has been set and it is different from zero
+    	if (this.defaultValue != 0) {    		
+    		// If the given var is a collection
+    		if ( TAO_MATCHING.Variable.isCollection (matchingVar)){
+    			// How many values have not been found * default value
+	        	var delta = matchingVar.value.length - mapEntriesFound.length;
+	        	returnValue += delta * this.defaultValue;
+    		} else if (!mapEntriesFound.length) {
+    			returnValue = this.defaultValue;
+    		}
+    	}	
         
         return returnValue;
     }

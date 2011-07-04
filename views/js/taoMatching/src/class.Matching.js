@@ -316,7 +316,8 @@ TAO_MATCHING.Matching.prototype = {
             try {
                 if (typeof this.maps[data[key].identifier] != 'undefined')
                     throw new Error ('TAO_MATCHING.Matching::setMaps a correct variable with the identifier '+ data[key].identifier +' exists yet');
-                var matchingVar = new TAO_MATCHING.Map (data[key].value);
+                console.log (data[key].value);
+                var matchingVar = new TAO_MATCHING.Map (data[key]);
                 this.maps[data[key].identifier] = matchingVar;
             } 
             catch (e) {
@@ -343,7 +344,7 @@ TAO_MATCHING.Matching.prototype = {
                 if (typeof this.maps[data[key].identifier] != 'undefined')
                     throw new Error ('TAO_MATCHING.Matching::setAreaMaps a correct variable with the identifier '+ data[key].identifier +' exists yet');
                 
-                var matchingVar = new TAO_MATCHING.AreaMap (data[key].value);
+                var matchingVar = new TAO_MATCHING.AreaMap (data[key]);
                 this.areaMaps[data[key].identifier] = matchingVar;
             } 
             catch (e) {

@@ -8,7 +8,7 @@ error_reporting(E_ALL);
  * containers the result is the sum of the mapped values from
  * the target set
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -21,7 +21,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Shape represents the different shapres managed by the tao 
  * matching api.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('taoItems/models/classes/Matching/class.Shape.php');
 
@@ -40,7 +40,7 @@ require_once('taoItems/models/classes/Matching/class.Shape.php');
  * the target set
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -59,21 +59,55 @@ class taoItems_models_classes_Matching_AreaMap
      */
     public $value = array();
 
+    /**
+     * Short description of attribute defaultValue
+     *
+     * @access private
+     * @var double
+     */
+    private $defaultValue = 0.0;
+
+    /**
+     * Short description of attribute upperBound
+     *
+     * @access private
+     * @var double
+     */
+    private $upperBound = 0.0;
+
+    /**
+     * Short description of attribute lowerBound
+     *
+     * @access private
+     * @var double
+     */
+    private $lowerBound = 0.0;
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  value
+     * @author firstname and lastname of author, <author@example.org>
+     * @param  data
      * @return mixed
      */
-    public function __construct(   $value)
+    public function __construct(   $data)
     {
         // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C88 begin
-        
-        $this->setValue ($value);
+    
+    	if (isset ($data->upperBound)){
+    		$this->upperBound = $data->upperBound;
+    	}    
+    	if (isset ($data->lowerBound)){
+    		$this->lowerBound = $data->lowerBound;
+    	}    
+    	if (isset ($data->defaultValue)){
+    		$this->defaultValue = $data->defaultValue;
+    	}   
+    	
+        $this->setValue ($data->value);
         
         // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C88 end
     }
@@ -87,7 +121,7 @@ class taoItems_models_classes_Matching_AreaMap
      * containers each area can be mapped once only.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Variable var
      * @return double
      */
@@ -97,30 +131,48 @@ class taoItems_models_classes_Matching_AreaMap
 
         // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C8B begin
 
-        $mapKeyFound = array ();
+        $mapEntriesFound = array ();
         
         // for each map element, check if it is represented in the given variable
         foreach ($this->value as $mapKey=>$mapElt) {
             
             // Collection of points
             if ($var instanceOf taoItems_models_classes_Matching_List){
+    			$found = false;
                 // For each value contained by the matching var to map
                 foreach ($var->getValue() as $key => $value) {
                     // If one is contained by the current map value
                     if ($mapElt['key']->contains($value)) {
-                        $returnValue += $mapElt['value'];
-                        break;
+                    	$mapEntriesFound[] = $key;
+                    	if (!$found) {
+                        	$returnValue += $mapElt['value'];
+                        	$found = true;
+                    	}
                     }
                 }
             }
             // Uniq Point
             else if ($var instanceOf taoItems_models_classes_Matching_Tuple) {
                 if ($mapElt['key']->contains($var)){
-                    $returnValue += $mapElt['value'];
+                    $mapEntriesFound[] = $mapElt['key'];
+    				$returnValue += $mapElt['value'];
+    				break;
                 }
                 
             }
         }
+        
+ 		// If a defaultValue has been set and it is different from zero
+    	if ($this->defaultValue != 0) {		
+    		// If the given var is a collection
+    		if ($var instanceOf taoItems_models_classes_Matching_Collection){
+    			// How many values have not been found * default value
+	        	$delta = count($var->getValue()) - count($mapEntriesFound);
+	        	$returnValue += $delta * $this->defaultValue;
+    		} else if (!$count(mapEntriesFound)) {
+    			$returnValue = $this->defaultValue;
+    		}
+    	}	
         
         // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C8B end
 
@@ -131,7 +183,7 @@ class taoItems_models_classes_Matching_AreaMap
      * Set the value of the area map.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  data
      * @return mixed
      */

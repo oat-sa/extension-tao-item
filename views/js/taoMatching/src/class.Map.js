@@ -13,8 +13,27 @@ TAO_MATCHING = typeof TAO_MATCHING != 'undefined' ? TAO_MATCHING : {};
  * @constructor 
  */
 TAO_MATCHING.Map = function (data) {
+	console.log (data);
+	this.value = null;
+	this.lowerBound = null;
+	this.upperBound = null;
+	this.defaultValue = 0;
+	
 	// Set the value of the variable
-	this.setValue (data);
+	this.setValue (data.value);
+
+	// Set default value
+	if (typeof data.defaultValue != 'undefined'){
+		this.defaultValue = data.defaultValue;
+	}
+	// Set lower bound
+	if (typeof data.lowerBound != 'undefined'){
+		this.lowerBound = data.lowerBound;
+	}
+	// Set upper bound
+	if (typeof data.upperBound != 'undefined'){
+		this.upperBound = data.upperBound;
+	}
 };
 
 TAO_MATCHING.Map.prototype = {
@@ -34,30 +53,50 @@ TAO_MATCHING.Map.prototype = {
      */
 	map : function (matchingVar) {
 		var returnValue = 0.0;
-        var mapKeyFound = [];
-        
-        // for each map element, check if it is represented in the given variable
+        var mapEntriesFound = new Array ();
+		
+    	// for each map element, check if it is represented in the given variable
     	for (var mapKey in this.value) {
     		
     		// If the given var is a collection
     		if ( TAO_MATCHING.Variable.isCollection (matchingVar)){
+
+            	var found = false;
     		    // For each value contained by the matching var to map
                 for (var varKey in matchingVar.value) {
+                	
                     // If one match the current map value
                     if (matchingVar.value[varKey].match (this.value[mapKey]['key'])) {
-                        returnValue += this.value[mapKey]['value'];
-                        break;
+                        mapEntriesFound.push(varKey);
+                        if (!found){ // Stop at the first value found (IMS QTI Standart requirement)
+                        	returnValue += this.value[mapKey]['value'];
+                        	found = true;
+                        }
                     }
                 }
             }
     		else {
-    			if (matchingVar.match (this.value[mapKey]['key'])){
-    				returnValue += this.value[mapKey]['value'];
-    			}
     			
+    			if (matchingVar.match (this.value[mapKey]['key'])){
+    				mapEntriesFound.push(mapKey);
+    				returnValue += this.value[mapKey]['value'];
+    				break;
+    			}
     		}
 	    }
-		
+    	
+    	// If a defaultValue has been set and it is different from zero
+    	if (this.defaultValue != 0) {    		
+    		// If the given var is a collection
+    		if ( TAO_MATCHING.Variable.isCollection (matchingVar)){
+    			// How many values have not been found * default value
+	        	var delta = matchingVar.value.length - mapEntriesFound.length;
+	        	returnValue += delta * this.defaultValue;
+    		} else if (!mapEntriesFound.length) {
+    			returnValue = this.defaultValue;
+    		}
+    	}	
+    	
         return returnValue;
 	}
 	

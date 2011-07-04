@@ -148,7 +148,7 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertFalse ($listList1->match($listList7));
 		
 		// Map List
-		$map1 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]'));
+		$map1 = new taoItems_models_classes_Matching_Map (json_decode('{"value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}'));
 		$this->assertEqual ($map1->map ($listList1), 1.7);
 		$this->assertEqual ($map1->map ($listList2), 1.7);
 		$this->assertEqual ($map1->map ($listList3), 1.5);
@@ -156,8 +156,17 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertEqual ($map1->map ($listList5), 0.0);
 		$this->assertEqual ($map1->map ($listList7), 1.7);
 		
+		// Map : test default Value 
+		$map11 = new taoItems_models_classes_Matching_Map (json_decode('{"defaultValue":-2, "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}'));
+		$this->assertEqual ($map11->map ($listList1), 1.7);
+		$this->assertEqual ($map11->map ($listList2), 1.7);
+		$this->assertEqual ($map11->map ($listList3), 1.5);
+		$this->assertEqual (round($map11->map ($listList4),1), -0.3);
+		$this->assertEqual ($map11->map ($listList5), 0.0);
+		$this->assertEqual ($map11->map ($listList7), 1.7);
+		
 		// Map Tuple
-		$map2 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]'));
+		$map2 = new taoItems_models_classes_Matching_Map (json_decode('{"value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}'));
 		$this->assertEqual ($map2->map ($listTpl1), 1.7);
 		$this->assertEqual ($map2->map ($listTpl2), 0.0);
 		$this->assertEqual ($map2->map ($listTpl3), 1.5);
@@ -168,7 +177,7 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		// Map List BasicType
 		$listStr1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('["TAO", "Test assisté par ordinateur", "CBA in english"]'));
 		$listStr2 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('["TAO", "Test assisté par ordinateur"]'));
-		$map3 = new taoItems_models_classes_Matching_Map (json_decode('[{"key":"TAO", "value":1}, {"key":"Test assisté par ordinateur", "value":0.5}, {"key":"CBA in english", "value":0.2}]'));
+		$map3 = new taoItems_models_classes_Matching_Map (json_decode('{"value":[{"key":"TAO", "value":1}, {"key":"Test assisté par ordinateur", "value":0.5}, {"key":"CBA in english", "value":0.2}]}'));
 		$this->assertEqual ($map3->map ($listStr1), 1.7);
 		$this->assertEqual ($map3->map ($listStr2), 1.5);
 		

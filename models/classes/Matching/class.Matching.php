@@ -409,7 +409,7 @@ class taoItems_models_classes_Matching_Matching
 
         foreach ($data as $key=>$map){
             try {
-                $var =  new taoItems_models_classes_Matching_AreaMap ($map->value);
+                $var =  new taoItems_models_classes_Matching_AreaMap ($map);
                 
                 if (isset ($this->areaMaps[$map->identifier]))
                     throw new Exception ('taoItems_models_classes_Matching_Matching::setMaps a map variable with the identifier '.$map->identifier.' exists yet');
@@ -443,7 +443,7 @@ class taoItems_models_classes_Matching_Matching
 
 		foreach ($data as $key=>$map){
 			try {
-				$var =  new taoItems_models_classes_Matching_Map ($map->value);
+				$var =  new taoItems_models_classes_Matching_Map ($map);
 				
 				if (isset ($this->maps[$map->identifier]))
 					throw new Exception ('taoItems_models_classes_Matching_Matching::setMaps a map variable with the identifier '.$map->identifier.' exists yet');
