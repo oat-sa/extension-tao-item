@@ -817,8 +817,17 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteraction){
 
 	var interaction = this;
-	delete interaction.choices[choiceSerial];
-	
+	delete this.choices[choiceSerial];
+        
+        var newOrderedChoices = [];
+        var j = 0;
+        for(var i=0; i<this.orderedChoices.length; i++){
+                if(this.orderedChoices[i] != choiceSerial){
+                        newOrderedChoices[j++] = this.orderedChoices[i];
+                }
+        }
+	this.orderedChoices = newOrderedChoices;
+        
 	if(!reloadInteraction) var reloadInteraction = false;
 	
 	$.ajax({
@@ -850,12 +859,12 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 					interaction.shapeEditor.removeShapeObj(choiceSerial);
 				}
 				
-				
 				//TODO: need to be optimized: only after the last choice saving
 				new responseClass(interaction.responseGrid, interaction);
 				interaction.saveInteractionData();
 			}else{
 				interaction.choices[choiceSerial] = choiceSerial;
+                                //interaction.orderedChoices[choiceSerial] = choiceSerial;
 			}
 	   }
 	});
