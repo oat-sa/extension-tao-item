@@ -130,6 +130,7 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		$listList2 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["B", "A"], ["D", "C"], ["F", "E"]]'));
 		$listList3 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"]]'));
 		$listList4 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"]]'));
+		$listList44 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]'));
 		$listList5 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[]'));
 		$listList6 = taoItems_models_classes_Matching_VariableFactory::create (json_decode(''));
 		$listList7 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"], ["A", "B"], ["C", "D"], ["E", "F"]]'));
@@ -158,12 +159,13 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		
 		// Map : test default Value 
 		$map11 = new taoItems_models_classes_Matching_Map (json_decode('{"defaultValue":-2, "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}'));
-		$this->assertEqual ($map11->map ($listList1), 1.7);
-		$this->assertEqual ($map11->map ($listList2), 1.7);
-		$this->assertEqual ($map11->map ($listList3), 1.5);
 		$this->assertEqual (round($map11->map ($listList4),1), -0.3);
-		$this->assertEqual ($map11->map ($listList5), 0.0);
-		$this->assertEqual ($map11->map ($listList7), 1.7);
+		$this->assertEqual (round($map11->map ($listList44),1), -2.3);
+		
+		// Map : test lowerBound / upperBound
+		$map12 = new taoItems_models_classes_Matching_Map (json_decode('{"lowerBound":-1, "upperBound":1, "defaultValue":-2, "value":[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]}'));
+		$this->assertEqual (round($map12->map ($listList44),1), -1);
+		$this->assertEqual ($map12->map ($listList7), 1);
 		
 		// Map Tuple
 		$map2 = new taoItems_models_classes_Matching_Map (json_decode('{"value":[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]}'));

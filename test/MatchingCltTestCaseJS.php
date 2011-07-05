@@ -265,7 +265,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
         });
 		
 		test("map list of list [in QTI list of pair]", function() {
-			var map1 = new TAO_MATCHING.Map ([{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]);
+			var map1 = new TAO_MATCHING.Map ({value:[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]});
 			var listList1 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"]]);
 			var listList2 = TAO_MATCHING.VariableFactory.create ([["B", "A"], ["D", "C"], ["F", "E"]]);
 			var listList3 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"]]);
@@ -279,9 +279,27 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			equals (map1.map(listList5), 0.0, 'Right mapping');
 			equals (map1.map(listList6), 1.7, 'Right mapping');
 		});
+
+		test("map default value", function() {
+			var map1 = new TAO_MATCHING.Map ({defaultValue:-2, value:[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]});
+			var listList4 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"]]);
+			var listList41 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]);
+			var tmpVal = Math.round(map1.map(listList4)*Math.pow(10,1))/Math.pow(10,1)
+			equals (tmpVal, -0.3, 'Right mapping');
+			var tmpVal = Math.round(map1.map(listList41)*Math.pow(10,1))/Math.pow(10,1)
+			equals (tmpVal, -2.3, 'Right mapping');
+		});
+
+		test("map lower/upperBound", function() {
+			var map1 = new TAO_MATCHING.Map ({defaultValue:-2, lowerBound:-1, upperBound:1, value:[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]});
+			var listList4 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"]]);
+			var listList41 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]);
+			equals (map1.map(listList4), 1, 'Right mapping');
+			equals (map1.map(listList41), -1, 'Right mapping');
+		});
 		
 		test("map list of tuple [in QTI list of directedpair]", function() {
-			var map2 = new TAO_MATCHING.Map ([{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]);
+			var map2 = new TAO_MATCHING.Map ({value:[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]});
 			var listTuple1 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
 			var listTuple2 = TAO_MATCHING.VariableFactory.create ([{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]);
 			var listTuple3 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}]);

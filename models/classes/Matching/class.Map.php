@@ -87,10 +87,14 @@ class taoItems_models_classes_Matching_Map
         
     	if (isset ($data->upperBound)){
     		$this->upperBound = $data->upperBound;
-    	}    
+    	}else{
+    		$this->upperBound = null;
+    	}
     	if (isset ($data->lowerBound)){
     		$this->lowerBound = $data->lowerBound;
-    	}    
+    	}else{
+    		$this->lowerBound = null;
+    	}  
     	if (isset ($data->defaultValue)){
     		$this->defaultValue = $data->defaultValue;
     	}    	
@@ -159,7 +163,19 @@ class taoItems_models_classes_Matching_Map
     		} else if (!$count(mapEntriesFound)) {
     			$returnValue = $this->defaultValue;
     		}
-    	}	
+    	}
+    	
+    	if ($this->lowerBound != null){
+    		if ($returnValue < $this->lowerBound){
+    			$returnValue = $this->lowerBound;
+    		}
+    	}
+    	
+    	if ($this->upperBound != null){
+    		if ($returnValue > $this->upperBound){
+    			$returnValue = $this->upperBound;
+    		}
+    	}
 	    
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002948 end
 

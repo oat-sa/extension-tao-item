@@ -447,10 +447,10 @@ class taoItems_models_classes_QTI_Response
             $returnValue = Array ();
             $returnValue['identifier'] = $this->getIdentifier();
             $returnValue['defaultValue'] = $this->mappingDefaultValue;
-            if (isset($this->options['areaMapping']['lowerBound'])){
+            if (isset($this->options['mapping']['lowerBound'])){
             	$returnValue['lowerBound'] = $this->options['mapping']['lowerBound'];
             }
-            if (isset($this->options['areaMapping']['upperBound'])){
+            if (isset($this->options['mapping']['upperBound'])){
             	$returnValue['upperBound'] = $this->options['mapping']['upperBound'];
             }
             $mappingValue = Array ();       

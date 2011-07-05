@@ -316,7 +316,6 @@ TAO_MATCHING.Matching.prototype = {
             try {
                 if (typeof this.maps[data[key].identifier] != 'undefined')
                     throw new Error ('TAO_MATCHING.Matching::setMaps a correct variable with the identifier '+ data[key].identifier +' exists yet');
-                console.log (data[key].value);
                 var matchingVar = new TAO_MATCHING.Map (data[key]);
                 this.maps[data[key].identifier] = matchingVar;
             } 

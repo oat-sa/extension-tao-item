@@ -73,7 +73,19 @@ TAO_MATCHING.AreaMap.prototype = {
     		} else if (!mapEntriesFound.length) {
     			returnValue = this.defaultValue;
     		}
-    	}	
+    	}		
+    	
+    	if (this.lowerBound != null){
+    		if (returnValue < this.lowerBound){
+    			returnValue = this.lowerBound;
+    		}
+    	}
+    	
+    	if (this.upperBound != null){
+    		if (returnValue > this.upperBound){
+    			returnValue = this.upperBound;
+    		}
+    	}
         
         return returnValue;
     }

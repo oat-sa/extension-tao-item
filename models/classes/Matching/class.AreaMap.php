@@ -99,10 +99,14 @@ class taoItems_models_classes_Matching_AreaMap
     
     	if (isset ($data->upperBound)){
     		$this->upperBound = $data->upperBound;
-    	}    
+    	}else{
+    		$this->upperBound = null;
+    	}
     	if (isset ($data->lowerBound)){
     		$this->lowerBound = $data->lowerBound;
-    	}    
+    	}else{
+    		$this->lowerBound = null;
+    	}
     	if (isset ($data->defaultValue)){
     		$this->defaultValue = $data->defaultValue;
     	}   
@@ -172,7 +176,19 @@ class taoItems_models_classes_Matching_AreaMap
     		} else if (!$count(mapEntriesFound)) {
     			$returnValue = $this->defaultValue;
     		}
-    	}	
+    	}
+    	
+    	if ($this->lowerBound){
+    		if ($returnValue < $this->lowerBound){
+    			$returnValue = $this->lowerBound;
+    		}
+    	}
+    	
+    	if ($this->upperBound){
+    		if ($returnValue > $this->upperBound){
+    			$returnValue = $this->upperBound;
+    		}
+    	}
         
         // section 127-0-1-1--1f4c3271:12ce9f13e78:-8000:0000000000002C8B end
 
