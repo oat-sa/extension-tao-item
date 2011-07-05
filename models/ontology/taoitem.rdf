@@ -137,22 +137,22 @@
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/generis.rd#generis_Ressource"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable">
-    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus"/>
     <rdfs:comment xml:lang="EN"><![CDATA[this item  model can be used in production]]></rdfs:comment>
     <rdfs:label xml:lang="EN"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated">
-    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus"/>
     <rdfs:comment xml:lang="EN"><![CDATA[this item model is not supported anymore, we advise to migrate your items]]></rdfs:comment>
     <rdfs:label xml:lang="EN"><![CDATA[Deprecated]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment">
-    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus"/>
     <rdfs:comment xml:lang="EN"><![CDATA[this item model has not been tested in a production environment, we advise to be carefull with it]]></rdfs:comment>
     <rdfs:label xml:lang="EN"><![CDATA[Development]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental">
-    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassNotificationMode"/>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus"/>
     <rdfs:comment xml:lang="EN"><![CDATA[this item model is still in conception, but you can try it, give your feedback and it will be improved.]]></rdfs:comment>
     <rdfs:label xml:lang="EN"><![CDATA[Experimental]]></rdfs:label>
   </rdf:Description>
