@@ -166,7 +166,7 @@ $(document).ready(function(){
 	});
 	
 	$('#qtiAuthoring_export_button').click(function(){
-		myItem.export();
+		myItem.exportItem();
 		return false;
 	});
 	

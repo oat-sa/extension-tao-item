@@ -1,4 +1,4 @@
-// alert('qtiEdit loaded');
+//alert('qtiEdit loaded');
 
 qtiEdit.instances = [];
 
@@ -29,6 +29,9 @@ function qtiEdit(itemSerial, formContainers, options){
 	this.cssFormContent = formContainers.cssFormContent;
 	// this.responseMappingMode = false;
 	
+        //init windows options:
+        this.windowOptions = 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1';
+        
 	this.currentInteraction = null;
 	
 	var instance = this;
@@ -832,7 +835,7 @@ qtiEdit.prototype.preview = function(){
 	url += '?itemSerial='+this.itemSerial;
 	
 	var openUrlFunction = function(){
-		window.open(url, 'QTI authoring - light preview', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+		window.open(url, 'light_preview', this.windowOptions);
 	}
 	
 	if(this.currentInteraction){
@@ -848,14 +851,12 @@ qtiEdit.prototype.preview = function(){
 }
 
 qtiEdit.prototype.debug = function(){
-	window.open(root_url+'/taoItems/QtiAuthoring/debug?itemSerial='+this.itemSerial, 'QTI authoring - debug', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+	window.open(root_url+'/taoItems/QtiAuthoring/debug?itemSerial='+this.itemSerial, 'QTIDebug', this.windowOptions);
 }
 
-qtiEdit.prototype['export'] = function(){
+qtiEdit.prototype.exportItem = function(){
 	//when the export action is transformed into a service:
-	//window.open('/taoItems/ItemExport/index?uri='+this.itemUri+'&classUri='+this.itemClassUri, 'QTI authoring - item export', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
-	
-	window.open(root_url+'/taoItems/Items/downloadItemContent?uri='+this.itemUri+'&classUri='+this.itemClassUri, 'QTI authoring - item export', 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1');
+	window.open(root_url+'/taoItems/Items/downloadItemContent?uri='+this.itemUri+'&classUri='+this.itemClassUri, 'QTIExport', this.windowOptions);
 }
 
 qtiEdit.prototype.saveItemData = function(itemSerial){
