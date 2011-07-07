@@ -1,6 +1,7 @@
 /**
  * TAO QTI initialize a QTI item in a <b>TAO Context</b>. 
  * It's a conveniance script to use it with the TAO platform.
+ * On window load event, the recovery context is initialized and qti widget as well.
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php

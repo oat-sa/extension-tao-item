@@ -312,7 +312,13 @@ QTIWidget.match = function(ctx){
 	 */
 	function deactivateNode(jElement){
 		jElement.removeClass('tabActive');
-		associations.splice(associations.indexOf(jElement.attr('id')), 1);
+                
+                //note: Array.indexOf() is not implemented in IE:
+                for(var i=0; i<associations.length; i++){
+                    if(associations[i] == jElement.attr('id')){
+                        associations.splice(i, 1);
+                    }
+                }
 	}
 	
 	var maxAssociations = ctx.opts['maxAssociations'];
@@ -320,7 +326,7 @@ QTIWidget.match = function(ctx){
 	
 	/**
 	 * Activate / deactivate nodes regarding:
-	 * 	- the maxAssociations options that should'nt be exceeded
+	 *  - the maxAssociations options that should'nt be exceeded
 	 *  - the matchMax option of the row and the column
 	 *  - the matchGroup option defining who can be associated with who
 	 * @param {jQuery} jElement
@@ -334,19 +340,19 @@ QTIWidget.match = function(ctx){
 			if(associations.length < maxAssociations || maxAssociations == 0){
 				
 				var nodeXY = getNodeXY(jElement);
-				
+                                
 				//check the matchGroup for the current association
 				var _rowMatchGroup = ctx.opts["matchMaxes"][nodeXY.xnode.id]['matchGroup'];
 				if(_rowMatchGroup.length > 0){
 					if($.inArray(nodeXY.ynode.id, _rowMatchGroup) < 0){
-						$(this).effect("highlight", {color:'#B02222'}, 1000);
+						jElement.effect("highlight", {color:'#B02222'}, 1000);
 						return false;
 					}
 				}
 				var _colMatchGroup = ctx.opts["matchMaxes"][nodeXY.ynode.id]['matchGroup'];
 				if(_colMatchGroup.length > 0){
 					if($.inArray(nodeXY.xnode.id, _colMatchGroup) < 0){
-						$(this).effect("highlight", {color:'#B02222'}, 1000);
+						jElement.effect("highlight", {color:'#B02222'}, 1000);
 						return false;
 					}
 				}
@@ -361,7 +367,7 @@ QTIWidget.match = function(ctx){
 				else if(rowMatch > 1){
 					var rowMatched = $(ctx.qti_item_id + " ." + nodeXY.xnode['class'] + ".tabActive").length;
 					if(rowMatched >= rowMatch){
-						$(this).effect("highlight", {color:'#B02222'}, 1000);
+						jElement.effect("highlight", {color:'#B02222'}, 1000);
 						return false;
 					}
 				}
@@ -376,7 +382,8 @@ QTIWidget.match = function(ctx){
 				else if(colMatch > 1){
 					var colMatched = $(ctx.qti_item_id + " ." + nodeXY.ynode['class']+ ".tabActive").length;
 					if(colMatched >= colMatch){
-						$(this).effect("highlight", {color:'#B02222'}, 1000);
+						jElement.effect("highlight", {color:'#B02222'}, 1000);
+                                                
 						return false;
 					}
 				}
