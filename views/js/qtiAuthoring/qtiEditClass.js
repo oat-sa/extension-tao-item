@@ -834,8 +834,9 @@ qtiEdit.prototype.preview = function(){
 	var url = root_url + '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
 	
+        var __this = this;
 	var openUrlFunction = function(){
-		window.open(url, 'light_preview', this.windowOptions);
+		window.open(url, 'LightPeview', __this.windowOptions);
 	}
 	
 	if(this.currentInteraction){

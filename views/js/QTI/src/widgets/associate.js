@@ -257,9 +257,9 @@ QTIWidget.associate = function(ctx){
 QTIWidget.graphic_associate = function (ctx){
 
 	var countChoices=ctx.opts["maxAssociations"];
-    var pointsPair=new Array();
+        var pointsPair=new Array();
     
-    var imageHeight = parseInt(ctx.opts.imageHeight);
+        var imageHeight = parseInt(ctx.opts.imageHeight);
 	var imageWidth = parseInt(ctx.opts.imageWidth);
     
 	// offset position
@@ -300,30 +300,30 @@ QTIWidget.graphic_associate = function (ctx){
 		paper.image(ctx.opts.imagePath,0,0,imageWidth,imageHeight);
 		
 		var model_obj=new Object();
-        var line_ref_obj=new Object();
+                var line_ref_obj=new Object();
             
-        // display max link or inifinite
-        if (ctx.opts["maxAssociations"]>0){
-          $(ctx.qti_item_id+" .link_counter").text(ctx.opts["maxAssociations"]);
-        } else {
-           $(ctx.qti_item_id+" .link_counter").html("<span class='infiniteSize'>∞</span>");
-        }
+                // display max link or inifinite
+                if (ctx.opts["maxAssociations"]>0){
+                  $(ctx.qti_item_id+" .link_counter").text(ctx.opts["maxAssociations"]);
+                } else {
+                   $(ctx.qti_item_id+" .link_counter").html("<span class='infiniteSize'>∞</span>");
+                }
 
-        // red cross
-        var deleteButton=paper.image(ctx.wwwPath+"img/delete.png",0,0,14,14);
-        deleteButton.attr("opacity","0");
-            
-        // create hotspot
-        $(ctx.qti_item_id+" .qti_graphic_associate_spotlist li").each(function(){
+                // red cross
+                var deleteButton=paper.image(ctx.wwwPath+"img/delete.png",0,0,14,14);
+                deleteButton.attr("opacity","0");
+
+                // create hotspot
+                $(ctx.qti_item_id+" .qti_graphic_associate_spotlist li").each(function(){
         	
 			var currentHotSpotShape		= ctx.opts.graphicAssociateChoices[$(this).attr("id")]["shape"];
 			var currentHotSpotCoords	= ctx.opts.graphicAssociateChoices[$(this).attr("id")]["coords"].split(",");
-	        var currentHotSpotX, currentHotSpotY, currentHotSpotSize, currentHotSpotTopX, currentHotSpotTopY;
-	        var currentHotSpotBottomX, currentHotSpotBottomY, currentHotSpotHradius, currentHotSpotVradius;
-	        var pointerSize=3, pointer, pointerCoordonates;
-	        var polyCoords;
-	        var currentShape;
-	        var shapeWidth, shapeHeight;
+                        var currentHotSpotX, currentHotSpotY, currentHotSpotSize, currentHotSpotTopX, currentHotSpotTopY;
+                        var currentHotSpotBottomX, currentHotSpotBottomY, currentHotSpotHradius, currentHotSpotVradius;
+                        var pointerSize=5, pointer, pointerCoordonates;
+                        var polyCoords;
+                        var currentShape;
+                        var shapeWidth, shapeHeight;
        
 			switch(currentHotSpotShape){
 				case "circle":
@@ -332,273 +332,277 @@ QTIWidget.graphic_associate = function (ctx){
 					currentHotSpotSize=currentHotSpotCoords[2];
 					currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotSize);
 					if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
-	                pointer = paper.circle(currentHotSpotX, currentHotSpotY, pointerSize);
-	                break;
-				case "rect":
-					currentHotSpotTopX=Number(currentHotSpotCoords[0]);
-					currentHotSpotTopY=Number(currentHotSpotCoords[1]);
-					currentHotSpotBottomX=currentHotSpotCoords[2]-currentHotSpotTopX;
-					currentHotSpotBottomY=currentHotSpotCoords[3]-currentHotSpotTopY;
-					currentShape=paper[currentHotSpotShape](currentHotSpotTopX,currentHotSpotTopY,currentHotSpotBottomX,currentHotSpotBottomY);
-					if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
-	                shapeWidth=currentShape.getBBox().width;
-					shapeHeight=currentShape.getBBox().height;
-					pointer = paper.circle(currentHotSpotTopX+(shapeWidth/2), currentHotSpotTopY+(shapeHeight/2), pointerSize);
-	                break;
-				case "ellipse":
-					currentHotSpotX=Number(currentHotSpotCoords[0]);
-					currentHotSpotY=Number(currentHotSpotCoords[1]);
-					currentHotSpotHradius=currentHotSpotCoords[2];
-					currentHotSpotVradius=currentHotSpotCoords[3];
-					currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotHradius,currentHotSpotVradius);
-					if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
-					pointer = paper.circle(currentHotSpotX, currentHotSpotY, pointerSize);
-	                break;
-				case "poly":
-					polyCoords=polyCoordonates(ctx.opts.graphicAssociateChoices[$(this).attr("id")]["coords"]);
-					currentShape=paper["path"](polyCoords);
-					if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
-					shapeWidth=currentShape.getBBox().width;
-					shapeHeight=currentShape.getBBox().height;
-				 	pointerCoordonates=pointerPolyCoordonates(ctx.opts.graphicAssociateChoices[$(this).attr("id")]["coords"]);
-					currentHotSpotTopX=Number(pointerCoordonates[0]);
-					currentHotSpotTopY=Number(pointerCoordonates[1]);
-					pointer = paper.circle(currentHotSpotTopX+(shapeWidth/2), currentHotSpotTopY+(shapeHeight/2), pointerSize);
-	                break;
+                                pointer = paper.circle(currentHotSpotX, currentHotSpotY, pointerSize);
+                                break;
+                                        case "rect":
+                                                currentHotSpotTopX=Number(currentHotSpotCoords[0]);
+                                                currentHotSpotTopY=Number(currentHotSpotCoords[1]);
+                                                currentHotSpotBottomX=currentHotSpotCoords[2]-currentHotSpotTopX;
+                                                currentHotSpotBottomY=currentHotSpotCoords[3]-currentHotSpotTopY;
+                                                currentShape=paper[currentHotSpotShape](currentHotSpotTopX,currentHotSpotTopY,currentHotSpotBottomX,currentHotSpotBottomY);
+                                                if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
+                                shapeWidth=currentShape.getBBox().width;
+                                                shapeHeight=currentShape.getBBox().height;
+                                                pointer = paper.circle(currentHotSpotTopX+(shapeWidth/2), currentHotSpotTopY+(shapeHeight/2), pointerSize);
+                                break;
+                                        case "ellipse":
+                                                currentHotSpotX=Number(currentHotSpotCoords[0]);
+                                                currentHotSpotY=Number(currentHotSpotCoords[1]);
+                                                currentHotSpotHradius=currentHotSpotCoords[2];
+                                                currentHotSpotVradius=currentHotSpotCoords[3];
+                                                currentShape=paper[currentHotSpotShape](currentHotSpotX,currentHotSpotY,currentHotSpotHradius,currentHotSpotVradius);
+                                                if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
+                                                pointer = paper.circle(currentHotSpotX, currentHotSpotY, pointerSize);
+                                break;
+                                        case "poly":
+                                                polyCoords=polyCoordonates(ctx.opts.graphicAssociateChoices[$(this).attr("id")]["coords"]);
+                                                currentShape=paper["path"](polyCoords);
+                                                if (ctx.graphicDebug) currentShape.attr("stroke-width", "3px");
+                                                shapeWidth=currentShape.getBBox().width;
+                                                shapeHeight=currentShape.getBBox().height;
+                                                pointerCoordonates=pointerPolyCoordonates(ctx.opts.graphicAssociateChoices[$(this).attr("id")]["coords"]);
+                                                currentHotSpotTopX=Number(pointerCoordonates[0]);
+                                                currentHotSpotTopY=Number(pointerCoordonates[1]);
+                                                pointer = paper.circle(currentHotSpotTopX+(shapeWidth/2), currentHotSpotTopY+(shapeHeight/2), pointerSize);
+                                break;
 			}
 
-	        var maxSubLink=ctx.opts.graphicAssociateChoices[$(this).attr("id")]["matchMax"];
-	
-	        model_obj[$(this).attr("id")] = { 
-	        		pointer			: pointer,
-	        		ref				: currentShape,
-	        		pointerState	: "hidden",
-	        		linkRelation	: {},
-	        		maxSubLinkLength: maxSubLink
-	        };
-	        pointer.attr("fill","black");
-			pointer.attr("opacity","0");
-			currentShape.toFront();
-			currentShape.attr("fill", "pink");
-			currentShape.attr("fill-opacity", "0");
-			currentShape.attr("stroke-opacity", "0");
-	                    
-			if (ctx.graphicDebug) currentShape.attr("stroke-opacity", "1");
-	                    
-			currentShape.attr("stroke", "blue");
-                    
-			// add a reference to newly created object
-			ctx.opts[currentShape.node]=$(this).attr("id");
-			$(currentShape.node).bind("mousedown",{
-					zis			: currentShape,
-					name		: $(this).attr("id"),
-		            pair		: pointsPair,
-		            zepointer	: pointer
-				}, function(e){
+                        var maxSubLink=ctx.opts.graphicAssociateChoices[$(this).attr("id")]["matchMax"];
 
-	                for (var i in line_ref_obj){
-	                	line_ref_obj[i].attr("stroke","black");
-	                }
-	
-	                $(deleteButton.node).unbind("mousedown");
-	
-	                var pointer=e.data.zepointer;
-	                deleteButton.attr("opacity","0");
-	                pointer.attr("fill","red");
-	                pointer.attr("stroke","white");
-	                if (e.data.pair.length<1){
-	                    e.data.pair.push(e.data.name);
-	
-	                    var currentLinkLength=displayedSubLink(model_obj[e.data.name].linkRelation);
-	                    var maxLinkAvalaible=model_obj[e.data.name].maxSubLinkLength-currentLinkLength;
-	                    
-	                    if(model_obj[e.data.name].maxSubLinkLength<1){
-	                        $(ctx.qti_item_id+" .sub_counter").html("<span class='infiniteSize'>∞</span>");
-	                    } 
-	                    else {
-	                    	$(ctx.qti_item_id+" .sub_counter").text(maxLinkAvalaible);
-	                    }
-	                } 
-	                else {
-	                    e.data.pair.push(e.data.name);
-	                    
-	                    // store bilateral relation
-                        var startId=e.data.pair[0];
-                        var endId=e.data.pair[1];
-	                    
-	                    //define begin and end point
-	                    var startPointer=model_obj[e.data.pair[0]].pointer;
-	                    var endPointer=model_obj[e.data.pair[1]].pointer;
-	                    var relation=e.data.pair[0]+' '+e.data.pair[1];
-	                    var targetRelation=e.data.pair[1]+' '+e.data.pair[0];
-	
-	                    // avoid double click on same pointer
-	                    if (startPointer==endPointer) {
-	                        startPointer.attr("fill","black");
-	                        startPointer.attr("stroke","black");
-	                        endPointer.attr("fill","black");
-	                        endPointer.attr("stroke","black");
-	                        hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
-	                        emptyArray(e.data.pair);
-	                        $(ctx.qti_item_id+" .sub_counter").text("");
-	                        startPointer.attr("opacity","0");
-	                        return;
-	                    }
-	
-	                    // block if maxAssociations are reached
-	                    if (countChoices==0 && ctx.opts["maxAssociations"]!=0){
-	                        startPointer.attr("fill","black");
-	                        startPointer.attr("stroke","black");
-	                        endPointer.attr("fill","black");
-	                        endPointer.attr("stroke","black");
-	                        hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
-	                        emptyArray(e.data.pair);
-	                        return;
-	                    }
-	                    // verify maxSubLink
-	                    var subLinkLength=displayedSubLink(model_obj[e.data.pair[0]].linkRelation);
-	                    var targetSubLinkLength=displayedSubLink(model_obj[e.data.pair[1]].linkRelation);
-	                   
-	                    // block max sub relation
-	                    // case infinite
-	                    if (model_obj[e.data.pair[0]].maxSubLinkLength==0){
-	                        if ((targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength && model_obj[e.data.pair[1]].maxSubLinkLength != 0){
-	                           startPointer.attr("fill","black");
-	                           startPointer.attr("stroke","black");
-	                           endPointer.attr("fill","black");
-	                           endPointer.attr("stroke","black");
-	                           hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
-	                           emptyArray(e.data.pair);
-	                           return;
-	                        }
-	
-	                    } else 
-	                    // case finite sublink length
-	                    if (subLinkLength>=model_obj[e.data.pair[0]].maxSubLinkLength || (targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength){
-	                         if (model_obj[e.data.pair[1]].maxSubLinkLength!=0){
-	                             // empty current pair
-	                             startPointer.attr("fill","black");
-	                             startPointer.attr("stroke","black");
-	                             endPointer.attr("fill","black");
-	                             endPointer.attr("stroke","black");
-	                             hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
-	                             emptyArray(e.data.pair);
-	                             return;
-	                        }
-	                    }
-	                    // bug peux plus creer de sublien (a tester)
-	                    if (model_obj[e.data.pair[0]].linkRelation[relation]!=undefined){
-	                        emptyArray(e.data.pair);
-	                        return;
-	                    }
-	                    var startPointX=startPointer.getBBox().x+startPointer.getBBox().width/2;
-	                    var startPointY=startPointer.getBBox().y+startPointer.getBBox().width/2;
-	                    var endPointX=endPointer.getBBox().x+endPointer.getBBox().width/2;
-	                    var endPointY=endPointer.getBBox().y+endPointer.getBBox().width/2;
-	                    var drawingPath="M"+startPointX+" "+startPointY+"L"+endPointX+" "+endPointY;
-	                    // trace line between dots
-	                    var line=paper.path(drawingPath);
-	
-	                    // black pointer
-	                    startPointer.attr("fill","black");
-	                    startPointer.attr("stroke","black");
-	                    endPointer.attr("fill","black");
-	                    endPointer.attr("stroke","black");
-	                    
-	                    model_obj[startId].linkRelation[relation]={};
-	                    model_obj[startId].linkRelation[relation].lineRef=line;
-	                    model_obj[startId].linkRelation[relation].endRef=endPointer;
-	
-	                    model_obj[endId].linkRelation[targetRelation]={};
-	                    model_obj[endId].linkRelation[targetRelation].lineRef=line;
-	                    model_obj[endId].linkRelation[targetRelation].endRef=startPointer;
-	
-	                    line_ref_obj[relation]=line;
-	                    var pairs = [];
-	                    for(aPair in line_ref_obj){
-	                    	pairs.push(aPair);
-	                    }
-	                    $(ctx.qti_item_id).data('pairs', pairs);
-	                    
-	                    emptyArray(e.data.pair);
-	                    
-	                    var pairOfPoints=e.data.pair;
-	
-	                     // click on line
-	                     $(line.node).bind("mousedown",{
-		                    	 zeline 	: line,
-		                    	 centerX	: (startPointX+endPointX)/2,
-		                    	 centerY	: (startPointY+endPointY)/2,
-		                    	 zerelation :relation
-	                    	 }, function(e){
-	
-	                           	var localRelation=e.data.zerelation;
-	                            var localLine=e.data.zeline;
-	
-	                            // color all line in black
-	                            for (var i in line_ref_obj){
-	                                line_ref_obj[i].attr("stroke","black");
-	                            }
-	
-	                            deleteButton.attr("opacity","1");
-	                            deleteButton.attr("x",e.data.centerX-7);
-                                deleteButton.attr("y",e.data.centerY-7);
-	                            deleteButton.toFront();
-	
-	                            $(deleteButton.node).bind("mousedown",{zisbutton:deleteButton}, function(e){
-	                            	
-	                                delete model_obj[startId].linkRelation[relation];
-	                                delete model_obj[endId].linkRelation[targetRelation];
-	
-	                                localLine.remove();
-	                                e.data.zisbutton.attr("opacity","0");
-	
-	                                if (ctx.opts["maxAssociations"]>0 && countChoices < ctx.opts["maxAssociations"]){
-	                                	countChoices++;
-	                                	$(ctx.qti_item_id+" .link_counter").text(countChoices);
-	                                }
-	                                
-	                                hideSinglePoint(model_obj, startId, endId, startPointer, endPointer);
-	                                
-	                                delete line_ref_obj[localRelation];
-	
-	                                emptyArray(pairOfPoints);
-	                                
-	                                line_ref_obj[relation]=line;
-	                                var pairs = [];
-	                                for(aPair in line_ref_obj){
-	                                	pairs.push(aPair);
-	                                }
-	                                $(ctx.qti_item_id).data('pairs', pairs);
-	                                
-	                                $(this).unbind("mousedown");
-	                            });
-	                            
-	                            var line=e.data.zeline;
-	                            line.attr("stroke","red");
-	                            
-	                            $(this).unbind("mousedown");
-	                     });
-	
-	                    // link counter displayed (except if ctx.opts["maxAssociations"]=0)
-	                    if (ctx.opts["maxAssociations"]>0){
-	                    	countChoices--;
-	                        $(ctx.qti_item_id+" .link_counter").text(countChoices);
-	                     }
-	                     e.data.zis.toFront();
-	                }
-	
-	                model_obj[e.data.name].pointer.attr("opacity","1");
-	                model_obj[e.data.name].pointerState="show";
-	                 
-	                for (var t in model_obj){
-	                     model_obj[t].ref.toFront();
-	                }
-				});
-		});
+                        model_obj[$(this).attr("id")] = { 
+                                        pointer			: pointer,
+                                        ref				: currentShape,
+                                        pointerState	: "hidden",
+                                        linkRelation	: {},
+                                        maxSubLinkLength: maxSubLink
+                        };
+                        
+                        pointer.attr("fill","black");
+                                pointer.attr("opacity","0");
+                                currentShape.toFront();
+                                currentShape.attr("fill", "pink");
+                                currentShape.attr("fill-opacity", "0");
+                                currentShape.attr("stroke-opacity", "0");
+
+                                if (ctx.graphicDebug) currentShape.attr("stroke-opacity", "1");
+
+                                currentShape.attr("stroke", "blue");
+
+                                // add a reference to newly created object
+                                ctx.opts[currentShape.node]=$(this).attr("id");
+                                $(currentShape.node).bind("mousedown",{
+                                                zis	: currentShape,
+                                                name	: $(this).attr("id"),
+                                                pair	: pointsPair,
+                                                zepointer	: pointer
+                                        }, function(e){
+
+                                for (var i in line_ref_obj){
+                                        line_ref_obj[i].attr("stroke","black").attr('stroke-width', '3');
+                                }
+
+                                $(deleteButton.node).unbind("mousedown");
+
+                                var pointer=e.data.zepointer;
+                                deleteButton.attr("opacity","0");
+                                pointer.attr("fill","red");
+                                pointer.attr("stroke","white");
+                                if (e.data.pair.length<1){
+                                    e.data.pair.push(e.data.name);
+
+                                    var currentLinkLength=displayedSubLink(model_obj[e.data.name].linkRelation);
+                                    var maxLinkAvalaible=model_obj[e.data.name].maxSubLinkLength-currentLinkLength;
+
+                                    if(model_obj[e.data.name].maxSubLinkLength<1){
+                                        $(ctx.qti_item_id+" .sub_counter").html("<span class='infiniteSize'>∞</span>");
+                                    } 
+                                    else {
+                                        $(ctx.qti_item_id+" .sub_counter").text(maxLinkAvalaible);
+                                    }
+                                } 
+                                else {
+                                    e.data.pair.push(e.data.name);
+
+                                    // store bilateral relation
+                                var startId=e.data.pair[0];
+                                var endId=e.data.pair[1];
+
+                                    //define begin and end point
+                                    var startPointer=model_obj[e.data.pair[0]].pointer;
+                                    var endPointer=model_obj[e.data.pair[1]].pointer;
+                                    var relation=e.data.pair[0]+' '+e.data.pair[1];
+                                    var targetRelation=e.data.pair[1]+' '+e.data.pair[0];
+
+                                    // avoid double click on same pointer
+                                    if (startPointer==endPointer) {
+                                        startPointer.attr("fill","black");
+                                        startPointer.attr("stroke","black");
+                                        endPointer.attr("fill","black");
+                                        endPointer.attr("stroke","black");
+                                        hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+                                        emptyArray(e.data.pair);
+                                        $(ctx.qti_item_id+" .sub_counter").text("");
+                                        startPointer.attr("opacity","0");
+                                        return;
+                                    }
+
+                                    // block if maxAssociations are reached
+                                    if (countChoices==0 && ctx.opts["maxAssociations"]!=0){
+                                        startPointer.attr("fill","black");
+                                        startPointer.attr("stroke","black");
+                                        endPointer.attr("fill","black");
+                                        endPointer.attr("stroke","black");
+                                        hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+                                        emptyArray(e.data.pair);
+                                        return;
+                                    }
+                                    // verify maxSubLink
+                                    var subLinkLength=displayedSubLink(model_obj[e.data.pair[0]].linkRelation);
+                                    var targetSubLinkLength=displayedSubLink(model_obj[e.data.pair[1]].linkRelation);
+
+                                    // block max sub relation
+                                    // case infinite
+                                    if (model_obj[e.data.pair[0]].maxSubLinkLength==0){
+                                        if ((targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength && model_obj[e.data.pair[1]].maxSubLinkLength != 0){
+                                           startPointer.attr("fill","black");
+                                           startPointer.attr("stroke","black");
+                                           endPointer.attr("fill","black");
+                                           endPointer.attr("stroke","black");
+                                           hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+                                           emptyArray(e.data.pair);
+                                           return;
+                                        }
+
+                                    } else 
+                                    // case finite sublink length
+                                    if (subLinkLength>=model_obj[e.data.pair[0]].maxSubLinkLength || (targetSubLinkLength+1)>model_obj[e.data.pair[1]].maxSubLinkLength){
+                                         if (model_obj[e.data.pair[1]].maxSubLinkLength!=0){
+                                             // empty current pair
+                                             startPointer.attr("fill","black");
+                                             startPointer.attr("stroke","black");
+                                             endPointer.attr("fill","black");
+                                             endPointer.attr("stroke","black");
+                                             hideSinglePoint(model_obj, e.data.pair[0], e.data.pair[1], startPointer, endPointer);
+                                             emptyArray(e.data.pair);
+                                             return;
+                                        }
+                                    }
+                                    // bug peux plus creer de sublien (a tester)
+                                    if (model_obj[e.data.pair[0]].linkRelation[relation]!=undefined){
+                                        emptyArray(e.data.pair);
+                                        return;
+                                    }
+                                    var startPointX=startPointer.getBBox().x+startPointer.getBBox().width/2;
+                                    var startPointY=startPointer.getBBox().y+startPointer.getBBox().width/2;
+                                    var endPointX=endPointer.getBBox().x+endPointer.getBBox().width/2;
+                                    var endPointY=endPointer.getBBox().y+endPointer.getBBox().width/2;
+                                    var drawingPath="M"+startPointX+" "+startPointY+"L"+endPointX+" "+endPointY;
+                                    // trace line between dots
+                                    var line=paper.path(drawingPath);
+                                    line.attr('stroke-width', '3');
+                                    
+                                    // black pointer
+                                    startPointer.attr("fill","black");
+                                    startPointer.attr("stroke","black");
+                                    endPointer.attr("fill","black");
+                                    endPointer.attr("stroke","black");
+
+                                    model_obj[startId].linkRelation[relation]={};
+                                    model_obj[startId].linkRelation[relation].lineRef=line;
+                                    model_obj[startId].linkRelation[relation].endRef=endPointer;
+
+                                    model_obj[endId].linkRelation[targetRelation]={};
+                                    model_obj[endId].linkRelation[targetRelation].lineRef=line;
+                                    model_obj[endId].linkRelation[targetRelation].endRef=startPointer;
+
+                                    line_ref_obj[relation]=line;
+                                    var pairs = [];
+                                    for(aPair in line_ref_obj){
+                                        pairs.push(aPair);
+                                    }
+                                    $(ctx.qti_item_id).data('pairs', pairs);
+
+                                    emptyArray(e.data.pair);
+
+                                    var pairOfPoints=e.data.pair;
+
+                                     // click on line
+                                     $(line.node).bind("mousedown",{
+                                                 zeline 	: line,
+                                                 centerX	: (startPointX+endPointX)/2,
+                                                 centerY	: (startPointY+endPointY)/2,
+                                                 zerelation :relation
+                                            }, function(e){
+
+                                            var localRelation=e.data.zerelation;
+                                            var localLine=e.data.zeline;
+
+                                            // color all line in black
+                                            for (var i in line_ref_obj){
+                                                line_ref_obj[i].attr("stroke","black");
+                                            }
+                                            
+                                            //move the ALREADY created delete button to the right location:
+                                            deleteButton.attr("opacity","1");
+                                            deleteButton.attr("x",e.data.centerX-7);
+                                            deleteButton.attr("y",e.data.centerY-7);
+                                            deleteButton.toFront();
+                                            
+                                            //reset delete button event listener:
+                                            $(deleteButton.node).unbind("mousedown").bind("mousedown",{zisbutton:deleteButton}, function(e){
+                                                e.preventDefault();
+                                                
+                                                delete model_obj[startId].linkRelation[localRelation];
+                                                delete model_obj[endId].linkRelation[targetRelation];
+
+                                                localLine.remove();
+                                                e.data.zisbutton.attr("opacity","0");
+
+                                                if (ctx.opts["maxAssociations"]>0 && countChoices < ctx.opts["maxAssociations"]){
+                                                        countChoices++;
+                                                        $(ctx.qti_item_id+" .link_counter").text(countChoices);
+                                                }
+
+                                                hideSinglePoint(model_obj, startId, endId, startPointer, endPointer);
+
+                                                delete line_ref_obj[localRelation];
+
+                                                emptyArray(pairOfPoints);
+
+                                                var pairs = [];
+                                                
+                                                for(aPair in line_ref_obj){
+                                                        pairs.push(aPair);
+                                                }
+                                                $(ctx.qti_item_id).data('pairs', pairs);
+                                                $(this).unbind("mousedown");
+                                            });
+
+                                            var line=e.data.zeline;
+                                            line.attr("stroke","red");
+                                     });
+
+                                    // link counter displayed (except if ctx.opts["maxAssociations"]=0)
+                                    if (ctx.opts["maxAssociations"]>0){
+                                        countChoices--;
+                                        $(ctx.qti_item_id+" .link_counter").text(countChoices);
+                                     }
+                                     e.data.zis.toFront();
+                                }
+
+                                model_obj[e.data.name].pointer.attr("opacity","1");
+                                model_obj[e.data.name].pointerState="show";
+
+                                for (var t in model_obj){
+                                     model_obj[t].ref.toFront();
+                                }
+                                
+			});//end of event mousedown
+                        
+		}); //end of foreach
 	}
 	
-    //set the values if defined
+        //set the values if defined
 	if(ctx.opts["values"]){
 		var values = ctx.opts["values"];
 		if(typeof(values) == 'object'){
@@ -610,19 +614,19 @@ QTIWidget.graphic_associate = function (ctx){
 						var startShape = model_obj[value[0]]['ref'];
 						if(startShape){
 							$(startShape.node).trigger("mousedown",{
-								zis			: startShape,
-								name		: value[0],
-					            pair		: pointsPair,
-					            zepointer	: model_obj[value[0]]['pointer']
+								zis     : startShape,
+								name	: value[0],
+                                                                pair    : pointsPair,
+                                                                zepointer: model_obj[value[0]]['pointer']
 							});
 						
 							var endShape = model_obj[value[1]]['ref'];
 							if(endShape){
 								$(endShape.node).trigger("mousedown",{
-									zis			: endShape,
+									zis		: endShape,
 									name		: value[1],
-						            pair		: pointsPair,
-						            zepointer	: model_obj[value[1]]['pointer']
+                                                                        pair		: pointsPair,
+                                                                        zepointer	: model_obj[value[1]]['pointer']
 								});
 							}
 						}
@@ -631,8 +635,9 @@ QTIWidget.graphic_associate = function (ctx){
 			}
 		}
 	}
-	
-	function hideSinglePoint(obj, startId, endId, startPointer, endPointer){
+
+    function hideSinglePoint(obj, startId, endId, startPointer, endPointer){
+       
        var rela=0;
        // hide points alone
        for (var z in obj[startId].linkRelation){
@@ -645,8 +650,8 @@ QTIWidget.graphic_associate = function (ctx){
         if (rela<1) startPointer.attr("opacity","0");
         if (relb<1) endPointer.attr("opacity","0");
     }
-
- 	function emptyArray(aRay){
+    
+    function emptyArray(aRay){
         while (aRay.length>0){
             aRay.pop();
         }
