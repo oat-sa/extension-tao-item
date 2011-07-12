@@ -448,10 +448,10 @@ class taoItems_models_classes_QTI_Response
             $returnValue['identifier'] = $this->getIdentifier();
             $returnValue['defaultValue'] = $this->mappingDefaultValue;
             if (isset($this->options['mapping']['lowerBound'])){
-            	$returnValue['lowerBound'] = $this->options['mapping']['lowerBound'];
+            	$returnValue['lowerBound'] = intVal($this->options['mapping']['lowerBound']);
             }
             if (isset($this->options['mapping']['upperBound'])){
-            	$returnValue['upperBound'] = $this->options['mapping']['upperBound'];
+            	$returnValue['upperBound'] = intVal($this->options['mapping']['upperBound']);
             }
             $mappingValue = Array ();       
             
