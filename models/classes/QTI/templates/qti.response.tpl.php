@@ -8,7 +8,7 @@
 	<?endif?>
 	
 	<?if(isset($mapping) && count($mapping) > 0):?>
-        <mapping defaultValue="<?=echo isset($mappingDefaultValue)?floatval($mappingDefaultValue):0;?>" <?=$mappingOptions?>>
+        <mapping defaultValue="<?echo isset($mappingDefaultValue)?floatval($mappingDefaultValue):0;?>" <?=$mappingOptions?>>
             <?foreach($mapping as $key => $value):?>
             	<mapEntry mapKey="<?=$key?>" mappedValue="<?=$value?>"/>
             <?endforeach?>
