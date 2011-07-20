@@ -1,5 +1,5 @@
 <responseDeclaration identifier="<?=$identifier?>" <?=$rowOptions?> >
-    <?if(count($correctResponses) > 0):?>
+    <?if(isset($correctResponses) && count($correctResponses) > 0):?>
         <correctResponse>
             <?foreach($correctResponses as $value):?>
             	<value><?=$value?></value>
@@ -7,16 +7,16 @@
         </correctResponse>
 	<?endif?>
 	
-	<?if(count($mapping) > 0):?>
-        <mapping defaultValue="<?=$mappingDefaultValue?>" <?=$mappingOptions?>>
+	<?if(isset($mapping) && count($mapping) > 0):?>
+        <mapping defaultValue="<?=echo isset($mappingDefaultValue)?floatval($mappingDefaultValue):0;?>" <?=$mappingOptions?>>
             <?foreach($mapping as $key => $value):?>
             	<mapEntry mapKey="<?=$key?>" mappedValue="<?=$value?>"/>
             <?endforeach?>
         </mapping>
 	<?endif?>
 	
-	<?if(count($areaMapping) > 0):?>
-        <areaMapping defaultValue="<?=$areaMappingDefaultValue?>" <?=$areaMappingOptions?>>
+	<?if(isset($areaMapping) && count($areaMapping) > 0):?>
+        <areaMapping defaultValue="<?echo isset($areaMappingDefaultValue)?floatval($areaMappingDefaultValue):0;?>" <?=$areaMappingOptions?>>
             <?foreach($areaMapping as $areaMapEntry):?>
             	<areaMapEntry <?foreach($areaMapEntry as $key => $value):?><?=$key?>="<?=$value?>" <?endforeach?> />
             <?endforeach?>
