@@ -1,0 +1,519 @@
+msgid "A QTI item file is an XML file following the QTI standard version 2.0"
+msgstr "Un fichier d'item QTI est un fichier XML suivant le standard QTI version 2.0"
+
+msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
+msgstr "Un paquet QTI est une archive ZIP contenant un fichier msmanifest.xml ainsi que les ressources QTI à importer"
+
+msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
+msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
+
+msgid "Add a choice"
+msgstr "إضافة خيار"
+
+msgid "Add the source file"
+msgstr "إضافة الملف المصدر"
+
+msgid "Advanced options"
+msgstr "خيارات متقدمة"
+
+msgid "Advanced properties"
+msgstr "خصائص متقدمة"
+
+msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
+msgstr "Un paquet XHTML est une archive ZIP contenant un fichier index.html au format XHTML 1.0 Transitional ainsi que ses ressources à importer (images, scripts, css, video, etc.)"
+
+msgid "An error occured during the import"
+msgstr "حدث خطأ أثناء الاستيراد"
+
+msgid "An error occured while saving the item"
+msgstr "حدث خطأ أثناء تحميل الاختبار"
+
+msgid "An error occurs during the import"
+msgstr "حدث خطأ أثناء الاستيراد"
+
+msgid "Apply"
+msgstr "تطبيق"
+
+msgid "Authoring"
+msgstr "التأليف"
+
+msgid "Back"
+msgstr "الرجوع"
+
+msgid "Changing shape type will delete the old shape, are you sure?"
+msgstr "تغيير نوع الشكل يحذف الشكل القديم ، هل أنت متأكد؟"
+
+msgid "Choice"
+msgstr "الاختيار"
+
+msgid "Choices editor:"
+msgstr ":محرر الخيارات"
+
+msgid "Class saved"
+msgstr "Classe enregistrée"
+
+msgid "Client"
+msgstr "الزبون"
+
+msgid "Content"
+msgstr "المحتوى"
+
+msgid "Correct Responses"
+msgstr "الإجابات الصحيحة"
+
+msgid "Default value"
+msgstr "القيمة الافتراضية"
+
+msgid "Delete choice"
+msgstr "حذف الخيار"
+
+msgid "Disabled"
+msgstr "غير نشط"
+
+msgid "Do you really want to delete the row?"
+msgstr "هل تريد فعلا حذف الصف؟""
+
+msgid "Download item content"
+msgstr "تحميل محتوى السؤال"
+
+msgid "Edit Item"
+msgstr "تعديل السؤال"
+
+msgid "Edit a class"
+msgstr "Modifier une classe"
+
+msgid "Edit item"
+msgstr "تعديل السؤال"
+
+msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
+msgstr "Cela vous permet d'exporter une archive ZIP contenant un dossier par item. Le dossier de chaque item contient un fichier XML principal (les données de l'item) ainsi que ses ressources externes (media, manifests, etc.)"
+
+msgid "Enabled"
+msgstr "نشط"
+
+msgid "Error in background file:"
+msgstr "Erreur de le fichier d'arrière plan:"
+
+msgid "Expected length"
+msgstr "الطول المنتظر"
+
+msgid "Expected lines"
+msgstr "عدد الاسطر"
+
+msgid "Export Options"
+msgstr "خيارات التصدير"
+
+msgid "Fake delivery"
+msgstr "Fausse passation"
+
+msgid "Fake process"
+msgstr "عملية خاطئة"
+
+msgid "Fake test"
+msgstr "اختبار خاطئ"
+
+msgid "File name"
+msgstr "اسم الملف"
+
+msgid "Fixed"
+msgstr "ثابت"
+
+msgid "Float"
+msgstr "عدد حقيقي"
+
+msgid "Identifier"
+msgstr "معرف"
+
+msgid "Image height"
+msgstr "ارتفاع الصورة"
+
+msgid "Image label"
+msgstr "تسمية الصورة"
+
+msgid "Image source url"
+msgstr "URL مصدر الصورة"
+
+msgid "Image width"
+msgstr "عرض صورة"
+
+msgid "Integer"
+msgstr "عدد صحيح"
+
+msgid "Interaction content editor:"
+msgstr "محرر محتوى التفاعلات"
+
+msgid "Interaction editor:"
+msgstr "Editeur d'intéraction"
+
+msgid "Item"
+msgstr "سؤال"
+
+msgid "Item Editor:"
+msgstr "محرر السؤال"
+
+msgid "Item Properties:"
+msgstr ":خصائص السؤال"
+
+msgid "Item content saved"
+msgstr "تم حفظ محتوى السؤال"
+
+msgid "Item imported successfully"
+msgstr "تم استيراد الؤال بنجاح"
+
+msgid "Item library"
+msgstr "مكتبة الاسئلة"
+
+msgid "Item saved"
+msgstr "تم حفظ السؤال"
+
+msgid "Item saved successfully"
+msgstr "تم بنجاح تحديث "
+
+msgid "Items"
+msgstr "الاسئلة"
+
+msgid "Label"
+msgstr "تسمية"
+
+msgid "Lower bound"
+msgstr "الحد الأدنى"
+
+msgid "Manage item content"
+msgstr "ادارة محتوى السؤال"
+
+msgid "Manage items"
+msgstr "ادارة الاسئلة"
+
+msgid "Mapping options:"
+msgstr "خيارات لرسم الخرائط"
+
+msgid "Match Group"
+msgstr "Groupe associé"
+
+msgid "Match group"
+msgstr "Groupe associé"
+
+msgid "Matching side"
+msgstr "Côté associé"
+
+msgid "Maximal number of matching"
+msgstr "الحد الأقصى لعدد من الجمعيات"
+
+msgid "Maximum number of associations"
+msgstr "الحد الأقصى لعدد من الجمعيات"
+
+msgid "Maximum number of choices"
+msgstr "العدد الاقصى من الخيارات"
+
+msgid "Maximum number of separate strings"
+msgstr "Nombre maximal de chaînes séparées"
+
+msgid "Modification on choice applied"
+msgstr "تم تطبيق تعديل الخيار"
+
+msgid "Modification on interaction applied"
+msgstr "La modification sur l'intéraction a été appliquée"
+
+msgid "Modification on response applied"
+msgstr "تم تطبيق تعديل الاجابة"
+
+msgid "Move Down"
+msgstr "تحريك لأسفل"
+
+msgid "Move Up"
+msgstr "تحريك لأعلى"
+
+msgid "No user is logged in"
+msgstr "Aucun utilisateur authentifié"
+
+msgid "Not yet available"
+msgstr "غير متوفرة حتى الآن"
+
+msgid "Number base for value interpretation"
+msgstr "قاعدة رقمية "
+
+msgid "Options"
+msgstr "خيارات"
+
+msgid "Ordered response"
+msgstr "مطلوب الرد"
+
+msgid "Orientation"
+msgstr "التوجيه"
+
+msgid "PREVIEW BOX"
+msgstr "مربع المعاينة"
+
+msgid "Pattern mask"
+msgstr "Masque d'expression régulière"
+
+msgid "Place holder text"
+msgstr "حامل مكان النص"
+
+msgid "Please select an item before!"
+msgstr "الرجاء اختيار سؤال"
+
+msgid "Preview"
+msgstr "معاينة"
+
+msgid "Preview Console"
+msgstr "Moniteur de prévisualisation"
+
+msgid "Processing rule:"
+msgstr ":تعليمات المعالجة"
+
+msgid "Processing type"
+msgstr "نوع المعالجة"
+
+msgid "Prompt"
+msgstr "Invite"
+
+msgid "Recovery context"
+msgstr "استرجاع المضمون"
+
+msgid "Response editor:"
+msgstr ":محرر الاجابة"
+
+msgid "Response processing template editor:"
+msgstr "محرر قوالب معالجة الاجابات:"
+
+msgid "Response variable type"
+msgstr "نوع متغير الاجابة"
+
+msgid "Responses Editor"
+msgstr "محرر الاجابة"
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Score"
+msgstr "النقاط"
+
+msgid "Server"
+msgstr "الخادم"
+
+msgid "Shape"
+msgstr "الشكل"
+
+msgid "Shuffle choices"
+msgstr ""
+
+msgid "String"
+msgstr "Chaîne de caractère"
+
+msgid "String identifier"
+msgstr "معرف النص"
+
+msgid "Stylesheets manager:"
+msgstr "Gestion des feuilles de style:"
+
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
+
+msgid "The choice cannot be saved"
+msgstr "لم يتم حفظ الخيار"
+
+msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
+msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
+
+msgid "The item has been successfully updated"
+msgstr "تم تحديث السؤال بنجاح"
+
+msgid "The mapping options have been applied"
+msgstr "Les options d'assocation ont été appliquées avec succès"
+
+msgid "The response form is available for templates driven item only.<br/>"
+msgstr "Le formulaire de réponse n'est disponible que pour les items issues de modèles.<br/>"
+
+msgid "The response processing has been saved"
+msgstr "تم حفظ طريقة معالجة الاجابات"
+
+msgid "The responses cannot be updated"
+msgstr "لا يمكن تحديث الاجابات"
+
+msgid "The responses have been updated"
+msgstr "تم تحديث الاجابات"
+
+msgid "Title"
+msgstr "العنوان"
+
+msgid "Unable to copy the resources"
+msgstr "لا يمكن نسخ الموارد"
+
+msgid "Unable to move"
+msgstr "لا يمكت التحريك"
+
+msgid "Upload QTI File"
+msgstr "QTI تحميل ملف "
+
+msgid "Upload a QTI Package File"
+msgstr "Télécharger un paquet QTI"
+
+msgid "Upload an XHTML Package File"
+msgstr "Télécharger un paquet XHTML"
+
+msgid "Upload new style sheet:"
+msgstr "Télécharger une nouvelle feuille de style:"
+
+msgid "Upload the item content"
+msgstr "تحميل محتوى السؤال"
+
+msgid "Upload the style sheet (CSS format required)"
+msgstr "Télécharger la feuille de style (le format CSS est obligatoire)"
+
+msgid "Uploaded style files:"
+msgstr "Télécharger des feuilles de style:"
+
+msgid "Upper bound"
+msgstr "الحد الاقصى"
+
+msgid "Validation has failed"
+msgstr "فشل التحقق"
+
+msgid "Validation of the imported file has failed"
+msgstr "فشل التحقق من الملفات المستوردة"
+
+msgid "Value"
+msgstr "قيمة"
+
+msgid "circle"
+msgstr "دائرة"
+
+msgid "clean up"
+msgstr "تنظيف"
+
+msgid "close"
+msgstr "اغلاق"
+
+msgid "correct"
+msgstr "تصحيح"
+
+msgid "create table"
+msgstr "انشاء جدول"
+
+msgid "default"
+msgstr "الافتراضي"
+
+msgid "delete"
+msgstr "حذف"
+
+msgid "duplicate"
+msgstr "تكرار"
+
+msgid "ellipse"
+msgstr "élipse"
+
+msgid "export"
+msgstr "تصدير"
+
+msgid "horizontal"
+msgstr "افقي"
+
+msgid "import"
+msgstr "استيراد"
+
+msgid "invalid image mime type"
+msgstr "le type MIME de l'image est invalide"
+
+msgid "item imported successfully"
+msgstr "تم استيراد السؤال بنجاح"
+
+msgid "items imported successfully"
+msgstr "تم استيراد السؤال بنجاح"
+
+msgid "lists"
+msgstr "القوائم"
+
+msgid "map"
+msgstr "خريطة"
+
+msgid "map point"
+msgstr "نقطة على الخريطة"
+
+msgid "meta data"
+msgstr "بيانات التعريف"
+
+msgid "move"
+msgstr "التحرك"
+
+msgid "new class"
+msgstr "nouvelle classe"
+
+msgid "new item"
+msgstr "سؤال جديد"
+
+msgid "no"
+msgstr "لا"
+
+msgid "polygon"
+msgstr "مضلع"
+
+msgid "preview"
+msgstr "معاينة"
+
+msgid "rectangle"
+msgstr "مستطيل"
+
+msgid "search"
+msgstr "بحث"
+
+msgid "show/hide"
+msgstr "إظهار / إخفاء"
+
+msgid "template"
+msgstr "قالب"
+
+msgid "unable to create for imported content"
+msgstr "لا يمكن إنشاء المحتوى المستورد"
+
+msgid "unable to extract archive content, please check your tmp dir"
+msgstr "لا يمكن استخراج محتويات الأرشيف "
+
+msgid "vertical"
+msgstr "العمودي"
+
+msgid "yes"
+msgstr "نعم"
+
+msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgstr ""
+
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
+
+msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
+
+msgid "An error occured while loading the item:"
+msgstr ":حدث خطا اثناء تحميل السؤال"
+
+msgid "An error occured while loading the item: "
+msgstr ":حدث خطا اثناء تحميل السؤال"
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
+msgstr "Cliquer sur un ligne pour éditer, ensuite tapez \"Entrer\" pour valider ou \"Echape\" pour annuler les changements."
+
+msgid "Debug Mode"
+msgstr "وضعيةالمنقحات"
+
+msgid "Delete interaction"
+msgstr "حذف التفاعل "
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
+msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
+
+msgid "Please confirm interaction deletion"
+msgstr "الرجاء تاكيد حذف التفاعل "
+
+msgid "Please select first the item type!"
+msgstr "!الرجاء اولا تحديد نوع السؤال"
+
+msgid "The migration scripts for the deprecated items will be provided soon"
+msgstr ""
+
+msgid "draw it"
+msgstr "ارسم"
+
+msgid "please confirm deletion of the interaction"
+msgstr "الرجاء تاكيد حذف التفاعل "
+
