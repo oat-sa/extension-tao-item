@@ -473,7 +473,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 			if($itemModel instanceof core_kernel_classes_Resource){
 				
 				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
-				if($authoring instanceof core_kernel_classes_Literal){
+				
+                                if($authoring instanceof core_kernel_classes_Literal){
 					
 					//urlencode instead of tao_helpers_Uri::encode to be compatible with the swf authoring tools
 					$itemContentUrlParam = array(
@@ -502,6 +503,14 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 		}
 		catch(Exception $e){
 			$this->setData('error', true);
+                        
+                        //build clear error or warning message:
+                        if(!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource){
+                                $errorMsg = __('No item authoring tool available for the selected type of item: '.$itemModel->getLabel());
+                        }else{
+                                $errorMsg = __('No item type selected for the current item.')." {$item->getLabel()} ".__('Please select first the item type!');
+                        }
+                        $this->setData('errorMsg', $errorMsg);
 		}
 		$this->setView('authoring.tpl');
 	}
