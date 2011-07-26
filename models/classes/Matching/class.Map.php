@@ -160,18 +160,18 @@ class taoItems_models_classes_Matching_Map
     			// How many values have not been found * default value
 	        	$delta = count($var->getValue()) - count($mapEntriesFound);
 	        	$returnValue += $delta * $this->defaultValue;
-    		} else if (!$count(mapEntriesFound)) {
+    		} else if (!count($mapEntriesFound)) {
     			$returnValue = $this->defaultValue;
     		}
     	}
     	
-    	if ($this->lowerBound != null){
+    	if (!is_null($this->lowerBound)){
     		if ($returnValue < $this->lowerBound){
     			$returnValue = $this->lowerBound;
     		}
     	}
     	
-    	if ($this->upperBound != null){
+    	if (!is_null($this->upperBound)){
     		if ($returnValue > $this->upperBound){
     			$returnValue = $this->upperBound;
     		}
