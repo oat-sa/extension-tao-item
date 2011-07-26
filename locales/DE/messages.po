@@ -70,6 +70,9 @@ msgstr "Vorschau"
 msgid "search"
 msgstr "suchen"
 
+msgid "%d items of %d imported successfuly"
+msgstr ""
+
 msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr ""
 
@@ -85,6 +88,15 @@ msgstr ""
 msgid "Add a choice"
 msgstr ""
 
+msgid "Add a new stylesheet:"
+msgstr ""
+
+msgid "Add choice"
+msgstr ""
+
+msgid "Add choice to group"
+msgstr ""
+
 msgid "Add the source file"
 msgstr ""
 
@@ -92,6 +104,9 @@ msgid "Advanced options"
 msgstr ""
 
 msgid "Advanced properties"
+msgstr ""
+
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
 msgstr ""
 
 msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
@@ -106,13 +121,25 @@ msgstr ""
 msgid "An error occured while loading the item:"
 msgstr ""
 
+msgid "An error occured while loading the item: "
+msgstr ""
+
 msgid "An error occurs during the import"
 msgstr ""
 
 msgid "Apply"
 msgstr ""
 
+msgid "Associable hotspots"
+msgstr ""
+
+msgid "Attached style sheets:"
+msgstr ""
+
 msgid "Authoring"
+msgstr ""
+
+msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
 msgstr ""
 
 msgid "Changing shape type will delete the old shape, are you sure?"
@@ -121,7 +148,16 @@ msgstr ""
 msgid "Choice"
 msgstr ""
 
+msgid "Choice group"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
+
 msgid "Choices editor:"
+msgstr ""
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
 msgstr ""
 
 msgid "Client"
@@ -130,7 +166,13 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
+msgid "Coordinates"
+msgstr ""
+
 msgid "Correct Responses"
+msgstr ""
+
+msgid "Debug"
 msgstr ""
 
 msgid "Debug Mode"
@@ -166,6 +208,9 @@ msgstr ""
 msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
 msgstr ""
 
+msgid "Enables you to export an IMS QTI Package."
+msgstr ""
+
 msgid "Error in background file:"
 msgstr ""
 
@@ -173,6 +218,9 @@ msgid "Expected length"
 msgstr ""
 
 msgid "Expected lines"
+msgstr ""
+
+msgid "Export"
 msgstr ""
 
 msgid "Export Options"
@@ -199,6 +247,15 @@ msgstr ""
 msgid "Full preview"
 msgstr ""
 
+msgid "Gap images"
+msgstr ""
+
+msgid "Gaps"
+msgstr ""
+
+msgid "Graphic interaction stage:"
+msgstr ""
+
 msgid "Identifier"
 msgstr ""
 
@@ -218,6 +275,9 @@ msgid "Integer"
 msgstr ""
 
 msgid "Interaction content editor:"
+msgstr ""
+
+msgid "Interaction data saved."
 msgstr ""
 
 msgid "Interaction editor:"
@@ -241,7 +301,16 @@ msgstr ""
 msgid "Label"
 msgstr ""
 
+msgid "Light preview"
+msgstr ""
+
+msgid "Light preview:"
+msgstr ""
+
 msgid "Lower bound"
+msgstr ""
+
+msgid "MIME type"
 msgstr ""
 
 msgid "Manage item content"
@@ -280,10 +349,16 @@ msgstr ""
 msgid "Modification on response applied"
 msgstr ""
 
+msgid "Modification(s) on interaction has been updated"
+msgstr ""
+
 msgid "Move Down"
 msgstr ""
 
 msgid "Move Up"
+msgstr ""
+
+msgid "Next"
 msgstr ""
 
 msgid "No user is logged in"
@@ -316,6 +391,9 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr ""
 
+msgid "Prev"
+msgstr ""
+
 msgid "Preview Console"
 msgstr ""
 
@@ -343,6 +421,15 @@ msgstr ""
 msgid "Responses Editor"
 msgstr ""
 
+msgid "Responses Grid"
+msgstr ""
+
+msgid "Return to item editor"
+msgstr ""
+
+msgid "Reverse rendering"
+msgstr ""
+
 msgid "Save"
 msgstr ""
 
@@ -352,10 +439,19 @@ msgstr ""
 msgid "Server"
 msgstr ""
 
+msgid "Set processing mode"
+msgstr ""
+
 msgid "Shape"
 msgstr ""
 
 msgid "Shuffle choices"
+msgstr ""
+
+msgid "Step"
+msgstr ""
+
+msgid "Step label display"
 msgstr ""
 
 msgid "String"
@@ -370,13 +466,28 @@ msgstr ""
 msgid "The choice cannot be saved"
 msgstr ""
 
+msgid "The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)"
+msgstr ""
+
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
+msgstr ""
+
+msgid "The item has been successfully saved"
 msgstr ""
 
 msgid "The item has been successfully updated"
 msgstr ""
 
 msgid "The mapping options have been applied"
+msgstr ""
+
+msgid "The mapping options have been updated"
 msgstr ""
 
 msgid "The migration scripts for the deprecated items will be provided soon"
@@ -397,16 +508,34 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
+msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
+msgstr ""
+
+msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
+msgstr ""
+
 msgid "Unable to copy the resources"
 msgstr ""
 
+msgid "Unable to load QTI resource with href = '%s'"
+msgstr ""
+
 msgid "Unable to move"
+msgstr ""
+
+msgid "Update interaction & choices modifications"
+msgstr ""
+
+msgid "Update response & scoring modifications"
 msgstr ""
 
 msgid "Upload QTI File"
 msgstr ""
 
 msgid "Upload a QTI Package File"
+msgstr ""
+
+msgid "Upload an Open Web Item Package File"
 msgstr ""
 
 msgid "Upload an XHTML Package File"
@@ -451,10 +580,16 @@ msgstr ""
 msgid "default"
 msgstr ""
 
+msgid "download"
+msgstr ""
+
 msgid "draw it"
 msgstr ""
 
 msgid "ellipse"
+msgstr ""
+
+msgid "end attempt now"
 msgstr ""
 
 msgid "horizontal"
@@ -491,6 +626,15 @@ msgid "please confirm deletion of the interaction"
 msgstr ""
 
 msgid "polygon"
+msgstr ""
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "quantity"
 msgstr ""
 
 msgid "rectangle"

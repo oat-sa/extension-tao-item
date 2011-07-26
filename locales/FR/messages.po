@@ -64,9 +64,6 @@ msgstr "Editeur de choix:"
 msgid "Class saved"
 msgstr "Classe enregistrée"
 
-msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
-msgstr "Cliquer sur un ligne pour éditer, ensuite tapez "Entrer" pour valider ou "Echape" pour annuler les changements."
-
 msgid "Client"
 msgstr "Client"
 
@@ -511,9 +508,153 @@ msgstr "vertical"
 msgid "yes"
 msgstr "oui"
 
+msgid "%d items of %d imported successfuly"
+msgstr ""
+
+msgid "Add a new stylesheet:"
+msgstr ""
+
+msgid "Add choice"
+msgstr ""
+
+msgid "Add choice to group"
+msgstr ""
+
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
+
+msgid "An error occured while loading the item: "
+msgstr ""
+
+msgid "Associable hotspots"
+msgstr ""
+
+msgid "Attached style sheets:"
+msgstr ""
+
+msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
+msgstr ""
+
+msgid "Choice group"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
+msgstr ""
+
+msgid "Coordinates"
+msgstr ""
+
+msgid "Debug"
+msgstr ""
+
+msgid "Enables you to export an IMS QTI Package."
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
 msgid "Full preview"
 msgstr ""
 
+msgid "Gap images"
+msgstr ""
+
+msgid "Gaps"
+msgstr ""
+
+msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "Interaction data saved."
+msgstr ""
+
+msgid "Light preview"
+msgstr ""
+
+msgid "Light preview:"
+msgstr ""
+
+msgid "MIME type"
+msgstr ""
+
+msgid "Modification(s) on interaction has been updated"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Responses Grid"
+msgstr ""
+
+msgid "Return to item editor"
+msgstr ""
+
+msgid "Reverse rendering"
+msgstr ""
+
+msgid "Set processing mode"
+msgstr ""
+
+msgid "Step"
+msgstr ""
+
+msgid "Step label display"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The item has been successfully saved"
+msgstr ""
+
+msgid "The mapping options have been updated"
+msgstr ""
+
 msgid "The migration scripts for the deprecated items will be provided soon"
+msgstr ""
+
+msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
+msgstr ""
+
+msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
+msgstr ""
+
+msgid "Unable to load QTI resource with href = '%s'"
+msgstr ""
+
+msgid "Update interaction & choices modifications"
+msgstr ""
+
+msgid "Update response & scoring modifications"
+msgstr ""
+
+msgid "Upload an Open Web Item Package File"
+msgstr ""
+
+msgid "download"
+msgstr ""
+
+msgid "end attempt now"
+msgstr ""
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "quantity"
 msgstr ""
 

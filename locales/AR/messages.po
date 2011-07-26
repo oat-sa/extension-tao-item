@@ -1,6 +1,9 @@
 msgid "A QTI item file is an XML file following the QTI standard version 2.0"
 msgstr "Un fichier d'item QTI est un fichier XML suivant le standard QTI version 2.0"
 
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
+
 msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
 msgstr "Un paquet QTI est une archive ZIP contenant un fichier msmanifest.xml ainsi que les ressources QTI à importer"
 
@@ -22,8 +25,14 @@ msgstr "خصائص متقدمة"
 msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
 msgstr "Un paquet XHTML est une archive ZIP contenant un fichier index.html au format XHTML 1.0 Transitional ainsi que ses ressources à importer (images, scripts, css, video, etc.)"
 
+msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
+
 msgid "An error occured during the import"
 msgstr "حدث خطأ أثناء الاستيراد"
+
+msgid "An error occured while loading the item:"
+msgstr ":حدث خطا اثناء تحميل السؤال"
 
 msgid "An error occured while saving the item"
 msgstr "حدث خطأ أثناء تحميل الاختبار"
@@ -52,6 +61,9 @@ msgstr ":محرر الخيارات"
 msgid "Class saved"
 msgstr "Classe enregistrée"
 
+msgid "Click on a row to edit, then press "enter" to validate or "escape" to cancel the changes."
+msgstr "Cliquer sur un ligne pour éditer, ensuite tapez "Entrer" pour valider ou "Echape" pour annuler les changements."
+
 msgid "Client"
 msgstr "الزبون"
 
@@ -61,11 +73,17 @@ msgstr "المحتوى"
 msgid "Correct Responses"
 msgstr "الإجابات الصحيحة"
 
+msgid "Debug Mode"
+msgstr "وضعيةالمنقحات"
+
 msgid "Default value"
 msgstr "القيمة الافتراضية"
 
 msgid "Delete choice"
 msgstr "حذف الخيار"
+
+msgid "Delete interaction"
+msgstr "حذف التفاعل"
 
 msgid "Disabled"
 msgstr "غير نشط"
@@ -73,8 +91,7 @@ msgstr "غير نشط"
 msgid "Do you really want to delete the row?"
 msgstr "هل تريد فعلا حذف الصف؟""
 
-msgid "Download item content"
-msgstr "تحميل محتوى السؤال"
+msgid"
 
 msgid "Edit Item"
 msgstr "تعديل السؤال"
@@ -90,6 +107,9 @@ msgstr "Cela vous permet d'exporter une archive ZIP contenant un dossier par ite
 
 msgid "Enabled"
 msgstr "نشط"
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
+msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
 
 msgid "Error in background file:"
 msgstr "Erreur de le fichier d'arrière plan:"
@@ -167,7 +187,7 @@ msgid "Item saved"
 msgstr "تم حفظ السؤال"
 
 msgid "Item saved successfully"
-msgstr "تم بنجاح تحديث "
+msgstr "تم بنجاح تحديث"
 
 msgid "Items"
 msgstr "الاسئلة"
@@ -230,7 +250,7 @@ msgid "Not yet available"
 msgstr "غير متوفرة حتى الآن"
 
 msgid "Number base for value interpretation"
-msgstr "قاعدة رقمية "
+msgstr "قاعدة رقمية"
 
 msgid "Options"
 msgstr "خيارات"
@@ -250,8 +270,14 @@ msgstr "Masque d'expression régulière"
 msgid "Place holder text"
 msgstr "حامل مكان النص"
 
+msgid "Please confirm interaction deletion"
+msgstr "الرجاء تاكيد حذف التفاعل"
+
 msgid "Please select an item before!"
 msgstr "الرجاء اختيار سؤال"
+
+msgid "Please select first the item type!"
+msgstr "!الرجاء اولا تحديد نوع السؤال"
 
 msgid "Preview"
 msgstr "معاينة"
@@ -294,9 +320,6 @@ msgstr "الخادم"
 
 msgid "Shape"
 msgstr "الشكل"
-
-msgid "Shuffle choices"
-msgstr ""
 
 msgid "String"
 msgstr "Chaîne de caractère"
@@ -344,7 +367,7 @@ msgid "Unable to move"
 msgstr "لا يمكت التحريك"
 
 msgid "Upload QTI File"
-msgstr "QTI تحميل ملف "
+msgstr "QTI تحميل ملف"
 
 msgid "Upload a QTI Package File"
 msgstr "Télécharger un paquet QTI"
@@ -397,6 +420,9 @@ msgstr "الافتراضي"
 msgid "delete"
 msgstr "حذف"
 
+msgid "draw it"
+msgstr "ارسم"
+
 msgid "duplicate"
 msgstr "تكرار"
 
@@ -445,6 +471,9 @@ msgstr "سؤال جديد"
 msgid "no"
 msgstr "لا"
 
+msgid "please confirm deletion of the interaction"
+msgstr "الرجاء تاكيد حذف التفاعل"
+
 msgid "polygon"
 msgstr "مضلع"
 
@@ -467,7 +496,7 @@ msgid "unable to create for imported content"
 msgstr "لا يمكن إنشاء المحتوى المستورد"
 
 msgid "unable to extract archive content, please check your tmp dir"
-msgstr "لا يمكن استخراج محتويات الأرشيف "
+msgstr "لا يمكن استخراج محتويات الأرشيف"
 
 msgid "vertical"
 msgstr "العمودي"
@@ -475,45 +504,162 @@ msgstr "العمودي"
 msgid "yes"
 msgstr "نعم"
 
+msgid "%d items of %d imported successfuly"
+msgstr ""
+
 msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
 msgstr ""
 
-msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
-msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
+msgid "Add a new stylesheet:"
+msgstr ""
 
-msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
+msgid "Add choice"
+msgstr ""
 
-msgid "An error occured while loading the item:"
-msgstr ":حدث خطا اثناء تحميل السؤال"
+msgid "Add choice to group"
+msgstr ""
+
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
 
 msgid "An error occured while loading the item: "
-msgstr ":حدث خطا اثناء تحميل السؤال"
+msgstr ""
+
+msgid "Associable hotspots"
+msgstr ""
+
+msgid "Attached style sheets:"
+msgstr ""
+
+msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
+msgstr ""
+
+msgid "Choice group"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
 
 msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
-msgstr "Cliquer sur un ligne pour éditer, ensuite tapez \"Entrer\" pour valider ou \"Echape\" pour annuler les changements."
+msgstr ""
 
-msgid "Debug Mode"
-msgstr "وضعيةالمنقحات"
+msgid "Coordinates"
+msgstr ""
 
-msgid "Delete interaction"
-msgstr "حذف التفاعل "
+msgid "Debug"
+msgstr ""
 
-msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
-msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
+msgid "Download item content"
+msgstr ""
 
-msgid "Please confirm interaction deletion"
-msgstr "الرجاء تاكيد حذف التفاعل "
+msgid "Enables you to export an IMS QTI Package."
+msgstr ""
 
-msgid "Please select first the item type!"
-msgstr "!الرجاء اولا تحديد نوع السؤال"
+msgid "Export"
+msgstr ""
+
+msgid "Full preview"
+msgstr ""
+
+msgid "Gap images"
+msgstr ""
+
+msgid "Gaps"
+msgstr ""
+
+msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "Interaction data saved."
+msgstr ""
+
+msgid "Light preview"
+msgstr ""
+
+msgid "Light preview:"
+msgstr ""
+
+msgid "MIME type"
+msgstr ""
+
+msgid "Modification(s) on interaction has been updated"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Responses Grid"
+msgstr ""
+
+msgid "Return to item editor"
+msgstr ""
+
+msgid "Reverse rendering"
+msgstr ""
+
+msgid "Set processing mode"
+msgstr ""
+
+msgid "Shuffle choices"
+msgstr ""
+
+msgid "Step"
+msgstr ""
+
+msgid "Step label display"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The item has been successfully saved"
+msgstr ""
+
+msgid "The mapping options have been updated"
+msgstr ""
 
 msgid "The migration scripts for the deprecated items will be provided soon"
 msgstr ""
 
-msgid "draw it"
-msgstr "ارسم"
+msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
+msgstr ""
 
-msgid "please confirm deletion of the interaction"
-msgstr "الرجاء تاكيد حذف التفاعل "
+msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
+msgstr ""
+
+msgid "Unable to load QTI resource with href = '%s'"
+msgstr ""
+
+msgid "Update interaction & choices modifications"
+msgstr ""
+
+msgid "Update response & scoring modifications"
+msgstr ""
+
+msgid "Upload an Open Web Item Package File"
+msgstr ""
+
+msgid "download"
+msgstr ""
+
+msgid "end attempt now"
+msgstr ""
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "quantity"
+msgstr ""
 
