@@ -1,21 +1,50 @@
-<?include('form_interaction_without_choiceform.tpl');?>
-
+<div id="qtiAuthoring_interaction_left_container">
+	<div id="qtiAuthoring_interactionEditor"> 
+		
+		<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
+				<?=__('Interaction editor:')?>
+		</div>
+		<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
+			<div class="ext-home-container ui-state-highlight">
+				<?=get_data('formInteraction')?>
+			</div>
+			
+			<div id="formInteraction_object_container">
+				<div id="formInteraction_object" />
+			</div>
+			
+		</div>
+	
+	</div>
+</div>
 <div id="qtiAuthoring_interaction_right_container">
-<?include('form_response_container.tpl');?>
+	<?include('form_response_container.tpl');?>
 </div>
 <div style="clear:both"/>
 
 <script type="text/javascript">
+var myInteraction = null;
 $(document).ready(function(){
 	var backgroundImagePath = "<?=get_data('backgroundImagePath')?>";
+	var options = {};
 	if(backgroundImagePath){
-		var options = {};
+		options.backgroundImagePath = backgroundImagePath;
 		var width = "<?=get_data('width')?>";
 		var height = "<?=get_data('height')?>";
 		if(width) options.width = width;
 		if(height) options.height = height;
-		
-		myInteraction.buildShapeEditor(backgroundImagePath, options);
+	}
+	
+	try{
+		myInteraction = new interactionClass(
+			'<?=get_data('interactionSerial')?>', 
+			myItem.itemSerial, 
+			{
+				"shapeEditorOptions":options
+			}
+		);
+	}catch(err){
+		CL('error creating interaction', err);
 	}
 });
 </script>

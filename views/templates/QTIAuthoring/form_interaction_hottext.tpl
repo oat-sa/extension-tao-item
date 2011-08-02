@@ -40,7 +40,7 @@
 var myInteraction = null;
 $(document).ready(function(){
 	try{
-		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, '#formChoices_container');
+		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, {"choicesFormContainer":'#formChoices_container'});
 	}catch(err){
 		CL('error creating interaction', err);
 	}

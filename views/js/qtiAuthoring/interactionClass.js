@@ -1,20 +1,21 @@
 // alert('interaction edit loaded');
 interactionClass.instances = [];
 
-function interactionClass(interactionSerial, relatedItemSerial, choicesFormContainer, responseFormContainer, responseMappingMode){
+function interactionClass(interactionSerial, relatedItemSerial, options){
 	
-	if(!interactionSerial){ throw 'no interaction serial found';}
-	if(!relatedItemSerial){ throw 'no related item serial found';}
+	if(!interactionSerial){throw 'no interaction serial found';}
+	if(!relatedItemSerial){throw 'no related item serial found';}
 	
 	var defaultResponseFormContainer = {
 		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
 		responseGrid: 'qtiAuthoring_response_grid'
 	};
-	if(!responseFormContainer){
-		var responseFormContainer = defaultResponseFormContainer;
-	}
-	this.responseMappingOptionsFormContainer = responseFormContainer.responseMappingOptionsFormContainer;
-	this.responseGrid = responseFormContainer.responseGrid;
+	
+	var settings = $.extend(settings, defaultResponseFormContainer, options);
+	
+	this.settings = settings;
+	this.responseMappingOptionsFormContainer = settings.responseMappingOptionsFormContainer;
+	this.responseGrid = settings.responseGrid;
 	
 	this.interactionSerial = interactionSerial;
 	this.relatedItemSerial = relatedItemSerial;
@@ -31,25 +32,37 @@ function interactionClass(interactionSerial, relatedItemSerial, choicesFormConta
 	
 	this.initInteractionFormSubmitter();
 	
-	//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode) deprecated!!!
-	// this.loadResponseMappingForm();
+	var __this = this;
+	var initChoicesAndResponse = function(){
+		//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode) deprecated!!!
+		// this.loadResponseMappingForm();
+
+		//load choices form if necessary:
+		if(settings.choicesFormContainer) {
+			__this.choicesFormContainer = settings.choicesFormContainer;
+			__this.loadChoicesForm(__this.choicesFormContainer);
+		}else{
+			//immediately set the form change listener (no need to wait for the choice forms)
+			__this.setFormChangeListener();
+
+			//and load the response form and grid:
+			new responseClass(__this.responseGrid, __this);
+		}
+	};
 	
-	//load choices form if necessary:
-	if(choicesFormContainer) {
-		this.choicesFormContainer = choicesFormContainer;
-		this.loadChoicesForm(this.choicesFormContainer);
+	if(settings.shapeEditorOptions && settings.shapeEditorOptions.backgroundImagePath){
+		var backgroundImagePath = settings.shapeEditorOptions['backgroundImagePath'];
+		delete settings.shapeEditorOptions['backgroundImagePath'];
+		settings.shapeEditorOptions.onReady = function(){
+			initChoicesAndResponse();
+		};
+		this.buildShapeEditor(backgroundImagePath, settings.shapeEditorOptions);
 	}else{
-		//immediately set the form change listener (no need to wait for the choice forms)
-		this.setFormChangeListener();
-		
-		//and load the response form and grid:
-		new responseClass(this.responseGrid, this);
+		initChoicesAndResponse();
 	}
 	
 	interactionClass.instances[interactionSerial] = this;
 	this.getRelatedItem().currentInteraction = this;
-	
-	
 }
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){
@@ -289,8 +302,6 @@ interactionClass.prototype.saveGroup = function($groupForm){
 			choiceOrder += '&choiceOrder['+i+']='+this.orderedChoices[order];
 			i++;
 		}
-		
-		var groupProperties = 
 		
 		$.ajax({
 		   type: "POST",
@@ -897,36 +908,36 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	
 	var interaction = this;
 	var controls = {
-	  strikeThrough : { visible : true },
-	  underline     : { visible : false },
-	  insertTable 	: { visible : false },
+	  strikeThrough : {visible : true},
+	  underline     : {visible : false},
+	  insertTable 	: {visible : false},
 	  
-	  h1 : { visible : true },
-	  h2 : { visible : true },
-	  h3 : { visible : true },
+	  h1 : {visible : true},
+	  h2 : {visible : true},
+	  h3 : {visible : true},
 	  
-	  justifyLeft   : { visible : true },
-	  justifyCenter : { visible : true },
-	  justifyRight  : { visible : true },
-	  justifyFull   : { visible : true },
+	  justifyLeft   : {visible : true},
+	  justifyCenter : {visible : true},
+	  justifyRight  : {visible : true},
+	  justifyFull   : {visible : true},
 	  
-	  indent  : { visible : true },
-	  outdent : { visible : true },
+	  indent  : {visible : true},
+	  outdent : {visible : true},
 	  
-	  subscript   : { visible : true },
-	  superscript : { visible : true },
+	  subscript   : {visible : true},
+	  superscript : {visible : true},
 	  
-	  undo : { visible : true },
-	  redo : { visible : true },
+	  undo : {visible : true},
+	  redo : {visible : true},
 	  
-	  insertOrderedList    : { visible : true },
-	  insertUnorderedList  : { visible : true },
-	  insertHorizontalRule : { visible : true },
+	  insertOrderedList    : {visible : true},
+	  insertUnorderedList  : {visible : true},
+	  insertHorizontalRule : {visible : true},
 	  
-	  cut   : { visible : true },
-	  copy  : { visible : true },
-	  paste : { visible : true },
-	  html  : { visible: true },
+	  cut   : {visible : true},
+	  copy  : {visible : true},
+	  paste : {visible : true},
+	  html  : {visible: true},
 	  
 	  addChoiceInteraction: {visible:false},
 	  addAssociateInteraction: {visible:false},
@@ -1040,6 +1051,7 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 	if(myShapeEditor){
 		//map choices to the shape editor:
 		this.shapeEditor = myShapeEditor;
+		
 	}
 }
 		

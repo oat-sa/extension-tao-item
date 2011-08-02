@@ -35,21 +35,29 @@
 <script type="text/javascript">
 var myInteraction = null;
 $(document).ready(function(){
-	try{
-		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, '#formChoices_container');
-	}catch(err){
-		CL('error creating interaction', err);
-	}
+	
 	
 	var backgroundImagePath = "<?=get_data('backgroundImagePath')?>";
+	var options = {};
 	if(backgroundImagePath){
-		var options = {};
+		options.backgroundImagePath = backgroundImagePath;
 		var width = "<?=get_data('width')?>";
 		var height = "<?=get_data('height')?>";
 		if(width) options.width = width;
 		if(height) options.height = height;
-		
-		myInteraction.buildShapeEditor(backgroundImagePath, options);
+	}
+	
+	try{
+		myInteraction = new interactionClass(
+			'<?=get_data('interactionSerial')?>', 
+			myItem.itemSerial, 
+			{
+				"choicesFormContainer":'#formChoices_container',
+				"shapeEditorOptions":options
+			}
+		);
+	}catch(err){
+		CL('error creating interaction', err);
 	}
 	
 	$('.interaction-form-submitter').clone().appendTo('#formInteraction_content_form_bottom_button').click(function(e){
