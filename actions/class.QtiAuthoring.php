@@ -806,7 +806,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	}
 	
 	public function saveInteraction(){
-	
+		
 		$interaction = $this->getCurrentInteraction();
 		
 		$myForm = $interaction->toForm();
