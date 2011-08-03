@@ -529,6 +529,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 			$item = $this->service->getItem($_SESSION['instance']);
 			if($this->service->isItemModelDefined($item)){
 				
+				$itemContentSaved = false;
+
 				//CTEST
 				 if ($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_CTEST))){
 					isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
@@ -538,15 +540,19 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 									<rdfs:COMMENT lang='{$lang}'>{$item->getComment()}</rdfs:COMMENT>
 									{$_SESSION['xml']}
 								</tao:ITEM>";
-					$item = $this->service->setItemContent($item, $data);
+					$itemContentSaved = $this->service->setItemContent($item, $data);
 				}
 				//OTHERS
 				else{
-					$item = $this->service->setItemContent($item, $_SESSION['xml']);
+					$itemContentSaved = $this->service->setItemContent($item, $_SESSION['xml']);
 				}
 				
-				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
-				$message = __('Item saved successfully');
+				if(!$itemContentSaved){
+					$message = __('Item saving failed');
+				}else{
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+					$message = __('Item successfully saved');
+				}
 			}
 	
 			if(tao_helpers_Context::check('STANDALONE_MODE')){
