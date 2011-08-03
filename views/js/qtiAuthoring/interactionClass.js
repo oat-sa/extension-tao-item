@@ -11,7 +11,8 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 		responseGrid: 'qtiAuthoring_response_grid'
 	};
 	
-	var settings = $.extend(settings, defaultResponseFormContainer, options);
+	var settings = {};
+	$.extend(settings, defaultResponseFormContainer, options);
 	
 	this.settings = settings;
 	this.responseMappingOptionsFormContainer = settings.responseMappingOptionsFormContainer;
@@ -134,7 +135,6 @@ interactionClass.prototype.saveModifiedChoices = function(){
 interactionClass.prototype.saveInteraction = function($myForm, option){
 	//TODO: check unicity of the id:
 	if($myForm.length){
-		// CD($myForm, '$myForm');
 		
 		var interactionProperties = $myForm.serializeObject();
 		

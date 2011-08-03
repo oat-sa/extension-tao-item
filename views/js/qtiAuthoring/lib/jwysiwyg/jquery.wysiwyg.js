@@ -737,7 +737,6 @@
 									self.removeFormat();
 									self.editorDoc.execCommand('delete', false, null);
 									self.insertHtml('{qti_hottext_new}');
-									CL('selection', selection);
 									return selection;
 							}
 							else if (self.options.messages.nonSelection)
