@@ -107,6 +107,7 @@ form.wysiwyg label{text-align: left;margin: 10px 0px;}
 #formInteraction_object {margin:auto;position:relative;}
 
 img.shapeEditorPencil {cursor:pointer;margin:2px;position:relative;top:5px;}
+img.shapeEditorPencil:hover{opacity:0.7;margin:3px 3px 1px 1px;}
 
 .form-submitter-emphasis {text-decoration:blink;}
 

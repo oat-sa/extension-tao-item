@@ -503,6 +503,7 @@ responseClass.prototype.destroyGrid = function(){
 
 responseClass.prototype.editGridRow = function(rowId){
 	var id = parseInt(rowId);
+	var $currentRow = this.myGrid.find('tr#'+id);
 	
 	if(id>=0 && id!=='' && id!==this.currentRowId){
 		
@@ -646,6 +647,8 @@ responseClass.prototype.editGridRow = function(rowId){
 					return false;
 				}
 				
+				$currentRow.find('input,select').unbind('blur');
+				
 				response.saveResponseGrid();
 				response.restoreCurrentRow();
 			},
@@ -657,18 +660,22 @@ responseClass.prototype.editGridRow = function(rowId){
 			}
 		); 
 		response.currentRowId = id;
-		response.bbb = 'CCC';
 		this.currentRowId = id;
-		// CD(this, 'this');
 		
-		//add listener to the input row: on click row...
-		// $('#qtiAuthoring_response_grid')
-		// $(document).not('#qtiAuthoring_response_grid').click(function(){
+		var triggerRowSave = function($gridRow){
+			var e = jQuery.Event("keydown");
+			e.which = 13;
+			e.keyCode = 13;//for MSIE...
+			$gridRow.trigger(e);
+		};
 		
-		// });
+		$currentRow.find('input,select').each(function(){
+			$(this).blur(function(){
+				triggerRowSave($(this));
+			});
+			
+		});
 		
-		
-		//local edit, then systematic global save:
 	}
 }
 
