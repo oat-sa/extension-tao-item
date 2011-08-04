@@ -241,7 +241,6 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 			}
 			
 			var interaction = this;
-			// CL('interaction.modifiedChoices before', interaction.modifiedChoices);
 			$.ajax({
 			   type: "POST",
 			   url: root_url + "/taoItems/QtiAuthoring/saveChoice",
@@ -257,7 +256,6 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 						
 						//only if it is the last updated choice!
 						if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
-							// CL('interaction.modifiedChoices', interaction.modifiedChoices);
 							//only when the identifier has changed:
 							if(r.reload){
 								interaction.loadChoicesForm();

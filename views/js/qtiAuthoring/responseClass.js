@@ -106,7 +106,6 @@ responseClass.prototype.loadResponseMappingForm = function(){
 					$(_this.responseFormContainer).after(form);
 					$('#qtiAuthoring_mappingEditor').find('.form-toolbar').hide();
 					interaction.setResponseMappingMode(true);
-					CL('qtiAuthoring_mappingEditor created');
 					setTimeout(function(){_this.setResponseFormChangeListener();},1000);
 				}
 		   }
@@ -157,7 +156,6 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 }
 
 responseClass.prototype.setResponseFormChangeListener = function(){
-   CL('setResponseFormChangeListenered');
    var __this = this;
 	$responseFormContainer = $('div#qtiAuthoring_responseEditor');
 	$responseFormContainer.children().unbind('change paste').bind('change paste', function(){
@@ -336,10 +334,8 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	var navGridParamDefault = {
 		search: false,
 		afterRefresh: function(){
-			//CL('refreshing');
 			response.destroyGrid();
 			new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
-			//CL('refreshed');
 		},
 		editfunc: function(rowId){
 			response.editGridRow(rowId);
