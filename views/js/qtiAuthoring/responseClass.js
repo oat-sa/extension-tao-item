@@ -38,6 +38,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 	
 	this.currentRowId = -1;
 	this.maxChoices = null;
+	this.setModifiedResponseProperties(false);
 	
 	if(!responseFormContainer){var responseFormContainer='#qtiAuthoring_response_formContainer';}
 	
@@ -61,8 +62,8 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					//set the response form if needed:
 					$(response.responseFormContainer).html(r.responseForm);
 					response.initResponseFormSubmitter();
-					
-						
+					response.setResponseFormChangeListener();
+
 					//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
 					if(r.maxChoices) response.maxChoices = r.maxChoices;
 						
@@ -78,6 +79,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					if(r.setResponseMappingMode){
 						response.loadResponseMappingForm();
 					}
+					
 				}else{
 					throw 'error in loading the response editing data';
 				}
@@ -98,12 +100,15 @@ responseClass.prototype.loadResponseMappingForm = function(){
 		   },
 		   dataType: 'html',
 		   success: function(form){
+				$responseFormContainer = $('#qtiAuthoring_mappingEditor');
+				
 				if(!$('#qtiAuthoring_mappingEditor').length){
 					$(_this.responseFormContainer).after(form);
 					$('#qtiAuthoring_mappingEditor').find('.form-toolbar').hide();
 					interaction.setResponseMappingMode(true);
+					CL('qtiAuthoring_mappingEditor created');
+					setTimeout(function(){_this.setResponseFormChangeListener();},1000);
 				}
-				
 		   }
 		});
 	}
@@ -140,6 +145,8 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 						}
 						
 					}
+					
+					self.setModifiedResponseProperties(false);
 				}
 		   }
 		});
@@ -147,6 +154,25 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 		//check modified choices then send it as well:
 		return false;
 	});
+}
+
+responseClass.prototype.setResponseFormChangeListener = function(){
+   CL('setResponseFormChangeListenered');
+   var __this = this;
+	$responseFormContainer = $('div#qtiAuthoring_responseEditor');
+	$responseFormContainer.children().unbind('change paste').bind('change paste', function(){
+		__this.setModifiedResponseProperties(true);
+	});
+}
+
+responseClass.prototype.setModifiedResponseProperties = function(modified){
+   if(modified){
+		this.modifiedResponseOptions = true;
+		$('a.response-form-submitter').addClass('form-submitter-emphasis');
+	}else{
+		this.modifiedResponseOptions = false;
+		$('a.response-form-submitter').removeClass('form-submitter-emphasis');
+	}
 }
 
 responseClass.prototype.buildGrid = function(tableElementId, serverResponse){

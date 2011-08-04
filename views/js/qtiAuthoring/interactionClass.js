@@ -649,6 +649,7 @@ interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
 	}
 }
 
+//define when the form is considered as changed:
 interactionClass.prototype.setFormChangeListener = function(target){
 	
 	var interaction = this;
@@ -669,17 +670,16 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		}
 	}
 	
-	$choiceForm.children().change(function(){
+	$choiceForm.children().bind('change paste', function(){
 		var $modifiedForm = $(this).parents('form');
 		interaction.setModifiedChoicesByForm($modifiedForm);
 	});
-	
+
 	$choiceForm.find('iframe').each(function(){
 		var $modifiedForm = $(this).parents('form');
 		var setChangesfunction = function(){
 			interaction.setModifiedChoicesByForm($modifiedForm);
 		};
-		
 		$($(this)[0].contentWindow.document).click(setChangesfunction);
 		$(this).siblings('ul').click(setChangesfunction);
 		
