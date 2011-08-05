@@ -246,11 +246,11 @@ $(document).ready(function(){
 		fileupload: {
 			label: 'file upload',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_fileUpload.png"
-		},
-		endattempt: {
-			label: 'end attempt',
-			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_custom.png"
 		}
+//		,endattempt: {
+//			label: 'end attempt',
+//			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_custom.png"
+//		}
 	}
 
 	for(interactionType in interactionTypes){
