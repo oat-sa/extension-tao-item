@@ -669,8 +669,6 @@ responseClass.prototype.editGridRow = function(rowId){
 					return false;
 				}
 				
-				$currentRow.find('input,select').unbind('blur');
-				
 				response.saveResponseGrid();
 				response.restoreCurrentRow();
 			},
@@ -692,10 +690,55 @@ responseClass.prototype.editGridRow = function(rowId){
 		};
 		
 		$currentRow.find('input,select').each(function(){
-			$(this).blur(function(){
-				triggerRowSave($(this));
+			
+			var realFocused = false;
+			$(this).focus(function(){
+				realFocused = true;
 			});
 			
+			$(this).unbind('blur').blur(function(){
+				if(realFocused){
+					triggerRowSave($(this));
+					realFocused = false;
+				}
+			});
+			
+			//for order intereactions only:
+			if(response.interactionType == 'order' || response.interactionType == 'graphicorder'){
+				
+				$(this).change(function(){
+					var myId = $(this).attr('id');
+					var myValue = $(this).val();
+					var $allSelectElts = $currentRow.find('select');
+					var pickedValues = [];
+					pickedValues.push(parseInt(myValue));
+
+					$allSelectElts.each(function(){
+						if($(this).attr('id') != myId){
+
+							var otherValue = parseInt($(this).val());
+							var newOtherValue = otherValue;
+							var i = 0;
+							while( util.indexOf(pickedValues, newOtherValue) >= 0 ){
+								newOtherValue = newOtherValue + 1;
+								if(newOtherValue >= $allSelectElts.length){
+									newOtherValue = 0;
+								}
+
+								if(i>$allSelectElts.length){
+									break;
+								}
+								i++;
+							}
+
+							pickedValues.push(newOtherValue);
+							$(this).val(newOtherValue);
+						}
+					});
+
+				});
+			}
+		
 		});
 		
 	}

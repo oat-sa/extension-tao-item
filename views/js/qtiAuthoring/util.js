@@ -203,3 +203,10 @@ $.fn.serializeObject = function(print)
     return o;
 };
 
+util.indexOf = function(arrayObj, needle, start){
+	for (var i = (start || 0), j = arrayObj.length; i < j; i++) {
+			 if (arrayObj[i] === needle) { return i; }
+		 }
+		 return -1;
+
+}
