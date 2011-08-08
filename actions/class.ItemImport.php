@@ -9,7 +9,9 @@
  *
  */
 class taoItems_actions_ItemImport extends tao_actions_Import {
-
+	
+	protected $excludedProperties = array(TAO_ITEM_CONTENT_PROPERTY);
+	
 	/**
 	 * Constructor used to override the formContainer
 	 */
