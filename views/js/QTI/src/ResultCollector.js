@@ -396,8 +396,7 @@ function QTIResultCollector(options){
 				, "value"	: parseInt($("#" + _this.id +' #qti_slider_value').val())
 			};
 	};
-	
-	
+		
 	/**
 	 * Collect the results of an <b>upload</b> widget 
 	 * @methodOf QTIResultCollector
@@ -412,6 +411,23 @@ function QTIResultCollector(options){
 			case "integer":
 			default:
 				value = parseInt( $("#" + _this.id +'_data').val());
+		}
+		
+		return {
+				"identifier": _this.opts['responseIdentifier'] // Identifier of the response
+				, "value"	: value
+			};
+	};
+	
+	/**
+	 * Collect the results of an <b>endattempt</b> widget 
+	 * @methodOf QTIResultCollector
+	 * @returns {Object} the results
+	 */
+	this.end_attempt = function(){
+		var value = 0;
+		if(parseInt( $("#"+_this.id+'_data').val()) > 1){
+			value = 1;
 		}
 		
 		return {

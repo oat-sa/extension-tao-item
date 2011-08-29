@@ -238,7 +238,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'delivery_server_mode' 	=> false,
 			'raw_preview'			=> true,
 			'debug'					=> true,
-        	'qti_base_www'			=> BASE_WWW . '/js/QTI/'
+        	'qti_lib_www'			=> BASE_WWW .'js/QTI/',
+			'qti_base_www'			=> BASE_WWW .'js/QTI/'
 		);
 		taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 		

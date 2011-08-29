@@ -387,12 +387,12 @@ function qtiEdit(itemSerial, formContainers, options){
 		  addHotspotInteraction: addHotspotInteraction,
 		  addGraphicOrderInteraction: addGraphicOrderInteraction,
 		  addGraphicAssociateInteraction: addGraphicAssociateInteraction,
-//		  addGraphicGapMatchInteraction: addGraphicGapMatchInteraction,
+		  addGraphicGapMatchInteraction: addGraphicGapMatchInteraction,
 		  addSelectPointInteraction: addSelectPointInteraction,
-//		  addPositionObjectInteraction: addPositionObjectInteraction,
+		  addPositionObjectInteraction: addPositionObjectInteraction,
 		  addSliderInteraction: addSliderInteraction,
 		  addUploadInteraction: addUploadInteraction,
-//		  addEndAttemptInteraction: addEndAttemptInteraction,
+		  addEndAttemptInteraction: addEndAttemptInteraction,
 		  saveItemData: saveItemData
 		},
 		events: {

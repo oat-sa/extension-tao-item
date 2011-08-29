@@ -515,9 +515,9 @@ class taoItems_models_classes_QTI_Item
 				$variables['hasGraphics'] = $interaction->isGraphic();
 			}
         }
-                
+		
         // get Matching data
-        $matchingData = $this->getMatchingData ();
+        $matchingData = $this->getMatchingData();
 		$variables['matching'] = array();
         $variables['matching']['data'] = $matchingData;
         $variables['matching']['url'] = ROOT_URL."/taoDelivery/ResultDelivery/evaluate";

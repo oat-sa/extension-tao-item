@@ -48,6 +48,7 @@ class QTIioTestCase extends UnitTestCase {
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
 				'matching_server'		=> false,
+				'qti_lib_www'			=> BASE_WWW .'js/QTI/',
 				'qti_base_www'			=> BASE_WWW .'js/QTI/'
 			);
 			

@@ -182,7 +182,7 @@ QTIWidget.upload = function(ctx){
 			}
 		}
 		
-		new AsyncFileUpload(uploaderElt, {
+		var uploadOptions = {
 			"scriptData": {'session_id' : ctx.opts['session_id']},
 			"basePath"  : ctx.wwwPath,
 			"rootUrl"	: '',
@@ -190,6 +190,26 @@ QTIWidget.upload = function(ctx){
 			"fileExt"	: fileExt,
 			"target"	: ctx.qti_item_id + '_data',
 			"folder"    : "/"
-		});
+		};
+		
+		new AsyncFileUpload(uploaderElt.attr('id'), uploadOptions);
 	}
 };
+
+
+//
+// UPLOAD
+//
+
+/**
+ * Creates an item terminating button
+ * @methodOf QTIWidget
+ * @param {Object} ctx the QTIWidget context
+ */
+QTIWidget.end_attempt = function(ctx){
+	$(ctx.qti_item_id).val(ctx.opts['title']);
+	$(ctx.qti_item_id).click(function(){
+		$(ctx.qti_item_id+'_data').val(1);
+		$("#qti_validate").click();
+	});
+}

@@ -20,15 +20,15 @@
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.4.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
 	<?if($hasGraphics):?>
-	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/raphael.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/raphael-collision.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/raphael.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/raphael-collision.min.js"></script>
 	<?endif?>
 	
 	<?if($hasUpload):?>
-	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_base_www?>lib/jquery.uploadify/uploadify.css" media="screen" />
-	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.0.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/jquery.uploadify/swfobject.js"></script>
-	<script type="text/javascript" src="<?=$ctx_qti_base_www?>lib/AsyncFileUpload.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/uploadify.css" media="screen" />
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.0.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/swfobject.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/AsyncFileUpload.js"></script>
 	<?endif?>
 	
 	<script type="text/javascript">
@@ -45,7 +45,7 @@
 	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
 	<?endif?>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_base_www?>js/QTI/qti.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>qti.min.js"></script>
 </head>
 <body>
 	<div id='<?=$identifier?>' class="qti_item">

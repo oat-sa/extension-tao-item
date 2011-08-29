@@ -114,6 +114,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 			$deployParams = array(
 				'delivery_server_mode'	=> false,
 				'matching_server'		=> false,
+				'qti_lib_www'			=> BASE_WWW .'js/QTI/',
 				'qti_base_www'			=> BASE_WWW .'js/QTI/',
 				'base_www'				=> BASE_WWW
 			);

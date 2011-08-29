@@ -22,7 +22,8 @@ class QTIOutputTestCase extends UnitTestCase {
 			'root_url' 		=> ROOT_URL,
         	'base_www' 		=> BASE_WWW,
         	'taobase_www' 	=> TAOBASE_WWW,
-			'qti_base_www'	=> BASE_WWW .'js/QTI/',
+			'qti_lib_www'			=> BASE_WWW .'js/QTI/',
+			'qti_base_www'			=> BASE_WWW .'js/QTI/',
         	'raw_preview'	=> false,
         	'debug'			=> false
 		);

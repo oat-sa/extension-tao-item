@@ -227,18 +227,18 @@ $(document).ready(function(){
 			label: 'graphic associate',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_graphicAssociate.png"
 		},
-//		graphicgapmatch: {
-//			label: 'graphic gap',
-//			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_graphicGapmatch.png"
-//		},
+		graphicgapmatch: {
+			label: 'graphic gap',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_graphicGapmatch.png"
+		},
 		selectpoint: {
 			label: 'select point',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_selectPoint.png"
 		},
-//		positionobject: {
-//			label: 'position object',
-//			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_positionObject.png"
-//		},
+		positionobject: {
+			label: 'position object',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_positionObject.png"
+		},
 		slider: {
 			label: 'slider',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_slider.png"
@@ -247,10 +247,10 @@ $(document).ready(function(){
 			label: 'file upload',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_fileUpload.png"
 		}
-//		,endattempt: {
-//			label: 'end attempt',
-//			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_custom.png"
-//		}
+		,endattempt: {
+			label: 'end attempt',
+			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_custom.png"
+		}
 	}
 
 	for(interactionType in interactionTypes){
