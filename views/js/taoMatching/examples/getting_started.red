@@ -1,63 +1,34 @@
-TAO MATCHING API
-Getting Started
-%%mtime(%m/%d/%Y)
 
+h1. Item Scoring
 
-%!options(html): --toc
-
-%!postproc(html):  "{title}(.*){/title}" "<center><h1>\1</h1></center>"
-%!postproc(html):  "{subtitle}(.*){/subtitle}" "<center><h2>\1</h2></center>"
-%!postproc(html):  "{release_data}(.*){/release_data}" "<center><h3>\1</h3></center>"
-
-%!postproc(html): "{javascript}" '<pre class="code">'
-%!postproc(html): "{/javascript}" '</pre>'
-%!postproc(html): "{html}" <pre class="code">'
-%!postproc(html): "{/html}" '</pre>'
-
-%!options(red): --no-header
-
-%!preproc(red): "([=]+)([a-zA-Z0-9 -_']*)([=]+)" '\1=\2\3='
-%!preproc(red): "\[(.*) #([a-zA-Z0-9_-]*)]" '[[Item Scoring API#\2|\1]]'
-
-%!postproc(red):  "{title}(.*){/title}" 'h1. \1'
-%!postproc(red): "{javascript}" '<pre><code class="javascript">'
-%!postproc(red): "{/javascript}" '</code></pre>'
-%!postproc(red): "{html}" '<pre><code class="html">'
-%!postproc(red): "{/html}" '</code></pre>'
-
-%!encoding: utf-8
-%!style   : style.css
-
-{title}Item Scoring{/title}
- 
 TAO provides a response matching API for items, called the Item Scoring API. There are two available modes for response matching:
-- matching on server side (PHP): ensures the response security, since the right answers will be kept on the server
-- client side (Javascript): ensures interoperability, so you can "plug" and "unplug" your item into and out of TAO easily
 
+* matching on server side (PHP): ensures the response security, since the right answers will be kept on the server
+* client side (Javascript): ensures interoperability, so you can "plug" and "unplug" your item into and out of TAO easily
 
-= todo =
-- Initialization : Initialize in server mode : Exemple : Explain correctly the default behavior. Make a link to the result exploitation documentation.
-- Explain outcome variables
+h2. todo
 
+* Initialization : Initialize in server mode : Exemple : Explain correctly the default behavior. Make a link to the result exploitation documentation.
+* Explain outcome variables
 
-= Initialization =
+h2. Initialization
 
 Firstly you need to include the API, you can either:
-- download the TAO API standalone package {{:developers:tao:tao_extension_item:taoMatchingApi.zip|here}}
-- use the version included in the TAO distribution at /taoItems/views/js/taoMatching/taoMatching.min.js
 
+* download the TAO API standalone package {{:developers:tao:tao_extension_item:taoMatchingApi.zip|here}}
+* use the version included in the TAO distribution at /taoItems/views/js/taoMatching/taoMatching.min.js
 
 and ensure that it is included into your html page 
 
-{html}<script type="application/javascript" src='TAO_URL/taoItems/views/js/taoMatching/taoMatching.min.js'></script>{/html}
+<pre><code class="html"><script type=="application/javascript" src=='TAO_URL/taoItems/views/js/taoMatching/taoMatching.min.js'></script></code></pre>
 
 Secondly you need to initialize the matching engine. The matching can take several parameters. Depending on these parameters the engine will be initialized in client mode or in server mode.
 
-== Initialize in client mode ==
+h3. Initialize in client mode
 
 To initialize the response matching engine on client side, add the following code (javascript) to your own script.
 
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     "data"    :   {
         "rule"          : [string]
@@ -67,25 +38,25 @@ matchingInit ({
         , "responses"   : [TaoMatchingVariable]
     }
 });
-{/javascript}
+</code></pre>
 
-By setting the parameter **data** the matching API will be initialized in local client mode. You can define the matching data directly during the initialization or later through the provided API functions.
+By setting the parameter *data* the matching API will be initialized in local client mode. You can define the matching data directly during the initialization or later through the provided API functions.
 
-__rule__ ([TaoMatchingRule #Rules]) : The rule that will be used to evaluate the user's responses;
++rule+ ([[Item Scoring API#Rules|TaoMatchingRule]]) : The rule that will be used to evaluate the user's responses;
 
-__corrects__ ([TaoMatchingVariable #Variables]) : The correct responses of the item;
++corrects+ ([[Item Scoring API#Variables|TaoMatchingVariable]]) : The correct responses of the item;
 
-__maps__ ([TaoMappingVariable #Mapping-Variables][*]) : The mapping responses of the item;
++maps+ ([[Item Scoring API#Mapping-Variables|TaoMappingVariable]][*]) : The mapping responses of the item;
 
-__outcomes__ ([TaoMatchingVariable #Variables][*]) : The outcome variables of the item;
++outcomes+ ([[Item Scoring API#Variables|TaoMatchingVariable]][*]) : The outcome variables of the item;
 
-__responses__ ([TaoMatchingVariable #Variables][*]) : The user's responses;
++responses+ ([[Item Scoring API#Variables|TaoMatchingVariable]][*]) : The user's responses;
 
-==== Example ====
+h5. Example
 
 For instance, a single qti _choice interaction_ is initialized on the local matching engine as follows.
 
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     "data"    :   {
         "rule"          : TAO_MATCHING.RULE.MATCH_CORRECT
@@ -93,107 +64,107 @@ matchingInit ({
         , "outcomes"    : [{"identifier":"SCORE", "type":"double"}]
     }
 });
-{/javascript}
+</code></pre>
 
-__rule__ : Here the matching engine will evaluate the user's response with the predefined template rule [TAO_MATCHING.RULE.MATCH_CORRECT #Match-Correct-Template].
++rule+ : Here the matching engine will evaluate the user's response with the predefined template rule [[Item Scoring API#Match-Correct-Template|TAO_MATCHING.RULE.MATCH_CORRECT]].
 
-__corrects__ : Based on the given correct variable **RESPONSE** initialized with the value **identifier1**, the rule is waiting for a user's response of type string and with single cardinality. See how the template rule works ([TAO_MATCHING.RULE.MATCH_CORRECT #Match-Correct-Template])
++corrects+ : Based on the given correct variable *RESPONSE* initialized with the value *identifier1*, the rule is waiting for a user's response of type string and with single cardinality. See how the template rule works ([[Item Scoring API#Match-Correct-Template|TAO_MATCHING.RULE.MATCH_CORRECT]])
 
-__outcomes__ : Initialization of an outcome variable identified by **SCORE** with a type double. See how the template rule works ([TAO_MATCHING.RULE.MATCH_CORRECT #Match-Correct-Template])
++outcomes+ : Initialization of an outcome variable identified by *SCORE* with a type double. See how the template rule works ([[Item Scoring API#Match-Correct-Template|TAO_MATCHING.RULE.MATCH_CORRECT]])
 
-== Initialize in server mode ==
+h3. Initialize in server mode
 
-By setting the parameter **url** the matching API will be initialized in remote server mode. This provides you a secure way to evaluate the user's responses.
+By setting the parameter *url* the matching API will be initialized in remote server mode. This provides you a secure way to evaluate the user's responses.
 
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     url         : "YOUR_MATCHING_ENGINE_REMOTE_URL"
     , params    : {}
 });
-{/javascript}
+</code></pre>
 
-__url__ (string) : The url of the remote matching engine.
++url+ (string) : The url of the remote matching engine.
 
-__params__ (object): The parameters be sent to the remote matching engine. You can set as many parameters as you want in this attribute.
++params+ (object): The parameters be sent to the remote matching engine. You can set as many parameters as you want in this attribute.
 
-==== Example ====
+h5. Example
 
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     url         : "/taoDelivery/ResultDelivery/evaluate"
     , params    : {
         token   : getToken ()
     }
 });
-{/javascript}
+</code></pre>
 
-__url__ (string) : Here we call the default TAO Delivery service to evaluate the user's responses. This service will record the input (user's responses), *compare them against the defined correct responses on the server* and record the output (outcome variables) in the TAO Result Module.
++url+ (string) : Here we call the default TAO Delivery service to evaluate the user's responses. This service will record the input (user's responses), *compare them against the defined correct responses on the server* and record the output (outcome variables) in the TAO Result Module.
 
-__params__ (object): In TAO environment the attribute **token** reserved and used to exchange an identification token to the remote matching engine. 
++params+ (object): In TAO environment the attribute *token* reserved and used to exchange an identification token to the remote matching engine. 
 
-= Variables =[Variables]
+h2. Variables
 
-== Definition ==
+h3. Definition
 
 All variables (corrects, outcomes & responses) are defined following the model :
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":[string]
     , "value":[TaoValueFormat]
 }
-{/javascript}
+</code></pre>
 
-__identifier__ (string) : Identifier of the variable;
++identifier+ (string) : Identifier of the variable;
 
-__value__ ([taoValueFormat #Value-Format]) : Value of the variable;
++value+ ([[Item Scoring API#Value-Format|taoValueFormat]]) : Value of the variable;
 
-__type__ (string) (optional) : One of the available types of variable : string, float, integer, tuple, list. For the known types if the value has been defined, the type will be infered based on it;
++type+ (string) (optional) : One of the available types of variable : string, float, integer, tuple, list. For the known types if the value has been defined, the type will be infered based on it;
 
-== Value format ==[Value-Format]
+h3. Value format
 
 The value of a variable accept the following representation :
 
-=== Scalar types ===[Scalar-types]
+h4. Scalar types
 
-__string__ :
++string+ :
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":"my response"
 }
-{/javascript}
+</code></pre>
 
-__float__ :
-{javascript}
++float+ :
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":3.1415
 }
-{/javascript}
+</code></pre>
 
-__integer__ :
-{javascript}
++integer+ :
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":123456
 }
-{/javascript}
+</code></pre>
 
-__boolean__ :
-{javascript}
++boolean+ :
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":true
 }
-{/javascript}
+</code></pre>
 
-=== Container types ===[Container-types]
+h4. Container types
 
-__list__ : The container list accepts a list of variables of the same type.
++list+ : The container list accepts a list of variables of the same type.
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":[
@@ -202,11 +173,11 @@ __list__ : The container list accepts a list of variables of the same type.
         , "val3"
     ]
 }
-{/javascript}
+</code></pre>
 
-__tuple__ : The container tuple accepts an ordered list of variables of the same type.
++tuple+ : The container tuple accepts an ordered list of variables of the same type.
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":{
@@ -215,13 +186,13 @@ __tuple__ : The container tuple accepts an ordered list of variables of the same
         , "2": true
     }
 }
-{/javascript}
+</code></pre>
 
-=== List of containers ===
+h4. List of containers
 
-__list of list__ : 
++list of list+ : 
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":[ 
@@ -230,11 +201,11 @@ __list of list__ :
         , [5,6] 
     ]
 }
-{/javascript}
+</code></pre>
 
-__list of tuple__ : 
++list of tuple+ : 
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value":[ 
@@ -252,142 +223,135 @@ __list of tuple__ :
         } 
     ]
 }
-{/javascript}
+</code></pre>
 
-%=== Tuple of containers ===
+h3. Mapping Variables
 
-%Variable creation **ok**
-
-%Matching engine support **not ok**
-
-
-== Mapping Variables ==[Mapping-Variables]
-
-=== Definition ===
+h4. Definition
 
 Mapping variables are special variables used to create a mapping from a source of any base type to a single float. Based on the specification of QTI a mapping variable allows test creator to :
-- **Map** users' answer with a value set
-- **Control** the lower and upper value of the result
-- To that, **allow** item creator to manage the __default value__ to use if no map entry is found for a source value.
 
+* *Map* users' answer with a value set
+* *Control* the lower and upper value of the result
+* To that, *allow* item creator to manage the +default value+ to use if no map entry is found for a source value.
 
 Mapping variables are defined following the model :
 
-{javascript}
+<pre><code class="javascript">
 {
-	"identifier":[string]
-	, "defaultValue":[float]
-	, "lowerBound":[float]
-	, "upperBound":[float]
-	, "value":[MapEntry][*]
+
+bq. "identifier":[string]
+bq. , "defaultValue":[float]
+bq. , "lowerBound":[float]
+bq. , "upperBound":[float]
+bq. , "value":[MapEntry][*]
+
 }
-{/javascript}
+</code></pre>
 
++identifier+ (string) : Identifier of the variable to map;
 
-__identifier__ (string) : Identifier of the variable to map;
++value+ ([[Item Scoring API#Map-Entry|mapEntry]]) : The map is defined by a set of mapEntries, each of which maps a single value from the source set onto a single float;
 
-__value__ ([mapEntry #Map-Entry]) : The map is defined by a set of mapEntries, each of which maps a single value from the source set onto a single float;
++defaultValue+ (float) : The default value from the target set to be used when no explicit mapping for a source value is given.
 
-__defaultValue__ (float) : The default value from the target set to be used when no explicit mapping for a source value is given.
++lowerBound+ (float) : (Optional) The lower bound for the result of mapping a container. If unspecified there is no lower-bound.
 
-__lowerBound__ (float) : (Optional) The lower bound for the result of mapping a container. If unspecified there is no lower-bound.
++upperBound+ (float) : (Optional) The upper bound for the result of mapping a container. If unspecified there is no upper-bound.
 
-__upperBound__ (float) : (Optional) The upper bound for the result of mapping a container. If unspecified there is no upper-bound.
-
-=== Examples ===
+h4. Examples
 
 By example for a multiple choice item where the instruction is to select the correct elements which are used to form the water.
 
 We purpose to the test taker the following choices :
 
-- Hydrogen
-- Helium
-- Carbon
-- Oxygen
-- Nitrogen
-- Mercure
+* Hydrogen
+* Helium
+* Carbon
+* Oxygen
+* Nitrogen
+* Chlorine
 
 But we want a special behavior :
 
-- -1 for each bad choice
-- +1 for each good choice
-- -2 for the mercure which is a very dangerous element.
+* -1 for each bad choice
+* +1 for each good choice
+* -2 for the mercure which is a very dangerous element.
 
 Moreover to avoid very bad score we want to limit the lower score to -1.
 
 Look at the example below which explains how to use the mapping variable to solve our problem :
 
-{javascript}
+<pre><code class="javascript">
 {
-  "identifier":"RESPONSE"
-  , "defaultValue":-1
-  , "lowerBound":-1
-  , "value":[{"key":"Hydrogen", "value":1}, {"key":"Oxygen", "value":1}, {"key":"Mercure", "value":-2}]
+"identifier":"RESPONSE"
+, "defaultValue":-1
+, "lowerBound":-1
+, "value":[{"key":"Hydrogen", "value":1}, {"key":"Oxygen", "value":1}, {"key":"mercure", "value":-2}]
 }
-{/javascript}
+</code></pre>
 
-
-== Map Entry ==[Map-Entry]
+h3. Map Entry
 
 Map entry are special variables used by the mapping variable to create a mapping from a source variable to a single float. Map entry variables are defined following the model :
-{javascript}
+<pre><code class="javascript">
 {
-	"key":[TaoValueFormat]
-	, "value":[float]
+
+bq. "key":[TaoValueFormat]
+bq. , "value":[float]
+
 }
-{/javascript}
+</code></pre>
 
-__key__ ([taoValueFormat #Value-Format]) : The value be used to map a source value;
++key+ ([[Item Scoring API#Value-Format|taoValueFormat]]) : The value be used to map a source value;
 
-__value__ (float) : The value to use if the source match the key;
++value+ (float) : The value to use if the source match the key;
 
+h2. Rules
 
-= Rules =[Rules]
+h3. Templates
 
-== Templates ==
+h4. Match Correct Template
 
-=== Match Correct Template ===[Match-Correct-Template]
+The match correct response processing template uses the [[Item Scoring API#Custom-Rules|match]] operator to match the value of a response variable (idenfitified by RESPONSE) with its correct value (identified by RESPONSE). It sets the outcome variable SCORE to either 0 or 1 depending on the outcome of the test. A response variable called RESPONSE must have been declared and have an associated correct value. Similarly, the outcome variable SCORE must also have been declared. The template applies to responses of any baseType and cardinality though bear in mind the limitations of matching more complex data types.
 
-The match correct response processing template uses the [match #Custom-Rules] operator to match the value of a response variable (idenfitified by RESPONSE) with its correct value (identified by RESPONSE). It sets the outcome variable SCORE to either 0 or 1 depending on the outcome of the test. A response variable called RESPONSE must have been declared and have an associated correct value. Similarly, the outcome variable SCORE must also have been declared. The template applies to responses of any baseType and cardinality though bear in mind the limitations of matching more complex data types.
+Note that the match correct template is strongly linked to the behavior of the [[Item Scoring API#Custom-Rules|match]] operator : the correct variables and user's responses associated to the same identifier (RESPONSE) must be the same type, the outcome variable SCORE will be set to 0 otherwise.
 
-Note that the match correct template is strongly linked to the behavior of the [match #Custom-Rules] operator : the correct variables and user's responses associated to the same identifier (RESPONSE) must be the same type, the outcome variable SCORE will be set to 0 otherwise.
+This template rule is defined with the constant +TAO_MATCHING.RULE.MATCH_CORRECT+.
 
-This template rule is defined with the constant __TAO_MATCHING.RULE.MATCH_CORRECT__.
++template code+ :
 
-__template code__ :
-
-{javascript}
+<pre><code class="javascript">
 if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))){
     setOutcomeValue("SCORE", 1);
 } else {
     setOutcomeValue("SCORE", 0);
 }
-{/javascript}
+</code></pre>
 
-=== Map Response Template ===[Map-Response-Template]
+h4. Map Response Template
 
-The map response processing template uses the [mapResponse #Custom-Rules] operator to map the value of a response variable (idenfitified by RESPONSE) onto a value for the outcome SCORE. Both variables must have been declared and RESPONSE must have an associated mapping. The template applies to responses of any baseType and cardinality.
+The map response processing template uses the [[Item Scoring API#Custom-Rules|mapResponse]] operator to map the value of a response variable (idenfitified by RESPONSE) onto a value for the outcome SCORE. Both variables must have been declared and RESPONSE must have an associated mapping. The template applies to responses of any baseType and cardinality.
 
-This template rule is defined in the constant __TAO_MATCHING.RULE.MAP_RESPONSE__.
+This template rule is defined in the constant +TAO_MATCHING.RULE.MAP_RESPONSE+.
 
-__template code__ :
++template code+ :
 
-{javascript}
+<pre><code class="javascript">
 if(isNull(null, getResponse("RESPONSE"))) { 
     setOutcomeValue("SCORE", 0); 
 } else { 
     setOutcomeValue("SCORE", mapResponse(null, getMap("RESPONSE"), getResponse("RESPONSE"))); 
 }
-{/javascript}
+</code></pre>
 
+h4. Examples
 
-=== Examples ===
-
-==== Single choice interaction ====
+h5. Single choice interaction
 
 For instance, a single choice interaction is initialized in the local matching engine as follows :
 
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     "data"    :   {
         "rule"          : TAO_MATCHING.RULE.MATCH_CORRECT
@@ -395,35 +359,34 @@ matchingInit ({
         , "outcomes"    : [{"identifier":"SCORE", "type":"double"}]
     }
 });
-{/javascript}
+</code></pre>
 
-With regard to the behavior of the template "match correct", please note that the engine expects a user's response (identified by RESPONSE) of the same type as the correct variable (identified by RESPONSE). After the user's responses have been collected, the **matchingSetResponses** is called to notify the matching engine the new user's responses.
+With regard to the behavior of the template "match correct", please note that the engine expects a user's response (identified by RESPONSE) of the same type as the correct variable (identified by RESPONSE). After the user's responses have been collected, the *matchingSetResponses* is called to notify the matching engine the new user's responses.
 
-{javascript}
+<pre><code class="javascript">
 matchingSetResponses ([
     {"identifier":"RESPONSE", "value":"identifier1"}
 ]);
-{/javascript}
+</code></pre>
 
-After that you just have to launch the response matching by calling the **matchingEvaluate()** method.
+After that you just have to launch the response matching by calling the *matchingEvaluate()* method.
 
-{javascript}
+<pre><code class="javascript">
 matchingEvaluate ();
-{/javascript}
+</code></pre>
 
 After the evaluation of the user's response done you could get the outcome variables as follows :
 
-{javascript}
+<pre><code class="javascript">
 var outcomes = matchingGetOutcomes ();
 // {
 //    "SCORE" : {"identifier":"SCORE", "value":1}
 // }
-{/javascript}
+</code></pre>
 
+h5. Multiple choice interaction
 
-==== Multiple choice interaction ====
-
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     "data"    :   {
         "rule"          : TAO_MATCHING.RULE.MATCH_CORRECT
@@ -431,38 +394,38 @@ matchingInit ({
         , "outcomes"    : [{"identifier":"SCORE", "type":"double"}]
     }
 });
-{/javascript}
+</code></pre>
 
 After collecting the user's responses.
 
-{javascript}
+<pre><code class="javascript">
 matchingSetResponses ([
     {"identifier":"RESPONSE", "value":["identifier1", "identifier2"]}
 ]);
 // ["identifier2", "identifier1"]
 // ["identifier2", "identifier12"]
-{/javascript}
+</code></pre>
 
-After that you just have to launch the evaluation by calling the **matchingEvaluate()** method.
+After that you just have to launch the evaluation by calling the *matchingEvaluate()* method.
 
-{javascript}
+<pre><code class="javascript">
 matchingEvaluate ();
-{/javascript}
+</code></pre>
 
 After the evaluation of the user's response, you can get the outcome variables as follows :
 
-{javascript}
+<pre><code class="javascript">
 var outcomes = matchingGetOutcomes ();
 // { "SCORE" : {"identifier":"SCORE", "value":1} }
 // 1 with ["identifier2", "identifier1"] the list is not ordered
 // 0 with ["identifier2", "identifier12"] the user's response is not exact
-{/javascript}
+</code></pre>
 
-==== Map a text ====
+h5. Map a text
 
-In the case of free text entry you will need to map the user's responses with a set of predefined responses. The template [MAP_RESPONSE #Map-Response-Template] could be relevant in such a case.
+In the case of free text entry you will need to map the user's responses with a set of predefined responses. The template [[Item Scoring API#Map-Response-Template|MAP_RESPONSE]] could be relevant in such a case.
 
-{javascript}
+<pre><code class="javascript">
 matchingInit ({
     "data"    :   {
         "rule"          : TAO_MATCHING.RULE.MAP_RESPONSE
@@ -481,11 +444,11 @@ matchingInit ({
         , "outcomes"    : [{"identifier":"SCORE", "type":"double"}]
     }
 });
-{/javascript}
+</code></pre>
 
 After collecting the user's responses.
 
-{javascript}
+<pre><code class="javascript">
 matchingSetResponses ([{"identifier":"RESPONSE", "value":"Paris"}]);
 // paris
 // Pari
@@ -502,16 +465,15 @@ var outcomes = matchingGetOutcomes ();
 // 0.4 for pari
 // 0.1 for paris
 // 0 for Lyon
-{/javascript}
+</code></pre>
 
-== Custom Rules ==[Custom-Rules]
+h3. Custom Rules
 
-The real power is [here #Custom-Rules]. The TAO Matching API provides a set of operators to evaluate an item and its variables. Whatever the rule it can be interpreted both on client and server side.
+The real power is [[Item Scoring API#Custom-Rules|here]]. The TAO Matching API provides a set of operators to evaluate an item and its variables. Whatever the rule it can be interpreted both on client and server side.
 
++Set of available operators+ :
 
-__Set of available operators__ :
-
-{javascript}
+<pre><code class="javascript">
     /**
      * The and operator takes one or more sub-expressions each with a base-type
      * boolean and single cardinality. The result is a single boolean which is
@@ -756,7 +718,7 @@ __Set of available operators__ :
     , product : function (options)
     /**
      * Selects a random integer from the specified range [min,max] satisfying
-     * + step * n for some integer n. For example, with min=2, max=11 and step=3
+     * + step * n for some integer n. For example, with min==2, max=11 and step==3
      * values {2,5,8,11} are possible.
      * @param  options
      * @return int
@@ -808,12 +770,11 @@ __Set of available operators__ :
      * @param  options
      */
     , sum : function (options)
-{/javascript}
+</code></pre>
 
+h4. Examples
 
-=== Examples ===
-
-==== Partial scoring on tuple ====
+h5. Partial scoring on tuple
 
 Let think about a formula one racing. Where the question could be :
 
@@ -822,9 +783,9 @@ The following F1 drivers finished on the podium in the first ever Grand Prix of 
 F1 drivers : DriverA, DriverB, DriverC
 </pre>
 
-The correct response for this interaction is a tuple of string where the drivers are correctly ordered. //DriverC// arrived in first position, //DriverB// in second position and //DriverA// in third position. The following //tuple// variable called //RESPONSE// represents the right answer.
+The correct response for this interaction is a tuple of string where the drivers are correctly ordered. _DriverC_ arrived in first position, _DriverB_ in second position and _DriverA_ in third position. The following _tuple_ variable called _RESPONSE_ represents the right answer.
 
-{javascript}
+<pre><code class="javascript">
 {
     "identifier":"RESPONSE"
     , "value" : {
@@ -833,11 +794,11 @@ The correct response for this interaction is a tuple of string where the drivers
         , "2":"DriverA"
     }
 }
-{/javascript}
+</code></pre>
 
-But we want to give some points to the test takers who give a partial answer : //DriverC// arrived in first position, //DriverA// in second position and //DriverB// in third position. To do that we need to create our specific rule :
+But we want to give some points to the test takers who give a partial answer : _DriverC_ arrived in first position, _DriverA_ in second position and _DriverB_ in third position. To do that we need to create our specific rule :
 
-{javascript}
+<pre><code class="javascript">
 if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))) {
     setOutcomeValue("SCORE", 1);
 } 
@@ -847,11 +808,11 @@ else if (match(null, getResponse("RESPONSE"), createVariable({"type":"tuple"}, "
 else {
     setOutcomeValue("SCORE", 0);
 }
-{/javascript}
+</code></pre>
 
-__See below the full example__ :
++See below the full example+ :
 
-{javascript}
+<pre><code class="javascript">
 var myRule = 'if (match(null, getResponse("RESPONSE"), getCorrect("RESPONSE"))) { \
     setOutcomeValue("SCORE", 1); \
 }  \
@@ -889,6 +850,5 @@ matchingEvaluate ();
 var outcomes = matchingGetOutcomes ();
 // { "SCORE" : {"identifier":"SCORE", "value":0.5} }
 // 1 with the right answer {"0":"DriverC", "1":"DriverB", "2":"DriverA"}
-{/javascript}
-
+</code></pre>
 
