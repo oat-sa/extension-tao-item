@@ -15,7 +15,7 @@ ol, ul, li {font-size:14px; }
 /* BD #009933 */.active {border:2px solid #009933 !important; }
 
 /* qti widgets layout */
-.qti_item {width:80%; margin:10px auto 70px auto;}
+.qti_item {width:80%; margin:10px auto 10px auto;}
 /* BD #009933 */ .qti_widget {border: 2px solid #009933; padding:20px; margin-bottom:10px; }
 .qti_widget ol, .qti_widget ul {list-style: none; }
 .qti_widget ol, .qti_widget ul, .qti_widget li {margin: 0; padding: 0; border: 0; font-size:100%; }
