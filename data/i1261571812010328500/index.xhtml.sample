@@ -8,43 +8,43 @@
 
     </title>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/models/ext/itemAuthoring/waterphenix/core/lib/jquery/jquery-1.5.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/models/ext/itemAuthoring/waterphenix/core/lib/jquery/jquery-1.5.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/views/js/taoApi/taoApi.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/views/js/taoApi/taoApi.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/views/js/taoMatching/taoMatching.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/views/js/taoMatching/taoMatching.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/wfEngine/views/js/wfApi/wfApi.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//wfEngine/views/js/wfApi/wfApi.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/tao/views/js/json.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//tao/views/js/json.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/models/ext/itemAuthoring/waterphenix/core/lib/oo/oo.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/models/ext/itemAuthoring/waterphenix/core/lib/oo/oo.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/models/ext/itemAuthoring/waterphenix/core/lib/jstools/jstools.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/models/ext/itemAuthoring/waterphenix/core/lib/jstools/jstools.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/models/ext/itemAuthoring/waterphenix/core/classes/models/uri.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/models/ext/itemAuthoring/waterphenix/core/classes/models/uri.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/runtime/xhtml.runtime.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/runtime/xhtml.runtime.min.js">
 
     </xhtml:script>
 
-    <xhtml:script type="text/javascript" src="{ROOT_URL}/taoItems/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/runtime/widgets/xhtml.widgets.min.js">
+    <xhtml:script type="text/javascript" src="http://tao.local//taoItems/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/runtime/widgets/xhtml.widgets.min.js">
 
     </xhtml:script>
 
