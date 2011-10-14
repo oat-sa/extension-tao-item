@@ -722,6 +722,7 @@ class taoItems_models_classes_ItemsService
         		if(preg_match_all("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](.+?)[\"\']/i", $output, $matches) > 0){
 					if(isset($matches[2])){
 						foreach($matches[2] as $relUri){
+							
 							if(trim($relUri) != '' && !preg_match("/^#/", $relUri) && !preg_match("/^http/", $relUri)){
 							
 								if(preg_match('/(.)+\/filemanager\/views\/data\//i', $relUri)){
@@ -753,7 +754,10 @@ class taoItems_models_classes_ItemsService
         			$sourceFolder = $this->getItemFolder($item);
         			foreach(scandir($sourceFolder) as $file){
         				if($file != basename($path) && $file != $itemFileName &&$file != '.' && $file != '..'){
-        					tao_helpers_File::copy($sourceFolder.'/'.$file, $itemFolder.'/'.$file, true);
+        					
+        					$copyFromPath = $sourceFolder . '/'. $file;
+        					$copyToPath = $itemFolder . '/' . $file;
+        					tao_helpers_File::copy($copyFromPath, $copyToPath, true);
         				}
         			}
         			
@@ -762,7 +766,8 @@ class taoItems_models_classes_ItemsService
 	        			$eventXml = file_get_contents(ROOT_PATH.'/taoItems/data/events_ref.xml');
 	        			if(is_string($eventXml) && !empty($eventXml)){
 	        				$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
-	        				@file_put_contents($itemFolder.'/events.xml', $eventXml);
+	        				$copyEventsToPath = $itemFolder.'/events.xml';
+	        				@file_put_contents($copyEventsToPath, $eventXml);
 	        			}
 	        		}
         		}
