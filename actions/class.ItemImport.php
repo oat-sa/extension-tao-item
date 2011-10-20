@@ -251,6 +251,10 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$itemService	= tao_models_classes_ServiceFactory::get('items');
 			
 			$uploadedFile = $formValues['source']['uploaded_file'];
+			$uploadedFileBaseName = basename($uploadedFile);
+			// uploaded file name contains an extra prefix that we have to remove.
+			$uploadedFileBaseName = preg_replace('/^([0-9a-z])+_/', '', $uploadedFileBaseName);
+			$uploadedFileBaseName = preg_replace('/.zip|.ZIP$/', '', $uploadedFileBaseName);
 			
 			$forceValid = false;
 			if(isset($formValues['disable_validation'])){
@@ -290,6 +294,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				
 			//create a new item in the model
 			$rdfItem = $itemService->createInstance($clazz);
+			$rdfItem->editPropertyValues(new core_kernel_classes_Property(RDFS_LABEL), $uploadedFileBaseName);
 			//set the QTI type
 			$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
 			
