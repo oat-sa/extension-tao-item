@@ -253,7 +253,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			$uploadedFileBaseName = basename($uploadedFile);
 			// uploaded file name contains an extra prefix that we have to remove.
-			$uploadedFileBaseName = preg_replace('/^([0-9a-z])+_/', '', $uploadedFileBaseName);
+			$uploadedFileBaseName = preg_replace('/^([0-9a-z])+_/', '', $uploadedFileBaseName, 1);
 			$uploadedFileBaseName = preg_replace('/.zip|.ZIP$/', '', $uploadedFileBaseName);
 			
 			$forceValid = false;
