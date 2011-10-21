@@ -107,7 +107,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 					$deprecatedOptions[] = $optUri;
 				}
 			}
-			
 		}
 		$itemModelElt->setOptions($options);
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
@@ -232,7 +231,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * Preview an item
 	 * @return void
 	 */
-	public function preview(){
+	public function preview()
+	{
 		
 		$this->setData('preview', false);
 		$this->setData('previewMsg', __("Not yet available"));
@@ -439,7 +439,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 		
 		$instance = $this->getCurrentInstance();
 		if($this->service->isItemModelDefined($instance)){
-
+			
         	$itemModel = $instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 			
