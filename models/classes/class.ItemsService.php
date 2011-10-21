@@ -482,10 +482,10 @@ class taoItems_models_classes_ItemsService
 	        		else{
 	        			$file = core_kernel_classes_File::create($lang.'_'.$dataFile, $itemDir .'/');
 	        			$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
-	        		} 
-        			if(file_put_contents($file->getAbsolutePath(), $content) > 0){
-        				 $returnValue = true;
-        			}
+	        		}
+	        		if($file->setContent($content)){
+	        			$returnValue = true;
+	        		}
         		}	
         	}
         }
