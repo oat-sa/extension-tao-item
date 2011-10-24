@@ -7,13 +7,15 @@
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-class taoItems_actions_Items extends tao_actions_TaoModule{
+class taoItems_actions_Items extends tao_actions_TaoModule
+{
 	
 	/**
 	 * constructor: initialize the service and the default data
 	 * @return  Items
 	 */
-	public function __construct(){
+	public function __construct()
+	{
 		
 		parent::__construct();
 		
@@ -29,7 +31,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * @see TaoModule::_isAllowed
 	 * @return boolean
 	 */	
-	protected function _isAllowed(){
+	protected function _isAllowed()
+	{
 		$context = Context::getInstance();
 		if($context->getActionName() != 'getItemContent'){
 			return parent::_isAllowed();
@@ -46,7 +49,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * get the instancee of the current item regarding the 'uri' and 'classUri' request parameters
 	 * @return core_kernel_classes_Resource the item instance
 	 */
-	protected function getCurrentInstance(){
+	protected function getCurrentInstance()
+	{
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
 		if(is_null($uri) || empty($uri)){
 			throw new Exception("No valid uri found");
@@ -67,7 +71,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * get the main class
 	 * @return core_kernel_classes_Classes
 	 */
-	protected function getRootClass(){
+	protected function getRootClass()
+	{
 		return $this->service->getItemClass();
 	}
 	
@@ -79,7 +84,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	/**
 	 * edit an item instance
 	 */
-	public function editItem(){
+	public function editItem()
+	{
 	
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
@@ -111,7 +117,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 		$itemModelElt->setOptions($options);
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
 		
-		$warningElt = tao_helpers_form_FormFactory::getElement("warning","Label");
+		$warningElt = tao_helpers_form_FormFactory::getElement("warning", "Label");
 		$warningElt->setValue(__("The migration scripts for the deprecated items will be provided soon"));
 		$myForm->addElement($warningElt);
 		
@@ -149,7 +155,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	/**
 	 * Edit the row item content: download and upload the item content from the XML format 
 	 */
-	public function itemContentIO(){
+	public function itemContentIO()
+	{
 		
 		$item = $this->getCurrentInstance();
 		$itemClass = $this->getCurrentClass();
@@ -285,7 +292,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	/**
 	 * Display directly the content of the preview, outside any container
 	 */
-	public function fullScreenPreview(){
+	public function fullScreenPreview()
+	{
 		
 		$itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
@@ -305,7 +313,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * @param core_kernel_classes_Class    $clazz
 	 * @return string|null 
 	 */
-	protected function getPreviewUrl(core_kernel_classes_Resource $item, core_kernel_classes_Class $clazz){
+	protected function getPreviewUrl(core_kernel_classes_Resource $item, core_kernel_classes_Class $clazz)
+	{
 		
 		$previewUrl = null;
 				
@@ -332,7 +341,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	/**
 	 * Edit a class
 	 */
-	public function editItemClass(){
+	public function editItemClass()
+	{
 		$clazz = $this->getCurrentClass();
 
 		if($this->hasRequestParameter('property_mode')){
@@ -358,7 +368,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * Sub Class
 	 * @return void
 	 */
-	public function addItemClass(){
+	public function addItemClass()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -377,7 +388,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * @see TaoModule::delete
 	 * @return void
 	 */
-	public function delete(){
+	public function delete()
+	{
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
 		}
@@ -396,7 +408,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * @see TaoModule::translateInstance
 	 * @return void
 	 */
-	public function translateInstance(){
+	public function translateInstance()
+	{
 		parent::translateInstance();
 		$this->setView('form.tpl', false);
 	}
@@ -406,7 +419,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * It's used by the authoring runtime/tools to retrieve the content
 	 * @return void 
 	 */
-	public function getItemContent(){
+	public function getItemContent()
+	{
 		
 		$this->setContentHeader('text/xml');
 		
@@ -414,7 +428,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 			//output direclty the itemContent as XML
 			$preview = false;
 			if($this->hasRequestParameter('preview')){
-				$preview = (bool)$this->getRequestParameter('preview');
+				$preview = (bool) $this->getRequestParameter('preview');
 			}
 			print $this->service->getItemContent($this->getCurrentInstance(), $preview);
 			
@@ -435,7 +449,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	/**
 	 * Download the content of the item in parameter
 	 */
-	public function downloadItemContent(){
+	public function downloadItemContent()
+	{
 		
 		$instance = $this->getCurrentInstance();
 		if($this->service->isItemModelDefined($instance)){
@@ -461,7 +476,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * Item Authoring tool loader action
 	 * @return void
 	 */
-	public function authoring(){
+	public function authoring()
+	{
 		
 		$this->setData('error', false);
 		
@@ -483,17 +499,17 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 					);
 					$itemContentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', $itemContentUrlParam));
 					
-					if(preg_match("/\.swf$/", (string)$authoring)){
+					if(preg_match("/\.swf$/", (string) $authoring)){
 						$this->setData('type', 'swf');
 					}
-					if(preg_match("/\.php$/", (string)$authoring)){
+					if(preg_match("/\.php$/", (string) $authoring)){
 						$this->setData('type', 'php');
 					}
-					if(preg_match("/taoItems\//", (string)$authoring)){
-						$this->redirect(ROOT_URL.(string)$authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
+					if(preg_match("/taoItems\//", (string) $authoring)){
+						$this->redirect(ROOT_URL.(string) $authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
 					}
 
-					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string)$authoring);
+					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string) $authoring);
 					$this->setData('itemContentUrl', $itemContentUrl);
 					
 				}
@@ -520,7 +536,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * forwarded to the index action 
 	 * @return void
 	 */
-	public function saveItemContent(){
+	public function saveItemContent()
+	{
 		
 		$message = __('An error occured while saving the item');
 
@@ -560,7 +577,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 				$this->redirect(_url('authoring', 'SaSItems', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource).'&classUri='.tao_helpers_Uri::encode($itemClass->uriResource), 'classUri' => tao_helpers_Uri::encode($itemClass->uriResource), 'message' => urlencode($message))));
 			}
 			else{
-				$this->redirect( _url('index', 'Main', 'tao', array('message' => urlencode($message))));
+				$this->redirect(_url('index', 'Main', 'tao', array('message' => urlencode($message))));
 			}
 		}
 	}
@@ -570,7 +587,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * It prevents to get it direclty in the data folder that access is denied
 	 *  
 	 */
-	public function getMediaResource(){
+	public function getMediaResource()
+	{
 		
 		if($this->hasRequestParameter('path')){
 		
@@ -581,7 +599,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 			else if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
 				$classUri = tao_helpers_Uri::decode(Session::getAttribute('classUri'));
 				if($this->service->isItemClass(new core_kernel_classes_Class($classUri))){
-					$item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));
+					$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode(Session::getAttribute('uri')));
 				}
 			}
 			if(!is_null($item)){
@@ -622,7 +640,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * Render json response {id: id, uri: uri}
 	 * @return void
 	 */
-	public function getAuthoringFile(){
+	public function getAuthoringFile()
+	{
 		
 		if(!tao_helpers_Request::isAjax()){
 			throw new Exception("wrong request mode");
@@ -645,7 +664,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * get the  BLACK/HAWAI  temporary authoring file
 	 * @return void
 	 */
-	public function loadTempAuthoringFile(){
+	public function loadTempAuthoringFile()
+	{
 		header("Content-Type: text/xml; charset utf-8");
 		if($this->hasRequestParameter('instance')){
 			$uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
@@ -667,7 +687,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule{
 	 * save the BLACK/HAWAI temporary authoring file
 	 * @return void
 	 */
-	public function saveTempAuthoringFile(){
+	public function saveTempAuthoringFile()
+	{
 		if($this->hasRequestParameter('instance')){
 			$uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
             $xml = $this->getRequestParameter('xml');
