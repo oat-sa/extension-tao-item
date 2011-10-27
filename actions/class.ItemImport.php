@@ -32,7 +32,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getSessionAttribute('classUri')));
 		
 			//get the services instances we will need
-			$itemService	= tao_models_classes_ServiceFactory::get('items');
+			$itemService	= tao_models_classes_ServiceFactory::get('Items');
 			$qtiService 	= tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
 		
 			$uploadedFile = $formValues['source']['uploaded_file'];
@@ -100,7 +100,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getSessionAttribute('classUri')));
 			
 			//get the services instances we will need
-			$itemService	= tao_models_classes_ServiceFactory::get('items');
+			$itemService	= tao_models_classes_ServiceFactory::get('Items');
 			$qtiService 	= tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
 			
 			$uploadedFile = $formValues['source']['uploaded_file'];
@@ -248,7 +248,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getSessionAttribute('classUri')));
 			
 			//get the services instances we will need
-			$itemService	= tao_models_classes_ServiceFactory::get('items');
+			$itemService	= tao_models_classes_ServiceFactory::get('Items');
 			
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			$uploadedFileBaseName = basename($uploadedFile);
