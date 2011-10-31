@@ -18,7 +18,6 @@
     <rdfs:comment xml:lang="EN"><![CDATA[ItemVersionedContent]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
     <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#VersionedFile"/>
-    <!--<widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#Versionedfile"/>-->
     <generis:is_language_dependent rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent">
