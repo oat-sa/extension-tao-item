@@ -72,28 +72,33 @@ class taoItems_actions_form_Item
     	
     	if(!tao_helpers_Context::check('STANDALONE_MODE')){
 			
-    		// Add content action
-    		$url = _url('itemContentIO', 'Items', 'taoItems', array(
-    			'uri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
-    			'classUri'	=> tao_helpers_Uri::encode($this->clazz->uriResource)
-    		));
-    		
-    		$itemContentIOElt = tao_helpers_form_FormFactory::getElement('itemContentIO', 'Free');
-			$itemContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('Content')."</a>");
-			$actions[] = $itemContentIOElt;
-			
-			// Add versioned content action
-    		$url = _url('editVersionedFile', 'Items', 'taoItems', array(
-    			'uri'			=> tao_helpers_Uri::encode($this->instance->uriResource),
-    			'classUri'		=> tao_helpers_Uri::encode($this->clazz->uriResource),
-    			'ownerUri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
-    			'ownerClassUri'	=> tao_helpers_Uri::encode($this->clazz->uriResource),
-    			'propertyUri'	=> tao_helpers_Uri::encode('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemVersionedContent')
-    		));
-    		
-    		$itemVersionedContentIOElt = tao_helpers_form_FormFactory::getElement('itemVersionedContentIO', 'Free');
-			$itemVersionedContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('VersionedContent')."</a>");
-			$actions[] = $itemVersionedContentIOElt;
+    		//According to the status of the versioning
+    		if(!GENERIS_VERSIONING_ENABLED){
+	    		// Add content action
+	    		$url = _url('itemContentIO', 'Items', 'taoItems', array(
+	    			'uri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
+	    			'classUri'	=> tao_helpers_Uri::encode($this->clazz->uriResource)
+	    		));
+	    		
+	    		$itemContentIOElt = tao_helpers_form_FormFactory::getElement('itemContentIO', 'Free');
+				$itemContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('Content')."</a>");
+				$actions[] = $itemContentIOElt;
+    		}
+    		else{
+				// Add versioned content action
+	    		$url = _url('editVersionedFile', 'Items', 'taoItems', array(
+	    			'uri'			=> tao_helpers_Uri::encode($this->instance->uriResource),
+	    			/*'classUri'		=> tao_helpers_Uri::encode($this->clazz->uriResource),
+	    			'ownerUri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
+	    			'ownerClassUri'	=> tao_helpers_Uri::encode($this->clazz->uriResource),*/
+	    			'propertyUri'	=> tao_helpers_Uri::encode('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemVersionedContent')
+	    		));
+	    		
+	    		$itemVersionedContentIOElt = tao_helpers_form_FormFactory::getElement('itemVersionedContentIO', 'Free');
+				$itemVersionedContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('VersionedContent')."</a>");
+				$actions[] = $itemVersionedContentIOElt;
+    		}			
+
 		}
 		
 		$this->form->setActions($actions, 'top');

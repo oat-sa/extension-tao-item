@@ -94,7 +94,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$myForm = $formContainer->getForm();
 		
 		/*
-		 * crapy way to add the status of the ite model
+		 * crapy way to add the status of the item model
 		 * @todo set this in the taoItems_actions_form_Item
 		 */
 		$deprecatedOptions = array();
