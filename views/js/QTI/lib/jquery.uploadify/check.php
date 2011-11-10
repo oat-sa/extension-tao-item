@@ -1,8 +1,9 @@
+<?php
 /*
-Uploadify v2.1.0
-Release Date: August 24, 2009
+Uploadify v2.1.4
+Release Date: November 8, 2010
 
-Copyright (c) 2009 Ronnie Garcia, Travis Nickels
+Copyright (c) 2010 Ronnie Garcia, Travis Nickels
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,43 +23,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
-div.xhtml_form div.file-uploader .uploadifyQueueItem,
-.uploadifyQueueItem {
-	font: 11px Verdana, Geneva, sans-serif;
-	border: 2px solid #E5E5E5;
-	background-color: #F5F5F5;
-	margin-top: 5px;
-	padding: 10px;
-	width: 350px;
+$fileArray = array();
+foreach ($_POST as $key => $value) {
+	if ($key != 'folder') {
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . $_POST['folder'] . '/' . $value)) {
+			$fileArray[$key] = $value;
+		}
+	}
 }
-
-div.xhtml_form div.file-uploader .uploadifyErrors,
-.uploadifyError {
-	border: 2px solid #FBCBBC !important;
-	background-color: #FDE5DD !important;
-}
-
-div.xhtml_form div.file-uploader .uploadifyQueueItem .cancel,
-.uploadifyQueueItem .cancel {
-	float: right;
-}
-
-div.xhtml_form div.file-uploader .uploadifyProgress,
-.uploadifyProgress{
-	background-color: #FFFFFF;
-	border-top: 1px solid #808080;
-	border-left: 1px solid #808080;
-	border-right: 1px solid #C5C5C5;
-	border-bottom: 1px solid #C5C5C5;
-	margin-top: 10px;
-	width: 100%;
-}
-
-div.xhtml_form div.file-uploader .uploadifyProgressBar,
-.uploadifyProgressBar {
-	background-color: #0099FF;
-	width: 1px;
-	height: 3px;
-	padding:0px;
-}
+echo json_encode($fileArray);
+?>

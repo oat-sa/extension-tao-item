@@ -192,7 +192,7 @@ QTIWidget.upload = function(ctx){
 			"folder"    : "/"
 		};
 		
-		new AsyncFileUpload(uploaderElt.attr('id'), uploadOptions);
+		new AsyncFileUpload('#'+uploaderElt.attr('id'), uploadOptions);
 	}
 };
 

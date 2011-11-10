@@ -26,7 +26,7 @@
 	
 	<?if($hasUpload):?>
 	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/uploadify.css" media="screen" />
-	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.0.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.4.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/swfobject.js"></script>
 	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/AsyncFileUpload.js"></script>
 	<?endif?>
