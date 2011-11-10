@@ -118,7 +118,6 @@ div#formContainer_interaction div.wysiwyg{margin-top:10px;}
 /*Adjust padding to add spaces in the accordion form*/
 div#item_option_accordion.ui-accordion div.ui-accordion-content{padding:1em;}
 form#ResponseProcessingForm div label {width:45%;}
-form#ResponseProcessingForm div select {margin-left:45%;}
 form#ResponseProcessingForm div.form-toolbar {top:10px;}
 
 div.wysiwyg div{padding:0;margin:0;}
@@ -130,5 +129,3 @@ div.xhtml_form div.form-toolbar {margin: 5px 5px 15px 2px;}
 div.choices-column-header, div#formInteraction_object_container_title {font-size:1.5em;padding:10px 0px;text-align:center;}
 
 div.qti-img-preview{text-align:center;}
-
-div.xhtml_form div input{margin:0 0 0 30%;}
