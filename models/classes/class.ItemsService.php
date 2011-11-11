@@ -706,7 +706,7 @@ class taoItems_models_classes_ItemsService
         			$variables = array(
         				'label' 		=> $item->getLabel(),
         				'uri'			=> $uri,
-        				'runtime'		=> BASE_URL . '/models/ext/itemRuntime/'. $this->getModelRuntime($item),
+        				'runtime'		=> TAO_ITEMS_BASE_URL . '/models/ext/itemRuntime/'. $this->getModelRuntime($item),
         				'contentUrl'	=> urlencode(str_replace(ROOT_PATH, ROOT_URL, $dataFile))
         			);
         			$templateRenderer = new taoItems_models_classes_TemplateRenderer(ROOT_PATH.'/taoItems/views/templates/swf_container_ref.tpl.php', $variables);
