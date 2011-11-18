@@ -18,7 +18,7 @@ $files[] = "./src/class.AreaMap.js";
 $files[] = "./src/matching_constant.js";
 $files[] = "./src/matching_api.js";
 
-minifyJSFiles ($files, "taoMatching.min.js");
+minifyJSFiles($files, "taoMatching.min.js");
 
 exit(0);
 ?>

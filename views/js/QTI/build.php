@@ -15,14 +15,14 @@ $jsFiles = array (
 	'./src/init.js',
 	'./src/initTaoApis.js'			//remove this line to use the QTI API without TAO
 );
-minifyJSFiles ($jsFiles, "qti.min.js");
+minifyJSFiles($jsFiles, "qti.min.js");
 
 //minimify QTI CSS sources using JSMin
 $cssFiles = array (
 	'./css/reset.css',
 	'./css/qti.css'
 );
-minifyCSSFiles ($cssFiles, dirname(__FILE__)."/css/qti.min.css");
+minifyCSSFiles($cssFiles, dirname(__FILE__)."/css/qti.min.css");
 
 exit(0);
 ?>
