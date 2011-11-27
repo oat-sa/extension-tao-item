@@ -716,11 +716,12 @@ class taoItems_models_classes_ItemsService
         		else{
         			$output	= $this->getItemContent($item);
         		}
-        		
+        		//var_dump($output);
         		//replace relative paths to resources by absolute uris to help the compilator
 				$matches = array();
         		if(preg_match_all("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](.+?)[\"\']/i", $output, $matches) > 0){
 					if(isset($matches[2])){
+						$matches[2] = array_unique($matches[2]);
 						foreach($matches[2] as $relUri){
 							
 							if(trim($relUri) != '' && !preg_match("/^#/", $relUri) && !preg_match("/^http/", $relUri)){
@@ -930,32 +931,38 @@ class taoItems_models_classes_ItemsService
             // If QTI Item
             if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
                 
-                $itemMatchingData = $this->getMatchingData ($itemRdf);
+                $itemMatchingData = $this->getMatchingData($itemRdf);
                 
-                matching_init ();
-                matching_setRule ($itemMatchingData["rule"]);
-                matching_setAreaMaps ($itemMatchingData["areaMaps"]);
-                matching_setMaps ($itemMatchingData["maps"]);
-                matching_setCorrects ($itemMatchingData["corrects"]);
-                matching_setResponses ($responses);
-                matching_setOutcomes ($itemMatchingData["outcomes"]);
+                matching_init();
+                matching_setRule($itemMatchingData["rule"]);
+                matching_setAreaMaps($itemMatchingData["areaMaps"]);
+                matching_setMaps($itemMatchingData["maps"]);
+                matching_setCorrects($itemMatchingData["corrects"]);
+                matching_setResponses($responses);
+                matching_setOutcomes($itemMatchingData["outcomes"]);
                 
                 try {
                     // Evaluate the user's response
-                    matching_evaluate ();
+                    matching_evaluate();
                     // get the outcomes
-                    $outcomes = matching_getOutcomes ();
+                    $outcomes = matching_getOutcomes();
                     
                     // Check if outcomes are scalar
                     try {
-                        foreach ($outcomes as $outcome) {
-                            if (! is_scalar($outcome['value'])){
-                                throw new Exception ('taoItems_models_classes_ItemsService::evaluate outcomes are not scalar');
+                        foreach($outcomes as $outcome) {
+                            if(! is_scalar($outcome['value'])){
+                                throw new Exception('taoItems_models_classes_ItemsService::evaluate outcomes are not scalar');
                             }
                         }
                         $returnValue = $outcomes;
-                    } catch (Exception $e) { }
-                } catch (Exception $e) { }
+                    }
+                    catch(Exception $e){
+                 		;//
+                    }
+                }
+                catch(Exception $e){ 
+                	;//
+                }
             }
         }
         
