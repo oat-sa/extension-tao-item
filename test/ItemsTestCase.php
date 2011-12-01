@@ -30,7 +30,7 @@ class ItemsTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$itemsService = tao_models_classes_ServiceFactory::get('Items');
+		$itemsService = taoItems_models_classes_ItemsService::singleton();
 		$this->assertIsA($itemsService, 'tao_models_classes_Service');
 		$this->assertIsA($itemsService, 'taoItems_models_classes_ItemsService');
 		

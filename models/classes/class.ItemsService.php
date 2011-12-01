@@ -673,7 +673,7 @@ class taoItems_models_classes_ItemsService
         		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
 	        		
         			//for the QTI Item
-	        		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
+	        		$qtiService = taoItems_models_classes_QTI_Service::singleton();
 	        		$qtiItem = $qtiService->getDataItemByRdfItem($item);
 	        	
 	        		if(!is_null($qtiItem)) {
@@ -901,7 +901,7 @@ class taoItems_models_classes_ItemsService
         	// If QTI Item
         	if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
         
-            	$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+            	$qtiService = taoItems_models_classes_QTI_Service::singleton();
             	$item = $qtiService->getDataItemByRdfItem ($itemRdf);
            	 	$returnValue = $item->getMatchingData ();
         	}

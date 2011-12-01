@@ -29,7 +29,7 @@ class QTIOutputTestCase extends UnitTestCase {
 		);
 		taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 		
-		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$this->qtiService = taoItems_models_classes_QTI_Service::singleton();
 	}
 	
 	

@@ -16,7 +16,7 @@ class taoItems_actions_HawaiAuthoring extends tao_actions_CommonModule {
 	public function __construct(){
 		
 		parent::__construct();
-		$this->itemService = tao_models_classes_ServiceFactory::get('Items');
+		$this->itemService = taoItems_models_classes_ItemsService::singleton();
 	}
 	
 	/**

@@ -327,7 +327,7 @@ class taoItems_models_classes_QTI_Response
         $returnValue = null;
 
         // section 127-0-1-1--67198282:12bb0429ae8:-8000:000000000000266C begin
-		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
 		$interaction = $qtiService->getComposingData($this);
 		if(!$interaction instanceof taoItems_models_classes_QTI_Interaction){
 			throw new Exception('cannot find the parent interaction of the current response');

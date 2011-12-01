@@ -95,7 +95,7 @@ class taoItems_actions_QTIform_choice_Gap
 		$this->group = $group;
 		$this->formName = 'GroupForm_'.$this->group->getSerial();//GroupForm...however it is considered as a choice
 		
-		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
 		$interaction = $qtiService->getComposingData($group);
 		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
 			$this->interaction = $interaction;
@@ -168,7 +168,7 @@ class taoItems_actions_QTIform_choice_Gap
 		}
 		$matchGroupElt->setOptions($options);
 		//the default empty value indicates to the authoring controller that there is no restriction to the associated choices
-		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
 		foreach($this->group->getChoices() as $choiceSerial){
 			$choice = $qtiService->getDataBySerial($choiceSerial, 'taoItems_models_classes_QTI_Choice');
 			$matchGroupElt->setValue($choice->getIdentifier());

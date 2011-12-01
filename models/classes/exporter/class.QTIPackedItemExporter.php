@@ -46,7 +46,7 @@ class taoItems_models_classes_exporter_QTIPackedItemExporter extends taoItems_mo
           		}
      		}
      		if(!empty($qtiFile)){
-     			$qtiItemService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
+     			$qtiItemService = taoItems_models_classes_QTI_Service::singleton();
      			$qtiItem = $qtiItemService->getDataItemByRdfItem($this->getItem());
      			if(!is_null($qtiItem)){
 	     			$templateRenderer = new taoItems_models_classes_TemplateRenderer(BASE_PATH.'/models/classes/QTI/templates/imsmanifest.tpl.php', array(

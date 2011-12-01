@@ -148,7 +148,7 @@ class taoItems_actions_QTIform_ResponseProcessing
 		$typeElt = tao_helpers_form_FormFactory::getElement('responseProcessingType', 'Combobox');
 		$typeElt->setDescription(__('Processing type'));
 		
-		$qtiAuthoringService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
+		$qtiAuthoringService = taoItems_models_classes_QtiAuthoringService::singleton();
 		try{
 			$type = $qtiAuthoringService->getResponseProcessingType($this->responseProcessing);
 		}catch(Exception $e){}

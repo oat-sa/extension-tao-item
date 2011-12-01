@@ -132,7 +132,7 @@ class taoItems_actions_QTIform_choice_SimpleAssociableChoice
 					}
 				}
 				if(!empty($currentGroupSerial)){
-					$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+					$qtiService = taoItems_models_classes_QTI_Service::singleton();
 					
 					$choicesInAnotherGroup = array_unique($choicesInAnotherGroup);
 					foreach($choicesInAnotherGroup as $choiceSerial){

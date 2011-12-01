@@ -86,7 +86,7 @@ class taoItems_actions_form_ItemContentIO
     {
         // section 127-0-1-1-7c161ae7:12af1a41c59:-8000:0000000000002598 begin
         
-    	$itemService = tao_models_classes_ServiceFactory::get('Items');
+    	$itemService = taoItems_models_classes_ItemsService::singleton();
     	if($itemService->hasItemModel($this->instance, array(TAO_ITEM_MODEL_XHTML))){
     		$extension 	= array('xhtml', 'html', 'htm');
     		$mimeType 	= array('text/xml', 'application/xml', 'text/html');

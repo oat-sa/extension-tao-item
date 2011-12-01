@@ -21,8 +21,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		parent::__construct();
 		
 		$this->debugMode = false;
-		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
-		$this->service = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QtiAuthoringService');
+		$this->qtiService = taoItems_models_classes_QTI_Service::singleton();
+		$this->service = taoItems_models_classes_QtiAuthoringService::singleton();
 		$this->defaultData();
 		
 		taoItems_models_classes_QTI_Data::setPersistance(true);
@@ -926,7 +926,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			
 			if(!preg_match("/^http/", $imageFilePath)){
 				if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
-					$itemService = tao_models_classes_ServiceFactory::get('Items');
+					$itemService = taoItems_models_classes_ItemsService::singleton();
 					$classUri = tao_helpers_Uri::decode(Session::getAttribute('classUri'));
 					if($itemService->isItemClass(new core_kernel_classes_Class($classUri))){
 						$item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));

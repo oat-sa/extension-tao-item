@@ -82,7 +82,7 @@ class taoItems_actions_form_Export
     {
         // section 127-0-1-1-70b2308e:12ca2398ae8:-8000:000000000000293C begin
         
-    	$itemService = tao_models_classes_ServiceFactory::get('Items');
+    	$itemService = taoItems_models_classes_ItemsService::singleton();
 		
 		$fileName = '';
     	$options = array();
@@ -146,7 +146,7 @@ class taoItems_actions_form_Export
     {
         // section 127-0-1-1--46051fb4:12ee209629f:-8000:0000000000002D57 begin
         
-    	$itemService = tao_models_classes_ServiceFactory::get('Items');
+    	$itemService = taoItems_models_classes_ItemsService::singleton();
 		
 		$fileName = '';
     	$options = array();

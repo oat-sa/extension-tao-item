@@ -29,7 +29,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 			
 			if(count($instances) > 0){
 				
-				$itemService = tao_models_classes_ServiceFactory::get('Items');
+				$itemService = taoItems_models_classes_ItemsService::singleton();
 				
 				$folder = $this->getExportPath();
 				$fileName = $formValues['filename'].'_'.time().'.zip';
@@ -63,7 +63,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 			$instances = $formValues['instances'];
 			if(count($instances) > 0){
 				
-				$itemService = tao_models_classes_ServiceFactory::get('Items');
+				$itemService = taoItems_models_classes_ItemsService::singleton();
 				
 				$folder = $this->getExportPath();
 				$fileName = $formValues['filename'].'_'.time().'.zip';
@@ -109,7 +109,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 		// must be suffixed by ItemExporter. For a QTI Item Model we would have:
 		// - file name: class.QTIItemExporter.php
 		// - class name: QTIItemExporter
-		$itemService = tao_models_classes_ServiceFactory::get('Items');
+		$itemService = taoItems_models_classes_ItemsService::singleton();
 		$itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
 
 		try {

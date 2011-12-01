@@ -77,7 +77,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000005014 begin
 		
-		$qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
 		$interaction = $qtiService->getComposingData($choice);
 		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
 			$this->interaction = $interaction;

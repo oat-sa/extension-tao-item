@@ -17,7 +17,7 @@ class QTIParsingTestCase extends UnitTestCase {
 	 */
 	public function setUp(){		
 		TestRunner::initTest();
-		$this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+		$this->qtiService = taoItems_models_classes_QTI_Service::singleton();
 	}
 	
 	

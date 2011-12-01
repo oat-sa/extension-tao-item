@@ -209,7 +209,7 @@ class taoItems_scripts_MigrateLegacyItems
         if(is_null($clazz)){
         	$clazz = new core_kernel_classes_Class(TAO_ITEM_CLASS);
         }
-        $itemService = tao_models_classes_ServiceFactory::get("Items");
+        $itemService = taoItems_models_classes_ItemsService::singleton();
         if($itemService->isItemClass($clazz)){
         	$returnValue = $clazz->createInstance();
         }
@@ -232,7 +232,7 @@ class taoItems_scripts_MigrateLegacyItems
 
         // section 127-0-1-1--5d5119d4:12e3924f2ec:-8000:0000000000002D7E begin
         
-        $itemService = tao_models_classes_ServiceFactory::get("Items");
+        $itemService = taoItems_models_classes_ItemsService::singleton();
      
         $returnValue = new core_kernel_classes_Resource($uri);
         

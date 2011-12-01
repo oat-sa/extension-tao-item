@@ -25,7 +25,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 	 */
 	public function __construct(){
 		parent::__construct();
-		$this->itemService = tao_models_classes_ServiceFactory::get('Items');
+		$this->itemService = taoItems_models_classes_ItemsService::singleton();
 	}
 	
 	/**
@@ -280,7 +280,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				//taoApi events tracing parameters
 				$itemFolder = $this->itemService->getRuntimeFolder($item);
 				if(file_exists($itemFolder .'/events.xml')){
-					$eventService = tao_models_classes_ServiceFactory::get("tao_models_classes_EventsService");
+					$eventService = tao_models_classes_EventsService::singleton();
 					$eventData =  $eventService->getEventList($itemFolder .'/events.xml');
 					
 					$this->setData('eventData', json_encode($eventData));

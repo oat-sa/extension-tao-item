@@ -150,7 +150,7 @@ abstract class taoItems_actions_QTIform_response_Response
 		);
 		
 		//get interaction type:
-		$qtiService = tao_models_classes_ServiceFactory::get('taoItems_models_classes_QTI_Service');
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
 		$interaction = $qtiService->getComposingData($this->response);
 		if(!is_null($interaction)){
 			switch(strtolower($interaction->getType())){

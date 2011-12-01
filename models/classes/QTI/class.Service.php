@@ -68,7 +68,7 @@ class taoItems_models_classes_QTI_Service
         	
         	try{
         		
-        		$itemService = tao_models_classes_ServiceFactory::get('Items');
+        		$itemService = taoItems_models_classes_ItemsService::singleton();
         		
         		//check if the item is QTI item
         		if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
@@ -117,7 +117,7 @@ class taoItems_models_classes_QTI_Service
         	
         	try{
         		
-        		$itemService = tao_models_classes_ServiceFactory::get('Items');
+        		$itemService = taoItems_models_classes_ItemsService::singleton();
         		
         		//check if the item is QTI item
         		if($itemService->hasItemModel($rdfItem, array(TAO_ITEM_MODEL_QTI))){

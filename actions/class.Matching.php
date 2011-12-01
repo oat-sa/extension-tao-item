@@ -28,7 +28,7 @@ class taoItems_actions_Matching extends tao_actions_Api {
             $token = $this->getRequestParameter('token');
             if($this->authenticate($token)){
 
-            	$this->itemService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_ItemsService");
+            	$this->itemService = taoItems_models_classes_ItemsService::singleton();
             	
                 $env = $this->getExecutionEnvironment();
                 $itemURI = $env[TAO_ITEM_CLASS]['uri'];
@@ -62,7 +62,7 @@ class taoItems_actions_Matching extends tao_actions_Api {
         $item_path = $this->getRequestParameter('item_path');
 
         // Load the qti items service
-        $this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+        $this->qtiService = taoItems_models_classes_QTI_Service::singleton();
         
         // get the item
         $item = $this->qtiService->loadItemFromFile ($item_path);
@@ -101,7 +101,7 @@ class taoItems_actions_Matching extends tao_actions_Api {
         $item_path =  urldecode($this->getRequestParameter('item_path'));
 
         // Load the qti items service
-        $this->qtiService = tao_models_classes_ServiceFactory::get("taoItems_models_classes_QTI_Service");
+        $this->qtiService = taoItems_models_classes_QTI_Service::singleton();
         
         // get the item
         $item = $this->qtiService->loadItemFromFile ($item_path);

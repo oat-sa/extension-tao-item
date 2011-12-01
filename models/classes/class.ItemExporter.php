@@ -43,7 +43,7 @@ abstract class taoItems_models_classes_ItemExporter {
 	protected function getItemService() {
 		$returnValue = null;
 		
-		$returnValue =  tao_models_classes_ServiceFactory::get('Items');
+		$returnValue =  taoItems_models_classes_ItemsService::singleton();
 		
 		return $returnValue;
 	}

@@ -20,7 +20,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		parent::__construct();
 		
 		//the service is initialized by default
-		$this->service = tao_models_classes_ServiceFactory::get('Items');
+		$this->service = taoItems_models_classes_ItemsService::singleton();
 		$this->defaultData();
 		$this->setData('modelDefined', false);
 		
