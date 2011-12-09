@@ -26,8 +26,8 @@ var QTIWidget = QTIWidget || {};
 QTIWidget.slider = function(ctx){
 	
 	//add the containers
-	$(ctx.qti_item_id).append("<input type='hidden' id='qti_slider_value' />")
-					.append("<div class='qti_slider'></div>")
+	$(ctx.qti_item_id).append("<input type='hidden' id='"+ctx.qti_item_id.substring(1, ctx.qti_item_id.length)+"_qti_slider_value' />")
+						.append("<div class='qti_slider'></div>")
 						.append("<div class='qti_slider_label'></div>");
 	
 	var containerWidth = parseInt($(ctx.qti_item_id).width());
@@ -127,7 +127,7 @@ QTIWidget.slider = function(ctx){
 	}
 	
 	//the input that has always the slider value
-	var $sliderVal = $("#qti_slider_value");
+	var $sliderVal = $(ctx.qti_item_id+"_qti_slider_value");
 	
 	//set the start value
 	var val = min;
