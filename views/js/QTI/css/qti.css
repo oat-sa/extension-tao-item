@@ -111,8 +111,10 @@ textarea {width:400px; height:100px; margin:auto; 	}
 /* TXT #009933 */.qti_slider_label span{color:#009933; font-weight:bold;position:absolute;}
 .qti_slider_horizontal .qti_slider_label{ height:1em; padding:0; margin:0; position:relative; left:-10px; top:5px;}
 .qti_slider_horizontal .qti_slider_label .slider_min{left:0;}
+.qti_slider_horizontal .qti_slider_label .slider_cur{left:45%}
 .qti_slider_horizontal .qti_slider_label .slider_max{right:0;}
 .qti_slider_vertical .qti_slider{float:left;}
 .qti_slider_vertical .qti_slider_label{ width:25px; padding:0; margin:0; position:relative; top:-7px; left:5px;}
 .qti_slider_vertical .qti_slider_label .slider_min{top:0;}
+.qti_slider_vertical .qti_slider_label .slider_cur{top:45%}
 .qti_slider_vertical .qti_slider_label .slider_max{bottom:0;}

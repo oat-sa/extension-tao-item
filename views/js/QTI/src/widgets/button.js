@@ -74,7 +74,8 @@ QTIWidget.slider = function(ctx){
 		}
 		$(ctx.qti_item_id+' .qti_slider_label')
 			.append("<span class='slider_min'>"+displayMin+"</span>")
-				.append("<span class='slider_max'>"+displayMax+"</span>");
+			.append("<span class='slider_cur'>"+displayMin+"</span>")
+			.append("<span class='slider_max'>"+displayMax+"</span>");
 		
 	}
 	else{
@@ -140,6 +141,8 @@ QTIWidget.slider = function(ctx){
 			val = ctx.opts["values"];
 		}
 	}
+
+	$(ctx.qti_item_id+' '+'.slider_cur').text(val);
 	
 	//create the slider
 	$(ctx.qti_item_id+' .qti_slider').slider({
@@ -154,6 +157,7 @@ QTIWidget.slider = function(ctx){
 				val = max - ui.value;
 			}
 			$sliderVal.val(  val );
+			$(ctx.qti_item_id+' '+'.slider_cur').text(val);
 		}
 	});
 	$sliderVal.val(  val );
