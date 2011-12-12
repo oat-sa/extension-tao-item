@@ -36,8 +36,8 @@ QTIWidget.slider = function(ctx){
 	var min 		= parseInt(ctx.opts['lowerBound']);
 	var max 		= parseInt(ctx.opts['upperBound']);
 	var step 		= parseInt(ctx.opts['step']);
-	var stepLabel 	= (ctx.opts['stepLabel'] === true);
-	var reverse 	= (ctx.opts['reverse'] === true);
+	var stepLabel 	= (ctx.opts['stepLabel'] === true || ctx.opts['stepLabel'] === 'true');
+	var reverse 	= (ctx.opts['reverse'] === true || ctx.opts['reverse'] === 'true');
 	var orientation = 'horizontal';
 	if($.inArray(ctx.opts['orientation'], ['horizontal', 'vertical']) > -1){
 		orientation = ctx.opts['orientation'];
