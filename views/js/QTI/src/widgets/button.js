@@ -42,10 +42,10 @@ QTIWidget.slider = function(ctx){
 	if($.inArray(ctx.opts['orientation'], ['horizontal', 'vertical']) > -1){
 		orientation = ctx.opts['orientation'];
 	}
-	
+
 	//calculate and adapt the slider size
 	var sliderSize = ((max - min) / step) * 20;
-	
+
 	if(orientation == 'horizontal'){
 		if(sliderSize > containerWidth){
 			sliderSize = containerWidth - 20;
@@ -146,10 +146,10 @@ QTIWidget.slider = function(ctx){
 	
 	//create the slider
 	$(ctx.qti_item_id+' .qti_slider').slider({
-		value:	val,
-		min: 	min,
-		max: 	max,
-		step: 	step,
+		value: val,
+		min: min,
+		max: max,
+		step: step,
 		orientation: orientation,
 		slide: function( event, ui ) {
 			var val = ui.value;
