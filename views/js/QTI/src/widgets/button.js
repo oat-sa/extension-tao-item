@@ -74,13 +74,14 @@ QTIWidget.slider = function(ctx){
 		}
 		$(ctx.qti_item_id+' .qti_slider_label')
 			.append("<span class='slider_min'>"+displayMin+"</span>")
-			.append("<span class='slider_cur'>"+displayMin+"</span>")
+			.append("<span class='slider_cur highlight'>"+displayMin+"</span>")
 			.append("<span class='slider_max'>"+displayMax+"</span>");
 		
 	}
 	else{
 		//add a label to the steps, 
 		//if there not the place we calculate the better interval
+		$(ctx.qti_item_id).addClass('qti_slider_step');
 		
 		var stepSpacing = 20;
 		var displayRatio = 1;
@@ -97,18 +98,19 @@ QTIWidget.slider = function(ctx){
 			if(reverse){
 				displayIndex = max - i;
 			}
-			var $iStep = $("<span>"+displayIndex+"</span>");
+			var $iStep = $("<span class=\"_"+displayIndex+"\">"+displayIndex+"</span>");
 			if(orientation == 'horizontal'){
-				$iStep.css({left: ((i / displayRatio)  * stepSpacing) + 'px'});
+				$iStep.css({left: ((i / displayRatio)  * stepSpacing) + 5 + 'px'});
 			}
 			else{
-				$iStep.css({top: ((i / displayRatio)  * stepSpacing) + 'px'});
+				$iStep.css({top: ((i / displayRatio)  * stepSpacing) + 5 + 'px'});
 			}
 			$(ctx.qti_item_id+' .qti_slider_label').append($iStep);
 		}
 		
 		//always add the last step
-		if(i != max){	
+		i -= (step * displayRatio);
+		if(i != max){
 			if(i < max){
 				$(ctx.qti_item_id+' .qti_slider_label span:last').remove();
 			}
@@ -141,12 +143,10 @@ QTIWidget.slider = function(ctx){
 			val = ctx.opts["values"];
 		}
 	}
-
-	$(ctx.qti_item_id+' '+'.slider_cur').text(val);
 	
 	//create the slider
 	$(ctx.qti_item_id+' .qti_slider').slider({
-		value: val,
+		value: ( (reverse && orientation == 'horizontal') || (!reverse && orientation == 'vertical') ) ? max - val : val,
 		min: min,
 		max: max,
 		step: step,
@@ -157,11 +157,20 @@ QTIWidget.slider = function(ctx){
 				val = max - ui.value;
 			}
 			$sliderVal.val(  val );
-			$(ctx.qti_item_id+' '+'.slider_cur').text(val);
+			QTIWidget.slider_highlight(ctx, val);
 		}
 	});
 	$sliderVal.val(  val );
+	QTIWidget.slider_highlight(ctx, val);
 };
+
+QTIWidget.slider_highlight = function(ctx, value) {
+  if (!$(ctx.qti_item_id).hasClass('qti_slider_step')) $(ctx.qti_item_id+' '+'.slider_cur').text(value);
+  else {
+	$(ctx.qti_item_id+' .qti_slider_label span').removeClass('highlight');
+	$(ctx.qti_item_id+' .qti_slider_label span._'+value).addClass('highlight');
+  }
+}
 
 
 //

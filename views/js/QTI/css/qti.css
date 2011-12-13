@@ -118,3 +118,4 @@ textarea {width:400px; height:100px; margin:auto; 	}
 .qti_slider_vertical .qti_slider_label .slider_min{top:0;}
 .qti_slider_vertical .qti_slider_label .slider_cur{top:45%}
 .qti_slider_vertical .qti_slider_label .slider_max{bottom:0;}
+.qti_slider_label .highlight{color:#930}
