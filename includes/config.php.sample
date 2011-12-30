@@ -18,6 +18,8 @@ define("DIR_VIEWS"			, "views/");
 # helpers directory
 define("DIR_HELPERS"		, dirname(__FILE__) . "/../helpers/");
 
+#Items BASE URL
+define('TAO_ITEMS_BASE_URL', ROOT_URL . '/taoItems');
 
 # default module name
 define('DEFAULT_MODULE_NAME', 'Items');
