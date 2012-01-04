@@ -678,7 +678,7 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		var setChangesfunction = function(){
 			interaction.setModifiedChoicesByForm($modifiedForm);
 		};
-		$($(this)[0].contentWindow.document).click(setChangesfunction);
+		$($(this)[0].contentWindow.document).focus(setChangesfunction);
 		$(this).siblings('ul').click(setChangesfunction);
 		
 	});
