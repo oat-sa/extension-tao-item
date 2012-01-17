@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * Matching provides a full API based on the QTI matching model to
  * score items or whatever.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -21,15 +21,22 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * containers the result is the sum of the mapped values from
  * the target set
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/Matching/class.AreaMap.php');
+
+/**
+ * include taoItems_models_classes_Matching_ExitResponseException
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/Matching/class.ExitResponseException.php');
 
 /**
  * A special class used to create a mapping from a source set of 
  * any baseType to a single float.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/Matching/class.Map.php');
 
@@ -37,7 +44,7 @@ require_once('taoItems/models/classes/Matching/class.Map.php');
  * Variable is an abstract class which is the representation 
  * of all the variables managed by the system
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/Matching/class.Variable.php');
 
@@ -45,7 +52,7 @@ require_once('taoItems/models/classes/Matching/class.Variable.php');
  * The class variable factory provide to developpers a set 
  * of usefull functions arround the variables creation process
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/Matching/class.VariableFactory.php');
 
@@ -62,7 +69,7 @@ require_once('taoItems/models/classes/Matching/class.VariableFactory.php');
  * score items or whatever.
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -151,7 +158,7 @@ class taoItems_models_classes_Matching_Matching
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __construct()
@@ -163,7 +170,8 @@ class taoItems_models_classes_Matching_Matching
             , 'createVariable'=>array()
             , 'divide'=>array()
 			, 'equal'=>array()
-            , 'if'=>array('native'=>true)
+			, 'exitResponse'=>array()
+			, 'if'=>array('native'=>true)
             , 'integerDivide'=>array()
 			, 'isNull'=>array()
 			, 'getCorrect'=>array()
@@ -186,6 +194,7 @@ class taoItems_models_classes_Matching_Matching
             , 'subtract'=>array()
             , 'sum'=>array()
 		);
+		common_Logger::d('Instance of Matching initialised');
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
     }
 
@@ -193,7 +202,7 @@ class taoItems_models_classes_Matching_Matching
      * Short description of method checkOptions
      *
      * @access private
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @return object
      */
@@ -227,7 +236,7 @@ class taoItems_models_classes_Matching_Matching
      * Short description of method parseExpressionRule
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array matches
      * @return string
      */
@@ -283,7 +292,7 @@ class taoItems_models_classes_Matching_Matching
      * Evaluate the matching rule
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      */
     public function evaluate()
     {
@@ -304,6 +313,8 @@ class taoItems_models_classes_Matching_Matching
         
         try {
 			eval ($this->getRule());
+        } catch (taoItems_models_classes_Matching_ExitResponseException $e) {
+        	//do nothing, code exited "normaly"
 		} catch (Exception $e) {
 			throw new Exception ('an error occured during the evaluation of the rule : '.$e);
 		}
@@ -317,7 +328,7 @@ class taoItems_models_classes_Matching_Matching
      * Get the matching rule
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     protected function getRule()
@@ -337,7 +348,7 @@ class taoItems_models_classes_Matching_Matching
      * Get the outcome in the defined JSON format
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      */
     public function getJSonOutcomes()
     {
@@ -362,7 +373,7 @@ class taoItems_models_classes_Matching_Matching
      * Set the corrects
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array data
      * @return mixed
      */
@@ -395,7 +406,7 @@ class taoItems_models_classes_Matching_Matching
      * Short description of method setAreaMaps
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  data
      * @return mixed
      */
@@ -429,7 +440,7 @@ class taoItems_models_classes_Matching_Matching
      * Set the mappings
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  data
      * @return mixed
      */
@@ -463,7 +474,7 @@ class taoItems_models_classes_Matching_Matching
      * Set the outcomes
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array data
      * @return mixed
      */
@@ -499,7 +510,7 @@ class taoItems_models_classes_Matching_Matching
      * Set the responses
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array data
      * @return mixed
      */
@@ -515,7 +526,7 @@ class taoItems_models_classes_Matching_Matching
 			try {
 				$var = taoItems_models_classes_Matching_VariableFactory::create ($response->value);
 				if (isset ($this->responses[$response->identifier]))
-					throw new Exception ('taoItems_models_classes_Matching_Matching::setReponses a response variable with the identifier '.$response->identifier.' exists yet');
+					throw new common_Exception('taoItems_models_classes_Matching_Matching::setReponses a response variable with the identifier '.$response->identifier.' exists yet');
 
 				$this->responses[$response->identifier] = $var;
 			}
@@ -532,7 +543,7 @@ class taoItems_models_classes_Matching_Matching
      * Set the matching rule
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string rule
      * @return mixed
      */
@@ -558,7 +569,7 @@ class taoItems_models_classes_Matching_Matching
      * are false.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @return boolean
      */
@@ -604,7 +615,7 @@ class taoItems_models_classes_Matching_Matching
      * createVariable (Array("type"=>"list"), "TAO", "Test Assisté par
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -683,7 +694,7 @@ class taoItems_models_classes_Matching_Matching
      * does not contain [C,A] but it does contain [B,C].
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -717,7 +728,7 @@ class taoItems_models_classes_Matching_Matching
      * results in NULL.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -758,7 +769,7 @@ class taoItems_models_classes_Matching_Matching
      * expressions are numerically equal and false if they are not.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @param  expr1
      * @param  expr2
@@ -807,10 +818,24 @@ class taoItems_models_classes_Matching_Matching
     }
 
     /**
+     * Short description of method exitResponse
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function exitResponse()
+    {
+        // section 127-0-1-1-6f9e545f:134ec499acb:-8000:000000000000358A begin
+		throw new taoItems_models_classes_Matching_ExitResponseException();
+        // section 127-0-1-1-6f9e545f:134ec499acb:-8000:000000000000358A end
+    }
+
+    /**
      * Get a correct variable from its identifier
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -833,7 +858,7 @@ class taoItems_models_classes_Matching_Matching
      * Get a mapping variable from its identifier
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @param  string type
      * @return taoItems_models_classes_Matching_Map
@@ -862,7 +887,7 @@ class taoItems_models_classes_Matching_Matching
      * Get an outcome variable from its identifier
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -884,7 +909,7 @@ class taoItems_models_classes_Matching_Matching
      * Get a variable from its identifier
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -910,7 +935,7 @@ class taoItems_models_classes_Matching_Matching
      * Get a response variable from its identifier
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -937,7 +962,7 @@ class taoItems_models_classes_Matching_Matching
      * to the second.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -978,7 +1003,7 @@ class taoItems_models_classes_Matching_Matching
      * and false if it is greater than the second.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -1019,7 +1044,7 @@ class taoItems_models_classes_Matching_Matching
      * the greatest integer (i) such that i<=(x/y).
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -1045,7 +1070,7 @@ class taoItems_models_classes_Matching_Matching
      * NULL and false otherwise.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @param  Variable var
      * @return boolean
@@ -1070,7 +1095,7 @@ class taoItems_models_classes_Matching_Matching
      * t is greater than or equal to the second.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -1111,7 +1136,7 @@ class taoItems_models_classes_Matching_Matching
      * and false if it is greater than the second.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -1167,7 +1192,7 @@ class taoItems_models_classes_Matching_Matching
      * not 2.5.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @param  Map map
      * @param  Variable expr
@@ -1208,7 +1233,7 @@ class taoItems_models_classes_Matching_Matching
      * calculated total just once.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @param  AreaMap map
      * @param  Variable expr
@@ -1244,7 +1269,7 @@ class taoItems_models_classes_Matching_Matching
      * false if they do not.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @param  expr1
      * @param  expr2
@@ -1285,7 +1310,7 @@ class taoItems_models_classes_Matching_Matching
      * of the sub-expression's value.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr
      * @return boolean
@@ -1321,7 +1346,7 @@ class taoItems_models_classes_Matching_Matching
      * in NULL.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @return boolean
      */
@@ -1367,7 +1392,7 @@ class taoItems_models_classes_Matching_Matching
      * product of the numerical values of the sub-expressions.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      */
     public function product(   $options)
@@ -1418,7 +1443,7 @@ class taoItems_models_classes_Matching_Matching
      * with min=2, max=11 and step=3 the values {2,5,8,11} are possible.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @return int
      */
@@ -1439,7 +1464,7 @@ class taoItems_models_classes_Matching_Matching
      * Selects a random float from the specified range [min,max].
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @return double
      */
@@ -1466,7 +1491,7 @@ class taoItems_models_classes_Matching_Matching
      * to 6 and -6.5 rounds up to -6.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr
      */
@@ -1507,7 +1532,7 @@ class taoItems_models_classes_Matching_Matching
      * The setOutcomeValue sets the value of an outcomeVariable.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @param  value
      * @return mixed
@@ -1545,7 +1570,7 @@ class taoItems_models_classes_Matching_Matching
      * second.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      * @param  expr1
      * @param  expr2
@@ -1587,7 +1612,7 @@ class taoItems_models_classes_Matching_Matching
      * numerical values of the sub-expressions.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  options
      */
     public function sum(   $options)

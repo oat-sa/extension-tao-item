@@ -63,6 +63,8 @@ class taoItems_models_classes_QTI_ParserFactory
 		if(isset($data['identifier'])){
 			$itemId = (string) $data['identifier'];//might be an issue if the identifier given is no good, e.g. twice the same value...
 		}
+		
+		common_Logger::i('Started parsing of QTI item'.(isset($itemId) ? ' '.$itemId : ''), array('TAOITEMS'));
 			
 		//retrieve the item attributes
 		$options = array();
@@ -707,7 +709,9 @@ class taoItems_models_classes_QTI_ParserFactory
 				$returnValue = self::buildCustomResponseProcessing($data);
 			}
 		}
-
+		
+		common_Logger::d('ResponseProcessing '.get_class($returnValue).' detected', array('TAOITEMS'));
+		
 		// section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
 
 		return $returnValue;
@@ -726,52 +730,17 @@ class taoItems_models_classes_QTI_ParserFactory
 		$returnValue = null;
 
 		// section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D begin
-
 		// Parse to find the different response rules
 		$responseRules = array ();
 
-		// Check if response conditions have been defined
-		$responseConditionNodes = $data->xpath("*[name(.) = 'responseCondition']");
-
-		foreach((array) $responseConditionNodes as $responseConditionNode) {
-			$responseIf = null;
-			$responseElseIf = array ();
-			$responseElse = array ();
-
-			$responseCondition = taoItems_models_classes_QTI_response_ExpressionFactory::create($responseConditionNode);
-
-			// RESPONSE IF (1)
-			$responseIfNodes = $responseConditionNode->xpath("*[name(.) = 'responseIf']"); // Only one responseIf is allowed
-
-			if (isset($responseIfNodes[0])) {
-				$responseIf = self::buildConditionalExpression($responseIfNodes[0]);
-			} else {
-				throw new taoItems_models_classes_QTI_ParsingException("responseIf is required in responseCondition");
-			}
-			$responseCondition->setResponseIf($responseIf);
-
-			// RESPONSE ELSE IF (*)
-			$responseElseIfNodes = $responseConditionNode->xpath("*[name(.) = 'responseElseIf']");
-			foreach ($responseElseIfNodes as $responseElseIfNode) {
-				$responseElseIf[] = self::buildConditionalExpression($responseElseIfNode);
-			}
-			$responseCondition->setResponseElseIf($responseElseIf);
-
-			// RESPONSE ELSE (1)
-			$responseElseNodes = $responseConditionNode->xpath("*[name(.) = 'responseElse']");
-			if (isset ($responseElseNodes[0])) {
-				foreach ($responseElseNodes[0]->children() as $node) {
-					$responseElse[] = self::buildExpression($node);
-				}
-				$responseCondition->setResponseElse($responseElse);
-			}
-
-			$responseRules[] = $responseCondition;
+		foreach ($data->children() as $child) {
+			$responseRules[] = taoItems_models_classes_QTI_response_ResponseRuleFactory::buildResponseRule($child);
 		}
-
+		//@todocheck responseCustom 
 		$returnValue = new taoItems_models_classes_QTI_response_Custom($responseRules);
 		$returnValue->setData($data->asXml(), false);
-			
+
+		common_Logger::d('Build custom processing with the following rule: '.$returnValue->getRule());
 		// section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6D end
 
 		return $returnValue;
@@ -884,23 +853,9 @@ class taoItems_models_classes_QTI_ParserFactory
 		// section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B34 begin
 
 		// The factory will create the right expression for us
-		$expression = taoItems_models_classes_QTI_response_ExpressionFactory::create($data);
-		$subExpressions = array();
-
-		// All sub-expressions of an expression are embedded by this expression
-		foreach ($data->children() as $subExpressionNode) {
-			$subExpressions[] = self::buildExpression($subExpressionNode);
-		}
-		$expression->setSubExpressions($subExpressions);
-
-		// If the expression has a value
-		$expressionValue = (string) trim($data);
-		if ($expressionValue != ''){
-			$expression->setValue($expressionValue);
-		}
-
+		$expression = taoItems_models_classes_QTI_expression_ExpressionFactory::create($data);
+		
 		$returnValue = $expression;
-
 		// section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B34 end
 
 		return $returnValue;

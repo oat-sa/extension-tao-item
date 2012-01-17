@@ -3,18 +3,18 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/response/class.Expression.php
+ * TAO - taoItems/models/classes/QTI/expression/class.CommonExpression.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 19.11.2010, 13:12:49 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 16.01.2012, 18:09:12 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
- * @subpackage models_classes_QTI_response
+ * @subpackage models_classes_QTI_expression
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -22,9 +22,16 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
+ * include taoItems_models_classes_QTI_expression_Expression
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/expression/class.Expression.php');
+
+/**
  * include taoItems_models_classes_QTI_response_Rule
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 
@@ -37,14 +44,15 @@ require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 // section 127-0-1-1-605722c1:12c112b6508:-8000:0000000000002A70-constants end
 
 /**
- * Short description of class taoItems_models_classes_QTI_response_Expression
+ * Short description of class
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
- * @subpackage models_classes_QTI_response
+ * @subpackage models_classes_QTI_expression
  */
-class taoItems_models_classes_QTI_response_Expression
+class taoItems_models_classes_QTI_expression_CommonExpression
+    extends taoItems_models_classes_QTI_expression_Expression
         implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
@@ -89,7 +97,7 @@ class taoItems_models_classes_QTI_response_Expression
      * Short description of method getRule
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getRule()
@@ -97,8 +105,7 @@ class taoItems_models_classes_QTI_response_Expression
         $returnValue = (string) '';
 
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
-        
-        // Get subExpressions
+    // Get subExpressions
         $subExpressionsRules = array();
         foreach ($this->subExpressions as $subExpression){
             $subExpressionsRules[] = $subExpression->getRule();
@@ -135,7 +142,8 @@ class taoItems_models_classes_QTI_response_Expression
                 $returnValue = 'getOutcome("'.$this->attributes['identifier'].'")';
                 break;
             case 'setOutcomeValue':
-                $returnValue = 'setOutcomeValue("'.$this->attributes['identifier'].'", '.$subExpressionsJSON.')';
+                //@todo remove this
+                throw new common_Exception('setOutcomeValue is not a valid expression');
                 break;
             case 'variable':
                 $returnValue = 'getVariable("'.$this->attributes['identifier'].'")';
@@ -148,7 +156,6 @@ class taoItems_models_classes_QTI_response_Expression
                         . ($subExpressionsJSON!="" ? ', '.$subExpressionsJSON : '')
                     .')';
         }
-        
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;
@@ -158,7 +165,7 @@ class taoItems_models_classes_QTI_response_Expression
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string name
      * @param  array attributes
      * @return mixed
@@ -166,10 +173,8 @@ class taoItems_models_classes_QTI_response_Expression
     public function __construct($name, $attributes)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004900 begin
-        
         $this->name = $name;
         $this->attributes = $attributes;
-        
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004900 end
     }
 
@@ -177,16 +182,14 @@ class taoItems_models_classes_QTI_response_Expression
      * Short description of method setSubExpressions
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array expressions
      * @return mixed
      */
     public function setSubExpressions($expressions)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AC7 begin
-        
         $this->subExpressions = $expressions;
-        
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AC7 end
     }
 
@@ -194,14 +197,14 @@ class taoItems_models_classes_QTI_response_Expression
      * Short description of method setValue
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  value
      * @return mixed
      */
     public function setValue(   $value)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AD8 begin
-        
+     
         // Set the value of the expression and cast it function of the (defined) base type of the variable
         if ($this->attributes['baseType']){
             switch ($this->attributes['baseType']){
@@ -234,10 +237,9 @@ class taoItems_models_classes_QTI_response_Expression
                     break;
             }   
         }
-
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AD8 end
     }
 
-} /* end of class taoItems_models_classes_QTI_response_Expression */
+} /* end of class taoItems_models_classes_QTI_expression_CommonExpression */
 
 ?>

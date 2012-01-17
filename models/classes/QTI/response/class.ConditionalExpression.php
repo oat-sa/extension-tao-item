@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 19:22:07 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 16.01.2012, 18:27:56 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -22,16 +22,30 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_response_Expression
+ * include taoItems_models_classes_QTI_expression_CommonExpression
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/class.Expression.php');
+require_once('taoItems/models/classes/QTI/expression/class.CommonExpression.php');
+
+/**
+ * include taoItems_models_classes_QTI_expression_Expression
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/expression/class.Expression.php');
+
+/**
+ * include taoItems_models_classes_QTI_response_ResponseRule
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/response/class.ResponseRule.php');
 
 /**
  * include taoItems_models_classes_QTI_response_Rule
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 
@@ -47,7 +61,7 @@ require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
  * Short description of class
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -55,7 +69,7 @@ class taoItems_models_classes_QTI_response_ConditionalExpression
         implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
 
     // --- ATTRIBUTES ---
 
@@ -81,7 +95,7 @@ class taoItems_models_classes_QTI_response_ConditionalExpression
      * Short description of method getRule
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getRule()
@@ -92,7 +106,7 @@ class taoItems_models_classes_QTI_response_ConditionalExpression
         
         $returnValue = 'if('.$this->getCondition()->getRule().') {';
         foreach ($this->getActions() as $actions) {
-            $returnValue .= $actions->getRule ().';';
+            $returnValue .= $actions->getRule();
         }
         $returnValue .= '}';
         
@@ -102,48 +116,35 @@ class taoItems_models_classes_QTI_response_ConditionalExpression
     }
 
     /**
-     * Short description of method setCondition
+     * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Expression expression
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Expression condition
+     * @param  array actions
      * @return mixed
      */
-    public function setCondition( taoItems_models_classes_QTI_response_Expression $expression)
+    public function __construct( taoItems_models_classes_QTI_expression_Expression $condition, $actions)
     {
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE9 begin
-        $this->condition = $expression;
+        $this->condition	= $condition;
+        $this->actions		= $actions;
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AE9 end
-    }
-
-    /**
-     * Short description of method setActions
-     *
-     * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  array expressions
-     * @return mixed
-     */
-    public function setActions($expressions)
-    {
-        // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AEC begin
-        $this->actions = $expressions;
-        // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002AEC end
     }
 
     /**
      * Short description of method getCondition
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @return taoItems_models_classes_QTI_response_ExpressionFactory
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return taoItems_models_classes_QTI_expression_Expression
      */
     public function getCondition()
     {
         $returnValue = null;
 
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004907 begin
-        $returnValue = $this->condition;        
+        $returnValue = $this->condition;
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000004907 end
 
         return $returnValue;
@@ -153,7 +154,7 @@ class taoItems_models_classes_QTI_response_ConditionalExpression
      * Short description of method getActions
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getActions()

@@ -39,7 +39,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_ParsingException
-    extends Exception
+    extends common_Exception
 {
     // --- ASSOCIATIONS ---
 

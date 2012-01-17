@@ -1290,6 +1290,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$xhtmlForm = '';
 		$interactionType = strtolower($interaction->getType());
 			
+		common_Logger::d('editResponse called for type '.$interactionType.' with type '.get_class($responseProcessing));
+		
 		//check the type...
 		//only display response grid when the response template is templates driven:
 		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){

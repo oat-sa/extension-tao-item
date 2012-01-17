@@ -266,7 +266,7 @@ class taoItems_models_classes_QTI_Service
 	        	$data = @unserialize(Session::getAttribute($key));
 	        
 	        	if($data === false){
-	        		throw new Exception("Unable to unserialize session entry identified by $serial");
+	        		throw new common_Exception("Unable to unserialize session entry identified by $serial");
 	        	}
 	        	if(!empty($type)){
 	        		if( ! $data instanceof $type) {

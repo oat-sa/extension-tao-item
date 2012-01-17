@@ -109,6 +109,7 @@ TAO_MATCHING.Matching = function(pData, pOptions) {
         , 'contains'        :{}
         , 'divide'          :{}
         , 'equal'           :{}
+        , 'exitResponse'	:{}
 		, 'if'				:{'jsFunction':true}
 		, 'isNull'			:{}
 		, 'for'				:{'jsFunction':true}
@@ -714,8 +715,11 @@ TAO_MATCHING.Matching.prototype = {
         }
         
         return result;
-    } 
-
+    }
+    
+    , exitResponse : function (){
+        throw new Error();
+    }
     /**
      * Get a correct variable from its identifier
      *

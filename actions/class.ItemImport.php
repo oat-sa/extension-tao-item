@@ -80,6 +80,8 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 							}
 						}
 					}
+				} else {
+					common_Logger::w('itemService expected class \''.$itemService->getItemClass()->getLabel().'\', but got class \''.$clazz->getLabel().'\'', array('TAOITEMS'));
 				}
 				$this->setData('message', __('An error occurs during the import'));
 			}

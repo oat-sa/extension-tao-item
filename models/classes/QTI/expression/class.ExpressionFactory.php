@@ -3,18 +3,18 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/response/class.ExpressionFactory.php
+ * TAO - taoItems/models/classes/QTI/expression/class.ExpressionFactory.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 18.11.2010, 11:29:44 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 16.01.2012, 18:09:12 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
- * @subpackage models_classes_QTI_response
+ * @subpackage models_classes_QTI_expression
  */
 
 if (0 > version_compare(PHP_VERSION, '5')) {
@@ -33,11 +33,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Short description of class
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
- * @subpackage models_classes_QTI_response
+ * @subpackage models_classes_QTI_expression
  */
-class taoItems_models_classes_QTI_response_ExpressionFactory
+class taoItems_models_classes_QTI_expression_ExpressionFactory
 {
     // --- ASSOCIATIONS ---
 
@@ -50,16 +50,15 @@ class taoItems_models_classes_QTI_response_ExpressionFactory
      * Short description of method create
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  SimpleXMLElement data
-     * @return core_kernel_classes_Expression
+     * @return taoItems_models_classes_QTI_expression_Expression
      */
     public static function create( SimpleXMLElement $data)
     {
         $returnValue = null;
 
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002ADB begin
-        
         $expression = null;
         $expressionName = $data->getName();
         
@@ -70,22 +69,34 @@ class taoItems_models_classes_QTI_response_ExpressionFactory
         }
         
         // Create expression function of its type (If specialization has been done for the expression type)
-        $expressionClass = 'taoItems_models_classes_QTI_response_'.ucfirst($expressionName);
+        $expressionClass = 'taoItems_models_classes_QTI_expression_'.ucfirst($expressionName);
         
         if (class_exists($expressionClass)){
             $expression = new $expressionClass ($expressionName, $attributes);
         }
         else {
-            $expression = new taoItems_models_classes_QTI_response_Expression ($expressionName, $attributes);
+            $expression = new taoItems_models_classes_QTI_expression_CommonExpression ($expressionName, $attributes);
         }
         
-        $returnValue = $expression;
+		// If the expression has a value
+		$expressionValue = (string) trim($data);
+		if ($expressionValue != ''){
+			$expression->setValue($expressionValue);
+		}
         
+		// All sub-expressions of an expression are embedded by this expression
+		$subExpressions = array();
+		foreach ($data->children() as $subExpressionNode) {
+			$subExpressions[] = self::create($subExpressionNode);
+		}
+		$expression->setSubExpressions($subExpressions);
+
+        $returnValue = $expression;
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002ADB end
 
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_QTI_response_ExpressionFactory */
+} /* end of class taoItems_models_classes_QTI_expression_ExpressionFactory */
 
 ?>
