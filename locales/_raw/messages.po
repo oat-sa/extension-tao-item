@@ -1,3 +1,13 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO v2.2-alpha\n"
+"PO-Revision-Date: 2012-01-18T15:51:26\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: _raw\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 msgid "%d items of %d imported successfuly"
 msgstr ""
 
@@ -28,9 +38,6 @@ msgstr ""
 msgid "Advanced properties"
 msgstr ""
 
-msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr ""
-
 msgid "An error occured during the import"
 msgstr ""
 
@@ -41,6 +48,9 @@ msgid "An error occured while saving the item"
 msgstr ""
 
 msgid "An error occurs during the import"
+msgstr ""
+
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
 msgstr ""
 
 msgid "Apply"
@@ -76,7 +86,13 @@ msgstr ""
 msgid "Choices editor:"
 msgstr ""
 
+msgid "circle"
+msgstr ""
+
 msgid "Class saved"
+msgstr ""
+
+msgid "clean up"
 msgstr ""
 
 msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
@@ -85,13 +101,25 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
+msgid "close"
+msgstr ""
+
 msgid "Content"
 msgstr ""
 
 msgid "Coordinates"
 msgstr ""
 
+msgid "correct"
+msgstr ""
+
 msgid "Correct Responses"
+msgstr ""
+
+msgid "Create and design items and exercises."
+msgstr ""
+
+msgid "create table"
 msgstr ""
 
 msgid "Debug"
@@ -100,7 +128,13 @@ msgstr ""
 msgid "Debug Mode"
 msgstr ""
 
+msgid "default"
+msgstr ""
+
 msgid "Default value"
+msgstr ""
+
+msgid "delete"
 msgstr ""
 
 msgid "Delete choice"
@@ -115,16 +149,28 @@ msgstr ""
 msgid "Do you really want to delete the row?"
 msgstr ""
 
+msgid "download"
+msgstr ""
+
 msgid "Download item content"
 msgstr ""
 
-msgid "Edit Item"
+msgid "draw it"
+msgstr ""
+
+msgid "duplicate"
 msgstr ""
 
 msgid "Edit a class"
 msgstr ""
 
+msgid "Edit Item"
+msgstr ""
+
 msgid "Edit item"
+msgstr ""
+
+msgid "ellipse"
 msgstr ""
 
 msgid "Enabled"
@@ -136,6 +182,12 @@ msgstr ""
 msgid "Enables you to export an IMS QTI Package."
 msgstr ""
 
+msgid "End Attempt"
+msgstr ""
+
+msgid "end attempt now"
+msgstr ""
+
 msgid "Error in background file:"
 msgstr ""
 
@@ -143,6 +195,9 @@ msgid "Expected length"
 msgstr ""
 
 msgid "Expected lines"
+msgstr ""
+
+msgid "export"
 msgstr ""
 
 msgid "Export"
@@ -181,6 +236,9 @@ msgstr ""
 msgid "Graphic interaction stage:"
 msgstr ""
 
+msgid "horizontal"
+msgstr ""
+
 msgid "Identifier"
 msgstr ""
 
@@ -196,6 +254,9 @@ msgstr ""
 msgid "Image width"
 msgstr ""
 
+msgid "import"
+msgstr ""
+
 msgid "Integer"
 msgstr ""
 
@@ -208,19 +269,25 @@ msgstr ""
 msgid "Interaction editor:"
 msgstr ""
 
-msgid "Item Editor:"
-msgstr ""
-
-msgid "Item Properties:"
+msgid "invalid image mime type"
 msgstr ""
 
 msgid "Item content saved"
 msgstr ""
 
+msgid "Item Editor:"
+msgstr ""
+
 msgid "Item imported successfully"
 msgstr ""
 
+msgid "item imported successfully"
+msgstr ""
+
 msgid "Item library"
+msgstr ""
+
+msgid "Item Properties:"
 msgstr ""
 
 msgid "Item saved"
@@ -229,7 +296,16 @@ msgstr ""
 msgid "Item saved successfully"
 msgstr ""
 
+msgid "Item saving failed"
+msgstr ""
+
+msgid "Item successfully saved"
+msgstr ""
+
 msgid "Items"
+msgstr ""
+
+msgid "items imported successfully"
 msgstr ""
 
 msgid "Label"
@@ -241,10 +317,10 @@ msgstr ""
 msgid "Light preview:"
 msgstr ""
 
-msgid "Lower bound"
+msgid "lists"
 msgstr ""
 
-msgid "MIME type"
+msgid "Lower bound"
 msgstr ""
 
 msgid "Manage item content"
@@ -253,10 +329,16 @@ msgstr ""
 msgid "Manage items"
 msgstr ""
 
-msgid "Match Group"
+msgid "map"
+msgstr ""
+
+msgid "map point"
 msgstr ""
 
 msgid "Match group"
+msgstr ""
+
+msgid "Match Group"
 msgstr ""
 
 msgid "Matching side"
@@ -274,6 +356,12 @@ msgstr ""
 msgid "Maximum number of separate strings"
 msgstr ""
 
+msgid "meta data"
+msgstr ""
+
+msgid "MIME type"
+msgstr ""
+
 msgid "Modification on choice applied"
 msgstr ""
 
@@ -283,13 +371,28 @@ msgstr ""
 msgid "Modification(s) on interaction has been updated"
 msgstr ""
 
+msgid "move"
+msgstr ""
+
 msgid "Move Down"
 msgstr ""
 
 msgid "Move Up"
 msgstr ""
 
+msgid "new class"
+msgstr ""
+
+msgid "new item"
+msgstr ""
+
 msgid "Next"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "No item type selected for the current item."
 msgstr ""
 
 msgid "No user is logged in"
@@ -310,13 +413,13 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
-msgid "PREVIEW BOX"
-msgstr ""
-
 msgid "Pattern mask"
 msgstr ""
 
 msgid "Place holder text"
+msgstr ""
+
+msgid "please confirm deletion of the interaction"
 msgstr ""
 
 msgid "Please confirm interaction deletion"
@@ -325,10 +428,25 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr ""
 
+msgid "polygon"
+msgstr ""
+
 msgid "Prev"
 msgstr ""
 
+msgid "preview"
+msgstr ""
+
 msgid "Preview"
+msgstr ""
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "PREVIEW BOX"
 msgstr ""
 
 msgid "Preview Console"
@@ -343,7 +461,13 @@ msgstr ""
 msgid "Prompt"
 msgstr ""
 
+msgid "quantity"
+msgstr ""
+
 msgid "Recovery context"
+msgstr ""
+
+msgid "rectangle"
 msgstr ""
 
 msgid "Response editor:"
@@ -370,6 +494,9 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
+msgid "search"
+msgstr ""
+
 msgid "Server"
 msgstr ""
 
@@ -377,6 +504,9 @@ msgid "Set processing mode"
 msgstr ""
 
 msgid "Shape"
+msgstr ""
+
+msgid "show/hide"
 msgstr ""
 
 msgid "Shuffle choices"
@@ -397,25 +527,33 @@ msgstr ""
 msgid "Stylesheets manager:"
 msgstr ""
 
-msgid "The Item module enables the creation and design of items and exercises."
+msgid "template"
 msgstr ""
 
 msgid "The choice cannot be saved"
 msgstr ""
 
-msgid "The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)"
+msgid "The current interaction has been modified but the modifications has not been updated yet,\n"
+" do you want to update the interaction with the modifications before saving your item?\n"
+"(Otherwise, the modifications are lost)"
 msgstr ""
 
-msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?"
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to do update the interaction with the modifications before previewing your item?"
 msgstr ""
 
-msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)"
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to update the interaction with the modifications before returning to the item editor?\n"
+"(Otherwise, the modifications are lost)"
 msgstr ""
 
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr ""
 
 msgid "The item has been successfully saved"
+msgstr ""
+
+msgid "The Item module enables the creation and design of items and exercises."
 msgstr ""
 
 msgid "The mapping options have been updated"
@@ -448,6 +586,9 @@ msgstr ""
 msgid "Unable to copy the resources"
 msgstr ""
 
+msgid "unable to extract archive content, please check your tmp dir"
+msgstr ""
+
 msgid "Unable to load QTI resource with href = '%s'"
 msgstr ""
 
@@ -460,13 +601,13 @@ msgstr ""
 msgid "Update response & scoring modifications"
 msgstr ""
 
-msgid "Upload QTI File"
-msgstr ""
-
 msgid "Upload a QTI Package File"
 msgstr ""
 
 msgid "Upload an Open Web Item Package File"
+msgstr ""
+
+msgid "Upload QTI File"
 msgstr ""
 
 msgid "Upload the item content"
@@ -487,115 +628,7 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-msgid "circle"
-msgstr ""
-
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
-
-msgid "correct"
-msgstr ""
-
-msgid "create table"
-msgstr ""
-
-msgid "default"
-msgstr ""
-
-msgid "delete"
-msgstr ""
-
-msgid "download"
-msgstr ""
-
-msgid "draw it"
-msgstr ""
-
-msgid "duplicate"
-msgstr ""
-
-msgid "ellipse"
-msgstr ""
-
-msgid "end attempt now"
-msgstr ""
-
-msgid "export"
-msgstr ""
-
-msgid "horizontal"
-msgstr ""
-
-msgid "import"
-msgstr ""
-
-msgid "invalid image mime type"
-msgstr ""
-
-msgid "item imported successfully"
-msgstr ""
-
-msgid "items imported successfully"
-msgstr ""
-
-msgid "lists"
-msgstr ""
-
-msgid "map"
-msgstr ""
-
-msgid "map point"
-msgstr ""
-
-msgid "meta data"
-msgstr ""
-
-msgid "move"
-msgstr ""
-
-msgid "new class"
-msgstr ""
-
-msgid "new item"
-msgstr ""
-
-msgid "no"
-msgstr ""
-
-msgid "please confirm deletion of the interaction"
-msgstr ""
-
-msgid "polygon"
-msgstr ""
-
-msgid "preview"
-msgstr ""
-
-msgid "preview (1:1)"
-msgstr ""
-
-msgid "preview (real size:"
-msgstr ""
-
-msgid "quantity"
-msgstr ""
-
-msgid "rectangle"
-msgstr ""
-
-msgid "search"
-msgstr ""
-
-msgid "show/hide"
-msgstr ""
-
-msgid "template"
-msgstr ""
-
-msgid "unable to extract archive content, please check your tmp dir"
+msgid "VersionedContent"
 msgstr ""
 
 msgid "vertical"

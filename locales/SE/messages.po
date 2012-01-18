@@ -1,5 +1,15 @@
-msgid "A QTI item file is an XML file following the QTI standard version 2.0"
-msgstr "En QTI-frågefil är en XML-fil som följer QTI-standarden version 2.0"
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO v2.2-alpha\n"
+"PO-Revision-Date: 2012-01-18T15:51:24\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: SE\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "%d items of %d imported successfuly"
+msgstr ""
 
 msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
 msgstr "En QTI-frågefil är en XML-fil som följer QTI-standarden version 2.0"
@@ -7,14 +17,17 @@ msgstr "En QTI-frågefil är en XML-fil som följer QTI-standarden version 2.0"
 msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
 msgstr "Ett QTI-paket är ett ziparkiv som innehåller en imsmanifest.xml-fil och QTI-resurserna för att importera."
 
-msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
-msgstr "Ett QTI-paket är ett ziparkiv som innehåller en imsmanifest.xml-fil och QTI-resurserna för att importera."
-
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "En rad olika mallar finns tillgängliga för frågans skapare, så som flervalsfrågor, puzzel, text med ifyllningsrutor etc."
 
-msgid "Add a choice"
-msgstr "Lägg till ett val"
+msgid "Add a new stylesheet:"
+msgstr ""
+
+msgid "Add choice"
+msgstr ""
+
+msgid "Add choice to group"
+msgstr ""
 
 msgid "Add the source file"
 msgstr "Lägg till källfilen"
@@ -25,17 +38,11 @@ msgstr "Avancerade alternativ"
 msgid "Advanced properties"
 msgstr "Avancerade egenskaper"
 
-msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
-msgstr "Ett XHTML-paket är ett ziparkiv som innehåller en index.html-fil med XHTML 1.0 Transitional och resurserna (bilder, manus, video etc.) för att importera."
-
-msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr "Ett XHTML-paket är ett ziparkiv som innehåller en index.html-fil med XHTML 1.0 Transitional och resurserna (bilder, manus, video etc.) för att importera."
-
 msgid "An error occured during the import"
 msgstr "Ett fel uppstod under importen"
 
-msgid "An error occured while loading the item:"
-msgstr "Ett fel uppstod medan frågan laddades"
+msgid "An error occured while loading the item: "
+msgstr ""
 
 msgid "An error occured while saving the item"
 msgstr "Ett fel uppstod medan frågan sparades"
@@ -43,8 +50,17 @@ msgstr "Ett fel uppstod medan frågan sparades"
 msgid "An error occurs during the import"
 msgstr "Ett fel uppstod under importen"
 
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
+
 msgid "Apply"
 msgstr "Applicera"
+
+msgid "Associable hotspots"
+msgstr ""
+
+msgid "Attached style sheets:"
+msgstr ""
 
 msgid "Authoring"
 msgstr "Skapa"
@@ -52,32 +68,74 @@ msgstr "Skapa"
 msgid "Back"
 msgstr "Bakåt"
 
+msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
+msgstr ""
+
 msgid "Changing shape type will delete the old shape, are you sure?"
 msgstr "Att förändra formtypen raderar den gamla formen. Är du säker på att du vill ändra formtypen?"
 
 msgid "Choice"
 msgstr "Val"
 
+msgid "Choice group"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
+
 msgid "Choices editor:"
 msgstr "Valredigerare:"
+
+msgid "circle"
+msgstr "cirkel"
 
 msgid "Class saved"
 msgstr "Klass sparad"
 
+msgid "clean up"
+msgstr "städa upp"
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
+msgstr ""
+
 msgid "Client"
 msgstr "Klient"
+
+msgid "close"
+msgstr "stäng"
 
 msgid "Content"
 msgstr "Innehåll"
 
+msgid "Coordinates"
+msgstr ""
+
+msgid "correct"
+msgstr "rätta"
+
 msgid "Correct Responses"
 msgstr "Korrekta svar"
+
+msgid "Create and design items and exercises."
+msgstr ""
+
+msgid "create table"
+msgstr "skapa tabell"
+
+msgid "Debug"
+msgstr ""
 
 msgid "Debug Mode"
 msgstr "Felsök metod"
 
+msgid "default"
+msgstr "förvald"
+
 msgid "Default value"
 msgstr "Förvalt värde"
+
+msgid "delete"
+msgstr "ta bort"
 
 msgid "Delete choice"
 msgstr "Ta bort val"
@@ -91,26 +149,44 @@ msgstr "Avaktivera"
 msgid "Do you really want to delete the row?"
 msgstr "Vill du verkligen ta bort raden?"
 
+msgid "download"
+msgstr ""
+
 msgid "Download item content"
 msgstr "Ladda ner frågeinnehåll"
 
-msgid "Edit Item"
-msgstr "Redigera fråga"
+msgid "draw it"
+msgstr "rita"
+
+msgid "duplicate"
+msgstr "dublett"
 
 msgid "Edit a class"
 msgstr "Redigera en klass"
 
+msgid "Edit Item"
+msgstr "Redigera fråga"
+
 msgid "Edit item"
 msgstr "Redigera fråga"
 
-msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
-msgstr "Aktiverar att kunna exportera ett Ziparkiv innehållandes en mapp per fråga. Varje frågas mapp innehåller en huvudsaklig XML-fil (momentdatan) samt de yttre resurserna (media, specifikationer etc.)."
+msgid "ellipse"
+msgstr "ellips"
 
 msgid "Enabled"
 msgstr "Aktiverad"
 
 msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
 msgstr "Aktiverar att kunna exportera ett Ziparkiv innehållandes en mapp per exporterad fråga. Varje frågas mapp innehåller en huvudsaklig XML-fil (momentdatan) samt de yttre resurserna (media, specifikationer etc.)."
+
+msgid "Enables you to export an IMS QTI Package."
+msgstr ""
+
+msgid "End Attempt"
+msgstr ""
+
+msgid "end attempt now"
+msgstr ""
 
 msgid "Error in background file:"
 msgstr "Fel i bakgrundsfil"
@@ -120,6 +196,12 @@ msgstr "Förväntad längd"
 
 msgid "Expected lines"
 msgstr "Förväntade rader"
+
+msgid "export"
+msgstr "export"
+
+msgid "Export"
+msgstr ""
 
 msgid "Export Options"
 msgstr "Exporteringsalternativ"
@@ -142,6 +224,21 @@ msgstr "Fastställd"
 msgid "Float"
 msgstr "Starta"
 
+msgid "Full preview"
+msgstr ""
+
+msgid "Gap images"
+msgstr ""
+
+msgid "Gaps"
+msgstr ""
+
+msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "horizontal"
+msgstr "horisontell"
+
 msgid "Identifier"
 msgstr "Identifierare"
 
@@ -157,32 +254,41 @@ msgstr "Bildkälla url"
 msgid "Image width"
 msgstr "Bildbredd"
 
+msgid "import"
+msgstr "importera"
+
 msgid "Integer"
 msgstr "Heltal"
 
 msgid "Interaction content editor:"
 msgstr "Interaktivitetinnehållsredigerare"
 
+msgid "Interaction data saved."
+msgstr ""
+
 msgid "Interaction editor:"
 msgstr "Interaktivitetsredigerare:"
 
-msgid "Item"
-msgstr "Fråga"
-
-msgid "Item Editor:"
-msgstr "Frågeredigerare"
-
-msgid "Item Properties:"
-msgstr "Frågeegenskaper"
+msgid "invalid image mime type"
+msgstr "ogiltig bildtyp"
 
 msgid "Item content saved"
 msgstr "Frågeinnehåll sparat"
 
+msgid "Item Editor:"
+msgstr "Frågeredigerare"
+
 msgid "Item imported successfully"
 msgstr "Fråga framgångsrikt importerad"
 
+msgid "item imported successfully"
+msgstr "fråga framgångsrikt importerat"
+
 msgid "Item library"
 msgstr "Frågearkiv"
+
+msgid "Item Properties:"
+msgstr "Frågeegenskaper"
 
 msgid "Item saved"
 msgstr "Fråga sparad"
@@ -190,11 +296,29 @@ msgstr "Fråga sparad"
 msgid "Item saved successfully"
 msgstr "Fråga framgångsrikt sparat"
 
+msgid "Item saving failed"
+msgstr ""
+
+msgid "Item successfully saved"
+msgstr ""
+
 msgid "Items"
 msgstr "Frågor"
 
+msgid "items imported successfully"
+msgstr "frågor framgångsrikt importerat"
+
 msgid "Label"
 msgstr "Etikett"
+
+msgid "Light preview"
+msgstr ""
+
+msgid "Light preview:"
+msgstr ""
+
+msgid "lists"
+msgstr "listor"
 
 msgid "Lower bound"
 msgstr "Undre gräns"
@@ -205,13 +329,16 @@ msgstr "Hantera frågeinnehåll"
 msgid "Manage items"
 msgstr "Hantera frågor"
 
-msgid "Mapping options:"
-msgstr "Kartlägg alternativ"
+msgid "map"
+msgstr "kartlägg"
 
-msgid "Match Group"
-msgstr "Matcha grupp"
+msgid "map point"
+msgstr "kartlägg poäng"
 
 msgid "Match group"
+msgstr "Matcha grupp"
+
+msgid "Match Group"
 msgstr "Matcha grupp"
 
 msgid "Matching side"
@@ -229,20 +356,44 @@ msgstr "Maximalt antal val"
 msgid "Maximum number of separate strings"
 msgstr "Maximalt antal separata trådar"
 
+msgid "meta data"
+msgstr "metadata"
+
+msgid "MIME type"
+msgstr ""
+
 msgid "Modification on choice applied"
 msgstr "Förändring av tillämpade val"
 
-msgid "Modification on interaction applied"
-msgstr "Förändring av tillämpad interaktion"
-
 msgid "Modification on response applied"
 msgstr "Förändring av tillämpat svar"
+
+msgid "Modification(s) on interaction has been updated"
+msgstr ""
+
+msgid "move"
+msgstr "flytta"
 
 msgid "Move Down"
 msgstr "Flytta ner"
 
 msgid "Move Up"
 msgstr "Flytta upp"
+
+msgid "new class"
+msgstr "ny klass"
+
+msgid "new item"
+msgstr "ny fråga"
+
+msgid "Next"
+msgstr ""
+
+msgid "no"
+msgstr "nej"
+
+msgid "No item type selected for the current item."
+msgstr ""
 
 msgid "No user is logged in"
 msgstr "Ingen användare är inloggad"
@@ -262,26 +413,41 @@ msgstr "Ordnat svar"
 msgid "Orientation"
 msgstr "Inriktning"
 
-msgid "PREVIEW BOX"
-msgstr "FÖRHANDSVISNINGSBOX"
-
 msgid "Pattern mask"
 msgstr "Mönstermask"
 
 msgid "Place holder text"
 msgstr "Platshållartext"
 
+msgid "please confirm deletion of the interaction"
+msgstr "var vänlig bekräfta raderandet av interaktionen"
+
 msgid "Please confirm interaction deletion"
 msgstr "Var vänlig bekräfta raderande av information"
-
-msgid "Please select an item before!"
-msgstr "Var vänlig välj ett tidigare moment!"
 
 msgid "Please select first the item type!"
 msgstr "Var vänlig välj först frågetyp!"
 
+msgid "polygon"
+msgstr "månghörning"
+
+msgid "Prev"
+msgstr ""
+
+msgid "preview"
+msgstr "förhandsvisning"
+
 msgid "Preview"
 msgstr "Förhandsvisning"
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "PREVIEW BOX"
+msgstr "FÖRHANDSVISNINGSBOX"
 
 msgid "Preview Console"
 msgstr "Förhandsvisningsbord"
@@ -295,8 +461,14 @@ msgstr "Processeringstyp"
 msgid "Prompt"
 msgstr "Markör"
 
+msgid "quantity"
+msgstr ""
+
 msgid "Recovery context"
 msgstr "Återställandesammanhang"
+
+msgid "rectangle"
+msgstr "rektangel"
 
 msgid "Response editor:"
 msgstr "Svarsredigerare:"
@@ -307,8 +479,14 @@ msgstr "Svarsprocesseringsmallredigerare:"
 msgid "Response variable type"
 msgstr "Svarsvariabeltyp"
 
-msgid "Responses Editor"
-msgstr "Svarsredigerare"
+msgid "Responses Grid"
+msgstr ""
+
+msgid "Return to item editor"
+msgstr ""
+
+msgid "Reverse rendering"
+msgstr ""
 
 msgid "Save"
 msgstr "Spara"
@@ -316,14 +494,29 @@ msgstr "Spara"
 msgid "Score"
 msgstr "Poäng"
 
+msgid "search"
+msgstr "sök"
+
 msgid "Server"
 msgstr "Server"
+
+msgid "Set processing mode"
+msgstr ""
 
 msgid "Shape"
 msgstr "Form"
 
+msgid "show/hide"
+msgstr "visa/dölj"
+
 msgid "Shuffle choices"
 msgstr "Blanda valen slumpmässigt"
+
+msgid "Step"
+msgstr ""
+
+msgid "Step label display"
+msgstr ""
 
 msgid "String"
 msgstr "Tråd"
@@ -334,20 +527,37 @@ msgstr "Trådidentifierare"
 msgid "Stylesheets manager:"
 msgstr "Stilarkhanterare:"
 
-msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
+msgid "template"
+msgstr "mall"
 
 msgid "The choice cannot be saved"
 msgstr "Valet kan inte sparas"
 
+msgid "The current interaction has been modified but the modifications has not been updated yet,\n"
+" do you want to update the interaction with the modifications before saving your item?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to update the interaction with the modifications before returning to the item editor?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "Svarsbearbetningstypen är för närvarande inte helt fungerande i detta verktyg. Att ta bort interaktioner eller val rekommenderas ej."
 
-msgid "The item has been successfully updated"
-msgstr "Frågan har framgångsrikt uppdaterats"
+msgid "The item has been successfully saved"
+msgstr ""
 
-msgid "The mapping options have been applied"
-msgstr "Kartläggningsalternativen har applicerats"
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
+
+msgid "The mapping options have been updated"
+msgstr ""
 
 msgid "The migration scripts for the deprecated items will be provided soon"
 msgstr "Rörelsemanusen för de ogillade momenten kommer snart tillhandahållas att tillhandahållas"
@@ -367,32 +577,44 @@ msgstr "Svaren har uppdaterats"
 msgid "Title"
 msgstr "Titel"
 
+msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
+msgstr ""
+
+msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
+msgstr ""
+
 msgid "Unable to copy the resources"
 msgstr "Resurserna kan inte kopieras"
+
+msgid "unable to extract archive content, please check your tmp dir"
+msgstr "går ej att hämta arkivinnehållet, var vänlig kontrollera ditt tmp dir"
+
+msgid "Unable to load QTI resource with href = '%s'"
+msgstr ""
 
 msgid "Unable to move"
 msgstr "Kan inte flyttas"
 
-msgid "Upload QTI File"
-msgstr "Ladda upp QTI-fil"
+msgid "Update interaction & choices modifications"
+msgstr ""
+
+msgid "Update response & scoring modifications"
+msgstr ""
 
 msgid "Upload a QTI Package File"
 msgstr "Ladda upp QTI-paketfil"
 
-msgid "Upload an XHTML Package File"
-msgstr "Ladda upp XHTML-paketfil"
+msgid "Upload an Open Web Item Package File"
+msgstr ""
 
-msgid "Upload new style sheet:"
-msgstr "Ladda upp nya stilarkiv:"
+msgid "Upload QTI File"
+msgstr "Ladda upp QTI-fil"
 
 msgid "Upload the item content"
 msgstr "Ladda upp frågeinnehåll"
 
 msgid "Upload the style sheet (CSS format required)"
 msgstr "Ladda upp stilarkivet (CSS-format krävs)"
-
-msgid "Uploaded style files:"
-msgstr "Ladda upp stilfiler"
 
 msgid "Upper bound"
 msgstr "Övre gräns"
@@ -406,255 +628,12 @@ msgstr "Bekräftande av den importerade filen misslyckades"
 msgid "Value"
 msgstr "Värde"
 
-msgid "circle"
-msgstr "cirkel"
-
-msgid "clean up"
-msgstr "städa upp"
-
-msgid "close"
-msgstr "stäng"
-
-msgid "correct"
-msgstr "rätta"
-
-msgid "create table"
-msgstr "skapa tabell"
-
-msgid "default"
-msgstr "förvald"
-
-msgid "delete"
-msgstr "ta bort"
-
-msgid "draw it"
-msgstr "rita"
-
-msgid "duplicate"
-msgstr "dublett"
-
-msgid "ellipse"
-msgstr "ellips"
-
-msgid "export"
-msgstr "export"
-
-msgid "horizontal"
-msgstr "horisontell"
-
-msgid "import"
-msgstr "importera"
-
-msgid "invalid image mime type"
-msgstr "ogiltig bildtyp"
-
-msgid "item imported successfully"
-msgstr "fråga framgångsrikt importerat"
-
-msgid "items imported successfully"
-msgstr "frågor framgångsrikt importerat"
-
-msgid "lists"
-msgstr "listor"
-
-msgid "map"
-msgstr "kartlägg"
-
-msgid "map point"
-msgstr "kartlägg poäng"
-
-msgid "meta data"
-msgstr "metadata"
-
-msgid "move"
-msgstr "flytta"
-
-msgid "new class"
-msgstr "ny klass"
-
-msgid "new item"
-msgstr "ny fråga"
-
-msgid "no"
-msgstr "nej"
-
-msgid "please confirm deletion of the interaction"
-msgstr "var vänlig bekräfta raderandet av interaktionen"
-
-msgid "polygon"
-msgstr "månghörning"
-
-msgid "preview"
-msgstr "förhandsvisning"
-
-msgid "rectangle"
-msgstr "rektangel"
-
-msgid "search"
-msgstr "sök"
-
-msgid "show/hide"
-msgstr "visa/dölj"
-
-msgid "template"
-msgstr "mall"
-
-msgid "unable to create for imported content"
-msgstr "går ej att skapa för importerat innehåll"
-
-msgid "unable to extract archive content, please check your tmp dir"
-msgstr "går ej att hämta arkivinnehållet, var vänlig kontrollera ditt tmp dir"
+msgid "VersionedContent"
+msgstr ""
 
 msgid "vertical"
 msgstr "vertikal"
 
 msgid "yes"
 msgstr "ja"
-
-msgid "%d items of %d imported successfuly"
-msgstr ""
-
-msgid "Add a new stylesheet:"
-msgstr ""
-
-msgid "Add choice"
-msgstr ""
-
-msgid "Add choice to group"
-msgstr ""
-
-msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr ""
-
-msgid "An error occured while loading the item: "
-msgstr ""
-
-msgid "Associable hotspots"
-msgstr ""
-
-msgid "Attached style sheets:"
-msgstr ""
-
-msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
-msgstr ""
-
-msgid "Choice group"
-msgstr ""
-
-msgid "Choices"
-msgstr ""
-
-msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
-msgstr ""
-
-msgid "Coordinates"
-msgstr ""
-
-msgid "Debug"
-msgstr ""
-
-msgid "Enables you to export an IMS QTI Package."
-msgstr ""
-
-msgid "Export"
-msgstr ""
-
-msgid "Full preview"
-msgstr ""
-
-msgid "Gap images"
-msgstr ""
-
-msgid "Gaps"
-msgstr ""
-
-msgid "Graphic interaction stage:"
-msgstr ""
-
-msgid "Interaction data saved."
-msgstr ""
-
-msgid "Light preview"
-msgstr ""
-
-msgid "Light preview:"
-msgstr ""
-
-msgid "MIME type"
-msgstr ""
-
-msgid "Modification(s) on interaction has been updated"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
-msgid "Prev"
-msgstr ""
-
-msgid "Responses Grid"
-msgstr ""
-
-msgid "Return to item editor"
-msgstr ""
-
-msgid "Reverse rendering"
-msgstr ""
-
-msgid "Set processing mode"
-msgstr ""
-
-msgid "Step"
-msgstr ""
-
-msgid "Step label display"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)"
-msgstr ""
-
-msgid "The item has been successfully saved"
-msgstr ""
-
-msgid "The mapping options have been updated"
-msgstr ""
-
-msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
-msgstr ""
-
-msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
-msgstr ""
-
-msgid "Unable to load QTI resource with href = '%s'"
-msgstr ""
-
-msgid "Update interaction & choices modifications"
-msgstr ""
-
-msgid "Update response & scoring modifications"
-msgstr ""
-
-msgid "Upload an Open Web Item Package File"
-msgstr ""
-
-msgid "download"
-msgstr ""
-
-msgid "end attempt now"
-msgstr ""
-
-msgid "preview (1:1)"
-msgstr ""
-
-msgid "preview (real size:"
-msgstr ""
-
-msgid "quantity"
-msgstr ""
 

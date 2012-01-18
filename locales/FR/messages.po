@@ -1,5 +1,15 @@
-msgid "A QTI item file is an XML file following the QTI standard version 2.0"
-msgstr "Un fichier d'item QTI est un fichier XML suivant le standard QTI version 2.0"
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO v2.2-alpha\n"
+"PO-Revision-Date: 2012-01-18T15:51:19\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: FR\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "%d items of %d imported successfuly"
+msgstr ""
 
 msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
 msgstr "Un fichier QTI est un fichier au format XML conforme à la version 2.0 du standard QTI."
@@ -7,14 +17,17 @@ msgstr "Un fichier QTI est un fichier au format XML conforme à la version 2.0 d
 msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
 msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
 
-msgid "A QTI-Package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import"
-msgstr "Un paquet QTI est une archive ZIP contenant un fichier msmanifest.xml ainsi que les ressources QTI à importer"
-
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
 
-msgid "Add a choice"
-msgstr "Ajouter un choix"
+msgid "Add a new stylesheet:"
+msgstr ""
+
+msgid "Add choice"
+msgstr ""
+
+msgid "Add choice to group"
+msgstr ""
 
 msgid "Add the source file"
 msgstr "Ajouter le fichier source"
@@ -25,17 +38,11 @@ msgstr "Options avancées"
 msgid "Advanced properties"
 msgstr "Propriétés avancées"
 
-msgid "An XHTML Package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional and the resources (images, scripts, css, video, etc.) to import"
-msgstr "Un paquet XHTML est une archive ZIP contenant un fichier index.html au format XHTML 1.0 Transitional ainsi que ses ressources à importer (images, scripts, css, video, etc.)"
-
-msgid "An XHTML package is a Zip archive containing a index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr "Un paquet XHTML est une archive Zip contenant un fichier index.html conforme au doctype XHTML 1.0 Transitional anisi que ses ressources (images, scripts, css, vidéos, etc.)."
-
 msgid "An error occured during the import"
 msgstr "Une erreur est survenue durant l'import"
 
-msgid "An error occured while loading the item:"
-msgstr "Une erreur est survenue durant le chargement de l'item:"
+msgid "An error occured while loading the item: "
+msgstr ""
 
 msgid "An error occured while saving the item"
 msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
@@ -43,8 +50,17 @@ msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
 msgid "An error occurs during the import"
 msgstr "Une erreur est survenue durant l'import"
 
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
+
 msgid "Apply"
 msgstr "Appliquer"
+
+msgid "Associable hotspots"
+msgstr ""
+
+msgid "Attached style sheets:"
+msgstr ""
 
 msgid "Authoring"
 msgstr "Editeur"
@@ -52,32 +68,74 @@ msgstr "Editeur"
 msgid "Back"
 msgstr "Retour"
 
+msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
+msgstr ""
+
 msgid "Changing shape type will delete the old shape, are you sure?"
 msgstr "Changer le type de forme effacera l'ancienne, est-vous certains?"
 
 msgid "Choice"
 msgstr "Choix"
 
+msgid "Choice group"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
+
 msgid "Choices editor:"
 msgstr "Editeur de choix:"
+
+msgid "circle"
+msgstr "cercle"
 
 msgid "Class saved"
 msgstr "Classe enregistrée"
 
+msgid "clean up"
+msgstr "nettoyer"
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
+msgstr ""
+
 msgid "Client"
 msgstr "Client"
+
+msgid "close"
+msgstr "fermer"
 
 msgid "Content"
 msgstr "Contenu"
 
+msgid "Coordinates"
+msgstr ""
+
+msgid "correct"
+msgstr "correcte"
+
 msgid "Correct Responses"
 msgstr "Réponse correcte"
+
+msgid "Create and design items and exercises."
+msgstr ""
+
+msgid "create table"
+msgstr "créer un tableau"
+
+msgid "Debug"
+msgstr ""
 
 msgid "Debug Mode"
 msgstr "Mode de déboguage"
 
+msgid "default"
+msgstr "par défaut"
+
 msgid "Default value"
 msgstr "Valeur par défaut"
+
+msgid "delete"
+msgstr "supprimer"
 
 msgid "Delete choice"
 msgstr "Supprimer le choix"
@@ -91,26 +149,44 @@ msgstr "Désactivé"
 msgid "Do you really want to delete the row?"
 msgstr "Etes-vous certains de vouloir supprimer la ligne?"
 
+msgid "download"
+msgstr ""
+
 msgid "Download item content"
 msgstr "Téléchager le contenu de l'item"
 
-msgid "Edit Item"
-msgstr "Modifier un item"
+msgid "draw it"
+msgstr "déssinez"
+
+msgid "duplicate"
+msgstr "dupliquer"
 
 msgid "Edit a class"
 msgstr "Modifier une classe"
 
+msgid "Edit Item"
+msgstr "Modifier un item"
+
 msgid "Edit item"
 msgstr "Modifier un item"
 
-msgid "Enable your to export an ZIP Archive containing a folder by item. Each item\'s folder contains a main XML file (the item data) and the external resources (media, manifests, etc.)"
-msgstr "Cela vous permet d'exporter une archive ZIP contenant un dossier par item. Le dossier de chaque item contient un fichier XML principal (les données de l'item) ainsi que ses ressources externes (media, manifests, etc.)"
+msgid "ellipse"
+msgstr "élipse"
 
 msgid "Enabled"
 msgstr "Activé"
 
 msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
 msgstr "Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)"
+
+msgid "Enables you to export an IMS QTI Package."
+msgstr ""
+
+msgid "End Attempt"
+msgstr ""
+
+msgid "end attempt now"
+msgstr ""
 
 msgid "Error in background file:"
 msgstr "Erreur de le fichier d'arrière plan:"
@@ -120,6 +196,12 @@ msgstr "Longueur attendue"
 
 msgid "Expected lines"
 msgstr "Nombre de lignes"
+
+msgid "export"
+msgstr "exporter"
+
+msgid "Export"
+msgstr ""
 
 msgid "Export Options"
 msgstr "Options d'export"
@@ -142,6 +224,21 @@ msgstr "Fixé"
 msgid "Float"
 msgstr "Nombre à virgule"
 
+msgid "Full preview"
+msgstr ""
+
+msgid "Gap images"
+msgstr ""
+
+msgid "Gaps"
+msgstr ""
+
+msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "horizontal"
+msgstr "horizontale"
+
 msgid "Identifier"
 msgstr "Identifiant"
 
@@ -157,32 +254,41 @@ msgstr "URL Source de l'image"
 msgid "Image width"
 msgstr "Largeur de l'image"
 
+msgid "import"
+msgstr "importer"
+
 msgid "Integer"
 msgstr "Nombre entier"
 
 msgid "Interaction content editor:"
 msgstr "Editeur de contenu des interactions:"
 
+msgid "Interaction data saved."
+msgstr ""
+
 msgid "Interaction editor:"
 msgstr "Editeur d'intéraction"
 
-msgid "Item"
-msgstr "Item"
-
-msgid "Item Editor:"
-msgstr "Editeur d'item:"
-
-msgid "Item Properties:"
-msgstr "Propriétés de l'item:"
+msgid "invalid image mime type"
+msgstr "le type MIME de l'image est invalide"
 
 msgid "Item content saved"
 msgstr "Le contenu de l'item a été sauvegardé"
 
+msgid "Item Editor:"
+msgstr "Editeur d'item:"
+
 msgid "Item imported successfully"
 msgstr "Item importé avec succès"
 
+msgid "item imported successfully"
+msgstr "item importée avec succès"
+
 msgid "Item library"
 msgstr "Librairie d'items"
+
+msgid "Item Properties:"
+msgstr "Propriétés de l'item:"
 
 msgid "Item saved"
 msgstr "Item sauvegardé"
@@ -190,11 +296,29 @@ msgstr "Item sauvegardé"
 msgid "Item saved successfully"
 msgstr "L'item a été enregistré avec succès"
 
+msgid "Item saving failed"
+msgstr ""
+
+msgid "Item successfully saved"
+msgstr ""
+
 msgid "Items"
 msgstr "Items"
 
+msgid "items imported successfully"
+msgstr "item importées avec succès"
+
 msgid "Label"
 msgstr "Intitulé"
+
+msgid "Light preview"
+msgstr ""
+
+msgid "Light preview:"
+msgstr ""
+
+msgid "lists"
+msgstr "listes"
 
 msgid "Lower bound"
 msgstr "Limite inférieure"
@@ -205,13 +329,16 @@ msgstr "Gérer le contenu de l'item"
 msgid "Manage items"
 msgstr "Gérer les items"
 
-msgid "Mapping options:"
-msgstr "Options d'association:"
+msgid "map"
+msgstr "carte"
 
-msgid "Match Group"
-msgstr "Groupe associé"
+msgid "map point"
+msgstr "point sur la carte"
 
 msgid "Match group"
+msgstr "Groupe associé"
+
+msgid "Match Group"
 msgstr "Groupe associé"
 
 msgid "Matching side"
@@ -229,20 +356,44 @@ msgstr "Nombre maximal de choix"
 msgid "Maximum number of separate strings"
 msgstr "Nombre maximal de chaînes séparées"
 
+msgid "meta data"
+msgstr "Métadonnée"
+
+msgid "MIME type"
+msgstr ""
+
 msgid "Modification on choice applied"
 msgstr "La modification sur le choix a été appliquée"
 
-msgid "Modification on interaction applied"
-msgstr "La modification sur l'intéraction a été appliquée"
-
 msgid "Modification on response applied"
 msgstr "La modification sur la réponse a été appliquée"
+
+msgid "Modification(s) on interaction has been updated"
+msgstr ""
+
+msgid "move"
+msgstr "déplacer"
 
 msgid "Move Down"
 msgstr "Descendre"
 
 msgid "Move Up"
 msgstr "Monter"
+
+msgid "new class"
+msgstr "nouvelle classe"
+
+msgid "new item"
+msgstr "nouvel item"
+
+msgid "Next"
+msgstr ""
+
+msgid "no"
+msgstr "non"
+
+msgid "No item type selected for the current item."
+msgstr ""
 
 msgid "No user is logged in"
 msgstr "Aucun utilisateur authentifié"
@@ -262,26 +413,41 @@ msgstr "Réponse ordonné"
 msgid "Orientation"
 msgstr "Orientation"
 
-msgid "PREVIEW BOX"
-msgstr "Prévisualisation"
-
 msgid "Pattern mask"
 msgstr "Masque d'expression régulière"
 
 msgid "Place holder text"
 msgstr "texte d'espace réservé"
 
+msgid "please confirm deletion of the interaction"
+msgstr "veuillez confirmer la suppression de l'intéraction"
+
 msgid "Please confirm interaction deletion"
 msgstr "Veuillez confirmer la suppression de l'intéraction"
-
-msgid "Please select an item before!"
-msgstr "Veuillez choisir un item!"
 
 msgid "Please select first the item type!"
 msgstr "Veuillez d'abord sélectionner un type d'item!"
 
+msgid "polygon"
+msgstr "polygone"
+
+msgid "Prev"
+msgstr ""
+
+msgid "preview"
+msgstr "Afficher"
+
 msgid "Preview"
 msgstr "Afficher"
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "PREVIEW BOX"
+msgstr "Prévisualisation"
 
 msgid "Preview Console"
 msgstr "Moniteur de prévisualisation"
@@ -295,8 +461,14 @@ msgstr "Type de traitement"
 msgid "Prompt"
 msgstr "Invite"
 
+msgid "quantity"
+msgstr ""
+
 msgid "Recovery context"
 msgstr "Restauration du context"
+
+msgid "rectangle"
+msgstr "rectangle"
 
 msgid "Response editor:"
 msgstr "Editeur de réponse:"
@@ -307,8 +479,14 @@ msgstr "Editeur de modèles de traitement des réponses:"
 msgid "Response variable type"
 msgstr "Type de variable de réponse"
 
-msgid "Responses Editor"
-msgstr "Editeur de réponse"
+msgid "Responses Grid"
+msgstr ""
+
+msgid "Return to item editor"
+msgstr ""
+
+msgid "Reverse rendering"
+msgstr ""
 
 msgid "Save"
 msgstr "Enregistrer"
@@ -316,14 +494,29 @@ msgstr "Enregistrer"
 msgid "Score"
 msgstr "Score"
 
+msgid "search"
+msgstr "Recharcher"
+
 msgid "Server"
 msgstr "Serveur"
+
+msgid "Set processing mode"
+msgstr ""
 
 msgid "Shape"
 msgstr "Forme"
 
+msgid "show/hide"
+msgstr "montrer/cacher"
+
 msgid "Shuffle choices"
 msgstr "Mélanger les choix"
+
+msgid "Step"
+msgstr ""
+
+msgid "Step label display"
+msgstr ""
 
 msgid "String"
 msgstr "Chaîne de caractère"
@@ -334,20 +527,40 @@ msgstr "Identifiant du texte"
 msgid "Stylesheets manager:"
 msgstr "Gestion des feuilles de style:"
 
-msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
+msgid "template"
+msgstr "modèle"
 
 msgid "The choice cannot be saved"
 msgstr "Le choix ne peux pas être sauvegardé"
 
+msgid "The current interaction has been modified but the modifications has not been updated yet,\n"
+" do you want to update the interaction with the modifications before saving your item?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to update the interaction with the modifications before returning to the item editor?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
 
-msgid "The item has been successfully updated"
-msgstr "L'item a été mis à jour avec succès"
+msgid "The item has been successfully saved"
+msgstr ""
 
-msgid "The mapping options have been applied"
-msgstr "Les options d'assocation ont été appliquées avec succès"
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
+
+msgid "The mapping options have been updated"
+msgstr ""
+
+msgid "The migration scripts for the deprecated items will be provided soon"
+msgstr ""
 
 msgid "The response form is available for templates driven item only.<br/>"
 msgstr "Le formulaire de réponse n'est disponible que pour les items issues de modèles.<br/>"
@@ -364,32 +577,44 @@ msgstr "Les réponse ont été mises à jour"
 msgid "Title"
 msgstr "Titre"
 
+msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
+msgstr ""
+
+msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
+msgstr ""
+
 msgid "Unable to copy the resources"
 msgstr "Impossible de copier les ressources"
+
+msgid "unable to extract archive content, please check your tmp dir"
+msgstr "impossible d'extraire le contenu de l'archive"
+
+msgid "Unable to load QTI resource with href = '%s'"
+msgstr ""
 
 msgid "Unable to move"
 msgstr "Impossible à déplacer"
 
-msgid "Upload QTI File"
-msgstr "Télécharger un fichier QTI"
+msgid "Update interaction & choices modifications"
+msgstr ""
+
+msgid "Update response & scoring modifications"
+msgstr ""
 
 msgid "Upload a QTI Package File"
 msgstr "Télécharger un paquet QTI"
 
-msgid "Upload an XHTML Package File"
-msgstr "Télécharger un paquet XHTML"
+msgid "Upload an Open Web Item Package File"
+msgstr ""
 
-msgid "Upload new style sheet:"
-msgstr "Télécharger une nouvelle feuille de style:"
+msgid "Upload QTI File"
+msgstr "Télécharger un fichier QTI"
 
 msgid "Upload the item content"
 msgstr "Télécharger le contenu de l'item"
 
 msgid "Upload the style sheet (CSS format required)"
 msgstr "Télécharger la feuille de style (le format CSS est obligatoire)"
-
-msgid "Uploaded style files:"
-msgstr "Télécharger des feuilles de style:"
 
 msgid "Upper bound"
 msgstr "Limite supérieure"
@@ -403,258 +628,12 @@ msgstr "La validation des fichiers importés a échouée"
 msgid "Value"
 msgstr "Valeur"
 
-msgid "circle"
-msgstr "cercle"
-
-msgid "clean up"
-msgstr "nettoyer"
-
-msgid "close"
-msgstr "fermer"
-
-msgid "correct"
-msgstr "correcte"
-
-msgid "create table"
-msgstr "créer un tableau"
-
-msgid "default"
-msgstr "par défaut"
-
-msgid "delete"
-msgstr "supprimer"
-
-msgid "draw it"
-msgstr "déssinez"
-
-msgid "duplicate"
-msgstr "dupliquer"
-
-msgid "ellipse"
-msgstr "élipse"
-
-msgid "export"
-msgstr "exporter"
-
-msgid "horizontal"
-msgstr "horizontale"
-
-msgid "import"
-msgstr "importer"
-
-msgid "invalid image mime type"
-msgstr "le type MIME de l'image est invalide"
-
-msgid "item imported successfully"
-msgstr "item importée avec succès"
-
-msgid "items imported successfully"
-msgstr "item importées avec succès"
-
-msgid "lists"
-msgstr "listes"
-
-msgid "map"
-msgstr "carte"
-
-msgid "map point"
-msgstr "point sur la carte"
-
-msgid "meta data"
-msgstr "Métadonnée"
-
-msgid "move"
-msgstr "déplacer"
-
-msgid "new class"
-msgstr "nouvelle classe"
-
-msgid "new item"
-msgstr "nouvel item"
-
-msgid "no"
-msgstr "non"
-
-msgid "please confirm deletion of the interaction"
-msgstr "veuillez confirmer la suppression de l'intéraction"
-
-msgid "polygon"
-msgstr "polygone"
-
-msgid "preview"
-msgstr "Afficher"
-
-msgid "rectangle"
-msgstr "rectangle"
-
-msgid "search"
-msgstr "Recharcher"
-
-msgid "show/hide"
-msgstr "montrer/cacher"
-
-msgid "template"
-msgstr "modèle"
-
-msgid "unable to create for imported content"
-msgstr "impossible de créer le contenu importé"
-
-msgid "unable to extract archive content, please check your tmp dir"
-msgstr "impossible d'extraire le contenu de l'archive"
+msgid "VersionedContent"
+msgstr ""
 
 msgid "vertical"
 msgstr "vertical"
 
 msgid "yes"
 msgstr "oui"
-
-msgid "%d items of %d imported successfuly"
-msgstr ""
-
-msgid "Add a new stylesheet:"
-msgstr ""
-
-msgid "Add choice"
-msgstr ""
-
-msgid "Add choice to group"
-msgstr ""
-
-msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
-msgstr ""
-
-msgid "An error occured while loading the item: "
-msgstr ""
-
-msgid "Associable hotspots"
-msgstr ""
-
-msgid "Attached style sheets:"
-msgstr ""
-
-msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
-msgstr ""
-
-msgid "Choice group"
-msgstr ""
-
-msgid "Choices"
-msgstr ""
-
-msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
-msgstr ""
-
-msgid "Coordinates"
-msgstr ""
-
-msgid "Debug"
-msgstr ""
-
-msgid "Enables you to export an IMS QTI Package."
-msgstr ""
-
-msgid "Export"
-msgstr ""
-
-msgid "Full preview"
-msgstr ""
-
-msgid "Gap images"
-msgstr ""
-
-msgid "Gaps"
-msgstr ""
-
-msgid "Graphic interaction stage:"
-msgstr ""
-
-msgid "Interaction data saved."
-msgstr ""
-
-msgid "Light preview"
-msgstr ""
-
-msgid "Light preview:"
-msgstr ""
-
-msgid "MIME type"
-msgstr ""
-
-msgid "Modification(s) on interaction has been updated"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
-msgid "Prev"
-msgstr ""
-
-msgid "Responses Grid"
-msgstr ""
-
-msgid "Return to item editor"
-msgstr ""
-
-msgid "Reverse rendering"
-msgstr ""
-
-msgid "Set processing mode"
-msgstr ""
-
-msgid "Step"
-msgstr ""
-
-msgid "Step label display"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)"
-msgstr ""
-
-msgid "The item has been successfully saved"
-msgstr ""
-
-msgid "The mapping options have been updated"
-msgstr ""
-
-msgid "The migration scripts for the deprecated items will be provided soon"
-msgstr ""
-
-msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
-msgstr ""
-
-msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
-msgstr ""
-
-msgid "Unable to load QTI resource with href = '%s'"
-msgstr ""
-
-msgid "Update interaction & choices modifications"
-msgstr ""
-
-msgid "Update response & scoring modifications"
-msgstr ""
-
-msgid "Upload an Open Web Item Package File"
-msgstr ""
-
-msgid "download"
-msgstr ""
-
-msgid "end attempt now"
-msgstr ""
-
-msgid "preview (1:1)"
-msgstr ""
-
-msgid "preview (real size:"
-msgstr ""
-
-msgid "quantity"
-msgstr ""
 
