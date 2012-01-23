@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/response/class.ResponseRuleFactory.php
+ * TAO -
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.01.2012, 16:55:50 with ArgoUML PHP module 
+ * Automatically generated on 23.01.2012, 17:03:12 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -20,6 +20,13 @@ error_reporting(E_ALL);
 if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
+
+/**
+ * include taoItems_models_classes_QTI_expression_ExpressionParserFactory
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/expression/class.ExpressionParserFactory.php');
 
 /* user defined includes */
 // section 127-0-1-1-dbb9044:134e695b13f:-8000:00000000000062AA-includes begin
@@ -37,7 +44,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
-class taoItems_models_classes_QTI_response_ResponseRuleFactory
+class taoItems_models_classes_QTI_response_ResponseRuleParserFactory
 {
     // --- ASSOCIATIONS ---
 
@@ -59,7 +66,7 @@ class taoItems_models_classes_QTI_response_ResponseRuleFactory
         $returnValue = null;
 
         // section 127-0-1-1-dbb9044:134e695b13f:-8000:00000000000062AB begin
-		switch ($data->getName()) {
+	    switch ($data->getName()) {
 			case 'exitResponse' : $returnValue = new taoItems_models_classes_QTI_response_ExitResponse();
 				break;
 			case 'setOutcomeValue' :
@@ -67,7 +74,7 @@ class taoItems_models_classes_QTI_response_ResponseRuleFactory
 				$children = array();
 				foreach ($data->children() as $child)
 					$children[] = $child;
-				$expression = taoItems_models_classes_QTI_expression_ExpressionFactory::create(array_shift($children));
+				$expression = taoItems_models_classes_QTI_expression_ExpressionParserFactory::build(array_shift($children));
 				$returnValue = new taoItems_models_classes_QTI_response_SetOutcomeVariable($identifier, $expression);
 				break;
 			case 'responseCondition' :
@@ -94,7 +101,7 @@ class taoItems_models_classes_QTI_response_ResponseRuleFactory
         $returnValue = null;
 
         // section 127-0-1-1-dbb9044:134e695b13f:-8000:00000000000062B7 begin
-		$responseCondition = new taoItems_models_classes_QTI_response_ResponseCondition();
+        $responseCondition = new taoItems_models_classes_QTI_response_ResponseCondition();
 		
 		foreach ($data->children() as $child) {
 			switch ($child->getName()) {
@@ -106,7 +113,7 @@ class taoItems_models_classes_QTI_response_ResponseRuleFactory
 		
 					// first node is condition
 					$conditionNode = array_shift($subchildren);
-					$condition = taoItems_models_classes_QTI_expression_ExpressionFactory::create($conditionNode);
+					$condition = taoItems_models_classes_QTI_expression_ExpressionParserFactory::build($conditionNode);
 					
 					// all the other nodes are action
 					$responseRules = array();
@@ -136,6 +143,6 @@ class taoItems_models_classes_QTI_response_ResponseRuleFactory
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_QTI_response_ResponseRuleFactory */
+} /* end of class taoItems_models_classes_QTI_response_ResponseRuleParserFactory */
 
 ?>

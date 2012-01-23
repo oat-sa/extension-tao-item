@@ -1152,7 +1152,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		// $this->setData('responseMappingMode', $responseMappingMode);//no longer definied in the item response proc:
 		
 		$warningMessage = '';
-		if($processingType != 'template'){
+		if($processingType == 'custom'){
 			$warningMessage = __('The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended.');
 		}
 		
@@ -1290,7 +1290,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$xhtmlForm = '';
 		$interactionType = strtolower($interaction->getType());
 			
-		common_Logger::d('editResponse called for type '.$interactionType.' with type '.get_class($responseProcessing));
+//		common_Logger::d('editResponse called for type '.$interactionType.' with type '.get_class($responseProcessing));
 		
 		//check the type...
 		//only display response grid when the response template is templates driven:
@@ -1316,7 +1316,31 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			
 			// $responseProcessingType = $response->getHowMatch();
 			$isResponseMappingMode = $this->isResponseMappingMode($response->getHowMatch());
-		}else{
+			
+		// composite processing
+		}elseif($responseProcessing instanceof taoItems_models_classes_QTI_response_Composite){
+			
+			common_Logger::w('composite called');
+			
+			// get everything response related
+			$response = $this->service->getInteractionResponse($interaction);
+			$responseForm = $response->toForm();
+			if(!is_null($responseForm)){
+				$xhtmlForm = $responseForm->render();
+			}
+			
+			//get everything processing related
+			$irp = $responseProcessing->getInteractionResponseProcessing($interaction->getResponse()->getIdentifier());
+			$responseProcessingForm = $irp->toForm();
+			if(!is_null($responseProcessingForm)){
+				$xhtmlForm .= $responseProcessingForm->render();
+			}
+			
+			//this should be part of response
+			//prepare data for the response grid:
+			$displayGrid = false;
+			
+		} else {
 			$xhtmlForm .= '<b>';
 			$xhtmlForm .= __('The response form is available for templates driven item only.<br/>');
 			$xhtmlForm .= '</b>';

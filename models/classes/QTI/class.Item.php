@@ -570,7 +570,9 @@ class taoItems_models_classes_QTI_Item
         // render the responseProcessing
         $renderedResponseProcessing = '';
         $responseProcessing = $this->getResponseProcessing();
+        common_Logger::d('ResponseProcessing class during output is '.get_class($responseProcessing));
         if(isset($responseProcessing)){
+        	
             if($responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven){
                 if (count($this->getInteractions()) == 1) {
                     foreach($this->getInteractions() as $interaction){
@@ -659,7 +661,10 @@ class taoItems_models_classes_QTI_Item
             // BUILD the RP rule
             if(!is_null($this->getResponseProcessing ())){
                 $responseProcessing = $this->getResponseProcessing ();
+                $returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
+                
                 // TEMPLATE DRIVEN RESPONSE PROCESSING
+                /*
                 if ( $responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven){
                     foreach ($this->getInteractions() as $interaction){
                         // Build the rule for each interaction functions of the associated template
@@ -676,6 +681,7 @@ class taoItems_models_classes_QTI_Item
                 else {
                     $returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
                 }
+                */
             }
             
             // Get the correct responses (correct variables and map variables)

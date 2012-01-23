@@ -151,12 +151,15 @@ class taoItems_actions_QTIform_ResponseProcessing
 		$qtiAuthoringService = taoItems_models_classes_QtiAuthoringService::singleton();
 		try{
 			$type = $qtiAuthoringService->getResponseProcessingType($this->responseProcessing);
-		}catch(Exception $e){}
+		}catch(Exception $e){
+			common_Logger::w('Could not get ResponseProcessingtype: '.$e->getMessage(), array('QTI', 'TAOITEMS'));
+		}
 		
 		if(!empty($type)){
 			$this->processingType = $type;//in array('template', 'custom', 'customTemplate')
 			$availableOptions = array(
-				'template' => __('template')
+				'composite'	=> __('composite'),
+				'templatesdriven'	=> __('template')
 			);
 			if($type == 'custom'||$type == 'customTemplate'){
 				$availableOptions[$type] = __($type);

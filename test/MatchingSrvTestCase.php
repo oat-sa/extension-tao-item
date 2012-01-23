@@ -436,6 +436,17 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
              $this->pass();
         }
     }
+    
+    // AND OPERATOR
+    public function testOperatorExitResponse (){
+        $matching = new taoItems_models_classes_Matching_Matching();
+        try {
+            $matching->exitResponse();
+            $this->fail("exit Response Exception was expected.");
+        } catch (taoItems_models_classes_Matching_ExitResponseException $e) {
+             $this->pass();
+        }
+    }
 
     public function testOperatorSubstract (){
         $matching = new taoItems_models_classes_Matching_Matching();
@@ -970,7 +981,110 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
         //echo $item->toXHTML();
         //echo '<script type="application/Javascript">$(document).ready(function(){ TAO_MATCHING.engine.url = "/taoItems/Matching/evaluateDebug?item_path='.urlencode($file).'"; });</script>';
     }
-
+    
+    // test the templates driven Example
+    public function testTemplatesDrivenCorrect () {
+    	$parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false,
+        	'raw_preview'	=> false,
+        	'debug'			=> false
+        );
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/templates_driven_correct.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setResponses (json_decode ('[
+            {"identifier":"RESPONSE", "value":"choice_1"}
+            ,{"identifier":"response_1","value":"choice_3"}
+        ]'));
+        
+        matching_evaluate ();
+        
+        $outcomes = matching_getOutcomes ();
+        
+		$this->assertEqual ($outcomes["SCORE"]["value"], 2);
+    }
+    
+    // test the templates driven Example
+    public function testTemplatesDrivenMixed () {
+    	$parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false,
+        	'raw_preview'	=> false,
+        	'debug'			=> false
+        );
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/templates_driven_mixed.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setMaps ($matching_data['maps']);
+        matching_setResponses (json_decode ('[
+            {"identifier":"RESPONSE", "value":"choice_1"}
+            ,{"identifier":"response_1","value":"choice_3"}
+        ]'));
+        
+        matching_evaluate ();
+        
+        $outcomes = matching_getOutcomes ();
+        
+		$this->assertEqual ($outcomes["SCORE"]["value"], 2);
+    }
+    
+    // test the exit Response
+    public function testCustomExitResponse () {
+    	$parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false,
+        	'raw_preview'	=> false,
+        	'debug'			=> false
+        );
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/custom_rule/custom_exitResponse.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        
+        matching_evaluate ();
+        
+        $outcomes = matching_getOutcomes ();
+        
+        $this->assertEqual ($outcomes["SCORE_bool"]["value"], true);
+               
+    }
+    
     // Test an item with a large coverage of the rules' subset
     public function testShakespear () {
         $parameters = array(
@@ -1004,6 +1118,12 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
         );
         matching_evaluate ();
         $outcomes = matching_getOutcomes ();
+        $this->assertEqual ($outcomes["SCORE_1"]["value"], 1);
+        $this->assertEqual ($outcomes["SCORE_2"]["value"], 1);
+        $this->assertEqual ($outcomes["SCORE_3"]["value"], 1);
+        $this->assertEqual ($outcomes["SCORE_4"]["value"], 1);
+        $this->assertEqual ($outcomes["SCORE_5"]["value"], 1);
+        $this->assertEqual ($outcomes["SCORE_6"]["value"], 1);
         $this->assertEqual ($outcomes["SCORE"]["value"], 6);
 
 
@@ -1015,7 +1135,7 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
     public function testPatternSeeker () {
         $file = dirname(__FILE__).'/samples/choice.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
-        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_TemplatesDriven);
+        $this->assertIsA($item->getResponseProcessing(), 'taoItems_models_classes_QTI_response_TemplatesDriven');
         //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
         
         $file = dirname(__FILE__).'/samples/custom_rule/custom_match_choice.xml';
@@ -1033,7 +1153,7 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
         //check if samples are loaded
         $file = dirname(__FILE__).'/samples/custom_rule/shakespeare.xml';
         $item = $this->qtiService->loadItemFromFile ($file);
-        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_TemplatesDriven);
+        $this->assertTrue ($item->getResponseProcessing() instanceOf taoItems_models_classes_QTI_response_Custom);
         //echo'<pre>';print_r(htmlentities($item->toQTI()));echo'</pre>';
     }
 

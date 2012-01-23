@@ -2,7 +2,7 @@
 <assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p0 imsqti_v2p0.xsd"
-	identifier="item_1" title="Shakespeare biography" timeDependent="false"
+	identifier="shakespeare" title="Shakespeare biography" timeDependent="false"
 	adaptive="false" lang="EN">
 
 	<responseDeclaration identifier="response_1"

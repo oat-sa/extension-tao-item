@@ -26,7 +26,8 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/models/classes/Matching/class.AreaMap.php');
 
 /**
- * include taoItems_models_classes_Matching_ExitResponseException
+ * This exception is used by the server-sided evaluation of the Matching rule.
+ * exitResponse is encountered no further rules should be executed.
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
@@ -145,6 +146,14 @@ class taoItems_models_classes_Matching_Matching
     const MAP_RESPONSE = 'if(isNull(null, getResponse("RESPONSE"))) { setOutcomeValue("SCORE", 0); } else { setOutcomeValue("SCORE", mapResponse(null, getMap("RESPONSE"), getResponse("RESPONSE"))); }';
 
     /**
+     * Short description of attribute MAP_RESPONSE_POINT
+     *
+     * @access public
+     * @var string
+     */
+    const MAP_RESPONSE_POINT = 'if(isNull(null, getResponse("RESPONSE"))) { setOutcomeValue("SCORE", 0); } else { setOutcomeValue("SCORE", mapResponsePoint(null, getMap("RESPONSE", "area"), getResponse("RESPONSE"))); }';
+
+    /**
      * Short description of attribute areaMaps
      *
      * @access protected
@@ -194,7 +203,6 @@ class taoItems_models_classes_Matching_Matching
             , 'subtract'=>array()
             , 'sum'=>array()
 		);
-		common_Logger::d('Instance of Matching initialised');
         // section 127-0-1-1--5c70894a:12bb048b221:-8000:0000000000002AB1 end
     }
 
@@ -876,6 +884,8 @@ class taoItems_models_classes_Matching_Matching
         
         if (isset($targetArray[$id])){
         	$returnValue = $targetArray[$id];
+        } else {
+        	common_logger::w('Map with id "'.$id.'" not found.', array('TAOITEMS', 'MATCHING'));
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EA end
@@ -1248,10 +1258,10 @@ class taoItems_models_classes_Matching_Matching
         $options = $this->checkOptions ($options);
         
         if (!isset($map)){
-            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the first argument [taoItems_models_classes_Matching_AreaMap] does not exist");
+            throw new common_Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the first argument [taoItems_models_classes_Matching_AreaMap] does not exist");
         }
         else if (!isset($expr)){
-            throw new Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the second argument [taoItems_models_classes_Matching_Variable] does not exist");
+            throw new common_Exception ("taoItems_models_classes_Matching_Matching::mapResponsePoint error : the second argument [taoItems_models_classes_Matching_Variable] does not exist");
         }
         
         $returnValue = $map->map ($expr);

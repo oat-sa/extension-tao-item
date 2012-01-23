@@ -3,13 +3,13 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/expression/class.ExpressionFactory.php
+ * TAO -
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.01.2012, 18:09:12 with ArgoUML PHP module 
+ * Automatically generated on 23.01.2012, 17:10:01 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -37,7 +37,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * @package taoItems
  * @subpackage models_classes_QTI_expression
  */
-class taoItems_models_classes_QTI_expression_ExpressionFactory
+class taoItems_models_classes_QTI_expression_ExpressionParserFactory
 {
     // --- ASSOCIATIONS ---
 
@@ -47,14 +47,14 @@ class taoItems_models_classes_QTI_expression_ExpressionFactory
     // --- OPERATIONS ---
 
     /**
-     * Short description of method create
+     * Short description of method build
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  SimpleXMLElement data
      * @return taoItems_models_classes_QTI_expression_Expression
      */
-    public static function create( SimpleXMLElement $data)
+    public static function build( SimpleXMLElement $data)
     {
         $returnValue = null;
 
@@ -87,16 +87,17 @@ class taoItems_models_classes_QTI_expression_ExpressionFactory
 		// All sub-expressions of an expression are embedded by this expression
 		$subExpressions = array();
 		foreach ($data->children() as $subExpressionNode) {
-			$subExpressions[] = self::create($subExpressionNode);
+			$subExpressions[] = self::build($subExpressionNode);
 		}
 		$expression->setSubExpressions($subExpressions);
 
         $returnValue = $expression;
+
         // section 127-0-1-1-2d3ac2b0:12c120718cc:-8000:0000000000002ADB end
 
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_QTI_expression_ExpressionFactory */
+} /* end of class taoItems_models_classes_QTI_expression_ExpressionParserFactory */
 
 ?>

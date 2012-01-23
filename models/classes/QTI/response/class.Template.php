@@ -119,7 +119,10 @@ class taoItems_models_classes_QTI_response_Template
         }
         else if ( $this->uri == self::MAP_RESPONSE ){
             $returnValue = taoItems_models_classes_Matching_Matching::MAP_RESPONSE;
-        } 
+        }
+        else if ( $this->uri == self::MAP_RESPONSE_POINT ){
+            $returnValue = taoItems_models_classes_Matching_Matching::MAP_RESPONSE_POINT;
+        }
              
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
@@ -141,7 +144,7 @@ class taoItems_models_classes_QTI_response_Template
     	if( $uri != self::MATCH_CORRECT && 
     		$uri != self::MAP_RESPONSE && 
     		$uri != self::MAP_RESPONSE_POINT ){
-    		throw new Exception("Unknown response processing template $uri");
+    		throw new common_Exception("Unknown response processing template '$uri'");
     	}
     	$this->uri = $uri;
     	

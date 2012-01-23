@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.01.2012, 18:22:04 with ArgoUML PHP module 
+ * Automatically generated on 23.01.2012, 17:25:48 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -74,6 +74,7 @@ abstract class taoItems_models_classes_QTI_response_ResponseRule
         $returnValue = (string) '';
 
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
+        throw new common_Exception('class '.get_class($this).' needs to implement getRule', array('TAOITEMS', 'QTI', 'HARD'));
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;

@@ -989,19 +989,29 @@ class taoItems_models_classes_QtiAuthoringService
 			//create a responseProcessing object
 			$responseProcessing = null;
 			switch(strtolower($type)){
-				case 'template':{
+				case 'templatesdriven':{
 					//add a default outcome to work with the reponseProcessing
-					if(count($item->getOutcomes()) == 0){
-						$item->setOutcomes(array(
-							new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'))
-						));
+					try {
+						$responseProcessing = taoItems_models_classes_QTI_response_TemplatesDriven::takeOverFrom($item->getResponseProcessing(), $item);
+					} catch (taoItems_models_classes_QTI_response_TakeoverFailedException $e) {
+						$responseProcessing = taoItems_models_classes_QTI_response_TemplatesDriven::create($item);
+						common_Logger::i('Created new responseProcessign of type '.get_class($responseProcessing));
 					}
-					$responseProcessing = new taoItems_models_classes_QTI_response_TemplatesDriven();
+					break;
+				}
+				case 'composite':{
+					try {
+						$responseProcessing = taoItems_models_classes_QTI_response_Composite::takeOverFrom($item->getResponseProcessing(), $item);
+					} catch (taoItems_models_classes_QTI_response_TakeoverFailedException $e) {
+						$responseProcessing = taoItems_models_classes_QTI_response_Composite::create($item);
+						common_Logger::i('Created new responseProcessing of type '.get_class($responseProcessing));
+					}
 					break;
 				}
 				case 'custom':
-				case 'customtemplate':{
-					throw new Exception("unavailable response processing type {$type}");
+				case 'customtemplate':
+				default:	{
+					throw new common_Exception("unavailable response processing type {$type}");
 					break;
 				}
 			}
@@ -1285,7 +1295,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){
 			
-			$returnValue = 'template';
+			$returnValue = 'templatesdriven';
 			
 		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_Custom){
 		
@@ -1295,8 +1305,12 @@ class taoItems_models_classes_QtiAuthoringService
 		
 			$returnValue = 'customTemplate';
 			
+		}else if($responseProcessing instanceof taoItems_models_classes_QTI_response_Summation){
+			
+			$returnValue = 'summation';
+			
 		}else{
-			throw new Exception('invalid type of response processing');
+			throw new common_Exception('invalid type of response processing');
 		}
 		
 		return $returnValue;

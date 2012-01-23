@@ -542,7 +542,18 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 ok (true, 'Expected exception');
             }
         });
-        
+
+		// Exit Operator        
+        test("test operator : exitResponse", function() {
+            var matching = new TAO_MATCHING.Matching ();
+            try {
+	            matching.exitResponse ()
+                ok (false, 'Expect exception');
+            }catch (e){
+                ok (true, 'Expected exception');
+            }
+        });
+
         // GTE OPERATOR
         test("test operator : gte", function() {
             var matching = new TAO_MATCHING.Matching ();

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 16.01.2012, 17:42:22 with ArgoUML PHP module 
+ * Automatically generated on 23.01.2012, 17:03:11 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -22,11 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include taoItems_models_classes_QTI_expression_ExpressionFactory
+ * include taoItems_models_classes_QTI_expression_ExpressionParserFactory
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/expression/class.ExpressionFactory.php');
+require_once('taoItems/models/classes/QTI/expression/class.ExpressionParserFactory.php');
 
 /**
  * include taoItems_models_classes_QTI_response_ResponseProcessing
@@ -36,11 +36,11 @@ require_once('taoItems/models/classes/QTI/expression/class.ExpressionFactory.php
 require_once('taoItems/models/classes/QTI/response/class.ResponseProcessing.php');
 
 /**
- * include taoItems_models_classes_QTI_response_ResponseRuleFactory
+ * include taoItems_models_classes_QTI_response_ResponseRuleParserFactory
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('taoItems/models/classes/QTI/response/class.ResponseRuleFactory.php');
+require_once('taoItems/models/classes/QTI/response/class.ResponseRuleParserFactory.php');
 
 /**
  * include taoItems_models_classes_QTI_response_Rule
@@ -112,15 +112,16 @@ class taoItems_models_classes_QTI_response_Custom
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array responseRules
+     * @param  string xml
      * @return mixed
      */
-    public function __construct($responseRules)
+    public function __construct($responseRules, $xml)
     {
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6B begin
         
         $this->responseRules = $responseRules;
         parent::__construct ();
-        
+        $this->setData($xml, false);
         // section 127-0-1-1-21b9a9c1:12c0d84cd90:-8000:0000000000002A6B end
     }
 
