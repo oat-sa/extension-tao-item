@@ -50,16 +50,17 @@
 <body>
 	<div id='<?=$identifier?>' class="qti_item">
 		<h1><?=$options['title']?></h1>
-	
-		<?=$data?>
+		<div class="qti_item_body">
+			<?=$data?>
 		
-		<!-- validation button -->
-		<div class="qti_control">
-		<?if($ctx_raw_preview):?>
-			<a href="#" id="qti_validate" style="visibility:hidden;">Validate</a>
-		<?else:?>
-			<a href="#" id="qti_validate">Validate</a>
-		<?endif?>
+			<!-- validation button -->
+			<div class="qti_control">
+			<?if($ctx_raw_preview):?>
+				<a href="#" id="qti_validate" style="visibility:hidden;">Validate</a>
+			<?else:?>
+				<a href="#" id="qti_validate">Validate</a>
+			<?endif?>
+			</div>
 		</div>
 	</div>
 </body>
