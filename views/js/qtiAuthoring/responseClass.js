@@ -132,6 +132,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   url: root_url + "/taoItems/QtiAuthoring/saveInteractionResponseProcessing",
 					   data: $(this).serialize(),
 					   dataType: 'json',
+					   async: false,
 					   success: function(r){
 							if(r.saved){
 								qtiEdit.createInfoMessage(__('Modification on response applied'));
@@ -161,6 +162,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   url: root_url + "/taoItems/QtiAuthoring/saveResponseProperties",
 					   data: $(this).serialize(),
 					   dataType: 'json',
+					   async: false,
 					   success: function(r){
 							if(r.saved){
 								qtiEdit.createInfoMessage(__('The response properties have been updated'));
@@ -175,6 +177,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   url: root_url + "/taoItems/QtiAuthoring/saveResponseCodingOptions",
 					   data: $(this).serialize(),
 					   dataType: 'json',
+					   async: false,
 					   success: function(r){
 							if(r.saved){
 								qtiEdit.createInfoMessage(__('The options have been updated'));

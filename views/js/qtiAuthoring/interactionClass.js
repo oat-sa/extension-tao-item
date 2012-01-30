@@ -1256,8 +1256,32 @@ interactionClass.prototype.bindChoiceLinkListener = function(){
 
 }
 
-/*interactionClass.prototype.setResponseMappingMode = function(isMapping){
-	if(isMapping){
+interactionClass.prototype.setResponseOptionsMode = function(optionsMode){
+	this.responseOptionsMode = optionsMode;
+	switch (optionsMode) {
+		case 'manual':
+			break;
+
+		case 'map':
+			if (this.responseOptionsMode != 'map') {
+				//display the scoring form: //TODO: load it only when necessary:
+				//this.responseMappingMode = true;
+				//$('#qtiAuthoring_mappingEditor').show();
+
+				//reload the response grid, to update column model:
+				new responseClass(this.responseGrid, this);
+			}
+			break;
+
+		case 'correct':
+			//this.responseMappingMode = false;
+			//$('#qtiAuthoring_mappingEditor').hide();
+
+			//reload the response grid, to update column model:
+			new responseClass(this.responseGrid, this);
+			break;
+	}
+	/*if(isMapping){
 		//set the reponse mapping to true:
 		if(this.responseMappingMode){
 			//nothing to do:
@@ -1275,9 +1299,8 @@ interactionClass.prototype.bindChoiceLinkListener = function(){
 
 		//reload the response grid, to update column model:
 		new responseClass(this.responseGrid, this);
-	}
-
-}*/
+	}*/
+}
 
 interactionClass.prototype.setModifiedInteraction = function(modified){
 	if(modified){
