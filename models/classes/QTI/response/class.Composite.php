@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 25.01.2012, 15:20:13 with ArgoUML PHP module 
+ * Automatically generated on 30.01.2012, 18:19:56 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -156,7 +156,6 @@ abstract class taoItems_models_classes_QTI_response_Composite
         	$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_None($interaction->getResponse()->getIdentifier());
 			$returnValue->add($irp, $item);
         }
-        $returnValue->ensureOutcomeVariablesExist($item);
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003612 end
 
         return $returnValue;
@@ -266,36 +265,6 @@ abstract class taoItems_models_classes_QTI_response_Composite
     }
 
     /**
-     * Short description of method ensureOutcomeVariablesExist
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Item item
-     * @return mixed
-     */
-    public function ensureOutcomeVariablesExist( taoItems_models_classes_QTI_Item $item)
-    {
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003620 begin
-        $outcomes = array();
-        foreach ($item->getOutcomes() as $outcome) {
-        	$outcomes[$outcome->getIdentifier()] = $outcome;
-        }
-        foreach ($this->components as $component) {
-        	if (!in_array($component->getOutcomeIdentifier(), array_keys($outcomes))) {
-        		$outcomes[$component->getOutcomeIdentifier()] = $component->generateOutcomeDefinition();
-        	}
-        }
-        if (!isset($outcomes[$this->outcomeIdentifier]))
-			$outcomes[$this->outcomeIdentifier] = new taoItems_models_classes_QTI_Outcome($this->outcomeIdentifier, array('baseType' => 'integer', 'cardinality' => 'single'));
-		
-		if (count($outcomes) != count($item->getOutcomes())) {
-			common_Logger::w('Outcome Variables mismatch');
-		}
-		//$item->setOutcomes($outcomes);
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003620 end
-    }
-
-    /**
      * Short description of method getInteractionResponseProcessing
      *
      * @access public
@@ -314,6 +283,23 @@ abstract class taoItems_models_classes_QTI_response_Composite
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:000000000000362E end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method replace
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  InteractionResponseProcessing newInteractionResponseProcessing
+     * @return mixed
+     */
+    public function replace( taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing $newInteractionResponseProcessing)
+    {
+        // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A9 begin
+        if (!isset($this->components[$newInteractionResponseProcessing->getResponseIdentifier()]))
+        	throw new common_exception_Error('Tried to replace non present InteractionResponseProcessing for "'.$newInteractionResponseProcessing->getResponseIdentifier().'"');
+        $this->components[$newInteractionResponseProcessing->getResponseIdentifier()] = $newInteractionResponseProcessing;
+        // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A9 end
     }
 
     /**

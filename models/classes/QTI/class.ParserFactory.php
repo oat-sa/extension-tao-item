@@ -742,18 +742,16 @@ class taoItems_models_classes_QTI_ParserFactory
 			}
         	
         }
-        
-        // convert template to composite
         /*
-        try {
-    		$returnValue = taoItems_models_classes_QTI_response_Composite::takeOverFrom($returnValue, $item);
-    		// ensure outcome Variables exist
-    		$returnValue->ensureOutcomeVariablesExist($item);
-        } catch (Exception $e) {
-        	common_Logger::w('Could not be converted to Composite', array('TAOITEMS', 'QTI'));
-		}
-		*/
-        
+        // convert template to composite
+        if (!is_null($returnValue)) {
+	        try {
+	    		$returnValue = taoItems_models_classes_QTI_response_Composite::takeOverFrom($returnValue, $item);
+	        } catch (Exception $e) {
+	        	common_Logger::w('Could not be converted to Composite', array('TAOITEMS', 'QTI'));
+			}
+        }
+        */
 	    // build custom
         if (is_null($returnValue))
 	        try {

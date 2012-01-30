@@ -114,7 +114,11 @@ class taoItems_actions_QTIform_CompositeResponseOptions
     public function initElements()
     {
         // section 127-0-1-1-7fd95e33:1350eecc263:-8000:0000000000003641 begin
-        $serialElt = tao_helpers_form_FormFactory::getElement('responseSerial', 'Hidden');
+        $rpElt = tao_helpers_form_FormFactory::getElement('responseprocessingSerial', 'Hidden');
+		$rpElt->setValue($this->responseProcessing->getSerial());
+		$this->form->addElement($rpElt);
+		
+    	$serialElt = tao_helpers_form_FormFactory::getElement('responseSerial', 'Hidden');
 		$serialElt->setValue($this->response->getSerial());
 		$this->form->addElement($serialElt);
     	
@@ -154,7 +158,7 @@ class taoItems_actions_QTIform_CompositeResponseOptions
 				$irps[taoItems_models_classes_QTI_response_interactionResponseProcessing_None::CLASS_ID] = __('manual');
 		}			
 		
-		$InteractionResponseProcessing = tao_helpers_form_FormFactory::getElement('InteractionResponseProcessing', 'Combobox');
+		$InteractionResponseProcessing = tao_helpers_form_FormFactory::getElement('interactionResponseProcessing', 'Combobox');
 		$InteractionResponseProcessing->setDescription(__('Processing type'));
 		$InteractionResponseProcessing->setOptions($irps);
 		$InteractionResponseProcessing->setValue($currentIRP);

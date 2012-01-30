@@ -141,6 +141,7 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D9 begin
         
         $this->interactions = array_keys($this->interactions);
+        $this->responseProcessing = $this->responseProcessing->getSerial(); 
         
         $returnValue = parent::__sleep();
         
@@ -168,6 +169,7 @@ class taoItems_models_classes_QTI_Item
     			$this->interactions[$serial] = $interaction;
     		}
     	}
+        $this->responseProcessing = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($this->responseProcessing, 'taoItems_models_classes_QTI_response_ResponseProcessing'); 
     	
     	parent::__wakeup();
     	

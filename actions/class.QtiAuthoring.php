@@ -627,7 +627,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					}
 				}
 			}catch(Exception $e){
-				throw new Exception('cannot find the response no request parameter "responseSerial" found');
+				throw new common_exception_Error('cannot find the response no request parameter "responseSerial" found');
 			}
 			
 		}
@@ -1195,12 +1195,12 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	public function saveInteractionResponseProcessing(){
 		$response = $this->getCurrentResponse();
 		$rp = $this->getCurrentResponseProcessing();
-		$saved					= false;
-		$setResponseMappingMode	= false;
-		$templateHasChanged		= false;
 		
 		if(!is_null($response) && !is_null($rp)){
 			if ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+				$saved					= false;
+				$setResponseMappingMode	= false;
+				$templateHasChanged		= false;
 				if($this->hasRequestParameter('processingTemplate')){
 					$processingTemplate = tao_helpers_Uri::decode($this->getRequestParameter('processingTemplate'));
 					if ($rp->getTemplate($response) != $processingTemplate) {
@@ -1209,16 +1209,29 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$saved = $rp->setTemplate($response, $processingTemplate);
 					if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
 				}
-			} elseif ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+				echo json_encode(array(
+					'saved'						=> $saved,
+					'setResponseMappingMode'	=> $setResponseMappingMode,
+					'templateHasChanged'		=> $templateHasChanged
+				));
+			} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
 				
+				$saved					= false;
+				if($this->hasRequestParameter('interactionResponseProcessing')) {
+					$currentIRP = $rp->getInteractionResponseProcessing($response->getIdentifier());
+					$newIRP = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::build(
+						$this->getRequestParameter('interactionResponseProcessing'),
+						$currentIRP->getResponseIdentifier(),
+						$currentIRP->getOutcomeIdentifier()
+					);
+					$rp->replace($newIRP);
+				}
+				echo json_encode(array(
+					'saved'						=> $saved,
+				));
 			}
 		}
 		
-		echo json_encode(array(
-			'saved'						=> $saved,
-			'setResponseMappingMode'	=> $setResponseMappingMode,
-			'templateHasChanged'		=> $templateHasChanged
-		));
 	}
 	
 	protected function isResponseMappingMode($processingType){
@@ -1363,10 +1376,16 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			
 		// composite processing
 		}elseif($responseProcessing instanceof taoItems_models_classes_QTI_response_Composite){
-			$displayGrid = false;
-			$manualForm = new taoItems_actions_QTIform_ManualProcessing();
-			if (!is_null($manualForm)) {
-				$xhtmlForms[] = $manualForm->getForm()->render();
+			
+			$irp = $responseProcessing->getInteractionResponseProcessing($response->getIdentifier());
+			if ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
+				$manualForm = new taoItems_actions_QTIform_ManualProcessing();
+				if (!is_null($manualForm)) {
+					$xhtmlForms[] = $manualForm->getForm()->render();
+				}
+				$displayGrid = false;
+			} else {
+				$displayGrid = true;
 			}
 			
 		} else {

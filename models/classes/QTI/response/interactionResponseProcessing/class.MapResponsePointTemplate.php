@@ -77,7 +77,7 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResp
         $returnValue = 'if(isNull(null, getResponse("'.$this->getResponseIdentifier().'"))) { '.
         	'setOutcomeValue("'.$this->getOutcomeIdentifier().'", 0); } else { '.
         	'setOutcomeValue("'.$this->getOutcomeIdentifier().'", '.
-        		'mapResponse(null, mapResponsePoint("'.$this->getResponseIdentifier().'", "area"), getResponse("'.$this->getResponseIdentifier().'"))); }';
+        		'mapResponsePoint(null, getMap("'.$this->getResponseIdentifier().'", "area"), getResponse("'.$this->getResponseIdentifier().'"))); }';
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009015 end
 
         return (string) $returnValue;

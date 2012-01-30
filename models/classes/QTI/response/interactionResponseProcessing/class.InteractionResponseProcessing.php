@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 24.01.2012, 17:16:26 with ArgoUML PHP module 
+ * Automatically generated on 30.01.2012, 18:08:10 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -102,6 +102,46 @@ abstract class taoItems_models_classes_QTI_response_interactionResponseProcessin
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method build
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  int classID
+     * @param  string responseIdentifier
+     * @param  string scoreIdentifier
+     * @return taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing
+     */
+    public static function build($classID, $responseIdentifier, $scoreIdentifier = null)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A0 begin
+        switch ($classID) {
+        	case taoItems_models_classes_QTI_response_interactionResponseProcessing_None::CLASS_ID : 
+        		$className = "taoItems_models_classes_QTI_response_interactionResponseProcessing_None";
+        		break;
+        	case taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate::CLASS_ID : 
+        		$className = "taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate";
+        		break;
+        	case taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate::CLASS_ID : 
+        		$className = "taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate";
+        		break;
+        	case taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate::CLASS_ID : 
+        		$className = "taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate";
+        		break;
+        	case taoItems_models_classes_QTI_response_interactionResponseProcessing_Custom::CLASS_ID : 
+        		$className = "taoItems_models_classes_QTI_response_interactionResponseProcessing_Custom";
+        		break;
+        	default :
+        		throw new common_exception_Error('Unknown InteractionResponseProcessing Class ID "'.$classID.'"');
+        }
+        $returnValue = new $className($responseIdentifier, $scoreIdentifier);
+        // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A0 end
+
+        return $returnValue;
     }
 
     /**
