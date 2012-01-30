@@ -60,6 +60,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 
 					//set the response form if needed:
 					//$(response.responseFormContainer).html(r.responseForm);
+					$(response.responseFormContainer).html('');
 					for (f in r.forms) {
 						$(response.responseFormContainer).append(r.forms[f]);
 					}
