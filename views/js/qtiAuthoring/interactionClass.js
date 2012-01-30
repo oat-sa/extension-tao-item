@@ -2,37 +2,38 @@
 interactionClass.instances = [];
 
 function interactionClass(interactionSerial, relatedItemSerial, options){
-	
+
 	if(!interactionSerial){throw 'no interaction serial found';}
 	if(!relatedItemSerial){throw 'no related item serial found';}
-	
+
 	var defaultResponseFormContainer = {
-		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
+		//responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
 		responseGrid: 'qtiAuthoring_response_grid'
 	};
-	
+
 	var settings = {};
+
 	$.extend(settings, defaultResponseFormContainer, options);
-	
+
 	this.settings = settings;
-	this.responseMappingOptionsFormContainer = settings.responseMappingOptionsFormContainer;
+	//this.responseMappingOptionsFormContainer = settings.responseMappingOptionsFormContainer;
 	this.responseGrid = settings.responseGrid;
-	
+
 	this.interactionSerial = interactionSerial;
 	this.relatedItemSerial = relatedItemSerial;
-	
-	var responseMappingMode = false;//default:false
-	this.setResponseMappingMode(responseMappingMode);
+
+	//var responseMappingMode = false;//default:false
+	//this.setResponseMappingMode(responseMappingMode);
 	this.choiceAutoSave = true;
-	
+
 	this.choices = [];
 	this.modifiedInteraction = false;
 	this.modifiedChoices = [];
 	this.modifiedGroups = [];
 	this.orderedChoices = [];
-	
+
 	this.initInteractionFormSubmitter();
-	
+
 	var __this = this;
 	var initChoicesAndResponse = function(){
 		//always load the mappingForm (show and hide it according to the value of the qtiEdit.responseMappingMode) deprecated!!!
@@ -50,7 +51,7 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 			new responseClass(__this.responseGrid, __this);
 		}
 	};
-	
+
 	if(settings.shapeEditorOptions && settings.shapeEditorOptions.backgroundImagePath){
 		var backgroundImagePath = settings.shapeEditorOptions['backgroundImagePath'];
 		delete settings.shapeEditorOptions['backgroundImagePath'];
@@ -61,7 +62,7 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 	}else{
 		initChoicesAndResponse();
 	}
-	
+
 	interactionClass.instances[interactionSerial] = this;
 	this.getRelatedItem().currentInteraction = this;
 }
@@ -70,27 +71,27 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 	var _this = this;
 	var $myForm = null;
 	$(".interaction-form-submitter").click(function(){
-		
+
 		$myForm = $(this).parents("form");
 		//linearize it and post it:
 		// if(_this.modifiedInteraction){
 			_this.saveInteraction($myForm);
 		// }
-		
+
 		_this.saveModifiedChoices();
-		
+
 		return false;
 	});
-	
+
 	$('#qtiAuthoring_item_editor_button').unbind('click').bind('click', function(){
-	
+
 		var self = this;
 		var switchTabFunction = function(){
 			if($myTab) $myTab.tabs("select" , 0);
 			$(self).hide();
 			$('#qtiAuthoring_menu_interactions').show();
 		}
-		
+
 		var relatedItem = _this.getRelatedItem();
 		if(relatedItem){
 			if(_this.modifiedInteraction){
@@ -100,11 +101,11 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 				}
 			}
 		}
-		
+
 		switchTabFunction();
-		
+
 	}).show();
-	
+
 	$('#qtiAuthoring_menu_interactions').hide();
 }
 
@@ -112,22 +113,22 @@ interactionClass.prototype.saveModifiedChoices = function(){
 
 	for(var groupSerial in this.modifiedGroups){
 		var $groupForm = $('#'+groupSerial);
-		
+
 		//serialize+submit:
 		if($groupForm.length){
 			this.saveGroup($groupForm);
 		}
 	}
-	
+
 	for(var choiceSerial in this.modifiedChoices){
 		var $choiceForm = $('#'+choiceSerial);
-		
+
 		//serialize+submit:
 		if($choiceForm.length){
 			this.saveChoice($choiceForm);
 		}
 	}
-	
+
 }
 
 
@@ -135,14 +136,14 @@ interactionClass.prototype.saveModifiedChoices = function(){
 interactionClass.prototype.saveInteraction = function($myForm, option){
 	//TODO: check unicity of the id:
 	if($myForm.length){
-		
+
 		var interactionProperties = $myForm.serializeObject();
-		
+
 		//filter the prompt html area field:
 		if(interactionProperties.prompt){
 			interactionProperties.prompt = util.htmlEncode(interactionProperties.prompt);
 		}
-		
+
 		//serialize the order:
 		var orderedChoices = '';
 		if(this.orderedChoices[0]){
@@ -162,7 +163,7 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 				i++;
 			}
 		}
-		
+
 		//check if it is required to save data (hotText and gapMatch interactions):
 		if(this.interactionDataContainer){
 			if($(this.interactionDataContainer).length && this.interactionEditor.length){
@@ -170,16 +171,16 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 				interactionProperties.interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
 			}
 		}
-		
+
 		var async = true;
 		if(option){
 			if(option.async === false){
 				async = false;
 			}
 		}
-		
+
 		var interaction = this;
-		
+
 		$.ajax({
 		   type: "POST",
 		   url: root_url + "/taoItems/QtiAuthoring/saveInteraction",
@@ -190,11 +191,11 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 				if(r.saved){
 					qtiEdit.createInfoMessage(__('Modification(s) on interaction has been updated'));
 					interaction.setModifiedInteraction(false);
-					
+
 					if(r.reloadResponse){
 						new responseClass(interaction.responseGrid, interaction);
 					}
-					
+
 					if(r.newGraphicObject){
 						if(r.newGraphicObject.data){
 							if(interaction.shapeEditor){
@@ -209,37 +210,37 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 							}
 						}
 					}
-					
+
 				}
 		    }
 		});
 	}
-	
+
 }
 
 interactionClass.prototype.saveChoice = function($choiceFormContainer){
 
 	var _this = this;
 	var $choiceForm = null;
-	
+
 	if($choiceFormContainer.length){
-		
+
 		if($choiceFormContainer[0].nodeName.toLowerCase() == 'form'){
 			$choiceForm = $choiceFormContainer;
 		}else{
 			$choiceForm = $choiceFormContainer.find('form');
 		}
 	}
-	
+
 	if($choiceForm){
 		if($choiceForm.length){
-	
+
 			var choiceProperties = $choiceForm.serializeObject();
 			if(choiceProperties.data){
 				var choiceData = choiceProperties.data;//keep un altered data string
 				choiceProperties.data = util.htmlEncode(choiceProperties.data);
 			}
-			
+
 			var interaction = this;
 			$.ajax({
 			   type: "POST",
@@ -247,13 +248,13 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 			   data: choiceProperties,
 			   dataType: 'json',
 			   success: function(r){
-					
+
 					if(!r.saved){
 						createErrorMessage(__('The choice cannot be saved'));
 					}else{
 						qtiEdit.createInfoMessage(__('Modification on choice applied'));
 						delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
-						
+
 						//only if it is the last updated choice!
 						if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
 							//only when the identifier has changed:
@@ -264,7 +265,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 								new responseClass(interaction.responseGrid, interaction);
 							}
 						}
-						
+
 						//for hotspot interaction, update the input value:
 						if(_this.interactionEditor && choiceData){
 							var $choiceInputs = qtiEdit.getEltInFrame('#'+choiceProperties.choiceSerial);
@@ -272,52 +273,52 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 								$choiceInputs[0].val(choiceData);
 							}
 						}
-						
-						
+
+
 						if(r.errorMessage){
 							createErrorMessage(r.errorMessage);
 						}
 					}
 				}
 			});
-			
+
 		}
 	}
-	
-	
+
+
 }
 
 interactionClass.prototype.saveGroup = function($groupForm){
 
 	if($groupForm){
-	
+
 		var interaction = this;
 		//save group order?
-		
+
 		var choiceOrder = ''
 		var i = 0;
 		for(var order in this.orderedChoices){
 			choiceOrder += '&choiceOrder['+i+']='+this.orderedChoices[order];
 			i++;
 		}
-		
+
 		$.ajax({
 		   type: "POST",
 		   url: root_url + "/taoItems/QtiAuthoring/saveGroup",
 		   data: $groupForm.serialize()+choiceOrder,
 		   dataType: 'json',
 		   success: function(r){
-				
+
 				if(!r.saved){
 					createErrorMessage(__('The choice cannot be saved'));
 				}else{
 					qtiEdit.createInfoMessage(__('Modification on choice applied'));
 					delete interaction.modifiedGroups['GroupForm_'+r.groupSerial];
-					
+
 					//only when the identifier has changed:
 					if(r.reload){
 						interaction.loadChoicesForm();
-						
+
 						//for gap match interaction:
 						if(r.identifierUpdated && r.newIdentifier && interaction.interactionEditor){
 							$groupInputs = qtiEdit.getEltInFrame('#'+r.groupSerial);
@@ -325,37 +326,37 @@ interactionClass.prototype.saveGroup = function($groupForm){
 								$groupInputs[0].val(r.newIdentifier);
 							}
 						}
-						
+
 					}else if(r.identifierUpdated){
 						new responseClass(interaction.responseGrid, interaction);
 					}
-					
+
 				}
 		   }
 		});
-		
+
 	}
-	
+
 }
 
-interactionClass.prototype.loadResponseMappingForm = function(){
+interactionClass.prototype.loadResponseOptionsForm = function(){
 	var relatedItem = this.getRelatedItem();
 	var interaction = this;
-	
+
 	if(relatedItem){
 		$.ajax({
 		   type: "POST",
-		   url: root_url + "/taoItems/QtiAuthoring/editMappingOptions",
+		   url: root_url + "/taoItems/QtiAuthoring/editOptions",
 		   data: {
 				'interactionSerial': this.interactionSerial
 		   },
 		   dataType: 'html',
 		   success: function(form){
-				
-				var $formContainer = $(interaction.responseMappingOptionsFormContainer);
-				// TODO: change by call of function setResponseMappingMode()
+
+				var $formContainer = $(interaction.responseOptionsFormContainer);
+				// TODO: change by call of function setResponseOptionsMode()
 				$formContainer.html(form);
-				if(interaction.responseMappingMode){
+				if(interaction.responseOptionsMode){
 					$formContainer.show();
 				}else{
 					$formContainer.hide();
@@ -365,7 +366,7 @@ interactionClass.prototype.loadResponseMappingForm = function(){
 	}else{
 		throw 'the related item cannot be found';
 	}
-	
+
 }
 
 interactionClass.prototype.getRelatedItem = function(strict){
@@ -385,7 +386,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	}
 	var interactionSerial = this.interactionSerial;
 	var interaction = this;
-	
+
 	if($(containerSelector).length){
 		$.ajax({
 		   type: "POST",
@@ -397,33 +398,33 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 		   success: function(form){
 				var $formContainer = $(containerSelector);
 				$formContainer.html(form);
-				
+
 				qtiEdit.initFormElements($formContainer);
 				interaction.setFormChangeListener();
 				interaction.setShapeEditListener();
-				
+
 				//reload the grid:
 				new responseClass(interaction.responseGrid, interaction);
 		   }
 		});
 	}
-	
+
 }
 
 interactionClass.prototype.setShapeEditListener = function(target){
 
 	if(this.shapeEditor){
-		
+
 		var interaction = this;
-		
+
 		//define the function:
 		var setListener = function($choiceForm){
-			
+
 			if($choiceForm.length){
 				var choiceSerial = $choiceForm.attr('id');
 				choiceSerial = choiceSerial.replace('GroupForm_', '');
 				choiceSerial = choiceSerial.replace('ChoiceForm_', '');
-				
+
 				var $qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial}, function(e){
 					var shape = $(this).val();
 					//delete old shape?
@@ -432,7 +433,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 						interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
 					}
 				});
-				
+
 				//append the edit button:
 				var $imageLink = $('<img src="'+img_url+'pencil.png"/>').insertAfter($qtiShapeCombobox);
 				$imageLink.attr('title', __('draw it'));
@@ -441,7 +442,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 					var shape = $(this).siblings('.qti-shape').val();
 					interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
 				});
-				
+
 				//check if the coords are not empty, if so, draw the shape:
 				var $qtiCoordsInput = $choiceForm.find('input[name=coords]');
 				if($qtiCoordsInput.length){
@@ -450,7 +451,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 						interaction.shapeEditor.exportShapeToCanvas(choiceSerial);
 					}
 				}
-				
+
 				//finally add the hover/blur control:
 				$choiceForm.parents('div.formContainer_choice').hover(function(){
 					// var choiceSerial = $(this).attr('id');
@@ -459,9 +460,9 @@ interactionClass.prototype.setShapeEditListener = function(target){
 					interaction.shapeEditor.hoverOut($(this).attr('id'));
 				});
 			}
-			
+
 		}
-		
+
 		if(!target){
 			//all choices:
 			$('div.formContainer_choice').find('form').each(function(){
@@ -473,27 +474,27 @@ interactionClass.prototype.setShapeEditListener = function(target){
 			}
 		}
 	}
-	
+
 }
 
 
 interactionClass.prototype.addChoice = function(number, $appendTo, containerClass, groupSerial){
-	
+
 	var interaction = this;
-	
+
 	if(!$appendTo || !$appendTo.length){
 		throw 'the append target element do not exists';
 	}
-	
+
 	var addChoice = function($appendTo, containerClass, groupSerial){
-	
+
 		var postData = {};
 		postData.interactionSerial = interaction.interactionSerial;
-		
+
 		if(groupSerial){
 			postData.groupSerial = groupSerial;
 		}
-		
+
 		$.ajax({
 		   type: "POST",
 		   url: root_url + "/taoItems/QtiAuthoring/addChoice",
@@ -501,26 +502,26 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 		   dataType: 'json',
 		   success: function(r){
 				if(r.added){
-					
+
 					if(r.reload){
 						interaction.loadChoicesForm();
 						return;
 					}
-					
+
 					var $newFormElt = $('<div/>');
 					$newFormElt.attr('id', r.choiceSerial);
 					$newFormElt.attr('class', containerClass);
 					$newFormElt.append(r.choiceForm);
 					$appendTo.append($newFormElt);
-					
+
 					$newFormElt.hide();
 					interaction.initToggleChoiceOptions();
 					$newFormElt.show();
-					
+
 					qtiEdit.initFormElements($newFormElt);
 					interaction.setFormChangeListener('#'+r.choiceSerial);
 					interaction.setShapeEditListener('#'+r.choiceSerial);
-					
+
 					//add to the local choices order array:
 					//if interaction type is match, save the new choice in one of the group array:
 					if(r.groupSerial){
@@ -532,18 +533,18 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 					}else{
 						interaction.orderedChoices.push(r.choiceSerial);
 					}
-					
+
 					//rebuild the response grid:
 					new responseClass(interaction.responseGrid, interaction);
 				}
 		   }
 		});
-	
+
 	}
-	
+
 	if(this.choiceAutoSave){
 		this.saveModifiedChoices();
-		
+
 		var timer = null;
 		var stopTimer = function(){
 			if(!number){
@@ -560,7 +561,7 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 				stopTimer();
 			}
 		}, 500);
-		
+
 	}else{
 		addChoice($appendTo, containerClass, groupSerial);
 	}
@@ -578,7 +579,7 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 	var interaction = this;
 	var groupId = $group.attr('id');
 	if(groupId.indexOf('choicePropOptions') == 0){
-		
+
 		if(!options){
 			var options = {'delete': true, 'group':true};
 		}else{
@@ -589,7 +590,7 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 				options.group = true;
 			}
 		}
-		
+
 		// it is a choice group:
 		if($('#a_'+groupId).length){
 			$('#a_'+groupId).remove();
@@ -597,12 +598,12 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 		if($('#delete_'+groupId).length){
 			$('#delete_'+groupId).remove();
 		}
-		
+
 		if(options['delete']){
 			var $deleteElt = $('<span id="delete_'+groupId+'" title="'+__('Delete choice')+'" class="form-group-control choice-button-delete ui-icon ui-icon-circle-close"></span>');
 			$group.before($deleteElt);
 			// $deleteElt.css('position', 'relative');
-			
+
 			//add click event listener:
 			$('#delete_'+groupId).click(function(){
 				if(confirm('Do you want to delete the choice?')){
@@ -611,24 +612,24 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 				}
 			});
 		}
-		
+
 		if(options.group){
 			var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control choice-button-advanced ui-icon ui-icon-circle-plus"></span>');
 			$group.before($buttonElt);
-			
+
 			$group.hide();
 			$('#a_'+groupId).bind('click', function(e){
 				e.preventDefault();
 				$('#'+groupId).toggle();
 			});
-			
+
 			$('#a_'+groupId).toggle(function(){
 				$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
 			},function(){
 				$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
 			});
 		}
-		
+
 	}
 }
 
@@ -649,10 +650,10 @@ interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
 
 //define when the form is considered as changed:
 interactionClass.prototype.setFormChangeListener = function(target){
-	
+
 	var interaction = this;
 	var $choiceForm = null;
-	
+
 	if(!target){
 		$choiceForm = $('form');//all forms
 	}else{
@@ -667,7 +668,7 @@ interactionClass.prototype.setFormChangeListener = function(target){
 			}
 		}
 	}
-	
+
 	$choiceForm.children().bind('change paste', function(){
 		var $modifiedForm = $(this).parents('form');
 		interaction.setModifiedChoicesByForm($modifiedForm);
@@ -680,27 +681,27 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		};
 		$($(this)[0].contentWindow.document).focus(setChangesfunction);
 		$(this).siblings('ul').click(setChangesfunction);
-		
+
 	});
-	
+
 	return true;
 }
 
 interactionClass.prototype.setOrderedChoicesButtons = function(list){
 	 return false;//deactivate it for now
-	 
+
 	var interaction = this;
 	var total = list.length;
 	for(var i=0; i<total; i++){
 		$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control choice-button-up ui-icon ui-icon-circle-triangle-n"></span>');
-		
+
 		//get the corresponding group id:
 		$("#delete_choicePropOptions_"+list[i]).after($upElt);
 		$upElt.click(function(){
 			var choiceSerial = $(this).attr('id').substr(3);
 			interaction.orderedChoices = interaction.switchOrder(interaction.orderedChoices, choiceSerial, 'up');
 		});
-		
+
 		$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control choice-button-down ui-icon ui-icon-circle-triangle-s"></span>');
 		$upElt.after($downElt);
 		$downElt.click(function(){
@@ -712,9 +713,9 @@ interactionClass.prototype.setOrderedChoicesButtons = function(list){
 
 interactionClass.prototype.setOrderedMatchChoicesButtons = function(doubleList){
 	return false;
-	
+
 	var interaction = this;
-	
+
 	// var length = doubleList.length;
 	for(var groupSerial in doubleList){
 		// interactionEdit.setOrderedChoicesButtons(doubleList[j]);
@@ -725,16 +726,16 @@ interactionClass.prototype.setOrderedMatchChoicesButtons = function(doubleList){
 				throw 'broken order in array';
 				break;
 			}
-			
+
 			$upElt = $('<span id="up_'+list[i]+'" title="'+__('Move Up')+'" class="form-group-control choice-button-up ui-icon ui-icon-circle-triangle-n"></span>');
-			
+
 			//get the corresponding group id:
 			$("#a_choicePropOptions_"+list[i]).after($upElt);
 			$upElt.bind('click', {'groupSerial':groupSerial}, function(e){
 				var choiceSerial = $(this).attr('id').substr(3);
 				interaction.orderedChoices[e.data.groupSerial] = interaction.switchOrder(interaction.orderedChoices[e.data.groupSerial], choiceSerial, 'up');
 			});
-			
+
 			$downElt = $('<span id="down_'+list[i]+'" title="'+__('Move Down')+'" class="form-group-control choice-button-down ui-icon ui-icon-circle-triangle-s"></span>');
 			$upElt.after($downElt);
 			$downElt.bind('click', {'groupSerial':groupSerial}, function(e){
@@ -746,7 +747,7 @@ interactionClass.prototype.setOrderedMatchChoicesButtons = function(doubleList){
 }
 
 interactionClass.prototype.switchOrder = function(list, choiceId, direction){
-	
+
 	var currentPosition = 0;
 	for(var i=0; i<list.length; i++){
 		if(list[i] == choiceId){
@@ -765,7 +766,7 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 				qtiEdit.destroyHtmlEditor($parentFormChoiceContainer);
 				$('#'+choiceId).insertBefore('#'+list[currentPosition-1]);
 				qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
-				
+
 				// $('#'+choiceId).remove();
 				for(var i=0;i<list.length;i++){
 					if(i == currentPosition-1){
@@ -776,7 +777,7 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 						newOrder[i] = list[i];
 					}
 				}
-				
+
 				sorted = true;
 			}
 			break;
@@ -789,7 +790,7 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 					$('#'+choiceId).insertAfter('#'+list[currentPosition+1]);
 					qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
 				}catch(err){
-					
+
 				}
 				// $('#'+choiceId).remove();
 				var newOrder = [];
@@ -802,13 +803,13 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 						newOrder[i] = list[i];
 					}
 				}
-				
+
 				sorted = true;
 			}
 			break;
 		}
 	}
-	
+
 	if(sorted){
 		//indicates that the interaction has changed:
 		this.setModifiedInteraction(true);
@@ -816,9 +817,9 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 		//return the old order
 		newOrder = list;
 	}
-	
+
 	}catch(err){
-		
+
 	}
 	return newOrder;
 }
@@ -827,7 +828,7 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 
 	var interaction = this;
 	delete this.choices[choiceSerial];
-        
+
         var newOrderedChoices = [];
         var j = 0;
         for(var i=0; i<this.orderedChoices.length; i++){
@@ -836,9 +837,9 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
                 }
         }
 	this.orderedChoices = newOrderedChoices;
-        
+
 	if(!reloadInteraction) var reloadInteraction = false;
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: "/taoItems/QtiAuthoring/deleteChoice",
@@ -860,14 +861,14 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 					interaction.loadChoicesForm();
 					return;
 				}
-			
+
 				$('#'+choiceSerial).remove();
-				
+
 				//delete the shape, if exists:
 				if(interaction.shapeEditor){
 					interaction.shapeEditor.removeShapeObj(choiceSerial);
 				}
-				
+
 				//TODO: need to be optimized: only after the last choice saving
 				new responseClass(interaction.responseGrid, interaction);
 				interaction.saveInteractionData();
@@ -878,65 +879,65 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 	   }
 	});
 }
+/*
+interactionClass.prototype.saveResponseOptions = function($myForm){
 
-interactionClass.prototype.saveResponseMappingOptions = function($myForm){
-	
 	var self = this;
-	
+
 	$.ajax({
 	   type: "POST",
-	   url: root_url + "/taoItems/QtiAuthoring/saveMappingOptions",
+	   url: root_url + "/taoItems/QtiAuthoring/saveOptions",
 	   data: $myForm.serialize(),
 	   dataType: 'json',
 	   success: function(r){
 			if(r.saved){
-				qtiEdit.createInfoMessage(__('The mapping options have been updated'));
+				qtiEdit.createInfoMessage(__('The options have been updated'));
 			}
 	   }
 	});
-}
+}*/
 
 interactionClass.prototype.buildInteractionEditor = function(interactionDataContainerSelector, extraControls, options){
-	
-	//re-init the interaction editor object: 
+
+	//re-init the interaction editor object:
 	this.interactionEditor = new Object();
-	
+
 	//interaction data container selector:
 	this.interactionDataContainer = interactionDataContainerSelector;
-	
+
 	var interaction = this;
 	var controls = {
 	  strikeThrough : {visible : true},
 	  underline     : {visible : false},
 	  insertTable 	: {visible : false},
-	  
+
 	  h1 : {visible : true},
 	  h2 : {visible : true},
 	  h3 : {visible : true},
-	  
+
 	  justifyLeft   : {visible : true},
 	  justifyCenter : {visible : true},
 	  justifyRight  : {visible : true},
 	  justifyFull   : {visible : true},
-	  
+
 	  indent  : {visible : true},
 	  outdent : {visible : true},
-	  
+
 	  subscript   : {visible : true},
 	  superscript : {visible : true},
-	  
+
 	  undo : {visible : true},
 	  redo : {visible : true},
-	  
+
 	  insertOrderedList    : {visible : true},
 	  insertUnorderedList  : {visible : true},
 	  insertHorizontalRule : {visible : true},
-	  
+
 	  cut   : {visible : true},
 	  copy  : {visible : true},
 	  paste : {visible : true},
 	  html  : {visible: true},
-	  
+
 	  addChoiceInteraction: {visible:false},
 	  addAssociateInteraction: {visible:false},
 	  addOrderInteraction: {visible:false},
@@ -958,7 +959,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	  createHotText: {visible:false},
 	  createGap: {visible:false},
 	  saveItemData: {visible:false},
-	  
+
 	  saveInteractionData: {
 			visible : false,//currently deactivated
 			className: 'addInteraction',
@@ -968,17 +969,17 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 			tooltip: 'save interaction data'
 		}
 	};
-	
+
 	if(extraControls){
 		var controls = $.extend(controls, extraControls);
 	}
-	
+
 	if(!options){
 		options = {
 			css: ''
 		}
 	}
-	
+
 	this.interactionEditor = $(this.interactionDataContainer).wysiwyg({
 		iFrameClass: 'wysiwyg-interaction',
 		css: options.css,
@@ -1008,14 +1009,14 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 
 		}
 	});
-	
+
 }
 
 
 interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, options){
-	
+
 	var interaction = this;
-	
+
 	var defaultOptions = {
 		onDrawn: function(choiceSerial, shapeObject, self){
 			//export shapeObject to qti:
@@ -1024,7 +1025,7 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 				if(qtiCoords){
 					// $('#ChoiceForm_'+choiceSerial).find('input[name=coords]').val(qtiCoords);
 					// interaction.modifiedChoices[choiceSerial] = 'modified';//it is a choice form:
-					
+
 					var $choiceGroupForm = $('#'+choiceSerial).find('form');
 					if($choiceGroupForm.length){
 						$choiceGroupForm.find('input[name=coords]').val(qtiCoords);
@@ -1032,30 +1033,30 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 					}else{
 						//throw 'no choice or group form found';
 					}
-					
+
 				}
 			}
 		}
 	};
-	
+
 	var shapeEditorOption = $.extend(defaultOptions, options);
-	
+
 	var myShapeEditor = new qtiShapesEditClass(
-		'formInteraction_object', 
+		'formInteraction_object',
 		backgroundImagePath,
 		shapeEditorOption
 	);
-		
+
 	if(myShapeEditor){
 		//map choices to the shape editor:
 		this.shapeEditor = myShapeEditor;
-		
+
 	}
 }
-		
-		
+
+
 interactionClass.prototype.saveInteractionData = function(){
-	
+
 	if(this.interactionDataContainer){
 		if($(this.interactionDataContainer).length && this.interactionEditor.length){
 			//save data if and only if the data content exists
@@ -1071,11 +1072,11 @@ interactionClass.prototype.saveInteractionData = function(){
 					qtiEdit.createInfoMessage(__('Interaction data saved.'));
 			   }
 			});
-			
+
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -1091,7 +1092,7 @@ interactionClass.prototype.getDeletedChoices = function(one){
 			}
 		}
 	}
-	
+
 	return deletedChoices;
 }
 
@@ -1099,7 +1100,7 @@ interactionClass.prototype.getDeletedChoices = function(one){
 interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	var interactionSerial = this.interactionSerial;
 	var interaction = this;
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/addHotText",
@@ -1111,28 +1112,28 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	   success: function(r){
 			//set the content:
 			interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
-			
+
 			//then add listener
 			interaction.bindChoiceLinkListener();
-			
+
 			//add choice form:
 			var $newFormElt = $('<div/>');
 			$newFormElt.attr('id', r.choiceSerial);
 			$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
 			$newFormElt.append(r.choiceForm);
-			
+
 			//add to parameter
 			if(!$appendTo){
 				var $appendTo = $('#formContainer_choices');
 			}
 			$appendTo.append($newFormElt);
-			
+
 			$newFormElt.hide();
 			interaction.initToggleChoiceOptions();//{'delete':false}
 			$newFormElt.show();
-			
+
 			interaction.setFormChangeListener('#'+r.choiceSerial);
-					
+
 			//rebuild the response grid:
 			new responseClass(interaction.responseGrid, interaction);
 	   }
@@ -1142,9 +1143,9 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 interactionClass.prototype.addGroup = function(number, interactionData, $appendTo){
 
 	var interaction = this;
-	
+
 	var addGroup = function(interactionData, $appendTo){
-	
+
 		$.ajax({
 		   type: "POST",
 		   url: root_url + "/taoItems/QtiAuthoring/addGroup",
@@ -1154,54 +1155,54 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 		   },
 		   dataType: 'json',
 		   success: function(r){
-				
+
 				if(interaction.interactionEditor){//gapmatch interaction only
 					//set the content:
 					interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
-				
+
 					//then add listener
 					interaction.bindChoiceLinkListener();//ok keep
-				} 
-				
+				}
+
 				//reload choices form
 				if(r.reload){
 					interaction.loadChoicesForm();
 					return;
 				}
-				
+
 				//add choice form:
 				var $newFormElt = $('<div/>');
 				$newFormElt.attr('id', r.groupSerial);//r.groupSerial
 				$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
 				$newFormElt.append(r.groupForm);
-				
+
 				//add to parameter
 				if(!$appendTo){
 					var $appendTo = $('#formContainer_groups');//append to group!
 				}
 				$appendTo.append($newFormElt);
-				
+
 				$newFormElt.hide();
 				interaction.initToggleChoiceOptions({'delete': false});
 				$newFormElt.show();
-				
+
 				interaction.setFormChangeListener('#'+r.groupSerial);
 				interaction.setShapeEditListener('#'+r.groupSerial);
-				
+
 				//rebuild the response grid:
 				new responseClass(interaction.responseGrid, interaction);
 		   }
 		});
-	
+
 	}
-	
+
 	//get directly interaction data from the editor:
 	var interactionData = '';
 	if(this.interactionEditor) interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
-	
+
 	if(this.choiceAutoSave){
 		this.saveModifiedChoices();
-		
+
 		var timer = null;
 		var stopTimer = function(){
 			if(!number){
@@ -1218,44 +1219,44 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 				stopTimer();
 			}
 		}, 500);
-		
+
 	}else{
 		addGroup(interactionData, $appendTo);
 	}
 }
 
 interactionClass.prototype.bindChoiceLinkListener = function(){
-		
+
 	//destroy all listeners:
-	
+
 	//reset the choice array:
 	this.choices = [];
-	
+
 	var links = qtiEdit.getEltInFrame('.qti_choice_link');
 	for(var i in links){
-		
+
 		var choiceSerial = links[i].attr('id');
-		
+
 		this.choices[choiceSerial] = choiceSerial;
-		
+
 		links[i].unbind('click').click(function(){
 			//focus the clicked choice form:
 			window.location.hash = '#'+$(this).attr('id');
-			
+
 			//add then remove the highlight class
 			// CL('highlighting the choice', $(this).attr('id'));
 		});
-		
+
 		qtiEdit.makeNoEditable(links[i]);
 		qtiEdit.makeNoEditable(links[i].parent('div'));
 		links[i].parent('div').click(function(e){
 			e.preventDefault();
 		});
 	}
-	
+
 }
 
-interactionClass.prototype.setResponseMappingMode = function(isMapping){
+/*interactionClass.prototype.setResponseMappingMode = function(isMapping){
 	if(isMapping){
 		//set the reponse mapping to true:
 		if(this.responseMappingMode){
@@ -1264,19 +1265,19 @@ interactionClass.prototype.setResponseMappingMode = function(isMapping){
 			//display the scoring form: //TODO: load it only when necessary:
 			this.responseMappingMode = true;
 			$('#qtiAuthoring_mappingEditor').show();
-			
+
 			//reload the response grid, to update column model:
 			new responseClass(this.responseGrid, this);
 		}
 	}else{
 		this.responseMappingMode = false;
 		$('#qtiAuthoring_mappingEditor').hide();
-		
+
 		//reload the response grid, to update column model:
 		new responseClass(this.responseGrid, this);
 	}
-	
-}
+
+}*/
 
 interactionClass.prototype.setModifiedInteraction = function(modified){
 	if(modified){
@@ -1286,5 +1287,5 @@ interactionClass.prototype.setModifiedInteraction = function(modified){
 		this.modifiedInteraction = false;
 		$('a.interaction-form-submitter').removeClass('form-submitter-emphasis');
 	}
-	
+
 }

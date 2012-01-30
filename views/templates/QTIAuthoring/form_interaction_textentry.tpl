@@ -1,6 +1,6 @@
 <div id="qtiAuthoring_interaction_left_container">
-	<div id="qtiAuthoring_interactionEditor"> 
-	
+	<div id="qtiAuthoring_interactionEditor">
+
 		<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
 				<?=__('Interaction editor:')?>
 		</div>
@@ -9,7 +9,7 @@
 				<?=get_data('formInteraction')?>
 			</div>
 		</div>
-	
+
 	</div>
 </div>
 
@@ -29,7 +29,7 @@ $(document).ready(function(){
 		else{
 			$("input[name=base]:text").attr('disabled', true);
 			$("input[name=stringIdentifier]:text").attr('disabled', true);
-		} 
+		}
 	});
 });
 </script>
