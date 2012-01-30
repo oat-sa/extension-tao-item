@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -22,7 +22,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * By implementing the exportable interface, the object must export it's data to
  * formats defined here.
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/interface.Exportable.php');
 
@@ -43,7 +43,7 @@ require_once('taoItems/models/classes/QTI/interface.Exportable.php');
  *
  * @abstract
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -54,6 +54,22 @@ abstract class taoItems_models_classes_QTI_Data
 
 
     // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute DATA_KEY
+     *
+     * @access public
+     * @var string
+     */
+    const DATA_KEY = 'qti_s';
+
+    /**
+     * Short description of attribute IDENTIFIERS_KEY
+     *
+     * @access public
+     * @var string
+     */
+    const IDENTIFIERS_KEY = 'qti_i';
 
     /**
      * It repesents the  QTI  identifier. 
@@ -111,14 +127,6 @@ abstract class taoItems_models_classes_QTI_Data
     public static $persist = true;
 
     /**
-     * String prefix used in session, keys and ids management
-     *
-     * @access public
-     * @var string
-     */
-    const PREFIX = 'qti_';
-
-    /**
      * Short description of attribute templatesPath
      *
      * @access protected
@@ -140,7 +148,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Export the data in XHTML format
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -169,7 +177,7 @@ abstract class taoItems_models_classes_QTI_Data
      * EXport the data in the QTI XML format
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -196,7 +204,7 @@ abstract class taoItems_models_classes_QTI_Data
      * EXport the data into TAO's objects Form
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -214,7 +222,7 @@ abstract class taoItems_models_classes_QTI_Data
      * a human readable identifier will be created)
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -223,9 +231,7 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 begin
         
-    	$this->createSerial();
-    	
-    	self::$_instances[] = $this->serial;
+    	self::$_instances[] = $this->getSerial();
     	
     	try{
     		$this->setIdentifier($identifier);
@@ -244,7 +250,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Be carefull to the assignment in the loops!!!
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __destruct()
@@ -253,22 +259,22 @@ abstract class taoItems_models_classes_QTI_Data
        
     		if(self::$persist){
 	    		//The instance is serialized and saved in the session me before the destruction 
-	    		Session::setAttribute(self::PREFIX . $this->serial, serialize($this));
+	    		taoItems_models_classes_QTI_Service::singleton()->saveDataToSession($this);
 	        }
 	        else{
 	        	//clean session
 	        	if(!empty($this->serial)){
-	        		Session::removeAttribute(self::PREFIX . $this->serial);
+	        		taoItems_models_classes_QTI_Service::singleton()->removeDataFromSession($this->serial);
 	        	}
 	        	if(!empty($this->identifier) && !is_null($this->identifier)){
-	        		$ids = Session::getAttribute(self::PREFIX . 'identifiers');
+	        		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
 		        	if(is_array($ids)){
  		    			if(in_array($this->identifier, $ids)){
 		    				$key = array_search($this->identifier, $ids);
 		    				if($key !== false){
 	        					unset($ids[$key]);
 	        					sort($ids);
-		    					Session::setAttribute(self::PREFIX . 'identifiers', $ids);
+		    					Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
 		    				}
 		    			}
 	        		}
@@ -289,7 +295,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Gives the list of attributes to serialize by reflection.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function __sleep()
@@ -314,15 +320,14 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method __wakeup
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function __wakeup()
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 begin
-        
-    	if(!in_array($this->serial, self::$_instances)){
-    		self::$_instances[] = $this->serial;
+    	if(!in_array($this->getSerial(), self::$_instances)){
+    		self::$_instances[] = $this->getSerial();
     	}
     	
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 end
@@ -332,7 +337,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Enable or disable the persistance mode.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  boolean enabled
      * @return mixed
      */
@@ -349,7 +354,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getTemplatePath
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public static function getTemplatePath()
@@ -372,7 +377,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the serial number
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getSerial()
@@ -395,7 +400,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the identifier
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getIdentifier()
@@ -420,7 +425,7 @@ abstract class taoItems_models_classes_QTI_Data
      * If the parameter already exists a InvalidArgumentException is thrown.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string id
      * @param  boolean unique
      * @return mixed
@@ -433,11 +438,9 @@ abstract class taoItems_models_classes_QTI_Data
     		throw new InvalidArgumentException("Id should be set");
     	}
     	
-    	$idsKey = self::PREFIX . 'identifiers';
-    	
     	$ids = array();
-        if(Session::hasAttribute($idsKey)){
-    		$ids = Session::getAttribute($idsKey);
+        if(Session::hasAttribute(self::IDENTIFIERS_KEY)){
+    		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
     		if(!is_array($ids)){
     			$ids = array($ids);
     		}
@@ -456,7 +459,7 @@ abstract class taoItems_models_classes_QTI_Data
     	}
 		
     	$ids[] = $id;
-    	Session::setAttribute($idsKey, $ids);
+    	Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
     	$this->identifier = $id;
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F end
@@ -466,17 +469,16 @@ abstract class taoItems_models_classes_QTI_Data
      * Create a unique identifier, based on the kind of instance.
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function createIdentifier()
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
-    	$idsKey = self::PREFIX . 'identifiers';
     	$ids = array();
-        if(Session::hasAttribute($idsKey)){
-    		$ids = Session::getAttribute($idsKey);
+        if(Session::hasAttribute(self::IDENTIFIERS_KEY)){
+    		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
     		if(!is_array($ids)){
     			$ids = array($ids);
     		}
@@ -496,7 +498,7 @@ abstract class taoItems_models_classes_QTI_Data
     	} while($exist);
     		
     	$ids[] = $id;
-    	Session::setAttribute($idsKey, $ids);
+    	Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
     	
     	$this->identifier = $id;
     	
@@ -507,7 +509,7 @@ abstract class taoItems_models_classes_QTI_Data
      * create a unique serial number
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function createSerial()
@@ -525,7 +527,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getType
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getType()
@@ -545,7 +547,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setType
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string type
      * @return mixed
      */
@@ -562,7 +564,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the data
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getData()
@@ -582,7 +584,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set the data
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string data
      * @param  boolean cleanup
      * @return mixed
@@ -619,7 +621,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getDataXHTML
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getDataXHTML()
@@ -676,7 +678,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setDataXHTML
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string data
      * @return mixed
      */
@@ -690,7 +692,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the options
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getOptions()
@@ -710,7 +712,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set the options
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array options
      * @return mixed
      */
@@ -727,7 +729,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get an options by it's name
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string name
      * @return mixed
      */
@@ -758,7 +760,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set an option
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string name
      * @param  string value
      * @return mixed
@@ -777,7 +779,7 @@ abstract class taoItems_models_classes_QTI_Data
      * from the instance options and regarding the option type
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array formalOpts
      * @param  boolean recursive
      * @return string
@@ -822,7 +824,7 @@ abstract class taoItems_models_classes_QTI_Data
      * of the current instances to an associative array
      *
      * @access protected
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     protected function extractVariables()
@@ -847,7 +849,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method _remove
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return boolean
      */
     public function _remove()
@@ -860,23 +862,23 @@ abstract class taoItems_models_classes_QTI_Data
         if(self::$persist){
         	//clean session
         	if(!empty($this->serial)){
-        		Session::removeAttribute(self::PREFIX . $this->serial);
+        		taoItems_models_classes_QTI_Service::singleton()->removeDataFromSession($this->serial);
         	}
         	if(!empty($this->identifier) && !is_null($this->identifier)){
-        		$ids = Session::getAttribute(self::PREFIX . 'identifiers');
+        		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
         		if(is_array($ids)){
 	    			if(in_array($this->identifier, $ids)){
 	    				$key = array_search($this->identifier, $ids);
 	    				if($key !== false){
         					unset($ids[$key]);
         					sort($ids);
-	    					Session::setAttribute(self::PREFIX . 'identifiers', $ids);
+	    					Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
 	    				}
 	    			}
         		}
         	}
         	foreach(self::$_instances as $key => $serial){
-        		if($serial == $this->serial){
+        		if($serial == $this->getSerial()){
         			unset(self::$_instances[$key]);
         			break;
         		}

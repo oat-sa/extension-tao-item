@@ -193,22 +193,21 @@ class taoItems_models_classes_QTI_Interaction
     	$choiceSerials = $this->choices; 
     	$this->choices = array();
     	foreach($choiceSerials as $serial){
-    		if(Session::hasAttribute(self::PREFIX .$serial)){
-    			$this->choices[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
+    		$choice = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($serial, 'taoItems_models_classes_QTI_Choice');
+    		if(!is_null($choice)){
+    			$this->choices[$serial] = $choice;
     		}
     	}
 		
     	$responseSerial = $this->response;
-    	$this->response = null;
-    	if(Session::hasAttribute(self::PREFIX .$responseSerial)){
-    		$this->response = unserialize(Session::getAttribute(self::PREFIX .$responseSerial));
-    	}
+    	$this->response = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($responseSerial, 'taoItems_models_classes_QTI_Response');
 		
 		$groupSerials = $this->groups;
 		$this->groups = array();
     	foreach($groupSerials as $serial){
-    		if(Session::hasAttribute(self::PREFIX .$serial)){
-    			$this->groups[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
+    		$group = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($serial, 'taoItems_models_classes_QTI_Group');
+    		if(!is_null($group)){
+    			$this->groups[$serial] = $group;
     		}
     	}
     	

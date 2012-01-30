@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.01.2012, 19:06:03 with ArgoUML PHP module 
+ * Automatically generated on 24.01.2012, 17:13:08 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -51,6 +51,14 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCo
 
 
     // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute CLASS_ID
+     *
+     * @access public
+     * @var string
+     */
+    const CLASS_ID = 'correct';
 
     // --- OPERATIONS ---
 

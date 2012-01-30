@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 23.01.2012, 18:11:20 with ArgoUML PHP module 
+ * Automatically generated on 25.01.2012, 14:31:58 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -96,6 +96,54 @@ abstract class taoItems_models_classes_QTI_response_ResponseProcessing
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003621 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method getForm
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Response response
+     * @return tao_helpers_form_Form
+     */
+    public function getForm( taoItems_models_classes_QTI_Response $response)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7fd95e33:1350eecc263:-8000:0000000000003633 begin
+        // section 127-0-1-1-7fd95e33:1350eecc263:-8000:0000000000003633 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method takeNoticeOfAddedInteraction
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Interaction interaction
+     * @param  Item item
+     * @return mixed
+     */
+    public function takeNoticeOfAddedInteraction( doc_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
+    {
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003659 begin
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003659 end
+    }
+
+    /**
+     * Short description of method takeNoticeOfRemovedInteraction
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Interaction interaction
+     * @param  Item item
+     * @return mixed
+     */
+    public function takeNoticeOfRemovedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
+    {
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003665 begin
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003665 end
     }
 
 } /* end of abstract class taoItems_models_classes_QTI_response_ResponseProcessing */

@@ -63,7 +63,7 @@ class taoItems_models_classes_QtiAuthoringService
 		$returnValue = new taoItems_models_classes_QTI_Item($itemIdentifier, array());
 		
 		//add default responseProcessing:
-		$this->setResponseProcessing($returnValue, 'template');
+		$returnValue->setResponseProcessing(taoItems_models_classes_QTI_response_TemplatesDriven::create($returnValue));
 		
 		$returnValue->setOption('title', empty($title)?'QTI item':$title);
 		
@@ -1011,7 +1011,7 @@ class taoItems_models_classes_QtiAuthoringService
 				case 'custom':
 				case 'customtemplate':
 				default:	{
-					throw new common_Exception("unavailable response processing type {$type}");
+					throw new common_Exception("unavailable response processing type '{$type}'");
 					break;
 				}
 			}
@@ -1024,20 +1024,6 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		return $returnValue;
 	}
-	
-	public function setResponseTemplate(taoItems_models_classes_QTI_Response $response, $templateUri){
-		
-		$returnValue = false;
-		
-		//check if it is one of the available templates:
-		if(taoItems_models_classes_QTI_response_TemplatesDriven::isSupportedTemplate($templateUri)){
-			$response->setHowMatch($templateUri);
-			$returnValue = true;
-		}
-		
-		return $returnValue;
-	}
-	
 	
 	public function getResponseProcessing(taoItems_models_classes_QTI_Item $item){
 		
@@ -1055,6 +1041,7 @@ class taoItems_models_classes_QtiAuthoringService
 		
 		if(is_null($response)){
 			//create a new one here, with default data model, according to the type of interaction:
+			common_Logger::w('interaction '.$interaction->getIdentifier().' is missing a response', array('TAOITEMS', 'QTI'));
 			$this->createInteractionResponse($interaction);
 		}
 		
@@ -1073,9 +1060,6 @@ class taoItems_models_classes_QtiAuthoringService
 		//var_dump(Session::getAttribute('qti_identifiers'));
 		$response = new taoItems_models_classes_QTI_Response($identifier);
 		
-		//set the default response template:
-		$this->setResponseTemplate($response, QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
-		
 		//set the response to the interaction
 		$interaction->setResponse($response);
 		
@@ -1085,11 +1069,11 @@ class taoItems_models_classes_QtiAuthoringService
 		if(!$returnValue){
 			throw new Exception('the interaction response cannot be updated upon creation');
 		}
-		
+
 		return $returnValue;
 	}
 	
-	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction){
+	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing){
 		$returnValue = array();
 		$interactionType = strtolower($interaction->getType());
 		switch($interactionType){
@@ -1240,8 +1224,8 @@ class taoItems_models_classes_QtiAuthoringService
 			$response = $interaction->getResponse();
 			if(is_null($response)){
 				throw new Exception("no response found for the interaction {$interaction->getIdentifier()}");
-			}else{
-				$responseProcessingType = $response->getHowMatch();
+			}elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+				$responseProcessingType = $responseProcessing->getTemplate($response);
 				if(!empty($responseProcessingType)){
 					if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
 						//mapping:

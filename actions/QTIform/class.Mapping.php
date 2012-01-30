@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems\actions\QTIform\class.Mapping.php
+ * TAO - taoItems/actions/QTIform/class.Mapping.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.01.2011, 11:32:48 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 26.01.2012, 14:41:46 with ArgoUML PHP module 
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10066
  * @subpackage actions_QTIform
@@ -23,12 +23,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * This class provide a container for a specific form instance.
- * It's subclasses instanciate a form and it's elements to be used as a
+ * include taoItems_actions_QTIform_ResponseProcessingOptions
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('tao/helpers/form/class.FormContainer.php');
+require_once('taoItems/actions/QTIform/class.ResponseProcessingOptions.php');
 
 /* user defined includes */
 // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FB7-includes begin
@@ -42,13 +41,13 @@ require_once('tao/helpers/form/class.FormContainer.php');
  * Short description of class taoItems_actions_QTIform_Mapping
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10066
  * @subpackage actions_QTIform
  */
 class taoItems_actions_QTIform_Mapping
-    extends tao_helpers_form_FormContainer
+    extends taoItems_actions_QTIform_ResponseProcessingOptions
 {
     // --- ASSOCIATIONS ---
 
@@ -69,7 +68,7 @@ class taoItems_actions_QTIform_Mapping
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Response response
      */
     public function __construct( taoItems_models_classes_QTI_Response $response)
@@ -86,33 +85,10 @@ class taoItems_actions_QTIform_Mapping
     }
 
     /**
-     * Short description of method initForm
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     */
-    public function initForm()
-    {
-        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC3 begin
-		
-		$this->form = tao_helpers_form_FormFactory::getForm('MappingForm');
-		
-		$actions = array();
-		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
-		$saveElt->setValue("<a href='#' class='form-submiter' ><img src='".TAOBASE_WWW."/img/save.png'  /> ".__('Apply')."</a>");
-		$actions[] = $saveElt;
-		
-		$this->form->setActions(array(), 'bottom');
-		$this->form->setActions($actions, 'top');
-		
-        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC3 end
-    }
-
-    /**
      * Short description of method initElements
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      */
     public function initElements()
     {
@@ -150,21 +126,7 @@ class taoItems_actions_QTIform_Mapping
 		}
 		$this->form->addElement($upperBoundElt);
 		$this->form->addElement($lowerBoundElt);
-		
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC5 end
-    }
-
-    /**
-     * Short description of method newOperation
-     *
-     * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
-     * @return mixed
-     */
-    public function newOperation()
-    {
-        // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F5F begin
-        // section 10-13-1-39--340dbb51:12d5574289f:-8000:0000000000002F5F end
     }
 
 } /* end of class taoItems_actions_QTIform_Mapping */

@@ -16,7 +16,7 @@
 		$('#qtiAuthoring_processingEditor_formContainer').find('.form-submiter').click(function(){
 			var $form = $('#qtiAuthoring_processingEditor_formContainer').find('form');
 			if($form.length){
-				myItem.saveResponseProcessing($form);
+				myItem.saveItemResponseProcessing($form);
 			}
 		});
 	

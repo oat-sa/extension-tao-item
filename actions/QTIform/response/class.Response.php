@@ -95,15 +95,13 @@ abstract class taoItems_actions_QTIform_response_Response
 		
 		$this->form = tao_helpers_form_FormFactory::getForm('Response_Form');
 		
-		$actions = array();
-		
 		$saveElt = tao_helpers_form_FormFactory::getElement('save', 'Free');
 		$saveElt->setValue("<a href='#' class='response-form-submitter' ><img src='".BASE_WWW."img/qtiAuthoring/update.png'  /> ".__('Update response & scoring modifications')."</a>");
 		$actions[] = $saveElt;
 		
 		$this->form->setActions($actions, 'top');
 		$this->form->setActions(array(), 'bottom');
-		
+			
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050BF end
     }
 
@@ -135,46 +133,10 @@ abstract class taoItems_actions_QTIform_response_Response
     public function setCommonElements()
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050C3 begin
-		
 		//serial
 		$serialElt = tao_helpers_form_FormFactory::getElement('responseSerial', 'Hidden');
 		$serialElt->setValue($this->response->getSerial());
 		$this->form->addElement($serialElt);
-		
-		//set response processing type:
-		$mapKey = tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE);
-		$mapPointKey = tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT);
-		
-		$availableTemplates = array(
-			tao_helpers_Uri::encode(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT) => __('correct')
-		);
-		
-		//get interaction type:
-		$qtiService = taoItems_models_classes_QTI_Service::singleton();
-		$interaction = $qtiService->getComposingData($this->response);
-		if(!is_null($interaction)){
-			switch(strtolower($interaction->getType())){
-				case 'order':
-				case 'graphicorder':{
-					break;
-				}
-				case 'selectpoint';
-				case 'positionobject':{
-					$availableTemplates[$mapPointKey] = __('map point');
-					break;
-				}
-				default:{
-					$availableTemplates[$mapKey] = __('map');
-				}
-			}
-		}
-		
-		$ResponseProcessingTplElt = tao_helpers_form_FormFactory::getElement('processingTemplate', 'Combobox');
-		$ResponseProcessingTplElt->setDescription(__('Processing type'));
-		$ResponseProcessingTplElt->setOptions($availableTemplates);
-		$ResponseProcessingTplElt->setValue($this->response->getHowMatch());
-		$this->form->addElement($ResponseProcessingTplElt);
-		
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:00000000000050C3 end
     }
 

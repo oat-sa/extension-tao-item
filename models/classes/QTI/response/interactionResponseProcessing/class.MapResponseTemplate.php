@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 23.01.2012, 18:57:45 with ArgoUML PHP module 
+ * Automatically generated on 24.01.2012, 17:13:08 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -51,6 +51,14 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResp
 
 
     // --- ATTRIBUTES ---
+
+    /**
+     * Short description of attribute CLASS_ID
+     *
+     * @access public
+     * @var string
+     */
+    const CLASS_ID = 'map';
 
     // --- OPERATIONS ---
 
@@ -104,23 +112,6 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResp
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:000000000000362A end
 
         return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method toForm
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return tao_helpers_form_xhtml_Form
-     */
-    public function toForm()
-    {
-        $returnValue = null;
-
-        // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003633 begin
-        // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003633 end
-
-        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate */

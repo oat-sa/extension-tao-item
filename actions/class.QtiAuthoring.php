@@ -117,13 +117,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$this->setData('debugMode', false);
 			
 			//clear the QTI session data before doing anything else:
-			if(isset($_SESSION['ClearFw'])){
-				foreach($_SESSION['ClearFw'] as $key => $value){
-					if(preg_match('/^'.taoItems_models_classes_QTI_Data::PREFIX.'/', $key)){
-						unset($_SESSION['ClearFw'][$key]);
-					}
-				}
-			}
+			Session::removeAttribute(taoItems_models_classes_QTI_Data::DATA_KEY);
+			Session::removeAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
 		}
 		
 		//required for saving the item in tao:
@@ -263,14 +258,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	
 		$sessionData = array();
 		
-		if(isset($_SESSION['ClearFw'])){
-			foreach($_SESSION['ClearFw'] as $key => $value){
-				if(preg_match('/^'.taoItems_models_classes_QTI_Data::PREFIX.'/', $key)){
+		if(session::hasAttribute(taoItems_models_classes_QTI_Data::DATA_KEY)){
+			foreach(session::getAttribute(taoItems_models_classes_QTI_Data::DATA_KEY) as $key => $value){
 					$sessionData[$key] = $value;
-				}
 			}
 		}
-		
 		return $sessionData;
 	}
 	
@@ -632,6 +624,32 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$response = $this->service->getInteractionResponse($interaction);
 					if(!empty($response)){
 						$returnValue = $response;
+					}
+				}
+			}catch(Exception $e){
+				throw new Exception('cannot find the response no request parameter "responseSerial" found');
+			}
+			
+		}
+		
+		return $returnValue;
+	}
+	
+	public function getCurrentResponseProcessing(){
+		$returnValue = null;
+		if($this->hasRequestParameter('responseprocessingSerial')){
+			$responseprocessing = $this->qtiService->getDataBySerial($this->getRequestParameter('responseprocessingSerial'), 'taoItems_models_classes_QTI_response_ResponseProcessing');
+			if(!empty($responseprocessing)){
+				$returnValue = $responseprocessing;
+			}
+		}else{
+			try{
+				//second chance: try getting the response from the item
+				$item = $this->getCurrentItem();
+				if(!empty($item)){
+					$responseprocessing = $this->service->getResponseProcessing($item);
+					if(!empty($responseprocessing)){
+						$returnValue = $responseprocessing;
 					}
 				}
 			}catch(Exception $e){
@@ -1160,7 +1178,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setView('QTIAuthoring/form_response_processing.tpl');
 	}
 	
-	public function saveResponseProcessing(){
+	public function saveItemResponseProcessing(){
 		
 		$item = $this->getCurrentItem();
 		$responseProcessingType = tao_helpers_Uri::decode($this->getRequestParameter('responseProcessingType'));
@@ -1171,6 +1189,35 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		echo json_encode(array(
 			'saved' => $saved,
 			'responseMode' => $this->isResponseMappingMode($responseProcessingType)
+		));
+	}
+	
+	public function saveInteractionResponseProcessing(){
+		$response = $this->getCurrentResponse();
+		$rp = $this->getCurrentResponseProcessing();
+		$saved					= false;
+		$setResponseMappingMode	= false;
+		$templateHasChanged		= false;
+		
+		if(!is_null($response) && !is_null($rp)){
+			if ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+				if($this->hasRequestParameter('processingTemplate')){
+					$processingTemplate = tao_helpers_Uri::decode($this->getRequestParameter('processingTemplate'));
+					if ($rp->getTemplate($response) != $processingTemplate) {
+						$templateHasChanged = true;
+					}
+					$saved = $rp->setTemplate($response, $processingTemplate);
+					if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
+				}
+			} elseif ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+				
+			}
+		}
+		
+		echo json_encode(array(
+			'saved'						=> $saved,
+			'setResponseMappingMode'	=> $setResponseMappingMode,
+			'templateHasChanged'		=> $templateHasChanged
 		));
 	}
 	
@@ -1229,8 +1276,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	public function saveResponseProperties(){
 		
 		$saved = false;
-		$templateHasChanged = false;
-		$setResponseMappingMode = false;
 		$response = $this->getCurrentResponse();
 		
 		if(!is_null($response)){
@@ -1259,54 +1304,49 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$saved = true;
 				}
 			}
-			
-			if($this->hasRequestParameter('processingTemplate')){
-				$processingTemplate = tao_helpers_Uri::decode($this->getRequestParameter('processingTemplate'));
-				if($response->getHowMatch() != $processingTemplate){
-					$templateHasChanged = true;
-				}
-				$saved = $this->service->setResponseTemplate($response, $processingTemplate);
-				if($saved) $setResponseMappingMode = $this->isResponseMappingMode($processingTemplate);
-			}
+
 		}
 		
 		echo json_encode(array(
 			'saved' => $saved,
-			'setResponseMappingMode' => $setResponseMappingMode,
-			'templateHasChanged' => $templateHasChanged
 		));
 	}
 	
 	//edit the interaction response:
 	public function editResponse(){
-		$interaction = $this->getCurrentInteraction();
 		$item = $this->getCurrentItem();
 		$responseProcessing = $item->getResponseProcessing();
+		$interaction = $this->getCurrentInteraction();
+		$response = $this->service->getInteractionResponse($interaction);
 		
 		$displayGrid = false;
 		$isResponseMappingMode = false;
 		$columnModel = array();
 		$responseData = array();
-		$xhtmlForm = '';
+		$xhtmlForms = array();
 		$interactionType = strtolower($interaction->getType());
 			
-//		common_Logger::d('editResponse called for type '.$interactionType.' with type '.get_class($responseProcessing));
+		//response options independant of processing
+		$response = $this->service->getInteractionResponse($interaction);
+		$responseForm = $response->toForm();
+		if(!is_null($responseForm)){
+			$xhtmlForms[] = $responseForm->render();
+		}
 		
-		//check the type...
+		//set the processing mode
+		$rpform = $responseProcessing->getForm($response);
+		if (!is_null($rpform)) {
+			$xhtmlForms[] = $rpform->render();
+		}
+		//proccessing related form
+		
 		//only display response grid when the response template is templates driven:
-		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven){
-			
-			//only allow the selection of a template for "templates driven" response processing:
-			$response = $this->service->getInteractionResponse($interaction);
-			$responseForm = $response->toForm();
-			if(!is_null($responseForm)){
-				$xhtmlForm = $responseForm->render();
-			}
+		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
 			
 			//prepare data for the response grid:
 			$displayGrid = true;
 			//get model:
-			$columnModel = $this->service->getInteractionResponseColumnModel($interaction);
+			$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
 			$responseData = $this->service->getInteractionResponseData($interaction);
 			
 			if($interactionType == 'order'){
@@ -1314,36 +1354,25 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				
 			}
 			
-			// $responseProcessingType = $response->getHowMatch();
-			$isResponseMappingMode = $this->isResponseMappingMode($response->getHowMatch());
+			if ($this->isResponseMappingMode($responseProcessing->getTemplate($response))) {
+				$mappingForm = new taoItems_actions_QTIform_Mapping($response);
+				if (!is_null($mappingForm)) {
+					$xhtmlForms[] = $mappingForm->getForm()->render();
+				}
+			}
 			
 		// composite processing
 		}elseif($responseProcessing instanceof taoItems_models_classes_QTI_response_Composite){
-			
-			common_Logger::w('composite called');
-			
-			// get everything response related
-			$response = $this->service->getInteractionResponse($interaction);
-			$responseForm = $response->toForm();
-			if(!is_null($responseForm)){
-				$xhtmlForm = $responseForm->render();
-			}
-			
-			//get everything processing related
-			$irp = $responseProcessing->getInteractionResponseProcessing($interaction->getResponse()->getIdentifier());
-			$responseProcessingForm = $irp->toForm();
-			if(!is_null($responseProcessingForm)){
-				$xhtmlForm .= $responseProcessingForm->render();
-			}
-			
-			//this should be part of response
-			//prepare data for the response grid:
 			$displayGrid = false;
+			$manualForm = new taoItems_actions_QTIform_ManualProcessing();
+			if (!is_null($manualForm)) {
+				$xhtmlForms[] = $manualForm->getForm()->render();
+			}
 			
 		} else {
-			$xhtmlForm .= '<b>';
-			$xhtmlForm .= __('The response form is available for templates driven item only.<br/>');
-			$xhtmlForm .= '</b>';
+			$xhtmlForms[] = '<b>'
+				.__('The response form is available for templates driven item only.<br/>')
+				.'</b>';
 		}
 		
 		
@@ -1356,7 +1385,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'data' => $responseData,
 			'setResponseMappingMode' => $isResponseMappingMode,
 			'maxChoices' => intval($interaction->getCardinality(true)),
-			'responseForm' => $xhtmlForm
+			'responseForm' => implode('', $xhtmlForms),
+			'forms'	=> $xhtmlForms
 		));
 		
 	}

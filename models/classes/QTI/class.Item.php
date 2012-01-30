@@ -160,11 +160,12 @@ class taoItems_models_classes_QTI_Item
     {
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB begin
         
-    	$interactionSerials = $this->interactions; 
+    	$interactionSerials = $this->interactions;
     	$this->interactions = array();
     	foreach($interactionSerials as $serial){
-    		if(Session::hasAttribute(self::PREFIX .$serial)){
-    			$this->interactions[$serial] = unserialize(Session::getAttribute(self::PREFIX .$serial));
+    		$interaction = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($serial, 'taoItems_models_classes_QTI_Interaction');
+    		if(!is_null($interaction)){
+    			$this->interactions[$serial] = $interaction;
     		}
     	}
     	
@@ -252,7 +253,12 @@ class taoItems_models_classes_QTI_Item
         
     	if(!is_null($interaction)){
     		$this->interactions[$interaction->getSerial()] = $interaction;
+    		
+    		//allow resonseProcessing to adapt to new interaction
+    		if (!is_null($this->getResponseProcessing()))
+				$this->getResponseProcessing()->takeNoticeOfAddedInteraction($interaction, $this);
     	}
+    	
     	
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023DF end
     }
@@ -292,6 +298,9 @@ class taoItems_models_classes_QTI_Item
 				//finally, delete the interaction:
     			$interaction->_remove();
     			unset($this->interactions[$interaction->getSerial()]);
+    			
+    			//allow responseProcessing to do cleanup
+    			$this->getResponseProcessing()->takeNoticeOfRemovedInteraction($interaction, $this);
     			$returnValue = true;
     		}
     	}
@@ -570,33 +579,8 @@ class taoItems_models_classes_QTI_Item
         // render the responseProcessing
         $renderedResponseProcessing = '';
         $responseProcessing = $this->getResponseProcessing();
-        common_Logger::d('ResponseProcessing class during output is '.get_class($responseProcessing));
         if(isset($responseProcessing)){
-        	
-            if($responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven){
-                if (count($this->getInteractions()) == 1) {
-                    foreach($this->getInteractions() as $interaction){
-                        $responseProcessingToRender = new taoItems_models_classes_QTI_response_Template ($interaction->getResponse()->getHowMatch());
-                        $renderedResponseProcessing = $responseProcessingToRender->toQTI();
-                    }
-                }
-                else {
-                    $renderedResponseProcessing .= "<responseProcessing>";
-                    foreach($this->getInteractions() as $interaction){
-                        $renderedResponseProcessing .= 
-                            $responseProcessing->buildQTI(
-                                $interaction->getResponse()->getHowMatch()
-                                , Array(
-                                    'responseIdentifier'=>$interaction->getResponse()->getIdentifier()
-                                    , 'outcomeIdentifier'=>'SCORE'
-                                )
-                            );
-                    }
-                    $renderedResponseProcessing .= "</responseProcessing>";
-                }
-            } else {
-                $renderedResponseProcessing = $responseProcessing->toQTI();
-            } 
+			$renderedResponseProcessing = $responseProcessing->toQTI();
         }
 
         $variables['renderedResponseProcessing'] = $renderedResponseProcessing;
@@ -660,28 +644,7 @@ class taoItems_models_classes_QTI_Item
             
             // BUILD the RP rule
             if(!is_null($this->getResponseProcessing ())){
-                $responseProcessing = $this->getResponseProcessing ();
-                $returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
-                
-                // TEMPLATE DRIVEN RESPONSE PROCESSING
-                /*
-                if ( $responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven){
-                    foreach ($this->getInteractions() as $interaction){
-                        // Build the rule for each interaction functions of the associated template
-                        $returnValue["rule"] .= $responseProcessing->buildRule (
-                            $interaction->getResponse()->getHowMatch () 
-                            , Array(
-                                'responseIdentifier'=>$interaction->getResponse()->getIdentifier()
-                                , 'outcomeIdentifier'=>'SCORE'
-                            )
-                        );
-                    }
-                } 
-                // CUSTOM RESPONSE PROCESSING
-                else {
-                    $returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
-                }
-                */
+				$returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
             }
             
             // Get the correct responses (correct variables and map variables)

@@ -72,7 +72,7 @@ class taoItems_models_classes_QTI_response_Summation
         }
         $sum = new taoItems_models_classes_QTI_expression_CommonExpression('sum', array());
         $sum->setSubExpressions($subExpressions);
-        $summationRule = new taoItems_models_classes_QTI_response_SetOutcomeVariable('SCORE', $sum);
+        $summationRule = new taoItems_models_classes_QTI_response_SetOutcomeVariable($this->outcomeIdentifier, $sum);
         
         $returnValue = array($summationRule);
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003606 end
@@ -92,7 +92,7 @@ class taoItems_models_classes_QTI_response_Summation
         $returnValue = (string) '';
 
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003632 begin
-        $returnValue .= '<setOutcomeValue identifier="SCORE"><sum>';
+        $returnValue .= '<setOutcomeValue identifier="'.$this->outcomeIdentifier.'"><sum>';
         foreach ($this->components as $irp) {
         	$returnValue .= '<variable identifier="'.$irp->getOutcomeIdentifier().'" />';
         }

@@ -324,7 +324,7 @@ class taoItems_models_classes_Matching_Matching
         } catch (taoItems_models_classes_Matching_ExitResponseException $e) {
         	//do nothing, code exited "normaly"
 		} catch (Exception $e) {
-			throw new Exception ('an error occured during the evaluation of the rule : '.$e);
+			throw new common_Exception ('an error occured during the evaluation of the rule : '.$e);
 		}
 		
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028DA end

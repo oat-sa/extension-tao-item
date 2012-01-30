@@ -399,15 +399,14 @@ class taoItems_scripts_MigrateLegacyItems
 				new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'))
 			));
 	
-			if($hasResponse){
-				$this->qtiItem->setResponseProcessing(
-					new taoItems_models_classes_QTI_response_TemplatesDriven()
-				);
-			}
-	   	 	
 	    	$this->qtiItem->setInteractions($interactions);
 	    	$this->qtiItem->setData($data);
-			
+			if($hasResponse){
+				$this->qtiItem->setResponseProcessing(
+					taoItems_models_classes_QTI_response_TemplatesDriven::create($this->qtiItem)
+				);
+			}
+	    	
 	    	$this->createStyleSheet();
 	    
 	    	$output = $this->qtiItem->toQTI();
@@ -582,7 +581,6 @@ class taoItems_scripts_MigrateLegacyItems
     	(count($correctResponses) > 1) ? $options['cardinality'] = 'multiple' :  $options['cardinality'] = 'single';
     		
     	$response = new taoItems_models_classes_QTI_Response(null, $options);
-		$response->setHowMatch(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
 		$response->setCorrectResponses($correctResponses);
 		$interaction->setResponse($response);
     		

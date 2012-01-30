@@ -107,12 +107,8 @@ class taoItems_models_classes_QTI_Parser
     	if($xml !== false){
     		
     		//clean session's previous item 
-    		foreach(Session::getAttributeNames() as $key){
-    			if(preg_match("/^".taoItems_models_classes_QTI_Data::PREFIX."/", $key)){
-    				Session::removeAttribute($key);
-    			}
-    		}
-    		Session::removeAttribute(taoItems_models_classes_QTI_Data::PREFIX . 'identifiers');
+    		Session::removeAttribute(taoItems_models_classes_QTI_Data::DATA_KEY);
+    		Session::removeAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
     		
     		//build the item from the xml
     		$returnValue = taoItems_models_classes_QTI_ParserFactory::buildItem($xml);

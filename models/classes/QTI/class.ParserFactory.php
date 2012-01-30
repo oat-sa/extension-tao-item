@@ -688,10 +688,10 @@ class taoItems_models_classes_QTI_ParserFactory
 			} elseif (count($data->xpath($patternMappingPointIMS)) == 1) {
 				$returnValue = new taoItems_models_classes_QTI_response_Template(taoItems_models_classes_QTI_response_Template::MAP_RESPONSE_POINT);
 			} else {
-				throw new Exception('not TemplateResponseProcessing');
+				throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('not Template, wrong rule');
 			}
 		} else {
-			throw new Exception('not TemplateResponseProcessing');
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('not Template');
 		}
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035DB end
 
@@ -715,11 +715,13 @@ class taoItems_models_classes_QTI_ParserFactory
         // try template
         try {
         	$returnValue = self::buildTemplateResponseProcessing($data);
-	       	common_Logger::d('Processing is Template', array('TAOITEMS', 'QTI'));
 	        try {
 	    		$returnValue = taoItems_models_classes_QTI_response_TemplatesDriven::takeOverFrom($returnValue, $item);
-	        } catch (taoItems_models_classes_QTI_response_TakeoverFailedException $e) {}
-        } catch (Exception $e) {
+	       		common_Logger::d('Processing is Template converted to TemplateDriven', array('TAOITEMS', 'QTI'));
+	        } catch (taoItems_models_classes_QTI_response_TakeoverFailedException $e) {
+	        	common_Logger::d('Processing is Template', array('TAOITEMS', 'QTI'));
+	        }
+        } catch (taoItems_models_classes_QTI_UnexpectedResponseProcessingException $e) {
 		}
         
 		//try templatedriven
@@ -727,22 +729,21 @@ class taoItems_models_classes_QTI_ParserFactory
 	        try {
 	        	$returnValue = self::buildTemplatedrivenResponse($data, $item->getInteractions());
 	        	common_Logger::d('Processing is TemplateDriven', array('TAOITEMS', 'QTI'));
-	        } catch (Exception $e) {
+	        } catch (taoItems_models_classes_QTI_UnexpectedResponseProcessingException $e) {
 			}
         }
         
         //try composite
         if (is_null($returnValue)) {
 	        try {
-	        	$responses = array();
-	        	$returnValue = self::buildCompositeResponseProcessing($data, $responses);
-	        	common_Logger::d('Processing is not Composite', array('TAOITEMS', 'QTI'));
-	        } catch (Exception $e) {
+	        	$returnValue = self::buildCompositeResponseProcessing($data, $item);
+	        	common_Logger::d('Processing is Composite', array('TAOITEMS', 'QTI'));
+	        } catch (taoItems_models_classes_QTI_UnexpectedResponseProcessingException $e) {
 			}
         	
         }
         
-        // convert templater to composite
+        // convert template to composite
         /*
         try {
     		$returnValue = taoItems_models_classes_QTI_response_Composite::takeOverFrom($returnValue, $item);
@@ -757,81 +758,16 @@ class taoItems_models_classes_QTI_ParserFactory
         if (is_null($returnValue))
 	        try {
 	        	$returnValue = self::buildCustomResponseProcessing($data);
-	        } catch (Exception $e) {
+        		common_Logger::d('ResponseProcessing is custom');
+	        } catch (taoItems_models_classes_QTI_UnexpectedResponseProcessingException $e) {
 	        	// not a Template
 	        	common_Logger::e('custom response processing failed, should never happen', array('TAOITEMS', 'QTI'));
 	        }
 	        
         if (is_null($returnValue)) {
         	common_Logger::d('failled to determin ResponseProcessing');
-        } else {
-        	common_Logger::d('ResponseProcessing of type '.get_class($returnValue).' detected', array('TAOITEMS'));
         }
-	   /*     
-        // RP based on TEMPLATE
-		if(isset($data['template']) && count($data->children()) == 0)
-		{
-			$templateUri = (string) $data['template'];
-
-			// TEMPLATE KNOWN by the system
-			if (taoItems_models_classes_QTI_response_TemplatesDriven::isSupportedTemplate($templateUri)){
-				// Set the how match attribute of the interactions' response
-				foreach ($interactions as $interaction) {
-					$interaction->getResponse()->setHowMatch($templateUri);
-				}
-				$returnValue = new taoItems_models_classes_QTI_response_TemplatesDriven($templateUri);
-				//echo ($returnValue->buildQTI($templateUri, Array('responseIdentifier'=>'RESPONSE', 'outcomeIdentifier'=>'SCORE')).'<br/>');
-			}
-
-			// TEMPLATE UNKNOWN by the system
-			else {
-				$returnValue = new taoItems_models_classes_QTI_response_Template($templateUri);
-			}
-
-		}
-
-		// RP based on CUSTOM RULE
-		else {
-
-			$responseConditionNodes = $data->xpath("*[name(.) = 'responseCondition']");
-
-			// Identify patterns in the custom response processing
-			$identifiedPatterns = self::identifyPattern($data);
-			
-			foreach ($interactions as $interaction){
-				if (isset($test)) {
-					
-				}
-			}
-					foreach ($identifiedPatterns as $responseIdentifier=>$identifierPattern){};
-			$templatesDriven = true;
-			foreach ($identifiedPatterns as $identifier => $patterns) {
-				if (count($patterns) != 1) {
-					$templatesDriven = true;
-				}
-			}
-
-			// TEMPLATES DRIVEN mode
-			if ((count($interactions) * count($identifiedPatterns) * count($responseConditionNodes)) == pow(count($interactions), 3)) {
-				// tag each response with the uri of the template used to match it
-				common_Logger::d('TemplateDriven ResponseProcessing detected', array('TAOITEMS'));
-				foreach ($interactions as $interaction){
-					foreach ($identifiedPatterns as $responseIdentifier=>$identifierPattern){
-						if ($interaction->getResponse()->getIdentifier() == $responseIdentifier){
-							$interaction->getResponse()->setHowMatch($identifierPattern);
-						}
-					}
-				}
-				$returnValue = new taoItems_models_classes_QTI_response_TemplatesDriven();
-			}
-
-			// CUSTOM CUSTOM
-			else {
-				common_Logger::d('Custom ResponseProcessing detected', array('TAOITEMS'));
-				$returnValue = self::buildCustomResponseProcessing($data);
-			}
-		}
-		*/
+	   
         // section 127-0-1-1-74726297:12ae6749c02:-8000:0000000000002585 end
 
         return $returnValue;
@@ -846,11 +782,54 @@ class taoItems_models_classes_QTI_ParserFactory
      * @param  array responses
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
-    public static function buildCompositeResponseProcessing( SimpleXMLElement $data, $responses)
+    public static function buildCompositeResponseProcessing( SimpleXMLElement $data, $item)
     {
         $returnValue = null;
 
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035D7 begin
+        // STRONGLY simplified summation detection
+        $patternCorrectTAO = '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "baseValue"]';        
+		$possibleSummation = '/setOutcomeValue [count(./*) = 1 ] [name(./*[1]) = "sum" ]';
+        
+		$irps = array();
+		$composition = null;
+		foreach ($data as $responseRule) {
+			if (!is_null($composition))
+				throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composite, rules after composition');
+			
+			$subtree = new SimpleXMLElement($responseRule->asXML());
+
+			if (count($subtree->xpath($patternCorrectTAO)) > 0 ) {
+				$responseIdentifier = (string) $subtree->responseIf->match->variable[0]['identifier'];
+				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
+				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($responseIdentifier, $scoreIdentifier);
+			} elseif (count($subtree->xpath($possibleSummation)) > 0 ) {
+				$composition = $subtree;
+			} else {
+				throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composite, unknown rule');
+			}
+		}
+		
+		$responseIdentifiers = array();
+		foreach ($item->getInteractions() as $interaction) {
+			$id = $interaction->getResponse()->getIdentifier();
+			$responseIdentifiers[] = $id;
+			if (!isset($irps[$id]))
+				$irps[$id] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_None($id);
+		}
+		
+		if (count(array_diff(array_keys($irps), $responseIdentifiers)) > 0) {
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not template driven, no interaction for rules: '.implode(',',array_diff(array_keys($irps), $responseIdentifiers)));
+		}
+		
+		//assuming sum is correct
+		
+        $compositonRP = new taoItems_models_classes_QTI_response_Summation($item);
+        foreach ($irps as $irp){
+        	$compositonRP->add($irp, $item);
+		}
+		$returnValue = $compositonRP;
+        
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035D7 end
 
         return $returnValue;
@@ -1108,7 +1087,7 @@ class taoItems_models_classes_QTI_ParserFactory
         $returnValue = null;
 
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035DF begin
-        $patternCorrectTAO = '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [name(./responseIf/setOutcomeValue/*[1]) = "sum" ] [name(./responseIf/setOutcomeValue/sum/*[1]) = "variable" ] [name(./responseIf/setOutcomeValue/sum/*[2]) = "baseValue"]';
+		$patternCorrectTAO = '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [name(./responseIf/setOutcomeValue/*[1]) = "sum" ] [name(./responseIf/setOutcomeValue/sum/*[1]) = "variable" ] [name(./responseIf/setOutcomeValue/sum/*[2]) = "baseValue"]';
 		$patternMappingTAO = '/responseCondition [count(./*) = 1] [name(./*[1]) = "responseIf"] [count(./responseIf/*) = 2] [name(./responseIf/*[1]) = "not"] [name(./responseIf/not/*[1]) = "isNull"] [name(./responseIf/not/isNull/*[1]) = "variable"] [name(./responseIf/*[2]) = "setOutcomeValue"] [name(./responseIf/setOutcomeValue/*[1]) = "sum"] [name(./responseIf/setOutcomeValue/sum/*[1]) = "variable"] [name(./responseIf/setOutcomeValue/sum/*[2]) = "mapResponse"]';
         
 		$rules = array();
@@ -1124,7 +1103,7 @@ class taoItems_models_classes_QTI_ParserFactory
 				$responseIdentifier = (string) $variable[0]['identifier'];
 				$rules[$responseIdentifier] = QTI_RESPONSE_TEMPLATE_MAP_RESPONSE;
 			} else {
-				throw new common_Exception('Not template driven, unknown rule');
+				throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not template driven, unknown rule');
 			}
 		}
 		
@@ -1135,15 +1114,15 @@ class taoItems_models_classes_QTI_ParserFactory
 		
 		if (count(array_diff($responseIdentifiers, array_keys($rules))) > 0
 			|| count(array_diff(array_keys($rules), $responseIdentifiers)) > 0) {
-			throw new common_Exception('Not template driven, diffrence in responseIdentifiers: '.implode(',',$responseIdentifiers).' have rules for '.implode(',',array_keys($rules)));
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not template driven, responseIdentifiers are '.implode(',',$responseIdentifiers).' while rules are '.implode(',',array_keys($rules)));
 		}
 		
-		foreach ($interactions as $interaction){
+        $templatesDrivenRP = new taoItems_models_classes_QTI_response_TemplatesDriven();
+        foreach ($interactions as $interaction){
 			$pattern = $rules[$interaction->getResponse()->getIdentifier()];
-			$interaction->getResponse()->setHowMatch($pattern);
+			$templatesDrivenRP->setTemplate($interaction->getResponse(), $pattern);
 		}
-		
-		$returnValue = new taoItems_models_classes_QTI_response_TemplatesDriven($rules);
+		$returnValue = $templatesDrivenRP;
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035DF end
 
         return $returnValue;

@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI_Service gives you a central access to the managment methods of the
  * objects
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -16,9 +16,10 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include tao_models_classes_Service
+ * Service is the base class of all services, and implements the singleton
+ * for derived services
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/models/classes/class.Service.php');
 
@@ -35,7 +36,7 @@ require_once('tao/models/classes/class.Service.php');
  * objects
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -54,7 +55,7 @@ class taoItems_models_classes_QTI_Service
      * Item as the QTI xml
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return taoItems_models_classes_QTI_Item
      */
@@ -102,7 +103,7 @@ class taoItems_models_classes_QTI_Service
      * and saving it in the itemContent prioperty of the RDF Item
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Item qtiItem
      * @param  Resource rdfItem
      * @return boolean
@@ -144,7 +145,7 @@ class taoItems_models_classes_QTI_Service
      * Load a QTI item from a qti file in parameter.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string file
      * @return taoItems_models_classes_QTI_Item
      */
@@ -185,7 +186,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Item instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Item
      */
@@ -206,7 +207,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Interaction instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return doc_Interaction
      */
@@ -227,7 +228,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Response instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Response
      */
@@ -248,7 +249,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Data child instance by it's id
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @param  string type
      * @return taoItems_models_classes_QTI_Data
@@ -258,27 +259,27 @@ class taoItems_models_classes_QTI_Service
         $returnValue = null;
 
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 begin
-        
-    	if(!empty($serial)){
-    		$key = taoItems_models_classes_QTI_Data::PREFIX . $serial;
-	        if(Session::hasAttribute($key)){
+    	if(!empty($serial) && Session::hasAttribute(taoItems_models_classes_QTI_Data::DATA_KEY)){
+    		$storage = Session::getAttribute(taoItems_models_classes_QTI_Data::DATA_KEY);
+	        if(isset($storage[$serial])){
 
-	        	$data = @unserialize(Session::getAttribute($key));
+	        	$data = @unserialize($storage[$serial]);
 	        
 	        	if($data === false){
-	        		throw new common_Exception("Unable to unserialize session entry identified by $serial");
+	        		throw new common_Exception("Unable to unserialize session entry identified by \"".$serial.'"');
 	        	}
 	        	if(!empty($type)){
 	        		if( ! $data instanceof $type) {
-	        			throw new Exception("object retrieved is a ".get_class($data)." instead of {$type}.");
+	        			throw new common__Exception("object retrieved is a ".get_class($data)." instead of {$type}.");
 	        		}
 	        	}
 	        	
 	        	$returnValue = $data;
 	        }
         }
-        
-        
+        if (is_null($returnValue)) {
+        	common_Logger::w('Failed to get '.$type.'('.$serial.')', array('TAOITEMS', 'QTI'));
+        }
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 end
 
         return $returnValue;
@@ -290,7 +291,7 @@ class taoItems_models_classes_QTI_Service
      * It works only of the objects are in the persistancy.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Data composed
      * @return taoItems_models_classes_QTI_Data
      */
@@ -317,17 +318,14 @@ class taoItems_models_classes_QTI_Service
         
 		$instances = taoItems_models_classes_QTI_Data::$_instances;
 		
-        foreach(Session::getAttributeNames() as $attrKey){
-        	if(preg_match("/^".taoItems_models_classes_QTI_Data::PREFIX."/", $attrKey)){
-				$attrKey = str_replace(taoItems_models_classes_QTI_Data::PREFIX,'',$attrKey);
-        		if(!in_array($attrKey, $instances)){
-        			$instances[] = $attrKey;
-        		}
-        	}
+        if(Session::hasAttribute(taoItems_models_classes_QTI_Data::DATA_KEY)) {
+        	foreach (Session::getAttribute(taoItems_models_classes_QTI_Data::DATA_KEY) as $serial => $data)
+        		$instances[] = $serial;
+        		
         }
-        
-        foreach($instances as $serial){
-			$instance = null;
+		
+        foreach(array_unique($instances) as $serial){
+        	$instance = null;
         	try{
 				$instance = $this->getDataBySerial($serial);
 			}catch(Exception $e){}
@@ -373,23 +371,27 @@ class taoItems_models_classes_QTI_Service
      * Use this method if you know what your are doing.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Data qtiObject
      * @return boolean
      */
-    public static function saveDataToSession( taoItems_models_classes_QTI_Data $qtiObject)
+    public function saveDataToSession( taoItems_models_classes_QTI_Data $qtiObject)
     {
         $returnValue = (bool) false;
 
         // section 10-13-1-39-11450a84:12b8101447d:-8000:00000000000028DE begin
-		if(!is_null($qtiObject)){
+        if(!is_null($qtiObject)){
 			if(taoItems_models_classes_QTI_Data::$persist == false){
-				throw new Exception("Cannot save data to session when persistence is disabled");
+				throw new common_Exception("Cannot save data to session when persistence is disabled");
 			}else{
-				Session::setAttribute(taoItems_models_classes_QTI_Data::PREFIX . $qtiObject->getSerial(), serialize($qtiObject));
+				// not clean put reading the session and then adding data to the session causses concurrency problems
+				// therefore this DOES NOT WORK: session::setAttribute(taoItems_models_classes_QTI_Data::DATA_KEY, $storage)
+				$_SESSION[SESSION_NAMESPACE][taoItems_models_classes_QTI_Data::DATA_KEY][$qtiObject->getSerial()] = serialize($qtiObject);
+				
 				$returnValue = true;
 				
-				//need to wakup the object to allow reuse in the rest of the script
+				// during serialization the referenced qti objects get replaced by their serial (@see __sleep)
+				// we call wakeup to convert them back into objects
 				$qtiObject->__wakeup();
 			}
 		}
@@ -402,7 +404,7 @@ class taoItems_models_classes_QTI_Service
      * Build the XHTML/CSS/JS from a QTI_Item to be rendered.
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Item item the item to render
      * @return string
      */
@@ -419,6 +421,21 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025E4 end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method removeDataFromSession
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  string serial
+     * @return mixed
+     */
+    public function removeDataFromSession($serial)
+    {
+        // section 127-0-1-1-249123f:13519689c9e:-8000:00000000000036BD begin
+        unset($_SESSION[SESSION_NAMESPACE][taoItems_models_classes_QTI_Data::DATA_KEY][$serial]);
+        // section 127-0-1-1-249123f:13519689c9e:-8000:00000000000036BD end
     }
 
 } /* end of class taoItems_models_classes_QTI_Service */

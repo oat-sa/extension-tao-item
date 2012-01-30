@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 23.01.2012, 18:25:52 with ArgoUML PHP module 
+ * Automatically generated on 25.01.2012, 15:20:13 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -110,6 +110,35 @@ abstract class taoItems_models_classes_QTI_response_Composite
     }
 
     /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Item item
+     * @param  string outcomeIdentifier
+     * @return mixed
+     */
+    public function __construct( taoItems_models_classes_QTI_Item $item, $outcomeIdentifier = 'SCORE')
+    {
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003671 begin
+        parent::__construct();
+        $this->outcomeIdentifier = $outcomeIdentifier;
+		$outcomeExists = false;
+        foreach ($item->getOutcomes() as $outcome) {
+        	if ($outcome->getIdentifier() == $outcomeIdentifier) {
+        		$outcomeExists = true;
+        		break;
+        	}
+        }
+        if (!$outcomeExists) {
+        	$outcomes = $item->getOutcomes();
+        	$outcomes[] = new taoItems_models_classes_QTI_Outcome($outcomeIdentifier, array('baseType' => 'integer', 'cardinality' => 'single'));
+        	$item->setOutcomes($outcomes);
+        }
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003671 end
+    }
+
+    /**
      * Short description of method create
      *
      * @access public
@@ -122,10 +151,10 @@ abstract class taoItems_models_classes_QTI_response_Composite
         $returnValue = null;
 
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003612 begin
-        $returnValue = new taoItems_models_classes_QTI_response_Summation();
+        $returnValue = new taoItems_models_classes_QTI_response_Summation($item);
         foreach ($item->getInteractions() as $interaction) {
         	$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_None($interaction->getResponse()->getIdentifier());
-			$returnValue->add($irp);
+			$returnValue->add($irp, $item);
         }
         $returnValue->ensureOutcomeVariablesExist($item);
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003612 end
@@ -153,7 +182,7 @@ abstract class taoItems_models_classes_QTI_response_Composite
         }
         // IMS Template
         elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_Template) {
-        	$rp = new taoItems_models_classes_QTI_response_Summation();
+        	$rp = new taoItems_models_classes_QTI_response_Summation($item, 'SCORE');
         	switch ($responseProcessing->getUri()) {
         		case QTI_RESPONSE_TEMPLATE_MATCH_CORRECT :
         			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate('RESPONSE');
@@ -168,13 +197,15 @@ abstract class taoItems_models_classes_QTI_response_Composite
         			common_Logger::d('Custom template '.$responseProcessing->getUri().' can not be converted to Composite');
         			throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
         	}
-        	$rp->add($irp);
+        	$rp->add($irp, $item);
         	$returnValue = $rp;
         }
         // TemplateDriven
         elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
-        	$rp = new taoItems_models_classes_QTI_response_Summation();
-        	foreach ($responseProcessing->getTemplate() as $identifier => $url) {
+        	$rp = new taoItems_models_classes_QTI_response_Summation($item, 'SCORE');
+        	foreach ($item->getInteractions() as $interaction) {
+        		$url = $responseProcessing->getTemplate($interaction->getResponse());
+        		$identifier = $interaction->getResponse()->getIdentifier();
 	        	switch ($url) {
 	        		case QTI_RESPONSE_TEMPLATE_MATCH_CORRECT :
 	        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($identifier);
@@ -190,7 +221,7 @@ abstract class taoItems_models_classes_QTI_response_Composite
 	        			common_Logger::w('unknwon template "'.$url.'" in templatesDriven can not be converted to Composite');
 	        			throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
 	        	}
-	        	$rp->add($irp);
+	        	$rp->add($irp, $item);
         	}
         	$returnValue = $rp;
         }
@@ -212,12 +243,25 @@ abstract class taoItems_models_classes_QTI_response_Composite
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  InteractionResponseProcessing interactionResponseProcessing
+     * @param  Item item
      * @return mixed
      */
-    public function add( taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing $interactionResponseProcessing)
+    public function add( taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing $interactionResponseProcessing,  taoItems_models_classes_QTI_Item $item)
     {
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035F6 begin
         $this->components[$interactionResponseProcessing->getResponseIdentifier()] = $interactionResponseProcessing;
+        $outcomeExists = false;
+        foreach ($item->getOutcomes() as $outcome) {
+        	if ($outcome->getIdentifier() == $interactionResponseProcessing->getOutcomeIdentifier()) {
+        		$outcomeExists = true;
+        		break;
+        	}
+        }
+        if (!$outcomeExists) {
+        	$outcomes = $item->getOutcomes();
+        	$outcomes[] = $interactionResponseProcessing->generateOutcomeDefinition();
+        	$item->setOutcomes($outcomes);
+        }
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035F6 end
     }
 
@@ -241,9 +285,13 @@ abstract class taoItems_models_classes_QTI_response_Composite
         		$outcomes[$component->getOutcomeIdentifier()] = $component->generateOutcomeDefinition();
         	}
         }
-        if (!isset($outcomes['SCORE']))
-			$outcomes['SCORE'] = new taoItems_models_classes_QTI_Outcome('SCORE', array('baseType' => 'integer', 'cardinality' => 'single'));
-    	$item->setOutcomes($outcomes);
+        if (!isset($outcomes[$this->outcomeIdentifier]))
+			$outcomes[$this->outcomeIdentifier] = new taoItems_models_classes_QTI_Outcome($this->outcomeIdentifier, array('baseType' => 'integer', 'cardinality' => 'single'));
+		
+		if (count($outcomes) != count($item->getOutcomes())) {
+			common_Logger::w('Outcome Variables mismatch');
+		}
+		//$item->setOutcomes($outcomes);
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003620 end
     }
 
@@ -292,14 +340,82 @@ abstract class taoItems_models_classes_QTI_response_Composite
     }
 
     /**
-     * Short description of method getCompositionRules
+     * Short description of method takeNoticeOfAddedInteraction
      *
-     * @abstract
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return array
+     * @param  Interaction interaction
+     * @param  Item item
+     * @return mixed
      */
-    public abstract function getCompositionRules();
+    public function takeNoticeOfAddedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
+    {
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003662 begin
+        $irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($interaction->getResponse()->getIdentifier());
+        $this->add($irp, $item);
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003662 end
+    }
+
+    /**
+     * Short description of method takeNoticeOfRemovedInteraction
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Interaction interaction
+     * @param  Item item
+     * @return mixed
+     */
+    public function takeNoticeOfRemovedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
+    {
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003668 begin
+        $irpExisted = false;
+        foreach ($this->components as $key => $irp) {
+        	if ($irp->getResponseIdentifier() == $interaction->getResponse()->getIdentifier()) {
+        		$outcomes = $item->getOutcomes();
+        		$outcomeExisted = false;
+        		foreach (array_keys($outcomes) as $key) {
+		        	if ($outcomes[$key]->getIdentifier() == $irp->getOutcomeIdentifier()) {
+        				$outcomeExisted = true;
+		        		unset($outcomes[$key]);
+		        		break;
+		        	}
+		        }
+		        if ($outcomeExisted) {
+	        		$item->setOutcomes($outcomes);
+		        } else {
+        			common_Logger::w('Related Outcome not found for interactionResponseProcessing '.$irp->getResponseIdentifier(), array('TAOITEMS', 'QTI'));
+		        }
+		        // remove the irp
+        		unset($this->components[$key]);
+        		$irpExisted = true;
+        		break;
+        	}
+        }
+        if (!$irpExisted) { 
+        	common_Logger::w('InstanceResponseProcessing not found for removed interaction '.$interaction->getIdentifier(), array('TAOITEMS', 'QTI'));
+        }
+        // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003668 end
+    }
+
+    /**
+     * Short description of method getForm
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Response response
+     * @return tao_helpers_form_Form
+     */
+    public function getForm( taoItems_models_classes_QTI_Response $response)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-7fd95e33:1350eecc263:-8000:0000000000003636 begin
+        $formContainer = new taoItems_actions_QTIform_CompositeResponseOptions($this, $response);
+        $returnValue = $formContainer->getForm();
+        // section 127-0-1-1-7fd95e33:1350eecc263:-8000:0000000000003636 end
+
+        return $returnValue;
+    }
 
     /**
      * Short description of method getCompositionQTI
@@ -310,6 +426,16 @@ abstract class taoItems_models_classes_QTI_response_Composite
      * @return string
      */
     public abstract function getCompositionQTI();
+
+    /**
+     * Short description of method getCompositionRules
+     *
+     * @abstract
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return array
+     */
+    public abstract function getCompositionRules();
 
 } /* end of abstract class taoItems_models_classes_QTI_response_Composite */
 

@@ -987,12 +987,12 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 	});
 }
 
-qtiEdit.prototype.saveResponseProcessing = function($myForm){
+qtiEdit.prototype.saveItemResponseProcessing = function($myForm){
 	var self = this;
 	
 	$.ajax({
 	   type: "POST",
-	   url: root_url + "/taoItems/QtiAuthoring/saveResponseProcessing",
+	   url: root_url + "/taoItems/QtiAuthoring/saveItemResponseProcessing",
 	   data: $myForm.serialize(),
 	   dataType: 'json',
 	   success: function(r){
