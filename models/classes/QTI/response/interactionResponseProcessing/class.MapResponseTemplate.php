@@ -103,9 +103,7 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResp
 		            </isNull>
 		        </not>
 		        <setOutcomeValue identifier="'.$this->getOutcomeIdentifier().'">
-		            <sum>
-		                <mapResponse identifier="'.$this->getResponseIdentifier().'" />
-		            </sum>
+	                <mapResponse identifier="'.$this->getResponseIdentifier().'" />
 		        </setOutcomeValue>
 		    </responseIf>
 		</responseCondition>';

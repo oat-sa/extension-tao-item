@@ -1212,22 +1212,29 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				echo json_encode(array(
 					'saved'						=> $saved,
 					'setResponseMappingMode'	=> $setResponseMappingMode,
-					'templateHasChanged'		=> $templateHasChanged
+					'hasChanged'				=> $templateHasChanged
 				));
 			} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
+				$currentIRP		= $rp->getInteractionResponseProcessing($response->getIdentifier());
+				$currentClass	= get_class($currentIRP);
+				$saved			= false;
+				$classID		= $currentClass::CLASS_ID;
 				
-				$saved					= false;
 				if($this->hasRequestParameter('interactionResponseProcessing')) {
-					$currentIRP = $rp->getInteractionResponseProcessing($response->getIdentifier());
-					$newIRP = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::build(
-						$this->getRequestParameter('interactionResponseProcessing'),
-						$currentIRP->getResponseIdentifier(),
-						$currentIRP->getOutcomeIdentifier()
-					);
-					$rp->replace($newIRP);
+					$classID		= $this->getRequestParameter('interactionResponseProcessing');
+					if ($currentClass::CLASS_ID != $classID) {
+						$newIRP = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::build(
+							$classID,
+							$currentIRP->getResponseIdentifier(),
+							$currentIRP->getOutcomeIdentifier()
+						);
+						$rp->replace($newIRP);
+						$saved = true;
+					}
 				}
 				echo json_encode(array(
 					'saved'						=> $saved,
+					'setResponseOptionsMode'	=> $classID
 				));
 			}
 		}
