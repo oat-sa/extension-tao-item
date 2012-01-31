@@ -135,20 +135,16 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   dataType: 'json',
 					   async: false,
 					   success: function(r){
-							if(r.saved){
+							if(r.saved){ //Assume save = changed
 								qtiEdit.createInfoMessage(__('Modification on response applied'));
 
-								if(r.hasChanged){
+								var interaction = interactionClass.instances[self.interactionSerial];
+								if(interaction){
+									//reload the grid, just in case the response template has changed:
+									new responseClass(self.myGrid.attr('id'), interaction);
 
-									var interaction = interactionClass.instances[self.interactionSerial];
-									if(interaction){
-										//reload the grid, just in case the response template has changed:
-										new responseClass(self.myGrid.attr('id'), interaction);
-
-										//set the response responseOptions mode:
-										interaction.setResponseOptionsMode(r.setResponseOptionsMode);
-									}
-
+									//set the response responseOptions mode:
+									interaction.setResponseOptionsMode(r.setResponseOptionsMode);
 								}
 
 								self.setModifiedResponseProperties(false);
