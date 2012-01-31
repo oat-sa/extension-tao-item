@@ -64,6 +64,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					for (f in r.forms) {
 						$(response.responseFormContainer).append(r.forms[f]);
 					}
+					$(response.responseFormContainer + ' .form-toolbar:empty').remove();
 					response.initResponseFormSubmitter();
 					response.setResponseFormChangeListener();
 
