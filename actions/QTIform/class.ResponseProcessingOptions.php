@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 26.01.2012, 14:41:46 with ArgoUML PHP module 
+ * Automatically generated on 31.01.2012, 17:07:21 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -54,7 +54,45 @@ abstract class taoItems_actions_QTIform_ResponseProcessingOptions
 
     // --- ATTRIBUTES ---
 
+    /**
+     * Short description of attribute interaction
+     *
+     * @access protected
+     * @var Interaction
+     */
+    protected $interaction = null;
+
+    /**
+     * Short description of attribute responseProcessing
+     *
+     * @access protected
+     * @var ResponseProcessing
+     */
+    protected $responseProcessing = null;
+
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Interaction interaction
+     * @param  ResponseProcessing responseProcessing
+     * @return mixed
+     */
+    public function __construct( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing)
+    {
+        // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036A7 begin
+        if(is_null($interaction) || is_null($responseProcessing)){
+			throw new common_exception_Error('interaction and responseProcessing cannot be null');
+		}
+		$this->interaction = $interaction;
+		$this->responseProcessing = $responseProcessing;
+		parent::__construct(array(), array('option1' => ''));
+		
+        // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036A7 end
+    }
 
     /**
      * Short description of method initForm
@@ -66,10 +104,30 @@ abstract class taoItems_actions_QTIform_ResponseProcessingOptions
     public function initForm()
     {
         // section 127-0-1-1-249123f:13519689c9e:-8000:000000000000368E begin
-		$this->form = tao_helpers_form_FormFactory::getForm('ScoreResponseCodingOptionsForm');
+		$this->form = tao_helpers_form_FormFactory::getForm('ResponseCodingOptionsForm');
 		
 		$this->form->setActions(array(), 'bottom');
         // section 127-0-1-1-249123f:13519689c9e:-8000:000000000000368E end
+    }
+
+    /**
+     * Short description of method initElements
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function initElements()
+    {
+        // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036AA begin
+        $serialElt = tao_helpers_form_FormFactory::getElement('interactionSerial', 'Hidden');
+		$serialElt->setValue($this->interaction->getSerial());
+		$this->form->addElement($serialElt);
+		
+        $serialElt = tao_helpers_form_FormFactory::getElement('responseprocessingSerial', 'Hidden');
+		$serialElt->setValue($this->responseProcessing->getSerial());
+		$this->form->addElement($serialElt);
+		// section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036AA end
     }
 
 } /* end of abstract class taoItems_actions_QTIform_ResponseProcessingOptions */

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 26.01.2012, 14:41:46 with ArgoUML PHP module 
+ * Automatically generated on 31.01.2012, 17:35:13 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -52,7 +52,33 @@ class taoItems_actions_QTIform_ManualProcessing
 
     // --- ATTRIBUTES ---
 
+    /**
+     * Short description of attribute outcome
+     *
+     * @access public
+     * @var Outcome
+     */
+    public $outcome = null;
+
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method __construct
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Interaction interaction
+     * @param  ResponseProcessing responseProcessing
+     * @param  Outcome outcome
+     * @return mixed
+     */
+    public function __construct( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing,  taoItems_models_classes_QTI_Outcome $outcome)
+    {
+        // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036B0 begin
+        $this->outcome = $outcome;
+    	parent::__construct($interaction, $responseProcessing);
+        // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036B0 end
+    }
 
     /**
      * Short description of method initElements
@@ -64,7 +90,12 @@ class taoItems_actions_QTIform_ManualProcessing
     public function initElements()
     {
         // section 127-0-1-1-249123f:13519689c9e:-8000:0000000000003690 begin
-        //upperbound+lowerbound:
+    	parent::initElements();
+        $serialElt = tao_helpers_form_FormFactory::getElement('outcomeSerial', 'Hidden');
+		$serialElt->setValue($this->outcome->getSerial());
+		$this->form->addElement($serialElt);
+		
+        //guidlines correct:
 		$guidelines = tao_helpers_form_FormFactory::getElement('guidelines', 'Textarea');
 		$guidelines->setDescription(__('Guidelines'));
 		$this->form->addElement($guidelines);

@@ -1488,7 +1488,7 @@ class taoItems_models_classes_QtiAuthoringService
 					break;
 				}
 				default:{
-					throw new Exception('invalid interaction type for response saving');
+					throw new common_exception_Error('invalid interaction type for response saving');
 				}
 			}
 			

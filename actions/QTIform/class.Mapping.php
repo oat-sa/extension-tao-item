@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 26.01.2012, 14:41:46 with ArgoUML PHP module 
+ * Automatically generated on 31.01.2012, 16:44:22 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -54,35 +54,7 @@ class taoItems_actions_QTIform_Mapping
 
     // --- ATTRIBUTES ---
 
-    /**
-     * Short description of attribute response
-     *
-     * @access protected
-     * @var Response
-     */
-    protected $response = null;
-
     // --- OPERATIONS ---
-
-    /**
-     * Short description of method __construct
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Response response
-     */
-    public function __construct( taoItems_models_classes_QTI_Response $response)
-    {
-        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FBF begin
-		
-		if(is_null($response)){
-			throw new Exception('the response cannot be null');
-		}
-		$this->response = $response;
-		$returnValue = parent::__construct(array(), array('option1' => ''));
-		
-        // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FBF end
-    }
 
     /**
      * Short description of method initElements
@@ -93,19 +65,15 @@ class taoItems_actions_QTIform_Mapping
     public function initElements()
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FC5 begin
-		
-		//add hidden id element, to know what the old id is:
-		$responseSerialElt = tao_helpers_form_FormFactory::getElement('responseSerial', 'Hidden');
-		$responseSerialElt->setValue($this->response->getSerial());
-		$this->form->addElement($responseSerialElt);
-		
+        parent::initElements();
+		$response = $this->interaction->getResponse();
 		//default box:
 		$defaultValueElt = tao_helpers_form_FormFactory::getElement('defaultValue', 'Textbox');
 		$defaultValueElt->setDescription(__('Default value'));
 		$defaultValue = 0;
-		$mappingDefaultValue = $this->response->getMappingDefaultValue();
+		$mappingDefaultValue = $response->getMappingDefaultValue();
 		if(empty($mappingDefaultValue)){
-			$this->response->setMappingDefaultValue($defaultValue);
+			$response->setMappingDefaultValue($defaultValue);
 		}else{
 			$defaultValue = $mappingDefaultValue;
 		}
@@ -119,7 +87,7 @@ class taoItems_actions_QTIform_Mapping
 		$lowerBoundElt = tao_helpers_form_FormFactory::getElement('lowerBound', 'Textbox');
 		$lowerBoundElt->setDescription(__('Lower bound'));
 		
-		$mappingOptions = $this->response->getOption('mapping');
+		$mappingOptions = $response->getOption('mapping');
 		if(is_array($mappingOptions)){
 			if(isset($mappingOptions['upperBound'])) $upperBoundElt->setValue($mappingOptions['upperBound']);
 			if(isset($mappingOptions['lowerBound'])) $lowerBoundElt->setValue($mappingOptions['lowerBound']);

@@ -644,7 +644,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			}
 		}else{
 			try{
-				//second chance: try getting the response from the item
+				//second chance: try getting the responseprocessing from the item
 				$item = $this->getCurrentItem();
 				if(!empty($item)){
 					$responseprocessing = $this->service->getResponseProcessing($item);
@@ -653,9 +653,23 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					}
 				}
 			}catch(Exception $e){
-				throw new Exception('cannot find the response no request parameter "responseSerial" found');
+				throw new Exception('cannot find the responseProcessing no request parameter "responseprocessingSerial" found');
 			}
 			
+		}
+		
+		return $returnValue;
+	}
+	
+	public function getCurrentOutcome(){
+		$returnValue = null;
+		if($this->hasRequestParameter('outcomeSerial')){
+			$outcome = $this->qtiService->getDataBySerial($this->getRequestParameter('outcomeSerial'), 'taoItems_models_classes_QTI_Outcome');
+			if(!empty($outcome)){
+				$returnValue = $outcome;
+			}
+		}else{
+			throw new common_exception_Error('cannot find the outcome no request parameter "outcomeSerial" found');
 		}
 		
 		return $returnValue;
@@ -1261,19 +1275,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 	}
 	
-	public function saveMappingOptions(){
-		$response = $this->getCurrentResponse();
-		
-		$mappingOptions = $_POST;
-		
-		$this->service->setMappingOptions($response, $mappingOptions);
-		$saved = true;
-		
-		echo json_encode(array(
-			'saved' => $saved
-		));
-	}
-	
 	public function saveResponse(){
 		
 		$saved = false;
@@ -1332,6 +1333,39 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		));
 	}
 	
+	public function saveResponseCodingOptions(){
+		
+		$interaction = $this->getCurrentInteraction();
+		$rp = $this->getCurrentResponseProcessing();
+		// case templatedriven
+		if ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven)
+		{
+			$response = $interaction->getResponse();
+			$mappingOptions = $_POST;
+		
+			common_Logger::d('storing mapping options:'.implode(',',$_POST));
+			$this->service->setMappingOptions($response, $mappingOptions);
+			$saved = true;
+		
+			echo json_encode(array(
+				'saved' => $saved
+			));
+		} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
+			$saved = false;
+			$outcome = $this->getCurrentOutcome();
+			common_Logger::d('storing composite stuff');
+			// i do stuff
+			echo json_encode(array(
+				'saved' => $saved
+			));
+		} else {
+			echo json_encode(array(
+				'saved' => false
+			));
+		}
+		
+	}
+	
 	//edit the interaction response:
 	public function editResponse(){
 		$item = $this->getCurrentItem();
@@ -1375,7 +1409,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			}
 			
 			if ($this->isResponseMappingMode($responseProcessing->getTemplate($response))) {
-				$mappingForm = new taoItems_actions_QTIform_Mapping($response);
+				$mappingForm = new taoItems_actions_QTIform_Mapping($interaction, $responseProcessing);
 				if (!is_null($mappingForm)) {
 					$xhtmlForms[] = $mappingForm->getForm()->render();
 				}
@@ -1386,7 +1420,17 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			
 			$irp = $responseProcessing->getInteractionResponseProcessing($response->getIdentifier());
 			if ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
-				$manualForm = new taoItems_actions_QTIform_ManualProcessing();
+				$found = null;
+				foreach ($item->getOutcomes() as $outcome) {
+					if ($outcome->getIdentifier() == $irp->getOutcomeIdentifier()) {
+						$found = $outcome;
+						break; 
+					}
+				}
+				if (is_null($found)) {
+					throw new common_exception_Error('No outcome definied for interaction '.$interaction->getIdentifier());
+				}
+				$manualForm = new taoItems_actions_QTIform_ManualProcessing($interaction, $responseProcessing, $found);
 				if (!is_null($manualForm)) {
 					$xhtmlForms[] = $manualForm->getForm()->render();
 				}
