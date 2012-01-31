@@ -138,7 +138,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 							if(r.saved){
 								qtiEdit.createInfoMessage(__('Modification on response applied'));
 
-								if(r.templateHasChanged){
+								if(r.hasChanged){
 
 									var interaction = interactionClass.instances[self.interactionSerial];
 									if(interaction){
