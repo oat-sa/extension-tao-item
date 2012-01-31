@@ -3,7 +3,7 @@
 qtiEdit.instances = [];
 
 function qtiEdit(itemSerial, formContainers, options){
-	
+
 	var defaultFormContainers = {
 		itemDataContainer : '#itemEditor_wysiwyg',
 		interactionFormContent : '#qtiAuthoring_interaction_container',
@@ -12,13 +12,13 @@ function qtiEdit(itemSerial, formContainers, options){
 		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
 		responseGrid: 'qtiAuthoring_response_grid'
 	}
-	
+
 	if(!formContainers){
 		var formContainers = defaultFormContainers;
 	}else{
 		$.extend(formContainers, defaultFormContainers);
 	}
-	
+
 	this.interactions = [];
 	this.itemSerial = itemSerial;
 	this.itemDataContainer = formContainers.itemDataContainer;
@@ -28,14 +28,14 @@ function qtiEdit(itemSerial, formContainers, options){
 	this.responseGrid = formContainers.responseGrid;
 	this.cssFormContent = formContainers.cssFormContent;
 	// this.responseMappingMode = false;
-	
+
         //init windows options:
         this.windowOptions = 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1';
-        
+
 	this.currentInteraction = null;
-	
+
 	var instance = this;
-	
+
 	//init the item's jwysiwyg editor here:
 	var addChoiceInteraction = {
 		visible : true,
@@ -44,11 +44,11 @@ function qtiEdit(itemSerial, formContainers, options){
 			// CL('inserting interaction...');
 			//display modal window with the list of available type of interactions
 			var interactionType = 'choice';
-			
+
 			//insert location of the current interaction in the item:
 			this.insertHtml("{qti_interaction_new}");
-			
-			
+
+
 			//send to request to the server
 			instance.addInteraction(interactionType, this.getContent(), instance.itemSerial);
 		},
@@ -135,7 +135,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add gap match interaction'
 	};
-	
+
 	var addHotspotInteraction = {
 		visible : true,
 		className: 'add_hotspot_interaction',
@@ -145,7 +145,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add hot spot interaction'
 	};
-	
+
 	var addGraphicOrderInteraction = {
 		visible : true,
 		className: 'add_graphicorder_interaction',
@@ -155,7 +155,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add graphic order interaction'
 	};
-	
+
 	var addGraphicAssociateInteraction = {
 		visible : true,
 		className: 'add_graphicassociate_interaction',
@@ -165,7 +165,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add graphic associate interaction'
 	};
-	
+
 	var addGraphicGapMatchInteraction = {
 		visible : true,
 		className: 'add_graphicgapmatch_interaction',
@@ -175,7 +175,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add hot spot interaction'
 	};
-	
+
 	var addSelectPointInteraction = {
 		visible : true,
 		className: 'add_selectpoint_interaction',
@@ -185,7 +185,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add select point interaction'
 	};
-	
+
 	var addPositionObjectInteraction = {
 		visible : false,
 		className: 'add_positionobject_interaction',
@@ -195,7 +195,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add position object interaction'
 	};
-	
+
 	var addSliderInteraction = {
 		visible : true,
 		className: 'add_slider_interaction',
@@ -205,7 +205,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add slider interaction'
 	};
-	
+
 	var addUploadInteraction = {
 		visible : true,
 		className: 'add_fileupload_interaction',
@@ -215,7 +215,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add file upload interaction'
 	};
-	
+
 	var addEndAttemptInteraction = {
 		visible : true,
 		className: 'add_endattempt_interaction',
@@ -225,7 +225,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		tooltip: 'add end attempt interaction'
 	};
-	
+
 	var saveItemData = {
 		visible : false,
 		className: 'addInteraction',
@@ -239,12 +239,12 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'addMedia',
 		exec: function(){
-			
+
 			var self = this;
 			var formDataHtml = '<form class="wysiwyg"><fieldset><legend>Insert Media</legend>';
 			formDataHtml += '<label>Media URL: <input type="text" name="url" value="http://" /></label><label>Media height: <input type="text" name="mediaHeight" value="" /></label><label>Media width: <input type="text" name="mediaWidth" value="" /></label><label>Media Description: <input type="text" name="description" value="" /></label><input type="submit" class="button" value="Insert Media" /> <input type="reset" value="Cancel" /></fieldset></form>';
 			if ($.modal){
-				
+
 				$.modal(formDataHtml, {
 					onShow: function(dialog){
 						var mediaType = '';
@@ -257,27 +257,27 @@ function qtiEdit(itemSerial, formContainers, options){
 									if(mediaData.width) $('input[name="mediaWidth"]').val(mediaData.width);
 									if(mediaData.type) mediaType = mediaData.type;
 								}
-								
+
 							});
 						}
-						
+
 						$('input:submit', dialog.data).click(function(e){
 							e.preventDefault();
 							var mediaURL = $('input[name="url"]', dialog.data).val();
 							var height = $('input[name="mediaHeight"]', dialog.data).val();
 							var width = $('input[name="mediaWidth"]', dialog.data).val();
 							var description = $('input[name="description"]', dialog.data).val();
-							
+
 							var objectEltHtml='';
 							objectEltHtml = "<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "' type='"+mediaType+"'><div class='qti-wysiwyg-mediabox' height='" + height+ "' width='" + width + "'><img  src='"+img_url+"media-display.png' alt='"+description+"' title='"+description+"'/></div></object>";
-							
+
 							self.insertHtml(objectEltHtml);
-							
+
 							self.saveContent();//line added to update the original textarea
-							
+
 							$.modal.close();
 						});
-						
+
 						$('input:reset', dialog.data).click(function(e){
 							e.preventDefault();
 							$.modal.close();
@@ -291,7 +291,7 @@ function qtiEdit(itemSerial, formContainers, options){
 					}
 				});
 			}else{
-				
+
 				 if ($.fn.dialog){
 					var dialog = $(formDataHtml).appendTo('body');
 					dialog.dialog({
@@ -300,7 +300,7 @@ function qtiEdit(itemSerial, formContainers, options){
 						height: $.fn.wysiwyg.defaults.formHeight,
 						open: function(ev, ui){
 							 $('input:submit', $(this)).click(function(e){
-							   
+
 							   e.preventDefault();
 								var mediaURL = $('input[name="url"]', dialog).val();
 								var height = $('input[name="mediaHeight"]', dialog).val();
@@ -308,7 +308,7 @@ function qtiEdit(itemSerial, formContainers, options){
 								var description = $('input[name="description"]', dialog).val();
 								var objectEltHtml="<object data='" + mediaURL + "' height='" + height+ "' width='" + width + "' type='"+mediaType+"'><img src='' alt='"+description+"' title='"+description+"'/></object>";
 								self.insertHtml(objectEltHtml);
-							   
+
 							   self.saveContent();//line added to update the original textarea
 
 							   $(dialog).dialog("close");
@@ -335,14 +335,14 @@ function qtiEdit(itemSerial, formContainers, options){
 					// }
 				}
 			}
-			
+
 		},
 		tooltip: 'insert media',
 		groupIndex: 2
 	};
-	
+
 	var instance = this;
-	
+
 	this.itemEditor = $(this.itemDataContainer).wysiwyg({
 		css: options.css,
 		iFrameClass: 'wysiwyg-item',
@@ -350,27 +350,27 @@ function qtiEdit(itemSerial, formContainers, options){
 		  strikeThrough : { visible : true },
 		  underline     : { visible : false },
 		  insertTable 	: { visible : false },
-		  
+
 		  justifyLeft   : { visible : true },
 		  justifyCenter : { visible : true },
 		  justifyRight  : { visible : true },
 		  justifyFull   : { visible : true },
-		  
+
 		  indent  : { visible : true },
 		  outdent : { visible : true },
-		  
+
 		  subscript   : { visible : true },
 		  superscript : { visible : true },
-		  
+
 		  undo : { visible : true },
 		  redo : { visible : true },
-		  
+
 		  insertOrderedList    : { visible : true },
 		  insertUnorderedList  : { visible : true },
 		  insertHorizontalRule : { visible : true },
 
 		  addMedia : addMedia,
-		  
+
 		  cut   : { visible : true },
 		  copy  : { visible : true },
 		  paste : { visible : true },
@@ -403,7 +403,7 @@ function qtiEdit(itemSerial, formContainers, options){
 				}else{
 					var deletedInteractions = instance.getDeletedInteractions();
 					instance.deleteInteractions(deletedInteractions);
-					
+
 				}
 				return false;
 			}
@@ -411,7 +411,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		  frameReady: function(editorDoc){
 			//the binding require the modified html data to be ready
 			instance.bindInteractionLinkListener();
-			
+
 			editorDoc.body.focus();
 		  },
 		  unsetHTMLview: function(){
@@ -419,21 +419,21 @@ function qtiEdit(itemSerial, formContainers, options){
 		  }
 		}
 	});
-	
+
 	this.loadResponseProcessingForm();
-	
+
 	qtiEdit.instances[this.itemSerial] = this;
 }
 
 qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSerial){
-		
+
 	if(!itemSerial){
 		itemSerial = this.itemSerial;
 	}
-	
+
 	var instance = this;
 	itemData = util.htmlEncode(itemData);
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/addInteraction",
@@ -446,32 +446,32 @@ qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSeria
 	   success: function(r){
 			//set the content:
 			instance.itemEditor.wysiwyg('setContent', $("<div/>").html(r.itemData).html());
-			
+
 			//then add listener
 			instance.bindInteractionLinkListener();
-			
+
 			//auto load the interaction form?
 	   }
 	});
 }
 
 qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
-	
+
 	//destroy all listeners:
-	
-	
+
+
 	//reset the interaction array:
 	var instance = this;
 	instance.interactionSerials = [];
-	
-	
+
+
 	var links = qtiEdit.getEltInFrame('.qti_interaction_link', editorDoc);
-	
+
 	for(var i in links){
-		
+
 		var $interaction = links[i];
 		var interactionSerial = $interaction.attr('id');
-		
+
 		instance.interactions[interactionSerial] = interactionSerial;
 		$interaction.mousedown(function(e){
 			e.preventDefault();
@@ -482,7 +482,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 			instance.loadInteractionForm(instance.currentInteractionSerial);
 		});
 		qtiEdit.makeNoEditable($interaction);
-		
+
 		//append the delete button:
 		var $interactionContainer = $interaction.parent('.qti_interaction_box');
 		$interactionContainer.bind('dragover drop',function(e){
@@ -490,7 +490,7 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 			return false;
 		});
 		qtiEdit.makeNoEditable($interactionContainer);
-		
+
 		var $deleteButton = $('<span class="qti_interaction_box_delete"></span>').appendTo($interactionContainer);
 		$deleteButton.attr('title', __('Delete interaction'));
 		$deleteButton.hide();
@@ -504,9 +504,9 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		$deleteButton.bind('mousedown contextmenu',function(e){
 			e.preventDefault();
 		});
-		
+
 		qtiEdit.makeNoEditable($deleteButton);
-		
+
 		$interaction.parent().hover(function(){
 			$(this).children('.qti_interaction_box_delete').show();
 			if($(this).hasClass('qti_interaction_inline')){
@@ -524,13 +524,13 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 qtiEdit.makeNoEditable = function($DOMelement){
 	if($DOMelement.length){
 		// $DOMelement[0].contenteditable = 'false';
-		
+
 		$DOMelement.focus(function(e){
 			//CL('try removing focus');
 			if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
 			$(this).blur();
 		});
-		
+
 		$DOMelement.keydown(function(){
 			//CL('key downed');
 		});
@@ -544,7 +544,7 @@ qtiEdit.makeNoEditable = function($DOMelement){
 
 qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 	var self = this;
-	
+
 	if(self.itemSerial){
 		$.ajax({
 		   type: "POST",
@@ -558,15 +558,15 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 				$(self.interactionFormContent).empty();
 				$(self.interactionFormContent).html(form);
 				qtiEdit.initFormElements($(self.interactionFormContent));
-				
+
 				// var position = $(self.interactionFormContent).position();
 				// window.scrollTo(0, parseInt(position.top));
-				
+
 				if($myTab) $myTab.tabs("select" , 1);
 		   }
 		});
 	}
-	
+
 }
 
 qtiEdit.initFormElements = function($container){
@@ -577,7 +577,7 @@ qtiEdit.initFormElements = function($container){
 qtiEdit.mapFileManagerField = function($container){
 
 	$container.find('.qti-file-img').each(function(){
-		
+
 		var displayPreview = function(elt, imagePath, width, height){
 			if($(elt).hasClass('qti-with-preview') && width && height){
 				var maxHeight = 150;
@@ -598,12 +598,12 @@ qtiEdit.mapFileManagerField = function($container){
 						height = width/baseRatio;
 					}
 				}
-				
+
 				//insert the image preview
 				var $parentElt = $(elt).parent();
 				var $previewElt = $parentElt.find('div.qti-img-preview');
 				if(!$previewElt.length){
-					
+
 					$previewElt = $('<div class="qti-img-preview">').appendTo($parentElt);
 				}
 				// var $descriptionElt = $();
@@ -611,39 +611,39 @@ qtiEdit.mapFileManagerField = function($container){
 				$previewElt.append('<br/><span class="qti-img-preview-label">'+previewDescription+'</span>');
 			}
 		}
-		
+
 		var imgPath = $(this).val();
 		if(imgPath){
 			//check if the weight and height are defined:
 			var $modifiedForm = $(this).parents('form');
 			var height = parseInt($modifiedForm.find('input#object_height').val());
 			var width = parseInt($modifiedForm.find('input#object_width').val());
-			
+
 			if($(this).hasClass('qti-with-preview') && width && height) displayPreview(this, imgPath, width, height);
 		}
-		
+
 		if($.fn.fmbind){
 			//dynamically change the style:
 			$(this).width('50%');
-			
+
 			//add tao file manager
 			$(this).fmbind({type: 'image'}, function(elt, imgPath, mediaData){
-				
+
 				var height = 0;
 				var width = 0;
 				if(mediaData){
 					if(mediaData.height) height = mediaData.height;
 					if(mediaData.width) width = mediaData.width;
 				}
-				
+
 				$(elt).val(imgPath);
-				
+
 				var $modifiedForm = $(elt).parents('form');
 				if($modifiedForm.length){
 					//find the active interaction:
 					for(var itemSerial in qtiEdit.instances){
 						var item = qtiEdit.instances[itemSerial];
-					
+
 						var interaction = item.currentInteraction;
 						if(interaction){
 							var id = $modifiedForm.attr('id');
@@ -657,43 +657,43 @@ qtiEdit.mapFileManagerField = function($container){
 						}
 					}
 				}
-				
+
 				if(height) $modifiedForm.find('input#object_height').val(height);
 				if(width) $modifiedForm.find('input#object_width').val(width);
-				
+
 				displayPreview(elt, imgPath, width, height);
-				
+
 			});
 		}
 	});
-	
+
 }
 
 qtiEdit.mapHtmlEditor = function($container){
 	//map the wysiwyg editor to the html-area fields
 	$container.find('.qti-html-area').each(function(){
 		if ($(this).css('display') != 'none' && !$(this).siblings('.wysiwyg').length){
-		
+
 			var controls = {
-			
+
 			  strikeThrough : { visible : true },
 			  underline     : { visible : false },
 			  insertTable 	: { visible : false },
-			  
+
 			  justifyLeft   : { visible : true },
 			  justifyCenter : { visible : true },
 			  justifyRight  : { visible : true },
 			  justifyFull   : { visible : true },
-			  
+
 			  indent  : { visible : true },
 			  outdent : { visible : true },
-			  
+
 			  subscript   : { visible : true },
 			  superscript : { visible : true },
-			  
+
 			  undo : { visible : true },
 			  redo : { visible : true },
-			  
+
 			  insertOrderedList    : { visible : true },
 			  insertUnorderedList  : { visible : true },
 			  insertHorizontalRule : { visible : true },
@@ -707,9 +707,9 @@ qtiEdit.mapHtmlEditor = function($container){
 			  h4: { visible: false },
 			  h5: { visible: false },
 			  h6: { visible: false },
-			  
+
 			  insertTable: { visible: false },
-			  			  
+
 			  addChoiceInteraction: {visible:false},
 			  addAssociateInteraction: {visible:false},
 			  addOrderInteraction: {visible:false},
@@ -733,7 +733,7 @@ qtiEdit.mapHtmlEditor = function($container){
 			  saveItemData: {visible:false},
 			  saveInteractionData: {visible:false}
 			};
-		
+
 			$(this).wysiwyg({
 				iFrameClass: 'wysiwyg-htmlarea',
 				controls: controls
@@ -749,7 +749,7 @@ qtiEdit.destroyHtmlEditor = function($container){
 			try{
 				$(this).wysiwyg('destroy');
 			}catch(err){
-				
+
 			}
 		// }
 	});
@@ -757,26 +757,26 @@ qtiEdit.destroyHtmlEditor = function($container){
 
 qtiEdit.getEltInFrame = function(selector, selectedDocument){
 	var foundElts = [];
-	
+
 	if(selectedDocument){
 		$(selector, selectedDocument).each(function(){
-			foundElts.push($(this));  
+			foundElts.push($(this));
 		});
 	}else{
 		// for each iframe:
 		$('iframe').each(function(){
-		
+
 			// get its document
 			$(this).each( function(){
 				var selectedDocument = this.contentWindow.document;
 				$(selector, selectedDocument).each(function(){
-					foundElts.push($(this));  
+					foundElts.push($(this));
 				});
 			});
-			
+
 		});
 	}
-	
+
 	return foundElts;
 }
 
@@ -786,12 +786,12 @@ qtiEdit.createInfoMessage = function(message){
 
 //the global save function
 qtiEdit.prototype.save = function(itemUri){
-	
+
 	if(!this.itemUri) throw 'item uri cannot be empty';
-	
+
 	//save item data then export to rdf item:
 	var self = this;
-	
+
 	var itemProperties = $('#AssessmentItem_Form').serializeObject();
 	itemProperties.itemSerial = this.itemSerial;
 	itemProperties.itemUri = this.itemUri;
@@ -810,7 +810,7 @@ qtiEdit.prototype.save = function(itemUri){
 		   }
 		});
 	}
-	
+
 	if(this.currentInteraction){
 		if(this.currentInteraction.modifiedInteraction){
 			if(confirm(__('The current interaction has been modified but the modifications has not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)'))){
@@ -819,26 +819,26 @@ qtiEdit.prototype.save = function(itemUri){
 			}
 		}
 	}
-	
+
 	saveItemFunction();
 }
 
 qtiEdit.prototype.preview = function(){
-	
+
 	//full preview require item saving before preview:
 	// var url = root_url + '/taoItems/Items/preview';
 	// url += '?uri='+this.itemUri;
 	// url += '&classUri='+this.itemClassUri;
 	// url += '&itemSerial='+this.itemSerial;
-	
+
 	var url = root_url + '/taoItems/QtiAuthoring/preview';
 	url += '?itemSerial='+this.itemSerial;
-	
+
         var __this = this;
 	var openUrlFunction = function(){
 		window.open(url, 'LightPeview', __this.windowOptions);
 	}
-	
+
 	if(this.currentInteraction){
 		if(this.currentInteraction.modifiedInteraction){
 			if(confirm(__('The current interaction has been modified but the modifications has not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?'))){
@@ -847,7 +847,7 @@ qtiEdit.prototype.preview = function(){
 			}
 		}
 	}
-	
+
 	openUrlFunction();
 }
 
@@ -861,15 +861,15 @@ qtiEdit.prototype.exportItem = function(){
 }
 
 qtiEdit.prototype.saveItemData = function(itemSerial){
-	
+
 	var instance = this;
-	
+
 	if(!itemSerial){
 		var itemSerial = instance.itemSerial;
 	}
-	
+
 	//make sure that the data is up to date:
-	
+
 	instance.itemEditor.wysiwyg('saveContent');
 	$.ajax({
 	   type: "POST",
@@ -897,16 +897,16 @@ qtiEdit.prototype.getDeletedInteractions = function(one){
 			}
 		}
 	}
-	
+
 	return deletedInteractions;
 }
 
 qtiEdit.prototype.deleteInteractions = function(interactionSerials){
-	
+
 	if(!interactionSerials || interactionSerials.length <=0){
 		return false;
 	}
-	
+
 	var data = '';
 	//prepare the data to be sent:
 	for(var i in interactionSerials){
@@ -914,16 +914,16 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 		delete this.interactions[interactionSerials[i]];
 	}
 	data += 'itemSerial=' + this.itemSerial;
-	
+
 	var instance = this;
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/deleteInteractions",
 	   data: data,
 	   dataType: 'json',
 	   success: function(r){
-			
+
 			if(r.deleted){
 				for(var i in interactionSerials){
 					var interactionSerial = interactionSerials[i];
@@ -932,18 +932,18 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 						$(instance.interactionFormContent).empty();
 					}
 					delete instance.interactions[interactionSerial];
-					
-					
+
+
 					//delete:
 					var $interactions = qtiEdit.getEltInFrame('#'+interactionSerial);
 					if($interactions.length){
-						
+
 						if($interactions[0]){
-							
+
 							// _dump($interactions[0].parent()[0].childNodes);
 							// CD($interactions[0].parent(), 'interatiocn to delete');
 							// CL('('+$interactions[0].parent()[0].tagName+')'+$interactions[0].parent()[0].innerHtml);
-							
+
 							$interactionBlock = $interactions[0].parent();
 							$interactionBlock.empty();
 							$interactionBlock.detach();
@@ -951,29 +951,29 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 						}
 					}
 				}
-				
+
 				//unload the interaction form if needed
-				
+
 				//save item data, i.e. validate the changes operated on the item data:
 				instance.saveItemData();
-				
+
 			}else{
-			
+
 				for(var i in interactionSerials){
 					instance.interactions[interactionSerials[i]] = interactionSerials[i];
 				}
-				
+
 			}
-			
+
 	   }
 	});
-	
+
 }
 
 qtiEdit.prototype.loadResponseProcessingForm = function(){
-	
+
 	var self = this;
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/editResponseProcessing",
@@ -989,7 +989,7 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 
 qtiEdit.prototype.saveItemResponseProcessing = function($myForm){
 	var self = this;
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/saveItemResponseProcessing",
@@ -1004,11 +1004,11 @@ qtiEdit.prototype.saveItemResponseProcessing = function($myForm){
 	});
 }
 
-//useful for single page interface only: reload interaction form, to reload 
+//useful for single page interface only: reload interaction form, to reload
 qtiEdit.prototype.setResponseMode = function(visible){
-	if(visible){
+	/*if(visible){
 		if(this.responseMode){
-		
+which value for this.responseMode here ?
 		}else{
 			this.responseMode = true;
 			//reload the current interaction form entirely, to display the response template
@@ -1017,14 +1017,17 @@ qtiEdit.prototype.setResponseMode = function(visible){
 	}else{
 		this.responseMode = false;
 		//reload the current interaction form entirely, to display the response template
-		if(this.currentInteraction) this.loadInteractionForm(this.currentInteraction.interactionSerial);
-	}
+		if (this.currentInteraction) this.loadInteractionForm(this.currentInteraction.interactionSerial);
+	}*/
+	if (visible && !this.responseMode) this.responseMode = true;
+	else this.responseMode = false;
+	if (((visible && !this.responseMode) || (!visible)) && this.currentInteraction) this.loadInteractionForm(this.currentInteraction.interactionSerial);
 }
 
 qtiEdit.prototype.loadStyleSheetForm = function(empty){
 
 	var instance = this;
-	
+
 	//check if the form is not empty:
 	var post = '';
 	if($('#css_uploader').length && !empty){
@@ -1033,7 +1036,7 @@ qtiEdit.prototype.loadStyleSheetForm = function(empty){
 	}else{
 		post = {itemSerial: this.itemSerial, itemUri: this.itemUri};
 	}
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/manageStyleSheets",
@@ -1051,11 +1054,11 @@ qtiEdit.prototype.loadStyleSheetForm = function(empty){
 							instance.loadStyleSheetForm();
 						}
 					};
-					
+
 					timer = setInterval(checkComplete, 1000);
 					return false;
 				});
-				
+
 			}
 	   }
 	});
@@ -1063,7 +1066,7 @@ qtiEdit.prototype.loadStyleSheetForm = function(empty){
 
 qtiEdit.prototype.deleteStyleSheet = function(css_href){
 	var instance = this;
-	
+
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/deleteStyleSheet",
@@ -1083,11 +1086,11 @@ qtiEdit.prototype.deleteStyleSheet = function(css_href){
 
 qtiEdit.prototype.saveCurrentInteraction = function(callback){
 	//auto save the current interaction, after confirming the choice to the user:
-	
+
 	if(this.currentInteraction){
 		var interaction = this.currentInteraction;
 		$(".interaction-form-submitter").click();
-		
+
 		var timer = null;
 		var stopTimer = function(){
 			callback();
@@ -1100,5 +1103,5 @@ qtiEdit.prototype.saveCurrentInteraction = function(callback){
 			}
 		}, 500);
 	}
-	
+
 }
