@@ -1,10 +1,10 @@
 /**
  * Choices widgets: simple, multiple and inline choice QTI's interactions
- * 
+ *
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
- * 
+ *
  * @requires jquery {@link http://www.jquery.com}
  * @requries raphael {@link http://raphaeljs.com/}
  */
@@ -41,24 +41,24 @@ QTIWidget.choice = function(ctx){
  * @methodOf QTIWidget
  * @param {Object} ctx the QTIWidget context
  */
-QTIWidget.simple_choice = function (ctx){	
-		
-	//add the main class 
+QTIWidget.simple_choice = function (ctx){
+
+	//add the main class
 	$(ctx.qti_item_id).addClass('qti_simple_interaction');
-	
+
 	//change the class to activate the choice on click
-	$(ctx.qti_item_id +" ul li").bind("click",function(){	
-		$(ctx.qti_item_id+" ul li").removeClass("tabActive");		
-		$(this).addClass("tabActive");					
+	$(ctx.qti_item_id +" ul li").bind("click",function(){
+		$(ctx.qti_item_id+" ul li").removeClass("tabActive");
+		$(this).addClass("tabActive");
 	});
-	
+
 	//set the current value if defined
 	if(ctx.opts["values"]){
 		var value = ctx.opts["values"];
 		if(typeof(value) == 'string' && value != ''){
 			$(ctx.qti_item_id+" ul li#"+value).addClass("tabActive");
-			}
 		}
+	}
 };
 
 /**
@@ -67,10 +67,10 @@ QTIWidget.simple_choice = function (ctx){
  * @param {Object} ctx the QTIWidget context
  */
 QTIWidget.multiple_choice = function (ctx){
-	
-	//add the main class 
+
+	//add the main class
 	$(ctx.qti_item_id).addClass('qti_multi_interaction');
-	
+
 	//change the class to activate the choices on click
 	$(ctx.qti_item_id+" ul li").bind("click",function(){
 		if ($(this).hasClass("tabActive")) {
@@ -82,7 +82,7 @@ QTIWidget.multiple_choice = function (ctx){
 			}
 		}
 	});
-	
+
 	//set the current values if defined
 	if(ctx.opts["values"]){
 		var values = ctx.opts["values"];
@@ -100,7 +100,7 @@ QTIWidget.multiple_choice = function (ctx){
 //
 //	INLINE CHOICE
 //
-	
+
 /**
  * We use the html <i>select</i> widget,
  * the function is listed only to keep the same behavior than the other
