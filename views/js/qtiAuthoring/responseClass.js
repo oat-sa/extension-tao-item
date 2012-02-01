@@ -79,7 +79,10 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 							// alert('Building response grid exception: '+err);
 							CL('Building response grid exception: '+err);
 						}
-					} else $('#'+tableElementId).prev('span').hide();
+					} else {
+						response.myGrid = $("#"+tableElementId); //If not displayed, var never be set, so set it here
+						$('#'+tableElementId).prev('span').hide();
+					}
 
 					/*if(r.setResponseOptionsMode){
 						response.loadResponseOptionsForm();
@@ -123,6 +126,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 
 	$(".response-form-submitter").click(function(event){
 		event.preventDefault();
+		var result = false;
 
 		$('#qtiAuthoring_response_formContainer form').each(function(i) {
 			switch ($(this).attr('name')) {
@@ -134,21 +138,9 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   data: $(this).serialize(),
 					   dataType: 'json',
 					   async: false,
-					   success: function(r){
-							if(r.saved){ //Assume save = changed
-								qtiEdit.createInfoMessage(__('Modification on response applied'));
-
-								var interaction = interactionClass.instances[self.interactionSerial];
-								if(interaction){
-									//reload the grid, just in case the response template has changed:
-									new responseClass(self.myGrid.attr('id'), interaction);
-
-									//set the response responseOptions mode:
-									interaction.setResponseOptionsMode(r.setResponseOptionsMode);
-								}
-
-								self.setModifiedResponseProperties(false);
-							}
+					   success: function(r){ //Assume save = changed
+						    if (r.saved) qtiEdit.createInfoMessage(__('Modification on response applied'));
+							result = r.saved;
 					   }
 					});
 					break;
@@ -184,6 +176,18 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					break;
 			}
 		});
+
+		if (result) {
+			var interaction = interactionClass.instances[self.interactionSerial];
+			if (interaction) {
+				//reload the grid, just in case the response template has changed:
+				new responseClass(self.myGrid.attr('id'), interaction);
+//The new or the intercation do, but not both ! doing the same with + in interaction
+				//set the response responseOptions mode:
+				//interaction.setResponseOptionsMode(r.setResponseOptionsMode);
+			}
+			self.setModifiedResponseProperties(false);
+		}
 		//auto save the response options values
 		//$('#qtiAuthoring_responseOptionsEditor').find('.form-submiter').click();
 
