@@ -13,6 +13,7 @@ div.qti-menu-item{float:left;text-align:center;cursor:pointer;padding: 0px 5px;w
 div.qti-menu-item a{color:#D1043B;font-weight:bold;text-decoration:none;}
 div.qti-menu-item:hover a, div.qti-menu-item a:hover{color:#FF8C8C;}
 div.qti-menu-item-wide{width: 100px;}
+#qtiAuthoring_menu_left_container div.qti-menu-item { padding: 0 1px }
 
 #qti-carousel-prev{float:left;}
 #qti-carousel-next{float:right;}
