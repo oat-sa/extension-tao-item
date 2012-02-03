@@ -259,27 +259,12 @@ class taoItems_models_classes_QTI_Service
         $returnValue = null;
 
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 begin
-    	if(!empty($serial) && Session::hasAttribute(taoItems_models_classes_QTI_Data::DATA_KEY)){
-    		$storage = Session::getAttribute(taoItems_models_classes_QTI_Data::DATA_KEY);
-	        if(isset($storage[$serial])){
-
-	        	$data = @unserialize($storage[$serial]);
-	        
-	        	if($data === false){
-	        		throw new common_Exception("Unable to unserialize session entry identified by \"".$serial.'"');
-	        	}
-	        	if(!empty($type)){
-	        		if( ! $data instanceof $type) {
-	        			throw new common__Exception("object retrieved is a ".get_class($data)." instead of {$type}.");
-	        		}
-	        	}
-	        	
-	        	$returnValue = $data;
-	        }
-        }
-        if (is_null($returnValue)) {
-        	common_Logger::w('Failed to get '.$type.'('.$serial.')', array('TAOITEMS', 'QTI'));
-        }
+        $returnValue = taoItems_models_classes_QTI_QTISessionCache::singleton()->get($serial);
+    	if(!is_null($returnValue) && !empty($type)){
+        	if(!$returnValue instanceof $type) {
+        		throw new common_Exception("object retrieved is a ".get_class($returnValue)." instead of {$type}.");
+        	}
+    	}
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 end
 
         return $returnValue;
@@ -316,24 +301,7 @@ class taoItems_models_classes_QTI_Service
         	$singularMethodName = 'get'.ucfirst($singularPropertyName);
         }
         
-		$instances = taoItems_models_classes_QTI_Data::$_instances;
-		
-        if(Session::hasAttribute(taoItems_models_classes_QTI_Data::DATA_KEY)) {
-        	foreach (Session::getAttribute(taoItems_models_classes_QTI_Data::DATA_KEY) as $serial => $data)
-        		$instances[] = $serial;
-        		
-        }
-		
-        foreach(array_unique($instances) as $serial){
-        	$instance = null;
-        	try{
-				$instance = $this->getDataBySerial($serial);
-			}catch(Exception $e){}
-			
-			if(is_null($instance)){
-				// newly constructed object that has not been saved into session yet or wrong variable that failed to be unserialized:
-				continue;
-			}
+		foreach (taoItems_models_classes_QTI_QTISessionCache::singleton()->getAll() as $serial => $instance) {
 			
         	$rObject  = new ReflectionObject($instance);
         	if($rObject->hasProperty($propertyName)){
@@ -380,21 +348,8 @@ class taoItems_models_classes_QTI_Service
         $returnValue = (bool) false;
 
         // section 10-13-1-39-11450a84:12b8101447d:-8000:00000000000028DE begin
-        if(!is_null($qtiObject)){
-			if(taoItems_models_classes_QTI_Data::$persist == false){
-				throw new common_Exception("Cannot save data to session when persistence is disabled");
-			}else{
-				// not clean put reading the session and then adding data to the session causses concurrency problems
-				// therefore this DOES NOT WORK: session::setAttribute(taoItems_models_classes_QTI_Data::DATA_KEY, $storage)
-				$_SESSION[SESSION_NAMESPACE][taoItems_models_classes_QTI_Data::DATA_KEY][$qtiObject->getSerial()] = serialize($qtiObject);
-				
-				$returnValue = true;
-				
-				// during serialization the referenced qti objects get replaced by their serial (@see __sleep)
-				// we call wakeup to convert them back into objects
-				$qtiObject->__wakeup();
-			}
-		}
+        taoItems_models_classes_QTI_QTISessionCache::singleton()->put($qtiObject);
+        $returnValue = true;
         // section 10-13-1-39-11450a84:12b8101447d:-8000:00000000000028DE end
 
         return (bool) $returnValue;
@@ -421,21 +376,6 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025E4 end
 
         return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method removeDataFromSession
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  string serial
-     * @return mixed
-     */
-    public function removeDataFromSession($serial)
-    {
-        // section 127-0-1-1-249123f:13519689c9e:-8000:00000000000036BD begin
-        unset($_SESSION[SESSION_NAMESPACE][taoItems_models_classes_QTI_Data::DATA_KEY][$serial]);
-        // section 127-0-1-1-249123f:13519689c9e:-8000:00000000000036BD end
     }
 
 } /* end of class taoItems_models_classes_QTI_Service */

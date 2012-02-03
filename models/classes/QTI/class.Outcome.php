@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * An outcome is a data build in item output. The SCORE is one of the most
  * outcomes.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
  * @subpackage models_classes_QTI
@@ -23,7 +23,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
@@ -33,7 +33,7 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * point
  * to render a complete item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
@@ -51,7 +51,7 @@ require_once('taoItems/models/classes/QTI/class.Item.php');
  * outcomes.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
  * @subpackage models_classes_QTI
@@ -75,36 +75,10 @@ class taoItems_models_classes_QTI_Outcome
     // --- OPERATIONS ---
 
     /**
-     * Short description of method __construct
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @param  string identifier
-     * @param  array options
-     * @return mixed
-     */
-    public function __construct($identifier = null, $options = array())
-    {
-        // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:0000000000002951 begin
-        
-    	if(is_null($identifier)===true || empty($identifier)===true){
-    		parent::__construct($identifier, $options);
-    	}
-    	else{
-    		$this->createSerial();
-	    	self::$_instances[] = $this->serial;
-			$this->setIdentifier($identifier, false);   	
-	    	$this->options 		= $options;
-    	}
-    	
-        // section 127-0-1-1--1dc66d76:12ce5106c38:-8000:0000000000002951 end
-    }
-
-    /**
      * Short description of method getDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getDefaultValue()
@@ -124,7 +98,7 @@ class taoItems_models_classes_QTI_Outcome
      * Short description of method setDefaultValue
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string value
      * @return mixed
      */
@@ -141,7 +115,7 @@ class taoItems_models_classes_QTI_Outcome
      * get the outcome in JSON format
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      */
     public function toJSON()
     {

@@ -82,7 +82,7 @@ abstract class taoItems_actions_QTIform_choice_AssociableChoice
 		if($interaction instanceof taoItems_models_classes_QTI_Interaction){
 			$this->interaction = $interaction;
 		}else{
-			throw new Exception('cannot find the parent interaction of the current choice');
+			throw new common_exception_Error('cannot find the parent interaction of the current choice');
 		}
 		
 		$returnValue = parent::__construct($choice);

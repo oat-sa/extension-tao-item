@@ -786,8 +786,10 @@ class taoItems_models_classes_QTI_ParserFactory
 
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035D7 begin
         // STRONGLY simplified summation detection
-        $patternCorrectTAO = '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "baseValue"]';        
-		$possibleSummation = '/setOutcomeValue [count(./*) = 1 ] [name(./*[1]) = "sum" ]';
+        $patternCorrectTAO	= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "baseValue"]';        
+        $patternMapTAO		= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "not" ] [count(./responseIf/not/*) = 1 ] [name(./responseIf/not/*[1]) = "isNull" ] [count(./responseIf/not/isNull/*) = 1 ] [name(./responseIf/not/isNull/*[1]) = "variable" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "mapResponse"]';       
+        $patternMapPointTAO	= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "not" ] [count(./responseIf/not/*) = 1 ] [name(./responseIf/not/*[1]) = "isNull" ] [count(./responseIf/not/isNull/*) = 1 ] [name(./responseIf/not/isNull/*[1]) = "variable" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "mapResponsePoint"]';       
+        $possibleSummation	= '/setOutcomeValue [count(./*) = 1 ] [name(./*[1]) = "sum" ]';
         
 		$irps = array();
 		$composition = null;
@@ -801,6 +803,14 @@ class taoItems_models_classes_QTI_ParserFactory
 				$responseIdentifier = (string) $subtree->responseIf->match->variable[0]['identifier'];
 				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
 				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($responseIdentifier, $scoreIdentifier);
+			} elseif (count($subtree->xpath($patternMapTAO)) > 0 ) {
+				$responseIdentifier = (string) $subtree->responseIf->not->isNull->variable[0]['identifier'];
+				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
+				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate($responseIdentifier, $scoreIdentifier);
+			} elseif (count($subtree->xpath($patternMapPointTAO)) > 0 ) {
+				$responseIdentifier = (string) $subtree->responseIf->not->isNull->variable[0]['identifier'];
+				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
+				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate($responseIdentifier, $scoreIdentifier);
 			} elseif (count($subtree->xpath($possibleSummation)) > 0 ) {
 				$composition = $subtree;
 			} else {
@@ -817,7 +827,7 @@ class taoItems_models_classes_QTI_ParserFactory
 		}
 		
 		if (count(array_diff(array_keys($irps), $responseIdentifiers)) > 0) {
-			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not template driven, no interaction for rules: '.implode(',',array_diff(array_keys($irps), $responseIdentifiers)));
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composit, no interaction for rules: '.implode(',',array_diff(array_keys($irps), $responseIdentifiers)));
 		}
 		
 		//assuming sum is correct

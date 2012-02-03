@@ -25,7 +25,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->service = taoItems_models_classes_QtiAuthoringService::singleton();
 		$this->defaultData();
 		
-		taoItems_models_classes_QTI_Data::setPersistance(true);
+		taoItems_models_classes_QTI_Data::setPersistence(true);
 	}
 	
 	public function getCurrentItemResource(){
@@ -117,7 +117,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$this->setData('debugMode', false);
 			
 			//clear the QTI session data before doing anything else:
-			Session::removeAttribute(taoItems_models_classes_QTI_Data::DATA_KEY);
+			taoItems_models_classes_QTI_QTISessionCache::singleton()->purge();
 			Session::removeAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
 		}
 		
@@ -250,20 +250,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$itemObject = $this->getCurrentItem();
 		
 		$this->setData('itemObject', $itemObject);
-		$this->setData('sessionData', $this->getQTIsessionData());
+		$this->setData('sessionData', array('not supported'));
 		$this->setView("QTIAuthoring/debug.tpl");
-	}
-	
-	protected function getQTIsessionData(){
-	
-		$sessionData = array();
-		
-		if(session::hasAttribute(taoItems_models_classes_QTI_Data::DATA_KEY)){
-			foreach(session::getAttribute(taoItems_models_classes_QTI_Data::DATA_KEY) as $key => $value){
-					$sessionData[$key] = $value;
-			}
-		}
-		return $sessionData;
 	}
 	
 	protected function getPostedItemData(){
@@ -1354,6 +1342,15 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$saved = false;
 			$outcome = $this->getCurrentOutcome();
 			common_Logger::d('storing composite stuff');
+			
+			$values = array(
+				'interpretation' => $this->getRequestParameter('guidelines')
+			);
+			
+			common_Logger::d('outcome b: '.implode(',',array_keys($outcome->getOptions())));
+			$this->service->editOptions($outcome, $values);
+			common_Logger::d('outcome a: '.implode(',',array_keys($outcome->getOptions())));
+			
 			// i do stuff
 			echo json_encode(array(
 				'saved' => $saved
@@ -1436,6 +1433,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				}
 				$displayGrid = false;
 			} else {
+				$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
+				$responseData = $this->service->getInteractionResponseData($interaction);
 				$displayGrid = true;
 			}
 			

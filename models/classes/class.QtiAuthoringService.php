@@ -1294,7 +1294,7 @@ class taoItems_models_classes_QtiAuthoringService
 			$returnValue = 'summation';
 			
 		}else{
-			throw new common_Exception('invalid type of response processing');
+			throw new common_Exception('invalid type of response processing: '.get_class($responseProcessing));
 		}
 		
 		return $returnValue;

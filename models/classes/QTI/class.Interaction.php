@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI's interactions are the way the user interact with the system. The
  * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  * @subpackage models_classes_QTI
@@ -19,7 +19,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * A choice is a kind of interaction's proposition.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  */
 require_once('taoItems/models/classes/QTI/class.Choice.php');
@@ -31,7 +31,7 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
@@ -39,7 +39,7 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * A group is an concept to enable choice logical grouping (ordering). 
  * It use when there is distinct choices groups in an interaction.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Group.php');
 
@@ -49,7 +49,7 @@ require_once('taoItems/models/classes/QTI/class.Group.php');
  * point
  * to render a complete item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
@@ -58,7 +58,7 @@ require_once('taoItems/models/classes/QTI/class.Item.php');
  * A response is on object associated to an interactino containing which are the
  * response into the interaction choices and the score regarding the answers
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  */
 require_once('taoItems/models/classes/QTI/class.Response.php');
@@ -76,7 +76,7 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
  * will be rendered into widgets to enable the user to answer to the item.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  * @subpackage models_classes_QTI
@@ -137,7 +137,7 @@ class taoItems_models_classes_QTI_Interaction
      * If the id is null, a unique identifier is generated
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string type
      * @param  string id
      * @param  array options
@@ -155,72 +155,10 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * used to the self persistency
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return array
-     */
-    public function __sleep()
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DD begin
-        
-        $this->choices = array_keys($this->choices);
-        if(!is_null($this->response)){
-        	$this->response = $this->response->getSerial();
-        }
-		$this->groups = array_keys($this->groups);
-        $returnValue = parent::__sleep();
-        
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DD end
-
-        return (array) $returnValue;
-    }
-
-    /**
-     * used to the self persitancy
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return mixed
-     */
-    public function __wakeup()
-    {
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF begin
-        
-    	$choiceSerials = $this->choices; 
-    	$this->choices = array();
-    	foreach($choiceSerials as $serial){
-    		$choice = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($serial, 'taoItems_models_classes_QTI_Choice');
-    		if(!is_null($choice)){
-    			$this->choices[$serial] = $choice;
-    		}
-    	}
-		
-    	$responseSerial = $this->response;
-    	$this->response = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($responseSerial, 'taoItems_models_classes_QTI_Response');
-		
-		$groupSerials = $this->groups;
-		$this->groups = array();
-    	foreach($groupSerials as $serial){
-    		$group = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($serial, 'taoItems_models_classes_QTI_Group');
-    		if(!is_null($group)){
-    			$this->groups[$serial] = $group;
-    		}
-    	}
-    	
-    	parent::__wakeup();
-    	
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DF end
-    }
-
-    /**
      * Set the list of choices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array choices
      * @return mixed
      */
@@ -240,7 +178,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the interaction's choices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getChoices()
@@ -260,7 +198,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get a choice identified by the serial
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Choice
      */
@@ -285,7 +223,7 @@ class taoItems_models_classes_QTI_Interaction
      * Add a choice to the interaction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Choice choice
      * @return mixed
      */
@@ -304,7 +242,7 @@ class taoItems_models_classes_QTI_Interaction
      * Remove a choice from the interaction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Choice choice
      * @return boolean
      */
@@ -341,7 +279,7 @@ class taoItems_models_classes_QTI_Interaction
      * Shuffle the order of the choices
      *
      * @access protected
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     protected function shuffleChoices()
@@ -412,7 +350,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the interaction's groups
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getGroups()
@@ -432,7 +370,7 @@ class taoItems_models_classes_QTI_Interaction
      * Define the interaction's groups
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array groups
      * @return mixed
      */
@@ -452,7 +390,7 @@ class taoItems_models_classes_QTI_Interaction
      * Add a  group to the interaction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Group group
      * @return mixed
      */
@@ -470,7 +408,7 @@ class taoItems_models_classes_QTI_Interaction
      * If recursive is set to true, it will remove the group's choices
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Group group
      * @param  boolean recursive
      * @return boolean
@@ -512,7 +450,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the response linked to the interaction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return taoItems_models_classes_QTI_Response
      */
     public function getResponse()
@@ -520,9 +458,7 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = null;
 
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F9 begin
-        
         $returnValue = $this->response;
-        
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F9 end
 
         return $returnValue;
@@ -532,14 +468,13 @@ class taoItems_models_classes_QTI_Interaction
      * Define the interaction's response
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Response response
      * @return mixed
      */
     public function setResponse( taoItems_models_classes_QTI_Response $response)
     {
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023FB begin
-        
     	$this->response = $response;
     	$this->options['responseIdentifier'] = $response->getIdentifier();
     	
@@ -550,7 +485,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the prompt data
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getPrompt()
@@ -570,7 +505,7 @@ class taoItems_models_classes_QTI_Interaction
      * Define the prompt data
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string text
      * @return mixed
      */
@@ -604,7 +539,7 @@ class taoItems_models_classes_QTI_Interaction
      * (single, multiple or ordered)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  boolean numeric
      * @return mixed
      */
@@ -686,7 +621,7 @@ class taoItems_models_classes_QTI_Interaction
      * float, boolean or point
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getBaseType()
@@ -767,7 +702,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setObject
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array objectData
      * @return mixed
      */
@@ -786,7 +721,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getObject
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getObject()
@@ -804,7 +739,7 @@ class taoItems_models_classes_QTI_Interaction
      * Check if the interaction is a block or an inline interaction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return boolean
      */
     public function isBlock()
@@ -840,7 +775,7 @@ class taoItems_models_classes_QTI_Interaction
      * (use of images/SVG as working area)
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return boolean
      */
     public function isGraphic()
@@ -866,7 +801,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -965,7 +900,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -1040,7 +975,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()

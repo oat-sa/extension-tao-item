@@ -38,7 +38,7 @@ class QTIOutputTestCase extends UnitTestCase {
 	 */
 	public function testToQTI(){
 		
-		taoItems_models_classes_QTI_Data::setPersistance(false);
+		taoItems_models_classes_QTI_Data::setPersistence(false);
 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){
 			$qtiParser = new taoItems_models_classes_QTI_Parser($file);
@@ -84,7 +84,7 @@ class QTIOutputTestCase extends UnitTestCase {
 	 */
 	public function testToXHTML(){
 		
-		taoItems_models_classes_QTI_Data::setPersistance(false);
+		taoItems_models_classes_QTI_Data::setPersistence(false);
 		$doc = new DOMDocument();
 		$doc->validateOnParse = true;
                 foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	

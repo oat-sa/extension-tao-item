@@ -28,7 +28,7 @@ class QTIioTestCase extends UnitTestCase {
 	 */
 	public function testDeploy(){
 		
-		taoItems_models_classes_QTI_Data::setPersistance(false);
+		taoItems_models_classes_QTI_Data::setPersistence(false);
 
 		foreach(glob(dirname(__FILE__).'/samples/*.xml') as $file){	
 		

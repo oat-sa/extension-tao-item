@@ -324,7 +324,6 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
 		if (count($this->templateMap) == 1) {
 			foreach($this->templateMap as $uri){
 				$responseProcessingToRender = new taoItems_models_classes_QTI_response_Template($uri);
-				common_Logger::i('Exporting using template '.$uri);
 				$returnValue = $responseProcessingToRender->toQTI();
 			}
 		} else {

@@ -27,7 +27,7 @@ class QTIModelTestCase extends UnitTestCase {
 	 */
 	public function testPersitance(){
 		
-		taoItems_models_classes_QTI_Data::setPersistance(true);
+		taoItems_models_classes_QTI_Data::setPersistence(true);
 		
 		//load an item
 		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice_multiple.xml');
@@ -76,7 +76,7 @@ class QTIModelTestCase extends UnitTestCase {
 		
 
 		//real remove
-		taoItems_models_classes_QTI_Data::setPersistance(false);
+		taoItems_models_classes_QTI_Data::setPersistence(false);
 		unset($savedItem);
 		
 		$this->assertNull($this->qtiService->getItemBySerial($serial));

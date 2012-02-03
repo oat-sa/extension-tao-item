@@ -26,7 +26,7 @@ class QTIParsingTestCase extends UnitTestCase {
 	 */
 	public function testFileParsing(){
 		
-		taoItems_models_classes_QTI_Data::setPersistance(false);
+		taoItems_models_classes_QTI_Data::setPersistence(false);
 		
 		//check if wrong files are not validated correctly
 		foreach(glob(dirname(__FILE__).'/samples/wrong/*.*') as $file){
@@ -62,7 +62,7 @@ class QTIParsingTestCase extends UnitTestCase {
 	 */
 	public function testBuilding(){
 		
-		taoItems_models_classes_QTI_Data::setPersistance(false);
+		taoItems_models_classes_QTI_Data::setPersistence(false);
 		
 		$qtiParser = new taoItems_models_classes_QTI_Parser(dirname(__FILE__).'/samples/choice.xml');
 		$item = $qtiParser->load();

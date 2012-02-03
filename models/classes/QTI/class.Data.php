@@ -19,6 +19,13 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
+ * include tao_models_classes_SessionSerializable
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('tao/models/classes/class.SessionSerializable.php');
+
+/**
  * By implementing the exportable interface, the object must export it's data to
  * formats defined here.
  *
@@ -48,6 +55,7 @@ require_once('taoItems/models/classes/QTI/interface.Exportable.php');
  * @subpackage models_classes_QTI
  */
 abstract class taoItems_models_classes_QTI_Data
+    extends tao_models_classes_SessionSerializable
         implements taoItems_models_classes_QTI_Exportable
 {
     // --- ASSOCIATIONS ---
@@ -56,20 +64,28 @@ abstract class taoItems_models_classes_QTI_Data
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute DATA_KEY
-     *
-     * @access public
-     * @var string
-     */
-    const DATA_KEY = 'qti_s';
-
-    /**
      * Short description of attribute IDENTIFIERS_KEY
      *
-     * @access public
+     * @access private
      * @var string
      */
     const IDENTIFIERS_KEY = 'qti_i';
+
+    /**
+     * Short description of attribute templatesPath
+     *
+     * @access protected
+     * @var string
+     */
+    protected static $templatesPath = '';
+
+    /**
+     * Short description of attribute persist
+     *
+     * @access public
+     * @var boolean
+     */
+    public static $persist = false;
 
     /**
      * It repesents the  QTI  identifier. 
@@ -81,17 +97,6 @@ abstract class taoItems_models_classes_QTI_Data
      * @var string
      */
     protected $identifier = '';
-
-    /**
-     * The serial number is a INTERNAL auto-generated unique key to identify
-     * the instance.
-     * It has no consequence on the in/output format and is generated again at
-     * new instanciation and is kept during the persisting session.
-     *
-     * @access protected
-     * @var string
-     */
-    protected $serial = '';
 
     /**
      * Short description of attribute type
@@ -118,30 +123,6 @@ abstract class taoItems_models_classes_QTI_Data
      */
     protected $options = array();
 
-    /**
-     * It defines if the instance should be kept after destruction
-     *
-     * @access public
-     * @var boolean
-     */
-    public static $persist = true;
-
-    /**
-     * Short description of attribute templatesPath
-     *
-     * @access protected
-     * @var string
-     */
-    protected static $templatesPath = '';
-
-    /**
-     * Short description of attribute _instances
-     *
-     * @access public
-     * @var array
-     */
-    public static $_instances = array();
-
     // --- OPERATIONS ---
 
     /**
@@ -156,7 +137,6 @@ abstract class taoItems_models_classes_QTI_Data
         $returnValue = (string) '';
 
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 begin
-        
         $clazz 	= strtolower(get_class($this));
     	$type 	= substr($clazz, strpos($clazz, 'qti_') + 4);
     	
@@ -167,7 +147,6 @@ abstract class taoItems_models_classes_QTI_Data
 		
         $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
         $returnValue = $tplRenderer->render();
-        
         // section 127-0-1-1--3f707dcb:12af06fca53:-8000:0000000000004159 end
 
         return (string) $returnValue;
@@ -218,136 +197,21 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * The constructor initialize the instance with the given identifier (if
-     * a human readable identifier will be created)
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  string identifier
-     * @param  array options
-     * @return mixed
-     */
-    public function __construct($identifier = null, $options = array())
-    {
-        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 begin
-        
-    	self::$_instances[] = $this->getSerial();
-    	
-    	try{
-    		$this->setIdentifier($identifier);
-    	}
-    	catch(InvalidArgumentException $iae){
-    		$this->createIdentifier();
-    	}
-    	
-    	$this->options = $options;
-
-        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 end
-    }
-
-    /**
-     * if the persistance is set to on, the instance is saved, just before the
-     * Be carefull to the assignment in the loops!!!
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return mixed
-     */
-    public function __destruct()
-    {
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF begin
-       
-    		if(self::$persist){
-	    		//The instance is serialized and saved in the session me before the destruction 
-	    		taoItems_models_classes_QTI_Service::singleton()->saveDataToSession($this);
-	        }
-	        else{
-	        	//clean session
-	        	if(!empty($this->serial)){
-	        		taoItems_models_classes_QTI_Service::singleton()->removeDataFromSession($this->serial);
-	        	}
-	        	if(!empty($this->identifier) && !is_null($this->identifier)){
-	        		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
-		        	if(is_array($ids)){
- 		    			if(in_array($this->identifier, $ids)){
-		    				$key = array_search($this->identifier, $ids);
-		    				if($key !== false){
-	        					unset($ids[$key]);
-	        					sort($ids);
-		    					Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
-		    				}
-		    			}
-	        		}
-	        	}
-	        	foreach(self::$_instances as $key => $serial){
-	        		if($serial == $this->serial){
-	        			unset(self::$_instances[$key]);
-	        			break;
-	        		}
-	        	}
-	        }
-	        
-        
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024CF end
-    }
-
-    /**
-     * Gives the list of attributes to serialize by reflection.
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return array
-     */
-    public function __sleep()
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 begin
-
-        $reflection = new ReflectionClass($this);
-		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
-				$returnValue[] = $property->getName();
-			}
-		}
-		
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D4 end
-
-        return (array) $returnValue;
-    }
-
-    /**
-     * Short description of method __wakeup
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return mixed
-     */
-    public function __wakeup()
-    {
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 begin
-    	if(!in_array($this->getSerial(), self::$_instances)){
-    		self::$_instances[] = $this->getSerial();
-    	}
-    	
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D7 end
-    }
-
-    /**
-     * Enable or disable the persistance mode.
+     * Short description of method setPersistence
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  boolean enabled
      * @return mixed
      */
-    public static function setPersistance($enabled)
+    public static function setPersistence($enabled)
     {
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 begin
-        
+        // section 127-0-1-1--18485ef3:13542665222:-8000:00000000000065B5 begin
     	self::$persist = (bool)$enabled;
-    	
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024F6 end
+		if (!$enabled) {
+			taoItems_models_classes_QTI_QTISessionCache::singleton()->purge();
+		}
+        // section 127-0-1-1--18485ef3:13542665222:-8000:00000000000065B5 end
     }
 
     /**
@@ -374,26 +238,27 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * get the serial number
+     * The constructor initialize the instance with the given identifier (if
+     * a human readable identifier will be created)
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return string
+     * @param  string identifier
+     * @param  array options
+     * @return mixed
      */
-    public function getSerial()
+    public function __construct($identifier = null, $options = array())
     {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002548 begin
-        
-    	if(is_null($this->serial) || empty($this->serial)){
-        	$this->createSerial();
-        }
-        $returnValue = $this->serial;
-        
-        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002548 end
-
-        return (string) $returnValue;
+        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 begin
+    	try{
+    		$this->setIdentifier($identifier);
+    	}
+    	catch(InvalidArgumentException $iae){
+    		$this->createIdentifier();
+    	}
+    	$this->options = $options;
+        parent::__construct($identifier);
+        // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002318 end
     }
 
     /**
@@ -503,24 +368,6 @@ abstract class taoItems_models_classes_QTI_Data
     	$this->identifier = $id;
     	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
-    }
-
-    /**
-     * create a unique serial number
-     *
-     * @access protected
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return mixed
-     */
-    protected function createSerial()
-    {
-        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 begin
-        
-    	$clazz  = strtolower(get_class($this));
-    	$prefix = substr($clazz, strpos($clazz, 'qti_') + 4).'_';
-    	$this->serial = str_replace('.', '', uniqid($prefix, true));
-    	
-        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 end
     }
 
     /**
@@ -846,48 +693,69 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method _remove
+     * create a unique serial number
+     *
+     * @access protected
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return string
+     */
+    protected function buildSerial()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 begin
+    	$clazz  = strtolower(get_class($this));
+    	$prefix = substr($clazz, strpos($clazz, 'qti_') + 4).'_';
+    	$returnValue = str_replace('.', '', uniqid($prefix, true));
+        // section 127-0-1-1-59bfe477:12ad17bec82:-8000:0000000000002556 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method getCache
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return boolean
+     * @return tao_models_classes_Cache
      */
-    public function _remove()
+    public function getCache()
     {
-        $returnValue = (bool) false;
+        $returnValue = null;
 
-        // section 127-0-1-1-2c0fe116:12c782d1e7c:-8000:00000000000028E7 begin
-        
-		//usefull only when persistance is enabled
-        if(self::$persist){
-        	//clean session
-        	if(!empty($this->serial)){
-        		taoItems_models_classes_QTI_Service::singleton()->removeDataFromSession($this->serial);
-        	}
-        	if(!empty($this->identifier) && !is_null($this->identifier)){
-        		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
-        		if(is_array($ids)){
-	    			if(in_array($this->identifier, $ids)){
-	    				$key = array_search($this->identifier, $ids);
-	    				if($key !== false){
-        					unset($ids[$key]);
-        					sort($ids);
-	    					Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
-	    				}
-	    			}
-        		}
-        	}
-        	foreach(self::$_instances as $key => $serial){
-        		if($serial == $this->getSerial()){
-        			unset(self::$_instances[$key]);
-        			break;
-        		}
-        	}
+        // section 127-0-1-1--18485ef3:13542665222:-8000:00000000000065B3 begin
+        if (self::$persist) {
+        	$returnValue = taoItems_models_classes_QTI_QTISessionCache::singleton();
         }
-        
-        // section 127-0-1-1-2c0fe116:12c782d1e7c:-8000:00000000000028E7 end
+        // section 127-0-1-1--18485ef3:13542665222:-8000:00000000000065B3 end
 
-        return (bool) $returnValue;
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method onRemove
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function onRemove()
+    {
+        // section 127-0-1-1-17e76cf9:1353916dbea:-8000:00000000000036E6 begin
+    	if(!empty($this->identifier) && !is_null($this->identifier)){
+			$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
+			if(is_array($ids)){
+				if(in_array($this->identifier, $ids)){
+					$key = array_search($this->identifier, $ids);
+					if($key !== false){
+						unset($ids[$key]);
+						sort($ids);
+						Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
+					}
+				}
+			}
+		}
+        // section 127-0-1-1-17e76cf9:1353916dbea:-8000:00000000000036E6 end
     }
 
 } /* end of abstract class taoItems_models_classes_QTI_Data */

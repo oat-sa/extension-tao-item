@@ -8,7 +8,7 @@ error_reporting(E_ALL);
  * point
  * to render a complete item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  * @subpackage models_classes_QTI
@@ -25,21 +25,25 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * include taoItems_models_classes_QTI_Interaction
+ * The QTI's interactions are the way the user interact with the system. The
+ * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
 
 /**
- * include taoItems_models_classes_QTI_Outcome
+ * An outcome is a data build in item output. The SCORE is one of the most
+ * outcomes.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
  */
 require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
@@ -58,7 +62,7 @@ require_once('taoItems/models/classes/QTI/class.Outcome.php');
  * to render a complete item.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  * @subpackage models_classes_QTI
@@ -109,7 +113,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -128,59 +132,10 @@ class taoItems_models_classes_QTI_Item
     }
 
     /**
-     * Short description of method __sleep
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return array
-     */
-    public function __sleep()
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D9 begin
-        
-        $this->interactions = array_keys($this->interactions);
-        $this->responseProcessing = $this->responseProcessing->getSerial(); 
-        
-        $returnValue = parent::__sleep();
-        
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024D9 end
-
-        return (array) $returnValue;
-    }
-
-    /**
-     * Short description of method __wakeup
-     *
-     * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
-     * @return mixed
-     */
-    public function __wakeup()
-    {
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB begin
-        
-    	$interactionSerials = $this->interactions;
-    	$this->interactions = array();
-    	foreach($interactionSerials as $serial){
-    		$interaction = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($serial, 'taoItems_models_classes_QTI_Interaction');
-    		if(!is_null($interaction)){
-    			$this->interactions[$serial] = $interaction;
-    		}
-    	}
-        $this->responseProcessing = taoItems_models_classes_QTI_Service::singleton()->getDataBySerial($this->responseProcessing, 'taoItems_models_classes_QTI_response_ResponseProcessing'); 
-    	
-    	parent::__wakeup();
-    	
-        // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024DB end
-    }
-
-    /**
      * Short description of method getInteractions
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getInteractions()
@@ -200,7 +155,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setInteractions
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array interactions
      * @return mixed
      */
@@ -220,7 +175,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getInteraction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Interaction
      */
@@ -245,7 +200,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method addInteraction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Interaction interaction
      * @return mixed
      */
@@ -269,7 +224,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method removeInteraction
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Interaction interaction
      * @return boolean
      */
@@ -316,7 +271,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getResponseProcessing
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
     public function getResponseProcessing()
@@ -336,7 +291,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setResponseProcessing
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  rprocessing
      * @return mixed
      */
@@ -353,7 +308,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setOutcomes
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array outcomes
      * @return mixed
      */
@@ -376,7 +331,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getOutcomes
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getOutcomes()
@@ -396,7 +351,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getOutcome
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Outcome
      */
@@ -421,7 +376,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method removeOutcome
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Outcome outcome
      * @return boolean
      */
@@ -448,7 +403,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getStylesheets
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getStylesheets()
@@ -468,7 +423,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method setStylesheets
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  array stylesheets
      * @return mixed
      */
@@ -492,7 +447,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toXHTML
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -547,7 +502,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toQTI
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -557,7 +512,7 @@ class taoItems_models_classes_QTI_Item
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000238A begin
         
         $template  = self::getTemplatePath() . '/qti.item.tpl.php';
-    	$variables 	= $this->extractVariables(); 
+    	$variables 	= $this->extractVariables();
 		
 		$variables['rowOptions']  	= $this->xmlizeOptions();
 		$variables['response'] 		= '';
@@ -606,7 +561,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method toForm
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -627,7 +582,7 @@ class taoItems_models_classes_QTI_Item
      * Short description of method getMatchingData
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return array
      */
     public function getMatchingData()
