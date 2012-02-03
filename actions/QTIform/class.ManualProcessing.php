@@ -98,9 +98,12 @@ class taoItems_actions_QTIform_ManualProcessing
         //guidlines correct:
 		$guidelines = tao_helpers_form_FormFactory::getElement('guidelines', 'Textarea');
 		$guidelines->setDescription(__('Guidelines'));
+		$guidelines->setValue($this->outcome->getOption('interpretation'));
 		$this->form->addElement($guidelines);
 		$correct = tao_helpers_form_FormFactory::getElement('correct', 'Textarea');
 		$correct->setDescription(__('Correct answer'));
+		$responses = $this->interaction->getResponse()->getCorrectResponses();
+		$correct->setValue(implode("\n", $responses));
 		$this->form->addElement($correct);
 		
 		//upperbound+lowerbound:

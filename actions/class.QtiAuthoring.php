@@ -1342,16 +1342,24 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$saved = false;
 			$outcome = $this->getCurrentOutcome();
 			common_Logger::d('storing composite stuff');
+
+			// set guidelines
+			if ($this->hasRequestParameter('guidelines')) {
+				$values = array(
+					'interpretation' => $this->getRequestParameter('guidelines')
+				);
+				$saved = $this->service->editOptions($outcome, $values) || $saved;
+			}
 			
-			$values = array(
-				'interpretation' => $this->getRequestParameter('guidelines')
-			);
+			// set correct answer
+			if ($this->hasRequestParameter('correct')) {
+				$responseData = array(array(
+					'choice1' => $this->getRequestParameter('correct'),
+					'correct' => 'yes'
+				));
+				$saved = $this->service->saveInteractionResponse($this->getCurrentInteraction(), $responseData) || $saved;
+			}
 			
-			common_Logger::d('outcome b: '.implode(',',array_keys($outcome->getOptions())));
-			$this->service->editOptions($outcome, $values);
-			common_Logger::d('outcome a: '.implode(',',array_keys($outcome->getOptions())));
-			
-			// i do stuff
 			echo json_encode(array(
 				'saved' => $saved
 			));
