@@ -337,7 +337,7 @@ abstract class taoItems_models_classes_QTI_response_Composite
     public function takeNoticeOfAddedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
     {
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003662 begin
-        $irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($interaction->getResponse()->getIdentifier());
+    	$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($interaction->getResponse()->getIdentifier());
         $this->add($irp, $item);
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003662 end
     }
@@ -357,19 +357,15 @@ abstract class taoItems_models_classes_QTI_response_Composite
         $irpExisted = false;
         foreach ($this->components as $key => $irp) {
         	if ($irp->getResponseIdentifier() == $interaction->getResponse()->getIdentifier()) {
-        		$outcomes = $item->getOutcomes();
         		$outcomeExisted = false;
-        		foreach (array_keys($outcomes) as $key) {
-		        	if ($outcomes[$key]->getIdentifier() == $irp->getOutcomeIdentifier()) {
+        		foreach ($item->getOutcomes() as $outcome) {
+        			if ( $outcome->getIdentifier() == $irp->getOutcomeIdentifier()) {
         				$outcomeExisted = true;
-		        		unset($outcomes[$key]);
-		        		break;
-		        	}
-		        }
-		        if ($outcomeExisted) {
-	        		$item->setOutcomes($outcomes);
-		        } else {
-        			common_Logger::w('Related Outcome not found for interactionResponseProcessing '.$irp->getResponseIdentifier(), array('TAOITEMS', 'QTI'));
+        				$item->removeOutcome($outcome);
+        			}
+        		}
+        		if (!$outcomeExisted) {
+        			common_Logger::w('Outcome "'.$irp->getOutcomeIdentifier().'" not found for interactionResponseProcessing ', array('TAOITEMS', 'QTI'));
 		        }
 		        // remove the irp
         		unset($this->components[$key]);
