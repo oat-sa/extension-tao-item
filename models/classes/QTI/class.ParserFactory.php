@@ -739,6 +739,7 @@ class taoItems_models_classes_QTI_ParserFactory
 	        	$returnValue = self::buildCompositeResponseProcessing($data, $item);
 	        	common_Logger::d('Processing is Composite', array('TAOITEMS', 'QTI'));
 	        } catch (taoItems_models_classes_QTI_UnexpectedResponseProcessingException $e) {
+	        	common_Logger::d($e->getMessage());
 			}
         	
         }
@@ -789,6 +790,7 @@ class taoItems_models_classes_QTI_ParserFactory
         $patternCorrectTAO	= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "baseValue"]';        
         $patternMapTAO		= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "not" ] [count(./responseIf/not/*) = 1 ] [name(./responseIf/not/*[1]) = "isNull" ] [count(./responseIf/not/isNull/*) = 1 ] [name(./responseIf/not/isNull/*[1]) = "variable" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "mapResponse"]';       
         $patternMapPointTAO	= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "not" ] [count(./responseIf/not/*) = 1 ] [name(./responseIf/not/*[1]) = "isNull" ] [count(./responseIf/not/isNull/*) = 1 ] [name(./responseIf/not/isNull/*[1]) = "variable" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "mapResponsePoint"]';       
+        $patternNoneTAO		= '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "isNull" ] [count(./responseIf/isNull/*) = 1 ] [name(./responseIf/isNull/*[1]) = "variable" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [count(./responseIf/setOutcomeValue/*) = 1 ] [name(./responseIf/setOutcomeValue/*[1]) = "baseValue"]';       
         $possibleSummation	= '/setOutcomeValue [count(./*) = 1 ] [name(./*[1]) = "sum" ]';
         
 		$irps = array();
@@ -801,41 +803,74 @@ class taoItems_models_classes_QTI_ParserFactory
 
 			if (count($subtree->xpath($patternCorrectTAO)) > 0 ) {
 				$responseIdentifier = (string) $subtree->responseIf->match->variable[0]['identifier'];
-				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
-				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($responseIdentifier, $scoreIdentifier);
+				$irps[$responseIdentifier] = array(
+					'class'		=> 'MatchCorrectTemplate',
+					'outcome'	=> (string) $subtree->responseIf->setOutcomeValue[0]['identifier']
+				);
 			} elseif (count($subtree->xpath($patternMapTAO)) > 0 ) {
 				$responseIdentifier = (string) $subtree->responseIf->not->isNull->variable[0]['identifier'];
-				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
-				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate($responseIdentifier, $scoreIdentifier);
+				$irps[$responseIdentifier] = array(
+					'class'		=> 'MapResponseTemplate',
+					'outcome'	=> (string) $subtree->responseIf->setOutcomeValue[0]['identifier']
+				);
 			} elseif (count($subtree->xpath($patternMapPointTAO)) > 0 ) {
 				$responseIdentifier = (string) $subtree->responseIf->not->isNull->variable[0]['identifier'];
-				$scoreIdentifier = (string) $subtree->responseIf->setOutcomeValue[0]['identifier'];
-				$irps[$responseIdentifier] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate($responseIdentifier, $scoreIdentifier);
+				$irps[$responseIdentifier] = array(
+					'class'		=> 'MapResponsePointTemplate',
+					'outcome'	=> (string) $subtree->responseIf->setOutcomeValue[0]['identifier']
+				);
+			} elseif (count($subtree->xpath($patternNoneTAO)) > 0 ) {
+				$responseIdentifier = (string) $subtree->responseIf->isNull->variable[0]['identifier'];
+				$irps[$responseIdentifier] = array(
+					'class'		=> 'None',
+					'outcome'	=> (string) $subtree->responseIf->setOutcomeValue[0]['identifier']
+				);
 			} elseif (count($subtree->xpath($possibleSummation)) > 0 ) {
-				$composition = $subtree;
+				$composition = 'Summation';
+				$outcomesUsed = array();
+				foreach ($subtree->xpath('/setOutcomeValue/sum/variable') as $var) {
+					$outcomesUsed[] = (string) $var[0]['identifier'];
+				}
 			} else {
 				throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composite, unknown rule');
 			}
 		}
 		
-		$responseIdentifiers = array();
-		foreach ($item->getInteractions() as $interaction) {
-			$id = $interaction->getResponse()->getIdentifier();
-			$responseIdentifiers[] = $id;
-			if (!isset($irps[$id]))
-				$irps[$id] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_None($id);
+		if (is_null($composition)) {
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composit, Composition rule missing');
 		}
 		
-		if (count(array_diff(array_keys($irps), $responseIdentifiers)) > 0) {
-			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composit, no interaction for rules: '.implode(',',array_diff(array_keys($irps), $responseIdentifiers)));
+		$responses = array();
+		foreach ($item->getInteractions() as $interaction) {
+			$responses[$interaction->getResponse()->getIdentifier()] = $interaction->getResponse();
+		}
+		
+		if (count(array_diff(array_keys($irps), array_keys($responses))) > 0) {
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composit, no responses for rules: '.implode(',',array_diff(array_keys($irps), array_keys($responses))));
+		}
+		if (count(array_diff(array_keys($responses), array_keys($irps))) > 0) {
+			common_Logger::w('Some responses have no processing');
+			throw new taoItems_models_classes_QTI_UnexpectedResponseProcessingException('Not composit, no support for unmatched variables yet');
 		}
 		
 		//assuming sum is correct
 		
-        $compositonRP = new taoItems_models_classes_QTI_response_Summation($item);
-        foreach ($irps as $irp){
-        	$compositonRP->add($irp, $item);
-		}
+		$compositonRP = new taoItems_models_classes_QTI_response_Summation($item);
+        foreach ($responses as $id => $response) {
+        	$outcome = null;
+        	foreach ($item->getOutcomes() as $possibleOutcome) {
+        		if ($possibleOutcome->getIdentifier() == $irps[$id]['outcome']) {
+        				$outcome = $possibleOutcome;
+        				break;
+        		}
+        	}
+        	if (is_null($outcome)) {
+        		$compositonRP->destroy();
+				throw new taoItems_models_classes_QTI_ParsingException('Undeclared Outcome in ResponseProcessing');
+        	}
+        	$classname = 'taoItems_models_classes_QTI_response_interactionResponseProcessing_'.$irps[$id]['class'];
+        	$compositonRP->add(new $classname($response, $outcome));
+        }
 		$returnValue = $compositonRP;
         
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035D7 end
@@ -858,74 +893,6 @@ class taoItems_models_classes_QTI_ParserFactory
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C02 begin
 		common_logger::d('Identifying patterns');
 		// foreach rule
-		
-		
-		/*
-		$compositionRules = array();
-		$interactionRules = array();
-		$independant	= true;
-		foreach ($data as $responseRule) {
-			// everything custom, then identify
-			$custom = taoItems_models_classes_QTI_response_ResponseRuleParserFactory::buildResponseRule($responseRule);
-			var_dump($responseRule->asXML());
-			var_dump($custom->getRule());
-			die;
-			switch ($responseRule) {
-			}
-			*/
-			/*
-			// identify first, then custom
-			$subtree = new SimpleXMLElement($responseRule->asXML());
-			$patternCorrectTAO = '/responseCondition [count(./*) = 1 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [name(./responseIf/setOutcomeValue/*[1]) = "sum" ] [name(./responseIf/setOutcomeValue/sum/*[1]) = "variable" ] [name(./responseIf/setOutcomeValue/sum/*[2]) = "baseValue"]';
-			$patternCorrectIMS = '/responseCondition [count(./*) = 2 ] [name(./*[1]) = "responseIf" ] [count(./responseIf/*) = 2 ] [name(./responseIf/*[1]) = "match" ] [name(./responseIf/match/*[1]) = "variable" ] [name(./responseIf/match/*[2]) = "correct" ] [name(./responseIf/*[2]) = "setOutcomeValue" ] [name(./responseIf/setOutcomeValue/*[1]) = "baseValue" ] [name(./*[2]) = "responseElse" ] [count(./responseElse/*) = 1 ] [name(./responseElse/*[1]) = "setOutcomeValue" ] [name(./responseElse/setOutcomeValue/*[1]) = "baseValue"]';
-			$patternMappingTAO = '/responseCondition [count(./*) = 1] [name(./*[1]) = "responseIf"] [count(./responseIf/*) = 2] [name(./responseIf/*[1]) = "not"] [name(./responseIf/not/*[1]) = "isNull"] [name(./responseIf/not/isNull/*[1]) = "variable"] [name(./responseIf/*[2]) = "setOutcomeValue"] [name(./responseIf/setOutcomeValue/*[1]) = "sum"] [name(./responseIf/setOutcomeValue/sum/*[1]) = "variable"] [name(./responseIf/setOutcomeValue/sum/*[2]) = "mapResponse"]';
-			$patternMappingIMS = '/responseCondition [count(./*) = 2] [name(./*[1]) = "responseIf"] [count(./responseIf/*) = 2] [name(./responseIf/*[1]) = "isNull"] [name(./responseIf/isNull/*[1]) = "variable"] [name(./responseIf/*[2]) = "setOutcomeValue"] [name(./responseIf/setOutcomeValue/*[1]) = "variable"] [name(./*[2]) = "responseElse"] [count(./responseElse/*) = 1] [name(./responseElse/*[1]) = "setOutcomeValue"] [name(./responseElse/setOutcomeValue/*[1]) = "mapResponse"]';
-			
-			// correct Matching
-			if (count($subtree->xpath($patternCorrectTAO.' | '.$patternCorrectIMS)) > 0 ) {
-				$variable = $subtree->responseIf->match->variable;
-				$responseIdentifier = (string) $variable[0]['identifier'];
-				if (!isset($interactionRules[$responseIdentifier])) 
-					$interactionRules[$responseIdentifier] = array();
-				$interactionRules[$responseIdentifier][] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate();
-				//common_Logger::d('Correct Matching template for '.$responseIdentifier.' extracted from '.$subtree->asXML());
-			}
-
-			// Response Mapping
-			elseif (count($subtree->xpath($patternMappingTAO)) > 0 ) {
-				$variable = $subtree->responseIf->not->isNull->variable;
-				$responseIdentifier = (string) $variable[0]['identifier'];
-				if (!isset($interactionRules[$responseIdentifier]))
-					$interactionRules[$responseIdentifier] = array();
-				
-				$interactionRules[$responseIdentifier][] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate();
-				//common_Logger::d('Mapping TAO template for '.$responseIdentifier.' extracted from '.$subtree->asXML()."\n");
-			} elseif (count($subtree->xpath($patternMappingIMS)) > 0 ) {
-				$variable = $subtree->responseIf->isNull->variable;
-				$responseIdentifier = (string) $variable[0]['identifier'];
-				if (!isset($interactionRules[$responseIdentifier]))
-					$interactionRules[$responseIdentifier] = array();
-				
-				$interactionRules[$responseIdentifier][] = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate();
-				//common_Logger::d('Mapping IMS template for '.$responseIdentifier.' extracted from '.$subtree->asXML()."\n");
-			} else {
-				$rule = taoItems_models_classes_QTI_response_ResponseRuleParserFactory::buildResponseRule($responseRule);
-				$independant = false;
-				//
-			}
-			
-			
-			
-			// is template A
-			// is template B
-			//build Custom
-			// get InVars
-			// store under InVars
-		}
-		
-		// if all Templates => templates driven
-		// else if independant: 
-		// else FUll Custom/**/
 
 		$data = simplexml_load_string($data->asxml());
 

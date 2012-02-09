@@ -144,6 +144,35 @@ class taoItems_models_classes_QTI_Outcome
         return $returnValue;
     }
 
+    /**
+     * Short description of method destroy
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function destroy()
+    {
+        // section 127-0-1-1--7c75b87:1355db19059:-8000:00000000000037B3 begin
+        foreach (taoItems_models_classes_QTI_QTISessionCache::singleton()->getAll() as $instance) {
+        	if ($instance instanceof taoItems_models_classes_QTI_Item) {
+        		$found = false;
+        		foreach ($instance->getOutcomes() as $outcome) {
+        			if ($outcome == $this) {
+        				$found = true;
+        				break;
+        			}
+        		}
+        		if ($found) {
+        			$instance->removeOutcome($this);
+        			break;
+        		}
+        	}
+        }
+        parent::destroy();
+        // section 127-0-1-1--7c75b87:1355db19059:-8000:00000000000037B3 end
+    }
+
 } /* end of class taoItems_models_classes_QTI_Outcome */
 
 ?>

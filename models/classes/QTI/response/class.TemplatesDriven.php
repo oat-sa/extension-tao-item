@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 26.01.2012, 10:57:29 with ArgoUML PHP module 
+ * Automatically generated on 09.02.2012, 16:25:40 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -60,14 +60,6 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
 
     // --- ATTRIBUTES ---
 
-    /**
-     * Short description of attribute templateMap
-     *
-     * @access private
-     * @var array
-     */
-    private $templateMap = array();
-
     // --- OPERATIONS ---
 
     /**
@@ -82,6 +74,8 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $returnValue = (string) '';
 
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF begin
+        throw new common_exception_Error('please use buildRule for templateDriven instead');
+        /*
 		foreach ($this->templateMap as $identifier => $uri){
 			
 			$templateName = substr($uri, strrpos($uri, '/')+1);
@@ -92,8 +86,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
 				Array('responseIdentifier' => $identifier, 'outcomeIdentifier'=>'SCORE')
 			);    
 			$returnValue .= $tplRenderer->render();
-        
-		}
+		}*/
         // section 127-0-1-1-3397f61e:12c15e8566c:-8000:0000000000002AFF end
 
         return (string) $returnValue;
@@ -198,7 +191,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $returnValue = (bool) false;
 
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003696 begin
-        $this->templateMap[$response->getIdentifier()] = $template;
+        $response->setHowMatch($template);
         $returnValue = true;
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003696 end
 
@@ -218,10 +211,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $returnValue = (string) '';
 
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:000000000000360D begin
-        if (!isset($this->templateMap[$response->getIdentifier()])) {
-        	throw new common_Exception('Identifier '.$response->getIdentifier().' unknown to TemplateDriven ResponseProcessing');
-        }
-        $returnValue = $this->templateMap[$response->getIdentifier()];
+        $returnValue = $response->getHowMatch();
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:000000000000360D end
 
         return (string) $returnValue;
@@ -239,7 +229,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
     public function takeNoticeOfAddedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
     {
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:000000000000365C begin
-		$this->setTemplate($interaction->getResponse(), QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
+        $interaction->getResponse()->setHowMatch(QTI_RESPONSE_TEMPLATE_MATCH_CORRECT);
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:000000000000365C end
     }
 
@@ -255,7 +245,6 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
     public function takeNoticeOfRemovedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
     {
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:000000000000368F begin
-        $this->templateMap[$interaction->getResponse()->getIdentifier()];
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:000000000000368F end
     }
 
@@ -284,27 +273,69 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  string uri
-     * @param  array options
+     * @param  Item item
      * @return string
      */
-    public function buildQTI($uri, $options)
+    public function buildQTI( taoItems_models_classes_QTI_Item $item)
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BF7 begin
-        
-        if (!isset ($options) || !is_array($options)){
-            $options = array();
-        }
-        
-        $templateName = substr($uri, strrpos($uri, '/')+1);
-        $matchingTemplate  = dirname(__FILE__).'/rpTemplate/qti.'.$templateName.'.tpl.php';
-
-        $tplRenderer = new taoItems_models_classes_TemplateRenderer($matchingTemplate, $options);
-        $returnValue = $tplRenderer->render();
-        
+    	if (count($item->getInteractions()) == 1) {
+			foreach($item->getInteractions() as $interaction){
+				$uri = $interaction->getResponse()->getHowMatch();
+				$responseProcessingToRender = new taoItems_models_classes_QTI_response_Template($uri);
+				$returnValue = $responseProcessingToRender->toQTI();
+			}
+		} else {
+	        $returnValue = "<responseProcessing>";
+	        foreach ($item->getInteractions() as $interaction) {
+	        	$response = $interaction->getResponse();
+	        	$uri = $response->getHowMatch();
+	        	$templateName = substr($uri, strrpos($uri, '/')+1);
+		        $matchingTemplate  = dirname(__FILE__).'/rpTemplate/qti.'.$templateName.'.tpl.php';
+		
+		        $tplRenderer = new taoItems_models_classes_TemplateRenderer($matchingTemplate, Array(
+	                                    'responseIdentifier'=> $response->getIdentifier()
+	                                    , 'outcomeIdentifier'=>'SCORE'
+	                                ));
+		        $returnValue .= $tplRenderer->render();
+		        
+	        }
+	        $returnValue .= "</responseProcessing>";
+		}        
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002BF7 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method buildRule
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Item item
+     * @return string
+     */
+    public function buildRule( taoItems_models_classes_QTI_Item $item)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--606491e9:13562b595c4:-8000:00000000000037CE begin
+		foreach ($item->getInteractions() as $interaction){
+			$response = $interaction->getResponse();
+			$uri = $response->getHowMatch();
+			$templateName = substr($uri, strrpos($uri, '/')+1);
+			$matchingTemplate  = dirname(__FILE__).'/rpTemplate/rule.'.$templateName.'.tpl.php';
+
+			$tplRenderer = new taoItems_models_classes_TemplateRenderer(
+				$matchingTemplate,
+				Array('responseIdentifier' => $response->getIdentifier(), 'outcomeIdentifier'=>'SCORE')
+			);    
+			$returnValue .= $tplRenderer->render();
+        
+		}
+        // section 127-0-1-1--606491e9:13562b595c4:-8000:00000000000037CE end
 
         return (string) $returnValue;
     }
@@ -321,6 +352,8 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
         $returnValue = (string) '';
 
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C06 begin
+        throw new common_exception_Error('please use buildQTI for templateDriven instead');
+        /*
 		if (count($this->templateMap) == 1) {
 			foreach($this->templateMap as $uri){
 				$responseProcessingToRender = new taoItems_models_classes_QTI_response_Template($uri);
@@ -336,6 +369,7 @@ class taoItems_models_classes_QTI_response_TemplatesDriven
 	        }
 	        $returnValue .= "</responseProcessing>";
 		}
+		*/
         // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C06 end
 
         return (string) $returnValue;

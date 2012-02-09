@@ -287,9 +287,15 @@ class taoItems_models_classes_QTI_Service
         // section 127-0-1-1-fba198:12b7c55f735:-8000:00000000000025B8 begin
         
         if(taoItems_models_classes_QTI_Data::$persist == false){
-        	throw new Exception("The composing data are got from the persistance!");
+        	throw new common_Exception("The composing data are got from the persistance!");
+        } elseif (!is_null($composed)) {
+        	$predecessor = $composed->getPredecessors();
+        	if (count($predecessor) == 1)
+        		$returnValue = array_pop($predecessor);
+        	else 
+        		throw new common_exception_Error("Called getComposingData on a non tree");
         }
-        
+        /*
         if(!is_null($composed)){
         	$tokens = explode('_', get_class($composed));
         	$objectType = strtolower($tokens[count($tokens) - 1]);
@@ -327,7 +333,7 @@ class taoItems_models_classes_QTI_Service
         		break;
         	}
         }
-        
+        */
         // section 127-0-1-1-fba198:12b7c55f735:-8000:00000000000025B8 end
 
         return $returnValue;

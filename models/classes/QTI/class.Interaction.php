@@ -257,7 +257,7 @@ class taoItems_models_classes_QTI_Interaction
     			foreach($this->getGroups() as $group){
 					$group->removeChoice($choice);
 				}
-				$choice->_remove();
+				$choice->destroy();
 				unset($this->choices[$choice->getSerial()]);
 				
 				//remove the choice from the interaction data:
@@ -428,7 +428,7 @@ class taoItems_models_classes_QTI_Interaction
     					$this->removeChoice($choice);
     				}
     			}
-    			$group->_remove();
+    			$group->destroy();
     			unset($this->groups[$group->getSerial()]);
 				
 				//remove the group from the interaction data:
@@ -997,6 +997,34 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method destroy
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function destroy()
+    {
+        // section 127-0-1-1--7c75b87:1355db19059:-8000:00000000000037B5 begin
+		//delete response:
+    	if(!is_null($this->getResponse())){
+			$this->getResponse()->destroy();
+		}
+				
+		//delete choices:
+		foreach($this->getChoices() as $choice){
+			$choice->destroy();
+		}
+		
+		//delete groups:
+		foreach($this->getGroups() as $group){
+			$group->destroy();
+		}
+        parent::destroy();
+        // section 127-0-1-1--7c75b87:1355db19059:-8000:00000000000037B5 end
     }
 
 } /* end of class taoItems_models_classes_QTI_Interaction */

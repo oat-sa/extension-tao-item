@@ -75,10 +75,10 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCo
 
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009011 begin
         $returnValue = 'if(match(null, '.
-        	'getResponse("'.$this->getResponseIdentifier().'"), '.
-        	'getCorrect("'.$this->getResponseIdentifier().'"))) '.
-        	'setOutcomeValue("'.$this->getOutcomeIdentifier().'", 1); '.
-        	'else setOutcomeValue("'.$this->getOutcomeIdentifier().'", 0);';
+        	'getResponse("'.$this->getResponse()->getIdentifier().'"), '.
+        	'getCorrect("'.$this->getResponse()->getIdentifier().'"))) '.
+        	'setOutcomeValue("'.$this->getOutcome()->getIdentifier().'", 1); '.
+        	'else setOutcomeValue("'.$this->getOutcome()->getIdentifier().'", 0);';
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009011 end
 
         return (string) $returnValue;
@@ -99,10 +99,10 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCo
         $returnValue = '<responseCondition>
 		    <responseIf>
 		        <match>
-		            <variable identifier="'.$this->getResponseIdentifier().'" />
-		            <correct identifier="'.$this->getResponseIdentifier().'" />
+		            <variable identifier="'.$this->getResponse()->getIdentifier().'" />
+		            <correct identifier="'.$this->getResponse()->getIdentifier().'" />
 		        </match>
-		        <setOutcomeValue identifier="'.$this->getOutcomeIdentifier().'">
+		        <setOutcomeValue identifier="'.$this->getOutcome()->getIdentifier().'">
 	                <baseValue baseType="integer">1</baseValue>
 		        </setOutcomeValue>
 		    </responseIf>

@@ -122,7 +122,7 @@ class taoItems_actions_QTIform_CompositeResponseOptions
 		$serialElt->setValue($this->response->getSerial());
 		$this->form->addElement($serialElt);
     	
-		$currentClass = get_class($this->responseProcessing->getInteractionResponseProcessing($this->response->getIdentifier()));
+		$currentClass = get_class($this->responseProcessing->getInteractionResponseProcessing($this->response));
 		$currentIRP = $currentClass::CLASS_ID;
 		
 		$irps = array(

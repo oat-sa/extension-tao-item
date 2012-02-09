@@ -1217,18 +1217,19 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					'hasChanged'				=> $templateHasChanged
 				));
 			} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
-				$currentIRP		= $rp->getInteractionResponseProcessing($response->getIdentifier());
+				$currentIRP		= $rp->getInteractionResponseProcessing($response);
 				$currentClass	= get_class($currentIRP);
 				$saved			= false;
 				$classID		= $currentClass::CLASS_ID;
 				
 				if($this->hasRequestParameter('interactionResponseProcessing')) {
+					$item = $this->qtiService->getComposingData($rp);
 					$classID		= $this->getRequestParameter('interactionResponseProcessing');
 					if ($currentClass::CLASS_ID != $classID) {
-						$newIRP = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::build(
+						$newIRP = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::create(
 							$classID,
-							$currentIRP->getResponseIdentifier(),
-							$currentIRP->getOutcomeIdentifier()
+							$response,
+							$item
 						);
 						$rp->replace($newIRP);
 						$saved = true;
@@ -1423,11 +1424,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		// composite processing
 		}elseif($responseProcessing instanceof taoItems_models_classes_QTI_response_Composite){
 			
-			$irp = $responseProcessing->getInteractionResponseProcessing($response->getIdentifier());
+			$irp = $responseProcessing->getInteractionResponseProcessing($response);
 			if ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
 				$found = null;
 				foreach ($item->getOutcomes() as $outcome) {
-					if ($outcome->getIdentifier() == $irp->getOutcomeIdentifier()) {
+					if ($outcome == $irp->getOutcome()) {
 						$found = $outcome;
 						break; 
 					}

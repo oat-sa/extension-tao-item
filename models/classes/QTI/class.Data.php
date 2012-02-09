@@ -298,7 +298,6 @@ abstract class taoItems_models_classes_QTI_Data
     public function setIdentifier($id, $unique = true)
     {
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F begin
-    	
     	if(empty($id) || is_null($id)){
     		throw new InvalidArgumentException("Id should be set");
     	}
@@ -312,6 +311,7 @@ abstract class taoItems_models_classes_QTI_Data
     	}
     	if($unique){
 	    	if(in_array($id, $ids)){
+	    		common_Logger::w("Tried to set non unique identifier ".$id, array('TAOITEMS', 'QTI'));
 	    		throw new InvalidArgumentException("The identifier \"{$id}\" is already in use");
 	    	}
     	}
@@ -324,6 +324,7 @@ abstract class taoItems_models_classes_QTI_Data
     	}
 		
     	$ids[] = $id;
+    	
     	Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
     	$this->identifier = $id;
     	
@@ -366,7 +367,6 @@ abstract class taoItems_models_classes_QTI_Data
     	Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
     	
     	$this->identifier = $id;
-    	
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
     }
 
@@ -733,16 +733,17 @@ abstract class taoItems_models_classes_QTI_Data
     }
 
     /**
-     * Short description of method onRemove
+     * Short description of method destroy
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
-    public function onRemove()
+    public function destroy()
     {
-        // section 127-0-1-1-17e76cf9:1353916dbea:-8000:00000000000036E6 begin
-    	if(!empty($this->identifier) && !is_null($this->identifier)){
+        // section 127-0-1-1-40168e54:135573066b9:-8000:000000000000374D begin
+        common_Logger::d('Destroying in QTIAuthoring: '.$this->getSerial());
+		if(!empty($this->identifier) && !is_null($this->identifier)){
 			$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
 			if(is_array($ids)){
 				if(in_array($this->identifier, $ids)){
@@ -755,7 +756,8 @@ abstract class taoItems_models_classes_QTI_Data
 				}
 			}
 		}
-        // section 127-0-1-1-17e76cf9:1353916dbea:-8000:00000000000036E6 end
+		parent::_remove();
+        // section 127-0-1-1-40168e54:135573066b9:-8000:000000000000374D end
     }
 
 } /* end of abstract class taoItems_models_classes_QTI_Data */

@@ -236,28 +236,15 @@ class taoItems_models_classes_QTI_Item
         
     	if(!is_null($interaction)){
     		if(isset($this->interactions[$interaction->getSerial()])){
-				//delete interaction response if set:
-				$response = $interaction->getResponse();
-				if(!is_null($response)){
-					$response->_remove();
-				}
-				
-				//delete choices:
-				foreach($interaction->getChoices() as $choice){
-					$choice->_remove();
-				}
-				
-				//delete groups:
-				foreach($interaction->getGroups() as $group){
-					$group->_remove();
-				}
+    			
+    			//delete interaction response if set:
+    			$this->getResponseProcessing()->takeNoticeOfRemovedInteraction($interaction, $this);
 				
 				//finally, delete the interaction:
-    			$interaction->_remove();
+    			$interaction->destroy();
     			unset($this->interactions[$interaction->getSerial()]);
     			
     			//allow responseProcessing to do cleanup
-    			$this->getResponseProcessing()->takeNoticeOfRemovedInteraction($interaction, $this);
     			$returnValue = true;
     		}
     	}
@@ -388,12 +375,18 @@ class taoItems_models_classes_QTI_Item
         
 	    if(!is_null($outcome)){
     		if(isset($this->outcomes[$outcome->getSerial()])){
-    			$outcome->_remove();
+    			// this function will be called from destroy
+    			// so no need to call $outcome->destroy();
     			unset($this->outcomes[$outcome->getSerial()]);
     			$returnValue = true;
     		}
+    	} else {
+    		common_Logger::w('Tried to remove null outcome');
     	}
-    	
+
+    	if (!$returnValue) {
+    		common_Logger::w('outcome not found '.$outcome->getSerial());
+    	}
         // section 127-0-1-1--a2bd9f7:12ae6efc8e9:-8000:00000000000025AC end
 
         return (bool) $returnValue;
@@ -537,7 +530,11 @@ class taoItems_models_classes_QTI_Item
         $renderedResponseProcessing = '';
         $responseProcessing = $this->getResponseProcessing();
         if(isset($responseProcessing)){
-			$renderedResponseProcessing = $responseProcessing->toQTI();
+        	if ($responseProcessing instanceOf taoItems_models_classes_QTI_response_TemplatesDriven) {
+        		$renderedResponseProcessing = $responseProcessing->buildQTI($this);
+        	} else {
+				$renderedResponseProcessing = $responseProcessing->toQTI();
+        	}
         }
 
         $variables['renderedResponseProcessing'] = $renderedResponseProcessing;
@@ -601,7 +598,11 @@ class taoItems_models_classes_QTI_Item
             
             // BUILD the RP rule
             if(!is_null($this->getResponseProcessing ())){
-				$returnValue["rule"] = $this->getResponseProcessing()->getRule($this);
+            	if ($this->getResponseProcessing() instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+					$returnValue["rule"] = $this->getResponseProcessing()->buildRule($this);
+            	} else {
+					$returnValue["rule"] = $this->getResponseProcessing()->getRule();
+            	}
             }
             
             // Get the correct responses (correct variables and map variables)

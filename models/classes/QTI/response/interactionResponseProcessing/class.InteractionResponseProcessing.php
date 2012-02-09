@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * TAO -
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 30.01.2012, 18:08:10 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * The response processing of a single interaction
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
@@ -20,6 +13,17 @@ error_reporting(E_ALL);
 if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
+
+/**
+ * The QTI_Data class represent the abstract model for all the QTI objects.
+ * It contains all the attributes of the different kind of QTI objects.
+ * It manages the identifiers and serial creation.
+ * It provides the serialisation and persistance methods.
+ * And give the interface for the rendering.
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
  * include taoItems_models_classes_QTI_response_Composite
@@ -44,7 +48,7 @@ require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
 // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000003597-constants end
 
 /**
- * Short description of class
+ * The response processing of a single interaction
  *
  * @abstract
  * @access public
@@ -53,6 +57,7 @@ require_once('taoItems/models/classes/QTI/response/interface.Rule.php');
  * @subpackage models_classes_QTI_response_interactionResponseProcessing
  */
 abstract class taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing
+    extends taoItems_models_classes_QTI_Data
         implements taoItems_models_classes_QTI_response_Rule
 {
     // --- ASSOCIATIONS ---
@@ -69,20 +74,20 @@ abstract class taoItems_models_classes_QTI_response_interactionResponseProcessin
     const SCORE_PREFIX = 'SCORE_';
 
     /**
-     * Short description of attribute responseIdentifier
+     * Short description of attribute response
      *
-     * @access private
-     * @var string
+     * @access public
+     * @var Response
      */
-    private $responseIdentifier = '';
+    public $response = null;
 
     /**
-     * Short description of attribute scoreIdentifier
+     * Short description of attribute outcome
      *
-     * @access private
-     * @var string
+     * @access public
+     * @var Outcome
      */
-    private $scoreIdentifier = '';
+    public $outcome = null;
 
     // --- OPERATIONS ---
 
@@ -105,16 +110,16 @@ abstract class taoItems_models_classes_QTI_response_interactionResponseProcessin
     }
 
     /**
-     * Short description of method build
+     * Short description of method create
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  int classID
-     * @param  string responseIdentifier
-     * @param  string scoreIdentifier
+     * @param  Response response
+     * @param  Item item
      * @return taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing
      */
-    public static function build($classID, $responseIdentifier, $scoreIdentifier = null)
+    public static function create($classID,  taoItems_models_classes_QTI_Response $response,  taoItems_models_classes_QTI_Item $item)
     {
         $returnValue = null;
 
@@ -138,63 +143,14 @@ abstract class taoItems_models_classes_QTI_response_interactionResponseProcessin
         	default :
         		throw new common_exception_Error('Unknown InteractionResponseProcessing Class ID "'.$classID.'"');
         }
-        $returnValue = new $className($responseIdentifier, $scoreIdentifier);
+        $outcome = self::generateOutcomeDefinition();
+        $outcomes = $item->getOutcomes();
+        $outcomes[] = $outcome;
+        $item->setOutcomes($outcomes);
+        $returnValue = new $className($response, $outcome);
         // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A0 end
 
         return $returnValue;
-    }
-
-    /**
-     * Short description of method __construct
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  string responseIdentifier
-     * @param  string scoreIdentifier
-     * @return mixed
-     */
-    public function __construct($responseIdentifier, $scoreIdentifier = null)
-    {
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035E5 begin
-        $this->responseIdentifier = $responseIdentifier;
-        $this->scoreIdentifier = is_null($scoreIdentifier) ? self::SCORE_PREFIX.$responseIdentifier : $scoreIdentifier;
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035E5 end
-    }
-
-    /**
-     * Short description of method getResponseIdentifier
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return string
-     */
-    public function getResponseIdentifier()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FE begin
-        return $this->responseIdentifier;
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FE end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method getOutcomeIdentifier
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return string
-     */
-    public function getOutcomeIdentifier()
-    {
-        $returnValue = (string) '';
-
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FC begin
-        return $this->scoreIdentifier;
-        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FC end
-
-        return (string) $returnValue;
     }
 
     /**
@@ -204,26 +160,103 @@ abstract class taoItems_models_classes_QTI_response_interactionResponseProcessin
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @return taoItems_models_classes_QTI_Outcome
      */
-    public function generateOutcomeDefinition()
+    public static function generateOutcomeDefinition()
     {
         $returnValue = null;
 
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003623 begin
-        $returnValue = new taoItems_models_classes_QTI_Outcome($this->getOutcomeIdentifier(), array('baseType' => 'integer', 'cardinality' => 'single'));
+        $returnValue = new taoItems_models_classes_QTI_Outcome(null, array('baseType' => 'integer', 'cardinality' => 'single'));
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003623 end
 
         return $returnValue;
     }
 
     /**
-     * Short description of method toQTI
+     * Short description of method __construct
      *
-     * @abstract
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Response response
+     * @param  Outcome outcome
+     * @return mixed
+     */
+    public function __construct( taoItems_models_classes_QTI_Response $response,  taoItems_models_classes_QTI_Outcome $outcome)
+    {
+        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035E5 begin
+        $this->response = $response;
+        $this->outcome = $outcome;
+        parent::__construct();
+        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035E5 end
+    }
+
+    /**
+     * Short description of method destroy
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function destroy()
+    {
+        // section 127-0-1-1-40168e54:135573066b9:-8000:0000000000003745 begin
+        $this->outcome->destroy();
+        parent::destroy();
+        // section 127-0-1-1-40168e54:135573066b9:-8000:0000000000003745 end
+    }
+
+    /**
+     * Short description of method getResponse
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return taoItems_models_classes_QTI_Interaction
+     */
+    public function getResponse()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FE begin
+        $returnValue = $this->response;
+        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FE end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getOutcome
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return taoItems_models_classes_QTI_Outcome
+     */
+    public function getOutcome()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FC begin
+        $returnValue = $this->outcome;
+        // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035FC end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getIdentifier
+     *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
-    public abstract function toQTI();
+    public function getIdentifier()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1-40168e54:135573066b9:-8000:0000000000003747 begin
+        $returnValue = $this->getResponse()->getIdentifier().'_rp';
+        // section 127-0-1-1-40168e54:135573066b9:-8000:0000000000003747 end
+
+        return (string) $returnValue;
+    }
 
 } /* end of abstract class taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing */
 

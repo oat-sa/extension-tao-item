@@ -957,7 +957,8 @@ class taoItems_models_classes_Matching_Matching
         
         if (isset($this->responses[$id]))
         	$returnValue = $this->responses[$id];
-        
+        else
+        	common_Logger::w('Unknwon response '.$id.' during serversided Matching.', array('TAOITEM', 'QTI', 'MATCHING'));
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028F2 end
 
         return $returnValue;

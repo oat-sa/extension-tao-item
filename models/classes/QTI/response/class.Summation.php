@@ -68,7 +68,7 @@ class taoItems_models_classes_QTI_response_Summation
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003606 begin
         $subExpressions = array();
         foreach ($this->components as $irp) {
-        	$subExpressions[] = new taoItems_models_classes_QTI_expression_CommonExpression('variable', array('identifier' => $irp->getOutcomeIdentifier()));
+        	$subExpressions[] = new taoItems_models_classes_QTI_expression_CommonExpression('variable', array('identifier' => $irp->getOutcome()->getIdentifier()));
         }
         $sum = new taoItems_models_classes_QTI_expression_CommonExpression('sum', array());
         $sum->setSubExpressions($subExpressions);
@@ -94,7 +94,7 @@ class taoItems_models_classes_QTI_response_Summation
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003632 begin
         $returnValue .= '<setOutcomeValue identifier="'.$this->outcomeIdentifier.'"><sum>';
         foreach ($this->components as $irp) {
-        	$returnValue .= '<variable identifier="'.$irp->getOutcomeIdentifier().'" />';
+        	$returnValue .= '<variable identifier="'.$irp->getOutcome()->getIdentifier().'" />';
         }
         $returnValue .= '</sum></setOutcomeValue>';
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:0000000000003632 end

@@ -74,10 +74,10 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResp
         $returnValue = (string) '';
 
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009013 begin
-        $returnValue = 'if(isNull(null, getResponse("'.$this->getResponseIdentifier().'"))) { '.
-        	'setOutcomeValue("'.$this->getOutcomeIdentifier().'", 0); } else { '.
-        	'setOutcomeValue("'.$this->getOutcomeIdentifier().'", '.
-        		'mapResponse(null, getMap("'.$this->getResponseIdentifier().'"), getResponse("'.$this->getResponseIdentifier().'"))); }';
+        $returnValue = 'if(isNull(null, getResponse("'.$this->getResponse()->getIdentifier().'"))) { '.
+        	'setOutcomeValue("'.$this->getOutcome()->getIdentifier().'", 0); } else { '.
+        	'setOutcomeValue("'.$this->getOutcome()->getIdentifier().'", '.
+        		'mapResponse(null, getMap("'.$this->getResponse()->getIdentifier().'"), getResponse("'.$this->getResponse()->getIdentifier().'"))); }';
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009013 end
 
         return (string) $returnValue;
@@ -99,11 +99,11 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResp
 		    <responseIf>
 		        <not>
 		            <isNull>
-		                <variable identifier="'.$this->getResponseIdentifier().'" />
+		                <variable identifier="'.$this->getResponse()->getIdentifier().'" />
 		            </isNull>
 		        </not>
-		        <setOutcomeValue identifier="'.$this->getOutcomeIdentifier().'">
-	                <mapResponse identifier="'.$this->getResponseIdentifier().'" />
+		        <setOutcomeValue identifier="'.$this->getOutcome()->getIdentifier().'">
+	                <mapResponse identifier="'.$this->getResponse()->getIdentifier().'" />
 		        </setOutcomeValue>
 		    </responseIf>
 		</responseCondition>';

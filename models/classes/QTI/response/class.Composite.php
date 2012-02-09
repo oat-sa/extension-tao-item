@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 30.01.2012, 18:19:56 with ArgoUML PHP module 
+ * Automatically generated on 07.02.2012, 17:46:11 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -153,7 +153,11 @@ abstract class taoItems_models_classes_QTI_response_Composite
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003612 begin
         $returnValue = new taoItems_models_classes_QTI_response_Summation($item);
         foreach ($item->getInteractions() as $interaction) {
-        	$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_None($interaction->getResponse()->getIdentifier());
+        	$irp = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::create(
+        		taoItems_models_classes_QTI_response_interactionResponseProcessing_None::CLASS_ID
+        		, $interaction->getResponse()
+        		, $item
+        	);
 			$returnValue->add($irp, $item);
         }
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:0000000000003612 end
@@ -175,57 +179,43 @@ abstract class taoItems_models_classes_QTI_response_Composite
         $returnValue = null;
 
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035DC begin
-        // already good?
         if ($responseProcessing instanceof static) {
+	        // already good
         	$returnValue = $responseProcessing;
-        }
-        // IMS Template
-        elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_Template) {
-        	$rp = new taoItems_models_classes_QTI_response_Summation($item, 'SCORE');
-        	switch ($responseProcessing->getUri()) {
-        		case QTI_RESPONSE_TEMPLATE_MATCH_CORRECT :
-        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate('RESPONSE');
-        			break;
-        		case QTI_RESPONSE_TEMPLATE_MAP_RESPONSE :
-        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate('RESPONSE');
-        			break;
-        		case QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT :
-        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate('RESPONSE');
-        			break;
-        		default :
-        			common_Logger::d('Custom template '.$responseProcessing->getUri().' can not be converted to Composite');
-        			throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
-        	}
-        	$rp->add($irp, $item);
-        	$returnValue = $rp;
-        }
-        // TemplateDriven
-        elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+        } elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_Template) {
+	        // IMS Template
         	$rp = new taoItems_models_classes_QTI_response_Summation($item, 'SCORE');
         	foreach ($item->getInteractions() as $interaction) {
-        		$url = $responseProcessing->getTemplate($interaction->getResponse());
-        		$identifier = $interaction->getResponse()->getIdentifier();
-	        	switch ($url) {
-	        		case QTI_RESPONSE_TEMPLATE_MATCH_CORRECT :
-	        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($identifier);
-	        			break;
-	        		case QTI_RESPONSE_TEMPLATE_MAP_RESPONSE :
-	        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate($identifier);
-	        			break;
-	        		// does not exist yet
-	        		case QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT :
-	        			$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate($identifier);
-	        			break;
-	        		default :
-	        			common_Logger::w('unknwon template "'.$url.'" in templatesDriven can not be converted to Composite');
-	        			throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
-	        	}
+        		$response = $interaction->getResponse();
+        		try {
+	        		$irp = taoItems_models_classes_QTI_response_interactionResponseProcessing_Template::createByTemplate(
+	        			$responseProcessing->getUri(), $response, $item);
+        		} catch (Exception $e) {
+        			$rp->destroy();
+        			throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
+        		}
+        		$rp->add($irp, $item);
+        	}
+        	$returnValue = $rp;
+        } elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+	        // TemplateDriven
+        	$rp = new taoItems_models_classes_QTI_response_Summation($item, 'SCORE');
+        	foreach ($item->getInteractions() as $interaction) {
+        		$response = $interaction->getResponse();
+        		try {
+	        		$irp = taoItems_models_classes_QTI_response_interactionResponseProcessing_Template::createByTemplate(
+	        			$responseProcessing->getTemplate($response)
+	        			, $response
+	        			, $item
+	        		);
+        		} catch (Exception $e) {
+        			$rp->destroy();
+        			throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
+        		}
 	        	$rp->add($irp, $item);
         	}
         	$returnValue = $rp;
-        }
-        
-        else {
+        } else {
         	common_Logger::d('Composite ResponseProcessing can not takeover from '.get_class($responseProcessing).' yet');
         	throw new taoItems_models_classes_QTI_response_TakeoverFailedException();
         }
@@ -242,25 +232,12 @@ abstract class taoItems_models_classes_QTI_response_Composite
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  InteractionResponseProcessing interactionResponseProcessing
-     * @param  Item item
      * @return mixed
      */
-    public function add( taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing $interactionResponseProcessing,  taoItems_models_classes_QTI_Item $item)
+    public function add( taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing $interactionResponseProcessing)
     {
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035F6 begin
-        $this->components[$interactionResponseProcessing->getResponseIdentifier()] = $interactionResponseProcessing;
-        $outcomeExists = false;
-        foreach ($item->getOutcomes() as $outcome) {
-        	if ($outcome->getIdentifier() == $interactionResponseProcessing->getOutcomeIdentifier()) {
-        		$outcomeExists = true;
-        		break;
-        	}
-        }
-        if (!$outcomeExists) {
-        	$outcomes = $item->getOutcomes();
-        	$outcomes[] = $interactionResponseProcessing->generateOutcomeDefinition();
-        	$item->setOutcomes($outcomes);
-        }
+        $this->components[] = $interactionResponseProcessing;
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:00000000000035F6 end
     }
 
@@ -269,17 +246,22 @@ abstract class taoItems_models_classes_QTI_response_Composite
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  string identifier
+     * @param  Response response
      * @return taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing
      */
-    public function getInteractionResponseProcessing($identifier)
+    public function getInteractionResponseProcessing( taoItems_models_classes_QTI_Response $response)
     {
         $returnValue = null;
 
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:000000000000362E begin
-        if (!isset($this->components[$identifier]))
-        	throw new common_Exception('No interactionResponseProcessing defined for '.$identifier);
-        $returnValue = $this->components[$identifier];
+        foreach ($this->components as $irp) {
+        	if ($irp->getResponse() == $response) {
+        		$returnValue = $irp;
+        		break;
+        	}
+        }
+        if (is_null($returnValue))
+       		throw new common_Exception('No interactionResponseProcessing defined for '.$response->getIdentifier());
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:000000000000362E end
 
         return $returnValue;
@@ -296,9 +278,20 @@ abstract class taoItems_models_classes_QTI_response_Composite
     public function replace( taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing $newInteractionResponseProcessing)
     {
         // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A9 begin
-        if (!isset($this->components[$newInteractionResponseProcessing->getResponseIdentifier()]))
-        	throw new common_exception_Error('Tried to replace non present InteractionResponseProcessing for "'.$newInteractionResponseProcessing->getResponseIdentifier().'"');
-        $this->components[$newInteractionResponseProcessing->getResponseIdentifier()] = $newInteractionResponseProcessing;
+        $oldkey = null;
+        foreach ($this->components as $key => $component) {
+        	if ($component->getResponse() == $newInteractionResponseProcessing->getResponse()) {
+        		$oldkey = $key;
+        		break;
+        	}
+        }
+        if (!is_null($oldkey)) {
+        	$this->components[$oldkey]->destroy();
+        	unset($this->components[$oldkey]);
+        } else {
+        	common_Logger::w('Component to be replaced not found', array('TAOITEMS', 'QTI'));
+        }
+        $this->add($newInteractionResponseProcessing);
         // section 127-0-1-1--409b13b8:1352f8ed821:-8000:00000000000036A9 end
     }
 
@@ -337,8 +330,12 @@ abstract class taoItems_models_classes_QTI_response_Composite
     public function takeNoticeOfAddedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
     {
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003662 begin
-    	$irp = new taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate($interaction->getResponse()->getIdentifier());
-        $this->add($irp, $item);
+        $irp = taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing::create(
+        	taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate::CLASS_ID,
+        	$interaction->getResponse(),
+        	$item
+        );
+        $this->add($irp);
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003662 end
     }
 
@@ -356,19 +353,9 @@ abstract class taoItems_models_classes_QTI_response_Composite
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003668 begin
         $irpExisted = false;
         foreach ($this->components as $key => $irp) {
-        	if ($irp->getResponseIdentifier() == $interaction->getResponse()->getIdentifier()) {
-        		$outcomeExisted = false;
-        		foreach ($item->getOutcomes() as $outcome) {
-        			if ( $outcome->getIdentifier() == $irp->getOutcomeIdentifier()) {
-        				$outcomeExisted = true;
-        				$item->removeOutcome($outcome);
-        			}
-        		}
-        		if (!$outcomeExisted) {
-        			common_Logger::w('Outcome "'.$irp->getOutcomeIdentifier().'" not found for interactionResponseProcessing ', array('TAOITEMS', 'QTI'));
-		        }
-		        // remove the irp
+        	if ($irp->getResponse() === $interaction->getResponse()) {
         		unset($this->components[$key]);
+        		$irp->destroy();
         		$irpExisted = true;
         		break;
         	}
@@ -397,6 +384,23 @@ abstract class taoItems_models_classes_QTI_response_Composite
         // section 127-0-1-1-7fd95e33:1350eecc263:-8000:0000000000003636 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method destroy
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function destroy()
+    {
+        // section 127-0-1-1-40168e54:135573066b9:-8000:0000000000003743 begin
+        foreach ($this->components as $component) {
+        	$component->destroy();
+        }
+        parent::destroy();
+        // section 127-0-1-1-40168e54:135573066b9:-8000:0000000000003743 end
     }
 
     /**

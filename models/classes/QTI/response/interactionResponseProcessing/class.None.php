@@ -3,14 +3,7 @@
 error_reporting(E_ALL);
 
 /**
- * TAO -
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 24.01.2012, 17:13:08 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
+ * no response processing
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
@@ -22,7 +15,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include
+ * The response processing of a single interaction
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
@@ -37,7 +30,7 @@ require_once('taoItems/models/classes/QTI/response/interactionResponseProcessing
 // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009004-constants end
 
 /**
- * Short description of class
+ * no response processing
  *
  * @access public
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -80,7 +73,8 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_None
     }
 
     /**
-     * Short description of method toQTI
+     * although no ResponseRules are nescessary to have no responseProcessing,
+     * add some rules to associate the interaction response with a sepcific
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
@@ -91,7 +85,17 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_None
         $returnValue = (string) '';
 
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:000000000000362E begin
-        // nothing to do here
+		$returnValue = '<responseCondition>
+		    <responseIf>
+	            <isNull>
+	                <variable identifier="'.$this->getResponse()->getIdentifier().'" />
+	            </isNull>
+		        <setOutcomeValue identifier="'.$this->getOutcome()->getIdentifier().'">
+		        	<baseValue baseType="'.$this->getResponse()->getBaseType().'">'.
+						$this->getResponse()->getMappingDefaultValue().'</baseValue>
+		        </setOutcomeValue>
+		    </responseIf>
+		</responseCondition>';
         // section 127-0-1-1-4c0a0972:134fa47975d:-8000:000000000000362E end
 
         return (string) $returnValue;
