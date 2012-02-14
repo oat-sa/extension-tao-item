@@ -1296,17 +1296,15 @@ class taoItems_models_classes_Matching_Matching
         //echo '<pre>';print_r($expr1);echo '</pre>';
         //echo '<pre>';print_r($expr2);echo '</pre>';
         
-        if (!isset($expr1)){
-            throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the first argument does not exist");
-        }
-        else if (!isset($expr2)){
-            throw new Exception ("taoItems_models_classes_Matching_Matching::match error : the second argument does not exist");
-        }
+        if (is_null($expr1) || is_null($expr2)){
+            $returnValue = null;
+        } else {
 
-        if ($expr1->getType() != $expr2->getType()) { 
-        	$returnValue = false;
-    	} else {
-        	$returnValue = $expr1->match($expr2);
+	        if ($expr1->getType() != $expr2->getType()) { 
+	        	$returnValue = false;
+	    	} else {
+	        	$returnValue = $expr1->match($expr2);
+	        }
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D end
