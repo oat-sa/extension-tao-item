@@ -111,7 +111,6 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 }
 
 interactionClass.prototype.saveModifiedChoices = function(){
-
 	for(var groupSerial in this.modifiedGroups){
 		var $groupForm = $('#'+groupSerial);
 
@@ -651,7 +650,7 @@ interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
 
 //define when the form is considered as changed:
 interactionClass.prototype.setFormChangeListener = function(target){
-
+	
 	var interaction = this;
 	var $choiceForm = null;
 
@@ -680,9 +679,23 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		var setChangesfunction = function(){
 			interaction.setModifiedChoicesByForm($modifiedForm);
 		};
-		$($(this)[0].contentWindow.document).focus(setChangesfunction);
+		
+		// contentWindow does not exist under google chrome and other browsers.
+		var contentW;
+		if (this.contentDocument) {
+			contentW = this.contentDocument;
+		} else if (this.contentWindow) {
+			contentW = this.contentWindow.document;
+		} else {
+			contentW = this.document;
+		}
+		
+		// focus and blur does not bubble up (DOM specs). Firefox
+		// allows it but not chromium.
+		// http://www.quirksmode.org/dom/events/blurfocus.html
+		$(contentW).bind('focusin', setChangesfunction);
 		$(this).siblings('ul').click(setChangesfunction);
-
+		console.dir(contentW);
 	});
 
 	return true;
