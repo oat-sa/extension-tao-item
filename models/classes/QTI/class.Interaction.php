@@ -1000,6 +1000,56 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
+     * Short description of method canRenderTesttakerResponse
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return boolean
+     */
+    public function canRenderTesttakerResponse()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000382F begin
+        $returnValue = in_array(strtolower($this->type), array('extendedtext'));
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000382F end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method renderTesttakerResponse
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  responses
+     * @return string
+     */
+    public function renderTesttakerResponse($responses)
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000382D begin
+        // test if XHTMLPreview supported
+        if (!$this->canRenderTesttakerResponse()) {
+        	throw new common_exception_Error('XHTMLPreview not implemented for '.$this->type);
+        }
+        //@todo implementation of Preview
+        $returnValue = 'Answers: ';
+        foreach ($responses as $response) {
+        	if (is_string($response)) {
+        		$returnValue .= $response.'<br>';
+        	} elseif (is_array($response)) {
+        		$returnValue .= 'array<br>';
+        	} else
+        		$returnValue .= get_class($response).'<br>';
+        }
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000382D end
+
+        return (string) $returnValue;
+    }
+
+    /**
      * Short description of method destroy
      *
      * @access public
