@@ -72,6 +72,15 @@ class taoItems_models_classes_QTI_Outcome
      */
     protected $defaultValue = '';
 
+    /**
+     * The scale to used for this outcome, this is NOT supported in the QTI. The
+     * visibility makes it inaccessible to the extractVariables()
+     *
+     * @access private
+     * @var Scale
+     */
+    private $scale = null;
+
     // --- OPERATIONS ---
 
     /**
@@ -171,6 +180,67 @@ class taoItems_models_classes_QTI_Outcome
         }
         parent::destroy();
         // section 127-0-1-1--7c75b87:1355db19059:-8000:00000000000037B3 end
+    }
+
+    /**
+     * used to extract the measurements of this item to the ontology
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return taoItems_models_classes_Measurement
+     */
+    public function toMeasurement()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037E0 begin
+
+        $interpretation = $this->getOption('interpretation');
+        $returnValue = new taoItems_models_classes_Measurement($this->getIdentifier(), $this->getScale(), $interpretation);
+        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037E0 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method setScale
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Scale scale
+     * @return mixed
+     */
+    public function setScale( taoItems_models_classes_Scale_Scale $scale)
+    {
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003809 begin
+        $this->scale = $scale;
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003809 end
+    }
+
+    /**
+     * Short description of method getScale
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return taoItems_models_classes_Scale_Scale
+     */
+    public function getScale()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000380C begin
+        if (!is_null($this->scale)) {
+        	$returnValue = $this->scale;
+        } else {
+        	//@todo remove this after testing
+	        $returnValue = new taoItems_models_classes_Scale_Discrete();
+	        $returnValue->lowerBound = 0;
+	        $returnValue->upperBound = rand(1, 5);
+	        $returnValue->distance = 0.5;
+        }
+        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000380C end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_QTI_Outcome */

@@ -682,7 +682,7 @@ abstract class taoItems_models_classes_QTI_Data
         
     	$reflection = new ReflectionClass($this);
 		foreach($reflection->getProperties() as $property){
-			if(!$property->isStatic()){
+			if(!$property->isStatic() && !$property->isPrivate()){
 				$returnValue[$property->getName()] = $this->{$property->getName()};
 			}
 		}
