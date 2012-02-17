@@ -48,12 +48,7 @@ $(window).load(function(){
         	if($.isPlainObject(answeredValues)){
             	
         		//set the answered values to the taoApi 
-				if(size == 1 && answeredValues['RESPONSE']){
-					setAnsweredValues(JSON.stringify(answeredValues['RESPONSE']));
-				}
-				else{
-					setAnsweredValues(JSON.stringify(answeredValues));
-				}
+				setAnsweredValues(JSON.stringify(answeredValues));
         	}
         	
             // Evaluate the user's responses
