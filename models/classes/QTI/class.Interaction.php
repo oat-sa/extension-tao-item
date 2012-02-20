@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI's interactions are the way the user interact with the system. The
  * will be rendered into widgets to enable the user to answer to the item.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  * @subpackage models_classes_QTI
@@ -19,7 +19,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * A choice is a kind of interaction's proposition.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10254
  */
 require_once('taoItems/models/classes/QTI/class.Choice.php');
@@ -31,7 +31,7 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
@@ -39,7 +39,7 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * A group is an concept to enable choice logical grouping (ordering). 
  * It use when there is distinct choices groups in an interaction.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  */
 require_once('taoItems/models/classes/QTI/class.Group.php');
 
@@ -49,7 +49,7 @@ require_once('taoItems/models/classes/QTI/class.Group.php');
  * point
  * to render a complete item.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#section10042
  */
 require_once('taoItems/models/classes/QTI/class.Item.php');
@@ -58,7 +58,7 @@ require_once('taoItems/models/classes/QTI/class.Item.php');
  * A response is on object associated to an interactino containing which are the
  * response into the interaction choices and the score regarding the answers
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10074
  */
 require_once('taoItems/models/classes/QTI/class.Response.php');
@@ -76,7 +76,7 @@ require_once('taoItems/models/classes/QTI/class.Response.php');
  * will be rendered into widgets to enable the user to answer to the item.
  *
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author firstname and lastname of author, <author@example.org>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  * @subpackage models_classes_QTI
@@ -137,7 +137,7 @@ class taoItems_models_classes_QTI_Interaction
      * If the id is null, a unique identifier is generated
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string type
      * @param  string id
      * @param  array options
@@ -146,11 +146,11 @@ class taoItems_models_classes_QTI_Interaction
     public function __construct($type, $id = null, $options = array())
     {
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 begin
-        
+
     	parent::__construct($id, $options);
-    	
+
     	$this->type = $type;
-    	
+
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002488 end
     }
 
@@ -158,19 +158,19 @@ class taoItems_models_classes_QTI_Interaction
      * Set the list of choices
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array choices
      * @return mixed
      */
     public function setChoices($choices)
     {
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023EE begin
-        
+
     	$this->choices = array();
     	foreach($choices as $choice){
     		$this->addChoice($choice);
     	}
-    	
+
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023EE end
     }
 
@@ -178,7 +178,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the interaction's choices
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
     public function getChoices()
@@ -186,9 +186,9 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = array();
 
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F1 begin
-        
+
         $returnValue = $this->choices;
-        
+
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F1 end
 
         return (array) $returnValue;
@@ -198,7 +198,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get a choice identified by the serial
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Choice
      */
@@ -207,13 +207,13 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = null;
 
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F3 begin
-        
+
         if(!empty($serial)){
         	if(array_key_exists($serial, $this->choices)){
         		$returnValue = $this->choices[$serial];
         	}
         }
-        
+
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F3 end
 
         return $returnValue;
@@ -223,18 +223,18 @@ class taoItems_models_classes_QTI_Interaction
      * Add a choice to the interaction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Choice choice
      * @return mixed
      */
     public function addChoice( taoItems_models_classes_QTI_Choice $choice)
     {
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F6 begin
-        
+
     	if(!is_null($choice)){
     		$this->choices[$choice->getSerial()] = $choice;
     	}
-    	
+
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023F6 end
     }
 
@@ -242,7 +242,7 @@ class taoItems_models_classes_QTI_Interaction
      * Remove a choice from the interaction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Choice choice
      * @return boolean
      */
@@ -251,7 +251,7 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (bool) false;
 
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 begin
-        
+
 		if(!is_null($choice)){
     		if(isset($this->choices[$choice->getSerial()])){
     			foreach($this->getGroups() as $group){
@@ -259,17 +259,17 @@ class taoItems_models_classes_QTI_Interaction
 				}
 				$choice->destroy();
 				unset($this->choices[$choice->getSerial()]);
-				
+
 				//remove the choice from the interaction data:
 				$data = $this->getData();
 				$data = str_replace("{{$choice->getSerial()}}", '', $data);
 				$this->setData($data);
-				
+
     			$returnValue = true;
     		}
-		
+
     	}
-    	
+
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:0000000000002545 end
 
         return (bool) $returnValue;
@@ -279,7 +279,7 @@ class taoItems_models_classes_QTI_Interaction
      * Shuffle the order of the choices
      *
      * @access protected
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     protected function shuffleChoices()
@@ -287,16 +287,16 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-4fc32daa:12b6736cfe7:-8000:00000000000025B2 begin
-        
+
         $returnValue = $this->data;
-        
+
         //get choices order
         $matchs = array();
         $max = preg_match_all("/{choice_[a-z0-9]*}/", $returnValue, $matchs);
         if($max > 0){
         	$ordered = $matchs[0];
-        	
-        	//get the choices which are fixed 
+
+        	//get the choices which are fixed
         	$fixed = array();
         	foreach($ordered as $index => $choiceSerial){
         		$serial = preg_replace(array("/^{/","/}$/"), '', $choiceSerial);
@@ -305,12 +305,12 @@ class taoItems_models_classes_QTI_Interaction
         			$fixed[] = $index;
         		}
         	}
-        	
+
         	//shuffle them
         	$shuffled = array();
         	foreach($ordered as $index => $choice){
-        		do { 
-        			$key = mt_rand(0, $max * 10); 
+        		do {
+        			$key = mt_rand(0, $max * 10);
         		} while(array_key_exists($key, $shuffled));
 	        	$shuffled[$key] = $choice;
         	}
@@ -323,7 +323,7 @@ class taoItems_models_classes_QTI_Interaction
         		}
         		$i++;
         	}
-        	
+
         	//replace the fixed choices
         	foreach($fixed as $index){
         		$tmpChoice = $shuffled[$index];
@@ -332,7 +332,7 @@ class taoItems_models_classes_QTI_Interaction
         		$shuffled[$tmpIndex] = $tmpChoice;
         		$shuffled[$index] = $ordered[$index];
         	}
-        	
+
         	foreach($shuffled as $i => $sChoice){
         		$returnValue = str_replace($ordered[$i], "{{$i}}", $returnValue);
         	}
@@ -340,7 +340,7 @@ class taoItems_models_classes_QTI_Interaction
         		$returnValue = str_replace("{{$i}}", $sChoice, $returnValue);
         	}
         }
-        
+
         // section 127-0-1-1-4fc32daa:12b6736cfe7:-8000:00000000000025B2 end
 
         return (string) $returnValue;
@@ -350,7 +350,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the interaction's groups
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
     public function getGroups()
@@ -358,9 +358,9 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = array();
 
         // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002544 begin
-        
+
         $returnValue  = $this->groups;
-        
+
         // section 127-0-1-1-7bfc492a:12ad2946c72:-8000:0000000000002544 end
 
         return (array) $returnValue;
@@ -370,19 +370,19 @@ class taoItems_models_classes_QTI_Interaction
      * Define the interaction's groups
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array groups
      * @return mixed
      */
     public function setGroups($groups)
     {
         // section 127-0-1-1-4b2a2e4c:12b61a11fd4:-8000:00000000000025AF begin
-        
+
     	$this->groups = array();
     	foreach($groups as $group){
     		$this->addGroup($group);
     	}
-    	
+
         // section 127-0-1-1-4b2a2e4c:12b61a11fd4:-8000:00000000000025AF end
     }
 
@@ -390,16 +390,16 @@ class taoItems_models_classes_QTI_Interaction
      * Add a  group to the interaction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Group group
      * @return mixed
      */
     public function addGroup( taoItems_models_classes_QTI_Group $group)
     {
         // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:0000000000002546 begin
-        
+
     	$this->groups[$group->getSerial()] = $group;
-    	
+
         // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:0000000000002546 end
     }
 
@@ -408,7 +408,7 @@ class taoItems_models_classes_QTI_Interaction
      * If recursive is set to true, it will remove the group's choices
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Group group
      * @param  boolean recursive
      * @return boolean
@@ -418,11 +418,11 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (bool) false;
 
         // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:000000000000254D begin
-        
+
     	if(!is_null($group)){
-    		
+
     		if(isset($this->groups[$group->getSerial()])){
-    			
+
     			if($recursive){
     				foreach($group->getChoices() as $choice){
     					$this->removeChoice($choice);
@@ -430,17 +430,17 @@ class taoItems_models_classes_QTI_Interaction
     			}
     			$group->destroy();
     			unset($this->groups[$group->getSerial()]);
-				
+
 				//remove the group from the interaction data:
 				$data = $this->getData();
 				$data = str_replace("{{$group->getSerial()}}", '', $data);
 				$this->setData($data);
-				
+
     			$returnValue = true;
     		}
-    		
+
     	}
-    	
+
         // section 127-0-1-1--56a89d8b:12ad288b4f1:-8000:000000000000254D end
 
         return (bool) $returnValue;
@@ -450,7 +450,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the response linked to the interaction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return taoItems_models_classes_QTI_Response
      */
     public function getResponse()
@@ -468,7 +468,7 @@ class taoItems_models_classes_QTI_Interaction
      * Define the interaction's response
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  Response response
      * @return mixed
      */
@@ -477,7 +477,7 @@ class taoItems_models_classes_QTI_Interaction
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023FB begin
     	$this->response = $response;
     	$this->options['responseIdentifier'] = $response->getIdentifier();
-    	
+
         // section 127-0-1-1--4be859a6:12a33452171:-8000:00000000000023FB end
     }
 
@@ -485,7 +485,7 @@ class taoItems_models_classes_QTI_Interaction
      * Get the prompt data
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function getPrompt()
@@ -493,9 +493,9 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002573 begin
-        
+
         $returnValue = $this->prompt;
-        
+
         // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002573 end
 
         return (string) $returnValue;
@@ -505,7 +505,7 @@ class taoItems_models_classes_QTI_Interaction
      * Define the prompt data
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  string text
      * @return mixed
      */
@@ -528,9 +528,9 @@ class taoItems_models_classes_QTI_Interaction
 			),
 			'UTF8'
 		);
-		
+
     	$this->prompt = $text;
-    	
+
         // section 127-0-1-1--424d5b00:12ad69af5de:-8000:0000000000002575 end
     }
 
@@ -539,7 +539,7 @@ class taoItems_models_classes_QTI_Interaction
      * (single, multiple or ordered)
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  boolean numeric
      * @return mixed
      */
@@ -621,7 +621,7 @@ class taoItems_models_classes_QTI_Interaction
      * float, boolean or point
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function getBaseType()
@@ -691,7 +691,7 @@ class taoItems_models_classes_QTI_Interaction
 			default:{
 				throw new Exception("the current interaction type \"{$this->type}\" is currently not available yet");
 			}
-			
+
 		}
         // section 10-13-1-39-5cb6de7e:12baf74d2b5:-8000:0000000000002985 end
 
@@ -702,18 +702,18 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method setObject
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  array objectData
      * @return mixed
      */
     public function setObject($objectData = array())
     {
         // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 begin
-		
+
 		foreach($objectData as $key=>$value){
 			$this->object[$key] = $value;
 		}
-		
+
         // section 10-13-1-39--20891d2c:12c9bf67a55:-8000:0000000000002C18 end
     }
 
@@ -721,7 +721,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method getObject
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return array
      */
     public function getObject()
@@ -739,7 +739,7 @@ class taoItems_models_classes_QTI_Interaction
      * Check if the interaction is a block or an inline interaction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return boolean
      */
     public function isBlock()
@@ -747,14 +747,14 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (bool) false;
 
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 begin
-        
+
         $returnValue = in_array(strtolower($this->type), array(
-        	'associate', 
-        	'choice', 
-        	'order', 
+        	'associate',
+        	'choice',
+        	'order',
         	'match',
-			'extendedtext',			
-        	'gapmatch', 
+			'extendedtext',
+        	'gapmatch',
         	'hottext',
 			'hotspot',
         	'selectpoint',
@@ -764,7 +764,7 @@ class taoItems_models_classes_QTI_Interaction
         	'upload',
 			'slider'
         ));
-        
+
         // section 127-0-1-1-3c3a6340:12c7365218a:-8000:00000000000028E5 end
 
         return (bool) $returnValue;
@@ -775,7 +775,7 @@ class taoItems_models_classes_QTI_Interaction
      * (use of images/SVG as working area)
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return boolean
      */
     public function isGraphic()
@@ -783,7 +783,7 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (bool) false;
 
         // section 127-0-1-1--30b98426:12f25041f87:-8000:0000000000002F03 begin
-        
+
          $returnValue = in_array(strtolower($this->type), array(
         	'selectpoint',
 			'graphicassociate',
@@ -791,7 +791,7 @@ class taoItems_models_classes_QTI_Interaction
 			'graphicgapmatch',
          	'hotspot'
          ));
-        
+
         // section 127-0-1-1--30b98426:12f25041f87:-8000:0000000000002F03 end
 
         return (bool) $returnValue;
@@ -801,7 +801,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toXHTML
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function toXHTML()
@@ -809,30 +809,30 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 begin
-        
+
    		//check first if there is a template for the given type
         $template = self::getTemplatePath() . 'interactions/xhtml.' .strtolower($this->type) . '.tpl.php';
         if(!file_exists($template)){
         	 //else get the general template
         	 $template = self::getTemplatePath() . 'xhtml.interaction.tpl.php';
         }
-        
+
         $variables 	= $this->extractVariables();
         $variables['rowOptions'] = json_encode($this->options);
-        
+
         $variables['class'] = '';
         if(isset($this->options['class'])){
         	$variables['class'] = $this->options['class'];
         }
-        
+
 		//change from camelCase to underscore_case the type of the interaction to be used in the JS
 		$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
-		
+
 		//suffle the choices for the runtime if defined in the QTI
 		if($this->getOption('shuffle') === true){
 			$variables['data'] = $this->shuffleChoices();
 		}
-		
+
    		switch($this->type){
    			case 'associate':
    			case 'choice':
@@ -847,7 +847,7 @@ class taoItems_models_classes_QTI_Interaction
    				$variables['data'] = preg_replace("/({choice_[a-z0-9]*}(.*){choice_[a-z0-9]*})|({choice_[a-z0-9]*})/mi", "<ul class='qti_{$variables['_type']}_spotlist'>$0</ul>", $variables['data']);
    				break;
    		}
-   			
+
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){
    			foreach($this->getGroups() as $group){
@@ -856,7 +856,7 @@ class taoItems_models_classes_QTI_Interaction
 			foreach($this->getChoices() as $choice){
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
-			
+
 			//create the matchGroup from the choice list
 			if($this->type == 'gapMatch'){
 				foreach($this->getGroups() as $group){
@@ -880,17 +880,17 @@ class taoItems_models_classes_QTI_Interaction
 				$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
 			}
    		}
-   		
+
    		// Give to the template the response base type linked to this interaction
    		// @todo check if this information is not yet available
 		$response = $this->getResponse ();
 		if ($response != null){
 			$variables['options']['responseBaseType'] = $response->getBaseType();
 		}
-		
+
         $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
       	$returnValue = $tplRenderer->render();
-        
+
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002495 end
 
         return (string) $returnValue;
@@ -900,7 +900,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toQTI
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return string
      */
     public function toQTI()
@@ -908,16 +908,16 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = (string) '';
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002497 begin
-        
+
         //check first if there is a template for the given type
         $template = self::getTemplatePath() . 'interactions/qti.' .strtolower($this->type) . '.tpl.php';
         if(!file_exists($template)){
         	 $template = self::getTemplatePath() . 'qti.interaction.tpl.php';
         }
-        
+
         $variables 	= $this->extractVariables();
         $variables['rowOptions'] 	= $this->xmlizeOptions();
-		
+
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){
    			//create the matchGroup from the choice list
@@ -941,11 +941,11 @@ class taoItems_models_classes_QTI_Interaction
 				$variables['data'] = preg_replace("/{".$group->getSerial()."}/", $group->toQti(), $variables['data']);
 			}
    		}
-   		
+
 		foreach($this->getChoices() as $choice){
 			$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toQti(), $variables['data']);
 		}
-		
+
 		//object tag used in the graphic interactions
 		if(count($this->object) > 0){
 			(isset($this->object['_alt'])) ? $_alt = $this->object['_alt'] : $_alt = '';
@@ -961,7 +961,7 @@ class taoItems_models_classes_QTI_Interaction
 			$variables['object_alt'] = $_alt;
 			$variables['objectAttributes'] = $objectAttributes;
 		}
-		
+
 		//parse and render the template
 		$tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
 		$returnValue = $tplRenderer->render();
@@ -975,7 +975,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method toForm
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return tao_helpers_form_Form
      */
     public function toForm()
@@ -983,7 +983,7 @@ class taoItems_models_classes_QTI_Interaction
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 begin
-		
+
 		$interactionFormClass = 'taoItems_actions_QTIform_interaction_'.ucfirst(strtolower($this->getType())).'Interaction';
 		if(!class_exists($interactionFormClass)){
 			throw new Exception("the class {$interactionFormClass} does not exist");
@@ -992,8 +992,8 @@ class taoItems_models_classes_QTI_Interaction
 			$myForm = $formContainer->getForm();
 			$returnValue = $myForm;
 		}
-		
-		
+
+
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:0000000000002499 end
 
         return $returnValue;
@@ -1003,7 +1003,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method canRenderTesttakerResponse
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return boolean
      */
     public function canRenderTesttakerResponse()
@@ -1018,14 +1018,14 @@ class taoItems_models_classes_QTI_Interaction
     }
 
     /**
-     * Short description of method renderTesttakerResponse
+     * Short description of method renderTesttakerResponseXHTML
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @param  responses
      * @return string
      */
-    public function renderTesttakerResponse($responses)
+    public function renderTesttakerResponseXHTML($responses)
     {
         $returnValue = (string) '';
 
@@ -1035,7 +1035,7 @@ class taoItems_models_classes_QTI_Interaction
         	throw new common_exception_Error('XHTMLPreview not implemented for '.$this->type);
         }
         //@todo implementation of Preview
-        $returnValue = 'Answers: ';
+        $returnValue = $this->toXHTML().'Answers: ';
         foreach ($responses as $response) {
         	if (is_string($response)) {
         		$returnValue .= $response.'<br>';
@@ -1053,7 +1053,7 @@ class taoItems_models_classes_QTI_Interaction
      * Short description of method destroy
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author firstname and lastname of author, <author@example.org>
      * @return mixed
      */
     public function destroy()
@@ -1063,12 +1063,12 @@ class taoItems_models_classes_QTI_Interaction
     	if(!is_null($this->getResponse())){
 			$this->getResponse()->destroy();
 		}
-				
+
 		//delete choices:
 		foreach($this->getChoices() as $choice){
 			$choice->destroy();
 		}
-		
+
 		//delete groups:
 		foreach($this->getGroups() as $group){
 			$group->destroy();
