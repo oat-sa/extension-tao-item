@@ -1055,6 +1055,7 @@ class taoItems_models_classes_QTI_Interaction
 
         $variables 	= $this->extractVariables();
         $variables['rowOptions'] = json_encode($this->options);
+				$variables['testtakerResponses'] = $responses;
 
         $variables['class'] = '';
         if(isset($this->options['class'])){
@@ -1119,9 +1120,9 @@ class taoItems_models_classes_QTI_Interaction
 */
 				// Give to the template the response base type linked to this interaction
 				// @todo check if this information is not yet available
-				$response = $this->getResponse ();
-				if ($response != null) {
-					$variables['options']['responseBaseType'] = $response->getBaseType();
+				$responseBase = $this->getResponse();
+				if ($responseBase != null) {
+					$variables['options']['responseBaseType'] = $responseBase->getBaseType();
 				}
 
         $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
