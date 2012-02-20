@@ -36,7 +36,7 @@ require_once('taoItems/models/classes/QTI/class.Choice.php');
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
 /**
- * A group is an concept to enable choice logical grouping (ordering). 
+ * A group is an concept to enable choice logical grouping (ordering).
  * It use when there is distinct choices groups in an interaction.
  *
  * @author firstname and lastname of author, <author@example.org>
@@ -85,7 +85,7 @@ class taoItems_models_classes_QTI_Interaction
     extends taoItems_models_classes_QTI_Data
 {
     // --- ASSOCIATIONS ---
-    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd : 
+    // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :     // generateAssociationEnd :
 
     // --- ATTRIBUTES ---
 
@@ -106,7 +106,7 @@ class taoItems_models_classes_QTI_Interaction
     protected $response = null;
 
     /**
-     * The choices' groups of the interactions 
+     * The choices' groups of the interactions
      * (give a grouped and ordered view of the choices)
      *
      * @access protected
@@ -1035,7 +1035,7 @@ class taoItems_models_classes_QTI_Interaction
         	throw new common_exception_Error('XHTMLPreview not implemented for '.$this->type);
         }
         //@todo implementation of Preview
-        $returnValue = $this->toXHTML().'Answers: ';
+        /*$returnValue = $this->toXHTML().'Answers: ';
         foreach ($responses as $response) {
         	if (is_string($response)) {
         		$returnValue .= $response.'<br>';
@@ -1043,7 +1043,91 @@ class taoItems_models_classes_QTI_Interaction
         		$returnValue .= 'array<br>';
         	} else
         		$returnValue .= get_class($response).'<br>';
+        }*/
+
+
+				//check first if there is a template for the given type
+        $template = self::getTemplatePath() . 'interactions/TesttakersResponse/xhtml.' .strtolower($this->type) . '.tpl.php';
+        if(!file_exists($template)){
+        	 //else get the general template
+        	 $template = self::getTemplatePath() . 'xhtml.interaction.tpl.php';
         }
+
+        $variables 	= $this->extractVariables();
+        $variables['rowOptions'] = json_encode($this->options);
+
+        $variables['class'] = '';
+        if(isset($this->options['class'])){
+        	$variables['class'] = $this->options['class'];
+        }
+
+				//change from camelCase to underscore_case the type of the interaction to be used in the JS
+				$variables['_type']	= strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $this->type));
+/*
+				//suffle the choices for the runtime if defined in the QTI
+				if($this->getOption('shuffle') === true){
+					$variables['data'] = $this->shuffleChoices();
+				}
+*/
+				switch($this->type){
+					case 'associate':
+					case 'choice':
+					case 'order':
+					case 'gapMatch':
+						$variables['data'] = preg_replace("/({choice_[a-z0-9]*}(.*){choice_[a-z0-9]*})|({choice_[a-z0-9]*})/mi", "<ul class='qti_choice_list'>$0</ul>", $variables['data']);
+						break;
+					case 'hotspot':
+						case 'graphicOrder':
+						case 'graphicAssociate':
+						case 'graphicGapMatch':
+						$variables['data'] = preg_replace("/({choice_[a-z0-9]*}(.*){choice_[a-z0-9]*})|({choice_[a-z0-9]*})/mi", "<ul class='qti_{$variables['_type']}_spotlist'>$0</ul>", $variables['data']);
+						break;
+				}
+/*
+				//build back the choices in the data variable
+				if(count($this->getGroups()) > 0){
+					foreach($this->getGroups() as $group){
+					$variables['data'] = preg_replace("/{".$group->getSerial()."}/", $group->toXHTML(), $variables['data']);
+				}
+				foreach($this->getChoices() as $choice){
+					$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
+				}
+
+				//create the matchGroup from the choice list
+				if($this->type == 'gapMatch'){
+					foreach($this->getGroups() as $group){
+						$matchGroup = array();
+						foreach($group->getChoices() as $choiceSerial){
+							foreach($this->getChoices() as $choice){
+								if($choice->getSerial() == $choiceSerial){
+									$matchGroup[] = $choice->getIdentifier();
+									break;
+								}
+							}
+						}
+						if(count($matchGroup) > 0){
+							$group->setOption('matchGroup', $matchGroup);
+						}
+					}
+				}
+				}
+				else{
+					foreach($this->getChoices() as $choice){
+						$variables['data'] = preg_replace("/{".$choice->getSerial()."}/", $choice->toXHTML(), $variables['data']);
+					}
+				}
+*/
+				// Give to the template the response base type linked to this interaction
+				// @todo check if this information is not yet available
+				$response = $this->getResponse ();
+				if ($response != null) {
+					$variables['options']['responseBaseType'] = $response->getBaseType();
+				}
+
+        $tplRenderer = new taoItems_models_classes_TemplateRenderer($template, $variables);
+      	$returnValue = $tplRenderer->render();
+
+
         // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000382D end
 
         return (string) $returnValue;
