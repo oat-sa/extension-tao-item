@@ -140,7 +140,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   async: false,
 					   success: function(r){ //Assume save = changed
 						    if (r.saved) qtiEdit.createInfoMessage(__('Modification on response applied'));
-							result = r.saved;
+								result = r.saved;
 					   }
 					});
 					break;
@@ -153,9 +153,7 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   dataType: 'json',
 					   async: false,
 					   success: function(r){
-							if(r.saved){
-								qtiEdit.createInfoMessage(__('The response properties have been updated'));
-							}
+								if (r.saved) qtiEdit.createInfoMessage(__('The response properties have been updated'));
 					   }
 					});
 					break;
@@ -168,9 +166,8 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 					   dataType: 'json',
 					   async: false,
 					   success: function(r){
-							if(r.saved){
-								qtiEdit.createInfoMessage(__('The options have been updated'));
-							}
+								if (r.saved) qtiEdit.createInfoMessage(__('The options have been updated'));
+								result = r.saved;
 					   }
 					});
 					break;
