@@ -1342,7 +1342,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
 			$saved = false;
 			$outcome = $this->getCurrentOutcome();
-			common_Logger::d('storing composite stuff');
 
 			// set guidelines
 			if ($this->hasRequestParameter('guidelines')) {
@@ -1359,6 +1358,29 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					'correct' => 'yes'
 				));
 				$saved = $this->service->saveInteractionResponse($this->getCurrentInteraction(), $responseData) || $saved;
+			}
+			// set scale
+			if ($this->hasRequestParameter('scaletype')) {
+				
+				if (strlen(trim($this->getRequestParameter('scaletype'))) > 0) {
+					$uri = tao_helpers_Uri::decode($this->getRequestParameter('scaletype'));
+					$scale = taoItems_models_classes_Scale_Scale::createByClass($uri);
+					
+					if ($this->hasRequestParameter('min')) {
+						$scale->lowerBound = (floatval($this->getRequestParameter('min')));
+					}
+					if ($this->hasRequestParameter('max')) {
+						$scale->upperBound = (floatval($this->getRequestParameter('max')));
+					}
+					if ($this->hasRequestParameter('dist')) {
+						$scale->distance = (floatval($this->getRequestParameter('dist')));
+					}
+					$outcome->setScale($scale);
+					$saved = true;
+				} else {
+					$outcome->removeScale();
+					$saved = true;
+				}
 			}
 			
 			echo json_encode(array(

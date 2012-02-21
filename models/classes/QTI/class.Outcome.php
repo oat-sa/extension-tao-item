@@ -73,13 +73,13 @@ class taoItems_models_classes_QTI_Outcome
     protected $defaultValue = '';
 
     /**
-     * The scale to used for this outcome, this is NOT supported in the QTI. The
-     * visibility makes it inaccessible to the extractVariables()
+     * The scale to used for this outcome, this is NOT supported in the QTI. It
+     * be serialized in the session but excluded by extractVariables()
      *
-     * @access private
+     * @access protected
      * @var Scale
      */
-    private $scale = null;
+    protected $scale = null;
 
     // --- OPERATIONS ---
 
@@ -194,12 +194,48 @@ class taoItems_models_classes_QTI_Outcome
         $returnValue = null;
 
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037E0 begin
-
         $interpretation = $this->getOption('interpretation');
-        $returnValue = new taoItems_models_classes_Measurement($this->getIdentifier(), $this->getScale(), $interpretation);
+        $returnValue = new taoItems_models_classes_Measurement($this->getIdentifier(), $interpretation);
+        if (!is_null($this->getScale())) {
+        	$returnValue->setScale($this->getScale());
+        }
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037E0 end
 
         return $returnValue;
+    }
+
+    /**
+     * to prevent the toQTI function to include the scale we overwrite the
+     * to exclude scale
+     *
+     * @access protected
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return array
+     */
+    protected function extractVariables()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003829 begin
+        $returnValue = parent::extractVariables();
+        unset($returnValue['scale']);
+        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003829 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method removeScale
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    public function removeScale()
+    {
+        // section 127-0-1-1-67366732:1359ace6a59:-8000:000000000000382C begin
+        $this->scale = null;
+        // section 127-0-1-1-67366732:1359ace6a59:-8000:000000000000382C end
     }
 
     /**
@@ -229,15 +265,7 @@ class taoItems_models_classes_QTI_Outcome
         $returnValue = null;
 
         // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000380C begin
-        if (!is_null($this->scale)) {
-        	$returnValue = $this->scale;
-        } else {
-        	//@todo remove this after testing
-	        $returnValue = new taoItems_models_classes_Scale_Discrete();
-	        $returnValue->lowerBound = 0;
-	        $returnValue->upperBound = rand(1, 5);
-	        $returnValue->distance = 0.5;
-        }
+       	$returnValue = $this->scale;
         // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:000000000000380C end
 
         return $returnValue;

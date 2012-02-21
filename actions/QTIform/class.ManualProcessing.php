@@ -106,14 +106,39 @@ class taoItems_actions_QTIform_ManualProcessing
 		$correct->setValue(implode("\n", $responses));
 		$this->form->addElement($correct);
 		
-		//upperbound+lowerbound:
-		$lowerBoundElt = tao_helpers_form_FormFactory::getElement('min', 'Textbox');
-		$lowerBoundElt->setDescription(__('Minimum value'));
-		$this->form->addElement($lowerBoundElt);
-		$upperBoundElt = tao_helpers_form_FormFactory::getElement('max', 'Textbox');
-		$upperBoundElt->setDescription(__('Maximum value'));
-		$this->form->addElement($upperBoundElt);
-        // section 127-0-1-1-249123f:13519689c9e:-8000:0000000000003690 end
+		//scale
+		$scale = $this->outcome->getScale();
+		$availableOptions = array(
+			tao_helpers_Uri::encode(taoItems_models_classes_Scale_Discrete::CLASS_URI) => __('Discrete Scale')
+		);
+		$scaleTypeElt = tao_helpers_form_FormFactory::getElement('scaletype', 'Combobox');
+		$scaleTypeElt->setDescription(__('Scale type'));
+		$scaleTypeElt->setEmptyOption(' ');
+		$scaleTypeElt->setOptions($availableOptions);
+		if (!is_null($scale)) {
+			$scaleTypeElt->setValue($scale->getClassUri());
+		}
+		$this->form->addElement($scaleTypeElt);
+		
+		if (!is_null($scale)) {
+			if ($scale->getClassUri() == taoItems_models_classes_Scale_Discrete::CLASS_URI) {
+				$lowerBoundElt = tao_helpers_form_FormFactory::getElement('min', 'Textbox');
+				$lowerBoundElt->setDescription(__('Minimum value'));
+				$lowerBoundElt->setValue($scale->lowerBound);
+				$this->form->addElement($lowerBoundElt);
+				$upperBoundElt = tao_helpers_form_FormFactory::getElement('max', 'Textbox');
+				$upperBoundElt->setDescription(__('Maximum value'));
+				$upperBoundElt->setValue($scale->upperBound);
+				$this->form->addElement($upperBoundElt);
+				$distanceElt = tao_helpers_form_FormFactory::getElement('dist', 'Textbox');
+				$distanceElt->setDescription(__('Distance'));
+				$distanceElt->setValue($scale->distance);
+				$this->form->addElement($distanceElt);
+			} else {
+				//@todo scale not supported message
+			}
+		}
+		// section 127-0-1-1-249123f:13519689c9e:-8000:0000000000003690 end
     }
 
 } /* end of class taoItems_actions_QTIform_ManualProcessing */

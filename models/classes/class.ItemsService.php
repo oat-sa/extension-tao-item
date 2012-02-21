@@ -1103,7 +1103,10 @@ class taoItems_models_classes_ItemsService
 			if (isset($properties[TAO_ITEM_SCALE_PROPERTY])) {
 				$scale = taoItems_models_classes_Scale_Scale::buildFromRessource(array_pop($properties[TAO_ITEM_SCALE_PROPERTY]));
 			}
-			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $scale);
+			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier);
+			if (isset($scale) && !is_null($scale)) {
+				$returnValue[$identifier]->setScale($scale);
+			}
 		}
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D2 end
 

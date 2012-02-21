@@ -851,6 +851,7 @@ class taoItems_models_classes_QTI_Interaction
    		//build back the choices in the data variable
    		if(count($this->getGroups()) > 0){
    			foreach($this->getGroups() as $group){
+   				common_Logger::i("The group is ".get_class($group));
 				$variables['data'] = preg_replace("/{".$group->getSerial()."}/", $group->toXHTML(), $variables['data']);
 			}
 			foreach($this->getChoices() as $choice){

@@ -85,6 +85,18 @@ class taoItems_models_classes_QTI_Service
 						if(!$returnValue->getOption('lang')){
 	    					$returnValue->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
 						}
+						
+						//load Measures
+						$measurements = $itemService->getItemMeasurements($item);
+	        			foreach ($returnValue->getOutcomes() as $outcome) {
+	        				foreach ($measurements as $measurement) {
+	        					if ($measurement->getIdentifier() == $outcome->getIdentifier()
+	        						&& !is_null($measurement->getScale())) {
+	        						$outcome->setScale($measurement->getScale());
+	        						break;
+	        					}
+	        				}
+	        			}
         			}
         		}
 				
@@ -128,7 +140,16 @@ class taoItems_models_classes_QTI_Service
         			
     				
         			//get the QTI xml
-        			$returnValue = $itemService->setItemContent($rdfItem, $qtiItem->toQTI());
+        			$itemsaved = $itemService->setItemContent($rdfItem, $qtiItem->toQTI());
+        			
+        			if ($itemsaved) {
+        			// extract the measurements
+        				$measurements = array();
+	        			foreach ($qtiItem->getOutcomes() as $outcome) {
+	        				$measurements[] = $outcome->toMeasurement();
+	        			}
+	        			$returnValue = $itemService->setItemMeasurements($rdfItem, $measurements);
+        			} 
         		}
 				
         	}catch(common_Exception $ce){
