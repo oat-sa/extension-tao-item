@@ -109,7 +109,9 @@ class taoItems_models_classes_QTI_ParserFactory
 		//extract the item structure to separate the structural/style content to the item content
 		$itemBodyNodes = $data->xpath("*[name(.) = 'itemBody']/*");
 		if ($itemBodyNodes === false) {
-			throw new taoItems_models_classes_QTI_ParsingException('Unable to read itemBody'.(isset($itemId) ? ' for item '.$itemId : ''));
+			$errors = libxml_get_errors();
+			$error = array_shift($errors); 
+			throw new taoItems_models_classes_QTI_ParsingException('XML error('.$error->message.') on itemBody read'.(isset($itemId) ? ' for item '.$itemId : ''));
 		} 
 
 		$itemData = '';
