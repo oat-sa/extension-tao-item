@@ -110,8 +110,13 @@ class taoItems_models_classes_QTI_ParserFactory
 		$itemBodyNodes = $data->xpath("*[name(.) = 'itemBody']/*");
 		if ($itemBodyNodes === false) {
 			$errors = libxml_get_errors();
-			$error = array_shift($errors); 
-			throw new taoItems_models_classes_QTI_ParsingException('XML error('.$error->message.') on itemBody read'.(isset($itemId) ? ' for item '.$itemId : ''));
+			if (count($errors) > 0) {
+				$error = array_shift($errors); 
+				$errormsg = $error->message;
+			} else {
+				$errormsg = "without errormessage";
+			}
+			throw new taoItems_models_classes_QTI_ParsingException('XML error('.$errormsg.') on itemBody read'.(isset($itemId) ? ' for item '.$itemId : ''));
 		} 
 
 		$itemData = '';

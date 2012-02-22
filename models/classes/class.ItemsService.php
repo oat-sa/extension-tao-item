@@ -1066,7 +1066,7 @@ class taoItems_models_classes_ItemsService
 	        	$scaleres->setPropertiesValues($measurement->getScale()->toProperties());
 	        	$measurementPropertiesValues[TAO_ITEM_SCALE_PROPERTY] = $scaleres->uriResource;
 	        }
-        	$measurementres->setPropertiesValues($measurementPropertiesValues);
+	        $measurementres->setPropertiesValues($measurementPropertiesValues);
         	$item->setPropertyValue($hasMeasurement, $measurementres);
         }
         $returnValue = true;
@@ -1090,7 +1090,7 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D2 begin
 		foreach($item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY)) as $uri) {
 			$measuremenRessource = new core_kernel_classes_Resource($uri);
-			$properties = $measuremenRessource->getPropertiesValue(array(
+			$properties = $measuremenRessource->getPropertiesValues(array(
 				new core_kernel_classes_Property(TAO_ITEM_IDENTIFIER_PROPERTY),
 				new core_kernel_classes_Property(TAO_ITEM_DESCRIPTION_PROPERTY),
 				new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY)
@@ -1103,7 +1103,13 @@ class taoItems_models_classes_ItemsService
 			if (isset($properties[TAO_ITEM_SCALE_PROPERTY])) {
 				$scale = taoItems_models_classes_Scale_Scale::buildFromRessource(array_pop($properties[TAO_ITEM_SCALE_PROPERTY]));
 			}
-			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier);
+			$desc = '';
+			if (isset($properties[TAO_ITEM_DESCRIPTION_PROPERTY])) {
+				foreach ($properties[TAO_ITEM_DESCRIPTION_PROPERTY] as $subdesc) {
+					$desc .= $subdesc;
+				}
+			}
+			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $desc);
 			if (isset($scale) && !is_null($scale)) {
 				$returnValue[$identifier]->setScale($scale);
 			}
