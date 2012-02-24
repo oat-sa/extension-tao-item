@@ -1085,6 +1085,43 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
                
     }
     
+    // test the composite Example
+    public function testCompositeMAnualCorrect() {
+    	$parameters = array(
+            'root_url' => ROOT_URL,
+            'base_www' => BASE_WWW,
+            'taobase_www' => TAOBASE_WWW,
+            'delivery_server_mode' => false,
+        	'raw_preview'	=> false,
+        	'debug'			=> false
+        );
+        taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
+        
+        //check if samples are loaded
+        $file = dirname(__FILE__).'/samples/composite.xml';
+        $item = $this->qtiService->loadItemFromFile ($file);
+        
+        $matching_data = $item->getMatchingData ();
+        
+        matching_init ();
+        matching_setRule ($matching_data['rule']);
+        
+        matching_setCorrects ($matching_data['corrects']);
+        matching_setOutcomes ($matching_data['outcomes']);
+        matching_setResponses (json_decode ('[
+            {"identifier":"RESPONSE", "value":"a sample text"}
+            ,{"identifier":"response_1","value":"choice_2"}
+        ]'));
+        
+        matching_evaluate ();
+        
+        $outcomes = matching_getOutcomes ();
+        
+		$this->assertEqual ($outcomes["outcome_1"]["value"], 1);
+        $this->assertEqual ($outcomes["outcome_2"]["value"], 0);
+        $this->assertEqual ($outcomes["SCORE"]["value"], 1);
+    }
+    
     // Test an item with a large coverage of the rules' subset
     public function testShakespear () {
         $parameters = array(

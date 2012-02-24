@@ -788,10 +788,10 @@ class taoItems_models_classes_QTI_ParserFactory
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  SimpleXMLElement data
-     * @param  array responses
+     * @param  Item item
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
-    public static function buildCompositeResponseProcessing( SimpleXMLElement $data, $responses)
+    public static function buildCompositeResponseProcessing( SimpleXMLElement $data,  taoItems_models_classes_QTI_Item $item)
     {
         $returnValue = null;
 
