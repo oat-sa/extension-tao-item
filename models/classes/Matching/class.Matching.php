@@ -885,7 +885,7 @@ class taoItems_models_classes_Matching_Matching
         if (isset($targetArray[$id])){
         	$returnValue = $targetArray[$id];
         } else {
-        	common_logger::w('Map with id "'.$id.'" not found.', array('TAOITEMS', 'MATCHING'));
+        	common_Logger::w('Map with id "'.$id.'" not found.', array('TAOITEMS', 'MATCHING'));
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:00000000000028EA end

@@ -791,7 +791,7 @@ class taoItems_models_classes_QTI_ParserFactory
      * @param  array responses
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
-    public static function buildCompositeResponseProcessing( SimpleXMLElement $data, $item)
+    public static function buildCompositeResponseProcessing( SimpleXMLElement $data, $responses)
     {
         $returnValue = null;
 
@@ -886,69 +886,6 @@ class taoItems_models_classes_QTI_ParserFactory
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035D7 end
 
         return $returnValue;
-    }
-
-    /**
-     * Short description of method identifyPattern
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  SimpleXMLElement data
-     * @return array
-     */
-    public static function identifyPattern( SimpleXMLElement $data)
-    {
-        $returnValue = array();
-
-        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C02 begin
-		common_logger::d('Identifying patterns');
-		// foreach rule
-
-		$data = simplexml_load_string($data->asxml());
-
-		// MATCH CORRECT PATTERN
-		$matchPatternMatchCorrectNodes = $data->xpath(
-						"responseCondition
-						[count(.) = 1]
-						[name(./*[1]) = 'responseIf']
-						[name(./responseIf/*[1]) = 'match']
-						[name(./responseIf/match/*[1]) = 'variable']
-						[name(./responseIf/match/*[2]) = 'correct']
-						[name(./responseIf/*[2]) = 'setOutcomeValue']
-						[name(./responseIf/setOutcomeValue/*[1]) = 'sum']
-						[name(./responseIf/setOutcomeValue/sum/*[1]) = 'variable']
-						[name(./responseIf/setOutcomeValue/sum/*[2]) = 'baseValue']"
-		);
-
-		foreach ($matchPatternMatchCorrectNodes as $node) {
-			// Get the response identifier
-			$subNode = $node->xpath('responseIf/match/variable');
-			$responseIdentifier = (string) $subNode[0]['identifier'];
-			$returnValue[$responseIdentifier] = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct';
-		}
-
-		// MAP RESPONSE PATTERN
-		$matchPatternMapResponseNodes = $data->xpath(
-						"responseCondition
-						[count(.) = 1]
-						[name(./responseIf/*[1]) = 'not']
-						[name(./responseIf/not/*[1]) = 'isNull']
-						[name(./responseIf/not/isNull/*[1]) = 'variable']
-						[name(./responseIf/*[2]) = 'setOutcomeValue']
-						[name(./responseIf/setOutcomeValue/*[1]) = 'sum']
-						[name(./responseIf/setOutcomeValue/sum/*[1]) = 'variable']
-						[name(./responseIf/setOutcomeValue/sum/*[2]) = 'mapResponse']"
-		);
-		foreach ($matchPatternMapResponseNodes as $node) {
-			// Get the response identifier
-			$subNode = $node->xpath('responseIf/not/isNull/variable');
-			$responseIdentifier = (string) $subNode[0]['identifier'];
-			$returnValue[$responseIdentifier] = 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response';
-		}
-
-        // section 127-0-1-1-703c736:12c63695364:-8000:0000000000002C02 end
-
-        return (array) $returnValue;
     }
 
     /**
