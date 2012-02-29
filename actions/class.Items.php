@@ -117,10 +117,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$itemModelElt->setOptions($options);
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
 		
-		$warningElt = tao_helpers_form_FormFactory::getElement("warning", "Label");
-		$warningElt->setValue(__("The migration scripts for the deprecated items will be provided soon"));
-		$myForm->addElement($warningElt);
-		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
