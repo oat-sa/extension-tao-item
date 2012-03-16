@@ -1032,6 +1032,12 @@ class taoItems_models_classes_ItemsService
 			}
 			
 			$returnValue->setLabel($cloneLabel);
+			
+			//Measurements
+			$measurements = $this->getItemMeasurements($instance);
+			if (count($measurements) > 0) {
+				$this->setItemMeasurements($returnValue, $measurements);
+			}
 		}
         
         // section 127-0-1-1--721a46fd:12ca1f35467:-8000:000000000000290E end
