@@ -53,7 +53,7 @@ abstract class taoItems_models_classes_Scale_Scale
         $returnValue = null;
 
         // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003824 begin
-        foreach ($ressource->getType() as $type) {
+        foreach ($ressource->getTypes() as $type) {
 	        try {
 	        	$returnValue = self::createByClass($type->uriResource);
 	        	break;
