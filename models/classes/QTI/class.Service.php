@@ -146,7 +146,7 @@ class taoItems_models_classes_QTI_Service
         			// extract the measurements
         				$measurements = array();
 	        			foreach ($qtiItem->getOutcomes() as $outcome) {
-	        				$measurements[] = $outcome->toMeasurement();
+	        				$measurements[] = $outcome->toMeasurement($qtiItem);
 	        			}
 	        			$returnValue = $itemService->setItemMeasurements($rdfItem, $measurements);
         			} 

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 07.02.2012, 17:46:11 with ArgoUML PHP module 
+ * Automatically generated on 20.03.2012, 16:31:57 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -29,7 +29,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('taoItems/models/classes/QTI/response/class.ResponseProcessing.php');
 
 /**
- * include
+ * The response processing of a single interaction
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
@@ -263,6 +263,30 @@ abstract class taoItems_models_classes_QTI_response_Composite
         if (is_null($returnValue))
        		throw new common_Exception('No interactionResponseProcessing defined for '.$response->getIdentifier());
         // section 127-0-1-1-6f11fd4b:1350ab5145f:-8000:000000000000362E end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getIRPByOutcome
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Outcome outcome
+     * @return taoItems_models_classes_QTI_response_interactionResponseProcessing_InteractionResponseProcessing
+     */
+    public function getIRPByOutcome( taoItems_models_classes_QTI_Outcome $outcome)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BCB begin
+        foreach ($this->components as $irp) {
+        	if ($irp->getOutcome() == $outcome) {
+        		$returnValue = $irp;
+        		break;
+        	}
+        }
+        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BCB end
 
         return $returnValue;
     }

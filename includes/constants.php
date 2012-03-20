@@ -36,7 +36,8 @@ $todefine = array(
 	
 	'TAO_ITEM_MEASURMENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#hasMeasurement',
 	'TAO_ITEM_MEASURMENT' 				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Measurement',
-	'TAO_ITEM_IDENTIFIER_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#MeasurementIdentifier', 
+	'TAO_ITEM_IDENTIFIER_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#MeasurementIdentifier',
+	'TAO_ITEM_MEASURMENT_HUMAN_ASSISTED'=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#isHumanAssisted', 
 	'TAO_ITEM_SCALE_PROPERTY'	 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#hasScale',
 	'TAO_ITEM_DESCRIPTION_PROPERTY'	 	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#MeasurementDescription',
 	'TAO_ITEM_SCALE'			 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Scale',

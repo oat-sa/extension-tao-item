@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 20.02.2012, 17:19:56 with ArgoUML PHP module 
+ * Automatically generated on 20.03.2012, 16:42:33 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -68,6 +68,14 @@ class taoItems_models_classes_Measurement
      */
     private $description = '';
 
+    /**
+     * Short description of attribute humanAssisted
+     *
+     * @access private
+     * @var boolean
+     */
+    private $humanAssisted = false;
+
     // --- OPERATIONS ---
 
     /**
@@ -124,6 +132,39 @@ class taoItems_models_classes_Measurement
     }
 
     /**
+     * Short description of method setHumanAssisted
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  boolean humanAssisted
+     * @return mixed
+     */
+    public function setHumanAssisted($humanAssisted)
+    {
+        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC8 begin
+        $this->humanAssisted = $humanAssisted;
+        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC8 end
+    }
+
+    /**
+     * Short description of method isHumanAssisted
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return boolean
+     */
+    public function isHumanAssisted()
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC6 begin
+        $returnValue = $this->humanAssisted; 
+        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC6 end
+
+        return (bool) $returnValue;
+    }
+
+    /**
      * Short description of method getScale
      *
      * @access public
@@ -167,7 +208,7 @@ class taoItems_models_classes_Measurement
     {
         // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003831 begin
         $this->scale = null;
-    	// section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003831 end
+        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003831 end
     }
 
 } /* end of class taoItems_models_classes_Measurement */

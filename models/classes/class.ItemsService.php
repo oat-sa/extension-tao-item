@@ -1064,8 +1064,11 @@ class taoItems_models_classes_ItemsService
         foreach ($measurements as $measurement) {
     		$measurementres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class(TAO_ITEM_MEASURMENT));
         	$measurementPropertiesValues = array(
-        		TAO_ITEM_IDENTIFIER_PROPERTY	=> $measurement->getIdentifier(),
-        		TAO_ITEM_DESCRIPTION_PROPERTY	=> $measurement->getDescription()
+        		TAO_ITEM_IDENTIFIER_PROPERTY		=> $measurement->getIdentifier(),
+        		TAO_ITEM_DESCRIPTION_PROPERTY		=> $measurement->getDescription(),
+        		TAO_ITEM_MEASURMENT_HUMAN_ASSISTED	=> $measurement->isHumanAssisted()
+        			? new core_kernel_classes_Resource(GENERIS_TRUE)
+        			: new core_kernel_classes_Resource(GENERIS_FALSE)
         	);
         	if (!is_null($measurement->getScale())) {
 	        	$scaleres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class($measurement->getScale()->getClassUri()));
@@ -1099,9 +1102,9 @@ class taoItems_models_classes_ItemsService
 			$properties = $measuremenRessource->getPropertiesValues(array(
 				new core_kernel_classes_Property(TAO_ITEM_IDENTIFIER_PROPERTY),
 				new core_kernel_classes_Property(TAO_ITEM_DESCRIPTION_PROPERTY),
-				new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY)
+				new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY),
+				new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_HUMAN_ASSISTED)
 			));
-			//$scale = $properties[TAO_ITEM_SCALE];
 			if (!isset($properties[TAO_ITEM_IDENTIFIER_PROPERTY])) {
 				throw new common_exception_Error('Missing identifier for Measurement');
 			}
@@ -1118,6 +1121,10 @@ class taoItems_models_classes_ItemsService
 			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $desc);
 			if (isset($scale) && !is_null($scale)) {
 				$returnValue[$identifier]->setScale($scale);
+			}
+			if (isset($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED])) {
+				$assisted = array_pop($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED]);
+				$returnValue[$identifier]->setHumanAssisted($assisted->getUri() == GENERIS_TRUE);
 			}
 		}
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D2 end

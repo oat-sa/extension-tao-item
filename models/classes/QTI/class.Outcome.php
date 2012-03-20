@@ -187,9 +187,10 @@ class taoItems_models_classes_QTI_Outcome
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Item qtiItem
      * @return taoItems_models_classes_Measurement
      */
-    public function toMeasurement()
+    public function toMeasurement( taoItems_models_classes_QTI_Item $qtiItem)
     {
         $returnValue = null;
 
@@ -198,6 +199,13 @@ class taoItems_models_classes_QTI_Outcome
         $returnValue = new taoItems_models_classes_Measurement($this->getIdentifier(), $interpretation);
         if (!is_null($this->getScale())) {
         	$returnValue->setScale($this->getScale());
+        }
+        $rp = $qtiItem->getResponseProcessing();
+        if ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
+        	$irp = $rp->getIRPByOutcome($this);
+        	if (!is_null($irp)) {
+	       		$returnValue->setHumanAssisted($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None);
+        	}
         }
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037E0 end
 
