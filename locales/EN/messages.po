@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-01-18T15:51:16\n"
+"PO-Revision-Date: 2012-03-21T09:38:34\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: EN\n"
@@ -53,9 +53,6 @@ msgstr ""
 msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
 msgstr ""
 
-msgid "Apply"
-msgstr ""
-
 msgid "Associable hotspots"
 msgstr ""
 
@@ -104,6 +101,9 @@ msgstr ""
 msgid "close"
 msgstr ""
 
+msgid "composite"
+msgstr ""
+
 msgid "Content"
 msgstr ""
 
@@ -113,6 +113,9 @@ msgstr ""
 msgid "correct"
 msgstr ""
 
+msgid "Correct answer"
+msgstr ""
+
 msgid "Correct Responses"
 msgstr ""
 
@@ -120,6 +123,9 @@ msgid "Create and design items and exercises."
 msgstr ""
 
 msgid "create table"
+msgstr ""
+
+msgid "custom"
 msgstr ""
 
 msgid "Debug"
@@ -144,6 +150,12 @@ msgid "Delete interaction"
 msgstr ""
 
 msgid "Disabled"
+msgstr ""
+
+msgid "Discrete Scale"
+msgstr ""
+
+msgid "Distance"
 msgstr ""
 
 msgid "Do you really want to delete the row?"
@@ -197,10 +209,10 @@ msgstr ""
 msgid "Expected lines"
 msgstr ""
 
-msgid "export"
+msgid "Export"
 msgstr ""
 
-msgid "Export"
+msgid "export"
 msgstr ""
 
 msgid "Export Options"
@@ -234,6 +246,9 @@ msgid "Gaps"
 msgstr ""
 
 msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "Guidelines"
 msgstr ""
 
 msgid "horizontal"
@@ -278,13 +293,10 @@ msgstr ""
 msgid "Item Editor:"
 msgstr ""
 
-msgid "Item imported successfully"
-msgstr ""
-
 msgid "item imported successfully"
 msgstr ""
 
-msgid "Item library"
+msgid "Item imported successfully"
 msgstr ""
 
 msgid "Item Properties:"
@@ -308,6 +320,9 @@ msgstr ""
 msgid "items imported successfully"
 msgstr ""
 
+msgid "Items library"
+msgstr ""
+
 msgid "Label"
 msgstr ""
 
@@ -327,6 +342,9 @@ msgid "Manage item content"
 msgstr ""
 
 msgid "Manage items"
+msgstr ""
+
+msgid "manual"
 msgstr ""
 
 msgid "map"
@@ -356,10 +374,16 @@ msgstr ""
 msgid "Maximum number of separate strings"
 msgstr ""
 
+msgid "Maximum value"
+msgstr ""
+
 msgid "meta data"
 msgstr ""
 
 msgid "MIME type"
+msgstr ""
+
+msgid "Minimum value"
 msgstr ""
 
 msgid "Modification on choice applied"
@@ -491,6 +515,9 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+msgid "Scale type"
+msgstr ""
+
 msgid "Score"
 msgstr ""
 
@@ -556,16 +583,16 @@ msgstr ""
 msgid "The Item module enables the creation and design of items and exercises."
 msgstr ""
 
-msgid "The mapping options have been updated"
-msgstr ""
-
-msgid "The migration scripts for the deprecated items will be provided soon"
+msgid "The options have been updated"
 msgstr ""
 
 msgid "The response form is available for templates driven item only.<br/>"
 msgstr ""
 
 msgid "The response processing has been saved"
+msgstr ""
+
+msgid "The response properties have been updated"
 msgstr ""
 
 msgid "The responses cannot be updated"

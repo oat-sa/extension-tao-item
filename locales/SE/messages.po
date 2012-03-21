@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-01-18T15:51:24\n"
+"PO-Revision-Date: 2012-03-21T09:38:42\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -53,9 +53,6 @@ msgstr "Ett fel uppstod under importen"
 msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
 msgstr ""
 
-msgid "Apply"
-msgstr "Applicera"
-
 msgid "Associable hotspots"
 msgstr ""
 
@@ -104,6 +101,9 @@ msgstr "Klient"
 msgid "close"
 msgstr "stäng"
 
+msgid "composite"
+msgstr ""
+
 msgid "Content"
 msgstr "Innehåll"
 
@@ -113,6 +113,9 @@ msgstr ""
 msgid "correct"
 msgstr "rätta"
 
+msgid "Correct answer"
+msgstr ""
+
 msgid "Correct Responses"
 msgstr "Korrekta svar"
 
@@ -121,6 +124,9 @@ msgstr ""
 
 msgid "create table"
 msgstr "skapa tabell"
+
+msgid "custom"
+msgstr ""
 
 msgid "Debug"
 msgstr ""
@@ -145,6 +151,12 @@ msgstr "Ta bort interaktion"
 
 msgid "Disabled"
 msgstr "Avaktivera"
+
+msgid "Discrete Scale"
+msgstr ""
+
+msgid "Distance"
+msgstr ""
 
 msgid "Do you really want to delete the row?"
 msgstr "Vill du verkligen ta bort raden?"
@@ -197,11 +209,11 @@ msgstr "Förväntad längd"
 msgid "Expected lines"
 msgstr "Förväntade rader"
 
-msgid "export"
-msgstr "export"
-
 msgid "Export"
 msgstr ""
+
+msgid "export"
+msgstr "export"
 
 msgid "Export Options"
 msgstr "Exporteringsalternativ"
@@ -234,6 +246,9 @@ msgid "Gaps"
 msgstr ""
 
 msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "Guidelines"
 msgstr ""
 
 msgid "horizontal"
@@ -278,14 +293,11 @@ msgstr "Frågeinnehåll sparat"
 msgid "Item Editor:"
 msgstr "Frågeredigerare"
 
-msgid "Item imported successfully"
-msgstr "Fråga framgångsrikt importerad"
-
 msgid "item imported successfully"
 msgstr "fråga framgångsrikt importerat"
 
-msgid "Item library"
-msgstr "Frågearkiv"
+msgid "Item imported successfully"
+msgstr "Fråga framgångsrikt importerad"
 
 msgid "Item Properties:"
 msgstr "Frågeegenskaper"
@@ -308,6 +320,9 @@ msgstr "Frågor"
 msgid "items imported successfully"
 msgstr "frågor framgångsrikt importerat"
 
+msgid "Items library"
+msgstr ""
+
 msgid "Label"
 msgstr "Etikett"
 
@@ -328,6 +343,9 @@ msgstr "Hantera frågeinnehåll"
 
 msgid "Manage items"
 msgstr "Hantera frågor"
+
+msgid "manual"
+msgstr ""
 
 msgid "map"
 msgstr "kartlägg"
@@ -356,10 +374,16 @@ msgstr "Maximalt antal val"
 msgid "Maximum number of separate strings"
 msgstr "Maximalt antal separata trådar"
 
+msgid "Maximum value"
+msgstr ""
+
 msgid "meta data"
 msgstr "metadata"
 
 msgid "MIME type"
+msgstr ""
+
+msgid "Minimum value"
 msgstr ""
 
 msgid "Modification on choice applied"
@@ -491,6 +515,9 @@ msgstr ""
 msgid "Save"
 msgstr "Spara"
 
+msgid "Scale type"
+msgstr ""
+
 msgid "Score"
 msgstr "Poäng"
 
@@ -556,17 +583,17 @@ msgstr ""
 msgid "The Item module enables the creation and design of items and exercises."
 msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 
-msgid "The mapping options have been updated"
+msgid "The options have been updated"
 msgstr ""
-
-msgid "The migration scripts for the deprecated items will be provided soon"
-msgstr "Rörelsemanusen för de ogillade momenten kommer snart tillhandahållas att tillhandahållas"
 
 msgid "The response form is available for templates driven item only.<br/>"
 msgstr "Svarsformen är endast tillgänglig för malldrivna frågor"
 
 msgid "The response processing has been saved"
 msgstr "Svarsprocessen har sparats"
+
+msgid "The response properties have been updated"
+msgstr ""
 
 msgid "The responses cannot be updated"
 msgstr "Svaren kan inte uppdateras"

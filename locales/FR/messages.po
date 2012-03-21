@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-01-18T15:51:19\n"
+"PO-Revision-Date: 2012-03-21T09:38:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: FR\n"
@@ -53,9 +53,6 @@ msgstr "Une erreur est survenue durant l'import"
 msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
 msgstr ""
 
-msgid "Apply"
-msgstr "Appliquer"
-
 msgid "Associable hotspots"
 msgstr ""
 
@@ -104,6 +101,9 @@ msgstr "Client"
 msgid "close"
 msgstr "fermer"
 
+msgid "composite"
+msgstr ""
+
 msgid "Content"
 msgstr "Contenu"
 
@@ -113,6 +113,9 @@ msgstr ""
 msgid "correct"
 msgstr "correcte"
 
+msgid "Correct answer"
+msgstr ""
+
 msgid "Correct Responses"
 msgstr "Réponse correcte"
 
@@ -121,6 +124,9 @@ msgstr ""
 
 msgid "create table"
 msgstr "créer un tableau"
+
+msgid "custom"
+msgstr ""
 
 msgid "Debug"
 msgstr ""
@@ -145,6 +151,12 @@ msgstr "Supprimer l'intéraction"
 
 msgid "Disabled"
 msgstr "Désactivé"
+
+msgid "Discrete Scale"
+msgstr ""
+
+msgid "Distance"
+msgstr ""
 
 msgid "Do you really want to delete the row?"
 msgstr "Etes-vous certains de vouloir supprimer la ligne?"
@@ -197,11 +209,11 @@ msgstr "Longueur attendue"
 msgid "Expected lines"
 msgstr "Nombre de lignes"
 
-msgid "export"
-msgstr "exporter"
-
 msgid "Export"
 msgstr ""
+
+msgid "export"
+msgstr "exporter"
 
 msgid "Export Options"
 msgstr "Options d'export"
@@ -234,6 +246,9 @@ msgid "Gaps"
 msgstr ""
 
 msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "Guidelines"
 msgstr ""
 
 msgid "horizontal"
@@ -278,14 +293,11 @@ msgstr "Le contenu de l'item a été sauvegardé"
 msgid "Item Editor:"
 msgstr "Editeur d'item:"
 
-msgid "Item imported successfully"
-msgstr "Item importé avec succès"
-
 msgid "item imported successfully"
 msgstr "item importée avec succès"
 
-msgid "Item library"
-msgstr "Librairie d'items"
+msgid "Item imported successfully"
+msgstr "Item importé avec succès"
 
 msgid "Item Properties:"
 msgstr "Propriétés de l'item:"
@@ -308,6 +320,9 @@ msgstr "Items"
 msgid "items imported successfully"
 msgstr "item importées avec succès"
 
+msgid "Items library"
+msgstr ""
+
 msgid "Label"
 msgstr "Intitulé"
 
@@ -328,6 +343,9 @@ msgstr "Gérer le contenu de l'item"
 
 msgid "Manage items"
 msgstr "Gérer les items"
+
+msgid "manual"
+msgstr ""
 
 msgid "map"
 msgstr "carte"
@@ -356,10 +374,16 @@ msgstr "Nombre maximal de choix"
 msgid "Maximum number of separate strings"
 msgstr "Nombre maximal de chaînes séparées"
 
+msgid "Maximum value"
+msgstr ""
+
 msgid "meta data"
 msgstr "Métadonnée"
 
 msgid "MIME type"
+msgstr ""
+
+msgid "Minimum value"
 msgstr ""
 
 msgid "Modification on choice applied"
@@ -491,6 +515,9 @@ msgstr ""
 msgid "Save"
 msgstr "Enregistrer"
 
+msgid "Scale type"
+msgstr ""
+
 msgid "Score"
 msgstr "Score"
 
@@ -556,10 +583,7 @@ msgstr ""
 msgid "The Item module enables the creation and design of items and exercises."
 msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
 
-msgid "The mapping options have been updated"
-msgstr ""
-
-msgid "The migration scripts for the deprecated items will be provided soon"
+msgid "The options have been updated"
 msgstr ""
 
 msgid "The response form is available for templates driven item only.<br/>"
@@ -567,6 +591,9 @@ msgstr "Le formulaire de réponse n'est disponible que pour les items issues de 
 
 msgid "The response processing has been saved"
 msgstr "Le mode de traitement des réponses a été sauvegardé"
+
+msgid "The response properties have been updated"
+msgstr ""
 
 msgid "The responses cannot be updated"
 msgstr "Les réponses ne peuvent être mises à jour"
