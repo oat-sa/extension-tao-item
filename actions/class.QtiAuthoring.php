@@ -141,7 +141,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('qtiAuthoring_img_path', BASE_WWW.'img/qtiAuthoring/');
 		
 		if(isset($_GET['STANDALONE_MODE']) && $_GET['STANDALONE_MODE']){
-			$this->setData('includedView', BASE_PATH . '/' . DIR_VIEWS . $GLOBALS['dir_theme'] . "QTIAuthoring/authoring.tpl");
+			$this->setData('includedView', DIR_VIEWS . $GLOBALS['dir_theme'] . "QTIAuthoring/authoring.tpl");
 			return parent::setView('sas.tpl', true);
 		}else{
 			$this->setView("QTIAuthoring/authoring.tpl");
