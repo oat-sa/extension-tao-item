@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 03.02.2012, 11:09:58 with ArgoUML PHP module 
+ * Automatically generated on 26.03.2012, 17:29:16 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -22,11 +22,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include tao_models_classes_SessionCache
+ * include tao_models_classes_cache_SessionCache
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('tao/models/classes/class.SessionCache.php');
+require_once('tao/models/classes/cache/class.SessionCache.php');
 
 /* user defined includes */
 // section 127-0-1-1--18485ef3:13542665222:-8000:00000000000065AA-includes begin
@@ -45,7 +45,7 @@ require_once('tao/models/classes/class.SessionCache.php');
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_QTISessionCache
-    extends tao_models_classes_SessionCache
+    extends tao_models_classes_cache_SessionCache
 {
     // --- ASSOCIATIONS ---
 
@@ -58,7 +58,7 @@ class taoItems_models_classes_QTI_QTISessionCache
      * @access public
      * @var string
      */
-    public $SESSION_KEY = '';
+    public $SESSION_KEY = 'cache_qti';
 
     // --- OPERATIONS ---
 

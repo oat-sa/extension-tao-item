@@ -19,11 +19,11 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * include tao_models_classes_SessionSerializable
+ * include tao_models_classes_cache_PartitionedCachable
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('tao/models/classes/class.SessionSerializable.php');
+require_once('tao/models/classes/cache/class.PartitionedCachable.php');
 
 /**
  * By implementing the exportable interface, the object must export it's data to
@@ -55,7 +55,7 @@ require_once('taoItems/models/classes/QTI/interface.Exportable.php');
  * @subpackage models_classes_QTI
  */
 abstract class taoItems_models_classes_QTI_Data
-    extends tao_models_classes_SessionSerializable
+    extends tao_models_classes_cache_PartitionedCachable
         implements taoItems_models_classes_QTI_Exportable
 {
     // --- ASSOCIATIONS ---
@@ -717,7 +717,7 @@ abstract class taoItems_models_classes_QTI_Data
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @return tao_models_classes_Cache
+     * @return tao_models_classes_cache_Cache
      */
     public function getCache()
     {

@@ -97,7 +97,11 @@ class taoItems_models_classes_QTI_Service
 	        					}
 	        				}
 	        			}
+        			} else {
+						throw new common_Exception('item('.$item->getUri().') is empty');
         			}
+        		} else {
+        			throw new common_Exception('Non QTI item('.$item->getUri().') opened via QTI Service');
         		}
 				
         	}catch(common_Exception $ce){
@@ -216,9 +220,7 @@ class taoItems_models_classes_QTI_Service
         $returnValue = null;
 
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A9 begin
-        
-        $returnValue = $this->getDataBySerial($serial, 'taoItems_models_classes_QTI_Item');
-        
+       	$returnValue = $this->getDataBySerial($serial, 'taoItems_models_classes_QTI_Item');
         // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A9 end
 
         return $returnValue;
@@ -280,12 +282,14 @@ class taoItems_models_classes_QTI_Service
         $returnValue = null;
 
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 begin
-        $returnValue = taoItems_models_classes_QTI_QTISessionCache::singleton()->get($serial);
-    	if(!is_null($returnValue) && !empty($type)){
-        	if(!$returnValue instanceof $type) {
-        		throw new common_Exception("object retrieved is a ".get_class($returnValue)." instead of {$type}.");
-        	}
-    	}
+        try {
+        	$returnValue = taoItems_models_classes_QTI_QTISessionCache::singleton()->get($serial);
+	    	if(!empty($type) && !$returnValue instanceof $type) {
+	       		throw new common_Exception("object retrieved is a ".get_class($returnValue)." instead of {$type}.");
+	    	}
+	    } catch (tao_models_classes_cache_NotFoundException $e) {
+        	// do nothing, return null
+        }
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 end
 
         return $returnValue;

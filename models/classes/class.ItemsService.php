@@ -361,6 +361,7 @@ class taoItems_models_classes_ItemsService
         $returnValue = (string) '';
 
         // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EA begin
+		common_Logger::i('Get itemContent for item '.$item->getUri());
         
         if(!is_null($item)){
         	
@@ -383,13 +384,20 @@ class taoItems_models_classes_ItemsService
 						$tmpFile = $this->getItemFolder($item).'/tmp_black.xml';
 						if(file_exists($tmpFile)){
 							$returnValue = file_get_contents($tmpFile);
+						} else {
+							common_Logger::w('File '.$tmpFile.' not found');
 						}
 					}
 					else{
-						$file = new core_kernel_classes_File($itemContent->uriResource);
+						$file = new core_kernel_classes_File($itemContent->getUri());
 						$returnValue = file_get_contents($file->getAbsolutePath());
+						if ($returnValue == false) {
+							common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
+						}
 					}
 				}
+			} else {
+				common_Logger::w('No itemContent for item '.$item->getUri());
 			}
         }
 			
@@ -900,9 +908,8 @@ class taoItems_models_classes_ItemsService
         if(!is_null($itemRdf)){
         	// If QTI Item
         	if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
-        
             	$qtiService = taoItems_models_classes_QTI_Service::singleton();
-            	$item = $qtiService->getDataItemByRdfItem ($itemRdf);
+            	$item = $qtiService->getDataItemByRdfItem($itemRdf);
            	 	$returnValue = $item->getMatchingData ();
         	}
         }
