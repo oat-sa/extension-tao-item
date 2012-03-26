@@ -11,6 +11,7 @@
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiShapeEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/jwysiwyg/jquery.wysiwyg.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/simplemodal/jquery.simplemodal.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL?>/tao/views/js/jquery.autogrow.js"></script>
 
 <link rel="stylesheet" href="<?=get_data('qtiAuthoring_path')?>lib/jwysiwyg/jquery.wysiwyg.css" type="text/css" />
 <link rel="stylesheet" href="<?=get_data('qtiAuthoring_path')?>lib/jwysiwyg/jquery.wysiwyg.modal.css" type="text/css" />
@@ -24,7 +25,7 @@
 </div>
 
 <div id="qtiAuthoring_main_container">
-	
+
 	<div id="qtiAuthoring_menu_container" class="ui-widget-content ui-corner-all">
 		<div id="qtiAuthoring_menu_left_container" class="ui-widget-header ui-corner-all">
 			<div id="qtiAuthoring_save_button" class="qti-menu-item">
@@ -32,19 +33,19 @@
 				<br/>
 				<a href="#"><?=__('Save')?></a>
 			</div>
-			
+
 			<div id="qtiAuthoring_preview_button" class="qti-menu-item">
 				<img title="<?=__('Light preview')?>" src="<?=get_data('qtiAuthoring_img_path')?>view-fullscreen.png"/>
 				<br/>
 				<a href="#"><?=__('Light preview')?></a>
 			</div>
-			
+
 			<div id="qtiAuthoring_export_button" class="qti-menu-item">
 				<img title="<?=__('Export')?>" src="<?=ROOT_URL?>/tao/views/img/actions/export.png"/>
 				<br/>
 				<a href="#"><?=__('Export')?></a>
 			</div>
-			
+
 			<div id="qtiAuthoring_debug_button" class="qti-menu-item">
 				<img title="<?=__('Debug')?>" src="<?=get_data('qtiAuthoring_img_path')?>bug.png"/>
 				<br/>
@@ -57,7 +58,7 @@
 				<br/>
 				<a href="#"><?=__('Return to item editor')?></a>
 			</div>
-			
+
 			<div id="qtiAuthoring_menu_interactions">
 				<div id ="qti-carousel-prev" class="qti-carousel-button">
 					<img id="qti-carousel-prev-button" title="<?=__('Prev')?>" src="<?=get_data('qtiAuthoring_img_path')?>go-previous-view.png"/>
@@ -71,14 +72,14 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="tabs-qti">
-	
+
 		<ul id="tabs-qti-menu">
 			<li><a href="#qtiAuthoring_item_container"></a></li>
 			<li><a href="#qtiAuthoring_interaction_container"></a></li>
 		</ul>
-		
+
 		<div id="qtiAuthoring_item_container">
 			<div id="qtiAuthoring_item_left_container">
 				<div id="item_option_accordion">
@@ -92,26 +93,26 @@
 					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"></div>
 				</div>
 			</div>
-			
+
 			<div id="qtiAuthoring_item_right_container">
 				<!--<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>-->
 				<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
 					<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
 				</div>
 			</div>
-			
+
 			<div style="clear:both"></div>
 		</div>
-		
+
 		<div id="qtiAuthoring_interaction_container">
 		</div>
-	
+
 	</div>
-	
+
 </div>
 
 <script type="text/javascript">
-		
+
 $(document).ready(function(){
 
 	//init interface:
@@ -126,14 +127,14 @@ $(document).ready(function(){
 			}else if(ui.index == 1){
 				return true;
 			}
-			
+
 			return false;
 	   }
 	});
-	
+
 	$('#tabs-qti-menu').hide();
 	$('#qtiAuthoring_item_editor_button').hide();
-	
+
 	//init item editor:
 	try{
 		//global item object
@@ -141,74 +142,74 @@ $(document).ready(function(){
 	}catch(err){
 		CL('error creating the item', err);
 	}
-	
+
 	//link the qti object to the item rdf resource
 	myItem.itemUri = '<?=get_data('itemUri')?>';
 	myItem.itemClassUri = '<?=get_data('itemClassUri')?>';
-	
+
 	//set the save button:
 	$('#qtiAuthoring_save_button').click(function(){
 		myItem.save();
 		return false;
 	});
-	
+
 	//set the preview button:
 	$('#qtiAuthoring_preview_button').click(function(){
 		myItem.preview();
 		return false;
 	});
-	
+
 	//set debug button
 	$('#qtiAuthoring_debug_button').click(function(){
 		myItem.debug();
 		return false;
 	});
-	
+
 	$('#qtiAuthoring_export_button').click(function(){
 		myItem.exportItem();
 		return false;
 	});
-	
-	
+
+
 	$( "#item_option_accordion" ).accordion({
 		fillSpace: true
 	});
-	
+
 	myItem.loadStyleSheetForm();
 
-	
+
 	// available interactions:
 	var interactionTypes = {
 		choice: {
-			label: 'choice', 
+			label: 'choice',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_choice.png"
 		},
 		inlinechoice: {
-			label: 'inline choice', 
+			label: 'inline choice',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_inlineChoice.png"
 		},
 		associate: {
-			label: 'associate', 
+			label: 'associate',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_associate.png"
 		},
 		order: {
-			label: 'order', 
+			label: 'order',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_order.png"
 		},
 		match: {
-			label: 'match', 
+			label: 'match',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_match.png"
 		},
 		gapmatch: {
-			label: 'gap match', 
+			label: 'gap match',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_gapMatch.png"
 		},
 		textentry: {
-			label: 'text entry', 
+			label: 'text entry',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_textentry.png"
 		},
 		extendedtext: {
-			label: 'extended text', 
+			label: 'extended text',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_extendedText.png"
 		},
 		hottext: {
@@ -259,7 +260,7 @@ $(document).ready(function(){
 		$menuItem.attr('id', id);
 		$menuItem.addClass('qti-menu-item');
 		$menuItem.appendTo($('#qti-carousel-content'));
-		
+
 		var label = interactionTypes[interactionType].label;
 		var $imgElt = $('<img/>');
 		$imgElt.attr('title', label);
@@ -267,24 +268,24 @@ $(document).ready(function(){
 		$menuItem.append($imgElt);
 		$menuItem.append('<br/>');
 		$menuItem.append('<a href="#">'+label+'</a>');
-		
+
 		$('#qtiAuthoring_itemEditor').find('li.'+id).hide();
 		$menuItem.bind('click', {id:id}, function(e){
 			$('#qtiAuthoring_itemEditor').find('li.'+e.data.id).click();
 		});
 	}
-	
+
 	//init interactions button carousel:
 	var qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
 	$(window).unbind('resize').resize(function(){
 		qtiInteractionCarousel.update();
 	});
-	
+
 	setTimeout(function(){
 		$('#qtiAuthoring_loading').hide();
 		$('#qtiAuthoring_main_container').show();
 	}, 1000);
-	
+
 });
 
 </script>

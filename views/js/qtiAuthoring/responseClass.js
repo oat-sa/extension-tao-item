@@ -63,6 +63,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					$(response.responseFormContainer).html('');
 					for (f in r.forms) {
 						$(response.responseFormContainer).append(r.forms[f]);
+						$('textarea', response.responseFormContainer).autogrow();
 					}
 					$(response.responseFormContainer + ' .form-toolbar:empty').remove();
 					response.initResponseFormSubmitter();
