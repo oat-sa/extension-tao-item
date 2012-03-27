@@ -98,7 +98,8 @@ class taoItems_models_classes_QTI_Service
 	        				}
 	        			}
         			} else {
-						throw new common_Exception('item('.$item->getUri().') is empty');
+        				// fail silently, since file might not have been created yet
+						common_Logger::d('item('.$item->getUri().') is empty, newly created?');
         			}
         		} else {
         			throw new common_Exception('Non QTI item('.$item->getUri().') opened via QTI Service');
