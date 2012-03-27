@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 26.03.2012, 17:29:16 with ArgoUML PHP module 
+ * Automatically generated on 27.03.2012, 13:57:56 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -58,7 +58,7 @@ class taoItems_models_classes_QTI_QTISessionCache
      * @access public
      * @var string
      */
-    public $SESSION_KEY = 'cache_qti';
+    const SESSION_KEY = 'cache_qti';
 
     // --- OPERATIONS ---
 

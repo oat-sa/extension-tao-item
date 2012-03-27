@@ -534,7 +534,7 @@ class taoItems_models_classes_Matching_Matching
 			try {
 				$var = taoItems_models_classes_Matching_VariableFactory::create ($response->value);
 				if (isset ($this->responses[$response->identifier]))
-					throw new common_Exception('taoItems_models_classes_Matching_Matching::setReponses a response variable with the identifier '.$response->identifier.' exists yet');
+					throw new common_Exception('taoItems_models_classes_Matching_Matching::setReponses a response variable with the identifier '.$response->identifier.' exists already');
 
 				$this->responses[$response->identifier] = $var;
 			}
