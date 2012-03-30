@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-03-21T09:38:42\n"
+"PO-Revision-Date: 2012-03-30T12:58:36\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -173,14 +173,14 @@ msgstr "rita"
 msgid "duplicate"
 msgstr "dublett"
 
-msgid "Edit a class"
-msgstr "Redigera en klass"
-
 msgid "Edit Item"
 msgstr "Redigera fråga"
 
 msgid "Edit item"
 msgstr "Redigera fråga"
+
+msgid "Edit item class"
+msgstr ""
 
 msgid "ellipse"
 msgstr "ellips"

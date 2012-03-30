@@ -355,7 +355,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				$this->setData('reload', true);
 			}
 		}
-		$this->setData('formTitle', __('Edit a class'));
+		$this->setData('formTitle', __('Edit item class'));
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl');
 	}
