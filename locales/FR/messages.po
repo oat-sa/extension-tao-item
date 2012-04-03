@@ -18,7 +18,7 @@ msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the 
 msgstr "Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer."
 
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
+msgstr "Un ensemble de différents modèles est fourni aux auteurs d'items comme : les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc."
 
 msgid "Add a new stylesheet:"
 msgstr ""
@@ -581,7 +581,7 @@ msgid "The item has been successfully saved"
 msgstr ""
 
 msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
+msgstr "Le module Item vous permet la création et le design d'items et d'exercices."
 
 msgid "The options have been updated"
 msgstr ""
