@@ -39,8 +39,8 @@ class QTIModelTestCase extends UnitTestCase {
 		
 		$serial = $item->getSerial();
 		
-		//item is saved by destruction 
-		unset($item);
+		// item is no longer saved by destruction, but during creation 
+		// unset($item);
 
 		
 		$savedItem = $this->qtiService->getItemBySerial($serial);
