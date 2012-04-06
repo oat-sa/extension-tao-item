@@ -316,10 +316,11 @@ class taoItems_models_classes_QTI_Service
         	throw new common_Exception("The composing data are got from the persistance!");
         } elseif (!is_null($composed)) {
         	$predecessor = $composed->getPredecessors();
-        	if (count($predecessor) == 1)
+        	if (count($predecessor) == 1) {
         		$returnValue = array_pop($predecessor);
-        	else 
-        		throw new common_exception_Error("Called getComposingData on a non tree");
+        	} else {
+        		throw new common_exception_Error("Called getComposingData on a non tree, ".count($predecessor)." predecessors");
+        	}
         }
         /*
         if(!is_null($composed)){
