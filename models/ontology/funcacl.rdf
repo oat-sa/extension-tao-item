@@ -25,22 +25,6 @@
 		<funcacl:actionMemberOf rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_HawaiAuthoring" />
   </rdf:Description>
 
-	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_ItemExport">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Module"/>
-    <rdfs:label xml:lang="EN"><![CDATA[module ItemExport]]></rdfs:label>
-		<rdfs:comment xml:lang="EN"><![CDATA[module ItemExport]]></rdfs:comment>
-		<funcacl:moduleIdentifier xml:lang="EN"><![CDATA[ItemExport]]></funcacl:moduleIdentifier>
-		<funcacl:moduleExtension xml:lang="EN"><![CDATA[taoItems]]></funcacl:moduleExtension>
-  </rdf:Description>
-
-
-	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_ItemImport">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Module"/>
-    <rdfs:label xml:lang="EN"><![CDATA[module ItemImport]]></rdfs:label>
-		<rdfs:comment xml:lang="EN"><![CDATA[module ItemImport]]></rdfs:comment>
-		<funcacl:moduleIdentifier xml:lang="EN"><![CDATA[ItemImport]]></funcacl:moduleIdentifier>
-		<funcacl:moduleExtension xml:lang="EN"><![CDATA[taoItems]]></funcacl:moduleExtension>
-  </rdf:Description>
 
 
 	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_Items">
@@ -555,14 +539,6 @@
 		<rdfs:comment xml:lang="EN"><![CDATA[action viewItem]]></rdfs:comment>
 		<funcacl:actionIdentifier xml:lang="EN"><![CDATA[viewItem]]></funcacl:actionIdentifier>
 		<funcacl:actionMemberOf rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_SaSItems" />
-  </rdf:Description>
-
-	<rdf:Description rdf:about="http://www.tao.lu/Ontologies/taoFuncACL.rdf#m_taoItems_Settings">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Module"/>
-    <rdfs:label xml:lang="EN"><![CDATA[module Settings]]></rdfs:label>
-		<rdfs:comment xml:lang="EN"><![CDATA[module Settings]]></rdfs:comment>
-		<funcacl:moduleIdentifier xml:lang="EN"><![CDATA[Settings]]></funcacl:moduleIdentifier>
-		<funcacl:moduleExtension xml:lang="EN"><![CDATA[taoItems]]></funcacl:moduleExtension>
   </rdf:Description>
 
 
