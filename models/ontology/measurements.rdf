@@ -59,7 +59,7 @@
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#NumericalScale">
     <rdfs:label xml:lang="EN"><![CDATA[Numerical measurement scale]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Numerical measurement scale]]></rdfs:comment>
-    <rdfs:type rdf:resource="http://www.tao.lu/Ontologies/generis.rd#Scale"/>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rd#Scale"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScale">
     <rdfs:label xml:lang="EN"><![CDATA[Discrete measurement scale]]></rdfs:label>
@@ -69,7 +69,7 @@
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Enumeration">
     <rdfs:label xml:lang="EN"><![CDATA[Enumeration scale]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Enumeration scale]]></rdfs:comment>
-    <rdfs:type rdf:resource="http://www.tao.lu/Ontologies/generis.rd#Scale"/>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rd#Scale"/>
   </rdf:Description>
     <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#UpperBound">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
