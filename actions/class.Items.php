@@ -486,7 +486,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				
 				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
 				
-                                if($authoring instanceof core_kernel_classes_Literal){
+                if($authoring instanceof core_kernel_classes_Literal){
 					
 					//urlencode instead of tao_helpers_Uri::encode to be compatible with the swf authoring tools
 					$itemContentUrlParam = array(

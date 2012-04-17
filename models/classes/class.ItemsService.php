@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Service methods to manage the Items business models using the RDF API.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -37,7 +37,7 @@ require_once (dirname(__FILE__).'/Matching/matching_api.php');
  * Service methods to manage the Items business models using the RDF API.
  *
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -79,7 +79,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method __construct
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return void
      */
     public function __construct()
@@ -100,7 +100,7 @@ class taoItems_models_classes_ItemsService
      * If the uri don't reference an item subclass, it returns null
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string uri
      * @return core_kernel_classes_Class
      */
@@ -130,7 +130,7 @@ class taoItems_models_classes_ItemsService
      * check if the class is a or a subclass of an Item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -161,7 +161,7 @@ class taoItems_models_classes_ItemsService
      * get an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string identifier
      * @param  Class itemClazz
      * @param  string mode
@@ -205,7 +205,7 @@ class taoItems_models_classes_ItemsService
      * delete an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -217,16 +217,37 @@ class taoItems_models_classes_ItemsService
 		
 		if(!is_null($item)){
 			
-			$itemFolder = $this->getItemFolder($item);
-			if(is_dir($itemFolder)){
-				tao_helpers_File::remove($itemFolder, true);
+			if(GENERIS_VERSIONING_ENABLED){
+				
+				foreach($item->getPropertyValues($this->itemContentProperty) as $fileUri){
+					if(common_Utils::isUri($fileUri)){
+						$versionedFile = new core_kernel_versioning_File($fileUri);
+						$versionedFile->delete();
+					}
+				}
+				
+				$returnValue = $item->delete(true);
+				
+			}else{
+				
+				foreach($item->getPropertyValues($this->itemContentProperty) as $fileUri){
+					if(common_Utils::isUri($fileUri)){
+						$file = new core_kernel_classes_File($fileUri);
+						$file->delete();
+					}
+				}
+				
+				$itemFolder = $this->getItemFolder($item);
+				if (is_dir($itemFolder)) {
+					tao_helpers_File::remove($itemFolder, true);
+				}
+				$runtimeFolder = $this->getRuntimeFolder($item);
+				if (is_dir($runtimeFolder)) {
+					tao_helpers_File::remove($runtimeFolder, true);
+				}
+
+				$returnValue = $item->delete(true);
 			}
-			$runtimeFolder = $this->getRuntimeFolder($item);
-			if(is_dir($runtimeFolder)){
-				tao_helpers_File::remove($runtimeFolder, true);
-			}
-			
-			$returnValue = $item->delete();
 			
 		}
 		
@@ -239,7 +260,7 @@ class taoItems_models_classes_ItemsService
      * delete an item class or subclass
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -263,7 +284,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemFolder
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return string
      */
@@ -274,8 +295,14 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 begin
         
         if(!is_null($item)){
-        	$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        	$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
+			if(GENERIS_VERSIONING_ENABLED){
+				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+				$this->getVersionedFileRepository();
+				$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
+			}else{
+				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+				$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
+			}
         }
         
         // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 end
@@ -287,7 +314,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getRuntimeFolder
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return string
      */
@@ -312,7 +339,7 @@ class taoItems_models_classes_ItemsService
      * after creation)
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -350,7 +377,7 @@ class taoItems_models_classes_ItemsService
      * usually an xml string
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  boolean preview
      * @param  string lang
@@ -410,7 +437,7 @@ class taoItems_models_classes_ItemsService
      * Check if the item has an itemContent Property
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  string lang
      * @return boolean
@@ -440,7 +467,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setItemContent
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  string content
      * @param  string lang
@@ -459,41 +486,96 @@ class taoItems_models_classes_ItemsService
         		if($this->hasItemContent($item, $lang)){
         			
         			$itemContent = null;
+					
 		        	if(empty($lang)){
 		    			$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
-		        	}
-		        	else{
+		        	}else{
 		        		$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 		        		if($itemContents->count() > 0){
 		        			$itemContent = $itemContents->get(0);
 		        		}
 		        	}
-        			if(core_kernel_classes_File::isFile($itemContent)){
+					
+					if(core_kernel_versioning_File::isVersionedFile($itemContent)){
+						$file = new core_kernel_versioning_File($itemContent->uriResource);
+						if($file->isVersioned() && file_put_contents($file->getAbsolutePath(), $content) > 0){
+							$returnValue = $file->commit();
+						}
+					}else if(core_kernel_classes_File::isFile($itemContent)){
         				$file = new core_kernel_classes_File($itemContent->uriResource);
         				if(file_put_contents($file->getAbsolutePath(), $content) > 0){
         					 $returnValue = true;
         				}
         			}
-        		}
-        		else{
+					
+				}else{
         		
 	        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 	        		$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-	        		$itemDir = $this->getItemFolder($item);
-	        		if(!is_dir($itemDir)){
-	        			mkdir($itemDir);
-	        		}
-	        		if(empty($lang)){
-	        			$file = core_kernel_classes_File::create($dataFile, $itemDir .'/');
-	        			$item->setPropertyValue($this->itemContentProperty, $file->uriResource);
-	        		}
-	        		else{
-	        			$file = core_kernel_classes_File::create($lang.'_'.$dataFile, $itemDir .'/');
-	        			$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
-	        		}
-	        		if($file->setContent($content)){
-	        			$returnValue = true;
-	        		}
+					
+					if(GENERIS_VERSIONING_ENABLED){
+						
+						//versioned file:
+						
+						$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
+						$session = core_kernel_classes_Session::singleton();
+						$repository = $this->getVersionedFileRepository();
+							
+						if(!is_null($repository)){
+							
+							$versionedFile = $versionedFileClass->createInstance('File : content of the item ' . $item->getLabel(), 'File : created by '.__CLASS__);
+							
+							if(empty($lang)){
+								
+								$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
+								$lang = strtolower($lang);
+								
+								$versionedFile = core_kernel_versioning_File::create(
+									$dataFile,
+									tao_helpers_Uri::getUniqueId($item->uriResource).'/itemContent/'.$lang,
+									$repository,
+									$versionedFile->uriResource
+								);
+								$item->setPropertyValue($this->itemContentProperty, $versionedFile->uriResource);
+								
+							} else {
+								
+								$versionedFile = core_kernel_versioning_File::create(
+									$dataFile,
+									tao_helpers_Uri::getUniqueId($item->uriResource).'/itemContent/'.$lang,
+									$repository,
+									$versionedFile->uriResource
+								);
+								$item->setPropertyValueByLg($this->itemContentProperty, $versionedFile->uriResource, $lang);
+							}
+							
+							if (!is_null($versionedFile) && $versionedFile->setContent($content)) {
+								$returnValue = $versionedFile->add() && $versionedFile->commit();
+							}
+						}
+						
+					}else{
+						
+						//non-versioned files:
+						
+						$itemDir = $this->getItemFolder($item);
+						if(!is_dir($itemDir)){
+							mkdir($itemDir);
+						}
+					
+						if (empty($lang)) {
+							$file = core_kernel_classes_File::create($dataFile, $itemDir . '/');
+							$item->setPropertyValue($this->itemContentProperty, $file->uriResource);
+						} else {
+							$file = core_kernel_classes_File::create($lang . '_' . $dataFile, $itemDir . '/');
+							$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
+						}
+						if (!is_null($file) && $file->setContent($content)) {
+							$returnValue = true;
+						}
+					
+					}
+					
         		}	
         	}
         }
@@ -507,7 +589,7 @@ class taoItems_models_classes_ItemsService
      * Check if the Item has on of the itemModel property in the models array
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  array models the list of URI of the itemModel to check
      * @return boolean
@@ -540,7 +622,7 @@ class taoItems_models_classes_ItemsService
      * Check if the itemModel has been defined for that item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -573,7 +655,7 @@ class taoItems_models_classes_ItemsService
      * Get the runtime associated to the item model.
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -602,7 +684,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method hasModelStatus
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  array status
      * @return boolean
@@ -640,7 +722,7 @@ class taoItems_models_classes_ItemsService
      * Deploy the item in parameter into the path.
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  string path
      * @param  string url
@@ -792,7 +874,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -814,7 +896,7 @@ class taoItems_models_classes_ItemsService
      * get the item uri linked to the given file
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string uri
      * @return string
      */
@@ -841,7 +923,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -866,7 +948,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the temporary authoring file
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string itemUri
      * @param  boolean fallback
      * @return string
@@ -895,7 +977,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the matching data of an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource itemRdf
      * @return array
      */
@@ -923,7 +1005,7 @@ class taoItems_models_classes_ItemsService
      * Service to evaluate an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource itemRdf
      * @param  responses
      * @return array
@@ -982,7 +1064,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method cloneInstance
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource instance
      * @param  Class clazz
      * @return core_kernel_classes_Resource
@@ -1056,7 +1138,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setItemMeasurements
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @param  array measurements
      * @return taoItems_models_classes_Matching_bool
@@ -1095,7 +1177,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemMeasurements
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
      * @return array
      */
@@ -1137,6 +1219,35 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D2 end
 
         return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method getVersionedFileRepository
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource item
+     * @return core_kernel_classes_Resource
+     */
+    public function getVersionedFileRepository( core_kernel_classes_Resource $item = null)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--47fb4a8c:136bfa11c56:-8000:0000000000003914 begin
+		
+		if(empty($item)){
+			//get tao default repository:
+			$versionedRepositoryClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDREPOSITORY);
+			$repositories = $versionedRepositoryClass->getInstances();
+			if(!empty($repositories)){
+				ksort($repositories);
+				$returnValue = new core_kernel_versioning_Repository(reset($repositories)->uriResource);
+			}
+		}
+		
+        // section 127-0-1-1--47fb4a8c:136bfa11c56:-8000:0000000000003914 end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */
