@@ -221,8 +221,16 @@ class taoItems_models_classes_ItemsService
 				
 				foreach($item->getPropertyValues($this->itemContentProperty) as $fileUri){
 					if(common_Utils::isUri($fileUri)){
+						
 						$versionedFile = new core_kernel_versioning_File($fileUri);
-						$versionedFile->delete();
+						if(core_kernel_versioning_File::isVersionedFile($versionedFile)){
+							$versionedFile->delete();
+							continue;
+						}
+						
+						$file = new core_kernel_classes_File($fileUri);
+						$file->delete();
+						
 					}
 				}
 				
@@ -286,19 +294,31 @@ class taoItems_models_classes_ItemsService
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  Resource item
+     * @param  string lang
      * @return string
      */
-    public function getItemFolder( core_kernel_classes_Resource $item)
+    public function getItemFolder( core_kernel_classes_Resource $item, $lang = '')
     {
         $returnValue = (string) '';
 
         // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 begin
         
         if(!is_null($item)){
+			
+			//@TODO : currently, only versioned item content take into account of languages, extends it to folder name
 			if(GENERIS_VERSIONING_ENABLED){
-				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-				$this->getVersionedFileRepository();
-				$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
+				if(empty($lang)){
+					$session = core_kernel_classes_Session::singleton();
+					$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
+				}
+				$itemRepo = $this->getVersionedFileRepository();
+				if(empty($itemRepo)){
+					throw new common_Exception('No repository found for the item '.$item->getLabel().' ('.$item->uriResource.')');
+				}
+				
+				$repositoryPath = $itemRepo->getPath();
+				$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
+				$returnValue = $repositoryPath . tao_helpers_Uri::getUniqueId($item->uriResource) . DIRECTORY_SEPARATOR. 'itemContent' . DIRECTORY_SEPARATOR . $lang;
 			}else{
 				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
 				$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
@@ -528,10 +548,9 @@ class taoItems_models_classes_ItemsService
 							if(empty($lang)){
 								
 								$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
-								$lang = strtolower($lang);
 								
 								$versionedFile = core_kernel_versioning_File::create(
-									$dataFile,
+									$dataFile,//to be replace to ' ' to allow folder versioning??
 									tao_helpers_Uri::getUniqueId($item->uriResource).'/itemContent/'.$lang,
 									$repository,
 									$versionedFile->uriResource
@@ -541,12 +560,13 @@ class taoItems_models_classes_ItemsService
 							} else {
 								
 								$versionedFile = core_kernel_versioning_File::create(
-									$dataFile,
+									$dataFile,//to be replace to ' ' to allow folder versioning
 									tao_helpers_Uri::getUniqueId($item->uriResource).'/itemContent/'.$lang,
 									$repository,
 									$versionedFile->uriResource
 								);
 								$item->setPropertyValueByLg($this->itemContentProperty, $versionedFile->uriResource, $lang);
+								
 							}
 							
 							if (!is_null($versionedFile) && $versionedFile->setContent($content)) {

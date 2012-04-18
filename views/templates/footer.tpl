@@ -10,7 +10,7 @@ $(function(){
 	//append "authoring button" manually:
 	var spanElt = $('span[for="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
 	if(spanElt.length){
-		spanElt.replaceWith('<input type="button" value="Authoring" class="authoringOpener" style="margin-left:100px">');
+		spanElt.replaceWith('<input type="button" value="Authoring" class="authoringOpener" />');
 	}
 	
 	<?if(get_data('uri') && get_data('classUri')):?>
