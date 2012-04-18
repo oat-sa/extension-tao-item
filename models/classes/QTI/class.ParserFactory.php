@@ -107,7 +107,7 @@ class taoItems_models_classes_QTI_ParserFactory
 		}
 
 		//extract the item structure to separate the structural/style content to the item content
-		$itemBodyNodes = $data->xpath("//itemBody");
+		$itemBodyNodes = $data->xpath("*[name(.) = 'itemBody']");
 		if ($itemBodyNodes === false) {
 			$errors = libxml_get_errors();
 			if (count($errors) > 0) {
