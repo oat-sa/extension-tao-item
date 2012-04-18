@@ -107,8 +107,8 @@ class taoItems_models_classes_QTI_ParserFactory
 		}
 
 		//extract the item structure to separate the structural/style content to the item content
-		$itemBodyNodes = $data->xpath("*[name(.) = 'itemBody']");
-		if ($itemBodyNodes === false) {
+		$itemBodies = $data->xpath("*[name(.) = 'itemBody']"); // array with 1 or zero bodies
+		if ($itemBodies === false) {
 			$errors = libxml_get_errors();
 			if (count($errors) > 0) {
 				$error = array_shift($errors); 
@@ -118,12 +118,13 @@ class taoItems_models_classes_QTI_ParserFactory
 			}
 			throw new taoItems_models_classes_QTI_ParsingException('XML error('.$errormsg.') on itemBody read'.(isset($itemId) ? ' for item '.$itemId : ''));
 		} 
-
 		$itemData = '';
-		foreach($itemBodyNodes as $itemBodyNode){	//the node should be alone
-			$itemData .= $itemBodyNode->asXml();
+		foreach ($itemBodies as $itemBody) {
+			foreach ($itemBody->children() as $child) {
+				$itemData .= $child->asXml();
+			}
 		}
-			
+		
 		if(!empty($itemData)){
 			foreach($myItem->getInteractions() as $interaction){
 				//map the interactions by an identified tag: {interaction.serial}

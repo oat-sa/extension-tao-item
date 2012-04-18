@@ -71,6 +71,9 @@ class QTIParsingTestCase extends UnitTestCase {
 		$this->assertNotNull($item);
 		$this->assertIsA($item, 'taoItems_models_classes_QTI_Item');
 		
+		$this->assertEqual(count($item->getInteractions()),1, 'nr of interactions in choice.xml differs from 1');
+		
+		$this->assertFalse(strlen($item->getData()) == 0, 'itembody empty');
 		foreach($item->getInteractions() as $interaction){
 			$this->assertIsA($interaction, 'taoItems_models_classes_QTI_Interaction');
 			
