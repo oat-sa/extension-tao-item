@@ -75,8 +75,7 @@ abstract class taoItems_actions_QTIform_interaction_BlockInteraction
 		$promptElt = tao_helpers_form_FormFactory::getElement('prompt', 'Textarea');//should be an htmlarea... need to solve the conflict with the 
 		$promptElt->setAttribute('class', 'qti-html-area');
 		$promptElt->setDescription(__('Prompt'));
-		// $promptElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));//no validator required for prompt
-		$interactionData = $this->interaction->getPrompt();
+		$interactionData = taoItems_models_classes_QtiAuthoringService::filteredData($this->interaction->getPrompt());
 		if(!empty($interactionData)){
 			$promptElt->setValue($interactionData);
 		}
