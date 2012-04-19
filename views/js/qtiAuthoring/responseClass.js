@@ -67,6 +67,7 @@ function responseClass(tableElementId, interaction, responseFormContainer){
 					}
 					$(response.responseFormContainer + ' .form-toolbar:empty').remove();
 					response.initResponseFormSubmitter();
+					response.initResponseFormProcessingTypeChange();
 					response.setResponseFormChangeListener();
 
 					//set the amximum allowed correct responses, according to the maxChoices attribute defined at the itneraction level.
@@ -122,6 +123,7 @@ responseClass.prototype.loadResponseOptionsForm = function(){
 	}
 }
 */
+
 responseClass.prototype.initResponseFormSubmitter = function(){
 	var self = this;
 
@@ -191,6 +193,13 @@ responseClass.prototype.initResponseFormSubmitter = function(){
 
 		//check modified choices then send it as well:
 		return false;
+	});
+}
+
+responseClass.prototype.initResponseFormProcessingTypeChange = function(){
+	$('#interactionResponseProcessing').change(function() {
+		$('.xhtml_form').next().nextAll().remove();
+		$(".response-form-submitter").click();
 	});
 }
 
