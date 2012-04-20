@@ -1326,20 +1326,37 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		
 		$interaction = $this->getCurrentInteraction();
 		$rp = $this->getCurrentResponseProcessing();
-		// case templatedriven
-		if ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven)
-		{
+		$form = null;
+		
+		// cases
+		if ($rp instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
+			$form = 'template';
+		} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
+			$irp = $rp->getInteractionResponseProcessing($interaction->getResponse());
+			if ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
+				$form = 'manual';
+			} elseif (in_array(get_class($irp), array(
+				'taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate',
+				'taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate',
+				'taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate'))) {
+				
+				$form = 'template';
+			}
+		}
+		
+		if ($form == 'template') {
 			$response = $interaction->getResponse();
 			$mappingOptions = $_POST;
 		
-			common_Logger::d('storing mapping options:'.implode(',',$_POST));
 			$this->service->setMappingOptions($response, $mappingOptions);
 			$saved = true;
 		
 			echo json_encode(array(
 				'saved' => $saved
 			));
-		} elseif ($rp instanceof taoItems_models_classes_QTI_response_Composite) {
+			
+		} elseif ($form == 'manual') {
+			$irp = $rp->getInteractionResponseProcessing($interaction->getResponse());
 			$saved = false;
 			$outcome = $this->getCurrentOutcome();
 
@@ -1396,6 +1413,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	
 	//edit the interaction response:
 	public function editResponse(){
+		
 		$item = $this->getCurrentItem();
 		$responseProcessing = $item->getResponseProcessing();
 		$interaction = $this->getCurrentInteraction();
@@ -1420,8 +1438,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		if (!is_null($rpform)) {
 			$xhtmlForms[] = $rpform->render();
 		}
-		//proccessing related form
 		
+		/*
 		//only display response grid when the response template is templates driven:
 		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
 			
@@ -1463,31 +1481,50 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$xhtmlForms[] = $manualForm->getForm()->render();
 				}
 				$displayGrid = false;
-			} else {
+			} elseif ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate) {
 				$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
 				$responseData = $this->service->getInteractionResponseData($interaction);
 				$displayGrid = true;
+			} elseif ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate
+				|| $irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate) {
+				$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
+				$responseData = $this->service->getInteractionResponseData($interaction);
+				$displayGrid = true;
+				$mappingForm = new taoItems_actions_QTIform_Mapping($interaction, $responseProcessing);
+				if (!is_null($mappingForm)) {
+					$xhtmlForms[] = $mappingForm->getForm()->render();
+				}
+				
 			}
 			
 		} else {
 			$xhtmlForms[] = '<b>'
-				.__('The response form is available for templates driven item only.<br/>')
+				.__('The response form is not available for the selected response processing.<br/>')
 				.'</b>';
 		}
 		
 		
-		
-		echo json_encode(array(
+		*/
+		$data = array(
 			'ok' => true,
-			'displayGrid' => $displayGrid,
 			'interactionType' => $interactionType,
-			'colModel' => $columnModel,
-			'data' => $responseData,
-			'setResponseMappingMode' => $isResponseMappingMode,
 			'maxChoices' => intval($interaction->getCardinality(true)),
-			'responseForm' => implode('', $xhtmlForms),
-			'forms'	=> $xhtmlForms
-		));
+			'forms'	=> $xhtmlForms,
+		);
+		//proccessing related form
+		foreach (taoItems_helpers_qti_InteractionAuthoring::getIRPData($item, $interaction) as $key => $value) {
+			if (isset($data[$key]) && is_array($data[$key])) {
+				foreach ($value as $v) {
+					$data[$key][] = $v;
+				}
+			} else {
+				$data[$key]= $value;
+			}
+		}
+		
+		$data['responseForm'] = implode('', $data['forms']);
+		
+		echo json_encode($data);
 		
 	}
 	

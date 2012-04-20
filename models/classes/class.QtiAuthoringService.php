@@ -1073,7 +1073,7 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
-	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing){
+	public function getInteractionResponseColumnModel(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_response_ResponseProcessing $responseProcessing, $isMapping){
 		$returnValue = array();
 		$interactionType = strtolower($interaction->getType());
 		switch($interactionType){
@@ -1221,21 +1221,13 @@ class taoItems_models_classes_QtiAuthoringService
 				'values' => array('yes', 'no')
 			);
 			
-			$response = $interaction->getResponse();
-			if(is_null($response)){
-				throw new Exception("no response found for the interaction {$interaction->getIdentifier()}");
-			}elseif ($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
-				$responseProcessingType = $responseProcessing->getTemplate($response);
-				if(!empty($responseProcessingType)){
-					if($responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE || $responseProcessingType == QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT){
-						//mapping:
-						$returnValue[] = array(
-							'name' => 'score',
-							'label' => __('Score'),
-							'edittype' => 'text'
-						);
-					}
-				}
+			if ($isMapping) {
+				//mapping:
+				$returnValue[] = array(
+					'name' => 'score',
+					'label' => __('Score'),
+					'edittype' => 'text'
+				);
 			}
 			
 		}
