@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 23.04.2012, 15:18:20 with ArgoUML PHP module 
+ * Automatically generated on 25.04.2012, 15:41:44 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -87,6 +87,25 @@ class taoItems_actions_form_VersionedItemContent
 		parent::initElements();
 		$this->form->removeElement(tao_helpers_Uri::encode(PROPERTY_FILE_FILENAME));
         // section 127-0-1-1-34f65b5e:136df48a4e6:-8000:0000000000004AE7 end
+    }
+
+    /**
+     * Short description of method getDefaultRepository
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return core_kernel_versioning_Repository
+     */
+    public function getDefaultRepository()
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--4b5c8f5d:136e9bb93ae:-8000:0000000000006ACE begin
+		$itemService = taoItems_models_classes_ItemsService::singleton();
+		$returnValue = $itemService->getVersionedFileRepository();
+        // section 127-0-1-1--4b5c8f5d:136e9bb93ae:-8000:0000000000006ACE end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_actions_form_VersionedItemContent */

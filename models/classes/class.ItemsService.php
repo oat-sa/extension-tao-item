@@ -224,7 +224,9 @@ class taoItems_models_classes_ItemsService
 					if(common_Utils::isUri($fileUri)){
 						$versionedFile = new core_kernel_versioning_File($fileUri);
 						if(core_kernel_versioning_File::isVersionedFile($versionedFile)){
-							$versionedFile->delete();
+							try{
+								$versionedFile->delete();
+							}catch(core_kernel_versioning_exception_FileUnversionedException $e){}
 						}
 					}
 				}
@@ -565,8 +567,10 @@ class taoItems_models_classes_ItemsService
 								);
 								$item->setPropertyValueByLg($this->itemVersionedContentProperty, $versionedFile->uriResource, $lang);
 								if (!is_null($versionedFile)) {
-									$versionedFile->add(true, true);
-									$returnValue = $versionedFile->commit();
+									$returnValue = $versionedFile->add(true, true);
+									if($returnValue && $commitMessage != 'HOLD_COMMIT'){
+										$returnValue = $versionedFile->commit($commitMessage);
+									}
 								}
 							}else{
 								throw new Exception('cannot get the versioned item repository');
