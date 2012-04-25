@@ -5,12 +5,16 @@ class taoItems_models_classes_exporter_QTIItemExporter extends taoItems_models_c
 	 * Overriden export fro QTI items
 	 * @see taoItems_models_classes_ItemExporter::export()
 	 */
-	public function export() {
+	public function export($options = array()) {
+		
+		$zipToRoot = isset($options['zipToRoot'])?(bool)$options['zipToRoot']:false;
 		
 		//add the data location
 		$location = $this->getItemLocation();
 		if(is_dir(realpath($location))){
-			$this->addFile($location, basename($location));
+			$basenameLocation = $zipToRoot?'':basename($location);
+			
+			$this->addFile($location, $basenameLocation);
 			
 			//get the local resources and add them
 			$addedResources = 0;
@@ -19,7 +23,7 @@ class taoItems_models_classes_exporter_QTIItemExporter extends taoItems_models_c
 			foreach($resources as $resource){
 				$resourceLocation = str_replace(ROOT_URL, ROOT_PATH, $resource);
 				if(file_exists($resourceLocation)){
-					$this->addFile($resourceLocation, basename($location).'/res/'.basename($resourceLocation));
+					$this->addFile($resourceLocation, $basenameLocation.'/res/'.basename($resourceLocation));
 					$addedResources++;
 				}
 				//in case of dynamic media service
@@ -29,7 +33,7 @@ class taoItems_models_classes_exporter_QTIItemExporter extends taoItems_models_c
 					if(preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
 						//check if the file is linked to the file manager
 						$resourceLocation = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH . '/filemanager/views/data/', $path);
-						$this->addFile($resourceLocation, basename($location).'/res/'.basename($resourceLocation));
+						$this->addFile($resourceLocation, $basenameLocation.'/res/'.basename($resourceLocation));
 						$addedResources++;
 					}
 				}
@@ -43,7 +47,7 @@ class taoItems_models_classes_exporter_QTIItemExporter extends taoItems_models_c
 				foreach($resources as $resource){
 					$content = str_replace(dirname($resource), 'res', $content);
 				}
-				$this->getZip()->addFromString( basename($location).'/'.$dataFile, $content);
+				$this->getZip()->addFromString($basenameLocation.'/'.$dataFile, $content);
 			}
 		}
 	}

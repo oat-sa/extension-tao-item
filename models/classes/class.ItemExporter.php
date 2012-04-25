@@ -130,9 +130,7 @@ abstract class taoItems_models_classes_ItemExporter {
 			foreach ($content as $file) {
 				// avoid . , .. , .svn etc ...
 				if(!preg_match("/^\./", $file)) {
-
-					$done += $this->addFile(	$src . $file, 
-																	$dest . $file);
+					$done += $this->addFile($src.$file, $dest.$file);
 				}
 			}
 		}

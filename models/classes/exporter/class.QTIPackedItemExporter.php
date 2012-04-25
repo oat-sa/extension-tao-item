@@ -18,8 +18,8 @@ class taoItems_models_classes_exporter_QTIPackedItemExporter extends taoItems_mo
 	 * @see taoItems_models_classes_exporter_QTIItemExporter::export()
 	 * Export the manifest in addition
 	 */
-	public function export(){
-		parent::export();
+	public function export($options = array()){
+		parent::export($options);
 		$this->exportManifest();
 	}
 	

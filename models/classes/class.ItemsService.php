@@ -90,6 +90,7 @@ class taoItems_models_classes_ItemsService
 		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
 		$this->itemModelProperty	= new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
 		$this->itemContentProperty	= new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
+		$this->itemVersionedContentProperty	= new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY);
 		
         // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 end
     }
@@ -219,43 +220,38 @@ class taoItems_models_classes_ItemsService
 			
 			if(GENERIS_VERSIONING_ENABLED){
 				
-				foreach($item->getPropertyValues($this->itemContentProperty) as $fileUri){
+				foreach($item->getPropertyValues($this->itemVersionedContentProperty) as $fileUri){
 					if(common_Utils::isUri($fileUri)){
-						
 						$versionedFile = new core_kernel_versioning_File($fileUri);
 						if(core_kernel_versioning_File::isVersionedFile($versionedFile)){
 							$versionedFile->delete();
-							continue;
 						}
-						
-						$file = new core_kernel_classes_File($fileUri);
-						$file->delete();
-						
 					}
 				}
-				
-				$returnValue = $item->delete(true);
 				
 			}else{
 				
-				foreach($item->getPropertyValues($this->itemContentProperty) as $fileUri){
-					if(common_Utils::isUri($fileUri)){
+				foreach ($item->getPropertyValues($this->itemContentProperty) as $fileUri) {
+					if (common_Utils::isUri($fileUri)) {
 						$file = new core_kernel_classes_File($fileUri);
 						$file->delete();
 					}
 				}
 				
+				//@TODO : delete the folder for all languages!
 				$itemFolder = $this->getItemFolder($item);
 				if (is_dir($itemFolder)) {
 					tao_helpers_File::remove($itemFolder, true);
 				}
-				$runtimeFolder = $this->getRuntimeFolder($item);
-				if (is_dir($runtimeFolder)) {
-					tao_helpers_File::remove($runtimeFolder, true);
-				}
-
-				$returnValue = $item->delete(true);
 			}
+			
+			//TODO : should the runtimeFolder be language dependent as well?
+			$runtimeFolder = $this->getRuntimeFolder($item);
+			if (is_dir($runtimeFolder)) {
+				tao_helpers_File::remove($runtimeFolder, true);
+			}
+
+			$returnValue = $item->delete(true);
 			
 		}
 		
@@ -305,12 +301,13 @@ class taoItems_models_classes_ItemsService
         
         if(!is_null($item)){
 			
-			//@TODO : currently, only versioned item content take into account of languages, extends it to folder name
+			if(empty($lang)){
+				$session = core_kernel_classes_Session::singleton();
+				$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
+			}
+				
 			if(GENERIS_VERSIONING_ENABLED){
-				if(empty($lang)){
-					$session = core_kernel_classes_Session::singleton();
-					$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
-				}
+				
 				$itemRepo = $this->getVersionedFileRepository();
 				if(empty($itemRepo)){
 					throw new common_Exception('No repository found for the item '.$item->getLabel().' ('.$item->uriResource.')');
@@ -318,11 +315,12 @@ class taoItems_models_classes_ItemsService
 				
 				$repositoryPath = $itemRepo->getPath();
 				$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
-				$returnValue = $repositoryPath . tao_helpers_Uri::getUniqueId($item->uriResource) . DIRECTORY_SEPARATOR. 'itemContent' . DIRECTORY_SEPARATOR . $lang;
+				$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
+			
 			}else{
-				$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-				$returnValue = ROOT_PATH . '/taoItems/data/' . $folderName;
+				$returnValue = ROOT_PATH.DIRECTORY_SEPARATOR.'taoItems'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.$lang;
 			}
+			
         }
         
         // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 end
@@ -491,9 +489,10 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @param  string content
      * @param  string lang
+     * @param  string commitMessage
      * @return boolean
      */
-    public function setItemContent( core_kernel_classes_Resource $item, $content, $lang = '')
+    public function setItemContent( core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = '')
     {
         $returnValue = (bool) false;
 
@@ -506,25 +505,34 @@ class taoItems_models_classes_ItemsService
         		if($this->hasItemContent($item, $lang)){
         			
         			$itemContent = null;
-					
+					$versionedFolder = null;
 		        	if(empty($lang)){
 		    			$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
+						if(GENERIS_VERSIONING_ENABLED) $versionedFolder = $item->getOnePropertyValue($this->itemVersionedContentProperty);
 		        	}else{
 		        		$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 		        		if($itemContents->count() > 0){
 		        			$itemContent = $itemContents->get(0);
 		        		}
+						if(GENERIS_VERSIONING_ENABLED){
+							$versionedFolders = $item->getPropertyValuesByLg($this->itemVersionedContentProperty, $lang);
+							if($versionedFolders->count() > 0){
+								$versionedFolder = $versionedFolders->get(0);
+							}
+						}
 		        	}
 					
-					if(core_kernel_versioning_File::isVersionedFile($itemContent)){
-						$file = new core_kernel_versioning_File($itemContent->uriResource);
-						if($file->isVersioned() && file_put_contents($file->getAbsolutePath(), $content) > 0){
-							$returnValue = $file->commit();
-						}
-					}else if(core_kernel_classes_File::isFile($itemContent)){
+					if(core_kernel_classes_File::isFile($itemContent)){
         				$file = new core_kernel_classes_File($itemContent->uriResource);
         				if(file_put_contents($file->getAbsolutePath(), $content) > 0){
-        					 $returnValue = true;
+							$returnValue = true;
+							if (GENERIS_VERSIONING_ENABLED 
+								&& !is_null($versionedFolder) 
+								&& core_kernel_versioning_File::isVersionedFile($versionedFolder)
+								&& $commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
+								$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
+								$returnValue = $versionedFolder->commit($commitMessage);
+							}
         				}
         			}
 					
@@ -533,67 +541,39 @@ class taoItems_models_classes_ItemsService
 	        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 	        		$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 					
-					if(GENERIS_VERSIONING_ENABLED){
-						
-						//versioned file:
-						
-						$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
+					if (empty($lang)) {
 						$session = core_kernel_classes_Session::singleton();
-						$repository = $this->getVersionedFileRepository();
-							
-						if(!is_null($repository)){
-							
-							$versionedFile = $versionedFileClass->createInstance('File : content of the item ' . $item->getLabel(), 'File : created by '.__CLASS__);
-							
-							if(empty($lang)){
-								
-								$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
-								
-								$versionedFile = core_kernel_versioning_File::create(
-									$dataFile,//to be replace to ' ' to allow folder versioning??
-									tao_helpers_Uri::getUniqueId($item->uriResource).'/itemContent/'.$lang,
-									$repository,
-									$versionedFile->uriResource
-								);
-								$item->setPropertyValue($this->itemContentProperty, $versionedFile->uriResource);
-								
-							} else {
-								
-								$versionedFile = core_kernel_versioning_File::create(
-									$dataFile,//to be replace to ' ' to allow folder versioning
-									tao_helpers_Uri::getUniqueId($item->uriResource).'/itemContent/'.$lang,
-									$repository,
-									$versionedFile->uriResource
-								);
-								$item->setPropertyValueByLg($this->itemContentProperty, $versionedFile->uriResource, $lang);
-								
-							}
-							
-							if (!is_null($versionedFile) && $versionedFile->setContent($content)) {
-								$returnValue = $versionedFile->add() && $versionedFile->commit();
-							}
-						}
-						
-					}else{
-						
-						//non-versioned files:
-						
-						$itemDir = $this->getItemFolder($item);
-						if(!is_dir($itemDir)){
-							mkdir($itemDir);
-						}
+						$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
+					}
 					
-						if (empty($lang)) {
-							$file = core_kernel_classes_File::create($dataFile, $itemDir . '/');
-							$item->setPropertyValue($this->itemContentProperty, $file->uriResource);
+					$itemDir = $this->getItemFolder($item);
+					$file = core_kernel_classes_File::create($dataFile, $itemDir . '/');
+					$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
+					
+					if (!is_null($file) && $file->setContent($content)) {
+						if (GENERIS_VERSIONING_ENABLED) {
+							//created versioned folder:
+							$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
+							$repository = $this->getVersionedFileRepository();
+							if (!is_null($repository)) {
+								$versionedFile = $versionedFileClass->createInstance('File : versioned folder of item ' . $item->getLabel(), 'File : created by ' . __CLASS__);
+								$versionedFile = core_kernel_versioning_File::create(
+									'', //empty string to allow folder versioning??
+									tao_helpers_Uri::getUniqueId($item->uriResource) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang,
+									$repository,
+									$versionedFile->uriResource
+								);
+								$item->setPropertyValueByLg($this->itemVersionedContentProperty, $versionedFile->uriResource, $lang);
+								if (!is_null($versionedFile)) {
+									$versionedFile->add(true, true);
+									$returnValue = $versionedFile->commit();
+								}
+							}else{
+								throw new Exception('cannot get the versioned item repository');
+							}
 						} else {
-							$file = core_kernel_classes_File::create($lang . '_' . $dataFile, $itemDir . '/');
-							$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
-						}
-						if (!is_null($file) && $file->setContent($content)) {
 							$returnValue = true;
 						}
-					
 					}
 					
         		}	
@@ -619,20 +599,13 @@ class taoItems_models_classes_ItemsService
         $returnValue = (bool) false;
 
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF begin
-        
-        if(!is_null($item)){
-    		try{
-        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-	        	if($itemModel instanceof core_kernel_classes_Resource){
-	        		if(in_array($itemModel->uriResource, $models)){
-	        			$returnValue = true;
-	        		}
-	        	}
-        	}
-        	catch(common_Exception $ce){
-        		$returnValue = false;
-        	}
-        }
+		
+		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+        if($itemModel instanceof core_kernel_classes_Resource){
+			if(in_array($itemModel->uriResource, $models)){
+				$returnValue = true;
+			}
+		}
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF end
 
         return (bool) $returnValue;
@@ -1121,6 +1094,9 @@ class taoItems_models_classes_ItemsService
 								if(file_exists($newPath)){
 									$newFile = core_kernel_classes_File::create((string)$file->getOnePropertyValue($fileNameProp), dirname($newPath).'/');
 									$returnValue->setPropertyValue($this->itemContentProperty, $newFile->uriResource);
+									if(GENERIS_VERSIONING_ENABLED){
+										//commit add and commit verioned folder
+									}
 								}
 							}
 						}
@@ -1266,6 +1242,28 @@ class taoItems_models_classes_ItemsService
 		}
 		
         // section 127-0-1-1--47fb4a8c:136bfa11c56:-8000:0000000000003914 end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method getItemModel
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource item
+     * @return core_kernel_classes_Resource
+     */
+    public function getItemModel( core_kernel_classes_Resource $item)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1--2a1905ad:136e3babab3:-8000:0000000000003986 begin
+		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+		if($itemModel instanceof core_kernel_classes_Resource){
+			$returnValue = $itemModel;
+		}
+        // section 127-0-1-1--2a1905ad:136e3babab3:-8000:0000000000003986 end
 
         return $returnValue;
     }

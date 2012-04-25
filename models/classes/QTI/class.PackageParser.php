@@ -152,8 +152,8 @@ class taoItems_models_classes_QTI_PackageParser
         
         $sourceFile = basename($this->source);
         $folder = dirname($this->source) . '/' . substr($sourceFile, 0, strrpos($sourceFile, '.'));
-        
-        if(!is_dir($folder)){
+		
+		if(!is_dir($folder)){
         	mkdir($folder);
         }
         

@@ -7,7 +7,8 @@
  */
 $todefine = array(
 	'TAO_ITEM_MODEL_PROPERTY' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel', 
-	'TAO_ITEM_CONTENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent', 
+	'TAO_ITEM_CONTENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent',
+	'TAO_ITEM_VERSIONED_CONTENT_PROPERTY'=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#VersionedItemContentFolder',
 	'TAO_ITEM_MODEL_RUNTIME_PROPERTY' 	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime', 
 	'TAO_ITEM_MODEL_AUTHORING_PROPERTY' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring',
 	'TAO_ITEM_MODEL_DATAFILE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName',
@@ -32,7 +33,7 @@ $todefine = array(
 	'TAO_ITEM_MODEL_STATUS_DEPRECATED'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated',
 	'TAO_ITEM_MODEL_STATUS_DEV' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment',
 	'TAO_ITEM_MODEL_STATUS_EXPERIMENTAL'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental',
-	'TAO_ITEM_EXPORTERS_DIR'	=> BASE_PATH.'/models/ext/itemExport',
+	'TAO_ITEM_EXPORTERS_DIR'				=> BASE_PATH.'/models/ext/itemExport',
 	
 	'TAO_ITEM_MEASURMENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#hasMeasurement',
 	'TAO_ITEM_MEASURMENT' 				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Measurement',

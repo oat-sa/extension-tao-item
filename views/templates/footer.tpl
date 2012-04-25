@@ -7,12 +7,6 @@ $(function(){
 	authoringIndex = getTabIndexByName('items_authoring');
 	previewIndex = getTabIndexByName('items_preview');
 	
-	//append "authoring button" manually:
-	var spanElt = $('span[for="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
-	if(spanElt.length){
-		spanElt.replaceWith('<input type="button" value="Authoring" class="authoringOpener" />');
-	}
-	
 	<?if(get_data('uri') && get_data('classUri')):?>
 		
 		if(ctx_action != 'authoring'){
@@ -24,6 +18,30 @@ $(function(){
 			UiBootstrap.tabs.tabs('enable', previewIndex);
 		}
 		
+		//append versioned item management manually :
+		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
+		if($authoringButton.length){
+			$authoringButton.after('<input id="versioned-item-content" type="button" value="Versioned Item content"/>');
+			$('#versioned-item-content').click(function(){
+				var url = '';
+				if(ctx_extension){
+					url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
+				}
+				url += 'editVersionedItemContent';
+				var data = {
+					'uri':$("#uri").val()
+				};
+
+				if(UiBootstrap.tabs.size() == 0){
+					if($('div.main-container').length){
+						$('div.main-container').load(url, data);
+					}
+				}
+				$(getMainContainerSelector(UiBootstrap.tabs)).load(url, data);
+				return false;
+			});
+		}
+	
 	<?else:?>
 	
 		if(ctx_action != 'authoring'){

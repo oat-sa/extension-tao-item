@@ -139,6 +139,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		if(!$modelDefined || $isDeprecated){
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
+		$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
+		
 		$this->setData('modelDefined', $modelDefined);
 		$this->setData('isDeprecated', $isDeprecated);
 		
@@ -146,6 +148,351 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$this->setData('myForm', $myForm->render());
 		
 		$this->setView('item_form.tpl');
+	}
+	
+	public function editVersionedItemContent(){
+		
+		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
+		if(is_null($uri) || empty($uri)){
+			throw new Exception("No valid uri found");
+		}
+		
+		$item = new core_kernel_classes_Resource($uri);
+		$itemModel = $this->service->getItemModel($item);
+		if(is_null($itemModel)){
+			throw new Exception('cannot edit versioned item content if no item model is set');
+		}
+		
+		$ownerInstance = $item;
+		$property = new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY);
+		$propertyRange = $property->getRange();
+
+		//get the versioned file resource
+		$versionedFileResource = $ownerInstance->getOnePropertyValue($property);
+		
+		//if it does not exist already, create a new versioned file resource
+		if(is_null($versionedFileResource)){
+			//if the file resource does not exist, create it
+			$versionedFileResource = $propertyRange->createInstance();
+			$ownerInstance->setPropertyValue($property, $versionedFileResource->uriResource);
+		}
+		$versionedFile = new core_kernel_versioning_File($versionedFileResource->uriResource);
+
+		//create the form
+		$formContainer = new taoItems_actions_form_VersionedItemContent(null
+			, array(
+				'instanceUri' => $versionedFile->uriResource,
+				'ownerUri' => $ownerInstance->uriResource,
+				'propertyUri' => $property->uriResource
+			)
+		);
+		$myForm = $formContainer->getForm();
+
+		//if the form was sent successfully
+		if($myForm->isSubmited()){
+
+			if($myForm->isValid()){
+
+				// Extract data from form
+				$data = $myForm->getValues();
+
+				// Extracted values
+				$content = '';
+				$delete = isset($data['file_delete']) && $data['file_delete'] == '1'?true:false;
+				$message = isset($data['commit_message'])?$data['commit_message']:'';
+				$fileName = '';
+				$filePath = $this->service->getItemFolder($item);
+				$repositoryUri = $this->service->getVersionedFileRepository()->uriResource;
+				$version = isset($data['file_version']) ? $data['file_version'] : 0;
+
+				//the file is already versioned
+				if($versionedFile->isVersioned()){
+
+					if($delete){
+
+						$versionedFile->delete();//no need to commit here (already done in the funciton implementation
+						$ownerInstance->removePropertyValues($property);
+
+					}else{
+
+						if ($version) {//version = [1..n]
+							//revert to a version
+							$topRevision = count($myForm->getElement('file_version')->getOptions());
+							if ($version < $topRevision) {
+								$versionedFile->revert($version, empty($message)?'Revert to TAO version '.$version : $message);
+							}
+						}
+
+						//a new content was sent
+						//get the content
+						$imported = false;
+						if (isset($data['file_import']['uploaded_file'])) {
+							//unzip here:
+							if (file_exists($data['file_import']['uploaded_file'])) {
+								$uploadedFilePath = $data['file_import']['uploaded_file'];
+								switch ($itemModel->uriResource) {
+									case TAO_ITEM_MODEL_QTI: {
+											if (preg_match('/\.xml/i', $uploadedFilePath)) {
+												$imported = $this->importQTIFile($item, $uploadedFilePath, false, $message);
+											} else if (preg_match('/\.zip/i', $uploadedFilePath)) {
+												$imported = $this->importQTIPACKFile($item, $uploadedFilePath, false, $message);
+											} else {
+												//wrong file type!
+											}
+											break;
+										}
+									case TAO_ITEM_MODEL_XHTML: {
+											if (preg_match('/\.zip/i', $uploadedFilePath)) {
+												$imported = $this->importXHTMLFile($item, $uploadedFilePath, false, $message);
+											} else {
+												//wrong file type!
+											}
+											break;
+										}
+									default: {
+											$content = file_get_contents($uploadedFilePath);
+											break;
+										}
+								}
+							} else {
+								throw new Exception(__('the file was not uploaded successfully'));
+							}
+
+							if ($imported) {
+								$this->setData('message', 'QTI item content saved');
+							} else {
+								var_dump('qti import errors', get_data('importErrorTitle'), get_data('importErrors'));
+								exit;
+							}
+						}
+
+						//commit the file
+//						$versionedFile->commit($message);
+					}
+
+				}
+					
+				//reload the form to take into account the changes
+				$ctx = Context::getInstance();
+				$this->redirect(_url($ctx->getActionName(), $ctx->getModuleName(), $this->getSessionAttribute('currentExtension'), array(
+					'uri'			=> tao_helpers_Uri::encode($ownerInstance->uriResource),
+					'propertyUri'	=> tao_helpers_Uri::encode($property->uriResource)
+				)));
+			}
+		}
+
+		$this->setData('formTitle', __('Manage the versioned content : ').$ownerInstance->getLabel().' > '.$property->getLabel());
+		$this->setData('myForm', $myForm->render());
+
+		$this->setView('form/versioned_file.tpl', true);
+	}
+	
+	/**
+	 * action to perform on a posted QTI file
+	 */
+	protected function importQTIFile(core_kernel_classes_Resource $rdfItem, $uploadedFile, $forceValid = false, $commitMessage = ''){
+			
+		//get the services instances we will need
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
+		
+		//validate the file to import
+		$qtiParser = new taoItems_models_classes_QTI_Parser($uploadedFile);
+		$qtiParser->validate();
+		if(!$qtiParser->isValid() && !$forceValid){
+			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
+			$this->setData('importErrors', $qtiParser->getErrors());
+		}
+		else{
+			//load the QTI item from the file
+			$qtiItem = $qtiParser->load();
+			if(!is_null($qtiItem)){
+				//set the QTI type (security)
+				$rdfItem->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_QTI);
+				
+				if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
+					$this->setData('message', __('Item imported successfully') . ' : ' .$rdfItem->getLabel());
+					$this->setData('reload', true);
+					@unlink($uploadedFile);
+					return true;
+				}
+			}
+			$this->setData('message', __('An error occurs during the import'));
+		}
+		return false;
+	}
+	
+	/**
+	 * action to perform on a posted QTI CP file
+	 * @param array $formValues the posted data
+	 */
+	protected function importQTIPACKFile(core_kernel_classes_Resource $rdfItem, $uploadedFile, $forceValid = false, $commitMessage = ''){
+			
+		set_time_limit(200);	//the zip extraction is a long process that can exced the 30s timeout
+
+		//get the services instances we will need
+		$qtiService = taoItems_models_classes_QTI_Service::singleton();
+		
+		//load and validate the package
+		$qtiPackageParser = new taoItems_models_classes_QTI_PackageParser($uploadedFile);
+		$qtiPackageParser->validate();
+
+		if(!$qtiPackageParser->isValid() && !$forceValid){
+			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
+			$this->setData('importErrors', $qtiPackageParser->getErrors());
+			return false;
+		}
+
+		//extract the package
+		$folder = $qtiPackageParser->extract();
+		if(!is_dir($folder)){
+			$this->setData('importErrorTitle', __('An error occured during the import'));
+			$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
+			return false;
+		}
+
+		//load and validate the manifest
+		$qtiManifestParser = new taoItems_models_classes_QTI_ManifestParser($folder .'/imsmanifest.xml');
+		$qtiManifestParser->validate();
+
+		if(!$qtiManifestParser->isValid() && !$forceValid){
+			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
+			$this->setData('importErrors', $qtiManifestParser->getErrors());
+			return false;
+		}
+
+		//load the information about resources in the manifest 
+		$resources = $qtiManifestParser->load();
+		$importedItems = 0;
+		foreach($resources as $resource){
+			
+			if($resource instanceof taoItems_models_classes_QTI_Resource){
+
+				$qtiParser = new taoItems_models_classes_QTI_Parser($folder . '/'. $resource->getItemFile());
+				$qtiItem = $qtiParser->load();
+				
+				if(is_null($qtiItem) || is_null($rdfItem)){
+					
+					$this->setData('importErrorTitle', __('An error occured during the import'));
+					$this->setData('importErrors', array(array('message' => __('Unable to create the item for the content '.$resource->getIdentifier().' , from file '.$resource->getItemFile()))));
+
+					// An error occured. We should rollback the knowledge base.
+					$rdfItem->delete();
+					if(!$forceValid){
+						break;
+					}
+				
+				}else{
+					
+					//set the QTI type
+					$rdfItem->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_QTI);
+
+					//set the file in the itemContent
+					$subpath = preg_quote(dirname($resource->getItemFile()), '/');
+
+					//and copy the others resources in the runtime path
+					$itemPath = $this->service->getItemFolder($rdfItem);
+					
+					if(GENERIS_VERSIONING_ENABLED){
+						//if the versioned item folder exists, delete all content first?
+					}
+
+					foreach($resource->getAuxiliaryFiles() as $auxResource){
+						$auxPath = $auxResource;
+						$auxPath = preg_replace("/^$subpath\//", '', $auxResource);
+						tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
+					}
+
+					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem, 'HOLD_COMMIT')){
+						if(GENERIS_VERSIONING_ENABLED){
+							$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
+							$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
+							if(empty($commitMessage)) $commitMessage = 'QTI package uploaded';
+							if($versionedFolder->add(true, true) && $versionedFolder->commit('[QTI pack] '.$commitMessage)){
+								$importedItems++;
+							}
+						}else{
+							$importedItems++;	//item is considered as imported there 
+						}
+					}
+				}
+				
+				//one loop is enough
+				//@TODO : available mutiple languages import/export with a package?
+				break;
+			}
+		}
+
+		if($importedItems){
+
+			$this->setData('message', $importedItems . ' ' . __('items imported successfully'));
+			$this->setData('reload', true);
+
+			tao_helpers_File::remove($uploadedFile);
+			tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
+
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * import OWI items
+	 */
+	protected function importXHTMLFile(core_kernel_classes_Resource $rdfItem, $uploadedFile, $forceValid = false, $commitMessage = ''){
+			
+		set_time_limit(200);	//the zip extraction is a long process that can exced the 30s timeout
+
+		//load and validate the package
+		$packageParser = new taoItems_models_classes_XHTML_PackageParser($uploadedFile);
+		$packageParser->validate();
+
+		if(!$packageParser->isValid()){
+			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
+			$this->setData('importErrors', $packageParser->getErrors());
+			return false;
+		}
+
+		//extract the package
+		$folder = $packageParser->extract();
+		if(!is_dir($folder)){
+			$this->setData('importErrorTitle', __('An error occured during the import'));
+			$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
+			return false;
+		}
+
+		//load and validate the manifest
+		$fileParser = new tao_models_classes_Parser($folder .'/index.html', array('extension' => 'html'));
+		$fileParser->validate(BASE_PATH.'/models/classes/data/xhtml/xhtml.xsd');
+
+		if(!$fileParser->isValid() && !$forceValid){
+			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
+			$this->setData('importErrors', $fileParser->getErrors());
+			return false;
+		}
+
+		//confirm item model
+		$rdfItem->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
+
+		$itemContent = file_get_contents($folder .'/index.html');
+
+		$itemPath = $this->service->getItemFolder($rdfItem);
+		if(!tao_helpers_File::move($folder, $itemPath)){
+			$this->setData('importErrorTitle', __('Unable to copy the resources'));
+			$this->setData('importErrors', array(array('message' => __('Unable to move')." $folder to $itemPath")));
+			return false;
+		}
+		//@TODO : commit here!
+
+		$this->service->setItemContent($rdfItem, $itemContent);
+
+		$this->setData('message',__('item imported successfully'));
+
+		//remove the temp files
+		tao_helpers_File::remove($uploadedFile);
+		tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
+
+		return true;
 	}
 	
 	/**

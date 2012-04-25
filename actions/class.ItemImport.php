@@ -194,20 +194,30 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 						//set the file in the itemContent
 						if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
 							
-							$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-							
 							$importedItems++;	//item is considered as imported there 
-							
 							
 							$subpath = preg_quote(dirname($resource->getItemFile()), '/');
 							
 							//and copy the others resources in the runtime path
+							$itemPath = $itemService->getItemFolder($rdfItem);
+							
+//							var_dump($subpath, $resource->getAuxiliaryFiles(), $folder, $itemPath);
+							
 							foreach($resource->getAuxiliaryFiles() as $auxResource){
 								$auxPath = $auxResource;
 								if(preg_match("/^i[0-9]*/", $subpath)){
 									$auxPath = preg_replace("/^$subpath\//", '', $auxResource);
 								}
-								tao_helpers_File::copy($folder . '/'. $auxResource, BASE_PATH. "/data/$folderName/$auxPath", true);
+//								var_dump($auxResource.' -> '.$auxPath);
+								
+								//@TODO : to be modified, to take into account versioning directory
+								tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
+							}
+							
+//							exit;
+							
+							if(GENERIS_VERSIONING_ENABLED){
+								//a big commit on the folder here!
 							}
 						}
 					}
@@ -303,12 +313,14 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$itemContent = file_get_contents($folder .'/index.html');
 			
 			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-        	$itemPath = BASE_PATH."/data/{$folderName}";
+			
+			$itemPath = $itemService->getItemFolder($rdfItem);
         	if(!tao_helpers_File::move($folder, $itemPath)){
         		$this->setData('importErrorTitle', __('Unable to copy the resources'));
 				$this->setData('importErrors', array(array('message' => __('Unable to move')." $folder to $itemPath")));
 				return false;
         	}
+			//@TODO : commit here!
         	
         	$itemService->setItemContent($rdfItem, $itemContent);
 						
