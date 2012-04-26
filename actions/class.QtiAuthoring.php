@@ -1376,6 +1376,13 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				));
 				$saved = $this->service->saveInteractionResponse($this->getCurrentInteraction(), $responseData) || $saved;
 			}
+			
+			// set guidelines
+			if ($this->hasRequestParameter('defaultValue')) {
+				$irp->setDefaultValue($this->getRequestParameter('defaultValue'));
+				$saved = true;
+			}
+			
 			// set scale
 			if ($this->hasRequestParameter('scaletype')) {
 				

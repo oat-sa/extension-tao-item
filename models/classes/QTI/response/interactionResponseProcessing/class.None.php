@@ -53,7 +53,48 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_None
      */
     const CLASS_ID = 'none';
 
+    /**
+     * Short description of attribute default
+     *
+     * @access protected
+     * @var string
+     */
+    protected $default = '';
+
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method getDefaultValue
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return string
+     */
+    public function getDefaultValue()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--7e5cf656:136ee8922cb:-8000:00000000000039BF begin
+        return $this->default;
+        // section 127-0-1-1--7e5cf656:136ee8922cb:-8000:00000000000039BF end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method setDefaultValue
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  string value
+     * @return mixed
+     */
+    public function setDefaultValue($value)
+    {
+        // section 127-0-1-1--7e5cf656:136ee8922cb:-8000:00000000000039BC begin
+        $this->default = $value;
+        // section 127-0-1-1--7e5cf656:136ee8922cb:-8000:00000000000039BC end
+    }
 
     /**
      * Short description of method getRule
@@ -92,7 +133,7 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_None
 	            </isNull>
 		        <setOutcomeValue identifier="'.$this->getOutcome()->getIdentifier().'">
 		        	<baseValue baseType="'.$this->getResponse()->getBaseType().'">'.
-						$this->getResponse()->getMappingDefaultValue().'</baseValue>
+						$this->default.'</baseValue>
 		        </setOutcomeValue>
 		    </responseIf>
 		</responseCondition>';

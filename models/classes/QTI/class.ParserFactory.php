@@ -834,7 +834,8 @@ class taoItems_models_classes_QTI_ParserFactory
 				$responseIdentifier = (string) $subtree->responseIf->isNull->variable[0]['identifier'];
 				$irps[$responseIdentifier] = array(
 					'class'		=> 'None',
-					'outcome'	=> (string) $subtree->responseIf->setOutcomeValue[0]['identifier']
+					'outcome'	=> (string) $subtree->responseIf->setOutcomeValue[0]['identifier'],
+					'default'	=> (string) $subtree->responseIf->setOutcomeValue[0]->baseValue[0]
 				);
 			} elseif (count($subtree->xpath($possibleSummation)) > 0 ) {
 				$composition = 'Summation';
@@ -880,7 +881,11 @@ class taoItems_models_classes_QTI_ParserFactory
 				throw new taoItems_models_classes_QTI_ParsingException('Undeclared Outcome in ResponseProcessing');
         	}
         	$classname = 'taoItems_models_classes_QTI_response_interactionResponseProcessing_'.$irps[$id]['class'];
-        	$compositonRP->add(new $classname($response, $outcome));
+        	$irp = new $classname($response, $outcome);
+        	if ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_none && isset($irps[$id]['default'])) {
+        		$irp->setDefaultValue($irps[$id]['default']);
+        	}
+        	$compositonRP->add($irp);
         }
 		$returnValue = $compositonRP;
         

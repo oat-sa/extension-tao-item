@@ -76,7 +76,10 @@ class taoItems_actions_QTIform_ManualProcessing
     {
         // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036B0 begin
         $this->outcome = $outcome;
-    	parent::__construct($interaction, $responseProcessing);
+    	if (!$responseProcessing instanceof taoItems_models_classes_QTI_response_Composite) {
+    		throw new common_exception_Error('Call to manualprocessing form in non-composite mode');
+    	}
+        parent::__construct($interaction, $responseProcessing);
         // section 127-0-1-1--3304025a:135345a8f39:-8000:00000000000036B0 end
     }
 
@@ -91,6 +94,11 @@ class taoItems_actions_QTIform_ManualProcessing
     {
         // section 127-0-1-1-249123f:13519689c9e:-8000:0000000000003690 begin
     	parent::initElements();
+    	$irp = $this->responseProcessing->getInteractionResponseProcessing($this->interaction->getResponse());
+    	if (!$irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
+    		throw new common_exception_Error('Call to manualprocessing form on a non manual interaction');
+    	}
+    	
         $serialElt = tao_helpers_form_FormFactory::getElement('outcomeSerial', 'Hidden');
 		$serialElt->setValue($this->outcome->getSerial());
 		$this->form->addElement($serialElt);
@@ -105,6 +113,11 @@ class taoItems_actions_QTIform_ManualProcessing
 		$responses = $this->interaction->getResponse()->getCorrectResponses();
 		$correct->setValue(implode("\n", $responses));
 		$this->form->addElement($correct);
+		
+		$default = tao_helpers_form_FormFactory::getElement('defaultValue', 'Textbox');
+		$default->setDescription(__('Default value'));
+		$default->setValue($irp->getDefaultValue());
+		$this->form->addElement($default);
 		
 		//scale
 		$scale = $this->outcome->getScale();

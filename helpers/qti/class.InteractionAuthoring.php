@@ -72,7 +72,6 @@ class taoItems_helpers_qti_InteractionAuthoring
 			
 			// composite processing
 			$irp = $responseProcessing->getInteractionResponseProcessing($interaction->getResponse());
-			common_Logger::d('class: '.get_class($irp));
 			switch (get_class($irp)) {
 				case 'taoItems_models_classes_QTI_response_interactionResponseProcessing_None' :
 					$returnValue = self::getManualRPData($item, $interaction);
