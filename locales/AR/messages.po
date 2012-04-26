@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-03-30T12:58:23\n"
+"PO-Revision-Date: 2012-04-26T16:12:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: AR\n"
+"Language: EN\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -175,10 +175,10 @@ msgstr "ارسم"
 msgid "duplicate"
 msgstr "تكرار"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "تعديل السؤال"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "تعديل السؤال"
 
 msgid "Edit item class"
@@ -292,14 +292,17 @@ msgstr "le type MIME de l'image est invalide"
 msgid "Item content saved"
 msgstr "تم حفظ محتوى السؤال"
 
+msgid "item content successfully imported"
+msgstr ""
+
 msgid "Item Editor:"
 msgstr "محرر السؤال"
 
-msgid "item imported successfully"
-msgstr "تم استيراد السؤال بنجاح"
-
 msgid "Item imported successfully"
 msgstr "تم استيراد الؤال بنجاح"
+
+msgid "item imported successfully"
+msgstr "تم استيراد السؤال بنجاح"
 
 msgid "Item Properties:"
 msgstr ":خصائص السؤال"
@@ -345,6 +348,9 @@ msgstr "ادارة محتوى السؤال"
 
 msgid "Manage items"
 msgstr "ادارة الاسئلة"
+
+msgid "Manage the versioned content : "
+msgstr ""
 
 msgid "manual"
 msgstr ""
@@ -579,6 +585,9 @@ msgstr ""
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
 
+msgid "the file was not uploaded successfully"
+msgstr ""
+
 msgid "The item has been successfully saved"
 msgstr ""
 
@@ -588,8 +597,8 @@ msgstr "Le module Item vous permet la création et le design d'items et d'exerci
 msgid "The options have been updated"
 msgstr ""
 
-msgid "The response form is available for templates driven item only.<br/>"
-msgstr "Le formulaire de réponse n'est disponible que pour les items issues de modèles.<br/>"
+msgid "The response form is not available for the selected response processing.<br/>"
+msgstr ""
 
 msgid "The response processing has been saved"
 msgstr "تم حفظ طريقة معالجة الاجابات"
@@ -662,6 +671,9 @@ msgstr ""
 
 msgid "vertical"
 msgstr "العمودي"
+
+msgid "wrong file format"
+msgstr ""
 
 msgid "yes"
 msgstr "نعم"

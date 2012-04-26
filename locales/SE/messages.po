@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-03-30T12:58:36\n"
+"PO-Revision-Date: 2012-04-26T16:13:01\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: SE\n"
+"Language: EN\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -173,10 +173,10 @@ msgstr "rita"
 msgid "duplicate"
 msgstr "dublett"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "Redigera fråga"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "Redigera fråga"
 
 msgid "Edit item class"
@@ -290,14 +290,17 @@ msgstr "ogiltig bildtyp"
 msgid "Item content saved"
 msgstr "Frågeinnehåll sparat"
 
+msgid "item content successfully imported"
+msgstr ""
+
 msgid "Item Editor:"
 msgstr "Frågeredigerare"
 
-msgid "item imported successfully"
-msgstr "fråga framgångsrikt importerat"
-
 msgid "Item imported successfully"
 msgstr "Fråga framgångsrikt importerad"
+
+msgid "item imported successfully"
+msgstr "fråga framgångsrikt importerat"
 
 msgid "Item Properties:"
 msgstr "Frågeegenskaper"
@@ -343,6 +346,9 @@ msgstr "Hantera frågeinnehåll"
 
 msgid "Manage items"
 msgstr "Hantera frågor"
+
+msgid "Manage the versioned content : "
+msgstr ""
 
 msgid "manual"
 msgstr ""
@@ -577,6 +583,9 @@ msgstr ""
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "Svarsbearbetningstypen är för närvarande inte helt fungerande i detta verktyg. Att ta bort interaktioner eller val rekommenderas ej."
 
+msgid "the file was not uploaded successfully"
+msgstr ""
+
 msgid "The item has been successfully saved"
 msgstr ""
 
@@ -586,8 +595,8 @@ msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 msgid "The options have been updated"
 msgstr ""
 
-msgid "The response form is available for templates driven item only.<br/>"
-msgstr "Svarsformen är endast tillgänglig för malldrivna frågor"
+msgid "The response form is not available for the selected response processing.<br/>"
+msgstr ""
 
 msgid "The response processing has been saved"
 msgstr "Svarsprocessen har sparats"
@@ -660,6 +669,9 @@ msgstr ""
 
 msgid "vertical"
 msgstr "vertikal"
+
+msgid "wrong file format"
+msgstr ""
 
 msgid "yes"
 msgstr "ja"

@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-03-30T12:58:31\n"
+"PO-Revision-Date: 2012-04-26T16:12:53\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: FR\n"
+"Language: EN\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -173,10 +173,10 @@ msgstr "déssinez"
 msgid "duplicate"
 msgstr "dupliquer"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "Modifier un item"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "Modifier un item"
 
 msgid "Edit item class"
@@ -290,14 +290,17 @@ msgstr "le type MIME de l'image est invalide"
 msgid "Item content saved"
 msgstr "Le contenu de l'item a été sauvegardé"
 
+msgid "item content successfully imported"
+msgstr ""
+
 msgid "Item Editor:"
 msgstr "Editeur d'item:"
 
-msgid "item imported successfully"
-msgstr "item importée avec succès"
-
 msgid "Item imported successfully"
 msgstr "Item importé avec succès"
+
+msgid "item imported successfully"
+msgstr "item importée avec succès"
 
 msgid "Item Properties:"
 msgstr "Propriétés de l'item:"
@@ -343,6 +346,9 @@ msgstr "Gérer le contenu de l'item"
 
 msgid "Manage items"
 msgstr "Gérer les items"
+
+msgid "Manage the versioned content : "
+msgstr ""
 
 msgid "manual"
 msgstr ""
@@ -577,6 +583,9 @@ msgstr ""
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
 
+msgid "the file was not uploaded successfully"
+msgstr ""
+
 msgid "The item has been successfully saved"
 msgstr ""
 
@@ -586,8 +595,8 @@ msgstr "Le module Item vous permet la création et le design d'items et d'exerci
 msgid "The options have been updated"
 msgstr ""
 
-msgid "The response form is available for templates driven item only.<br/>"
-msgstr "Le formulaire de réponse n'est disponible que pour les items issues de modèles.<br/>"
+msgid "The response form is not available for the selected response processing.<br/>"
+msgstr ""
 
 msgid "The response processing has been saved"
 msgstr "Le mode de traitement des réponses a été sauvegardé"
@@ -660,6 +669,9 @@ msgstr ""
 
 msgid "vertical"
 msgstr "vertical"
+
+msgid "wrong file format"
+msgstr ""
 
 msgid "yes"
 msgstr "oui"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-03-30T12:58:28\n"
+"PO-Revision-Date: 2012-04-26T16:12:49\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: EN\n"
@@ -173,10 +173,10 @@ msgstr ""
 msgid "duplicate"
 msgstr ""
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr ""
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr ""
 
 msgid "Edit item class"
@@ -290,13 +290,16 @@ msgstr ""
 msgid "Item content saved"
 msgstr ""
 
+msgid "item content successfully imported"
+msgstr ""
+
 msgid "Item Editor:"
 msgstr ""
 
-msgid "item imported successfully"
+msgid "Item imported successfully"
 msgstr ""
 
-msgid "Item imported successfully"
+msgid "item imported successfully"
 msgstr ""
 
 msgid "Item Properties:"
@@ -342,6 +345,9 @@ msgid "Manage item content"
 msgstr ""
 
 msgid "Manage items"
+msgstr ""
+
+msgid "Manage the versioned content : "
 msgstr ""
 
 msgid "manual"
@@ -577,6 +583,9 @@ msgstr ""
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr ""
 
+msgid "the file was not uploaded successfully"
+msgstr ""
+
 msgid "The item has been successfully saved"
 msgstr ""
 
@@ -586,7 +595,7 @@ msgstr ""
 msgid "The options have been updated"
 msgstr ""
 
-msgid "The response form is available for templates driven item only.<br/>"
+msgid "The response form is not available for the selected response processing.<br/>"
 msgstr ""
 
 msgid "The response processing has been saved"
@@ -659,6 +668,9 @@ msgid "VersionedContent"
 msgstr ""
 
 msgid "vertical"
+msgstr ""
+
+msgid "wrong file format"
 msgstr ""
 
 msgid "yes"
