@@ -108,6 +108,8 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_None
         $returnValue = (string) '';
 
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009017 begin
+        $returnValue = 'if(isNull(null, getResponse("'.$this->getResponse()->getIdentifier().'"))) { '.
+        	'setOutcomeValue("'.$this->getOutcome()->getIdentifier().'", '.$this->getDefaultValue().'); };';
         // section 127-0-1-1-786830e4:134f066fb13:-8000:0000000000009017 end
 
         return (string) $returnValue;
