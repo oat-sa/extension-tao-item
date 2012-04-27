@@ -231,21 +231,21 @@ class taoItems_models_classes_ItemsService
 					}
 				}
 				
-			}else{
+			}
 				
-				foreach ($item->getPropertyValues($this->itemContentProperty) as $fileUri) {
-					if (common_Utils::isUri($fileUri)) {
-						$file = new core_kernel_classes_File($fileUri);
-						$file->delete();
-					}
-				}
-				
-				//@TODO : delete the folder for all languages!
-				$itemFolder = $this->getItemFolder($item);
-				if (is_dir($itemFolder)) {
-					tao_helpers_File::remove($itemFolder, true);
+			foreach ($item->getPropertyValues($this->itemContentProperty) as $fileUri) {
+				if (common_Utils::isUri($fileUri)) {
+					$file = new core_kernel_classes_File($fileUri);
+					$file->delete();
 				}
 			}
+
+			//@TODO : delete the folder for all languages!
+			$itemFolder = $this->getItemFolder($item);
+			if (is_dir($itemFolder)) {
+				tao_helpers_File::remove($itemFolder, true);
+			}
+			
 			
 			//TODO : should the runtimeFolder be language dependent as well?
 			$runtimeFolder = $this->getRuntimeFolder($item);

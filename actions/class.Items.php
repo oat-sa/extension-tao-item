@@ -150,7 +150,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$this->setView('item_form.tpl');
 	}
 	
-	public function editVersionedItemContent(){
+	public function itemVersionedContentIO(){
 		
 		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
 		if(is_null($uri) || empty($uri)){
@@ -191,7 +191,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		if($myForm->isSubmited()){
 
 			if($myForm->isValid()){
-
+				
 				// Extract data from form
 				$data = $myForm->getValues();
 
@@ -205,18 +205,30 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				$version = isset($data['file_version']) ? $data['file_version'] : 0;
 				
 				$done = false;
-				
 				//the file is already versioned
 				if($versionedFile->isVersioned()){
 					if($delete){
+						
 						$versionedFile->delete();//no need to commit here (already done in the funciton implementation
 						$done = $ownerInstance->removePropertyValues($property);
+						$itemContentProp = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
+						foreach($ownerInstance->getPropertyValues($itemContentProp) as $fileUri){
+							if(common_Utils::isUri($fileUri)){
+								$file = new core_kernel_classes_File($fileUri);
+								$file->delete();
+							}
+						}
+						$done &= $ownerInstance->removePropertyValues($itemContentProp);
+						
+						$this->setData('message', __('item versioned content deleted'));
 					}else if ($version) {//version = [1..n]
 						//revert to a version
 						$topRevision = count($myForm->getElement('file_version')->getOptions());
 						if ($version < $topRevision) {
 							$done = $versionedFile->revert($version, empty($message)?'Revert to TAO version '.$version : $message);
+							$this->setData('message', __('revision restored : ').$version);
 						}
+						
 					}
 				}
 				
@@ -256,23 +268,24 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					}
 
 					if ($imported) {
-						$this->setData('message', 'QTI item content saved');
-					} else {
-						var_dump('import errors : ', get_data('importErrorTitle'), get_data('importErrors'));
-						exit;
+						$this->setData('message', __('item versioned content saved'));
 					}
+					
 				}
 				
-				//reload the form to take into account the changes
-				$ctx = Context::getInstance();
-				$this->redirect(_url($ctx->getActionName(), $ctx->getModuleName(), $this->getSessionAttribute('currentExtension'), array(
-					'uri'			=> tao_helpers_Uri::encode($ownerInstance->uriResource),
-					'propertyUri'	=> tao_helpers_Uri::encode($property->uriResource)
-				)));
+				//refresh the page to reflect the change
+				if(!count(get_data('importErrors'))){
+					$ctx = Context::getInstance();
+					$this->redirect(_url($ctx->getActionName(), $ctx->getModuleName(), $this->getSessionAttribute('currentExtension'), array(
+						'uri'			=> tao_helpers_Uri::encode($ownerInstance->uriResource),
+						'propertyUri'	=> tao_helpers_Uri::encode($property->uriResource),
+						'message'		=> get_data('message')
+					)));
+				}
 			}
 		}
-
-		$this->setData('formTitle', __('Manage the versioned content : ').$ownerInstance->getLabel().' > '.$property->getLabel());
+		
+		$this->setData('formTitle', __('Manage the item versioned content').' '.$this->service->getItemModel($ownerInstance)->getLabel().' : '.$ownerInstance->getLabel());
 		$this->setData('myForm', $myForm->render());
 
 		$this->setView('form/versioned_file.tpl', true);
