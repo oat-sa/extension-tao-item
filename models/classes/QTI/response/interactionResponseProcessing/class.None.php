@@ -134,8 +134,7 @@ class taoItems_models_classes_QTI_response_interactionResponseProcessing_None
 	                <variable identifier="'.$this->getResponse()->getIdentifier().'" />
 	            </isNull>
 		        <setOutcomeValue identifier="'.$this->getOutcome()->getIdentifier().'">
-		        	<baseValue baseType="'.$this->getResponse()->getBaseType().'">'.
-						$this->default.'</baseValue>
+		        	<baseValue baseType="'.$this->getOutcome()->options['baseType'].'">0</baseValue>
 		        </setOutcomeValue>
 		    </responseIf>
 		</responseCondition>';

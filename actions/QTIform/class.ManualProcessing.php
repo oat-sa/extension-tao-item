@@ -113,12 +113,12 @@ class taoItems_actions_QTIform_ManualProcessing
 		$responses = $this->interaction->getResponse()->getCorrectResponses();
 		$correct->setValue(implode("\n", $responses));
 		$this->form->addElement($correct);
-		
+		/*
 		$default = tao_helpers_form_FormFactory::getElement('defaultValue', 'Textbox');
-		$default->setDescription(__('Default value'));
+		$default->setDescription(__('Empty response value'));
 		$default->setValue($irp->getDefaultValue());
 		$this->form->addElement($default);
-		
+		*/
 		//scale
 		$scale = $this->outcome->getScale();
 		$availableOptions = array(
