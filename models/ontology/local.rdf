@@ -11,56 +11,55 @@
 	xmlns:generis="http://www.tao.lu/Ontologies/generis.rdf#"
 	xmlns:widget="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#"
 >
-  <rdf:Description rdf:about="lg"/>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#i1261571812010328500">
     <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Hawai"/>
     <item:ItemContent rdf:resource="LOCAL_NAMESPACE#i1296490050055730300"/>
-    <rdf:type xml:lang="EN" rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
-    <rdfs:label><![CDATA[Hawai Item]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+    <rdfs:label xml:lang="EN"><![CDATA[Hawai Item]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296490050062615400">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
-    <rdfs:label><![CDATA[File : {ROOT_PATH}taoItems/data/i1261565165029846800/kohs.xml]]></rdfs:label>
-    <rdfs:comment><![CDATA[File : {ROOT_PATH}taoItems/data/i1261565165029846800/kohs.xml]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261565165029846800/kohs.xml]]></rdfs:label>
+    <rdfs:comment xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261565165029846800/kohs.xml]]></rdfs:comment>
     <generis:FilePath><![CDATA[{ROOT_PATH}taoItems/data/i1261565165029846800/]]></generis:FilePath>
     <generis:FileName><![CDATA[kohs.xml]]></generis:FileName>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1261565165029846800">
-    <rdf:type xml:lang="EN" rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
-    <rdfs:label><![CDATA[Kohs Item]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+    <rdfs:label xml:lang="EN"><![CDATA[Kohs Item]]></rdfs:label>
     <item:ItemContent rdf:resource="LOCAL_NAMESPACE#i1296490050062615400"/>
     <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#kohs"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296490050068099900">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
-    <rdfs:label><![CDATA[File : {ROOT_PATH}taoItems/data/i1261572123013289000/ctest.xml]]></rdfs:label>
-    <rdfs:comment><![CDATA[File : {ROOT_PATH}taoItems/data/i1261572123013289000/ctest.xml]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261572123013289000/ctest.xml]]></rdfs:label>
+    <rdfs:comment xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261572123013289000/ctest.xml]]></rdfs:comment>
     <generis:FilePath><![CDATA[{ROOT_PATH}taoItems/data/i1261572123013289000/]]></generis:FilePath>
     <generis:FileName><![CDATA[ctest.xml]]></generis:FileName>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1261572123013289000">
-    <rdf:type xml:lang="EN" rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
-    <rdfs:label><![CDATA[CTest Item]]></rdfs:label>
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+    <rdfs:label xml:lang="EN"><![CDATA[CTest Item]]></rdfs:label>
     <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest"/>
     <item:ItemContent rdf:resource="LOCAL_NAMESPACE#i1296490050068099900"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1292796232039301700">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
-    <rdfs:label><![CDATA[QTI Item]]></rdfs:label>
+    <rdfs:label xml:lang="EN"><![CDATA[QTI Item]]></rdfs:label>
     <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#QTI"/>
     <item:ItemContent xml:lang="EN" rdf:resource="LOCAL_NAMESPACE#i1292796235055825700"/>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1292796235055825700">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
-    <rdfs:label><![CDATA[File : {ROOT_PATH}taoItems/data/i1292796232039301700/qti.xml]]></rdfs:label>
-    <rdfs:comment><![CDATA[File : {ROOT_PATH}taoItems/data/i1292796232039301700/qti.xml]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1292796232039301700/qti.xml]]></rdfs:label>
+    <rdfs:comment xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1292796232039301700/qti.xml]]></rdfs:comment>
     <generis:FilePath><![CDATA[{ROOT_PATH}taoItems/data/i1292796232039301700/]]></generis:FilePath>
     <generis:FileName><![CDATA[qti.xml]]></generis:FileName>
   </rdf:Description>
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296490050055730300">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
-    <rdfs:label><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/index.xhtml]]></rdfs:label>
-    <rdfs:comment><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/index.xhtml]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/index.xhtml]]></rdfs:label>
+    <rdfs:comment xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261571812010328500/index.xhtml]]></rdfs:comment>
     <generis:FilePath><![CDATA[{ROOT_PATH}taoItems/data/i1261571812010328500/]]></generis:FilePath>
     <generis:FileName><![CDATA[index.xhtml]]></generis:FileName>
   </rdf:Description>
