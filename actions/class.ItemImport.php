@@ -192,32 +192,29 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 						$rdfItem->setPropertyValue($itemModelProperty, TAO_ITEM_MODEL_QTI);
 						
 						//set the file in the itemContent
-						if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
-							
-							$importedItems++;	//item is considered as imported there 
+						if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem, 'HOLD_COMMIT')){
 							
 							$subpath = preg_quote(dirname($resource->getItemFile()), '/');
 							
 							//and copy the others resources in the runtime path
 							$itemPath = $itemService->getItemFolder($rdfItem);
 							
-//							var_dump($subpath, $resource->getAuxiliaryFiles(), $folder, $itemPath);
-							
 							foreach($resource->getAuxiliaryFiles() as $auxResource){
 								$auxPath = $auxResource;
 								if(preg_match("/^i[0-9]*/", $subpath)){
 									$auxPath = preg_replace("/^$subpath\//", '', $auxResource);
 								}
-//								var_dump($auxResource.' -> '.$auxPath);
-								
-								//@TODO : to be modified, to take into account versioning directory
 								tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
 							}
 							
-//							exit;
-							
 							if(GENERIS_VERSIONING_ENABLED){
-								//a big commit on the folder here!
+								$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
+								$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
+								if($versionedFolder->add(true, true) && $versionedFolder->commit('[QTI pack] '.__('created from qti package'))){
+									$importedItems++;
+								}
+							}else{
+								$importedItems++;	//item is considered as imported there 
 							}
 						}
 					}
@@ -320,10 +317,16 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				$this->setData('importErrors', array(array('message' => __('Unable to move')." $folder to $itemPath")));
 				return false;
         	}
-			//@TODO : commit here!
         	
-        	$itemService->setItemContent($rdfItem, $itemContent);
-						
+        	$itemService->setItemContent($rdfItem, $itemContent, 'HOLD_COMMIT');
+			if(GENERIS_VERSIONING_ENABLED){
+				$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
+				$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
+				if($versionedFolder->add(true, true) && $versionedFolder->commit('[OWI pack] '.__('OWI package uploaded'))){
+					//uploaded
+				}
+			}
+			
 			$this->removeSessionAttribute('classUri');
 			$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
 			$this->setData('message',__('item imported successfully'));

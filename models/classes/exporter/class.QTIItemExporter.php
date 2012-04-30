@@ -12,7 +12,8 @@ class taoItems_models_classes_exporter_QTIItemExporter extends taoItems_models_c
 		//add the data location
 		$location = $this->getItemLocation();
 		if(is_dir(realpath($location))){
-			$basenameLocation = $zipToRoot?'':basename($location);
+			
+			$basenameLocation = $zipToRoot?'':tao_helpers_Uri::getUniqueId($this->getItem()->uriResource);
 			
 			$this->addFile($location, $basenameLocation);
 			

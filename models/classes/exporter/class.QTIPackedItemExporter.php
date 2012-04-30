@@ -28,19 +28,18 @@ class taoItems_models_classes_exporter_QTIPackedItemExporter extends taoItems_mo
 	 */
 	public function exportManifest(){
 
-		$base = basename($this->getItemLocation());
+		$base = tao_helpers_Uri::getUniqueId($this->getItem()->uriResource);
 		$zipArchive = $this->getZip();
 		if(!is_null($zipArchive)){
 			
 			$qtiFile = '';
 			$qtiResources = array();
-			for($i = 0; $i < $zipArchive->numFiles; $i++){  
+			for($i = 0; $i < $zipArchive->numFiles; $i++){
           		$fileName = $zipArchive->getNameIndex($i);
           		if(preg_match("/^$base/", $fileName)){
           			if(basename($fileName) == 'qti.xml'){
           				$qtiFile = $fileName;
-          			}
-          			else{
+          			}else{
           				$qtiResources[] = $fileName;
           			}
           		}
