@@ -240,12 +240,13 @@ class taoItems_models_classes_ItemsService
 				}
 			}
 
-			//@TODO : delete the folder for all languages!
-			$itemFolder = $this->getItemFolder($item);
-			if (is_dir($itemFolder)) {
-				tao_helpers_File::remove($itemFolder, true);
+			//delete the folder for all languages!
+			foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
+				$itemFolder = $this->getItemFolder($item, $lang);
+				if (file_exists($itemFolder) && is_dir($itemFolder)) {
+					tao_helpers_File::remove($itemFolder, true);
+				}
 			}
-			
 			
 			//TODO : should the runtimeFolder be language dependent as well?
 			$runtimeFolder = $this->getRuntimeFolder($item);
@@ -415,15 +416,14 @@ class taoItems_models_classes_ItemsService
         	$itemContent = null;
         	
         	if(empty($lang)){
-    			$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
-        	}
-        	else{
-        		$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-        		if($itemContents->count() > 0){
-        			$itemContent = $itemContents->get(0);
-        		}
+				$lang = $this->getSessionLg();
         	}
         	
+			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+			if($itemContents->count() > 0){
+				$itemContent = $itemContents->get(0);
+			}
+			
 			if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 				
 				if(core_kernel_classes_File::isFile($itemContent)){
@@ -469,13 +469,13 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F6 begin
         
         if(!is_null($item)){
+			
         	if(empty($lang)){
-        		$returnValue = !is_null($item->getOnePropertyValue($this->itemContentProperty));
+				$lang = $this->getSessionLg();
         	}
-        	else{
-		        $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-		        $returnValue = ($itemContents->count() > 0);
-        	}
+        	
+			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+			$returnValue = ($itemContents->count() > 0);
         }
         
         // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F6 end
@@ -503,26 +503,27 @@ class taoItems_models_classes_ItemsService
         if(!is_null($item)){
         	
         	if($this->isItemModelDefined($item)){
-
+				
+				if(empty($lang)){
+					$lang = $this->getSessionLg();
+				}
+					
         		if($this->hasItemContent($item, $lang)){
         			
         			$itemContent = null;
 					$versionedFolder = null;
-		        	if(empty($lang)){
-		    			$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
-						if(GENERIS_VERSIONING_ENABLED) $versionedFolder = $item->getOnePropertyValue($this->itemVersionedContentProperty);
-		        	}else{
-		        		$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-		        		if($itemContents->count() > 0){
-		        			$itemContent = $itemContents->get(0);
-		        		}
-						if(GENERIS_VERSIONING_ENABLED){
-							$versionedFolders = $item->getPropertyValuesByLg($this->itemVersionedContentProperty, $lang);
-							if($versionedFolders->count() > 0){
-								$versionedFolder = $versionedFolders->get(0);
-							}
+					
+					$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+					if($itemContents->count() > 0){
+						$itemContent = $itemContents->get(0);
+					}
+					if(GENERIS_VERSIONING_ENABLED){
+						$versionedFolders = $item->getPropertyValuesByLg($this->itemVersionedContentProperty, $lang);
+						if($versionedFolders->count() > 0){
+							$versionedFolder = $versionedFolders->get(0);
 						}
-		        	}
+					}
+		        	
 					
 					if(core_kernel_classes_File::isFile($itemContent)){
         				$file = new core_kernel_classes_File($itemContent->uriResource);
@@ -543,31 +544,30 @@ class taoItems_models_classes_ItemsService
 	        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 	        		$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 					
-					if (empty($lang)) {
-						$session = core_kernel_classes_Session::singleton();
-						$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
-					}
-					
-					$itemDir = $this->getItemFolder($item);
+					$itemDir = $this->getItemFolder($item, $lang);//absolutely need for setting the language to preserve coherence between the item content and its versioned folder!
 					$file = core_kernel_classes_File::create($dataFile, $itemDir . '/');
-					$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
 					
 					if (!is_null($file) && $file->setContent($content)) {
+						
+						$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
 						if (GENERIS_VERSIONING_ENABLED) {
+							
 							//created versioned folder:
 							$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
 							$repository = $this->getVersionedFileRepository();
 							if (!is_null($repository)) {
 								$versionedFile = $versionedFileClass->createInstance('File : versioned folder of item ' . $item->getLabel(), 'File : created by ' . __CLASS__);
 								$versionedFile = core_kernel_versioning_File::create(
-									'', //empty string to allow folder versioning??
+									'', //empty string to allow folder versioning!!
 									tao_helpers_Uri::getUniqueId($item->uriResource) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang,
 									$repository,
 									$versionedFile->uriResource
 								);
+								
 								$item->setPropertyValueByLg($this->itemVersionedContentProperty, $versionedFile->uriResource, $lang);
 								if (!is_null($versionedFile)) {
 									$returnValue = $versionedFile->add(true, true);
+									
 									if($returnValue && $commitMessage != 'HOLD_COMMIT'){
 										$returnValue = $versionedFile->commit($commitMessage);
 									}
@@ -663,13 +663,10 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F9 begin
         
         if(!is_null($item)){
-        	try{
-        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-				if(!is_null($itemModel)){
-	        		$returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-				}
+			$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+			if(!is_null($itemModel)){
+				$returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
 			}
-        	catch(common_Exception $ce){}
         }
         
         // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F9 end
@@ -842,7 +839,6 @@ class taoItems_models_classes_ItemsService
         			$sourceFolder = $this->getItemFolder($item);
         			foreach(scandir($sourceFolder) as $file){
         				if($file != basename($path) && $file != $itemFileName &&$file != '.' && $file != '..'){
-        					
         					$copyFromPath = $sourceFolder . '/'. $file;
         					$copyToPath = $itemFolder . '/' . $file;
         					tao_helpers_File::copy($copyFromPath, $copyToPath, true);
@@ -1270,6 +1266,31 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1--2a1905ad:136e3babab3:-8000:0000000000003986 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method getSessionLg
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @return string
+     */
+    public function getSessionLg()
+    {
+        $returnValue = (string) '';
+
+        // section 127-0-1-1--37ac2a7e:1370da27424:-8000:00000000000039CC begin
+		
+		$session = core_kernel_classes_Session::singleton();
+		if ($session->getLg() != '') {
+			$returnValue = $session->getLg();
+		} else {
+			throw new Exception('the data language of the user cannot be found in session');
+		}
+		
+        // section 127-0-1-1--37ac2a7e:1370da27424:-8000:00000000000039CC end
+
+        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */

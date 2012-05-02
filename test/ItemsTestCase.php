@@ -94,25 +94,7 @@ class ItemsTestCase extends UnitTestCase {
 		
 		$this->assertFalse($this->itemsService->hasItemContent($item));
 		
-		$itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
-		$this->assertIsA($itemContentProperty, 'core_kernel_classes_Property');
-		
-		$file = core_kernel_classes_File::create('test.txt');
-		$this->assertTrue(core_kernel_classes_File::isFile($file));
-		
-		
-		$this->assertTrue(file_put_contents($file->getAbsolutePath(), 'test') > 0);
-		
-		$item->setPropertyValue($itemContentProperty, $file->uriResource);
-		
-		$content = $item->getOnePropertyValue($itemContentProperty);
-		
-		$this->assertTrue(core_kernel_classes_File::isFile($content));
-		
-		$gotFile = new core_kernel_classes_File($content->uriResource);
-		
-		$this->assertEqual($gotFile->getAbsolutePath(), $file->getAbsolutePath());
-			
+		//must use setItemContent and getItemContent
 		$this->assertTrue($this->itemsService->setItemContent($item, 'test 2'));
 		$this->assertEqual('test 2', $this->itemsService->getItemContent($item));
 		
