@@ -59,6 +59,10 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 		}
 	}
 	
+	/**
+	 * action to perform to export items as QTI Content Packages.
+	 * @param array $formValues the posted data (assoc).
+	 */
 	protected function exportIMSCPData($formValues){
 		if($this->hasRequestParameter('filename')){
 			$instances = $formValues['instances'];
