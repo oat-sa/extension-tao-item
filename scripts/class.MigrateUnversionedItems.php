@@ -88,6 +88,8 @@ class taoItems_scripts_MigrateUnversionedItems
     public function preRun()
     {
         // section 127-0-1-1--698399da:1370ca5efd2:-8000:00000000000039C2 begin
+		
+		
         // section 127-0-1-1--698399da:1370ca5efd2:-8000:00000000000039C2 end
     }
 
@@ -135,7 +137,10 @@ class taoItems_scripts_MigrateUnversionedItems
 				//migrate items with an item model only:
 				self::out('migrating item '.$itemModelLabel.' : '.$item->getLabel(). ' ('.$item->uriResource.')', array('color'=>'light_cyan'));
 				
+				//switch from script parameters to one of these options:
 				$this->migrateToNewItemPath($item);
+//				$this->migrateToUnversionedItem($item);
+//				$this->migrateToVersionedItem($item);
 				
 			}
 			
@@ -177,8 +182,7 @@ class taoItems_scripts_MigrateUnversionedItems
 						$destinationFolder = $this->itemService->getItemFolder($item, $usedLanguage);
 						self::out('copying ' . $oldSourceFolder . ' to ' . $destinationFolder);
 
-						//copy item start point
-
+						//copy item start point:
 						if ($usedLanguage == DEFAULT_LANG || $usedLanguage == '') {
 							$source = $oldSourceFolder . $dataFile;
 						} else {
@@ -243,7 +247,7 @@ class taoItems_scripts_MigrateUnversionedItems
     /**
      * version all tao items from items created in TAO 2.2 or migrated by the
      * 'migrateToNewItemPath' : e.g.
-     * taoItems/data/i123456/EN ->
+     * taoItems/data/i123456/EN -> generis/data/versioning/DEFAULT/i123465/itemContent/EN
      *
      * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -361,8 +365,7 @@ class taoItems_scripts_MigrateUnversionedItems
     /**
      * unversion all tao items for items created in TAO 2.2 or migrated by the
      * 'migrateToNewItemPath' : e.g.
-     * ->
-     * taoItems/data/i123456/EN
+     * generis/data/versioning/DEFAULT/i123465/itemContent/EN -> taoItems/data/i123456/EN
      *
      * @access protected
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
