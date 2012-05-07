@@ -318,7 +318,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				return false;
         	}
         	
-        	$itemService->setItemContent($rdfItem, $itemContent, 'HOLD_COMMIT');
+        	$itemService->setItemContent($rdfItem, $itemContent, null, 'HOLD_COMMIT');
 			if(GENERIS_VERSIONING_ENABLED){
 				$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
 				$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);

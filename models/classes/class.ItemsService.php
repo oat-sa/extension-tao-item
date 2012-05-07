@@ -218,35 +218,7 @@ class taoItems_models_classes_ItemsService
 		
 		if(!is_null($item)){
 			
-			if(GENERIS_VERSIONING_ENABLED){
-				
-				foreach($item->getPropertyValues($this->itemVersionedContentProperty) as $fileUri){
-					if(common_Utils::isUri($fileUri)){
-						$versionedFile = new core_kernel_versioning_File($fileUri);
-						if(core_kernel_versioning_File::isVersionedFile($versionedFile)){
-							try{
-								$versionedFile->delete();
-							}catch(core_kernel_versioning_exception_FileUnversionedException $e){}
-						}
-					}
-				}
-				
-			}
-				
-			foreach ($item->getPropertyValues($this->itemContentProperty) as $fileUri) {
-				if (common_Utils::isUri($fileUri)) {
-					$file = new core_kernel_classes_File($fileUri);
-					$file->delete();
-				}
-			}
-
-			//delete the folder for all languages!
-			foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
-				$itemFolder = $this->getItemFolder($item, $lang);
-				if (file_exists($itemFolder) && is_dir($itemFolder)) {
-					tao_helpers_File::remove($itemFolder, true);
-				}
-			}
+			$returnValue = $this->deleteItemContent($item);
 			
 			//TODO : should the runtimeFolder be language dependent as well?
 			$runtimeFolder = $this->getRuntimeFolder($item);
@@ -254,7 +226,7 @@ class taoItems_models_classes_ItemsService
 				tao_helpers_File::remove($runtimeFolder, true);
 			}
 
-			$returnValue = $item->delete(true);
+			$returnValue &= $item->delete(true);
 			
 		}
 		
@@ -1269,7 +1241,8 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getSessionLg
+     * Rertrieve current user's language from the session object to know where
+     * item content should be located
      *
      * @access public
      * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
@@ -1291,6 +1264,57 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1--37ac2a7e:1370da27424:-8000:00000000000039CC end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method deleteItemContent
+     *
+     * @access public
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  Resource item
+     * @return boolean
+     */
+    public function deleteItemContent( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (bool) false;
+
+        // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039CD begin
+		
+		if(GENERIS_VERSIONING_ENABLED){
+
+			foreach($item->getPropertyValues($this->itemVersionedContentProperty) as $fileUri){
+				if(common_Utils::isUri($fileUri)){
+					$versionedFile = new core_kernel_versioning_File($fileUri);
+					if(core_kernel_versioning_File::isVersionedFile($versionedFile)){
+						try{
+							$versionedFile->delete();
+						}catch(core_kernel_versioning_exception_FileUnversionedException $e){}
+					}
+				}
+			}
+
+		}
+
+		foreach ($item->getPropertyValues($this->itemContentProperty) as $fileUri) {
+			if (common_Utils::isUri($fileUri)) {
+				$file = new core_kernel_classes_File($fileUri);
+				$file->delete();
+			}
+		}
+
+		//delete the folder for all languages!
+		foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
+			$itemFolder = $this->getItemFolder($item, $lang);
+			if (file_exists($itemFolder) && is_dir($itemFolder)) {
+				tao_helpers_File::remove($itemFolder, true);
+			}
+		}
+		
+		$returnValue = true;
+		
+        // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039CD end
+
+        return (bool) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */
