@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-04-26T16:12:43\n"
+"Project-Id-Version: TAO v2.2-beta\n"
+"PO-Revision-Date: 2012-05-08T17:57:29\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: EN\n"
+"Language: AR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -125,6 +125,9 @@ msgstr ""
 msgid "create table"
 msgstr "انشاء جدول"
 
+msgid "created from qti package"
+msgstr ""
+
 msgid "custom"
 msgstr ""
 
@@ -186,6 +189,9 @@ msgstr ""
 
 msgid "ellipse"
 msgstr "élipse"
+
+msgid "Empty response value"
+msgstr ""
 
 msgid "Enabled"
 msgstr "نشط"
@@ -319,6 +325,12 @@ msgstr ""
 msgid "Item successfully saved"
 msgstr ""
 
+msgid "item versioned content deleted"
+msgstr ""
+
+msgid "item versioned content saved"
+msgstr ""
+
 msgid "Items"
 msgstr "الاسئلة"
 
@@ -349,7 +361,7 @@ msgstr "ادارة محتوى السؤال"
 msgid "Manage items"
 msgstr "ادارة الاسئلة"
 
-msgid "Manage the versioned content : "
+msgid "Manage the item versioned content"
 msgstr ""
 
 msgid "manual"
@@ -361,10 +373,10 @@ msgstr "خريطة"
 msgid "map point"
 msgstr "نقطة على الخريطة"
 
-msgid "Match group"
+msgid "Match Group"
 msgstr "Groupe associé"
 
-msgid "Match Group"
+msgid "Match group"
 msgstr "Groupe associé"
 
 msgid "Matching side"
@@ -445,6 +457,9 @@ msgstr "مطلوب الرد"
 msgid "Orientation"
 msgstr "التوجيه"
 
+msgid "OWI package uploaded"
+msgstr ""
+
 msgid "Pattern mask"
 msgstr "Masque d'expression régulière"
 
@@ -518,6 +533,9 @@ msgid "Return to item editor"
 msgstr ""
 
 msgid "Reverse rendering"
+msgstr ""
+
+msgid "revision restored : "
 msgstr ""
 
 msgid "Save"

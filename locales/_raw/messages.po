@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-alpha\n"
-"PO-Revision-Date: 2012-04-26T16:13:04\n"
+"Project-Id-Version: TAO v2.2-beta\n"
+"PO-Revision-Date: 2012-05-08T17:58:05\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: EN\n"
+"Language: _raw\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -125,6 +125,9 @@ msgstr ""
 msgid "create table"
 msgstr ""
 
+msgid "created from qti package"
+msgstr ""
+
 msgid "custom"
 msgstr ""
 
@@ -183,6 +186,9 @@ msgid "Edit item class"
 msgstr ""
 
 msgid "ellipse"
+msgstr ""
+
+msgid "Empty response value"
 msgstr ""
 
 msgid "Enabled"
@@ -317,6 +323,12 @@ msgstr ""
 msgid "Item successfully saved"
 msgstr ""
 
+msgid "item versioned content deleted"
+msgstr ""
+
+msgid "item versioned content saved"
+msgstr ""
+
 msgid "Items"
 msgstr ""
 
@@ -347,7 +359,7 @@ msgstr ""
 msgid "Manage items"
 msgstr ""
 
-msgid "Manage the versioned content : "
+msgid "Manage the item versioned content"
 msgstr ""
 
 msgid "manual"
@@ -359,10 +371,10 @@ msgstr ""
 msgid "map point"
 msgstr ""
 
-msgid "Match group"
+msgid "Match Group"
 msgstr ""
 
-msgid "Match Group"
+msgid "Match group"
 msgstr ""
 
 msgid "Matching side"
@@ -443,6 +455,9 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
+msgid "OWI package uploaded"
+msgstr ""
+
 msgid "Pattern mask"
 msgstr ""
 
@@ -516,6 +531,9 @@ msgid "Return to item editor"
 msgstr ""
 
 msgid "Reverse rendering"
+msgstr ""
+
+msgid "revision restored : "
 msgstr ""
 
 msgid "Save"

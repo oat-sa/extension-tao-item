@@ -34,7 +34,7 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source ItemContent
+    @source Item Content
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
@@ -62,7 +62,7 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source ItemModels
+    @source Item Models
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
@@ -70,7 +70,7 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source ItemModels
+    @source Item Models
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
@@ -88,7 +88,7 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source ItemModel
+    @source Item Model
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
@@ -98,7 +98,7 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source Runtime<br />
+    @source Runtime
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
@@ -252,15 +252,15 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source 
+    @source Stable
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="AR"><![CDATA[]]></rdfs:label>
+    <rdfs:label xml:lang="AR"><![CDATA[Stable]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source this item  model can be used in production
+    @source This item  model can be used in production
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
@@ -278,7 +278,7 @@
     <!--
     @sourceLanguage EN
     @targetLanguage AR
-    @source this item model is not supported anymore, we advise to migrate your items
+    @source This item model is not supported anymore, we advise to migrate your items
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
