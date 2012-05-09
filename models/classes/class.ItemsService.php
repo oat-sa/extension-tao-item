@@ -717,7 +717,8 @@ class taoItems_models_classes_ItemsService
         		TAO_ITEM_MODEL_CTEST,
         		TAO_ITEM_MODEL_HAWAI,
         		TAO_ITEM_MODEL_QTI,
-        		TAO_ITEM_MODEL_XHTML
+        		TAO_ITEM_MODEL_XHTML,
+			TAO_ITEM_MODEL_SURVEY
         	);
         	
         	if($this->hasItemModel($item, $deployableItems)){
@@ -769,6 +770,10 @@ class taoItems_models_classes_ItemsService
         			$output	= $templateRenderer->render();
         			
         		}
+			else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_SURVEY))){
+							$output = taoItems_models_classes_Survey_Item::renderItem($item);
+						}
+        		
         		else{
         			$output	= $this->getItemContent($item);
         		}
