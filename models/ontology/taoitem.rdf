@@ -98,6 +98,7 @@
     <rdfs:seeAlso xml:lang="EN"/>
     <rdfs:isDefinedBy xml:lang="EN"/>
   </rdf:Description>
+   <!-- DEPRECATED
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Hawai">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
     <item:ItemRuntime xml:lang="EN"><![CDATA[hawai.swf]]></item:ItemRuntime>
@@ -110,7 +111,8 @@
     <item:DataFileName><![CDATA[index.xhtml]]></item:DataFileName>
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental"/>
   </rdf:Description>
-  
+    -->
+    
   <!-- DEPRECATED
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#campus">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
