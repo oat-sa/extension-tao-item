@@ -47,6 +47,9 @@ $todefine = array(
 	'TAO_ITEM_ENUMERATION_SCALE'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Enumeration',
 	'TAO_ITEM_LOWER_BOUND_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ScaleLowerBound',
 	'TAO_ITEM_UPPER_BOUND_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ScaleUpperBound',
-	'TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScaleDistance'
+	'TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScaleDistance',
+	'TAO_ITEM_MODEL_SURVEY'                => 
+'http://www.tao.lu/Ontologies/TAOItem.rdf#SurveyItem'
+
 );
 ?>
