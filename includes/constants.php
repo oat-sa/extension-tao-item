@@ -19,6 +19,7 @@ $todefine = array(
 	'TAO_ITEM_MODEL_XHTML'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML',
 	'TAO_ITEM_MODEL_HAWAI'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Hawai',
 	'TAO_ITEM_MODEL_CAMPUS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#campus',
+	'TAO_ITEM_MODEL_SURVEY'             => 'http://www.tao.lu/Ontologies/TAOItem.rdf#SurveyItem',
 	
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
 	'TAO_ITEM_HAWAI_TPL_FILE'	 		=> BASE_PATH.'/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/units/xhtml.skeleton.xhtml',
@@ -47,9 +48,8 @@ $todefine = array(
 	'TAO_ITEM_ENUMERATION_SCALE'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Enumeration',
 	'TAO_ITEM_LOWER_BOUND_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ScaleLowerBound',
 	'TAO_ITEM_UPPER_BOUND_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ScaleUpperBound',
-	'TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScaleDistance',
-	'TAO_ITEM_MODEL_SURVEY'                => 
-'http://www.tao.lu/Ontologies/TAOItem.rdf#SurveyItem'
+	'TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScaleDistance'
+
 
 );
 ?>
