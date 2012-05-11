@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Specialize the export for the items
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage actions_form
  */
@@ -17,7 +17,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * This container initialize the export form.
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/actions/form/class.Export.php');
 
@@ -33,7 +33,7 @@ require_once('tao/actions/form/class.Export.php');
  * Specialize the export for the items
  *
  * @access public
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage actions_form
  */
@@ -45,21 +45,13 @@ class taoItems_actions_form_Export
 
     // --- ATTRIBUTES ---
 
-    /**
-     * the supported formats
-     *
-     * @access protected
-     * @var array
-     */
-    protected $formats = array('rdf' => 'RDF', 'xml' => 'XML', 'imscp' => 'QTI Package');
-
     // --- OPERATIONS ---
 
     /**
      * overriden
      *
      * @access public
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     public function initElements()
@@ -75,7 +67,7 @@ class taoItems_actions_form_Export
      * Create the form elements to select the instances to be exported
      *
      * @access protected
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function initXMLElements()
@@ -139,7 +131,7 @@ class taoItems_actions_form_Export
      * Create the form elements to select the QTI instances to be exported
      *
      * @access protected
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function initIMSCPElements()
@@ -200,6 +192,24 @@ class taoItems_actions_form_Export
     	$this->form->createGroup('options', __('Export Options'), array('xml_desc', 'filename', 'instances'));
     	
         // section 127-0-1-1--46051fb4:12ee209629f:-8000:0000000000002D57 end
+    }
+
+    /**
+     * Short description of method getFormats
+     *
+     * @access protected
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return array
+     */
+    protected function getFormats()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A50 begin
+        $returnValue = array('rdf' => 'RDF', 'xml' => 'XML', 'imscp' => 'QTI Package');
+        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A50 end
+
+        return (array) $returnValue;
     }
 
 } /* end of class taoItems_actions_form_Export */

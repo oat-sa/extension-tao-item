@@ -9,10 +9,10 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 23.03.2011, 23:54:38 with ArgoUML PHP module 
+ * Automatically generated on 11.05.2012, 17:45:28 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage actions_form
  */
@@ -24,7 +24,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * This container initialize the import form.
  *
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/actions/form/class.Import.php');
 
@@ -40,7 +40,7 @@ require_once('tao/actions/form/class.Import.php');
  * Short description of class taoItems_actions_form_Import
  *
  * @access public
- * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage actions_form
  */
@@ -52,21 +52,13 @@ class taoItems_actions_form_Import
 
     // --- ATTRIBUTES ---
 
-    /**
-     * Short description of attribute formats
-     *
-     * @access protected
-     * @var array
-     */
-    protected $formats = array('csv' => 'CSV', 'rdf' => 'RDF', 'qti' => 'QTI Item', 'qtipack' => 'QTI Package', 'xhtml' => 'Open Web Item Package');
-
     // --- OPERATIONS ---
 
     /**
      * Short description of method initQTIElements
      *
      * @access protected
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function initQTIElements()
@@ -112,7 +104,7 @@ class taoItems_actions_form_Import
      * Short description of method initQTIPACKElements
      *
      * @access protected
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function initQTIPACKElements()
@@ -158,7 +150,7 @@ class taoItems_actions_form_Import
      * Short description of method initXHTMLElements
      *
      * @access protected
-     * @author Bertrand CHEVRIER, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return mixed
      */
     protected function initXHTMLElements()
@@ -197,6 +189,44 @@ class taoItems_actions_form_Import
 		$this->form->addElement($xhtmlSentElt);
     	
         // section 127-0-1-1-2d0bb0b3:12c2c41fb7c:-8000:0000000000002858 end
+    }
+
+    /**
+     * Short description of method getFormats
+     *
+     * @access protected
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return array
+     */
+    protected function getFormats()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A52 begin
+        $returnValue = array(
+        	'csv' => 'CSV',
+        	'rdf' => 'RDF',
+        	'qti' => 'QTI Item',
+        	'qtipack' => 'QTI Package',
+        	'xhtml' => 'Open Web Item Package',
+        	'paper'	=> 'Paper-based Item'
+        );
+        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A52 end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method initPaperElements
+     *
+     * @access protected
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return mixed
+     */
+    protected function initPaperElements()
+    {
+        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A56 begin
+        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A56 end
     }
 
 } /* end of class taoItems_actions_form_Import */
