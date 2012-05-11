@@ -718,7 +718,7 @@ class taoItems_models_classes_ItemsService
         		TAO_ITEM_MODEL_HAWAI,
         		TAO_ITEM_MODEL_QTI,
         		TAO_ITEM_MODEL_XHTML,
-			TAO_ITEM_MODEL_SURVEY
+				TAO_ITEM_MODEL_SURVEY
         	);
         	
         	if($this->hasItemModel($item, $deployableItems)){

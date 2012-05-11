@@ -20,7 +20,13 @@ $todefine = array(
 	'TAO_ITEM_MODEL_HAWAI'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Hawai',
 	'TAO_ITEM_MODEL_CAMPUS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#campus',
 	'TAO_ITEM_MODEL_SURVEY'             => 'http://www.tao.lu/Ontologies/TAOItem.rdf#SurveyItem',
-	
+	'TAO_ITEM_MODEL_PAPERBASED'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Paperbased',
+
+	'TAO_ITEM_SOURCENAME_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName',
+	'TAO_ITEM_MODELTARGET_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget',
+	'TAO_ITEM_ONLINE_TARGET'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget',
+	'TAO_ITEM_PAPERBASED_TARGET'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget',
+
 	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
 	'TAO_ITEM_HAWAI_TPL_FILE'	 		=> BASE_PATH.'/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/units/xhtml.skeleton.xhtml',
 	'TAO_ITEM_CAMPUS_TPL_FILE'	 		=> BASE_PATH.'/data/campus_ref.xml',

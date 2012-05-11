@@ -117,6 +117,14 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$itemModelElt->setOptions($options);
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
 		
+		$modelUri = $itemModelElt->getEvaluatedValue();
+		if (is_string($modelUri) && !empty($modelUri)) {
+			$currentModel = new core_kernel_classes_Resource($modelUri);
+			$hasAuthoring = count($currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY))) > 0;
+		} else {
+			$hasAuthoring = false;
+		}
+		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				
@@ -143,6 +151,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		
 		$this->setData('modelDefined', $modelDefined);
 		$this->setData('isDeprecated', $isDeprecated);
+		$this->setData('isAuthoringEnabled', $hasAuthoring);
 		
 		$this->setData('formTitle', __('Edit Item'));
 		$this->setData('myForm', $myForm->render());
@@ -531,19 +540,26 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					//get the Xml Schema regarding the item model
 					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 					switch($itemModel->uriResource){
-					 	case TAO_ITEM_MODEL_HAWAI: /**@todo add the black schema  */
+					 	case TAO_ITEM_MODEL_PAPERBASED:
+							$validate = false;
 					 		break;
+						case TAO_ITEM_MODEL_HAWAI: /**@todo add the black schema  */
+							$validate = true;
+							break;
 					 	case TAO_ITEM_MODEL_QTI:
 							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
+							$validate = true;
 							break;
 					 	case TAO_ITEM_MODEL_XHTML:
 					 		$extension = 'html';
 					 		$schema = BASE_PATH . '/models/classes/data/xhtml/xhtml.xsd';
-							break;
+							$validate = true;
+					 		break;
 					 	default:
 					 		$modelName = strtolower(trim($itemModel->getLabel()));
 					 		$schema = BASE_PATH . "/models/classes/data/{$modelName}/{$modelName}.xsd";
-							break;
+							$validate = true;
+					 		break;
 						
 					}
 					
@@ -551,7 +567,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					$parser = new tao_models_classes_Parser($data['file_import']['uploaded_file'], array('extension' => $extension));
 					
 					//check if the valdiation should be skipped
-					$validate = true;
 					if(isset($data['disable_validation'])){
 						if(in_array('on', $data['disable_validation'])){
 							$validate = false;	
@@ -569,6 +584,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					if($parser->isValid()){
 						//if the file is valid, we set it as the property of the item
 						$this->service->setItemContent($item, file_get_contents($data['file_import']['uploaded_file']));
+						$item->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY), $data['file_import']['name']);
 						$formContainer->addDownloadSection();
 						
 						$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
@@ -810,14 +826,17 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		if($this->service->isItemModelDefined($instance)){
 			
         	$itemModel = $instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-			$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-			
+			$filename = $instance->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY));
+        	if (is_null($filename)) {
+				$filename = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        	}
+        	
 			$itemContent = $this->service->getItemContent($instance, false);
 			$size = strlen($itemContent);
 			
 			$this->setContentHeader('text/xml');
 			header("Content-Length: $size");
-			header("Content-Disposition: attachment; filename=\"{$dataFile}\"");
+			header("Content-Disposition: attachment; filename=\"{$filename}\"");
 			header("Expires: 0");
 			header("Cache-Control: no-cache, must-revalidate");
 			header("Pragma: no-cache");

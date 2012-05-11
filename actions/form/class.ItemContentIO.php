@@ -101,16 +101,24 @@ class taoItems_actions_form_ItemContentIO
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
 			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),	
-			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => $mimeType, 'extension' => $extension))
 		));
+		if (!$itemService->hasItemModel($this->instance, array(TAO_ITEM_MODEL_PAPERBASED))) {
+			$importFileElt->addValidator(
+				tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => $mimeType, 'extension' => $extension))
+			);
+		}
 		$this->form->addElement($importFileElt);
 		
-		$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
-		$disableValidationElt->setDescription("Disable validation");
-		$disableValidationElt->setOptions(array("on" => ""));
-		$this->form->addElement($disableValidationElt);
+		if (!$itemService->hasItemModel($this->instance, array(TAO_ITEM_MODEL_PAPERBASED))) {
+			$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
+			$disableValidationElt->setDescription("Disable validation");
+			$disableValidationElt->setOptions(array("on" => ""));
+			$this->form->addElement($disableValidationElt);
+			$this->form->createGroup('import', 'Import item content',  array($importFileElt->getName(), $disableValidationElt->getName()));
+		} else {
+			$this->form->createGroup('import', 'Import item content',  array($importFileElt->getName()));
+		}
 		
-		$this->form->createGroup('import', 'Import item content',  array($importFileElt->getName(), $disableValidationElt->getName()));
 			
     	//add an hidden elt for the class uri
 		$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');

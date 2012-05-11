@@ -126,7 +126,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('itemUri', tao_helpers_Uri::encode($itemUri));
 		
 		$itemResource = new core_kernel_classes_Resource($itemUri);
-		foreach($itemResource->getType() as $itemClass){
+		foreach($itemResource->getTypes() as $itemClass){
 			$this->setData('itemClassUri', tao_helpers_Uri::encode((!is_null($itemClass))?$itemClass->uriResource:''));
 			break;
 		}

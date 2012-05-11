@@ -26,9 +26,33 @@
 			}
 		});
 		
+		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
+		$authoringButton.after('<input id="content-button" type="button" value="Content"/>');
+		$('#content-button').click(function(){
+			var url = '';
+			if(ctx_extension){
+				url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
+			}
+			url += 'itemContentIO';
+			var data = {
+				'uri':$("#uri").val()
+			};
+
+			if(UiBootstrap.tabs.size() == 0){
+				if($('div.main-container').length){
+					$('div.main-container').load(url, data);
+				}
+			}
+			$(getMainContainerSelector(UiBootstrap.tabs)).load(url, data);
+			return false;
+		});
+		<?if(!get_data('isAuthoringEnabled')):?>
+			$authoringButton.hide();
+			UiBootstrap.tabs.tabs('disable', getTabIndexByName('items_authoring'));
+		<?endif;?>
+		
 		<?if(GENERIS_VERSIONING_ENABLED):?>
 		//append versioned item management manually :
-		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
 		if($authoringButton.length){
 			$authoringButton.after('<input id="versioned-item-content" type="button" value="Versioned Item content"/>');
 			$('#versioned-item-content').click(function(){
