@@ -226,7 +226,29 @@ class taoItems_actions_form_Import
     protected function initPaperElements()
     {
         // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A56 begin
-        // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A56 end
+    	
+    	//create file upload form box
+		$fileElt = tao_helpers_form_FormFactory::getElement('source', 'AsyncFile');
+		$fileElt->setDescription(__("Max filesize").' '.(tao_helpers_Environment::getFileUploadLimit()/1048576).' '.__("MB"));
+    	if(isset($_POST['import_sent_xhtml'])){
+			$fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+		}
+		else{
+			$fileElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty', array('message' => '')));
+		}
+		$fileElt->addValidators(array(
+			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => tao_helpers_Environment::getFileUploadLimit()))
+		));
+    	
+		$this->form->addElement($fileElt);
+		
+		$itemModel = tao_helpers_form_FormFactory::getElement('import_sent_paper', 'Hidden');
+		$itemModel->setValue(1);
+		$this->form->addElement($itemModel);
+		
+		$this->form->createGroup('file', __('Upload an paper-based Item'), array($fileElt->getName(), $itemModel->getName()));
+		
+		// section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A56 end
     }
 
 } /* end of class taoItems_actions_form_Import */

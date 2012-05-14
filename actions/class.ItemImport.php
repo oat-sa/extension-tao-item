@@ -340,5 +340,55 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 		}
 		return false;
 	}
+	
+	protected function importPaperFile($formValues){
+		if(!isset($formValues['source'])) {
+			common_Logger::w('Missing file source during paper-based item import', 'TAOITEMS');
+			return false;
+		}
+		if(!$this->hasSessionAttribute('classUri')) {
+			common_Logger::w('Missing classUri during paper-based item import', 'TAOITEMS');
+			return false;
+		}
+		//get the item parent class
+		//get the item parent class
+		$clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getSessionAttribute('classUri')));
+	
+		//get the services instances we will need
+		$itemService		= taoItems_models_classes_ItemsService::singleton();
+		$uploadedFile		= $formValues['source']['uploaded_file'];
+		$originalFileName	= $formValues['source']['name'];
+		
+		//create a new item instance of the clazz
+		if($itemService->isItemClass($clazz)){
+					
+			//create the instance
+			$rdfItem = $itemService->createInstance($clazz);
+						
+			if(!is_null($rdfItem)){
+				//set the QTI type
+				$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_PAPERBASED);
+				
+				$itemService->setItemContent($rdfItem, file_get_contents($uploadedFile));
+				$rdfItem->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY), $originalFileName);
+				$rdfItem->setLabel($originalFileName);
+
+				$this->removeSessionAttribute('classUri');
+				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
+				$this->setData('message', __('Item imported successfully') . ' : ' .$rdfItem->getLabel());
+				$this->setData('reload', true);
+								
+				@unlink($uploadedFile);
+				return true;
+			} else {
+				common_Logger::w('could not create instance of class \''.$clazz->getLabel().'\'', array('TAOITEMS'));
+			}
+		} else {
+			common_Logger::w('expected ItemClass, got class \''.$clazz->getLabel().'\'', array('TAOITEMS'));
+		}
+		$this->setData('message', __('An error occurs during the import'));
+			
+		return true;
+	}
 }
 ?>
