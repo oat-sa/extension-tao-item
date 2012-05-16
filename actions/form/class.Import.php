@@ -204,13 +204,16 @@ class taoItems_actions_form_Import
 
         // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A52 begin
         $returnValue = array(
-        	'csv' => 'CSV',
-        	'rdf' => 'RDF',
-        	'qti' => 'QTI Item',
-        	'qtipack' => 'QTI Package',
-        	'xhtml' => 'Open Web Item Package',
-        	'paper'	=> 'Paper-based Item'
+        	'csv'		=> 'CSV',
+        	'rdf'		=> 'RDF',
+        	'qti'		=> __('QTI Item'),
+        	'qtipack'	=> __('QTI Package'),
+        	'xhtml'		=> __('Open Web Item Package')
         );
+        $paperclass = new core_kernel_classes_Class(TAO_ITEM_MODEL_PAPERBASED);
+        if ($paperclass->exists()) {
+        	$returnValue['paper'] = __('Paper-based Item');
+        }
         // section 127-0-1-1--4252657e:1373c83a2a6:-8000:0000000000003A52 end
 
         return (array) $returnValue;

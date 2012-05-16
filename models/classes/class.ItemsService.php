@@ -718,7 +718,8 @@ class taoItems_models_classes_ItemsService
         		TAO_ITEM_MODEL_HAWAI,
         		TAO_ITEM_MODEL_QTI,
         		TAO_ITEM_MODEL_XHTML,
-				TAO_ITEM_MODEL_SURVEY
+				TAO_ITEM_MODEL_SURVEY,
+				TAO_ITEM_MODEL_PAPERBASED
         	);
         	
         	if($this->hasItemModel($item, $deployableItems)){
@@ -770,13 +771,27 @@ class taoItems_models_classes_ItemsService
         			$output	= $templateRenderer->render();
         			
         		}
-			else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_SURVEY))){
-							$output = taoItems_models_classes_Survey_Item::renderItem($item);
-						}
-        		
-        		else{
-        			$output	= $this->getItemContent($item);
-        		}
+				else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_SURVEY))) {
+					$output = taoItems_models_classes_Survey_Item::renderItem($item);
+				}
+	        	else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_PAPERBASED))) {
+	        		$clazz 		= $this->getClass($item);
+					$downloadUrl = _url('downloadItemContent', 'items', null, array(
+							'uri' 		=> tao_helpers_Uri::encode($item->getUri()),
+							'classUri' 	=> tao_helpers_Uri::encode($clazz->getUri())
+					));
+					
+					$templateRenderer = new taoItems_models_classes_TemplateRenderer(
+						ROOT_PATH.'taoItems/views/templates/paperbased_download.tpl.php',
+						array(
+							'downloadurl'	=> $downloadUrl
+						));
+        			$output	= $templateRenderer->render();
+					common_logger::d($output);
+	        	}
+				else {
+	        		$output	= $this->getItemContent($item);
+	        	}
         		//var_dump($output);
         		//replace relative paths to resources by absolute uris to help the compilator
 				$matches = array();

@@ -67,6 +67,10 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 							//set the QTI type
 							$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_QTI);
 							
+							//set the label
+							$rdfItem->setLabel($qtiItem->getOption('title'));
+							
+							//save itemcontent
 							if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
 								
 								$this->removeSessionAttribute('classUri');
