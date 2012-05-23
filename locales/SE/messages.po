@@ -1,12 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-08T17:57:59\n"
+"PO-Revision-Date: 2012-05-23T11:00:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid " Download item content"
+msgstr ""
 
 msgid "%d items of %d imported successfuly"
 msgstr ""
@@ -302,11 +305,11 @@ msgstr ""
 msgid "Item Editor:"
 msgstr "Frågeredigerare"
 
-msgid "Item imported successfully"
-msgstr "Fråga framgångsrikt importerad"
-
 msgid "item imported successfully"
 msgstr "fråga framgångsrikt importerat"
+
+msgid "Item imported successfully"
+msgstr "Fråga framgångsrikt importerad"
 
 msgid "Item Properties:"
 msgstr "Frågeegenskaper"
@@ -380,6 +383,9 @@ msgstr "Matcha grupp"
 msgid "Matching side"
 msgstr "Matchsida"
 
+msgid "Max filesize"
+msgstr ""
+
 msgid "Maximal number of matching"
 msgstr "Maximalt antal att matcha"
 
@@ -393,6 +399,9 @@ msgid "Maximum number of separate strings"
 msgstr "Maximalt antal separata trådar"
 
 msgid "Maximum value"
+msgstr ""
+
+msgid "MB"
 msgstr ""
 
 msgid "meta data"
@@ -446,6 +455,9 @@ msgstr "Inte tillgänglig än"
 msgid "Number base for value interpretation"
 msgstr "Nummmerbas för värdetolkning"
 
+msgid "Open Web Item Package"
+msgstr ""
+
 msgid "Options"
 msgstr "Alternativ"
 
@@ -456,6 +468,9 @@ msgid "Orientation"
 msgstr "Inriktning"
 
 msgid "OWI package uploaded"
+msgstr ""
+
+msgid "Paper-based Item"
 msgstr ""
 
 msgid "Pattern mask"
@@ -505,6 +520,12 @@ msgstr "Processeringstyp"
 
 msgid "Prompt"
 msgstr "Markör"
+
+msgid "QTI Item"
+msgstr ""
+
+msgid "QTI Package"
+msgstr ""
 
 msgid "quantity"
 msgstr ""
@@ -659,6 +680,9 @@ msgid "Upload a QTI Package File"
 msgstr "Ladda upp QTI-paketfil"
 
 msgid "Upload an Open Web Item Package File"
+msgstr ""
+
+msgid "Upload an paper-based Item"
 msgstr ""
 
 msgid "Upload QTI File"

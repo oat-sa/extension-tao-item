@@ -1,12 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-08T23:22:01\n"
+"PO-Revision-Date: 2012-05-23T11:00:32\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: FR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid " Download item content"
+msgstr ""
 
 msgid "%d items of %d imported successfuly"
 msgstr "%d items de %d importés avec succès"
@@ -302,11 +305,11 @@ msgstr "contenu de l'item importé avec succès"
 msgid "Item Editor:"
 msgstr "Editeur d'item:"
 
-msgid "Item imported successfully"
-msgstr "Item importé avec succès"
-
 msgid "item imported successfully"
 msgstr "item importée avec succès"
+
+msgid "Item imported successfully"
+msgstr "Item importé avec succès"
 
 msgid "Item Properties:"
 msgstr "Propriétés de l'item:"
@@ -380,6 +383,9 @@ msgstr "Groupe associé"
 msgid "Matching side"
 msgstr "Côté associé"
 
+msgid "Max filesize"
+msgstr ""
+
 msgid "Maximal number of matching"
 msgstr "Nombre maximal d'assocations"
 
@@ -394,6 +400,9 @@ msgstr "Nombre maximal de chaînes séparées"
 
 msgid "Maximum value"
 msgstr "Valeur maximale"
+
+msgid "MB"
+msgstr ""
 
 msgid "meta data"
 msgstr "méta-données"
@@ -446,6 +455,9 @@ msgstr "Pas encore disponible"
 msgid "Number base for value interpretation"
 msgstr "Base numérique pour l'interprétation de valeur"
 
+msgid "Open Web Item Package"
+msgstr ""
+
 msgid "Options"
 msgstr "Options"
 
@@ -457,6 +469,9 @@ msgstr "Orientation"
 
 msgid "OWI package uploaded"
 msgstr "Paquet OWI téléversé"
+
+msgid "Paper-based Item"
+msgstr ""
 
 msgid "Pattern mask"
 msgstr "Masque d'expression régulière"
@@ -505,6 +520,12 @@ msgstr "Type de traitement"
 
 msgid "Prompt"
 msgstr "Invite"
+
+msgid "QTI Item"
+msgstr ""
+
+msgid "QTI Package"
+msgstr ""
 
 msgid "quantity"
 msgstr "quantité"
@@ -663,6 +684,9 @@ msgstr "Télécharger un paquet QTI"
 
 msgid "Upload an Open Web Item Package File"
 msgstr "Téléverser un paquet Open Web Item"
+
+msgid "Upload an paper-based Item"
+msgstr ""
 
 msgid "Upload QTI File"
 msgstr "Télécharger un fichier QTI"
