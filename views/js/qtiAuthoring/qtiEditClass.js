@@ -411,6 +411,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		  frameReady: function(editorDoc){
 			//the binding require the modified html data to be ready
 			instance.bindInteractionLinkListener();
+			instance.bindObjectLinkListener();
 
 			editorDoc.body.focus();
 		  },
@@ -515,6 +516,62 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 		},function(){
 			$(this).children('.qti_interaction_box_delete').hide();
 			if($(this).hasClass('qti_interaction_inline')){
+				$(this).css('padding-right', 0);
+			}
+		});
+	}
+}
+
+qtiEdit.prototype.bindObjectLinkListener = function(editorDoc){
+	var objlinks = qtiEdit.getEltInFrame('.qti_object_link', editorDoc);
+	for(var i in objlinks){
+
+		var object = objlinks[i];
+		var objectSerial = object.attr('id');
+
+		//instance.interactions[interactionSerial] = interactionSerial;
+		object.mousedown(function(e){
+			e.preventDefault();
+		});
+		object.click(function(e){
+			e.preventDefault();
+			instance.currentInteractionSerial = $(this).attr('id');
+			instance.loadInteractionForm(instance.currentInteractionSerial);
+		});
+		qtiEdit.makeNoEditable(object);
+
+		//append the delete button:
+		var objectContainer = object.parent('.qti_object_inline');
+		objectContainer.bind('dragover drop',function(e){
+			e.preventDefault();
+			return false;
+		});
+		qtiEdit.makeNoEditable(objectContainer);
+
+		var $deleteButton = $('<span class="qti_object_delete"></span>').appendTo(objectContainer);
+		$deleteButton.attr('title', __('Delete object'));
+		$deleteButton.hide();
+		$deleteButton.bind('click', {'objectSerial': objectSerial}, function(e){
+			e.preventDefault();
+			if(confirm(__('Please confirm object deletion'))){
+				instance.deleteObject([e.data.objectSerial]);
+			}
+			return false;
+		});
+		$deleteButton.bind('mousedown contextmenu',function(e){
+			e.preventDefault();
+		});
+
+		qtiEdit.makeNoEditable($deleteButton);
+
+		object.parent().hover(function(){
+			$(this).children('.qti_object_delete').show();
+			if($(this).hasClass('qti_object_inline')){
+				$(this).css('padding-right', '20px');
+			}
+		},function(){
+			$(this).children('.qti_object_delete').hide();
+			if($(this).hasClass('qti_object_inline')){
 				$(this).css('padding-right', 0);
 			}
 		});

@@ -107,6 +107,14 @@ class taoItems_models_classes_QTI_Item
      */
     protected $stylesheets = array();
 
+    /**
+     * Short description of attribute objects
+     *
+     * @access public
+     * @var array
+     */
+    public $objects = array();
+
     // --- OPERATIONS ---
 
     /**
@@ -474,6 +482,10 @@ class taoItems_models_classes_QTI_Item
 				$variables['hasGraphics'] = $interaction->isGraphic();
 			}
         }
+        
+        foreach($this->objects as $object) {
+			$variables['data'] = preg_replace("/{".$object->getSerial()."}/", $object->toXHTML(), $variables['data']);
+        }
 		
         // get Matching data
         $matchingData = $this->getMatchingData();
@@ -510,6 +522,9 @@ class taoItems_models_classes_QTI_Item
 		$variables['rowOptions']  	= $this->xmlizeOptions();
 		$variables['response'] 		= '';
 		$foundResponses = array();
+		foreach($this->objects as $object){
+			$variables['data'] = preg_replace("/{".$object->getSerial()."}/", $object->toQti(), $variables['data']);
+		}
 		foreach($this->getInteractions() as $interaction){
 
 			//build the interactions in the data variable
@@ -635,6 +650,42 @@ class taoItems_models_classes_QTI_Item
             }
         
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B2F end
+
+        return (array) $returnValue;
+    }
+
+    /**
+     * Short description of method addObject
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Object object
+     * @return mixed
+     */
+    public function addObject( taoItems_models_classes_QTI_Object $object)
+    {
+        // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A84 begin
+    	if(is_null($object)){
+    		throw new common_exception_Error('called addObject with null object');
+    	}
+    	$this->objects[] = $object;
+        // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A84 end
+    }
+
+    /**
+     * Short description of method getObjects
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return array
+     */
+    public function getObjects()
+    {
+        $returnValue = array();
+
+        // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A8A begin
+        $returnValue = $this->objects;
+        // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A8A end
 
         return (array) $returnValue;
     }

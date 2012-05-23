@@ -95,7 +95,17 @@ class taoItems_models_classes_QTI_ParserFactory
 			);
 		}
 		$myItem->setStylesheets($styleSheets);
+
+		// parse for objects
+		$objectNodes = $data->xpath("//*[name(.) = 'object']");
+		//name(./*[1]) = "responseIf"
+		foreach($objectNodes as $objectNode){
 			
+			$object = self::buildObject($objectNode);
+			if (!is_null($object))
+				$myItem->addObject($object);
+		}
+		
 		//parse the xml to find the interaction nodes
 		$interactionNodes = $data->xpath("//*[contains(name(.), 'Interaction')]");
 		foreach($interactionNodes as $interactionNode){
@@ -131,6 +141,10 @@ class taoItems_models_classes_QTI_ParserFactory
 				$tag = $interaction->getType().'Interaction';
 				$pattern = "/<{$tag}\b[^>]*>(.*?)<\/{$tag}>|(<{$tag}\b[^>]*\/>)/is";
 				$itemData = preg_replace($pattern, "{{$interaction->getSerial()}}", $itemData, 1);
+			}
+			foreach($myItem->getObjects() as $object){
+				$pattern = "/(<object\b[^>]*\/>)|<object\b[^>]*>(.*?)<\/object>/is";
+				$itemData = preg_replace($pattern, "{{$object->getSerial()}}", $itemData, 1);
 			}
 			$myItem->setData($itemData);
 		}
@@ -1052,6 +1066,28 @@ class taoItems_models_classes_QTI_ParserFactory
 		}
 		$returnValue = $templatesDrivenRP;
         // section 127-0-1-1-1eeee7a:134f5c3c208:-8000:00000000000035DF end
+
+        return $returnValue;
+    }
+
+    /**
+     * Short description of method buildObject
+     *
+     * @access private
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  SimpleXMLElement data
+     * @return taoItems_models_classes_QTI_Object
+     */
+    private static function buildObject( SimpleXMLElement $data)
+    {
+        $returnValue = null;
+
+        // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A87 begin
+        $returnValue = new taoItems_models_classes_QTI_Object();
+        foreach ($data->attributes() as $k => $v) {
+        	$returnValue->setOption((string)$k, (string)$v);
+        }
+        // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A87 end
 
         return $returnValue;
     }

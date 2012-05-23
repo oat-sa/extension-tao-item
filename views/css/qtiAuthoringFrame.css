@@ -28,11 +28,32 @@ div.qti_interaction_inline{
 	cursor: default;
 }
 
+div.qti_object_inline{
+	display:inline;
+	text-align:center;
+	border: solid #009933 2px;
+	margin:none;
+	padding:2px 1px 2px 1px;
+	position:relative;
+	cursor: default;
+}
+
 div.qti_interaction_block input.qti_interaction_link{
 	padding:20px;
 }
 
 span.qti_interaction_box_delete{
+	position: absolute;
+	right: 1px;
+	top: 1px;
+	cursor: pointer;
+	height: 16px;
+	width: 16px;
+	background-image: url("../img/qtiAuthoring/delete.png");
+	background-repeat: no-repeat;
+}
+
+span.qti_object_delete{
 	position: absolute;
 	right: 1px;
 	top: 1px;

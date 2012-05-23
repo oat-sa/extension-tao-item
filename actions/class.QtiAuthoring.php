@@ -1689,6 +1689,23 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		return $returnValue;
 	}
 	
+	public function addObject() {
+		
+		common_Logger::d('addObject');
+			
+				//instantiate the item content form container
+		$formContainer = new taoItems_actions_QTIform_AddObject();
+		$myForm = $formContainer->getForm();
+		
+		if($myForm->isSubmited() && $myForm->isValid()){
+			common_Logger::d('submited');
+		}
+		
+		$this->setData('formTitle', __('Add object'));
+		$this->setData('myForm', $myForm->render());
+		
+		$this->setView('form_content.tpl');
+	}
 	
 }
 ?>

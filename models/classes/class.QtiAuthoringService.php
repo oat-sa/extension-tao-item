@@ -81,6 +81,7 @@ class taoItems_models_classes_QtiAuthoringService
 	
 		$itemData = self::getFilteredData($item);
 		
+		
 		//inserting white spaces to allow easy item selecting:
 		$itemData = preg_replace('/}{/', '}&nbsp;{', $itemData);
 		$itemData = preg_replace('/^{/', '&nbsp;{', $itemData);
@@ -95,8 +96,23 @@ class taoItems_models_classes_QtiAuthoringService
 			$pattern = "/{{$interaction->getSerial()}}/";
 			$itemData = preg_replace($pattern, $this->getInteractionTag($interaction), $itemData, 1);
 		}
+		foreach($item->getObjects() as $object){
+			//replace the interactions by a identified tag with the authoring elements
+			$pattern = "/{{$object->getSerial()}}/";
+			$itemData = preg_replace($pattern, $this->getObjectTag($object), $itemData, 1);
+		}
 		
 		return $itemData;
+	}
+	
+	public function getObjectTag($pObject){
+		$returnValue = '';
+		
+		$returnValue .= "<div class='qti_object_inline'>";
+		$returnValue .= "<input id=\"".$pObject->getSerial()."\" class=\"qti_object_link\" value=\"object\" type=\"button\"/>";
+		$returnValue .= "</div>";
+		
+		return $returnValue;
 	}
 	
 	public function getInteractionTag(taoItems_models_classes_QTI_Interaction $interaction){
@@ -313,6 +329,10 @@ class taoItems_models_classes_QtiAuthoringService
 			//clean the interactions' editing elements:
 			foreach($item->getInteractions() as $interaction){
 				$itemData = $this->filterData($interaction, $itemData);
+			}
+			//clean the objects' editing elements:
+			foreach($item->getObjects() as $object){
+				$itemData = $this->filterData($object, $itemData);
 			}
 			
 			//item saved in session:
