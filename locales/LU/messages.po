@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-23T11:00:37\n"
+"PO-Revision-Date: 2012-05-24T16:39:59\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: LU\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid " Download item content"
-msgstr ""
 
 msgid "%d items of %d imported successfuly"
 msgstr ""
@@ -30,6 +27,9 @@ msgid "Add choice"
 msgstr ""
 
 msgid "Add choice to group"
+msgstr ""
+
+msgid "Add object"
 msgstr ""
 
 msgid "Add the source file"
@@ -155,6 +155,9 @@ msgstr ""
 msgid "Delete interaction"
 msgstr ""
 
+msgid "Delete object"
+msgstr ""
+
 msgid "Disabled"
 msgstr ""
 
@@ -218,11 +221,11 @@ msgstr ""
 msgid "Expected lines"
 msgstr ""
 
-msgid "Export"
-msgstr ""
-
 msgid "export"
 msgstr "exportéiren"
+
+msgid "Export"
+msgstr ""
 
 msgid "Export Options"
 msgstr ""
@@ -374,10 +377,10 @@ msgstr ""
 msgid "map point"
 msgstr ""
 
-msgid "Match Group"
+msgid "Match group"
 msgstr ""
 
-msgid "Match group"
+msgid "Match Group"
 msgstr ""
 
 msgid "Matching side"
@@ -485,6 +488,9 @@ msgstr ""
 msgid "Please confirm interaction deletion"
 msgstr ""
 
+msgid "Please confirm object deletion"
+msgstr ""
+
 msgid "Please select first the item type!"
 msgstr ""
 
@@ -494,10 +500,10 @@ msgstr ""
 msgid "Prev"
 msgstr ""
 
-msgid "preview"
+msgid "Preview"
 msgstr "Viirbléck"
 
-msgid "Preview"
+msgid "preview"
 msgstr "Viirbléck"
 
 msgid "preview (1:1)"

@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-23T11:00:12\n"
+"PO-Revision-Date: 2012-05-24T16:39:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: AR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid " Download item content"
-msgstr ""
 
 msgid "%d items of %d imported successfuly"
 msgstr ""
@@ -30,6 +27,9 @@ msgid "Add choice"
 msgstr ""
 
 msgid "Add choice to group"
+msgstr ""
+
+msgid "Add object"
 msgstr ""
 
 msgid "Add the source file"
@@ -155,6 +155,9 @@ msgstr "حذف الخيار"
 msgid "Delete interaction"
 msgstr "حذف التفاعل"
 
+msgid "Delete object"
+msgstr ""
+
 msgid "Disabled"
 msgstr "غير نشط"
 
@@ -220,11 +223,11 @@ msgstr "الطول المنتظر"
 msgid "Expected lines"
 msgstr "عدد الاسطر"
 
-msgid "Export"
-msgstr ""
-
 msgid "export"
 msgstr "تصدير"
+
+msgid "Export"
+msgstr ""
 
 msgid "Export Options"
 msgstr "خيارات التصدير"
@@ -376,10 +379,10 @@ msgstr "خريطة"
 msgid "map point"
 msgstr "نقطة على الخريطة"
 
-msgid "Match Group"
+msgid "Match group"
 msgstr "Groupe associé"
 
-msgid "Match group"
+msgid "Match Group"
 msgstr "Groupe associé"
 
 msgid "Matching side"
@@ -487,6 +490,9 @@ msgstr "الرجاء تاكيد حذف التفاعل"
 msgid "Please confirm interaction deletion"
 msgstr "الرجاء تاكيد حذف التفاعل"
 
+msgid "Please confirm object deletion"
+msgstr ""
+
 msgid "Please select first the item type!"
 msgstr "!الرجاء اولا تحديد نوع السؤال"
 
@@ -496,10 +502,10 @@ msgstr "مضلع"
 msgid "Prev"
 msgstr ""
 
-msgid "preview"
+msgid "Preview"
 msgstr "معاينة"
 
-msgid "Preview"
+msgid "preview"
 msgstr "معاينة"
 
 msgid "preview (1:1)"

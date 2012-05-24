@@ -23,7 +23,7 @@
 <div class="main-container">
 	<div id="form-container" class="ui-widget-content ui-corner-bottom">
 		<a target="_blank" class="blink" href="<?=$downloadurl?>">
-			<img class="icon" alt="xml" src="<?=$ctx_base_www?>img/text-xml-file.png"><?=__(' Download item content')?>
+			<img class="icon" alt="xml" src="<?=$ctx_base_www?>img/text-xml-file.png"><?=__('Download item content')?>
 		</a>
 	</div>
 </div>	
