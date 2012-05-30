@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 31.01.2012, 17:35:13 with ArgoUML PHP module 
+ * Automatically generated on 31.01.2012, 17:35:13 with ArgoUML PHP module
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -98,12 +98,12 @@ class taoItems_actions_QTIform_ManualProcessing
     	if (!$irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
     		throw new common_exception_Error('Call to manualprocessing form on a non manual interaction');
     	}
-    	
-        $serialElt = tao_helpers_form_FormFactory::getElement('outcomeSerial', 'Hidden');
+
+		$serialElt = tao_helpers_form_FormFactory::getElement('outcomeSerial', 'Hidden');
 		$serialElt->setValue($this->outcome->getSerial());
 		$this->form->addElement($serialElt);
-		
-        //guidlines correct:
+
+		//guidlines correct:
 		$guidelines = tao_helpers_form_FormFactory::getElement('guidelines', 'Textarea');
 		$guidelines->setDescription(__('Guidelines'));
 		$guidelines->setValue($this->outcome->getOption('interpretation'));
@@ -132,20 +132,28 @@ class taoItems_actions_QTIform_ManualProcessing
 			$scaleTypeElt->setValue($scale->getClassUri());
 		}
 		$this->form->addElement($scaleTypeElt);
-		
+
 		if (!is_null($scale)) {
 			if ($scale->getClassUri() == taoItems_models_classes_Scale_Discrete::CLASS_URI) {
 				$lowerBoundElt = tao_helpers_form_FormFactory::getElement('min', 'Textbox');
 				$lowerBoundElt->setDescription(__('Minimum value'));
 				$lowerBoundElt->setValue($scale->lowerBound);
+				$lowerBoundElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+				$lowerBoundElt->addValidator(tao_helpers_form_FormFactory::getValidator('Integer', array('min' => 0)));
 				$this->form->addElement($lowerBoundElt);
+
 				$upperBoundElt = tao_helpers_form_FormFactory::getElement('max', 'Textbox');
 				$upperBoundElt->setDescription(__('Maximum value'));
 				$upperBoundElt->setValue($scale->upperBound);
+				$upperBoundElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+				$upperBoundElt->addValidator(tao_helpers_form_FormFactory::getValidator('Integer', array('min' => 0, 'integer2_ref' => $lowerBoundElt, 'comparator' => '>')));
 				$this->form->addElement($upperBoundElt);
+
 				$distanceElt = tao_helpers_form_FormFactory::getElement('dist', 'Textbox');
 				$distanceElt->setDescription(__('Distance'));
 				$distanceElt->setValue($scale->distance);
+				$distanceElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
+				$distanceElt->addValidator(tao_helpers_form_FormFactory::getValidator('Integer', array('min' => 0)));
 				$this->form->addElement($distanceElt);
 			} else {
 				//@todo scale not supported message
