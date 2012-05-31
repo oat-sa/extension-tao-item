@@ -107,7 +107,7 @@
     <item:ItemRuntime><![CDATA[kohs_passation.swf]]></item:ItemRuntime>
     <item:ItemAuthoring xml:lang="EN"><![CDATA[kohs_authoring.swf]]></item:ItemAuthoring>
     <item:DataFileName><![CDATA[kohs.xml]]></item:DataFileName>
-    <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable"/>
+    <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest">
@@ -117,7 +117,7 @@
     <item:ItemRuntime><![CDATA[ctest_item.swf]]></item:ItemRuntime>
     <item:ItemAuthoring xml:lang="EN"><![CDATA[C_TestAuth.swf]]></item:ItemAuthoring>
     <item:DataFileName><![CDATA[ctest.xml]]></item:DataFileName>
-    <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable"/>
+    <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring">
