@@ -285,7 +285,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				//refresh the page to reflect the change
 				if(!count(get_data('importErrors'))){
 					$ctx = Context::getInstance();
-					$this->redirect(_url($ctx->getActionName(), $ctx->getModuleName(), $this->getSessionAttribute('currentExtension'), array(
+					$this->redirect(_url($ctx->getActionName(), $ctx->getModuleName(), $ctx->getExtensionName(), array(
 						'uri'			=> tao_helpers_Uri::encode($ownerInstance->uriResource),
 						'propertyUri'	=> tao_helpers_Uri::encode($property->uriResource),
 						'message'		=> get_data('message')

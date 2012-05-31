@@ -47,7 +47,7 @@ define('TAOVIEW_PATH', ROOT_PATH . '/tao/views/');
 define('TAO_TPL_PATH', TAOVIEW_PATH . $GLOBALS['dir_theme']);
 
 #export resources path
-define('EXPORT_PATH', 	'/views/export');
+define('EXPORT_PATH', 	BASE_PATH . '/views/export');
 
 #Path to the old generis interface
 define('LEGACY_PATH', ROOT_PATH ."/generis/core/view/");

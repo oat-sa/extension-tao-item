@@ -70,7 +70,10 @@ class taoItems_models_classes_QTI_Object
         $returnValue = (string) '';
 
         // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A8E begin
-        $returnValue = $this->toQTI();
+        $data = $this->getOption('data');
+        $options = $this->getOptions();
+        unset($options['data']);
+        $returnValue = '<object data="'.$data.'"'.$this->xmlizeOptions($options, true).'/>';
         // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A8E end
 
         return (string) $returnValue;
@@ -88,17 +91,7 @@ class taoItems_models_classes_QTI_Object
         $returnValue = (string) '';
 
         // section 127-0-1-1--769dcec7:1375f36ffc9:-8000:0000000000003A8E begin
-        common_Logger::d('data = '.$this->getOption('data'));
-        $returnValue = '<object data="'.$this->getOption('data').'" type="'.$this->getOption('type').'"';
-        $height = $this->getOption('height');
-        $width = $this->getOption('width');
-        if (!is_null($width)) {
-        	$returnValue .= ' width="'.$width.'"';
-        }
-        if (!is_null($height)) {
-        	$returnValue .= ' height="'.$height.'"';
-        }
-        $returnValue .= '/>';
+        $returnValue = '<object '.$this->xmlizeOptions().'/>';
         // section 127-0-1-1--769dcec7:1375f36ffc9:-8000:0000000000003A8E end
 
         return (string) $returnValue;
