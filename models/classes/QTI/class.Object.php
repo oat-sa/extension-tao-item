@@ -73,7 +73,7 @@ class taoItems_models_classes_QTI_Object
         $data = $this->getOption('data');
         $options = $this->getOptions();
         unset($options['data']);
-        $returnValue = '<object data="'.$data.'"'.$this->xmlizeOptions($options, true).'/>';
+        $returnValue = '<object data="'.$data.'"'.$this->xmlizeOptions($options, true).'></object>';
         // section 127-0-1-1-2549921c:137563a02f1:-8000:0000000000003A8E end
 
         return (string) $returnValue;
@@ -91,7 +91,7 @@ class taoItems_models_classes_QTI_Object
         $returnValue = (string) '';
 
         // section 127-0-1-1--769dcec7:1375f36ffc9:-8000:0000000000003A8E begin
-        $returnValue = '<object '.$this->xmlizeOptions().'/>';
+        $returnValue = '<object '.$this->xmlizeOptions().'></object>';
         // section 127-0-1-1--769dcec7:1375f36ffc9:-8000:0000000000003A8E end
 
         return (string) $returnValue;
