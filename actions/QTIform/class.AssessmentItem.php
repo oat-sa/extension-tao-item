@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.01.2011, 11:32:47 with ArgoUML PHP module 
+ * Automatically generated on 05.01.2011, 11:32:47 with ArgoUML PHP module
  * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
  *
  * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
@@ -89,14 +89,14 @@ class taoItems_actions_QTIform_AssessmentItem
     public function initForm()
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E2D begin
-		
+
 		$this->form = tao_helpers_form_FormFactory::getForm('AssessmentItem_Form');
-		
+
 		$actions = array();
-		
+
 		$this->form->setActions($actions, 'top');
 		$this->form->setActions(array(), 'bottom');
-		
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E2D end
     }
 
@@ -127,27 +127,27 @@ class taoItems_actions_QTIform_AssessmentItem
     public function initElements()
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E31 begin
-		
+
 		//serial
 		$serialElt = tao_helpers_form_FormFactory::getElement('itemSerial', 'Hidden');
 		$serialElt->setValue($this->item->getSerial());
 		$this->form->addElement($serialElt);
-		
+
 		//title:
 		$titleElt = tao_helpers_form_FormFactory::getElement('title', 'Textbox');
 		$titleElt->setDescription(__('Title'));
 		$titleElt->setValue($this->item->getOption('title'));
 		$this->form->addElement($titleElt);
-		
+
 		//label:
 		$labelElt = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
 		$labelElt->setDescription(__('Label'));
 		$labelElt->setValue($this->item->getOption('label'));
 		$this->form->addElement($labelElt);
-		
-		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent'));		
+
+		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent'));
 		$this->form->addElement(self::createBooleanElement($this->item, 'adaptive', ''));
-		
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E31 end
     }
 
@@ -167,25 +167,25 @@ class taoItems_actions_QTIform_AssessmentItem
         $returnValue = null;
 
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E33 begin
-		
+
 		if(count($boolean) != 2){
 			throw new Exception('invalid number of elements in boolean array definition');
 		}
 		$returnValue = tao_helpers_form_FormFactory::getElement($optionName, 'Radiobox');
-		
+
 		if(empty($elementLabel)) $elementLabel = __(ucfirst(strtolower($optionName)));
 		$returnValue->setDescription($elementLabel);
-		$returnValue->setOptions(array('false' => $boolean[0], 'true'=>$boolean[1]));
-		
+		$returnValue->setOptions(array('true'=>$boolean[1], 'false' => $boolean[0]));
+
 		$optionValue = $qtiObject->getOption($optionName);
-		
+
 		$returnValue->setValue('false');
 		if(!empty($optionValue)){
 			if($optionValue === 'true' || $optionValue === true){
 				$returnValue->setValue('true');
 			}
 		}
-		
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E33 end
 
         return $returnValue;
@@ -206,17 +206,17 @@ class taoItems_actions_QTIform_AssessmentItem
         $returnValue = null;
 
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E3D begin
-		
+
 		$returnValue = tao_helpers_form_FormFactory::getElement($optionName, 'Textbox');
 		if(empty($elementLabel)) $elementLabel = __(ucfirst(strtolower($optionName)));
 		$returnValue->setDescription($elementLabel);
-		
+
 		//validator: is int??
 		$value = (string) $qtiObject->getOption($optionName);
 		if(!is_null($value)){
 			$returnValue->setValue($value);
 		}
-		
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E3D end
 
         return $returnValue;
