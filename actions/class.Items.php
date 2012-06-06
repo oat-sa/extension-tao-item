@@ -25,21 +25,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$this->setData('modelDefined', false);
 		
 	}
-
-	/**
-	 * Override auth method
-	 * @see TaoModule::_isAllowed
-	 * @return boolean
-	 */	
-	protected function _isAllowed()
-	{
-		$context = Context::getInstance();
-		if($context->getActionName() != 'getItemContent'){
-			return parent::_isAllowed();
-		}
-		return true;
-	}
-	
 	
 /*
  * conveniance methods
