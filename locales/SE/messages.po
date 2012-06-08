@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-24T16:40:06\n"
+"Project-Id-Version: TAO v2.2-beta2\n"
+"PO-Revision-Date: 2012-06-08T13:41:49\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -62,6 +62,7 @@ msgstr ""
 msgid "Attached style sheets:"
 msgstr ""
 
+#, tao-public
 msgid "Authoring"
 msgstr "Skapa"
 
@@ -122,6 +123,7 @@ msgstr ""
 msgid "Correct Responses"
 msgstr "Korrekta svar"
 
+#, tao-public
 msgid "Create and design items and exercises."
 msgstr ""
 
@@ -221,11 +223,11 @@ msgstr "Förväntad längd"
 msgid "Expected lines"
 msgstr "Förväntade rader"
 
-msgid "export"
-msgstr "export"
-
 msgid "Export"
 msgstr ""
+
+msgid "export"
+msgstr "export"
 
 msgid "Export Options"
 msgstr "Exporteringsalternativ"
@@ -248,6 +250,7 @@ msgstr "Fastställd"
 msgid "Float"
 msgstr "Starta"
 
+#, tao-public
 msgid "Full preview"
 msgstr ""
 
@@ -335,6 +338,7 @@ msgstr ""
 msgid "item versioned content saved"
 msgstr ""
 
+#, tao-public
 msgid "Items"
 msgstr "Frågor"
 
@@ -362,6 +366,7 @@ msgstr "Undre gräns"
 msgid "Manage item content"
 msgstr "Hantera frågeinnehåll"
 
+#, tao-public
 msgid "Manage items"
 msgstr "Hantera frågor"
 
@@ -377,10 +382,10 @@ msgstr "kartlägg"
 msgid "map point"
 msgstr "kartlägg poäng"
 
-msgid "Match group"
+msgid "Match Group"
 msgstr "Matcha grupp"
 
-msgid "Match Group"
+msgid "Match group"
 msgstr "Matcha grupp"
 
 msgid "Matching side"
@@ -611,18 +616,18 @@ msgstr "mall"
 msgid "The choice cannot be saved"
 msgstr "Valet kan inte sparas"
 
-msgid "The current interaction has been modified but the modifications has not been updated yet,\n"
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to update the interaction with the modifications before returning to the item editor?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications have not been updated yet,\n"
 " do you want to update the interaction with the modifications before saving your item?\n"
 "(Otherwise, the modifications are lost)"
 msgstr ""
 
-msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+msgid "The current interaction has been modified but the modifications have not been updated yet.\n"
 "Do you want to do update the interaction with the modifications before previewing your item?"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
-"Do you want to update the interaction with the modifications before returning to the item editor?\n"
-"(Otherwise, the modifications are lost)"
 msgstr ""
 
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-beta\n"
-"PO-Revision-Date: 2012-05-24T16:45:05\n"
+"Project-Id-Version: TAO v2.2-beta2\n"
+"PO-Revision-Date: 2012-06-08T13:41:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: FR\n"
@@ -62,6 +62,7 @@ msgstr "Hotspots associables"
 msgid "Attached style sheets:"
 msgstr "Feuilles de styles associées:"
 
+#, tao-public
 msgid "Authoring"
 msgstr "Editeur"
 
@@ -122,6 +123,7 @@ msgstr "Réponse correcte"
 msgid "Correct Responses"
 msgstr "Réponse correcte"
 
+#, tao-public
 msgid "Create and design items and exercises."
 msgstr "Concevoir des items et exercices."
 
@@ -221,11 +223,11 @@ msgstr "Longueur attendue"
 msgid "Expected lines"
 msgstr "Nombre de lignes attendues"
 
-msgid "export"
-msgstr "exporter"
-
 msgid "Export"
 msgstr "Export"
+
+msgid "export"
+msgstr "exporter"
 
 msgid "Export Options"
 msgstr "Options d'export"
@@ -248,6 +250,7 @@ msgstr "Fixé"
 msgid "Float"
 msgstr "Nombre à virgule"
 
+#, tao-public
 msgid "Full preview"
 msgstr "Aperçu complet"
 
@@ -335,6 +338,7 @@ msgstr "contenu de l'item versionné supprimé"
 msgid "item versioned content saved"
 msgstr "contenu de l'item versionné sauvegardé"
 
+#, tao-public
 msgid "Items"
 msgstr "Items"
 
@@ -362,6 +366,7 @@ msgstr "Limite inférieure"
 msgid "Manage item content"
 msgstr "Gérer le contenu de l'item"
 
+#, tao-public
 msgid "Manage items"
 msgstr "Gérer les items"
 
@@ -377,10 +382,10 @@ msgstr "carte"
 msgid "map point"
 msgstr "point sur la carte"
 
-msgid "Match group"
+msgid "Match Group"
 msgstr "Groupe associé"
 
-msgid "Match Group"
+msgid "Match group"
 msgstr "Groupe associé"
 
 msgid "Matching side"
@@ -611,22 +616,21 @@ msgstr "modèle"
 msgid "The choice cannot be saved"
 msgstr "Le choix ne peux pas être sauvegardé"
 
-msgid "The current interaction has been modified but the modifications has not been updated yet,\n"
-" do you want to update the interaction with the modifications before saving your item?\n"
-"(Otherwise, the modifications are lost)"
-msgstr ""
-
-msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
-"Do you want to do update the interaction with the modifications before previewing your item?"
-msgstr "L'intéraction courante a été modifiée mais les modifications n'ont pas encore été mises à jour.\n"
-"Voulez-vous mettre à jour l'intéraction avec ses modifications avant l'aperçu de votre item ?"
-
 msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
 "Do you want to update the interaction with the modifications before returning to the item editor?\n"
 "(Otherwise, the modifications are lost)"
 msgstr "L'intéraction courante a été modifiée mais les modifications n'ont pas encore été mises à jour.\n"
 "Voulez-vous mettre à jour l'intéraction avec ses modifications avant de retourner à l'éditeur d'item ?\n"
 "(Autrement, les modifications seront perdues)"
+
+msgid "The current interaction has been modified but the modifications have not been updated yet,\n"
+" do you want to update the interaction with the modifications before saving your item?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications have not been updated yet.\n"
+"Do you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
 
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
