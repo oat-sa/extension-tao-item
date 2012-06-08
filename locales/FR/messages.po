@@ -30,7 +30,7 @@ msgid "Add choice to group"
 msgstr "Ajouter un choix au groupe"
 
 msgid "Add object"
-msgstr ""
+msgstr "Ajouter un objet"
 
 msgid "Add the source file"
 msgstr "Ajouter le fichier source"
@@ -158,7 +158,7 @@ msgid "Delete interaction"
 msgstr "Supprimer l'intéraction"
 
 msgid "Delete object"
-msgstr ""
+msgstr "Supprimer l'objet"
 
 msgid "Disabled"
 msgstr "Désactivé"
@@ -392,7 +392,7 @@ msgid "Matching side"
 msgstr "Côté associé"
 
 msgid "Max filesize"
-msgstr ""
+msgstr "Taille Max"
 
 msgid "Maximal number of matching"
 msgstr "Nombre maximal d'assocations"
@@ -410,7 +410,7 @@ msgid "Maximum value"
 msgstr "Valeur maximale"
 
 msgid "MB"
-msgstr ""
+msgstr "MO"
 
 msgid "meta data"
 msgstr "méta-données"
@@ -464,7 +464,7 @@ msgid "Number base for value interpretation"
 msgstr "Base numérique pour l'interprétation de valeur"
 
 msgid "Open Web Item Package"
-msgstr ""
+msgstr "Paquet Open Web Item"
 
 msgid "Options"
 msgstr "Options"
@@ -479,7 +479,7 @@ msgid "OWI package uploaded"
 msgstr "Paquet OWI téléversé"
 
 msgid "Paper-based Item"
-msgstr ""
+msgstr "Fichier Papier-crayon"
 
 msgid "Pattern mask"
 msgstr "Masque d'expression régulière"
@@ -494,7 +494,7 @@ msgid "Please confirm interaction deletion"
 msgstr "Veuillez confirmer la suppression de l'intéraction"
 
 msgid "Please confirm object deletion"
-msgstr ""
+msgstr "Veuillez confirmer la suppression de l'objet"
 
 msgid "Please select first the item type!"
 msgstr "Veuillez d'abord sélectionner un type d'item!"
@@ -533,10 +533,10 @@ msgid "Prompt"
 msgstr "Invite"
 
 msgid "QTI Item"
-msgstr ""
+msgstr "Item QTI"
 
 msgid "QTI Package"
-msgstr ""
+msgstr "Paquet QTI"
 
 msgid "quantity"
 msgstr "quantité"
@@ -626,11 +626,14 @@ msgstr "L'intéraction courante a été modifiée mais les modifications n'ont p
 msgid "The current interaction has been modified but the modifications have not been updated yet,\n"
 " do you want to update the interaction with the modifications before saving your item?\n"
 "(Otherwise, the modifications are lost)"
-msgstr ""
+msgstr "L'intéraction courante a été modifiée mais les modification n'ont pas encore été mises à jour.\n"
+"Voulez-vous mettre à jour l'intéraction avec ses modifications avant de sauvegarder l'item ?\n"
+"(Autrement, les modifications seront perdues)"
 
 msgid "The current interaction has been modified but the modifications have not been updated yet.\n"
 "Do you want to do update the interaction with the modifications before previewing your item?"
-msgstr ""
+msgstr "L'intéraction courante a été modifiée mais les modifications n'ont pas encore été mises à jour.\n"
+"Voulez-vous mettre à jour l'intéraction avec les modifications avant de faire un aperçu de votre item ?"
 
 msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
 msgstr "La traitement des réponses personalisées n'est actuellement que partielement supporté dans cet éditeur. La suppression des intéractions et choix n'est pas recommandé."
@@ -696,7 +699,7 @@ msgid "Upload an Open Web Item Package File"
 msgstr "Téléverser un paquet Open Web Item"
 
 msgid "Upload an paper-based Item"
-msgstr ""
+msgstr "Télécharger un Item Papier-Crayon"
 
 msgid "Upload QTI File"
 msgstr "Télécharger un fichier QTI"
