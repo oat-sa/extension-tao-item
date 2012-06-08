@@ -83,7 +83,7 @@ class taoItems_models_classes_QTI_Service
 						$returnValue = $qtiParser->load();
 						
 						if(!$returnValue->getOption('lang')){
-	    					$returnValue->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
+	    					$returnValue->setOption('lang', core_kernel_classes_Session::singleton()->getDataLanguage());
 						}
 						
 						//load Measures
@@ -142,7 +142,7 @@ class taoItems_models_classes_QTI_Service
         		if($itemService->hasItemModel($rdfItem, array(TAO_ITEM_MODEL_QTI))){
         			
         			//set the current data lang in the item content to keep the integrity
-    				$qtiItem->setOption('lang', core_kernel_classes_Session::singleton()->getLg());
+    				$qtiItem->setOption('lang', core_kernel_classes_Session::singleton()->getDataLanguage());
     				
         			//get the QTI xml
         			$itemsaved = $itemService->setItemContent($rdfItem, $qtiItem->toQTI(), '', $commitMessage);

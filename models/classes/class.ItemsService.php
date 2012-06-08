@@ -278,7 +278,7 @@ class taoItems_models_classes_ItemsService
 			
 			if(empty($lang)){
 				$session = core_kernel_classes_Session::singleton();
-				$lang = ($session->getLg() != '') ? $session->getLg() : $session->defaultLg;
+				$lang = $session->getDataLanguage();
 			}
 				
 			if(GENERIS_VERSIONING_ENABLED){
@@ -1275,8 +1275,8 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1--37ac2a7e:1370da27424:-8000:00000000000039CC begin
 		
 		$session = core_kernel_classes_Session::singleton();
-		if ($session->getLg() != '') {
-			$returnValue = $session->getLg();
+		if ($session->getDataLanguage() != '') {
+			$returnValue = $session->getDataLanguage();
 		} else {
 			throw new Exception('the data language of the user cannot be found in session');
 		}
