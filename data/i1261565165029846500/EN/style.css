@@ -1,0 +1,115 @@
+#elections-in-the-united-states-2004 {
+	width: 700px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #999;
+	color: #363636!important;
+	font-family: font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding: 0;
+	background-image: url('img/body-bg.jpg');
+	background-repeat: no-repeat;
+	background-position: 0px -90px;
+}
+
+h1 {
+	color: #363636;
+	background-color: transparent;
+	font-size: 24px;
+	margin:30px 20px;
+	border-bottom: 1px solid #363636;
+	font-weight: bold;
+	padding-bottom: 5px;
+	width: 405px;
+}
+
+#stimulus {
+	color: #363636!important;
+	line-height: 16px;
+	padding-bottom: 30px;
+}
+
+.qti_item_body {
+	width: 625px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	text-align: justify;
+	padding: 20px;
+	background-color: #fff;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #999;
+}
+
+.qti_slider_interaction {
+	color: #363636!important;
+	border: none!important;
+	padding: 0!important;
+	margin: 0!important;
+}
+
+.prompt {
+	line-height: 18px;
+	margin-bottom: 30px;
+}
+
+.qti_control {
+	width: 200px;
+	height: 34px;
+	margin: 50px auto 0px auto;
+}
+
+a#qti_validate {
+	border: 1px solid #828282!important;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-family: font-family: Verdana, Arial, Helvetica, sans-serif!important;
+	width: 73px;
+	height: 14px!important;
+	padding: 5px!important;
+	text-align: center;
+	line-height: 13px;
+	position: relative!important;
+	display: block;
+	left: 65px;
+	font-size: 13px;
+	background-color: #f2f2f2;
+	color: #4c4c4c;
+}
+
+a#qti_validate:hover {
+	background-color: #d7d7d7;
+}
+
+.qti_slider {
+	width: 400px!important;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.qti_slider_label {
+	width: 400px!important;
+	margin-left:auto!important;
+	margin-right: auto!important;
+	position: relative!important;
+	left: 12px!important;
+	margin-bottom: 20px!important;
+}
+
+.slider_min {
+	left: -14px!important;
+	color: #363636!important;
+	font-weight: normal!important;
+}
+
+.slider_cur {
+	left: 180px!important;
+	font-size: 16px!important;
+}
+
+.slider_max {
+	right: 8px!important;
+	color: #363636!important;
+	font-weight: normal!important;
+}

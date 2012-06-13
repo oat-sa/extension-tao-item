@@ -1,0 +1,132 @@
+#periods-of-history {
+	width: 700px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #999;
+	color: #363636!important;
+	font-family: font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	padding: 0;
+	background-image: url('img/body-bg.jpg');
+	background-repeat: no-repeat;
+	background-position: right 20px;
+}
+
+h1 {
+	color: #fff;
+	background-image: url('img/header-bg.png');
+	background-repeat: repeat-x;
+	font-size: 18px;
+	margin:0;
+	padding: 8px 13px;
+	-moz-border-radius-topleft: 9px;
+	-moz-border-radius-topright: 9px;
+	border-top-left-radius: 9px;
+	border-top-right-radius: 9px;
+	border-radius-topleft: 9px;
+	border-radius-topright: 9px;
+	border-bottom: 1px solid #fff;
+	font-weight: normal;
+}
+
+#stimulus {
+	color: #363636!important;
+	line-height: 16px;
+	margin-bottom: 30px;
+}
+
+.qti_item_body {
+	padding: 13px;
+	text-align: justify;
+	background-image: url('img/body-bg.png');
+	background-position: top left;
+	background-repeat: repeat-x;
+}
+
+.qti_order_interaction {
+	color: #363636!important;
+	border: none!important;
+	padding: 0!important;
+}
+
+.qti_choice_list {
+	color: #363636!important;
+	border: none!important;
+	padding: 5px 0 0 5px!important;
+	margin: 0!important;
+	background-image: url('img/interaction-bg.png');
+	height: 269px;
+}
+
+.qti_choice_list li {
+	background-color: transparent;
+	border: none;
+	background-position: top left;
+	font-size: 18px;
+	height: 40px;
+	width: 447px;
+	line-height: 40px;
+	padding: 0 0 0 35px;
+	margin: 0 0 16px 0;
+}
+
+#Prehistory {
+	background-image: url('img/c1-bg.png');
+}
+
+#Antiquity {
+	background-image: url('img/c2-bg.png');
+}
+
+#ContemporaryEra {
+	background-image: url('img/c5-bg.png');
+}
+
+#MiddleAges {
+	background-image: url('img/c3-bg.png');
+}
+
+#ModernEra {
+	background-image: url('img/c4-bg.png');
+}
+
+.sort-placeholder {
+	border: none!important;
+	height: 40px!important;
+	margin:0;
+	padding:0;
+}
+
+.prompt {
+	line-height: 20px;
+	margin-bottom: 30px;
+	font-size: 14px;
+}
+
+.qti_control {
+	width: 200px;
+	height: 34px;
+	margin: 20px auto 0px 140px;
+}
+
+a#qti_validate {
+	border: 1px solid #828282!important;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-family: font-family: Verdana, Arial, Helvetica, sans-serif!important;
+	width: 73px;
+	height: 14px!important;
+	padding: 5px!important;
+	text-align: center;
+	line-height: 13px;
+	position: relative!important;
+	display: block;
+	left: 65px;
+	font-size: 13px;
+	background-color: #f2f2f2;
+	color: #4c4c4c;
+}
+
+a#qti_validate:hover {
+	background-color: #d7d7d7;
+}
