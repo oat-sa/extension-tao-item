@@ -17,7 +17,6 @@ return array(
 		'install' => array(
 			'rdf' => array(
 					array('ns' => 'http://www.tao.lu/Ontologies/TAOItem.rdf', 'file' => dirname(__FILE__). '/models/ontology/taoitem.rdf'),
-					array('ns' => 'http://www.tao.lu/Ontologies/taoFuncACL.rdf', 'file' => dirname(__FILE__). '/models/ontology/funcacl.rdf')
 			)
 		),
 		'classLoaderPackages' => array(
