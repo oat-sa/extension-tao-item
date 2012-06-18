@@ -236,10 +236,10 @@ $(document).ready(function(){
 			label: 'select point',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_selectPoint.png"
 		},
-		positionobject: {
+		/*positionobject: {
 			label: 'position object',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_positionObject.png"
-		},
+		},*/
 		slider: {
 			label: 'slider',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_slider.png"
