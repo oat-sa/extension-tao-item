@@ -97,6 +97,7 @@ div.wysiwyg ul.panel li.addInteraction{ background: url('../img/qtiAuthoring/app
 div.wysiwyg ul.panel li.addGap{ background: url('../img/qtiAuthoring/add_gap.png'); }
 div.wysiwyg ul.panel li.addHottext{ background: url('../img/qtiAuthoring/add_hottext.png'); }
 div.wysiwyg ul.panel li.addMedia{ background: url('../img/qtiAuthoring/media-add.png'); }
+div.wysiwyg ul.panel li.addObject{ background: url('../img/qtiAuthoring/object-add.png'); }
 object div.qti-wysiwyg-mediabox{background: url('../img/qtiAuthoring/media-display.png');}
 
 /*style of the img inserting modal box*/

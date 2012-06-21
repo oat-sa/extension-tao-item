@@ -341,6 +341,37 @@ function qtiEdit(itemSerial, formContainers, options){
 		groupIndex: 2
 	};
 
+	var addObject = {
+		visible : true,
+		className: 'addObject',
+		exec: function(){
+			$.ajax({
+				type: "GET",
+				url: root_url + "/taoItems/QtiAuthoring/addObject",
+				dataType: 'json',
+				async: true,
+				success: function(data) {
+					$('<div id="addObjectFrm" title="'+data.title+'">'+data.html+'</div>').dialog({
+						modal: true,
+						width: 400,
+						height: 400,
+						buttons: [
+							{
+								text: __('Insert'),
+								click: function() {
+									//Insert
+									$(this).dialog('close');
+								}
+							}
+						]
+					});
+				}
+			});
+		},
+		tooltip: 'insert object',
+		groupIndex: 2
+	};
+
 	var instance = this;
 
 	this.itemEditor = $(this.itemDataContainer).wysiwyg({
@@ -370,6 +401,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		  insertHorizontalRule : { visible : true },
 
 		  addMedia : addMedia,
+		  addObject : addObject,
 
 		  cut   : { visible : true },
 		  copy  : { visible : true },
