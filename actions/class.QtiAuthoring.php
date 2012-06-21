@@ -1693,19 +1693,37 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 		common_Logger::d('addObject');
 
-				//instantiate the item content form container
-		$formContainer = new taoItems_actions_QTIform_AddObject();
+		//instantiate the item content form container
+		$formContainer = new taoItems_actions_QTIform_AddObject(array('itemSerial' => $this->getCurrentItem()->getSerial()));
 		$myForm = $formContainer->getForm();
 
-		if($myForm->isSubmited() && $myForm->isValid()){
-			common_Logger::d('submited');
+		if ($myForm->isSubmited() && $myForm->isValid()) {
+			$options = array(
+				'data'	=> $this->getRequestParameter('objecturl'),
+				'type'	=> $this->getRequestParameter('type'), 
+			);
+			if ($this->hasRequestParameter('width')) {
+				$options['width'] = $this->getRequestParameter('width'); 
+			}
+			if ($this->hasRequestParameter('height')) {
+				$options['height'] = $this->getRequestParameter('height'); 
+			}
+			$object = new taoItems_models_classes_QTI_Object(null,$options);
+			$this->getCurrentItem()->addObject($object);
+			common_Logger::d('Added object '.$object->getSerial(), array('TAOITEMS', 'QTI'));
+			echo json_encode(array(
+				'success'	=> true,
+				'objectSerial'	=> $object->getSerial(),
+				'objectData'	=> $this->service->getObjectTag($object)
+			));
+		} else {
+			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Add object')));
 		}
-
+			
 		//$this->setData('formTitle', __('Add object'));
 		//$this->setData('myForm', $myForm->render());
 
 		//$this->setView('form_content.tpl');
-		echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Add object')));
 	}
 
 }
