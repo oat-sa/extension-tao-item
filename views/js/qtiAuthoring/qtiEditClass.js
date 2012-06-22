@@ -356,35 +356,8 @@ function qtiEdit(itemSerial, formContainers, options){
 				async: true,
 				success: function(data) {
 					if (data.success) {
-						obj.insertHtml(data.objectData); //.wysiwyg
-						qtiEdit.getEltInFrame('#'+data.objectSerial)[0].click(function(){
-							$.ajax({
-								type: "POST",
-								url: root_url + "/taoItems/QtiAuthoring/editObject",
-								dataType: 'json',
-								data: {
-									itemSerial: instance.itemSerial,
-									objectSerial: $(this).attr('id')
-								},
-								async: true,
-								success: function(data) {
-									$('<div id="editObjectFrm" title="'+data.title+'">'+data.html+'</div>').dialog({
-										modal: true,
-										width: 400,
-										height: 200,
-										buttons: [
-											{
-												text: __('Insert'),
-												click: function() {
-													//Insert
-													$(this).dialog('close');
-												}
-											}
-										]
-									});
-								}
-							});
-						});
+						obj.insertHtml(data.objectData);
+						instance.bindObjectLinkListener();
 					}
 				}
 			});
@@ -399,35 +372,35 @@ function qtiEdit(itemSerial, formContainers, options){
 		css: options.css,
 		iFrameClass: 'wysiwyg-item',
 		controls: {
-		  strikeThrough : { visible : true },
-		  underline     : { visible : false },
-		  insertTable 	: { visible : false },
+		  strikeThrough : {visible : true},
+		  underline     : {visible : false},
+		  insertTable 	: {visible : false},
 
-		  justifyLeft   : { visible : true },
-		  justifyCenter : { visible : true },
-		  justifyRight  : { visible : true },
-		  justifyFull   : { visible : true },
+		  justifyLeft   : {visible : true},
+		  justifyCenter : {visible : true},
+		  justifyRight  : {visible : true},
+		  justifyFull   : {visible : true},
 
-		  indent  : { visible : true },
-		  outdent : { visible : true },
+		  indent  : {visible : true},
+		  outdent : {visible : true},
 
-		  subscript   : { visible : true },
-		  superscript : { visible : true },
+		  subscript   : {visible : true},
+		  superscript : {visible : true},
 
-		  undo : { visible : true },
-		  redo : { visible : true },
+		  undo : {visible : true},
+		  redo : {visible : true},
 
-		  insertOrderedList    : { visible : true },
-		  insertUnorderedList  : { visible : true },
-		  insertHorizontalRule : { visible : true },
+		  insertOrderedList    : {visible : true},
+		  insertUnorderedList  : {visible : true},
+		  insertHorizontalRule : {visible : true},
 
 		  addMedia : addMedia,
 		  addObject : addObject,
 
-		  cut   : { visible : true },
-		  copy  : { visible : true },
-		  paste : { visible : true },
-		  html  : { visible: true },
+		  cut   : {visible : true},
+		  copy  : {visible : true},
+		  paste : {visible : true},
+		  html  : {visible: true},
 		  addChoiceInteraction: addChoiceInteraction,
 		  addAssociateInteraction: addAssociateInteraction,
 		  addOrderInteraction: addOrderInteraction,
@@ -450,26 +423,26 @@ function qtiEdit(itemSerial, formContainers, options){
 		},
 		events: {
 		  keyup : function(e){
-			if(instance.getDeletedInteractions(true).length > 0){
-				if(!confirm(__('please confirm deletion of the interaction'))){
-					instance.itemEditor.wysiwyg('undo');
-				}else{
-					var deletedInteractions = instance.getDeletedInteractions();
-					instance.deleteInteractions(deletedInteractions);
-
+				if(instance.getDeletedInteractions(true).length > 0){
+					if(!confirm(__('please confirm deletion of the interaction'))){
+						instance.itemEditor.wysiwyg('undo');
+					}else{
+						var deletedInteractions = instance.getDeletedInteractions();
+						instance.deleteInteractions(deletedInteractions);
+					}
+					return false;
 				}
-				return false;
-			}
 		  },
 		  frameReady: function(editorDoc){
-			//the binding require the modified html data to be ready
-			instance.bindInteractionLinkListener();
-			instance.bindObjectLinkListener();
+				//the binding require the modified html data to be ready
+				instance.bindInteractionLinkListener();
+				instance.bindObjectLinkListener();
 
-			editorDoc.body.focus();
+				editorDoc.body.focus();
 		  },
 		  unsetHTMLview: function(){
-			instance.bindInteractionLinkListener();
+				instance.bindInteractionLinkListener();
+				instance.bindObjectLinkListener();
 		  }
 		}
 	});
@@ -503,6 +476,7 @@ qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSeria
 
 			//then add listener
 			instance.bindInteractionLinkListener();
+			instance.bindObjectLinkListener();
 
 			//auto load the interaction form?
 	   }
@@ -576,24 +550,44 @@ qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
 }
 
 qtiEdit.prototype.bindObjectLinkListener = function(editorDoc){
-	var objlinks = qtiEdit.getEltInFrame('.qti_object_link', editorDoc);
-	for(var i in objlinks){
+	var instance = this;
+	objects = qtiEdit.getEltInFrame('.qti_object_link', editorDoc);
+	for (i in objects) {
+		object = objects[i];
 
-		var object = objlinks[i];
-		var objectSerial = object.attr('id');
+		$(object).unbind('click').click(function(event){
+			event.preventDefault();
+			$.ajax({
+				type: "POST",
+				url: root_url + "/taoItems/QtiAuthoring/editObject",
+				dataType: 'json',
+				data: {
+					itemSerial: instance.itemSerial,
+					objectSerial: $(this).attr('id')
+				},
+				async: true,
+				success: function(data) {
+					$('<div id="editObjectFrm" title="'+data.title+'">'+data.html+'</div>').dialog({
+						modal: true,
+						width: 400,
+						height: 300,
+						buttons: [
+							{
+								text: __('Insert'),
+								click: function() {
+									//Insert
+									$(this).dialog('close');
+								}
+							}
+						]
+					});
+				}
+			});
+		});
 
-		//instance.interactions[interactionSerial] = interactionSerial;
-		object.mousedown(function(e){
-			e.preventDefault();
-		});
-		object.click(function(e){
-			e.preventDefault();
-			instance.currentInteractionSerial = $(this).attr('id');
-			instance.loadInteractionForm(instance.currentInteractionSerial);
-		});
 		qtiEdit.makeNoEditable(object);
 
-		//append the delete button:
+		//Append the delete button:
 		var objectContainer = object.parent('.qti_object_block');
 		objectContainer.bind('dragover drop',function(e){
 			e.preventDefault();
@@ -604,7 +598,7 @@ qtiEdit.prototype.bindObjectLinkListener = function(editorDoc){
 		var $deleteButton = $('<span class="qti_object_delete"></span>').appendTo(objectContainer);
 		$deleteButton.attr('title', __('Delete object'));
 		$deleteButton.hide();
-		$deleteButton.bind('click', {'objectSerial': objectSerial}, function(e){
+		$deleteButton.bind('click', {'objectSerial': $(object).attr('id')}, function(e){
 			e.preventDefault();
 			if(confirm(__('Please confirm object deletion'))){
 				instance.deleteObject([e.data.objectSerial]);
@@ -637,7 +631,7 @@ qtiEdit.makeNoEditable = function($DOMelement){
 
 		$DOMelement.focus(function(e){
 			//CL('try removing focus');
-			if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+			if (e.preventDefault) {e.preventDefault();} else {e.returnValue = false;}
 			$(this).blur();
 		});
 
@@ -646,7 +640,7 @@ qtiEdit.makeNoEditable = function($DOMelement){
 		});
 		$DOMelement.bind('mousedown contextmenu keypress keydown', function(e){
 			//CL(e);
-			if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+			if (e.preventDefault) {e.preventDefault();} else {e.returnValue = false;}
 			return false;
 		});
 	}
@@ -786,39 +780,39 @@ qtiEdit.mapHtmlEditor = function($container){
 
 			var controls = {
 
-			  strikeThrough : { visible : true },
-			  underline     : { visible : false },
-			  insertTable 	: { visible : false },
+			  strikeThrough : {visible : true},
+			  underline     : {visible : false},
+			  insertTable 	: {visible : false},
 
-			  justifyLeft   : { visible : true },
-			  justifyCenter : { visible : true },
-			  justifyRight  : { visible : true },
-			  justifyFull   : { visible : true },
+			  justifyLeft   : {visible : true},
+			  justifyCenter : {visible : true},
+			  justifyRight  : {visible : true},
+			  justifyFull   : {visible : true},
 
-			  indent  : { visible : true },
-			  outdent : { visible : true },
+			  indent  : {visible : true},
+			  outdent : {visible : true},
 
-			  subscript   : { visible : true },
-			  superscript : { visible : true },
+			  subscript   : {visible : true},
+			  superscript : {visible : true},
 
-			  undo : { visible : true },
-			  redo : { visible : true },
+			  undo : {visible : true},
+			  redo : {visible : true},
 
-			  insertOrderedList    : { visible : true },
-			  insertUnorderedList  : { visible : true },
-			  insertHorizontalRule : { visible : true },
-			  cut   : { visible : true },
-			  copy  : { visible : true },
-			  paste : { visible : true },
-			  html  : { visible: true },
-			  h1: { visible: false },
-			  h2: { visible: false },
-			  h3: { visible: false },
-			  h4: { visible: false },
-			  h5: { visible: false },
-			  h6: { visible: false },
+			  insertOrderedList    : {visible : true},
+			  insertUnorderedList  : {visible : true},
+			  insertHorizontalRule : {visible : true},
+			  cut   : {visible : true},
+			  copy  : {visible : true},
+			  paste : {visible : true},
+			  html  : {visible: true},
+			  h1: {visible: false},
+			  h2: {visible: false},
+			  h3: {visible: false},
+			  h4: {visible: false},
+			  h5: {visible: false},
+			  h6: {visible: false},
 
-			  insertTable: { visible: false },
+			  insertTable: {visible: false},
 
 			  addChoiceInteraction: {visible:false},
 			  addAssociateInteraction: {visible:false},
