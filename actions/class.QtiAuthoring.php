@@ -1706,12 +1706,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	
 	public function editObject() {
 
-		common_Logger::d('editObject');
-
 		//instantiate the item content form container
-		$formContainer = new taoItems_actions_QTIform_AddObject(array('itemSerial' => $this->getCurrentItem()->getSerial()));
-		$myForm = $formContainer->getForm();
-		
 		foreach ($this->getCurrentItem()->getObjects() as $object) {
 			if ($object->getSerial() == $this->getRequestParameter('objectSerial')) {
 				$myObject = $object;
@@ -1721,6 +1716,12 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		if (!isset($myObject)) {
 			throw new common_Exception('Object not found');
 		}
+		common_Logger::d('editObject '.$myObject->getSerial());
+
+		
+		$formContainer = new taoItems_actions_QTIform_EditObject($myObject);
+		$myForm = $formContainer->getForm();
+		
 		
 
 		if ($myForm->isSubmited() && $myForm->isValid()) {
@@ -1736,7 +1737,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				'success'	=> true,
 			));
 		} else {
-			$myForm->setValues($myObject->getOptions());
 			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Edit object')));
 		}
 			
