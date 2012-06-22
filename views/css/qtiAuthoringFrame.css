@@ -28,8 +28,8 @@ div.qti_interaction_inline{
 	cursor: default;
 }
 
-div.qti_object_inline{
-	display:inline;
+div.qti_object_block{
+	display:block;
 	text-align:center;
 	border: solid #009933 2px;
 	margin:none;

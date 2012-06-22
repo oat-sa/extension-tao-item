@@ -345,8 +345,9 @@ function qtiEdit(itemSerial, formContainers, options){
 		visible : true,
 		className: 'addObject',
 		exec: function(){
+			obj = this;
 			$.ajax({
-				type: "GET",
+				type: "POST",
 				url: root_url + "/taoItems/QtiAuthoring/addObject",
 				dataType: 'json',
 				data: {
@@ -354,20 +355,36 @@ function qtiEdit(itemSerial, formContainers, options){
 				},
 				async: true,
 				success: function(data) {
-					$('<div id="addObjectFrm" title="'+data.title+'">'+data.html+'</div>').dialog({
-						modal: true,
-						width: 400,
-						height: 400,
-						buttons: [
-							{
-								text: __('Insert'),
-								click: function() {
-									//Insert
-									$(this).dialog('close');
+					if (data.success) {
+						obj.insertHtml(data.objectData); //.wysiwyg
+						qtiEdit.getEltInFrame('#'+data.objectSerial)[0].click(function(){
+							$.ajax({
+								type: "POST",
+								url: root_url + "/taoItems/QtiAuthoring/editObject",
+								dataType: 'json',
+								data: {
+									itemSerial:  instance.itemSerial
+								},
+								async: true,
+								success: function(data) {
+									$('<div id="editObjectFrm" title="'+data.title+'">'+data.html+'</div>').dialog({
+										modal: true,
+										width: 400,
+										height: 400,
+										buttons: [
+											{
+												text: __('Insert'),
+												click: function() {
+													//Insert
+													$(this).dialog('close');
+												}
+											}
+										]
+									});
 								}
-							}
-						]
-					});
+							});
+						});
+					}
 				}
 			});
 		},
@@ -576,7 +593,7 @@ qtiEdit.prototype.bindObjectLinkListener = function(editorDoc){
 		qtiEdit.makeNoEditable(object);
 
 		//append the delete button:
-		var objectContainer = object.parent('.qti_object_inline');
+		var objectContainer = object.parent('.qti_object_block');
 		objectContainer.bind('dragover drop',function(e){
 			e.preventDefault();
 			return false;
@@ -601,12 +618,12 @@ qtiEdit.prototype.bindObjectLinkListener = function(editorDoc){
 
 		object.parent().hover(function(){
 			$(this).children('.qti_object_delete').show();
-			if($(this).hasClass('qti_object_inline')){
+			if($(this).hasClass('qti_object_block')){
 				$(this).css('padding-right', '20px');
 			}
 		},function(){
 			$(this).children('.qti_object_delete').hide();
-			if($(this).hasClass('qti_object_inline')){
+			if($(this).hasClass('qti_object_block')){
 				$(this).css('padding-right', 0);
 			}
 		});
