@@ -363,14 +363,15 @@ function qtiEdit(itemSerial, formContainers, options){
 								url: root_url + "/taoItems/QtiAuthoring/editObject",
 								dataType: 'json',
 								data: {
-									itemSerial:  instance.itemSerial
+									itemSerial: instance.itemSerial,
+									objectSerial: $(this).attr('id')
 								},
 								async: true,
 								success: function(data) {
 									$('<div id="editObjectFrm" title="'+data.title+'">'+data.html+'</div>').dialog({
 										modal: true,
 										width: 400,
-										height: 400,
+										height: 200,
 										buttons: [
 											{
 												text: __('Insert'),
