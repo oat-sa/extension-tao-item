@@ -948,29 +948,34 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 	public function getMediaResource()
 	{
 		
-		if($this->hasRequestParameter('path')){
+		if( $this->hasRequestParameter('path')){
 		
 			$item = null;
-			if($this->hasRequestParameter('uri') && $this->hasRequestParameter('classUri')){
+			if ($this->hasRequestParameter('uri') && $this->hasRequestParameter('classUri')){
 				$item = $this->getCurrentInstance();
 			}
-			else if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
-				$classUri = tao_helpers_Uri::decode(Session::getAttribute('classUri'));
-				if($this->service->isItemClass(new core_kernel_classes_Class($classUri))){
-					$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode(Session::getAttribute('uri')));
+			else if ($this->hasSessionAttribute('uri') && $this->hasSessionAttribute('classUri')){
+				$classUri = tao_helpers_Uri::decode($this->getSessionAttribute('classUri'));
+				if ($this->service->isItemClass(new core_kernel_classes_Class($classUri))){
+					$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getSessionAttribute('uri')));
 				}
 			}
-			if(!is_null($item)){
+
+			if (!is_null($item)){
 				
 				$path = $this->getRequestParameter('path');
-				if(!tao_helpers_File::securityCheck($path)){
+				if (!tao_helpers_File::securityCheck($path)){
 					throw new Exception('Unauthorized path '.$path);
 				}
 				
-				if(preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
-					//check if the file is linked to the file manager
+				if (preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
+					// check if the file is linked to the file manager
 					$resource = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH . '/filemanager/views/data/', $path);
-				}else{
+				}
+				else{
+				    // look in the item's dedicated folder. it should be a resource
+				    // that is local to the item, not it the file manager
+				    // $folder is the item's dedicated folder path, $path the path to the resource, relative to $folder
 					$folder 	= $this->service->getItemFolder($item);
 					$resource 	= tao_helpers_File::concat(array($folder, $path));
 				}
@@ -981,7 +986,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					$mimeType = tao_helpers_File::getMimeType($resource);
 					
 					//allow only images, video, flash (and css?)
-					if(preg_match("/^(image|video|audio|application\/x-shockwave-flash)/", $mimeType)){
+					if (preg_match("/^(image|video|audio|application\/x-shockwave-flash)/", $mimeType)){
 						
 						header("Content-Type: $mimeType; charset utf-8");
 						print trim(file_get_contents($resource));
