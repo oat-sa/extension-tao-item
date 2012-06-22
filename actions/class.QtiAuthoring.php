@@ -1690,34 +1690,54 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	}
 
 	public function addObject() {
-
-		common_Logger::d('addObject');
-
-		//instantiate the item content form container
-		$formContainer = new taoItems_actions_QTIform_AddObject(array('itemSerial' => $this->getCurrentItem()->getSerial()));
-		$myForm = $formContainer->getForm();
-
-		if ($myForm->isSubmited() && $myForm->isValid()) {
-			$options = array(
-				'data'	=> $this->getRequestParameter('objecturl'),
-				'type'	=> $this->getRequestParameter('type'), 
-			);
-			if ($this->hasRequestParameter('width')) {
-				$options['width'] = $this->getRequestParameter('width'); 
-			}
-			if ($this->hasRequestParameter('height')) {
-				$options['height'] = $this->getRequestParameter('height'); 
-			}
-			$object = new taoItems_models_classes_QTI_Object(null,$options);
-			$this->getCurrentItem()->addObject($object);
-			common_Logger::d('Added object '.$object->getSerial(), array('TAOITEMS', 'QTI'));
-			echo json_encode(array(
+		$object = new taoItems_models_classes_QTI_Object(null, array('data' => '', 'type' => ''));
+		$this->getCurrentItem()->addObject($object);
+		common_Logger::d('Added object '.$object->getSerial(), array('TAOITEMS', 'QTI'));
+		echo json_encode(array(
 				'success'	=> true,
 				'objectSerial'	=> $object->getSerial(),
 				'objectData'	=> $this->service->getObjectTag($object)
 			));
+	}
+	
+	public function deleteObject() {
+		
+	}
+	
+	public function editObject() {
+
+		common_Logger::d('editObject');
+
+		//instantiate the item content form container
+		$formContainer = new taoItems_actions_QTIform_AddObject(array('itemSerial' => $this->getCurrentItem()->getSerial()));
+		$myForm = $formContainer->getForm();
+		
+		foreach ($this->getCurrentItem()->getObjects() as $object) {
+			if ($object->getSerial() == $this->getRequestParameter('objectSerial')) {
+				$myObject = $object;
+				break;
+			}
+		}
+		if (!isset($myObject)) {
+			throw new common_Exception('Object not found');
+		}
+		
+
+		if ($myForm->isSubmited() && $myForm->isValid()) {
+			$myObject->setOption('data', $this->getRequestParameter('objecturl'));
+			if ($this->hasRequestParameter('width')) {
+				$myObject->setOption('width', $this->getRequestParameter('width'));
+			}
+			if ($this->hasRequestParameter('height')) {
+				$myObject->setOption('height', $this->getRequestParameter('height'));
+			}
+			common_Logger::d('Edited object '.$myObject->getSerial(), array('TAOITEMS', 'QTI'));
+			echo json_encode(array(
+				'success'	=> true,
+			));
 		} else {
-			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Add object')));
+			$myForm->setValues($myObject->getOptions());
+			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Edit object')));
 		}
 			
 		//$this->setData('formTitle', __('Add object'));
