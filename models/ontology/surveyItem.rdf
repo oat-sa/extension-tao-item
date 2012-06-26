@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xml:base="http://www.tao.lu/Ontologies/TAOItem.rdf#"
+	xmlns:item="http://www.tao.lu/Ontologies/TAOItem.rdf#"
+>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#SurveyItem">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
+    <item:ItemAuthoring xml:lang="EN"><![CDATA[http://qat]]></item:ItemAuthoring>
+    <rdfs:comment xml:lang="EN"><![CDATA[Electronic version of paper based Question's]]></rdfs:comment>
+    <rdfs:label xml:lang="EN"><![CDATA[SurveyItem]]></rdfs:label>
+    <item:DataFileName><![CDATA[itemGroup.xml]]></item:DataFileName>
+    <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental"/>
+  </rdf:Description>
+</rdf:RDF>

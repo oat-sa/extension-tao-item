@@ -1,0 +1,86 @@
+#container {
+	font-family:				 'Verdana', 'Arial', 'Helvetica', 'sans-serif';
+}
+
+#container .column_header {
+	color:				 #000000;
+	font-size:				 16px;
+	text-decoration:				 none;
+}
+
+#container em {
+	color:				 #000000;
+	font-weight:				bold;
+	font-style:				italic;
+	text-decoration:				 none;
+}
+
+#container .matrix_table .labelText {
+	color:				 #000000;
+	font-size:				 12px;
+	text-align:				 left;
+	line-height:				 16px;
+	text-decoration:				 none;
+}
+
+#container .question {
+	color:				 #000000;
+	font-size:				 14px;
+	text-align:				 left;
+	font-weight:				bold;
+	line-height:				 18px;
+	text-decoration:				 none;
+}
+
+#container .question_description {
+	font-size:				 12px;
+	color:				 #000000;
+	text-align:				 left;
+	font-style:				italic;
+	line-height:				 14px;
+	text-decoration:				 none;
+}
+
+#container .instruction {
+	color:				 #000000;
+	font-size:				 14px;
+	text-align:				 left;
+	font-style:				italic;
+	line-height:				 18px;
+	text-decoration:				 none;
+}
+
+#container .response_description {
+	font-size:				 12px;
+	color:				 #000000;
+	text-align:				 left;
+	font-style:				italic;
+	line-height:				 14px;
+	text-decoration:				 none;
+}
+
+#container .list_table .labelText {
+	color:				 #000000;
+	font-size:				 12px;
+	text-align:				 left;
+	line-height:				 16px;
+	text-decoration:				 none;
+}
+
+#container strong {
+	color:				 #000000;
+	text-decoration:				 underline;
+}
+
+#container .input[type="text"] {
+	font-size:				 12px;
+	color:				 #000000;
+	text-align:				 right;
+	line-height:				 14px;
+	text-decoration:				 none;
+}
+
+#container table {
+	font-family:				'Verdana', 'Arial', 'Helvetica', 'sans-serif';
+}
+

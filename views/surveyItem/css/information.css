@@ -1,0 +1,39 @@
+
+#container {
+	border: 1px solid black;
+/*	font-family: Arial;*/
+	margin: 0 auto;
+	min-height: 500px;
+	top: 15px;
+	width: 960px;
+}
+
+#container #information {
+	left: 280px;
+	position: absolute;
+	top: 150px;
+	width: 660px;
+}
+
+#container #information ul {
+	/*margin: 30px;*/
+}
+#container #information li {
+	/*list-style-type: circle;*/
+}
+
+#container #info  {
+	display: none;
+}
+
+#container #header #logoPisa {
+	position: absolute;
+	right: 5px;
+	top: 75px;
+	float: right;
+}
+
+#container #header #logoPisa, #container #header #logoPisa img{
+	width: 75px;
+	height: 40px;
+}

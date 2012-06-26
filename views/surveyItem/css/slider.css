@@ -1,0 +1,33 @@
+/* Slider Ui */
+.slider_step_ui{
+	position:absolute;
+	bottom:0;
+	width:2px;
+	height:20px;
+	border-left:1px solid #aaa;
+}
+
+.slider_ui
+{
+	border-bottom:1px solid #aaa;
+	height:10px;
+}
+
+.dummyClick_ui{
+	position:absolute;
+	diplay:block;
+	top:0;
+	left:0;
+
+}
+
+
+.zeslider_ui{
+	position:absolute;
+	width:10px;
+	height:10px;
+	background:url(../image/cross.png);
+	bottom:0px;
+	z-index:20;
+	visibility:hidden;
+}
