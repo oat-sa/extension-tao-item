@@ -25,7 +25,7 @@
 				$("label[for='"+$(this).attr('id')+"']").css('color', '#A0A0A0');
 			}
 		});
-		
+
 		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
 		$authoringButton.after('<input id="content-button" type="button" value="Content"/>');
 		$('#content-button').click(function(){
@@ -50,7 +50,7 @@
 			$authoringButton.hide();
 			UiBootstrap.tabs.tabs('disable', getTabIndexByName('items_authoring'));
 		<?endif;?>
-		
+
 		<?if(GENERIS_VERSIONING_ENABLED):?>
 		//append versioned item management manually :
 		if($authoringButton.length){
