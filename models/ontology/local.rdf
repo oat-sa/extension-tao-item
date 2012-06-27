@@ -25,8 +25,6 @@
     <generis:FilePath><![CDATA[{ROOT_PATH}taoItems/data/i1261571812010328500/EN/]]></generis:FilePath>
     <generis:FileName><![CDATA[index.xhtml]]></generis:FileName>
   </rdf:Description>
-  -->
-  
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1296490050062615400">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
     <rdfs:label xml:lang="EN"><![CDATA[File : {ROOT_PATH}taoItems/data/i1261565165029846800/EN/kohs.xml]]></rdfs:label>
@@ -53,6 +51,7 @@
     <item:ItemModel rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest"/>
     <item:ItemContent xml:lang="EN" rdf:resource="LOCAL_NAMESPACE#i1296490050068099900"/>
   </rdf:Description>
+  -->
   <rdf:Description rdf:about="LOCAL_NAMESPACE#i1292796232039301700">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
     <rdfs:label xml:lang="EN"><![CDATA[QTI Planets]]></rdfs:label>
