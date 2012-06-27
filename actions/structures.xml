@@ -6,7 +6,8 @@
 		<sections>
 			<section id="manage_items" name="Manage items" url="/taoItems/Items/index">
 				<trees>
-					<tree name="Items library" 
+					<tree name="Items library"
+						className="Item" 
 						dataUrl="/taoItems/Items/getOntologyData" 
 						editClassUrl="/taoItems/Items/editItemClass"
 						editInstanceUrl="/taoItems/Items/editItem"
