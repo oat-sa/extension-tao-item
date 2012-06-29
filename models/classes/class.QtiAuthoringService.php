@@ -680,8 +680,11 @@ class taoItems_models_classes_QtiAuthoringService
 				break;
 			}
 		}
+	}
 
 
+	public function deleteObject(taoItems_models_classes_QTI_Item $item, taoItems_models_classes_QTI_Object $object){
+		$item->removeObject($object);
 	}
 
 	public function deleteChoice(taoItems_models_classes_QTI_Interaction $interaction, taoItems_models_classes_QTI_Choice $choice){

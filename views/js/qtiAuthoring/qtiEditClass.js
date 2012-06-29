@@ -11,7 +11,7 @@ function qtiEdit(itemSerial, formContainers, options){
 		cssFormContent: '#qtiAuthoring_cssManager',
 		responseMappingOptionsFormContainer : '#qtiAuthoring_mapping_container',
 		responseGrid: 'qtiAuthoring_response_grid'
-	}
+	};
 
 	if(!formContainers){
 		var formContainers = defaultFormContainers;
@@ -573,10 +573,18 @@ qtiEdit.prototype.bindObjectLinkListener = function(editorDoc){
 						height: 300,
 						buttons: [
 							{
-								text: __('Insert'),
+								text: __('Save'),
 								click: function() {
-									//Insert
-									$(this).dialog('close');
+									$.ajax({
+										type: "POST",
+										url: root_url + "/taoItems/QtiAuthoring/editObject",
+										dataType: 'json',
+										data: $('#editObjectFrm form').serialize(),
+										async: true,
+										success: function(data) {
+											if (data.success) $('#editObjectFrm').dialog('close');
+										}
+									});
 								}
 							}
 						]
@@ -1069,6 +1077,58 @@ qtiEdit.prototype.deleteInteractions = function(interactionSerials){
 
 			}
 
+	   }
+	});
+
+}
+
+qtiEdit.prototype.deleteObject = function(objectSerials){
+	if(!objectSerials || objectSerials.length <= 0){
+		return false;
+	}
+
+	var data = '';
+	//prepare the data to be sent:
+	for(var i in objectSerials){
+		data += 'objectSerials['+ i +']=' + objectSerials[i] + '&';
+		//delete this.objects[objectSerials[i]];
+	}
+	data += 'itemSerial=' + this.itemSerial;
+
+	var instance = this;
+
+	$.ajax({
+	   type: "POST",
+	   url: root_url + "/taoItems/QtiAuthoring/deleteObjects",
+	   data: data,
+	   dataType: 'json',
+	   success: function(r){
+			if (r.deleted) {
+				for (var i in objectSerials) {
+					var objectSerial = objectSerials[i];
+					if (instance.objectSerial == objectSerial) {
+						// destroy the object form:
+						$(instance.objectFormContent).empty();
+					}
+					//delete instance.objects[objectSerial];
+
+					//delete:
+					var $objects = qtiEdit.getEltInFrame('#'+objectSerial);
+					if ($objects.length) {
+						if ($objects[0]) {
+							$objectBlock = $objects[0].parent();
+							$objectBlock.empty();
+							$objectBlock.detach();
+						}
+					}
+				}
+				//save item data, i.e. validate the changes operated on the item data:
+				instance.saveItemData();
+			} else {
+				for (var i in objectSerials) {
+					instance.objects[objectSerials[i]] = objectSerials[i];
+				}
+			}
 	   }
 	});
 

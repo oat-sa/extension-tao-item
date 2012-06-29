@@ -1633,12 +1633,41 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			));
 	}
 
-	public function deleteObject() {
+	public function deleteObjects() {
+		$deleted = false;
 
+		$objectSerials = array();
+		if ($this->hasRequestParameter('objectSerials')) {
+			$objectSerials = $this->getRequestParameter('objectSerials');
+		}
+		if (empty($objectSerials)) {
+			throw new Exception('no object ids found to be deleted');
+		} else {
+			$item = $this->getCurrentItem();
+			$deleteCount = 0;
+
+			//delete objects:
+			foreach ($objectSerials as $objectSerial) {
+				$object = $this->qtiService->getDataBySerial($objectSerial);
+				if (!empty($object)) {
+					$this->service->deleteObject($item, $object);
+					$deleteCount++;
+				} else {
+					throw new Exception('no object found to be deleted with the serial: '.$objectSerial);
+				}
+			}
+
+			if ($deleteCount == count($objectSerials)) {
+				$deleted = true;
+			}
+		}
+
+		echo json_encode(array(
+			'deleted' => $deleted
+		));
 	}
 
 	public function editObject() {
-
 		//instantiate the item content form container
 		foreach ($this->getCurrentItem()->getObjects() as $object) {
 			if ($object->getSerial() == $this->getRequestParameter('objectSerial')) {
@@ -1651,20 +1680,37 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		}
 		common_Logger::d('editObject '.$myObject->getSerial());
 
-
-		$formContainer = new taoItems_actions_QTIform_EditObject($myObject);
+		$formContainer = new taoItems_actions_QTIform_EditObject($myObject, $this->getCurrentItem());
 		$myForm = $formContainer->getForm();
 
-
-
 		if ($myForm->isSubmited() && $myForm->isValid()) {
-			$myObject->setOption('data', $this->getRequestParameter('objecturl'));
-			if ($this->hasRequestParameter('width')) {
+			//Url
+			$url = $this->getRequestParameter('objecturl');
+			$myObject->setOption('data', $url);
+
+			//Mime-type
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1) ;
+			$content = curl_exec($ch);
+			if (!curl_errno($ch)) {
+				$info = curl_getinfo($ch);
+				$myObject->setOption('type', $info['content_type']);
+			} else {
+				common_Logger::d('Error getting the ressource : '.$url, array('TAOITEMS', 'QTI'));
+			}
+			curl_close($ch);
+			common_Logger::d('Type : '.$myObject->getOption('type'), array('TAOITEMS', 'QTI'));
+
+			//Width
+			if ($this->hasRequestParameter('width') && intval($this->getRequestParameter('width')) > 0) {
 				$myObject->setOption('width', $this->getRequestParameter('width'));
 			}
-			if ($this->hasRequestParameter('height')) {
+
+			//Height
+			if ($this->hasRequestParameter('height') && intval($this->hasRequestParameter('height')) > 0) {
 				$myObject->setOption('height', $this->getRequestParameter('height'));
 			}
+
 			common_Logger::d('Edited object '.$myObject->getSerial(), array('TAOITEMS', 'QTI'));
 			echo json_encode(array(
 				'success'	=> true,
@@ -1672,11 +1718,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		} else {
 			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Edit object')));
 		}
-
-		//$this->setData('formTitle', __('Add object'));
-		//$this->setData('myForm', $myForm->render());
-
-		//$this->setView('form_content.tpl');
 	}
 
 }
