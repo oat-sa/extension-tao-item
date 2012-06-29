@@ -1446,72 +1446,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$xhtmlForms[] = $rpform->render();
 		}
 
-		/*
-		//only display response grid when the response template is templates driven:
-		if($responseProcessing instanceof taoItems_models_classes_QTI_response_TemplatesDriven) {
-
-			//prepare data for the response grid:
-			$displayGrid = true;
-			//get model:
-			$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
-			$responseData = $this->service->getInteractionResponseData($interaction);
-
-			if($interactionType == 'order'){
-				//special case for order interaction:
-
-			}
-
-			if ($this->isResponseMappingMode($responseProcessing->getTemplate($response))) {
-				$mappingForm = new taoItems_actions_QTIform_Mapping($interaction, $responseProcessing);
-				if (!is_null($mappingForm)) {
-					$xhtmlForms[] = $mappingForm->getForm()->render();
-				}
-			}
-
-		// composite processing
-		}elseif($responseProcessing instanceof taoItems_models_classes_QTI_response_Composite){
-
-			$irp = $responseProcessing->getInteractionResponseProcessing($response);
-			if ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_None) {
-				$found = null;
-				foreach ($item->getOutcomes() as $outcome) {
-					if ($outcome == $irp->getOutcome()) {
-						$found = $outcome;
-						break;
-					}
-				}
-				if (is_null($found)) {
-					throw new common_exception_Error('No outcome definied for interaction '.$interaction->getIdentifier());
-				}
-				$manualForm = new taoItems_actions_QTIform_ManualProcessing($interaction, $responseProcessing, $found);
-				if (!is_null($manualForm)) {
-					$xhtmlForms[] = $manualForm->getForm()->render();
-				}
-				$displayGrid = false;
-			} elseif ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_MatchCorrectTemplate) {
-				$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
-				$responseData = $this->service->getInteractionResponseData($interaction);
-				$displayGrid = true;
-			} elseif ($irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponseTemplate
-				|| $irp instanceof taoItems_models_classes_QTI_response_interactionResponseProcessing_MapResponsePointTemplate) {
-				$columnModel = $this->service->getInteractionResponseColumnModel($interaction, $responseProcessing);
-				$responseData = $this->service->getInteractionResponseData($interaction);
-				$displayGrid = true;
-				$mappingForm = new taoItems_actions_QTIform_Mapping($interaction, $responseProcessing);
-				if (!is_null($mappingForm)) {
-					$xhtmlForms[] = $mappingForm->getForm()->render();
-				}
-
-			}
-
-		} else {
-			$xhtmlForms[] = '<b>'
-				.__('The response form is not available for the selected response processing.<br/>')
-				.'</b>';
-		}
-
-
-		*/
 		$data = array(
 			'ok' => true,
 			'interactionType' => $interactionType,
@@ -1528,7 +1462,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				$data[$key]= $value;
 			}
 		}
-
 		$data['responseForm'] = implode('', $data['forms']);
 
 		echo json_encode($data);
@@ -1699,11 +1632,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				'objectData'	=> $this->service->getObjectTag($object)
 			));
 	}
-	
+
 	public function deleteObject() {
-		
+
 	}
-	
+
 	public function editObject() {
 
 		//instantiate the item content form container
@@ -1718,11 +1651,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		}
 		common_Logger::d('editObject '.$myObject->getSerial());
 
-		
+
 		$formContainer = new taoItems_actions_QTIform_EditObject($myObject);
 		$myForm = $formContainer->getForm();
-		
-		
+
+
 
 		if ($myForm->isSubmited() && $myForm->isValid()) {
 			$myObject->setOption('data', $this->getRequestParameter('objecturl'));
@@ -1739,7 +1672,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		} else {
 			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Edit object')));
 		}
-			
+
 		//$this->setData('formTitle', __('Add object'));
 		//$this->setData('myForm', $myForm->render());
 
