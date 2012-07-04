@@ -10,14 +10,14 @@
 		</li>
 	<?endforeach;?>
 	</ul>
-	
+
 	<hr size="1" width="100%">
 <?endif;?>
 </div>
 
 
 
-<div>
+<div class="main-container">
 	<?=__('Add a new stylesheet:')?>
 	<?=get_data('myForm')?>
 </div>

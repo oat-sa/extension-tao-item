@@ -1471,7 +1471,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	public function manageStyleSheets(){
 		//create upload form:
 		$item = $this->getCurrentItem();
-		$formContainer = new taoItems_actions_QTIform_CSSuploader($item);
+		$formContainer = new taoItems_actions_QTIform_CSSuploader($item, $this->hasRequestParameter('itemUri'));
 		$myForm = $formContainer->getForm();
 
 		if($myForm->isSubmited()){

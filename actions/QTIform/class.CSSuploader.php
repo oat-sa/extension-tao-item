@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems\actions\QTIform\class.CSSuploader.php
+ * TAO - taoItems/actions/QTIform/class.CSSuploader.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 05.01.2011, 11:32:48 with ArgoUML PHP module 
- * (last revised $Date: 2008-04-19 08:22:08 +0200 (Sat, 19 Apr 2008) $)
+ * Automatically generated on 03.07.2012, 14:40:43 with ArgoUML PHP module
+ * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Jehan Bihin, <jehan.bihin@tudor.lu>
  * @package taoItems
  * @subpackage actions_QTIform
  */
@@ -25,7 +25,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * This class provide a container for a specific form instance.
  * It's subclasses instanciate a form and it's elements to be used as a
  *
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Jehan Bihin, <jehan.bihin@tudor.lu>
  */
 require_once('tao/helpers/form/class.FormContainer.php');
 
@@ -41,7 +41,7 @@ require_once('tao/helpers/form/class.FormContainer.php');
  * Short description of class taoItems_actions_QTIform_CSSuploader
  *
  * @access public
- * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+ * @author Jehan Bihin, <jehan.bihin@tudor.lu>
  * @package taoItems
  * @subpackage actions_QTIform
  */
@@ -61,22 +61,32 @@ class taoItems_actions_QTIform_CSSuploader
      */
     protected $item = null;
 
+    /**
+     * Short description of attribute itemUri
+     *
+     * @access public
+     * @var string
+     */
+    public $itemUri = '';
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Jehan Bihin, <jehan.bihin@tudor.lu>
      * @param  Item item
+     * @param  string itemUri
      */
-    public function __construct( taoItems_models_classes_QTI_Item $item)
+    public function __construct( taoItems_models_classes_QTI_Item $item, $itemUri)
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FAF begin
-		
+
 		$this->item = $item;
+		$this->itemUri = $itemUri;
 		$returnValue = parent::__construct(array(), array());
-		
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FAF end
     }
 
@@ -84,19 +94,18 @@ class taoItems_actions_QTIform_CSSuploader
      * Short description of method initForm
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Jehan Bihin, <jehan.bihin@tudor.lu>
      */
     public function initForm()
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FB3 begin
-		
+
 		$this->form = tao_helpers_form_FormFactory::getForm('css_uploader');
-		
-		$actions = array();
-		
-		$this->form->setActions($actions, 'top');
-		$this->form->setActions(array(), 'bottom');
-		
+
+		$connectElt = tao_helpers_form_FormFactory::getElement('submit', 'Submit');
+		$connectElt->setValue('Save');
+		$this->form->setActions(array($connectElt), 'bottom');
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FB3 end
     }
 
@@ -104,30 +113,34 @@ class taoItems_actions_QTIform_CSSuploader
      * Short description of method initElements
      *
      * @access public
-     * @author Somsack SIPASSEUTH, <s.sipasseuth@gmail.com>
+     * @author Jehan Bihin, <jehan.bihin@tudor.lu>
      */
     public function initElements()
     {
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FB5 begin
-		
+
 		$serialElt = tao_helpers_form_FormFactory::getElement('itemSerial', 'Hidden');
 		$serialElt->setValue($this->item->getSerial());
 		$this->form->addElement($serialElt);
-		
+
+		$elt = tao_helpers_form_FormFactory::getElement('itemUri', 'Hidden');
+		$elt->setValue($this->itemUri);
+		$this->form->addElement($elt);
+
 		$labelElt = tao_helpers_form_FormFactory::getElement('title', 'Textbox');
 		$labelElt->setDescription(__('File name'));
 		$this->form->addElement($labelElt);
-		
+
 		$importFileElt = tao_helpers_form_FormFactory::getElement("css_import", 'AsyncFile');
-		$importFileElt->setAttribute('auto', false);
+		$importFileElt->setAttribute('auto', true);
 		$importFileElt->setDescription(__("Upload the style sheet (CSS format required)"));
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
-			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),	
+			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),
 			tao_helpers_form_FormFactory::getValidator('FileMimeType', array('mimetype' => array('text/css', 'text/plain'), 'extension' => array('css')))
 		));
 		$this->form->addElement($importFileElt);
-		
+
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FB5 end
     }
 
