@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<rdf:RDF 
-	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
-	xml:base="http://www.tao.lu/Ontologies/TAOItem.rdf#" 
-	xmlns:item="http://www.tao.lu/Ontologies/TAOItem.rdf#" 
-	xmlns:widget="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#" 
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xml:base="http://www.tao.lu/Ontologies/TAOItem.rdf#"
+	xmlns:item="http://www.tao.lu/Ontologies/TAOItem.rdf#"
+	xmlns:widget="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#"
 	xmlns:generis="http://www.tao.lu/Ontologies/generis.rdf#"
 	xmlns:tao="http://www.tao.lu/Ontologies/TAO.rdf#"
 >
@@ -86,7 +86,7 @@
     <rdfs:label xml:lang="EN"><![CDATA[Paper-based Delivery Target]]></rdfs:label>
     <rdfs:comment xml:lang="EN"><![CDATA[Paper-based Delivery Target]]></rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryTarget"/>
-  </rdf:Description>  
+  </rdf:Description>
   <!-- DEPRECATED
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#QCM">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
@@ -98,8 +98,6 @@
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
-  -->
-  
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#kohs">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
     <rdfs:label xml:lang="EN"><![CDATA[Kohs]]></rdfs:label>
@@ -120,6 +118,7 @@
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
+  -->
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
@@ -147,7 +146,7 @@
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
     -->
-    
+
   <!-- DEPRECATED
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#campus">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
@@ -160,7 +159,7 @@
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
   -->
-  
+
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#QTI">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
     <item:ItemAuthoring xml:lang="EN"><![CDATA[/taoItems/QtiAuthoring/index]]></item:ItemAuthoring>
