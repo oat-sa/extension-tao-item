@@ -19,15 +19,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * An outcome is a data build in item output. The SCORE is one of the most
- * outcomes.
- *
- * @author Jehan Bihin, <jehan.bihin@tudor.lu>
- * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
- */
-require_once('class.Outcome.php');
-
-/**
  * The QTI_Data class represent the abstract model for all the QTI objects.
  * It contains all the attributes of the different kind of QTI objects.
  * It manages the identifiers and serial creation.
@@ -46,6 +37,15 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10247
  */
 require_once('taoItems/models/classes/QTI/class.Interaction.php');
+
+/**
+ * An outcome is a data build in item output. The SCORE is one of the most
+ * outcomes.
+ *
+ * @author Jehan Bihin, <jehan.bihin@tudor.lu>
+ * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10091
+ */
+require_once('taoItems/models/classes/QTI/class.Outcome.php');
 
 /* user defined includes */
 // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000233F-includes begin
@@ -348,7 +348,7 @@ class taoItems_models_classes_QTI_Item
      * @access public
      * @author Jehan Bihin, <jehan.bihin@tudor.lu>
      * @param  string serial
-     * @return Outcome
+     * @return taoItems_models_classes_QTI_Outcome
      */
     public function getOutcome($serial)
     {
@@ -375,7 +375,7 @@ class taoItems_models_classes_QTI_Item
      * @param  Outcome outcome
      * @return boolean
      */
-    public function removeOutcome( Outcome $outcome)
+    public function removeOutcome( taoItems_models_classes_QTI_Outcome $outcome)
     {
         $returnValue = (bool) false;
 
@@ -702,8 +702,8 @@ class taoItems_models_classes_QTI_Item
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-5b684d5f:138376facb1:-8000:0000000000003B56 begin
-    	if(!is_null($object)){
+        // section 127-0-1-1--84650a0:1386bc9fc2f:-8000:000000000000A146 begin
+			if(!is_null($object)){
     		if(isset($this->objects[$object->getSerial()])){
 					//finally, delete the interaction:
     			$object->destroy();
@@ -713,7 +713,7 @@ class taoItems_models_classes_QTI_Item
     			$returnValue = true;
     		}
     	}
-        // section 127-0-1-1-5b684d5f:138376facb1:-8000:0000000000003B56 end
+        // section 127-0-1-1--84650a0:1386bc9fc2f:-8000:000000000000A146 end
 
         return (bool) $returnValue;
     }
