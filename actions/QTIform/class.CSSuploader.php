@@ -102,6 +102,15 @@ class taoItems_actions_QTIform_CSSuploader
 
 		$this->form = tao_helpers_form_FormFactory::getForm('css_uploader');
 
+		$this->form->setDecorators(array(
+			'element'			=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'div')),
+			'group'				=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'div', 'cssClass' => 'form-group')),
+			'error'				=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'div', 'cssClass' => 'form-error ui-state-error ui-corner-all')),
+			'help'				=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'span','cssClass' => 'form-help')),
+			'actions-bottom'	=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'div', 'cssClass' => 'form-toolbar')),
+			'actions-top'		=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'div', 'cssClass' => 'form-toolbar'))
+		));
+
 		$connectElt = tao_helpers_form_FormFactory::getElement('submit', 'Submit');
 		$connectElt->setValue('Save');
 		$this->form->setActions(array($connectElt), 'bottom');
@@ -133,7 +142,8 @@ class taoItems_actions_QTIform_CSSuploader
 
 		$importFileElt = tao_helpers_form_FormFactory::getElement("css_import", 'AsyncFile');
 		$importFileElt->setAttribute('auto', true);
-		$importFileElt->setDescription(__("Upload the style sheet (CSS format required)"));
+		$importFileElt->setDescription(__("Upload the style sheet"));
+		$importFileElt->setHelp(__("CSS format required"));
 		$importFileElt->addValidators(array(
 			tao_helpers_form_FormFactory::getValidator('NotEmpty'),
 			tao_helpers_form_FormFactory::getValidator('FileSize', array('max' => 3000000)),
