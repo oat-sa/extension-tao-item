@@ -6,10 +6,11 @@
 /*placing top menu*/
 #qtiAuthoring_menu_container{width: 100%;position: relative;height:68px;top:0%;left:0%;}
 
-#qtiAuthoring_menu_left_container{position:absolute;width:24.8%;height:98%;padding:0px;}
+#qtiAuthoring_menu_left_container{position:absolute;width:24.8%;min-width:310px;height:98%;padding:0px;}
+#qtiAuthoring_menu_left_container>div{float:left;margin-right:15px;}
 #qtiAuthoring_menu_right_container{position:absolute;left:25%;height:98%;padding:0px;width: 75%;}
 
-div.qti-menu-item{float:left;text-align:center;cursor:pointer;padding: 0px 5px;width: 60px;margin-top: 3px;}
+div.qti-menu-item{float:right;text-align:center;cursor:pointer;padding: 0px 5px;width: 60px;margin-top: 3px;}
 div.qti-menu-item a{color:#D1043B;font-weight:bold;text-decoration:none;}
 div.qti-menu-item:hover a, div.qti-menu-item a:hover{color:#FF8C8C;}
 div.qti-menu-item-wide{width: 100px;}
