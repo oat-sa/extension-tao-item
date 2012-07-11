@@ -16,21 +16,12 @@ class taoItems_models_classes_Survey_Compilator
 	public function __construct($xsl, $lang, $params = array())
 	{
 		// to have recurrent path in memory
-//		switch($xsl) {
-////			case 'preview': $xsl =  QAT_PATH . '/preview/xsl/index.xsl';break;
-////			case 'app': $xsl =  QAT_PATH . '/style/xsl/app.xsl';break;
-//			//put to constant good or not ?
-//			case 'preview': $xsl =  QAT_XSL_PREVIEW_PATH ;break;
-//			case 'app': $xsl =  QAT_XSL_APP_PATH;break;
-//			default: break;
-//		}
+		switch($xsl) {
+			case 'preview': $xsl =  ROOT_PATH . '/taoItems/views/surveyItem/xsl/index.xsl' ;break;
+			default: break;
+		}
 		$this->xsl = $xsl;
 		$this->lang = $lang;
-		$this->absoluteImagesPrefix = BASE_WWW . '/surveyItem/';
-		if(isset($params['absoluteImagesPrefix'])) {
-			$this->absoluteImagesPrefix = $params['absoluteImagesPrefix'];
-			unset($params['absoluteImagesPrefix']);
-		}
 		$this->params = $params;
 		$this->setXslKey();
 		$this->preparedXsl = $this->getXsl();
@@ -45,7 +36,9 @@ class taoItems_models_classes_Survey_Compilator
 	private function setXslKey() {
 			$key = $this->xsl . $this->lang;
 			if(sizeof($this->params)) {
-				$key = $key + implode('', sort(array_keys($this->params)));
+				$p = array_keys($this->params);
+				sort($p);
+				$key = $key + implode('', $p);
 			}
 			$this->key = md5($key);
 	}
@@ -82,7 +75,6 @@ class taoItems_models_classes_Survey_Compilator
 			} else {
 				$xsl = $this->getFullXsl($this->xsl);
 			}
-			$xsl = $this->transformImagesPath($xsl);
 			$xsl = $this->translateXsl($xsl);
 			$xsl = taoItems_helpers_Xslt::prepareXsl($xsl, $this->params)->saveXML();
 			self::$styleSheets[$this->key] = $xsl;
@@ -108,29 +100,6 @@ class taoItems_models_classes_Survey_Compilator
 			$oldnode = $translations->item(0);
 			$newnode = $xsl_dom->createElementNS(taoItems_helpers_Xslt::XSLT_NS, "xsl:text", __($oldnode->nodeValue));
 			$oldnode->parentNode->replaceChild($newnode, $oldnode);
-		}
-		return $xsl_dom->saveXML();
-	}
-
-/**
-	 * transform relative image path to absolute
-	 * @param DOMDocument $xsl
-	 * @return DOMDocument
-	 */
-	private function transformImagesPath($xsl) {
-		$xsl_dom = new DOMDocument();
-		$xsl_dom->loadXML($xsl);
-		// this have to be done after the include resolving
-		$elts = $xsl_dom->getElementsByTagNameNS(taoItems_helpers_Xslt::XSLT_NS, "element");
-		for ($i =0; $i < $elts->length; $i++) {
-			if($elts->item($i)->getAttribute('name') == 'img') {
-				$atts = $elts->item($i)->getElementsByTagNameNS(taoItems_helpers_Xslt::XSLT_NS, "attribute");
-				for ($j =0; $j < $atts->length; $j++) {
-					if($atts->item($j)->getAttribute('name') == 'src') {
-						$atts->item($j)->getElementsByTagNameNS(taoItems_helpers_Xslt::XSLT_NS, "text")->item(0)->nodeValue = $this->absoluteImagesPrefix . '/' . $atts->item($j)->getElementsByTagNameNS(taoItems_helpers_Xslt::XSLT_NS, "text")->item(0)->nodeValue;
-					}
-				}
-			}
 		}
 		return $xsl_dom->saveXML();
 	}

@@ -14,7 +14,7 @@ class taoItems_models_classes_Survey_Item
 	// INSTANCE PROPERTIES
 	private $resource;
 	// CONSTANTS
-	const VIEWS_FOLDER = '/surveyItems/basePreview/';
+	const VIEWS_FOLDER = '/surveyItem/';
 	const QAT_TEST_PREFIX_URI = 'http://www.tao.lu/Ontologies/TAO.rdf#Surveys_test_';
 
 	public function __construct(core_kernel_classes_Resource $resource)

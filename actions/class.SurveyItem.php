@@ -51,5 +51,31 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 		echo $compilator->compile($xml);
 	}
 
+	/**
+	 * create a te:porary item, display his content and removeIt
+	 * @return type
+	 */
+	public function preview() {
+		$xml = html_entity_decode($this->getRequestParameter('xml')); // string XML
+		$parsed = taoItems_models_classes_Survey_Item::parseItemXml($xml);
+		if ($keep = $parsed instanceof core_kernel_classes_Resource) {
+			// get the item
+			$item = taoItems_models_classes_Survey_Item::singleton($parsed);
+			// call the item render function
+		} else {
+			$return = taoItems_models_classes_Survey_Item::saveItem($xml);
+			if(!isset($return['uri'])) {
+				throw new Exception(__('Error while rendering item'));
+			}
+			$item = taoItems_models_classes_Survey_Item::rendreItem(new core_kernel_classes_Resource($return['uri']));
+		}
+		// call the item render function
+		$render = $item->render();
+		if(!$keep) {
+			$item->delete();
+		}
+		echo $render;
+	}
+
 }
 ?>
