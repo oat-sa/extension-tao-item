@@ -56,7 +56,25 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 	 * @return type
 	 */
 	public function preview() {
+		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
+		if(!is_dir($dir)) {
+			mkdir($dir);
+		}
+		if(is_null($this->getRequestParameter('xml'))) {
+			//display preview generated
+			$content = file_get_contents($dir . $this->getRequestParameter('file'));
+			$this->setData('content', $content);
+			$this->setData('basePreview', ROOT_URL . '/taoItems/views/surveyItem/');
+			$this->setView('../surveyItem/preview.tpl');
+			return;
+		}
+		// generate preview in file
 		$xml = html_entity_decode($this->getRequestParameter('xml')); // string XML
+		$md5 = md5($xml);
+		if(file_exists($dir.$md5)) {
+			echo $md5;
+			return ;
+		}
 		$parsed = taoItems_models_classes_Survey_Item::parseItemXml($xml);
 		if ($keep = $parsed instanceof core_kernel_classes_Resource) {
 			// get the item
@@ -67,14 +85,16 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 			if(!isset($return['uri'])) {
 				throw new Exception(__('Error while rendering item'));
 			}
-			$item = taoItems_models_classes_Survey_Item::rendreItem(new core_kernel_classes_Resource($return['uri']));
+			$item = taoItems_models_classes_Survey_Item::renderItem(new core_kernel_classes_Resource($return['uri']));
 		}
-		// call the item render function
-		$render = $item->render();
+//		$file = tempnam($dir, 'SurveyPreview_');
+		file_put_contents($dir . $md5, $item->preRender());
+		echo json_encode($md5);
+//		// call the item render function
+//		$render = $item->render();
 		if(!$keep) {
 			$item->delete();
 		}
-		echo $render;
 	}
 
 }

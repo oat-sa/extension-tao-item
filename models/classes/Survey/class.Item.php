@@ -52,7 +52,7 @@ class taoItems_models_classes_Survey_Item
 	 *
 	 * tmp actually just used for preview
 	 */
-	public function render()
+	public function preRender()
 	{
 		// first get lang
 		$service = tao_models_classes_ServiceFactory::get('tao_models_classes_UserService');
@@ -72,8 +72,14 @@ class taoItems_models_classes_Survey_Item
 
 		// create the compilator and get the transformation
 		$compilator = new taoItems_models_classes_Survey_Compilator('preview', $lang);
-		$content = $compilator->compile($this->getContent());
+		return $compilator->compile($this->getContent());
+	}
 
+	/**
+	 *
+	 */
+	public function render() {
+		$content = $this->preRender();
 		$skeleton = DIR_VIEWS .  self::VIEWS_FOLDER . 'previewSkeleton.html';
 		$xhtml = str_replace('{RELATIVE_PATH_TO_PREVIEW_BASE}', BASE_WWW . self::VIEWS_FOLDER, file_get_contents($skeleton));
 		$xhtml = str_replace('{content}', $content, $xhtml);
