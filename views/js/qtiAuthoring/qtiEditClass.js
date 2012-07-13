@@ -484,9 +484,7 @@ qtiEdit.prototype.addInteraction = function(interactionType, itemData, itemSeria
 }
 
 qtiEdit.prototype.bindInteractionLinkListener = function(editorDoc){
-
 	//destroy all listeners:
-
 
 	//reset the interaction array:
 	var instance = this;
@@ -674,7 +672,7 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 				// var position = $(self.interactionFormContent).position();
 				// window.scrollTo(0, parseInt(position.top));
 
-				if($myTab) $myTab.tabs("select" , 1);
+				if ($myTab) $myTab.tabs("select", 1);
 		   }
 		});
 	}

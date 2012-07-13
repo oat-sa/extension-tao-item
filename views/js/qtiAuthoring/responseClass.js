@@ -26,7 +26,6 @@ $.jgrid.GridUnload = function(){
 responseClass.grid = null;
 
 function responseClass(tableElementId, interaction, responseFormContainer){
-
 	if(responseClass.grid){
 		responseClass.grid.destroyGrid();//only one response grid available at a time.
 	}
@@ -245,10 +244,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	var fixedColumn = [];
 	var colNames = [];
 	var colModel = [];
+
 	for(var i=0; i<serverResponse.colModel.length; i++){
-
 		var colElt = serverResponse.colModel[i];
-
 		colNames[i] = colElt.label;
 
 		colModel[i] = [];
@@ -317,7 +315,6 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 			}
 		}
 	}
-
 	this.colNames = colNames;
 	this.colModel = colModel;
 
@@ -351,10 +348,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		onSelectRow: function(id){
 			response.test = 'test1'
 			// CD(response, 'selet row and editing');
-
 			response.editGridRow(id);
-
-
 			// CD(response, 'after response');
 		}
 	};
@@ -368,7 +362,9 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 	}
 
 	try{
-		this.myGrid = $myGridElt.jqGrid(gridOptions);
+		if (colModel.length) { //CHROME crash if empty
+			this.myGrid = $myGridElt.jqGrid(gridOptions);
+		}
 	}catch(err){
 		throw 'jgGrid constructor exception: '+err;
 	}

@@ -17,35 +17,32 @@
 	</div>
 </div>
 
-
 <script type="text/javascript">
 $(document).ready(function(){
-	
 	$('a.form-choice-adder, #add_choice_button a').click(function(){
 		var number = 1;
-		
+
 		var val = parseInt($("#add_choice_number").val());
 		if(val){
 			number = val;
 		}
-		
+
 		//add a choice to the current interaction:
 		myInteraction.addChoice(number, $('#formContainer_choices'), 'formContainer_choice');
 		return false;
 	});
-	
+
 	//add adv. & delete button
 	myInteraction.initToggleChoiceOptions();
-	
+
 	//add move up and down button
 	myInteraction.orderedChoices = [];
 	<?foreach(get_data('orderedChoices') as $choice):?>
 		myInteraction.orderedChoices.push('<?=$choice->getSerial()?>');
 	<?endforeach;?>
 	myInteraction.setOrderedChoicesButtons(myInteraction.orderedChoices);
-	
-	//add the listener to the form changing 
+
+	//add the listener to the form changing
 	// myInteraction.setFormChangeListener();//all form
-	
 });
 </script>

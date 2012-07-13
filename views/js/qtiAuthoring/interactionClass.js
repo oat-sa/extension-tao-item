@@ -1,8 +1,7 @@
-// alert('interaction edit loaded');
+//alert('interaction edit loaded');
 interactionClass.instances = [];
 
 function interactionClass(interactionSerial, relatedItemSerial, options){
-
 	if(!interactionSerial){throw 'no interaction serial found';}
 	if(!relatedItemSerial){throw 'no related item serial found';}
 
@@ -14,7 +13,6 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 	var settings = {};
 
 	$.extend(settings, defaultResponseFormContainer, options);
-
 	this.settings = settings;
 	//this.responseMappingOptionsFormContainer = settings.responseMappingOptionsFormContainer;
 	this.responseGrid = settings.responseGrid;
@@ -650,7 +648,7 @@ interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
 
 //define when the form is considered as changed:
 interactionClass.prototype.setFormChangeListener = function(target){
-	
+
 	var interaction = this;
 	var $choiceForm = null;
 
@@ -679,7 +677,7 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		var setChangesfunction = function(){
 			interaction.setModifiedChoicesByForm($modifiedForm);
 		};
-		
+
 		// contentWindow does not exist under google chrome and other browsers.
 		var contentW;
 		if (this.contentDocument) {
@@ -689,13 +687,13 @@ interactionClass.prototype.setFormChangeListener = function(target){
 		} else {
 			contentW = this.document;
 		}
-		
+
 		// focus and blur does not bubble up (DOM specs). Firefox
 		// allows it but not chromium.
 		// http://www.quirksmode.org/dom/events/blurfocus.html
 		$(contentW).bind('focusin', setChangesfunction);
 		$(this).siblings('ul').click(setChangesfunction);
-		console.dir(contentW);
+		//console.dir(contentW);
 	});
 
 	return true;
@@ -856,7 +854,7 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 
 	$.ajax({
 	   type: "POST",
-	   url: "/taoItems/QtiAuthoring/deleteChoice",
+	   url: root_url + "/taoItems/QtiAuthoring/deleteChoice",
 	   data: {
 			'choiceSerial': choiceSerial,
 			'groupSerial': choiceSerial,
