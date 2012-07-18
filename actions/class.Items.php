@@ -208,7 +208,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 						$itemContentProp = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
 						foreach($ownerInstance->getPropertyValues($itemContentProp) as $fileUri){
 							if(common_Utils::isUri($fileUri)){
-								$file = new core_kernel_classes_File($fileUri);
+								$file = new core_kernel_versioning_File($fileUri);
 								$file->delete();
 							}
 						}
