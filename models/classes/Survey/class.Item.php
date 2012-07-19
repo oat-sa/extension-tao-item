@@ -9,13 +9,12 @@ class taoItems_models_classes_Survey_Item
 	const NO_ERROR = 0;
 	const DUPLICATE_ID_ERROR = 1;
 	// STATIC PROPERTIES
-	private static $singleton = false; // to avoid direct call of constructor
-	private static $instances = array();
+	protected static $singleton = false; // to avoid direct call of constructor
+	protected static $instances = array();
 	// INSTANCE PROPERTIES
-	private $resource;
+	protected $resource;
 	// CONSTANTS
 	const VIEWS_FOLDER = '/surveyItem/';
-	const QAT_TEST_PREFIX_URI = 'http://www.tao.lu/Ontologies/TAO.rdf#Surveys_test_';
 
 	public function __construct(core_kernel_classes_Resource $resource)
 	{
@@ -47,12 +46,11 @@ class taoItems_models_classes_Survey_Item
 	}
 
 	/**
-	 * Render function to display the item
+	 * Render function to display an item by passing xml
 	 * @return string (xhtml)
 	 *
-	 * tmp actually just used for preview
 	 */
-	public function preRender()
+	public static function preRender($xml)
 	{
 		// first get lang
 		$service = tao_models_classes_ServiceFactory::get('tao_models_classes_UserService');
@@ -72,62 +70,22 @@ class taoItems_models_classes_Survey_Item
 
 		// create the compilator and get the transformation
 		$compilator = new taoItems_models_classes_Survey_Compilator('preview', $lang);
-		return $compilator->compile($this->getContent());
+		return $compilator->compile($xml);
 	}
 
 	/**
+	 * Render function to display the item
+	 * @return string (xhtml)
 	 *
 	 */
-	public function render() {
-		$content = $this->preRender();
+	public function render()
+	{
+		$content = self::preRender($this->getContent());
 		$skeleton = DIR_VIEWS .  self::VIEWS_FOLDER . 'previewSkeleton.html';
 		$xhtml = str_replace('{RELATIVE_PATH_TO_PREVIEW_BASE}', BASE_WWW . self::VIEWS_FOLDER, file_get_contents($skeleton));
 		$xhtml = str_replace('{content}', $content, $xhtml);
 
 		return $xhtml;
-	}
-
-	/**
-	 * save item content
-	 * @param string $xml
-	 * @return boolean
-	 */
-	public function save($xml, $test)
-	{
-		$itemService = self::getItemService();
-		$this->resource->setLabel(self::getLabelInXml($xml));
-		$this->resource->editPropertyValues(new core_kernel_classes_Property(RDF_TYPE), $test->uriResource);
-		return $itemService->setItemContent($this->resource, $xml);
-	}
-
-	/**
-	 * check if item can be saved
-	 * @param string $xml
-	 * @return boolean
-	 */
-	public function checkBeforeSave()
-	{
-		// check duplicate label (cause actually label in tao == id in qat so unik)
-		$items = self::getResources();
-		$typeProperty = new core_kernel_classes_Property(RDF_TYPE);
-		foreach ($items as $resource) {
-			// if same label and different uri so throw exception else qat won't work correctly
-			if($resource->getLabel() == $this->resource->getLabel() && $resource->uriResource != $this->resource->uriResource) {
-				// new filter : unicity by test
-				if($this->resource->getOnePropertyValue($typeProperty) == $resource->getOnePropertyValue($typeProperty)) {
-					return self::DUPLICATE_ID_ERROR;
-				}
-			}
-		}
-	}
-
-	/**
-	 * delete the resource item
-	 * @param bool $full
-	 */
-	public function delete($full = true)
-	{
-		return $this->resource->delete($full);
 	}
 
 	/**
@@ -197,141 +155,17 @@ class taoItems_models_classes_Survey_Item
 	}
 
 	/**
-	 * save an item getting his uri in xml or create a new one noexistent
-	 * @param string $xml
-	 * @param array $params
-	 * @return mixed
-	 */
-	public static function saveItem($xml)
-	{
-		$parsed = self::parseItemXml($xml);
-		if ($parsed instanceof core_kernel_classes_Resource) {
-			// get the item
-			$item = self::singleton($parsed);
-			// call the item render function
-		} else {
-			// create a new item with given params
-			$item = self::singleton(self::createNewItem($parsed));
-		}
-		$test = self::getTest($xml);
-		// remove uri
-		$xml = self::removeUnwanted($xml);
-		// check if save is ok
-		$check = $item->checkBeforeSave();
-		switch ($check) {
-			case self::NO_ERROR:
-				$returnValue = array(
-						'uri' => $item->resource->uriResource,
-						'savedContent' => $item->save($xml, $test)
-				);
-				break;
-			// error message need to be filled in QAT (in the translation file)
-			default:
-				// return number for display error mesage
-				$returnValue = array(
-					'errorNumber' => $check,
-					'errorInfo'	=>	array(
-						'id' => $item->resource->getLabel()
-					)
-				);
-				// delete resource created
-				$item->delete();
-				break;
-		}
-		return $returnValue;
-	}
-
-	/**
-	 * remove unwanted content from xml
-	 * @param string $xml
+	 * Static call for rendering an item
+	 *
+	 * @param core_kernel_classes_Resource $resource
 	 * @return string
 	 */
-	public static function removeUnwanted($xml)
+	public static function renderItemMemory($xml)
 	{
-		// temp do it on string until found why removeChild render an bugged xml
-		$pos = strpos($xml, '<uri>');
-		if($pos !== false) {
-			$xml = substr($xml, 0, $pos) . substr($xml, strpos($xml, '</uri>', $pos) + 6);
-		}
-		$pos = strpos($xml, '<test>');
-		if($pos !== false) {
-			$xml = substr($xml, 0, $pos) . substr($xml, strpos($xml, '</test>', $pos) + 7);
-		}
-		return $xml;
-//		$dom = new DomDocument();
-//		$dom->loadXML($xml);
-////		$uri = $dom->getElementsByTagName('uri');
-//		$xpath = new DOMXPath($dom);
-//		$uri = $xpath->query('//uri');
-//		// no uri in the content (used in case of bug to clean content)
-//		if ($uri->length) {
-//			foreach ($uri as $u) {
-//				$dom->removeChild($u);
-//			}
-//		}
-//		return $dom->saveXML($dom->getElementsByTagName('itemGroup')->item(0));
-	}
-
-	/**
-	 * parse xml to get resourceUri or just label if new item
-	 * @param string $xml
-	 * @return mixed
-	 */
-	public static function parseItemXml($xml)
-	{
-		$uri = self::getXPath($xml, '//uri');
-		// if resource existing
-		if ($uri->length) {
-			return new core_kernel_classes_Resource($uri->item(0)->nodeValue);
-		} else {
-			// else get his label to create it
-			return self::getLabelInXml($xml);
-		}
-	}
-
-	/**
-	 * parse xml to get the test
-	 * @param string $xml
-	 * @return string
-	 */
-	public static function getTest($xml)
-	{
-		$test = self::getXPath($xml, '//test');
-		if (!$test->length) {
-			throw new Exception(__('No test in xml content'));
-		} else {
-			$cls = new core_kernel_classes_Class(self::QAT_TEST_PREFIX_URI . $test->item(0)->nodeValue);
-			return $cls->exists() ? $cls: false;
-		}
-	}
-
-	/**
-	 * parse xml to get resourceUri or just label if new item
-	 * @param string $xml
-	 * @return mixed
-	 */
-	public static function getLabelInXml($xml)
-	{
-		$label = self::getXPath($xml, '//itemGroup/@id');
-		if ($label->length) {
-			return $label->item(0)->nodeValue;
-		} else {
-			// if no label, ERROR
-			throw new Exception('Label not found for the item.');
-		}
-	}
-
-	/**
-	 * create an instance of a nex item survey
-	 * @param type $label
-	 */
-	public static function createNewItem($label)
-	{
-		$cls = new core_kernel_classes_Class(TAO_ITEM_CLASS);
-//		$label = self::getItemService()->createUniqueLabel($cls);
-		$instance = self::getItemService()->createInstance($cls, $label);
-		$instance->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_SURVEY);
-		return $instance;
+		// get the item
+		$item = self::singleton($resource);
+		// call the item render function
+		return $item->render();
 	}
 
 	/**
@@ -343,20 +177,6 @@ class taoItems_models_classes_Survey_Item
 		$cls = new core_kernel_classes_Class(TAO_ITEM_CLASS);
 		$lst = $cls->searchInstances(array(TAO_ITEM_MODEL_PROPERTY => TAO_ITEM_MODEL_SURVEY));//, array('like' => false));
 		return $lst;
-	}
-
-	/**
-	 * 	Remove an item using his uri
-	 * @param string $uri
-	 * @return boolean
-	 */
-	public static function deleteItem($uri)
-	{
-		if (empty($uri) || !is_string($uri)) {
-			throw new Exception('The given uri is empty or is not a string : ' . var_export($uri, true));
-		}
-		$item = self::singleton(new core_kernel_classes_Resource($uri));
-		return $item->delete();
 	}
 
 	/*	 * ***********************

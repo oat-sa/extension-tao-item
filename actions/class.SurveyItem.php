@@ -12,26 +12,6 @@
 class taoItems_actions_SurveyItem extends taoItems_actions_Items
 {
 	/**
-	 *  save an item into tao
-	 */
-	public function save()
-	{
-		$xml = $GLOBALS['HTTP_RAW_POST_DATA'];
-		$returnValue = taoItems_models_classes_Survey_Item::saveItem($xml);
-		echo json_encode($returnValue);
-	}
-
-	/**
-	 *  delete an item into tao
-	 */
-	public function delete()
-	{
-		$uri = $this->getRequestParameter('uri');
-		$returnValue = taoItems_models_classes_Survey_Item::deleteItem($uri);
-		echo json_encode($returnValue);
-	}
-
-	/**
 	 *  PHP XSL transformation used for item render and qat ui render
 	 */
 	public function transformXSL()
@@ -72,29 +52,20 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 		$xml = html_entity_decode($this->getRequestParameter('xml')); // string XML
 		$md5 = md5($xml);
 		if(file_exists($dir.$md5)) {
-			echo $md5;
+			echo json_encode($md5);
 			return ;
 		}
 		$parsed = taoItems_models_classes_Survey_Item::parseItemXml($xml);
 		if ($keep = $parsed instanceof core_kernel_classes_Resource) {
 			// get the item
 			$item = taoItems_models_classes_Survey_Item::singleton($parsed);
+			$content = taoItems_models_classes_Survey_Item::preRender($item->getContent());
 			// call the item render function
 		} else {
-			$return = taoItems_models_classes_Survey_Item::saveItem($xml);
-			if(!isset($return['uri'])) {
-				throw new Exception(__('Error while rendering item'));
-			}
-			$item = taoItems_models_classes_Survey_Item::renderItem(new core_kernel_classes_Resource($return['uri']));
+			$content = taoItems_models_classes_Survey_Item::preRender($xml);
 		}
-//		$file = tempnam($dir, 'SurveyPreview_');
-		file_put_contents($dir . $md5, $item->preRender());
+		file_put_contents($dir . $md5, $content);
 		echo json_encode($md5);
-//		// call the item render function
-//		$render = $item->render();
-		if(!$keep) {
-			$item->delete();
-		}
 	}
 
 }
