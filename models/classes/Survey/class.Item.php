@@ -111,6 +111,23 @@ class taoItems_models_classes_Survey_Item
 	 * ******************* */
 
 	/**
+	 * parse xml to get resourceUri or just label if new item
+	 * @param string $xml
+	 * @return mixed
+	 */
+	public static function parseItemXml($xml)
+	{
+		$uri = self::getXPath($xml, '//uri');
+		// if resource existing
+		if ($uri->length) {
+			return new core_kernel_classes_Resource($uri->item(0)->nodeValue);
+		} else {
+			// else get his label to create it
+			return self::getLabelInXml($xml);
+		}
+	}
+
+	/**
 	 * item Servcice factory getter
 	 * @return taoItems_models_classes_ItemsService
 	 */
