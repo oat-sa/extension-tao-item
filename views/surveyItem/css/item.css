@@ -199,7 +199,7 @@
 /*
 / INFORMATIONAL TEMPLATE
 */
-#container p.information
+#container div.information
 {
 	font-size: 20px;
 	font-weight: normal;
@@ -207,7 +207,7 @@
 	margin: 15px 0px 10px;
 }
 
-#container p.information ul,ol
+#container div.information ul,ol
 {
 	font-weight: normal;
 	/*list-style-type: circle;*/

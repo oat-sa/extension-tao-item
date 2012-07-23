@@ -24,9 +24,9 @@
 	<xsl:template
 		match="question"
 		mode="information">
-		<p class="information">
+		<div class="information">
 			<xsl:value-of disable-output-escaping="yes" select="."/>
-		</p>
+		</div>
 	</xsl:template>
 
 </xsl:stylesheet>

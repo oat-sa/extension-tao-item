@@ -27,7 +27,6 @@
 		<div id="container">
 			<div id="info_dialog">
 				<span id="info_dialog_close">[ <span class="close"></span> ]</span>
-				<p></p>
 			</div>
 			<div id="menuDialog">
 				<div class="headerMenuDialog">

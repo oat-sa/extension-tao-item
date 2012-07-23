@@ -56,7 +56,7 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 			return ;
 		}
 		$parsed = taoItems_models_classes_Survey_Item::parseItemXml($xml);
-		if ($keep = $parsed instanceof core_kernel_classes_Resource) {
+		if ($parsed instanceof core_kernel_classes_Resource) {
 			// get the item
 			$item = taoItems_models_classes_Survey_Item::singleton($parsed);
 			$content = taoItems_models_classes_Survey_Item::preRender($item->getContent());
