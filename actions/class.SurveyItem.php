@@ -56,14 +56,14 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 			return ;
 		}
 		$parsed = taoItems_models_classes_Survey_Item::parseItemXml($xml);
-		if ($parsed instanceof core_kernel_classes_Resource) {
-			// get the item
-			$item = taoItems_models_classes_Survey_Item::singleton($parsed);
-			$content = taoItems_models_classes_Survey_Item::preRender($item->getContent());
-			// call the item render function
-		} else {
+//		if ($parsed instanceof core_kernel_classes_Resource) {
+//			// get the item
+//			$item = taoItems_models_classes_Survey_Item::singleton($parsed);
+//			$content = taoItems_models_classes_Survey_Item::preRender($item->getContent());
+//			// call the item render function
+//		} else {
 			$content = taoItems_models_classes_Survey_Item::preRender($xml);
-		}
+//		}
 		file_put_contents($dir . $md5, $content);
 		echo json_encode($md5);
 	}
