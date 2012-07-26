@@ -3,7 +3,7 @@
 <head>
 	<title>taoApi Test Suite</title>
 	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
-	<script type="text/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
+	<script type="text/javascript" src='../../tao/views/js/jquery-1.7.2.min.js'></script>
 	<script type="text/javascript" src="../../tao/test/qunit/qunit.js"></script>
 	<script type="text/javascript" src="../views/js/taoApi/taoApi.min.js"></script>
 	<script type="text/javascript" src="../../wfEngine/views/js/wfApi/wfApi.min.js"></script>
@@ -14,9 +14,9 @@
 		test("Test the constants availability", function() {
 			ok( (URI != null), 'the URI constant should not be null');
 			ok( (URI.LABEL != undefined), 'the URI has a LABEL property');
-			equals( STATE.ITEM.FINISHED, 'item_finished', 'the state finished is defined '); 
+			equals( STATE.ITEM.FINISHED, 'item_finished', 'the state finished is defined ');
 		});
-	
+
 		module("core");
 
 		test("Test an instance of the  TaoStack class", function() {
@@ -26,16 +26,16 @@
 			ok(isScalar("douze"), 'test the isScalar function with  a string');
 			ok(!isScalar([1,2]), 'test the isScalar function with an array ');
 			ok(!isScalar({douze:12}), 'test the isScalar function with an object');
-			
+
 			var aTaoStack =  new TaoStack();
 			ok( (aTaoStack != null), 'the taoStack instance should not be null');
 			ok( !$.isPlainObject(aTaoStack), 'check if the taoStack is not a plain object');
 			ok( (aTaoStack instanceof TaoStack), 'check the taoStack Class');
-			ok( (typeof(aTaoStack) === 'object'), 'check the taoStack type');			
+			ok( (typeof(aTaoStack) === 'object'), 'check the taoStack type');
 		});
 
 		test("Test the global TaoStack instance used by the API", function() {
-			
+
 			ok( (taoStack != undefined), 'the taoStack instance should defined');
 			ok( !$.isPlainObject(taoStack), 'check if the taoStack is not a plain object');
 			ok( (taoStack instanceof TaoStack), 'check the taoStack Class');
@@ -83,15 +83,15 @@
 			setEndorsment(true);
 
 			push();
-			
+
 			equals(getUserVar('tempScore'), false, 'Test if the stack is cleared');
 
 			setUserVar('tempScore2', 12);
 
 			equals(getUserVar('tempScore2'), 12, 'Test the user variables');
 
-			
-			
+
+
 		});
 
 		module("events");
@@ -115,7 +115,7 @@
 				url : 'taoApiServer.php?action=traceEvents',
 				params: {
 					token : getToken()
-				} 
+				}
 			});
 
 			logEvent('div', 'click', {id: "qunit-fixture"});
@@ -128,12 +128,12 @@
 		});
 
 		module("state");
-		
+
 		test("Finishing", function(){
 
 			logEvent('h1', 'click', {id: "qunit-header"});
 			logEvent('h2', 'click', {id: "qunit-banner"});
-			
+
 			var testCallBack = 2;
 			onFinish(function(){
 				testCallBack++;
@@ -144,13 +144,13 @@
 			finish();
 
 			equals(testCallBack, 3, 'Test the finish callback');
-			
+
 			equals(getUserVar('tempScore2'), false, 'Test if the stack is cleared');
 
 			ok(eventTracer.eventPool.length == 0, "Test if the events has been sent");
-		});	
+		});
 	</script>
-	
+
 </head>
 <body>
 	<h1 id="qunit-header">TAO API Test Suite</h1>

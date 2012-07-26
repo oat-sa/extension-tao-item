@@ -3,15 +3,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?=$label?></title>
-	
+
 	<!-- LIB -->
-	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.4.custom.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.21.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
 	<script type="text/javascript">
 		var root_url = "<?=$ctx_root_url?>";
 	</script>
-	
+
 	<!-- JS REQUIRED -->
 	<?if(!$ctx_raw_preview):?>
 	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
@@ -26,6 +26,6 @@
 			<img class="icon" alt="xml" src="<?=$ctx_base_www?>img/text-xml-file.png"><?=__('Download item content')?>
 		</a>
 	</div>
-</div>	
+</div>
 </body>
 </html>

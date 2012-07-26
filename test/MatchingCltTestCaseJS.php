@@ -11,7 +11,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 	<title>QUnit Test Suite</title>
 	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen">
 	<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
-	<script type="application/javascript" src='../../tao/views/js/jquery-1.4.2.min.js'></script>
+	<script type="application/javascript" src='../../tao/views/js/jquery-1.7.2.min.js'></script>
     <script type="application/javascript" src="../../tao/test/qunit/qunit.js"></script>
     <script type="application/javascript" src="../views/js/taoMatching/lib/json2.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/class.Matching.js"></script>
@@ -29,15 +29,15 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
     <script type="application/javascript" src="../views/js/taoMatching/src/class.AreaMap.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/matching_constant.js"></script>
 	<script type="application/javascript" src="../views/js/taoMatching/src/matching_api.js"></script>
-	
+
 	<!-- -------------------------------------------------------------------------
 	QTI DATA
 	--------------------------------------------------------------------------->
-	
+
 	<script type="application/javascript">
         var testToRun = '*';
         //var testToRun = "Remote Parsing / Client Matching : Select Point";
-        
+
         var testUnitFct = test;
         var asynctestUnitFct = asyncTest;
         test = function (label, func) {
@@ -68,7 +68,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!int1.equal(int2), 'It is not equal to a different integer variable');
 			ok (!int1.equal(nullVar), 'It is not equal to a null variable');
 		});
-		
+
 		test("Test the VariableFactory (float)", function() {
 			var dbl1 = TAO_MATCHING.VariableFactory.create (3.14);
 			var dbl2 = TAO_MATCHING.VariableFactory.create (3.0);
@@ -82,7 +82,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!dbl1.equal(dbl2), 'It is not equal to a different float variable');
 			ok (!dbl1.equal(nullVar), 'It is not equal to a null variable');
 		});
-		
+
 		test("Test the VariableFactory (boolean)", function() {
 			var bool1 = TAO_MATCHING.VariableFactory.create (3.14);
 			var bool2 = TAO_MATCHING.VariableFactory.create (3.0);
@@ -96,7 +96,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!bool1.equal(bool2), 'It is not equal to a different boolean variable');
 			ok (!bool1.equal(nullVar), 'It is not equal to a null variable');
 		});
-		
+
 		test("Test the VariableFactory (string)", function() {
 			var str1 = TAO_MATCHING.VariableFactory.create ('TAO');
 			var str2 = TAO_MATCHING.VariableFactory.create ('it\'s so powerfull');
@@ -110,7 +110,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!str1.equal(str2), 'It is not equal to a different string variable');
 			ok (!str1.equal(nullVar), 'It is not equal to a null variable');
 		});
-		
+
 		test("Test the VariableFactory (list [in QTI Pair])", function() {
 			var list1 = TAO_MATCHING.VariableFactory.create (["TAO", "Test Assisté par Ordinateur"]);
 			var list2 = TAO_MATCHING.VariableFactory.create (["CBA", "Computer Based Assessment"]);
@@ -129,7 +129,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!list1.match(list4), 'Does not match a different list');
 			ok (!list1.match(list5), 'Does not match a different list');
 		});
-		
+
 		test("Test the VariableFactory (tuple [in QTI DirectedPair])", function() {
 			var tuple1 = TAO_MATCHING.VariableFactory.create ({"0":"TAO", "1":"it\'s so powerfull"});
 			var tuple2 = TAO_MATCHING.VariableFactory.create ({"0":"Yeahhh", "1":"it\'s true"});
@@ -145,7 +145,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!tuple1.match(tuple3), 'Does not match a different tuple');
 			ok (!tuple1.match(tuple4), 'Does not match a different tuple');
 		});
-		
+
 		test("Test the VariableFactory (list of list [in QTI Multiple Pair])", function() {
 			var listList1 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"]]);
 			var listList2 = TAO_MATCHING.VariableFactory.create ([["B", "A"], ["D", "C"], ["F", "E"]]);
@@ -161,7 +161,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!listList1.match(listList4), 'Does not match a different list');
 			ok (!listList1.match(listList5), 'Does not match a different list');
 		});
-		
+
 		test("Test the VariableFactory (list of tuple [in QTI Multiple DirectedPair])", function() {
 			var listTuple1 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
 			var listTuple2 = TAO_MATCHING.VariableFactory.create ([{"0":"B", "1":"A"}, {"0":"D", "1":"C"}, {"0":"F", "1":"E"}]);
@@ -177,7 +177,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			ok (!listTuple1.match(listTuple4), 'Does not match a different listTuple');
 			ok (!listTuple1.match(listTuple5), 'Does not match a different listTuple');
 		});
-        
+
         test("Test the VariableFactory (tuple:point [in QTI Point])", function() {
             var point1 = TAO_MATCHING.VariableFactory.create ({"0":101, "1":112});
             ok (point1 != null, 'Variable not null');
@@ -187,7 +187,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (tmpValue[1].getValue(), 112, 'Right value');
             ok (point1.match(point1), 'Match itself');
         });
-        
+
         test("Test the VariableFactory (shape:circle)", function() {
             var circle1 = TAO_MATCHING.VariableFactory.create ({"type":"circle", "center":{"0":102,"1":113},"hradius":8,"vradius":8});
             ok (circle1 != null, 'Variable not null');
@@ -200,13 +200,13 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (tmpValue[1].getValue(), 113, 'Right center value Y');
             // Check if a point is inside this shape
             var point = TAO_MATCHING.VariableFactory.create ({"0":102, "1":113});
-            ok (circle1.contains (point), 'Point in ellipse'); 
+            ok (circle1.contains (point), 'Point in ellipse');
             point = TAO_MATCHING.VariableFactory.create ({"0":102, "1":105});
             ok (circle1.contains (point), 'Point in ellipse');
             point = TAO_MATCHING.VariableFactory.create ({"0":102, "1":104});
-            ok (!circle1.contains (point), 'Point in ellipse');            
+            ok (!circle1.contains (point), 'Point in ellipse');
         });
-        
+
         test("Test the VariableFactory (shape:ellipse)", function() {
             var ellipse1 = TAO_MATCHING.VariableFactory.create ({"type":"ellipse", "center":{"0":"102","1":"113"},"hradius":"8","vradius":"2"});
             ok (ellipse1 != null, 'Variable not null');
@@ -218,7 +218,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (tmpValue[0].getValue(), 102, 'Right center value X');
             equals (tmpValue[1].getValue(), 113, 'Right center value Y');
         });
-        
+
         test("Test the VariableFactory (shape:rect)", function() {
             var rect1 = TAO_MATCHING.VariableFactory.create ({"type":"rect", "points":[{"0":0,"1":0}, {"0":0,"1":1}, {"0":1,"1":1}, {"0":1,"1":0}]});
             ok (rect1 != null, 'Variable not null');
@@ -254,7 +254,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             var point = TAO_MATCHING.VariableFactory.create ({"0":2, "1":0});
             ok (!rect1.contains (point), 'Point not in rect');
         });
-        
+
         test("Test the VariableFactory (shape:poly)", function() {
             var poly1 = TAO_MATCHING.VariableFactory.create ({"type":"poly", "points":[{"0":"0","1":"0"}, {"0":"1","1":"1"}, {"0":"0","1":"2"}, {"0":"1","1":"3"}, {"0":"2","1":"2"}, {"0":"3","1":"3"}, {"0":"4","1":"2"}, {"0":"3","1":"1"}, {"0":"4","1":"0"}]});
             ok (poly1 != null, 'Variable not null');
@@ -263,7 +263,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (tmpValue[0].getValue(), 3, 'Right five point value X');
             equals (tmpValue[1].getValue(), 3, 'Right five point value Y');
         });
-		
+
 		test("map list of list [in QTI list of pair]", function() {
 			var map1 = new TAO_MATCHING.Map ({value:[{"key":["A", "B"], "value":1}, {"key":["C", "D"], "value":0.5}, {"key":["E", "F"], "value":0.2}]});
 			var listList1 = TAO_MATCHING.VariableFactory.create ([["A", "B"], ["C", "D"], ["E", "F"]]);
@@ -297,7 +297,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			equals (map1.map(listList4), 1, 'Right mapping');
 			equals (map1.map(listList41), -1, 'Right mapping');
 		});
-		
+
 		test("map list of tuple [in QTI list of directedpair]", function() {
 			var map2 = new TAO_MATCHING.Map ({value:[{"key":{"0":"A", "1":"B"}, "value":1}, {"key":{"0":"C", "1":"D"}, "value":0.5}, {"key":{"0":"E", "1":"F"}, "value":0.2}]});
 			var listTuple1 = TAO_MATCHING.VariableFactory.create ([{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]);
@@ -313,7 +313,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			equals (map2.map(listTuple5), 0.0, 'Right mapping');
 			equals (map2.map(listTuple6), 1.7, 'Right mapping');
 		});
-	
+
 		test("template response processing match_correct", function() {
 			var matching_param = {
 				data : {
@@ -327,7 +327,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			matchingEvaluate ();
 			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"], 1, 'Expected Score');
-			
+
 			matching_param = {
 				data : {
 					corrects 	: [{"identifier":"RESPONSE", "value":[{"0":"A", "1":"B"}, {"0":"C", "1":"D"}, {"0":"E", "1":"F"}]}]
@@ -357,7 +357,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			matchingEvaluate ();
 			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  0.9, 'Expected Score');
-			
+
 			// list list (multiple pair)
 			var matching_param = {
 				data : {
@@ -372,7 +372,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			matchingEvaluate ();
 			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
-						
+
 			// list list (multiple pair but with reversed result)
 			var matching_param = {
 				data : {
@@ -387,7 +387,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			matchingEvaluate ();
 			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
-			
+
 			// list tuple (multiple directedpair)
 			var matching_param = {
 				data : {
@@ -402,7 +402,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
 			matchingEvaluate ();
 			outcomes = matchingGetOutcomes ();
 			equals (outcomes["SCORE"]["value"],  1.7, 'Expected Score');
-	
+
 			// list tuple (multiple directedpair reversed pair)
 			var matching_param = {
 				data : {
@@ -431,7 +431,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             matchingEvaluate ();
             outcomes = matchingGetOutcomes ();
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
-            
+
             // and on a single matching
             var matching_param = {
                 data : {
@@ -445,7 +445,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             matchingEvaluate ();
             outcomes = matchingGetOutcomes ();
             equals (outcomes["SCORE"]["value"],  1, 'Expected score');
-            
+
             // and with a true and matching
             var matching_param = {
                 data : {
@@ -464,7 +464,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
         // CREATE VARIABLE OPERATOR (the operator used to map the baseValue QTI Expression)
         test("test operator : createVariable (*) (QTI basevalue)", function() {
             var matching = new TAO_MATCHING.Matching ();
-            
+
             // String
             var str1 = matching.createVariable(null, 'Driver A');
             ok (str1 != null, 'Create a not null String Variable');
@@ -472,7 +472,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             ok (str1.match(str1), 'String Variable matches itself');
             var str2 = matching.createVariable(null, 'Driver B');
             ok (!str1.match(str2), 'String Variable does not match a different String Variable');
-            
+
             // Float
             var float1 = matching.createVariable(null, 3.1415);
             ok (float1 != null, 'Create a not null Float Variable');
@@ -480,7 +480,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             ok (float1.match(float1), 'Float Variable matches itself');
             var float2 = matching.createVariable(null, 3.0);
             ok (!str1.match(str2), 'Float Variable does not match a different Float Variable');
-            
+
             // Integer
             var int1 = matching.createVariable(null, 123456);
             ok (int1 != null, 'Create a not null Integer Variable');
@@ -488,31 +488,31 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             ok (int1.match(int1), 'Integer Variable matches itself');
             var int2 = matching.createVariable(null, 6543210);
             ok (!int1.match(int2), 'Integer Variable does not match a different Integer Variable');
-            
+
             // Boolean
             var bool1 = matching.createVariable(null, true);
             ok (bool1 != null, 'Create a not null Boolean Variable');
             equals (bool1.getType(), 'boolean', 'Boolean Variable get the right type');
             ok (bool1.match(bool1), 'Boolean Variable matches itself');
             var bool2 = matching.createVariable(null, false);
-            ok (!int1.match(bool2), 'Boolean Variable does not match a different Boolean Variable');         
-            
+            ok (!int1.match(bool2), 'Boolean Variable does not match a different Boolean Variable');
+
             // List
             var list1 = matching.createVariable (null, ["TAO", "Test Assisté par Ordinateur"]);
             equals (list1.getType(), 'list', 'List Variable get the right type');
             ok (list1.match(list1), 'List Variable  matches itself');
             var list2 = matching.createVariable (null, ["CBA", "Computer Based Assessment"]);
             ok (!list1.match(list2), 'List Variable does not match a different List Variable');
-            
+
             // Tuple
             var tuple1 = matching.createVariable({"type":"tuple"}, matching.createVariable ({"type":"string"}, "DriverC"), matching.createVariable ({"type":"string"}, "DriverB"), matching.createVariable ({"type":"string"}, "DriverA"));
             ok (tuple1 != null, 'Create a not null Tuple Variable');
             equals (tuple1.getType(), 'tuple', 'Tuple Variable get the right type');
             ok (tuple1.match(tuple1), 'Tuple Variable matches itself');
             var tuple2 = matching.createVariable({"type":"tuple"}, matching.createVariable ({"type":"string"}, "DriverA"), matching.createVariable ({"type":"string"}, "DriverB"), matching.createVariable ({"type":"string"}, "DriverC"));
-            ok (!tuple1.match(tuple2), 'Tuple Variable does not match a different Tuple Variable');          
+            ok (!tuple1.match(tuple2), 'Tuple Variable does not match a different Tuple Variable');
         });
-        
+
         // GT OPERATOR
         test("test operator : gt", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -527,7 +527,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 ok (true, 'Expected exception');
             }
         });
-        
+
         // LT OPERATOR
         test("test operator : lt", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -543,7 +543,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             }
         });
 
-		// Exit Operator        
+		// Exit Operator
         test("test operator : exitResponse", function() {
             var matching = new TAO_MATCHING.Matching ();
             try {
@@ -568,7 +568,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 ok (true, 'Expected exception');
             }
         });
-        
+
         // LTE OPERATOR
         test("test operator : lte", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -583,7 +583,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 ok (true, 'Expected exception');
             }
         });
-        
+
         // SUM OPERATOR
         test("test operator : sum", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -591,7 +591,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.sum (null, matching.createVariable(null, 2), 3), 5, 'Expected value');
             equals (matching.sum (null, matching.createVariable(null, 2), null), null, 'Expected value');
         });
-        
+
         // SUBSTRACT OPERATOR
         test("test operator : subtract", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -599,7 +599,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.subtract (null, matching.createVariable(null, 3), 2), 1, 'Expected value');
             equals (matching.subtract (null, matching.createVariable(null, 3), null), null, 'Expected value');
         });
-        
+
         // PRODUCT OPERATOR
         test("test operator : product", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -607,7 +607,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.product (null, matching.createVariable(null, 3), 6), 18, 'Expected value');
             equals (matching.product (null, matching.createVariable(null, 3), null), null, 'Expected value');
         });
-        
+
         // DIVIDE OPERATOR
         test("test operator : divide", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -616,7 +616,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.divide (null, matching.createVariable(null, 3), null), null, 'Expected value');
             equals (matching.divide (null, matching.createVariable(null, 3), 0), null, 'Expected value');
         });
-        
+
         // ROUND OPERATOR
         test("test operator : round", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -624,7 +624,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.round (null, matching.createVariable(null, 3.5)), 4, 'Expected value');
             equals (matching.round (null, null), null, 'Expected value');
         });
-        
+
         // INTEGER DIVIDE OPERATOR
         test("test operator : integerDivide", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -633,7 +633,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.integerDivide (null, matching.createVariable(null, 3), null), null, 'Expected value');
             equals (matching.integerDivide (null, matching.createVariable(null, 3), 0), null, 'Expected value');
         });
-        
+
         // NOT OPERATOR
         test("test operator : not", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -641,7 +641,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.not (null, matching.createVariable(null, false)), true, 'Expected value');
             equals (matching.not (null, null), null, 'Expected value');
         });
-        
+
         // OR OPERATOR
         test("test operator : or", function() {
             var matching = new TAO_MATCHING.Matching ();
@@ -654,11 +654,11 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
             equals (matching.or (null, matching.createVariable(null, false), false), false, 'Expected value');
             equals (matching.or (null, null), null, 'Expected value');
         });
-        
+
         // CONTAINS OPERATOR
         test("test operator : contains", function() {
             var matching = new TAO_MATCHING.Matching ();
-            
+
             // List
             equals (matching.contains (null
                 , matching.createVariable(null, [1,2,3,4])
@@ -700,43 +700,43 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                 , matching.createVariable(null, {0:3, 1:4}))
             , true, 'Expected value');
         });
-        
+
         // RANDOM INTEGER OPERATOR
         test("test operator : randomInteger", function() {
             var matching = new TAO_MATCHING.Matching ();
             var isNull = false;
             var correctRange = true;
             var i =0;
-            
+
             while (!isNull && correctRange && i<100) {
                 var rand = matching.randomInteger ({"min":0, "max":9});
                 isNull = rand === null;
                 correctRang = rand>=0 && rand<=9;
                 i++;
             }
-            
+
             ok (!isNull, 'Random value not null ['+rand+']');
             ok (correctRange, 'Random value >= min & <= max');
         });
-        
+
         // RANDOM FLOAT OPERATOR
         test("test operator : randomInteger", function() {
             var matching = new TAO_MATCHING.Matching ();
             var isNull = false;
             var correctRange = true;
             var i =0;
-            
+
             while (!isNull && correctRange && i<100) {
                 var rand = matching.randomFloat ({"min":0.00, "max":9.99});
                 isNull = rand === null;
                 correctRang = rand>=0.00 && rand<=9.99;
                 i++;
             }
-            
+
             ok (!isNull, 'Random value not null ['+rand+']');
             ok (correctRange, 'Random value >= min & <= max');
         });
-        
+
         // REMOTE MATCHING CHOICE.XML
         asyncTest ('Remote Matching : Choice.xml', function () {
             var matching_param = {
@@ -970,7 +970,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     matchingSetResponses ([{"identifier":"RESPONSE", "value":"ChoiceA"}]);
                     matchingEvaluate ();
                 }
-            });            
+            });
         });
 
         // REMOTE MATCHING CUSTOM MAP RESPONSE .xml
@@ -1016,7 +1016,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     matchingSetResponses ([{"identifier":"RESPONSE", "value":["H", "O"]}]);
                     matchingEvaluate ();
                 }
-            });            
+            });
         });
 
         // REMOTE MATCHING CUSTOM PARTIAL SCORING.xml
@@ -1062,7 +1062,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     matchingSetResponses ([{"identifier":"RESPONSE", "value":{"0":"DriverC", "1":"DriverB", "2":"DriverA"}}]);
                     matchingEvaluate ();
                 }
-            });            
+            });
         });
 
         // REMOTE PARSING / CLIENT MATCHING PARTIAL all rules.xml
@@ -1088,7 +1088,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     matchingInit (matching_param);
                     matchingEvaluate ();
                 }
-            });            
+            });
         });
 
         // REMOTE MATCHING SHAKESPEAR.xml
@@ -1143,7 +1143,7 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     matchingSetResponses ([{"identifier":"RESPONSE", "value":[{"0":"102","1":"113"}]}]);
                     matchingEvaluate ();
                 }
-            });            
+            });
         });
 
         // REMOTE PARSING / CLIENT MATCHING SHAKESPEAR .xml
@@ -1173,11 +1173,11 @@ define ('PATH_SAMPLE', dirname(__FILE__).'/samples/');
                     ]);
                     matchingEvaluate ();
                 }
-            });            
+            });
         });*/
 
 	</script>
-	
+
 </head>
 <body>
 	<h1 id="qunit-header">QUnit Test Suite</h1>
