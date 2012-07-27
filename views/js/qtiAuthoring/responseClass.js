@@ -527,6 +527,7 @@ responseClass.prototype.buildGrid = function(tableElementId, serverResponse){
 		e.preventDefault();
 		if(responseClass.grid) responseClass.grid.resizeGrid();
 	});
+	this.myGrid.trigger("reloadGrid");
 
 	return this;
 }
