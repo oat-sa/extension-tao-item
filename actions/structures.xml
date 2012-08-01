@@ -24,7 +24,7 @@
 					<action name="new item" js="GenerisAction.instanciate" url="/taoItems/Items/addInstance" context="class" />
 					<action name="delete" js="GenerisAction.removeNode" url="/taoItems/Items/delete" context="resource" />
 					<action name="duplicate" js="GenerisAction.duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" />
-					<action name="move" js="GenerisAction.moveNode" url="" context="instance" />
+					<action name="move" js="GenerisAction.moveNode" url="/taoItems/Items/moveInstance" context="instance" />
 					<action name="preview" js="GenerisAction.fullScreen" url="/taoItems/Items/fullScreenPreview" context="instance" />
 					<action name="lists"  url="/tao/Lists/index"  context="*" />
 					<action name="meta data" js="GenerisAction.loadMetaData" url="/taoItems/Items/getMetaData"  context="instance" />
