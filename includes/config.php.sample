@@ -6,6 +6,9 @@
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * 
  */
+# cache for xsl transformation
+define("USE_CACHED_XSL", true);
+
 # actions directory
 define("DIR_ACTIONS"		, dirname(__FILE__). "/../actions/");
 

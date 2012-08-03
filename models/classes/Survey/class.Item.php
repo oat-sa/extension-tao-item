@@ -13,8 +13,6 @@ class taoItems_models_classes_Survey_Item
 	protected static $instances = array();
 	// INSTANCE PROPERTIES
 	protected $resource;
-	// CONSTANTS
-	const VIEWS_FOLDER = '/surveyItem/';
 
 	public function __construct(core_kernel_classes_Resource $resource)
 	{
@@ -81,10 +79,10 @@ class taoItems_models_classes_Survey_Item
 	public function render()
 	{
 		$content = self::preRender($this->getContent());
-		$skeleton = DIR_VIEWS .  self::VIEWS_FOLDER . 'previewSkeleton.html';
-		$xhtml = str_replace('{RELATIVE_PATH_TO_PREVIEW_BASE}', BASE_WWW . self::VIEWS_FOLDER, file_get_contents($skeleton));
-		$xhtml = str_replace('{content}', $content, $xhtml);
-
+		$skeleton = DIR_VIEWS . '/templates/previewSurvey.tpl';
+		$xhtml = str_replace("<?php echo get_data('basePreview') ?>", BASE_WWW, file_get_contents($skeleton));
+		$xhtml = str_replace("<?php echo get_data('taoView') ?>", TAOBASE_WWW, $xhtml);
+		$xhtml = str_replace("<?php echo get_data('content') ?>", $content, $xhtml);
 		return $xhtml;
 	}
 
@@ -147,20 +145,6 @@ class taoItems_models_classes_Survey_Item
 	 * @return string
 	 */
 	public static function renderItem(core_kernel_classes_Resource $resource)
-	{
-		// get the item
-		$item = self::singleton($resource);
-		// call the item render function
-		return $item->render();
-	}
-
-	/**
-	 * Static call for rendering an item
-	 *
-	 * @param core_kernel_classes_Resource $resource
-	 * @return string
-	 */
-	public static function renderItemMemory($xml)
 	{
 		// get the item
 		$item = self::singleton($resource);

@@ -44,8 +44,9 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 			//display preview generated
 			$content = file_get_contents($dir . $this->getRequestParameter('file'));
 			$this->setData('content', $content);
-			$this->setData('basePreview', ROOT_URL . '/taoItems/views/surveyItem/');
-			$this->setView('../surveyItem/preview.tpl');
+			$this->setData('basePreview', BASE_WWW);
+			$this->setData('taoView', TAOBASE_WWW);
+			$this->setView('previewSurvey.tpl');
 			return;
 		}
 		// generate preview in file
