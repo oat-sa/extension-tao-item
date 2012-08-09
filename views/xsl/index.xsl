@@ -26,11 +26,11 @@
 		match="itemGroup">
 		<div id="container">
 			<div id="info_dialog">
-				<span id="info_dialog_close">[ <span class="close"></span> ]</span>
+				<span id="info_dialog_close">[ <span class="close">-</span> ]</span>
 			</div>
 			<div id="menuDialog">
 				<div class="headerMenuDialog">
-					<span id="menuDialogClose">[ <span class="close"></span> ]</span>
+					<span id="menuDialogClose">[ <span class="close">-</span> ]</span>
 				</div>
 <!--				<div class="contentMenuDialog">
 					<ul id="activities"></ul>
@@ -63,11 +63,6 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-
-	<xsl:template name="headSection">
-		<link class="head" rel="stylesheet" type="text/css" href="css/section.css" media="screen" />
-	</xsl:template>
-
 	<xsl:template name="headInformation">
 		<link class="head" rel="stylesheet" type="text/css" href="css/information.css" media="screen" />
 	</xsl:template>
