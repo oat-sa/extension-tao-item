@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>authoringConfig.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>tinyCarousel.js"></script>
-<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>
+<!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/json2.js"></script>

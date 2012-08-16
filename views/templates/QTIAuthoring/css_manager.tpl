@@ -1,5 +1,5 @@
-<div>
 <?if(count(get_data('cssFiles'))):?>
+<div>
 	<?=__('Attached style sheets:')?>
 	<ul id="cssFiles">
 	<?foreach(get_data('cssFiles') as $file):?>
@@ -12,11 +12,9 @@
 	</ul>
 
 	<hr size="1" width="100%">
-<?endif;?>
 </div>
 
-
-
+<?endif;?>
 <div class="main-container">
 	<?=__('Add a new stylesheet:')?>
 	<?=get_data('myForm')?>

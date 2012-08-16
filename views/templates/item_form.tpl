@@ -12,8 +12,8 @@
 	$(document).ready(function(){
 		var deprecated = <?=get_data('deprecatedOptions')?>;
 	<?if(get_data('isDeprecated') === true):?>
-		UiBootstrap.tabs.tabs('disable', getTabIndexByName('items_authoring'));
-		UiBootstrap.tabs.tabs('disable', getTabIndexByName('items_preview'));
+		uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
+		uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_preview'));
 		$(':radio').each(function(){
 			$(this).attr('disabled', 'true');
 			$("label[for='"+$(this).attr('id')+"']").css('color', '#A0A0A0');
@@ -38,17 +38,17 @@
 				'uri':$("#uri").val()
 			};
 
-			if(UiBootstrap.tabs.size() == 0){
+			if(uiBootstrap.tabs.size() == 0){
 				if($('div.main-container').length){
 					$('div.main-container').load(url, data);
 				}
 			}
-			$(getMainContainerSelector(UiBootstrap.tabs)).load(url, data);
+			$(helpers.getMainContainerSelector(uiBootstrap.tabs)).load(url, data);
 			return false;
 		});
 		<?if(!get_data('isAuthoringEnabled')):?>
 			$authoringButton.hide();
-			UiBootstrap.tabs.tabs('disable', getTabIndexByName('items_authoring'));
+			uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
 		<?endif;?>
 
 		<?if(GENERIS_VERSIONING_ENABLED):?>
@@ -65,12 +65,12 @@
 					'uri':$("#uri").val()
 				};
 
-				if(UiBootstrap.tabs.size() == 0){
+				if(uiBootstrap.tabs.size() == 0){
 					if($('div.main-container').length){
 						$('div.main-container').load(url, data);
 					}
 				}
-				$(getMainContainerSelector(UiBootstrap.tabs)).load(url, data);
+				$(helpers.getMainContainerSelector(uiBootstrap.tabs)).load(url, data);
 				return false;
 			});
 		}

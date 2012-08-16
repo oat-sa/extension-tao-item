@@ -891,7 +891,7 @@ qtiEdit.getEltInFrame = function(selector, selectedDocument){
 }
 
 qtiEdit.createInfoMessage = function(message){
-	createInfoMessage('<img src="'+img_url+'ok.png" alt="" style="float:left;margin-right:10px;"/>'+message);
+	helpers.createInfoMessage('<img src="'+img_url+'ok.png" alt="" style="float:left;margin-right:10px;"/>'+message);
 }
 
 //the global save function

@@ -46,7 +46,9 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 			__this.setFormChangeListener();
 
 			//and load the response form and grid:
-			new responseClass(__this.responseGrid, __this);
+			require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				new responseClass(__this.responseGrid, __this);
+			});
 		}
 	};
 
@@ -204,7 +206,7 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 							}
 						}else{
 							if(r.newGraphicObject.errorMessage){
-								createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
+								helpers.createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
 							}
 						}
 					}
@@ -248,7 +250,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 			   success: function(r){
 
 					if(!r.saved){
-						createErrorMessage(__('The choice cannot be saved'));
+						helpers.createErrorMessage(__('The choice cannot be saved'));
 					}else{
 						qtiEdit.createInfoMessage(__('Modification on choice applied'));
 						delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
@@ -272,9 +274,8 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 							}
 						}
 
-
 						if(r.errorMessage){
-							createErrorMessage(r.errorMessage);
+							helpers.createErrorMessage(r.errorMessage);
 						}
 					}
 				}
@@ -307,9 +308,9 @@ interactionClass.prototype.saveGroup = function($groupForm){
 		   dataType: 'json',
 		   success: function(r){
 
-				if(!r.saved){
-					createErrorMessage(__('The choice cannot be saved'));
-				}else{
+				if (!r.saved) {
+					helpers.createErrorMessage(__('The choice cannot be saved'));
+				} else {
 					qtiEdit.createInfoMessage(__('Modification on choice applied'));
 					delete interaction.modifiedGroups['GroupForm_'+r.groupSerial];
 
