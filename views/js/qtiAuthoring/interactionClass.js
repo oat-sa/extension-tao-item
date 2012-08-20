@@ -192,8 +192,10 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 					qtiEdit.createInfoMessage(__('Modification(s) on interaction has been updated'));
 					interaction.setModifiedInteraction(false);
 
-					if(r.reloadResponse){
-						new responseClass(interaction.responseGrid, interaction);
+					if (r.reloadResponse) {
+						require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+							new responseClass(interaction.responseGrid, interaction);
+						});
 					}
 
 					if(r.newGraphicObject){
@@ -256,13 +258,15 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 						delete interaction.modifiedChoices['ChoiceForm_'+r.choiceSerial];
 
 						//only if it is the last updated choice!
-						if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
+						if (!interaction.modifiedChoices.length && !interaction.modifiedGroups.length) {
 							//only when the identifier has changed:
-							if(r.reload){
+							if (r.reload) {
 								interaction.loadChoicesForm();
-							}else if(r.identifierUpdated){
-								//reload the response grid tu update the identifier
-								new responseClass(interaction.responseGrid, interaction);
+							} else if (r.identifierUpdated) {
+								require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+									//reload the response grid tu update the identifier
+									new responseClass(interaction.responseGrid, interaction);
+								});
 							}
 						}
 
@@ -402,8 +406,10 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				interaction.setFormChangeListener();
 				interaction.setShapeEditListener();
 
-				//reload the grid:
-				new responseClass(interaction.responseGrid, interaction);
+				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+					//reload the grid:
+					new responseClass(interaction.responseGrid, interaction);
+				});
 		   }
 		});
 	}
@@ -533,8 +539,10 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 						interaction.orderedChoices.push(r.choiceSerial);
 					}
 
-					//rebuild the response grid:
-					new responseClass(interaction.responseGrid, interaction);
+					require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+						//rebuild the response grid:
+						new responseClass(interaction.responseGrid, interaction);
+					});
 				}
 		   }
 		});
@@ -882,12 +890,14 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 					interaction.shapeEditor.removeShapeObj(choiceSerial);
 				}
 
-				//TODO: need to be optimized: only after the last choice saving
-				new responseClass(interaction.responseGrid, interaction);
-				interaction.saveInteractionData();
+				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+					//TODO: need to be optimized: only after the last choice saving
+					new responseClass(interaction.responseGrid, interaction);
+					interaction.saveInteractionData();
+				});
 			}else{
 				interaction.choices[choiceSerial] = choiceSerial;
-                                //interaction.orderedChoices[choiceSerial] = choiceSerial;
+				//interaction.orderedChoices[choiceSerial] = choiceSerial;
 			}
 	   }
 	});
@@ -1202,8 +1212,10 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 				interaction.setFormChangeListener('#'+r.groupSerial);
 				interaction.setShapeEditListener('#'+r.groupSerial);
 
-				//rebuild the response grid:
-				new responseClass(interaction.responseGrid, interaction);
+				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+					//rebuild the response grid:
+					new responseClass(interaction.responseGrid, interaction);
+				});
 		   }
 		});
 
@@ -1281,8 +1293,10 @@ interactionClass.prototype.setResponseOptionsMode = function(optionsMode){
 				//this.responseMappingMode = true;
 				//$('#qtiAuthoring_mappingEditor').show();
 
-				//reload the response grid, to update column model:
-				new responseClass(this.responseGrid, this);
+				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+					//reload the response grid, to update column model:
+					new responseClass(this.responseGrid, this);
+				});
 			}
 			break;
 
@@ -1290,8 +1304,10 @@ interactionClass.prototype.setResponseOptionsMode = function(optionsMode){
 			//this.responseMappingMode = false;
 			//$('#qtiAuthoring_mappingEditor').hide();
 
-			//reload the response grid, to update column model:
-			new responseClass(this.responseGrid, this);
+			require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				//reload the response grid, to update column model:
+				new responseClass(this.responseGrid, this);
+			});
 			break;
 	}
 	/*if(isMapping){
