@@ -7,8 +7,8 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo get_data('basePreview') ?>/css/survey/reset.css" media="screen"/>
 		<link rel="stylesheet" type="text/css" href="<?php echo get_data('basePreview') ?>/css/survey/item.css" media="screen"/>
 		<link rel="stylesheet" type="text/css" href="<?php echo get_data('taoView') ?>/css/custom-theme/jquery-ui-1.8.22.custom.css" media="screen"/>
-		<script type="text/javascript" src="<?php echo get_data('taoView') ?>/js/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="<?php echo get_data('taoView') ?>/js/jquery-ui-1.8.22.custom.min.js"></script>
+		<script type="text/javascript" src="<?php echo get_data('taoView') ?>/js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="<?php echo get_data('taoView') ?>/js/jquery-ui-1.8.23.custom.min.js"></script>
 		<script type="text/javascript" src="<?php echo get_data('basePreview') ?>/js/sliderSurvey.js"></script>
 
 		<!--[if IE]>

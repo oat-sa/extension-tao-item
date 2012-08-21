@@ -5,8 +5,8 @@
 	<title><?=$label?></title>
 
 	<!-- LIB -->
-	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.22.custom.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.23.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
 	<script type="text/javascript">
 		var root_url = "<?=$ctx_root_url?>";
