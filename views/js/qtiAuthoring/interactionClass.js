@@ -291,15 +291,13 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 }
 
 interactionClass.prototype.saveGroup = function($groupForm){
-
-	if($groupForm){
-
+	if ($groupForm) {
 		var interaction = this;
 		//save group order?
 
 		var choiceOrder = ''
 		var i = 0;
-		for(var order in this.orderedChoices){
+		for (var order in this.orderedChoices) {
 			choiceOrder += '&choiceOrder['+i+']='+this.orderedChoices[order];
 			i++;
 		}
@@ -310,7 +308,6 @@ interactionClass.prototype.saveGroup = function($groupForm){
 		   data: $groupForm.serialize()+choiceOrder,
 		   dataType: 'json',
 		   success: function(r){
-
 				if (!r.saved) {
 					helpers.createErrorMessage(__('The choice cannot be saved'));
 				} else {
@@ -318,27 +315,25 @@ interactionClass.prototype.saveGroup = function($groupForm){
 					delete interaction.modifiedGroups['GroupForm_'+r.groupSerial];
 
 					//only when the identifier has changed:
-					if(r.reload){
+					if (r.reload) {
 						interaction.loadChoicesForm();
 
 						//for gap match interaction:
-						if(r.identifierUpdated && r.newIdentifier && interaction.interactionEditor){
+						if (r.identifierUpdated && r.newIdentifier && interaction.interactionEditor) {
 							$groupInputs = qtiEdit.getEltInFrame('#'+r.groupSerial);
-							if($groupInputs.length){
+							if ($groupInputs.length) {
 								$groupInputs[0].val(r.newIdentifier);
 							}
 						}
-
-					}else if(r.identifierUpdated){
-						new responseClass(interaction.responseGrid, interaction);
+					} else if(r.identifierUpdated) {
+						require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+							new responseClass(interaction.responseGrid, interaction);
+						});
 					}
-
 				}
-		   }
+			}
 		});
-
 	}
-
 }
 
 interactionClass.prototype.loadResponseOptionsForm = function(){
@@ -1118,14 +1113,14 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 	var interaction = this;
 
 	$.ajax({
-	   type: "POST",
-	   url: root_url + "/taoItems/QtiAuthoring/addHotText",
-	   data: {
+		type: "POST",
+		url: root_url + "/taoItems/QtiAuthoring/addHotText",
+		data: {
 			'interactionSerial': interactionSerial,
 			'interactionData': util.htmlEncode(interaction.interactionEditor.wysiwyg('getContent'))
-	   },
-	   dataType: 'json',
-	   success: function(r){
+		},
+		dataType: 'json',
+		success: function(r){
 			//set the content:
 			interaction.interactionEditor.wysiwyg('setContent', $("<div/>").html(r.interactionData).html());
 
@@ -1139,7 +1134,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 			$newFormElt.append(r.choiceForm);
 
 			//add to parameter
-			if(!$appendTo){
+			if (!$appendTo) {
 				var $appendTo = $('#formContainer_choices');
 			}
 			$appendTo.append($newFormElt);
@@ -1151,8 +1146,10 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 			interaction.setFormChangeListener('#'+r.choiceSerial);
 
 			//rebuild the response grid:
-			new responseClass(interaction.responseGrid, interaction);
-	   }
+			require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				new responseClass(interaction.responseGrid, interaction);
+			});
+		}
 	});
 }
 
