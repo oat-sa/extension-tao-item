@@ -38,10 +38,10 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 		// this.loadResponseMappingForm();
 
 		//load choices form if necessary:
-		if(settings.choicesFormContainer) {
+		if (settings.choicesFormContainer) {
 			__this.choicesFormContainer = settings.choicesFormContainer;
 			__this.loadChoicesForm(__this.choicesFormContainer);
-		}else{
+		} else {
 			//immediately set the form change listener (no need to wait for the choice forms)
 			__this.setFormChangeListener();
 
@@ -111,24 +111,23 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 }
 
 interactionClass.prototype.saveModifiedChoices = function(){
-	for(var groupSerial in this.modifiedGroups){
+	for (var groupSerial in this.modifiedGroups) {
 		var $groupForm = $('#'+groupSerial);
 
 		//serialize+submit:
-		if($groupForm.length){
+		if ($groupForm.length) {
 			this.saveGroup($groupForm);
 		}
 	}
 
-	for(var choiceSerial in this.modifiedChoices){
+	for (var choiceSerial in this.modifiedChoices) {
 		var $choiceForm = $('#'+choiceSerial);
 
 		//serialize+submit:
-		if($choiceForm.length){
+		if ($choiceForm.length) {
 			this.saveChoice($choiceForm);
 		}
 	}
-
 }
 
 
@@ -381,16 +380,16 @@ interactionClass.prototype.getRelatedItem = function(strict){
 }
 
 interactionClass.prototype.loadChoicesForm = function(containerSelector){
-	if(!containerSelector){
+	if (!containerSelector) {
 		var containerSelector = '';
-		if(this.choicesFormContainer){
+		if (this.choicesFormContainer) {
 			var containerSelector = this.choicesFormContainer;
 		}
 	}
 	var interactionSerial = this.interactionSerial;
 	var interaction = this;
 
-	if($(containerSelector).length){
+	if ($(containerSelector).length) {
 		$.ajax({
 		   type: "POST",
 		   url: root_url + "/taoItems/QtiAuthoring/editChoices",
@@ -546,7 +545,6 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 				}
 		   }
 		});
-
 	}
 
 	if(this.choiceAutoSave){
@@ -657,31 +655,30 @@ interactionClass.prototype.setModifiedChoicesByForm = function($modifiedForm){
 
 //define when the form is considered as changed:
 interactionClass.prototype.setFormChangeListener = function(target){
-
 	var interaction = this;
 	var $choiceForm = null;
 
-	if(!target){
+	if (!target) {
 		$choiceForm = $('form');//all forms
-	}else{
-		if(!$(target).length){
+	} else {
+		if (!$(target).length) {
 			return false;
-		}else{
+		} else {
 			var $choiceFormContainer = $(target);
-			if($choiceFormContainer[0].nodeName.toLowerCase() == 'form'){
+			if ($choiceFormContainer[0].nodeName.toLowerCase() == 'form') {
 				$choiceForm = $choiceFormContainer;
-			}else{
+			} else {
 				$choiceForm = $choiceFormContainer.find('form');
 			}
 		}
 	}
 
-	$choiceForm.children().bind('change paste', function(){
+	$choiceForm.children().bind('change paste', function() {
 		var $modifiedForm = $(this).parents('form');
 		interaction.setModifiedChoicesByForm($modifiedForm);
 	});
 
-	$choiceForm.find('iframe').each(function(){
+	$choiceForm.find('iframe').each(function() {
 		var $modifiedForm = $(this).parents('form');
 		var setChangesfunction = function(){
 			interaction.setModifiedChoicesByForm($modifiedForm);
@@ -697,12 +694,8 @@ interactionClass.prototype.setFormChangeListener = function(target){
 			contentW = this.document;
 		}
 
-		// focus and blur does not bubble up (DOM specs). Firefox
-		// allows it but not chromium.
-		// http://www.quirksmode.org/dom/events/blurfocus.html
-		$(contentW).bind('focusin', setChangesfunction);
+		$(contentW).bind('click focus', setChangesfunction); //focusin
 		$(this).siblings('ul').click(setChangesfunction);
-		//console.dir(contentW);
 	});
 
 	return true;
