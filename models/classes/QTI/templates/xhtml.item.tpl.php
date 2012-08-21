@@ -25,10 +25,10 @@
 <?endif?>
 
 <?if($hasUpload):?>
-	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/uploadify.css" media="screen" />
-	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.4.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/swfobject.js"></script>
-	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/AsyncFileUpload.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_taobase_www?>js/jquery.uploadify/uploadify.css" media="screen" />
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery.uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery.uploadify/swfobject.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/AsyncFileUpload.js"></script>
 <?endif?>
 
 	<script type="text/javascript">
