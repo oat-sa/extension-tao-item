@@ -5,31 +5,31 @@
 	<title>QTI Item <?=$identifier?></title>
 
 	<!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />
-	<?if($hasSlider):?>
+	<link rel="stylesheet" type="text/css" href="<?=$ctx_base_www?>js/QTI/css/qti.min.css" media="screen" />
+<?if($hasSlider):?>
 	<link rel="stylesheet" type="text/css" href="<?=$ctx_taobase_www?>css/custom-theme/jquery-ui-1.8.22.custom.css" />
-	<?endif?>
+<?endif?>
 
 	<!-- user CSS -->
-	<?foreach($stylesheets as $stylesheet):?>
-		<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
-	<?endforeach?>
+<?foreach($stylesheets as $stylesheet):?>
+	<link rel="stylesheet" type="text/css" href="<?=$stylesheet['href']?>" media="<?=$stylesheet['media']?>" />
+<?endforeach?>
 
 	<!-- LIB -->
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/jquery-ui-1.8.23.custom.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/json.min.js"></script>
-	<?if($hasGraphics):?>
-	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/raphael.min.js"></script>
-	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/raphael-collision.min.js"></script>
-	<?endif?>
+<?if($hasGraphics):?>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/raphael/raphael.min.js"></script>
+	<script type="text/javascript" src="<?=$ctx_taobase_www?>js/raphael/raphael-collision.min.js"></script>
+<?endif?>
 
-	<?if($hasUpload):?>
+<?if($hasUpload):?>
 	<link rel="stylesheet" type="text/css" href="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/uploadify.css" media="screen" />
 	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/jquery.uploadify.v2.1.4.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/jquery.uploadify/swfobject.js"></script>
 	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>lib/AsyncFileUpload.js"></script>
-	<?endif?>
+<?endif?>
 
 	<script type="text/javascript">
 		var qti_base_www = "<?=$ctx_qti_base_www?>";
@@ -41,9 +41,9 @@
 
 	<!-- JS REQUIRED -->
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
-	<?if(!$ctx_raw_preview):?>
+<?if(!$ctx_raw_preview):?>
 	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
-	<?endif?>
+<?endif?>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_qti_lib_www?>qti.min.js"></script>
 </head>
