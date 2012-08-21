@@ -1,15 +1,14 @@
 <div id="qtiAuthoring_interaction_left_container">
-	<div id="qtiAuthoring_interactionEditor"> 
+	<div id="qtiAuthoring_interactionEditor">
 
 		<div id="formInteraction_title_<?=get_data('interactionSerial')?>" class="ui-widget-header ui-corner-top ui-state-default">
 				<?=__('Interaction editor:')?>
 		</div>
 		<div id="formInteraction_content_<?=get_data('interactionSerial')?>" class="ui-widget-content ui-corner-bottom">
-			
-			<div class="ext-home-container ui-state-highlight">
+			<div id="formInteraction_content_form_body" class="ext-home-container ui-state-highlight">
 				<?=get_data('formInteraction')?>
 			</div>
-			
+
 			<div class="ext-home-container">
 				<div id="formInteraction_title" class="ui-widget-header ui-corner-top ui-state-default" style="margin-top:10px;">
 						<?=__('Interaction content editor:')?>
@@ -20,19 +19,19 @@
 					<div id="interactionEditor_wysiwyg_addChoice"></div>
 				</div>
 			</div>
-			
+
 			<div id="formChoices_container" class="ext-home-container">
 			</div>
-			
+
 			<div id="formInteraction_content_form_bottom" class="ext-home-container">
 				<div class="xhtml_form">
 					<div id="formInteraction_content_form_bottom_button" class="form-toolbar">
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
-		
+
 	</div>
 </div>
 
@@ -44,7 +43,7 @@ $(document).ready(function(){
 	}catch(err){
 		CL('error creating interaction', err);
 	}
-	
+
 	try{
 		var createHotText = {
 			visible : true,
@@ -57,12 +56,12 @@ $(document).ready(function(){
 			tooltip: 'set a hot text',
 			groupIndex: 12
 		};
-	
+
 		myInteraction.buildInteractionEditor('#interactionEditor_wysiwyg', {'createHotText': createHotText}, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
 	}catch(err){
 		CL('error building interaction data editor', err);
 	}
-	
+
 	$('.interaction-form-submitter').clone().appendTo('#formInteraction_content_form_bottom_button').click(function(e){
 		e.preventDefault();
 		$('#formInteraction_content_form_body').find('.interaction-form-submitter').click();
