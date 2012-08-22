@@ -6,7 +6,7 @@
 define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery.jqGrid-4.4.0/js/i18n/grid.locale-'+base_lang], function(req, $) {
 	var responseClass = Class.extend({
 		init: function(tableElementId, interaction, responseFormContainer) {
-			this.grid = null;
+			this.myGrid = null;
 			/*if(responseClass.grid){
 				responseClass.grid.destroyGrid();//only one response grid available at a time.
 			}*/
@@ -57,7 +57,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 								try {
 									response.buildGrid(tableElementId, r);
 								}
-								catch(err) {
+								catch (err) {
 									// alert('Building response grid exception: '+err);
 									CL('Building response grid exception: '+err);
 								}
@@ -179,7 +179,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 		},
 
 		setResponseFormChangeListener: function() {
-			 var __this = this;
+			var __this = this;
 			$responseFormContainer = $('div#qtiAuthoring_responseEditor');
 			$responseFormContainer.children().unbind('change paste').bind('change paste', function(){
 				__this.setModifiedResponseProperties(true);
@@ -197,7 +197,6 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 		},
 
 		buildGrid: function(tableElementId, serverResponse) {
-
 			// CD(serverResponse, 'response:');
 
 			//firstly, get the column models, from the interactionSerial:
@@ -221,7 +220,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			var colNames = [];
 			var colModel = [];
 
-			for(var i=0; i<serverResponse.colModel.length; i++){
+			for (var i=0; i<serverResponse.colModel.length; i++) {
 				var colElt = serverResponse.colModel[i];
 				colNames[i] = colElt.label;
 
@@ -229,19 +228,19 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				colModel[i].name = colElt.name;
 				colModel[i].index = colElt.name;
 				colModel[i].editable = true;//all field is editable by default (except "fixed" column and id)
-				if(colElt.name == 'shape'){
+				if (colElt.name == 'shape') {
 					this.areaMapping = true;
 				}
 
-				switch(colElt.edittype){
-					case 'checkbox':{
+				switch (colElt.edittype) {
+					case 'checkbox': {
 						colModel[i].edittype = colElt.edittype;
 
 						if(colElt.values){
 							if(colElt.values.length){
 
 								var value = '';
-								for(var j=0; j<colElt.values.length; j++){
+								for (var j=0; j<colElt.values.length; j++) {
 									value += colElt.values[j]+':';
 								}
 								value = value.substring(0,value.length-1);
@@ -249,18 +248,15 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 								colModel[i].editoptions = {
 									value:value
 								};
-
 							}
 						}
-
 						break;
 					}
-					case 'select':{
-
+					case 'select': {
 						colModel[i].edittype = colElt.edittype;
-						if(colElt.values){
+						if (colElt.values) {
 							var value = '';
-							for(var k in colElt.values){
+							for (var k in colElt.values) {
 								value += k+':'+colElt.values[k]+';';
 							}
 							value = value.substring(0,value.length-1);
@@ -269,24 +265,22 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 								value:value
 							};
 						}
-
 						break;
 					}
-					case 'text':{
+					case 'text': {
 						colModel[i].edittype = colElt.edittype;
 						break;
 					}
-					case 'fixed':{
+					case 'fixed': {
 						//the grid is set as requireing a column to be fixed
 						colModel[i].editable = false;
 
 						//record the name and the values of the column, it will be used to filter and display the grid after:
-						if(fixedColumn.name){
+						if (fixedColumn.name) {
 							throw 'building grid: only one column can be fixed';
 						}
 						fixedColumn.name = colElt.name;
 						fixedColumn.values = colElt.values;
-
 						break;
 					}
 				}
@@ -337,23 +331,21 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				gridOptions.autowidth = true;
 			}
 
-			try{
+			try {
 				if (colModel.length) { //CHROME crash if empty
 					this.myGrid = $myGridElt.jqGrid(gridOptions);
 				}
-			}catch(err){
+			} catch(err) {
 				throw 'jgGrid constructor exception: '+err;
 			}
 			var interactionSerial = this.interactionSerial;
-
-
 
 			//configure the navigation bar:
 			//afterRefresh
 			var navGridParam = {};
 			var navGridParamDefault = {
 				search: false,
-				afterRefresh: function(){
+				afterRefresh: function() {
 					response.destroyGrid();
 					new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
 				},
@@ -362,10 +354,10 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				}
 			};
 
-			if(fixedColumn.name && fixedColumn.values){
+			if (fixedColumn.name && fixedColumn.values) {
 				//is fixed, so disable the add and delete row
 				var navGridParamOptions = {add:false, del:false};
-			}else{
+			} else {
 				var navGridParamOptions = {
 					addfunc: function(){
 						var newId = response.getUniqueRowId();
@@ -398,65 +390,63 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				};
 			}
 			navGridParam = $.extend(navGridParam, navGridParamOptions, navGridParamDefault);
-			try{
+
+			try {
 				this.myGrid.jqGrid('navGrid', '#'+pagerId, navGridParam);
-			}catch(err){
+			} catch (err) {
 				throw 'jgGrid navigator constructor exception: '+err;
 			}
 
 			var interaction = null;
 
-			if(this.areaMapping){
+			if (this.areaMapping) {
 				interaction = interactionClass.instances[response.interactionSerial];
 
 				//detroy all shapes
-				if(interaction && interaction.shapeEditor){
-					for(shapeId in interaction.shapeEditor.shapes){
+				if (interaction && interaction.shapeEditor) {
+					for (shapeId in interaction.shapeEditor.shapes) {
 						interaction.shapeEditor.removeShapeObj(shapeId);
 					}
 				}
 			}
 
-			try{
-				if(fixedColumn.name && fixedColumn.values){
+			try {
+				if (fixedColumn.name && fixedColumn.values) {
 					//there is a column that have fixed values, so only keep rows that has the fixed value:
-					for(var i=0; i<fixedColumn.values.length; i++){
-
+					for (var i=0; i<fixedColumn.values.length; i++) {
 						var theValue = fixedColumn.values[i];
 
 						//find the corresponding row with such a value
 						var theRow = null;
-						for(var j=0; j<serverResponse.data.length; j++){
+						for (var j=0; j<serverResponse.data.length; j++) {
 							var aRow = serverResponse.data[j];
-							if(aRow[fixedColumn.name] == theValue){
+							if (aRow[fixedColumn.name] == theValue) {
 								theRow = aRow;
 								break;
 							}
 						}
 
-						if(!theRow){
+						if (!theRow) {
 							theRow = new Object();
 							//create the default row from the column model:
-							for(var k=0; k<serverResponse.colModel.length; k++){
+							for (var k=0; k<serverResponse.colModel.length; k++) {
 								var colElt = serverResponse.colModel[k];
 								var val = null;
-								if(colElt.name == fixedColumn.name){
+								if (colElt.name == fixedColumn.name) {
 									val = theValue;
-								}else if(colElt.values){
-									switch(colElt.edittype){
-										case 'checkbox':{
+								} else if(colElt.values) {
+									switch (colElt.edittype) {
+										case 'checkbox':
 											val = colElt.values[1];//take the "false" variable
 											break;
-										}
-										case 'select':{
+										case 'select':
 											for(var key in colElt.values){
 												val = colElt.values[key];
 												break;
 											}
 											break;
-										}
 									}
-								}else{
+								} else {
 									val = '';
 								}
 								theRow[colElt.name] = val;
@@ -467,43 +457,39 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 						//add row:
 						this.myGrid.jqGrid('addRowData', i, theRow);
 					}
-				}else{
-
-
+				} else {
 					//insert all row in it:
 					var dataLength = serverResponse.data.length
-					for(var j=0; j<dataLength; j++){
+					for (var j=0; j<dataLength; j++) {
 						var data = serverResponse.data[j];
 						this.myGrid.jqGrid('addRowData', j, data);
 
-						if(this.areaMapping && interaction && data.shape && data.coordinates && interaction.shapeEditor){
+						if (this.areaMapping && interaction && data.shape && data.coordinates && interaction.shapeEditor) {
 							var shapeId = j+'_shape';
 							interaction.shapeEditor.createShape(shapeId, 'qti', {data: data.coordinates, shape: data.shape});
 							interaction.shapeEditor.exportShapeToCanvas(shapeId);
-						}else{
-							if(this.areaMapping) throw 'wrong response data format for area mapping';
+						} else {
+							if (this.areaMapping) throw 'wrong response data format for area mapping';
 						}
 					}
-
-
 				}
 			}
-			catch(err){
+			catch (err) {
 				throw 'jgGrid adding row exception: '+err;
 			}
 
 			this.fixedColumn = fixedColumn;
 
-			if(this.areaMapping){
+			if (this.areaMapping) {
 				this.bindShapeEventListeners();
 			}
 
 			this.resizeGrid();
 			$(window).bind('resize', function(e){
 				e.preventDefault();
-				if(responseClass.grid) responseClass.grid.resizeGrid();
+				if (responseClass.grid) responseClass.grid.resizeGrid();
 			});
-			this.myGrid.trigger("reloadGrid");
+			//this.myGrid.trigger("reloadGrid"); //Commented because causes issue with addChoices reload/rebuild grid
 
 			return this;
 		},

@@ -500,9 +500,8 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 		   data: postData,
 		   dataType: 'json',
 		   success: function(r){
-				if(r.added){
-
-					if(r.reload){
+				if (r.added) {
+					if (r.reload) {
 						interaction.loadChoicesForm();
 						return;
 					}
@@ -523,13 +522,13 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 
 					//add to the local choices order array:
 					//if interaction type is match, save the new choice in one of the group array:
-					if(r.groupSerial){
-						if(interaction.orderedChoices[r.groupSerial]){
+					if (r.groupSerial) {
+						if (interaction.orderedChoices[r.groupSerial]) {
 							interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
-						}else{
+						} else {
 							throw 'the group serial is not defined in the ordered choices array';
 						}
-					}else{
+					} else {
 						interaction.orderedChoices.push(r.choiceSerial);
 					}
 
