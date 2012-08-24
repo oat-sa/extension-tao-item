@@ -14,7 +14,7 @@
 	<xsl:template
 		name="table_tr_even_odd">
 		<xsl:param name="position" />
-		<xsl:param name="layout" />
+		<!--<xsl:param name="layout" />-->
 		<xsl:attribute name="class">
 			<xsl:choose>
 				<xsl:when test="$position mod 2 = 1">
@@ -24,11 +24,11 @@
 					<xsl:text>odd</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-            <xsl:if test='$layout="slider"'>
-				<xsl:text> tr_slider</xsl:text>
-            </xsl:if>
+            <!--<xsl:if test='$layout="slider"'>-->
+				<!--<xsl:text> tr_slider</xsl:text>-->
+            <!--</xsl:if>-->
 
-				<xsl:text> tr_slider_extended</xsl:text>
+				<!--<xsl:text> tr_slider_extended</xsl:text>-->
 
 		</xsl:attribute>
 	</xsl:template>
@@ -74,23 +74,30 @@
 			<xsl:text>question_description</xsl:text>
 		</xsl:attribute>
 	</xsl:template>
-	
-	<!-- footer -->
-	<xsl:template
-		match="footer"
-		mode="layout">
-				<tfoot>
-					<tr class='even'>
-						<td colspan='5' class='rowSep'>
-						</td>
-					</tr>
-					<tr class='odd'>
-						<td>
-						</td>
-						<td colspan='5'>
-							<p><xsl:value-of disable-output-escaping="yes" select='.' /></p>
-						</td>
-					</tr>
-				</tfoot>
-	</xsl:template>
+
+  <!-- footer -->
+  <xsl:template
+    match="footer"
+    mode="generic">
+    <param name="column" />
+    <tfoot>
+      <tr class='even'>
+        <td class='rowSep'>
+          <xsl:attribute name="colspan">
+            <xsl:value-of select="$column" />
+          </xsl:attribute>
+        </td>
+      </tr>
+      <tr class='odd'>
+        <td>
+        </td>
+        <td>
+          <xsl:attribute name="colspan">
+            <xsl:value-of select="$column" />
+          </xsl:attribute>
+          <p><xsl:value-of disable-output-escaping="yes" select='.' /></p>
+        </td>
+      </tr>
+    </tfoot>
+  </xsl:template>
 </xsl:stylesheet>

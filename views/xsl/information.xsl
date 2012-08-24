@@ -16,13 +16,13 @@
 		match="item"
 		mode="information">
 			<div id="information">
-					<xsl:apply-templates select="question" mode="information" />
+					<xsl:apply-templates select="subject" mode="information" />
 			</div>
 	</xsl:template>
 
 	<!-- question -->
 	<xsl:template
-		match="question"
+		match="subject"
 		mode="information">
 		<div class="information">
 			<xsl:value-of disable-output-escaping="yes" select="."/>

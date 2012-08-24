@@ -42,7 +42,7 @@ function createSliders(mode) {
 			});
 			$(graduation).appendTo($(this));
 		}
-		// generate horizontal graduation bar
+    // generate horizontal graduation bar
 		var graduationBar = $('<div />').css({
 			'position': 'absolute',
 			'top': '23px',

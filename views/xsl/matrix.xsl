@@ -1,171 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet
-	version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns="http://www.w3.org/1999/xhtml" >
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml">
 
-	<xsl:output
-		method="xml"
-		version="1.0"
-		encoding="utf-8"
-		indent="yes"
-		omit-xml-declaration="yes"/>
+  <xsl:output method="xml" version="1.0" encoding="utf-8" indent="yes" omit-xml-declaration="yes" />
 
-	<!-- list -->
-	<xsl:template
-		match="item"
-		mode="matrix">
-		<xsl:if test="position()=1">
-			<xsl:choose>
-				<xsl:when test="count(questionDescription/following-sibling::question)&gt;0">
-					<xsl:apply-templates select="questionDescription" mode="matrix">
-						<xsl:with-param name="pos" select="'top'" />
-					</xsl:apply-templates>
-					<xsl:apply-templates select="question" mode="matrix">
-						<xsl:with-param name="pos" select="'bottom'" />
-					</xsl:apply-templates>
-				</xsl:when>
+  <!-- matrix -->
+  <xsl:template match="item" mode="matrix">
+    <table class="matrix_table">
+      <thead>
+        <tr>
+          <th></th>
+          <xsl:apply-templates select="header" mode="matrix" />
+        </tr>
+      </thead>
+      <xsl:apply-templates select="responses" mode="matrix" />
+    </table>
+  </xsl:template>
 
-				<xsl:otherwise>
-					<xsl:apply-templates select="question" mode="matrix">
-						<xsl:with-param name="pos" select="'top'" />
-					</xsl:apply-templates>
-					<xsl:apply-templates select="questionDescription" mode="matrix">
-						<xsl:with-param name="pos" select="'bottom'" />
-					</xsl:apply-templates>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:apply-templates select="instruction" mode="matrix" />
-			<xsl:apply-templates select="../item/responses" mode="matrix" />
-		</xsl:if>
-	</xsl:template>
+  <!-- matrix -->
+  <xsl:template match="header" mode="matrix">
+    <th>
+      <xsl:value-of disable-output-escaping="yes" select="label" />
+    </th>
+  </xsl:template>
 
-	<!-- question -->
-	<xsl:template
-		match="question"
-		mode="matrix">
-		<xsl:param name="pos" />
-		<xsl:variable name='value'>
-			<xsl:value-of disable-output-escaping="yes" select="."/>
-		</xsl:variable>
-		<xsl:if test="$value!=''">
-			<p class="question">
-				<xsl:if test="$pos='top'">
-					<xsl:attribute name="class">
-						<xsl:text>question noMarginTop</xsl:text>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:value-of disable-output-escaping="yes" select="."/>
-			</p>
-		</xsl:if>
-	</xsl:template>
+  <!-- responses -->
+  <xsl:template match="responses" mode="matrix">
+    <tbody>
+      <xsl:apply-templates select="response" mode="matrix" />
+      <xsl:variable name='footer'>
+        <xsl:value-of select="footer" />
+      </xsl:variable>
+      <xsl:if test='$footer!=""'>
+        <xsl:apply-templates select="footer" mode="matrix" />
+      </xsl:if>
+    </tbody>
+  </xsl:template>
 
-	<!-- questionDescription -->
-	<xsl:template
-		match="questionDescription"
-		mode="matrix">
-		<xsl:param name="pos" />
-		<p>
-			<xsl:call-template name="question_description" />
-			<xsl:if test="$pos='top'">
-				<xsl:attribute name="class">
-					<xsl:text>question_description noMarginTop</xsl:text>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:value-of select="." disable-output-escaping="yes" />
-		</p>
-	</xsl:template>
+  <!-- response -->
+  <xsl:template match="response" mode="matrix">
 
-	<!-- instruction -->
-	<xsl:template
-		match="instruction"
-		mode="matrix">
-		<p>
-			<xsl:call-template name="instruction" />
-			<xsl:value-of disable-output-escaping="yes" select="."/>
-		</p>
-	</xsl:template>
+    <tr>
+      <xsl:call-template name="table_tr_even_odd">
+        <xsl:with-param name="position" select="position()" />
+      </xsl:call-template>
+      <td>
+        <!--<xsl:call-template name="table_tr_td" >-->
+        <!--<xsl:with-param name="count" select="count(response)"/>-->
+        <!--</xsl:call-template>-->
+        <xsl:apply-templates select="label" mode="generic" />
+      </td>
+      <xsl:apply-templates select="ancestor::item/header" mode="matrix_row">
+        <xsl:with-param name="response" select="." />
+      </xsl:apply-templates>
 
-	<!-- responses -->
-	<xsl:template
-		match="responses"
-		mode="matrix">
-		<xsl:if test="position()=count(../../item/responses)">
-			<table class="matrix_table">
-				<thead>
-					<tr>
-						<th></th>
-						<xsl:if test="ancestor::itemGroup/@layout!='simpleFieldsList' and ancestor::itemGroup/@layout!='complexFieldsList'">
-							<th></th>
-						</xsl:if>
-						<xsl:apply-templates select="response" mode="matrix_header" />
-					</tr>
-				</thead>
-				<xsl:variable name='footer'>
-					<xsl:value-of select="ancestor::itemGroup/footer" />
-				</xsl:variable>
-				<xsl:if test='$footer!=""'>
-					<xsl:apply-templates select="ancestor::itemGroup/footer" mode="layout" />
-				</xsl:if>
-				<tbody>
-					<xsl:variable name='layout'>
-						<xsl:value-of select='ancestor::itemGroup/@layout' />
-					</xsl:variable>
-					<xsl:for-each select="../../item[position()&gt;1]">
-						<tr>
-							<xsl:call-template name="table_tr_even_odd" >
-								<xsl:with-param name="position" select="position()"/>
-								<xsl:with-param name="layout" select="$layout"/>
-							</xsl:call-template>
-							<td>
-								<xsl:call-template name="table_tr_td" >
-									<xsl:with-param name="count" select="count(responses/response)"/>
-								</xsl:call-template>
-								<xsl:value-of disable-output-escaping="yes" select="question"/>
-							</td>
-							<xsl:if test="ancestor::itemGroup/@layout!='simpleFieldsList' and ancestor::itemGroup/@layout!='complexFieldsList'">
-								<td class="variable">
-									<xsl:value-of select="@id" />
-								</td>
-							</xsl:if>
-							<xsl:apply-templates select="responses/response" mode="matrix_body">
-								<xsl:with-param name="row" select="position()"/>
-							</xsl:apply-templates>
+    </tr>
+  </xsl:template>
 
-						</tr>
-					</xsl:for-each>
-				</tbody>
-			</table>
-		</xsl:if>
-	</xsl:template>
+  <!-- label -->
+  <xsl:template match="label" mode="generic">
+    <!--@todo thing about fte and in text input-->
+    <xsl:value-of disable-output-escaping="yes" select="." />
+  </xsl:template>
 
-	<!-- response -->
-	<xsl:template
-		match="response"
-		mode="matrix_header">
-		<th class="column_header">
-			<xsl:choose>
-				<xsl:when test="contains(., '[FTE]')">
-					<xsl:value-of disable-output-escaping="yes" select="substring-before(., '[FTE]')"/>
-					<xsl:value-of disable-output-escaping="yes" select="substring-after(., '[FTE]')"/>
-				</xsl:when>
-				<xsl:when test="ancestor::itemGroup[@layout='slider']">
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of disable-output-escaping="yes" select="."/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</th>
-	</xsl:template>
+  <!--&lt;!&ndash; response &ndash;&gt;-->
+  <!--<xsl:template-->
+  <!--match="response"-->
+  <!--mode="matrix_header">-->
+  <!--<th class="column_header">-->
+  <!--<xsl:choose>-->
+  <!--<xsl:when test="contains(., '[FTE]')">-->
+  <!--<xsl:value-of disable-output-escaping="yes" select="substring-before(., '[FTE]')"/>-->
+  <!--<xsl:value-of disable-output-escaping="yes" select="substring-after(., '[FTE]')"/>-->
+  <!--</xsl:when>-->
+  <!--<xsl:when test="ancestor::itemGroup[@layout='slider']">-->
+  <!--</xsl:when>-->
+  <!--<xsl:otherwise>-->
+  <!--<xsl:value-of disable-output-escaping="yes" select="."/>-->
+  <!--</xsl:otherwise>-->
+  <!--</xsl:choose>-->
+  <!--</th>-->
+  <!--</xsl:template>-->
 
-	<!-- response -->
-	<xsl:template
-		match="response"
-		mode="matrix_body">
-		<xsl:param name="row"/>
-		<td>
-			<xsl:apply-templates select="." mode="form"/>
-		</td>
-	</xsl:template>
-
+  <!-- response -->
+  <xsl:template match="header" mode="matrix_row">
+    <xsl:param name="response" />
+    <td>
+      <xsl:apply-templates select="$response" mode="form">
+        <xsl:with-param name="code2" select="code" />
+      </xsl:apply-templates>
+    </td>
+  </xsl:template>
+  <!-- footer -->
+  <xsl:template match="responses/footer" mode="matrix">
+    <xsl:apply-templates select="." mode="matrix">
+      <xsl:with-param name="column" select="count(ancestor::item/header) + 1" />
+    </xsl:apply-templates>
+  </xsl:template>
+  <!-- footer -->
+  <xsl:template match="footer" mode="matrix">
+    <param name="column" />
+    <tr class='even'>
+      <td class='rowSep'>
+        <xsl:attribute name="colspan">
+          <xsl:value-of select="$column" />
+        </xsl:attribute>
+      </td>
+    </tr>
+    <tr class='odd responsesFooter'>
+      <td></td>
+      <td>
+        <xsl:attribute name="colspan">
+          <xsl:value-of select="$column" />
+        </xsl:attribute>
+        <p>
+          <xsl:value-of disable-output-escaping="yes" select='.' />
+        </p>
+      </td>
+    </tr>
+  </xsl:template>
 </xsl:stylesheet>
