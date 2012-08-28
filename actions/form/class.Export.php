@@ -57,9 +57,9 @@ class taoItems_actions_form_Export
     public function initElements()
     {
         // section 127-0-1-1-2c41a4d:12ca27f7d37:-8000:0000000000002921 begin
-        
+
     	parent::initElements();
-    	
+
         // section 127-0-1-1-2c41a4d:12ca27f7d37:-8000:0000000000002921 end
     }
 
@@ -73,9 +73,9 @@ class taoItems_actions_form_Export
     protected function initXMLElements()
     {
         // section 127-0-1-1-70b2308e:12ca2398ae8:-8000:000000000000293C begin
-        
+
     	$itemService = taoItems_models_classes_ItemsService::singleton();
-		
+
 		$fileName = '';
     	$options = array();
     	if(isset($this->data['instance'])){
@@ -99,18 +99,18 @@ class taoItems_actions_form_Export
 				}
     		}
     	}
-    	
+
     	$descElt = tao_helpers_form_FormFactory::getElement('xml_desc', 'Label');
 		$descElt->setValue(__("Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"));
 		$this->form->addElement($descElt);
-		
+
 		$nameElt = tao_helpers_form_FormFactory::getElement('filename', 'Textbox');
 		$nameElt->setDescription(__('File name'));
 		$nameElt->setValue($fileName);
 		$nameElt->setUnit(".zip");
 		$nameElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
     	$this->form->addElement($nameElt);
-    	
+
     	$instanceElt = tao_helpers_form_FormFactory::getElement('instances', 'Checkbox');
     	$instanceElt->setDescription(__('Items'));
     	$instanceElt->setAttribute('checkAll', true);
@@ -119,11 +119,11 @@ class taoItems_actions_form_Export
 			$instanceElt->setValue($value);
 		}
 		$this->form->addElement($instanceElt);
-		
-    	
-    	
+
+
+
     	$this->form->createGroup('options', __('Export Options'), array('xml_desc', 'filename', 'instances'));
-    	
+
         // section 127-0-1-1-70b2308e:12ca2398ae8:-8000:000000000000293C end
     }
 
@@ -137,9 +137,9 @@ class taoItems_actions_form_Export
     protected function initIMSCPElements()
     {
         // section 127-0-1-1--46051fb4:12ee209629f:-8000:0000000000002D57 begin
-        
+
     	$itemService = taoItems_models_classes_ItemsService::singleton();
-		
+
 		$fileName = '';
     	$options = array();
     	if(isset($this->data['instance'])){
@@ -159,26 +159,26 @@ class taoItems_actions_form_Export
 	    		$class = $itemService->getItemClass();
 	    	}
     		if($class instanceof core_kernel_classes_Class){
-				$fileName =  strtolower(tao_helpers_Display::textCleaner($class->getLabel(), '*'));
-				foreach($class->getInstances() as $instance){
-					if($itemService->hasItemModel($instance, array(TAO_ITEM_MODEL_QTI))){
-						$options[$instance->uriResource] = $instance->getLabel();
+					$fileName =  strtolower(tao_helpers_Display::textCleaner($class->getLabel(), '*'));
+					foreach($class->getInstances() as $instance){
+						if($itemService->hasItemModel($instance, array(TAO_ITEM_MODEL_QTI))){
+							$options[$instance->uriResource] = $instance->getLabel();
+						}
 					}
-				}
     		}
     	}
-    	
-    	$descElt = tao_helpers_form_FormFactory::getElement('xml_desc', 'Label');
+
+		$descElt = tao_helpers_form_FormFactory::getElement('xml_desc', 'Label');
 		$descElt->setValue(__("Enables you to export an IMS QTI Package."));
 		$this->form->addElement($descElt);
-		
+
 		$nameElt = tao_helpers_form_FormFactory::getElement('filename', 'Textbox');
 		$nameElt->setDescription(__('File name'));
 		$nameElt->setValue($fileName);
 		$nameElt->setUnit(".zip");
 		$nameElt->addValidator(tao_helpers_form_FormFactory::getValidator('NotEmpty'));
     	$this->form->addElement($nameElt);
-    	
+
     	$instanceElt = tao_helpers_form_FormFactory::getElement('instances', 'Checkbox');
     	$instanceElt->setDescription(__('Items'));
     	$instanceElt->setAttribute('checkAll', true);
@@ -187,10 +187,10 @@ class taoItems_actions_form_Export
 			$instanceElt->setValue($value);
 		}
 		$this->form->addElement($instanceElt);
-		
-    	
+
+
     	$this->form->createGroup('options', __('Export Options'), array('xml_desc', 'filename', 'instances'));
-    	
+
         // section 127-0-1-1--46051fb4:12ee209629f:-8000:0000000000002D57 end
     }
 
