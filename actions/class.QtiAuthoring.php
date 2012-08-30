@@ -1550,7 +1550,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 	public function getStyleSheet(){
 		$fileData = $this->getCurrentStyleSheet();
-		if(!empty($fileData)){
+		if (!empty($fileData)) {
 			$fileName = basename($fileData['path']);
 
 			header("Pragma: public");
@@ -1561,26 +1561,12 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			header("Content-Type: text/css");
 			header("Content-Disposition: attachment; filename=\"$fileName\"");
 			header("Content-Transfer-Encoding: binary");
-			header("Content-Length: " . filesize($fileData['path']));
+			header("Content-Length: ".filesize($fileData['path']));
 
-			// download
-			// @readfile($file_path);
-			$file = @fopen($fileData['path'], "rb");
-			if ($file) {
-				while ( ! feof($file) ) {
-					print(fread($file, 1024 * 8));
-					flush();
-					if (connection_status() != 0) {
-						@fclose($file);
-						die();
-					}
-				}
-				@fclose($file);
-			}
-		}else{
+			echo file_get_contents($fileData['path']);
+		} else {
 			throw new Exception('The style file cannot be found');
 		}
-
 	}
 
 	public function getCurrentStyleSheet($baseName=''){
