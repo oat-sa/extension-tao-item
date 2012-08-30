@@ -28,7 +28,7 @@
 					<action name="preview" js="generisActions.fullScreen" url="/taoItems/Items/fullScreenPreview" context="instance" />
 					<action name="lists"  url="/tao/Lists/index"  context="*" />
 					<action name="meta data" js="generisActions.loadMetaData" url="/taoItems/Items/getMetaData"  context="instance" />
-					<action name="create table" url="/taoResults/Results/createTable"  context="class" />
+					<action name="create table" url="/taoResults/LegacyResults/createTable"  context="class" />
 					<action name="export" url="/taoItems/ItemExport/index"  context="*" />
 					<action name="import" url="/taoItems/ItemImport/index"  context="class" />
 				</actions>
