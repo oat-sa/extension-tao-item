@@ -90,7 +90,7 @@
 					<h3><a href="#"><?=__('Response processing template editor:')?></a></h3>
 					<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"></div>
 					<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
-					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom"></div>
+					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom main-container"></div>
 				</div>
 			</div>
 
