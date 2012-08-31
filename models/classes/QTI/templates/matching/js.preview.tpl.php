@@ -8,7 +8,7 @@ matchingParam = {
             for (var outcomeKey in outcomes){
                 strOutcomes += '[ ' + outcomeKey+ ' = ' +outcomes[outcomeKey]['value'] + ' ]';
             }
-            window.top.createInfoMessage ('THE OUTCOME VALUES : <br/>'  + strOutcomes);
+            window.top.helpers.createInfoMessage('THE OUTCOME VALUES : <br/>'  + strOutcomes);
             // Reset the matching engine
             matchingInit (matchingParam);
             // Finish the process
