@@ -498,6 +498,7 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 		   type: "POST",
 		   url: root_url + "/taoItems/QtiAuthoring/addChoice",
 		   data: postData,
+			 async: false,
 		   dataType: 'json',
 		   success: function(r){
 				if (r.added) {
@@ -549,10 +550,10 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 			if(!number){
 				number = 1;
 			}
+			clearTimeout(timer);
 			for(var i=0;i<number;i++){
 				addChoice($appendTo, containerClass, groupSerial);
 			}
-			clearTimeout(timer);
 		}
 		//check every half a second if all choices have been saved:
 		timer = setTimeout(function(){
