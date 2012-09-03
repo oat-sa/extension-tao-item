@@ -1814,7 +1814,7 @@ class taoItems_models_classes_QtiAuthoringService
 								$source = trim($element->getAttribute($attr));
 								if(!preg_match("/^http/", $source)){
 									$updated = true;
-									$element->setAttribute($attr,  _url('getMediaResource', 'Items', 'taoItems',array('path' => urlencode($source))));
+									$element->setAttribute($attr,  _url('getMediaResource', 'Items', 'taoItems',array('path' => $source)));
 								}
 							}
 						}

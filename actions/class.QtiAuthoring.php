@@ -320,9 +320,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 								if($element->hasAttribute($attr)){
 									$source = trim($element->getAttribute($attr));
 									if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $source)){
-										$path = urldecode(substr($source, strpos($source, '?path=') + 6));
-										$path = substr($path, 0, strrpos($path, '&'));
-										$element->setAttribute($attr,  $path);
+										$path = substr($source, strpos($source, '?path=') + 6);
+										if (strpos($path, '&')) {
+											$path = substr($path, 0, strpos($path, '&'));
+										}
+										$element->setAttribute($attr,  urldecode($path));
 										$updated = true;
 									}
 								}
