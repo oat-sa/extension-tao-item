@@ -62,7 +62,7 @@
       <xsl:otherwise>
         <xsl:choose>
           <!--matrix case-->
-          <xsl:when test="header">
+          <xsl:when test="@disposition='matrix'">
             <xsl:apply-templates select="." mode="matrix" />
           </xsl:when>
           <!--list case-->
