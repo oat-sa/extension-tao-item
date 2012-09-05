@@ -50,15 +50,50 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 			return;
 		}
 		// generate preview in file
-		$xml = html_entity_decode($this->getRequestParameter('xml')); // string XML
-		$md5 = md5($xml);
-		if(file_exists($dir.$md5)) {
-			echo json_encode($md5);
-			return ;
+		echo json_encode(taoItems_models_classes_Survey_Item::generatePreviewFile(html_entity_decode($xml)));
+	}
+	
+	/**
+	 * exports a questionnaire to a PDF file
+	 * from a xml
+	 */
+	public function exportPDF() {
+		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
+		$xml = $this->getRequestParameter('flow');
+		$file = $this->getRequestParameter('file');
+		if (!is_null($file)) {
+			if (file_exists($file)) {
+				$size = filesize($file);
+				header("Content-Type: application/pdf");
+				header("Content-Length: $size");
+				header("Content-Disposition: attachment; filename=\"export.pdf\"");
+				header("Expires: 0");
+				header("Cache-Control: no-cache, must-revalidate");
+				header("Pragma: no-cache");
+				echo file_get_contents($file);
+				return;
+			}
+			exit;
 		}
-		$content = taoItems_models_classes_Survey_Item::preRender($xml);
-		file_put_contents($dir . $md5, $content);
-		echo json_encode($md5);
+		
+		if(is_null($xml)) {
+			echo 'ko';
+			return;
+		}
+		
+		
+		$hash = taoItems_models_classes_Survey_Item::generatePreviewFile(html_entity_decode($xml));
+		$htmlFile = $dir . $hash;
+		
+		// trick because wkhtmltopdf requires .html file
+		$htmlFileFinal = $htmlFile . '.html';
+		copy($htmlFile, $htmlFileFinal);
+		
+		$html2pdf = new taoQAT_models_classes_Html2Pdf();
+		$html2pdf->load(array($htmlFileFinal));
+		echo $html2pdf->getTmpFile();
+		
+		
 	}
 
 }

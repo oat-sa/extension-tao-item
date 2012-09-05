@@ -198,5 +198,21 @@ class taoItems_models_classes_Survey_Item
 		$newdoc->appendChild($newdoc->importNode($cloned, TRUE));
 		return $newdoc->saveXML();
 	}
+	
+	/**
+	 * Generate a preview HTML file from a xml and returns a md5 hash from it
+	 * @param type $xml
+	 * @return string
+	 */
+	public static function generatePreviewFile($xml) {
+		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
+		$md5 = md5($xml);
+		if(file_exists($dir.$md5)) {
+			return $md5;
+		}
+		$content = taoItems_models_classes_Survey_Item::preRender($xml);
+		file_put_contents($dir . $md5, $content);
+		return $md5;
+	}
 }
 ?>
