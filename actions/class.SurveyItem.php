@@ -50,7 +50,8 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 			return;
 		}
 		// generate preview in file
-		echo json_encode(taoItems_models_classes_Survey_Item::generatePreviewFile(html_entity_decode($xml)));
+		$xml = html_entity_decode($this->getRequestParameter('xml')); // string XML
+		echo json_encode(taoItems_models_classes_Survey_Item::generatePreviewFile($xml));
 	}
 	
 	/**
