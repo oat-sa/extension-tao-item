@@ -19,6 +19,9 @@
       <xsl:attribute name="name">
         <xsl:apply-templates select="." mode="getId" />
       </xsl:attribute>
+      <xsl:attribute name="id">
+        <xsl:apply-templates select="." mode="getId" />
+      </xsl:attribute>
       <!--<xsl:attribute name="class">-->
         <!--<xsl:text>variableTextField</xsl:text>-->
       <!--</xsl:attribute>-->

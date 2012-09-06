@@ -67,14 +67,27 @@
             </xsl:apply-templates>
           </td>
           <td>
-            <xsl:apply-templates select="." mode="form" />
+            <div>
+              <xsl:if test="ancestor::item/@layout='slider'">
+                <span class="sliderHeader">
+                  <xsl:apply-templates select="." mode="sliderHeader" />
+                </span>
+              </xsl:if>
+              <xsl:apply-templates select="." mode="form" />
+            </div>
           </td>
           <td class="td_after_fte"></td>
         </xsl:otherwise>
       </xsl:choose>
     </tr>
   </xsl:template>
-
+  <!--match the response with the header-->
+  <xsl:template match="response" mode="sliderHeader">
+    <xsl:variable name="code">
+      <xsl:value-of select="code" />
+    </xsl:variable>
+    <xsl:value-of select="ancestor::itemGroup/header[@code=$code]" />
+  </xsl:template>
   <!-- response/description -->
   <xsl:template match="response/description" mode="list">
     <xsl:param name="responsePos" />

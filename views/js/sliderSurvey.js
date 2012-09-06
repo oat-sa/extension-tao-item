@@ -14,6 +14,9 @@ function createSliders(mode) {
 		var step = $(this).find('.step').val() * 1;
 		var min = $(this).find('.min').val() * 1;
 		var max = $(this).find('.max').val() * 1;
+//    step = 1;
+//    min = 0;
+//    max = 5;
 		// transform the div to slider
 		$(this).slider({
 			range: range,
@@ -29,29 +32,32 @@ function createSliders(mode) {
 				$("[id^='value_" + $(this).attr('id') + "']")[0].value = val;
 			}
 		});
-		// generrate vertical graduation bars
-		for (var i = min; i <= max; i += step) {
-			var left = ((i - min) * $(this).width()) / (max - min);
-			var graduation = $('<div />').css({
-				'position': 'absolute',
-				'top': '18px',
-				'left': left + 'px',
-				'width': '1px',
-				'height': '10px',
-				'backgroundColor': 'black'
-			});
-			$(graduation).appendTo($(this));
-		}
-    // generate horizontal graduation bar
-		var graduationBar = $('<div />').css({
-			'position': 'absolute',
-			'top': '23px',
-			'left': '0px',
-			'width': $(this).width() + 'px',
-			'height': '1px',
-			'backgroundColor': 'black'
-		});
-		$(graduationBar).appendTo($(this));
+    // to avoid freeze if not filled attribute
+    if(step != 0 && min < max) {
+      // generrate vertical graduation bars
+      for (var i = min; i <= max; i += step) {
+        var left = ((i - min) * $(this).width()) / (max - min);
+        var graduation = $('<div />').css({
+          'position': 'absolute',
+          'top': '18px',
+          'left': left + 'px',
+          'width': '1px',
+          'height': '10px',
+          'backgroundColor': 'black'
+        });
+        $(graduation).appendTo($(this));
+      }
+      // generate horizontal graduation bar
+      var graduationBar = $('<div />').css({
+        'position': 'absolute',
+        'top': '23px',
+        'left': '0px',
+        'width': $(this).width() + 'px',
+        'height': '1px',
+        'backgroundColor': 'black'
+      });
+      $(graduationBar).appendTo($(this));
+    }
 	});
 }
 // put a label on each side ok the slider
