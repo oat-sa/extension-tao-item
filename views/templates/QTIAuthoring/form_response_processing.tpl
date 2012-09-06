@@ -4,21 +4,17 @@
 </div>
 
 <script type="text/javascript">
-	
 	// myItem.setResponseMappingMode(<?=get_data('responseMappingMode')?>);
-	
 	var warningMessage = "<?=get_data('warningMessage')?>"
-	if(warningMessage.length){
+	if (warningMessage.length) {
 		alert(warningMessage);
 	}
-	
-	$(document).ready(function(){
-		$('#qtiAuthoring_processingEditor_formContainer').find('.form-submiter').click(function(){
-			var $form = $('#qtiAuthoring_processingEditor_formContainer').find('form');
-			if($form.length){
-				myItem.saveItemResponseProcessing($form);
-			}
-		});
-	
+
+	$(function(){
+setTimeout(function(){
+		$('#qtiAuthoring_processingEditor_formContainer .form-submiter').off('click').on('click', function(e){
+			e.preventDefault();
+			myItem.saveItemResponseProcessing($('#qtiAuthoring_processingEditor_formContainer form'));
+		});}, 2000);
 	});
 </script>
