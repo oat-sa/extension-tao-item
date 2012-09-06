@@ -85,12 +85,39 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 		
 		$hash = taoItems_models_classes_Survey_Item::generatePreviewFile(html_entity_decode($xml));
 		$htmlFile = $dir . $hash;
+		$content = file_get_contents($htmlFile);
+		
+		$content = '
+			<style>
+				#container {
+					page-break-after: always;
+					position: static !important;
+				}
+			</style>
+' . $content;
+		
+		// retrieves the evaluated content of the preview base template
+		ob_start();
+		$this->setData('content', $content);
+		$this->setData('basePreview', BASE_WWW);
+		$this->setData('taoView', TAOBASE_WWW);
+		include ROOT_PATH . '/taoItems/views/templates/previewSurvey.tpl';
+        $content = ob_get_clean();
+		
+		
+		$content = str_replace('"screen"', '"screen, print"', $content);
 		
 		// trick because wkhtmltopdf requires .html file
 		$htmlFileFinal = $htmlFile . '.html';
-		copy($htmlFile, $htmlFileFinal);
+		//--
+		
+		file_put_contents($htmlFileFinal, $content);
 		
 		$html2pdf = new taoQAT_models_classes_Html2Pdf();
+		$html2pdf->setup(array(
+			'-O' => 'Landscape',
+			'--print-media-type' => ''
+		));
 		$html2pdf->load(array($htmlFileFinal));
 		echo $html2pdf->getTmpFile();
 		
