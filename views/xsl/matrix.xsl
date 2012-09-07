@@ -48,6 +48,7 @@
         <!--<xsl:with-param name="count" select="count(response)"/>-->
         <!--</xsl:call-template>-->
         <xsl:apply-templates select="label" mode="generic" />
+        <xsl:apply-templates select="description" mode="list" />
       </td>
       <xsl:apply-templates select="ancestor::item/header" mode="matrix_row">
         <xsl:with-param name="response" select="." />

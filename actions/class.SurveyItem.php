@@ -28,6 +28,7 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 		$lang = (string) $user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_UILG))->getOnePropertyValue(new core_kernel_classes_Property(RDF_VALUE));
 		// create the compilator and get the transformation
 		$compilator = new taoItems_models_classes_Survey_Compilator($xsl, $lang, $params);
+//		var_dump($compilator->compile($xml));die;
 		echo $compilator->compile($xml);
 	}
 

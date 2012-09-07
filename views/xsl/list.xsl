@@ -37,11 +37,7 @@
             </xsl:call-template>
             <!--@todo managing by tag now-->
             <xsl:value-of disable-output-escaping="yes" select="substring-before(., '[FTE]')" />
-            <xsl:apply-templates select="description" mode="list">
-              <xsl:with-param name="responsePos">
-                <xsl:value-of select="count(preceding-sibling::*)+2" />
-              </xsl:with-param>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="description" mode="list" />
           </td>
           <td>
             <xsl:apply-templates select="." mode="form" />
@@ -60,11 +56,7 @@
               <xsl:with-param name="count" select="count(.)" />
             </xsl:call-template>
             <xsl:value-of disable-output-escaping="yes" select="label" />
-            <xsl:apply-templates select="description" mode="list">
-              <xsl:with-param name="responsePos">
-                <xsl:value-of select="count(preceding-sibling::*)+2" />
-              </xsl:with-param>
-            </xsl:apply-templates>
+            <xsl:apply-templates select="description" mode="list" />
           </td>
           <td>
             <div>
@@ -90,14 +82,10 @@
   </xsl:template>
   <!-- response/description -->
   <xsl:template match="response/description" mode="list">
-    <xsl:param name="responsePos" />
-    <xsl:variable name="descriptionPos" select="count(preceding-sibling::*)+1" />
-    <xsl:if test="$responsePos=$descriptionPos">
-      <p>
-        <xsl:call-template name="response_description" />
-        <xsl:value-of disable-output-escaping="yes" select="." />
-      </p>
-    </xsl:if>
+    <p>
+      <xsl:call-template name="response_description" />
+      <xsl:value-of disable-output-escaping="yes" select="." />
+    </p>
   </xsl:template>
 
   <!-- footer -->

@@ -49,29 +49,31 @@
 	</xsl:template>
   <!--item generic management-->
   <xsl:template mode="selectTemplate" match="item">
-    <xsl:choose>
-      <!--informational item-->
-      <!--<xsl:when test="@layout='information'">-->
-        <!--<xsl:apply-templates select="item" mode="information" />-->
-      <!--</xsl:when>-->
-      <!--item with only one textarea-->
-      <xsl:when test="@layout='textfield'">
-        <xsl:apply-templates select="." mode="textfield" />
-      </xsl:when>
-      <!--generic templates (list or matrix)-->
-      <xsl:otherwise>
-        <xsl:choose>
-          <!--matrix case-->
-          <xsl:when test="@disposition='matrix'">
-            <xsl:apply-templates select="." mode="matrix" />
-          </xsl:when>
-          <!--list case-->
-          <xsl:otherwise>
-            <xsl:apply-templates select="." mode="list" />
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
+    <!--<xsl:if test="@layout='information'">-->
+      <xsl:choose>
+        <!--informational item-->
+        <!--<xsl:when test="@layout='information'">-->
+          <!--<xsl:apply-templates select="item" mode="information" />-->
+        <!--</xsl:when>-->
+        <!--item with only one textarea-->
+        <xsl:when test="@layout='textfield'">
+          <xsl:apply-templates select="." mode="textfield" />
+        </xsl:when>
+        <!--generic templates (list or matrix)-->
+        <xsl:otherwise>
+          <xsl:choose>
+            <!--matrix case-->
+            <xsl:when test="@disposition='matrix'">
+              <xsl:apply-templates select="." mode="matrix" />
+            </xsl:when>
+            <!--list case-->
+            <xsl:otherwise>
+              <xsl:apply-templates select="." mode="list" />
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    <!--</xsl:if>-->
   </xsl:template>
   <!--set the input type-->
   <xsl:template match="item" mode="currentItemInputType">

@@ -10,7 +10,7 @@
   <xsl:template match="itemGroup" mode="orderSubject">
 
     <xsl:choose>
-      <xsl:when test="count(questionDescription/following-sibling::question)&gt;0">
+      <xsl:when test="count(description/following-sibling::subject)&gt;0">
         <xsl:apply-templates select="description" mode="generic">
           <xsl:with-param name="pos" select="'top'" />
         </xsl:apply-templates>
@@ -18,7 +18,6 @@
           <xsl:with-param name="pos" select="'bottom'" />
         </xsl:apply-templates>
       </xsl:when>
-
       <xsl:otherwise>
         <xsl:apply-templates select="subject" mode="generic">
           <xsl:with-param name="pos" select="'top'" />
