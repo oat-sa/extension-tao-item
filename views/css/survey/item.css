@@ -78,9 +78,9 @@
     text-align: center;
 }
 
-#container table tbody tr td + td input[type="text"] {
+/*#container table tbody tr td + td input[type="text"] {
 	margin-top: -15px;
-}
+}*/
 
 #container table tbody tr.odd, #container table tfoot tr.odd {
 	background:										#DDD;
@@ -108,6 +108,7 @@
 
 #container table tbody tr td.xlarge {
 	width:											80%;
+	vertical-align:									middle;
 }
 
 #container .tr_slider td.xlarge {
