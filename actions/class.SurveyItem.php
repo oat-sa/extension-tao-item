@@ -65,14 +65,13 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 		if (!is_null($file)) {
 			if (file_exists($file)) {
 				$size = filesize($file);
-				header("Content-Type: application/pdf");
-				header("Content-Length: $size");
+				header("Content-Type: application/text");
+				header("Content-Transfer-Encoding: binary");
 				header("Content-Disposition: attachment; filename=\"export.pdf\"");
 				header("Expires: 0");
-				header("Cache-Control: no-cache, must-revalidate");
+				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 				header("Pragma: no-cache");
 				echo file_get_contents($file);
-				return;
 			}
 			exit;
 		}
