@@ -30,6 +30,9 @@
 
     <!--<xsl:value-of select="$code" />-->
     <div class="div_input">
+      <span class="variable">
+        <xsl:value-of select="$code" />
+      </span>
       <xsl:choose>
         <xsl:when test="$type='slider'">
           <div>
@@ -114,7 +117,7 @@
             <xsl:attribute name="id">
               <xsl:value-of select="$code" />
             </xsl:attribute>
-
+			
             <!--<xsl:attribute name="class">-->
               <!--<xsl:text>variableText</xsl:text>-->
             <!--</xsl:attribute>-->
