@@ -20,6 +20,7 @@
 	<xsl:include href="matrix.xsl"/>
 	<xsl:include href="form.xsl"/>
 	<xsl:include href="layout.xsl"/>
+	<xsl:include href="multipleItems.xsl"/>
 	<xsl:include href="rules.xsl"/>
   <!-- itemGroup -->
 	<xsl:template
@@ -37,6 +38,9 @@
       <xsl:choose>
         <xsl:when test="count(item)>1">
           <!--Apply trend item here. CAREFUL not trend !!  multiple items !!! trend template is multiple items template on the same layout so managed in js-->
+          <!--trend Items-->
+          <!--for the moment only trend, multiple will be done later-->
+          <xsl:apply-templates select="." mode="trend" />
         </xsl:when>
         <!--simples items-->
         <xsl:otherwise>

@@ -682,3 +682,12 @@
 	width: 100px;
 	display: inline-block;
 }
+
+/****************
+  TREND ITEMS
+*****************/
+#container table tbody tr td.tdItemId {
+ min-width: 5px;
+ width: 50px;
+ vertical-align: middle;
+}
