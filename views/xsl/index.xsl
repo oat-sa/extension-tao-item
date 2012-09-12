@@ -20,6 +20,7 @@
 	<xsl:include href="matrix.xsl"/>
 	<xsl:include href="form.xsl"/>
 	<xsl:include href="layout.xsl"/>
+	<xsl:include href="rules.xsl"/>
   <!-- itemGroup -->
 	<xsl:template
 		name="itemGroup"
