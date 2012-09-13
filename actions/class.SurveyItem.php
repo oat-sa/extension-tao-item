@@ -62,12 +62,13 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 	public function exportPDF() {
 		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
 		$xml = $this->getRequestParameter('flow');
+		$name = $this->getRequestParameter('name');
 		$file = $this->getRequestParameter('file');
 		if (!is_null($file)) {
 			if (file_exists($file)) {
 				header("Content-Type: application/text");
 				header("Content-Transfer-Encoding: binary");
-				header("Content-Disposition: attachment; filename=\"export.pdf\"");
+				header("Content-Disposition: attachment; filename=\"" . $name . ".pdf\"");
 				header("Expires: 0");
 				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 				header("Pragma: no-cache");
