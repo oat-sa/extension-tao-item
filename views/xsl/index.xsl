@@ -21,6 +21,7 @@
 	<xsl:include href="form.xsl"/>
 	<xsl:include href="layout.xsl"/>
 	<xsl:include href="multipleItems.xsl"/>
+	<xsl:include href="horizontal.xsl"/>
 	<xsl:include href="rules.xsl"/>
   <!-- itemGroup -->
 	<xsl:template
@@ -67,6 +68,10 @@
         <!--generic templates (list or matrix)-->
         <xsl:otherwise>
           <xsl:choose>
+            <!--horizontal case-->
+            <xsl:when test="@disposition='horizontal'">
+              <xsl:apply-templates select="." mode="horizontal" />
+            </xsl:when>
             <!--matrix case-->
             <xsl:when test="@disposition='matrix'">
               <xsl:apply-templates select="." mode="matrix" />

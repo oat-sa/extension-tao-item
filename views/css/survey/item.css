@@ -691,3 +691,18 @@
  width: 50px;
  vertical-align: middle;
 }
+
+/****************
+ HORIZONTAL ITEMS
+*****************/
+.horizontal_table td, .horizontal_table th {
+  padding: 0;
+  border: solid 1px black;
+  text-align: center;
+}
+.horizontal_table th {
+  font-size: 13px;
+  font-weight: bold;
+  background-color: #DFF2FF;
+  text-decoration: underline;
+}
