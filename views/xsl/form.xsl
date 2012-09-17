@@ -27,6 +27,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="code3">
+			<xsl:value-of select="code" />
+		</xsl:variable>
 
     <!--<xsl:value-of select="$code" />-->
 		<div class="div_input">
@@ -44,7 +47,7 @@
 							<xsl:attribute name="class">
 								<xsl:value-of select="'title'" />
 							</xsl:attribute>
-							<xsl:value-of select="header/label" />
+							<xsl:value-of select="ancestor::item/header[code=$code3]/label" />
 						</div>
 						<div>
 							<xsl:attribute name="class">
