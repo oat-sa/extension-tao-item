@@ -123,6 +123,9 @@
 	width:											10% !important;
 }
 
+#container .td_slider {
+	height:											100px !important;
+}
 #container .td_after_fte {
 	min-width:										1% !important;
 }
@@ -606,13 +609,19 @@
 	height: 5px;
 }
 
-.variable {
+.variable, .variableSlider {
 	font-style: normal !important;
 	min-width: 1px !important;
 	width: 1px !important;
 	color: gray !important;
 	text-align: center !important;
 	font-size: 16px !important;
+}
+
+.variableSlider {
+	position: absolute;
+	top: 0;
+	left: -150px;
 }
 
 .variableText {

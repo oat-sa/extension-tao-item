@@ -58,7 +58,7 @@
             <xsl:value-of disable-output-escaping="yes" select="label" />
             <xsl:apply-templates select="description" mode="list" />
           </td>
-          <td>
+          <td class="td_slider">
             <div>
               <xsl:if test="ancestor::item/@layout='slider'">
                 <span class="sliderHeader">
