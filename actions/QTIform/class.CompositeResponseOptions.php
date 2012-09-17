@@ -153,7 +153,7 @@ class taoItems_actions_QTIform_CompositeResponseOptions
 			$irps[taoItems_models_classes_QTI_response_interactionResponseProcessing_Custom::CLASS_ID] = __('custom');			
 		}
 		
-		if (common_ext_ExtensionsManager::singleton()->isExtensionEnabled('taoCoding')
+		if (common_ext_ExtensionsManager::singleton()->getExtensionById('taoCoding')->isEnabled()
 			|| $currentIRP == taoItems_models_classes_QTI_response_interactionResponseProcessing_None::CLASS_ID) {
 				$irps[taoItems_models_classes_QTI_response_interactionResponseProcessing_None::CLASS_ID] = __('manual');
 		}			

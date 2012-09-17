@@ -760,11 +760,12 @@ class taoItems_models_classes_ItemsService
 
 					$dataFile = $itemFolder.'/data.xml';
 					file_put_contents($dataFile, $itemContent);
+					$itemExt = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
 
         			$variables = array(
         				'label' 		=> $item->getLabel(),
         				'uri'			=> $uri,
-        				'runtime'		=> TAO_ITEMS_BASE_URL . '/models/ext/itemRuntime/'. $this->getModelRuntime($item),
+        				'runtime'		=> $itemExt->getConstant('BASE_URL') . '/models/ext/itemRuntime/'. $this->getModelRuntime($item),
         				'contentUrl'	=> urlencode(str_replace(ROOT_PATH, ROOT_URL, $dataFile))
         			);
         			$templateRenderer = new taoItems_models_classes_TemplateRenderer(ROOT_PATH.'/taoItems/views/templates/swf_container_ref.tpl.php', $variables);
