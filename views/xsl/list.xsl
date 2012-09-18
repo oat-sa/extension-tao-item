@@ -58,15 +58,16 @@
             <xsl:value-of disable-output-escaping="yes" select="label" />
             <xsl:apply-templates select="description" mode="list" />
           </td>
-          <td class="td_slider">
-            <div>
-              <xsl:if test="ancestor::item/@layout='slider'">
-                <span class="sliderHeader">
-                  <xsl:apply-templates select="." mode="sliderHeader" />
-                </span>
-              </xsl:if>
-              <xsl:apply-templates select="." mode="form" />
-            </div>
+          <td>
+            <xsl:if test="ancestor::item/@layout='slider'">
+              <xsl:attribute name="class">
+				  <xsl:text>td_slider</xsl:text>
+			  </xsl:attribute>
+              <span class="sliderHeader">
+                <xsl:apply-templates select="." mode="sliderHeader" />
+              </span>
+            </xsl:if>
+            <xsl:apply-templates select="." mode="form" />
           </td>
           <td class="td_after_fte"></td>
         </xsl:otherwise>
