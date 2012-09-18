@@ -33,7 +33,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 			$this->setData('includedView', $identifier);
 		}
 		else{
-			$this->setData('includedView', DIR_VIEWS . $GLOBALS['dir_theme'] . $identifier);
+			$this->setData('includedView', DIR_VIEWS . 'templates/' . $identifier);
 		}
 		return parent::setView('sas.tpl', true);
     }
