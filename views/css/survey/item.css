@@ -408,6 +408,15 @@
 /*
 / SLIDERS
 */
+#container .cursorSlider {
+	background-color: red;
+    bottom: 0;
+    height: 10px;
+    left: 4px;
+    position: absolute;
+    width: 1px;
+}
+
 #container .slider_ui {
 	position: absolute;
 	width: 190px;
@@ -701,6 +710,10 @@
  vertical-align: middle;
 }
 
+#container .trendUL {
+	margin-top: 0 !important;
+}
+
 /****************
  HORIZONTAL ITEMS
 *****************/
@@ -714,4 +727,12 @@
   font-weight: bold;
   background-color: #DFF2FF;
   text-decoration: underline;
+}
+
+/***************
+ jQuery overwrite
+****************/
+.ui-slider-handle {
+	margin-left: -0.3em !important;
+	width: 0.5em !important;
 }

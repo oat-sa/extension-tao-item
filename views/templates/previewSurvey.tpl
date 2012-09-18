@@ -89,6 +89,8 @@
 //				{
 //					makeResizable($(this));
 //				});
+				// for sliders
+				$('.ui-slider-handle').append('<div class="cursorSlider"></div>');
 
 			});
 
