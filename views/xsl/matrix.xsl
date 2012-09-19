@@ -8,7 +8,11 @@
     <table class="matrix_table">
       <thead>
         <tr>
-          <th></th>
+          <th>
+            <xsl:call-template name="columnWidth">
+              <xsl:with-param name="match" select="'1'" />
+            </xsl:call-template>
+          </th>
           <xsl:apply-templates select="header" mode="matrix" />
         </tr>
       </thead>
@@ -19,6 +23,9 @@
   <!-- matrix -->
   <xsl:template match="header" mode="matrix">
     <th>
+      <xsl:call-template name="columnWidth">
+        <xsl:with-param name="mach" select="position()+1" />
+      </xsl:call-template>
       <xsl:value-of disable-output-escaping="yes" select="label" />
     </th>
   </xsl:template>

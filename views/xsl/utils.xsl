@@ -11,5 +11,11 @@
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
-
+  <!--get the style attribute to have the width of column-->
+  <xsl:template name="columnWidth">
+    <xsl:param name="match" />
+    <xsl:if test="ancestor::itemGroup/styles[@type='column'][@match=$match]/key[@name='size']">
+      <xsl:attribute name="style">width:<xsl:value-of select="ancestor::itemGroup/styles[@type='column'][@match=$match]/key[@name='size']" />%;</xsl:attribute>
+    </xsl:if>
+  </xsl:template>
 </xsl:stylesheet>
