@@ -26,7 +26,7 @@
 				var displayMode = "<?php echo get_data('ITEM_DISPLAY_MODE'); ?>";
 				if(displayMode == 'preview') {
 					// columnresizing
-					$('.list_table, .horizontal_table, .matrix_table').dataTable({
+					$('.matrix_table').dataTable({
 						"bPaginate": false,
 						"bLengthChange": false,
 						"bFilter": false,
