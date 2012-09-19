@@ -27,6 +27,7 @@
 	<xsl:template
 		name="itemGroup"
 		match="itemGroup">
+    <div id="itemGroupID" class="invisible"><xsl:value-of select="@id" /></div>
 		<div id="container">
 			<div id="info_dialog">
 				<span id="info_dialog_close">[ <span class="close">-</span> ]</span>

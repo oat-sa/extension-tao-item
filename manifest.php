@@ -57,7 +57,7 @@ return array(
 		'TAOVIEW_PATH'			=> $taopath.'views'.DIRECTORY_SEPARATOR,
 		'TAO_TPL_PATH'			=> $taopath.'views'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR,
 	
-		'USE_CACHED_XSL'		=> true
+		'USE_CACHED_XSL'		=> false
 	)
 );
 ?>

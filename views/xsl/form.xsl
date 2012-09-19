@@ -118,80 +118,14 @@
 						</span>
 					</xsl:when>
 					<xsl:when test="$type='text'">
-						<input type="text">
-							<xsl:attribute name="name">
-								<xsl:value-of select="$code" />
-							</xsl:attribute>
-							<xsl:attribute name="id">
-								<xsl:value-of select="$code" />
-							</xsl:attribute>
-			
-            <!--<xsl:attribute name="class">-->
-              <!--<xsl:text>variableText</xsl:text>-->
-            <!--</xsl:attribute>-->
-            <!--<xsl:if test="ancestor::itemGroup/@layout!='complexCompleteFields'">-->
-              <!--<xsl:attribute name="value">-->
-                <!--<xsl:choose>-->
-                  <!--<xsl:when test="ancestor::itemGroup/@layout='complexFieldsList' and count(ancestor::responses/response)=1">-->
-                    <!--<xsl:value-of select="ancestor::item/@id" />-->
-                  <!--</xsl:when>-->
-                  <!--<xsl:when test="ancestor::itemGroup/@layout='simpleFieldsList'">-->
-                    <!--<xsl:value-of select="ancestor::item/@id" />-->
-                    <!--<xsl:text>Q</xsl:text>-->
-                    <!--<xsl:choose>-->
-                      <!--<xsl:when test="string(number(@code))!='NaN'">-->
-                        <!--<xsl:if test="number(@code)&lt;10">-->
-                          <!--<xsl:text>0</xsl:text>-->
-                        <!--</xsl:if>-->
-                        <!--<xsl:value-of select="number(@code)" />-->
-                      <!--</xsl:when>-->
-                      <!--<xsl:otherwise>-->
-                        <!--<xsl:value-of select="@code" />-->
-                      <!--</xsl:otherwise>-->
-                    <!--</xsl:choose>-->
-                  <!--</xsl:when>-->
-                  <!--<xsl:otherwise>-->
-                    <!--<xsl:variable name="suffixVariable">-->
-                      <!--<xsl:choose>-->
-                        <!--<xsl:when test="string(number(substring(ancestor::item/@id, string-length(ancestor::item/@id)-1)))!='NaN'">-->
-                          <!--<xsl:value-of select="substring(ancestor::item/@id, 0, string-length(ancestor::item/@id)-1)" />-->
-                          <!--<xsl:if test="count(ancestor::itemGroup/item)&gt;10 or count(ancestor::responses/response)&gt;10">-->
-                            <!--<xsl:if test="number(@code)&lt;10">-->
-                              <!--<xsl:text>0</xsl:text>-->
-                            <!--</xsl:if>-->
-                          <!--</xsl:if>-->
-                          <!--<xsl:value-of select="number(substring(ancestor::item/@id, string-length(ancestor::item/@id)-1))" />-->
-                        <!--</xsl:when>-->
-                        <!--<xsl:otherwise>-->
-                          <!--<xsl:value-of select="ancestor::item/@id" />-->
-                        <!--</xsl:otherwise>-->
-                      <!--</xsl:choose>-->
-                    <!--</xsl:variable>-->
-
-                    <!--<xsl:variable name="codeResponse">-->
-
-                      <!--<xsl:choose>-->
-                        <!--<xsl:when test="string(number(@code))!='NaN'">-->
-                          <!--<xsl:if test="count(ancestor::itemGroup/item)&gt;10 or count(ancestor::responses/response)&gt;10">-->
-                            <!--<xsl:if test="number(@code)&lt;10">-->
-                              <!--<xsl:text>0</xsl:text>-->
-                            <!--</xsl:if>-->
-                          <!--</xsl:if>-->
-                          <!--<xsl:value-of select="number(@code)" />-->
-                        <!--</xsl:when>-->
-                        <!--<xsl:otherwise>-->
-                          <!--<xsl:value-of select="@code" />-->
-                        <!--</xsl:otherwise>-->
-                      <!--</xsl:choose>-->
-
-                    <!--</xsl:variable>-->
-                    <!--<xsl:value-of select="concat($suffixVariable, $codeResponse)" />-->
-                  <!--</xsl:otherwise>-->
-                <!--</xsl:choose>-->
-              <!--</xsl:attribute>-->
-            <!--</xsl:if>-->
-
-						</input>
+						<input type="text" id="{$code}" name="{$code}">
+              <xsl:if test="ancestor::item/header[code=$code2]/@size">
+                <xsl:attribute name="class">
+                  <xsl:text>inputSize_</xsl:text>
+                  <xsl:value-of select="ancestor::item/header[code=$code2]/@size" />
+                </xsl:attribute>
+              </xsl:if>
+            </input>
 					</xsl:when>
 					<xsl:when test="$type='radio'">
 						<input type="radio">

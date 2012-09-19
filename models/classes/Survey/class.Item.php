@@ -207,9 +207,6 @@ class taoItems_models_classes_Survey_Item
 	public static function generatePreviewFile($xml) {
 		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
 		$md5 = md5($xml);
-//		if(file_exists($dir.$md5)) {
-//			return $md5;
-//		}
 		$content = taoItems_models_classes_Survey_Item::preRender($xml);
 		file_put_contents($dir . $md5, $content);
 		return $md5;

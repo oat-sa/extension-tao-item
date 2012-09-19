@@ -33,7 +33,7 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 	}
 
 	/**
-	 * create a te:porary item, display his content and removeIt
+	 *  render an item
 	 * @return type
 	 */
 	public function preview() {
@@ -44,6 +44,7 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 		if(is_null($this->getRequestParameter('xml'))) {
 			//display preview generated
 			$content = file_get_contents($dir . $this->getRequestParameter('file'));
+			$this->setData('ITEM_DISPLAY_MODE', "preview");
 			$this->setData('content', $content);
 			$this->setData('basePreview', BASE_WWW);
 			$this->setData('taoView', TAOBASE_WWW);
