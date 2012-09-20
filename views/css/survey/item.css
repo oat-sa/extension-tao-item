@@ -2,6 +2,10 @@
 / TO REMOVE
 */
 
+#itemGroupTable thead th {
+  height: 20px;
+}
+
 .invisible {
   display: none;
 }
@@ -757,3 +761,7 @@
   margin-left: -0.3em !important;
   width: 0.5em !important;
 }
+
+
+
+

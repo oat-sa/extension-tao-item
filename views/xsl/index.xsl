@@ -38,11 +38,11 @@
 				</div>
 			</div>
       <xsl:choose>
-        <xsl:when test="count(item)>1">
+        <xsl:when test="@layout='multipleItems'">
           <!--Apply trend item here. CAREFUL not trend !!  multiple items !!! trend template is multiple items template on the same layout so managed in js-->
           <!--trend Items-->
           <!--for the moment only trend, multiple will be done later-->
-          <xsl:apply-templates select="." mode="trend" />
+          <xsl:apply-templates select="." mode="multiple" />
         </xsl:when>
         <!--simples items-->
         <xsl:otherwise>
@@ -103,6 +103,10 @@
       <xsl:when test="@layout='simpleFieldsList'
          or @layout='complexFieldsList'">
         <xsl:value-of select="'text'" />
+      </xsl:when>
+      <xsl:when test="@layout='simpleDropDown'
+         or @layout='complexDropDown'">
+        <xsl:value-of select="'select'" />
       </xsl:when>
       <xsl:otherwise></xsl:otherwise>
     </xsl:choose>

@@ -5,14 +5,10 @@
 
   <!-- matrix -->
   <xsl:template match="item" mode="matrix">
-    <table class="matrix_table">
+    <table id="itemGroupTable" class="matrix_table">
       <thead>
         <tr>
-          <th>
-            <xsl:call-template name="columnWidth">
-              <xsl:with-param name="match" select="'1'" />
-            </xsl:call-template>
-          </th>
+          <xsl:call-template name="firstColumnHeader" />
           <xsl:apply-templates select="header" mode="matrix" />
         </tr>
       </thead>

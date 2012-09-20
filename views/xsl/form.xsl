@@ -143,20 +143,36 @@
 							</xsl:attribute>
 						</input>
 					</xsl:when>
-					<xsl:otherwise>
-						<input type="checkbox">
-							<xsl:attribute name="name">
-								<xsl:value-of select="$code" />
-							</xsl:attribute>
-							<xsl:attribute name="value">
-								<xsl:value-of select="@code" />
-							</xsl:attribute>
-						</input>
-					</xsl:otherwise>
+					<xsl:when test="$type='select'">
+            <xsl:variable name="list">
+              <xsl:value-of select="@values" />
+            </xsl:variable>
+            <select name="{$code}" id="{$code}">
+              <xsl:apply-templates select="//values[@list=$list]/value" />
+            </select>
+          </xsl:when>
+          <xsl:when test="$type='checkbox'">
+            <input type="checkbox">
+              <xsl:attribute name="name">
+                <xsl:value-of select="$code" />
+              </xsl:attribute>
+              <xsl:attribute name="value">
+                <xsl:value-of select="@code" />
+              </xsl:attribute>
+            </input>
+          </xsl:when>
 				</xsl:choose>
 			</div>
 		</xsl:template>
-
+  <!--option generation for dropdown item-->
+  <xsl:template match="value">
+    <option>
+      <xsl:attribute name="value">
+        <xsl:value-of select="code" />
+      </xsl:attribute>
+      <xsl:value-of select="label" />
+    </option>
+  </xsl:template>
   <!-- response > form_code -->
 		<xsl:template match="response" mode="form_code">
 			<xsl:variable name="id">

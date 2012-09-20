@@ -7,7 +7,7 @@
   </xsl:template>
   <!-- responses -->
   <xsl:template match="responses" mode="horizontal">
-    <table class="horizontal_table">
+    <table id="itemGroupTable" class="horizontal_table">
       <thead>
         <tr>
           <xsl:apply-templates select="response" mode="horizontal_label" />
@@ -29,6 +29,9 @@
   <!-- response label-->
   <xsl:template match="response" mode="horizontal_label">
     <th>
+      <xsl:call-template name="columnWidth">
+        <xsl:with-param name="mach" select="position()" />
+      </xsl:call-template>
       <xsl:value-of disable-output-escaping="yes" select="label" />
       <xsl:apply-templates select="description" mode="list" />
     </th>

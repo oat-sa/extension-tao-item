@@ -26,7 +26,7 @@
 				var displayMode = "<?php echo get_data('ITEM_DISPLAY_MODE'); ?>";
 				if(displayMode == 'preview') {
 					// columnresizing
-					$('.matrix_table').dataTable({
+					$('#itemGroupTable').dataTable({
 						"bPaginate": false,
 						"bLengthChange": false,
 						"bFilter": false,
@@ -37,9 +37,7 @@
 					});
 					//css injection
 					$('<style />')
-						.html('.list_table th:hover,' +
-							'.horizontal_table th:hover,' +
-							'.matrix_table th:hover {' +
+						.html('#itemGroupTable th:hover {' +
 							'border-left: solid 1px black;' +
 							'border-right : solid 1px black;' +
 						'}').appendTo($('body'));

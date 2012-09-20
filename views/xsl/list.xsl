@@ -10,7 +10,31 @@
 
   <!-- responses -->
   <xsl:template match="responses" mode="list">
-    <table class="list_table">
+    <table id="itemGroupTable" class="list_table">
+      <thead>
+        <tr>
+          <xsl:call-template name="firstColumnHeader" />
+          <!--no match on code cause of list == only one column of input-->
+          <xsl:choose>
+            <xsl:when test="ancestor::item/header">
+              <xsl:apply-templates select="ancestor::item/header" mode="matrix" />
+            </xsl:when>
+            <xsl:otherwise>
+              <th>
+                <xsl:call-template name="columnWidth">
+                  <xsl:with-param name="match" select="'2'" />
+                </xsl:call-template>
+              </th>
+            </xsl:otherwise>
+          </xsl:choose>
+          <!--after fte things-->
+          <th>
+            <xsl:call-template name="columnWidth">
+              <xsl:with-param name="match" select="'2'" />
+            </xsl:call-template>
+          </th>
+        </tr>
+      </thead>
       <tbody>
         <xsl:apply-templates select="response" mode="list" />
         <xsl:variable name='footer'>
@@ -22,7 +46,6 @@
       </tbody>
     </table>
   </xsl:template>
-
   <!-- response -->
   <xsl:template match="response" mode="list">
     <tr>
