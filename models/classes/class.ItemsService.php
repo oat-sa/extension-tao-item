@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Service methods to manage the Items business models using the RDF API.
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -15,10 +15,10 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * The Service class is an abstraction of each service instance.
+ * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -37,7 +37,7 @@ require_once (dirname(__FILE__).'/Matching/matching_api.php');
  * Service methods to manage the Items business models using the RDF API.
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -79,7 +79,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method __construct
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return void
      */
     public function __construct()
@@ -96,12 +96,12 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * get an item subclass by uri.
+     * get an item subclass by uri. 
      * If the uri is not set, it returns the  item class (the top level class.
      * If the uri don't reference an item subclass, it returns null
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string uri
      * @return core_kernel_classes_Class
      */
@@ -131,7 +131,7 @@ class taoItems_models_classes_ItemsService
      * check if the class is a or a subclass of an Item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -159,54 +159,10 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * get an item
-     *
-     * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  string identifier
-     * @param  Class itemClazz
-     * @param  string mode
-     * @return core_kernel_classes_Resource
-     */
-    public function getItem($identifier,  core_kernel_classes_Class $itemClazz = null, $mode = 'uri')
-    {
-        $returnValue = null;
-
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 begin
-
-		if(is_null($itemClazz) && $mode == 'uri'){
-			try{
-				$resource = new core_kernel_classes_Resource($identifier);
-				foreach($resource->getType() as $type){
-					$itemClazz = $type;
-					break;
-				}
-			}
-			catch(Exception $e){}
-		}
-		if(is_null($itemClazz)){
-			$itemClazz = $this->itemClass;
-		}
-		if($itemClazz->uriResource != $this->itemClass->uriResource){
-
-			if(!$this->isItemClass($itemClazz)){
-				throw new Exception("The item class is not a valid item sub class");
-			}
-
-		}
-		$returnValue = $this->getOneInstanceBy( $itemClazz, $identifier, $mode);
-
-
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:0000000000001815 end
-
-        return $returnValue;
-    }
-
-    /**
      * delete an item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -239,7 +195,7 @@ class taoItems_models_classes_ItemsService
      * delete an item class or subclass
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Class clazz
      * @return boolean
      */
@@ -263,7 +219,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemFolder
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  string lang
      * @return string
@@ -307,7 +263,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getRuntimeFolder
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return string
      */
@@ -332,7 +288,7 @@ class taoItems_models_classes_ItemsService
      * after creation)
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -366,11 +322,11 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Enables you to get the content of an item,
+     * Enables you to get the content of an item, 
      * usually an xml string
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  boolean preview
      * @param  string lang
@@ -429,7 +385,7 @@ class taoItems_models_classes_ItemsService
      * Check if the item has an itemContent Property
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  string lang
      * @return boolean
@@ -459,7 +415,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setItemContent
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  string content
      * @param  string lang
@@ -565,7 +521,7 @@ class taoItems_models_classes_ItemsService
      * Check if the Item has on of the itemModel property in the models array
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  array models the list of URI of the itemModel to check
      * @return boolean
@@ -591,7 +547,7 @@ class taoItems_models_classes_ItemsService
      * Check if the itemModel has been defined for that item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return boolean
      */
@@ -624,7 +580,7 @@ class taoItems_models_classes_ItemsService
      * Get the runtime associated to the item model.
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -650,7 +606,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method hasModelStatus
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  array status
      * @return boolean
@@ -688,7 +644,7 @@ class taoItems_models_classes_ItemsService
      * Deploy the item in parameter into the path.
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  string path
      * @param  string url
@@ -860,7 +816,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -882,7 +838,7 @@ class taoItems_models_classes_ItemsService
      * get the item uri linked to the given file
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string uri
      * @return string
      */
@@ -909,7 +865,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string itemUri
      * @return string
      */
@@ -934,7 +890,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the temporary authoring file
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string itemUri
      * @param  boolean fallback
      * @return string
@@ -963,7 +919,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the matching data of an item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource itemRdf
      * @return array
      */
@@ -991,7 +947,7 @@ class taoItems_models_classes_ItemsService
      * Service to evaluate an item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource itemRdf
      * @param  responses
      * @return array
@@ -1050,7 +1006,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method cloneInstance
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource instance
      * @param  Class clazz
      * @return core_kernel_classes_Resource
@@ -1127,7 +1083,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setItemMeasurements
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @param  array measurements
      * @return taoItems_models_classes_Matching_bool
@@ -1166,7 +1122,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemMeasurements
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return array
      */
@@ -1214,7 +1170,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getVersionedFileRepository
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -1243,7 +1199,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemModel
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -1266,7 +1222,7 @@ class taoItems_models_classes_ItemsService
      * item content should be located
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return string
      */
     public function getSessionLg()
@@ -1291,7 +1247,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method deleteItemContent
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return boolean
      */

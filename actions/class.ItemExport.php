@@ -45,7 +45,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 				}
 				
 				foreach($instances as $instance){
-					$item = $itemService->getItem($instance);
+					$item = new core_kernel_classes_Resource($instance);
 					if(!is_null($item)){
 						$className = $this->loadItemExporter($item);
 						
@@ -83,7 +83,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 				}
 				
 				foreach($instances as $instance){
-					$item = $itemService->getItem($instance);
+					$item = new core_kernel_classes_Resource($instance);
 					if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
 						$exporter = new taoItems_models_classes_exporter_QTIPackedItemExporter($item, $zipArchive);
 						$exporter->export();

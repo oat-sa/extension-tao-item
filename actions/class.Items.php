@@ -31,28 +31,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
  */
 	
 	/**
-	 * get the instancee of the current item regarding the 'uri' and 'classUri' request parameters
-	 * @return core_kernel_classes_Resource the item instance
-	 */
-	protected function getCurrentInstance()
-	{
-		$uri = tao_helpers_Uri::decode($this->getRequestParameter('uri'));
-		if(is_null($uri) || empty($uri)){
-			throw new Exception("No valid uri found");
-		}
-		$itemClass = $this->getCurrentClass();
-		$item = $this->service->getItem($uri, $itemClass);
-		if(is_null($item)){
-			throw new Exception("No item found for the uri {$uri}");
-		}
-		
-		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
-		
-		return $item;
-	}
-	
-	/**
 	 * get the main class
 	 * @return core_kernel_classes_Classes
 	 */
@@ -133,6 +111,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
 		$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
+		
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		
 		$this->setData('modelDefined', $modelDefined);
 		$this->setData('isDeprecated', $isDeprecated);
@@ -582,6 +563,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				}
 			}
 		}
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		
 		$this->setData('formTitle', __('Manage item content'));
 		$this->setData('myForm', $myForm->render());
@@ -640,6 +623,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 			$previewTitle = $this->getRequestParameter('previewTitle');
 		}
 		$this->setData('previewTitle', $previewTitle);
+		
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
 		
 		$this->setView('preview.tpl');
 	}
@@ -886,6 +872,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule
                         }
                         $this->setData('errorMsg', $errorMsg);
 		}
+		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		
 		$this->setView('authoring.tpl');
 	}
 	
@@ -901,7 +890,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 
 		if(isset($_SESSION['instance']) && isset($_SESSION['xml'])){
 
-			$item = $this->service->getItem($_SESSION['instance']);
+			$item = new core_kernel_classes_Resource($_SESSION['instance']);
 			if($this->service->isItemModelDefined($item)){
 				
 				$itemContentSaved = false;

@@ -75,10 +75,8 @@ class ItemsTestCase extends UnitTestCase {
 		$this->assertTrue($itemInstance->delete());
 		
 		//delete subclass and check if the instance is deleted
-		$subItemInstanceUri = $subItemInstance->uriResource;
-		$this->assertNotNull($this->itemsService->getItem($subItemInstanceUri));
 		$this->assertTrue($subItemInstance->delete());
-		$this->assertNull($this->itemsService->getItem($subItemInstanceUri));
+		$this->assertFalse($subItemInstance->exits());
 		
 		$this->assertTrue($subItemClass->delete());
 	}

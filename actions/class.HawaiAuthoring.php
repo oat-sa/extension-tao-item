@@ -24,7 +24,7 @@ class taoItems_actions_HawaiAuthoring extends tao_actions_CommonModule {
 	 */
 	public function saveItemContent() {
 		if($this->hasRequestParameter("xml") && $this->hasRequestParameter("instance")){
-			$item = $this->itemService->getItem($this->getRequestParameter("instance"));
+			$item = new core_kernel_classes_Resource($this->getRequestParameter("instance"));
 			if(!is_null($item) && $this->itemService->isItemModelDefined($item)){
 				$item = $this->itemService->setItemContent($item, $_POST["xml"]);
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
