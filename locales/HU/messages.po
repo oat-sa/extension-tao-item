@@ -1,0 +1,752 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:53:03\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: HU\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "%d items of %d imported successfuly"
+msgstr ""
+
+msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgstr ""
+
+msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgstr ""
+
+msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
+msgstr ""
+
+msgid "Add a new stylesheet:"
+msgstr ""
+
+msgid "Add choice"
+msgstr ""
+
+msgid "Add choice to group"
+msgstr ""
+
+msgid "Add the source file"
+msgstr ""
+
+msgid "Advanced options"
+msgstr ""
+
+msgid "Advanced properties"
+msgstr ""
+
+msgid "An error occured during the import"
+msgstr ""
+
+msgid "An error occured while loading the item: "
+msgstr ""
+
+msgid "An error occured while saving the item"
+msgstr ""
+
+msgid "An error occurs during the import"
+msgstr ""
+
+msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgstr ""
+
+msgid "Associable hotspots"
+msgstr ""
+
+msgid "Attached style sheets:"
+msgstr ""
+
+#, tao-public
+msgid "Authoring"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Background image not set yet. Select it in the \"Image source url\" input then update."
+msgstr ""
+
+msgid "Changing shape type will delete the old shape, are you sure?"
+msgstr ""
+
+msgid "Choice"
+msgstr ""
+
+msgid "Choice group"
+msgstr ""
+
+msgid "Choices"
+msgstr ""
+
+msgid "Choices editor:"
+msgstr ""
+
+msgid "circle"
+msgstr ""
+
+msgid "Class saved"
+msgstr ""
+
+msgid "clean up"
+msgstr ""
+
+msgid "Click on a row to edit, then press \"enter\" to validate or \"escape\" to cancel the changes."
+msgstr ""
+
+msgid "Client"
+msgstr ""
+
+msgid "close"
+msgstr ""
+
+msgid "composite"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Coordinates"
+msgstr ""
+
+msgid "correct"
+msgstr ""
+
+msgid "Correct answer"
+msgstr ""
+
+msgid "Correct Responses"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr ""
+
+msgid "create table"
+msgstr ""
+
+msgid "created from qti package"
+msgstr ""
+
+msgid "CSS format required"
+msgstr ""
+
+msgid "custom"
+msgstr ""
+
+msgid "Debug"
+msgstr ""
+
+msgid "Debug Mode"
+msgstr ""
+
+msgid "default"
+msgstr ""
+
+msgid "Default value"
+msgstr ""
+
+msgid "delete"
+msgstr ""
+
+msgid "Delete choice"
+msgstr ""
+
+msgid "Delete interaction"
+msgstr ""
+
+msgid "Delete object"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Discrete Scale"
+msgstr ""
+
+msgid "Distance"
+msgstr ""
+
+msgid "Do you really want to delete the row?"
+msgstr ""
+
+msgid "download"
+msgstr ""
+
+msgid "Download item content"
+msgstr ""
+
+msgid "draw it"
+msgstr ""
+
+msgid "duplicate"
+msgstr ""
+
+msgid "Edit item"
+msgstr ""
+
+msgid "Edit Item"
+msgstr ""
+
+msgid "Edit item class"
+msgstr ""
+
+msgid "Edit object"
+msgstr ""
+
+msgid "ellipse"
+msgstr ""
+
+msgid "Empty response value"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
+msgstr ""
+
+msgid "Enables you to export an IMS QTI Package."
+msgstr ""
+
+msgid "End Attempt"
+msgstr ""
+
+msgid "end attempt now"
+msgstr ""
+
+msgid "Error in background file:"
+msgstr ""
+
+msgid "Expected length"
+msgstr ""
+
+msgid "Expected lines"
+msgstr ""
+
+msgid "export"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Export Options"
+msgstr ""
+
+msgid "Fake delivery"
+msgstr ""
+
+msgid "Fake process"
+msgstr ""
+
+msgid "Fake test"
+msgstr ""
+
+msgid "File name"
+msgstr ""
+
+msgid "Fixed"
+msgstr ""
+
+msgid "Float"
+msgstr ""
+
+#, tao-public
+msgid "Full preview"
+msgstr ""
+
+msgid "Gap images"
+msgstr ""
+
+msgid "Gaps"
+msgstr ""
+
+msgid "Graphic interaction stage:"
+msgstr ""
+
+msgid "Guidelines"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Heihgt"
+msgstr ""
+
+msgid "horizontal"
+msgstr ""
+
+msgid "Identifier"
+msgstr ""
+
+msgid "Image height"
+msgstr ""
+
+msgid "Image label"
+msgstr ""
+
+msgid "Image source url"
+msgstr ""
+
+msgid "Image width"
+msgstr ""
+
+msgid "import"
+msgstr ""
+
+msgid "Integer"
+msgstr ""
+
+msgid "Interaction content editor:"
+msgstr ""
+
+msgid "Interaction data saved."
+msgstr ""
+
+msgid "Interaction editor:"
+msgstr ""
+
+msgid "invalid image mime type"
+msgstr ""
+
+msgid "Item content saved"
+msgstr ""
+
+msgid "item content successfully imported"
+msgstr ""
+
+msgid "Item Editor:"
+msgstr ""
+
+msgid "item imported successfully"
+msgstr ""
+
+msgid "Item imported successfully"
+msgstr ""
+
+msgid "Item Properties:"
+msgstr ""
+
+msgid "Item saved"
+msgstr ""
+
+msgid "Item saved successfully"
+msgstr ""
+
+msgid "Item saving failed"
+msgstr ""
+
+msgid "Item successfully saved"
+msgstr ""
+
+msgid "item versioned content deleted"
+msgstr ""
+
+msgid "item versioned content saved"
+msgstr ""
+
+#, tao-public
+msgid "Items"
+msgstr ""
+
+msgid "items imported successfully"
+msgstr ""
+
+msgid "Items library"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Light preview"
+msgstr ""
+
+msgid "Light preview:"
+msgstr ""
+
+msgid "lists"
+msgstr ""
+
+msgid "Lower bound"
+msgstr ""
+
+msgid "Manage item content"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr ""
+
+msgid "Manage the item versioned content"
+msgstr ""
+
+msgid "manual"
+msgstr ""
+
+msgid "map"
+msgstr ""
+
+msgid "map point"
+msgstr ""
+
+msgid "Match group"
+msgstr ""
+
+msgid "Match Group"
+msgstr ""
+
+msgid "Matching side"
+msgstr ""
+
+msgid "Max filesize"
+msgstr ""
+
+msgid "Maximal number of matching"
+msgstr ""
+
+msgid "Maximum number of associations"
+msgstr ""
+
+msgid "Maximum number of choices"
+msgstr ""
+
+msgid "Maximum number of separate strings"
+msgstr ""
+
+msgid "Maximum value"
+msgstr ""
+
+msgid "MB"
+msgstr ""
+
+msgid "meta data"
+msgstr ""
+
+msgid "MIME type"
+msgstr ""
+
+msgid "Minimum value"
+msgstr ""
+
+msgid "Modification on choice applied"
+msgstr ""
+
+msgid "Modification on response applied"
+msgstr ""
+
+msgid "Modification(s) on interaction has been updated"
+msgstr ""
+
+msgid "move"
+msgstr ""
+
+msgid "Move Down"
+msgstr ""
+
+msgid "Move Up"
+msgstr ""
+
+msgid "new class"
+msgstr ""
+
+msgid "new item"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "No item type selected for the current item."
+msgstr ""
+
+msgid "No user is logged in"
+msgstr ""
+
+msgid "Not yet available"
+msgstr ""
+
+msgid "Number base for value interpretation"
+msgstr ""
+
+msgid "Open Web Item Package"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Ordered response"
+msgstr ""
+
+msgid "Orientation"
+msgstr ""
+
+msgid "OWI package uploaded"
+msgstr ""
+
+msgid "Paper-based Item"
+msgstr ""
+
+msgid "Pattern mask"
+msgstr ""
+
+msgid "Place holder text"
+msgstr ""
+
+msgid "please confirm deletion of the interaction"
+msgstr ""
+
+msgid "Please confirm interaction deletion"
+msgstr ""
+
+msgid "Please confirm object deletion"
+msgstr ""
+
+msgid "Please select first the item type!"
+msgstr ""
+
+msgid "polygon"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "preview"
+msgstr ""
+
+msgid "preview (1:1)"
+msgstr ""
+
+msgid "preview (real size:"
+msgstr ""
+
+msgid "PREVIEW BOX"
+msgstr ""
+
+msgid "Preview Console"
+msgstr ""
+
+msgid "Processing rule:"
+msgstr ""
+
+msgid "Processing type"
+msgstr ""
+
+msgid "Prompt"
+msgstr ""
+
+msgid "QTI Item"
+msgstr ""
+
+msgid "QTI Package"
+msgstr ""
+
+msgid "quantity"
+msgstr ""
+
+msgid "Recovery context"
+msgstr ""
+
+msgid "rectangle"
+msgstr ""
+
+msgid "Required"
+msgstr ""
+
+msgid "Response editor:"
+msgstr ""
+
+msgid "Response processing template editor:"
+msgstr ""
+
+msgid "Response variable type"
+msgstr ""
+
+msgid "Responses Grid"
+msgstr ""
+
+msgid "Return to item editor"
+msgstr ""
+
+msgid "Reverse rendering"
+msgstr ""
+
+msgid "revision restored : "
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Scale type"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+msgid "Server"
+msgstr ""
+
+msgid "Set processing mode"
+msgstr ""
+
+msgid "Shape"
+msgstr ""
+
+msgid "show/hide"
+msgstr ""
+
+msgid "Shuffle choices"
+msgstr ""
+
+msgid "Step"
+msgstr ""
+
+msgid "Step label display"
+msgstr ""
+
+msgid "String"
+msgstr ""
+
+msgid "String identifier"
+msgstr ""
+
+msgid "Stylesheets manager:"
+msgstr ""
+
+msgid "template"
+msgstr ""
+
+msgid "The choice cannot be saved"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications has not been updated yet.\n"
+"Do you want to update the interaction with the modifications before returning to the item editor?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications have not been updated yet,\n"
+" do you want to update the interaction with the modifications before saving your item?\n"
+"(Otherwise, the modifications are lost)"
+msgstr ""
+
+msgid "The current interaction has been modified but the modifications have not been updated yet.\n"
+"Do you want to do update the interaction with the modifications before previewing your item?"
+msgstr ""
+
+msgid "The custom response processing type is currently not fully supported in this tool. Removing interactions or choices is not recommended."
+msgstr ""
+
+msgid "the file was not uploaded successfully"
+msgstr ""
+
+msgid "The item has been successfully saved"
+msgstr ""
+
+msgid "The Item module enables the creation and design of items and exercises."
+msgstr ""
+
+msgid "The options have been updated"
+msgstr ""
+
+msgid "The response form is not available for the selected response processing.<br/>"
+msgstr ""
+
+msgid "The response processing has been saved"
+msgstr ""
+
+msgid "The response properties have been updated"
+msgstr ""
+
+msgid "The responses cannot be updated"
+msgstr ""
+
+msgid "The responses have been updated"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "To insert a \"gap\" in your interaction, set focus on the desired place in the editor below then click on the \"add gap\" button "
+msgstr ""
+
+msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Unable to copy the resources"
+msgstr ""
+
+msgid "unable to extract archive content, please check your tmp dir"
+msgstr ""
+
+msgid "Unable to load QTI resource with href = '%s'"
+msgstr ""
+
+msgid "Unable to move"
+msgstr ""
+
+msgid "Update interaction & choices modifications"
+msgstr ""
+
+msgid "Update response & scoring modifications"
+msgstr ""
+
+msgid "Upload a QTI Package File"
+msgstr ""
+
+msgid "Upload an Open Web Item Package File"
+msgstr ""
+
+msgid "Upload an paper-based Item"
+msgstr ""
+
+msgid "Upload QTI File"
+msgstr ""
+
+msgid "Upload the item content"
+msgstr ""
+
+msgid "Upload the style sheet"
+msgstr ""
+
+msgid "Upper bound"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "Validation has failed"
+msgstr ""
+
+msgid "Validation of the imported file has failed"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "VersionedContent"
+msgstr ""
+
+msgid "vertical"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "wrong file format"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
