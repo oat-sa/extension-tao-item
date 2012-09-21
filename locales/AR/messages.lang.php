@@ -8,8 +8,8 @@ $GLOBALS['__l10n']["A short text"]="نص قصير";
 $GLOBALS['__l10n']["A single choice list"]="قائمة خيار واحد";
 $GLOBALS['__l10n']["A single choice long list"]="قائمة خيار واحد طويلة";
 $GLOBALS['__l10n']["Access denied. Please renew your authentication!"]="!تم رفض الوصول. يرجى تجديد المصادقة الخاصة بك";
-$GLOBALS['__l10n']["actions"]="الأعمال";
 $GLOBALS['__l10n']["Actions"]="الأعمال";
+$GLOBALS['__l10n']["actions"]="الأعمال";
 $GLOBALS['__l10n']["Add"]="إضافة";
 $GLOBALS['__l10n']["Add / Edit lists"]="إضافة / تعديل القوائم";
 $GLOBALS['__l10n']["Add a user"]="إضافة مستخدم";
@@ -53,8 +53,8 @@ $GLOBALS['__l10n']["CSV Options"]="CSV خيارات";
 $GLOBALS['__l10n']["Current (the current extension, the local data and their dependancies)"]="(الحالي(الملحق الحالي,البيانات المحلية وتوابعها";
 $GLOBALS['__l10n']["Current language"]="اللغة الحالية";
 $GLOBALS['__l10n']["Data imported successfully"]="البيانات التي تم استيرادها بنجاح";
-$GLOBALS['__l10n']["Data language"]="لغة البيانات";
 $GLOBALS['__l10n']["Data Language"]="لغة البيانات";
+$GLOBALS['__l10n']["Data language"]="لغة البيانات";
 $GLOBALS['__l10n']["Date"]="التاريخ";
 $GLOBALS['__l10n']["Debug Mode"]="وضعيةالمنقحات";
 $GLOBALS['__l10n']["default"]="الافتراضي";
@@ -140,7 +140,6 @@ $GLOBALS['__l10n']["Items"]="الاسئلة";
 $GLOBALS['__l10n']["items imported successfully"]="تم استيراد السؤال بنجاح";
 $GLOBALS['__l10n']["Javascript is required to run this software. Please activate it in your browser."]=".مطلوب جافا سكريبت لتشغيل هذا البرنامج ، يرجى تفعيلها في المتصفح";
 $GLOBALS['__l10n']["Label"]="تسمية";
-$GLOBALS['__l10n']["Label already used"]="تسمية قيد الاستعمال";
 $GLOBALS['__l10n']["Language"]="اللغة";
 $GLOBALS['__l10n']["List"]="قائمة";
 $GLOBALS['__l10n']["list deleted"]="حذف القائمة";
@@ -148,8 +147,8 @@ $GLOBALS['__l10n']["List Options"]="خيارات القائمة";
 $GLOBALS['__l10n']["list saved"]="تم حفظ القائمة";
 $GLOBALS['__l10n']["list the users"]="lister les utilisateurs";
 $GLOBALS['__l10n']["List values"]="قيم القائمة";
-$GLOBALS['__l10n']["Lists"]="القوائم";
 $GLOBALS['__l10n']["lists"]="القوائم";
+$GLOBALS['__l10n']["Lists"]="القوائم";
 $GLOBALS['__l10n']["Local Data (the local namespace containing only the data inserted by the users)"]="(البيانات المحلية (مساحة الاسم المحلي الذي يحتوي فقط على البيانات المدرجة من قبل المستخدمين";
 $GLOBALS['__l10n']["Login"]="الدخول";
 $GLOBALS['__l10n']["Login *"]="*تسجيل الدخول";
@@ -165,7 +164,6 @@ $GLOBALS['__l10n']["Manage item content"]="ادارة محتوى السؤال";
 $GLOBALS['__l10n']["Manage items"]="ادارة الاسئلة";
 $GLOBALS['__l10n']["Manage processes"]="إدارة العمليات";
 $GLOBALS['__l10n']["Manage result servers"]="ادارة خوادم النتائج";
-$GLOBALS['__l10n']["Manage results"]="ادارة النتائج";
 $GLOBALS['__l10n']["Manage roles"]="إدارة الأدوار";
 $GLOBALS['__l10n']["Manage test takers"]="إدارة المتقدمين للاختبار";
 $GLOBALS['__l10n']["Manage tests"]="ادارة الاختبارات";
@@ -228,8 +226,8 @@ $GLOBALS['__l10n']["Please select the input data format to import"]="الرجا�
 $GLOBALS['__l10n']["Please select the way to export the data"]="الرجاء حدد طريقة لتصدير البيانات\n\nmsgid";
 $GLOBALS['__l10n']["Please upload an RDF file."]=".RDF الرجاء تحميل ملف";
 $GLOBALS['__l10n']["polygon"]="مضلع";
-$GLOBALS['__l10n']["Preview"]="معاينة";
 $GLOBALS['__l10n']["preview"]="معاينة";
+$GLOBALS['__l10n']["Preview"]="معاينة";
 $GLOBALS['__l10n']["PREVIEW BOX"]="مربع المعاينة";
 $GLOBALS['__l10n']["Preview Console"]="Moniteur de prévisualisation";
 $GLOBALS['__l10n']["Process authoring"]="Processus de création";
@@ -253,11 +251,11 @@ $GLOBALS['__l10n']["Revert"]="الغاء";
 $GLOBALS['__l10n']["Right click the tree to manage your lists"]="استعمل زر النقر اليمين لادارة قوائمك";
 $GLOBALS['__l10n']["Save"]="حفظ";
 $GLOBALS['__l10n']["Score"]="النقاط";
-$GLOBALS['__l10n']["Search"]="بحث";
 $GLOBALS['__l10n']["search"]="بحث";
+$GLOBALS['__l10n']["Search"]="بحث";
 $GLOBALS['__l10n']["Search results"]="البحث عن النتائج";
-$GLOBALS['__l10n']["select"]="اختر";
 $GLOBALS['__l10n']["Select"]="حدد";
+$GLOBALS['__l10n']["select"]="اختر";
 $GLOBALS['__l10n']["Select a language"]="حدد اللغة";
 $GLOBALS['__l10n']["Select the element destination"]="حدد العنصر المستقبل";
 $GLOBALS['__l10n']["selected"]="محدد";
@@ -295,7 +293,6 @@ $GLOBALS['__l10n']["Translate"]="ترجم";
 $GLOBALS['__l10n']["Translate to"]="ترجم الى";
 $GLOBALS['__l10n']["Translation parameters"]="اعدادات الترجمة";
 $GLOBALS['__l10n']["Translation saved"]="حفظ الترجمة";
-$GLOBALS['__l10n']["Type"]="نوع";
 $GLOBALS['__l10n']["Unable to copy the resources"]="لا يمكن نسخ الموارد";
 $GLOBALS['__l10n']["unable to extract archive content, please check your tmp dir"]="لا يمكن استخراج محتويات الأرشيف";
 $GLOBALS['__l10n']["Unable to move"]="لا يمكت التحريك";
@@ -306,7 +303,6 @@ $GLOBALS['__l10n']["Upload File"]="تحميل الملف";
 $GLOBALS['__l10n']["Upload QTI File"]="QTI تحميل ملف";
 $GLOBALS['__l10n']["Upload RDF File"]="RDF تحميل ملف";
 $GLOBALS['__l10n']["Upload the item content"]="تحميل محتوى السؤال";
-$GLOBALS['__l10n']["Upload the style sheet (CSS format required)"]="Télécharger la feuille de style (le format CSS est obligatoire)";
 $GLOBALS['__l10n']["Upper bound"]="الحد الاقصى";
 $GLOBALS['__l10n']["Use the * character to replace any string"]="استعمل الحرف* لتعويض اي مجموعة من الاشكال";
 $GLOBALS['__l10n']["User"]="المستخدم";

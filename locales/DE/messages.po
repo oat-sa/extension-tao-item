@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-rc01\n"
-"PO-Revision-Date: 2012-06-15T13:37:44\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:08:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: DE\n"
@@ -27,9 +27,6 @@ msgid "Add choice"
 msgstr ""
 
 msgid "Add choice to group"
-msgstr ""
-
-msgid "Add object"
 msgstr ""
 
 msgid "Add the source file"
@@ -133,6 +130,9 @@ msgstr "Tabelle erstellen"
 msgid "created from qti package"
 msgstr ""
 
+msgid "CSS format required"
+msgstr ""
+
 msgid "custom"
 msgstr ""
 
@@ -193,6 +193,9 @@ msgstr "Item bearbeiten"
 msgid "Edit item class"
 msgstr ""
 
+msgid "Edit object"
+msgstr ""
+
 msgid "ellipse"
 msgstr ""
 
@@ -223,11 +226,11 @@ msgstr ""
 msgid "Expected lines"
 msgstr ""
 
-msgid "Export"
-msgstr ""
-
 msgid "export"
 msgstr "Export"
+
+msgid "Export"
+msgstr ""
 
 msgid "Export Options"
 msgstr ""
@@ -264,6 +267,12 @@ msgid "Graphic interaction stage:"
 msgstr ""
 
 msgid "Guidelines"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Heihgt"
 msgstr ""
 
 msgid "horizontal"
@@ -382,10 +391,10 @@ msgstr ""
 msgid "map point"
 msgstr ""
 
-msgid "Match Group"
+msgid "Match group"
 msgstr ""
 
-msgid "Match group"
+msgid "Match Group"
 msgstr ""
 
 msgid "Matching side"
@@ -547,6 +556,9 @@ msgstr ""
 msgid "rectangle"
 msgstr ""
 
+msgid "Required"
+msgstr ""
+
 msgid "Response editor:"
 msgstr ""
 
@@ -669,6 +681,9 @@ msgstr ""
 msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
 msgstr ""
 
+msgid "Type"
+msgstr ""
+
 msgid "Unable to copy the resources"
 msgstr ""
 
@@ -702,10 +717,13 @@ msgstr ""
 msgid "Upload the item content"
 msgstr ""
 
-msgid "Upload the style sheet (CSS format required)"
+msgid "Upload the style sheet"
 msgstr ""
 
 msgid "Upper bound"
+msgstr ""
+
+msgid "URL"
 msgstr ""
 
 msgid "Validation has failed"
@@ -721,6 +739,9 @@ msgid "VersionedContent"
 msgstr ""
 
 msgid "vertical"
+msgstr ""
+
+msgid "Width"
 msgstr ""
 
 msgid "wrong file format"

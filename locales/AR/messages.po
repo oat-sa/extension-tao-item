@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-rc01\n"
-"PO-Revision-Date: 2012-06-15T13:37:41\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:07:57\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: AR\n"
@@ -27,9 +27,6 @@ msgid "Add choice"
 msgstr ""
 
 msgid "Add choice to group"
-msgstr ""
-
-msgid "Add object"
 msgstr ""
 
 msgid "Add the source file"
@@ -133,6 +130,9 @@ msgstr "انشاء جدول"
 msgid "created from qti package"
 msgstr ""
 
+msgid "CSS format required"
+msgstr ""
+
 msgid "custom"
 msgstr ""
 
@@ -195,6 +195,9 @@ msgstr "تعديل السؤال"
 msgid "Edit item class"
 msgstr ""
 
+msgid "Edit object"
+msgstr ""
+
 msgid "ellipse"
 msgstr "élipse"
 
@@ -225,11 +228,11 @@ msgstr "الطول المنتظر"
 msgid "Expected lines"
 msgstr "عدد الاسطر"
 
-msgid "Export"
-msgstr ""
-
 msgid "export"
 msgstr "تصدير"
+
+msgid "Export"
+msgstr ""
 
 msgid "Export Options"
 msgstr "خيارات التصدير"
@@ -266,6 +269,12 @@ msgid "Graphic interaction stage:"
 msgstr ""
 
 msgid "Guidelines"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Heihgt"
 msgstr ""
 
 msgid "horizontal"
@@ -384,10 +393,10 @@ msgstr "خريطة"
 msgid "map point"
 msgstr "نقطة على الخريطة"
 
-msgid "Match Group"
+msgid "Match group"
 msgstr "Groupe associé"
 
-msgid "Match group"
+msgid "Match Group"
 msgstr "Groupe associé"
 
 msgid "Matching side"
@@ -549,6 +558,9 @@ msgstr "استرجاع المضمون"
 msgid "rectangle"
 msgstr "مستطيل"
 
+msgid "Required"
+msgstr ""
+
 msgid "Response editor:"
 msgstr ":محرر الاجابة"
 
@@ -671,6 +683,9 @@ msgstr ""
 msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
 msgstr ""
 
+msgid "Type"
+msgstr ""
+
 msgid "Unable to copy the resources"
 msgstr "لا يمكن نسخ الموارد"
 
@@ -704,11 +719,14 @@ msgstr "QTI تحميل ملف"
 msgid "Upload the item content"
 msgstr "تحميل محتوى السؤال"
 
-msgid "Upload the style sheet (CSS format required)"
-msgstr "Télécharger la feuille de style (le format CSS est obligatoire)"
+msgid "Upload the style sheet"
+msgstr ""
 
 msgid "Upper bound"
 msgstr "الحد الاقصى"
+
+msgid "URL"
+msgstr ""
 
 msgid "Validation has failed"
 msgstr "فشل التحقق"
@@ -724,6 +742,9 @@ msgstr ""
 
 msgid "vertical"
 msgstr "العمودي"
+
+msgid "Width"
+msgstr ""
 
 msgid "wrong file format"
 msgstr ""

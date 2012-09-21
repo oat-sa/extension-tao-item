@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.2-rc01\n"
-"PO-Revision-Date: 2012-06-15T13:37:51\n"
+"Project-Id-Version: TAO v2.3-beta\n"
+"PO-Revision-Date: 2012-09-21T15:08:06\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: FR\n"
@@ -28,9 +28,6 @@ msgstr "Ajouter un choix"
 
 msgid "Add choice to group"
 msgstr "Ajouter un choix au groupe"
-
-msgid "Add object"
-msgstr "Ajouter un objet"
 
 msgid "Add the source file"
 msgstr "Ajouter le fichier source"
@@ -133,6 +130,9 @@ msgstr "créer un tableau"
 msgid "created from qti package"
 msgstr "créé à partir d'un paquet QTI"
 
+msgid "CSS format required"
+msgstr ""
+
 msgid "custom"
 msgstr "personnalisé"
 
@@ -193,6 +193,9 @@ msgstr "Modifier un item"
 msgid "Edit item class"
 msgstr "Editer la classe item"
 
+msgid "Edit object"
+msgstr ""
+
 msgid "ellipse"
 msgstr "élipse"
 
@@ -223,11 +226,11 @@ msgstr "Longueur attendue"
 msgid "Expected lines"
 msgstr "Nombre de lignes attendues"
 
-msgid "Export"
-msgstr "Export"
-
 msgid "export"
 msgstr "exporter"
+
+msgid "Export"
+msgstr "Export"
 
 msgid "Export Options"
 msgstr "Options d'export"
@@ -265,6 +268,12 @@ msgstr "Etape d'intéraction graphique:"
 
 msgid "Guidelines"
 msgstr "Lignes de conduites"
+
+msgid "Height"
+msgstr ""
+
+msgid "Heihgt"
+msgstr ""
 
 msgid "horizontal"
 msgstr "horizontale"
@@ -382,10 +391,10 @@ msgstr "carte"
 msgid "map point"
 msgstr "point sur la carte"
 
-msgid "Match Group"
+msgid "Match group"
 msgstr "Groupe associé"
 
-msgid "Match group"
+msgid "Match Group"
 msgstr "Groupe associé"
 
 msgid "Matching side"
@@ -547,6 +556,9 @@ msgstr "Restauration du context"
 msgid "rectangle"
 msgstr "rectangle"
 
+msgid "Required"
+msgstr ""
+
 msgid "Response editor:"
 msgstr "Editeur de réponse:"
 
@@ -674,6 +686,9 @@ msgstr "Pour insérer un \trou\" dans votre intéraction, placez votre curseur �
 msgid "To insert a \"hot text\" in your interaction, set focus on the desired place in the editor below then click on the \"set hot text\" button "
 msgstr "Pour insérer un \"hot text\" dans votre intéraction, placez votre curseur à l'endroit désiré dans l'éditeur ci-dessous et cliquez sur le bouton \"ajouter un hot text\""
 
+msgid "Type"
+msgstr ""
+
 msgid "Unable to copy the resources"
 msgstr "Impossible de copier les ressources"
 
@@ -707,11 +722,14 @@ msgstr "Télécharger un fichier QTI"
 msgid "Upload the item content"
 msgstr "Télécharger le contenu de l'item"
 
-msgid "Upload the style sheet (CSS format required)"
-msgstr "Télécharger la feuille de style (le format CSS est obligatoire)"
+msgid "Upload the style sheet"
+msgstr ""
 
 msgid "Upper bound"
 msgstr "Limite supérieure"
+
+msgid "URL"
+msgstr ""
 
 msgid "Validation has failed"
 msgstr "La validation a échouée"
@@ -727,6 +745,9 @@ msgstr "Contenu versionné"
 
 msgid "vertical"
 msgstr "vertical"
+
+msgid "Width"
+msgstr ""
 
 msgid "wrong file format"
 msgstr "mauvais format de fichier"

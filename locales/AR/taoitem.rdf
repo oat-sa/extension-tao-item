@@ -202,42 +202,6 @@
     -->
     <rdfs:comment xml:lang="AR"><![CDATA[Paper-based Delivery Target]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#kohs">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage AR
-    @source Kohs
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#kohs
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="AR"><![CDATA[Kohs]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage AR
-    @source Kohs
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#kohs
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="AR"><![CDATA[Kohs]]></rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage AR
-    @source C-Test
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="AR"><![CDATA[C-Test]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage AR
-    @source C-Test
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#Ctest
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="AR"><![CDATA[C-Test]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring">
     <!--
     @sourceLanguage EN
