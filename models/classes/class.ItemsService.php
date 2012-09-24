@@ -275,7 +275,7 @@ class taoItems_models_classes_ItemsService
 
     	if(!is_null($item)){
         	$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        	$returnValue = ROOT_PATH . 'taoItems/views/runtime/' . $folderName;
+        	$returnValue = ROOT_PATH . 'taoItems' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR . $folderName;
         }
 
         // section 127-0-1-1--2174cec8:12c311b88e7:-8000:0000000000002883 end
