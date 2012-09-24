@@ -16,7 +16,7 @@
           <xsl:call-template name="firstColumnHeader" />
           <!--no match on code cause of list == only one column of input-->
           <xsl:choose>
-            <xsl:when test="ancestor::item/header">
+            <xsl:when test="ancestor::item/header and ancestor::item/@layout != 'slider'">
               <xsl:apply-templates select="ancestor::item/header" mode="matrix" />
             </xsl:when>
             <xsl:otherwise>
