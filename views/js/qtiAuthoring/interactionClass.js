@@ -46,7 +46,7 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 			__this.setFormChangeListener();
 
 			//and load the response form and grid:
-			require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+			require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 				new responseClass(__this.responseGrid, __this);
 			});
 		}
@@ -192,7 +192,7 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 					interaction.setModifiedInteraction(false);
 
 					if (r.reloadResponse) {
-						require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+						require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 							new responseClass(interaction.responseGrid, interaction);
 						});
 					}
@@ -262,7 +262,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 							if (r.reload) {
 								interaction.loadChoicesForm();
 							} else if (r.identifierUpdated) {
-								require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+								require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 									//reload the response grid tu update the identifier
 									new responseClass(interaction.responseGrid, interaction);
 								});
@@ -326,7 +326,7 @@ interactionClass.prototype.saveGroup = function($groupForm){
 							}
 						}
 					} else if(r.identifierUpdated) {
-						require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+						require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 							new responseClass(interaction.responseGrid, interaction);
 						});
 					}
@@ -400,7 +400,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				interaction.setFormChangeListener();
 				interaction.setShapeEditListener();
 
-				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 					//reload the grid:
 					new responseClass(interaction.responseGrid, interaction);
 				});
@@ -533,7 +533,7 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 						interaction.orderedChoices.push(r.choiceSerial);
 					}
 
-					require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+					require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 						//rebuild the response grid:
 						new responseClass(interaction.responseGrid, interaction);
 					});
@@ -878,7 +878,7 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 					interaction.shapeEditor.removeShapeObj(choiceSerial);
 				}
 
-				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 					//TODO: need to be optimized: only after the last choice saving
 					new responseClass(interaction.responseGrid, interaction);
 					interaction.saveInteractionData();
@@ -1146,7 +1146,7 @@ interactionClass.prototype.addHotText = function(interactionData, $appendTo){
 			interaction.setFormChangeListener('#'+r.choiceSerial);
 
 			//rebuild the response grid:
-			require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+			require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 				new responseClass(interaction.responseGrid, interaction);
 			});
 		}
@@ -1202,7 +1202,7 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 				interaction.setFormChangeListener('#'+r.groupSerial);
 				interaction.setShapeEditListener('#'+r.groupSerial);
 
-				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 					//rebuild the response grid:
 					new responseClass(interaction.responseGrid, interaction);
 				});
@@ -1283,7 +1283,7 @@ interactionClass.prototype.setResponseOptionsMode = function(optionsMode){
 				//this.responseMappingMode = true;
 				//$('#qtiAuthoring_mappingEditor').show();
 
-				require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+				require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 					//reload the response grid, to update column model:
 					new responseClass(this.responseGrid, this);
 				});
@@ -1294,7 +1294,7 @@ interactionClass.prototype.setResponseOptionsMode = function(optionsMode){
 			//this.responseMappingMode = false;
 			//$('#qtiAuthoring_mappingEditor').hide();
 
-			require([root_url  + '/taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+			require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 				//reload the response grid, to update column model:
 				new responseClass(this.responseGrid, this);
 			});
