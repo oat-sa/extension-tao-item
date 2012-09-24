@@ -491,7 +491,7 @@ class taoItems_models_classes_QTI_Item
         $matchingData = $this->getMatchingData();
 		$variables['matching'] = array();
         $variables['matching']['data'] = $matchingData;
-        $variables['matching']['url'] = ROOT_URL."/taoDelivery/ResultDelivery/evaluate";
+        $variables['matching']['url'] = ROOT_URL . "taoDelivery/ResultDelivery/evaluate";
         $variables['matching']['params'] = array ();
 
 
