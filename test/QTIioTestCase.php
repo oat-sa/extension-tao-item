@@ -58,7 +58,7 @@ class QTIioTestCase extends UnitTestCase {
 			if(!is_dir($itemFolder)){
         		mkdir($itemFolder);
         	}
-        	$itemUrl = str_replace(BASE_PATH .'views', BASE_WWW, $itemPath);
+        	$itemUrl = tao_helpers_Uri::getUrlForPath($itemPath);
         	
         	//deploy the item
         	$this->assertTrue($this->itemService->deployItem($rdfItem, $itemPath, $itemUrl,  $deployParams));

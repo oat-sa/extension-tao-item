@@ -147,9 +147,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
         		mkdir($itemFolder);
         	}
 
-        	$itemUrl = str_replace(BASE_PATH .'views' . DIRECTORY_SEPARATOR, BASE_WWW, $itemPath);
-        	$itemUrl = str_replace('\\', '/', $itemUrl);
-        	
+        	$itemUrl = tao_helpers_Uri::getUrlForPath($itemPath);
         	//Deploy the item, will create the html file in itemPath available from itemUrl
         	
         	if(!$this->itemService->deployItem($item, $itemPath, $itemUrl,  $deployParams)){
