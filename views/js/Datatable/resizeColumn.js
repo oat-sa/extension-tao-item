@@ -846,6 +846,15 @@
             $($('div.dataTables_scrollHead', this.s.dt.nTableWrapper)[0].childNodes[0].childNodes[0]).width(this.table_size + moveLength);
         }
 
+
+        //CUSTOMISATION
+        sizeOfColumnHaveChanged = true;
+
+
+
+
+
+
         ////////////////////////
         //Martin Marchetta: Fixed col resizing when the scroller is enabled.
         var visibleColumnIndex;

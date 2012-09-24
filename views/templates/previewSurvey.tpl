@@ -22,6 +22,7 @@
 			<link rel="stylesheet" type="text/css" href="<?php echo get_data('basePreview') ?>/css/survey/ie.css" media="screen"/>
 		<![endif]-->
 		<script type="text/javascript">
+			var sizeOfColumnHaveChanged = false;
 			$(function () {
 				var displayMode = "<?php echo get_data('ITEM_DISPLAY_MODE'); ?>";
 				if(displayMode == 'preview') {
