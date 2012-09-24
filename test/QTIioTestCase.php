@@ -53,12 +53,12 @@ class QTIioTestCase extends UnitTestCase {
 			);
 			
 			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-        	$itemFolder = ROOT_PATH . '/taoItems/views/runtime/' . $folderName;
+        	$itemFolder = ROOT_PATH . 'taoItems/views/runtime/' . $folderName;
         	$itemPath = "{$itemFolder}/index.html";
 			if(!is_dir($itemFolder)){
         		mkdir($itemFolder);
         	}
-        	$itemUrl = str_replace(BASE_PATH .'/views', BASE_WWW, $itemPath);
+        	$itemUrl = str_replace(BASE_PATH .'views', BASE_WWW, $itemPath);
         	
         	//deploy the item
         	$this->assertTrue($this->itemService->deployItem($rdfItem, $itemPath, $itemUrl,  $deployParams));
