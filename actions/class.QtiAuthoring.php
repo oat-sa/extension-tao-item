@@ -1473,7 +1473,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	public function manageStyleSheets(){
 		//create upload form:
 		$item = $this->getCurrentItem();
-		$formContainer = new taoItems_actions_QTIform_CSSuploader($item, $this->hasRequestParameter('itemUri'));
+		$formContainer = new taoItems_actions_QTIform_CSSuploader($item, $this->getRequestParameter('itemUri'));
 		$myForm = $formContainer->getForm();
 
 		if($myForm->isSubmited()){
@@ -1573,13 +1573,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 	public function getCurrentStyleSheet($baseName=''){
 		$returnValue = array();
-
 		$itemResource = $this->getCurrentItemResource();
-		$folderName = substr($itemResource->uriResource, strpos($itemResource->uriResource, '#') + 1);
-		$basePath = BASE_PATH.'/data/'.$folderName.'/';
-		$baseWWW = BASE_WWW.'runtime/'.$folderName.'/';
+		$basePath = taoItems_models_classes_ItemsService::singleton()->getItemFolder($itemResource);
+		$baseWWW = taoItems_models_classes_ItemsService::singleton()->getRuntimeFolder($itemResource);
 
-		if(!empty($baseName)){
+		if (!empty($baseName)) {
 			//creation mode:
 			$css_href = 'style/'.$baseName;
 
@@ -1587,20 +1585,19 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				'href' => $css_href,
 				'type' => 'text/css',
 				'title' => $baseName,
-				'path' => $basePath.$css_href,
-				'hrefAbsolute' => $baseWWW.$css_href
+				'path' => $basePath.'/'.$css_href,
+				'hrefAbsolute' => $baseWWW.'/'.$css_href
 			);
-
-		}else{
+		} else {
 			//get mode:
 			$css_href = $this->getRequestParameter('css_href');
-			if(!empty($css_href)){
+			if (!empty($css_href)) {
 				$files = $this->getCurrentItem()->getStylesheets();
-				foreach($files as $file){
-					if($file['href'] == $css_href){
+				foreach ($files as $file) {
+					if ($file['href'] == $css_href) {
 						$returnValue = $file;
-						$returnValue['path'] = $basePath.$css_href;
-						$returnValue['hrefAbsolute'] = $baseWWW.$css_href;
+						$returnValue['path'] = $basePath.'/'.$css_href;
+						$returnValue['hrefAbsolute'] = $baseWWW.'/'.$css_href;
 						break;
 					}
 				}
