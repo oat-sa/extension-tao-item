@@ -5,7 +5,13 @@
  */
 require_once dirname(__FILE__). '/../tao/includes/class.Bootstrap.php';
 
-$bootStrap = new BootStrap('taoItems');
+$options = array();
+if (Context::getInstance()->getModuleName() == 'SaSItems') {
+	$options = array(
+		'constants' => array('wfEngine')
+	);
+}
+$bootStrap = new BootStrap('taoItems', $options);
 $bootStrap->start();
 $bootStrap->dispatch();
 ?>
