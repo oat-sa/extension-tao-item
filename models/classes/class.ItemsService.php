@@ -249,7 +249,7 @@ class taoItems_models_classes_ItemsService
 				$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
 
 			}else{
-				$returnValue = ROOT_PATH.DIRECTORY_SEPARATOR.'taoItems'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.$lang;
+				$returnValue = ROOT_PATH.'taoItems'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.$lang;
 			}
 
         }
