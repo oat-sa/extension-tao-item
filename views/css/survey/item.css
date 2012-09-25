@@ -99,6 +99,7 @@
 }
 
 #container table tbody tr td {
+  vertical-align : middle;
   min-width : 90px;
 }
 
@@ -116,7 +117,6 @@
 
 #container table tbody tr td.xlarge {
   width          : 80%;
-  vertical-align : middle;
 }
 
 #container .tr_slider td.xlarge {

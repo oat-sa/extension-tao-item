@@ -23,6 +23,13 @@
 		<![endif]-->
 		<script type="text/javascript">
 			var sizeOfColumnHaveChanged = false;
+			changeColumnSize = function () {
+				//remove the css sizes first
+				$(['small', 'medium', 'large', 'xlarge']).each(function(i, v) {
+					$('#container table tbody tr').find('td.' + v).removeClass(v);
+				})
+				sizeOfColumnHaveChanged = true;
+			}
 			$(function () {
 				var displayMode = "<?php echo get_data('ITEM_DISPLAY_MODE'); ?>";
 				if(displayMode == 'preview') {

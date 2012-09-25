@@ -848,7 +848,7 @@
 
 
         //CUSTOMISATION
-        sizeOfColumnHaveChanged = true;
+        changeColumnSize();
 
 
 

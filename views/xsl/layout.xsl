@@ -38,20 +38,25 @@
 		<xsl:param name="count" />
 		<xsl:attribute name="class">
 			<xsl:choose>
+        <!--if tag column is present it's override the classic sizes-->
+				<xsl:when test="ancestor::itemGroup/styles[@type='column']">
+
+				</xsl:when>
 				<xsl:when test="$count&gt;0 and $count&lt;=2">
-					<xsl:text>xlarge labelText</xsl:text>
+					<xsl:text>xlarge </xsl:text>
 				</xsl:when>
 				<xsl:when test="$count&gt;2 and $count&lt;=4">
-					<xsl:text>large labelText</xsl:text>
+					<xsl:text>large </xsl:text>
 				</xsl:when>
 				<xsl:when test="$count&gt;4 and $count&lt;=6">
-					<xsl:text>medium labelText</xsl:text>
+					<xsl:text>medium </xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:text>small labelText</xsl:text>
+					<xsl:text>small </xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:attribute>
+      <xsl:text>labelText</xsl:text>
+    </xsl:attribute>
 	</xsl:template>
 
 	<xsl:template
