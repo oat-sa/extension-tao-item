@@ -431,7 +431,7 @@ class taoItems_models_classes_QTI_ParserFactory
 						foreach($myInteraction->getChoices() as $choice){
 							//map the choices by a identified tag: {choice-serial}
 							$tag = $choice->getType();
-							$pattern = "/(<{$tag}\b[^>]*>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
+							$pattern = "/(<{$tag}\b[^>]*[^\/]>(.*?)<\/{$tag}>)|(<{$tag}\b[^>]*\/>)/is";
 							$interactionData = preg_replace($pattern, "{{$choice->getSerial()}}", $interactionData, 1);
 						}
 					}

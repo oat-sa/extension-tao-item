@@ -240,7 +240,7 @@ class taoItems_models_classes_QtiAuthoringService
 						$order = false;
 						$order = strpos($data, '{'.$choiceId.'}');
 						if($order === false){
-							throw new Exception("the position of the choice {$choiceId} cannot be found in the interaction data");//need to save the choice in the data everytime
+							throw new common_exception_Error("the position of the choice {$choiceId} cannot be found in the interaction data");//need to save the choice in the data everytime
 							// continue;
 						}else{
 							$choices[$order] = $choice;
