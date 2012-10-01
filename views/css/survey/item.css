@@ -626,11 +626,10 @@
 
 .variable, .variableSlider {
   font-style : normal !important;
-  min-width  : 1px !important;
-  width      : 1px !important;
   color      : gray !important;
   text-align : center !important;
   font-size  : 8px !important;
+  display    : block !important;
 }
 
 .variableSlider {
