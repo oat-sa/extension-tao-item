@@ -10,6 +10,7 @@
   <!-- response > form -->
 	<xsl:template match="response" mode="form">
 		<xsl:param name="code2" />
+		<xsl:param name="position" />
 		<xsl:variable name="type">
 			<xsl:apply-templates select="." mode="form_type" />
 		</xsl:variable>
@@ -160,6 +161,30 @@
                 <xsl:value-of select="@code" />
               </xsl:attribute>
             </input>
+          </xsl:when>
+          <xsl:when test="$type='mixed'">
+            <xsl:choose>
+              <xsl:when test="$position=1">
+                <input type="checkbox">
+                  <xsl:attribute name="name">
+                    <xsl:value-of select="$code" />
+                  </xsl:attribute>
+                  <xsl:attribute name="value">
+                    <xsl:value-of select="@code" />
+                  </xsl:attribute>
+                </input>
+              </xsl:when>
+              <xsl:otherwise>
+                <input type="text" id="{$code}" name="{$code}">
+                  <xsl:if test="ancestor::item/header[code=$code2]/@size">
+                    <xsl:attribute name="class">
+                      <xsl:text>inputSize_</xsl:text>
+                      <xsl:value-of select="ancestor::item/header[code=$code2]/@size" />
+                    </xsl:attribute>
+                  </xsl:if>
+                </input>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
 				</xsl:choose>
 			</div>

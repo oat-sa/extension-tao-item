@@ -91,6 +91,7 @@
     <td>
       <xsl:apply-templates select="$response" mode="form">
         <xsl:with-param name="code2" select="code" />
+        <xsl:with-param name="position" select="position()" />
       </xsl:apply-templates>
     </td>
   </xsl:template>
