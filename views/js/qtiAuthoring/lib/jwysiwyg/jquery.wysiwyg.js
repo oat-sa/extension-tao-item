@@ -292,7 +292,7 @@
 											{	
 												if($.fn.fmbind){
 													//add tao file manager
-													$('input[name="url"]').fmbind({type: 'image'}, function(elt, value){
+													$('input[name="url"]').fmbind({type: 'image', showselect: true}, function(elt, value){
 														$(elt).val(value);
 													});
 												}

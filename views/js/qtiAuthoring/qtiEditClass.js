@@ -250,7 +250,7 @@ function qtiEdit(itemSerial, formContainers, options){
 						var mediaType = '';
 						if($.fn.fmbind){
 							//add tao file manager
-							$('input[name="url"]').fmbind({type: 'file'}, function(elt, value, mediaData){
+							$('input[name="url"]').fmbind({type: 'file', showselect: true}, function(elt, value, mediaData){
 								$(elt).val(value);
 								if(mediaData){
 									if(mediaData.height) $('input[name="mediaHeight"]').val(mediaData.height);
@@ -737,7 +737,7 @@ qtiEdit.mapFileManagerField = function($container){
 			$(this).width('50%');
 
 			//add tao file manager
-			$(this).fmbind({type: 'image'}, function(elt, imgPath, mediaData){
+			$(this).fmbind({type: 'image', showselect: true}, function(elt, imgPath, mediaData){
 
 				var height = 0;
 				var width = 0;
