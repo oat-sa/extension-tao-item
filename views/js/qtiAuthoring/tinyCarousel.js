@@ -31,7 +31,6 @@ function tinyCarousel(container, content, next, prev, options){
 			//this.stepWidth += parseInt($refElt.css('padding-right'));
 			// this.stepWidth += parseInt($refElt.css('margin-left'));
 			// this.stepWidth += parseInt($refElt.css('margin-right'));
-
 			this.contentWidth = this.total * this.stepWidth;
 
 			$(this.content).width(this.contentWidth);

@@ -114,7 +114,6 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-
 	//init interface:
 	$myTab = $("#tabs-qti");
 	$myTab.tabs({
@@ -127,7 +126,6 @@ $(document).ready(function(){
 			}else if(ui.index == 1){
 				return true;
 			}
-
 			return false;
 	   }
 	});
@@ -276,7 +274,6 @@ $(document).ready(function(){
 	}
 
 	//init interactions button carousel:
-	var qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
 	$(window).unbind('resize').resize(function(){
 		qtiInteractionCarousel.update();
 	});
@@ -284,6 +281,7 @@ $(document).ready(function(){
 	setTimeout(function(){
 		$('#qtiAuthoring_loading').hide();
 		$('#qtiAuthoring_main_container').show();
+		var qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
 	}, 1000);
 
 });
