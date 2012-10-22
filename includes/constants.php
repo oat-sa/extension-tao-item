@@ -26,10 +26,6 @@ $todefine = array(
 	'TAO_ITEM_MODELTARGET_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget',
 	'TAO_ITEM_ONLINE_TARGET'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget',
 	'TAO_ITEM_PAPERBASED_TARGET'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget',
-
-	'TAO_ITEM_AUTHORING_BASE_URI' 		=> BASE_PATH.'/data',
-	'TAO_ITEM_HAWAI_TPL_FILE'	 		=> BASE_PATH.'/models/ext/itemAuthoring/waterphenix/xt/xhtml/data/units/xhtml.skeleton.xhtml',
-	'TAO_ITEM_CAMPUS_TPL_FILE'	 		=> BASE_PATH.'/data/campus_ref.xml',
 	
 	'QTI_RESPONSE_TEMPLATE_MATCH_CORRECT' 		=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct',
 	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE' 		=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response',
@@ -40,7 +36,6 @@ $todefine = array(
 	'TAO_ITEM_MODEL_STATUS_DEPRECATED'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated',
 	'TAO_ITEM_MODEL_STATUS_DEV' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment',
 	'TAO_ITEM_MODEL_STATUS_EXPERIMENTAL'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental',
-	'TAO_ITEM_EXPORTERS_DIR'				=> BASE_PATH.'/models/ext/itemExport',
 	
 	'TAO_ITEM_MEASURMENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#hasMeasurement',
 	'TAO_ITEM_MEASURMENT' 				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Measurement',
@@ -55,7 +50,5 @@ $todefine = array(
 	'TAO_ITEM_LOWER_BOUND_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ScaleLowerBound',
 	'TAO_ITEM_UPPER_BOUND_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ScaleUpperBound',
 	'TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScaleDistance'
-
-
 );
 ?>

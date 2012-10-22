@@ -37,7 +37,7 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 	 * @return type
 	 */
 	public function preview() {
-		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
+		$dir = BASE_DATA . 'surveyItems/';
 		if(!is_dir($dir)) {
 			mkdir($dir);
 		}
@@ -61,7 +61,7 @@ class taoItems_actions_SurveyItem extends taoItems_actions_Items
 	 * from a xml
 	 */
 	public function exportPDF() {
-		$dir = ROOT_PATH . '/taoItems/data/surveyItems/';
+		$dir = BASE_DATA . 'surveyItems/';
 		$xml = $this->getRequestParameter('flow');
 		$name = $this->getRequestParameter('name');
 		$file = $this->getRequestParameter('file');

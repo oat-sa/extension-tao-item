@@ -249,7 +249,8 @@ class taoItems_models_classes_ItemsService
 				$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
 
 			}else{
-				$returnValue = ROOT_PATH.'taoItems'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.$lang;
+				$base_data = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_DATA');
+				$returnValue = $base_data.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.$lang;
 			}
 
         }
@@ -275,7 +276,7 @@ class taoItems_models_classes_ItemsService
 
     	if(!is_null($item)){
         	$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        	$returnValue = ROOT_PATH . 'taoItems' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR . $folderName;
+        	$returnValue = BASE_PREVIEW . $folderName;
         }
 
         // section 127-0-1-1--2174cec8:12c311b88e7:-8000:0000000000002883 end
@@ -827,7 +828,7 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 begin
 
 		if(strlen($itemUri) > 0){
-			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/'.tao_helpers_Uri::encode($itemUri).'.xml';
+			$returnValue = BASE_DATA.'/'.tao_helpers_Uri::encode($itemUri).'.xml';
 		}
         // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 end
 
@@ -850,7 +851,7 @@ class taoItems_models_classes_ItemsService
 		if(strlen($uri) > 0){
 			if(file_exists($uri)){
 				$returnValue = tao_helpers_Uri::decode(
-					str_replace(TAO_ITEM_AUTHORING_BASE_URI.'/', '',
+					str_replace(BASE_DATA, '',
 						str_replace('.xml', '', $uri)
 					)
 				);
@@ -902,7 +903,7 @@ class taoItems_models_classes_ItemsService
         // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 begin
 
 		if(strlen($itemUri) > 0){
-			$returnValue = TAO_ITEM_AUTHORING_BASE_URI.'/tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';
+			$returnValue = BASE_DATA.'tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';
 			if(!file_exists($returnValue)){
 				if($fallback){	//fallback in case of error otheerwise create  the file
 					$returnValue = $this->getAuthoringFile($itemUri);
