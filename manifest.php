@@ -13,7 +13,8 @@ return array(
 	'version' => '2.4',
 	'author' => 'CRP Henri Tudor',
 	'dependencies' => array('tao'),
-	'models' => array('http://www.tao.lu/Ontologies/TAOItem.rdf',
+	'models' => array(
+		'http://www.tao.lu/Ontologies/TAOItem.rdf',
 		'http://www.tao.lu/Ontologies/taoFuncACL.rdf'),
 	'install' => array(
 		'rdf' => array(
