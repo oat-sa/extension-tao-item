@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -17,7 +17,7 @@ class QTIModelTestCase extends UnitTestCase {
 	 * load qti service
 	 */
 	public function setUp(){		
-		TestRunner::initTest();
+		TaoTestRunner::initTest();
 		$this->qtiService = taoItems_models_classes_QTI_Service::singleton();
 	}
 	

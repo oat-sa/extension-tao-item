@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/../../../tao/test/TestRunner.php';
+require_once dirname(__FILE__) . '/../../../tao/test/TaoTestRunner.php';
 
 //get the test into each extensions
-$tests = TestRunner::getTests(array('taoItems'));
+$tests = TaoTestRunner::getTests(array('taoItems'));
 
 //create the test sutie
 $testSuite = new TestSuite('TAO Item unit tests');
