@@ -371,7 +371,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					//and copy the others resources in the runtime path
 					$itemPath = $this->service->getItemFolder($rdfItem);
 					
-					if(GENERIS_VERSIONING_ENABLED){
+					if(helpers_Versioning::isEnabled()){
 						//if the versioned item folder exists, delete all content first?
 					}
 
@@ -382,7 +382,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					}
 
 					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem, 'HOLD_COMMIT')){
-						if(GENERIS_VERSIONING_ENABLED){
+						if(helpers_Versioning::isEnabled()){
 							$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
 							$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
 							if($versionedFolder->add(true, true) && $versionedFolder->commit('[QTI pack] '.$commitMessage)){
@@ -463,7 +463,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		}
 		
 		$this->service->setItemContent($rdfItem, $itemContent, null, 'HOLD_COMMIT');
-		if(GENERIS_VERSIONING_ENABLED){
+		if(helpers_Versioning::isEnabled()){
 			$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
 			$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
 			if(empty($commitMessage)) $commitMessage = 'OWI package uploaded';

@@ -211,7 +211,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 								tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
 							}
 							
-							if(GENERIS_VERSIONING_ENABLED){
+							if(helpers_Versioning::isEnabled()){
 								$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
 								$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
 								if($versionedFolder->add(true, true) && $versionedFolder->commit('[QTI pack] '.__('created from qti package'))){
@@ -323,7 +323,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
         	}
         	
         	$itemService->setItemContent($rdfItem, $itemContent, null, 'HOLD_COMMIT');
-			if(GENERIS_VERSIONING_ENABLED){
+			if(helpers_Versioning::isEnabled()){
 				$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
 				$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
 				if($versionedFolder->add(true, true) && $versionedFolder->commit('[OWI pack] '.__('OWI package uploaded'))){

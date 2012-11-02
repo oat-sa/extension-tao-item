@@ -237,7 +237,7 @@ class taoItems_models_classes_ItemsService
 				$lang = $session->getDataLanguage();
 			}
 
-			if(GENERIS_VERSIONING_ENABLED){
+			if(helpers_Versioning::isEnabled()){
 
 				$itemRepo = $this->getVersionedFileRepository();
 				if(empty($itemRepo)){
@@ -447,7 +447,7 @@ class taoItems_models_classes_ItemsService
 					if($itemContents->count() > 0){
 						$itemContent = $itemContents->get(0);
 					}
-					if(GENERIS_VERSIONING_ENABLED){
+					if(helpers_Versioning::isEnabled()){
 						$versionedFolders = $item->getPropertyValuesByLg($this->itemVersionedContentProperty, $lang);
 						if($versionedFolders->count() > 0){
 							$versionedFolder = $versionedFolders->get(0);
@@ -459,7 +459,7 @@ class taoItems_models_classes_ItemsService
         				$file = new core_kernel_classes_File($itemContent->uriResource);
         				if(file_put_contents($file->getAbsolutePath(), $content) > 0){
 							$returnValue = true;
-							if (GENERIS_VERSIONING_ENABLED
+							if (helpers_Versioning::isEnabled()
 								&& !is_null($versionedFolder)
 								&& core_kernel_versioning_File::isVersionedFile($versionedFolder)
 								&& $commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
@@ -480,7 +480,7 @@ class taoItems_models_classes_ItemsService
 					if (!is_null($file) && $file->setContent($content)) {
 
 						$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
-						if (GENERIS_VERSIONING_ENABLED) {
+						if (helpers_Versioning::isEnabled()) {
 
 							//created versioned folder:
 							$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
@@ -1045,7 +1045,7 @@ class taoItems_models_classes_ItemsService
 								if(file_exists($newPath)){
 									$newFile = core_kernel_classes_File::create((string)$file->getOnePropertyValue($fileNameProp), dirname($newPath).'/');
 									$returnValue->setPropertyValue($this->itemContentProperty, $newFile->uriResource);
-									if(GENERIS_VERSIONING_ENABLED){
+									if(helpers_Versioning::isEnabled()){
 										//commit add and commit verioned folder
 									}
 								}
@@ -1259,7 +1259,7 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039CD begin
 
-		if(GENERIS_VERSIONING_ENABLED){
+		if(helpers_Versioning::isEnabled()){
 
 			foreach($item->getPropertyValues($this->itemVersionedContentProperty) as $fileUri){
 				if(common_Utils::isUri($fileUri)){

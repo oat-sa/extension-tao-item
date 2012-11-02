@@ -51,7 +51,7 @@
 			uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
 		<?endif;?>
 
-		<?if(GENERIS_VERSIONING_ENABLED):?>
+		<?if(helpers_Versioning::isEnabled()):?>
 		//append versioned item management manually :
 		if($authoringButton.length){
 			$authoringButton.after('<input id="versioned-item-content" type="button" value="Versioned Item content"/>');

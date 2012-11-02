@@ -73,7 +73,7 @@ class taoItems_actions_form_Item
     	if(!tao_helpers_Context::check('STANDALONE_MODE')){
 			
     		//According to the status of the versioning
-    		if(!GENERIS_VERSIONING_ENABLED){
+    		if(!helpers_Versioning::isEnabled()){
 	    		// Add content action
 	    		$url = _url('itemContentIO', 'Items', 'taoItems', array(
 	    			'uri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
