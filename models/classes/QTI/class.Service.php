@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI_Service gives you a central access to the managment methods of the
  * objects
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -16,12 +16,12 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * Service is the base class of all services, and implements the singleton
- * for derived services
+ * this class is extended by the ItemModels
+ * to implement their functionalities
  *
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('tao/models/classes/class.Service.php');
+require_once('taoItems/models/classes/class.ItemModelService.php');
 
 /* user defined includes */
 // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A8-includes begin
@@ -36,12 +36,12 @@ require_once('tao/models/classes/class.Service.php');
  * objects
  *
  * @access public
- * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+ * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Service
-    extends tao_models_classes_Service
+    extends taoItems_models_classes_ItemModelService
 {
     // --- ASSOCIATIONS ---
 
@@ -55,7 +55,7 @@ class taoItems_models_classes_QTI_Service
      * Item as the QTI xml
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Resource item
      * @return taoItems_models_classes_QTI_Item
      */
@@ -120,7 +120,7 @@ class taoItems_models_classes_QTI_Service
      * and saving it in the itemContent prioperty of the RDF Item
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Item qtiItem
      * @param  Resource rdfItem
      * @param  string commitMessage
@@ -171,7 +171,7 @@ class taoItems_models_classes_QTI_Service
      * Load a QTI item from a qti file in parameter.
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string file
      * @return taoItems_models_classes_QTI_Item
      */
@@ -212,7 +212,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Item instance by it's id
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Item
      */
@@ -231,7 +231,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Interaction instance by it's id
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return doc_Interaction
      */
@@ -252,7 +252,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Response instance by it's id
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @return taoItems_models_classes_QTI_Response
      */
@@ -273,7 +273,7 @@ class taoItems_models_classes_QTI_Service
      * Retrive a QTI_Data child instance by it's id
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  string serial
      * @param  string type
      * @return taoItems_models_classes_QTI_Data
@@ -302,7 +302,7 @@ class taoItems_models_classes_QTI_Service
      * It works only of the objects are in the persistancy.
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Data composed
      * @return taoItems_models_classes_QTI_Data
      */
@@ -372,7 +372,7 @@ class taoItems_models_classes_QTI_Service
      * Use this method if you know what your are doing.
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Data qtiObject
      * @return boolean
      */
@@ -392,11 +392,11 @@ class taoItems_models_classes_QTI_Service
      * Build the XHTML/CSS/JS from a QTI_Item to be rendered.
      *
      * @access public
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @author Joel Bout, <joel.bout@tudor.lu>
      * @param  Item item the item to render
      * @return string
      */
-    public function renderItem( taoItems_models_classes_QTI_Item $item)
+    public function renderQTIItem( taoItems_models_classes_QTI_Item $item)
     {
         $returnValue = (string) '';
 
@@ -407,6 +407,29 @@ class taoItems_models_classes_QTI_Service
         }
 			
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025E4 end
+
+        return (string) $returnValue;
+    }
+
+    /**
+     * Short description of method render
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource item
+     * @return string
+     */
+    public function render( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (string) '';
+
+        // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C11 begin
+        $qtiItem = $this->getDataItemByRdfItem($item);
+
+		if(!is_null($qtiItem)) {
+			$returnValue = $this->renderQTIItem($qtiItem);
+		}
+        // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C11 end
 
         return (string) $returnValue;
     }

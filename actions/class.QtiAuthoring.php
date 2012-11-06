@@ -238,7 +238,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		);
 		taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 
-		$output = $this->qtiService->renderItem($this->getCurrentItem());
+		$output = $this->qtiService->renderQTIItem($this->getCurrentItem());
 
 		$output = taoItems_models_classes_QtiAuthoringService::filteredData($output);
 

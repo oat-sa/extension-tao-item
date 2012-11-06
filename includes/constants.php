@@ -21,6 +21,7 @@ $todefine = array(
 	'TAO_ITEM_MODEL_CAMPUS'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#campus',
 	'TAO_ITEM_MODEL_SURVEY'             => 'http://www.tao.lu/Ontologies/TAOItem.rdf#SurveyItem',
 	'TAO_ITEM_MODEL_PAPERBASED'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Paperbased',
+	'PROPERTY_ITEM_MODEL_SERVICE'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService',
 
 	'TAO_ITEM_SOURCENAME_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName',
 	'TAO_ITEM_MODELTARGET_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget',
