@@ -13,6 +13,7 @@
     <rdfs:label xml:lang="EN"><![CDATA[Paper-based Item]]></rdfs:label>
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget"/>
+    <item:ModelService><![CDATA[taoItems_models_classes_Paperbased_Service]]></item:ModelService>
     <item:DataFileName><![CDATA[data]]></item:DataFileName>
   </rdf:Description>
   

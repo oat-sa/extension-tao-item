@@ -276,7 +276,7 @@ class taoItems_models_classes_ItemsService
 
     	if(!is_null($item)){
         	$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-        	$basePreview = common_ext_ExtensionsManager::getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
+        	$basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
         	$returnValue = $basePreview . $folderName;
         }
 
@@ -670,60 +670,15 @@ class taoItems_models_classes_ItemsService
 
         	taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 
-			$service = $this->getItemModelService($item);
+        	$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+			$service = $this->getItemModelService($itemModel);
 			if (!is_null($service)) {
 				$output = $service->render($item);
 			} else {
 				// fallback
-	        	$legacyItemModels = array(
-	        		TAO_ITEM_MODEL_KOHS,
-	        		TAO_ITEM_MODEL_CTEST,
-	        		TAO_ITEM_MODEL_HAWAI,
-	        		TAO_ITEM_MODEL_QTI,
-	        		TAO_ITEM_MODEL_XHTML,
-					TAO_ITEM_MODEL_SURVEY,
-					TAO_ITEM_MODEL_PAPERBASED
-	        	);
-	
-	        	if($this->hasItemModel($item, $legacyItemModels)){
-	
-	        		$itemFolder = dirname($path);
-	
-	        		$output = '';
-	
-	        		if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
-	
-	        			// Temporary replace
-	        			$output	= $this->getItemContent($item);
-						$output = str_replace ('<xhtml:', '<', $output);
-						$output = str_replace ('</xhtml:', '</', $output);
-						$output = str_replace ('<![CDATA[', '', $output);
-						$output = str_replace (']]>', '', $output);
-	
-	        		}
-					else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_SURVEY))) {
-						$output = taoItems_models_classes_Survey_Item::renderItem($item);
-					}
-					else if($this->hasItemModel($item, array(TAO_ITEM_MODEL_PAPERBASED))) {
-		        		$clazz 		= $this->getClass($item);
-						$downloadUrl = _url('downloadItemContent', 'items', null, array(
-								'uri' 		=> tao_helpers_Uri::encode($item->getUri()),
-								'classUri' 	=> tao_helpers_Uri::encode($clazz->getUri())
-						));
-	
-						$templateRenderer = new taoItems_models_classes_TemplateRenderer(
-							ROOT_PATH.'taoItems/views/templates/paperbased_download.tpl.php',
-							array(
-								'downloadurl'	=> $downloadUrl
-							));
-	        			$output	= $templateRenderer->render();
-		        	}
-					else {
-						$output	= $this->getItemContent($item);
-		        	}
-	        	} else {
-					common_Logger::w('Deploy not possible for item('.$item->getUri().')');
-	        	}
+				if ($this->hasItemModel($item, array(TAO_ITEM_MODEL_SURVEY))) {
+					$output = taoItems_models_classes_Survey_Item::renderItem($item);
+				}
         	}
         	
         	if (isset($output)) {
@@ -785,7 +740,10 @@ class taoItems_models_classes_ItemsService
 	        			}
 	        		}
         		}
-			}
+			} else {
+				common_Logger::w('Deploy not possible for item('.$item->getUri().')');
+        	}
+			
         }
 
         // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE end
@@ -1280,15 +1238,14 @@ class taoItems_models_classes_ItemsService
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource item
-     * @return taoItems_models_classes_ItemModelService
+     * @param  Resource itemModel
+     * @return taoItems_models_classes_itemModelService
      */
-    public function getItemModelService( core_kernel_classes_Resource $item)
+    public function getItemModelService( core_kernel_classes_Resource $itemModel)
     {
         $returnValue = null;
 
         // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C05 begin
-		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
 		$services = $itemModel->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
 		if (count($services) > 0) {
 			if (count($services) > 1) {
@@ -1300,6 +1257,8 @@ class taoItems_models_classes_ItemsService
 			} else {
 				throw new common_exception_Error('Item model service '.$serviceName.' not found, or not compatible for item model '.$itemModel->getLabel());
 			}
+        } else {
+        	common_Logger::d('No service for '.$itemModel->getLabel());
         }
         // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C05 end
 

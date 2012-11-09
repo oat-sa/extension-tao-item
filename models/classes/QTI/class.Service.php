@@ -16,12 +16,19 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 }
 
 /**
- * this class is extended by the ItemModels
- * to implement their functionalities
+ * Service is the base class of all services, and implements the singleton
+ * for derived services
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
  */
-require_once('taoItems/models/classes/class.ItemModelService.php');
+require_once('tao/models/classes/class.Service.php');
+
+/**
+ * include taoItems_models_classes_itemModelService
+ *
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ */
+require_once('taoItems/models/classes/interface.itemModelService.php');
 
 /* user defined includes */
 // section 127-0-1-1-25600304:12a5c17a5ca:-8000:00000000000024A8-includes begin
@@ -41,7 +48,8 @@ require_once('taoItems/models/classes/class.ItemModelService.php');
  * @subpackage models_classes_QTI
  */
 class taoItems_models_classes_QTI_Service
-    extends taoItems_models_classes_ItemModelService
+    extends tao_models_classes_Service
+        implements taoItems_models_classes_itemModelService
 {
     // --- ASSOCIATIONS ---
 
@@ -49,6 +57,29 @@ class taoItems_models_classes_QTI_Service
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
+
+    /**
+     * Short description of method render
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource item
+     * @return string
+     */
+    public function render( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (string) '';
+
+        // section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C26 begin
+		$qtiItem = $this->getDataItemByRdfItem($item);
+
+		if(!is_null($qtiItem)) {
+			$returnValue = $this->renderQTIItem($qtiItem);
+		}
+        // section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C26 end
+
+        return (string) $returnValue;
+    }
 
     /**
      * Load a QTI_Item from an, RDF Item using the itemContent property of the
@@ -407,29 +438,6 @@ class taoItems_models_classes_QTI_Service
         }
 			
         // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025E4 end
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method render
-     *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource item
-     * @return string
-     */
-    public function render( core_kernel_classes_Resource $item)
-    {
-        $returnValue = (string) '';
-
-        // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C11 begin
-        $qtiItem = $this->getDataItemByRdfItem($item);
-
-		if(!is_null($qtiItem)) {
-			$returnValue = $this->renderQTIItem($qtiItem);
-		}
-        // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C11 end
 
         return (string) $returnValue;
     }

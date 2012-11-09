@@ -52,7 +52,7 @@ class QTIioTestCase extends UnitTestCase {
 				'qti_base_www'			=> BASE_WWW .'js/QTI/'
 			);
 			
-			$basePreview = common_ext_ExtensionsManager::getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
+			$basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
 			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
         	$itemFolder = $basePreview . $folderName;
         	$itemPath = "{$itemFolder}/index.html";
