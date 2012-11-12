@@ -109,6 +109,16 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$itemService	= taoItems_models_classes_ItemsService::singleton();
 			$qtiService 	= taoItems_models_classes_QTI_Service::singleton();
 			
+			//test versioning
+			$versioning = false;
+			if (isset($formValues['repository']) && common_Utils::isUri($formValues['repository'])) {
+				$repository = new core_kernel_versioning_Repository($formValues['repository']);
+				if ($repository->exists()) {
+					$versioning = true;
+				}
+			}
+			
+			
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			
 			$forceValid = false;
@@ -211,10 +221,14 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 								tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
 							}
 							
-							if(helpers_Versioning::isEnabled()){
-								$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
-								$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
-								if($versionedFolder->add(true, true) && $versionedFolder->commit('[QTI pack] '.__('created from qti package'))){
+							if ($versioning) {
+								// add to repo
+								$itemContent = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+								$versionedContend = $repository->add($itemContent);
+								if (!is_null($versionedContend)) {
+									if ($versionedContend->getUri() != $itemContent->getUri()) {
+										$rdfItem->editPropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $versionedContend);
+									}
 									$importedItems++;
 								}
 							}else{
@@ -262,6 +276,15 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			
 			//get the services instances we will need
 			$itemService	= taoItems_models_classes_ItemsService::singleton();
+			
+			//test versioning
+			$versioning = false;
+			if (isset($formValues['repository']) && common_Utils::isUri($formValues['repository'])) {
+				$repository = new core_kernel_versioning_Repository($formValues['repository']);
+				if ($repository->exists()) {
+					$versioning = true;
+				}
+			}
 			
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			$uploadedFileBaseName = basename($uploadedFile);
@@ -323,11 +346,15 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
         	}
         	
         	$itemService->setItemContent($rdfItem, $itemContent, null, 'HOLD_COMMIT');
-			if(helpers_Versioning::isEnabled()){
-				$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
-				$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
-				if($versionedFolder->add(true, true) && $versionedFolder->commit('[OWI pack] '.__('OWI package uploaded'))){
-					//uploaded
+			if($versioning){
+				// add to repo
+				$itemContent = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+				$versionedContend = $repository->add($itemContent);
+				if (!is_null($versionedContend)) {
+					if ($versionedContend->getUri() != $itemContent->getUri()) {
+						$rdfItem->editPropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $versionedContend);
+					}
+					$importedItems++;
 				}
 			}
 			

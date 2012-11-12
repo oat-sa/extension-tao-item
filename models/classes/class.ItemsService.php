@@ -90,7 +90,6 @@ class taoItems_models_classes_ItemsService
 		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
 		$this->itemModelProperty	= new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
 		$this->itemContentProperty	= new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
-		$this->itemVersionedContentProperty	= new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY);
 
         // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 end
     }
@@ -216,7 +215,7 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getItemFolder
+     * Short description of method getDefaultItemFolder
      *
      * @access public
      * @author Joel Bout, <joel.bout@tudor.lu>
@@ -224,7 +223,7 @@ class taoItems_models_classes_ItemsService
      * @param  string lang
      * @return string
      */
-    public function getItemFolder( core_kernel_classes_Resource $item, $lang = '')
+    public function getDefaultItemFolder( core_kernel_classes_Resource $item, $lang = '')
     {
         $returnValue = (string) '';
 
@@ -441,45 +440,38 @@ class taoItems_models_classes_ItemsService
         		if($this->hasItemContent($item, $lang)){
 
         			$itemContent = null;
-					$versionedFolder = null;
 
 					$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 					if($itemContents->count() > 0){
 						$itemContent = $itemContents->get(0);
-					}
-					if(helpers_Versioning::isEnabled()){
-						$versionedFolders = $item->getPropertyValuesByLg($this->itemVersionedContentProperty, $lang);
-						if($versionedFolders->count() > 0){
-							$versionedFolder = $versionedFolders->get(0);
+						if(!core_kernel_classes_File::isFile($itemContent)){
+							throw new common_Exception('Item '.$item->getUri().' has none file itemContent');
 						}
 					}
 
-
-					if(core_kernel_classes_File::isFile($itemContent)){
-        				$file = new core_kernel_classes_File($itemContent->uriResource);
-        				if(file_put_contents($file->getAbsolutePath(), $content) > 0){
-							$returnValue = true;
-							if (helpers_Versioning::isEnabled()
-								&& !is_null($versionedFolder)
-								&& core_kernel_versioning_File::isVersionedFile($versionedFolder)
-								&& $commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
-								$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
-								$returnValue = $versionedFolder->commit($commitMessage);
-							}
-        				}
-        			}
+					$file = new core_kernel_classes_File($itemContent);
+					if(file_put_contents($file->getAbsolutePath(), $content) > 0){
+						$returnValue = true;
+						if (core_kernel_versioning_File::isVersionedFile($file)
+							&& $commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
+								
+							$versionedFolder = new core_kernel_versioning_File($file);
+							$returnValue = $versionedFolder->commit($commitMessage);
+						}
+					}	
 
 				}else{
 
 	        		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 	        		$dataFile = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 
-					$itemDir = $this->getItemFolder($item, $lang);//absolutely need for setting the language to preserve coherence between the item content and its versioned folder!
+					$itemDir = $this->getDefaultItemFolder($item, $lang);//absolutely need for setting the language to preserve coherence between the item content and its versioned folder!
 					$file = core_kernel_classes_File::create($dataFile, $itemDir . '/');
 
 					if (!is_null($file) && $file->setContent($content)) {
 
 						$item->setPropertyValueByLg($this->itemContentProperty, $file->uriResource, $lang);
+						/*
 						if (helpers_Versioning::isEnabled()) {
 
 							//created versioned folder:
@@ -505,9 +497,11 @@ class taoItems_models_classes_ItemsService
 							}else{
 								throw new Exception('cannot get the versioned item repository');
 							}
+							
 						} else {
+						*/
 							$returnValue = true;
-						}
+						//}
 					}
 
         		}
@@ -1196,25 +1190,19 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039CD begin
 
-		if(helpers_Versioning::isEnabled()){
-
-			foreach($item->getPropertyValues($this->itemVersionedContentProperty) as $fileUri){
-				if(common_Utils::isUri($fileUri)){
-					$versionedFile = new core_kernel_versioning_File($fileUri);
-					if(core_kernel_versioning_File::isVersionedFile($versionedFile)){
-						try{
-							$versionedFile->delete();
-						}catch(core_kernel_versioning_exception_FileUnversionedException $e){}
-					}
-				}
-			}
-
-		}
-
-		foreach ($item->getPropertyValues($this->itemContentProperty) as $fileUri) {
-			if (common_Utils::isUri($fileUri)) {
+		foreach($item->getPropertyValues($this->itemContentProperty) as $fileUri){
+			if(common_Utils::isUri($fileUri)){
 				$file = new core_kernel_classes_File($fileUri);
-				$file->delete();
+				if (core_kernel_versioning_File::isVersionedFile($file)) {
+					$file = new core_kernel_versioning_File($fileUri);
+				}
+				try{
+					$file->delete();
+				} catch (core_kernel_versioning_exception_FileUnversionedException $e) {
+					// file was not versioned after all, ignore in delte
+				}
+			} else {
+				throw new common_Exception('itemContent of item '.$item->getUri().' is a literal');
 			}
 		}
 
@@ -1263,6 +1251,65 @@ class taoItems_models_classes_ItemsService
         // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C05 end
 
         return $returnValue;
+    }
+
+    /**
+     * Short description of method isItemVersioned
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource item
+     * @return boolean
+     */
+    public function isItemVersioned( core_kernel_classes_Resource $item)
+    {
+        $returnValue = (bool) false;
+
+        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C1E begin
+        $files = $item->getPropertyValues($this->itemContentProperty);
+        foreach ($files as $file) {
+        	// theoreticaly this should always be no or a single file 
+        	if ($file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE))) {
+        		$returnValue = true;
+        	}
+        }
+        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C1E end
+
+        return (bool) $returnValue;
+    }
+
+    /**
+     * Short description of method getItemFolder
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @param  Resource item
+     * @param  string lang
+     * @return string
+     */
+    public function getItemFolder( core_kernel_classes_Resource $item, $lang = '')
+    {
+        $returnValue = (string) '';
+
+        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C21 begin
+        if ($lang === '') {
+        	$files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        } else {
+        	$files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $lang)->toArray();
+        }
+        if (count($files) == 0) {
+        	// no content found assign default
+        	$returnValue = $this->getDefaultItemFolder($item, $lang);
+        } else {
+	        if (count($files) > 1) {
+	        	throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
+	        }
+	        $content = new core_kernel_classes_Resource(current($files));
+	        $returnValue = $content->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_FILE_FILEPATH));
+        }
+        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C21 end
+
+        return (string) $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */

@@ -8,7 +8,6 @@
 $todefine = array(
 	'TAO_ITEM_MODEL_PROPERTY' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel', 
 	'TAO_ITEM_CONTENT_PROPERTY' 		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent',
-	'TAO_ITEM_VERSIONED_CONTENT_PROPERTY'=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#VersionedItemContentFolder',
 	'TAO_ITEM_MODEL_RUNTIME_PROPERTY' 	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime', 
 	'TAO_ITEM_MODEL_AUTHORING_PROPERTY' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring',
 	'TAO_ITEM_MODEL_DATAFILE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName',

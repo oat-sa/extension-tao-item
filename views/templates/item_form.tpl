@@ -51,30 +51,6 @@
 			uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
 		<?endif;?>
 
-		<?if(helpers_Versioning::isEnabled()):?>
-		//append versioned item management manually :
-		if($authoringButton.length){
-			$authoringButton.after('<input id="versioned-item-content" type="button" value="Versioned Item content"/>');
-			$('#versioned-item-content').click(function(){
-				var url = '';
-				if(ctx_extension){
-					url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
-				}
-				url += 'itemVersionedContentIO';
-				var data = {
-					'uri':$("#uri").val()
-				};
-
-				if(uiBootstrap.tabs.size() == 0){
-					if($('div.main-container').length){
-						$('div.main-container').load(url, data);
-					}
-				}
-				$(helpers.getMainContainerSelector(uiBootstrap.tabs)).load(url, data);
-				return false;
-			});
-		}
-		<?endif;?>
 	<?endif?>
 	});
 </script>

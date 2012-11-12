@@ -73,7 +73,7 @@ class taoItems_actions_form_Item
     	if(!tao_helpers_Context::check('STANDALONE_MODE')){
 			
     		//According to the status of the versioning
-    		if(!helpers_Versioning::isEnabled()){
+    		//if(!helpers_Versioning::isEnabled()){
 	    		// Add content action
 	    		$url = _url('itemContentIO', 'Items', 'taoItems', array(
 	    			'uri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
@@ -83,6 +83,7 @@ class taoItems_actions_form_Item
 	    		$itemContentIOElt = tao_helpers_form_FormFactory::getElement('itemContentIO', 'Free');
 				$itemContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('Content')."</a>");
 				$actions[] = $itemContentIOElt;
+				/*
     		}else{
 				// Add versioned content action
 	    		$url = _url('itemVersionedContentIO', 'Items', 'taoItems', array(
@@ -94,7 +95,7 @@ class taoItems_actions_form_Item
 				$itemVersionedContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('VersionedContent')."</a>");
 				$actions[] = $itemVersionedContentIOElt;
 			}
-		
+			*/
 		}
 		
 		$this->form->setActions($actions, 'top');

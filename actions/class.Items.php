@@ -110,7 +110,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		if(!$modelDefined || $isDeprecated){
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
-		$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
 		
 		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));

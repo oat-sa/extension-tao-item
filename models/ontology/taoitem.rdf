@@ -23,16 +23,6 @@
     <generis:is_language_dependent rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
     <tao:TAOGUIOrder><![CDATA[20]]></tao:TAOGUIOrder>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#VersionedItemContentFolder">
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="EN"><![CDATA[Versioned Item Content]]></rdfs:label>
-    <rdfs:comment xml:lang="EN"><![CDATA[The folder containing the versioned content]]></rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
-	<rdfs:range rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#VersionedFile"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#VersionedFile"/>
-    <generis:is_language_dependent rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
-    <tao:TAOGUIOrder><![CDATA[21]]></tao:TAOGUIOrder>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:label xml:lang="EN"><![CDATA[Original Filename]]></rdfs:label>
