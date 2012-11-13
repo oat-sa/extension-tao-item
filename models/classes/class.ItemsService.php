@@ -1240,7 +1240,7 @@ class taoItems_models_classes_ItemsService
 				throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
 			}
 			$serviceName = (string)current($services);
-			if (class_exists($serviceName) && is_subclass_of($serviceName, 'taoItems_models_classes_ItemModelService')) {
+			if (class_exists($serviceName) && in_array('taoItems_models_classes_itemModelService', class_implements($serviceName))) {
 				$returnValue = $serviceName::singleton();
 			} else {
 				throw new common_exception_Error('Item model service '.$serviceName.' not found, or not compatible for item model '.$itemModel->getLabel());
