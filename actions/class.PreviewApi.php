@@ -156,7 +156,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 
 			// We inject the data directly in the deployed item file
       $apis = array(
-				'require' => ROOT_URL.'tao/views/js/jquery-1.8.0.min',
+				'jquery' => ROOT_URL.'tao/views/js/jquery-1.8.0.min.js',
 				'taoApi' => BASE_WWW.'js/taoApi/taoApi.min.js',
 				'taoMatching'	=> BASE_WWW.'js/taoMatching/taoMatching.min.js',
 				'wfApi' => ROOT_URL.'wfEngine/views/js/wfApi/wfApi.min.js'
