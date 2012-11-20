@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * List represents the collection list as managed by the the
  * tao matching api
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -19,7 +19,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Collection is an abstract class which represents
  * the variables "collection".
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('taoItems/models/classes/Matching/class.Collection.php');
 
@@ -36,7 +36,7 @@ require_once('taoItems/models/classes/Matching/class.Collection.php');
  * tao matching api
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -54,7 +54,7 @@ class taoItems_models_classes_Matching_List
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  array data data used to construct the tuple
      * @return mixed
      */
@@ -71,7 +71,7 @@ class taoItems_models_classes_Matching_List
      * Get the type of the variable
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return string
      * @see Variable
      */
@@ -92,7 +92,7 @@ class taoItems_models_classes_Matching_List
      * Get an element by its index. Return null if the element does not exist.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  int key
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -115,12 +115,12 @@ class taoItems_models_classes_Matching_List
      * Match a list with an other
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  List list
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @param  Variable list
      * @return boolean
      * @see Variable
      */
-    public function match( taoItems_models_classes_Matching_List $list)
+    public function match( taoItems_models_classes_Matching_Variable $list)
     {
         $returnValue = (bool) false;
 
@@ -163,7 +163,7 @@ class taoItems_models_classes_Matching_List
      * array of Variables or an array of "base type" variables
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  data
      * @return mixed
      * @see Variable
@@ -200,7 +200,7 @@ class taoItems_models_classes_Matching_List
      * }
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      */
     public function toJSon()
     {

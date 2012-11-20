@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * tuple represents the collection tuple as managed by the the
  * tao matching api
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -19,7 +19,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * Collection is an abstract class which represents
  * the variables "collection".
  *
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('taoItems/models/classes/Matching/class.Collection.php');
 
@@ -36,7 +36,7 @@ require_once('taoItems/models/classes/Matching/class.Collection.php');
  * tao matching api
  *
  * @access public
- * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_Matching
  */
@@ -54,7 +54,7 @@ class taoItems_models_classes_Matching_Tuple
      * Short description of method __construct
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  data data used to construct the tuple
      * @return mixed
      */
@@ -71,7 +71,7 @@ class taoItems_models_classes_Matching_Tuple
      * Get the type of the variable
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return string
      * @see Variable
      */
@@ -92,7 +92,7 @@ class taoItems_models_classes_Matching_Tuple
      * Get an element by its key. Return null if the element does not exist.
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  string key
      * @return taoItems_models_classes_Matching_Variable
      */
@@ -115,11 +115,11 @@ class taoItems_models_classes_Matching_Tuple
      * Match a tuple with an other
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
-     * @param  Tuple tuple
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @param  Variable tuple
      * @return boolean
      */
-    public function match( taoItems_models_classes_Matching_Tuple $tuple)
+    public function match( taoItems_models_classes_Matching_Variable $tuple)
     {
         $returnValue = (bool) false;
 
@@ -160,7 +160,7 @@ class taoItems_models_classes_Matching_Tuple
      * array of Variables or an array of "base type" variables
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  data
      * @return mixed
      */
@@ -198,7 +198,7 @@ class taoItems_models_classes_Matching_Tuple
      * }
      *
      * @access public
-     * @author Cedric Alfonsi, <cedric.alfonsi@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @see Variable
      */
     public function toJSon()
