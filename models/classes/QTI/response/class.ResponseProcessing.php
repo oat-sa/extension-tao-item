@@ -3,16 +3,16 @@
 error_reporting(E_ALL);
 
 /**
- * TAO - taoItems/models/classes/QTI/response/class.ResponseProcessing.php
+ * TAO - taoItems\models\classes\QTI\response\class.ResponseProcessing.php
  *
  * $Id$
  *
  * This file is part of TAO.
  *
- * Automatically generated on 25.01.2012, 14:31:58 with ArgoUML PHP module 
+ * Automatically generated on 20.11.2012, 10:19:21 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -28,7 +28,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/class.Data.php');
 
@@ -45,7 +45,7 @@ require_once('taoItems/models/classes/QTI/class.Data.php');
  *
  * @abstract
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI_response
  */
@@ -63,7 +63,7 @@ abstract class taoItems_models_classes_QTI_response_ResponseProcessing
      * Short description of method create
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  Item item
      * @return taoItems_models_classes_QTI_response_ResponseProcessing
      */
@@ -82,7 +82,7 @@ abstract class taoItems_models_classes_QTI_response_ResponseProcessing
      * Short description of method takeoverFrom
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  ResponseProcessing responseProcessing
      * @param  Item item
      * @return taoItems_actions_QTIform_ResponseProcessing
@@ -102,7 +102,7 @@ abstract class taoItems_models_classes_QTI_response_ResponseProcessing
      * Short description of method getForm
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  Response response
      * @return tao_helpers_form_Form
      */
@@ -120,12 +120,12 @@ abstract class taoItems_models_classes_QTI_response_ResponseProcessing
      * Short description of method takeNoticeOfAddedInteraction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  Interaction interaction
      * @param  Item item
      * @return mixed
      */
-    public function takeNoticeOfAddedInteraction( doc_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
+    public function takeNoticeOfAddedInteraction( taoItems_models_classes_QTI_Interaction $interaction,  taoItems_models_classes_QTI_Item $item)
     {
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003659 begin
         // section 127-0-1-1-53d7bbd:135145c7d03:-8000:0000000000003659 end
@@ -135,7 +135,7 @@ abstract class taoItems_models_classes_QTI_response_ResponseProcessing
      * Short description of method takeNoticeOfRemovedInteraction
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @param  Interaction interaction
      * @param  Item item
      * @return mixed

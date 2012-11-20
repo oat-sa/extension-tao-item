@@ -6,7 +6,7 @@ error_reporting(E_ALL);
  * The QTI Parser enables you to parse QTI item xml files and build the
  * objects
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10010
  * @subpackage models_classes_QTI
@@ -20,7 +20,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Parser enables you to load, parse and validate xml content from an xml
  * Usually used for to load and validate the itemContent  property.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('tao/models/classes/class.Parser.php');
 
@@ -37,7 +37,7 @@ require_once('tao/models/classes/class.Parser.php');
  * objects
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_infov2p0.html#element10010
  * @subpackage models_classes_QTI
@@ -56,10 +56,11 @@ class taoItems_models_classes_QTI_Parser
      * Run the validation process
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @param  string schema
      * @return boolean
      */
-    public function validate()
+    public function validate($schema = '')
     {
         $returnValue = (bool) false;
 
@@ -76,7 +77,7 @@ class taoItems_models_classes_QTI_Parser
      * load the file content, parse it  and build the a QTI_Item instance
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return taoItems_models_classes_QTI_Item
      */
     public function load()
