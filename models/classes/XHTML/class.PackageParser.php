@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  * The external resources (media, css, scripts, images, etc.) in the package are
  * too.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_XHTML
  */
@@ -22,7 +22,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Parser enables you to load, parse and validate xml content from an xml
  * Usually used for to load and validate the itemContent  property.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('tao/models/classes/class.Parser.php');
 
@@ -42,7 +42,7 @@ require_once('tao/models/classes/class.Parser.php');
  * too.
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_XHTML
  */
@@ -60,10 +60,11 @@ class taoItems_models_classes_XHTML_PackageParser
      * Short description of method validate
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @param  string schema
      * @return boolean
      */
-    public function validate()
+    public function validate($schema = '')
     {
         $returnValue = (bool) false;
 
@@ -139,7 +140,7 @@ class taoItems_models_classes_XHTML_PackageParser
      * Short description of method extract
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return string
      */
     public function extract()

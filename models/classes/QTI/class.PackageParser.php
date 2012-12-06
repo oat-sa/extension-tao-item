@@ -7,7 +7,7 @@ error_reporting(E_ALL);
  * The Package is formated as a zip archive containing the manifest and the
  * (item files and media files)
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_intgv2p0.html#section10003
  * @subpackage models_classes_QTI
@@ -21,7 +21,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Parser enables you to load, parse and validate xml content from an xml
  * Usually used for to load and validate the itemContent  property.
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  */
 require_once('tao/models/classes/class.Parser.php');
 
@@ -39,7 +39,7 @@ require_once('tao/models/classes/class.Parser.php');
  * (item files and media files)
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
  * @package taoItems
  * @see http://www.imsglobal.org/question/qti_v2p0/imsqti_intgv2p0.html#section10003
  * @subpackage models_classes_QTI
@@ -58,10 +58,11 @@ class taoItems_models_classes_QTI_PackageParser
      * Short description of method validate
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
+     * @param  string schema
      * @return boolean
      */
-    public function validate()
+    public function validate($schema = '')
     {
         $returnValue = (bool) false;
 
@@ -137,7 +138,7 @@ class taoItems_models_classes_QTI_PackageParser
      * Short description of method extract
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Jerome Bogaerts, <jerome.bogaerts@tudor.lu>
      * @return string
      */
     public function extract()
