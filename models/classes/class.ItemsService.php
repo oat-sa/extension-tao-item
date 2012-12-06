@@ -479,7 +479,7 @@ class taoItems_models_classes_ItemsService
 							$repository = $this->getVersionedFileRepository();
 							if (!is_null($repository)) {
 								$versionedFile = $versionedFileClass->createInstance('File : versioned folder of item ' . $item->getLabel(), 'File : created by ' . __CLASS__);
-								$versionedFile = core_kernel_versioning_File::create(
+								$versionedFile = core_kernel_versioning_File::createVersioned(
 									'', //empty string to allow folder versioning!!
 									tao_helpers_Uri::getUniqueId($item->uriResource) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang,
 									$repository,

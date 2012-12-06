@@ -750,12 +750,14 @@ class taoItems_models_classes_Matching_Matching
         $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
         // IF the first expression is not a numerical base type
         if ($matchingExpr1 == null) {
+        	$expr1 = is_array($expr1) ? implode('-', $expr1) : $expr1;
             throw new Exception ("TtaoItems_models_classes_Matching_Matching::divide an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
         }
 
         $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
         // IF the second expression is not a numerical base type
         if ($matchingExpr2 == null) {
+        	$expr2 = is_array($expr2) ? implode('-', $expr2) : $expr2;
             throw new Exception ("TtaoItems_models_classes_Matching_Matching::divide an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
         }
         
@@ -988,13 +990,15 @@ class taoItems_models_classes_Matching_Matching
         $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
         // IF the first expression is not a numerical base type
         if ($matchingExpr1 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        	$expr1 = is_array($expr1) ? implode('-', $expr1) : $expr1;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::gt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
         }
 
         $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
         // IF the second expression is not a numerical base type
         if ($matchingExpr2 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        	$expr2 = is_array($expr2) ? implode('-', $expr2) : $expr2;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::gt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
         }
         
         if ($matchingExpr1->getValue() > $matchingExpr2->getValue()) {
@@ -1029,13 +1033,15 @@ class taoItems_models_classes_Matching_Matching
         $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
         // IF the first expression is not a numerical base type
         if ($matchingExpr1 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        	$expr1 = is_array($expr1) ? implode('-', $expr1) : $expr1;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::gt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
         }
 
         $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
         // IF the second expression is not a numerical base type
         if ($matchingExpr2 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::gt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        	$expr2 = is_array($expr2) ? implode('-', $expr2) : $expr2;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::gt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
         }
         
         if ($matchingExpr1->getValue() >= $matchingExpr2->getValue()) {
@@ -1121,13 +1127,13 @@ class taoItems_models_classes_Matching_Matching
         $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
         // IF the first expression is not a numerical base type
         if ($matchingExpr1 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+            throw new Exception ("taoItems_models_classes_Matching_Matching::lt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
         }
 
         $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
         // IF the second expression is not a numerical base type
         if ($matchingExpr2 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+            throw new Exception ("taoItems_models_classes_Matching_Matching::lt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
         }
         
         if ($matchingExpr1->getValue() < $matchingExpr2->getValue()) {
@@ -1162,13 +1168,13 @@ class taoItems_models_classes_Matching_Matching
         $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
         // IF the first expression is not a numerical base type
         if ($matchingExpr1 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+            throw new Exception ("taoItems_models_classes_Matching_Matching::lt an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
         }
 
         $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
         // IF the second expression is not a numerical base type
         if ($matchingExpr2 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::lt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+            throw new Exception ("taoItems_models_classes_Matching_Matching::lt an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
         }
         
         if ($matchingExpr1->getValue() <= $matchingExpr2->getValue()) {
@@ -1332,7 +1338,8 @@ class taoItems_models_classes_Matching_Matching
         
         $matchingExpr = taoItems_models_classes_Matching_VariableFactory::toBooleanBaseType ($expr);
         if ($matchingExpr == null){
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::not an error occured : The expression passed [".$expr."] to the operator has to be a valid boolean expression with single cardinality");
+        	$expr = is_array($expr) ? implode('-', $expr) : $expr;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::not an error occured : The expression passed [".$expr."] to the operator has to be a valid boolean expression with single cardinality");
         } else {
             $matchingExprValue = $matchingExpr->getValue();
             if ($matchingExprValue !== null){
@@ -1373,7 +1380,7 @@ class taoItems_models_classes_Matching_Matching
             $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toBooleanBaseType ($subExp);
             
             if ($matchingSubExp == null) {
-                throw new Exception ("TtaoItems_models_classes_Matching_Matching::or an error occured : The expression passed [".$matchingSubExp."] to the operator has to be a valid boolean expression with single cardinality");
+                throw new Exception ("taoItems_models_classes_Matching_Matching::or an error occured : The expression passed [".$matchingSubExp."] to the operator has to be a valid boolean expression with single cardinality");
             } else {
                 if ($matchingSubExp->isNull()){
                     $returnValue = null;
@@ -1420,7 +1427,8 @@ class taoItems_models_classes_Matching_Matching
             $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($subExp);
             // If the sub expression is not a numerical base type variable
             if ($matchingSubExp == null){
-                throw new Exception ("TtaoItems_models_classes_Matching_Matching::product an error occured : The [".$i."] expression passed [".$subExp."] to the operator has to be a valid numerical expression with single cardinality");
+            	$subExp = is_array($subExp) ? implode('-', $subExp) : $subExp;
+                throw new Exception ("taoItems_models_classes_Matching_Matching::product an error occured : The [".$i."] expression passed [".$subExp."] to the operator has to be a valid numerical expression with single cardinality");
             } 
             // If the sub expression value is null
             else if ($matchingSubExp->isNull()){
@@ -1518,7 +1526,8 @@ class taoItems_models_classes_Matching_Matching
             $matchingExpr = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr);
             // IF the expression is not a numerical base type
             if ($matchingExpr == null) {
-                throw new Exception ("TtaoItems_models_classes_Matching_Matching::round an error occured : The expression passed [".$expr."] to the operator has to be a valid numerical expression with single cardinality");
+            	$expr = is_array($expr) ? implode('', $expr) : $expr;
+                throw new Exception ("taoItems_models_classes_Matching_Matching::round an error occured : The expression passed [".$expr."] to the operator has to be a valid numerical expression with single cardinality");
             }else{
                 if ($matchingExpr->isNull()){
                     $returnValue = null;
@@ -1593,13 +1602,15 @@ class taoItems_models_classes_Matching_Matching
         $matchingExpr1 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr1);
         // IF the first expression is not a numerical base type
         if ($matchingExpr1 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::substract an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
+        	$expr1 = is_array($expr1) ? implode('-', $expr1) : $expr1;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::substract an error occured : The first expression passed [".$expr1."] to the operator has to be a valid numerical expression with single cardinality");
         }
 
         $matchingExpr2 = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($expr2);
         // IF the second expression is not a numerical base type
         if ($matchingExpr2 == null) {
-            throw new Exception ("TtaoItems_models_classes_Matching_Matching::substract an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
+        	$expr2 = is_array($expr2) ? implode('-', $expr2) : $expr2;
+            throw new Exception ("taoItems_models_classes_Matching_Matching::substract an error occured : The second expression passed [".$expr2."] to the operator has to be a valid numerical expression with single cardinality");
         }
         
         if ($matchingExpr1->isNull() || $matchingExpr2->isNull()){
@@ -1639,7 +1650,8 @@ class taoItems_models_classes_Matching_Matching
             $matchingSubExp = taoItems_models_classes_Matching_VariableFactory::toNumericBaseType ($subExp);
             // If the sub expression is not a numerical base type variable
             if ($matchingSubExp == null){
-                throw new Exception ("TtaoItems_models_classes_Matching_Matching::sum an error occured : The [".$i."] expression passed [".$subExp."] to the operator has to be a valid numerical expression with single cardinality");
+            	$subExp = is_array($subExp) ? implode('-', $subExp) : $subExp;
+                throw new Exception ("taoItems_models_classes_Matching_Matching::sum an error occured : The [".$i."] expression passed [".$subExp."] to the operator has to be a valid numerical expression with single cardinality");
             } 
             // If the sub expression value is null
             else if ($matchingSubExp->isNull()){
