@@ -508,9 +508,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 					 	case TAO_ITEM_MODEL_PAPERBASED:
 							$validate = false;
 					 		break;
-						case TAO_ITEM_MODEL_HAWAI: /**@todo add the black schema  */
-							$validate = true;
-							break;
 					 	case TAO_ITEM_MODEL_QTI:
 							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
 							$validate = true;

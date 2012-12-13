@@ -212,26 +212,6 @@ class taoItems_scripts_MigrateUnversionedItems
 					self::out('copying ' . $oldSourceFolder . ' to ' . $destination);
 					break;
 				}
-			case TAO_ITEM_MODEL_KOHS:
-			case TAO_ITEM_MODEL_CTEST: {
-					foreach ($usedLanguages as $usedLanguage) {
-						$destination = $this->itemService->getItemFolder($item, $usedLanguage) . '/' . $dataFile;
-						if ($usedLanguage == DEFAULT_LANG || $usedLanguage == '') {
-							$source = $oldSourceFolder . $dataFile;
-						} else {
-							$source = $oldSourceFolder . $usedLanguage . '_' . $dataFile;
-						}
-						self::out('copying ' . $source . ' to ' . $destination);
-//							tao_helpers_File::copy($source, $destination);
-					}
-					break;
-				}
-			case TAO_ITEM_MODEL_HAWAI:
-			case TAO_ITEM_MODEL_QCM:
-			case TAO_ITEM_MODEL_CAMPUS: {
-					self::out('item type deprecated : ' . $itemModelLabel . ' (' . $itemModel->uriResource . ')');
-					break;
-				}
 			default : {
 					self::out('unknown item type : ' . $itemModel->uriResource);
 				}
@@ -311,42 +291,6 @@ class taoItems_scripts_MigrateUnversionedItems
 						$this->itemService->setItemContent($item, $content, $usedLanguage);
 					}
 				}
-				break;
-			}
-			case TAO_ITEM_MODEL_KOHS:
-			case TAO_ITEM_MODEL_CTEST: {
-				foreach ($usedLanguages as $usedLanguage) {
-
-					$destinationFolder = $this->itemService->getItemFolder($item, $usedLanguage) . '/' . $dataFile;
-
-					//copy item start point
-					if ($usedLanguage == DEFAULT_LANG || $usedLanguage == '') {
-						$oldSourceFolder .= DEFAULT_LANG;
-					} else {
-						$oldSourceFolder .= $usedLanguage;
-					}
-					$source = $oldSourceFolder.'/'.$dataFile;
-					$destination = $destinationFolder . '/' . $dataFile;
-
-					self::out('versioning ' . $source . ' to ' . $destination);
-					if (file_exists($source)) {
-
-						//delete the old data file
-						$content = file_get_contents($source);
-						foreach ($item->getPropertyValuesByLg($propItemContent, $usedLanguage)->getIterator() as $file) {
-							$file->delete(true);
-						}
-
-						//set the versioned file content
-						$this->itemService->setItemContent($item, $content, $usedLanguage);
-					}
-				}
-				break;
-			}
-			case TAO_ITEM_MODEL_HAWAI:
-			case TAO_ITEM_MODEL_QCM:
-			case TAO_ITEM_MODEL_CAMPUS: {
-				self::out('item type deprecated : ' . $itemModelLabel . ' (' . $itemModel->uriResource . ')');
 				break;
 			}
 			default : {

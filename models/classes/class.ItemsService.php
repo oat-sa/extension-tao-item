@@ -299,22 +299,6 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 begin
 
-        $content = '';
-
-		$itemContent = $item->getOnePropertyValue($this->itemContentProperty);
-		if(is_null($itemContent) && $this->isItemModelDefined($item)){
-			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
-				$content = file_get_contents(TAO_ITEM_HAWAI_TPL_FILE);
-				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
-				$this->setItemContent($item, $content);
-			}
-			if($this->hasItemModel($item, array(TAO_ITEM_MODEL_CAMPUS))){
-				$content = file_get_contents(TAO_ITEM_CAMPUS_TPL_FILE);
-				$content = str_replace('{ITEM_URI}', $item->uriResource, $content);
-				$this->setItemContent($item, $content);
-			}
-		}
-
 		$returnValue = $item;
 
         // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 end
@@ -356,20 +340,11 @@ class taoItems_models_classes_ItemsService
 			if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 
 				if(core_kernel_classes_File::isFile($itemContent)){
-					if($preview && $this->hasItemModel($item, array(TAO_ITEM_MODEL_HAWAI))){
-						$tmpFile = $this->getItemFolder($item).'/tmp_black.xml';
-						if(file_exists($tmpFile)){
-							$returnValue = file_get_contents($tmpFile);
-						} else {
-							common_Logger::w('File '.$tmpFile.' not found');
-						}
-					}
-					else{
-						$file = new core_kernel_classes_File($itemContent->getUri());
-						$returnValue = file_get_contents($file->getAbsolutePath());
-						if ($returnValue == false) {
-							common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
-						}
+
+					$file = new core_kernel_classes_File($itemContent->getUri());
+					$returnValue = file_get_contents($file->getAbsolutePath());
+					if ($returnValue == false) {
+						common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
 					}
 				}
 			} else {
