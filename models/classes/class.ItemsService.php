@@ -236,21 +236,10 @@ class taoItems_models_classes_ItemsService
 				$lang = $session->getDataLanguage();
 			}
 
-			if(helpers_Versioning::isEnabled()){
-
-				$itemRepo = $this->getVersionedFileRepository();
-				if(empty($itemRepo)){
-					throw new common_Exception('No repository found for the item '.$item->getLabel().' ('.$item->uriResource.')');
-				}
-
-				$repositoryPath = $itemRepo->getPath();
-				$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
-				$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
-
-			}else{
-				$base_data = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_DATA');
-				$returnValue = $base_data.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.$lang;
-			}
+			$itemRepo = tao_models_classes_FileSourceService::singleton()->getDefaultFileSource();
+			$repositoryPath = $itemRepo->getPath();
+			$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
+			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
 
         }
 

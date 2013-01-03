@@ -101,8 +101,7 @@ class taoItems_actions_form_VersionedItemContent
         $returnValue = null;
 
         // section 127-0-1-1--4b5c8f5d:136e9bb93ae:-8000:0000000000006ACE begin
-		$itemService = taoItems_models_classes_ItemsService::singleton();
-		$returnValue = $itemService->getVersionedFileRepository();
+		$returnValue = tao_models_classes_FileSourceService::singleton()->getDefaultFileSource();
         // section 127-0-1-1--4b5c8f5d:136e9bb93ae:-8000:0000000000006ACE end
 
         return $returnValue;

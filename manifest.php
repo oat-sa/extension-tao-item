@@ -25,6 +25,9 @@ return array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_data', 'location' => 'taoItems/data', 'rights' => 'rw')),
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_includes', 'location' => 'taoItems/includes', 'rights' => 'r')),
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_views_runtime', 'location' => 'taoItems/views/runtime', 'rights' => 'rw'))
+		),
+		'php'	=> array(
+			dirname(__FILE__).'/scripts/install/addLocalSource.php'
 		)
 	),
 	'classLoaderPackages' => array(
