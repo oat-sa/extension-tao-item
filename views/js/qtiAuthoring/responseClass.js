@@ -4,13 +4,16 @@
 // alert('response edit loaded');
 
 define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery.jqGrid-4.4.0/js/i18n/grid.locale-'+base_lang], function(req, $) {
-	var responseClass = Class.extend({
+
+	var responseClassFunctions = {
 		init: function(tableElementId, interaction, responseFormContainer) {
+			
 			this.myGrid = null;
-			/*if(responseClass.grid){
+			if(responseClass.grid){
 				responseClass.grid.destroyGrid();//only one response grid available at a time.
-			}*/
-			//responseClass.grid = this;
+			}
+			responseClass.grid = this;
+			
 			var response = this;
 
 			this.interactionSerial = interaction.interactionSerial;
@@ -19,7 +22,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			this.maxChoices = null;
 			this.setModifiedResponseProperties(false);
 
-			if (!responseFormContainer) var responseFormContainer = '#qtiAuthoring_response_formContainer';
+			if (!responseFormContainer) responseFormContainer = '#qtiAuthoring_response_formContainer';
 
 			if ($(responseFormContainer).length) {
 				this.responseFormContainer = responseFormContainer;
@@ -98,71 +101,78 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				});
 			};
 		},
+		
+		saveResponseProperties : function(){
+			
+			var result = false;
+			$('#qtiAuthoring_response_formContainer form').each(function(i) {
+				switch ($(this).attr('name')) {
+					case 'InteractionResponseProcessingForm':
+						//linearize it and post it:
+						$.ajax({
+							type: "POST",
+							url: root_url + "/taoItems/QtiAuthoring/saveInteractionResponseProcessing",
+							data: $(this).serialize(),
+							dataType: 'json',
+							async: false,
+							success: function(r){ //Assume save = changed
+								if (r.saved) qtiEdit.createInfoMessage(__('Modification on response applied'));
+								result = r.saved;
+							}
+						});
+						break;
 
+					case 'Response_Form':
+						$.ajax({
+							type: "POST",
+							url: root_url + "/taoItems/QtiAuthoring/saveResponseProperties",
+							data: $(this).serialize(),
+							dataType: 'json',
+							async: false,
+							success: function(r){
+								if (r.saved) qtiEdit.createInfoMessage(__('The response properties have been updated'));
+							}
+						});
+						break;
+
+					case 'ResponseCodingOptionsForm':
+						$.ajax({
+							type: "POST",
+							url: root_url + "/taoItems/QtiAuthoring/saveResponseCodingOptions",
+							data: $(this).serialize(),
+							dataType: 'json',
+							async: false,
+							success: function(r){
+								if (r.saved) qtiEdit.createInfoMessage(__('The options have been updated'));
+								result = r.saved;
+							}
+						});
+						break;
+				}
+			});
+
+			if (result) {
+				var interaction = interactionClass.instances[this.interactionSerial];
+				if (interaction) {
+					//reload the grid, just in case the response template has changed:
+					new responseClass(this.myGrid.attr('id'), interaction);
+				//The new or the intercation do, but not both ! doing the same with + in interaction
+				//set the response responseOptions mode:
+				//interaction.setResponseOptionsMode(r.setResponseOptionsMode);
+				}
+				this.setModifiedResponseProperties(false);
+			}
+			
+			return result;
+		},
+		
 		initResponseFormSubmitter: function() {
 			var self = this;
 
 			$(".response-form-submitter").click(function(event){
 				event.preventDefault();
-				var result = false;
-
-				$('#qtiAuthoring_response_formContainer form').each(function(i) {
-					switch ($(this).attr('name')) {
-						case 'InteractionResponseProcessingForm':
-							//linearize it and post it:
-							$.ajax({
-								 type: "POST",
-								 url: root_url + "/taoItems/QtiAuthoring/saveInteractionResponseProcessing",
-								 data: $(this).serialize(),
-								 dataType: 'json',
-								 async: false,
-								 success: function(r){ //Assume save = changed
-										if (r.saved) qtiEdit.createInfoMessage(__('Modification on response applied'));
-										result = r.saved;
-								 }
-							});
-							break;
-
-						case 'Response_Form':
-							$.ajax({
-								 type: "POST",
-								 url: root_url + "/taoItems/QtiAuthoring/saveResponseProperties",
-								 data: $(this).serialize(),
-								 dataType: 'json',
-								 async: false,
-								 success: function(r){
-										if (r.saved) qtiEdit.createInfoMessage(__('The response properties have been updated'));
-								 }
-							});
-							break;
-
-						case 'ResponseCodingOptionsForm':
-							$.ajax({
-								 type: "POST",
-								 url: root_url + "/taoItems/QtiAuthoring/saveResponseCodingOptions",
-								 data: $(this).serialize(),
-								 dataType: 'json',
-								 async: false,
-								 success: function(r){
-										if (r.saved) qtiEdit.createInfoMessage(__('The options have been updated'));
-										result = r.saved;
-								 }
-							});
-							break;
-					}
-				});
-
-				if (result) {
-					var interaction = interactionClass.instances[self.interactionSerial];
-					if (interaction) {
-						//reload the grid, just in case the response template has changed:
-						new responseClass(self.myGrid.attr('id'), interaction);
-		//The new or the intercation do, but not both ! doing the same with + in interaction
-						//set the response responseOptions mode:
-						//interaction.setResponseOptionsMode(r.setResponseOptionsMode);
-					}
-					self.setModifiedResponseProperties(false);
-				}
+				
+				self.saveResponseProperties();
 				//auto save the response options values
 				//$('#qtiAuthoring_responseOptionsEditor').find('.form-submiter').click();
 
@@ -179,10 +189,10 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 		},
 
 		setResponseFormChangeListener: function() {
-			var __this = this;
+			var self = this;
 			$responseFormContainer = $('div#qtiAuthoring_responseEditor');
 			$responseFormContainer.children().unbind('change paste').bind('change paste', function(){
-				__this.setModifiedResponseProperties(true);
+				self.setModifiedResponseProperties(true);
 			});
 		},
 
@@ -190,6 +200,9 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			 if(modified){
 				this.modifiedResponseOptions = true;
 				$('a.response-form-submitter').addClass('form-submitter-emphasis');
+				
+				//autosave :
+//				this.saveResponseProperties();
 			}else{
 				this.modifiedResponseOptions = false;
 				$('a.response-form-submitter').removeClass('form-submitter-emphasis');
@@ -345,12 +358,10 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			var navGridParam = {};
 			var navGridParamDefault = {
 				search: false,
+				edit: false,
 				afterRefresh: function() {
 					response.destroyGrid();
 					new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
-				},
-				editfunc: function(rowId){
-					response.editGridRow(rowId);
 				}
 			};
 
@@ -904,7 +915,9 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				}
 			}
 		}
-	});
+	};
+	
+	var responseClass = Class.extend(responseClassFunctions);
 
 	return responseClass;
 });

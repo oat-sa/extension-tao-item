@@ -139,14 +139,15 @@ class taoItems_actions_QTIform_AssessmentItem
 		$titleElt->setValue($this->item->getOption('title'));
 		$this->form->addElement($titleElt);
 
-		//label:
-		$labelElt = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
-		$labelElt->setDescription(__('Label'));
-		$labelElt->setValue($this->item->getOption('label'));
-		$this->form->addElement($labelElt);
-
-		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent'));
-		$this->form->addElement(self::createBooleanElement($this->item, 'adaptive', ''));
+		//label: not used, instead rather confusing for users
+//		$labelElt = tao_helpers_form_FormFactory::getElement('label', 'Textbox');
+//		$labelElt->setDescription(__('Label'));
+//		$labelElt->setValue($this->item->getOption('label'));
+//		$this->form->addElement($labelElt);
+		
+		//@TODO : funcitons not available yet, to be implemented
+//		$this->form->addElement(self::createBooleanElement($this->item, 'timeDependent', 'Time dependent'));
+//		$this->form->addElement(self::createBooleanElement($this->item, 'adaptive', ''));
 
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000002E31 end
     }

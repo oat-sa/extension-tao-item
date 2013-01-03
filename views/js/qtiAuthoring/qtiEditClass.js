@@ -894,6 +894,10 @@ qtiEdit.createInfoMessage = function(message){
 	helpers.createInfoMessage('<img src="'+img_url+'ok.png" alt="" style="float:left;margin-right:10px;"/>'+message);
 }
 
+qtiEdit.prototype.setTitleBar = function(text){
+	$('#qtiAuthoring_title_container').text(text);
+}
+
 //the global save function
 qtiEdit.prototype.save = function(itemUri){
 
@@ -916,6 +920,10 @@ qtiEdit.prototype.save = function(itemUri){
 		   success: function(r){
 				if(r.saved){
 					qtiEdit.createInfoMessage(__('The item has been successfully saved'));
+					
+					//update title here:
+					self.setTitleBar(itemProperties.title);
+					
 				}
 		   }
 		});

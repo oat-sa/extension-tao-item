@@ -1102,7 +1102,8 @@ class taoItems_models_classes_QtiAuthoringService
 		switch($interactionType){
 			case 'choice':
 			case 'hottext':
-			case 'hotspot':{
+			case 'hotspot':
+			case 'inlinechoice':{
 				$choices = array();
 				foreach($interaction->getChoices() as $choice){
 					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
@@ -1191,25 +1192,9 @@ class taoItems_models_classes_QtiAuthoringService
 
 				break;
 			}
-			case 'inlinechoice':{
-				$choices = array();
-				foreach($interaction->getChoices() as $choice){
-					$choices[] = $choice->getIdentifier();//and not serial, since the identifier is the name that is significant for the user
-				}
-				$returnValue[] = $this->getInteractionResponseColumn(1, 'select', $choices);
-				break;
-			}
 			case 'textentry':
 			case 'extendedtext':
 			case 'slider':{
-				//values = mapping then...
-				// $i = 1;
-				// $editType = 'text';
-				// $returnValue[] = array(
-					// 'name' => 'choice'.$i,
-					// 'label' => __('Choice').' '.$i,
-					// 'edittype' => $editType
-				// );
 				$returnValue[] = $this->getInteractionResponseColumn(1, 'text');
 				break;
 			}

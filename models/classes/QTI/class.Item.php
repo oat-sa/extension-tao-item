@@ -461,7 +461,7 @@ class taoItems_models_classes_QTI_Item
 
     	//get the variables to use in the template
     	$variables = $this->extractVariables();
-
+		
     	//these variables enables to get only the needed resources
 		$variables['hasUpload'] 	= false;
 		$variables['hasGraphics'] 	= false;
@@ -482,7 +482,7 @@ class taoItems_models_classes_QTI_Item
 				$variables['hasGraphics'] = $interaction->isGraphic();
 			}
         }
-
+		
         foreach($this->objects as $object) {
 			$variables['data'] = preg_replace("/{".$object->getSerial()."}/", $object->toXHTML(), $variables['data']);
         }

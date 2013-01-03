@@ -654,7 +654,6 @@ class taoItems_models_classes_ItemsService
         		
 				$itemFolder = dirname($path);
         		
-        		//var_dump($output);
         		//replace relative paths to resources by absolute uris to help the compilator
 				$matches = array();
         		if(preg_match_all("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](.+?)[\"\']/i", $output, $matches) > 0){

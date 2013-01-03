@@ -177,7 +177,10 @@ class taoItems_models_classes_QTI_Service
     				
         			//get the QTI xml
         			$itemsaved = $itemService->setItemContent($rdfItem, $qtiItem->toQTI(), '', $commitMessage);
-        			
+					
+					//update RDF item's label:
+        			$rdfItem->setLabel($qtiItem->getOption('title'));
+					
         			if ($itemsaved) {
         			// extract the measurements
         				$measurements = array();

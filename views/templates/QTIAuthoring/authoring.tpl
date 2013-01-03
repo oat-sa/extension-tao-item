@@ -25,9 +25,12 @@
 </div>
 
 <div id="qtiAuthoring_main_container">
-
-	<div id="qtiAuthoring_menu_container" class="ui-widget-content ui-corner-all">
-		<div id="qtiAuthoring_menu_left_container" class="ui-widget-header ui-corner-all">
+	<div id="qtiAuthoring_title_container" class="ui-widget-content ui-corner-top">
+		
+	</div>
+	
+	<div id="qtiAuthoring_menu_container" class="ui-widget-content">
+		<div id="qtiAuthoring_menu_left_container" class="ui-widget-header">
 			<div id="qtiAuthoring_save_button" class="qti-menu-item">
 				<img title="<?=__('Save')?>" src="<?=get_data('qtiAuthoring_img_path')?>document-save.png"/>
 				<br/>
@@ -45,12 +48,13 @@
 				<br/>
 				<a href="#"><?=__('Export')?></a>
 			</div>
-
+			<?if(DEBUG_MODE):?>
 			<div id="qtiAuthoring_debug_button" class="qti-menu-item">
 				<img title="<?=__('Debug')?>" src="<?=get_data('qtiAuthoring_img_path')?>bug.png"/>
 				<br/>
 				<a href="#"><?=__('Debug')?></a>
 			</div>
+			<?endif;?>
 		</div>
 		<div id="qtiAuthoring_menu_right_container">
 			<div id="qtiAuthoring_item_editor_button" class="qti-menu-item qti-menu-item-wide">
@@ -83,13 +87,13 @@
 		<div id="qtiAuthoring_item_container">
 			<div id="qtiAuthoring_item_left_container">
 				<div id="item_option_accordion">
-					<h3><a href="#"><?=__('Item Properties:')?></a></h3>
+					<h3><a href="#"><?=__('Item Properties')?></a></h3>
 					<div id="qtiAuthoring_itemProperties" class="ui-widget-content ui-corner-bottom">
 						<?=get_data('itemForm')?>
 					</div>
-					<h3><a href="#"><?=__('Response processing template editor:')?></a></h3>
+					<h3><a href="#"><?=__('Response processing template editor')?></a></h3>
 					<div id="qtiAuthoring_processingEditor" class="ui-widget-content ui-corner-bottom"></div>
-					<h3><a href="#"><?=__('Stylesheets manager:')?></a></h3>
+					<h3><a href="#"><?=__('Stylesheets manager')?></a></h3>
 					<div id="qtiAuthoring_cssManager" class="ui-widget-content ui-corner-bottom main-container"></div>
 				</div>
 			</div>
@@ -137,6 +141,13 @@ $(document).ready(function(){
 	try{
 		//global item object
 		myItem = new qtiEdit('<?=get_data('itemSerial')?>', null, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
+		
+		//set item name in title bar
+		var titleInput = $('#AssessmentItem_Form').find('input#title');
+		if(titleInput.length){
+			myItem.setTitleBar($(titleInput[0]).val());
+		}
+		
 	}catch(err){
 		CL('error creating the item', err);
 	}
@@ -156,13 +167,15 @@ $(document).ready(function(){
 		myItem.preview();
 		return false;
 	});
-
+	
+	<?if(DEBUG_MODE):?>
 	//set debug button
 	$('#qtiAuthoring_debug_button').click(function(){
 		myItem.debug();
 		return false;
 	});
-
+	<?endif;?>
+		
 	$('#qtiAuthoring_export_button').click(function(){
 		myItem.exportItem();
 		return false;
@@ -281,7 +294,7 @@ $(document).ready(function(){
 	setTimeout(function(){
 		$('#qtiAuthoring_loading').hide();
 		$('#qtiAuthoring_main_container').show();
-		var qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
+		qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
 	}, 1000);
 
 });
