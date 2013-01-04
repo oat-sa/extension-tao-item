@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.3-beta\n"
-"PO-Revision-Date: 2012-09-21T15:08:11\n"
+"Project-Id-Version: TAO v2.4-alpha\n"
+"PO-Revision-Date: 2013-01-04T11:15:28\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -127,9 +127,6 @@ msgstr ""
 msgid "create table"
 msgstr "skapa tabell"
 
-msgid "created from qti package"
-msgstr ""
-
 msgid "CSS format required"
 msgstr ""
 
@@ -184,10 +181,10 @@ msgstr "rita"
 msgid "duplicate"
 msgstr "dublett"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "Redigera fråga"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "Redigera fråga"
 
 msgid "Edit item class"
@@ -226,11 +223,11 @@ msgstr "Förväntad längd"
 msgid "Expected lines"
 msgstr "Förväntade rader"
 
-msgid "export"
-msgstr "export"
-
 msgid "Export"
 msgstr ""
+
+msgid "export"
+msgstr "export"
 
 msgid "Export Options"
 msgstr "Exporteringsalternativ"
@@ -326,14 +323,11 @@ msgstr "fråga framgångsrikt importerat"
 msgid "Item imported successfully"
 msgstr "Fråga framgångsrikt importerad"
 
-msgid "Item Properties:"
-msgstr "Frågeegenskaper"
+msgid "Item Properties"
+msgstr ""
 
 msgid "Item saved"
 msgstr "Fråga sparad"
-
-msgid "Item saved successfully"
-msgstr "Fråga framgångsrikt sparat"
 
 msgid "Item saving failed"
 msgstr ""
@@ -484,9 +478,6 @@ msgstr "Ordnat svar"
 msgid "Orientation"
 msgstr "Inriktning"
 
-msgid "OWI package uploaded"
-msgstr ""
-
 msgid "Paper-based Item"
 msgstr ""
 
@@ -514,11 +505,11 @@ msgstr "månghörning"
 msgid "Prev"
 msgstr ""
 
-msgid "Preview"
-msgstr "Förhandsvisning"
-
 msgid "preview"
 msgstr "förhandsvisning"
+
+msgid "Preview"
+msgstr "Förhandsvisning"
 
 msgid "preview (1:1)"
 msgstr ""
@@ -562,8 +553,8 @@ msgstr ""
 msgid "Response editor:"
 msgstr "Svarsredigerare:"
 
-msgid "Response processing template editor:"
-msgstr "Svarsprocesseringsmallredigerare:"
+msgid "Response processing template editor"
+msgstr ""
 
 msgid "Response variable type"
 msgstr "Svarsvariabeltyp"
@@ -619,8 +610,8 @@ msgstr "Tråd"
 msgid "String identifier"
 msgstr "Trådidentifierare"
 
-msgid "Stylesheets manager:"
-msgstr "Stilarkhanterare:"
+msgid "Stylesheets manager"
+msgstr ""
 
 msgid "template"
 msgstr "mall"

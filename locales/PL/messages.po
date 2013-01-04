@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.3-beta\n"
-"PO-Revision-Date: 2012-09-21T15:55:49\n"
+"Project-Id-Version: TAO v2.4-alpha\n"
+"PO-Revision-Date: 2013-01-04T11:15:26\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: PL\n"
@@ -127,9 +127,6 @@ msgstr ""
 msgid "create table"
 msgstr ""
 
-msgid "created from qti package"
-msgstr ""
-
 msgid "CSS format required"
 msgstr ""
 
@@ -184,10 +181,10 @@ msgstr ""
 msgid "duplicate"
 msgstr ""
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr ""
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr ""
 
 msgid "Edit item class"
@@ -226,10 +223,10 @@ msgstr ""
 msgid "Expected lines"
 msgstr ""
 
-msgid "export"
+msgid "Export"
 msgstr ""
 
-msgid "Export"
+msgid "export"
 msgstr ""
 
 msgid "Export Options"
@@ -326,13 +323,10 @@ msgstr ""
 msgid "Item imported successfully"
 msgstr ""
 
-msgid "Item Properties:"
+msgid "Item Properties"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
-
-msgid "Item saved successfully"
 msgstr ""
 
 msgid "Item saving failed"
@@ -484,9 +478,6 @@ msgstr ""
 msgid "Orientation"
 msgstr ""
 
-msgid "OWI package uploaded"
-msgstr ""
-
 msgid "Paper-based Item"
 msgstr ""
 
@@ -514,10 +505,10 @@ msgstr ""
 msgid "Prev"
 msgstr ""
 
-msgid "Preview"
+msgid "preview"
 msgstr ""
 
-msgid "preview"
+msgid "Preview"
 msgstr ""
 
 msgid "preview (1:1)"
@@ -562,7 +553,7 @@ msgstr ""
 msgid "Response editor:"
 msgstr ""
 
-msgid "Response processing template editor:"
+msgid "Response processing template editor"
 msgstr ""
 
 msgid "Response variable type"
@@ -619,7 +610,7 @@ msgstr ""
 msgid "String identifier"
 msgstr ""
 
-msgid "Stylesheets manager:"
+msgid "Stylesheets manager"
 msgstr ""
 
 msgid "template"

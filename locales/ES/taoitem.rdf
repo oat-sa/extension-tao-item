@@ -40,24 +40,6 @@
     -->
     <rdfs:comment xml:lang="ES"><![CDATA[Item Content]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#VersionedItemContentFolder">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source Versioned Item Content
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#VersionedItemContentFolder
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="ES"><![CDATA[Versioned Item Content]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source The folder containing the versioned content
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#VersionedItemContentFolder
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="ES"><![CDATA[The folder containing the versioned content]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName">
     <!--
     @sourceLanguage EN
@@ -147,6 +129,24 @@
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
     <rdfs:comment xml:lang="ES"><![CDATA[Items of model are deliverable]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source itemmodel service
+    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="ES"><![CDATA[itemmodel service]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source service of the item model
+    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="ES"><![CDATA[service of the item model]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget">
     <!--
