@@ -30,6 +30,11 @@ return array(
 			dirname(__FILE__).'/scripts/install/addLocalSource.php'
 		)
 	),
+	'local'	=> array(
+		'php'	=> array(
+			dirname(__FILE__).'/scripts/install/addQTIExamples.php'
+		)
+	),
 	'classLoaderPackages' => array(
 		dirname(__FILE__).'/actions/',
 		dirname(__FILE__).'/helpers/'

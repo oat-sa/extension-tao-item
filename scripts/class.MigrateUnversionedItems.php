@@ -240,11 +240,6 @@ class taoItems_scripts_MigrateUnversionedItems
 
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039D3 begin
 		
-		if(!helpers_Versioning::isEnabled()){
-			self::out('generis versioning is not enabled');
-			return $returnValue;
-		}
-		
 		//copy item content folder to the versioned path
 		//get old file content, set file content
 		//commit changes
