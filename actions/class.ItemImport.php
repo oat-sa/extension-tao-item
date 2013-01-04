@@ -31,10 +31,6 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			//get the item parent class
 			$clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getSessionAttribute('classUri')));
 		
-			//get the services instances we will need
-			$itemService	= taoItems_models_classes_ItemsService::singleton();
-			$qtiService 	= taoItems_models_classes_QTI_Service::singleton();
-		
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			
 			$forceValid = false;
@@ -42,55 +38,28 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				if(is_array($formValues['disable_validation'])){
 					$forceValid = true;
 				}
-			} 
+			}
 			
-			//validate the file to import
-			$qtiParser = new taoItems_models_classes_QTI_Parser($uploadedFile);
-			
-			$qtiParser->validate();
-			if(!$qtiParser->isValid() && !$forceValid){
+			try {
+				$importService = taoItems_models_classes_QTI_ImportService::singleton();
+				$item = $importService->importQTIFile($uploadedFile, $clazz, $forceValid);
+			} catch (taoItems_models_classes_QTI_ParsingException $e) {
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
 				$this->setData('importErrors', $qtiParser->getErrors());
-			}
-			else{
-				//create a new item instance of the clazz
-				if($itemService->isItemClass($clazz)){
-					
-					//load the QTI item from the file
-					$qtiItem = $qtiParser->load();
-					if(!is_null($qtiItem)){
-					
-						//create the instance
-						$rdfItem = $itemService->createInstance($clazz);
-						
-						if(!is_null($rdfItem)){
-							//set the QTI type
-							$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_QTI);
-							
-							//set the label
-							$rdfItem->setLabel($qtiItem->getOption('title'));
-							
-							//save itemcontent
-							if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem)){
-								
-								$this->removeSessionAttribute('classUri');
-								$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
-								$this->setData('message', __('Item imported successfully') . ' : ' .$rdfItem->getLabel());
-								$this->setData('reload', true);
-								
-								@unlink($uploadedFile);
-								
-								return true;
-							}
-						}
-					}
-				} else {
-					common_Logger::w('itemService expected class \''.$itemService->getItemClass()->getLabel().'\', but got class \''.$clazz->getLabel().'\'', array('TAOITEMS'));
-				}
+			} catch (common_Exception $e) {
 				$this->setData('message', __('An error occurs during the import'));
 			}
-			return false;
+			
+			@unlink($uploadedFile);
+			if (!is_null($item)) {
+				$this->removeSessionAttribute('classUri');
+				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
+				$this->setData('message', __('Item imported successfully') . ' : ' .$item->getLabel());
+				$this->setData('reload', true);
+			}
+			return true;
 		}
+		return false;
 	}
 	
 	/**
