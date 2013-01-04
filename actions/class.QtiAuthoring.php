@@ -675,7 +675,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$choices = $this->service->getInteractionChoices($interaction);
 		$choiceForms = array();
 
-		$interactionType = strtolower($interaction->getType());
+		$interactionTypeLabel = $interaction->getType();
+		$interactionType = strtolower($interactionTypeLabel);
 		switch($interactionType){
 			case 'match':{
 				$i = 0;
@@ -755,6 +756,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 		//display the template, according to the type of interaction
 		$templateName = 'QTIAuthoring/form_interaction_'.strtolower($interaction->getType()).'.tpl';
+		$this->setData('interactionType', ucfirst($interactionTypeLabel));
 		$this->setData('interactionSerial', $interaction->getSerial());
 		$this->setData('formInteraction', $myForm->render());
 		$this->setData('formChoices', $choiceForms);
@@ -816,11 +818,12 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		}
 
 		$templateName = 'QTIAuthoring/form_choices_'.strtolower($interaction->getType()).'.tpl';
+		$this->setData('choiceType', ucfirst($this->service->getInteractionChoiceName($interactionType)).'s');
 		$this->setData('formChoices', $choiceForms);
 		$this->setData('orderedChoices', $choices);
 		$this->setView($templateName);
 	}
-
+	
 	public function saveInteraction(){
 
 		$interaction = $this->getCurrentInteraction();
@@ -1127,7 +1130,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$added = false;
 		$groupSerial = '';//a gap basically is a "group", the content of which is by default all available choices in the interaction
 		$textContent = '';
-		$interaction = null;
 		$interaction = $this->getCurrentInteraction();
 		$interactionData = $this->getPostedInteractionData();
 

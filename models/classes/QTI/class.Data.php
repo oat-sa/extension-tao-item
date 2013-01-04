@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  * It provides the serialisation and persistance methods.
  * And give the interface for the rendering.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -21,7 +21,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 /**
  * include tao_models_classes_cache_PartitionedCachable
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('tao/models/classes/cache/class.PartitionedCachable.php');
 
@@ -29,7 +29,7 @@ require_once('tao/models/classes/cache/class.PartitionedCachable.php');
  * By implementing the exportable interface, the object must export it's data to
  * formats defined here.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  */
 require_once('taoItems/models/classes/QTI/interface.Exportable.php');
 
@@ -50,7 +50,7 @@ require_once('taoItems/models/classes/QTI/interface.Exportable.php');
  *
  * @abstract
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package taoItems
  * @subpackage models_classes_QTI
  */
@@ -129,7 +129,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Export the data in XHTML format
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public function toXHTML()
@@ -156,7 +156,7 @@ abstract class taoItems_models_classes_QTI_Data
      * EXport the data in the QTI XML format
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public function toQTI()
@@ -183,7 +183,7 @@ abstract class taoItems_models_classes_QTI_Data
      * EXport the data into TAO's objects Form
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return tao_helpers_form_xhtml_Form
      */
     public function toForm()
@@ -200,7 +200,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setPersistence
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  boolean enabled
      * @return mixed
      */
@@ -218,7 +218,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getTemplatePath
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public static function getTemplatePath()
@@ -242,7 +242,7 @@ abstract class taoItems_models_classes_QTI_Data
      * a human readable identifier will be created)
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string identifier
      * @param  array options
      * @return mixed
@@ -254,7 +254,8 @@ abstract class taoItems_models_classes_QTI_Data
     		$this->setIdentifier($identifier);
     	}
     	catch(InvalidArgumentException $iae){
-    		$this->createIdentifier();
+			$prefix = isset($options['identifierPrefix'])?(string)$options['identifierPrefix']:'';
+    		$this->createIdentifier($prefix);
     	}
     	$this->options = $options;
         parent::__construct($identifier);
@@ -265,7 +266,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the identifier
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public function getIdentifier()
@@ -290,7 +291,7 @@ abstract class taoItems_models_classes_QTI_Data
      * If the parameter already exists a InvalidArgumentException is thrown.
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string id
      * @param  boolean unique
      * @return mixed
@@ -335,10 +336,11 @@ abstract class taoItems_models_classes_QTI_Data
      * Create a unique identifier, based on the kind of instance.
      *
      * @access protected
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
+     * @param  string prefix
      * @return mixed
      */
-    protected function createIdentifier()
+    protected function createIdentifier($prefix = '')
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
@@ -351,7 +353,14 @@ abstract class taoItems_models_classes_QTI_Data
     	}
     	
     	$clazz = strtolower(get_class($this));
-    	$prefix = substr($clazz, strpos($clazz, 'qti_') + 4).'_';
+		
+		if(empty($prefix)){
+			$prefix = substr($clazz, strpos($clazz, 'qti_') + 4).'_';
+		}else{
+			$prefix = preg_replace('/[^a-zA-Z0-9_]/', '_', $prefix);
+			$prefix = preg_replace('/(_)+/', '_', $prefix);
+			$prefix .= '_';
+		}
     		
     	$index = 1;
     	do {
@@ -374,7 +383,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getType
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public function getType()
@@ -394,7 +403,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setType
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string type
      * @return mixed
      */
@@ -411,7 +420,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the data
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public function getData()
@@ -431,7 +440,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set the data
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string data
      * @param  boolean cleanup
      * @return mixed
@@ -468,7 +477,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getDataXHTML
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     public function getDataXHTML()
@@ -525,7 +534,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method setDataXHTML
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string data
      * @return mixed
      */
@@ -539,7 +548,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get the options
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return array
      */
     public function getOptions()
@@ -559,7 +568,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set the options
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  array options
      * @return mixed
      */
@@ -576,7 +585,7 @@ abstract class taoItems_models_classes_QTI_Data
      * get an options by it's name
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string name
      * @return mixed
      */
@@ -607,7 +616,7 @@ abstract class taoItems_models_classes_QTI_Data
      * set an option
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  string name
      * @param  string value
      * @return mixed
@@ -626,7 +635,7 @@ abstract class taoItems_models_classes_QTI_Data
      * from the instance options and regarding the option type
      *
      * @access protected
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @param  array formalOpts
      * @param  boolean recursive
      * @return string
@@ -671,7 +680,7 @@ abstract class taoItems_models_classes_QTI_Data
      * of the current instances to an associative array
      *
      * @access protected
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return array
      */
     protected function extractVariables()
@@ -696,7 +705,7 @@ abstract class taoItems_models_classes_QTI_Data
      * create a unique serial number
      *
      * @access protected
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return string
      */
     protected function buildSerial()
@@ -716,7 +725,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method getCache
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return tao_models_classes_cache_Cache
      */
     public function getCache()
@@ -736,7 +745,7 @@ abstract class taoItems_models_classes_QTI_Data
      * Short description of method destroy
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
      * @return mixed
      */
     public function destroy()

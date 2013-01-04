@@ -404,7 +404,6 @@ class taoItems_models_classes_QtiAuthoringService
 						$interaction->addGroup($newGroup);
 						$interaction->setData($interaction->getData().'{'.$newGroup->getSerial().'}');
 					}
-
 					$interaction->setOption('shuffle', false);
 					$interaction->setOption('maxAssociations', 1);
 					break;
@@ -455,7 +454,46 @@ class taoItems_models_classes_QtiAuthoringService
 
 		return $returnValue;
 	}
-
+	
+	public function getInteractionChoiceName($interactionType){
+		
+		$returnValue = '';
+		
+		switch ($interactionType) {
+			case 'choice':
+			case 'order':
+			case 'associate':
+			case 'match':
+			case 'inlinechoice': {
+				$returnValue = 'choice'; //case sensitive! used to get the xml qti element tag + the choice form
+				break;
+			}
+			case 'gapmatch': {
+				$returnValue = 'gapText';
+				break;
+			}
+			case 'hottext': {
+				$returnValue = 'hottext';
+				break;
+			}
+			case 'hotspot':
+			case 'graphicorder':
+			case 'graphicassociate':{
+				$returnValue = 'hotspot';
+				break;
+			}
+			case 'graphicgapmatch': {
+				$returnValue = 'gapImg';
+				break;
+			}
+			default: {
+				throw new InvalidArgumentException('invalid interaction type : '.$interactionType);
+			}
+		}
+		
+		return $returnValue;
+	}
+	
 	//TODO: place all optionnal and special parameters in the option array
 	public function addChoice(taoItems_models_classes_QTI_Interaction $interaction, $data='', $identifier=null, taoItems_models_classes_QTI_Group $group=null, $interactionData = ''){
 
@@ -465,6 +503,7 @@ class taoItems_models_classes_QtiAuthoringService
 			//create a new choice:
 			//determine the type of choice according to the type of the interaction:
 			$choiceType = '';
+			$choiceIdentifierPrefix = 'choice';//define the default choice label for user display convenience
 			$matchMax = null;
 			$interactionType = strtolower($interaction->getType());
 			switch($interactionType){
@@ -481,6 +520,7 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'gapmatch':{
 					$choiceType = 'gapText';
+					$choiceIdentifierPrefix = 'gapText';
 					$matchMax = 0;
 					break;
 				}
@@ -490,20 +530,24 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 				case 'hottext':{
 					$choiceType = 'hottext';
+					$choiceIdentifierPrefix = 'hottext';
 					break;
 				}
 				case 'hotspot':
 				case 'graphicorder':{
 					$choiceType = 'hotspotChoice';
+					$choiceIdentifierPrefix = 'hotspot';
 					break;
 				}
 				case 'graphicassociate':{
 					$choiceType = 'associableHotspot';
+					$choiceIdentifierPrefix = 'hotspot';
 					$matchMax = 0;
 					break;
 				}
 				case 'graphicgapmatch':{
 					$choiceType = 'gapImg';
+					$choiceIdentifierPrefix = 'gapImg';
 					$matchMax = 0;
 					break;
 				}
@@ -512,7 +556,7 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 
-			$choice = new taoItems_models_classes_QTI_Choice($identifier);
+			$choice = new taoItems_models_classes_QTI_Choice($identifier, array('identifierPrefix'=>$choiceIdentifierPrefix));
 			$choice->setType($choiceType);
 
 			if(!empty($data)){
@@ -523,7 +567,6 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			$interaction->addChoice($choice);
 			$this->qtiService->saveDataToSession($choice);
-
 			switch($interactionType){
 				case 'match':{
 					//insert into group: which group?
@@ -601,7 +644,7 @@ class taoItems_models_classes_QtiAuthoringService
 
 		if(!is_null($interaction)){
 
-			$group = new taoItems_models_classes_QTI_Group();
+			$group = new taoItems_models_classes_QTI_Group(null, array('identifierPrefix'=>'gap'));
 			foreach($this->getInteractionChoices($interaction) as $choice){
 				$group->addChoices(array($choice));
 			}

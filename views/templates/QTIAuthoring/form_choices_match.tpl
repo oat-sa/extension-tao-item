@@ -1,5 +1,5 @@
 <div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default">
-	<?=__('Choices editor:')?>
+	<?=get_data('choiceType')?> <?=__('Editor')?>
 </div>
 <?  $formChoices = get_data('formChoices');
 	$groupSerials = get_data('groupSerials'); ?>

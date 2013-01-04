@@ -1,5 +1,5 @@
 <div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default qti-authoring-form-container">
-		<?=__('Choices editor:')?>
+		<?=  get_data('choiceType')?> <?=__('Editor')?>
 </div>
 <div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
