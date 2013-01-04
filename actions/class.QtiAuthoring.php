@@ -203,18 +203,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->service->setOptions($itemObject, $options);
 
 		if(!empty($itemData)){
-			//save item data:
-			// print_r($itemData);
 			$this->service->saveItemData($itemObject, $itemData);
-			//save to qti:
-
-
-
 		}
 
 		$itemResource = $this->getCurrentItemResource();
 		$saved = $this->qtiService->saveDataItemToRdfItem($itemObject, $itemResource);
-
 
 		if(tao_helpers_Request::isAjax()){
 			echo json_encode(array(
