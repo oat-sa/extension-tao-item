@@ -116,7 +116,6 @@
 </div>
 
 <script type="text/javascript">
-
 $(document).ready(function(){
 	//init interface:
 	$myTab = $("#tabs-qti");
@@ -181,13 +180,12 @@ $(document).ready(function(){
 		return false;
 	});
 
-
-	$( "#item_option_accordion" ).accordion({
+	$("#item_option_accordion").accordion({
+		heightStyle: "fill",
 		fillSpace: true
 	});
 
 	myItem.loadStyleSheetForm();
-
 
 	// available interactions:
 	var interactionTypes = {
@@ -296,7 +294,11 @@ $(document).ready(function(){
 		$('#qtiAuthoring_main_container').show();
 		qtiInteractionCarousel = new tinyCarousel('#qti-carousel-container', '#qti-carousel-content', '#qti-carousel-next-button', '#qti-carousel-prev-button');
 	}, 1000);
-
+	
 });
 
+//chrome: need to refresh accordion to fix height issue
+$(window).load(function(){
+	$("#item_option_accordion").accordion('refresh');
+});
 </script>

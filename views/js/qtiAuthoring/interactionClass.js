@@ -693,19 +693,17 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 		}
 
 		if(options.group){
+			
 			var $buttonElt = $('<span id="a_'+groupId+'" title="'+__('Advanced options')+'" class="form-group-control choice-button-advanced ui-icon ui-icon-circle-plus"></span>');
 			$group.before($buttonElt);
-
 			$group.hide();
-			$('#a_'+groupId).bind('click', function(e){
-				e.preventDefault();
-				$('#'+groupId).toggle();
-			});
 
 			$('#a_'+groupId).toggle(function(){
 				$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
+				$group.slideToggle();
 			},function(){
 				$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
+				$group.slideToggle();
 			});
 		}
 

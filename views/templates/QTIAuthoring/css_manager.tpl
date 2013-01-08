@@ -16,7 +16,7 @@
 
 <?endif;?>
 <div class="main-container">
-	<?=__('Add a new stylesheet:')?>
+	<a id="a_cssFormToggleButton"><span id="cssFormToggleButton" class="ui-icon ui-icon-circle-plus"></span></a><span><?=__('Add a new stylesheet')?></span>
 	<?=get_data('myForm')?>
 </div>
 

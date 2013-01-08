@@ -4,12 +4,12 @@
 
 /*top menu*/
 /*placing top menu*/
-#qtiAuthoring_title_container{border-bottom-width: 0;text-align: center;}
-#qtiAuthoring_menu_container{position: relative;height:68px;top:0%;left:0%;}
+#qtiAuthoring_title_container{text-align: center;padding: 3px 0px;font-weight:bold;}
+#qtiAuthoring_menu_container{position: relative;height:68px;top:0%;left:0%;border-width: 1px;}
 
-#qtiAuthoring_menu_left_container{position:absolute;width:25%;min-width:310px;height:98%;padding:0px;border-width: 1px 0px;}
+#qtiAuthoring_menu_left_container{position:absolute;width:25%;min-width:310px;padding:0px;border-width: 0px;}
 #qtiAuthoring_menu_left_container>div{float:left;margin-right:15px;}
-#qtiAuthoring_menu_right_container{position:absolute;left:25%;height:98%;padding:0px;width: 75%;border-width: 0px;}
+#qtiAuthoring_menu_right_container{position:absolute;left:25%;padding:0px;width: 75%;border-width: 1px;}
 
 div.qti-menu-item{float:right;text-align:center;cursor:pointer;padding: 0px 5px;width: 60px;margin-top: 3px;}
 div.qti-menu-item a{color:#D1043B;font-weight:bold;text-decoration:none;}
@@ -31,6 +31,7 @@ ul#cssFiles li span.cssFile-title{width:80%;}
 ul#cssFiles li span.cssFile-title a {}
 ul#cssFiles li span.cssFile-title a:hover{color:#BDBDBD;}
 ul#cssFiles a.cssFile-button{float:right;margin-right:5px;cursor:pointer;}
+a#a_cssFormToggleButton{float:left;margin-left:5px;cursor:pointer;}
 
 /*uploadify made smaller*/
 div.xhtml_form div.file-uploader .uploadifyQueueItem, .uploadifyQueueItem {width: auto;padding:auto;}
@@ -76,7 +77,6 @@ div#qtiAuthoring_interaction_container.ui-tabs-panel.ui-widget-content{width: 10
 
 #qtiAuthoring_interaction_left_container{float:left;width:60%;}
 
-#item_option_accordion{margin-right:2px}
 #item_option_accordion > h3:first-child {margin: 0px;}
 
 #qtiAuthoring_interaction_right_container{float:left;width:40%;}

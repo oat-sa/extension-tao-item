@@ -111,9 +111,9 @@ class taoItems_actions_QTIform_CSSuploader
 			'actions-top'		=> new tao_helpers_form_xhtml_TagWrapper(array('tag' => 'div', 'cssClass' => 'form-toolbar'))
 		));
 
-		$connectElt = tao_helpers_form_FormFactory::getElement('submit', 'Submit');
-		$connectElt->setValue('Save');
-		$this->form->setActions(array($connectElt), 'bottom');
+		$submitElt = tao_helpers_form_FormFactory::getElement('submit', 'Submit');
+		$submitElt->setValue('Upload');
+		$this->form->setActions(array($submitElt), 'bottom');
 
         // section 10-13-1-39-643eb156:12d51696e7c:-8000:0000000000004FB3 end
     }

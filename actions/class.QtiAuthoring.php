@@ -1489,7 +1489,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 							'title' => empty($data['title'])?$data['css_import']['name']:$data['title'],
 							'href' => $fileData['href'],
 							'type' => 'text/css',
-							'media' => 'qti item body'
+							'media' => 'screen'//@TODO:default to "screen" make suggestion of other devises such as "handheld" when mobile ready
 						);
 						$item->setStyleSheets($cssFiles);
 					}

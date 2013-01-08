@@ -1159,7 +1159,6 @@ qtiEdit.prototype.loadResponseProcessingForm = function(){
 
 qtiEdit.prototype.saveItemResponseProcessing = function($myForm){
 	var self = this;
-
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/saveItemResponseProcessing",
@@ -1196,7 +1195,7 @@ which value for this.responseMode here ?
 
 qtiEdit.prototype.loadStyleSheetForm = function(empty){
 
-	var instance = this;
+	var self = this;
 
 	//check if the form is not empty:
 	var post = '';
@@ -1206,26 +1205,28 @@ qtiEdit.prototype.loadStyleSheetForm = function(empty){
 	}else{
 		post = {itemSerial: this.itemSerial, itemUri: this.itemUri};
 	}
-
+	
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/manageStyleSheets",
 	   data: post,
 	   dataType: 'html',
 	   success: function(form){
-			$(instance.cssFormContent).html(form);
-			var timer = null;
+			$(self.cssFormContent).html(form);
 			if($('#css_uploader').length){
-				$('#css_import-AsyncFileUploader_starter').click(function(){
-					if(timer) clearInterval(timer);
-					var checkComplete = function(){
-						if( $('#css_import').val() != ''){
-							clearInterval(timer);
-							instance.loadStyleSheetForm();
-						}
-					};
-
-					timer = setInterval(checkComplete, 1000);
+				
+				var $cssForm = $('form#css_uploader').hide();
+				$('#cssFormToggleButton').toggle(function(){
+					$(this).switchClass('ui-icon-circle-plus', 'ui-icon-circle-minus');
+					$cssForm.slideToggle();
+				},function(){
+					$(this).switchClass('ui-icon-circle-minus', 'ui-icon-circle-plus');
+					$cssForm.slideToggle();
+				});
+				
+				$('#css_uploader').find('input#title').each(function(){$(this).val('');});//reset the css name after reload
+				$('#css_uploader').find('input#submit').unbind('click').bind('click', function(){
+					self.loadStyleSheetForm();//submit manually to reset the event handler
 					return false;
 				});
 
@@ -1235,8 +1236,7 @@ qtiEdit.prototype.loadStyleSheetForm = function(empty){
 }
 
 qtiEdit.prototype.deleteStyleSheet = function(css_href){
-	var instance = this;
-
+	var self = this;
 	$.ajax({
 	   type: "POST",
 	   url: root_url + "/taoItems/QtiAuthoring/deleteStyleSheet",
@@ -1248,7 +1248,7 @@ qtiEdit.prototype.deleteStyleSheet = function(css_href){
 	   dataType: 'json',
 	   success: function(r){
 			if(r.deleted){
-				instance.loadStyleSheetForm(true);
+				self.loadStyleSheetForm(true);
 			}
 	   }
 	});
