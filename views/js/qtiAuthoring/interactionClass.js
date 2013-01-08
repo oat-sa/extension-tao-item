@@ -152,8 +152,8 @@ interactionClass.prototype.saveInteraction = function($myForm, option){
 		var orderedChoices = '';
 		if(this.orderedChoices[0]){
 			interactionProperties.choiceOrder = [];
-			for(var i=0;i<this.orderedChoices.length;i++){
-				interactionProperties.choiceOrder[i] = this.orderedChoices[i];
+			for(var index=0;i<this.orderedChoices.length;index++){
+				interactionProperties.choiceOrder[index] = this.orderedChoices[index];
 			}
 		}else{
 			//for match and gapmatch interaction:
@@ -381,9 +381,9 @@ interactionClass.prototype.getRelatedItem = function(strict){
 
 interactionClass.prototype.loadChoicesForm = function(containerSelector){
 	if (!containerSelector) {
-		var containerSelector = '';
+		containerSelector = '';
 		if (this.choicesFormContainer) {
-			var containerSelector = this.choicesFormContainer;
+			containerSelector = this.choicesFormContainer;
 		}
 	}
 	var interactionSerial = this.interactionSerial;
@@ -402,35 +402,7 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 				$formContainer.html(form);
 				
 				//populate choices local model:
-				//@TODO: replace the form based data filing by a clean data model
-				$formContainer.find('input#choiceSerial').each(function(){
-					var serial = $(this).val();
-					interaction.choices[serial] = {};
-					
-					$(this).siblings('div').each(function(){
-						
-						var choiceIdElt = $(this).find('input#choiceIdentifier');
-						if(choiceIdElt.length){
-							interaction.setInteractionChoiceAttribute(serial, 'identifier', $(choiceIdElt[0]).val());
-						}
-						
-						var choiceShapeElt = $(this).find('select#shape');
-						if(choiceShapeElt.length){
-							var shape = $(choiceShapeElt[0]).val();
-							
-							interaction.setInteractionChoiceAttribute(serial, 'shape', shape);
-							
-							$(choiceShapeElt[0]).siblings('img.shapeEditorPencil').each(function(){
-								if(shape == 'default'){
-									$(this).hide();
-								}else{
-									$(this).show();
-								}
-							});
-						}
-					});
-					
-				});
+				interaction.loadChoiceDataFromChoiceForm($formContainer);//parse form data to get choice data
 				
 				qtiEdit.initFormElements($formContainer);
 				interaction.setFormChangeListener();
@@ -444,6 +416,34 @@ interactionClass.prototype.loadChoicesForm = function(containerSelector){
 		});
 	}
 
+}
+
+//@TODO: replace the form based data filing by a clean data model
+interactionClass.prototype.loadChoiceDataFromChoiceForm = function($choiceFormContainer){
+	
+	var __this = this;
+	
+	//group and choice are both considered choices in QTI 
+	$choiceFormContainer.find('input#choiceSerial,input#groupSerial').each(function(){
+		
+		var serial = $(this).val();
+		__this.choices[serial] = {};//init interaction's internal choice object
+		
+		$(this).siblings('div').each(function(){
+						
+			var choiceIdElt = $(this).find('input#choiceIdentifier');
+			if(choiceIdElt.length){
+				__this.setInteractionChoiceAttribute(serial, 'identifier', $(choiceIdElt[0]).val());
+			}
+						
+			var choiceShapeElt = $(this).find('select#shape');
+			if(choiceShapeElt.length){
+				var shape = $(choiceShapeElt[0]).val();
+				__this.setInteractionChoiceAttribute(serial, 'shape', shape);
+			}
+		});
+					
+	});
 }
 
 interactionClass.prototype.getInteractionChoiceAttribute = function(choiceSerial, attribute){
@@ -476,7 +476,7 @@ interactionClass.prototype.setShapeEditListener = function(target){
 				var choiceSerial = $choiceForm.attr('id');
 				choiceSerial = choiceSerial.replace('GroupForm_', '');
 				choiceSerial = choiceSerial.replace('ChoiceForm_', '');
-
+				
 				var $qtiShapeCombobox = $choiceForm.find('.qti-shape').bind('change', {choiceSerial:choiceSerial}, function(e){
 					
 					var cSerial = e.data.choiceSerial;
@@ -484,34 +484,20 @@ interactionClass.prototype.setShapeEditListener = function(target){
 					var oldShape = interaction.getInteractionChoiceAttribute(cSerial, 'shape');
 					
 					if(newShape != oldShape){
-						var redrawShape = false;
-						if(oldShape == 'default'){
-							redrawShape = true;
-						}else{
-							if(confirm(__('Changing shape type will delete the old shape, are you sure?'))){
-								redrawShape = true;
-							}else{
-								//restore shape and interaction modification :
-								$(this).val(oldShape);
-							}
-						}
-					
-						if(redrawShape){
-							interaction.shapeEditor.removeShapeObj(cSerial);
-							interaction.shapeEditor.startDrawing(cSerial, newShape);
-							interaction.setInteractionChoiceAttribute(cSerial, 'shape', newShape);
-						}
+						interaction.shapeEditor.removeShapeObj(cSerial);
+						interaction.shapeEditor.startDrawing(cSerial, newShape);
+						interaction.setInteractionChoiceAttribute(cSerial, 'shape', newShape);
 					}
 					
 					$(this).siblings('img.shapeEditorPencil').each(function(){
-						if(interaction.getInteractionChoiceAttribute(cSerial, 'shape') == 'default'){
+						if(interaction.getInteractionChoiceAttribute(choiceSerial, 'shape') == 'default'){
 							$(this).hide();
 						}else{
 							$(this).show();
 						}
 					});
 				});
-
+				
 				//append the edit button:
 				var $imageLink = $('<img src="'+img_url+'pencil.png"/>').insertAfter($qtiShapeCombobox);
 				$imageLink.attr('title', __('draw it'));
@@ -520,7 +506,12 @@ interactionClass.prototype.setShapeEditListener = function(target){
 					var shape = $(this).siblings('.qti-shape').val();
 					interaction.shapeEditor.startDrawing(e.data.choiceSerial, shape);
 				});
-
+				
+				//init pencil show/hide according to default shape:
+				if(interaction.getInteractionChoiceAttribute(choiceSerial, 'shape') == 'default'){
+					$imageLink.hide();
+				}
+				
 				//check if the coords are not empty, if so, draw the shape:
 				var $qtiCoordsInput = $choiceForm.find('input[name=coords]');
 				if($qtiCoordsInput.length){
@@ -581,41 +572,48 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 		   dataType: 'json',
 		   success: function(r){
 				if (r.added) {
+					
 					if (r.reload) {
 						interaction.loadChoicesForm();
 						return;
-					}
+						
+					}else{
+						
+						var $newFormElt = $('<div/>');
+						$newFormElt.attr('id', r.choiceSerial);
+						$newFormElt.attr('class', containerClass);
+						$newFormElt.append(r.choiceForm);
+						$appendTo.append($newFormElt);
+						
+						//populate new choice into local data:
+						interaction.loadChoiceDataFromChoiceForm($newFormElt);
+						
+						$newFormElt.hide();
+						interaction.initToggleChoiceOptions();
+						$newFormElt.show();
 
-					var $newFormElt = $('<div/>');
-					$newFormElt.attr('id', r.choiceSerial);
-					$newFormElt.attr('class', containerClass);
-					$newFormElt.append(r.choiceForm);
-					$appendTo.append($newFormElt);
+						qtiEdit.initFormElements($newFormElt);
+						interaction.setFormChangeListener('#'+r.choiceSerial);
+						interaction.setShapeEditListener('#'+r.choiceSerial);
 
-					$newFormElt.hide();
-					interaction.initToggleChoiceOptions();
-					$newFormElt.show();
-
-					qtiEdit.initFormElements($newFormElt);
-					interaction.setFormChangeListener('#'+r.choiceSerial);
-					interaction.setShapeEditListener('#'+r.choiceSerial);
-
-					//add to the local choices order array:
-					//if interaction type is match, save the new choice in one of the group array:
-					if (r.groupSerial) {
-						if (interaction.orderedChoices[r.groupSerial]) {
-							interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
+						//add to the local choices order array:
+						//if interaction type is match, save the new choice in one of the group array:
+						if (r.groupSerial) {
+							if (interaction.orderedChoices[r.groupSerial]) {
+								interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
+							} else {
+								throw 'the group serial is not defined in the ordered choices array';
+							}
 						} else {
-							throw 'the group serial is not defined in the ordered choices array';
+							interaction.orderedChoices.push(r.choiceSerial);
 						}
-					} else {
-						interaction.orderedChoices.push(r.choiceSerial);
-					}
 
-					require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
-						//rebuild the response grid:
-						new responseClass(interaction.responseGrid, interaction);
-					});
+						require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+							//rebuild the response grid:
+							new responseClass(interaction.responseGrid, interaction);
+						});
+					}
+					
 				}
 		   }
 		});
@@ -660,7 +658,7 @@ interactionClass.prototype.toggleChoiceOptions = function($group, options){
 	if(groupId.indexOf('choicePropOptions') == 0){
 
 		if(!options){
-			var options = {'delete': true, 'group':true};
+			options = {'delete': true, 'group':true};
 		}else{
 			if(options['delete'] !== false){
 				options['delete'] = true;
@@ -854,13 +852,13 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 				qtiEdit.mapHtmlEditor($parentFormChoiceContainer);
 
 				// $('#'+choiceId).remove();
-				for(var i=0;i<list.length;i++){
-					if(i == currentPosition-1){
-						newOrder[i] = list[i+1];
-					}else if(i == currentPosition){
-						newOrder[i] = list[i-1];
+				for(var j=0;j<list.length;j++){
+					if(j == currentPosition-1){
+						newOrder[j] = list[j+1];
+					}else if(j == currentPosition){
+						newOrder[j] = list[j-1];
 					}else{
-						newOrder[i] = list[i];
+						newOrder[j] = list[j];
 					}
 				}
 
@@ -880,13 +878,13 @@ interactionClass.prototype.switchOrder = function(list, choiceId, direction){
 				}
 				// $('#'+choiceId).remove();
 				var newOrder = [];
-				for(var i=0;i<list.length;i++){
-					if(i == currentPosition){
-						newOrder[i] = list[i+1];
-					}else if(i == currentPosition+1){
-						newOrder[i] = list[i-1];
+				for(var j=0;j<list.length;j++){
+					if(j == currentPosition){
+						newOrder[j] = list[j+1];
+					}else if(j == currentPosition+1){
+						newOrder[j] = list[j-1];
 					}else{
-						newOrder[i] = list[i];
+						newOrder[j] = list[j];
 					}
 				}
 
@@ -925,7 +923,7 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 	}
 	this.orderedChoices = newOrderedChoices;
 
-	if(!reloadInteraction) var reloadInteraction = false;
+	if(!reloadInteraction) reloadInteraction = false;
 
 	$.ajax({
 	   type: "POST",
@@ -1060,7 +1058,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 	};
 
 	if(extraControls){
-		var controls = $.extend(controls, extraControls);
+		controls = $.extend(controls, extraControls);
 	}
 
 	if(!options){
@@ -1088,6 +1086,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 					}
 					return false;
 				}
+				return true;
 			},
 			frameReady: function(editorDoc){
 				interaction.bindChoiceLinkListener();
@@ -1279,7 +1278,10 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 				$newFormElt.attr('id', r.groupSerial);//r.groupSerial
 				$newFormElt.attr('class', 'formContainer_choice');//hard-coded: bad
 				$newFormElt.append(r.groupForm);
-
+				
+				//populate new choice into local data:
+				interaction.loadChoiceDataFromChoiceForm($newFormElt);
+						
 				//add to parameter
 				if(!$appendTo){
 					var $appendTo = $('#formContainer_groups');//append to group!

@@ -1,12 +1,12 @@
 <div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default qti-authoring-form-container">
-		<?=  get_data('choiceType')?> <?=__('Editor')?>
+		<?=get_data('choiceType')?> <?=__('Editor')?>
 </div>
 <div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_groups" class="formContainer_choices">
 		<? $formChoices = get_data('formChoices');?>
 		<div class="choices-column-header"><?=__('Gaps')?></div>
-		<?foreach($formGroups as $groupSerial => $groupForm):?>
+		<?foreach(get_data('formGroups') as $groupSerial => $groupForm):?>
 			<div id='<?=$groupSerial?>' class="formContainer_choice">
 				<?=$groupForm?>
 			</div>

@@ -802,7 +802,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 					$groupForms[$group->getSerial()] = $group->toForm($interaction)->render();
 				}
 				$this->setData('formGroups', $groupForms);
-
+				
 				//get choice forms:
 				foreach($choices as $order=>$choice){
 					$choiceForms[$choice->getSerial()] = $choice->toForm()->render();

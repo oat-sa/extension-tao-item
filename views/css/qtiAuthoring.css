@@ -4,7 +4,7 @@
 
 /*top menu*/
 /*placing top menu*/
-#qtiAuthoring_title_container{text-align: center;padding: 3px 0px;font-weight:bold;}
+#qtiAuthoring_title_container{text-align: center;padding: 3px 0px;font-weight:bold;border-bottom-width: 0px;}
 #qtiAuthoring_menu_container{position: relative;height:68px;top:0%;left:0%;border-width: 1px;}
 
 #qtiAuthoring_menu_left_container{position:absolute;width:25%;min-width:310px;padding:0px;border-width: 0px;}

@@ -668,10 +668,6 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 				$(self.interactionFormContent).empty();
 				$(self.interactionFormContent).html(form);
 				qtiEdit.initFormElements($(self.interactionFormContent));
-
-				// var position = $(self.interactionFormContent).position();
-				// window.scrollTo(0, parseInt(position.top));
-
 				if ($myTab) $myTab.tabs("select", 1);
 		   }
 		});
@@ -679,6 +675,9 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 
 }
 
+/*
+* Format common qti authoring form elements
+*/
 qtiEdit.initFormElements = function($container){
 	qtiEdit.mapFileManagerField($container);
 	qtiEdit.mapHtmlEditor($container);

@@ -1,12 +1,11 @@
 <div id="formChoices_title" class="ui-widget-header ui-corner-top ui-state-default qti-authoring-form-container">
-		<?=  get_data('choiceType')?> <?=__('Editor')?>
+	<?=  get_data('choiceType')?> <?=__('Editor')?>
 </div>
 <div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_groups" class="formContainer_choices">
-		<? $formChoices = get_data('formChoices');?>
-		<div class="choices-column-header"><?=__('Associable hotspots')?></div>
-		<?foreach($formGroups as $groupSerial => $groupForm):?>
+		<div class="choices-column-header"><?=__('Hotspots')?></div>
+		<?foreach(get_data('formGroups') as $groupSerial => $groupForm):?>
 			<div id='<?=$groupSerial?>' class="formContainer_choice">
 				<?=$groupForm?>
 			</div>
@@ -23,7 +22,7 @@
 	<div id="formContainer_choices_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_choices" class="formContainer_choices">
 		<div class="choices-column-header"><?=__('Gap images')?></div>
-		<?foreach($formChoices as $choiceSerial => $choiceForm):?>
+		<?foreach(get_data('formChoices') as $choiceSerial => $choiceForm):?>
 			<div id='<?=$choiceSerial?>' class="formContainer_choice">
 				<?=$choiceForm?>
 			</div>
