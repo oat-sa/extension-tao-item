@@ -126,7 +126,6 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				$this->setData('message', __('No items of could be imported successfuly'));
 			}
 			tao_helpers_File::remove($uploadedFile);
-			tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
 		}
 		return false;
 	}

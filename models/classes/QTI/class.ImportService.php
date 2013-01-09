@@ -168,6 +168,7 @@ class taoItems_models_classes_QTI_ImportService
 		$qtiManifestParser->validate();
 		
 		if(!$qtiManifestParser->isValid() && !$validate){
+			tao_helpers_File::delTree($folder);
 			throw new taoItems_models_classes_QTI_ParsingException();
 		}
 			
@@ -195,6 +196,8 @@ class taoItems_models_classes_QTI_ImportService
 				// skip to next
 			}
 		}
+		// cleanup
+		tao_helpers_File::delTree($folder);
 		
 		$returnValue = $importedItems;
         // section 10-30-1--78--1c871595:13c064de577:-8000:0000000000003C9F end

@@ -148,11 +148,11 @@ class taoItems_models_classes_QTI_PackageParser
         // section 127-0-1-1-5c65d02d:12bc97f5116:-8000:00000000000026F3 begin
         
     	if(!is_file($this->source)){	//ultimate verification
-        	throw new Exception("Wrong source mode");
+        	throw new common_exception_Error("source ".$this->source." not a file");
         }
         
         $sourceFile = basename($this->source);
-        $folder = dirname($this->source) . '/' . substr($sourceFile, 0, strrpos($sourceFile, '.'));
+        $folder = tao_helpers_File::createTempDir();
 		
 		if(!is_dir($folder)){
         	mkdir($folder);
