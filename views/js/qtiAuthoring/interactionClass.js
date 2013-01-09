@@ -1103,7 +1103,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 
 interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, options){
 
-	var interaction = this;
+	var __this = this;
 
 	var defaultOptions = {
 		onDrawn: function(choiceSerial, shapeObject, self){
@@ -1117,7 +1117,7 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 					var $choiceGroupForm = $('#'+choiceSerial).find('form');
 					if($choiceGroupForm.length){
 						$choiceGroupForm.find('input[name=coords]').val(qtiCoords);
-						interaction.setModifiedChoicesByForm($choiceGroupForm);
+						__this.setModifiedChoicesByForm($choiceGroupForm);
 					}else{
 						//throw 'no choice or group form found';
 					}
@@ -1134,8 +1134,40 @@ interactionClass.prototype.buildShapeEditor = function(backgroundImagePath, opti
 		backgroundImagePath,
 		shapeEditorOption
 	);
-
+	
+	//add slider to size img in a more user friendly way
+	var $eltHeight = $('form#InteractionForm').find('input#object_height');
+	var $eltWidth = $('form#InteractionForm').find('input#object_width');
+	
+	//record initial dimension:
+	var height = $eltHeight.val();
+	var width = $eltWidth.val();
+	
+	//append slider for a more user friendly way of img resizing
+	var $slider = $('<div class="qti-img-resize-slider"></div>').appendTo($('#formInteraction_object_container'));
+	$slider.slider({
+		range: "min",
+		value: 100,
+		min: 10,
+		max: 200,
+		slide: function(e, ui) {
+			var percentage = ui.value;
+			var newHeight = Math.round(percentage/100*height);
+			var newWidth = Math.round(percentage/100*width);
+			$eltHeight.val(newHeight);
+			$eltWidth.val(newWidth);
+			myShapeEditor.setSize(newWidth, newHeight);
+		},
+		stop:function(e,ui){
+			$eltHeight.change();//trigger change event
+			$eltWidth.change();
+		}
+	});
+	
 	if(myShapeEditor){
+		
+		$('#formInteraction_object_container_title').find('span.qti-img-preview-label').text(__('preview (1:1)'));
+		
 		//map choices to the shape editor:
 		this.shapeEditor = myShapeEditor;
 

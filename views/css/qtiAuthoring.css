@@ -134,4 +134,10 @@ div.xhtml_form div.form-toolbar {margin: 5px 5px 15px 2px;}
 
 div.choices-column-header, div#formInteraction_object_container_title {font-size:1.5em;padding:10px 0px;text-align:center;}
 
-div.qti-img-preview{text-align:center;}
+div.qti-img-preview{text-align:center;min-height:150px;}
+div.qti-img-resize-slider{height: 5px;}
+div.qti-img-resize-slider>div.ui-slider-range{height:0px;}
+div.qti-img-resize-slider>a.ui-slider-handle{height:0.5em;width:0.1em;margin-left:-0.6em;top:-0.3em;}
+
+span.qti-img-preview-label{font-style: italic;}
+div#formInteraction_object_container_title > span.qti-img-preview-label{font-size: 0.8em;}

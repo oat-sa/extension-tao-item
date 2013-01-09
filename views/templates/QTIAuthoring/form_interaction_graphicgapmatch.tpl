@@ -10,7 +10,7 @@
 			</div>
 			
 			<div class="xhtml_form">
-				<div id="formInteraction_object_container_title"><?=__('Graphic interaction stage:')?></div>
+				<div id="formInteraction_object_container_title"><?=__('Graphic interaction stage')?>&nbsp;<span class="qti-img-preview-label"></span></div>
 				<div id="formInteraction_object_container">
 					<div id="formInteraction_object">
 						<?=__('Background image not set yet. Select it in the "Image source url" input then update.')?>

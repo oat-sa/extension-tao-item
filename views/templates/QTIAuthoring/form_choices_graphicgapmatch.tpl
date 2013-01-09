@@ -4,7 +4,7 @@
 <div class="ui-widget-content ui-corner-bottom qti-authoring-form-container">
 	<div id="formContainer_groups_container" class="qti-authoring-form-container-column">
 		<div id="formContainer_groups" class="formContainer_choices">
-		<div class="choices-column-header"><?=__('Hotspots')?></div>
+		<div class="choices-column-header"><?=__('Gaps')?></div>
 		<?foreach(get_data('formGroups') as $groupSerial => $groupForm):?>
 			<div id='<?=$groupSerial?>' class="formContainer_choice">
 				<?=$groupForm?>

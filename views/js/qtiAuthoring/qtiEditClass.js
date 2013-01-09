@@ -687,7 +687,7 @@ qtiEdit.mapFileManagerField = function($container){
 
 	$container.find('.qti-file-img').each(function(){
 
-		var displayPreview = function(elt, imagePath, width, height){
+		var functionDisplayPreview = function(elt, imagePath, width, height){
 			if($(elt).hasClass('qti-with-preview') && width && height){
 				var maxHeight = 150;
 				var maxWidth = 150;
@@ -712,7 +712,6 @@ qtiEdit.mapFileManagerField = function($container){
 				var $parentElt = $(elt).parent();
 				var $previewElt = $parentElt.find('div.qti-img-preview');
 				if(!$previewElt.length){
-
 					$previewElt = $('<div class="qti-img-preview">').appendTo($parentElt);
 				}
 				// var $descriptionElt = $();
@@ -720,15 +719,51 @@ qtiEdit.mapFileManagerField = function($container){
 				$previewElt.append('<br/><span class="qti-img-preview-label">'+previewDescription+'</span>');
 			}
 		}
-
+		
+		//elt file input
+		var functionAddSlider = function($elt){
+			var $parent = $elt.parent();
+			if($elt.hasClass('qti-with-resizer') && $parent.find('div.qti-img-resize-slider').length == 0){
+				//do append slider:
+				var $slider = $('<div class="qti-img-resize-slider"></div>').appendTo($elt.parent());
+				$slider.slider({
+					range: "min",
+					value: 100,
+					min: 10,
+					max: 200,
+					slide: function(e, ui) {
+						var percentage = ui.value;
+						var newHeight = Math.round(percentage/100*height);
+						var newWidth = Math.round(percentage/100*width);
+						$eltHeight.val(newHeight);
+						$eltWidth.val(newWidth);
+						functionDisplayPreview($elt, imgPath, newWidth, newHeight);
+					},
+					stop:function(e,ui){
+						$eltHeight.change();//trigger change event
+						$eltWidth.change();
+					}
+				});
+			}
+		}
+		
 		var imgPath = $(this).val();
-		if(imgPath){
-			//check if the weight and height are defined:
-			var $modifiedForm = $(this).parents('form');
-			var height = parseInt($modifiedForm.find('input#object_height').val());
-			var width = parseInt($modifiedForm.find('input#object_width').val());
+		var $modifiedForm = $(this).parents('form');
+		var $eltHeight = $modifiedForm.find('input#object_height');
+		var $eltWidth = $modifiedForm.find('input#object_width');
 
-			if($(this).hasClass('qti-with-preview') && width && height) displayPreview(this, imgPath, width, height);
+		var height = parseInt($eltHeight.val());
+		var width = parseInt($eltWidth.val());
+		if(imgPath){
+			
+			if($(this).hasClass('qti-with-preview') && width && height){
+				
+				functionDisplayPreview(this, imgPath, width, height);
+				
+				functionAddSlider($(this));
+				
+			} 
+			
 		}
 
 		if($.fn.fmbind){
@@ -736,18 +771,16 @@ qtiEdit.mapFileManagerField = function($container){
 			$(this).width('50%');
 
 			//add tao file manager
-			$(this).fmbind({type: 'image', showselect: true}, function(elt, imgPath, mediaData){
+			$(this).fmbind({type: 'image', showselect: true}, function(elt, newImgPath, mediaData){
 
-				var height = 0;
-				var width = 0;
 				if(mediaData){
 					if(mediaData.height) height = mediaData.height;
 					if(mediaData.width) width = mediaData.width;
 				}
-
+				
+				imgPath = newImgPath;//record the newImgPath in the function wide scope
 				$(elt).val(imgPath);
 
-				var $modifiedForm = $(elt).parents('form');
 				if($modifiedForm.length){
 					//find the active interaction:
 					for(var itemSerial in qtiEdit.instances){
@@ -767,11 +800,11 @@ qtiEdit.mapFileManagerField = function($container){
 					}
 				}
 
-				if(height) $modifiedForm.find('input#object_height').val(height);
-				if(width) $modifiedForm.find('input#object_width').val(width);
+				if(height) $eltHeight.val(height);
+				if(width) $eltWidth.val(width);
 
-				displayPreview(elt, imgPath, width, height);
-
+				functionDisplayPreview(elt, imgPath, width, height);
+				functionAddSlider($(elt));
 			});
 		}
 	});

@@ -80,7 +80,7 @@ class taoItems_actions_QTIform_choice_GapImg
 		
 		//add the object form:
 		$objectSrcElt = tao_helpers_form_FormFactory::getElement('object_data', 'Textbox');
-		$objectSrcElt->setAttribute('class', 'qti-file-img qti-with-preview');
+		$objectSrcElt->setAttribute('class', 'qti-file-img qti-with-preview qti-with-resizer');
 		$objectSrcElt->setDescription(__('Image source url'));
 		
 		$objectWidthElt = tao_helpers_form_FormFactory::getElement('object_width', 'Textbox');
