@@ -316,7 +316,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				rowNum:20,
 				height:300,
 				width:500,
-				pager: '#'+tableElementId+'_pager',
+//				pager: '#'+tableElementId+'_pager',
 				sortname: 'choice1',
 				viewrecords: false,
 				sortorder: "asc",

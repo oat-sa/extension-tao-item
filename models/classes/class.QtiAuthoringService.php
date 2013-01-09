@@ -1404,9 +1404,12 @@ class taoItems_models_classes_QtiAuthoringService
 								if($response['correct'] === 'yes' || $response['correct'] === true){
 									$correctResponses[] = $responseValue;
 								}
-								if(!empty($response['score'])){
-									//0 is considered as empty:
-									$mapping[$responseValue] = $response['score'];//float
+								
+								if(isset($response['score'])){
+									$score = trim($response['score']);
+									if(is_numeric($score)){
+										$mapping[$responseValue] = floatval($score);
+									}
 								}
 
 							}
@@ -1434,9 +1437,11 @@ class taoItems_models_classes_QtiAuthoringService
 								if($response['correct'] == 'yes' || $response['correct'] === true){
 									$correctResponses[] = $responseValue;
 								}
-								if(!empty($response['score'])){
-									//0 is considered as empty:
-									$mapping[$responseValue] = $response['score'];
+								if(isset($response['score'])){
+									$score = trim($response['score']);
+									if(is_numeric($score)){
+										$mapping[$responseValue] = floatval($score);
+									}
 								}
 
 							}
@@ -1485,16 +1490,6 @@ class taoItems_models_classes_QtiAuthoringService
 							return true;
 						}
 
-						//temporary trick to make it work until the mapping rule is done:
-						/*
-						$response['correct'] = 'yes';
-						if($response['correct'] == 'yes'){
-							//set response array directly:
-							$correctResponses = $responseValue;
-						}
-						if(!empty($response['score'])){
-							//partial order... not available yet
-						}*/
 					}
 					break;
 				}
@@ -1516,15 +1511,18 @@ class taoItems_models_classes_QtiAuthoringService
 										$correctResponses[] = $coords[0].' '.$coords[1];
 									}
 								}
-
-								if(!empty($response['score'])){
-									$mapping[] = array(
-										'shape' => $shape,
-										'coords' => $coordinates,
-										'mappedValue' => $response['score']
-									);
+								
+								if(isset($response['score'])){
+									$score = trim($response['score']);
+									if(is_numeric($score)){
+											$mapping[] = array(
+											'shape' => $shape,
+											'coords' => $coordinates,
+											'mappedValue' => floatval($score)
+										);
+									}
 								}
-
+								
 							}
 						}
 					}

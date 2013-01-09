@@ -14,7 +14,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 
 	if(!formContainers){
-		var formContainers = defaultFormContainers;
+		formContainers = defaultFormContainers;
 	}else{
 		$.extend(formContainers, defaultFormContainers);
 	}
@@ -29,8 +29,8 @@ function qtiEdit(itemSerial, formContainers, options){
 	this.cssFormContent = formContainers.cssFormContent;
 	// this.responseMappingMode = false;
 
-        //init windows options:
-        this.windowOptions = 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1';
+	//init windows options:
+	this.windowOptions = 'width=800,height=600,menubar=no,toolbar=no,scrollbars=1';
 
 	this.currentInteraction = null;
 
@@ -394,8 +394,9 @@ function qtiEdit(itemSerial, formContainers, options){
 		  insertUnorderedList  : {visible : true},
 		  insertHorizontalRule : {visible : true},
 
-		  addMedia : addMedia,
-		  addObject : addObject,
+//@TODO : allow insertion of proper media
+//		  addMedia : addMedia,
+//		  addObject : addObject,
 
 		  cut   : {visible : true},
 		  copy  : {visible : true},
@@ -739,7 +740,7 @@ qtiEdit.mapFileManagerField = function($container){
 						$eltWidth.val(newWidth);
 						functionDisplayPreview($elt, imgPath, newWidth, newHeight);
 					},
-					stop:function(e,ui){
+					stop: function(e, ui) {
 						$eltHeight.change();//trigger change event
 						$eltWidth.change();
 					}
@@ -849,8 +850,6 @@ qtiEdit.mapHtmlEditor = function($container){
 			  h4: {visible: false},
 			  h5: {visible: false},
 			  h6: {visible: false},
-
-			  insertTable: {visible: false},
 
 			  addChoiceInteraction: {visible:false},
 			  addAssociateInteraction: {visible:false},
