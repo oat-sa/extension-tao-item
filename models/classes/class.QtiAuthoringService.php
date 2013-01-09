@@ -1763,10 +1763,12 @@ class taoItems_models_classes_QtiAuthoringService
 
 			$options = array();
 			if(isset($mappingOptions['lowerBound'])){
-				if(!empty($mappingOptions['lowerBound'])) $options['lowerBound'] = $mappingOptions['lowerBound'];
+				$value = trim($mappingOptions['lowerBound']);
+				if(is_numeric($value)) $options['lowerBound'] = floatval($value);
 			}
 			if(isset($mappingOptions['upperBound'])){
-				if(!empty($mappingOptions['upperBound'])) $options['upperBound'] = $mappingOptions['upperBound'];
+				$value = trim($mappingOptions['upperBound']);
+				if(is_numeric($value)) $options['upperBound'] = floatval($value);
 			}
 			$response->setOption('mapping', $options);
 
