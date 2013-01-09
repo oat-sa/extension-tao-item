@@ -155,9 +155,10 @@ class taoItems_models_classes_QTI_Service
      * @param  Item qtiItem
      * @param  Resource rdfItem
      * @param  string commitMessage
+     * @param  Repository fileSource
      * @return boolean
      */
-    public function saveDataItemToRdfItem( taoItems_models_classes_QTI_Item $qtiItem,  core_kernel_classes_Resource $rdfItem, $commitMessage = '')
+    public function saveDataItemToRdfItem( taoItems_models_classes_QTI_Item $qtiItem,  core_kernel_classes_Resource $rdfItem, $commitMessage = '',  core_kernel_versioning_Repository $fileSource = null)
     {
         $returnValue = (bool) false;
 
@@ -176,7 +177,7 @@ class taoItems_models_classes_QTI_Service
     				$qtiItem->setOption('lang', core_kernel_classes_Session::singleton()->getDataLanguage());
     				
         			//get the QTI xml
-        			$itemsaved = $itemService->setItemContent($rdfItem, $qtiItem->toQTI(), '', $commitMessage);
+        			$itemsaved = $itemService->setItemContent($rdfItem, $qtiItem->toQTI(), '', $commitMessage, $fileSource);
 					
 					//update RDF item's label:
         			$rdfItem->setLabel($qtiItem->getOption('title'));

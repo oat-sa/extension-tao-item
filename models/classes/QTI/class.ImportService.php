@@ -9,7 +9,7 @@ error_reporting(E_ALL);
  *
  * This file is part of TAO.
  *
- * Automatically generated on 04.01.2013, 18:09:35 with ArgoUML PHP module 
+ * Automatically generated on 09.01.2013, 11:31:43 with ArgoUML PHP module 
  * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
  *
  * @author Joel Bout, <joel.bout@tudor.lu>
@@ -63,18 +63,27 @@ class taoItems_models_classes_QTI_ImportService
      * @param  string qtiFile
      * @param  Class itemClass
      * @param  boolean validate
+     * @param  Repository repository
      * @return core_kernel_classes_Resource
      */
-    public function importQTIFile($qtiFile,  core_kernel_classes_Class $itemClass, $validate = true)
+    public function importQTIFile($qtiFile,  core_kernel_classes_Class $itemClass, $validate = true,  core_kernel_versioning_Repository $repository = null)
     {
         $returnValue = null;
 
         // section 10-30-1--78--1c871595:13c064de577:-8000:0000000000003CAC begin
-    	
+    	//repository
+		$repository = is_null($repository)
+			? tao_models_classes_FileSourceService::singleton()->getDefaultFileSource()
+			: $repository;
+			
         //get the services instances we will need
 		$itemService	= taoItems_models_classes_ItemsService::singleton();
 		$qtiService 	= taoItems_models_classes_QTI_Service::singleton();
 	
+		if(!$itemService->isItemClass($itemClass)){
+			throw new common_exception_Error('provided non Itemclass for '.__FUNCTION__);
+		}
+				
 		//validate the file to import
 		$qtiParser = new taoItems_models_classes_QTI_Parser($qtiFile);
 		
@@ -83,10 +92,6 @@ class taoItems_models_classes_QTI_ImportService
 			throw new taoItems_models_classes_QTI_ParsingException(implode(',', $qtiParser->getErrors()));
 		}
 
-		if(!$itemService->isItemClass($itemClass)){
-			throw new common_exception_Error('provided non Itemclass for '.__FUNCTION__);
-		}
-				
 		//load the QTI item from the file
 		$qtiItem = $qtiParser->load();
 		if(is_null($qtiItem)){
@@ -94,6 +99,7 @@ class taoItems_models_classes_QTI_ImportService
 		}
 		
 		//create the instance
+		// @todo add type and repository
 		$rdfItem = $itemService->createInstance($itemClass);
 		
 		if(is_null($rdfItem)){
@@ -124,9 +130,10 @@ class taoItems_models_classes_QTI_ImportService
      * @param  string file
      * @param  Class itemClass
      * @param  boolean validate
+     * @param  Repository repository if none provided uses default repository
      * @return int
      */
-    public function importQTIPACKFile($file,  core_kernel_classes_Class $itemClass, $validate = true)
+    public function importQTIPACKFile($file,  core_kernel_classes_Class $itemClass, $validate = true,  core_kernel_versioning_Repository $repository = null)
     {
         $returnValue = (int) 0;
 
@@ -136,26 +143,23 @@ class taoItems_models_classes_QTI_ImportService
 		$itemService	= taoItems_models_classes_ItemsService::singleton();
 		$qtiService 	= taoItems_models_classes_QTI_Service::singleton();
 		
-		//test versioning
-		$versioning = false;
-
+		//repository
+		$repository = is_null($repository)
+			? tao_models_classes_FileSourceService::singleton()->getDefaultFileSource()
+			: $repository;
 		
 		//load and validate the package
 		$qtiPackageParser = new taoItems_models_classes_QTI_PackageParser($file);
 		$qtiPackageParser->validate();
 
 		if(!$qtiPackageParser->isValid() && !$validate){
-			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-			$this->setData('importErrors', $qtiPackageParser->getErrors());
-			return false;
+			throw new taoItems_models_classes_QTI_ParsingException();
 		}
 		
 		//extract the package
 		$folder = $qtiPackageParser->extract();
 		if(!is_dir($folder)){
-			$this->setData('importErrorTitle', __('An error occured during the import'));
-			$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
-			return false;
+			throw new taoItems_models_classes_QTI_exception_ExtractException();
 		}
 		
 			
@@ -164,9 +168,7 @@ class taoItems_models_classes_QTI_ImportService
 		$qtiManifestParser->validate();
 		
 		if(!$qtiManifestParser->isValid() && !$validate){
-			$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-			$this->setData('importErrors', $qtiManifestParser->getErrors());
-			return false;
+			throw new taoItems_models_classes_QTI_ParsingException();
 		}
 			
 		$itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
@@ -174,85 +176,27 @@ class taoItems_models_classes_QTI_ImportService
 		//load the information about resources in the manifest 
 		$resources = $qtiManifestParser->load();
 		$importedItems = 0;
-		foreach($resources as $resource){
-			if($resource instanceof taoItems_models_classes_QTI_Resource){
-			
-				//create a new item in the model
-				$rdfItem = $itemService->createInstance($itemClass, $resource->getIdentifier());
+		foreach($resources as $qtiResource){
+			try {
+				$qtiFile = $folder .DIRECTORY_SEPARATOR. $qtiResource->getItemFile();
+				$rdfItem = $this->importQTIFile($qtiFile, $itemClass, $validate, $repository);
+				$itemPath = taoItems_models_classes_ItemsService::singleton()->getItemFolder($rdfItem);
 				
-				$qtiItem = null;
-				try{//load the QTI_Item from the item file
-					$qtiItem = $qtiService->loadItemFromFile($folder . '/'. $resource->getItemFile());
+				foreach($qtiResource->getAuxiliaryFiles() as $auxResource){
+					$auxPath = $folder .DIRECTORY_SEPARATOR. $auxResource;
+					$relPath = helpers_File::getRelPath($qtiFile, $auxPath);
+					$destPath = $itemPath.$relPath;
+					tao_helpers_File::copy($auxPath, $destPath, true);
 				}
-				catch(Exception $e){
-					
-					$this->setData('importErrorTitle', __('An error occured during the import'));
-					
-					// The QTI File at $folder/$resource->itemFile cannot be loaded.
-					// Is this because 
-					// - the file referenced by the manifest does not exists in the archive ?
-					// - the file exists but cannot be parsed ?
-					if(file_exists($folder . '/' . $resource->getItemFile())){
-						$this->setData('importErrors', array(array('message' => $e->getMessage())));
-					}
-					else{
-						$this->setData('importErrors', array(array('message' => sprintf(__("Unable to load QTI resource with href = '%s'"), $resource->getItemFile()))));
-					}
-					
-					// An error occured. We should rollback the knowledge base for this item.
-					$rdfItem->delete();
-					break;
-				}
+				$importedItems++;
 				
-				if(is_null($qtiItem) || is_null($rdfItem)){
-					$this->setData('importErrorTitle', __('An error occured during the import'));
-					$this->setData('importErrors', array(array('message' => __('Unable to create the item for the content '.$resource->getIdentifier().' , from file '.$resource->getItemFile()))));
-					
-					// An error occured. We should rollback the knowledge base.
-					$rdfItem->delete();
-					if(!$validate){
-						break;
-					}
-				}
-				else{
-					//set the QTI type
-					$rdfItem->setPropertyValue($itemModelProperty, TAO_ITEM_MODEL_QTI);
-					
-					//set the file in the itemContent
-					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem, 'HOLD_COMMIT')){
-						
-						$subpath = preg_quote(dirname($resource->getItemFile()), '/');
-						
-						//and copy the others resources in the runtime path
-						$itemPath = $itemService->getItemFolder($rdfItem);
-						
-						foreach($resource->getAuxiliaryFiles() as $auxResource){
-							$auxPath = $auxResource;
-							if(preg_match("/^i[0-9]*/", $subpath)){
-								$auxPath = preg_replace("/^$subpath\//", '', $auxResource);
-							}
-							tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
-						}
-						
-						if ($versioning) {
-							// add to repo
-							$itemContent = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-							$versionedContend = $repository->add($itemContent);
-							if (!is_null($versionedContend)) {
-								if ($versionedContend->getUri() != $itemContent->getUri()) {
-									$rdfItem->editPropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $versionedContend);
-								}
-								$importedItems++;
-							}
-						}else{
-							$importedItems++;	//item is considered as imported there 
-						}
-					}
-				}
+			} catch (Exception $e) {
+				// an error occured during a specific item
+				// skip to next
 			}
 		}
 		
-		$returnValue = count($resources);
+		$returnValue = $importedItems;
         // section 10-30-1--78--1c871595:13c064de577:-8000:0000000000003C9F end
 
         return (int) $returnValue;

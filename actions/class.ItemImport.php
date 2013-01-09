@@ -79,11 +79,11 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			$qtiService 	= taoItems_models_classes_QTI_Service::singleton();
 			
 			//test versioning
-			$versioning = false;
+			$repository = null;
 			if (isset($formValues['repository']) && common_Utils::isUri($formValues['repository'])) {
 				$repository = new core_kernel_versioning_Repository($formValues['repository']);
-				if ($repository->exists()) {
-					$versioning = true;
+				if (!$repository->exists()) {
+					$repository = null;
 				}
 			}
 			
@@ -96,136 +96,37 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 					$forceValid = true;
 				}
 			} 
-			//load and validate the package
-			$qtiPackageParser = new taoItems_models_classes_QTI_PackageParser($uploadedFile);
-			$qtiPackageParser->validate();
-
-			if(!$qtiPackageParser->isValid() && !$forceValid){
-				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-				$this->setData('importErrors', $qtiPackageParser->getErrors());
-				return false;
-			}
 			
-			//extract the package
-			$folder = $qtiPackageParser->extract();
-			if(!is_dir($folder)){
+			try {
+				$importService = taoItems_models_classes_QTI_ImportService::singleton();
+				$importedItems = $importService->importQTIPACKFile($uploadedFile, $clazz, $forceValid, $repository);
+			} catch (taoItems_models_classes_QTI_exception_ExtractException $e) {
 				$this->setData('importErrorTitle', __('An error occured during the import'));
 				$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
-				return false;
-			}
-			
-				
-			//load and validate the manifest
-			$qtiManifestParser = new taoItems_models_classes_QTI_ManifestParser($folder .'/imsmanifest.xml');
-			$qtiManifestParser->validate();
-			
-			if(!$qtiManifestParser->isValid() && !$forceValid){
+			} catch (taoItems_models_classes_QTI_ParsingException $e) {
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-				$this->setData('importErrors', $qtiManifestParser->getErrors());
+				$this->setData('importErrors', $qtiParser->getErrors());
 				return false;
-			}
 				
-			$itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
-			
-			//load the information about resources in the manifest 
-			$resources = $qtiManifestParser->load();
-			$importedItems = 0;
-			foreach($resources as $resource){
-				if($resource instanceof taoItems_models_classes_QTI_Resource){
-				
-					//create a new item in the model
-					$rdfItem = $itemService->createInstance($clazz, $resource->getIdentifier());
-					
-					$qtiItem = null;
-					try{//load the QTI_Item from the item file
-						$qtiItem = $qtiService->loadItemFromFile($folder . '/'. $resource->getItemFile());
-					}
-					catch(Exception $e){
-						
-						$this->setData('importErrorTitle', __('An error occured during the import'));
-						
-						// The QTI File at $folder/$resource->itemFile cannot be loaded.
-						// Is this because 
-						// - the file referenced by the manifest does not exists in the archive ?
-						// - the file exists but cannot be parsed ?
-						if(file_exists($folder . '/' . $resource->getItemFile())){
-							$this->setData('importErrors', array(array('message' => $e->getMessage())));
-						}
-						else{
-							$this->setData('importErrors', array(array('message' => sprintf(__("Unable to load QTI resource with href = '%s'"), $resource->getItemFile()))));
-						}
-						
-						// An error occured. We should rollback the knowledge base for this item.
-						$rdfItem->delete();
-						break;
-					}
-					
-					if(is_null($qtiItem) || is_null($rdfItem)){
-						$this->setData('importErrorTitle', __('An error occured during the import'));
-						$this->setData('importErrors', array(array('message' => __('Unable to create the item for the content '.$resource->getIdentifier().' , from file '.$resource->getItemFile()))));
-						
-						// An error occured. We should rollback the knowledge base.
-						$rdfItem->delete();
-						if(!$forceValid){
-							break;
-						}
-					}
-					else{
-						//set the QTI type
-						$rdfItem->setPropertyValue($itemModelProperty, TAO_ITEM_MODEL_QTI);
-						
-						//set the file in the itemContent
-						if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem, 'HOLD_COMMIT')){
-							
-							$subpath = preg_quote(dirname($resource->getItemFile()), '/');
-							
-							//and copy the others resources in the runtime path
-							$itemPath = $itemService->getItemFolder($rdfItem);
-							
-							foreach($resource->getAuxiliaryFiles() as $auxResource){
-								$auxPath = $auxResource;
-								if(preg_match("/^i[0-9]*/", $subpath)){
-									$auxPath = preg_replace("/^$subpath\//", '', $auxResource);
-								}
-								tao_helpers_File::copy($folder . '/'. $auxResource, $itemPath.'/'.$auxPath, true);
-							}
-							
-							if ($versioning) {
-								// add to repo
-								$itemContent = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-								$versionedContend = $repository->add($itemContent);
-								if (!is_null($versionedContend)) {
-									if ($versionedContend->getUri() != $itemContent->getUri()) {
-										$rdfItem->editPropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $versionedContend);
-									}
-									$importedItems++;
-								}
-							}else{
-								$importedItems++;	//item is considered as imported there 
-							}
-						}
-					}
-				}
+			} catch (common_Exception $e) {
+				$this->setData('message', __('An error occurs during the import'));
 			}
 			
-			$totalItems = count($resources);
-			
-			if($totalItems == $importedItems && $totalItems > 0){
+			if($importedItems > 0){
 				
 				$this->removeSessionAttribute('classUri');
-				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
+				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->getUri()));
 				$this->setData('message', $importedItems . ' ' . __('items imported successfully'));
 				$this->setData('reload', true);
-				
-				tao_helpers_File::remove($uploadedFile);
-				tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
 				
 				return true;
 			}
 			else{
 				// Display how many items were imported.
-				$this->setData('message', sprintf(__('%d items of %d imported successfuly'), $importedItems, $totalItems));
+				$this->setData('message', __('No items of could be imported successfuly'));
 			}
+			tao_helpers_File::remove($uploadedFile);
+			tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
 		}
 		return false;
 	}
