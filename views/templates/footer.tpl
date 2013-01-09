@@ -31,6 +31,16 @@
 <?if(get_data('reload')):?>
 			uiBootstrap.initTrees();
 <?endif?>
+
+<?/*if(get_data('selectTreeNode')):?>
+			uiBootstrap.initTrees(function() {
+				setTimeout(function() {
+					console.log('callback called: on<?=tao_helpers_Uri::encode(get_data('selectTreeNode'));?>');
+					generisActions.select('<?=tao_helpers_Uri::encode(get_data('selectTreeNode'));?>');
+				}, 1000)
+			});
+			
+<?endif*/?>
 		});
 	});
 </script>
