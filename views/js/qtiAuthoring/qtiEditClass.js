@@ -874,9 +874,14 @@ qtiEdit.mapHtmlEditor = function($container){
 			  saveItemData: {visible:false},
 			  saveInteractionData: {visible:false}
 			};
-
+			
+			var iFrameClass = 'wysiwyg-htmlarea';
+			if($(this).parents('form#InteractionForm').length){
+				iFrameClass += ' wysiwyg-interaction';
+			}
+			
 			$(this).wysiwyg({
-				iFrameClass: 'wysiwyg-htmlarea',
+				iFrameClass: iFrameClass,
 				controls: controls
 			});
 		}

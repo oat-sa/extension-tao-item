@@ -1512,16 +1512,17 @@ class taoItems_models_classes_QtiAuthoringService
 									}
 								}
 								
+								$mappingElt = array(
+									'shape' => $shape,
+									'coords' => $coordinates
+								);
 								if(isset($response['score'])){
 									$score = trim($response['score']);
 									if(is_numeric($score)){
-											$mapping[] = array(
-											'shape' => $shape,
-											'coords' => $coordinates,
-											'mappedValue' => floatval($score)
-										);
+										$mappingElt['mappedValue'] = floatval($score);
 									}
 								}
+								$mapping[] = $mappingElt;
 								
 							}
 						}

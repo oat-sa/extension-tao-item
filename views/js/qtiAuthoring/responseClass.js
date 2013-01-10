@@ -18,7 +18,8 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 
 			this.interactionSerial = interaction.interactionSerial;
 
-			this.currentRowId = -1;
+			this.currentRowId = -1;//init current row Id at -1 (first row id equals 0)
+			this.changedRows = [];
 			this.maxChoices = null;
 			this.setModifiedResponseProperties(false);
 
@@ -156,9 +157,9 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				if (interaction) {
 					//reload the grid, just in case the response template has changed:
 					new responseClass(this.myGrid.attr('id'), interaction);
-				//The new or the intercation do, but not both ! doing the same with + in interaction
-				//set the response responseOptions mode:
-				//interaction.setResponseOptionsMode(r.setResponseOptionsMode);
+					//The new or the intercation do, but not both ! doing the same with + in interaction
+					//set the response responseOptions mode:
+					//interaction.setResponseOptionsMode(r.setResponseOptionsMode);
 				}
 				this.setModifiedResponseProperties(false);
 			}
@@ -167,16 +168,24 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 		},
 		
 		initResponseFormSubmitter: function() {
-			var self = this;
+			
+			var __this = this;
 
 			$(".response-form-submitter").click(function(event){
 				event.preventDefault();
+				//check modified choices then send it as well:
+				if(__this.isModifiedRow(__this.currentRowId)){
+					//save it!
+					__this.saveCurrentRow();
+				}else{
+					//restore row
+					__this.restoreCurrentRow(__this.currentRowId);
+				}
 				
-				self.saveResponseProperties();
+				__this.saveResponseProperties();
 				//auto save the response options values
 				//$('#qtiAuthoring_responseOptionsEditor').find('.form-submiter').click();
-
-				//check modified choices then send it as well:
+				
 				return false;
 			});
 		},
@@ -316,7 +325,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				rowNum:20,
 				height:300,
 				width:500,
-//				pager: '#'+tableElementId+'_pager',
+				pager: '#'+tableElementId+'_pager',
 				sortname: 'choice1',
 				viewrecords: false,
 				sortorder: "asc",
@@ -347,6 +356,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			try {
 				if (colModel.length) { //CHROME crash if empty
 					this.myGrid = $myGridElt.jqGrid(gridOptions);
+					$(gridOptions.pager+'_center').css('visibility','hidden');
 				}
 			} catch(err) {
 				throw 'jgGrid constructor exception: '+err;
@@ -536,19 +546,79 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				}
 			}
 		},
+		
+		/*
+		 * save current row if it has been modified
+		 */
+		saveCurrentRow : function(){
+			if(this.currentRowId>=0){
+				var __this = this;
+				var aftersavefunc = function(){
+					if(__this.validateCurrentResponseRow()){
+						__this.saveResponseGrid();
+						__this.restoreCurrentRow();
+					}
+				};
+				this.myGrid.jqGrid('saveRow',this.currentRowId, function(){}, 'clientArray', {}, aftersavefunc,function(){}, function(){});
+			}
+		},
+		
+		validateCurrentResponseRow : function(){
+			
+			var repeatedChoice = this.checkRepeatedChoice(this.currentRowId);
+			var repeatedRow =  this.checkRepeatedRow(this.currentRowId);
+			var maxChoicesRespected = this.checkCardinality(this.currentRowId);
+			var validCoordinates = true;
 
+			if(repeatedChoice){
+				alert('There cannot be identical choice in a row.');
+				this.myGrid.jqGrid('setRowData', this.currentRowId, this.currentRowData);
+				this.restoreCurrentRow();
+				return false;
+			}
+			if(repeatedRow){
+				alert('There is already a row with the same choices.');
+				this.myGrid.jqGrid('setRowData', this.currentRowId, this.currentRowData);
+				this.restoreCurrentRow();
+				return false;
+			}
+			if(!maxChoicesRespected){
+				alert('Impossible to exceed the maximum number of choices defined in the interaction');
+				this.myGrid.jqGrid('setRowData', this.currentRowId, this.currentRowData);
+				this.restoreCurrentRow();
+				return false;
+			}
+			
+			return true;
+		},
+		
 		editGridRow: function(rowId) {
+			
+			var response = this;
 			var id = parseInt(rowId);
 			var $currentRow = this.myGrid.find('tr#'+id);
-
+			var aftersavefunc = function(){
+				if(response.validateCurrentResponseRow()){
+					response.saveResponseGrid();
+					response.restoreCurrentRow();
+				}
+			};
+			
 			if(id>=0 && id!=='' && id!==this.currentRowId){
 
-				// this.myGrid.jqGrid('restoreRow',this.currentRowId);//restore the previously edited row
-				this.restoreCurrentRow(this.currentRowId);
-
+				//save previously selected if modified : 
+				if(this.isModifiedRow(this.currentRowId)){
+					//save it!
+					this.saveCurrentRow();
+				}else{
+					//restore row
+					this.restoreCurrentRow(this.currentRowId);
+				}
+				
+				//set the new current row id :
 				this.currentRowData = this.myGrid.jqGrid('getRowData', id);
-
-				var response = this;
+				this.currentRowId = id;
+				
 				this.myGrid.jqGrid(
 					'editRow',
 					id,
@@ -565,7 +635,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 								var $correctElt = response.myGrid.find('#'+id+'_correct');
 								var $scoreElt = response.myGrid.find('#'+id+'_score');
 								var interaction = interactionClass.instances[response.interactionSerial];
-
+								
 								if(interaction && $coordElt.length && $shapeElt.length){
 
 									interaction.shapeEditor.drawn(function(currentId, shapeObject, self){
@@ -576,6 +646,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 											if(qtiCoords){
 												//update it!
 												$coordElt.val(qtiCoords);
+												$coordElt.change();//manually trigger change event
 											}
 										}
 									});
@@ -583,23 +654,21 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 									var shapeDrawingFunction = function(e){
 										// $(this).attr('disabled', 'disabled');
 										// e.preventDefault();
-
 										var shape = $shapeElt.val();
 										if(interaction.shapeEditor && shape){
 											interaction.shapeEditor.startDrawing(shapeId, shape);
 										}
-
 									}
-
+									
+									var hideOptionFunction = function($optionElt){
+										$optionElt.hide();
+									}
+									
+									var showOptionFunction = function($optionElt){
+										$optionElt.show();
+									}
+										
 									var correctCheckedFunction = function(){
-										var hideOptionFunction = function($optionElt){
-											$optionElt.hide();
-											// $optionElt.
-										}
-										var showOptionFunction = function($optionElt){
-											$optionElt.show();
-											// $optionElt.
-										}
 
 										if($correctElt.is(':checked')){
 											$shapeElt.val('point');
@@ -612,7 +681,12 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 											});
 											$scoreElt.val('').attr('disabled', 'disabled');
 										}else{
-											$shapeElt.val('circle');
+											
+											//init the shape to a valid option
+											if($shapeElt.val() == 'point'){
+												$shapeElt.val('circle');
+											}
+											
 											$shapeElt.find('option').each(function(){
 												if($(this).val() == 'point'){
 													hideOptionFunction($(this));
@@ -635,14 +709,15 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 									//execute the function immediately to allow immediate drawing capability
 									correctCheckedFunction();
 									shapeDrawingFunction();
-
+									
 									$coordElt.bind('focus', shapeDrawingFunction);
 									$shapeElt.bind('change', function(){
 										$coordElt.val('');
 										interaction.shapeEditor.removeShapeObj(shapeId);
 										shapeDrawingFunction();
 									});
-
+									
+									//allow manually tune coordinates
 									$coordElt.keyup(function(){
 										var shape = $shapeElt.val();
 										var qtiCoords = $coordElt.val();
@@ -659,33 +734,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 					null,
 					'clientArray',
 					{'optionalData': null},
-					function(){
-
-						var repeatedChoice = response.checkRepeatedChoice(response.currentRowId);
-						var repeatedRow =  response.checkRepeatedRow(response.currentRowId);
-						var maxChoicesRespected = response.checkCardinality(response.currentRowId);
-						if(repeatedChoice){
-							alert('There cannot be identical choice in a row.');
-							response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
-							response.restoreCurrentRow();
-							return false;
-						}
-						if(repeatedRow){
-							alert('There is already a row with the same choices.');
-							response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
-							response.restoreCurrentRow();
-							return false;
-						}
-						if(!maxChoicesRespected){
-							alert('Impossible to exceed the maximum number of choices defined in the interaction');
-							response.myGrid.jqGrid('setRowData', response.currentRowId, response.currentRowData);
-							response.restoreCurrentRow();
-							return false;
-						}
-
-						response.saveResponseGrid();
-						response.restoreCurrentRow();
-					},
+					aftersavefunc,
 					null,
 					function(rowId){
 						// CD(response, 'after response 1');
@@ -693,68 +742,69 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 						// CD(response, 'after response 2');
 					}
 				);
-				response.currentRowId = id;
-				this.currentRowId = id;
-
-				var triggerRowSave = function($gridRow){
-					var e = jQuery.Event("keydown");
-					e.which = 13;
-					e.keyCode = 13;//for MSIE...
-					$gridRow.trigger(e);
-				};
-
+				
 				$currentRow.find('input,select').each(function(){
-
-					var realFocused = false;
-					$(this).focus(function(){
-						realFocused = true;
-					});
-
-					$(this).unbind('blur').blur(function(){
-						if(realFocused){
-							triggerRowSave($(this));
-							realFocused = false;
-						}
-					});
-
-					//for order intereactions only:
-					if(response.interactionType == 'order' || response.interactionType == 'graphicorder'){
-
-						$(this).change(function(){
-							var myId = $(this).attr('id');
-							var myValue = $(this).val();
-							var $allSelectElts = $currentRow.find('select');
-							var pickedValues = [];
-							pickedValues.push(parseInt(myValue));
-
-							$allSelectElts.each(function(){
-								if($(this).attr('id') != myId){
-
-									var otherValue = parseInt($(this).val());
-									var newOtherValue = otherValue;
-									var i = 0;
-									while( util.indexOf(pickedValues, newOtherValue) >= 0 ){
-										newOtherValue = newOtherValue + 1;
-										if(newOtherValue >= $allSelectElts.length){
-											newOtherValue = 0;
-										}
-
-										if(i>$allSelectElts.length){
-											break;
-										}
-										i++;
-									}
-
-									pickedValues.push(newOtherValue);
-									$(this).val(newOtherValue);
-								}
-							});
+					
+					$(this).bind('click focus',function(){
+						$(this).bind('change keyup',function(){
+							response.setModifiedRow(response.currentRowId, {});
 						});
+					
+					});
+					
+					//add special behaviour depending on the interaction type:
+					switch(response.interactionType){
+						case 'order':
+						case 'graphicorder':{
+							$(this).change(function(){
+								var myId = $(this).attr('id');
+								var myValue = $(this).val();
+								var $allSelectElts = $currentRow.find('select');
+								var pickedValues = [];
+								pickedValues.push(parseInt(myValue));
+
+								$allSelectElts.each(function(){
+									if($(this).attr('id') != myId){
+
+										var otherValue = parseInt($(this).val());
+										var newOtherValue = otherValue;
+										var i = 0;
+										while( util.indexOf(pickedValues, newOtherValue) >= 0 ){
+											newOtherValue = newOtherValue + 1;
+											if(newOtherValue >= $allSelectElts.length){
+												newOtherValue = 0;
+											}
+
+											if(i>$allSelectElts.length){
+												break;
+											}
+											i++;
+										}
+										pickedValues.push(newOtherValue);
+										$(this).val(newOtherValue);
+									}
+								});
+							});
+							break;
+						}
 					}
+					
 				});
 			}
 		},
-
+		
+		setModifiedRow: function(rowId, data){
+			this.changedRows[rowId] = data;
+		},
+		
+		unsetModifiedRow:function(rowId){
+			delete this.changedRows[rowId];
+		},
+		
+		isModifiedRow: function(rowId){
+			return (rowId in this.changedRows);
+		},
+		
 		getUniqueRowId: function() {
 			var responseData = this.myGrid.jqGrid('getRowData');
 			return responseData.length;
@@ -776,6 +826,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 					}
 				}
 				this.myGrid.jqGrid('resetSelection');
+				this.unsetModifiedRow(this.currentRowId);
 				this.currentRowId = -2;
 			} else {
 				// CL('restoring failed');
@@ -783,6 +834,8 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 		},
 
 		saveResponseGrid: function() {
+			
+			var __this = this;
 			var responseData = this.myGrid.jqGrid('getRowData');
 			var responseDataString = JSON.stringify(responseData);
 
@@ -795,6 +848,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				dataType: 'json',
 				success: function(response){
 					if (response.saved) {
+						__this.changedRows = [];//reset modified choice since all choices hav been saved
 						qtiEdit.createInfoMessage(__('The responses have been updated'));
 					} else {
 						helpers.createErrorMessage(__('The responses cannot be updated'));
