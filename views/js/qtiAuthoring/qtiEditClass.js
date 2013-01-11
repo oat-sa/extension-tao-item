@@ -774,7 +774,12 @@ qtiEdit.mapFileManagerField = function($container){
 
 			//add tao file manager
 			$(this).fmbind({type: 'image', showselect: true}, function(elt, newImgPath, mediaData){
-
+				
+				//need to redefine the scope of $modifiedForm, $eltHeight and $eltWidth
+				var $modifiedForm = $(elt).parents('form');
+				var $eltHeight = $modifiedForm.find('input#object_height');
+				var $eltWidth = $modifiedForm.find('input#object_width');
+				var height = width = 0;
 				if(mediaData){
 					if(mediaData.height) height = mediaData.height;
 					if(mediaData.width) width = mediaData.width;
@@ -965,8 +970,12 @@ qtiEdit.prototype.save = function(itemUri){
 		   }
 		});
 	}
-
-	this.saveCurrentInteraction(saveItemFunction);
+	
+	if(this.currentInteraction){
+		this.saveCurrentInteraction(saveItemFunction);
+	}else{
+		saveItemFunction();
+	}
 	
 }
 
@@ -985,8 +994,13 @@ qtiEdit.prototype.preview = function(){
 	var openUrlFunction = function(){
 		window.open(url, 'LightPeview', __this.windowOptions);
 	}
-
-	this.saveCurrentInteraction(openUrlFunction);
+	
+	if(this.currentInteraction){
+		this.saveCurrentInteraction(openUrlFunction);
+	}else{
+		openUrlFunction();
+	}
+	
 }
 
 qtiEdit.prototype.debug = function(){
@@ -1300,7 +1314,7 @@ qtiEdit.prototype.saveCurrentInteraction = function(callback, reloadResponse){
 		var i = 1;
 		timer = window.setInterval(function(){
 			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length && !interaction.modifiedInteraction){
-				if(interaction.response && !interaction.response.modifiedResponseOptions){
+				if(!interaction.response || interaction.response && !interaction.response.modifiedResponseOptions){
 					stopTimer();
 				}
 			}
