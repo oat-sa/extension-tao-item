@@ -141,3 +141,6 @@ div.qti-img-resize-slider>a.ui-slider-handle{height:0.5em;width:0.1em;margin-lef
 
 span.qti-img-preview-label{font-style: italic;}
 div#formInteraction_object_container_title > span.qti-img-preview-label{font-size: 0.8em;}
+
+/*response grid*/
+a.ui-jqgrid-titlebar-close{visibility: hidden;}

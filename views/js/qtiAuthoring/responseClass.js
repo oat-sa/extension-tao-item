@@ -191,7 +191,11 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 		},
 
 		initResponseFormProcessingTypeChange: function() {
-			$('#interactionResponseProcessing').change(function() {
+			var $processingTemplateElt = $('select#processingTemplate');
+			this.processingTemplate = $processingTemplateElt.val();
+			var __this = this;
+			$processingTemplateElt.change(function() {
+				__this.processingTemplate = $(this).val();
 				$('.xhtml_form').next().nextAll().remove();
 				$(".response-form-submitter").click();
 			});
@@ -199,7 +203,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 
 		setResponseFormChangeListener: function() {
 			var self = this;
-			$responseFormContainer = $('div#qtiAuthoring_responseEditor');
+			var $responseFormContainer = $('div#qtiAuthoring_responseEditor');
 			$responseFormContainer.children().unbind('change paste').bind('change paste', function(){
 				self.setModifiedResponseProperties(true);
 			});
@@ -217,9 +221,24 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				$('a.response-form-submitter').removeClass('form-submitter-emphasis');
 			}
 		},
-
-		buildGrid: function(tableElementId, serverResponse) {
-			// CD(serverResponse, 'response:');
+		
+		//disable row adding if records exceed max choice...
+		checkMaxChoices : function(grid){
+			if(!grid) grid = this.myGrid;
+			var returnValue = false;
+			var maxChoices = parseInt(this.maxChoices);
+			if(maxChoices && grid.getGridParam("records") >= maxChoices){
+				if(this.processingTemplate.indexOf('match_correct') > 0){
+					returnValue = true;
+				} 
+			}
+			if(this.interactionType == 'order'|| this.interactionType == 'graphicorder'){
+				returnValue = true;
+			}
+			return returnValue;
+		},
+			
+		buildGrid : function(tableElementId, serverResponse) {
 
 			//firstly, get the column models, from the interactionSerial:
 			//label = columName
@@ -336,6 +355,8 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 						e.preventDefault();
 						if(response) response.resizeGrid();
 					});
+										
+					if(response.checkMaxChoices($(this))) response.disableRowAdding();
 				},
 				onSelectRow: function(id){
 					response.test = 'test1'
@@ -374,33 +395,38 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 					new responseClass(tableElementId, interactionClass.instances[interactionSerial]);
 				}
 			};
-
+			
 			if (fixedColumn.name && fixedColumn.values) {
 				//is fixed, so disable the add and delete row
 				var navGridParamOptions = {add:false, del:false};
 			} else {
 				var navGridParamOptions = {
 					addfunc: function(){
+						
+						//autosave current row if changed
+						if(response.isModifiedRow(response.currentRowId)){
+							//save it!
+							response.saveCurrentRow();
+						}else{
+							//restore row
+							response.restoreCurrentRow(response.currentRowId);
+						}
+						
+						//insert new row
 						var newId = response.getUniqueRowId();
-						response.restoreCurrentRow();
 						response.myGrid.jqGrid('addRowData', newId, new Object(), 'last');
 						response.editGridRow(newId);
+						
+						if(response.checkMaxChoices()) response.disableRowAdding();
 
-						var maxChoices = parseInt(response.maxChoices);
-						if((response.interactionType == 'order'|| response.interactionType == 'graphicorder') && maxChoices && response.myGrid.getGridParam("records") >= maxChoices){
-							//disable row adding:
-							response.disableRowAdding();
-						}
-
-						if(response.areaMapping){
-							response.bindShapeEventListeners();
-						}
+						if(response.areaMapping) response.bindShapeEventListeners();
+						
 					},
 					delfunc: function(rowId){
 						if(confirm(__("Do you really want to delete the row?"))){
 							response.myGrid.jqGrid('delRowData', rowId);
 							response.saveResponseGrid();
-
+							
 							var maxChoices = parseInt(response.maxChoices);
 							if((response.interactionType == 'order'|| response.interactionType == 'graphicorder') && maxChoices && response.myGrid.getGridParam("records") < maxChoices){
 								//enable row adding:
@@ -410,6 +436,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 					}
 				};
 			}
+			
 			navGridParam = $.extend(navGridParam, navGridParamOptions, navGridParamDefault);
 
 			try {
@@ -417,7 +444,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			} catch (err) {
 				throw 'jgGrid navigator constructor exception: '+err;
 			}
-
+			
 			var interaction = null;
 
 			if (this.areaMapping) {
@@ -640,7 +667,6 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 
 									interaction.shapeEditor.drawn(function(currentId, shapeObject, self){
 										//export shapeObject to qti:
-										// CD(shapeObject, 'drawn');
 										if(currentId && shapeObject){
 											var qtiCoords = self.exportShapeToQti(currentId);
 											if(qtiCoords){
@@ -652,8 +678,6 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 									});
 
 									var shapeDrawingFunction = function(e){
-										// $(this).attr('disabled', 'disabled');
-										// e.preventDefault();
 										var shape = $shapeElt.val();
 										if(interaction.shapeEditor && shape){
 											interaction.shapeEditor.startDrawing(shapeId, shape);
@@ -667,7 +691,11 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 									var showOptionFunction = function($optionElt){
 										$optionElt.show();
 									}
-										
+									
+									if(response.processingTemplate.indexOf('match_correct')>0 && !$correctElt.is(':checked')){
+										$correctElt.prop('checked', true);
+									}
+									
 									var correctCheckedFunction = function(){
 
 										if($correctElt.is(':checked')){
@@ -679,7 +707,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 													hideOptionFunction($(this));
 												}
 											});
-											$scoreElt.val('').attr('disabled', 'disabled');
+											$scoreElt.val('').attr('disabled', 'disabled').attr('title',__('Not needed'));
 										}else{
 											
 											//init the shape to a valid option
@@ -754,6 +782,13 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 					
 					//add special behaviour depending on the interaction type:
 					switch(response.interactionType){
+						case 'selectpoint':{
+							$(this).bind('change keyup',function(){
+								response.setModifiedRow(response.currentRowId, {});
+							});	
+							break;
+						}
+						case 'associate':
 						case 'order':
 						case 'graphicorder':{
 							$(this).change(function(){

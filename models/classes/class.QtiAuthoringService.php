@@ -620,7 +620,6 @@ class taoItems_models_classes_QtiAuthoringService
 					if($count){
 						$this->setInteractionData($interaction, $interactionData);
 					}else{
-						//
 						$interaction->setData($interaction->getData().'{'.$choice->getSerial().'}');
 					}
 					break;
@@ -1503,26 +1502,27 @@ class taoItems_models_classes_QtiAuthoringService
 							$shape = strtolower(trim($response['shape']));
 							$coordinates = trim($response['coordinates']);
 							if(!is_null($shape) && !is_null($coordinates)){
-
-								if(($response['correct'] == 'yes' || $response['correct'] === true) && $shape == 'point'){
+								
+								//shape = point <=> correct = yes
+								if(($response['correct'] == 'yes' || $response['correct'] === true) || $shape == 'point'){
 									$coords = explode(',', $coordinates);
 									if(count($coords)>=2){
 										$coords = array_map('trim', $coords);
 										$correctResponses[] = $coords[0].' '.$coords[1];
 									}
-								}
-								
-								$mappingElt = array(
-									'shape' => $shape,
-									'coords' => $coordinates
-								);
-								if(isset($response['score'])){
-									$score = trim($response['score']);
-									if(is_numeric($score)){
-										$mappingElt['mappedValue'] = floatval($score);
+								}else{
+									$mappingElt = array(
+										'shape' => $shape,
+										'coords' => $coordinates
+									);
+									if (isset($response['score'])) {
+										$score = trim($response['score']);
+										if (is_numeric($score)) {
+											$mappingElt['mappedValue'] = floatval($score);
+										}
 									}
+									$mapping[] = $mappingElt;
 								}
-								$mapping[] = $mappingElt;
 								
 							}
 						}
