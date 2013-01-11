@@ -15,7 +15,8 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			responseClass.grid = this;
 			
 			var response = this;
-
+			
+			interaction.response = response;//reference reponse in interaction Object
 			this.interactionSerial = interaction.interactionSerial;
 
 			this.currentRowId = -1;//init current row Id at -1 (first row id equals 0)
@@ -151,15 +152,12 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 						break;
 				}
 			});
-
+			
 			if (result) {
 				var interaction = interactionClass.instances[this.interactionSerial];
 				if (interaction) {
 					//reload the grid, just in case the response template has changed:
 					new responseClass(this.myGrid.attr('id'), interaction);
-					//The new or the intercation do, but not both ! doing the same with + in interaction
-					//set the response responseOptions mode:
-					//interaction.setResponseOptionsMode(r.setResponseOptionsMode);
 				}
 				this.setModifiedResponseProperties(false);
 			}
@@ -167,26 +165,28 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			return result;
 		},
 		
+		/*
+		 *global function to save everything related to response of the current interaction
+		 *note : no need to call saveResponseGrid() since it is always called after any row modification
+		 */
+		saveResponse : function(){
+			//check modified choices then send it as well:
+			if(this.isModifiedRow(this.currentRowId)){
+				//save it!
+				this.saveCurrentRow();
+			}else{
+				//restore row
+				this.restoreCurrentRow(this.currentRowId);
+			}
+			this.saveResponseProperties();
+		},
+		
 		initResponseFormSubmitter: function() {
-			
 			var __this = this;
-
 			$(".response-form-submitter").click(function(event){
 				event.preventDefault();
-				//check modified choices then send it as well:
-				if(__this.isModifiedRow(__this.currentRowId)){
-					//save it!
-					__this.saveCurrentRow();
-				}else{
-					//restore row
-					__this.restoreCurrentRow(__this.currentRowId);
-				}
-				
-				__this.saveResponseProperties();
-				//auto save the response options values
-				//$('#qtiAuthoring_responseOptionsEditor').find('.form-submiter').click();
-				
-				return false;
+				__this.saveResponse();
+				return false;//prevent click
 			});
 		},
 
@@ -213,9 +213,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			 if(modified){
 				this.modifiedResponseOptions = true;
 				$('a.response-form-submitter').addClass('form-submitter-emphasis');
-				
-				//autosave :
-//				this.saveResponseProperties();
+				//autosave here?
 			}else{
 				this.modifiedResponseOptions = false;
 				$('a.response-form-submitter').removeClass('form-submitter-emphasis');

@@ -158,7 +158,8 @@ class taoItems_models_classes_QtiAuthoringService
 
 	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
 		$data = self::getFilteredData($interaction);
-
+		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', trim(html_entity_decode($data)));
+		
 		//depending on the type of interaciton, strip the choice identifier or transfor it to editable elt
 		$interactionType = strtolower($interaction->getType());
 		switch($interactionType){

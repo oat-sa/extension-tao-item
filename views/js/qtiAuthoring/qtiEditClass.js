@@ -966,16 +966,8 @@ qtiEdit.prototype.save = function(itemUri){
 		});
 	}
 
-	if(this.currentInteraction){
-		if(this.currentInteraction.modifiedInteraction){
-			if(confirm(__('The current interaction has been modified but the modifications have not been updated yet,\n do you want to update the interaction with the modifications before saving your item?\n(Otherwise, the modifications are lost)'))){
-				this.saveCurrentInteraction(saveItemFunction);
-				return;
-			}
-		}
-	}
-
-	saveItemFunction();
+	this.saveCurrentInteraction(saveItemFunction);
+	
 }
 
 qtiEdit.prototype.preview = function(){
@@ -994,16 +986,7 @@ qtiEdit.prototype.preview = function(){
 		window.open(url, 'LightPeview', __this.windowOptions);
 	}
 
-	if(this.currentInteraction){
-		if(this.currentInteraction.modifiedInteraction){
-			if(confirm(__('The current interaction has been modified but the modifications have not been updated yet.\nDo you want to do update the interaction with the modifications before previewing your item?'))){
-				this.saveCurrentInteraction(openUrlFunction);
-				return;
-			}
-		}
-	}
-
-	openUrlFunction();
+	this.saveCurrentInteraction(openUrlFunction);
 }
 
 qtiEdit.prototype.debug = function(){
@@ -1291,24 +1274,37 @@ qtiEdit.prototype.deleteStyleSheet = function(css_href){
 	});
 }
 
-qtiEdit.prototype.saveCurrentInteraction = function(callback){
+qtiEdit.prototype.saveCurrentInteraction = function(callback, reloadResponse){
 	//auto save the current interaction, after confirming the choice to the user:
 
 	if(this.currentInteraction){
 		var interaction = this.currentInteraction;
-		$(".interaction-form-submitter").click();
-
+		
+		if(interaction.response && interaction.response.modifiedResponseOptions){
+			interaction.response.saveResponse();
+		}
+		
+		interaction.saveModifiedChoices();
+		
+		if(reloadResponse == 'undefined') reloadResponse = true;
+		if(interaction.modifiedChoices.length || interaction.modifiedGroups.length || interaction.modifiedInteraction){
+			interaction.saveInteraction({'reloadResponse':reloadResponse});
+		}
+		
 		var timer = null;
 		var stopTimer = function(){
 			callback();
 			window.clearInterval(timer);
 		}
 		//check every half a second if all choices have been saved:
+		var i = 1;
 		timer = window.setInterval(function(){
 			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length && !interaction.modifiedInteraction){
-				stopTimer();
+				if(interaction.response && !interaction.response.modifiedResponseOptions){
+					stopTimer();
+				}
 			}
-		}, 500);
+		}, 100);
 	}
 
 }

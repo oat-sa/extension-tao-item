@@ -24,6 +24,11 @@ function interactionClass(interactionSerial, relatedItemSerial, options){
 	//this.setResponseMappingMode(responseMappingMode);
 	this.choiceAutoSave = true;
 	
+	this.$form = $('#InteractionForm');
+	if(!this.$form.length){
+		throw 'cannot find the interaction form';
+	}
+	
 	this.type = 'unknown';
 	this.choices = [];
 	this.modifiedInteraction = false;
@@ -73,14 +78,12 @@ interactionClass.prototype.setType = function(type){
 }
 
 interactionClass.prototype.initInteractionFormSubmitter = function(){
+	
 	var _this = this;
-	var $myForm = null;
-	$(".interaction-form-submitter").click(function(){
+	this.$form.find(".interaction-form-submitter").click(function(){
 
-		$myForm = $(this).parents("form");
-		//linearize it and post it:
 		// if(_this.modifiedInteraction){
-			_this.saveInteraction($myForm);
+			_this.saveInteraction();
 		// }
 
 		_this.saveModifiedChoices();
@@ -99,17 +102,14 @@ interactionClass.prototype.initInteractionFormSubmitter = function(){
 
 		var relatedItem = _this.getRelatedItem();
 		if(relatedItem){
+			relatedItem.saveCurrentInteraction(switchTabFunction);
 			relatedItem.currentInteraction = null;
-			if(_this.modifiedInteraction){
-				if(confirm(__('The current interaction has been modified but the modifications has not been updated yet.\nDo you want to update the interaction with the modifications before returning to the item editor?\n(Otherwise, the modifications are lost)'))){
-					relatedItem.saveCurrentInteraction(switchTabFunction);
-					return;
-				}
-			}
+		}else{
+			switchTabFunction();
 		}
-
-		switchTabFunction();
-
+		
+		return false;
+		
 	}).show();
 
 	$('#qtiAuthoring_menu_interactions').hide();
@@ -137,90 +137,90 @@ interactionClass.prototype.saveModifiedChoices = function(){
 
 
 
-interactionClass.prototype.saveInteraction = function($myForm, option){
-	//TODO: check unicity of the id:
-	if($myForm.length){
+interactionClass.prototype.saveInteraction = function(userOptions){
+	
+	//@todo: check unicity of the id?
+	if(!this.$form.length){
+		throw 'cannot save the interaction from the interaction forms because it does not exist';
+	}
 
-		var interactionProperties = $myForm.serializeObject();
+	var interactionProperties = this.$form.serializeObject();
 
-		//filter the prompt html area field:
-		if(interactionProperties.prompt){
-			interactionProperties.prompt = util.htmlEncode(interactionProperties.prompt);
+	//filter the prompt html area field:
+	if(interactionProperties.prompt){
+		interactionProperties.prompt = util.htmlEncode(interactionProperties.prompt);
+	}
+
+	//serialize the order:
+	if(this.orderedChoices[0]){
+		interactionProperties.choiceOrder = [];
+		for(var index=0;i<this.orderedChoices.length;index++){
+			interactionProperties.choiceOrder[index] = this.orderedChoices[index];
 		}
-
-		//serialize the order:
-		var orderedChoices = '';
-		if(this.orderedChoices[0]){
-			interactionProperties.choiceOrder = [];
-			for(var index=0;i<this.orderedChoices.length;index++){
-				interactionProperties.choiceOrder[index] = this.orderedChoices[index];
+	}else{
+		//for match and gapmatch interaction:
+		var i = 0;
+		for(var groupSerial in this.orderedChoices){
+			interactionProperties['choiceOrder'+i] = [];
+			interactionProperties['choiceOrder'+i]['groupSerial'] = groupSerial;
+			for(var j=0; j<this.orderedChoices[groupSerial].length; j++){
+				interactionProperties['choiceOrder'+i][j] = this.orderedChoices[groupSerial][j];
 			}
-		}else{
-			//for match and gapmatch interaction:
-			var i = 0;
-			for(var groupSerial in this.orderedChoices){
-				interactionProperties['choiceOrder'+i] = [];
-				interactionProperties['choiceOrder'+i]['groupSerial'] = groupSerial;
-				for(var j=0; j<this.orderedChoices[groupSerial].length; j++){
-					interactionProperties['choiceOrder'+i][j] = this.orderedChoices[groupSerial][j];
+			i++;
+		}
+	}
+
+	//check if it is required to save data (hotText and gapMatch interactions):
+	if(this.interactionDataContainer){
+		if($(this.interactionDataContainer).length && this.interactionEditor.length){
+			//there is a wysiwyg editor that contains the interaciton data:
+			interactionProperties.interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
+		}
+	}
+
+	var defaultOptions = {
+		'async' : true,
+		'reloadResponse' : false
+	};
+	var options = $.extend(defaultOptions, userOptions);
+
+	var interaction = this;
+
+	$.ajax({
+	   type: "POST",
+	   url: root_url + "/taoItems/QtiAuthoring/saveInteraction",
+	   data: interactionProperties,
+	   // async: options.async,
+	   dataType: 'json',
+	   success: function(r){
+			if(r.saved){
+				qtiEdit.createInfoMessage(__('Modification(s) on interaction has been updated'));
+				interaction.setModifiedInteraction(false);
+
+				if (r.reloadResponse && options.reloadResponse) {
+					require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+						new responseClass(interaction.responseGrid, interaction);
+					});
 				}
-				i++;
-			}
-		}
 
-		//check if it is required to save data (hotText and gapMatch interactions):
-		if(this.interactionDataContainer){
-			if($(this.interactionDataContainer).length && this.interactionEditor.length){
-				//there is a wysiwyg editor that contains the interaciton data:
-				interactionProperties.interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
-			}
-		}
-
-		var async = true;
-		if(option){
-			if(option.async === false){
-				async = false;
-			}
-		}
-
-		var interaction = this;
-
-		$.ajax({
-		   type: "POST",
-		   url: root_url + "/taoItems/QtiAuthoring/saveInteraction",
-		   data: interactionProperties,
-		   // async: async,
-		   dataType: 'json',
-		   success: function(r){
-				if(r.saved){
-					qtiEdit.createInfoMessage(__('Modification(s) on interaction has been updated'));
-					interaction.setModifiedInteraction(false);
-
-					if (r.reloadResponse) {
-						require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
-							new responseClass(interaction.responseGrid, interaction);
-						});
-					}
-
-					if(r.newGraphicObject){
-						if(r.newGraphicObject.data){
-							if(interaction.shapeEditor){
-								interaction.shapeEditor.setBackground(r.newGraphicObject.data, r.newGraphicObject.width, r.newGraphicObject.height);
-							}else{
-								interaction.buildShapeEditor(r.newGraphicObject.data, {width: r.newGraphicObject.width, height:r.newGraphicObject.height});
-								interaction.setShapeEditListener();
-							}
+				if(r.newGraphicObject){
+					if(r.newGraphicObject.data){
+						if(interaction.shapeEditor){
+							interaction.shapeEditor.setBackground(r.newGraphicObject.data, r.newGraphicObject.width, r.newGraphicObject.height);
 						}else{
-							if(r.newGraphicObject.errorMessage){
-								helpers.createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
-							}
+							interaction.buildShapeEditor(r.newGraphicObject.data, {width: r.newGraphicObject.width, height:r.newGraphicObject.height});
+							interaction.setShapeEditListener();
+						}
+					}else{
+						if(r.newGraphicObject.errorMessage){
+							helpers.createErrorMessage(__('Error in background file:')+'<br/>'+r.newGraphicObject.errorMessage);
 						}
 					}
-
 				}
-		    }
-		});
-	}
+
+			}
+		}
+	});
 
 }
 
@@ -966,23 +966,6 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 	   }
 	});
 }
-/*
-interactionClass.prototype.saveResponseOptions = function($myForm){
-
-	var self = this;
-
-	$.ajax({
-	   type: "POST",
-	   url: root_url + "/taoItems/QtiAuthoring/saveOptions",
-	   data: $myForm.serialize(),
-	   dataType: 'json',
-	   success: function(r){
-			if(r.saved){
-				qtiEdit.createInfoMessage(__('The options have been updated'));
-			}
-	   }
-	});
-}*/
 
 interactionClass.prototype.buildInteractionEditor = function(interactionDataContainerSelector, extraControls, options){
 
