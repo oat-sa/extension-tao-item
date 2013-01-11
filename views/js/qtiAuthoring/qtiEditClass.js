@@ -687,7 +687,14 @@ qtiEdit.initFormElements = function($container){
 qtiEdit.mapFileManagerField = function($container){
 
 	$container.find('.qti-file-img').each(function(){
-
+		
+		var imgPath = $(this).val();
+		var $modifiedForm = $(this).parents('form');
+		var $eltHeight = $modifiedForm.find('input#object_height');
+		var $eltWidth = $modifiedForm.find('input#object_width');
+		var height = parseInt($eltHeight.val());
+		var width = parseInt($eltWidth.val());
+		
 		var functionDisplayPreview = function(elt, imagePath, width, height){
 			if($(elt).hasClass('qti-with-preview') && width && height){
 				var maxHeight = 150;
@@ -722,7 +729,13 @@ qtiEdit.mapFileManagerField = function($container){
 		}
 		
 		//elt file input
-		var functionAddSlider = function($elt){
+		var functionAddSlider = function($elt, imgPath, oldWidth, oldHeight){
+			
+			//need to redefine the scope of $modifiedForm, $eltHeight and $eltWidth
+			var $modifiedForm = $elt.parents('form');
+			var $eltHeight = $modifiedForm.find('input#object_height');
+			var $eltWidth = $modifiedForm.find('input#object_width');
+			
 			var $parent = $elt.parent();
 			if($elt.hasClass('qti-with-resizer') && $parent.find('div.qti-img-resize-slider').length == 0){
 				//do append slider:
@@ -734,8 +747,8 @@ qtiEdit.mapFileManagerField = function($container){
 					max: 200,
 					slide: function(e, ui) {
 						var percentage = ui.value;
-						var newHeight = Math.round(percentage/100*height);
-						var newWidth = Math.round(percentage/100*width);
+						var newHeight = Math.round(percentage/100*oldHeight);
+						var newWidth = Math.round(percentage/100*oldWidth);
 						$eltHeight.val(newHeight);
 						$eltWidth.val(newWidth);
 						functionDisplayPreview($elt, imgPath, newWidth, newHeight);
@@ -747,24 +760,12 @@ qtiEdit.mapFileManagerField = function($container){
 				});
 			}
 		}
-		
-		var imgPath = $(this).val();
-		var $modifiedForm = $(this).parents('form');
-		var $eltHeight = $modifiedForm.find('input#object_height');
-		var $eltWidth = $modifiedForm.find('input#object_width');
 
-		var height = parseInt($eltHeight.val());
-		var width = parseInt($eltWidth.val());
 		if(imgPath){
-			
 			if($(this).hasClass('qti-with-preview') && width && height){
-				
 				functionDisplayPreview(this, imgPath, width, height);
-				
-				functionAddSlider($(this));
-				
+				functionAddSlider($(this), imgPath, width, height);
 			} 
-			
 		}
 
 		if($.fn.fmbind){
@@ -805,7 +806,7 @@ qtiEdit.mapFileManagerField = function($container){
 				if(width) $eltWidth.val(width);
 
 				functionDisplayPreview(elt, imgPath, width, height);
-				functionAddSlider($(elt));
+				functionAddSlider($(elt), imgPath, width, height);
 			});
 		}
 	});
