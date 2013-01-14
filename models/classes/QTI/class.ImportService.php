@@ -184,7 +184,8 @@ class taoItems_models_classes_QTI_ImportService
 				$itemPath = taoItems_models_classes_ItemsService::singleton()->getItemFolder($rdfItem);
 				
 				foreach($qtiResource->getAuxiliaryFiles() as $auxResource){
-					$auxPath = $folder .DIRECTORY_SEPARATOR. $auxResource;
+					// $auxResource is a relativ URL, so we need to replace the slashes with directory separators
+					$auxPath = $folder .DIRECTORY_SEPARATOR. str_replace('/', DIRECTORY_SEPARATOR, $auxResource);
 					$relPath = helpers_File::getRelPath($qtiFile, $auxPath);
 					$destPath = $itemPath.$relPath;
 					tao_helpers_File::copy($auxPath, $destPath, true);
