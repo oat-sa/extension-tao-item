@@ -323,7 +323,7 @@ class taoItems_models_classes_QTI_Service
 	    	if(!empty($type) && !$returnValue instanceof $type) {
 	       		throw new common_Exception("object retrieved is a ".get_class($returnValue)." instead of {$type}.");
 	    	}
-	    } catch (tao_models_classes_cache_NotFoundException $e) {
+	    } catch (common_cache_NotFoundException $e) {
         	// do nothing, return null
         }
         // section 127-0-1-1--272f4da0:12a899718bf:-8000:00000000000024E1 end

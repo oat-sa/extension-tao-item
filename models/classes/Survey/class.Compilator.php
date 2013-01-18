@@ -61,12 +61,12 @@ class taoItems_models_classes_Survey_Compilator
 	{
 		if(USE_CACHED_XSL) {
 			try {
-				$content = tao_models_classes_cache_FileCache::singleton()->get($this->key);
+				$content = common_cache_FileCache::singleton()->get($this->key);
 				self::$styleSheets[$this->key] = $content;
 			} catch (Exception $e) {
 				$xsl                           = $this->generateXsl();
 				self::$styleSheets[$this->key] = $xsl;
-				tao_models_classes_cache_FileCache::singleton()->put($xsl, $this->key);
+				common_cache_FileCache::singleton()->put($xsl, $this->key);
 			}
 		} else {
 			$xsl                           = $this->generateXsl();
