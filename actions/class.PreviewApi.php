@@ -64,7 +64,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 					'uri'					=> $user->uriResource,
 					RDFS_LABEL				=> $user->getLabel(),
 					PROPERTY_USER_LOGIN		=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)),
-					PROPERTY_USER_FIRTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_FIRTNAME)),
+					PROPERTY_USER_FIRSTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_FIRSTNAME)),
 					PROPERTY_USER_LASTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LASTNAME))
 				)
 			);
