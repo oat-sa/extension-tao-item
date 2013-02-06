@@ -207,7 +207,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 
 	var addUploadInteraction = {
-		visible : true,
+		visible : false,
 		className: 'add_fileupload_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");
@@ -217,7 +217,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 
 	var addEndAttemptInteraction = {
-		visible : true,
+		visible : false,
 		className: 'add_endattempt_interaction',
 		exec: function(){
 			this.insertHtml("{qti_interaction_new}");

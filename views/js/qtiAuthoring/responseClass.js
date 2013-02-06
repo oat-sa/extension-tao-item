@@ -770,12 +770,15 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				);
 				
 				$currentRow.find('input,select').each(function(){
-					
 					$(this).bind('click focus',function(){
 						$(this).bind('change keyup',function(){
 							response.setModifiedRow(response.currentRowId, {});
 						});
-					
+						
+						//fix in chrome
+						if($(this).attr('type') == 'checkbox'){
+							response.setModifiedRow(response.currentRowId, {});
+						}
 					});
 					
 					//add special behaviour depending on the interaction type:
@@ -870,6 +873,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			
 			var __this = this;
 			var responseData = this.myGrid.jqGrid('getRowData');
+			CD(responseData, 'responseData');
 			var responseDataString = JSON.stringify(responseData);
 
 			//save to server:

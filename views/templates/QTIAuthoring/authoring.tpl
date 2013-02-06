@@ -252,15 +252,15 @@ $(document).ready(function(){
 		slider: {
 			label: 'slider',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_slider.png"
-		},
-		fileupload: {
+		}
+		/*fileupload: {
 			label: 'file upload',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_fileUpload.png"
 		}
 		,endattempt: {
 			label: 'end attempt',
 			icon:"<?=get_data('qtiAuthoring_img_path')?>QTI_custom.png"
-		}
+		}*/
 	}
 
 	for(interactionType in interactionTypes){
