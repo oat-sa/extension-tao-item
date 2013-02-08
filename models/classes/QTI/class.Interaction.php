@@ -516,16 +516,16 @@ class taoItems_models_classes_QTI_Interaction
 		$text = $tidy->repairString (
 			$text,
 			array(
-				'output-xhtml' => true,
-				'numeric-entities' => true,
-				'show-body-only' => true,
-				'quote-nbsp' => false,
-				'indent' => 'auto',
-				'preserve-entities' => false,
-				'quote-ampersand' => true,
-				'uppercase-attributes' => false,
-				'uppercase-tags' => false
-			),
+					'output-xhtml' => true,
+					'numeric-entities' => true,//only entities allowed in XML
+					'show-body-only' => true,
+					'quote-nbsp' => true,
+					'indent' => 'auto',
+					'preserve-entities' => false,//replace html entities by numeric entities
+					'quote-ampersand' => true,
+					'uppercase-attributes' => false,
+					'uppercase-tags' => false
+				),
 			'UTF8'
 		);
 

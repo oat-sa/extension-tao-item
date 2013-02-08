@@ -873,7 +873,6 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			
 			var __this = this;
 			var responseData = this.myGrid.jqGrid('getRowData');
-			CD(responseData, 'responseData');
 			var responseDataString = JSON.stringify(responseData);
 
 			//save to server:

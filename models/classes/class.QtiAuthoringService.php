@@ -1814,11 +1814,11 @@ class taoItems_models_classes_QtiAuthoringService
 				$data,
 				array(
 					'output-xhtml' => true,
-					'doctype' => 'transitional',
-					'show-body-only' => false,
-					'quote-nbsp' => false,
+					'numeric-entities' => true,//only entities allowed in XML
+					'show-body-only' => true,
+					'quote-nbsp' => true,
 					'indent' => 'auto',
-					'preserve-entities' => false,
+					'preserve-entities' => false,//replace html entities by numeric entities
 					'quote-ampersand' => true,
 					'uppercase-attributes' => false,
 					'uppercase-tags' => false

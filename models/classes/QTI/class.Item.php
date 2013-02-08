@@ -563,7 +563,7 @@ class taoItems_models_classes_QTI_Item
         $dom->validateOnParse = false;
         $dom->loadXML($tplRenderer->render());
         $returnValue = $dom->saveXML();
-
+		
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000238A end
 
         return (string) $returnValue;

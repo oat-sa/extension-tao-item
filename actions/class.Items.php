@@ -113,7 +113,6 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 							if(!is_null($qtiObject)){
 								$qtiObject->setOption('title', $properties[RDFS_LABEL]);
 								$qtiService->saveDataItemToRdfItem($qtiObject, $item);
-								common_Logger::d('changed label : '.$newLabel, 'QTIdebug');
 							}
 							break;
 						}

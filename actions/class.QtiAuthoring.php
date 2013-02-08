@@ -132,7 +132,9 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		}
 
 		$currentItem = $this->getCurrentItem();
-		$itemData = $this->service->getItemData($currentItem);
+		$itemData = $this->service->getItemData($currentItem);//issue here?
+//		$itemData = taoItems_models_classes_QtiAuthoringService::filteredData($itemData);
+		
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
 		$this->setData('itemData', $itemData);
@@ -254,16 +256,15 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	protected function getPostedInteractionData(){
 		return $this->getPostedData('interactionData');
 	}
-
+	
 	protected function getPostedData($key, $required = false){
 		$returnValue = '';
 
 		if($this->hasRequestParameter($key)){
-
-			$returnValue = html_entity_decode(urldecode($this->getRequestParameter($key)), null, "UTF-8");
+			
 			$returnValue = $_POST[$key];
 			$returnValue = $this->cleanPostedData($returnValue);
-
+			
 		}else{
 			if($required){
 				throw new Exception('the request data "'.$key.'" cannot be found');
@@ -286,18 +287,18 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 				$returnValue,
 				array(
 					'output-xhtml' => true,
-					'numeric-entities' => true,
+					'numeric-entities' => true,//only entities allowed in XML
 					'show-body-only' => true,
-					'quote-nbsp' => false,
+					'quote-nbsp' => true,
 					'indent' => 'auto',
-					'preserve-entities' => false,
+					'preserve-entities' => false,//replace html entities by numeric entities
 					'quote-ampersand' => true,
 					'uppercase-attributes' => false,
 					'uppercase-tags' => false
 				),
 				'UTF8'
 			);
-
+			
 			if(!empty($returnValue)){
 				try{//Parse data and replace img src by the media service URL
 					$updated = false;
@@ -670,7 +671,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 		//build the form with its method "toForm"
 		$myForm = $interaction->toForm();
-
+		
 		//get the itnteraction's choices
 		$choices = $this->service->getInteractionChoices($interaction);
 		$choiceForms = array();

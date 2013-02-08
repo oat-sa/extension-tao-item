@@ -367,7 +367,7 @@ function qtiEdit(itemSerial, formContainers, options){
 	};
 
 	var instance = this;
-
+	
 	this.itemEditor = $(this.itemDataContainer).wysiwyg({
 		css: options.css,
 		iFrameClass: 'wysiwyg-item',
@@ -398,9 +398,9 @@ function qtiEdit(itemSerial, formContainers, options){
 //		  addMedia : addMedia,
 //		  addObject : addObject,
 
-		  cut   : {visible : true},
-		  copy  : {visible : true},
-		  paste : {visible : true},
+		  cut   : {visible : false},
+		  copy  : {visible : false},
+		  paste : {visible : false},
 		  html  : {visible: true},
 		  addChoiceInteraction: addChoiceInteraction,
 		  addAssociateInteraction: addAssociateInteraction,
@@ -846,9 +846,9 @@ qtiEdit.mapHtmlEditor = function($container){
 			  insertOrderedList    : {visible : true},
 			  insertUnorderedList  : {visible : true},
 			  insertHorizontalRule : {visible : true},
-			  cut   : {visible : true},
-			  copy  : {visible : true},
-			  paste : {visible : true},
+			  cut   : {visible : false},
+			  copy  : {visible : false},
+			  paste : {visible : false},
 			  html  : {visible: true},
 			  h1: {visible: false},
 			  h2: {visible: false},

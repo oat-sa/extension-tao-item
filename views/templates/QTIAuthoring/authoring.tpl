@@ -101,7 +101,7 @@
 			<div id="qtiAuthoring_item_right_container">
 				<!--<div id="qtiAuthoring_itemEditor_title" class="ui-widget-header ui-corner-top ui-state-default"><?=__('Item Editor:')?></div>-->
 				<div id="qtiAuthoring_itemEditor" class="ui-widget-content ui-corner-bottom">
-					<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=get_data('itemData')?></textarea>
+					<textarea name="wysiwyg" id="itemEditor_wysiwyg"><?=_dh(get_data('itemData'))?></textarea>
 				</div>
 			</div>
 
