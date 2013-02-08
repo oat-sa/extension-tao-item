@@ -6,7 +6,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-require_once(ROOT_PATH.'/tao/lib/htmlpurifier/HTMLPurifier.standalone.php');
+require_once(ROOT_PATH.'/tao/lib/htmlpurifier/HTMLPurifier.auto.php');
 
 /**
  * Service methods to manage the QTI authoring business
