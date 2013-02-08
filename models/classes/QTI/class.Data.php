@@ -450,22 +450,7 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:000000000000232C begin
         
     	if ($cleanup){
-			$tidy = new tidy();
-			$data = $tidy->repairString (
-				$data,
-				array(
-					'output-xhtml' => true,
-					'numeric-entities' => true,//only entities allowed in XML
-					'show-body-only' => true,
-					'quote-nbsp' => true,
-					'indent' => 'auto',
-					'preserve-entities' => false,//replace html entities by numeric entities
-					'quote-ampersand' => true,
-					'uppercase-attributes' => false,
-					'uppercase-tags' => false
-				),
-				'UTF8'
-			);
+			$data = taoItems_models_classes_QtiAuthoringService::cleanHTML($data);
     	}
 		
     	$this->data = $data;

@@ -133,7 +133,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 		$currentItem = $this->getCurrentItem();
 		$itemData = $this->service->getItemData($currentItem);//issue here?
-//		$itemData = taoItems_models_classes_QtiAuthoringService::filteredData($itemData);
 		
 		$this->setData('itemSerial', $currentItem->getSerial());
 		$this->setData('itemForm', $currentItem->toForm()->render());
@@ -275,71 +274,16 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	}
 
 	protected function cleanPostedData($data){
-
-		$returnValue = '';
-
-		$returnValue = trim($data);
-
-		if(!empty($returnValue)){
-
-			$tidy = new tidy();
-			$returnValue = $tidy->repairString (
-				$returnValue,
-				array(
-					'output-xhtml' => true,
-					'numeric-entities' => true,//only entities allowed in XML
-					'show-body-only' => true,
-					'quote-nbsp' => true,
-					'indent' => 'auto',
-					'preserve-entities' => false,//replace html entities by numeric entities
-					'quote-ampersand' => true,
-					'uppercase-attributes' => false,
-					'uppercase-tags' => false
-				),
-				'UTF8'
-			);
-			
-			if(!empty($returnValue)){
-				try{//Parse data and replace img src by the media service URL
-					$updated = false;
-					$doc = new DOMDocument;
-					if($doc->loadHTML($returnValue)){
-
-						$tags 		= array('img', 'object');
-						$srcAttr 	= array('src', 'data');
-						$xpath 		= new DOMXpath($doc);
-						$query 		= implode(' | ', array_map(create_function('$a', "return '//'.\$a;"), $tags));
-						foreach($xpath->query($query) as $element) {
-							foreach($srcAttr as $attr){
-								if($element->hasAttribute($attr)){
-									$source = trim($element->getAttribute($attr));
-									if(preg_match("/taoItems\/Items\/getMediaResource\?path=/", $source)){
-										$path = substr($source, strpos($source, '?path=') + 6);
-										if (strpos($path, '&')) {
-											$path = substr($path, 0, strpos($path, '&'));
-										}
-										$element->setAttribute($attr,  urldecode($path));
-										$updated = true;
-									}
-								}
-							}
-						}
-					}
-
-					if($updated){
-						$returnValue = $doc->saveHTML();
-					}
-				}
-				catch(DOMException $de){
-					//we render it anyway
-				}
-			}
-
-		}
+		
+		$returnValue = taoItems_models_classes_QtiAuthoringService::filteredData($data);
 
 		return $returnValue;
 	}
-
+	
+	public function cleanData(){
+		
+	}
+	
 	public function addInteraction(){
 		$added = false;
 		$interactionSerial = '';

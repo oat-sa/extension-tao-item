@@ -6,7 +6,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
     die('This file was generated for PHP 5');
 }
 
-require_once('tao/models/classes/class.GenerisService.php');
+require_once(ROOT_PATH.'/tao/lib/htmlpurifier/HTMLPurifier.standalone.php');
 
 /**
  * Service methods to manage the QTI authoring business
@@ -33,7 +33,10 @@ class taoItems_models_classes_QtiAuthoringService
     protected $itemClass = null;
 
 	protected $qtiService = null;
-
+	
+	static protected $tidy = null;
+	static protected $purifier = null;
+	
     // --- OPERATIONS ---
 
     /**
@@ -874,8 +877,6 @@ class taoItems_models_classes_QtiAuthoringService
 
 	public function setInteractionData(taoItems_models_classes_QTI_Interaction $interaction, $data = '', $choiceOrder=array()){
 
-		// $data = $this->convertToXHTML($data);
-
 		//append the choices id to the interaction data:
 		switch(strtolower($interaction->getType())){
 			case 'choice':
@@ -990,7 +991,10 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 
 	}
-
+	
+	/*
+	 * Prepare data to be saved to the QTI Object model 
+	 */
 	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
 
 		$pattern = '/';
@@ -1004,18 +1008,6 @@ class taoItems_models_classes_QtiAuthoringService
 		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", $data);
 
 		return $data;
-	}
-
-	public function convertToXHTML($data){
-		$html = '<div>' . $data . '</div>';
-		$doc = new DOMDocument('1.0', 'UTF-8');
-		$doc->encoding = 'UTF-8';
-		$doc->loadHTML($html);
-		$doc->encoding = 'UTF-8';
-
-		$data = substr($doc->saveXML($doc->getElementsByTagName('div')->item(0)), 5, -6);
-
-		return utf8_decode($data);
 	}
 
 	public function setGroupData(taoItems_models_classes_QTI_Group $group, $choiceOrder=array(), taoItems_models_classes_QTI_Interaction $interaction=null, $edit=false){
@@ -1793,6 +1785,95 @@ class taoItems_models_classes_QtiAuthoringService
 		}
 		return $returnValue;
 	}
+	
+	public static function cleanHTML($html){
+		
+		$qtiTags = array(
+			'abbr',
+			'acronym',
+			'address',
+			'blockquote',
+			'br',
+			'cite',
+			'code',
+			'dfn',
+			'div',
+			'em',
+			'h1',
+			'h2',
+			'h3',
+			'h4',
+			'h5',
+			'h6',
+			'kbd',
+			'p',
+			'pre', //not include img, object, big, small,sub, sup
+			'q',
+			'samp',
+			'span',
+			'strong',
+			'var',
+			'dl',
+			'dt',
+			'dd',
+			'ol',
+			'ul',
+			'li',
+			'object', //attributes(objectFlow, data, type, width, height)
+			'param', //attributes(name,value,valuetype,type)
+			'b',
+			'big',
+			'hr',
+			'i',
+			'small',
+			'sub',
+			'sup',
+			'tt',
+			'caption',
+			'col',
+			'colgroup',
+			'table', //attributes(summary, caption, col, colgroup, thead, tfoot, tbody)
+			'tablecell',
+			'th',
+			'td',
+			'tbody',
+			'tfoot',
+			'thead',
+			'tr',
+			'img', //attr
+			'a',
+			'input'//@todo : to be removed after refactoring
+		);
+		
+		if(!self::$purifier instanceof HTMLPurifier){
+			$config = HTMLPurifier_Config::createDefault();
+			$config->set('HTML.AllowedElements', implode(',', $qtiTags));
+			self::$purifier = new HTMLPurifier($config);
+		}
+		$html = self::$purifier->purify($html);
+		
+		if(!self::$tidy instanceof tidy){
+			self::$tidy = new tidy();
+		}
+		$html = self::$tidy->repairString (
+			$html,
+			array(
+				'output-xhtml' => true,
+				'numeric-entities' => true,//only entities allowed in XML
+				'show-body-only' => true,
+				'quote-nbsp' => true,
+				'indent' => 'auto',
+				'preserve-entities' => false,//replace html entities by numeric entities
+				'quote-ampersand' => true,
+				'uppercase-attributes' => false,
+				'uppercase-tags' => false
+			),
+			'UTF8'
+		);
+		
+		return $html;
+		
+	}
 
 	/**
 	 * Filter the data for the authoring needs
@@ -1809,22 +1890,7 @@ class taoItems_models_classes_QtiAuthoringService
 
 		if(!empty($data)){
 
-			$tidy = new tidy();
-			$data = $tidy->repairString (
-				$data,
-				array(
-					'output-xhtml' => true,
-					'numeric-entities' => true,//only entities allowed in XML
-					'show-body-only' => true,
-					'quote-nbsp' => true,
-					'indent' => 'auto',
-					'preserve-entities' => false,//replace html entities by numeric entities
-					'quote-ampersand' => true,
-					'uppercase-attributes' => false,
-					'uppercase-tags' => false
-				),
-				'UTF8'
-			);
+			$data = self::cleanHTML($data);
 
 			//remove the buggy and useless qti_validate tag in internal preview
 			$data = preg_replace('/<a(.[^>]*)?id="qti_validate"(.[^>]*)?>(.[^<]*)?<\/a>/im', '', $data);
@@ -1853,6 +1919,7 @@ class taoItems_models_classes_QtiAuthoringService
 
 				if($updated){
 					$returnValue = $doc->saveHTML();
+//					$returnValue = self::cleanHTML($returnValue);
 				}
 			}
 			catch(DOMException $de){
