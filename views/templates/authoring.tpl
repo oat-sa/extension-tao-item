@@ -1,4 +1,4 @@
-<?include(TAO_TPL_PATH . 'header.tpl')?>
+<?include(TAO_TPL_PATH . 'messages.tpl')?>
 
 <?if(get_data('error')):?>
 	<div class="main-container" style='height:100px;'>
