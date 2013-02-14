@@ -31,15 +31,6 @@
 <?if(get_data('reload')):?>
 			uiBootstrap.initTrees();
 <?endif?>
-
-<?/*if(get_data('selectTreeNode')):?>
-			uiBootstrap.initTrees(function() {
-				setTimeout(function() {
-					generisActions.select('<?=tao_helpers_Uri::encode(get_data('selectTreeNode'));?>');
-				}, 1000)
-			});
-			
-<?endif*/?>
 		});
 	});
 </script>
