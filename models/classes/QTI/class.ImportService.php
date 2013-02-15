@@ -73,7 +73,7 @@ class taoItems_models_classes_QTI_ImportService
         // section 10-30-1--78--1c871595:13c064de577:-8000:0000000000003CAC begin
     	//repository
 		$repository = is_null($repository)
-			? tao_models_classes_FileSourceService::singleton()->getDefaultFileSource()
+			? taoItems_models_classes_ItemsService::singleton()->getDefaultFileSource()
 			: $repository;
 			
         //get the services instances we will need
@@ -145,7 +145,7 @@ class taoItems_models_classes_QTI_ImportService
 		
 		//repository
 		$repository = is_null($repository)
-			? tao_models_classes_FileSourceService::singleton()->getDefaultFileSource()
+			? taoItems_models_classes_ItemsService::singleton()->getDefaultFileSource()
 			: $repository;
 		
 		//load and validate the package

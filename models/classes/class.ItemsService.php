@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * Service methods to manage the Items business models using the RDF API.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -18,7 +18,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * The Service class is an abstraction of each service instance. 
  * Used to centralize the behavior related to every servcie instances.
  *
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Joel Bout, <joel@taotesting.com>
  */
 require_once('tao/models/classes/class.GenerisService.php');
 
@@ -37,7 +37,7 @@ require_once (dirname(__FILE__).'/Matching/matching_api.php');
  * Service methods to manage the Items business models using the RDF API.
  *
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -73,13 +73,22 @@ class taoItems_models_classes_ItemsService
      */
     public $itemContentProperty = null;
 
+    /**
+     * key to use to store dthe default filesource
+     * to be used in for new items
+     *
+     * @access private
+     * @var string
+     */
+    const DEFAULT_FILESOURCE_KEY = 'defaultItemFileSource';
+
     // --- OPERATIONS ---
 
     /**
      * Short description of method __construct
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @return void
      */
     public function __construct()
@@ -100,7 +109,7 @@ class taoItems_models_classes_ItemsService
      * If the uri don't reference an item subclass, it returns null
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  string uri
      * @return core_kernel_classes_Class
      */
@@ -130,7 +139,7 @@ class taoItems_models_classes_ItemsService
      * check if the class is a or a subclass of an Item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Class clazz
      * @return boolean
      */
@@ -161,7 +170,7 @@ class taoItems_models_classes_ItemsService
      * delete an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return boolean
      */
@@ -194,7 +203,7 @@ class taoItems_models_classes_ItemsService
      * delete an item class or subclass
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Class clazz
      * @return boolean
      */
@@ -218,7 +227,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getDefaultItemFolder
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  string lang
      * @return string
@@ -236,7 +245,7 @@ class taoItems_models_classes_ItemsService
 				$lang = $session->getDataLanguage();
 			}
 
-			$itemRepo = tao_models_classes_FileSourceService::singleton()->getDefaultFileSource();
+			$itemRepo = $this->getDefaultFileSource();
 			$repositoryPath = $itemRepo->getPath();
 			$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
 			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
@@ -252,7 +261,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getRuntimeFolder
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return string
      */
@@ -278,7 +287,7 @@ class taoItems_models_classes_ItemsService
      * after creation)
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -300,7 +309,7 @@ class taoItems_models_classes_ItemsService
      * usually an xml string
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  boolean preview
      * @param  string lang
@@ -350,7 +359,7 @@ class taoItems_models_classes_ItemsService
      * Check if the item has an itemContent Property
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  string lang
      * @return boolean
@@ -380,7 +389,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setItemContent
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  string content
      * @param  string lang
@@ -413,7 +422,7 @@ class taoItems_models_classes_ItemsService
 		} else {
 
 			$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
-			$repository = tao_models_classes_FileSourceService::singleton()->getDefaultFileSource();
+			$repository = $this->getDefaultFileSource();
 			$file = core_kernel_versioning_File::createVersioned(
 				$dataFile,
 				tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang,
@@ -436,7 +445,7 @@ class taoItems_models_classes_ItemsService
      * Check if the Item has on of the itemModel property in the models array
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  array models the list of URI of the itemModel to check
      * @return boolean
@@ -462,7 +471,7 @@ class taoItems_models_classes_ItemsService
      * Check if the itemModel has been defined for that item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return boolean
      */
@@ -495,7 +504,7 @@ class taoItems_models_classes_ItemsService
      * Get the runtime associated to the item model.
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -521,7 +530,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method hasModelStatus
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  array status
      * @return boolean
@@ -559,7 +568,7 @@ class taoItems_models_classes_ItemsService
      * Deploy the item in parameter into the path.
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  string path
      * @param  string url
@@ -667,7 +676,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  string itemUri
      * @return string
      */
@@ -689,7 +698,7 @@ class taoItems_models_classes_ItemsService
      * get the item uri linked to the given file
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  string uri
      * @return string
      */
@@ -716,7 +725,7 @@ class taoItems_models_classes_ItemsService
      * Get the file linked to an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  string itemUri
      * @return string
      */
@@ -741,7 +750,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the temporary authoring file
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  string itemUri
      * @param  boolean fallback
      * @return string
@@ -770,7 +779,7 @@ class taoItems_models_classes_ItemsService
      * Service to get the matching data of an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource itemRdf
      * @return array
      */
@@ -798,7 +807,7 @@ class taoItems_models_classes_ItemsService
      * Service to evaluate an item
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource itemRdf
      * @param  responses
      * @return array
@@ -857,7 +866,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method cloneInstance
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource instance
      * @param  Class clazz
      * @return core_kernel_classes_Resource
@@ -940,7 +949,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method setItemMeasurements
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  array measurements
      * @return taoItems_models_classes_Matching_bool
@@ -979,7 +988,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemMeasurements
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return array
      */
@@ -1027,7 +1036,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemModel
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
@@ -1050,7 +1059,7 @@ class taoItems_models_classes_ItemsService
      * item content should be located
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @return string
      */
     public function getSessionLg()
@@ -1075,7 +1084,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method deleteItemContent
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return boolean
      */
@@ -1113,7 +1122,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemModelService
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource itemModel
      * @return taoItems_models_classes_itemModelService
      */
@@ -1145,7 +1154,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method isItemVersioned
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @return boolean
      */
@@ -1170,7 +1179,7 @@ class taoItems_models_classes_ItemsService
      * Short description of method getItemFolder
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
      * @param  string lang
      * @return string
@@ -1198,6 +1207,46 @@ class taoItems_models_classes_ItemsService
         // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C21 end
 
         return (string) $returnValue;
+    }
+
+    /**
+     * sets the filesource to use for new items
+     *
+     * @access public
+     * @author Joel Bout, <joel@taotesting.com>
+     * @param  Repository filesource
+     * @return mixed
+     */
+    public function setDefaultFilesource( core_kernel_versioning_Repository $filesource)
+    {
+        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C83 begin
+		$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+        $ext->setConfig(self::DEFAULT_FILESOURCE_KEY, $filesource->getUri());
+        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C83 end
+    }
+
+    /**
+     * returns the filesource to use for new items
+     *
+     * @access public
+     * @author Joel Bout, <joel@taotesting.com>
+     * @return core_kernel_versioning_Repository
+     */
+    public function getDefaultFileSource()
+    {
+        $returnValue = null;
+
+        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C81 begin
+    	$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+		$uri = $ext->getConfig(self::DEFAULT_FILESOURCE_KEY);
+		if (!empty($uri)) {
+			$returnValue = new core_kernel_versioning_Repository($uri);
+		} else {
+			throw new common_Exception('No default repository defined');
+		}
+        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C81 end
+
+        return $returnValue;
     }
 
 } /* end of class taoItems_models_classes_ItemsService */
