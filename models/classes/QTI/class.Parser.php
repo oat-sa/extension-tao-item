@@ -108,8 +108,10 @@ class taoItems_models_classes_QTI_Parser
     	if($xml !== false){
     		
     		//clean session's previous item 
+    		$session = Context::getInstance()->getSession();
+    		
     		taoItems_models_classes_QTI_QTISessionCache::singleton()->purge();
-    		Session::removeAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
+    		$session->removeAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
     		
     		//build the item from the xml
     		$returnValue = taoItems_models_classes_QTI_ParserFactory::buildItem($xml);

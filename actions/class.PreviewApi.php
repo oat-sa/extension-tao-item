@@ -68,7 +68,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 					PROPERTY_USER_LASTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LASTNAME))
 				)
 			);
-			Session::setAttribute(self::ENV_VAR_NAME.'_'.tao_helpers_Uri::encode($user->uriResource), $executionEnvironment);
+        	$this->setSessionAttribute(self::ENV_VAR_NAME.'_'.tao_helpers_Uri::encode($user->uriResource), $executionEnvironment);
 		}
 
 		return $executionEnvironment;
@@ -83,8 +83,8 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 		$executionEnvironment = array();
 		if(!is_null($user)){
 			$sessionKey =  self::ENV_VAR_NAME . '_' . tao_helpers_Uri::encode($user->uriResource);
-			if(Session::hasAttribute($sessionKey)){
-				$executionEnvironment = Session::getAttribute($sessionKey);
+			if($this->hasSessionAttribute($sessionKey)){
+				$executionEnvironment = $this->getSessionAttribute($sessionKey);
 				if(isset($executionEnvironment['token'])){
 					return $executionEnvironment;
 				}

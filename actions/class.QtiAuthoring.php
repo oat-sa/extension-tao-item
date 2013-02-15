@@ -118,7 +118,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 			//clear the QTI session data before doing anything else:
 			taoItems_models_classes_QTI_QTISessionCache::singleton()->purge();
-			Session::removeAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
+			$this->removeSessionAttribute(taoItems_models_classes_QTI_Data::IDENTIFIERS_KEY);
 		}
 
 		//required for saving the item in tao:
@@ -888,11 +888,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		if(!empty($imageFilePath)){
 
 			if(!preg_match("/^http/", $imageFilePath)){
-				if(Session::hasAttribute('uri') && Session::hasAttribute('classUri')){
+				if($this->hasSessionAttribute('uri') && $this->hasSessionAttribute('classUri')){
 					$itemService = taoItems_models_classes_ItemsService::singleton();
-					$classUri = tao_helpers_Uri::decode(Session::getAttribute('classUri'));
+					$classUri = tao_helpers_Uri::decode($this->getSessionAttribute('classUri'));
 					if($itemService->isItemClass(new core_kernel_classes_Class($classUri))){
-						$item = new core_kernel_classes_Resource( tao_helpers_Uri::decode(Session::getAttribute('uri')));
+						$item = new core_kernel_classes_Resource( tao_helpers_Uri::decode($this->getSessionAttribute('uri')));
 						if(!is_null($item)){
 							$folder 	= $itemService->getItemFolder($item);
 							$imageFilePath 	= tao_helpers_File::concat(array($folder, $imageFilePath));

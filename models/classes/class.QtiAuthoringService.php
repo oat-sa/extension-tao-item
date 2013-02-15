@@ -1115,7 +1115,7 @@ class taoItems_models_classes_QtiAuthoringService
 				$identifier = 'RESPONSE';
 			}
 		}
-		//var_dump(Session::getAttribute('qti_identifiers'));
+		
 		$response = new taoItems_models_classes_QTI_Response($identifier);
 
 		//set the response to the interaction

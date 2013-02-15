@@ -608,8 +608,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				'match'		=> 'client'
 			);
 
-			if (Session::hasAttribute('previewOpts')) {
-				$options = array_merge($options, Session::getAttribute('previewOpts'));
+			if ($this->hasSessionAttribute('previewOpts')) {
+				$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
 			}
 
 			//create the options form
@@ -619,7 +619,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				if ($myForm->isValid()) {
 					$previewOpts = $myForm->getValues();
 					$options = array_merge($options, $previewOpts);
-					Session::setAttribute('previewOpts', $previewOpts);
+					$this->setSessionAttribute('previewOpts', $previewOpts);
 				}
 			}
 			$this->setData('optionsForm', $myForm->render());
@@ -680,8 +680,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				'context'	=> false,
 				'match'		=> 'client'
 			);
-			if(Session::hasAttribute('previewOpts')){
-				$options = array_merge($options, Session::getAttribute('previewOpts'));
+			if($this->hasSessionAttribute('previewOpts')){
+				$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
 			}
 
 			$previewUrl =  _url('runner', 'PreviewApi', 'taoItems', $options);

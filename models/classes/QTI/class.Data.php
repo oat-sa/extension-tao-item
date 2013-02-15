@@ -303,9 +303,12 @@ abstract class taoItems_models_classes_QTI_Data
     		throw new InvalidArgumentException("Id should be set");
     	}
     	
+    	$context = Context::getInstance();
+    	$session = $context->getSession();
+    	
     	$ids = array();
-        if(Session::hasAttribute(self::IDENTIFIERS_KEY)){
-    		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
+        if($session->hasAttribute(self::IDENTIFIERS_KEY)){
+    		$ids = $session->getAttribute(self::IDENTIFIERS_KEY);
     		if(!is_array($ids)){
     			$ids = array($ids);
     		}
@@ -326,7 +329,7 @@ abstract class taoItems_models_classes_QTI_Data
 		
     	$ids[] = $id;
     	
-    	Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
+    	$session->setAttribute(self::IDENTIFIERS_KEY, $ids);
     	$this->identifier = $id;
     	
         // section 127-0-1-1--398d1ef5:12acc40a46b:-8000:000000000000250F end
@@ -344,9 +347,12 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
+    	$context = Context::getInstance();
+    	$session = $context->getSession();
+    	
     	$ids = array();
-        if(Session::hasAttribute(self::IDENTIFIERS_KEY)){
-    		$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
+        if($session->hasAttribute(self::IDENTIFIERS_KEY)){
+    		$ids = $session->getAttribute(self::IDENTIFIERS_KEY);
     		if(!is_array($ids)){
     			$ids = array($ids);
     		}
@@ -373,7 +379,7 @@ abstract class taoItems_models_classes_QTI_Data
     	} while($exist);
     		
     	$ids[] = $id;
-    	Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
+    	$session->setAttribute(self::IDENTIFIERS_KEY, $ids);
     	
     	$this->identifier = $id;
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 end
@@ -738,14 +744,17 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1-40168e54:135573066b9:-8000:000000000000374D begin
         common_Logger::d('Destroying in QTIAuthoring: '.$this->getSerial());
 		if(!empty($this->identifier) && !is_null($this->identifier)){
-			$ids = Session::getAttribute(self::IDENTIFIERS_KEY);
+			$ids = $session->getAttribute(self::IDENTIFIERS_KEY);
 			if(is_array($ids)){
 				if(in_array($this->identifier, $ids)){
 					$key = array_search($this->identifier, $ids);
 					if($key !== false){
 						unset($ids[$key]);
 						sort($ids);
-						Session::setAttribute(self::IDENTIFIERS_KEY, $ids);
+						
+						$context = Context::getInstance();
+						$session = $context->getSession();
+						$session->setAttribute(self::IDENTIFIERS_KEY, $ids);
 					}
 				}
 			}
