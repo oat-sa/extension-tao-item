@@ -165,7 +165,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		}
 
 		$ownerInstance = $item;
-		$property = new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY);
+		$property = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
 		$propertyRange = $property->getRange();
 
 		//get the versioned file resource
