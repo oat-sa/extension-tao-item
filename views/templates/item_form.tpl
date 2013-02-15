@@ -1,3 +1,5 @@
+<? include(TAO_TPL_PATH . 'form_context.tpl') ?>
+
 <div class="main-container">
 	<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
 		<?=get_data('formTitle')?>
@@ -53,5 +55,5 @@
 	});
 </script>
 <?if(!get_data('isDeprecated')):?>
-	<?include('footer.tpl');?>
+	<? include('footer.tpl') ?>
 <?endif?>
