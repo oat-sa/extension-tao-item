@@ -27,10 +27,6 @@
 				uiBootstrap.tabs.tabs('disable', previewIndex);
 			}
 <?endif?>
-
-<?if(get_data('reload')):?>
-			uiBootstrap.initTrees();
-<?endif?>
 		});
 	});
 </script>
