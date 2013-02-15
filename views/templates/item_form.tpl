@@ -30,8 +30,8 @@
 		$authoringButton.after('<input id="content-button" type="button" value="Content"/>');
 		$('#content-button').click(function(){
 			var url = '';
-			if(ctx_extension){
-				url = root_url + '/' + ctx_extension + '/' + ctx_module + '/';
+			if(ctx_form_extension){
+				url = root_url + '/' + ctx_form_extension + '/' + ctx_form_module + '/';
 			}
 			url += 'itemContentIO';
 			var data = {
