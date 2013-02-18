@@ -303,8 +303,7 @@ abstract class taoItems_models_classes_QTI_Data
     		throw new InvalidArgumentException("Id should be set");
     	}
     	
-    	$context = Context::getInstance();
-    	$session = $context->getSession();
+    	$session = PHPSession::singleton();
     	
     	$ids = array();
         if($session->hasAttribute(self::IDENTIFIERS_KEY)){
@@ -347,8 +346,7 @@ abstract class taoItems_models_classes_QTI_Data
     {
         // section 127-0-1-1--56c234f4:12a31c89cc3:-8000:0000000000002328 begin
         
-    	$context = Context::getInstance();
-    	$session = $context->getSession();
+    	$session = PHPSession::singleton();
     	
     	$ids = array();
         if($session->hasAttribute(self::IDENTIFIERS_KEY)){
@@ -752,9 +750,7 @@ abstract class taoItems_models_classes_QTI_Data
 						unset($ids[$key]);
 						sort($ids);
 						
-						$context = Context::getInstance();
-						$session = $context->getSession();
-						$session->setAttribute(self::IDENTIFIERS_KEY, $ids);
+						PHPSession::singleton()->setAttribute(self::IDENTIFIERS_KEY, $ids);
 					}
 				}
 			}
