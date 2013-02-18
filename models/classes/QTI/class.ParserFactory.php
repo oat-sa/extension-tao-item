@@ -600,7 +600,6 @@ class taoItems_models_classes_QTI_ParserFactory
 					$mappingOptions[$key] = (string) $value;
 				}
 			}
-			//var_dump($mappingOptions);
 			$myResponse->setOption('mapping', $mappingOptions);
 
 			$mapping = array();

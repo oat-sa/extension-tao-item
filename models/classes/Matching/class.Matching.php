@@ -529,7 +529,7 @@ class taoItems_models_classes_Matching_Matching
         if (gettype($data) != 'array'){
     		throw new Exception ('taoItems_models_classes_Matching_Matching::setReponses is waiting on an array, a '.gettype($data).' is given. '.$data);
         }
-
+		
 		foreach ($data as $key=>$response){
 			try {
 				$var = taoItems_models_classes_Matching_VariableFactory::create ($response->value);
@@ -1305,12 +1305,11 @@ class taoItems_models_classes_Matching_Matching
         if (is_null($expr1) || is_null($expr2)){
             $returnValue = null;
         } else {
-
-	        if ($expr1->getType() != $expr2->getType()) { 
-	        	$returnValue = false;
-	    	} else {
-	        	$returnValue = $expr1->match($expr2);
-	        }
+if($expr1->getType() === $expr2->getType()){
+				$returnValue = $expr1->match($expr2);
+			}else{
+				$returnValue = false;
+			}
         }
         
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:000000000000291D end

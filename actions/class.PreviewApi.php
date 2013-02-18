@@ -349,7 +349,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 			        matching_setResponses (json_decode($_POST['data']));
 			        matching_setOutcomes ($itemMatchingData["outcomes"]);
 			        matching_evaluate ();
-
+					
 			        $outcomes = matching_getOutcomes ();
 			        // Check if outcomes are scalar
 			        try {

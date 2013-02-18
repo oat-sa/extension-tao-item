@@ -125,25 +125,33 @@ class taoItems_models_classes_Matching_List
         $returnValue = (bool) false;
 
         // section 127-0-1-1--58a488d5:12baaa39fdd:-8000:0000000000002945 begin
-
+		
         $returnValue = true;
         
+		// If the cardinality is not the same return false
+        if ($list->getType() != $this->getType()){
+        	return false;	
+        }
+		
         // If the cardinality is not the same return false
         if ($this->length() != $list->length()){
         	return false;	
         }
         
         // Test if the both lists have the same content
+		$checkedElts = array();//store checked elements from the second list, to ensure bijective matching
         for ($i=0; $i<$this->length(); $i++) {
 	        $tempResult = false;
 			
 	        for ($j=0; $j<$list->length(); $j++) {
 	        	if ($this->getElement($i)->getType () != $list->getElement($j)->getType()){
-	        		throw new Exception ('taoItems_models_classes_Matching_List::match an error occured : types of the elements to match are not the same ['. $this->getElement($i)->getType () .'] and ['. $list->getElement($j)->getType() .']');
+					//@todo : add a matching exception
+	        		throw new Exception('taoItems_models_classes_Matching_List::match an error occured : types of the elements to match are not the same ['. $this->getElement($i)->getType () .'] and ['. $list->getElement($j)->getType() .']');
 	        		$returnValue = false;
 	        	} 
-	        	else if ($this->getElement($i)->match($list->getElement($j))) {
-	            	$tempResult = true;
+	        	else if ($this->getElement($i)->match($list->getElement($j)) && !in_array($j, $checkedElts)){
+	            	$checkedElts[] = $j;
+					$tempResult = true;
 	                break;
 	            }
 	        }

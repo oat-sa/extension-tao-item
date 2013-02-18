@@ -125,7 +125,7 @@ define the type of the variable
      * @param  string baseType
      * @param  values Value of the variable
      */
-    public static function createJSONVariableFromQTIData($id, $card, $baseType,    $values)
+    public static function createJSONVariableFromQTIData($id, $card, $baseType, $values)
     {
         $returnValue = null;
 

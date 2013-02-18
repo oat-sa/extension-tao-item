@@ -127,30 +127,39 @@ class taoItems_models_classes_Matching_Map
         $mapEntriesFound = array ();
         
         // for each map element, check if it is represented in the given variable
-    	foreach ($this->value as $mapKey=>$mapElt) {
+		foreach ($this->value as $mapKey=>$mapElt) {
     		
-    		// If the given var is a collection
+    		// If the given var is a collection of element with the same type as
     		if ($var instanceOf taoItems_models_classes_Matching_Collection){
     			$found = false;
     		    // For each value contained by the matching var to map
     		    foreach ($var->getValue() as $key => $value) {
                     // If one match the current map value
-                    if ($value->match ($mapElt['key'])) {
+                    if ($value->match($mapElt['key'])){
+						common_Logger::d('   matched : ', 'QTIdebug');
+						common_Logger::d($value, 'QTIdebug');
+						common_Logger::d($mapElt['key'], 'QTIdebug');
                     	$mapEntriesFound[] = $key;
                     	if (!$found) {
-                        	$returnValue += $mapElt['value'];
+                        	$returnValue += $mapElt['value'];//add score only once here
+							common_Logger::d('value : +'. $mapElt['value'], 'QTIdebug');
                         	$found = true;
                     	}
                     }
     		    }
     		}
-    		else {
-    			if ($var->match ($mapElt['key'])){
-                    $mapEntriesFound[] = $mapElt['key'];
-    				$returnValue += $mapElt['value'];
-    				break;
-    			}
-    		}
+			//If the given var is a pair (also of class taoItems_models_classes_Matching_Collection)
+			try{
+				if($var->match($mapElt['key'])){
+					$mapEntriesFound[] = $mapElt['key'];
+					$returnValue += $mapElt['value'];
+					common_Logger::d('matched : +'. $mapElt['value'], 'QTIdebug');
+					break;
+				}
+			}catch(Exception $e){
+				//if the elements is not of the same type
+			}
+			
 	    }
 
 	    // If a defaultValue has been set and it is different from zero
@@ -159,9 +168,12 @@ class taoItems_models_classes_Matching_Map
     		if ($var instanceOf taoItems_models_classes_Matching_Collection){
     			// How many values have not been found * default value
 	        	$delta = count($var->getValue()) - count($mapEntriesFound);
-	        	$returnValue += $delta * $this->defaultValue;
+				$mapRes = $delta * $this->defaultValue;
+	        	$returnValue += $mapRes;
+				common_Logger::d('defaultDelta : +'.$mapRes, 'QTIdebug');
     		} else if (!count($mapEntriesFound)) {
     			$returnValue = $this->defaultValue;
+				common_Logger::d('no map : +'. $this->defaultValue, 'QTIdebug');
     		}
     	}
     	

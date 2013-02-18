@@ -218,6 +218,9 @@ interactionClass.prototype.saveInteraction = function(userOptions){
 					}
 				}
 
+			}else{
+				//reload interaction form:
+				//need for validation on server side
 			}
 		}
 	});
@@ -1073,7 +1076,7 @@ interactionClass.prototype.buildInteractionEditor = function(interactionDataCont
 			},
 			frameReady: function(editorDoc){
 				interaction.bindChoiceLinkListener();
-				editorDoc.body.focus();
+				//no need to editorDoc.body.focus() here
 			}
 		},
 		frameReady: function(editorDoc){

@@ -1307,16 +1307,24 @@ qtiEdit.prototype.saveCurrentInteraction = function(callback, reloadResponse){
 		
 		var timer = null;
 		var stopTimer = function(){
-			callback();
 			window.clearInterval(timer);
+		}
+		var successFunction = function(){
+			callback();
+			stopTimer();
 		}
 		//check every half a second if all choices have been saved:
 		var i = 1;
 		timer = window.setInterval(function(){
 			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length && !interaction.modifiedInteraction){
 				if(!interaction.response || interaction.response && !interaction.response.modifiedResponseOptions){
-					stopTimer();
+					successFunction();
 				}
+			}
+			i++;
+			if(i>30){
+				//save failed
+				stopTimer();
 			}
 		}, 100);
 	}
