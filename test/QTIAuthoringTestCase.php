@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
-require_once dirname(__FILE__) . '/../../tao/lib/htmlpurifier/HTMLPurifier.standalone.php';
+require_once dirname(__FILE__) . '/../../tao/lib/htmlpurifier/HTMLPurifier.auto.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
