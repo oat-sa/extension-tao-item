@@ -1,6 +1,8 @@
 <?php
 
-require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
+if(!function_exists('matching_init')){
+	require (dirname(__FILE__).'/../models/classes/Matching/matching_api.php');
+}
 
 /**
  * Matching Controller provide actions to match an item

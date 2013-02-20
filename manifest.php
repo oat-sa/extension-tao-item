@@ -35,6 +35,7 @@ return array(
 			dirname(__FILE__).'/scripts/install/addQTIExamples.php'
 		)
 	),
+	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
 	'classLoaderPackages' => array(
 		dirname(__FILE__).'/actions/',
 		dirname(__FILE__).'/helpers/'
