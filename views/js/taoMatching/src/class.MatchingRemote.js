@@ -125,7 +125,6 @@ TAO_MATCHING.MatchingRemote.prototype = {
                 throw e;
             }
         }
-		console.log('a', data);
     }
     
     /**

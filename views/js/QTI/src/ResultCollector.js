@@ -395,7 +395,7 @@ function QTIResultCollector(options){
 		if ($.isArray(result.value) && result.value.length == 1) {
 		    result.value = result.value.shift();
 		}
-		console.log('buggy');
+		
 		return result;
 	};
 
