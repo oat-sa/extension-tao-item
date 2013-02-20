@@ -133,13 +133,13 @@ class taoItems_models_classes_Matching_Map
     		if ($var instanceOf taoItems_models_classes_Matching_Collection){
     			$found = false;
     		    // For each value contained by the matching var to map
-    		    foreach ($var->getValue() as $key => $value) {
+    		    foreach($var->getValue() as $key => $value) {
                     // If one match the current map value
                     if ($value->match($mapElt['key'])){
                     	$mapEntriesFound[] = $key;
                     	if (!$found) {
                         	$returnValue += $mapElt['value'];//add score only once here
-							common_Logger::d('matched : +'. $mapElt['value'], 'QTIdebug');
+							common_Logger::d('matched '.$mapKey.'-'.$key.': +'. $mapElt['value'], array('QTIdebug'));
                         	$found = true;
                     	}
                     }
@@ -150,7 +150,7 @@ class taoItems_models_classes_Matching_Map
 				if($var->match($mapElt['key'])){
 					$mapEntriesFound[] = $mapElt['key'];
 					$returnValue += $mapElt['value'];
-					common_Logger::d('matched : +'. $mapElt['value'], 'QTIdebug');
+					common_Logger::d('matched '.$mapKey.': +'. $mapElt['value'], array('QTIdebug'));
 					break;
 				}
 			}catch(Exception $e){
