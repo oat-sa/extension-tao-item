@@ -136,13 +136,10 @@ class taoItems_models_classes_Matching_Map
     		    foreach ($var->getValue() as $key => $value) {
                     // If one match the current map value
                     if ($value->match($mapElt['key'])){
-						common_Logger::d('   matched : ', 'QTIdebug');
-						common_Logger::d($value, 'QTIdebug');
-						common_Logger::d($mapElt['key'], 'QTIdebug');
                     	$mapEntriesFound[] = $key;
                     	if (!$found) {
                         	$returnValue += $mapElt['value'];//add score only once here
-							common_Logger::d('value : +'. $mapElt['value'], 'QTIdebug');
+							common_Logger::d('matched : +'. $mapElt['value'], 'QTIdebug');
                         	$found = true;
                     	}
                     }
