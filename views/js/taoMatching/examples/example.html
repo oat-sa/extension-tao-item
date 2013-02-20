@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Example</title>
+	<link rel="stylesheet" href="../../tao/test/qunit/qunit.css" type="text/css" media="screen" />
+	<style>
+		.code { background-color: #FBF9EA; border:1px solid #E2E1D5; color:#333333; overflow-x:auto; }	
+		.inline_code { background-color: #EEEEEE; }		
+	</style>
+	<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
+	<script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
+	<script type="application/javascript" src="../src/taoMatching.js"></script>
+	
+	<script type="application/javascript">
+	</script>
+</head>
+<body>
+	<div>
+		<a href="#CLIENT_SIDE">CLIENT SIDE MATCHING</a> / <a href="#SERVER_SIDE">SERVER SIDE MATCHING</a>
+	</div>
+	
+	<h1 id="CLIENT_SIDE">1. CLIENT SIDE MATCHING</h1>
+	
+	This Matching API allow you (developer) to use it from client side. 
+	
+	<p>
+		<h1 id="MATCHING_INITIALIZATION">1. Initialization</h1>
+		Firstly you need to initialize the matching engine. The matching can take several parameters.
+		Depending on these parameters the engine will be initialized in client or in server mode.
+		
+		<br/>
+		
+		<h2>1.1.2. Initialization in server mode</h2>
+		By setting the parameter <span class="inline_code">url</span> you will initialize the matching engine in
+		server mode :
+<pre class="code">
+matching_init ({
+  "url"    :   MATCHING_ENGINE_URL
+}); 
+</pre>
+  
+        <h2>1.1.2. Initialization in client mode</h2>
+        By setting the parameter <span class="inline_code">data</span> you will initialize the matching engine in
+        client mode :
+        
+<pre class="code">
+matching_init ({
+    "data"    :   {
+        "rule"          : ""
+        , "corrects"    : Array()
+        , "response"    : Array()
+        , "maps"        : Array()
+    }
+}); 
+</pre>
+		If the parameter url is present then the matching engine will be intialized in server mode, and the evaluation
+		of the rule will be computed in the server. Respectively to initialize the matching engine in client mode
+		you have to pass the data parameter which contains the matching data (rule, correct, mapping ...).
+		<br/> 
+<pre class="code">
+matching_init ({
+  "mode"	: "client"
+}); 
+</pre>
+		Others parameters are available to initialize the engine with the evaluation context, such as :
+		<ul>
+			<li><span class="inline_code">rule</span> (string) : <a href="#RULE">The rule</a> which will be used to evaluate the data</li>
+			<li><span class="inline_code">corrects</span> (<a href="#">TAO_MATCHING.JSON.Variable) : The corrects variables, a part of the equation</li>
+			<li><span class="inline_code">maps</span> (<a href="#">TAO_MATCHING.JSON.Map</a>) : The maps which will be used to score the user's data</li>
+			<li><span class="inline_code">outcomes</span> (<a href="#">TAO_MATCHING.JSON.Variable</a>) : The variables which will be returned by the matching engine after the evaluation</li>
+		</ul>
+		<br/>
+<pre class="code">
+matching_init ({
+  "mode"	: "client"
+  , "rule"	: TAO_MATCHING.RULE.MATCH_CORRECT
+  , "corrects"	: [{"identifier":"RESPONSE", "value":"Choice_A"]
+  , "outcomes"	: [{"identifier":"SCORE", "type":"double"}]
+}); 
+</pre>
+
+	</p>
+		
+	<p>
+		<h2 id="RULE">1.2. The rules</h2>
+		The matching engine needs a rule to evaluate the user's data. This rule id expressed through a subset of functionnal
+		language. However two template rules are available (<a href="#MAP_RESPONSE">TAO_MATCHING.RULE.MAP_RESPONSE</a>, <a href="#MATCH_CORRECT">TAO_MATCHING.RULE.MATCH_CORRECT</a>) and allow the
+		developper to avoid this task to make common evaluation
+	</p>
+	
+	<p>
+		<h3>1.2.1. Set a rule</h3>
+		The matching engine accept during its initialization a rule (see <a href="#MATCHING_INITIALIZATION">Matching Engine Initialization step</a>).
+		But you can set the rule after the initialization with the function <span class="inline_code">matching_setRule</span> which takes as attribute
+		a rule (string).
+	</p>
+	
+	<p>
+		<h3>1.2.2. Template rules</h3>
+		
+		<p>
+			Template rules have been created to facilitate items' designers work. But they each have 
+			internal behaviors which require designers to complying with them. For the yet two supported
+			templates the user's response, correct response and map have to be identify by "RESPONSE", and
+			the outcome variable has to be identify by "SCORE" and must be a <span class="inline_code">float</span>.
+		</p>
+		
+		<p>
+			<h4 id="MATCH_CORRECT">Match Correct Template</h4>
+			
+			The match correct template rule provides to the items' designer a tool to match two variables together. 
+			If the user's response match the correct response then the outcome variable value will be set to 
+			1 otherwise it will be set to 0.
+			
+			<br/>
+			Match correct template content :
+<pre class="code">
+if(match(getResponse('RESPONSE'), getCorrect('RESPONSE'))) {
+	setOutcomeValue('SCORE', 1);
+} 
+else {
+	setOutcomeValue('SCORE', 0);
+}
+</pre>
+		</p>
+		
+		<p>
+			<h4 id="MAP_RESPONSE">Map Response Template</h4>
+			
+			Map response template content :
+<pre class="code">
+if (isNull(getResponse('RESPONSE'))) { 
+	setOutcomeValue('SCORE', 0); 
+} 
+else { 
+	setOutcomeValue('SCORE', mapResponse(getMap('RESPONSE'), getResponse('RESPONSE'))); 
+}
+</pre>			
+		</p>
+	</p>
+
+	<p>
+		<h3>1.2.3. Custom rule</h3>
+		You can if you need create your own rules for your specific needs. Why a subset of functional language
+		is available to manipulate the data of the evaluation context.
+		
+		(coming soon)
+	</p>
+
+	<p>
+		<h2 id="#">1.3. Context data</h2>
+		
+		The representation of the context data depends on what you want evaluate
+		
+		<p>
+			<h3 id="#">1.3.1. Evaluate single data</h2>
+			
+		</p>
+	</p>
+		
+</body>
+</html>

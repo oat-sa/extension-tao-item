@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <title>QTI Supported expressions</title>
+        <style>
+            .code { background-color: #FBF9EA; border:1px solid #E2E1D5; color:#333333; overflow-x:auto; }  
+            .inline_code { background-color: #EEEEEE; }  
+            #Expressions {border:1px solid black;}
+            #Expressions td {border-bottom: 1px solid black; vertical-align: top;}
+            .label {}
+            .php {}
+            .javascript {}
+        </style>
+        <script type="application/javascript" src='http://waterphoenix.local/lib/jquery/jquery-1.4.2.min.js'></script>
+        <script type="text/javascript">
+        var expressions = {
+            'and'               : {'php':true, 'js':true, 'mapped':{'php':'andExpression'}, 'description':"The and operator takes one or more sub-expressions each with a base-type of boolean and single cardinality. The result is a single boolean which is true if all sub-expressions are true and false if any of them are false. If one or more sub-expressions are NULL and all others are true then the operator also results in NULL."}
+            , 'anyN'            : {'php':false, 'js':false, 'mapped':null}
+            , 'baseValue'       : {'php':true, 'js':true, 'mapped':'createVariable', 'description':"The simplest expression returns a single value from the set defined by the given baseType."}
+            , 'contains'        : {'php':false, 'js':false, 'mapped':null}
+            , 'correct'         : {'php':true, 'js':true, 'mapped':"getCorrect",'description':"This expression looks up the declaration of a responseVariable and returns the associated correctResponse or NULL if no correct value was declared."}
+            , 'customOperator'  : {'php':false, 'js':false, 'mapped':null}
+            , 'default'         : {'php':false, 'js':false, 'mapped':null}
+            , 'delete'          : {'php':false, 'js':false, 'mapped':null}
+            , 'divide'          : {'php':true, 'js':true, 'mapped':null, 'description':"The divide operator takes 2 sub-expressions which both have single cardinality and numerical base-types. The result is a single float that corresponds to the first expression divided by the second expression. If either of the sub-expressions is NULL then the operator results in NULL. \
+                <br/>&nbsp;Item authors should make every effort to ensure that the value of the second expression is never 0, however, if it is zero or the resulting value is outside the value set defined by float (not including positive and negative infinity) then the operator should result in NULL."}
+            , 'durationGTE'     : {'php':false, 'js':false, 'mapped':null}
+            , 'durationLT'      : {'php':false, 'js':false, 'mapped':null}
+            , 'equal'           : {'php':true, 'js':true, 'mapped':null, 'description':"The equal operator takes two sub-expressions which must both have single cardinality and have a numerical base-type. The result is a single boolean with a value of true if the two expressions are numerically equal and false if they are not. If either sub-expression is NULL then the operator results in NULL."}
+            , 'equalRounded'    : {'php':false, 'js':false, 'mapped':null}
+            , 'fieldValue'      : {'php':false, 'js':false, 'mapped':null}
+            , 'gt'              : {'php':true, 'js':true, 'mapped':null, 'description':"The gt operator takes two sub-expressions which must both have single cardinality and have a numerical base-type. The result is a single boolean with a value of true if the first expression is numerically greater than the second and false if it is less than or equal to the second. If either sub-expression is NULL then the operator results in NULL."}
+            , 'gte'             : {'php':true, 'js':true, 'mapped':null, 'description':"The gte operator takes two sub-expressions which must both have single cardinality and have a numerical base-type. The result is a single boolean with a value of true if the first expression is numerically less than or equal to the second and false if it is greater than the second. If either sub-expression is NULL then the operator results in NULL."}
+            , 'index'           : {'php':false, 'js':false, 'mapped':null}
+            , 'inside'          : {'php':false, 'js':false, 'mapped':null}
+            , 'integerDivide'   : {'php':true, 'js':true, 'mapped':null, 'description':"The integer divide operator takes 2 sub-expressions which both have single cardinality and base-type integer. The result is the single integer that corresponds to the first expression (x) divided by the second expression (y) rounded down to the greatest integer (i) such that i<=(x/y). If y is 0, or if either of the sub-expressions is NULL then the operator results in NULL."}
+            , 'integerModulus'  : {'php':false, 'js':false, 'mapped':null}
+            , 'integerToFloat'  : {'php':false, 'js':false, 'mapped':null}
+            , 'isNull'          : {'php':true, 'js':true, 'mapped':null, 'description':"The isNull operator takes a sub-expression with any base-type and cardinality. The result is a single boolean with a value of true if the sub-expression is NULL and false otherwise. Note that empty containers and empty strings are both treated as NULL."}
+            , 'lt'              : {'php':true, 'js':true, 'mapped':null, 'description':"The lt operator takes two sub-expressions which must both have single cardinality and have a numerical base-type. The result is a single boolean with a value of true if the first expression is numerically less than the second and false if it is greater than or equal to the second. If either sub-expression is NULL then the operator results in NULL."}
+            , 'lte'             : {'php':true, 'js':true, 'mapped':null, 'description':"The lte operator takes two sub-expressions which must both have single cardinality and have a numerical base-type. The result is a single boolean with a value of true if the first expression is numerically less than or equal to the second and false if it is greater than the second. If either sub-expression is NULL then the operator results in NULL."}
+            , 'mapResponse'     : {'php':true, 'js':true, 'mapped':null, 
+                'description':"This expression looks up the value of a responseVariable and then transforms it using the associated mapping, which must have been declared. The result is a single float. If the response variable has single cardinality then the value returned is simply the mapped target value from the map. If the response variable has single or multiple cardinality then the value returned is the sum of the mapped target values. This expression cannot be applied to variables of record cardinality. \
+                <br/>&nbsp;For example, if a mapping associates the identifiers {A,B,C,D} with the values {0,1,0.5,0} respectively then mapResponse will map the single value 'C' to the numeric value 0.5 and the set of values {C,B} to the value 1.5. \
+                <br/>&nbsp;If a container contains multiple instances of the same value then that value is counted once only. To continue the example above {B,B,C} would still map to 1.5 and not 2.5."
+              }
+            , 'mapResponsePoint': {'php':false, 'js':false, 'mapped':null}
+            , 'match'           : {'php':true, 'js':true, 'mapped':null, 
+                'description':"The match operator takes two sub-expressions which must both have the same base-type and cardinality. The result is a single boolean with a value of true if the two expressions represent the same value and false if they do not. If either sub-expression is NULL then the operator results in NULL. \
+                <br/>&nbsp;The match operator must not be confused with broader notions of equality such as numerical equality. To avoid confusion, the match operator should not be used to compare subexpressions with base-types of float and must not be used on sub-expressions with a base-type of duration."
+              }
+            , 'member'          : {'php':false, 'js':false, 'mapped':null}
+            , 'multiple'        : {'php':true, 'js':true, 'mapped':'createVariable(list)', 'description':"The multiple operator takes 0 or more sub-expressions all of which must have either single or multiple cardinality. Although the sub-expressions may be of any base-type they must all be of the same base-type. The result is a container with multiple cardinality containing the values of the sub-expressions, sub-expressions with multiple cardinality have their individual values added to the result: containers cannot contain other containers. For example, when applied to A, B and {C,D} the multiple operator results in {A,B,C,D}. All sub-expressions with NULL values are ignored. If no sub-expressions are given (or all are NULL) then the result is NULL."}
+            , 'not'             : {'php':true, 'js':true, 'mapped':null, 'description':"The not operator takes a single sub-expression with a base-type of boolean and single cardinality. The result is a single boolean with a value obtained by the logical negation of the sub-expression's value. If the sub-expression is NULL then the not operator also results in NULL."}
+            , 'null'            : {'php':true, 'js':true, 'mapped':"createVariable(null)", 'description':"null is a simple expression that returns the NULL value - the null value is treated as if it is of any desired baseType."}
+            , 'or'              : {'php':true, 'js':true, 'mapped':null, 'description':"The or operator takes one or more sub-expressions each with a base-type of boolean and single cardinality. The result is a single boolean which is true if any of the sub-expressions are true and false if all of them are false. If one or more sub-expressions are NULL and all the others are false then the operator also results in NULL."}
+            , 'ordered'         : {'php':true, 'js':true, 'mapped':'createVariable(tuple)', 'description':"The ordered operator takes 0 or more sub-expressions all of which must have either single or ordered cardinality. Although the sub-expressions may be of any base-type they must all be of the same base-type. The result is a container with ordered cardinality containing the values of the sub-expressions, sub-expressions with ordered cardinality have their individual values added (in order) to the result: contains cannot contain other containers. For example, when applied to A, B, {C,D} the ordered operator results in {A,B,C,D}. Note that the ordered operator never results in an empty container. All sub-expressions with NULL values are ignored. If no sub-expressions are given (or all are NULL) then the result is NULL"}
+            , 'patternMatch'    : {'php':false, 'js':false, 'mapped':null}
+            , 'power'           : {'php':false, 'js':false, 'mapped':null}
+            , 'product'         : {'php':true, 'js':true, 'mapped':null, 'description':"The product operator takes 1 or more sub-expressions which all have single cardinality and have numerical base-types. The result is a single float or, if all sub-expressions are of integer type, a single integer that corresponds to the product of the numerical values of the sub-expressions. If any of the sub-expressions are NULL then the operator results in NULL."}
+            , 'random'          : {'php':false, 'js':false, 'mapped':null}
+            , 'randomFloat'     : {'php':false, 'js':false, 'mapped':null}
+            , 'randomInteger'   : {'php':false, 'js':false, 'mapped':null}
+            , 'round'           : {'php':true, 'js':true, 'mapped':null, 'description':"The round operator takes a single sub-expression which must have single cardinality and base-type float. The result is a value of base-type integer formed by rounding the value of the sub-expression. The result is the integer n for all input values in the range [n-0.5,n+0.5). In other words, 6.8 and 6.5 both round up to 7, 6.49 rounds down to 6 and -6.5 rounds up to -6. If the sub-expression is NULL then the operator results in NULL."}
+            , 'stringMatch'     : {'php':false, 'js':false, 'mapped':null}
+            , 'substring'       : {'php':false, 'js':false, 'mapped':null}
+            , 'subtract'        : {'php':true, 'js':true, 'mapped':null, 'description':"The subtract operator takes 2 sub-expressions which all have single cardinality and numerical base-types. The result is a single float or, if both sub-expressions are of integer type, a single integer that corresponds to the first value minus the second. If either of the sub-expressions is NULL then the operator results in NULL."}
+            , 'sum'             : {'php':true, 'js':true, 'mapped':null, 'description':"The sum operator takes 1 or more sub-expressions which all have single cardinality and have numerical base-types. The result is a single float or, if all sub-expressions are of integer type, a single integer that corresponds to the sum of the numerical values of the sub-expressions. If any of the sub-expressions are NULL then the operator results in NULL."}
+            , 'truncate'        : {'php':false, 'js':false, 'mapped':null}
+            , 'variable'        : {'php':true, 'js':true, 'mapped':"getResponse", 'description':"This expression looks up the value of an itemVariable that has been declared in a corresponding variableDeclaration or is one of the built-in variables. The result has the base-type and cardinality declared for the variable."}
+        };
+        
+        var addExpression = function (label, options) {
+            var mapping = '';
+            if (typeof options.mapped != 'undefined' && options.mapped != 'null'){
+                if (typeof options.mapped == 'object'){
+                    for (var i in options.mapped){
+                        mapping += i+':'+options.mapped[i]+'<br/>';
+                    }
+                }else{
+                    mapping = options.mapped;
+                }
+            }
+            var description = (typeof options.description != 'undefined' ? options.description : '');
+            var jsImplementation = (options.js?'<img src="javascript.png"/>':'');
+            var phpImplementation = (options.php?'<img src="php.png"/>':'');
+            var html = '<tr class="expression"> \
+                <td class="label">&nbsp;'+label+'</td> \
+                <td class="php">&nbsp;'+phpImplementation+'</td> \
+                <td class="javascript">&nbsp;'+jsImplementation+'</td> \
+                <td class="javascript">&nbsp;'+mapping+'</td> \
+                <td class="description">&nbsp;'+description+'</td> \
+            </tr>'
+            $('#Expressions').append(html);
+        }
+        
+        $(function(){
+           for (var expLabel in expressions){
+               addExpression(expLabel, expressions[expLabel]);
+           } 
+        });
+        </script>
+    </head>
+    <body>
+        <table id="Expressions">
+            <thead>
+                <th>Expression</th>
+                <th>php</th>
+                <th>js</th>
+                <th>mapping</th>
+                <th>Description</th>
+            </thead>
+        </table>
+    </body>
+</html>
