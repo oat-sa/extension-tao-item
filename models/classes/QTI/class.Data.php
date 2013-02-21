@@ -742,6 +742,7 @@ abstract class taoItems_models_classes_QTI_Data
         // section 127-0-1-1-40168e54:135573066b9:-8000:000000000000374D begin
         common_Logger::d('Destroying in QTIAuthoring: '.$this->getSerial());
 		if(!empty($this->identifier) && !is_null($this->identifier)){
+			$session = PHPSession::singleton();
 			$ids = $session->getAttribute(self::IDENTIFIERS_KEY);
 			if(is_array($ids)){
 				if(in_array($this->identifier, $ids)){
@@ -749,8 +750,7 @@ abstract class taoItems_models_classes_QTI_Data
 					if($key !== false){
 						unset($ids[$key]);
 						sort($ids);
-						
-						PHPSession::singleton()->setAttribute(self::IDENTIFIERS_KEY, $ids);
+						$session->setAttribute(self::IDENTIFIERS_KEY, $ids);
 					}
 				}
 			}
