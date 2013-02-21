@@ -1786,71 +1786,132 @@ class taoItems_models_classes_QtiAuthoringService
 		return $returnValue;
 	}
 	
-	public static function cleanHTML($html){
+	public static function getQTIhtmlPurifier(){
 		
-		$qtiTags = array(
-			'abbr',
-			'acronym',
-			'address',
-			'blockquote',
-			'br',
-			'cite',
-			'code',
-			'dfn',
-			'div',
-			'em',
-			'h1',
-			'h2',
-			'h3',
-			'h4',
-			'h5',
-			'h6',
-			'kbd',
-			'p',
-			'pre', //not include img, object, big, small,sub, sup
-			'q',
-			'samp',
-			'span',
-			'strong',
-			'var',
-			'dl',
-			'dt',
-			'dd',
-			'ol',
-			'ul',
-			'li',
-			'object', //attributes(objectFlow, data, type, width, height)
-			'param', //attributes(name,value,valuetype,type)
-			'b',
-			'big',
-			'hr',
-			'i',
-			'small',
-			'sub',
-			'sup',
-			'tt',
-			'caption',
-			'col',
-			'colgroup',
-			'table', //attributes(summary, caption, col, colgroup, thead, tfoot, tbody)
-			'tablecell',
-			'th',
-			'td',
-			'tbody',
-			'tfoot',
-			'thead',
-			'tr',
-			'img', //attr
-			'a',
-			'input'//@todo : to be removed after refactoring
-		);
-		
-		if(!self::$purifier instanceof HTMLPurifier){
+		if(!self::$purifier instanceof HTMLPurifier){//configure purifier here:
+			
+			$qtiTags = array(
+				'abbr',
+				'acronym',
+				'address',
+				'blockquote',
+				'br',
+				'cite',
+				'code',
+				'dfn',
+				'div',
+				'em',
+				'h1',
+				'h2',
+				'h3',
+				'h4',
+				'h5',
+				'h6',
+				'kbd',
+				'p',
+				'pre',//not include img, object, big, small,sub, sup
+				'q',
+				'samp',
+				'span',
+				'strong',
+				'var',
+				'dl',
+				'dt',
+				'dd',
+				'ol',
+				'ul',
+				'li',
+				'object',//attributes(objectFlow, data, type, width, height)
+				'param',//attributes(name,value,valuetype,type)
+				'b',
+				'big',
+				'hr',
+				'i',
+				'small',
+				'sub',
+				'sup',
+				'tt',
+				'caption',
+				'col',
+				'colgroup',
+				'table',//attributes(summary, caption, col, colgroup, thead, tfoot, tbody)
+				'th',//scope,abbr
+				'td',
+				'tbody',
+				'tfoot',
+				'thead',
+				'tr',
+				'img',//attr
+				'a',
+			);
+
 			$config = HTMLPurifier_Config::createDefault();
+			$config->set('Cache.SerializerPath', ROOT_PATH.'tao/data/cache/htmlpurifier');
 			$config->set('HTML.AllowedElements', implode(',', $qtiTags));
+			$config->set('HTML.DefinitionID', 'qti-customize.html test');
+			$config->set('HTML.DefinitionRev', 1);
+			$config->set('Cache.DefinitionImpl', null); // remove this later!
+			if ($def = $config->maybeGetRawHTMLDefinition()) {
+				
+				common_Logger::d('QTI-html purifier cache has been recreated', array('QTIdebug'));
+
+				$img = $def->addElement(
+					'img', // name
+					'Inline', // content set
+					'Empty', // allowed children
+					'Common', // attribute collection
+					array(// attributes
+						'src*' => 'URI',
+						'alt' => 'CDATA',
+						'longdesc' => 'CDATA',
+						'height' => 'Length',
+						'width' => 'Length',
+					)
+				);
+
+				$object = $def->addElement(
+					'object',
+					'Block',
+					'Flow',
+					'Common',
+					array(
+						'data*' => 'URI',
+						'type'	=> 'CDATA',
+						'width'	=> 'Length',
+						'height'	=> 'Length'
+					)
+				);
+
+				//can only apprear in object
+				$param = $def->addElement(
+					'param',
+					'Block',//false : need to manually register param 
+					'Empty',
+					'Common',
+					array(
+						'name*' => 'URI',
+						'value*'	=> 'CDATA',
+						'valuetype'	=> 'Enum#DATA|REF',
+						'type'	=> 'CDATA'
+					)
+				);
+
+				$def->addAttribute('th', 'abbr', 'CDATA');
+				$def->addAttribute('th', 'scope', 'Enum#row|col|rowgroup|colgroup');
+				$def->addAttribute('td', 'abbr', 'CDATA');
+				$def->addAttribute('td', 'scope', 'Enum#row|col|rowgroup|colgroup');
+			}	
+		
 			self::$purifier = new HTMLPurifier($config);
 		}
-		$html = self::$purifier->purify($html);
+		
+		return self::$purifier;
+	}
+
+
+	public static function cleanHTML($html){
+		
+		$html = self::getQTIhtmlPurifier()->purify($html);
 		
 		if(!self::$tidy instanceof tidy){
 			self::$tidy = new tidy();
