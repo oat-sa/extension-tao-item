@@ -52,10 +52,9 @@ TAO_MATCHING.Map.prototype = {
      */
 	map : function (matchingVar) {
 		var returnValue = 0.0;
-        var mapEntriesFound = new Array ();
-		
+        var mapEntriesFound = new Array();
     	// for each map element, check if it is represented in the given variable
-    	for (var mapKey in this.value) {
+    	for (var mapKey in this.value){
     		
     		// If the given var is a collection
     		if ( TAO_MATCHING.Variable.isCollection (matchingVar)){
@@ -65,35 +64,40 @@ TAO_MATCHING.Map.prototype = {
                 for (var varKey in matchingVar.value) {
                 	
                     // If one match the current map value
-                    if (matchingVar.value[varKey].match (this.value[mapKey]['key'])) {
+                    if (matchingVar.value[varKey].match(this.value[mapKey]['key'])) {
                         mapEntriesFound.push(varKey);
-                        if (!found){ // Stop at the first value found (IMS QTI Standart requirement)
+                        if (!found){ // Stop at the first value found (IMS QTI Standard requirement)
                         	returnValue += this.value[mapKey]['value'];
                         	found = true;
                         }
                     }
                 }
             }
-    		else {
-    			
-    			if (matchingVar.match (this.value[mapKey]['key'])){
-    				mapEntriesFound.push(mapKey);
-    				returnValue += this.value[mapKey]['value'];
-    				break;
-    			}
-    		}
+    		//If the given var is a pair (also of class taoItems_models_classes_Matching_Collection)
+			try{
+				if (matchingVar.match(this.value[mapKey]['key'])){
+					mapEntriesFound.push(mapKey);
+					returnValue += this.value[mapKey]['value'];
+					break;
+				}
+			}catch(err){
+				//if the elements is not of the same type
+			}	
+			
 	    }
     	
     	// If a defaultValue has been set and it is different from zero
-    	if (this.defaultValue != 0) {    		
+    	if (this.defaultValue != 0){
     		// If the given var is a collection
-    		if ( TAO_MATCHING.Variable.isCollection (matchingVar)){
+    		if(TAO_MATCHING.Variable.isCollection(matchingVar)){
     			// How many values have not been found * default value
 	        	var delta = matchingVar.value.length - mapEntriesFound.length;
-	        	returnValue += delta * this.defaultValue;
-    		} else if (!mapEntriesFound.length) {
+				var mapRes = delta * this.defaultValue;
+	        	returnValue += mapRes;
+    		}else if(!mapEntriesFound.length){
     			returnValue = this.defaultValue;
-    		}
+    		}else{
+			}
     	}	
     	
     	if (this.lowerBound != null){

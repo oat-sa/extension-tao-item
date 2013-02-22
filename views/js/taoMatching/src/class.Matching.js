@@ -584,8 +584,6 @@ TAO_MATCHING.Matching.prototype = {
             }
         }
         
-        //console.log(returnValue.toJSon());
-        
         return returnValue;
     }
 
@@ -1089,9 +1087,9 @@ TAO_MATCHING.Matching.prototype = {
         options = this.checkOptions(options);
                 
         if (typeof (expr1) == 'undefined')
-            throw new Exception ("TAO_MATCHING.Matching::match error : the first argument does not exist");
+            throw "TAO_MATCHING.Matching::match error : the first argument does not exist";
         if (typeof (expr2) == 'undefined')
-            throw new Exception ("TAO_MATCHING.Matching::match error : the second argument does not exist");
+            throw "TAO_MATCHING.Matching::match error : the second argument does not exist";
 
         if (expr1.getType() != expr2.getType()) {
             returnValue = false;

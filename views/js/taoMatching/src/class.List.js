@@ -86,15 +86,17 @@ TAO_MATCHING.List.prototype = {
         }
         
         // Test if the both lists have the same content
+		var checkedElts = [];
         for (var i=0; i<this.length(); i++) {
 	        var tempResult = false;
 			
 	        for (var j=0; j<list.length(); j++) {
 	        	if (this.getElement(i).getType () != list.getElement(j).getType()){
-	        		throw new Exception ('TAO_MATCHING.List::match an error occured : types of the elements to match are not the same ['+ this.getElement(i).getType () +'] and ['+ list.getElement(j).getType() +']');
+	        		throw 'TAO_MATCHING.List::match an error occured : types of the elements to match are not the same ['+ this.getElement(i).getType () +'] and ['+ list.getElement(j).getType() +']';
 	        		returnValue = false;
 	        	} 
-	        	else if (this.getElement(i).match(list.getElement(j))) {
+	        	else if (this.getElement(i).match(list.getElement(j)) && $.inArray(j, checkedElts)===-1) {
+					checkedElts.push(j);
 	            	tempResult = true;
 	                break;
 	            } 
