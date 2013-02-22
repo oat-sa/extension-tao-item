@@ -244,10 +244,6 @@ function QTIResultCollector(options){
 			result.value.push({0:groupId, 1:choiceId});
 		});
 
-		if ($.isArray(result.value) && result.value.length == 1) {
-		    result.value = result.value.shift();
-		}
-
 		return result;
 	};
 
