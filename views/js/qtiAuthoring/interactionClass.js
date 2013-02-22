@@ -267,9 +267,7 @@ interactionClass.prototype.saveChoice = function($choiceFormContainer){
 						//only if it is the last updated choice!
 						if (!interaction.modifiedChoices.length && !interaction.modifiedGroups.length) {
 							//only when the identifier has changed:
-							if (r.reload) {
-								interaction.loadChoicesForm();
-							} else if (r.identifierUpdated) {
+							if (r.identifierUpdated) {
 								require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
 									//reload the response grid tu update the identifier
 									new responseClass(interaction.responseGrid, interaction);
@@ -576,75 +574,65 @@ interactionClass.prototype.addChoice = function(number, $appendTo, containerClas
 		   success: function(r){
 				if (r.added) {
 					
-					if (r.reload) {
-						interaction.loadChoicesForm();
-						return;
-						
-					}else{
-						
-						var $newFormElt = $('<div/>');
-						$newFormElt.attr('id', r.choiceSerial);
-						$newFormElt.attr('class', containerClass);
-						$newFormElt.append(r.choiceForm);
-						$appendTo.append($newFormElt);
-						
-						//populate new choice into local data:
-						interaction.loadChoiceDataFromChoiceForm($newFormElt);
-						
-						$newFormElt.hide();
-						interaction.initToggleChoiceOptions();
-						$newFormElt.show();
+					var $newFormElt = $('<div/>');
+					$newFormElt.attr('id', r.choiceSerial);
+					$newFormElt.attr('class', containerClass);
+					$newFormElt.append(r.choiceForm);
+					$appendTo.append($newFormElt);
 
-						qtiEdit.initFormElements($newFormElt);
-						interaction.setFormChangeListener('#'+r.choiceSerial);
-						interaction.setShapeEditListener('#'+r.choiceSerial);
+					//populate new choice into local data:
+					interaction.loadChoiceDataFromChoiceForm($newFormElt);
 
-						//add to the local choices order array:
-						//if interaction type is match, save the new choice in one of the group array:
-						if (r.groupSerial) {
-							if (interaction.orderedChoices[r.groupSerial]) {
-								interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
-							} else {
-								throw 'the group serial is not defined in the ordered choices array';
-							}
+					$newFormElt.hide();
+					interaction.initToggleChoiceOptions();
+					$newFormElt.show();
+
+					qtiEdit.initFormElements($newFormElt);
+					interaction.setFormChangeListener('#'+r.choiceSerial);
+					interaction.setShapeEditListener('#'+r.choiceSerial);
+
+					//add to the local choices order array:
+					//if interaction type is match, save the new choice in one of the group array:
+					if (r.groupSerial) {
+						if (interaction.orderedChoices[r.groupSerial]) {
+							interaction.orderedChoices[r.groupSerial].push(r.choiceSerial);
 						} else {
-							interaction.orderedChoices.push(r.choiceSerial);
+							throw 'the group serial is not defined in the ordered choices array';
 						}
-
-						require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
-							//rebuild the response grid:
-							new responseClass(interaction.responseGrid, interaction);
-						});
+					} else {
+						interaction.orderedChoices.push(r.choiceSerial);
 					}
-					
+
 				}
-		   }
+					
+			}
 		});
 	}
 
-	if(this.choiceAutoSave){
-		this.saveModifiedChoices();
+	this.saveModifiedChoices();
 
-		var timer = null;
-		var stopTimer = function(){
-			if(!number){
-				number = 1;
-			}
-			clearTimeout(timer);
-			for(var i=0;i<number;i++){
-				addChoice($appendTo, containerClass, groupSerial);
-			}
+	var timer = null;
+	var stopTimer = function(){
+		if(!number){
+			number = 1;
 		}
-		//check every half a second if all choices have been saved:
-		timer = setTimeout(function(){
-			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
-				stopTimer();
-			}
-		}, 500);
-
-	}else{
-		addChoice($appendTo, containerClass, groupSerial);
+		clearTimeout(timer);
+		for(var i=0;i<number;i++){
+			addChoice($appendTo, containerClass, groupSerial);
+		}
+		
+		//rebuild the response grid, only after all choices have been added:
+		require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+			new responseClass(interaction.responseGrid, interaction);
+		});
 	}
+	
+	//check every half a second if all choices have been saved:
+	timer = setTimeout(function(){
+		if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
+			stopTimer();
+		}
+	}, 500);
 
 }
 
@@ -918,12 +906,26 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 	delete this.choices[choiceSerial];
 
 	var newOrderedChoices = [];
-	var j = 0;
-	for(var i=0; i<this.orderedChoices.length; i++){
-		if(this.orderedChoices[i] != choiceSerial){
-				newOrderedChoices[j++] = this.orderedChoices[i];
+	
+	if(interaction.type === 'match'){
+		for(var k in this.orderedChoices){
+			//the choices for match interactions are stored in 2 arrays representing the two groups
+			var group = this.orderedChoices[k];
+			newOrderedChoices[k] = [];
+			for(var i=0; i<group.length; i++){
+				if(group[i] != choiceSerial){
+					newOrderedChoices[k].push(group[i]);
+				}
+			}
+		}
+	}else{
+		for(var i=0; i<this.orderedChoices.length; i++){
+			if(this.orderedChoices[i] != choiceSerial){
+				newOrderedChoices.push(this.orderedChoices[i]);
+			}
 		}
 	}
+	
 	this.orderedChoices = newOrderedChoices;
 
 	if(!reloadInteraction) reloadInteraction = false;
@@ -943,10 +945,6 @@ interactionClass.prototype.deleteChoice = function(choiceSerial, reloadInteracti
 				if(r.reloadInteraction){
 					// var item = interaction.getRelatedItem();
 					interaction.getRelatedItem(true).loadInteractionForm(interaction.interactionSerial);
-					return;
-				}else if(r.reload){
-					//reload form choices
-					interaction.loadChoicesForm();
 					return;
 				}
 
@@ -1285,12 +1283,6 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 					interaction.bindChoiceLinkListener();//ok keep
 				}
 
-				//reload choices form
-				if(r.reload){
-					interaction.loadChoicesForm();
-					return;
-				}
-
 				//add choice form:
 				var $newFormElt = $('<div/>');
 				$newFormElt.attr('id', r.groupSerial);//r.groupSerial
@@ -1312,12 +1304,7 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 
 				interaction.setFormChangeListener('#'+r.groupSerial);
 				interaction.setShapeEditListener('#'+r.groupSerial);
-
-				require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
-					//rebuild the response grid:
-					new responseClass(interaction.responseGrid, interaction);
-				});
-		   }
+			}
 		});
 
 	}
@@ -1326,29 +1313,31 @@ interactionClass.prototype.addGroup = function(number, interactionData, $appendT
 	var interactionData = '';
 	if(this.interactionEditor) interactionData = util.htmlEncode(this.interactionEditor.wysiwyg('getContent'));
 
-	if(this.choiceAutoSave){
-		this.saveModifiedChoices();
+	this.saveModifiedChoices();
 
-		var timer = null;
-		var stopTimer = function(){
-			if(!number){
-				number = 1;
-			}
-			for(var i=0;i<number;i++){
-				addGroup(interactionData, $appendTo);
-			}
-			clearTimeout(timer);
+	var timer = null;
+	var stopTimer = function(){
+		if(!number){
+			number = 1;
 		}
-		//check every half a second if all choices have been saved:
-		timer = setTimeout(function(){
-			if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
-				stopTimer();
-			}
-		}, 500);
-
-	}else{
-		addGroup(interactionData, $appendTo);
+		for(var i=0;i<number;i++){
+			addGroup(interactionData, $appendTo);
+		}
+		
+		//rebuild the response grid only when all groups have been added
+		require([root_url  + 'taoItems/views/js/qtiAuthoring/responseClass.js'], function(responseClass) {
+			new responseClass(interaction.responseGrid, interaction);
+		});
+				
+		clearTimeout(timer);
 	}
+	//check every half a second if all choices have been saved:
+	timer = setTimeout(function(){
+		if(!interaction.modifiedChoices.length && !interaction.modifiedGroups.length){
+			stopTimer();
+		}
+	}, 500);
+	
 }
 
 interactionClass.prototype.bindChoiceLinkListener = function(){

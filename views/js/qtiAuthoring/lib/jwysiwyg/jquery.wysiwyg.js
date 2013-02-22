@@ -27,16 +27,18 @@
         var innerDocument = function (elts)
         {
                 var element = $(elts).get(0);
+				
+				if (element.nodeName.toLowerCase() === "iframe") {
+					
+					if (element.contentDocument) {				// Gecko
+						return element.contentDocument;
+					} else if (element.contentWindow) {			// IE
+						return element.contentWindow.document;
+					}
+					
+					throw new QTIauthoringException('jwysiwyg', "Unexpected error in innerDocument");
+				}
 
-                if (element.nodeName.toLowerCase() == 'iframe')
-                {
-                        return element.contentWindow.document;
-                        /*
-                         return ( $.browser.msie )
-                         ? document.frames[element.id].document
-                         : element.contentWindow.document // contentDocument;
-                         */
-                }
                 return element;
         };
 
@@ -904,15 +906,16 @@
                         /**
                          * @link http://code.google.com/p/jwysiwyg/issues/detail?id=14
                          */
-                        if (this.options.css && this.options.css.constructor == String)
-                        {
-                                style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '" />';
+                        if (this.options.css && this.options.css.constructor == String){
+							style = '<link rel="stylesheet" type="text/css" media="screen" href="' + this.options.css + '" />';
                         }
 						
-                        this.editorDoc = innerDocument(this.editor);
+						try{
+	                        this.editorDoc = innerDocument(this.editor);
+						}catch(e){
+							CL(e.name, e.message);
+						}
                         this.editorDoc_designMode = false;
-						
-						
 						
                         this.designMode();
 

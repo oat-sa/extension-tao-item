@@ -2,6 +2,7 @@
 <script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>authoringConfig.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
+<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>QTIauthoringException.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>tinyCarousel.js"></script>
 <!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>

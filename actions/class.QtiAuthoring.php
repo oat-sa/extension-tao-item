@@ -371,7 +371,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'choiceSerial' => $choiceSerial,
 			'choiceForm' => $choiceForm,
 			'groupSerial' => $groupSerial,
-			'reload' => ($added)?$this->requireChoicesUpdate($interaction):false
+			'reload' => false //@see deprecated function requireChoicesUpdate()
 		));
 	}
 
@@ -442,11 +442,14 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 		echo json_encode(array(
 			'deleted' => $deleted,
-			'reload' => ($deleted)?$this->requireChoicesUpdate($interaction):false,
+			'reload' => false,//@see deprecated requireChoicesUpdate()
 			'reloadInteraction' => ($deleted)?$this->requireInteractionUpdate($interaction):false
 		));
 	}
-
+	
+	/*
+	 * deprecated : matchgroup is deprecated in QTI v 2.1
+	 */
 	protected function requireChoicesUpdate(taoItems_models_classes_QTI_Interaction $interaction){
 
 		$reload = false;
@@ -986,10 +989,8 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			}
 		}
 
-		$choiceFormReload = false;
 		if($identifierUpdated){
 			$interaction = $this->qtiService->getComposingData($choice);
-			$choiceFormReload = $this->requireChoicesUpdate($interaction);
 			$interaction->addChoice($choice);
 			$interaction = null;
 		}
@@ -998,7 +999,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'saved' => $saved,
 			'choiceSerial' => $choice->getSerial(),
 			'identifierUpdated' => $identifierUpdated,
-			'reload' => $choiceFormReload,
+			'reload' => false,//@see requireChoicesUpdate()
 			'errorMessage' => (string)$errorMessage
 		));
 	}
@@ -1093,7 +1094,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'groupSerial' => $groupSerial,
 			'groupForm' => $group->toForm()->render(),
 			'interactionData' => html_entity_decode($interactionData),
-			'reload' => ($added)?$this->requireChoicesUpdate($interaction):false
+			'reload' => false//@see deprecated requireChoicesUpdate()
 		));
 	}
 
