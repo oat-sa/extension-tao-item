@@ -371,7 +371,12 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				gridOptions.shrinkToFit = false;
 				gridOptions.autowidth = true;
 			}
-
+			
+			if(colModel.length == 0){
+				$myGridElt.text(__('Please add some "QTI choices" before defining the correct response'));
+				return this;//no choice defined, so need to create the grid
+			}
+			
 			try {
 				if (colModel.length) { //CHROME crash if empty
 					this.myGrid = $myGridElt.jqGrid(gridOptions);
@@ -445,12 +450,13 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 			
 			var interaction = null;
 
-			if (this.areaMapping) {
+			if(this.areaMapping){
+				
 				interaction = interactionClass.instances[response.interactionSerial];
 
 				//detroy all shapes
-				if (interaction && interaction.shapeEditor) {
-					for (shapeId in interaction.shapeEditor.shapes) {
+				if(interaction && interaction.shapeEditor){
+					for(shapeId in interaction.shapeEditor.shapes){
 						interaction.shapeEditor.removeShapeObj(shapeId);
 					}
 				}
@@ -460,6 +466,7 @@ define(['require', 'jquery', 'jquery.jqGrid-4.4.0/js/jquery.jqGrid.min', 'jquery
 				if (fixedColumn.name && fixedColumn.values) {
 					//there is a column that have fixed values, so only keep rows that has the fixed value:
 					for (var i=0; i<fixedColumn.values.length; i++) {
+						
 						var theValue = fixedColumn.values[i];
 
 						//find the corresponding row with such a value
