@@ -247,13 +247,73 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		$this->setData('sessionData', array('not supported'));
 		$this->setView("QTIAuthoring/debug.tpl");
 	}
+	
+	
+	/*
+	 * Prepare data to be saved to the QTI Object model 
+	 */
+	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
+		
+		common_Logger::d('filtering out qtiObject', 'QTIdebug');
+		common_Logger::d($qtiObject, 'QTIdebug');
+		common_Logger::d($data, 'QTIdebug');
+		
+		$pattern = '/';
+		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
+			if($qtiObject->isBlock()){
+				$pattern .= "(<br(.[^<]*)?>([\n\s])*)?";
+			}
+		}
+		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/ims";
 
+		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", $data);
+		
+		common_Logger::d('after filtering out qtiObject', 'QTIdebug');
+		common_Logger::d($data, 'QTIdebug');
+		
+		return $data;
+	}
+	
 	protected function getPostedItemData(){
-		return $this->getPostedData('itemData');
+		
+		$returnValue = $_POST['itemData'];
+		$item = $this->getCurrentItem();
+		//clean the interactions' editing elements:
+		foreach($item->getInteractions() as $interaction){
+			$returnValue = $this->filterData($interaction, $returnValue);
+		}
+		//clean the objects' editing elements:
+		foreach($item->getObjects() as $object){
+			$returnValue = $this->filterData($object, $returnValue);
+		}
+			
+		$returnValue = $this->cleanPostedData($returnValue);
+		return $returnValue;
 	}
 
 	protected function getPostedInteractionData(){
-		return $this->getPostedData('interactionData');
+		
+		$returnValue = $_POST['interactionData'];
+		$interaction = $this->getCurrentInteraction();
+		switch(strtolower($interaction->getType())){
+			case 'gapmatch':{
+				foreach($interaction->getGroups() as $group){
+					$returnValue = $this->filterData($group, $returnValue);
+				}
+				break;
+			}
+			case 'hottext':{
+				//note for hottext: the chocies of hottext are inline string elements, the order of which are naturally set in the interaction data
+				//clean the choices link tags:
+				foreach($interaction->getChoices() as $choice){
+					$returnValue = $this->filterData($choice, $returnValue);
+				}
+				break;
+			}
+		}
+		
+		$returnValue = $this->cleanPostedData($returnValue);
+		return $returnValue;
 	}
 	
 	protected function getPostedData($key, $required = false){
@@ -314,14 +374,14 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'itemData' => $itemData
 		));
 	}
-
+	
 	public function addHotText(){
 		$added = false;
 		$choiceSerial = '';//the hot text basically is a "choice"
-		$textContent = '';
 
 		$interactionData = $this->getPostedInteractionData();
-
+		common_Logger::d('$interactionData', 'QTIdebug');
+		common_Logger::d($interactionData, 'QTIdebug');
 		$interaction = $this->getCurrentInteraction();
 
 		$choice = $this->service->addChoice($interaction, '', null, null, $interactionData);
@@ -334,12 +394,16 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			$choiceSerial = $choice->getSerial();
 		}
 
-
+		common_Logger::d('tojson', 'QTIdebug');
+		common_Logger::d($interactionData, 'QTIdebug');
+//		
+//		common_Logger::d('html_entity_decode', 'QTIdebug');
+//		common_Logger::d(html_entity_decode($interactionData), 'QTIdebug');
 		echo json_encode(array(
 			'added' => $added,
 			'choiceSerial' => $choiceSerial,
 			'choiceForm' => $choice->toForm()->render(),
-			'interactionData' => html_entity_decode($interactionData)
+			'interactionData' => $interactionData
 		));
 	}
 
@@ -1075,10 +1139,11 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 	public function addGroup(){
 		$added = false;
 		$groupSerial = '';//a gap basically is a "group", the content of which is by default all available choices in the interaction
-		$textContent = '';
 		$interaction = $this->getCurrentInteraction();
 		$interactionData = $this->getPostedInteractionData();
-
+		common_Logger::d('$interactionData', 'QTIdebug');
+		common_Logger::d($interactionData, 'QTIdebug');
+		
 		$group = $this->service->addGroup($interaction, $interactionData);
 
 		if(!is_null($group)){
@@ -1093,7 +1158,7 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 			'added' => $added,
 			'groupSerial' => $groupSerial,
 			'groupForm' => $group->toForm()->render(),
-			'interactionData' => html_entity_decode($interactionData),
+			'interactionData' => $interactionData,
 			'reload' => false//@see deprecated requireChoicesUpdate()
 		));
 	}

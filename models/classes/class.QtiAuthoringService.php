@@ -161,7 +161,7 @@ class taoItems_models_classes_QtiAuthoringService
 
 	public function getInteractionData(taoItems_models_classes_QTI_Interaction $interaction){
 		$data = self::getFilteredData($interaction);
-		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', trim(html_entity_decode($data)));
+		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', $data);
 		
 		//depending on the type of interaciton, strip the choice identifier or transfor it to editable elt
 		$interactionType = strtolower($interaction->getType());
@@ -194,8 +194,9 @@ class taoItems_models_classes_QtiAuthoringService
 				}
 			}
 		}
-		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', trim(html_entity_decode($data)));
-
+		
+		$data = preg_replace('/^<(p|div)>(.*)<\/\1>$/im', '\2', $data);
+		
 		return $data;
 	}
 
@@ -328,20 +329,8 @@ class taoItems_models_classes_QtiAuthoringService
 
 
 	public function saveItemData(taoItems_models_classes_QTI_Item $item, $itemData){
-		if(!is_null($item)){
-
-			//clean the interactions' editing elements:
-			foreach($item->getInteractions() as $interaction){
-				$itemData = $this->filterData($interaction, $itemData);
-			}
-			//clean the objects' editing elements:
-			foreach($item->getObjects() as $object){
-				$itemData = $this->filterData($object, $itemData);
-			}
-
 			//item saved in session:
 			$item->setData($itemData);
-		}
 	}
 
 	/**
@@ -901,7 +890,6 @@ class taoItems_models_classes_QtiAuthoringService
 				if(!empty($choiceOrder)){
 					//the old data must contain all groups:
 					$oldData = $interaction->getData();
-					$interactionSerial = $interaction->getSerial();
 					foreach($choiceOrder as $groupSerial=>$groupChoiceOrder){
 						//need for reappending the group to the data
 						$data .= "{{$groupSerial}}";
@@ -955,13 +943,13 @@ class taoItems_models_classes_QtiAuthoringService
 					$choicesData .= '{'.$choiceOrder[$i].'}';
 				}
 
-
-				foreach($interaction->getGroups() as $group){
-					$data = $this->filterData($group, $data);
-				}
 				$data = '<div>'.$data.'</div>';
 
 				$interaction->setData($choicesData.$data);
+				break;
+			}
+			case 'hottext':{
+				$interaction->setData($data);
 				break;
 			}
 			case 'textentry':
@@ -974,40 +962,11 @@ class taoItems_models_classes_QtiAuthoringService
 				//nothing to do related to choices
 				break;
 			}
-			case 'hottext':{
-				//note for hottext: the chocies of hottext are inline string elements, the order of which are naturally set in the interaction data
-				//clean the choices link tags:
-				foreach($interaction->getChoices() as $choice){
-					$data = $this->filterData($choice, $data);
-				}
-
-				// $interaction->setData('<div>'.$data.'</div>');
-				$interaction->setData($data);
-				break;
-			}
 			default:{
 				throw new Exception('unknown type of interaction');
 			}
 		}
 
-	}
-	
-	/*
-	 * Prepare data to be saved to the QTI Object model 
-	 */
-	protected function filterData(taoItems_models_classes_QTI_Data $qtiObject, $data){
-
-		$pattern = '/';
-		if($qtiObject instanceof taoItems_models_classes_QTI_Interaction){
-			if($qtiObject->isBlock()){
-				$pattern .= "(<br(.[^<]*)?>([\n\s])*)?";
-			}
-		}
-		$pattern .= "<div(.[^<]*)?>(.[^<>]*)?<input(.[^<>]*){1}{$qtiObject->getSerial()}(.[^<>]*){1}>(.[^<>]*)?(<span(.[^>]*)?><\/span>|<span(.[^>]*)?\/>)?(<\/div>){1}/ims";
-
-		$data = preg_replace($pattern, "{{$qtiObject->getSerial()}}", $data);
-
-		return $data;
 	}
 
 	public function setGroupData(taoItems_models_classes_QTI_Group $group, $choiceOrder=array(), taoItems_models_classes_QTI_Interaction $interaction=null, $edit=false){
@@ -1847,10 +1806,10 @@ class taoItems_models_classes_QtiAuthoringService
 
 			$config = HTMLPurifier_Config::createDefault();
 			$config->set('Cache.SerializerPath', ROOT_PATH.'tao/data/cache/htmlpurifier');
+//			if(DEBUG_MODE) $config->set('Cache.DefinitionImpl', null);//to prevent the definition to be cached
 			$config->set('HTML.AllowedElements', implode(',', $qtiTags));
 			$config->set('HTML.DefinitionID', 'qti-customize.html test');
 			$config->set('HTML.DefinitionRev', 1);
-			$config->set('Cache.DefinitionImpl', null); // remove this later!
 			if ($def = $config->maybeGetRawHTMLDefinition()) {
 				
 				common_Logger::d('QTI-html purifier cache has been recreated', array('QTIdebug'));
@@ -1950,11 +1909,11 @@ class taoItems_models_classes_QtiAuthoringService
 		$data = trim($data);
 
 		if(!empty($data)){
-
+		
 			$data = self::cleanHTML($data);
-
+		
 			//remove the buggy and useless qti_validate tag in internal preview
-			$data = preg_replace('/<a(.[^>]*)?id="qti_validate"(.[^>]*)?>(.[^<]*)?<\/a>/im', '', $data);
+			$returnValue = preg_replace('/<a(.[^>]*)?id="qti_validate"(.[^>]*)?>(.[^<]*)?<\/a>/im', '', $data);
 
 			try{//Parse data and replace img src by the media service URL
 				$updated = false;
@@ -1985,6 +1944,7 @@ class taoItems_models_classes_QtiAuthoringService
 			}
 			catch(DOMException $de){
 				//we render it anyway
+				common_Logger::w('DOMException in QTI data filtering');
 			}
 		}
 
