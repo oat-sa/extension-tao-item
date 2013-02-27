@@ -14,7 +14,6 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 
 	/**
 	 * constructor: initialize the service and the default data
-	 * @return Delivery
 	 */
 	public function __construct(){
 
@@ -1709,6 +1708,57 @@ class taoItems_actions_QtiAuthoring extends tao_actions_CommonModule {
 		} else {
 			echo json_encode(array('html' => $myForm->render(), 'title' =>  __('Edit object')));
 		}
+	}
+	
+	protected function getRequestQTIobject($required = true){
+		
+		$returnValue = null;
+		
+		$type = '';
+		$serial = '';
+		if($this->hasRequestParameter('type') && $this->hasRequestParameter('serial')){
+			
+			$type = strtolower($this->getRequestParameter('type'));
+			$types = array(
+				'item' => 'taoItems_models_classes_QTI_Item',
+				'interaction' => 'taoItems_models_classes_QTI_Interaction',
+				'choice' => 'taoItems_models_classes_QTI_Choice',
+				'group' => 'taoItems_models_classes_QTI_Group'
+			);
+			
+			if(isset($types[$type])){
+				$serial = $this->getRequestParameter('serial');
+				$returnValue = $this->qtiService->getDataBySerial($serial, $types[$type]);
+			}
+			
+		}
+		
+		if($required && is_null($returnValue)){
+			throw new Exception('cannot retrive the qti object : '.$type.'/'.$serial);
+		}
+		
+		return $returnValue;
+	}
+
+
+	public function saveAttribute(){
+		
+		$success = false;
+		$messages = array();
+		$qtiObject = $this->getRequestQTIobject();
+		if(!is_null($qtiObject) && $this->hasRequestParameter('attribute') && $this->hasRequestParameter('value')){
+			$attribute = $this->getRequestParameter('attribute');
+			$value = $this->getRequestParameter('value');
+			
+			//validate attribute value against attribute validators:
+			$qtiObject->setOption($attribute, $value);
+			$success = true;
+		}
+		
+		echo json_encode(array(
+			'success' => $success,
+			'messages' => $messages
+		));
 	}
 
 }

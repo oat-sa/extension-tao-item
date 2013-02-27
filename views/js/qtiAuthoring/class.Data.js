@@ -2,38 +2,31 @@ define(['require', 'jquery'], function(req, $){
 	
 	var QTIdataClassFunctions = {
 		init : function(type, serial, options){
-			this.type = type;
-			this.serial = serial;
+			
+			this.getSerial = function(){
+				return serial;
+			}
+			this.getType = function(){
+				return type;
+			}
+			
+			//for debug only!
+			this.type = type;//private
+			this.serial = serial;//private
+			
 			this.options = options;
 			this.attributes = [];
 			this.attributesCallbacks = {};
 			
-			var callbacks = {
-				title : {
-					validators:[
-						{type:'notempty'},
-						{type:'length', options:{max:150}}
-					],
-					afterValidation:function(validatorType, success, message){
-						if(success){
-							CL('valid!', validatorType);
-						}else{
-							CL('failed man', message);
-						}
-					},
-					onChange:function(newValue, oldValue, qti){
-						CL('title value changed');
-						CL('newValue', newValue);
-						CL('newValue', newValue);
-					}
-				}
-			};
-			
 			try{
-				this.initAttributesCallbacks(callbacks);
+				this.initAttributesCallbacks(this.getDefaultCallbacks());
 			}catch(e){
 				console.warn('initAttributesCallbacks', e);
 			}
+		},
+		
+		getDefaultCallbacks : function(){
+			return {};
 		},
 		
 		initAttributesCallbacks : function(callbacks){
@@ -56,7 +49,8 @@ define(['require', 'jquery'], function(req, $){
 						//other authorized callback:
 						case 'onChange':
 						case 'beforeSave':
-						case 'afterSave':
+						case 'saveSuccess':
+						case 'saveFailed':
 						case 'afterValidation':{
 							this.addAttributeCallback(attributeKey, callbackName, callbacks[attributeKey][callbackName]);
 							break;
@@ -72,7 +66,7 @@ define(['require', 'jquery'], function(req, $){
 			if(typeof this.attributesCallbacks[attribute] == 'undefined'){
 				this.attributesCallbacks[attribute] = {};
 			}
-			this.attributesCallbacks[callbackName] = callbackFunction;
+			this.attributesCallbacks[attribute][callbackName] = callbackFunction;
 		},
 		
 		addAttributeValidator : function(attribute, type, options){
@@ -105,18 +99,19 @@ define(['require', 'jquery'], function(req, $){
 			
 		},
 		
-		validateAttributeValue : function(attributeKey, value){
+		validateAttributeValue : function(attributeKey, value, afterValidationCallback){
 			var returnValue = true;
+			var messages = [];
 			if(this.attributesCallbacks[attributeKey] && typeof this.attributesCallbacks[attributeKey].validators == 'array'){
 				
-				var afterValidationCallback = this.getCallback(attributeKey, 'afterValidation');
+				var onValidateCallback = this.getCallback(attributeKey, 'onValidate');
 				
 				for(var i in this.attributesCallbacks[attributeKey].validators){
 					var validator = this.attributesCallbacks[attributeKey].validators[i];
 					var success = validator.validate(value);
-					
-					if(afterValidationCallback){
-						afterValidationCallback(validator.getType(), success, (success)?'':validator.getMessage());
+						
+					if(onValidateCallback){
+						onValidateCallback(validator.getType(), success, (success)?'':validator.getMessage());
 					}
 						
 					if(!success){
@@ -125,6 +120,12 @@ define(['require', 'jquery'], function(req, $){
 					}
 				}
 			}
+			
+			afterValidationCallback = (typeof afterValidationCallback == 'function')?afterValidationCallback:this.getCallback(attributeKey, 'afterValidation');
+			if(afterValidationCallback){
+				afterValidationCallback(success, messages);
+			}
+					
 			return returnValue;
 		},
 		getCallback:function(attributeKey, callbackName){
@@ -139,10 +140,12 @@ define(['require', 'jquery'], function(req, $){
 		saveAttribute : function(attributeKey, value){
 			
 			var _this = this;
+			
 			//validate val: 
 			var oldValue = (this.attributes[attributeKey] == null)?null:this.attributes[attributeKey];
 			if(this.validateAttributeValue(attributeKey, value)){
-			
+				CL('validated');
+				
 				//save to local datamodel:
 				this.attributes[attributeKey] = value;
 				
@@ -153,13 +156,33 @@ define(['require', 'jquery'], function(req, $){
 				}
 				
 				//save to server:
+				$.ajax({
+				   type: "POST",
+				   url: root_url + "/taoItems/QtiAuthoring/saveAttribute",
+				   data: {
+						'type': this.getType(),
+						'serial': this.getSerial(),
+						'attribute':attributeKey,
+						'value':value
+				   },
+				   dataType: 'json',
+				   success: function(r){
+						if(r.success){
+							//call modified attribute callback:
+							var saveSuccessCallback = _this.getCallback(attributeKey, 'saveSuccess');
+							if(saveSuccessCallback){
+								saveSuccessCallback(oldValue, value, _this);
+							}
+						}else{
+							//call modified attribute callback:
+							var saveFailCallback = _this.getCallback(attributeKey, 'saveFailed');
+							if(saveFailCallback){
+								saveFailCallback(oldValue, value, _this);
+							}
+						}
+				   }
+				});
 
-
-				//call modified attribute callback:
-				var afterSaveCallback = _this.getCallback(attributeKey, 'afterSave');
-				if(afterSaveCallback){
-					afterSaveCallback(oldValue, value, _this);
-				}
 			}
 			
 		}

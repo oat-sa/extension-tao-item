@@ -4,7 +4,6 @@
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>util.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>QTIauthoringException.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>tinyCarousel.js"></script>
-<!--<script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>responseClass.js"></script>-->
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>qtiEditClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>interactionClass.js"></script>
 <script type="text/javascript" src="<?=get_data('qtiAuthoring_path')?>lib/json2.js"></script>
@@ -136,58 +135,63 @@ $(document).ready(function(){
 
 	$('#tabs-qti-menu').hide();
 	$('#qtiAuthoring_item_editor_button').hide();
-
-	//init item editor:
-	try{
-		//global item object
-		myItem = new qtiEdit('<?=get_data('itemSerial')?>', null, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
-		
-		//set item name in title bar
-		var titleInput = $('#AssessmentItem_Form').find('input#title');
-		if(titleInput.length){
-			myItem.setTitleBar($(titleInput[0]).val());
-		}
-		
-	}catch(err){
-		CL('error creating the item', err);
-	}
-
-	//link the qti object to the item rdf resource
-	myItem.itemUri = '<?=get_data('itemUri')?>';
-	myItem.itemClassUri = '<?=get_data('itemClassUri')?>';
-
-	//set the save button:
-	$('#qtiAuthoring_save_button').click(function(){
-		myItem.save();
-		return false;
-	});
-
-	//set the preview button:
-	$('#qtiAuthoring_preview_button').click(function(){
-		myItem.preview();
-		return false;
-	});
 	
-	<?if(DEBUG_MODE):?>
-	//set debug button
-	$('#qtiAuthoring_debug_button').click(function(){
-		myItem.debug();
-		return false;
-	});
-	<?endif;?>
+	require([root_url  + 'taoItems/views/js/qtiAuthoring/class.Item.js'], function(QTIitemClass){
+		//init item editor:
+		try{
+			//global item object
+			myItem = new qtiEdit('<?=get_data('itemSerial')?>', null, {css:"<?=BASE_WWW?>css/qtiAuthoringFrame.css"});
+			
+			//set item name in title bar
+			var titleInput = $('#AssessmentItem_Form').find('input#title');
+			if(titleInput.length){
+				qtiEdit.setTitleBar($(titleInput[0]).val());
+			}
+			
+			var item1 =  new QTIitemClass('<?=get_data('itemSerial')?>', {option1:1, option2:2});
+			qtiEdit.initItemForm($('#AssessmentItem_Form'), item1);
+
+		}catch(err){
+			CL('error creating the item', err);
+		}
+
+		//link the qti object to the item rdf resource
+		myItem.itemUri = '<?=get_data('itemUri')?>';
+		myItem.itemClassUri = '<?=get_data('itemClassUri')?>';
+
+		//set the save button:
+		$('#qtiAuthoring_save_button').click(function(){
+			myItem.save();
+			return false;
+		});
+
+		//set the preview button:
+		$('#qtiAuthoring_preview_button').click(function(){
+			myItem.preview();
+			return false;
+		});
+
+		<?if(DEBUG_MODE):?>
+		//set debug button
+		$('#qtiAuthoring_debug_button').click(function(){
+			myItem.debug();
+			return false;
+		});
+		<?endif;?>
+
+		$('#qtiAuthoring_export_button').click(function(){
+			myItem.exportItem();
+			return false;
+		});
+
+		$("#item_option_accordion").accordion({
+			heightStyle: "fill",
+			fillSpace: true
+		});
+
+		myItem.loadStyleSheetForm();
 		
-	$('#qtiAuthoring_export_button').click(function(){
-		myItem.exportItem();
-		return false;
 	});
-
-	$("#item_option_accordion").accordion({
-		heightStyle: "fill",
-		fillSpace: true
-	});
-
-	myItem.loadStyleSheetForm();
-
 	// available interactions:
 	var interactionTypes = {
 		choice: {

@@ -31,8 +31,15 @@
 var myInteraction = null;
 $(document).ready(function(){
 	try{
-		myInteraction = new interactionClass('<?=get_data('interactionSerial')?>', myItem.itemSerial, {"choicesFormContainer":'#formChoices_container'});
-		myInteraction.setType('<?=get_data('interactionType')?>');
+		require([root_url  + 'taoItems/views/js/qtiAuthoring/class.Interaction.js'], function(QTIinteractionClass){
+			myInteraction = new interactionClass('<?= get_data('interactionSerial') ?>', myItem.itemSerial, {"choicesFormContainer":'#formChoices_container'});
+			myInteraction.setType('<?= get_data('interactionType') ?>');
+
+			var QTIinteraction = new QTIinteractionClass('<?= get_data('interactionType') ?>', '<?= get_data('interactionSerial') ?>');
+			qtiEdit.initInteractionForm($('#formInteraction_content_<?=get_data('interactionSerial')?>').find('form'), QTIinteraction);
+		});
+		
+			
 	}catch(err){
 		CL('error creating interaction', err);
 	}

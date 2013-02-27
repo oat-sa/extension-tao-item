@@ -666,9 +666,10 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 		   },
 		   dataType: 'html',
 		   success: function(form){
-				$(self.interactionFormContent).empty();
-				$(self.interactionFormContent).html(form);
-				qtiEdit.initFormElements($(self.interactionFormContent));
+				var $interactionForm = $(self.interactionFormContent);
+				$interactionForm.empty();
+				$interactionForm.html(form);
+				qtiEdit.initFormElements($interactionForm);
 				if ($myTab) $myTab.tabs("select", 1);
 		   }
 		});
@@ -682,7 +683,101 @@ qtiEdit.prototype.loadInteractionForm = function(interactionSerial){
 qtiEdit.initFormElements = function($container){
 	qtiEdit.mapFileManagerField($container);
 	qtiEdit.mapHtmlEditor($container);
+	qtiEdit.bindFormElementAutosave($container);
 }
+
+qtiEdit.bindFormElementAutosave = function($form){
+	
+	var formElementsModel = {
+		title:{
+			selector:'input[name=title]',
+			change:function(){
+				$('input[name=title]').keyup(function(){
+					
+				});
+			}
+		},
+		itemData:{
+			dataType:'item',
+			serial:'i123456',
+			validate:function(){
+				
+				
+			},
+			//allow hand edited item data: insert interaction
+			afterInteractionDelete:function(){
+				//delete interaction
+			}
+		},
+		prompt:{
+			
+		},
+		suffle_:{
+			
+		},
+		maxChoices:{
+			onChange:function(){
+				//exec subscribed functions :
+				//response grid option changed
+			}
+		},
+		interactionData:{
+			//allow hand edited interaction data: insert gap/hottext
+			afterGroupAdd:function(){
+				//update response grid
+			},
+			afterGroupDelete:function(){
+				//delete group
+			}
+		},
+		choiceIdentifier:{
+			onChange:function(){
+				//exec subscribed functions :
+				//response grid
+				//update 
+			}
+		},
+		choiceData:{
+			
+		},
+		fixed_:{
+			
+		},
+		object_data:{
+			//file path
+			onChange:function(){
+				//update graphic interaction stage
+			}
+		},
+		object_width:{
+			onChange:function(){
+				//update graphic interaction stage
+			}
+		}
+	}
+	
+	$form.find('select,input').each(function(){
+		
+		$(this).bind('focus', function(){
+			CL('focused', $(this).attr('name'));
+			
+		});
+		
+		$(this).bind('blur', function(){
+			CL('blurred', $(this).attr('name'));
+			
+			//try validate here:
+			
+			//if validate ok, save it:
+			
+		});
+		
+		$(this).bind('change', function(){
+			CL('changed', $(this).attr('name'));
+		});
+	});
+}
+
 
 qtiEdit.mapFileManagerField = function($container){
 
@@ -936,7 +1031,7 @@ qtiEdit.createInfoMessage = function(message){
 	helpers.createInfoMessage('<img src="'+img_url+'ok.png" alt="" style="float:left;margin-right:10px;"/>'+message);
 }
 
-qtiEdit.prototype.setTitleBar = function(text){
+qtiEdit.setTitleBar = function(text){
 	$('#qtiAuthoring_title_container').text(text);
 }
 
@@ -964,7 +1059,7 @@ qtiEdit.prototype.save = function(itemUri){
 					qtiEdit.createInfoMessage(__('The item has been successfully saved'));
 					
 					//update title here:
-					self.setTitleBar(itemProperties.title);
+					qtiEdit.setTitleBar(itemProperties.title);
 					
 				}
 		   }
@@ -1329,4 +1424,84 @@ qtiEdit.prototype.saveCurrentInteraction = function(callback, reloadResponse){
 		}, 100);
 	}
 
+}
+
+qtiEdit.initItemForm = function($form, QTIitem){
+	$form.find('input[name=title]').keyup(function(){
+		qtiEdit.setTitleBar($(this).val());
+	}).blur(function(){
+		QTIitem.saveAttribute('title', $(this).val());
+	});
+}
+
+qtiEdit.initInteractionForm = function($form, QTIinteraction){
+
+	$form.find('input, select').each(function(){
+		var attribute = $(this).attr('name');
+		switch(attribute){
+			case 'maxChoices':
+			case 'maxAssociations':{
+				$(this).bind('keyup', function(){
+					QTIinteraction.validateAttributeValue(attribute, $(this).val(), function(ok){
+						if(ok){
+							//check maxChoice
+							CL('checking max choice');
+						}
+					});
+				}).blur(function(){
+					QTIinteraction.saveAttribute(attribute, $(this).val());
+				});
+				break;
+			}
+			case 'shuffle':
+			case 'orientation':{
+				$(this).bind('change', function(){
+					QTIinteraction.saveAttribute(attribute, $(this).val());
+				});
+				break;
+			}
+			case 'prompt':{
+				
+				break;
+			}
+		}
+		
+	});
+	
+}
+
+qtiEdit.initChoiceForm = function($form, QTIchoice){
+
+	$form.find('input, select').each(function(){
+		var attribute = $(this).attr('name');
+		switch(attribute){
+			case 'identifier':{
+				$(this).bind('keyup', function(){
+					QTIchoice.validateAttributeValue(attribute, $(this).val(), function(ok){
+						if(ok){
+							//update choice identifier in grid cells_
+						}
+					});
+				}).blur(function(){
+					QTIchoice.saveAttribute(attribute, $(this).val());
+				});
+				break;
+			}
+			case 'fixed':
+			case 'matchMax':{
+				$(this).bind('change', function(){
+					QTIchoice.saveAttribute(attribute, $(this).val());
+				});
+				break;
+			}
+			case 'value':{
+				$(this).bind('blur', function(){
+					QTIchoice.saveAttribute(attribute, $(this).val());
+				});
+				break;
+			}
+		}
+		
+	});
+	
 }

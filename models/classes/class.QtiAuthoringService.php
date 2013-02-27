@@ -12,7 +12,7 @@ require_once(ROOT_PATH.'/tao/lib/htmlpurifier/HTMLPurifier.auto.php');
  * Service methods to manage the QTI authoring business
  *
  * @access public
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * @author CRP Henri Tudor - TAO Team
  * @package taoItems
  * @subpackage models_classes
  */
