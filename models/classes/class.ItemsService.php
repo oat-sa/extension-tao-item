@@ -1243,7 +1243,7 @@ class taoItems_models_classes_ItemsService
 		if (!empty($uri)) {
 			$returnValue = new core_kernel_versioning_Repository($uri);
 		} else {
-			throw new common_Exception('No default repository defined');
+			throw new common_Exception('No default repository defined for Items storage.');
 		}
         // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C81 end
 
