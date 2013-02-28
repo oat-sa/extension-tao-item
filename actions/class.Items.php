@@ -289,7 +289,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$this->setData('formTitle', __('Manage the item versioned content').' '.$this->service->getItemModel($ownerInstance)->getLabel().' : '.$ownerInstance->getLabel());
 		$this->setData('myForm', $myForm->render());
 
-		$this->setView('form/versioned_file.tpl', true);
+		$this->setView('form/versioned_file.tpl', 'tao');
 	}
 
 	/**
@@ -765,7 +765,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 	public function translateInstance()
 	{
 		parent::translateInstance();
-		$this->setView('form.tpl', false);
+		$this->setView('form.tpl');
 	}
 
 	/**

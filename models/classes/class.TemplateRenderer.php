@@ -86,6 +86,7 @@ class taoItems_models_classes_TemplateRenderer
     		}
     	}
     	if(empty($this->file)){
+    		common_Logger::w('Template ',$templatePath.' not found');
     		throw new InvalidArgumentException("Unable to load the template file from $templatePath");
     	}
 		if(!tao_helpers_File::securityCheck($this->file)){

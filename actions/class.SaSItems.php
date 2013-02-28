@@ -75,7 +75,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		$this->setData('classUri', tao_helpers_Uri::encode($clazz->uriResource));
 		$this->setData('formTitle', __('Edit item'));
 		$this->setData('myForm', $myForm->render());
-		$this->setView('form.tpl', true);
+		$this->setView('form.tpl', 'tao');
 	}
 	
 	/**
