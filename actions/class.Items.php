@@ -100,6 +100,9 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				$newLabel = $properties[RDFS_LABEL];
 				
 				//bind item properties and set default content:
+				$binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
+				$item = $binder->bind($properties);
+				
 				$item = $this->service->bindProperties($item, $properties);
 				$item = $this->service->setDefaultItemContent($item);
 				
