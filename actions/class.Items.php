@@ -849,25 +849,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 
                 if($authoring instanceof core_kernel_classes_Literal){
 
-					//urlencode instead of tao_helpers_Uri::encode to be compatible with the swf authoring tools
-					$itemContentUrlParam = array(
-						'uri' => urlencode($item->uriResource),
-						'classUri' => urlencode($itemClass->uriResource)
-					);
-					$itemContentUrl = urlencode(_url('getItemContent', 'Items', 'taoItems', $itemContentUrlParam));
-
-					if(preg_match("/\.swf$/", (string) $authoring)){
-						$this->setData('type', 'swf');
-					}
-					if(preg_match("/\.php$/", (string) $authoring)){
-						$this->setData('type', 'php');
-					}
-					if(preg_match("/taoItems\//", (string) $authoring)){
-						$this->redirect(ROOT_URL.(string) $authoring.'?instance='.tao_helpers_Uri::encode($item->uriResource, false).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
-					}
-
-					$this->setData('authoringFile', BASE_URL.'/models/ext/itemAuthoring/'.(string) $authoring);
-					$this->setData('itemContentUrl', $itemContentUrl);
+					$this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->uriResource).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
 
 				}
 			}
