@@ -52,10 +52,10 @@ interface taoItems_models_classes_evaluatableItemModel
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
-     * @param  array response
+     * @param  array responses
      * @return array
      */
-    public function evaluate( core_kernel_classes_Resource $item, $response);
+    public function evaluate( core_kernel_classes_Resource $item, $responses);
 
 } /* end of interface taoItems_models_classes_evaluatableItemModel */
 

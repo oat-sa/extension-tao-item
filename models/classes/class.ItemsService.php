@@ -24,10 +24,6 @@ require_once('tao/models/classes/class.GenerisService.php');
 
 /* user defined includes */
 // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-includes begin
-if(!function_exists('matching_init')){
-	require_once (dirname(__FILE__).'/Matching/matching_api.php');
-}
-
 // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-includes end
 
 /* user defined constants */
@@ -817,8 +813,8 @@ class taoItems_models_classes_ItemsService
 
         // section 127-0-1-1-3d6b7ea7:12c3643ac5e:-8000:0000000000002BB9 begin
 		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
-		if (in_array('taoItems_models_classes_evaluatableItemModel', class_implements($serviceName))) {
-			$returnValue = $imp->evaluate($itemRdf, $responses);
+		if (in_array('taoItems_models_classes_evaluatableItemModel', class_implements($impl))) {
+			$returnValue = $impl->evaluate($itemRdf, $responses);
 		} else {
 			throw new common_exception_Error('Evaluate called on non-evaluatable item model');
 		}
