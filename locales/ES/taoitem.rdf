@@ -3,7 +3,7 @@
     @sourceLanguage EN
     @targetLanguage ES
 -->
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/Ontologies/TAOItem.rdf">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/Ontologies/TAOItem.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Item">
     <!--
     @sourceLanguage EN
@@ -220,24 +220,6 @@
     -->
     <rdfs:comment xml:lang="ES"><![CDATA[Authoring]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#QTI">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source QTI
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#QTI
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="ES"><![CDATA[QTI]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage ES
-    @source IMS Question and Test Interoperability
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#QTI
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="ES"><![CDATA[IMS Question and Test Interoperability]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML">
     <!--
     @sourceLanguage EN
@@ -373,5 +355,23 @@
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
     <rdfs:comment xml:lang="ES"><![CDATA[The status of an item model]]></rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source Items Manager
+    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="ES"><![CDATA[Items Manager]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage ES
+    @source The Items Manager Role
+    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="ES"><![CDATA[The Items Manager Role]]></rdfs:comment>
   </rdf:Description>
 </rdf:RDF>

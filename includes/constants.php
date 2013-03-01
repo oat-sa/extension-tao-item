@@ -22,10 +22,6 @@ $todefine = array(
 	'TAO_ITEM_ONLINE_TARGET'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget',
 	'TAO_ITEM_PAPERBASED_TARGET'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget',
 	
-	'QTI_RESPONSE_TEMPLATE_MATCH_CORRECT' 		=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct',
-	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE' 		=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response',
-	'QTI_RESPONSE_TEMPLATE_MAP_RESPONSE_POINT' 	=> 'http://www.imsglobal.org/question/qti_v2p0/rptemplates/map_response_point',
-
 	'TAO_ITEM_MODEL_STATUS_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus',
 	'TAO_ITEM_MODEL_STATUS_STABLE' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable',
 	'TAO_ITEM_MODEL_STATUS_DEPRECATED'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated',
