@@ -1,1 +1,0 @@
-<li id="<?=$identifier?>" class="<?=$class?>"><?=$data?></li>

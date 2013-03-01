@@ -594,7 +594,7 @@ class taoItems_models_classes_ItemsService
 			taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
 
 			$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-			$service = $this->getItemModelService($itemModel);
+			$service = $this->getItemModelImplementation($itemModel);
 			if (!is_null($service)) {
 				$output = $service->render($item);
 			} else {
@@ -789,16 +789,14 @@ class taoItems_models_classes_ItemsService
         $returnValue = array();
 
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 begin
-
-		if(!is_null($itemRdf)){
-			// If QTI Item
-			if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
-				$qtiService = taoItems_models_classes_QTI_Service::singleton();
+		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
+		
+		/* @todo reevaluate client side evaluation */
+		if ($impl instanceof taoQTI_models_classes_ItemModel) {
+				$qtiService = taoQTI_models_classes_QTI_Service::singleton();
 				$item = $qtiService->getDataItemByRdfItem($itemRdf);
 		   	 	$returnValue = $item->getMatchingData ();
-			}
 		}
-
         // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 end
 
         return (array) $returnValue;
@@ -818,46 +816,12 @@ class taoItems_models_classes_ItemsService
         $returnValue = array();
 
         // section 127-0-1-1-3d6b7ea7:12c3643ac5e:-8000:0000000000002BB9 begin
-
-		 if(!is_null($itemRdf)){
-			// If QTI Item
-			if($this->hasItemModel($itemRdf, array(TAO_ITEM_MODEL_QTI))){
-
-				$itemMatchingData = $this->getMatchingData($itemRdf);
-
-				matching_init();
-				matching_setRule($itemMatchingData["rule"]);
-				matching_setAreaMaps($itemMatchingData["areaMaps"]);
-				matching_setMaps($itemMatchingData["maps"]);
-				matching_setCorrects($itemMatchingData["corrects"]);
-				matching_setResponses($responses);
-				matching_setOutcomes($itemMatchingData["outcomes"]);
-
-				try {
-					// Evaluate the user's response
-					matching_evaluate();
-					// get the outcomes
-					$outcomes = matching_getOutcomes();
-
-					// Check if outcomes are scalar
-					try {
-						foreach($outcomes as $outcome) {
-							if(! is_scalar($outcome['value'])){
-								throw new Exception('taoItems_models_classes_ItemsService::evaluate outcomes are not scalar');
-							}
-						}
-						$returnValue = $outcomes;
-					}
-					catch(Exception $e){
-				 		;//
-					}
-				}
-				catch(Exception $e){
-					;//
-				}
-			}
+		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
+		if (in_array('taoItems_models_classes_evaluatableItemModel', class_implements($serviceName))) {
+			$returnValue = $imp->evaluate($itemRdf, $responses);
+		} else {
+			throw new common_exception_Error('Evaluate called on non-evaluatable item model');
 		}
-
         // section 127-0-1-1-3d6b7ea7:12c3643ac5e:-8000:0000000000002BB9 end
 
         return (array) $returnValue;
@@ -1120,14 +1084,14 @@ class taoItems_models_classes_ItemsService
     }
 
     /**
-     * Short description of method getItemModelService
+     * Short description of method getItemModelImplementation
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource itemModel
-     * @return taoItems_models_classes_itemModelService
+     * @return taoItems_models_classes_itemModel
      */
-    public function getItemModelService( core_kernel_classes_Resource $itemModel)
+    public function getItemModelImplementation( core_kernel_classes_Resource $itemModel)
     {
         $returnValue = null;
 
@@ -1138,13 +1102,13 @@ class taoItems_models_classes_ItemsService
 				throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
 			}
 			$serviceName = (string)current($services);
-			if (class_exists($serviceName) && in_array('taoItems_models_classes_itemModelService', class_implements($serviceName))) {
-				$returnValue = $serviceName::singleton();
+			if (class_exists($serviceName) && in_array('taoItems_models_classes_itemModel', class_implements($serviceName))) {
+				$returnValue = new $serviceName();
 			} else {
 				throw new common_exception_Error('Item model service '.$serviceName.' not found, or not compatible for item model '.$itemModel->getLabel());
 			}
 		} else {
-			common_Logger::d('No service for '.$itemModel->getLabel());
+			common_Logger::d('No implementation for '.$itemModel->getLabel());
 		}
         // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C05 end
 

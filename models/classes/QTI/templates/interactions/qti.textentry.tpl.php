@@ -1,1 +1,0 @@
-<<?=$type?>Interaction <?=$rowOptions?> />

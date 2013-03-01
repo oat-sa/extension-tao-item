@@ -1,1 +1,0 @@
-<responseProcessing template="<?=$uri?>"/>

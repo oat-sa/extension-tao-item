@@ -1,1 +1,0 @@
-<span class="gap" id="<?=$identifier?>"></span>

@@ -7,7 +7,7 @@ error_reporting(E_ALL);
  * It parses a file with php short tags and replace the variables by the
  * in attributes
  *
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -30,7 +30,7 @@ if (0 > version_compare(PHP_VERSION, '5')) {
  * in attributes
  *
  * @access public
- * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+ * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  * @subpackage models_classes
  */
@@ -71,7 +71,7 @@ class taoItems_models_classes_TemplateRenderer
      * Short description of method __construct
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  string templatePath
      * @param  array variables
      * @return mixed
@@ -103,7 +103,7 @@ class taoItems_models_classes_TemplateRenderer
      * Short description of method setContext
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @param  array parameters
      * @param  string prefix
      * @return mixed
@@ -122,10 +122,41 @@ class taoItems_models_classes_TemplateRenderer
     }
 
     /**
+     * sets the template to be used
+     *
+     * @access public
+     * @author Joel Bout, <joel@taotesting.com>
+     * @param  string templatePath
+     * @return mixed
+     */
+    public function setTemplate($templatePath)
+    {
+        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C81 begin
+        $this->file = $templatePath;
+        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C81 end
+    }
+
+    /**
+     * adds or replaces the data for a specific key
+     *
+     * @access public
+     * @author Joel Bout, <joel@taotesting.com>
+     * @param  string key
+     * @param  value
+     * @return mixed
+     */
+    public function setData($key, $value)
+    {
+        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C7D begin
+        $this->variables[$key] = $value;
+        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C7D end
+    }
+
+    /**
      * Short description of method render
      *
      * @access public
-     * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
+     * @author Joel Bout, <joel@taotesting.com>
      * @return string
      */
     public function render()
@@ -135,8 +166,8 @@ class taoItems_models_classes_TemplateRenderer
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A5 begin
         
         //extract in the current context the array: 'key' => 'value'  to $key = 'value';
-        extract($this->variables);
         extract(self::$context);
+        extract($this->variables);
       
         ob_start();
         

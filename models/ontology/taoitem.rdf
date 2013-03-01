@@ -158,19 +158,6 @@
   </rdf:Description>
   -->
 
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#QTI">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
-    <item:ItemAuthoring xml:lang="EN"><![CDATA[/taoItems/QtiAuthoring/index]]></item:ItemAuthoring>
-    <rdf:value xml:lang="EN"/>
-    <rdfs:comment xml:lang="EN"><![CDATA[IMS Question and Test Interoperability]]></rdfs:comment>
-    <rdfs:label xml:lang="EN"><![CDATA[QTI]]></rdfs:label>
-    <rdfs:seeAlso xml:lang="EN"/>
-    <rdfs:isDefinedBy xml:lang="EN"/>
-    <item:DataFileName><![CDATA[qti.xml]]></item:DataFileName>
-    <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable"/>
-    <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
-    <item:ModelService><![CDATA[taoItems_models_classes_QTI_Service]]></item:ModelService>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
     <rdf:value xml:lang="EN"/>

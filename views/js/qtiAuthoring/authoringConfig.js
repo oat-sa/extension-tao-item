@@ -1,1 +1,0 @@
-var img_url = root_url + "/taoItems/views/img/qtiAuthoring/";
