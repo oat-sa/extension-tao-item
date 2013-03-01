@@ -11,7 +11,7 @@ return array(
 	'name' => 'taoItems',
 	'description' => 'the TAO Items extension provides the item creation, authoring and managment',
 	'version' => '2.4',
-	'author' => 'CRP Henri Tudor',
+	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'dependencies' => array('tao'),
 	'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf',
