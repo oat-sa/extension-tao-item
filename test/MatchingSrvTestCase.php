@@ -126,6 +126,7 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		$this->assertFalse ($listTpl1->match($listTpl6));
 		
 		// list of list (in QTI Multiple Pair)
+		$listList0 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"]]'));
 		$listList1 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"], ["E", "F"]]'));
 		$listList2 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["B", "A"], ["D", "C"], ["F", "E"]]'));
 		$listList3 = taoItems_models_classes_Matching_VariableFactory::create (json_decode('[["A", "B"], ["C", "D"]]'));
@@ -139,7 +140,8 @@ class MatchingScoringServerSideTestCase extends UnitTestCase {
 		$tmpValue = $listList1->getValue();
 		$tmpValue2 = $tmpValue[0]->getValue();
 		$this->assertEqual ($tmpValue2[0]->getValue(), 'A');
-		$this->assertEqual ($tmpValue2[1]->getValue(), 'B');		
+		$this->assertEqual ($tmpValue2[1]->getValue(), 'B');
+		$this->assertTrue ($listList0->match($listList0));
 		$this->assertTrue ($listList1->match($listList1));
 		$this->assertTrue ($listList1->match($listList2));
 		$this->assertFalse($listList1->match($listList3));
