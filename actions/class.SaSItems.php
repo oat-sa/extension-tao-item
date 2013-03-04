@@ -65,7 +65,8 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
-				$instance = $this->service->bindProperties($instance, $myForm->getValues());
+				$binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
+				$instance = $binder->bind($myForm->getValues());
 				$instance = $this->service->setDefaultItemContent($instance);
 				$this->setData('message', __('Item saved'));
 			}

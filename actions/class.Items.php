@@ -95,38 +95,10 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
 				unset($properties['warning']);
 				
-				//get the old label to check if the label has been changed (not from Resource::getLabel() because of lazy loading)
-				$oldLabel = (string) $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
-				$newLabel = $properties[RDFS_LABEL];
-				
 				//bind item properties and set default content:
 				$binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
 				$item = $binder->bind($properties);
-				
-				$item = $this->service->bindProperties($item, $properties);
 				$item = $this->service->setDefaultItemContent($item);
-				
-				//if label has changed, update item content with new label:
-				if($oldLabel != $newLabel && isset($properties[TAO_ITEM_MODEL_PROPERTY])){
-					//check if the item is a QTI item
-					switch($properties[TAO_ITEM_MODEL_PROPERTY]){
-						case TAO_ITEM_MODEL_QTI:{
-							$qtiService = taoItems_models_classes_QTI_Service::singleton();
-							$qtiObject = $qtiService->getDataItemByRdfItem($item);
-							if(!is_null($qtiObject)){
-								$qtiObject->setOption('title', $properties[RDFS_LABEL]);
-								$qtiService->saveDataItemToRdfItem($qtiObject, $item);
-							}
-							break;
-						}
-						case TAO_ITEM_MODEL_SURVEY:{
-							break;
-						}
-						default:{
-							
-						}
-					}
-				}
 				
 				$this->setData('message', __('Item saved'));
 				$this->setData('reload', true);
