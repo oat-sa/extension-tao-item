@@ -42,28 +42,19 @@ class taoItems_models_classes_TemplateRenderer
     // --- ATTRIBUTES ---
 
     /**
-     * Short description of attribute file
-     *
-     * @access protected
-     * @var string
-     */
-    protected $file = '';
-
-    /**
-     * Short description of attribute variables
-     *
-     * @access protected
-     * @var array
-     */
-    protected $variables = array();
-
-    /**
      * Short description of attribute context
      *
      * @access protected
      * @var array
      */
     protected static $context = array();
+
+    /**
+     * ClearFW Renderer
+     *
+     * @access private
+     */
+    private $renderer = null;
 
     // --- OPERATIONS ---
 
@@ -80,21 +71,19 @@ class taoItems_models_classes_TemplateRenderer
     {
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A1 begin
         
-    	if(file_exists($templatePath)){
-    		if(is_readable($templatePath) && preg_match("/\.tpl\.php$/", basename($templatePath))){
-    			$this->file = $templatePath;
-    		}
+    	if (!file_exists($templatePath)
+    		|| !is_readable($templatePath)
+    		|| !preg_match("/\.tpl\.php$/", basename($templatePath))) {
+    		
+    			common_Logger::w('Template ',$templatePath.' not found');
+    			throw new InvalidArgumentException("Unable to load the template file from $templatePath");
     	}
-    	if(empty($this->file)){
-    		common_Logger::w('Template ',$templatePath.' not found');
-    		throw new InvalidArgumentException("Unable to load the template file from $templatePath");
-    	}
-		if(!tao_helpers_File::securityCheck($this->file)){
+    	
+		if(!tao_helpers_File::securityCheck($templatePath)){
 			throw new Exception("Security warning: $templatePath is not safe.");
 		}
     	
-    	
-    	$this->variables = $variables;
+    	$this->renderer = new Renderer($templatePath, $variables);
     	
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A1 end
     }
@@ -132,7 +121,7 @@ class taoItems_models_classes_TemplateRenderer
     public function setTemplate($templatePath)
     {
         // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C81 begin
-        $this->file = $templatePath;
+        $this->renderer->setTemplate($templatePath);
         // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C81 end
     }
 
@@ -148,7 +137,7 @@ class taoItems_models_classes_TemplateRenderer
     public function setData($key, $value)
     {
         // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C7D begin
-        $this->variables[$key] = $value;
+        $this->renderer->setData($key, $value);
         // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C7D end
     }
 
@@ -164,24 +153,8 @@ class taoItems_models_classes_TemplateRenderer
         $returnValue = (string) '';
 
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A5 begin
-        
-        //extract in the current context the array: 'key' => 'value'  to $key = 'value';
-        extract(self::$context);
-        extract($this->variables);
-      
-        ob_start();
-        
-        include $this->file;
-        
-        $returnValue = ob_get_contents();
-        
-        ob_end_clean();
-        
-        //clean the extracted variables
-        foreach(array_merge($this->variables, self::$context) as $key => $name){
-        	unset($$key);
-        }
-       
+        $this->renderer->setMultipleData(self::$context);
+    	$returnValue = $this->renderer->render();
         // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A5 end
 
         return (string) $returnValue;
