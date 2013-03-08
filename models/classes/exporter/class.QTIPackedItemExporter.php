@@ -45,10 +45,10 @@ class taoItems_models_classes_exporter_QTIPackedItemExporter extends taoItems_mo
           		}
      		}
      		if(!empty($qtiFile)){
-     			$qtiItemService = taoItems_models_classes_QTI_Service::singleton();
+     			$qtiItemService = taoQTI_models_classes_QTI_Service::singleton();
      			$qtiItem = $qtiItemService->getDataItemByRdfItem($this->getItem());
      			if(!is_null($qtiItem)){
-	     			$templateRenderer = new taoItems_models_classes_TemplateRenderer(BASE_PATH.'/models/classes/QTI/templates/imsmanifest.tpl.php', array(
+	     			$templateRenderer = new taoItems_models_classes_TemplateRenderer(ROOT_PATH.'/taoQTI/models/classes/QTI/templates/imsmanifest.tpl.php', array(
 						'qtiItem' 				=> $qtiItem,
 						'qtiFilePath'			=> $qtiFile,
 						'medias'				=> $qtiResources,

@@ -76,7 +76,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			
 			//get the services instances we will need
 			$itemService	= taoItems_models_classes_ItemsService::singleton();
-			$qtiService 	= taoItems_models_classes_QTI_Service::singleton();
+			$qtiService 	= taoQTI_models_classes_QTI_Service::singleton();
 			
 			//test versioning
 			$repository = null;

@@ -273,7 +273,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 	protected function importQTIFile(core_kernel_classes_Resource $rdfItem, $uploadedFile, $forceValid = false, $commitMessage = 'QTI XML uploaded'){
 
 		//get the services instances we will need
-		$qtiService = taoItems_models_classes_QTI_Service::singleton();
+		$qtiService = taoQTI_models_classes_QTI_Service::singleton();
 
 		//validate the file to import
 		$qtiParser = new taoItems_models_classes_QTI_Parser($uploadedFile);
@@ -311,7 +311,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		set_time_limit(200);	//the zip extraction is a long process that can exced the 30s timeout
 
 		//get the services instances we will need
-		$qtiService = taoItems_models_classes_QTI_Service::singleton();
+		$qtiService = taoQTI_models_classes_QTI_Service::singleton();
 
 		//load and validate the package
 		$qtiPackageParser = new taoItems_models_classes_QTI_PackageParser($uploadedFile);
