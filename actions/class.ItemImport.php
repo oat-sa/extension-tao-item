@@ -62,7 +62,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			}
 			
 			try {
-				$importService = taoItems_models_classes_QTI_ImportService::singleton();
+				$importService = taoQTI_models_classes_QTI_ImportService::singleton();
 				$item = $importService->importQTIFile($uploadedFile, $clazz, $forceValid);
 			} catch (taoItems_models_classes_QTI_ParsingException $e) {
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
@@ -119,7 +119,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			} 
 			
 			try {
-				$importService = taoItems_models_classes_QTI_ImportService::singleton();
+				$importService = taoQTI_models_classes_QTI_ImportService::singleton();
 				$importedItems = $importService->importQTIPACKFile($uploadedFile, $clazz, $forceValid, $repository);
 			} catch (taoItems_models_classes_QTI_exception_ExtractException $e) {
 				$this->setData('importErrorTitle', __('An error occured during the import'));
