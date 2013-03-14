@@ -255,7 +255,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			
 			//remove the temp files
 			tao_helpers_File::remove($uploadedFile);
-			tao_helpers_File::remove(str_replace('.zip', '', $uploadedFile), true);
+			tao_helpers_File::remove($folder);
 			
 			return true;
 		}
