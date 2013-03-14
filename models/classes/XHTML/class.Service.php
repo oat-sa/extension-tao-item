@@ -51,21 +51,6 @@ if (0 > version_compare(PHP_VERSION, '5')) {
 require_once('tao/models/classes/class.Service.php');
 
 /**
- * include taoItems_models_classes_itemModelService
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- */
-require_once('taoItems/models/classes/interface.itemModelService.php');
-
-/* user defined includes */
-// section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C1C-includes begin
-// section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C1C-includes end
-
-/* user defined constants */
-// section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C1C-constants begin
-// section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C1C-constants end
-
-/**
  * Short description of class taoItems_models_classes_XHTML_Service
  *
  * @access public
@@ -74,8 +59,7 @@ require_once('taoItems/models/classes/interface.itemModelService.php');
  * @subpackage models_classes_XHTML
  */
 class taoItems_models_classes_XHTML_Service
-    extends tao_models_classes_Service
-        implements taoItems_models_classes_itemModelService
+	implements taoItems_models_classes_itemModel
 {
     // --- ASSOCIATIONS ---
 
@@ -83,7 +67,13 @@ class taoItems_models_classes_XHTML_Service
     // --- ATTRIBUTES ---
 
     // --- OPERATIONS ---
-
+    /**
+     * default constructor to ensure the implementation
+     * can be instanciated
+     */
+    public function __construct() {
+    }
+	
     /**
      * Short description of method render
      *
