@@ -884,23 +884,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 			$item = new core_kernel_classes_Resource($_SESSION['instance']);
 			if($this->service->isItemModelDefined($item)){
 
-				$itemContentSaved = false;
-
-				//CTEST
-				 if ($this->service->hasItemModel($item, array(TAO_ITEM_MODEL_CTEST))){
-					isset($_SESSION["datalg"]) ? $lang = $_SESSION["datalg"] : $lang = $GLOBALS['lang'];
-					$data = "<?xml version='1.0' encoding='UTF-8'?>
-								<tao:ITEM xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' rdf:ID='{$item->uriResource}' xmlns:tao='http://www.tao.lu/tao.rdfs' xmlns:rdfs='http://www.w3.org/2000/01/rdf-schema#'>
-									<rdfs:LABEL lang='{$lang}'>{$item->getLabel()}</rdfs:LABEL>
-									<rdfs:COMMENT lang='{$lang}'>{$item->getComment()}</rdfs:COMMENT>
-									{$_SESSION['xml']}
-								</tao:ITEM>";
-					$itemContentSaved = $this->service->setItemContent($item, $data);
-				}
-				//OTHERS
-				else{
-					$itemContentSaved = $this->service->setItemContent($item, $_SESSION['xml']);
-				}
+				$itemContentSaved = $this->service->setItemContent($item, $_SESSION['xml']);
 
 				if(!$itemContentSaved){
 					$message = __('Item saving failed');
