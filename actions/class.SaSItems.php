@@ -36,7 +36,6 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
      */
     public function __construct() {
     	tao_helpers_Context::load('STANDALONE_MODE');
-        $this->setSessionAttribute('currentExtension', 'taoItems');
 		parent::__construct();
     }
 
