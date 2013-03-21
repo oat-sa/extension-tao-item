@@ -51,11 +51,7 @@ return array(
 		)
 	),
 	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
-	'classLoaderPackages' => array(
-		dirname(__FILE__).'/actions/',
-		dirname(__FILE__).'/helpers/'
-	),
-	 'constants' => array(
+	'constants' => array(
 		# actions directory
 		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
 	
