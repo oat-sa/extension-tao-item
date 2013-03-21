@@ -35,11 +35,11 @@ return array(
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'dependencies' => array('tao'),
 	'models' => array(
-		'http://www.tao.lu/Ontologies/TAOItem.rdf',
-		'http://www.tao.lu/Ontologies/taoFuncACL.rdf'),
+		'http://www.tao.lu/Ontologies/TAOItem.rdf'
+	),
 	'install' => array(
 		'rdf' => array(
-				array('ns' => 'http://www.tao.lu/Ontologies/TAOItem.rdf', 'file' => dirname(__FILE__). '/models/ontology/taoitem.rdf'),
+			dirname(__FILE__). '/models/ontology/taoitem.rdf'
 		),
 		'checks' => array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_data', 'location' => 'taoItems/data', 'rights' => 'rw')),
