@@ -51,6 +51,12 @@ return array(
 		)
 	),
 	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
+	'optimizableClasses' => array(
+			'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+			'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',
+			'http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget',
+			'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus'
+	),
 	'constants' => array(
 		# actions directory
 		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
