@@ -127,11 +127,11 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
 			} catch (taoItems_models_classes_QTI_ParsingException $e) {
 				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-				$this->setData('importErrors', $qtiParser->getErrors());
+				$this->setData('importErrors', array());
 				return false;
 				
 			} catch (common_Exception $e) {
-				$this->setData('message', __('An error occurs during the import'));
+				$this->setData('message', __('An error occured during the import'));
 			}
 			
 			if($importedItems > 0){
@@ -168,95 +168,41 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			//get the services instances we will need
 			$itemService	= taoItems_models_classes_ItemsService::singleton();
 			
-			//test versioning
-			$versioning = false;
-			if (isset($formValues['repository']) && common_Utils::isUri($formValues['repository'])) {
-				$repository = new core_kernel_versioning_Repository($formValues['repository']);
-				if ($repository->exists()) {
-					$versioning = true;
-				}
-			}
-			
 			$uploadedFile = $formValues['source']['uploaded_file'];
 			$uploadedFileBaseName = basename($uploadedFile);
 			// uploaded file name contains an extra prefix that we have to remove.
 			$uploadedFileBaseName = preg_replace('/^([0-9a-z])+_/', '', $uploadedFileBaseName, 1);
 			$uploadedFileBaseName = preg_replace('/.zip|.ZIP$/', '', $uploadedFileBaseName);
 			
-			$forceValid = false;
+			$validate = true;
 			if(isset($formValues['disable_validation'])){
 				if(is_array($formValues['disable_validation'])){
-					$forceValid = true;
+					$validate = false;
 				}
 			}
 			
-			//load and validate the package
-			$packageParser = new taoItems_models_classes_XHTML_PackageParser($uploadedFile);
-			$packageParser->validate();
-
-			if(!$packageParser->isValid()){
-				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-				$this->setData('importErrors', $packageParser->getErrors());
-				return false;
-			}
-			
-		
-			//extract the package
-			$folder = $packageParser->extract();
-			if(!is_dir($folder)){
+			$importService = taoItems_models_classes_XHTML_ImportService::singleton();
+			try {
+				$rdfItem = $importService->importXhtmlFile($uploadedFile, $clazz, $validate);
+			} catch (taoItems_models_classes_Import_ExtractException $e) {
 				$this->setData('importErrorTitle', __('An error occured during the import'));
 				$this->setData('importErrors', array(array('message' => __('unable to extract archive content, please check your tmp dir'))));
 				return false;
-			}
+			} catch (taoItems_models_classes_Import_ParsingException $e) {
+				$this->setData('importErrorTitle', __('Validation failed'));
+				$this->setData('importErrors', array(array('message' => __('Validation of the imported file has failed'))));
+				return false;
 				
-			//load and validate the manifest
-			$fileParser = new tao_models_classes_Parser($folder .'/index.html', array('extension' => 'html'));
-			$fileParser->validate(BASE_PATH.'/models/classes/data/xhtml/xhtml.xsd');
-			
-			if(!$fileParser->isValid() && !$forceValid){
-				$this->setData('importErrorTitle', __('Validation of the imported file has failed'));
-				$this->setData('importErrors', $fileParser->getErrors());
+			} catch (common_Exception $e) {
+				$this->setData('message', __('An error occured during the import'));
 				return false;
 			}
-				
-			//create a new item in the model
-			$rdfItem = $itemService->createInstance($clazz);
-			$rdfItem->editPropertyValues(new core_kernel_classes_Property(RDFS_LABEL), $uploadedFileBaseName);
-			//set the QTI type
-			$rdfItem->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
 			
-			$itemContent = file_get_contents($folder .'/index.html');
-			
-			$folderName = substr($rdfItem->uriResource, strpos($rdfItem->uriResource, '#') + 1);
-			
-			$itemPath = $itemService->getItemFolder($rdfItem);
-        	if(!tao_helpers_File::move($folder, $itemPath)){
-        		$this->setData('importErrorTitle', __('Unable to copy the resources'));
-				$this->setData('importErrors', array(array('message' => __('Unable to move')." $folder to $itemPath")));
-				return false;
-        	}
-        	
-        	$itemService->setItemContent($rdfItem, $itemContent, null, 'HOLD_COMMIT');
-			if($versioning){
-				// add to repo
-				$itemContent = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-				$versionedContend = $repository->add($itemContent);
-				if (!is_null($versionedContend)) {
-					if ($versionedContend->getUri() != $itemContent->getUri()) {
-						$rdfItem->editPropertyValue(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $versionedContend);
-					}
-					$importedItems++;
-				}
-			}
-			
+			tao_helpers_File::remove($uploadedFile);
 			$this->removeSessionAttribute('classUri');
 			$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
 			$this->setData('message',__('item imported successfully'));
 			$this->setData('reload', true);
-			
-			//remove the temp files
-			tao_helpers_File::remove($uploadedFile);
-			tao_helpers_File::remove($folder);
 			
 			return true;
 		}
