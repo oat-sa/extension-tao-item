@@ -614,15 +614,6 @@ class taoItems_models_classes_ItemsService
 			$service = $this->getItemModelImplementation($itemModel);
 			if (!is_null($service)) {
 				$output = $service->render($item);
-			} else {
-				// fallback
-				if ($this->hasItemModel($item, array(TAO_ITEM_MODEL_SURVEY))) {
-					$output = taoItems_models_classes_Survey_Item::renderItem($item);
-				}
-			}
-			
-			if (isset($output)) {
-				
 				$itemFolder = dirname($path);
 				
 				//replace relative paths to resources by absolute uris to help the compilator
