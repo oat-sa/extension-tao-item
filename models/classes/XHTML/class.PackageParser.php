@@ -174,14 +174,7 @@ class taoItems_models_classes_XHTML_PackageParser
         	throw new Exception("Wrong source mode");
         }
         
-        $sourceFile = basename($this->source);
         $folder = tao_helpers_File::createTempDir();
-        //$folder = dirname($this->source) . '/' . substr($sourceFile, 0, strrpos($sourceFile, '.'));
-        
-        if(!is_dir($folder)){
-        	mkdir($folder);
-        }
-        
 	    $zip = new ZipArchive();
 		if ($zip->open($this->source) === true) {
 		    if($zip->extractTo($folder)){
