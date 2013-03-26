@@ -48,7 +48,8 @@ return array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_views_runtime', 'location' => 'taoItems/views/runtime', 'rights' => 'rw'))
 		),
 		'php'	=> array(
-			dirname(__FILE__).'/scripts/install/addLocalSource.php'
+			dirname(__FILE__).'/scripts/install/addLocalSource.php',
+			dirname(__FILE__).'/scripts/install/cleanRuntime.php'
 		)
 	),
 	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
