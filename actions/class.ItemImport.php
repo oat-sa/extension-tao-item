@@ -134,11 +134,11 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				$this->setData('message', __('An error occured during the import'));
 			}
 			
-			if($importedItems > 0){
+			if(count($importedItems) > 0) {
 				
 				$this->removeSessionAttribute('classUri');
 				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->getUri()));
-				$this->setData('message', $importedItems . ' ' . __('items imported successfully'));
+				$this->setData('message', count($importedItems) . ' ' . __('items imported successfully'));
 				$this->setData('reload', true);
 				
 				return true;
