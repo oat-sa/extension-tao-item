@@ -652,8 +652,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$previewUrl = $this->getPreviewUrl($item, $itemClass);
 		if(is_null($previewUrl)){
 			echo  __("Not yet available");
-		}
-		else{
+		}else{
 			$this->redirect($previewUrl);
 		}
 	}

@@ -18,38 +18,6 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * Service methods to manage the Items business models using the RDF API.
- *
- * @author Joel Bout, <joel@taotesting.com>
- * @package taoItems
- * @subpackage models_classes
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * The Service class is an abstraction of each service instance. 
- * Used to centralize the behavior related to every servcie instances.
- *
- * @author Joel Bout, <joel@taotesting.com>
- */
-require_once('tao/models/classes/class.GenerisService.php');
-
-/* user defined includes */
-// section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-includes begin
-// section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-includes end
-
-/* user defined constants */
-// section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-constants begin
-// section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BE-constants end
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -62,10 +30,6 @@ require_once('tao/models/classes/class.GenerisService.php');
 class taoItems_models_classes_ItemsService
     extends tao_models_classes_GenerisService
 {
-    // --- ASSOCIATIONS ---
-
-
-    // --- ATTRIBUTES ---
 
     /**
      * The RDFS top level item class
@@ -111,14 +75,10 @@ class taoItems_models_classes_ItemsService
      */
     public function __construct()
     {
-        // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 begin
-
 		parent::__construct();
 		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
 		$this->itemModelProperty	= new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
 		$this->itemContentProperty	= new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
-
-        // section 10-13-1-45--20a3dc13:1239ebd775d:-8000:0000000000001897 end
     }
 
     /**
@@ -135,9 +95,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--5cd530d7:1249feedb80:-8000:0000000000001AE4 begin
-
-
 		if(empty($uri) && !is_null($this->itemClass)){
 			$returnValue= $this->itemClass;
 		}
@@ -147,8 +104,6 @@ class taoItems_models_classes_ItemsService
 				$returnValue = $clazz;
 			}
 		}
-
-        // section 127-0-1-1--5cd530d7:1249feedb80:-8000:0000000000001AE4 end
 
         return $returnValue;
     }
@@ -165,8 +120,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001AD2 begin
-
 		if($this->itemClass->uriResource == $clazz->uriResource){
 			return true;
 		}
@@ -178,8 +131,6 @@ class taoItems_models_classes_ItemsService
 				break;
 			}
 		}
-
-        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001AD2 end
 
         return (bool) $returnValue;
     }
@@ -196,8 +147,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BB begin
-
 		if(!is_null($item)){
 
 			$returnValue = $this->deleteItemContent($item);
@@ -211,8 +160,6 @@ class taoItems_models_classes_ItemsService
 			$returnValue &= $item->delete(true);
 
 		}
-
-        // section 10-13-1-45-792423e0:12398d13f24:-8000:00000000000017BB end
 
         return (bool) $returnValue;
     }
@@ -229,14 +176,11 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001ACF begin
-
 		if(!is_null($clazz)){
 			if($this->isItemClass($clazz)){
 				$returnValue = $clazz->delete();
 			}
 		}
-        // section 127-0-1-1-4cd2d1f1:124910fbd83:-8000:0000000000001ACF end
 
         return (bool) $returnValue;
     }
@@ -254,8 +198,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 begin
-
 		if(!is_null($item)){
 
 			if(empty($lang)){
@@ -269,8 +211,6 @@ class taoItems_models_classes_ItemsService
 			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
 
 		}
-
-        // section 127-0-1-1-2473cce:12c31050806:-8000:0000000000002880 end
 
         return (string) $returnValue;
     }
@@ -287,15 +227,11 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1--2174cec8:12c311b88e7:-8000:0000000000002883 begin
-
 		if(!is_null($item)){
 			$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
 			$basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
 			$returnValue = $basePreview . $folderName;
 		}
-
-        // section 127-0-1-1--2174cec8:12c311b88e7:-8000:0000000000002883 end
 
         return (string) $returnValue;
     }
@@ -312,12 +248,9 @@ class taoItems_models_classes_ItemsService
     public function setDefaultItemContent( core_kernel_classes_Resource $item)
     {
         $returnValue = null;
-
-        // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 begin
-
+		
+		//@todo : to be completed
 		$returnValue = $item;
-
-        // section 127-0-1-1-c213658:12568a3be0b:-8000:0000000000001CE9 end
 
         return $returnValue;
     }
@@ -337,7 +270,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EA begin
 		common_Logger::i('Get itemContent for item '.$item->getUri());
 
 		if(!is_null($item)){
@@ -368,8 +300,6 @@ class taoItems_models_classes_ItemsService
 			}
 		}
 
-        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EA end
-
         return (string) $returnValue;
     }
 
@@ -386,8 +316,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F6 begin
-
 		if(!is_null($item)){
 
 			if(empty($lang)){
@@ -397,8 +325,6 @@ class taoItems_models_classes_ItemsService
 			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 			$returnValue = ($itemContents->count() > 0);
 		}
-
-        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F6 end
 
         return (bool) $returnValue;
     }
@@ -418,7 +344,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-2473cce:12c31050806:-8000:000000000000287C begin
 		if(is_null($item) && !$this->isItemModelDefined($item)) {
 			throw new common_exception_Error('No item or itemmodel in '.__FUNCTION__);
 		}
@@ -454,7 +379,6 @@ class taoItems_models_classes_ItemsService
 		if ($commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
 			$returnValue = $file->commit($commitMessage);
 		}	
-        // section 127-0-1-1-2473cce:12c31050806:-8000:000000000000287C end
 
         return (bool) $returnValue;
     }
@@ -472,15 +396,12 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF begin
-
 		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
 		if($itemModel instanceof core_kernel_classes_Resource){
 			if(in_array($itemModel->uriResource, $models)){
 				$returnValue = true;
 			}
 		}
-        // section 127-0-1-1-49582216:12ba4862c6b:-8000:00000000000025DF end
 
         return (bool) $returnValue;
     }
@@ -497,8 +418,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F3 begin
-
 		if(!is_null($item)){
 
 			$model = $item->getOnePropertyValue($this->itemModelProperty);
@@ -512,8 +431,6 @@ class taoItems_models_classes_ItemsService
 			}
 
 		}
-
-        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F3 end
 
         return (bool) $returnValue;
     }
@@ -530,16 +447,12 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F9 begin
-
 		if(!is_null($item)){
 			$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
 			if(!is_null($itemModel)){
 				$returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
 			}
 		}
-
-        // section 127-0-1-1--380e02a0:12ba9a8eb52:-8000:00000000000025F9 end
 
         return $returnValue;
     }
@@ -556,8 +469,6 @@ class taoItems_models_classes_ItemsService
     public function hasModelStatus( core_kernel_classes_Resource $item, $status)
     {
         $returnValue = (bool) false;
-
-        // section 127-0-1-1--203e680b:12cfebcad50:-8000:00000000000029C2 begin
 
 		if(!is_null($item)){
 			if(!is_array($status) && is_string($status)){
@@ -577,8 +488,6 @@ class taoItems_models_classes_ItemsService
 			}
 		}
 
-        // section 127-0-1-1--203e680b:12cfebcad50:-8000:00000000000029C2 end
-
         return (bool) $returnValue;
     }
 
@@ -596,8 +505,6 @@ class taoItems_models_classes_ItemsService
     public function deployItem( core_kernel_classes_Resource $item, $path, $url = '', $parameters = array())
     {
         $returnValue = (bool) false;
-
-        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE begin
 
 		if(!is_null($item)){
 
@@ -676,8 +583,6 @@ class taoItems_models_classes_ItemsService
 			
 		}
 
-        // section 127-0-1-1-61b30d97:12ba603bd1d:-8000:00000000000025EE end
-
         return (bool) $returnValue;
     }
 
@@ -693,12 +598,9 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 begin
-
 		if(strlen($itemUri) > 0){
 			$returnValue = BASE_DATA.'/'.tao_helpers_Uri::encode($itemUri).'.xml';
 		}
-        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B79 end
 
         return (string) $returnValue;
     }
@@ -715,7 +617,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D begin
 		if(strlen($uri) > 0){
 			if(file_exists($uri)){
 				$returnValue = tao_helpers_Uri::decode(
@@ -725,7 +626,6 @@ class taoItems_models_classes_ItemsService
 				);
 			}
 		}
-        // section 127-0-1-1-188be92e:12507f7441c:-8000:0000000000001B7D end
 
         return (string) $returnValue;
     }
@@ -742,15 +642,12 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E begin
 		$uri = $this->getAuthoringFileUriByItem($itemUri);
 
 		if(!file_exists($uri)){
 			file_put_contents($uri, '<?xml version="1.0" encoding="utf-8" ?>');
 		}
 		$returnValue = $uri;
-
-        // section 127-0-1-1-34d7bcb9:1250bcb34b1:-8000:0000000000001B6E end
 
         return (string) $returnValue;
     }
@@ -768,8 +665,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 begin
-
 		if(strlen($itemUri) > 0){
 			$returnValue = BASE_DATA.'tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';
 			if(!file_exists($returnValue)){
@@ -778,8 +673,6 @@ class taoItems_models_classes_ItemsService
 				}
 			}
 		}
-
-        // section 127-0-1-1-5249fce9:12694acf215:-8000:0000000000001E84 end
 
         return (string) $returnValue;
     }
@@ -796,16 +689,29 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 begin
 		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
 		
 		/* @todo reevaluate client side evaluation */
 		if ($impl instanceof taoQTI_models_classes_ItemModel) {
+				
+				$item = null;
 				$qtiService = taoQTI_models_classes_QTI_Service::singleton();
-				$item = $qtiService->getDataItemByRdfItem($itemRdf);
-		   	 	$returnValue = $item->getMatchingData ();
+				$itemSerial = taoQTI_helpers_qti_ItemAuthoring::getAuthoringItem($itemRdf);
+				if(!empty($itemSerial)){//load item from cache
+					taoQTI_models_classes_QTI_Data::setPersistence(true);
+					$item = $qtiService->getItemBySerial($itemSerial);
+				}
+				if(is_null($item)){
+					$item = $qtiService->getDataItemByRdfItem($item);
+				}
+				
+				if(!is_null($item)){
+					//@todo cache matching data by rdf item
+					$returnValue = $item->getMatchingData();
+				}else{
+					throw new common_Exception('cannot load QTI item for matching data');
+				}
 		}
-        // section 127-0-1-1-554f2bd6:12c176484b7:-8000:0000000000002B26 end
 
         return (array) $returnValue;
     }
@@ -823,14 +729,12 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-3d6b7ea7:12c3643ac5e:-8000:0000000000002BB9 begin
 		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
 		if (in_array('taoItems_models_classes_evaluatableItemModel', class_implements($impl))) {
 			$returnValue = $impl->evaluate($itemRdf, $responses);
 		} else {
 			throw new common_exception_Error('Evaluate called on non-evaluatable item model');
 		}
-        // section 127-0-1-1-3d6b7ea7:12c3643ac5e:-8000:0000000000002BB9 end
 
         return (array) $returnValue;
     }
@@ -847,8 +751,6 @@ class taoItems_models_classes_ItemsService
     public function cloneInstance( core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz = null)
     {
         $returnValue = null;
-
-        // section 127-0-1-1--721a46fd:12ca1f35467:-8000:000000000000290E begin
 
    		$returnValue = $this->createInstance($clazz);
 		if(!is_null($returnValue)){
@@ -913,8 +815,6 @@ class taoItems_models_classes_ItemsService
 			}
 		}
 
-        // section 127-0-1-1--721a46fd:12ca1f35467:-8000:000000000000290E end
-
         return $returnValue;
     }
 
@@ -952,7 +852,6 @@ class taoItems_models_classes_ItemsService
 			$item->setPropertyValue($hasMeasurement, $measurementres);
 		}
 		$returnValue = true;
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037CE end
 
         return (bool) $returnValue;
     }
@@ -969,7 +868,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = array();
 
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D2 begin
 		foreach($item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY)) as $uri) {
 			$measuremenRessource = new core_kernel_classes_Resource($uri);
 			$properties = $measuremenRessource->getPropertiesValues(array(
@@ -1000,7 +898,6 @@ class taoItems_models_classes_ItemsService
 				$returnValue[$identifier]->setHumanAssisted($assisted->getUri() == GENERIS_TRUE);
 			}
 		}
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D2 end
 
         return (array) $returnValue;
     }
@@ -1017,12 +914,10 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = null;
 
-        // section 127-0-1-1--2a1905ad:136e3babab3:-8000:0000000000003986 begin
 		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
 		if($itemModel instanceof core_kernel_classes_Resource){
 			$returnValue = $itemModel;
 		}
-        // section 127-0-1-1--2a1905ad:136e3babab3:-8000:0000000000003986 end
 
         return $returnValue;
     }
@@ -1039,16 +934,12 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1--37ac2a7e:1370da27424:-8000:00000000000039CC begin
-
 		$session = core_kernel_classes_Session::singleton();
 		if ($session->getDataLanguage() != '') {
 			$returnValue = $session->getDataLanguage();
 		} else {
 			throw new Exception('the data language of the user cannot be found in session');
 		}
-
-        // section 127-0-1-1--37ac2a7e:1370da27424:-8000:00000000000039CC end
 
         return (string) $returnValue;
     }
@@ -1064,8 +955,6 @@ class taoItems_models_classes_ItemsService
     public function deleteItemContent( core_kernel_classes_Resource $item)
     {
         $returnValue = (bool) false;
-
-        // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039CD begin
 
         //delete the folder for all languages!
 		foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
@@ -1086,8 +975,6 @@ class taoItems_models_classes_ItemsService
 
 		$returnValue = true;
 
-        // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039CD end
-
         return (bool) $returnValue;
     }
 
@@ -1103,7 +990,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = null;
 
-        // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C05 begin
 		$services = $itemModel->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
 		if (count($services) > 0) {
 			if (count($services) > 1) {
@@ -1118,7 +1004,6 @@ class taoItems_models_classes_ItemsService
 		} else {
 			common_Logger::d('No implementation for '.$itemModel->getLabel());
 		}
-        // section 10-30-1--78-5ccf71ea:13ad5bff220:-8000:0000000000003C05 end
 
         return $returnValue;
     }
@@ -1135,7 +1020,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C1E begin
 		$files = $item->getPropertyValues($this->itemContentProperty);
 		foreach ($files as $file) {
 			// theoreticaly this should always be no or a single file 
@@ -1143,7 +1027,6 @@ class taoItems_models_classes_ItemsService
 				$returnValue = true;
 			}
 		}
-        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C1E end
 
         return (bool) $returnValue;
     }
@@ -1161,7 +1044,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (string) '';
 
-        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C21 begin
 		if ($lang === '') {
 			$files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
 		} else {
@@ -1177,7 +1059,6 @@ class taoItems_models_classes_ItemsService
 			$content = new core_kernel_classes_Resource(current($files));
 			$returnValue = $content->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_FILE_FILEPATH));
 		}
-        // section 10-30-1--78-e79fa48:13af3e783af:-8000:0000000000003C21 end
 
         return (string) $returnValue;
     }
@@ -1192,10 +1073,8 @@ class taoItems_models_classes_ItemsService
      */
     public function setDefaultFilesource( core_kernel_versioning_Repository $filesource)
     {
-        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C83 begin
 		$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
         $ext->setConfig(self::DEFAULT_FILESOURCE_KEY, $filesource->getUri());
-        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C83 end
     }
 
     /**
@@ -1209,7 +1088,6 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = null;
 
-        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C81 begin
     	$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
 		$uri = $ext->getConfig(self::DEFAULT_FILESOURCE_KEY);
 		if (!empty($uri)) {
@@ -1217,7 +1095,6 @@ class taoItems_models_classes_ItemsService
 		} else {
 			throw new common_Exception('No default repository defined for Items storage.');
 		}
-        // section 10-30-1--78-7b8378f2:13cdd8193fc:-8000:0000000000003C81 end
 
         return $returnValue;
     }
