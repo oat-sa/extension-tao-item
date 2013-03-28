@@ -81,7 +81,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		/*
 		 * crapy way to add the status of the item model
 		 * @todo set this in the taoItems_actions_form_Item
-		 */
+		 **/
 		$deprecatedOptions = array();
 		$statusProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY);
 		$itemModelElt = $myForm->getElement(tao_helpers_Uri::encode(TAO_ITEM_MODEL_PROPERTY));
@@ -91,7 +91,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 			$status = $model->getOnePropertyValue($statusProperty);
 			$statusLabel = (!is_null($status))?trim($status->getLabel()):'';
 			if(!empty($statusLabel)){
-				$options[$optUri] = $optLabel . " ($statusLabel)";
+				//in the case it is a stable one, implicit (may be misleading otherwise)
+				//$options[$optUri] = $optLabel . " ($statusLabel)";
 			}
 			if(!is_null($status)){
 				if($status->uriResource == TAO_ITEM_MODEL_STATUS_DEPRECATED){
@@ -100,6 +101,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 			}
 		}
 		$itemModelElt->setOptions($options);
+		 
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
 
 		$modelUri = $itemModelElt->getEvaluatedValue();
