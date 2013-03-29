@@ -47,7 +47,17 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 		$this->setData('modelDefined', false);
 
 	}
-
+	
+	protected function defaultData()
+	{
+		parent::defaultData();
+		if($this->hasRequestParameter('uri')) {
+			
+			$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
+			common_Logger::d($item->getLabel(), 'QTIdebug');
+			$this->setData('label', $item->getLabel());
+		}
+	}
 /*
  * conveniance methods
  */
