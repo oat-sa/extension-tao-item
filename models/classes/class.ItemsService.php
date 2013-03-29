@@ -525,25 +525,26 @@ class taoItems_models_classes_ItemsService
 				
 				//replace relative paths to resources by absolute uris to help the compilator
 				$matches = array();
-				if(preg_match_all("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](.+?)[\"\']/i", $output, $matches) > 0){
-					if(isset($matches[2])){
-						$matches[2] = array_unique($matches[2]);
-						foreach($matches[2] as $relUri){
-
-							if(trim($relUri) != '' && !preg_match("/^#/", $relUri) && !preg_match("/^http/", $relUri)){
-
-								if(preg_match('/(.)+\/filemanager\/views\/data\//i', $relUri)){
-									//check if the file is contained in the file manager
-									$absoluteUri = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_URL . '/filemanager/views/data/', $relUri);
-								}else{
-									$absoluteUri = dirname($url) . '/' . preg_replace(array("/^\./", "/^\//"), '', $relUri);
-								}
-
-								$output = str_replace($relUri, $absoluteUri, $output);
-							}
+				$output = preg_replace_callback("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](?!http|ftp|#)([\.\/]*)(.+?)[\"\']/i", function($matches) use ($url){
+					
+					$returnValue = $matches[0];
+					$htmlAttr = $matches[1];
+					$relUri = $matches[3];
+					
+					if(trim($relUri) != '' && true){
+						if (preg_match('/(.)+\/filemanager\/views\/data\//i', $relUri)) {
+							//check if the file is contained in the file manager
+							$absoluteUri = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_URL . '/filemanager/views/data/', $relUri);
+						} else {
+							$absoluteUri = dirname($url) . '/' . $relUri;
 						}
+						
+						$returnValue = $htmlAttr.'="'.$absoluteUri.'"';
 					}
-				}
+						
+					return $returnValue;
+					
+				}, $output);
 
 				if(file_put_contents($path, $output)){
 					$returnValue = true;
