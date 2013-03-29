@@ -48,13 +48,14 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 
 	}
 	
+	/**
+	 * overwrite the parent defaultData, adding the item label to be sent to the view
+	 */
 	protected function defaultData()
 	{
 		parent::defaultData();
 		if($this->hasRequestParameter('uri')) {
-			
 			$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
-			common_Logger::d($item->getLabel(), 'QTIdebug');
 			$this->setData('label', $item->getLabel());
 		}
 	}
@@ -537,7 +538,8 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 							$validate = false;
 					 		break;
 					 	case TAO_ITEM_MODEL_QTI:
-							$schema = BASE_PATH . '/models/classes/QTI/data/imsqti_v2p0.xsd';
+							$qtifolder = common_ext_ExtensionsManager::singleton()->getExtensionById('taoQTI')->getConstant('BASE_PATH');
+							$schema = $qtifolder . 'models/classes/QTI/data/imsqti_v2p0.xsd';
 							$validate = true;
 							break;
 					 	case TAO_ITEM_MODEL_XHTML:
