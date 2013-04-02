@@ -1,0 +1,3822 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta charset="utf-8"></meta>
+		<meta name="generator" content="JsDoc Toolkit"></meta>
+		<title>TAO_MATCHING.Matching | JsDoc Reference</title>
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
+		<meta name="mobileoptimized" content="0"></meta>
+	
+		<link rel="stylesheet" href="../css/all.css" media="all"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="only screen and (max-width: 660px)"></link>
+		<link rel="stylesheet" href="../css/handheld.css" media="handheld"></link>
+		<link rel="stylesheet" href="../css/screen.css" media="screen and (min-width: 661px)"></link>
+        <link rel="stylesheet" href="../css/jstree.css" media="screen and (min-width: 661px)"></link>
+
+		<script src="../javascript/all.js"></script>
+		<script src="../javascript/jquery-1.5.min.js"></script>
+		<script src="../javascript/jquery.jstree.js"></script>
+        <script type="application/javascript">
+        $(function(){
+            // Get the menu reference in the url
+            var ref = null;
+            var regexS = "ref=(.*)[#&]*";
+            var regex = new RegExp( regexS );
+            var results = regex.exec( window.location.href );
+            if (results!=null){
+                ref = results[1];
+            }
+
+            
+            // Load the jstree menu
+            $('#ClassMenu').jstree({
+        		"plugins" : [ "themes", "html_data", "ui" ] 
+			    , "themes" : {
+				    "theme" : "default",
+				    "dots" : true,
+				    "icons" : false
+			    }
+            })
+            // When an element is selected
+            .bind("select_node.jstree", function (e, ui) {
+                // same ref, ref null
+                if (($(ui.args[0]).parent())[0].id == ref 
+                    || ($(ui.args[0]).parent())[0].id == ''){ 
+                    return; 
+                }
+                // Redirect
+                window.location.href = $(ui.args[0])
+                    .attr('href')+"?ref="
+                    +($(ui.args[0]).parent())[0].id;
+            })
+            // When the jstree is loaded
+            .bind("loaded.jstree", function (event, data) {
+                // If a reference has been found in the url, select it on the jstree
+                if (ref!=null){
+                    $.jstree._reference($('#ClassMenu'))
+                        .select_node ($('#'+ref)[0]);
+                }
+            });
+    	});
+        </script>
+		<!--[if lt IE 9]>
+			<script src="../javascript/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+
+
+<div class="index">
+	<div class="menu">
+        
+        <div style="width:100px; height:69px; background-image:url('../css/taoLogo.png');">&nbsp;</div>
+		<div class="indexLinks">
+			<a href="../index.html">Classes</a>
+			<a href="../files.html">Files</a>
+		</div>
+	
+		<h2 class="heading1">Classes</h2>
+		
+		<input type="text" name="classFilter" class="classFilter" id="ClassFilter" placeholder="Filter"></input>
+		
+		<nav id="ClassMenu" style="width:100%; overflow-x:auto;">
+			<ul class="classList" id="ClassList">
+                <li>
+                    <a href="#">main</a>
+                    <ul>
+				        
+					        <li id="menuRef0"><a href="../symbols/_global_.html">_global_</a>
+                                <ul>
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                </ul>
+                            </li>
+				        
+					        <li id="menuRef1"><a href="../symbols/TAO_MATCHING.html">TAO_MATCHING</a>
+                                <ul>
+                                    
+                                        <li id=menuRef2><a href="../symbols/TAO_MATCHING.AreaMap.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>AreaMap</a></li>
+                                    
+                                        <li id=menuRef3><a href="../symbols/TAO_MATCHING.BaseTypeVariable.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>BaseTypeVariable</a></li>
+                                    
+                                        <li id=menuRef4><a href="../symbols/TAO_MATCHING.Collection.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Collection</a></li>
+                                    
+                                        <li id=menuRef5><a href="../symbols/TAO_MATCHING.Ellipse.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Ellipse</a></li>
+                                    
+                                        <li id=menuRef6><a href="../symbols/TAO_MATCHING.List.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>List</a></li>
+                                    
+                                        <li id=menuRef7><a href="../symbols/TAO_MATCHING.Map.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Map</a></li>
+                                    
+                                        <li id=menuRef8><a href="../symbols/TAO_MATCHING.Matching.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Matching</a></li>
+                                    
+                                        <li id=menuRef9><a href="../symbols/TAO_MATCHING.MatchingRemote.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>MatchingRemote</a></li>
+                                    
+                                        <li id=menuRef10><a href="../symbols/TAO_MATCHING.Poly.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Poly</a></li>
+                                    
+                                        <li id=menuRef11><a href="../symbols/TAO_MATCHING.Shape.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Shape</a></li>
+                                    
+                                        <li id=menuRef12><a href="../symbols/TAO_MATCHING.Tuple.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Tuple</a></li>
+                                    
+                                        <li id=menuRef13><a href="../symbols/TAO_MATCHING.Variable.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>Variable</a></li>
+                                    
+                                        <li id=menuRef14><a href="../symbols/TAO_MATCHING.VariableFactory.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>VariableFactory</a></li>
+                                    
+                                </ul>
+                            </li>
+				        
+					        <li id="menuRef15"><a href="../symbols/TAO_MATCHING.RULE.html">TAO_MATCHING<span class='break'> </span>.<span class='break'> </span>RULE</a>
+                                <ul>
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                        
+                                    
+                                </ul>
+                            </li>
+				        
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </ul>
+                </li>
+			</ul>
+		</nav>
+	</div>
+	<div class="fineprint" style="clear:both">
+		
+		Documentation generator: <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.3-beta<br />
+		Template: <a href="http://www.thebrightlines.com/2010/05/06/new-template-for-jsdoctoolkit-codeview/" target="_blank">Codeview</a> 1.2<br />
+		Generated on: 2011-2-10 18:56
+	</div>
+</div>
+
+<div class="index indexStatic"></div>
+
+<div class="content">
+	<div class="innerContent">
+		<h1 class="classTitle">
+			
+			Class <span>TAO_MATCHING.Matching</span>
+		</h1>
+		
+		<div class="intro">
+			<p class="description summary">
+				Matching class provides a full client side API to score items or whatever. 
+This API is widely based on the QTI matching model.
+			</p>
+				
+			
+				<ul class="summary">
+					
+					
+					
+						<li>Defined in: <a href="../symbols/src/src_class.Matching.js.html">class.Matching.js</a></li>
+					
+						
+				</ul>
+			
+		</div>
+		
+		
+			<div class="props">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class TAO_MATCHING.Matching.">
+					<caption class="sectionTitle">Class Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Constructor Attributes</th>
+							<th scope="col">Constructor Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription" >
+								<div class="fixedFont">
+									<b><a href="../symbols/TAO_MATCHING.Matching.html#constructor">TAO_MATCHING.Matching</a></b>(array, array, array, array, array, array, array, function)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+		
+		
+			
+			
+				<div class="props">
+					<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class TAO_MATCHING.Matching.">
+						<caption class="sectionTitle">Field Summary</caption>
+						
+						<thead>
+							<tr>
+								<th scope="col">Field Attributes</th>
+								<th scope="col">Field Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#areaMaps">areaMaps</a></b>
+										</div>
+										<div class="description">areaMaps will store a mapping used to map points</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#corrects">corrects</a></b>
+										</div>
+										<div class="description">Corrects will be used to store the values expected as
+good response</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#DEBUG_MODE">DEBUG_MODE</a></b>
+										</div>
+										<div class="description">Turn the matching engine into debug mode</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#maps">maps</a></b>
+										</div>
+										<div class="description">maps will store a mapping used to map scalar variables</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#options">options</a></b>
+										</div>
+										<div class="description">Short description of attribute options</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#outcomes">outcomes</a></b>
+										</div>
+										<div class="description">Outcomes will be used to store the defined outcome variables</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#responses">responses</a></b>
+										</div>
+										<div class="description">Responses will store the user's response variables</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#rule">rule</a></b>
+										</div>
+										<div class="description">Rule will be used to store the rule used to score the user's responses</div>
+									</td>
+								</tr>
+							
+								<tr>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont">
+										<b><a href="../symbols/TAO_MATCHING.Matching.html#whiteFunctionsList">whiteFunctionsList</a></b>
+										</div>
+										<div class="description">Short description of attribute whiteFunctionsList</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			
+			
+			
+		
+<!--
+#### METHODS SUMMARY
+-->
+		
+			
+			
+			<div class="props">
+				<h2 class="sectionTitle">Method Summary</h2>
+				
+				
+					<table class="summaryTable" id="MethodsList" cellspacing="0" summary="A summary of the methods documented in the class TAO_MATCHING.Matching.">
+						<thead>
+							<tr>
+								<th scope="col">Method Attributes</th>
+								<th scope="col">Method Name and Description</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							
+							
+								<tr
+									 class='item0'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#and">and</a></b>(options)
+										</div>
+										<div class="description">The and operator takes one or more sub-expressions each with a base-type
+boolean and single cardinality.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item1'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#checkOptions">checkOptions</a></b>(options)
+										</div>
+										<div class="description">Check if optional paramaters are well formated</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item2'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#console">console</a></b>(options, obj)
+										</div>
+										<div class="description">DEVELOPEMENT FUNCTION
+Debug function to show in the console an object
+This function does not work if the document is validated</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item3'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#contains">contains</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The contains function takes two sub-expressions.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item4'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#createVariable">createVariable</a></b>(array, type)
+										</div>
+										<div class="description">Create a variable functions of the arguments.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item5'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#debugTrace">debugTrace</a></b>(fctName)
+										</div>
+										<div class="description">Debug the response processing</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item6'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#divide">divide</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The divide operator takes 2 sub-expressions which both 
+have single cardinality and numerical base-types.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item7'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#equal">equal</a></b>(expr1, expr2, expr2)
+										</div>
+										<div class="description">The equal operator takes two sub-expressions which must both have single
+and have a numerical base-type.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item8'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#evaluate">evaluate</a></b>()
+										</div>
+										<div class="description">Evaluate the matching rule</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item9'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getCorrect">getCorrect</a></b>(string)
+										</div>
+										<div class="description">Get a correct variable from its identifier</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item10'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getMap">getMap</a></b>(id, type)
+										</div>
+										<div class="description">Get a mapping variable from its identifier</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item11'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getOutcome">getOutcome</a></b>(string)
+										</div>
+										<div class="description">Get an outcome variable from its identifier</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item12'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getOutcomes">getOutcomes</a></b>(pOptions)
+										</div>
+										<div class="description">Get the outcome variables</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item13'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getResponse">getResponse</a></b>(string)
+										</div>
+										<div class="description">Get a response variable from its identifier</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item14'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getResponses">getResponses</a></b>(pOptions)
+										</div>
+										<div class="description">get the collected responses</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item15'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getRule">getRule</a></b>()
+										</div>
+										<div class="description">Get the matching rule</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item16'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#getVariable">getVariable</a></b>(string)
+										</div>
+										<div class="description">Get a variable from its identifier</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item17'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#gt">gt</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The gt operator takes two sub-expressions which must 
+both have single cardinality and have a numerical 
+base-type.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item18'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#gte">gte</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The gte operator takes two sub-expressions which must 
+both have single cardinality and have a numerical base-type.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item19'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#integerDivide">integerDivide</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The integer divide operator takes 2 sub-expressions which
+both have single cardinality and base-type integer.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item20'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#isNull">isNull</a></b>(Variable, matchingVar)
+										</div>
+										<div class="description">The isNull operator takes a sub-expression with any base-type and
+The result is a single boolean with a value of true if the sub-expression
+NULL and false otherwise.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item21'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#lt">lt</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The lt operator takes two sub-expressions which must both
+have single cardinality and have a numerical base-type.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item22'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#lte">lte</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The lte operator takes two sub-expressions which must both
+have single cardinality and have a numerical base-type.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item23'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#mapResponse">mapResponse</a></b>(Map, Variable, matchingVar)
+										</div>
+										<div class="description">This expression looks up the value of a responseVariable and then
+it using the associated mapping, which must have been declared.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item24'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#mapResponsePoint">mapResponsePoint</a></b>(array, AreaMap, Variable)
+										</div>
+										<div class="description">This expression looks up the value of a responseVariable that must be of
+point , and transforms it using the associated areaMapping.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item25'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#match">match</a></b>(expr1, expr2, expr2)
+										</div>
+										<div class="description">The match operator takes two sub-expressions which must both have the
+type and cardinality.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item26'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#not">not</a></b>(options, expr)
+										</div>
+										<div class="description">The not operator takes a single sub-expression with a
+base-type of boolean and single cardinality.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item27'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#or">or</a></b>(options)
+										</div>
+										<div class="description">The or operator takes one or more sub-expressions each with a base-type
+boolean and single cardinality.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item28'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#product">product</a></b>(options)
+										</div>
+										<div class="description">The product operator takes 1 or more sub-expressions which
+all have single cardinality and have numerical base-types.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item29'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#randomFloat">randomFloat</a></b>(options)
+										</div>
+										<div class="description">Selects a random float from the specified range [min,max].</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item30'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#randomInteger">randomInteger</a></b>(options)
+										</div>
+										<div class="description">Selects a random integer from the specified range [min,max] satisfying
++ step * n for some integer n.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item31'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#round">round</a></b>(options, expr)
+										</div>
+										<div class="description">The round operator takes a single sub-expression which
+must have single cardinality and base-type float.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item32'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setAreaMaps">setAreaMaps</a></b>(data)
+										</div>
+										<div class="description">Set the area mappings</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item33'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setCorrects">setCorrects</a></b>(array)
+										</div>
+										<div class="description">Set the corrects</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item34'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setMaps">setMaps</a></b>(data)
+										</div>
+										<div class="description">Set the mappings</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item35'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setOutcomes">setOutcomes</a></b>(array)
+										</div>
+										<div class="description">Set the outcomes</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item36'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setOutcomeValue">setOutcomeValue</a></b>(string, value)
+										</div>
+										<div class="description">The setOutcomeValue sets the value of an outcomeVariable.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item37'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setResponses">setResponses</a></b>(array)
+										</div>
+										<div class="description">Set the collected responses</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item38'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#setRule">setRule</a></b>(string)
+										</div>
+										<div class="description">Set the matching rule</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item39'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#subtract">subtract</a></b>(options, expr1, expr2)
+										</div>
+										<div class="description">The subtract operator takes 2 sub-expressions which all have
+single cardinality and numerical base-types.</div>
+									</td>
+								</tr>
+							
+								<tr
+									 class='item40'
+								>
+									<td class="attributes">&nbsp;</td>
+									<td class="nameDescription">
+										<div class="fixedFont"><b><a href="../symbols/TAO_MATCHING.Matching.html#sum">sum</a></b>(options)
+										</div>
+										<div class="description">The sum operator takes 1 or more sub-expressions which all
+have single cardinality and have numerical base-types.</div>
+									</td>
+								</tr>
+							
+						</tbody>
+					</table>
+				
+			
+				
+			</div>
+		
+		
+<!--
+#### EVENTS SUMMARY
+-->
+		
+<!--
+#### CONSTRUCTOR DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle" id="constructor">
+						Class Detail
+					</h2>
+					
+					<div class="fixedFont">
+						<b>TAO_MATCHING.Matching</b>(array, array, array, array, array, array, array, function)
+					</div>
+					
+					<div class="description">
+						
+						<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+					</div>
+					
+					
+				
+					
+						<dl class="detailList params">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pData Data used to intialize the matching API</dd>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pData.outcomes Set the API with a set of outcome variables</dd>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pData.correct Set the API with a set of expected correct response</dd>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pData.maps Set the API with a set of mapping variables</dd>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pData.areaMaps Set the API with a set of area mapping variables</dd>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pData.rule Set the API with the rule which will be used to make a scoring</dd>
+							
+								<dt>
+									 <b>array</b>
+									
+								</dt>
+								<dd>pOptions Optional parameters</dd>
+							
+								<dt>
+									 <b>function</b>
+									
+								</dt>
+								<dd>pOptions.evaluateCallback Fire this callback when the evaluation has been done</dd>
+							
+						</dl>
+					
+					
+					
+				</div>
+			</div>
+		
+<!--
+#### FIELD DETAILS
+-->
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Field Detail
+					</h2>
+					
+					
+						<div class="fixedFont heading" id="areaMaps">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>areaMaps</b>							
+						</div>
+						
+						<div class="description">
+							areaMaps will store a mapping used to map points
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="corrects">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>corrects</b>							
+						</div>
+						
+						<div class="description">
+							Corrects will be used to store the values expected as
+good response
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="DEBUG_MODE">
+							<span class='lighter'>
+							
+							</span>
+							
+							<span class="light">{boolean}</span>
+							
+							<b>DEBUG_MODE</b>							
+						</div>
+						
+						<div class="description">
+							Turn the matching engine into debug mode
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="maps">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>maps</b>							
+						</div>
+						
+						<div class="description">
+							maps will store a mapping used to map scalar variables
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="options">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>options</b>							
+						</div>
+						
+						<div class="description">
+							Short description of attribute options
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="outcomes">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>outcomes</b>							
+						</div>
+						
+						<div class="description">
+							Outcomes will be used to store the defined outcome variables
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="responses">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>responses</b>							
+						</div>
+						
+						<div class="description">
+							Responses will store the user's response variables
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="rule">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>rule</b>							
+						</div>
+						
+						<div class="description">
+							Rule will be used to store the rule used to score the user's responses
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						<div class="hr"></div>
+					
+						<div class="fixedFont heading" id="whiteFunctionsList">
+							<span class='lighter'>
+							
+							</span>
+							
+							
+							
+							<b>whiteFunctionsList</b>							
+						</div>
+						
+						<div class="description">
+							Short description of attribute whiteFunctionsList
+							
+							
+							
+						</div>
+						
+						
+							
+						
+						
+					
+				</div>
+			</div>
+		
+<!--
+#### METHOD DETAILS
+-->		
+		
+			<div class="details props">
+				<div class="innerProps">
+					<h2 class="sectionTitle">
+						Method Detail
+					</h2>
+					
+					<ul class="methodDetail" id="MethodDetail">
+						
+						
+							<li 
+								 class='item0'
+							>
+								<div class="fixedFont heading" id="and">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>and</b>(options)
+								</div>
+								
+								<div class="description">
+									The and operator takes one or more sub-expressions each with a base-type
+boolean and single cardinality. The result is a single boolean which is
+if all sub-expressions are true and false if any of them are false.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item1'
+							>
+								<div class="fixedFont heading" id="checkOptions">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{array|object}</span>
+									
+									<b>checkOptions</b>(options)
+								</div>
+								
+								<div class="description">
+									Check if optional paramaters are well formated
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{string|array|object}</span> <b>options</b>
+												
+											</dt>
+											<dd>Object to check</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{array|object}</span> the converted options in the right format</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item2'
+							>
+								<div class="fixedFont heading" id="console">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>console</b>(options, obj)
+								</div>
+								
+								<div class="description">
+									DEVELOPEMENT FUNCTION
+Debug function to show in the console an object
+This function does not work if the document is validated
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>obj</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item3'
+							>
+								<div class="fixedFont heading" id="contains">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>contains</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The contains function takes two sub-expressions. The first one has a
+- either list or tuple. The second one could have any base type and could
+the same cardinality than the first expression or it could have a single
+The result is a single boolean with a value of true if the container
+by the first sub-expression contains the value given by the second
+and false if it doesn't. Note that the contains operator works
+depending on the cardinality of the two sub-expressions. For unordered
+the values are compared without regard for ordering, for example, [A,B,C]
+[C,A]. Note that [A,B,C] does not contain [B,B] but that [A,B,B,C] does.
+ordered containers the second sub-expression must be a strict
+within the first. In other words, [A,B,C] does not contain [C,A] but it
+contain [B,C].
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_bool</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item4'
+							>
+								<div class="fixedFont heading" id="createVariable">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>createVariable</b>(array, type)
+								</div>
+								
+								<div class="description">
+									Create a variable functions of the arguments.
+Create either scalar or container from the value :
+createVariable (null, 3.1415);
+createVariable (null, Array ("TAO", "Test Assisté par Ordinateur"))
+Create container following the options.type and the arguments of the
+createVariable (Array("type"=>"list"), "TAO", "Test Assisté par
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>array</b>
+												
+											</dt>
+											<dd>options</dd>
+										
+											<dt>
+												<b>type</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_Variable</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item5'
+							>
+								<div class="fixedFont heading" id="debugTrace">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>debugTrace</b>(fctName)
+								</div>
+								
+								<div class="description">
+									Debug the response processing
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>fctName</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item6'
+							>
+								<div class="fixedFont heading" id="divide">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>divide</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The divide operator takes 2 sub-expressions which both 
+have single cardinality and numerical base-types. The
+result is a single float that corresponds to the first 
+expression divided by the second expression. If either
+of the sub-expressions is NULL then the operator 
+results in NULL.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item7'
+							>
+								<div class="fixedFont heading" id="equal">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>equal</b>(expr1, expr2, expr2)
+								</div>
+								
+								<div class="description">
+									The equal operator takes two sub-expressions which must both have single
+and have a numerical base-type. The result is a single boolean with a
+of true if the two expressions are numerically equal and false if they
+not.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item8'
+							>
+								<div class="fixedFont heading" id="evaluate">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>evaluate</b>()
+								</div>
+								
+								<div class="description">
+									Evaluate the matching rule
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item9'
+							>
+								<div class="fixedFont heading" id="getCorrect">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getCorrect</b>(string)
+								</div>
+								
+								<div class="description">
+									Get a correct variable from its identifier
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>string</b>
+												
+											</dt>
+											<dd>id</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_Variable</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item10'
+							>
+								<div class="fixedFont heading" id="getMap">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getMap</b>(id, type)
+								</div>
+								
+								<div class="description">
+									Get a mapping variable from its identifier
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<span class="light fixedFont">{string}</span> <b>id</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<span class="light fixedFont">{string}</span> <b>type</b>
+												
+											</dt>
+											<dd>Type of map to get ["area", null]</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_Map</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item11'
+							>
+								<div class="fixedFont heading" id="getOutcome">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getOutcome</b>(string)
+								</div>
+								
+								<div class="description">
+									Get an outcome variable from its identifier
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>string</b>
+												
+											</dt>
+											<dd>id</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_Variable</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item12'
+							>
+								<div class="fixedFont heading" id="getOutcomes">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{array}</span>
+									
+									<b>getOutcomes</b>(pOptions)
+								</div>
+								
+								<div class="description">
+									Get the outcome variables
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>pOptions</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{array}</span> </dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item13'
+							>
+								<div class="fixedFont heading" id="getResponse">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getResponse</b>(string)
+								</div>
+								
+								<div class="description">
+									Get a response variable from its identifier
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>string</b>
+												
+											</dt>
+											<dd>id</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_Variable</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item14'
+							>
+								<div class="fixedFont heading" id="getResponses">
+									<span class='lighter'>
+									
+									</span>
+									
+									<span class="light">{Object}</span>
+									
+									<b>getResponses</b>(pOptions)
+								</div>
+								
+								<div class="description">
+									get the collected responses
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>pOptions</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd><span class="light fixedFont">{Object}</span> </dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item15'
+							>
+								<div class="fixedFont heading" id="getRule">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getRule</b>()
+								</div>
+								
+								<div class="description">
+									Get the matching rule
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>string</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item16'
+							>
+								<div class="fixedFont heading" id="getVariable">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>getVariable</b>(string)
+								</div>
+								
+								<div class="description">
+									Get a variable from its identifier
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>string</b>
+												
+											</dt>
+											<dd>id</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>taoQTI_models_classes_Matching_Variable</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item17'
+							>
+								<div class="fixedFont heading" id="gt">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>gt</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The gt operator takes two sub-expressions which must 
+both have single cardinality and have a numerical 
+base-type. The result is a single boolean with a value 
+of true if the first expression is numerically greater 
+than the second and false if it is less than or equal
+to the second.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item18'
+							>
+								<div class="fixedFont heading" id="gte">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>gte</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The gte operator takes two sub-expressions which must 
+both have single cardinality and have a numerical base-type.
+The result is a single boolean with a value of true if the first
+expression is numerically less than or equal to the second
+and false if it is greater than the second.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item19'
+							>
+								<div class="fixedFont heading" id="integerDivide">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>integerDivide</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The integer divide operator takes 2 sub-expressions which
+both have single cardinality and base-type integer. The result
+is the single integer that corresponds to the first expression
+(x) divided by the second expression (y) rounded down to 
+the greatest integer (i) such that i<=(x/y).
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>int</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item20'
+							>
+								<div class="fixedFont heading" id="isNull">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>isNull</b>(Variable, matchingVar)
+								</div>
+								
+								<div class="description">
+									The isNull operator takes a sub-expression with any base-type and
+The result is a single boolean with a value of true if the sub-expression
+NULL and false otherwise.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>Variable</b>
+												
+											</dt>
+											<dd>var</dd>
+										
+											<dt>
+												<b>matchingVar</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item21'
+							>
+								<div class="fixedFont heading" id="lt">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>lt</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The lt operator takes two sub-expressions which must both
+have single cardinality and have a numerical base-type. The
+result is a single boolean with a value of true if the first
+expression is numerically less than the second and false if 
+t is greater than or equal to the second.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item22'
+							>
+								<div class="fixedFont heading" id="lte">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>lte</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The lte operator takes two sub-expressions which must both
+have single cardinality and have a numerical base-type. The
+result is a single boolean with a value of true if the first
+expression is numerically less than or equal to the second
+and false if it is greater than the second.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item23'
+							>
+								<div class="fixedFont heading" id="mapResponse">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>mapResponse</b>(Map, Variable, matchingVar)
+								</div>
+								
+								<div class="description">
+									This expression looks up the value of a responseVariable and then
+it using the associated mapping, which must have been declared. The
+is a single float. If the response variable has single cardinality then
+value returned is simply the mapped target value from the map. If the
+variable has single or multiple cardinality then the value returned is
+sum of the mapped target values. This expression cannot be applied to
+of record cardinality.
+
+For example, if a mapping associates the identifiers {A,B,C,D} with the
+{0,1,0.5,0} respectively then mapResponse will map the single value 'C'
+the numeric value 0.5 and the set of values {C,B} to the value 1.5.
+
+If a container contains multiple instances of the same value then that
+is counted once only. To continue the example above {B,B,C} would still
+to 1.5 and not 2.5.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>Map</b>
+												
+											</dt>
+											<dd>map</dd>
+										
+											<dt>
+												<b>Variable</b>
+												
+											</dt>
+											<dd>expr</dd>
+										
+											<dt>
+												<b>matchingVar</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>double</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item24'
+							>
+								<div class="fixedFont heading" id="mapResponsePoint">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>mapResponsePoint</b>(array, AreaMap, Variable)
+								</div>
+								
+								<div class="description">
+									This expression looks up the value of a responseVariable that must be of
+point , and transforms it using the associated areaMapping. The
+is similar to mapResponse except that the points are tested
+against each area in turn. When mapping containers 
+each area can be mapped once only. For example, if the
+candidate identified two points that both fall in the same
+area then the mappedValue is still added to the
+calculated total just once.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>array</b>
+												
+											</dt>
+											<dd>options</dd>
+										
+											<dt>
+												<b>AreaMap</b>
+												
+											</dt>
+											<dd>map</dd>
+										
+											<dt>
+												<b>Variable</b>
+												
+											</dt>
+											<dd>expr</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>double</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item25'
+							>
+								<div class="fixedFont heading" id="match">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>match</b>(expr1, expr2, expr2)
+								</div>
+								
+								<div class="description">
+									The match operator takes two sub-expressions which must both have the
+type and cardinality. The result is a single boolean with a value of true
+the two expressions represent the same value and false if they do not.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item26'
+							>
+								<div class="fixedFont heading" id="not">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>not</b>(options, expr)
+								</div>
+								
+								<div class="description">
+									The not operator takes a single sub-expression with a
+base-type of boolean and single cardinality. The result is a
+single boolean with a value obtained by the logical negation
+of the sub-expression's value.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item27'
+							>
+								<div class="fixedFont heading" id="or">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>or</b>(options)
+								</div>
+								
+								<div class="description">
+									The or operator takes one or more sub-expressions each with a base-type
+boolean and single cardinality. The result is a single boolean which is
+if any of the sub-expressions are true and false if all of them are
+If one or more sub-expressions are NULL and all the others are false then
+operator also results in NULL.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>boolean</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item28'
+							>
+								<div class="fixedFont heading" id="product">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>product</b>(options)
+								</div>
+								
+								<div class="description">
+									The product operator takes 1 or more sub-expressions which
+all have single cardinality and have numerical base-types.
+The result is a single float or, if all sub-expressions are of
+integer type, a single integer that corresponds to the 
+product of the numerical values of the sub-expressions.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item29'
+							>
+								<div class="fixedFont heading" id="randomFloat">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>randomFloat</b>(options)
+								</div>
+								
+								<div class="description">
+									Selects a random float from the specified range [min,max].
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>double</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item30'
+							>
+								<div class="fixedFont heading" id="randomInteger">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>randomInteger</b>(options)
+								</div>
+								
+								<div class="description">
+									Selects a random integer from the specified range [min,max] satisfying
++ step * n for some integer n. For example, with min=2, max=11 and step=3
+values {2,5,8,11} are possible.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>int</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item31'
+							>
+								<div class="fixedFont heading" id="round">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>round</b>(options, expr)
+								</div>
+								
+								<div class="description">
+									The round operator takes a single sub-expression which
+must have single cardinality and base-type float. The
+result is a value of base-type integer formed by rounding
+the value of the sub-expression. The result is the integer
+n for all input values in the range [n-0.5,n+0.5). In other
+words, 6.8 and 6.5 both round up to 7, 6.49 rounds down
+to 6 and -6.5 rounds up to -6.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item32'
+							>
+								<div class="fixedFont heading" id="setAreaMaps">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setAreaMaps</b>(data)
+								</div>
+								
+								<div class="description">
+									Set the area mappings
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>data</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item33'
+							>
+								<div class="fixedFont heading" id="setCorrects">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setCorrects</b>(array)
+								</div>
+								
+								<div class="description">
+									Set the corrects
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>array</b>
+												
+											</dt>
+											<dd>data</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item34'
+							>
+								<div class="fixedFont heading" id="setMaps">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setMaps</b>(data)
+								</div>
+								
+								<div class="description">
+									Set the mappings
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>data</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item35'
+							>
+								<div class="fixedFont heading" id="setOutcomes">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setOutcomes</b>(array)
+								</div>
+								
+								<div class="description">
+									Set the outcomes
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>array</b>
+												
+											</dt>
+											<dd>data</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item36'
+							>
+								<div class="fixedFont heading" id="setOutcomeValue">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setOutcomeValue</b>(string, value)
+								</div>
+								
+								<div class="description">
+									The setOutcomeValue sets the value of an outcomeVariable.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>string</b>
+												
+											</dt>
+											<dd>id</dd>
+										
+											<dt>
+												<b>value</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item37'
+							>
+								<div class="fixedFont heading" id="setResponses">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setResponses</b>(array)
+								</div>
+								
+								<div class="description">
+									Set the collected responses
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>array</b>
+												
+											</dt>
+											<dd>data</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item38'
+							>
+								<div class="fixedFont heading" id="setRule">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>setRule</b>(string)
+								</div>
+								
+								<div class="description">
+									Set the matching rule
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>string</b>
+												
+											</dt>
+											<dd>rule</dd>
+										
+									</dl>
+								
+								
+								
+									<dl class="detailList nomargin">
+									
+										
+										
+										
+										
+										
+										
+										
+											<dt class="heading">Returns:</dt>
+											
+												<dd>mixed</dd>
+											
+										
+										
+										
+										
+										
+									
+									</dl>
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item39'
+							>
+								<div class="fixedFont heading" id="subtract">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>subtract</b>(options, expr1, expr2)
+								</div>
+								
+								<div class="description">
+									The subtract operator takes 2 sub-expressions which all have
+single cardinality and numerical base-types. The result is a
+single float or, if both sub-expressions are of integer type, a
+single integer that corresponds to the first value minus the
+second.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr1</b>
+												
+											</dt>
+											<dd></dd>
+										
+											<dt>
+												<b>expr2</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								<div class="hr"></div>
+							</li>
+						
+							<li 
+								 class='item40'
+							>
+								<div class="fixedFont heading" id="sum">
+									<span class='lighter'>
+									
+									</span>
+									
+									
+									
+									<b>sum</b>(options)
+								</div>
+								
+								<div class="description">
+									The sum operator takes 1 or more sub-expressions which all
+have single cardinality and have numerical base-types. The
+result is a single float or, if all sub-expressions are of integer
+type, a single integer that corresponds to the sum of the
+numerical values of the sub-expressions.
+									
+									
+									
+									<br /><i>Author: </i>Cedric Alfonsi, <cedric.alfonsi@tudor.lu>.
+								</div>
+								
+								
+								
+								
+									<dl class="detailList params">
+										<dt class="heading">Parameters:</dt>
+										
+											<dt>
+												<b>options</b>
+												
+											</dt>
+											<dd></dd>
+										
+									</dl>
+								
+								
+								
+								
+							</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+		
+<!--
+#### EVENT DETAILS
+-->		
+		
+	</div>
+</div>
+		<script type="text/javascript">
+			wbos.CssTools.MediaQueryFallBack.LoadCss('../css/screen.css', '../css/handheld.css', 660)
+			codeview.classFilter.Init()
+		</script>
+	</body>
+</html>
+
