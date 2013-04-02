@@ -91,6 +91,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 	protected function importQTIPACKFile($formValues){
 		if(isset($formValues['source']) && $this->hasSessionAttribute('classUri')){
 			
+			$importedItems = array();
 			set_time_limit(200);	//the zip extraction is a long process that can exced the 30s timeout
 			
 			//get the item parent class
