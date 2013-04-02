@@ -175,12 +175,14 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 			$executionEnvironment = $this->createFakeExecutionEnvironment($item, $user);
 
 			// We inject the data directly in the deployed item file
-      $apis = array(
+      		$apis = array(
 				'jquery' => ROOT_URL.'tao/views/js/jquery-1.8.0.min.js',
 				'taoApi' => BASE_WWW.'js/taoApi/taoApi.min.js',
 				'taoMatching'	=> BASE_WWW.'js/taoMatching/taoMatching.min.js',
 				'wfApi' => ROOT_URL.'wfEngine/views/js/wfApi/wfApi.min.js'
 			);
+      		
+      		$apis = array();
 
 			try {
 				//we parse the DOM of the item (it must be well formed and valid)
@@ -207,40 +209,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 					//the url of the init script
 					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
 
-
-					$inserted = false;
-					$scriptNodes = $headNode->getElementsByTagName('script');
-					$position = 0;
-					if ($scriptNodes->length > 0) {
-						foreach ($scriptNodes as $index => $scriptNode) {
-							if ($scriptNode->hasAttribute('src')) {
-								foreach (array_keys($apis) as $api) {
-									if (preg_match("/$api\.min\.js$/", $scriptNode->getAttribute('src'))) {
-										if ($index > $position) {
-											$position = $index;
-										}
-										break;
-									}
-								}
-							}
-						}
-						if ($scriptNodes->item($position + 1)) {
-							$headNode->insertBefore($initScriptElt, $scriptNodes->item($position + 1));
-							$inserted = true;
-						}
-					}
-
-					//If the common apis havn't been declared in the header, we had them
-					if (!$inserted) {
-						foreach ($apis as $apiUrl) {
-							$apiScriptElt = $doc->createElement('script');
-							$apiScriptElt->setAttribute('type', 'text/javascript');
-							$apiScriptElt->setAttribute('src', $apiUrl);
-							$headNode->appendChild($apiScriptElt);
-						}
-
-						$headNode->appendChild($initScriptElt);
-					}
+					$headNode->appendChild($initScriptElt);
 
 					//we inject too the preview-console
 					$previewScriptElt = $doc->createElement('script');
