@@ -703,7 +703,7 @@ class taoItems_models_classes_ItemsService
 					$item = $qtiService->getItemBySerial($itemSerial);
 				}
 				if(is_null($item)){
-					$item = $qtiService->getDataItemByRdfItem($item);
+					$item = $qtiService->getDataItemByRdfItem($itemRdf);
 				}
 				
 				if(!is_null($item)){
