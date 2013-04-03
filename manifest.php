@@ -90,6 +90,9 @@ return array(
 		#BASE PREVIEW URL the url pointing at where items can be previewed
 		'BASE_PREVIEW_URL'		=> ROOT_URL.'taoItems/views/runtime/',
 	 
+		#WWW PATH the path where view medias (templates, img) are stored.
+		'WWW_PATH'				=> $extpath.'views'.DIRECTORY_SEPARATOR,	
+		
 	 	#TAO extension Paths
 		'TAOBASE_WWW'			=> ROOT_URL	.'tao/views/',
 		'TAOVIEW_PATH'			=> $taopath	.'views'.DIRECTORY_SEPARATOR,

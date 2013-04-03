@@ -18,55 +18,18 @@
  *               
  * 
  */
-?>
-<?php
-
-error_reporting(E_ALL);
-
-/**
- * TAO - taoItems/models/classes/XHTML/class.Service.php
- *
- * $Id$
- *
- * This file is part of TAO.
- *
- * Automatically generated on 08.11.2012, 17:06:11 with ArgoUML PHP module 
- * (last revised $Date: 2010-01-12 20:14:42 +0100 (Tue, 12 Jan 2010) $)
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- * @package taoItems
- * @subpackage models_classes_XHTML
- */
-
-if (0 > version_compare(PHP_VERSION, '5')) {
-    die('This file was generated for PHP 5');
-}
-
-/**
- * Service is the base class of all services, and implements the singleton
- * for derived services
- *
- * @author Joel Bout, <joel.bout@tudor.lu>
- */
-require_once('tao/models/classes/class.Service.php');
 
 /**
  * Short description of class taoItems_models_classes_XHTML_Service
  *
  * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
+ * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  * @subpackage models_classes_XHTML
  */
 class taoItems_models_classes_XHTML_Service
 	implements taoItems_models_classes_itemModel
 {
-    // --- ASSOCIATIONS ---
-
-
-    // --- ATTRIBUTES ---
-
-    // --- OPERATIONS ---
     /**
      * default constructor to ensure the implementation
      * can be instanciated
@@ -75,24 +38,88 @@ class taoItems_models_classes_XHTML_Service
     }
 	
     /**
-     * Short description of method render
+     * Render an XHTML item.
      *
      * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
-     * @param  Resource item
-     * @return string
+     * @author Joel Bout, <joel@taotesting.com>
+     * @param  Resource item The item to render.
+     * @return string The rendered item.
+     * @throws taoItems_models_classes_ItemModelException
      */
     public function render( core_kernel_classes_Resource $item)
     {
-        $returnValue = (string) '';
+    	$itemsService = taoItems_models_classes_ItemsService::singleton();
+        $xhtml = $itemsService->getItemContent($item);
+        
+        // Check if all needed APIs are referenced.
+        $xhtml = self::referenceApis($xhtml); // throws ItemModelException.
 
-        // section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C26 begin
-        $returnValue	= taoItems_models_classes_ItemsService::singleton()->getItemContent($item);
-        // section 10-30-1--78-7c71ec09:13ae0b6dbb2:-8000:0000000000003C26 end
-
-        return (string) $returnValue;
+        return $xhtml;
     }
-
-} /* end of class taoItems_models_classes_XHTML_Service */
-
+    
+    /**
+     * Add script elements 
+     * 
+     * @author Jerome Bogaerts, <jerome@taotesting.com>
+     * @access public
+     * @param string $xhtml An XHTML stream as a string.
+     * @return string An XHTML stream as a string with new references to APIs.
+     * @throws taoItems_models_classes_ItemModelException
+     */
+    public static function referenceApis($xhtml){
+    	try{
+    		$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
+    		if (!$dom->loadHTML($xhtml)){
+    			$msg = "An error occured while loading the XML content of the rendered item.";
+    			throw new taoItems_models_classes_ItemModelException($msg);
+    		}
+    		else{
+    			$apis = self::buildApisArray();
+    	
+    			foreach ($apis as $pattern => $infos){
+    				if (!taoItems_helpers_Xhtml::hasScriptElements($dom, '/' . $pattern . '/i')){
+    					taoItems_helpers_Xhtml::addScriptElement($dom, $infos['src']);
+    	
+    					common_Logger::d("Script element '${pattern}' added to item.");
+    				}
+    			}
+    	
+    			return $dom->saveHTML();
+    		}
+    	}
+    	catch (DOMException $e){
+    		$msg = "An error occured while parsing the XML content of the rendered item.";
+    		throw new taoItems_models_classes_ItemModelException($msg);
+    	}
+    	catch (taoItems_models_classes_ItemModelException $e){
+    		throw $e;
+    	}
+    }
+    
+    
+    public static function buildApisArray(){
+   		$extManager = common_ext_ExtensionsManager::singleton();
+    	$taoItemsExt = $extManager->getExtensionById('taoItems');
+    	$taoItemsBaseWww = $taoItemsExt->getConstant('BASE_WWW');
+    	$taoItemsWwwPath = $taoItemsExt->getConstant('WWW_PATH');
+    	
+    	$apis = array();
+    	$apis['taoApi'] 		= array('src' 	=> $taoItemsBaseWww . 'js/taoApi/taoApi.min.js',
+    									 'path'	=> $taoItemsWwwPath . 'js' . DIRECTORY_SEPARATOR . 'taoApi' . DIRECTORY_SEPARATOR . 'taoApi.min.js');
+    	
+    	if (($wfEngineExt = $extManager->getExtensionById('wfEngine')) != null){
+    		$wfEngineExt = $extManager->getExtensionById('wfEngine');
+    		$wfEngineBaseWww = $wfEngineExt->getConstant('BASE_WWW');
+    		$wfEngineWwwPath = $wfEngineExt->getConstant('WWW_PATH');
+    		
+    		$apis['wfApi'] = array('src'	=> $wfEngineBaseWww . 'js/wfApi/wfApi.min.js',
+    								'path'	=> $wfEngineWwwPath . 'js' . DIRECTORY_SEPARATOR . 'wfApi' . DIRECTORY_SEPARATOR . 'wfApi.min.js');
+    	}
+    	
+    	$apis['taoMatching'] 	= array('src'	=> $taoItemsBaseWww . 'js/taoMatching/taoMatching.min.js',
+    									 'path'	=> $taoItemsBaseWww . 'js' . DIRECTORY_SEPARATOR . 'taoMatching' . DIRECTORY_SEPARATOR . 'taoMatching.min.js');
+    	
+    	return $apis;
+    }
+}
 ?>
