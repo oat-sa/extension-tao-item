@@ -20,7 +20,7 @@
  */
 
 /**
- * Short description of class taoItems_models_classes_XHTML_Service
+ * Service dedicated to the management of the XHTML Item Model.
  *
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
@@ -58,13 +58,17 @@ class taoItems_models_classes_XHTML_Service
     }
     
     /**
-     * Add script elements 
+     * Add script elements to OWI items if there are some missing APIs.
+     * Missing APIs could be 
+     * - taoApi
+     * - taoMatching
+     * - wfApi (only if the wfEngine extension is installed)
      * 
      * @author Jerome Bogaerts, <jerome@taotesting.com>
      * @access public
      * @param string $xhtml An XHTML stream as a string.
      * @return string An XHTML stream as a string with new references to APIs.
-     * @throws taoItems_models_classes_ItemModelException
+     * @throws taoItems_models_classes_ItemModelException If the item content cannot be parsed or contains errors.
      */
     public static function referenceApis($xhtml){
     	try{
@@ -96,7 +100,21 @@ class taoItems_models_classes_XHTML_Service
     	}
     }
     
-    
+    /**
+     * Builds an associative array containing information about which APIs must be
+     * present to run an OWI item at execution time.
+     * 
+     * Example:
+     * <code>
+     * array('taoApi' => array('src' => 'http://www.myplatform.com/taoItems/views/js/taoApi/taoApi.min.js',
+     * 						   'path' => '/var/www/tao/taoItems/views/js/taoApi/taoApi.min.js'),
+     * 						   ...);
+     * </code>
+     * 
+     * @access public
+     * @author Jerome Bogaerts, <jerome@taotesting.com>
+     * @return array An associative array.
+     */
     public static function buildApisArray(){
    		$extManager = common_ext_ExtensionsManager::singleton();
     	$taoItemsExt = $extManager->getExtensionById('taoItems');
