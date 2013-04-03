@@ -55,8 +55,11 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 	{
 		parent::defaultData();
 		if($this->hasRequestParameter('uri')) {
-			$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
-			$this->setData('label', $item->getLabel());
+			$uri = $this->getRequestParameter('uri');
+			if (!empty($uri)) {
+				$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($uri));
+				$this->setData('label', $item->getLabel());
+			}
 		}
 	}
 /*
