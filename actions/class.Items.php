@@ -138,6 +138,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				$item = $binder->bind($properties);
 				$item = $this->service->setDefaultItemContent($item);
 				
+				$this->setData('label', $item->getLabel());//in case item label has been changed
 				$this->setData('message', __('Item saved'));
 				$this->setData('reload', true);
 			}
