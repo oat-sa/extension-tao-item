@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.4-beta1\n"
-"PO-Revision-Date: 2013-03-05T10:35:13\n"
+"Project-Id-Version: TAO v2.4-beta3\n"
+"PO-Revision-Date: 2013-04-05T18:37:45\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: SE\n"
@@ -61,9 +61,6 @@ msgstr "Innehåll"
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "create table"
-msgstr "skapa tabell"
-
 msgid "Debug Mode"
 msgstr "Felsök metod"
 
@@ -79,10 +76,10 @@ msgstr "Ladda ner frågeinnehåll"
 msgid "duplicate"
 msgstr "dublett"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "Redigera fråga"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "Redigera fråga"
 
 msgid "Edit item class"
@@ -114,10 +111,6 @@ msgstr "Simulerat test"
 
 msgid "File name"
 msgstr "Filnamn"
-
-#, tao-public
-msgid "Full preview"
-msgstr ""
 
 msgid "import"
 msgstr "importera"
@@ -217,11 +210,12 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr "Var vänlig välj först frågetyp!"
 
-msgid "preview"
-msgstr "förhandsvisning"
-
+#, tao-public
 msgid "Preview"
 msgstr "Förhandsvisning"
+
+msgid "preview"
+msgstr "förhandsvisning"
 
 msgid "PREVIEW BOX"
 msgstr "FÖRHANDSVISNINGSBOX"
@@ -279,6 +273,9 @@ msgstr "Ladda upp QTI-fil"
 
 msgid "Upload the item content"
 msgstr "Ladda upp frågeinnehåll"
+
+msgid "Validation failed"
+msgstr ""
 
 msgid "Validation has failed"
 msgstr "Verifierande misslyckades"

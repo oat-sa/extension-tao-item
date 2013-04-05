@@ -38,7 +38,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[ItemContent]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Item Content]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName">
     <!--
@@ -66,7 +66,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[ItemModels]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Item Models]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -74,7 +74,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[ItemModels]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Item Models]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel">
     <!--
@@ -92,7 +92,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[ItemModel]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[Item Model]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime">
     <!--
@@ -102,7 +102,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
     @predicate http://www.w3.org/2000/01/rdf-schema#label
     -->
-    <rdfs:label xml:lang="LU"><![CDATA[Runtime<br />]]></rdfs:label>
+    <rdfs:label xml:lang="LU"><![CDATA[Runtime]]></rdfs:label>
     <!--
     @sourceLanguage EN
     @targetLanguage LU
@@ -254,7 +254,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[The name of the file were are saved the data of items of this model]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[the filename used to store the item content for this model]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus">
     <!--
@@ -282,7 +282,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[this item  model can be used in production]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[This item  model can be used in production]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated">
     <!--
@@ -300,7 +300,7 @@
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
     @predicate http://www.w3.org/2000/01/rdf-schema#comment
     -->
-    <rdfs:comment xml:lang="LU"><![CDATA[this item model is not supported anymore, we advise to migrate your items]]></rdfs:comment>
+    <rdfs:comment xml:lang="LU"><![CDATA[This item model is not supported anymore, we advise to migrate your items]]></rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment">
     <!--

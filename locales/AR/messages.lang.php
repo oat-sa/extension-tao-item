@@ -1,45 +1,36 @@
 <?php
-/*  
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; under version 2
- * of the License (non-upgradable).
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- * 
- */
-?>
-<?php
+$GLOBALS['__l10n'][" next"]="التالي";
+$GLOBALS['__l10n'][" of the instance "]="من المثال";
+$GLOBALS['__l10n'][" requires a subgrid adapter"]="يحتاج إلى محول subgrid";
+$GLOBALS['__l10n']["(empty)"]="(فارغ)";
+$GLOBALS['__l10n']["A file"]="ملف";
 $GLOBALS['__l10n']["A formated text"]="نص منسق";
+$GLOBALS['__l10n']["A joint initiative of CRP Henri Tudor and the University of Luxembourg"]="مبادرة ثنائية من CRP هنري تودر و جامعة لوكسمبورج";
+$GLOBALS['__l10n']["A long text"]="نص طويل";
 $GLOBALS['__l10n']["A multiple choice list"]="قائمة الخيارات المتعددة";
 $GLOBALS['__l10n']["A password"]="كلمة المرور";
 $GLOBALS['__l10n']["A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."]="Un paquet QTI est une archive Zip contenant un fichier imsmanifest.xml et les ressources QTI à importer.";
 $GLOBALS['__l10n']["A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."]="Un ensemble de différents modèles est fourni aux auteurs d'items comme les questions à choix multiple, l'éditeur de puzzle, les textes à trou, etc.";
 $GLOBALS['__l10n']["A short text"]="نص قصير";
+$GLOBALS['__l10n']["A similar resource has already been versioned"]="مصدر مشابه تم تعيين اصداره بالفعل";
 $GLOBALS['__l10n']["A single choice list"]="قائمة خيار واحد";
 $GLOBALS['__l10n']["A single choice long list"]="قائمة خيار واحد طويلة";
 $GLOBALS['__l10n']["Access denied. Please renew your authentication!"]="!تم رفض الوصول. يرجى تجديد المصادقة الخاصة بك";
+$GLOBALS['__l10n']["Action"]="عمل";
 $GLOBALS['__l10n']["actions"]="الأعمال";
 $GLOBALS['__l10n']["Actions"]="الأعمال";
 $GLOBALS['__l10n']["Add"]="إضافة";
 $GLOBALS['__l10n']["Add / Edit lists"]="إضافة / تعديل القوائم";
-$GLOBALS['__l10n']["Add a user"]="اضافة مستخدم";
+$GLOBALS['__l10n']["Add a user"]="إضافة مستخدم";
 $GLOBALS['__l10n']["Add property"]="إضافة خاصية";
 $GLOBALS['__l10n']["Add the source file"]="إضافة الملف المصدر";
 $GLOBALS['__l10n']["Advanced Authoring Tool"]="محرر متقدم";
 $GLOBALS['__l10n']["Advanced Mode"]="طريقة متقدمة";
+$GLOBALS['__l10n']["all"]="كل";
+$GLOBALS['__l10n']["All"]="كل";
 $GLOBALS['__l10n']["All (the complete TAO Module)"]="الكل";
+$GLOBALS['__l10n']["All data are removed regularly!"]="كل البيانات تم حذفها عاديا ";
+$GLOBALS['__l10n']["Allowed files types: "]="أنواع الملفات المسموحة";
 $GLOBALS['__l10n']["An error occured during the import"]="حدث خطأ أثناء الاستيراد";
 $GLOBALS['__l10n']["An error occured during user deletion"]="حدث خطأ أثناء حذف المستخدم";
 $GLOBALS['__l10n']["An error occured while saving the item"]="حدث خطأ أثناء تحميل الاختبار";
@@ -61,7 +52,6 @@ $GLOBALS['__l10n']["Connect"]="الاتصال";
 $GLOBALS['__l10n']["Content"]="المحتوى";
 $GLOBALS['__l10n']["Create"]="إنشاء";
 $GLOBALS['__l10n']["Create a list"]="إنشاء قائمة";
-$GLOBALS['__l10n']["create table"]="انشاء جدول";
 $GLOBALS['__l10n']["CSV Options"]="CSV خيارات";
 $GLOBALS['__l10n']["Current (the current extension, the local data and their dependancies)"]="(الحالي(الملحق الحالي,البيانات المحلية وتوابعها";
 $GLOBALS['__l10n']["Current language"]="اللغة الحالية";
@@ -70,8 +60,8 @@ $GLOBALS['__l10n']["Data Language"]="لغة البيانات";
 $GLOBALS['__l10n']["Data language"]="لغة البيانات";
 $GLOBALS['__l10n']["Date"]="التاريخ";
 $GLOBALS['__l10n']["Debug Mode"]="وضعيةالمنقحات";
-$GLOBALS['__l10n']["delete"]="حذف";
 $GLOBALS['__l10n']["Delete"]="حذف";
+$GLOBALS['__l10n']["delete"]="حذف";
 $GLOBALS['__l10n']["Delete property"]="حذف الخاصية";
 $GLOBALS['__l10n']["Delete user"]="حذف المستخدم";
 $GLOBALS['__l10n']["Deliveries"]="Deliveries";
@@ -83,22 +73,22 @@ $GLOBALS['__l10n']["duplicate"]="تكرار";
 $GLOBALS['__l10n']["Dynamic date picker"]="روزنامة";
 $GLOBALS['__l10n']["Edit"]="تحرير";
 $GLOBALS['__l10n']["edit"]="تحرير";
-$GLOBALS['__l10n']["Edit a user"]="تحرير مستخدم";
+$GLOBALS['__l10n']["Edit a user"]="تحرير المستخم";
 $GLOBALS['__l10n']["Edit Comment"]="تحرير تعليق";
 $GLOBALS['__l10n']["Edit Item"]="تعديل السؤال";
 $GLOBALS['__l10n']["Edit item"]="تعديل السؤال";
 $GLOBALS['__l10n']["Edit item comment"]="تحرير تعليق";
 $GLOBALS['__l10n']["Edit user"]="تحرير مستخدم";
-$GLOBALS['__l10n']["element"]="عنصر";
 $GLOBALS['__l10n']["Element"]="العنصر";
+$GLOBALS['__l10n']["element"]="عنصر";
 $GLOBALS['__l10n']["element deleted"]="عنصر محذوف";
 $GLOBALS['__l10n']["Enabled"]="نشط";
 $GLOBALS['__l10n']["Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"]="Vous permais d'exporter une archive au format Zip contenant un dossier pour chaque item exporté. Chaque dossier est composé d'un fichier XML principal (les données de l'item) ainsi que de ressources externes (médias, manifets, etc.)";
 $GLOBALS['__l10n']["Error"]="خطأ";
 $GLOBALS['__l10n']["Error during file import"]="خطأ أثناء استيراد الملف";
 $GLOBALS['__l10n']["Exclusive (OR)"]="Exclusif (OU)";
-$GLOBALS['__l10n']["Export"]="تصدير";
 $GLOBALS['__l10n']["export"]="تصدير";
+$GLOBALS['__l10n']["Export"]="تصدير";
 $GLOBALS['__l10n']["Export Options"]="خيارات التصدير";
 $GLOBALS['__l10n']["Exported files library"]="مكتبة الملفات المصدرة";
 $GLOBALS['__l10n']["exported successfully"]="تصدير بنجاح";
@@ -112,11 +102,11 @@ $GLOBALS['__l10n']["Filter"]="تصفية";
 $GLOBALS['__l10n']["Filtering mode"]="طريقة التصفية";
 $GLOBALS['__l10n']["Filters"]="Filtres";
 $GLOBALS['__l10n']["Groups"]="مجموعات";
-$GLOBALS['__l10n']["import"]="استيراد";
 $GLOBALS['__l10n']["Import"]="استيراد";
+$GLOBALS['__l10n']["import"]="استيراد";
 $GLOBALS['__l10n']["Inclusive (AND)"]="Inclusif (ET)";
-$GLOBALS['__l10n']["Interface Language"]="لغة الواجهة";
 $GLOBALS['__l10n']["Interface language"]="لغة الواجهة";
+$GLOBALS['__l10n']["Interface Language"]="لغة الواجهة";
 $GLOBALS['__l10n']["Invalid field length"]="طول الحقل غير صحيح";
 $GLOBALS['__l10n']["Invalid field range"]="Le rang du champ est invalide";
 $GLOBALS['__l10n']["Invalid file size"]="حجم الملف غير صحيح";
@@ -142,13 +132,14 @@ $GLOBALS['__l10n']["Local Data (the local namespace containing only the data ins
 $GLOBALS['__l10n']["Login"]="الدخول";
 $GLOBALS['__l10n']["Login not available"]="الدخول غير متوفر";
 $GLOBALS['__l10n']["Logout"]="الخروج";
-$GLOBALS['__l10n']["Manage campaigns"]="إدارة العمليات";
 $GLOBALS['__l10n']["Manage data list"]="إدارة قائمة البيانات";
 $GLOBALS['__l10n']["Manage deliveries"]="Gérer les deliveries";
 $GLOBALS['__l10n']["Manage groups"]="إدارة المجموعات";
 $GLOBALS['__l10n']["Manage item content"]="ادارة محتوى السؤال";
 $GLOBALS['__l10n']["Manage items"]="ادارة الاسئلة";
+$GLOBALS['__l10n']["Manage processes"]="إدارة العمليات";
 $GLOBALS['__l10n']["Manage result servers"]="ادارة خوادم النتائج";
+$GLOBALS['__l10n']["Manage roles"]="إدارة الأدوار";
 $GLOBALS['__l10n']["Manage test takers"]="إدارة المتقدمين للاختبار";
 $GLOBALS['__l10n']["Manage tests"]="ادارة الاختبارات";
 $GLOBALS['__l10n']["Manage users"]="إدارة المستخدمين";
@@ -190,10 +181,12 @@ $GLOBALS['__l10n']["Please select first the item type!"]="!الرجاء اولا
 $GLOBALS['__l10n']["Please select the input data format to import"]="الرجاء حدد نسق بيانات الدخول المراد تصديرها";
 $GLOBALS['__l10n']["Please select the way to export the data"]="الرجاء حدد طريقة لتصدير البيانات\n\nmsgid";
 $GLOBALS['__l10n']["Please upload an RDF file."]=".RDF الرجاء تحميل ملف";
-$GLOBALS['__l10n']["preview"]="معاينة";
 $GLOBALS['__l10n']["Preview"]="معاينة";
+$GLOBALS['__l10n']["preview"]="معاينة";
 $GLOBALS['__l10n']["PREVIEW BOX"]="مربع المعاينة";
 $GLOBALS['__l10n']["Preview Console"]="Moniteur de prévisualisation";
+$GLOBALS['__l10n']["Process authoring"]="Processus de création";
+$GLOBALS['__l10n']["Processes"]="Processus";
 $GLOBALS['__l10n']["Property"]="خاصية";
 $GLOBALS['__l10n']["Recovery context"]="استرجاع المضمون";
 $GLOBALS['__l10n']["Remove"]="إزالة";
@@ -205,8 +198,8 @@ $GLOBALS['__l10n']["Results"]="النتائج";
 $GLOBALS['__l10n']["Revert"]="الغاء";
 $GLOBALS['__l10n']["Right click the tree to manage your lists"]="استعمل زر النقر اليمين لادارة قوائمك";
 $GLOBALS['__l10n']["Save"]="حفظ";
-$GLOBALS['__l10n']["Search"]="بحث";
 $GLOBALS['__l10n']["search"]="بحث";
+$GLOBALS['__l10n']["Search"]="بحث";
 $GLOBALS['__l10n']["Search results"]="البحث عن النتائج";
 $GLOBALS['__l10n']["select"]="اختر";
 $GLOBALS['__l10n']["Select"]="حدد";
