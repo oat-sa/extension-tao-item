@@ -71,7 +71,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				),
 
 				TAO_ITEM_CLASS	=> array(
-					'uri'		=> $item->uriResource,
+					'uri'		=> $item->getUri(),
 					RDFS_LABEL	=> $item->getLabel()
 				),
 				TAO_TEST_CLASS	=> array(
@@ -83,14 +83,14 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 					RDFS_LABEL	=> __('Fake delivery')
 				),
 				TAO_SUBJECT_CLASS => array(
-					'uri'					=> $user->uriResource,
+					'uri'					=> $user->getUri(),
 					RDFS_LABEL				=> $user->getLabel(),
 					PROPERTY_USER_LOGIN		=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN)),
 					PROPERTY_USER_FIRSTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_FIRSTNAME)),
 					PROPERTY_USER_LASTNAME	=> (string)$user->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LASTNAME))
 				)
 			);
-        	$this->setSessionAttribute(self::ENV_VAR_NAME.'_'.tao_helpers_Uri::encode($user->uriResource), $executionEnvironment);
+        	$this->setSessionAttribute(self::ENV_VAR_NAME.'_'.tao_helpers_Uri::encode($user->getUri()), $executionEnvironment);
 		}
 
 		return $executionEnvironment;
@@ -104,7 +104,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 	private function getFakeExecutionEnvironment(core_kernel_classes_Resource $user){
 		$executionEnvironment = array();
 		if(!is_null($user)){
-			$sessionKey =  self::ENV_VAR_NAME . '_' . tao_helpers_Uri::encode($user->uriResource);
+			$sessionKey =  self::ENV_VAR_NAME . '_' . tao_helpers_Uri::encode($user->getUri());
 			if($this->hasSessionAttribute($sessionKey)){
 				$executionEnvironment = $this->getSessionAttribute($sessionKey);
 				if(isset($executionEnvironment['token'])){
@@ -134,14 +134,14 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 			//default deployment params
 			$deployParams = array(
 				'delivery_server_mode' => false,
-				'matching_server' => false,
+				'matching_server' => true,
 				'base_www' => BASE_WWW
 			);
 
 			//Initialize the deployment parameters
 			if ($this->hasRequestParameter('match')) {
-				if ($this->getRequestParameter('match') == 'server') {
-					$deployParams['matching_server'] = true;
+				if ($this->getRequestParameter('match') == 'client') {
+					$deployParams['matching_server'] = false;
 				}
 			}
 			$debugMode = false;
@@ -202,10 +202,11 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 						'context'	=> $useContext,
 						'matching' 	=> ($deployParams['matching_server']) ? 'server' : 'client',
 						'debug'		=> $debugMode,
-						'uri' 		=> tao_helpers_Uri::encode($item->uriResource),
+						'uri' 		=> tao_helpers_Uri::encode($item->getUri()),
 						'time'		=> time()	//to prevent caching
 					);
-
+					common_Logger::d($initScriptParams, 'QTIdebug');
+					
 					//the url of the init script
 					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
 

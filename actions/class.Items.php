@@ -620,7 +620,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
 				'classUri'	=> 	tao_helpers_Uri::encode($itemClass->uriResource),
 				'context'	=> false,
-				'match'		=> 'client'
+				'match'		=> 'server'
 			);
 
 			if ($this->hasSessionAttribute('previewOpts')) {
@@ -692,7 +692,7 @@ class taoItems_actions_Items extends tao_actions_TaoModule
 				'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
 				'classUri'	=> 	tao_helpers_Uri::encode($clazz->uriResource),
 				'context'	=> false,
-				'match'		=> 'client'
+				'match'		=> 'server'
 			);
 			if($this->hasSessionAttribute('previewOpts')){
 				$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
