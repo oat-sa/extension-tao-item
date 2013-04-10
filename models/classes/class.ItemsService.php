@@ -62,7 +62,7 @@ class taoItems_models_classes_ItemsService
      * @access private
      * @var string
      */
-    const DEFAULT_FILESOURCE_KEY = 'defaultItemFileSource';
+    const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
 
     // --- OPERATIONS ---
 
@@ -1075,7 +1075,7 @@ class taoItems_models_classes_ItemsService
     public function setDefaultFilesource( core_kernel_versioning_Repository $filesource)
     {
 		$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-        $ext->setConfig(self::DEFAULT_FILESOURCE_KEY, $filesource->getUri());
+        $ext->setConfig(self::CONFIG_DEFAULT_FILESOURCE, $filesource->getUri());
     }
 
     /**
@@ -1090,7 +1090,7 @@ class taoItems_models_classes_ItemsService
         $returnValue = null;
 
     	$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-		$uri = $ext->getConfig(self::DEFAULT_FILESOURCE_KEY);
+		$uri = $ext->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
 		if (!empty($uri)) {
 			$returnValue = new core_kernel_versioning_Repository($uri);
 		} else {
