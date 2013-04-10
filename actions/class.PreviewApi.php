@@ -205,7 +205,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 						'uri' 		=> tao_helpers_Uri::encode($item->getUri()),
 						'time'		=> time()	//to prevent caching
 					);
-					common_Logger::d($initScriptParams, 'QTIdebug');
+					common_Logger::d(var_export($initScriptParams, true), 'QTIdebug');
 					
 					//the url of the init script
 					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
