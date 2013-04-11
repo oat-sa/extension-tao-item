@@ -81,6 +81,10 @@ class taoItems_models_classes_ItemsService
 		$this->itemContentProperty	= new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
     }
 
+    public function getRootClass() {
+    	return $this->itemClass;
+    }
+    
     /**
      * get an item subclass by uri. 
      * If the uri is not set, it returns the  item class (the top level class.
@@ -90,6 +94,7 @@ class taoItems_models_classes_ItemsService
      * @author Joel Bout, <joel@taotesting.com>
      * @param  string uri
      * @return core_kernel_classes_Class
+     * @deprecated
      */
     public function getItemClass($uri = '')
     {

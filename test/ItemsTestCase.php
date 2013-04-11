@@ -65,7 +65,7 @@ class ItemsTestCase extends UnitTestCase {
 		
 		//check parent class
 		$this->assertTrue(defined('TAO_ITEM_CLASS'));
-		$itemClass = $this->itemsService->getItemClass();
+		$itemClass = $this->itemsService->getRootClass();
 		$this->assertIsA($itemClass, 'core_kernel_classes_Class');
 		$this->assertEqual(TAO_ITEM_CLASS, $itemClass->uriResource);
 		
@@ -104,7 +104,7 @@ class ItemsTestCase extends UnitTestCase {
 	
 	public function testItemContent(){
 		//create an instance of the Item class
-		$itemClass = $this->itemsService->getItemClass();
+		$itemClass = $this->itemsService->getRootClass();
 		$item = $this->itemsService->createInstance($itemClass, 'test content');
 		$this->assertIsA($item, 'core_kernel_classes_Resource');
 		$this->assertEqual('test content', $item->getLabel());
