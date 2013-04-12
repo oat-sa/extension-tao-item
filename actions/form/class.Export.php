@@ -111,7 +111,7 @@ class taoItems_actions_form_Export
 	    		$class = $this->data['class'];
 	    	}
 	    	else{
-	    		$class = $itemService->getItemClass();
+	    		$class = $itemService->getRootClass();
 	    	}
     		if($class instanceof core_kernel_classes_Class){
 				$fileName =  strtolower(tao_helpers_Display::textCleaner($class->getLabel(), '*'));
@@ -177,7 +177,7 @@ class taoItems_actions_form_Export
 	    		$class = $this->data['class'];
 	    	}
 	    	else{
-	    		$class = $itemService->getItemClass();
+	    		$class = $itemService->getRootClass();
 	    	}
     		if($class instanceof core_kernel_classes_Class){
 					$fileName =  strtolower(tao_helpers_Display::textCleaner($class->getLabel(), '*'));
