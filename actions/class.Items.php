@@ -929,9 +929,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 	 */
 	public function getMediaResource()
 	{
-
+		
 		if( $this->hasRequestParameter('path')){
-
+			
 			$item = null;
 			if ($this->hasRequestParameter('uri') && $this->hasRequestParameter('classUri')){
 				$item = $this->getCurrentInstance();
@@ -944,17 +944,15 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 			}
 
 			if (!is_null($item)){
-
-				$path = $this->getRequestParameter('path');
+				
+				$path = urldecode($this->getRequestParameter('path'));
 				if (!tao_helpers_File::securityCheck($path)){
 					throw new Exception('Unauthorized path '.$path);
 				}
-
 				if (preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
 					// check if the file is linked to the file manager
 					$resource = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH . '/filemanager/views/data/', $path);
-				}
-				else{
+				}else{
 				    // look in the item's dedicated folder. it should be a resource
 				    // that is local to the item, not it the file manager
 				    // $folder is the item's dedicated folder path, $path the path to the resource, relative to $folder
@@ -962,14 +960,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 					$resource 	= tao_helpers_File::concat(array($folder, $path));
 				}
 
-
 				if(file_exists($resource)){
-
 					$mimeType = tao_helpers_File::getMimeType($resource);
 
 					//allow only images, video, flash (and css?)
 					if (preg_match("/^(image|video|audio|application\/x-shockwave-flash)/", $mimeType)){
-
 						header("Content-Type: $mimeType; charset utf-8");
 						print trim(file_get_contents($resource));
 					}
