@@ -8,9 +8,9 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Paperbased">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
-    <rdf:value xml:lang="EN"/>
-    <rdfs:comment xml:lang="EN"><![CDATA[Paper-based Items model]]></rdfs:comment>
-    <rdfs:label xml:lang="EN"><![CDATA[Paper-based Item]]></rdfs:label>
+    <rdf:value xml:lang="en-US"/>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Paper-based Items model]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Paper-based Item]]></rdfs:label>
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget"/>
     <item:ModelService><![CDATA[taoItems_models_classes_Paperbased_Service]]></item:ModelService>
