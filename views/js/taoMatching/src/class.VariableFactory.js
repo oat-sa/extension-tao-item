@@ -50,7 +50,7 @@ define the type of the variable
             type = pType;
 		}
 		else {
-            type = TAO_MATCHING.VariableFactory.getType (data);
+            type = TAO_MATCHING.VariableFactory.getType(data);
 		}
 
 		// Create the variable according to its type
@@ -98,7 +98,7 @@ define the type of the variable
 	 * @return string
 	 * @private
 	 */
-	, getType : function (data){
+	, getType : function(data){
 	    var returnValue = null;
 	    
 	    // We get an object as data

@@ -25,20 +25,22 @@
 function unserializeUrl(params){
     var data = {};
     var hashes = params.split('&');
-    for(i in hashes){
-    	var hash = hashes[i].split('=');
-        if(hash.length == 2){
-        	if(/\[\]$/.test(hash[0])){
-        		var key = hash[0].replace(/\[\]$/, '');
-        		if(typeof(data[key]) == "undefined"){
-        			data[key] = [];
-        		}
-        		data[key].push(hash[1]);
-        	}
-        	else{
-        		data[hash[0]] = hash[1];
-        	}
-        }
+    for(var i in hashes){
+		if(typeof hashes[i] == 'string'){
+			var hash = hashes[i].split('=');
+			if(hash.length == 2){
+				if(/\[\]$/.test(hash[0])){
+					var key = hash[0].replace(/\[\]$/, '');
+					if(typeof(data[key]) == "undefined"){
+						data[key] = [];
+					}
+					data[key].push(hash[1]);
+				}
+				else{
+					data[hash[0]] = hash[1];
+				}
+			}
+		}
     }
     return data;
 }
@@ -86,14 +88,15 @@ $(document).ready(function(){
 	});
 	
 	//log in the console the ajax request to the Preview Api
-	$('body').ajaxSuccess(function(event,request, settings){
+	$('body').ajaxSuccess(function(event, request, settings){
+		
 		if(/PreviewApi/.test(settings.url)){
 			
 			var message = '';
 			//taoApi Push
 			if(/save$/.test(settings.url)){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
-				for(key in data){
+				for(var key in data){
 					if(key != 'token'){
 						message += '<br />' + key + ' = '  + data[key] ;
 					}
@@ -108,7 +111,7 @@ $(document).ready(function(){
 			else if(/traceEvents$/.test(settings.url)){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
 				if(data.events){
-					for(index in data.events){
+					for(var index in data.events){
 						try{
 							var eventData = $.parseJSON(data.events[index]);
 							message += '<br />' + eventData.type + ' on element ' + eventData.name;
@@ -173,6 +176,7 @@ $(document).ready(function(){
 				previewConsole.trigger('updateConsole', ['remote request', message]);
 			}
 		}
+		
 	});
 	
 	afterFinish(function(){

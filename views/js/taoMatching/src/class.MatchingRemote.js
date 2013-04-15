@@ -100,8 +100,8 @@ TAO_MATCHING.MatchingRemote.prototype = {
 			, data       : requestParams
 			, success    : function (data){
 				self.outcomes = data;
-				if (self.options.evaluateCallback!=null){
-                    self.options.evaluateCallback (data);   
+				if (typeof self.options.evaluateCallback == 'function'){
+                    self.options.evaluateCallback(data);   
 				}
 			}
 		});
