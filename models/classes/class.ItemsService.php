@@ -282,10 +282,12 @@ class taoItems_models_classes_ItemsService
 			$itemContent = null;
 
 			if(empty($lang)){
-				$lang = $this->getSessionLg();
+				$itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
+			}
+			else{
+				$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 			}
 
-			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 			if($itemContents->count() > 0){
 				$itemContent = $itemContents->get(0);
 			}
