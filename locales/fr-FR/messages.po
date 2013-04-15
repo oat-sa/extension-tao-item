@@ -248,7 +248,7 @@ msgstr "montrer/cacher"
 msgid "the file was not uploaded successfully"
 msgstr "le fichier n'a pas été téléversé avec succès"
 
-msgid "The Item module enables the creation and design of items and exercises."
+msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Le module Item vous permet la création et le design d'items et d'exercices."
 
 msgid "Unable to copy the resources"

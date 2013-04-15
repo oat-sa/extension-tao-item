@@ -247,7 +247,7 @@ msgstr "vis/skjul"
 msgid "the file was not uploaded successfully"
 msgstr "filen blev ikke uploadet"
 
-msgid "The Item module enables the creation and design of items and exercises."
+msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Item modulet lader dig oprette og designe item og øvelser."
 
 msgid "Unable to copy the resources"

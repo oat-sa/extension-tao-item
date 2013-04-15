@@ -247,8 +247,8 @@ msgstr "إظهار / إخفاء"
 msgid "the file was not uploaded successfully"
 msgstr ""
 
-msgid "The Item module enables the creation and design of items and exercises."
-msgstr "Le module Item vous permet la création et le design d'items et d'exercises."
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "Le module Items vous permet la création et le design d'items et d'exercises."
 
 msgid "Unable to copy the resources"
 msgstr "لا يمكن نسخ الموارد"

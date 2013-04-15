@@ -247,7 +247,7 @@ msgstr "visa/dölj"
 msgid "the file was not uploaded successfully"
 msgstr ""
 
-msgid "The Item module enables the creation and design of items and exercises."
+msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 
 msgid "Unable to copy the resources"

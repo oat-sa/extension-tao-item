@@ -247,7 +247,7 @@ msgstr ""
 msgid "the file was not uploaded successfully"
 msgstr ""
 
-msgid "The Item module enables the creation and design of items and exercises."
+msgid "The Items module enables the creation and design of items and exercises."
 msgstr ""
 
 msgid "Unable to copy the resources"
