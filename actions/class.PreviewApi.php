@@ -187,7 +187,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 			try {
 				//we parse the DOM of the item (it must be well formed and valid)
 				$doc = new DOMDocument();
-				$doc->loadHTMLFile($itemPath);
+				(DEBUG_MODE)?@$doc->loadHTMLFile($itemPath):$doc->loadHTMLFile($itemPath);
 
 				//inject the apis
 				$headNodes = $doc->getElementsByTagName('head');
