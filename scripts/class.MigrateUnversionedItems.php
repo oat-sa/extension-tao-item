@@ -59,12 +59,13 @@ require_once('tao/scripts/class.Runner.php');
 // section 127-0-1-1--698399da:1370ca5efd2:-8000:00000000000039C1-constants end
 
 /**
- * Short description of class taoItems_scripts_MigrateUnversionedItems
+ * This script will probably no longer work
  *
  * @access public
  * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
  * @package taoItems
  * @subpackage scripts
+ * @deprecated
  */
 class taoItems_scripts_MigrateUnversionedItems
     extends tao_scripts_Runner
@@ -160,7 +161,6 @@ class taoItems_scripts_MigrateUnversionedItems
 				self::out('migrating item '.$itemModelLabel.' : '.$item->getLabel(). ' ('.$item->uriResource.')', array('color'=>'light_cyan'));
 				
 				//switch from script parameters to one of these options:
-				$this->migrateToNewItemPath($item);
 //				$this->migrateToUnversionedItem($item);
 //				$this->migrateToVersionedItem($item);
 				
@@ -170,80 +170,6 @@ class taoItems_scripts_MigrateUnversionedItems
 		
 		
         // section 127-0-1-1--698399da:1370ca5efd2:-8000:00000000000039C4 end
-    }
-
-    /**
-     * migrate item content location to the new one (from TAO2.1 to 2.2) :
-     * taoItems/data/i123456 -> taoItems/data/i123456/EN
-     *
-     * @access protected
-     * @author Somsack Sipasseuth, <somsack.sipasseuth@tudor.lu>
-     * @param  Resource item
-     * @return boolean
-     */
-    protected function migrateToNewItemPath( core_kernel_classes_Resource $item)
-    {
-        $returnValue = (bool) false;
-
-        // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039D0 begin
-		
-		//used languages:
-		$model = $this->itemModels[$this->getItemData($item, 'model')];
-		$itemModelLabel = $model['label'];
-		$dataFile = $model['file'];
-		$usedLanguages = $item->getUsedLanguages($this->itemContentProperty);
-		$oldSourceFolder = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
-		$oldSourceFolder = ROOT_PATH . '/taoItems/data/' . $oldSourceFolder . '/';
-		$propItemContent = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
-		$propFilePath = new core_kernel_classes(PROPERTY_FILE_FILEPATH);
-		switch ($itemModel->uriResource) {
-			case TAO_ITEM_MODEL_QTI: {
-					foreach ($usedLanguages as $usedLanguage) {
-
-						//copy all item resources
-						$destinationFolder = $this->itemService->getItemFolder($item, $usedLanguage);
-						self::out('copying ' . $oldSourceFolder . ' to ' . $destinationFolder);
-
-						//copy item start point:
-						if ($usedLanguage == DEFAULT_LANG || $usedLanguage == '') {
-							$source = $oldSourceFolder . $dataFile;
-						} else {
-							$source = $oldSourceFolder . $usedLanguage . '_' . $dataFile;
-						}
-
-						$destination = $destinationFolder . '/' . $dataFile;
-
-						if (file_exists($source)) {
-
-							self::out('copying ' . $source . ' to ' . $destination);
-							continue;
-							tao_helpers_File::copy($source, $destination);
-							
-							$content = file_get_contents($source);
-							foreach ($item->getPropertyValuesByLg($propItemContent, $usedLanguage) as $file) {
-								$file->editPropertyValues($propFilePath, $destinationFolder);
-							}
-							$this->itemService->setItemContent($item, $content, $usedLanguage);
-						}
-					}
-					break;
-				}
-			case TAO_ITEM_MODEL_XHTML: {
-					//copy all item resources
-					$destination = $this->itemService->getItemFolder($item, $usedLanguage);
-					self::out('copying ' . $oldSourceFolder . ' to ' . $destination);
-					break;
-				}
-			default : {
-					self::out('unknown item type : ' . $itemModel->uriResource);
-				}
-		}
-		
-		$returnValue = true;
-		
-        // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039D0 end
-
-        return (bool) $returnValue;
     }
 
     /**

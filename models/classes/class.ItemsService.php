@@ -1064,8 +1064,8 @@ class taoItems_models_classes_ItemsService
 			if (count($files) > 1) {
 				throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
 			}
-			$content = new core_kernel_classes_Resource(current($files));
-			$returnValue = $content->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_FILE_FILEPATH));
+			$content = new core_kernel_classes_File(current($files));
+			$returnValue = dirname($content->getAbsolutePath()).DIRECTORY_SEPARATOR;
 		}
 
         return (string) $returnValue;
