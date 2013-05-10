@@ -371,7 +371,6 @@ class taoItems_models_classes_ItemsService
 			
 		} else {
 
-			$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
 			$repository = $this->getDefaultFileSource();
 			$file = $repository->createFile(
 				$dataFile,
