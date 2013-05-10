@@ -373,10 +373,9 @@ class taoItems_models_classes_ItemsService
 
 			$versionedFileClass = new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE);
 			$repository = $this->getDefaultFileSource();
-			$file = core_kernel_versioning_File::createVersioned(
+			$file = $repository->createFile(
 				$dataFile,
-				tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang,
-				$repository
+				tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang
 			);
 			$item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
 			$file->setContent($content);
@@ -768,16 +767,16 @@ class taoItems_models_classes_ItemsService
 
 			foreach($clazz->getProperties(true) as $property){
 
-				if($property->uriResource == RDFS_TYPE){
+				if($property->getUri() == RDFS_TYPE){
 					continue;
 				}
 
 				$range = $property->getRange();
 
-				if($range->getUri() == CLASS_GENERIS_FILE){
-
-					foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
-						if(core_kernel_versioning_File::isVersionedFile($propertyValue)){
+				if (!is_null($range)) {
+					if($range->getUri() == CLASS_GENERIS_FILE){
+	
+						foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
 							$file = new core_kernel_versioning_File($propertyValue->getUri());
 							$repo = $file->getRepository();
 							$relPath = basename($file->getAbsolutePath());
@@ -787,10 +786,9 @@ class taoItems_models_classes_ItemsService
 								tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
 								if(file_exists($newPath)){
 									$subpath = substr($newPath, strlen($repo->getPath()));
-									$newFile = core_kernel_versioning_File::createVersioned(
+									$newFile = $repo->createFile(
 										(string)$file->getOnePropertyValue($fileNameProp),
-										dirname($subpath).'/',
-										$repo
+										dirname($subpath).'/'
 									);
 									$returnValue->setPropertyValue($property, $newFile->getUri());
 									$newFile->add(true, true);
@@ -799,11 +797,13 @@ class taoItems_models_classes_ItemsService
 							}
 						}
 					}
-				}
-				else{
-					foreach($instance->getPropertyValues($property) as $propertyValue){
-						$returnValue->setPropertyValue($property, $propertyValue);
+					else{
+						foreach($instance->getPropertyValues($property) as $propertyValue){
+							$returnValue->setPropertyValue($property, $propertyValue);
+						}
 					}
+				} else {
+					common_Logger::w('Missing range for property '.$property->getUri());					
 				}
 			}
 			$label = $instance->getLabel();
