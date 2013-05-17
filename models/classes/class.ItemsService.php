@@ -125,13 +125,13 @@ class taoItems_models_classes_ItemsService
     {
         $returnValue = (bool) false;
 
-		if($this->itemClass->uriResource == $clazz->uriResource){
+		if($this->itemClass->getUri() == $clazz->getUri()){
 			return true;
 		}
 
 		foreach($clazz->getParentClasses(true) as $parent){
 
-			if($parent->uriResource == $this->itemClass->uriResource){
+			if($parent->getUri() == $this->itemClass->getUri()){
 				$returnValue = true;
 				break;
 			}
@@ -213,7 +213,7 @@ class taoItems_models_classes_ItemsService
 			$itemRepo = $this->getDefaultFileSource();
 			$repositoryPath = $itemRepo->getPath();
 			$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
-			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->uriResource).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
+			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
 
 		}
 
@@ -233,7 +233,7 @@ class taoItems_models_classes_ItemsService
         $returnValue = (string) '';
 
 		if(!is_null($item)){
-			$folderName = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+			$folderName = substr($item->getUri(), strpos($item->getUri(), '#') + 1);
 			$basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
 			$returnValue = $basePreview . $folderName;
 		}
@@ -403,7 +403,7 @@ class taoItems_models_classes_ItemsService
 
 		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
 		if($itemModel instanceof core_kernel_classes_Resource){
-			if(in_array($itemModel->uriResource, $models)){
+			if(in_array($itemModel->getUri(), $models)){
 				$returnValue = true;
 			}
 		}
@@ -483,7 +483,7 @@ class taoItems_models_classes_ItemsService
 				$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
 				if($itemModel instanceof core_kernel_classes_Resource){
 					$itemModelStatus = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY));
-					if(in_array($itemModelStatus->uriResource, $status)){
+					if(in_array($itemModelStatus->getUri(), $status)){
 						$returnValue = true;
 					}
 				}
@@ -577,7 +577,7 @@ class taoItems_models_classes_ItemsService
 					if(!file_exists($itemFolder.'/events.xml')){
 						$eventXml = file_get_contents(ROOT_PATH.'/taoItems/data/events_ref.xml');
 						if(is_string($eventXml) && !empty($eventXml)){
-							$eventXml = str_replace('{ITEM_URI}', $item->uriResource, $eventXml);
+							$eventXml = str_replace('{ITEM_URI}', $item->getUri(), $eventXml);
 							$copyEventsToPath = $itemFolder.'/events.xml';
 							@file_put_contents($copyEventsToPath, $eventXml);
 						}
@@ -853,7 +853,7 @@ class taoItems_models_classes_ItemsService
 			if (!is_null($measurement->getScale())) {
 				$scaleres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class($measurement->getScale()->getClassUri()));
 				$scaleres->setPropertiesValues($measurement->getScale()->toProperties());
-				$measurementPropertiesValues[TAO_ITEM_SCALE_PROPERTY] = $scaleres->uriResource;
+				$measurementPropertiesValues[TAO_ITEM_SCALE_PROPERTY] = $scaleres->getUri();
 			}
 			$measurementres->setPropertiesValues($measurementPropertiesValues);
 			$item->setPropertyValue($hasMeasurement, $measurementres);

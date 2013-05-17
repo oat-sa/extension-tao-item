@@ -93,8 +93,8 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 			}
 		}
 		
-		$this->setData('uri', tao_helpers_Uri::encode($instance->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($clazz->uriResource));
+		$this->setData('uri', tao_helpers_Uri::encode($instance->getUri()));
+		$this->setData('classUri', tao_helpers_Uri::encode($clazz->getUri()));
 		$this->setData('formTitle', __('Edit item'));
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl', 'tao');
@@ -123,7 +123,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		
 		$properties = array();
 		foreach($this->service->getClazzProperties($itemClass) as $property){
-			if(in_array($property->uriResource, $hiddenProperties)){
+			if(in_array($property->getUri(), $hiddenProperties)){
 				continue;
 			}
 			$range = $property->getRange();
@@ -137,7 +137,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 			}
 			foreach($propValues as $propValue){	
 				$value = '';
-				if($range->uriResource == RDFS_LITERAL){
+				if($range->getUri() == RDFS_LITERAL){
 					$value = (string)$propValue;
 				}
 				else {
@@ -158,14 +158,14 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		}
 		else{
 			$this->setData('preview', true);
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
 			foreach($previewData as $key => $value){
 				$this->setData($key, $value);
 			}
 		}
 		
-		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 		
 		$this->setData('label', $item->getLabel());
 		$this->setData('itemProperties', $properties);

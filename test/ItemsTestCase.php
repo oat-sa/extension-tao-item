@@ -67,7 +67,7 @@ class ItemsTestCase extends UnitTestCase {
 		$this->assertTrue(defined('TAO_ITEM_CLASS'));
 		$itemClass = $this->itemsService->getRootClass();
 		$this->assertIsA($itemClass, 'core_kernel_classes_Class');
-		$this->assertEqual(TAO_ITEM_CLASS, $itemClass->uriResource);
+		$this->assertEqual(TAO_ITEM_CLASS, $itemClass->getUri());
 		
 		//create a subclass
 		$subItemClassLabel = 'subItem class';

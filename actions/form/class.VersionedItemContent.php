@@ -88,7 +88,7 @@ class taoItems_actions_form_VersionedItemContent
 
         // section 127-0-1-1-34f65b5e:136df48a4e6:-8000:0000000000004AE1 begin
 		if(!is_null($this->ownerInstance)){
-			$returnValue = _url('directItemExport', 'ItemExport', 'taoItems', array('uri' => tao_helpers_Uri::encode($this->ownerInstance->uriResource)));
+			$returnValue = _url('directItemExport', 'ItemExport', 'taoItems', array('uri' => tao_helpers_Uri::encode($this->ownerInstance->getUri())));
 		}
         // section 127-0-1-1-34f65b5e:136df48a4e6:-8000:0000000000004AE1 end
 

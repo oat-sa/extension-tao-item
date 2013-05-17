@@ -201,7 +201,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			
 			tao_helpers_File::remove($uploadedFile);
 			$this->removeSessionAttribute('classUri');
-			$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
+			$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->getUri()));
 			$this->setData('message',__('item imported successfully'));
 			$this->setData('reload', true);
 			
@@ -243,7 +243,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				$rdfItem->setLabel($originalFileName);
 
 				$this->removeSessionAttribute('classUri');
-				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->uriResource));
+				$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($rdfItem->getUri()));
 				$this->setData('message', __('Item imported successfully') . ' : ' .$rdfItem->getLabel());
 				$this->setData('reload', true);
 								

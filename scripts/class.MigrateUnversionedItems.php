@@ -143,13 +143,13 @@ class taoItems_scripts_MigrateUnversionedItems
 				//lazy loading item model data:
 				$itemModelLabel = '';
 				$dataFile = '';
-				if(isset($this->itemModels[$itemModel->uriResource])){
-					$itemModelLabel = $this->itemModels[$itemModel->uriResource]['label'];
-					$dataFile = $this->itemModels[$itemModel->uriResource]['file'];
+				if(isset($this->itemModels[$itemModel->getUri()])){
+					$itemModelLabel = $this->itemModels[$itemModel->getUri()]['label'];
+					$dataFile = $this->itemModels[$itemModel->getUri()]['file'];
 				}else{
 					$itemModelLabel = $itemModel->getLabel();
 					$dataFile = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY))->literal;
-					$this->itemModels[$itemModel->uriResource] = array(
+					$this->itemModels[$itemModel->getUri()] = array(
 						'label' => $itemModelLabel,
 						'file' => $dataFile
 					);
@@ -158,7 +158,7 @@ class taoItems_scripts_MigrateUnversionedItems
 				$this->setItemData($item, 'model', $itemModel);
 				
 				//migrate items with an item model only:
-				self::out('migrating item '.$itemModelLabel.' : '.$item->getLabel(). ' ('.$item->uriResource.')', array('color'=>'light_cyan'));
+				self::out('migrating item '.$itemModelLabel.' : '.$item->getLabel(). ' ('.$item->getUri().')', array('color'=>'light_cyan'));
 				
 				//switch from script parameters to one of these options:
 //				$this->migrateToUnversionedItem($item);
@@ -198,10 +198,10 @@ class taoItems_scripts_MigrateUnversionedItems
 		$dataFile = $model['file'];
 		$usedLanguages = $item->getUsedLanguages($this->itemContentProperty);
 		
-		$oldSourceFolder = substr($item->uriResource, strpos($item->uriResource, '#') + 1);
+		$oldSourceFolder = substr($item->getUri(), strpos($item->getUri(), '#') + 1);
 		$oldSourceFolder = ROOT_PATH . '/taoItems/data/' . $oldSourceFolder . '/';
 		$propItemContent = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
-		switch ($itemModel->uriResource) {
+		switch ($itemModel->getUri()) {
 			case TAO_ITEM_MODEL_QTI:
 			case TAO_ITEM_MODEL_XHTML:{
 				foreach ($usedLanguages as $usedLanguage) {
@@ -237,7 +237,7 @@ class taoItems_scripts_MigrateUnversionedItems
 				break;
 			}
 			default : {
-				self::out('unknown item type : ' . $itemModel->uriResource);
+				self::out('unknown item type : ' . $itemModel->getUri());
 				return $returnValue;
 			}
 		}
@@ -284,10 +284,10 @@ class taoItems_scripts_MigrateUnversionedItems
         $returnValue = (bool) false;
 
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039D9 begin
-		if(!isset($this->items[$item->uriResource])){
-			$this->items[$item->uriResource] = array();
+		if(!isset($this->items[$item->getUri()])){
+			$this->items[$item->getUri()] = array();
 		}
-		$this->items[$item->uriResource][$key] = $value;
+		$this->items[$item->getUri()][$key] = $value;
 		$returnValue = true;
 		
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039D9 end
@@ -309,8 +309,8 @@ class taoItems_scripts_MigrateUnversionedItems
         $returnValue = null;
 
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039DE begin
-		if(isset($this->items[$item->uriResource]) && $this->items[$item->uriResource][$key]){
-			$returnValue = $this->items[$item->uriResource][$key];
+		if(isset($this->items[$item->getUri()]) && $this->items[$item->getUri()][$key]){
+			$returnValue = $this->items[$item->getUri()][$key];
 		}
         // section 127-0-1-1-4425969b:13726750fb5:-8000:00000000000039DE end
 

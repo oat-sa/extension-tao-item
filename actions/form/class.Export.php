@@ -103,7 +103,7 @@ class taoItems_actions_form_Export
     		$item = $this->data['instance'];
     		if($item instanceof core_kernel_classes_Resource){
     			$fileName = strtolower(tao_helpers_Display::textCleaner($item->getLabel()));
-    			$options[$item->uriResource] = $item->getLabel();
+    			$options[$item->getUri()] = $item->getLabel();
     		}
     	}
     	else {
@@ -116,7 +116,7 @@ class taoItems_actions_form_Export
     		if($class instanceof core_kernel_classes_Class){
 				$fileName =  strtolower(tao_helpers_Display::textCleaner($class->getLabel(), '*'));
 				foreach($class->getInstances() as $instance){
-					$options[$instance->uriResource] = $instance->getLabel();
+					$options[$instance->getUri()] = $instance->getLabel();
 				}
     		}
     	}
@@ -168,7 +168,7 @@ class taoItems_actions_form_Export
     		if($item instanceof core_kernel_classes_Resource){
     			if($itemService->hasItemModel($item, array(TAO_ITEM_MODEL_QTI))){
     				$fileName = strtolower(tao_helpers_Display::textCleaner($item->getLabel()));
-    				$options[$item->uriResource] = $item->getLabel();
+    				$options[$item->getUri()] = $item->getLabel();
     			}
     		}
     	}
@@ -183,7 +183,7 @@ class taoItems_actions_form_Export
 					$fileName =  strtolower(tao_helpers_Display::textCleaner($class->getLabel(), '*'));
 					foreach($class->getInstances() as $instance){
 						if($itemService->hasItemModel($instance, array(TAO_ITEM_MODEL_QTI))){
-							$options[$instance->uriResource] = $instance->getLabel();
+							$options[$instance->getUri()] = $instance->getLabel();
 						}
 					}
     		}

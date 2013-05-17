@@ -76,14 +76,14 @@ abstract class taoItems_models_classes_Scale_Scale
         // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003824 begin
         foreach ($ressource->getTypes() as $type) {
 	        try {
-	        	$returnValue = self::createByClass($type->uriResource);
+	        	$returnValue = self::createByClass($type->getUri());
 	        	break;
 	        } catch (common_Exception $e) {
 	        	// not nescessary an exception since ressource can have many types
 	        };
         }
         if (is_null($returnValue)) {
-        	throw new common_exception_Error('Unknown Scale Type for '.$ressource->uriResource);	
+        	throw new common_exception_Error('Unknown Scale Type for '.$ressource->getUri());	
         }
     	
     	if ($returnValue instanceof taoItems_models_classes_Scale_Numerical) {

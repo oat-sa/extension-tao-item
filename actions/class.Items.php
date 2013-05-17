@@ -109,7 +109,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				//$options[$optUri] = $optLabel . " ($statusLabel)";
 			}
 			if(!is_null($status)){
-				if($status->uriResource == TAO_ITEM_MODEL_STATUS_DEPRECATED){
+				if($status->getUri() == TAO_ITEM_MODEL_STATUS_DEPRECATED){
 					$deprecatedOptions[] = $optUri;
 				}
 			}
@@ -144,7 +144,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 			}
 		}
 
-		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
 
 		$modelDefined = $this->service->isItemModelDefined($item);
 		$isDeprecated =  $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
@@ -152,8 +152,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
 
-		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
 		$this->setData('modelDefined', $modelDefined);
 		$this->setData('isDeprecated', $isDeprecated);
@@ -188,16 +188,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		if(!$versionedFileResource instanceof core_kernel_classes_Resource){
 			//if the file resource does not exist, create it
 			$versionedFileResource = $propertyRange->createInstance();
-			$ownerInstance->setPropertyValue($property, $versionedFileResource->uriResource);
+			$ownerInstance->setPropertyValue($property, $versionedFileResource->getUri());
 		}
-		$versionedFile = new core_kernel_versioning_File($versionedFileResource->uriResource);
+		$versionedFile = new core_kernel_versioning_File($versionedFileResource->getUri());
 
 		//create the form
 		$formContainer = new taoItems_actions_form_VersionedItemContent(null
 			, array(
-				'instanceUri' => $versionedFile->uriResource,
-				'ownerUri' => $ownerInstance->uriResource,
-				'propertyUri' => $property->uriResource
+				'instanceUri' => $versionedFile->getUri(),
+				'ownerUri' => $ownerInstance->getUri(),
+				'propertyUri' => $property->getUri()
 			)
 		);
 		$myForm = $formContainer->getForm();
@@ -252,7 +252,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 					$imported = false;
 					if (file_exists($data['file_import']['uploaded_file'])) {
 						$uploadedFilePath = $data['file_import']['uploaded_file'];
-						switch ($itemModel->uriResource) {
+						switch ($itemModel->getUri()) {
 							case TAO_ITEM_MODEL_QTI: {
 									if (preg_match('/\.xml/i', $uploadedFilePath)) {
 										$imported = $this->importQTIFile($item, $uploadedFilePath, false, $message);
@@ -292,8 +292,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				if(!count(get_data('importErrors'))){
 					$ctx = Context::getInstance();
 					$this->redirect(_url($ctx->getActionName(), $ctx->getModuleName(), $ctx->getExtensionName(), array(
-						'uri'			=> tao_helpers_Uri::encode($ownerInstance->uriResource),
-						'propertyUri'	=> tao_helpers_Uri::encode($property->uriResource),
+						'uri'			=> tao_helpers_Uri::encode($ownerInstance->getUri()),
+						'propertyUri'	=> tao_helpers_Uri::encode($property->getUri()),
 						'message'		=> get_data('message')
 					)));
 				}
@@ -419,7 +419,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
 					if($qtiService->saveDataItemToRdfItem($qtiItem, $rdfItem, 'HOLD_COMMIT')){
 						$versionedFolder = $rdfItem->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_VERSIONED_CONTENT_PROPERTY));
-						$versionedFolder = new core_kernel_versioning_File($versionedFolder->uriResource);
+						$versionedFolder = new core_kernel_versioning_File($versionedFolder->getUri());
 						if($versionedFolder->add(true, true) && $versionedFolder->commit('[QTI pack] '.$commitMessage)){
 							$importedItems++;
 						}
@@ -537,7 +537,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
 					//get the Xml Schema regarding the item model
 					$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-					switch($itemModel->uriResource){
+					switch($itemModel->getUri()){
 					 	case TAO_ITEM_MODEL_PAPERBASED:
 							$validate = false;
 					 		break;
@@ -583,7 +583,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 						$item->editPropertyValues(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY), $data['file_import']['name']);
 						$formContainer->addDownloadSection();
 
-						$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+						$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
 						$this->setData('message', __('Item content saved'));
 
 					}
@@ -593,8 +593,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				}
 			}
 		}
-		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
 		$this->setData('formTitle', __('Manage item content'));
 		$this->setData('myForm', $myForm->render());
@@ -617,8 +617,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 			$this->setData('preview', true);
 
 			$options = array(
-				'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
-				'classUri'	=> 	tao_helpers_Uri::encode($itemClass->uriResource),
+				'uri'		=>	tao_helpers_Uri::encode($item->getUri()),
+				'classUri'	=> 	tao_helpers_Uri::encode($itemClass->getUri()),
 				'context'	=> false,
 				'match'		=> 'server'
 			);
@@ -639,7 +639,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 			}
 			$this->setData('optionsForm', $myForm->render());
 
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
 
 			//this is this url that will contains the preview
 			//@see taoItems_actions_PreviewApi
@@ -652,8 +652,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		}
 		$this->setData('previewTitle', $previewTitle);
 
-		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
 		$this->setView('preview.tpl');
 	}
@@ -689,8 +689,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		if($this->service->hasItemContent($item) && $this->service->isItemModelDefined($item)){
 
 			$options = array(
-				'uri'		=>	tao_helpers_Uri::encode($item->uriResource),
-				'classUri'	=> 	tao_helpers_Uri::encode($clazz->uriResource),
+				'uri'		=>	tao_helpers_Uri::encode($item->getUri()),
+				'classUri'	=> 	tao_helpers_Uri::encode($clazz->getUri()),
 				'context'	=> false,
 				'match'		=> 'server'
 			);
@@ -721,7 +721,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		if($myForm->isSubmited()){
 			if($myForm->isValid()){
 				if($clazz instanceof core_kernel_classes_Resource){
-					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->uriResource));
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->getUri()));
 				}
 				$this->setData('message', __('Class saved'));
 				$this->setData('reload', true);
@@ -745,7 +745,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		if($subClass instanceof core_kernel_classes_Class){
 			echo json_encode(array(
 				'label'	=> $subClass->getLabel(),
-				'uri' 	=> tao_helpers_Uri::encode($subClass->uriResource)
+				'uri' 	=> tao_helpers_Uri::encode($subClass->getUri())
 			));
 		}
 	}
@@ -863,11 +863,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                 if($authoring instanceof core_kernel_classes_Literal){
 
-					$this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->uriResource).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
+					$this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->getUri()).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
 
 				}
 			}
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->uriResource, false));
+			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
 
 		}
 		catch(Exception $e){
@@ -881,8 +881,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         }
                         $this->setData('errorMsg', $errorMsg);
 		}
-		$this->setData('uri', tao_helpers_Uri::encode($item->uriResource));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->uriResource));
+		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
 		$this->setView('authoring.tpl');
 	}
@@ -907,14 +907,14 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				if(!$itemContentSaved){
 					$message = __('Item saving failed');
 				}else{
-					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->uriResource));
+					$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
 					$message = __('Item successfully saved');
 				}
 			}
 
 			if(tao_helpers_Context::check('STANDALONE_MODE')){
 				$itemClass = $this->service->getClass($item);
-				$this->redirect(_url('authoring', 'SaSItems', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->uriResource).'&classUri='.tao_helpers_Uri::encode($itemClass->uriResource), 'classUri' => tao_helpers_Uri::encode($itemClass->uriResource), 'message' => urlencode($message))));
+				$this->redirect(_url('authoring', 'SaSItems', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->getUri()).'&classUri='.tao_helpers_Uri::encode($itemClass->getUri()), 'classUri' => tao_helpers_Uri::encode($itemClass->getUri()), 'message' => urlencode($message))));
 			}
 			else{
 				$this->redirect(_url('index', 'Main', 'tao', array('message' => urlencode($message))));

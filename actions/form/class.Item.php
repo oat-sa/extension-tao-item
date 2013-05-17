@@ -94,7 +94,7 @@ class taoItems_actions_form_Item
     	if(!tao_helpers_Context::check('STANDALONE_MODE')){
 			/*
 			$url = _url('itemVersionedContentIO', 'Items', 'taoItems', array(
-				'uri'			=> tao_helpers_Uri::encode($this->instance->uriResource),
+				'uri'			=> tao_helpers_Uri::encode($this->instance->getUri()),
 				'propertyUri'	=> tao_helpers_Uri::encode('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemVersionedContent')
 			));
 
@@ -105,8 +105,8 @@ class taoItems_actions_form_Item
 			
 	    		// Add content action
 	    		$url = _url('itemContentIO', 'Items', 'taoItems', array(
-	    			'uri'		=> tao_helpers_Uri::encode($this->instance->uriResource),
-	    			'classUri'	=> tao_helpers_Uri::encode($this->clazz->uriResource)
+	    			'uri'		=> tao_helpers_Uri::encode($this->instance->getUri()),
+	    			'classUri'	=> tao_helpers_Uri::encode($this->clazz->getUri())
 	    		));
 	    		
 	    		$itemContentIOElt = tao_helpers_form_FormFactory::getElement('itemContentIO', 'Free');

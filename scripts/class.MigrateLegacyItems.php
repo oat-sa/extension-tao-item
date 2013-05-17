@@ -296,7 +296,7 @@ class taoItems_scripts_MigrateLegacyItems
 		    //create default structure
 		    $itemIdentifier = null;
 		    if(!is_null($this->item)){
-		    	$itemIdentifier = tao_helpers_Uri::getUniqueId($this->item->uriResource);
+		    	$itemIdentifier = tao_helpers_Uri::getUniqueId($this->item->getUri());
 		    }
 		    
 		    $label = '';

@@ -143,13 +143,13 @@ class taoItems_actions_form_ItemContentIO
 			
     	//add an hidden elt for the class uri
 		$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');
-		$classUriElt->setValue(tao_helpers_Uri::encode($this->clazz->uriResource));
+		$classUriElt->setValue(tao_helpers_Uri::encode($this->clazz->getUri()));
 		$this->form->addElement($classUriElt);
 			
 		if(!is_null($this->instance)){
 			//add an hidden elt for the instance Uri
 			$instanceUriElt = tao_helpers_form_FormFactory::getElement('uri', 'Hidden');
-			$instanceUriElt->setValue(tao_helpers_Uri::encode($this->instance->uriResource));
+			$instanceUriElt->setValue(tao_helpers_Uri::encode($this->instance->getUri()));
 			$this->form->addElement($instanceUriElt);
 		}
     	
@@ -176,8 +176,8 @@ class taoItems_actions_form_ItemContentIO
         
     	if(is_null($this->form->getElement('file_download'))){
 			$downloadUrl = _url('downloadItemContent', null, null, array(
-					'uri' 		=> tao_helpers_Uri::encode($this->instance->uriResource),
-					'classUri' 	=> tao_helpers_Uri::encode($this->clazz->uriResource)
+					'uri' 		=> tao_helpers_Uri::encode($this->instance->getUri()),
+					'classUri' 	=> tao_helpers_Uri::encode($this->clazz->getUri())
 			));
 			
 			$downloadFileElt = tao_helpers_form_FormFactory::getElement("file_download", 'Free');

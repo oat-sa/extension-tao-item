@@ -49,7 +49,7 @@ class taoItems_models_classes_exporter_QTIPackedItemExporter extends taoItems_mo
 	 */
 	public function exportManifest(){
 
-		$base = tao_helpers_Uri::getUniqueId($this->getItem()->uriResource);
+		$base = tao_helpers_Uri::getUniqueId($this->getItem()->getUri());
 		$zipArchive = $this->getZip();
 		if(!is_null($zipArchive)){
 			
