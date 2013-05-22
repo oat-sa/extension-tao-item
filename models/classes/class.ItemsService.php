@@ -294,9 +294,9 @@ class taoItems_models_classes_ItemsService
 
 			if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 
-				if(core_kernel_classes_File::isFile($itemContent)){
+				if(core_kernel_file_File::isFile($itemContent)){
 
-					$file = new core_kernel_classes_File($itemContent->getUri());
+					$file = new core_kernel_file_File($itemContent->getUri());
 					$returnValue = file_get_contents($file->getAbsolutePath());
 					if ($returnValue == false) {
 						common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
@@ -363,7 +363,7 @@ class taoItems_models_classes_ItemsService
 
 			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 			$itemContent = $itemContents->get(0);
-			if(!core_kernel_classes_File::isFile($itemContent)){
+			if(!core_kernel_file_File::isFile($itemContent)){
 				throw new common_Exception('Item '.$item->getUri().' has none file itemContent');
 			}
 			$file = new core_kernel_versioning_File($itemContent);
@@ -967,7 +967,7 @@ class taoItems_models_classes_ItemsService
 		foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
 			$files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
 			foreach($files->getIterator() as $file){
-				$file = new core_kernel_classes_File($file);
+				$file = new core_kernel_file_File($file);
 				if (core_kernel_versioning_File::isVersionedFile($file)) {
 					$file = new core_kernel_versioning_File($file);
 				}
@@ -1030,7 +1030,7 @@ class taoItems_models_classes_ItemsService
 		$files = $item->getPropertyValues($this->itemContentProperty);
 		foreach ($files as $file) {
 			// theoreticaly this should always be no or a single file 
-			if ($file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_VERSIONEDFILE))) {
+			if ($file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))) {
 				$returnValue = true;
 			}
 		}
@@ -1063,7 +1063,7 @@ class taoItems_models_classes_ItemsService
 			if (count($files) > 1) {
 				throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
 			}
-			$content = new core_kernel_classes_File(current($files));
+			$content = new core_kernel_file_File(current($files));
 			$returnValue = dirname($content->getAbsolutePath()).DIRECTORY_SEPARATOR;
 		}
 

@@ -216,7 +216,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				$message = isset($data['commit_message'])?$data['commit_message']:'';
 				$fileName = '';
 				$filePath = $this->service->getItemFolder($item);
-				$repositoryUri = $data[PROPERTY_VERSIONEDFILE_REPOSITORY];
+				$repositoryUri = $data[PROPERTY_FILE_FILESYSTEM];
 				$version = isset($data['file_version']) ? $data['file_version'] : 0;
 
 				$done = false;
