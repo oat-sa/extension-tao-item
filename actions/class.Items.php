@@ -643,7 +643,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
 			//this is this url that will contains the preview
 			//@see taoItems_actions_PreviewApi
-			$this->setData('previewUrl', _url('runner', 'PreviewApi', 'taoItems', $options));
+			$this->setData('previewUrl', taoItems_actions_PreviewApi::getPreviewUrl($item, $options));
+			// deprecated Preview using runtime folder:
+			//$this->setData('previewUrl', _url('runner', 'PreviewApi', 'taoItems', $options));
 		}
 
 		$previewTitle = __('Preview');

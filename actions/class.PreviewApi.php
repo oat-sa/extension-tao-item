@@ -159,7 +159,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 
 			//Prepare folders for the deployment
 			$itemFolder = $this->itemService->getRuntimeFolder($item);
-      $itemPath = "{$itemFolder}/index.html";
+			$itemPath = "{$itemFolder}/index.html";
 			if (!is_dir($itemFolder)) {
 				mkdir($itemFolder);
 			}
@@ -173,58 +173,11 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 
 			//Create the sandbox
 			$executionEnvironment = $this->createFakeExecutionEnvironment($item, $user);
-
-			// We inject the data directly in the deployed item file
-      		$apis = array(
-				'jquery' => ROOT_URL.'tao/views/js/jquery-1.8.0.min.js',
-				'taoApi' => BASE_WWW.'js/taoApi/taoApi.min.js',
-				'taoMatching'	=> BASE_WWW.'js/taoMatching/taoMatching.min.js',
-				'wfApi' => ROOT_URL.'wfEngine/views/js/wfApi/wfApi.min.js'
-			);
-      		
-      		$apis = array();
-
+			
 			try {
-				//we parse the DOM of the item (it must be well formed and valid)
-				$doc = new DOMDocument();
-				(DEBUG_MODE)?@$doc->loadHTMLFile($itemPath):$doc->loadHTMLFile($itemPath);
-
-				//inject the apis
-				$headNodes = $doc->getElementsByTagName('head');
-
-				foreach ($headNodes as $headNode) {
-					//Inject the initialisation script
-					//@see taoItems_actions_PreviewApi::iniApis
-					$initScriptElt = $doc->createElement('script');
-					$initScriptElt->setAttribute('type', 'text/javascript');
-
-					$initScriptParams = array(
-						'context'	=> $useContext,
-						'matching' 	=> ($deployParams['matching_server']) ? 'server' : 'client',
-						'debug'		=> $debugMode,
-						'uri' 		=> tao_helpers_Uri::encode($item->getUri()),
-						'time'		=> time()	//to prevent caching
-					);
-					common_Logger::d(var_export($initScriptParams, true), 'QTIdebug');
-					
-					//the url of the init script
-					$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
-
-					$headNode->appendChild($initScriptElt);
-
-					//we inject too the preview-console
-					$previewScriptElt = $doc->createElement('script');
-					$previewScriptElt->setAttribute('type', 'text/javascript');
-					$previewScriptElt->setAttribute('src', BASE_WWW.'js/preview-console.js');
-					$headNode->appendChild($previewScriptElt);
-					break;
-				}
-
-				/*
-				 * Render of the item by printing the HTML,
-				 * so be carefull with the URLs inside the item
-				 */
-				echo $doc->saveHTML();
+				$source = file_get_contents($itemPath);
+				$htmlCode = $this->insertPreviewJs($item, $source);
+				echo $htmlCode;
 			}
 			catch (DOMException $de) {
 				throw new Exception(__("An error occured while loading the item: ") . $de);
@@ -258,18 +211,20 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				)));
 
 				//taoApi events tracing parameters
-				$itemFolder = $this->itemService->getRuntimeFolder($item);
-				if(file_exists($itemFolder .'/events.xml')){
-					$eventService = tao_models_classes_EventsService::singleton();
-					$eventData =  $eventService->getEventList($itemFolder .'/events.xml');
-
-					$this->setData('eventData', json_encode($eventData));
-					$this->setData('eventParams', json_encode(array(
-							'url' 		=> _url('traceEvents', 'PreviewApi', 'taoItems'),
-							'params'	=> array('token' => self::AUTH_TOKEN)
-					)));
+				$eventFile = $this->itemService->getItemFolder($item).'events.xml';
+				if (!file_exists($eventFile)) {
+					$eventFile = ROOT_PATH.'taoItems/data/events_ref.xml';
 				}
+				
+				$eventService = tao_models_classes_EventsService::singleton();
+				$eventData =  $eventService->getEventList($eventFile);
 
+				$this->setData('eventData', json_encode($eventData));
+				$this->setData('eventParams', json_encode(array(
+						'url' 		=> _url('traceEvents', 'PreviewApi', 'taoItems'),
+						'params'	=> array('token' => self::AUTH_TOKEN)
+				)));
+			
 				//taoMatching
 				$matching_server = false;
 				if($this->hasRequestParameter('matching')){
@@ -327,21 +282,11 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				$user = $this->userService->getCurrentUser();
 				$executionEnvironment = $this->getFakeExecutionEnvironment($user);
 				if(isset($executionEnvironment['token'])){
-
-					$item = new core_kernel_classes_Resource($executionEnvironment[TAO_ITEM_CLASS]['uri']);
-					$itemMatchingData = $this->itemService->getMatchingData($item);
-
-					matching_init ();
-			        matching_setRule ($itemMatchingData["rule"]);
-                    matching_setMaps ($itemMatchingData["maps"]);
-                    matching_setAreaMaps ($itemMatchingData["areaMaps"]);
-			        matching_setCorrects ($itemMatchingData["corrects"]);
-			        matching_setResponses (json_decode($_POST['data']));
-			        matching_setOutcomes ($itemMatchingData["outcomes"]);
-			        matching_evaluate ();
 					
-			        $outcomes = matching_getOutcomes ();
-			        // Check if outcomes are scalar
+					$item = new core_kernel_classes_Resource($executionEnvironment[TAO_ITEM_CLASS]['uri']);
+					$outcomes = $this->itemService->evaluate($item, json_decode($_POST['data']));
+
+					// Check if outcomes are scalar
 			        try {
 			            foreach ($outcomes as $outcome) {
 			                if (! is_scalar($outcome['value'])){
@@ -442,6 +387,114 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 		}
 		echo json_encode(array('saved' => $saved));
 	}
+	
+	private function insertPreviewJs($item, $html) {
+		
+		//Initialize the deployment parameters
+		$matching_server = true;
+		if ($this->hasRequestParameter('match')) {
+			if ($this->getRequestParameter('match') == 'client') {
+				$matching_server = false;
+			}
+		}
+		$debugMode = false;
+		if ($this->hasRequestParameter('debug')) {
+			if ($this->getRequestParameter('debug')) {
+				$deployParams['debug'] = true;
+			}
+		}
+		$useContext  = false;
+		if ($this->hasRequestParameter('context')) {
+			if ($this->getRequestParameter('context')) {
+				$useContext = true;
+			}
+		}
+		//we parse the DOM of the item (it must be well formed and valid)
+		$doc = new DOMDocument();
+		(DEBUG_MODE)?@$doc->loadHTML($html):$doc->loadHTML($html);
 
+		//inject the apis
+		$headNodes = $doc->getElementsByTagName('head');
+
+		foreach ($headNodes as $headNode) {
+			//Inject the initialisation script
+			//@see taoItems_actions_PreviewApi::iniApis
+			$initScriptElt = $doc->createElement('script');
+			$initScriptElt->setAttribute('type', 'text/javascript');
+
+			$initScriptParams = array(
+				'context'	=> $useContext,
+				'matching' 	=> $matching_server ? 'server' : 'client',
+				'debug'		=> $debugMode,
+				'uri' 		=> tao_helpers_Uri::encode($item->getUri()),
+				'time'		=> time()	//to prevent caching
+			);
+			common_Logger::d(var_export($initScriptParams, true), 'QTIdebug');
+			
+			//the url of the init script
+			$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
+
+			$headNode->appendChild($initScriptElt);
+
+			//we inject too the preview-console
+			$previewScriptElt = $doc->createElement('script');
+			$previewScriptElt->setAttribute('type', 'text/javascript');
+			$previewScriptElt->setAttribute('src', BASE_WWW.'js/preview-console.js');
+			$headNode->appendChild($previewScriptElt);
+			break;
+		}
+
+		/*
+		 * Render of the item by printing the HTML,
+		 * so be carefull with the URLs inside the item
+		 */
+		return $doc->saveHTML();
+	}
+	
+	public static function getPreviewUrl($item, $options) {
+		$code = base64_encode($item->getUri());
+		unset($options['uri'], $options['classUri']);
+		return _url('render/'.$code.'/index.php', 'PreviewApi', 'taoItems', $options);
+	}
+	
+	public function render() {
+		$parts = explode('?', $_SERVER['REQUEST_URI'], 2);
+		$parts = explode('/', $parts[0], 6);
+		list($empty, $extension, $module, $action, $codedUri, $path) = $parts;
+		$uri = base64_decode($codedUri);
+		$item = new core_kernel_classes_Resource($uri);
+		if ($path == 'index.php') {
+			$this->renderItem($item);
+		} else {
+			$this->renderResource($item, $path);
+		}
+	}
+	
+	private function renderItem($item) {
+		
+		$user = $this->userService->getCurrentUser();
+		$this->createFakeExecutionEnvironment($item, $user);
+		
+		$itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+		$impl = $this->itemService->getItemModelImplementation($itemModel);
+		if (!is_null($impl)) {
+			$html = $impl->render($item);
+			echo $this->insertPreviewJs($item, $html);
+		} else {
+			throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
+		}
+	}
+	
+	private function renderResource($item, $path) {
+		$folder = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item);
+		$filename = $folder.$path;
+		if (file_exists($filename)) {
+			$mimeType = tao_helpers_File::getMimeType($filename);
+			header('Content-Type: '.$mimeType); 
+			echo file_get_contents($filename);
+		} else {
+			throw new tao_models_classes_FileNotFoundException($filename);
+		}
+	}
 }
 ?>
