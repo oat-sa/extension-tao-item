@@ -883,24 +883,24 @@ class taoItems_models_classes_ItemsService
 				new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY),
 				new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_HUMAN_ASSISTED)
 			));
-			if (!isset($properties[TAO_ITEM_IDENTIFIER_PROPERTY])) {
+			if (empty($properties[TAO_ITEM_IDENTIFIER_PROPERTY])) {
 				throw new common_exception_Error('Missing identifier for Measurement');
 			}
 			$identifier = (string)array_pop($properties[TAO_ITEM_IDENTIFIER_PROPERTY]);
-			if (isset($properties[TAO_ITEM_SCALE_PROPERTY])) {
+			if (!empty($properties[TAO_ITEM_SCALE_PROPERTY])) {
 				$scale = taoItems_models_classes_Scale_Scale::buildFromRessource(array_pop($properties[TAO_ITEM_SCALE_PROPERTY]));
 			}
 			$desc = '';
-			if (isset($properties[TAO_ITEM_DESCRIPTION_PROPERTY])) {
+			if (!empty($properties[TAO_ITEM_DESCRIPTION_PROPERTY])) {
 				foreach ($properties[TAO_ITEM_DESCRIPTION_PROPERTY] as $subdesc) {
 					$desc .= $subdesc;
 				}
 			}
 			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $desc);
-			if (isset($scale) && !is_null($scale)) {
+			if (!empty($scale) && !is_null($scale)) {
 				$returnValue[$identifier]->setScale($scale);
 			}
-			if (isset($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED])) {
+			if (!empty($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED])) {
 				$assisted = array_pop($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED]);
 				$returnValue[$identifier]->setHumanAssisted($assisted->getUri() == GENERIS_TRUE);
 			}
