@@ -11,6 +11,10 @@ $(function (){
 		initEventServices({ type: 'manual', data: <?=get_data('eventData')?>}, <?=get_data('eventParams')?>);
 	<?endif?>
 
+		beforeFinish(function(){
+			$('body').css('cursor', 'wait');
+		});
+		
 		afterFinish(function(){
 			$('body').css('cursor', 'default');
 		});
