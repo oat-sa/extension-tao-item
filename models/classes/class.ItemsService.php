@@ -488,7 +488,7 @@ class taoItems_models_classes_ItemsService
 					}
 				}
 			}
-			catch(common_Exception $ce){
+			catch(common_exception_EmptyProperty $ce){
 				$returnValue = false;
 			}
 		}
