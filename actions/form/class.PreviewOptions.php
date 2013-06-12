@@ -149,11 +149,6 @@ class taoItems_actions_form_PreviewOptions
     	}
     	$this->form->addElement($debugElt);
     	
-    	//add an hidden elt for the class uri
-		$classUriElt = tao_helpers_form_FormFactory::getElement('classUri', 'Hidden');
-		$classUriElt->setValue($this->data['classUri']);
-		$this->form->addElement($classUriElt);
-			
 		//add an hidden elt for the instance Uri
 		$uriElt = tao_helpers_form_FormFactory::getElement('uri', 'Hidden');
 		$uriElt->setValue($this->data['uri']);
