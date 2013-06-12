@@ -36,7 +36,7 @@ class taoItems_models_classes_XHTML_Service
      */
     public function __construct() {
     }
-	
+
     /**
      * Render an XHTML item.
      *
@@ -53,10 +53,37 @@ class taoItems_models_classes_XHTML_Service
         
         // Check if all needed APIs are referenced.
         $xhtml = self::referenceApis($xhtml); // throws ItemModelException.
+        //$xhtml = $this->replaceDeprecatedApis($xhtml); // throws ItemModelException.
 
         return $xhtml;
     }
     
+	
+    /**
+     * Removes unnescessary API references
+     * 
+     * @param Resource $item
+     */
+    public function replaceDeprecatedApis($xhtml) {
+    	$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
+    	if (!$dom->loadHTML($xhtml)){
+    		throw new taoItems_models_classes_ItemModelException("An error occured while loading the XML content of the rendered item.");
+    	}
+    	
+    	$found = 0;
+    	$apis = self::buildApisArray();
+    	foreach ($apis as $pattern => $infos){
+    		$found += taoItems_helpers_Xhtml::removeScriptElements($dom, '/' . $pattern . '/i');
+    	}
+    	if ($found > 0) {
+    		common_Logger::i('found '.$found.' references to deprecated APIs, replacing with legacy API');
+	    	$taoItemsExt = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+	    	$legacyApiSrc = $taoItemsExt->getConstant('BASE_WWW') . 'js/taoApi/taoApi.min.js';
+	    	taoItems_helpers_Xhtml::addScriptElement($dom, $legacyApiSrc);
+    	}
+    	return $dom->saveHTML();
+    }
+        
     /**
      * Add script elements to OWI items if there are some missing APIs.
      * Missing APIs could be 
@@ -121,21 +148,32 @@ class taoItems_models_classes_XHTML_Service
     	$taoItemsBaseWww = $taoItemsExt->getConstant('BASE_WWW');
     	$taoItemsWwwPath = $taoItemsExt->getConstant('WWW_PATH');
     	
+    	// item Api
     	$apis = array();
-    	$apis['taoApi'] 		= array('src' 	=> $taoItemsBaseWww . 'js/taoApi/taoApi.min.js',
-    									 'path'	=> $taoItemsWwwPath . 'js' . DIRECTORY_SEPARATOR . 'taoApi' . DIRECTORY_SEPARATOR . 'taoApi.min.js');
+    	$apis['taoApi'] = array(
+    		'src' 	=> $taoItemsBaseWww . 'js/taoApi/taoApi.min.js',
+    		'path'	=> $taoItemsWwwPath . 'js' . DIRECTORY_SEPARATOR . 'taoApi' . DIRECTORY_SEPARATOR . 'taoApi.min.js'
+    	);
     	
+    	// wf Api
     	if (($wfEngineExt = $extManager->getExtensionById('wfEngine')) != null){
     		$wfEngineExt = $extManager->getExtensionById('wfEngine');
     		$wfEngineBaseWww = $wfEngineExt->getConstant('BASE_WWW');
     		$wfEngineWwwPath = $wfEngineExt->getConstant('WWW_PATH');
     		
-    		$apis['wfApi'] = array('src'	=> $wfEngineBaseWww . 'js/wfApi/wfApi.min.js',
-    								'path'	=> $wfEngineWwwPath . 'js' . DIRECTORY_SEPARATOR . 'wfApi' . DIRECTORY_SEPARATOR . 'wfApi.min.js');
+    		$apis['wfApi'] = array(
+    			'src'	=> $wfEngineBaseWww . 'js/wfApi/wfApi.min.js',
+    			'path'	=> $wfEngineWwwPath . 'js' . DIRECTORY_SEPARATOR . 'wfApi' . DIRECTORY_SEPARATOR . 'wfApi.min.js'
+    		);
     	}
     	
-    	$apis['taoMatching'] 	= array('src'	=> $taoItemsBaseWww . 'js/taoMatching/taoMatching.min.js',
-    									 'path'	=> $taoItemsBaseWww . 'js' . DIRECTORY_SEPARATOR . 'taoMatching' . DIRECTORY_SEPARATOR . 'taoMatching.min.js');
+    	if (($taoQtiExt = $extManager->getExtensionById('taoQTI')) != null) {
+    		$taoQtiWww = $taoQtiExt->getConstant('BASE_WWW');
+    		$apis['taoMatching'] 	= array(
+    			'src'	=> $taoQtiWww . 'js/responseProcessing/taoMatching.min.js',
+    			'path'	=> $taoQtiWww . 'js' . DIRECTORY_SEPARATOR . 'responseProcessing' . DIRECTORY_SEPARATOR . 'taoMatching.min.js'
+    		);
+    	}
     	
     	return $apis;
     }
