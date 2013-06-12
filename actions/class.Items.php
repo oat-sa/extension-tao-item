@@ -603,64 +603,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 	}
 
 	/**
-	 * Preview an item
-	 * @return void
-	 */
-	public function preview() {
-		$this->setData('preview', false);
-		$this->setData('previewMsg', __("Not yet available"));
-
-		$itemClass = $this->getCurrentClass();
-		$item = $this->getCurrentInstance();
-
-		if ($this->service->hasItemContent($item) && $this->service->isItemModelDefined($item)) {
-			$this->setData('preview', true);
-
-			$options = array(
-				'uri'		=>	tao_helpers_Uri::encode($item->getUri()),
-				'classUri'	=> 	tao_helpers_Uri::encode($itemClass->getUri()),
-				'context'	=> false,
-				'match'		=> 'server'
-			);
-
-			if ($this->hasSessionAttribute('previewOpts')) {
-				$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
-			}
-
-			//create the options form
-			$formContainer = new taoItems_actions_form_PreviewOptions($options);
-			$myForm = $formContainer->getForm();
-			if ($myForm->isSubmited()) {
-				if ($myForm->isValid()) {
-					$previewOpts = $myForm->getValues();
-					$options = array_merge($options, $previewOpts);
-					$this->setSessionAttribute('previewOpts', $previewOpts);
-				}
-			}
-			$this->setData('optionsForm', $myForm->render());
-
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
-
-			//this is this url that will contains the preview
-			//@see taoItems_actions_PreviewApi
-			$this->setData('previewUrl', taoItems_actions_PreviewApi::getPreviewUrl($item, $options));
-			// deprecated Preview using runtime folder:
-			//$this->setData('previewUrl', _url('runner', 'PreviewApi', 'taoItems', $options));
-		}
-
-		$previewTitle = __('Preview');
-		if ($this->hasRequestParameter('previewTitle')) {
-			$previewTitle = $this->getRequestParameter('previewTitle');
-		}
-		$this->setData('previewTitle', $previewTitle);
-
-		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
-
-		$this->setView('preview.tpl');
-	}
-
-	/**
 	 * Display directly the content of the preview, outside any container
 	 */
 	public function fullScreenPreview()
@@ -700,7 +642,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
 			}
 
-			$previewUrl =  _url('runner', 'PreviewApi', 'taoItems', $options);
+			$previewUrl =  _url('index', 'ItemPreview', 'taoItems', $options);
 		}
 
 		return $previewUrl;

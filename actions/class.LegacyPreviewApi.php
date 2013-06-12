@@ -22,7 +22,7 @@
 ?>
 <?php
 /**
- * the PreviewApi provides methods to preview and execute items
+ * the LegacyPreviewApi provides methods to preview and execute items
  * in a sandbox environment.
  *
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -30,7 +30,7 @@
  * @subpackage actions
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-class taoItems_actions_PreviewApi extends tao_actions_Api {
+class taoItems_actions_LegacyPreviewApi extends tao_actions_Api {
 
 	/**
 	 * @var string the same token is exchanged for all the communications
@@ -116,76 +116,6 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 	}
 
 	/**
-	 * The runner is the containter called to :
-	 * 	- Initialize the environment and the parameters, inject the Apis into the item
-	 *  - Deploy the item: generate the item files
-	 *  - Display the previewed item
-	 */
-	public function runner(){
-		if ($this->hasRequestParameter('uri')) {
-			$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
-
-			//use the TaoManager user as the subject
-			$user = $this->userService->getCurrentUser();
-			if (is_null($user)) {
-				throw new Exception(__('No user is logged in'));
-			}
-
-			//default deployment params
-			$deployParams = array(
-				'delivery_server_mode' => false,
-				'matching_server' => true,
-				'base_www' => BASE_WWW
-			);
-
-			//Initialize the deployment parameters
-			if ($this->hasRequestParameter('match')) {
-				if ($this->getRequestParameter('match') == 'client') {
-					$deployParams['matching_server'] = false;
-				}
-			}
-			$debugMode = false;
-			if ($this->hasRequestParameter('debug')) {
-				if ($this->getRequestParameter('debug')) {
-					$deployParams['debug'] = true;
-				}
-			}
-			$useContext  = false;
-			if ($this->hasRequestParameter('context')) {
-				if ($this->getRequestParameter('context')) {
-					$useContext = true;
-				}
-			}
-
-			//Prepare folders for the deployment
-			$itemFolder = $this->itemService->getRuntimeFolder($item);
-			$itemPath = "{$itemFolder}/index.html";
-			if (!is_dir($itemFolder)) {
-				mkdir($itemFolder);
-			}
-
-			$itemUrl = tao_helpers_Uri::getUrlForPath($itemPath);
-			//Deploy the item, will create the html file in itemPath available from itemUrl
-
-			if (!$this->itemService->deployItem($item, $itemPath, $itemUrl,  $deployParams)) {
-				throw new Exception('unable to deploy item');
-			}
-
-			//Create the sandbox
-			$executionEnvironment = $this->createFakeExecutionEnvironment($item, $user);
-			
-			try {
-				$source = file_get_contents($itemPath);
-				$htmlCode = $this->insertPreviewJs($item, $source);
-				echo $htmlCode;
-			}
-			catch (DOMException $de) {
-				throw new Exception(__("An error occured while loading the item: ") . $de);
-			}
-		}
-	}
-
-	/**
 	 * Action to render a dynamic javascript page
 	 * containing the APIs initialization for the current preview execution context
 	 */
@@ -206,7 +136,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 
 				//taoApi push parameters
 				$this->setData('pushParams', json_encode(array(
-						'url' 		=> _url('save', 'PreviewApi', 'taoItems'),
+						'url' 		=> _url('save', 'LegacyPreviewApi', 'taoItems'),
 						'params'	=> array('token' => self::AUTH_TOKEN)
 				)));
 
@@ -221,7 +151,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 
 				$this->setData('eventData', json_encode($eventData));
 				$this->setData('eventParams', json_encode(array(
-						'url' 		=> _url('traceEvents', 'PreviewApi', 'taoItems'),
+						'url' 		=> _url('traceEvents', 'LegacyPreviewApi', 'taoItems'),
 						'params'	=> array('token' => self::AUTH_TOKEN)
 				)));
 			
@@ -236,7 +166,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				$matchingParams = array();
 				if($matching_server == true){
 					$matchingParams = array(
-						'url'		=> _url('evaluate', 'PreviewApi', 'taoItems'),
+						'url'		=> _url('evaluate', 'LegacyPreviewApi', 'taoItems'),
 						'params'	=> array('token' => self::AUTH_TOKEN)
 					);
 				}
@@ -254,11 +184,11 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 				}
 				$this->setData('disableContext', $disable_context);
 				$this->setData('contextSourceParams', json_encode(array(
-						'url' 		=> _url('retrieveContext', 'PreviewApi', 'taoItems'),
+						'url' 		=> _url('retrieveContext', 'LegacyPreviewApi', 'taoItems'),
 						'params'	=> array('token' => self::AUTH_TOKEN)
 				)));
 				$this->setData('contextDestinationParams', json_encode(array(
-						'url' 		=> _url('saveContext', 'PreviewApi', 'taoItems'),
+						'url' 		=> _url('saveContext', 'LegacyPreviewApi', 'taoItems'),
 						'params'	=> array('token' => self::AUTH_TOKEN)
 				)));
 
@@ -388,27 +318,17 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 		echo json_encode(array('saved' => $saved));
 	}
 	
-	private function insertPreviewJs($item, $html) {
+	private function insertInitApiJs($item, $html) {
 		
 		//Initialize the deployment parameters
-		$matching_server = true;
-		if ($this->hasRequestParameter('match')) {
-			if ($this->getRequestParameter('match') == 'client') {
-				$matching_server = false;
-			}
+		$options = $this->getRequestParameters();
+		if ($this->hasSessionAttribute('previewOpts')) {
+			$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
 		}
-		$debugMode = false;
-		if ($this->hasRequestParameter('debug')) {
-			if ($this->getRequestParameter('debug')) {
-				$deployParams['debug'] = true;
-			}
-		}
-		$useContext  = false;
-		if ($this->hasRequestParameter('context')) {
-			if ($this->getRequestParameter('context')) {
-				$useContext = true;
-			}
-		}
+		$debugMode = isset($options['debug']) ? $options['debug'] : true;
+		$matching_server = isset($options['match']) ? $options['match'] !== 'client' : false;
+		$useContext = isset($options['debug']) ? $options['context'] : true;
+		
 		//we parse the DOM of the item (it must be well formed and valid)
 		$doc = new DOMDocument();
 		(DEBUG_MODE)?@$doc->loadHTML($html):$doc->loadHTML($html);
@@ -418,7 +338,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 
 		foreach ($headNodes as $headNode) {
 			//Inject the initialisation script
-			//@see taoItems_actions_PreviewApi::iniApis
+			//@see taoItems_actions_LegacyPreviewApi::iniApis
 			$initScriptElt = $doc->createElement('script');
 			$initScriptElt->setAttribute('type', 'text/javascript');
 
@@ -432,7 +352,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 			common_Logger::d(var_export($initScriptParams, true), 'QTIdebug');
 			
 			//the url of the init script
-			$initScriptElt->setAttribute('src', _url('initApis', 'PreviewApi', 'taoItems', $initScriptParams));
+			$initScriptElt->setAttribute('src', _url('initApis', 'LegacyPreviewApi', 'taoItems', $initScriptParams));
 
 			$headNode->appendChild($initScriptElt);
 
@@ -451,16 +371,15 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 		return $doc->saveHTML();
 	}
 	
-	public static function getPreviewUrl($item, $options) {
-		$code = base64_encode($item->getUri());
-		unset($options['uri'], $options['classUri']);
-		return _url('render/'.$code.'/index.php', 'PreviewApi', 'taoItems', $options);
-	}
-	
 	public function render() {
-		$parts = explode('?', $_SERVER['REQUEST_URI'], 2);
-		$parts = explode('/', $parts[0], 6);
-		list($empty, $extension, $module, $action, $codedUri, $path) = $parts;
+		// @TODO Copy/past of resolver in need of refactoring
+		$rootUrlPath	= parse_url(ROOT_URL, PHP_URL_PATH);
+		$absPath		= parse_url('/'.ltrim($_SERVER['REQUEST_URI'], '/'), PHP_URL_PATH);
+		if (substr($absPath, 0, strlen($rootUrlPath)) != $rootUrlPath ) {
+			throw new ResolverException('Request Uri '.$request.' outside of TAO path '.ROOT_URL);
+		}
+		$relPath		= substr($absPath, strlen($rootUrlPath));
+		list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);;
 		$uri = base64_decode($codedUri);
 		$item = new core_kernel_classes_Resource($uri);
 		if ($path == 'index.php') {
@@ -479,7 +398,7 @@ class taoItems_actions_PreviewApi extends tao_actions_Api {
 		$impl = $this->itemService->getItemModelImplementation($itemModel);
 		if (!is_null($impl)) {
 			$html = $impl->render($item);
-			echo $this->insertPreviewJs($item, $html);
+			echo $this->insertInitApiJs($item, $html);
 		} else {
 			throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
 		}

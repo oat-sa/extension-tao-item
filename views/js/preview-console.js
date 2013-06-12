@@ -90,7 +90,7 @@ $(document).ready(function(){
 	//log in the console the ajax request to the Preview Api
 	$('body').ajaxSuccess(function(event, request, settings){
 		
-		if(/PreviewApi/.test(settings.url)){
+		if(/LegacyPreviewApi/.test(settings.url)){
 			
 			var message = '';
 			//taoApi Push

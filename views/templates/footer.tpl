@@ -19,7 +19,7 @@
 			}
 		<?endif;?>
 			if(ctx_action != 'preview'){
-				uiBootstrap.tabs.tabs('url', previewIndex, "<?=_url('preview', 'Items', 'taoItems', array('uri' => get_data('uri'), 'classUri' => get_data('classUri')))?>");
+				uiBootstrap.tabs.tabs('url', previewIndex, "<?=_url('index', 'ItemPreview', 'taoItems', array('uri' => get_data('uri'), 'classUri' => get_data('classUri')))?>");
 				uiBootstrap.tabs.tabs('enable', previewIndex);
 			}
 		<?if(get_data('label')):?>
