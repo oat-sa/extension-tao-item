@@ -61,25 +61,30 @@ ItemPreviewImpl.prototype.finish = function() {
 	};
 	
 	// submit Results
-	
-	this.renderToConsole();
-};
-
-ItemPreviewImpl.prototype.renderToConsole = function() {
+	this.log('state', 'item is now finished!');
 	var strOutcomes = '';
 	for (var outcomeKey in this.scores){
 		strOutcomes += '[ ' + outcomeKey+ ' = ' + this.scores[outcomeKey] + ' ]';
 	}
+	window.top.helpers.createInfoMessage('THE OUTCOME VALUES : <br/>'  + strOutcomes);
+	this.log('responses', this.responses);
+	this.log('outcomes', this.scores);
+};
 
-	var previewConsole = document.getElementById("preview-console");
-	if (previewConsole != null){
-		//display the outcomes in the main window
-		window.top.helpers.createInfoMessage('THE OUTCOME VALUES : <br/>'  + strOutcomes);
-	
-		//and in the preview console
-		$('#preview-console', window.top.document).trigger('updateConsole', ['outcomes', strOutcomes]);
+ItemPreviewImpl.prototype.log = function(title, message) {
+	if (typeof(message) == 'object') {
+		string = '';
+		for (var attrname in message) {
+			string += ', ' + attrname+ '=' + message[attrname];
+		}
+		message = '{' + string.substring(2) + '}';
+	}
+	previewConsole = $('#preview-console');
+	if (previewConsole.length > 0){
+		//In the preview console
+		previewConsole.trigger('updateConsole', [title, message]);
 	} else {
 		//outside preview container
-		alert(strOutcomes);
+		util.log(title + ': ' + message);
 	}
 }
