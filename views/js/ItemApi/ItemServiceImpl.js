@@ -1,5 +1,5 @@
-function ItemServiceImpl(workFlowApi) {
-	this.wfApi = workFlowApi;
+function ItemServiceImpl(serviceApi) {
+	this.serviceApi = serviceApi;
 	
 	this.responses = {};
 	this.scores = {};
@@ -54,5 +54,6 @@ ItemServiceImpl.prototype.finish = function() {
 	console.log('Finished with responses, scores, events: ');
 	console.log(this.responses);	
 	console.log(this.scores);	
-	console.log(this.events);	
+	console.log(this.events);
+	this.serviceApi.finish();
 };
