@@ -178,9 +178,10 @@ $(document).ready(function(){
 		}
 		
 	});
-	
+	/*
 	afterFinish(function(){
 		previewConsole.trigger('updateConsole', ['state', 'item is now finished!']);
-	});
+	})
+	*/;
 	
 });

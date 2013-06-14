@@ -81,38 +81,6 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 		$this->setView('previewItemRunner.tpl');
 	}
 
-	private function insertPreviewConsole($item, $html) {
-		
-		//we parse the DOM of the item (it must be well formed and valid)
-		$doc = new DOMDocument();
-		(DEBUG_MODE)?@$doc->loadHTML($html):$doc->loadHTML($html);
-
-		//inject the apis
-		$headNodes = $doc->getElementsByTagName('head');
-
-		foreach ($headNodes as $headNode) {
-			/*
-			$initScriptElt = $doc->createElement('script');
-			$initScriptElt->setAttribute('type', 'text/javascript');
-			$initScriptElt->setAttribute('src', BASE_WWW.'js/legacyApi/taoLegacyApi.min.js');
-			
-			$headNode->appendChild($initScriptElt);
-			*/
-			//we inject too the preview-console
-			$previewScriptElt = $doc->createElement('script');
-			$previewScriptElt->setAttribute('type', 'text/javascript');
-			$previewScriptElt->setAttribute('src', BASE_WWW.'js/preview-console.js');
-			$headNode->appendChild($previewScriptElt);
-			break;
-		}
-
-		/*
-		 * Render of the item by printing the HTML,
-		 * so be carefull with the URLs inside the item
-		 */
-		return $doc->saveHTML();
-	}
-	
 	public function getPreviewUrl($item, $options = array()) {
 		
 		$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
@@ -161,7 +129,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 	}
 	
 	private function renderItem($item) {
-		echo $this->insertPreviewConsole($item, $this->getRenderedItem($item));
+		echo $this->getRenderedItem($item);
 	}
 	
 	private function renderResource($item, $path) {

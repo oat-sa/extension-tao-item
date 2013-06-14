@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/preview.css" />
 <script type="text/javascript" src="<?=BASE_WWW?>js/ItemApi/ItemPreviewImpl.js"></script>
+<script type="text/javascript" src="<?=BASE_WWW?>js/preview-console.js"></script>
 <script type="text/javascript" src="<?=BASE_WWW?>js/previewItemRunner.js"></script>
 
 <div class="main-container">
