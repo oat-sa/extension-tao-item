@@ -44,12 +44,10 @@ return array(
 		),
 		'checks' => array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_data', 'location' => 'taoItems/data', 'rights' => 'rw')),
-			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_includes', 'location' => 'taoItems/includes', 'rights' => 'rw')),
-			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_views_runtime', 'location' => 'taoItems/views/runtime', 'rights' => 'rw'))
+			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_includes', 'location' => 'taoItems/includes', 'rights' => 'rw'))
 		),
 		'php'	=> array(
 			dirname(__FILE__).'/scripts/install/addLocalSource.php',
-			dirname(__FILE__).'/scripts/install/cleanRuntime.php'
 		)
 	),
 	'local'	=> array(
