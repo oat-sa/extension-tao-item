@@ -45,7 +45,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 			$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
 			if (in_array('taoItems_models_classes_ExportableItemModel', class_implements($impl))) {
 				foreach ($impl->getExportHandlers() as $handler) {
-					$returnValue[] = $handler;
+					array_unshift($returnValue, $handler);
 				}
 			}
 		}
