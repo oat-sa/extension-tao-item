@@ -143,8 +143,8 @@ abstract class taoItems_models_classes_ItemExporter {
 		
 		if (is_dir($src)) {
 			// Go deeper in folder hierarchy !
-			$src .= '/';
-			$dest .= '/';
+			$src .= DIRECTORY_SEPARATOR;
+			$dest .= DIRECTORY_SEPARATOR;
 			// Recursively copy.
 			$content = scandir($src);
 			
@@ -152,12 +152,13 @@ abstract class taoItems_models_classes_ItemExporter {
 				// avoid . , .. , .svn etc ...
 				if(!preg_match("/^\./", $file)) {
 					$done += $this->addFile($src.$file, $dest.$file);
+					
 				}
 			}
 		}
 		else {
-			// Simply copy the file.
-			if($zip->addFile($src, $dest)){
+			// Simply copy the file. Beware of leading slashes
+			if($zip->addFile($src, ltrim($dest, DIRECTORY_SEPARATOR))){
 				$done++;
 			}
 		}
