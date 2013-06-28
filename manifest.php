@@ -50,11 +50,6 @@ return array(
 			dirname(__FILE__).'/scripts/install/addLocalSource.php',
 		)
 	),
-	'local'	=> array(
-		'php'	=> array(
-				dirname(__FILE__).'/scripts/install/addOWIExamples.php'
-		)
-	),
 	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
 	'optimizableClasses' => array(
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
