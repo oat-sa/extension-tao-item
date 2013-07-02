@@ -39,7 +39,9 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 		$itemModels = array();
 		foreach ($resources as $resource) {
 			$model = taoItems_models_classes_ItemsService::singleton()->getItemModel($resource);
-			$itemModels[$model->getUri()] = $model;
+			if (!is_null($model)) {
+				$itemModels[$model->getUri()] = $model;
+			}
 		}
 		foreach ($itemModels as $model) {
 			$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
