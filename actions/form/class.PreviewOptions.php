@@ -91,7 +91,7 @@ class taoItems_actions_form_PreviewOptions
     	$this->form = tao_helpers_form_FormFactory::getForm('preview_options_form');
     	
     	$this->form->setActions(array(), 'top');
-    	$this->form->setActions(tao_helpers_form_FormFactory::getCommonActions('bottom', true, false), 'bottom');
+    	$this->form->setActions(tao_helpers_form_FormFactory::getCommonActions('bottom', true), 'bottom');
     	
         // section 127-0-1-1--983698e:12c9833a275:-8000:000000000000274B end
     }
