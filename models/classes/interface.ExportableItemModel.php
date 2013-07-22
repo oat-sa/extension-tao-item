@@ -46,6 +46,4 @@ interface taoItems_models_classes_ExportableItemModel
      */
     public function getExportHandlers();
 
-} /* end of interface taoItems_models_classes_evaluatableItemModel */
-
-?>
+}
