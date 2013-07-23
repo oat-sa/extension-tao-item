@@ -50,6 +50,21 @@ interface taoItems_models_classes_itemModel
      * @throws taoItems_models_classes_ItemModelException
      */
     public function render( core_kernel_classes_Resource $item);
+	
+    /**
+     * deploy used to create a stand-alone
+	 * runnable version of the item
+     *
+     * @access public
+     * @author Joel Bout, <joel@taotesting.com>
+     * @param  Resource item
+     * @param  string language
+	 * @param  string destination
+	 * @param  array options
+	 * @return boolean
+     * @throws taoItems_models_classes_ItemModelException
+     */
+	public function deployItem( core_kernel_classes_Resource $item, $language, $destination, $options = array());
 
 }
 

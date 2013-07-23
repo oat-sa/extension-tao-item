@@ -502,91 +502,21 @@ class taoItems_models_classes_ItemsService
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
-     * @param  string path
-     * @param  string url
-     * @param  array parameters
-     * @return boolean
+     * @param  string language
+     * @param  string destination
+     * @param  array options
+	 * @return boolean
      */
-    public function deployItem( core_kernel_classes_Resource $item, $path, $url = '', $parameters = array())
+    public function deployItem( core_kernel_classes_Resource $item, $language, $destination, $options = array())
     {
         $returnValue = (bool) false;
 
-		if(!is_null($item)){
-
-			//parameters that could not be rewrited
-			if(!isset($parameters['root_url']))		{ $parameters['root_url'] 		= ROOT_URL; }
-			if(!isset($parameters['base_www']))		{ $parameters['base_www'] 		= BASE_WWW; }
-			if(!isset($parameters['taobase_www']))	{ $parameters['taobase_www'] 	= TAOBASE_WWW; }
-			if(!isset($parameters['debug']))		{ $parameters['debug'] 			= false; }
-			if(!isset($parameters['raw_preview']))	{ $parameters['raw_preview'] 	= false; }
-
-			taoItems_models_classes_TemplateRenderer::setContext($parameters, 'ctx_');
-
-			$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-			$service = $this->getItemModelImplementation($itemModel);
-			if (!is_null($service)) {
-				$output = $service->render($item);
-				$itemFolder = dirname($path);
-				
-				//replace relative paths to resources by absolute uris to help the compilator
-				$matches = array();
-				$output = preg_replace_callback("/(href|src|data|\['imagePath'\]|root_url)\s*=\s*[\"\'](?!http|ftp|#)([\.\/]*)(.+?)[\"\']/i", function($matches) use ($url){
-					
-					$returnValue = $matches[0];
-					$htmlAttr = $matches[1];
-					$relUri = $matches[3];
-					
-					if(trim($relUri) != '' && true){
-						if (preg_match('/(.)+\/filemanager\/views\/data\//i', $relUri)) {
-							//check if the file is contained in the file manager
-							$absoluteUri = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_URL . '/filemanager/views/data/', $relUri);
-						} else {
-							$absoluteUri = dirname($url) . '/' . $relUri;
-						}
-						
-						$returnValue = $htmlAttr.'="'.$absoluteUri.'"';
-					}
-						
-					return $returnValue;
-					
-				}, $output);
-
-				if(file_put_contents($path, $output)){
-					$returnValue = true;
-				}
-
-				if($returnValue){
-
-					$itemFileName = '';
-					$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-					if(!is_null($itemModel)){
-						$itemFileName = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-					}
-
-					//copy the resources
-					$sourceFolder = $this->getItemFolder($item);
-					foreach(scandir($sourceFolder) as $file){
-						if($file != basename($path) && $file != $itemFileName &&$file != '.' && $file != '..'){
-							$copyFromPath = $sourceFolder . '/'. $file;
-							$copyToPath = $itemFolder . '/' . $file;
-							tao_helpers_File::copy($copyFromPath, $copyToPath, true);
-						}
-					}
-
-					//copy the event.xml if not present
-					if(!file_exists($itemFolder.'/events.xml')){
-						$eventXml = file_get_contents(ROOT_PATH.'/taoItems/data/events_ref.xml');
-						if(is_string($eventXml) && !empty($eventXml)){
-							$eventXml = str_replace('{ITEM_URI}', $item->getUri(), $eventXml);
-							$copyEventsToPath = $itemFolder.'/events.xml';
-							@file_put_contents($copyEventsToPath, $eventXml);
-						}
-					}
-				}
-			} else {
-				common_Logger::w('Deploy not possible for item('.$item->getUri().')');
+		$itemModel = $this->getItemModel($item);
+		if (!is_null($itemModel)) {
+			$impl = $this->getItemModelImplementation($itemModel);
+			if (!is_null($impl)) {
+				$returnValue = $impl->deployItem($item, $language, $destination, $options); 
 			}
-			
 		}
 
         return (bool) $returnValue;
