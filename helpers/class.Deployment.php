@@ -35,10 +35,9 @@ class taoItems_helpers_Deployment
 	public static function copyResources($sourceFolder, $destination, $excludeFiles = array())
 	{
 		//copy the resources
-		$exclude = array_merge($excludeFiles, array('.', '..'));
+		$exclude = array_merge($excludeFiles, array('.', '..', '.svn'));
 		foreach(scandir($sourceFolder) as $file) {
 			if(!in_array($file, $exclude)) {
-				common_Logger::i('Copy '.$sourceFolder . $file.' to '.$destination . $file);
 				tao_helpers_File::copy(
 					$sourceFolder . $file,
 					$destination . $file,
@@ -94,7 +93,7 @@ class taoItems_helpers_Deployment
 		// Only if the resource is external to TAO or in the filemanager of the current instance.
 		if(!preg_match('@^' . BASE_URL . '@', $url)){
 
-			common_Logger::i('Downloading '.$url);
+			common_Logger::d('Downloading '.$url);
 			set_time_limit(0);
 			$fp = fopen ($destination.$fileName, 'w+');
 			$curlHandler = curl_init();
