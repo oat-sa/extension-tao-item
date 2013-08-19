@@ -63,7 +63,7 @@ class taoItems_actions_LegacyPreviewApi extends tao_actions_Api {
 		//create a fake  executionEnvironment
         	$executionEnvironment = array(
 				'token'			 => self::AUTH_TOKEN,
-				'localNamespace' => core_kernel_classes_Session::singleton()->getNameSpace(),
+				'localNamespace' => rtrim(common_ext_NamespaceManager::singleton()->getLocalNamespace()->getUri(), '#'),
 
 				CLASS_PROCESS_EXECUTIONS => array(
 					'uri'		=> 'fake_process#i'.time(),
