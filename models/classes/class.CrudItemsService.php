@@ -48,9 +48,12 @@ class taoItems_models_classes_CrudItemsService
     }
     
     public function delete( $resource){
-	return parent::delete($resource);
+         taoItems_models_classes_ItemsService::singleton()->deleteItem(new core_kernel_classes_Resource($resource));
+	//parent::delete($resource)
+         return true;
     }
-     public function deleteAll(){
+
+    public function deleteAll(){
 	return parent::deleteAll();
     }
     /**
