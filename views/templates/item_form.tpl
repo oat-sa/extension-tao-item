@@ -26,28 +26,9 @@
 			}
 		});
 
-		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
-		$authoringButton.after('<input id="content-button" type="button" value="Content"/>');
-		$('#content-button').click(function(){
-			var url = '';
-			if(ctx_form_extension){
-				url = root_url + '/' + ctx_form_extension + '/' + ctx_form_module + '/';
-			}
-			url += 'itemContentIO';
-			var data = {
-				'uri':$("#uri").val()
-			};
-
-			if(uiBootstrap.tabs.size() == 0){
-				if($('div.main-container').length){
-					$('div.main-container').load(url, data);
-				}
-			}
-			$(helpers.getMainContainerSelector(uiBootstrap.tabs)).load(url, data);
-			return false;
-		});
 		<?if(!get_data('isAuthoringEnabled')):?>
-			$authoringButton.hide();
+    		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
+    		$authoringButton.hide();
 			uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
 		<?endif;?>
 

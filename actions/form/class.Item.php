@@ -108,10 +108,11 @@ class taoItems_actions_form_Item
 	    			'uri'		=> tao_helpers_Uri::encode($this->instance->getUri()),
 	    			'classUri'	=> tao_helpers_Uri::encode($this->clazz->getUri())
 	    		));
-	    		
+	    		/*
 	    		$itemContentIOElt = tao_helpers_form_FormFactory::getElement('itemContentIO', 'Free');
 				$itemContentIOElt->setValue("<a href='{$url}' class='nav' ><img src='".BASE_WWW."/img/text-xml.png' alt='xml' class='icon' /> ".__('Content')."</a>");
 				$actions[] = $itemContentIOElt;
+				*/
 				
     		
 		}
