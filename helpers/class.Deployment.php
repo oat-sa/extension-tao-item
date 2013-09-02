@@ -73,7 +73,7 @@ class taoItems_helpers_Deployment
 			// user might delete an image in the filemanager during a delivery campain. This is dangerous.
 			$mediaPath = self::retrieveFile($mediaUrl, $destination);
 			if(!empty($mediaPath) && $mediaPath !== false){
-				$xhtml = str_replace($mediaUrl, basename($mediaUrl), $xhtml, $replaced);//replace only when copyFile is successful
+				$xhtml = str_replace($mediaUrl, basename($mediaPath), $xhtml, $replaced);//replace only when copyFile is successful
 			}
 		}
 		return $xhtml;
