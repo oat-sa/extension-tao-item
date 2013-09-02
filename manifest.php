@@ -40,7 +40,9 @@ return array(
 	),
 	'install' => array(
 		'rdf' => array(
-			dirname(__FILE__). '/models/ontology/taoitem.rdf'
+			dirname(__FILE__). '/models/ontology/aclrole.rdf',
+		    dirname(__FILE__). '/models/ontology/taoitem.rdf',
+		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf'
 		),
 		'checks' => array(
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_data', 'location' => 'taoItems/data', 'rights' => 'rw')),
