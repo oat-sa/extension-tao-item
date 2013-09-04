@@ -22,7 +22,7 @@
 ?>
 <?php
 $extension = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-$dataPath = $extension ->getConstant('BASE_PATH') . 'data' . DIRECTORY_SEPARATOR;
+$dataPath = $extension ->getConstant('BASE_PATH') . 'data' . DIRECTORY_SEPARATOR . 'itemdata' . DIRECTORY_SEPARATOR;
 
 $source = tao_models_classes_FileSourceService::singleton()->addLocalSource('itemDirectory', $dataPath);
 taoItems_models_classes_ItemsService::singleton()->setDefaultFileSource($source);
