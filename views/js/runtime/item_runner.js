@@ -13,9 +13,7 @@ var bindApi = function() {
 }
 
 function onServiceApiReady(serviceApi) {
-	//var facade = util.generateFacade(ItemVariableStorage);
-	var storage = new ItemVariableStorage(serviceApi.getServiceCallId());
-	itemApi = new ItemServiceImpl(serviceApi, storage);
+	itemApi = new ItemServiceImpl(serviceApi);
 	console.log('Api ready');
 	bindApi();
 };

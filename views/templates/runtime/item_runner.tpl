@@ -4,10 +4,9 @@
 		<script type='text/javascript' src="<?=TAOBASE_WWW?>js/require-jquery.js"></script>
 		<script type='text/javascript' src="<?=TAOBASE_WWW?>js/util.js"></script>
 		<script type='text/javascript' src='<?=BASE_WWW?>js/runtime/ItemServiceImpl.js'></script>
-		<script type='text/javascript' src='<?=BASE_WWW?>js/runtime/ItemVariableStorage.js'></script>
 		<script type='text/javascript' src='<?=BASE_WWW?>js/runtime/item_runner.js'></script>
 		<script type='text/javascript'>
-			var storageData = <?=tao_helpers_Javascript::buildObject(get_data('storageData'));?>;
+
 			var itemId = <?=json_encode(get_data('itemId'));?>;
 		</script>
 	</head>

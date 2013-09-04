@@ -25,7 +25,7 @@
  * @package taoItems
  * @subpackage actions
  */
-class taoItems_actions_ItemRunner extends tao_actions_CommonModule {
+class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	
 	public function index(){
 

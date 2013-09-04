@@ -1,16 +1,23 @@
-function ItemServiceImpl(serviceApi, variableStorage) {
-	
-	// temnporary fix
-	this.itemId = 'undefined';
+function ItemServiceImpl(serviceApi) {
+
+	// temporary fix
+	this.itemId = '12314';
+	/*
 	if (typeof itemId !== "undefined") {
 		this.itemId = itemId;
 	}
+	*/
+	
+	console.log(serviceApi);
 	
 	this.serviceApi = serviceApi;
-	this.variableStorage = variableStorage;
 	this.responses = {};
 	this.scores = {};
 	this.events = {};
+	
+	var rawstate = serviceApi.getState();
+	var state = (typeof rawstate == 'undefined' || rawstate == null) ? {} : $.parseJSON(rawstate)
+	this.stateVariables = typeof state == 'object' ? state : {};
 	
 	this.beforeFinishCallbacks = new Array();
 }
@@ -61,7 +68,7 @@ ItemServiceImpl.prototype.finish = function() {
 	var callIdValue = this.serviceApi.getServiceCallId();
 	var itemIdValue = this.itemId;
 
-	this.variableStorage.submit(function(itemApi) {
+	this.serviceApi.setState(JSON.stringify(this.stateVariables), function(itemApi) {
 		
 		return function() {
 			console.log('Responses ', itemApi.responses);	
@@ -92,10 +99,13 @@ ItemServiceImpl.prototype.finish = function() {
 
 ItemServiceImpl.prototype.getVariable = function(identifier, callback) {
 	if (typeof callback == 'function') {
-		return this.variableStorage.get(identifier, callback);
+		callback((typeof this.stateVariables[identifier] == 'undefined')
+			? null
+			: this.stateVariables[identifier]
+		);
 	}
 }
 
 ItemServiceImpl.prototype.setVariable = function(identifier, value) {
-	return this.variableStorage.put(identifier, value);
+	this.stateVariables[identifier] = value;
 }
