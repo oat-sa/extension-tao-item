@@ -55,6 +55,10 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Service
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMPATH),
             $destinationDirectory
         ));
+        $service->addInParameter(new tao_models_classes_service_ConstantParameter(
+            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMURI),
+            $item
+        ));
         return $service;
     }
 }

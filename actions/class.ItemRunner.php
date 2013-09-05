@@ -50,15 +50,9 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		$directoryResource = new core_kernel_file_File(tao_helpers_Uri::decode($this->getRequestParameter('itemPath')));
 
 		$baseUrl = taoDelivery_models_classes_RuntimeAccess::getAccessProvider()->getAccessUrl($directoryResource);
-		/*
-		$itemPath = taoDelivery_models_classes_RuntimeAccess::getAccessProvider()->getAccessUrl($directoryResource);
 		
-        echo $itemPath;
-        die();
-
-		$this->setData('itemId', '12345');
-		*/
 		$this->setData('itemPath', $baseUrl.$lang.DIRECTORY_SEPARATOR.'index.html');
+		$this->setData('itemId', $this->getRequestParameter('itemUri'));
 		
 		$this->setView('runtime/item_runner.tpl');			
 	}

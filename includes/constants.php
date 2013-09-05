@@ -66,6 +66,7 @@ $todefine = array(
 	'TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DiscreteScaleDistance',
     
     'INSTANCE_SERVICE_ITEMRUNNER'      => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner',
-    'INSTANCE_FORMALPARAM_ITEMPATH'    => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath'
+    'INSTANCE_FORMALPARAM_ITEMPATH'    => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath',
+	'INSTANCE_FORMALPARAM_ITEMURI'     => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri'
 );
 ?>

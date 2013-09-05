@@ -28,36 +28,15 @@
  */
 abstract class taoItems_models_classes_Compiler extends tao_models_classes_Service
 {
-    /**
-     * 
-     * @param core_kernel_classes_Resource $item
-     * @param string $destination
-     * @return tao_models_classes_service_ServiceCall
-     */
-    public function compileItem(core_kernel_classes_Resource $item, $destination) {
-        $itemService = taoItems_models_classes_ItemsService::singleton();
-        if (! $itemService->isItemModelDefined($item)) {
-            throw new common_Exception('Item ' . $item->getUri() . ' has no item model during compilation');
-        }
-        
-        $langs = $item->getUsedLanguages(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-        foreach ($langs as $compilationLanguage) {
-        	$compiledFolder = $destination. $compilationLanguage. DIRECTORY_SEPARATOR;
-        	if(!is_dir($compiledFolder)){
-        		mkdir($compiledFolder);
-        	}
-        	$itemService = taoItems_models_classes_ItemsService::singleton();
-        	$itemService->deployItem($item, $compilationLanguage, $compiledFolder);
-        	//$compilationResult[] = $this->deployItem($item, $compilationLanguage, $compiledFolder);
-        }
-        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_SERVICE_ITEMRUNNER));
-        $service->addInParameter(new tao_models_classes_service_ConstantParameter(
-            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMPATH),
-            $compiledFolder
-        ));
-        return $service;
-    }
     
+    /**
+     * Creates an appropriate subdirectory for a resource's compilation
+     * 
+     * @param core_kernel_file_File $directory
+     * @param core_kernel_classes_Resource $resource
+     * @throws taoItems_models_classes_CompilationFailedException
+     * @return core_kernel_versioning_File
+     */
     protected function createSubDirectory(core_kernel_file_File $directory, core_kernel_classes_Resource $resource)
     {
         $subDirectory = substr($resource->getUri(), strpos($resource->getUri(), '#') + 1);

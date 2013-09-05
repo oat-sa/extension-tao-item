@@ -17,12 +17,19 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[Resultserver]]></rdfs:comment>
     <wf:PropertyFormalParametersName><![CDATA[resultServer]]></wf:PropertyFormalParametersName>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri">
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Uri]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Uri]]></rdfs:comment>
+    <wf:PropertyFormalParametersName><![CDATA[itemUri]]></wf:PropertyFormalParametersName>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Runner]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Embed a run an item into a Delivery. This service initialize the TAO Apis and contexts]]></rdfs:comment>
     <wf:PropertySupportServicesUrl><![CDATA[/taoItems/ItemRunner/index?itemPath=^itemPath&resultServer=^resultServer&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath"/>
+    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri"/>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver"/>
   </rdf:Description>
 </rdf:RDF>

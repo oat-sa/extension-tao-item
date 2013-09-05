@@ -1,14 +1,9 @@
 function ItemServiceImpl(serviceApi) {
 
 	// temporary fix
-	this.itemId = '12314';
-	/*
 	if (typeof itemId !== "undefined") {
 		this.itemId = itemId;
 	}
-	*/
-	
-	console.log(serviceApi);
 	
 	this.serviceApi = serviceApi;
 	this.responses = {};
@@ -65,8 +60,6 @@ ItemServiceImpl.prototype.finish = function() {
 	for (var i = 0; i < this.beforeFinishCallbacks.length; i++) {
 		this.beforeFinishCallbacks[i]();
 	};
-	var callIdValue = this.serviceApi.getServiceCallId();
-	var itemIdValue = this.itemId;
 
 	this.serviceApi.setState(JSON.stringify(this.stateVariables), function(itemApi) {
 		
@@ -79,8 +72,8 @@ ItemServiceImpl.prototype.finish = function() {
 			$.ajax({
 				url  		: resultsStorageEndPoint,
 				data 		: {
-					itemId:itemIdValue,
-					serviceCallId: callIdValue,
+					itemId: itemApi.itemId,
+					serviceCallId: itemApi.serviceApi.getServiceCallId(),
 					responseVariables: itemApi.responses,
 					outcomeVariables: itemApi.scores,
 					traceVariables:itemApi.events
