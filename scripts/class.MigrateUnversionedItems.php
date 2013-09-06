@@ -134,7 +134,7 @@ class taoItems_scripts_MigrateUnversionedItems
 		$this->itemModels = array();
 		$this->items = array();
 		
-		self::out('generis default language : '.DEFAULT_LANG);
+		$this->out('generis default language : '.DEFAULT_LANG);
 		foreach($items as $item){
 			
 			$itemModel = $this->itemService->getItemModel($item);
@@ -158,7 +158,7 @@ class taoItems_scripts_MigrateUnversionedItems
 				$this->setItemData($item, 'model', $itemModel);
 				
 				//migrate items with an item model only:
-				self::out('migrating item '.$itemModelLabel.' : '.$item->getLabel(). ' ('.$item->getUri().')', array('color'=>'light_cyan'));
+				$this->out('migrating item '.$itemModelLabel.' : '.$item->getLabel(). ' ('.$item->getUri().')', array('color'=>'light_cyan'));
 				
 				//switch from script parameters to one of these options:
 //				$this->migrateToUnversionedItem($item);
@@ -217,11 +217,11 @@ class taoItems_scripts_MigrateUnversionedItems
 					$source = $oldSourceFolder.'/'.$dataFile;
 					$destination = $destinationFolder . '/' . $dataFile;
 
-					self::out('versioning ' . $destinationFolder . ' to ' . $destinationFolder);
+					$this->out('versioning ' . $destinationFolder . ' to ' . $destinationFolder);
 					if (file_exists($oldSourceFolder) && is_dir($oldSourceFolder)) {
 
 						//first copy all source files from source to destination:
-						self::out('copying ' . $oldSourceFolder . ' to ' . $destinationFolder);
+						$this->out('copying ' . $oldSourceFolder . ' to ' . $destinationFolder);
 						tao_helpers_File::copy($oldSourceFolder, $destinationFolder);
 
 						//delete the old data file
@@ -237,7 +237,7 @@ class taoItems_scripts_MigrateUnversionedItems
 				break;
 			}
 			default : {
-				self::out('unknown item type : ' . $itemModel->getUri());
+				$this->out('unknown item type : ' . $itemModel->getUri());
 				return $returnValue;
 			}
 		}

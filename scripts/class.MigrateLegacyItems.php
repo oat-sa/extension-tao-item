@@ -146,7 +146,7 @@ class taoItems_scripts_MigrateLegacyItems
     		$this->item = $this->createResource($clazz);
     	}
     	if ((isset($this->inputFormat['uri'])  || isset($this->parameters['addResource'])) && is_null($this->item )){
-    		self::err("Unable to create/retrieve item");
+    		$this->err("Unable to create/retrieve item");
     	}
     	if(isset($this->parameters['output'])){
     		$this->outputDir = $this->parameters['output'];
@@ -471,7 +471,7 @@ class taoItems_scripts_MigrateLegacyItems
 			$returnValue = $output;
     	}
     	catch(DomainException $de){
-			self::err($de, true);    		
+			$this->err($de, true);    		
     	}
     	
         // section 127-0-1-1--5d5119d4:12e3924f2ec:-8000:0000000000002D78 end
