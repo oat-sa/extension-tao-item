@@ -31,10 +31,11 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Service
     /**
      * 
      * @param core_kernel_classes_Resource $item
-     * @param string $destination
+     * @param core_kernel_file_File $destination
+     * @param core_kernel_classes_Resource $resultServer
      * @return tao_models_classes_service_ServiceCall
      */
-    public function compileItem(core_kernel_classes_Resource $item, core_kernel_file_File $destinationDirectory) {
+    public function compileItem(core_kernel_classes_Resource $item, core_kernel_file_File $destinationDirectory, core_kernel_classes_Resource $resultServer) {
         $itemService = taoItems_models_classes_ItemsService::singleton();
         if (! $itemService->isItemModelDefined($item)) {
             throw new common_Exception('Item ' . $item->getUri() . ' has no item model during compilation');
@@ -59,6 +60,11 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Service
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMURI),
             $item
         ));
+        $service->addInParameter(new tao_models_classes_service_ConstantParameter(
+            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_RESULTSERVER),
+            $resultServer
+        ));
+        
         return $service;
     }
 }
