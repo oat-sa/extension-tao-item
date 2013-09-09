@@ -10,7 +10,7 @@
 			var itemId = <?=json_encode(get_data('itemId'));?>;
 		</script>
 	</head>
-	<body style="margin: 0px;">
-		<iframe id='item-container' src="<?=get_data('itemPath')?>" class="toolframe" frameborder="0" style="position:absolute;left:0%;top:0%;width:100%;" height="800"></iframe>
+	<body>
+		<iframe id='item-container' src="<?=get_data('itemPath')?>" class="toolframe" frameborder="0" style="width:100%;overflow:auto"></iframe>
 	</body>
 </html>

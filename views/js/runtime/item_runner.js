@@ -10,7 +10,7 @@ var bindApi = function() {
 		console.log('Connecting');
 		itemApi.connect(frame);
 	}
-}
+};
 
 function onServiceApiReady(serviceApi) {
 	itemApi = new ItemServiceImpl(serviceApi);
@@ -26,11 +26,15 @@ $(document).ready(function() {
 				console.log('Frame ready');
 				bindApi();
 			}
-		}
+		};
 	} else {		
 		frame.onload = function(){
 			console.log('Frame ready');
 			bindApi();
-		}
+		};
 	}
+	
+	setInterval(function() {
+		$(frame).height($(frame).contents().height());
+	}, 10);
 });
