@@ -11,7 +11,7 @@ function ItemServiceImpl(serviceApi) {
 	this.events = {};
 	
 	var rawstate = serviceApi.getState();
-	var state = (typeof rawstate == 'undefined' || rawstate == null) ? {} : $.parseJSON(rawstate)
+	var state = (typeof rawstate == 'undefined' || rawstate == null) ? {} : $.parseJSON(rawstate);
 	this.stateVariables = typeof state == 'object' ? state : {};
 	
 	this.beforeFinishCallbacks = new Array();
@@ -23,7 +23,7 @@ ItemServiceImpl.prototype.connect = function(frame){
 		frame.contentWindow.onItemApiReady(this);
 	}
 	console.log('ItemServiceImpl connected');
-}
+};
 
 // Response 
 
@@ -31,7 +31,7 @@ ItemServiceImpl.prototype.saveResponses = function(valueArray){
 	for (var attrname in valueArray) {
 		this.responses[attrname] = valueArray[attrname];
 	}
-}
+};
 
 ItemServiceImpl.prototype.traceEvents = function(eventArray) {
 	for (var attrname in eventArray) {
@@ -39,7 +39,7 @@ ItemServiceImpl.prototype.traceEvents = function(eventArray) {
 	}
 
 	console.log('Got scores: '.eventArray);
-}
+};
 
 // Scoring
 ItemServiceImpl.prototype.saveScores = function(valueArray) {
@@ -47,13 +47,13 @@ ItemServiceImpl.prototype.saveScores = function(valueArray) {
 		this.scores[attrname] = valueArray[attrname];
 	}
 	console.log('Got scores: '.valueArray);
-}
+};
 
 // Flow
 ItemServiceImpl.prototype.beforeFinish = function(callback) {
 	console.log('beforeFinish received by ItemServiceImpl');
 	this.beforeFinishCallbacks.push(callback);
-}
+};
 
 ItemServiceImpl.prototype.finish = function() {
 	console.log('Running ' + this.beforeFinishCallbacks.length + ' registered events');
@@ -86,7 +86,7 @@ ItemServiceImpl.prototype.finish = function() {
 			});
 
 			
-		}
+		};
 	}(this));		
 };
 
@@ -97,8 +97,8 @@ ItemServiceImpl.prototype.getVariable = function(identifier, callback) {
 			: this.stateVariables[identifier]
 		);
 	}
-}
+};
 
 ItemServiceImpl.prototype.setVariable = function(identifier, value) {
 	this.stateVariables[identifier] = value;
-}
+};
