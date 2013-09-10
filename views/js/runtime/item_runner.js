@@ -16,7 +16,14 @@ function onServiceApiReady(serviceApi) {
 	itemApi = new ItemServiceImpl(serviceApi);
 	console.log('Api ready');
 	bindApi();
-};
+}
+
+function autoResize(frame, frequence) {
+	$frame = $(frame);
+	setInterval(function() {
+		$frame.height($frame.contents().height());
+	}, frequence);
+}
 
 $(document).ready(function() {
 	frame = document.getElementById('item-container');
@@ -25,16 +32,14 @@ $(document).ready(function() {
 			if(this.readyState == 'complete'){
 				console.log('Frame ready');
 				bindApi();
+				autoResize(frame, 10);
 			}
 		};
 	} else {		
 		frame.onload = function(){
 			console.log('Frame ready');
 			bindApi();
+			autoResize(frame, 10);
 		};
 	}
-	
-	setInterval(function() {
-		$(frame).height($(frame).contents().height());
-	}, 10);
 });
