@@ -54,7 +54,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		$this->setData('itemPath', $baseUrl.$lang.DIRECTORY_SEPARATOR.'index.html');
 		$this->setData('itemId', $this->getRequestParameter('itemUri'));
 		
-		$resultServer = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('itemUri')));
+		$resultServer = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('resultServer')));
 		$this->setData('resultJsApi', taoResultServer_helpers_ResultServerJsApi::getServiceApi($resultServer));
 		
 		$this->setView('runtime/item_runner.tpl');			
