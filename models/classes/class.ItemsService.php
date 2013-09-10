@@ -999,6 +999,14 @@ class taoItems_models_classes_ItemsService
 
         return (string) $returnValue;
     }
+    
+    public function getCompiler(core_kernel_classes_Resource $item) {
+        $itemModel = $this->getItemModel($item);
+        if (is_null($itemModel)) {
+            throw new common_exception_Error('undefined itemmodel for test '.$item->getUri());
+        }
+        return $this->getItemModelImplementation($itemModel)->getCompiler($item);
+    }
 
     /**
      * sets the filesource to use for new items

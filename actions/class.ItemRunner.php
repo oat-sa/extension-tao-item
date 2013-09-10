@@ -107,8 +107,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	 * @return string A string representing JavaScript instructions.
 	 */
 	protected function getResultServerApi() {
-	    $resultServer = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('resultServer')));
-	    return taoResultServer_helpers_ResultServerJsApi::getServiceApi($resultServer);
+	    return taoResultServer_helpers_ResultServerJsApi::getServiceApi();
 	}
 	
 	/**
@@ -125,7 +124,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	 * select the view to be displayed.
 	 */
 	protected function selectView() {
-	    $this->setView('runtime/item_runner.tpl');
+	    $this->setView('runtime/item_runner.tpl', 'taoItems');
 	}
 	
 	/**
@@ -134,6 +133,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	 * 
 	 */
 	protected function selectWebFolder() {
-	    $this->setData('webFolder', BASE_WWW);
+	    $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+	    $this->setData('webFolder', $ext->getConstant('BASE_WWW'));
 	}
 }

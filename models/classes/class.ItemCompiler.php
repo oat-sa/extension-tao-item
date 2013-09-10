@@ -19,23 +19,23 @@
  */
 
 /**
- * Compiles a test and item
+ * Generic item compiler
  *
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
- * @package taoDelivery
+ * @package taoItems
  * @subpackage models_classes
  */
-class taoItems_models_classes_ItemCompiler extends tao_models_classes_Service
+class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
 {
     /**
      * 
-     * @param core_kernel_classes_Resource $item
-     * @param core_kernel_file_File $destination
-     * @param core_kernel_classes_Resource $resultServer
+     * @param core_kernel_file_File $destinationDirectory
+     * @throws common_Exception
      * @return tao_models_classes_service_ServiceCall
      */
-    public function compileItem(core_kernel_classes_Resource $item, core_kernel_file_File $destinationDirectory, core_kernel_classes_Resource $resultServer) {
+    public function compile(core_kernel_file_File $destinationDirectory) {
+        $item = $this->getResource();
         $itemService = taoItems_models_classes_ItemsService::singleton();
         if (! $itemService->isItemModelDefined($item)) {
             throw new common_Exception('Item ' . $item->getUri() . ' has no item model during compilation');
@@ -49,8 +49,11 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Service
         	}
         	$itemService = taoItems_models_classes_ItemsService::singleton();
         	$itemService->deployItem($item, $compilationLanguage, $compiledFolder);
-        	//$compilationResult[] = $this->deployItem($item, $compilationLanguage, $compiledFolder);
         }
+        return $this->createService($item, $destinationDirectory);
+    }
+    
+    protected function createService(core_kernel_classes_Resource $item, $destinationDirectory) {
         $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_SERVICE_ITEMRUNNER));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMPATH),
@@ -60,11 +63,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Service
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMURI),
             $item
         ));
-        $service->addInParameter(new tao_models_classes_service_ConstantParameter(
-            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_RESULTSERVER),
-            $resultServer
-        ));
         
-        return $service;
+        return $service;        
     }
 }

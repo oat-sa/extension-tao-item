@@ -66,6 +66,13 @@ interface taoItems_models_classes_itemModel
      */
 	public function deployItem( core_kernel_classes_Resource $item, $language, $destination, $options = array());
 
+	/**
+	 * Returns a compiler for the item 
+	 * 
+	 * @param core_kernel_classes_Resource $item
+	 * @return tao_models_classes_Compiler
+	 */
+	public function getCompiler( core_kernel_classes_Resource $item);
 }
 
 ?>
