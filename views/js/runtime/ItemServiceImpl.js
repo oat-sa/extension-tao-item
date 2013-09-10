@@ -14,6 +14,8 @@ function ItemServiceImpl(serviceApi) {
 	var state = (typeof rawstate == 'undefined' || rawstate == null) ? {} : $.parseJSON(rawstate);
 	this.stateVariables = typeof state == 'object' ? state : {};
 	
+	this.resultApi = (typeof resultApi == 'undefined' || resultApi == null) ? null : resultApi;
+	
 	this.beforeFinishCallbacks = new Array();
 }
 
@@ -69,23 +71,20 @@ ItemServiceImpl.prototype.finish = function() {
 			console.log('Events ', itemApi.events);
 			//todo add item, call id etc
 			
-			$.ajax({
-				url  		: resultsStorageEndPoint,
-				data 		: {
-					itemId: itemApi.itemId,
-					serviceCallId: itemApi.serviceApi.getServiceCallId(),
-					responseVariables: itemApi.responses,
-					outcomeVariables: itemApi.scores,
-					traceVariables:itemApi.events
-				},
-				type 		: 'post',
-				dataType	: 'json',
-				success		: function(reply) {
-					itemApi.serviceApi.finish();
-				}
-			});
-
-			
+			if (itemApi.resultApi != null) {
+				itemApi.resultApi.submitItemVariables(
+						itemApi.itemId,
+						itemApi.serviceApi.getServiceCallId(),
+						itemApi.responses,
+						itemApi.scores,
+						itemApi.events,
+						function() {
+							itemApi.serviceApi.finish();
+						}
+				);
+			} else {
+				itemApi.serviceApi.finish();
+			}
 		};
 	}(this));		
 };
