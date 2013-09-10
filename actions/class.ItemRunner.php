@@ -53,11 +53,11 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		
 		$this->setData('itemPath', $baseUrl.$lang.DIRECTORY_SEPARATOR.'index.html');
 		$this->setData('itemId', $this->getRequestParameter('itemUri'));
+		$this->setData('resultJsApi', $this->getResultServerApi());
+		$this->setData('resultJsApiPath', $this->getResultServerApiPath());
 		
-		$resultServer = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('resultServer')));
-		$this->setData('resultJsApi', taoResultServer_helpers_ResultServerJsApi::getServiceApi($resultServer));
-		
-		$this->setView('runtime/item_runner.tpl');			
+		$this->selectView();
+		$this->selectWebFolder();	
 	}
 	
 	public function access() {
@@ -99,5 +99,41 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 			'success' => $variables !== null,
 			'data' => $variables
 		));
+	}
+	
+	/**
+	 * Get the ResultServer API call to be used by the item.
+	 * 
+	 * @return string A string representing JavaScript instructions.
+	 */
+	protected function getResultServerApi() {
+	    $resultServer = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('resultServer')));
+	    return taoResultServer_helpers_ResultServerJsApi::getServiceApi($resultServer);
+	}
+	
+	/**
+	 * Get the path from ROOT_URL where the ResultServerApi implementation is found on the server.
+	 * 
+	 * @return string
+	 */
+	protected function getResultServerApiPath() {
+	    return 'taoResultServer/views/js/ResultServerApi.js';
+	}
+	
+	/**
+	 * The implementation of this method calls ItemRunner::setView in order to
+	 * select the view to be displayed.
+	 */
+	protected function selectView() {
+	    $this->setView('runtime/item_runner.tpl');
+	}
+	
+	/**
+	 * The implementation of this method calls ItemRunner::setData with key
+	 * 'webFolder' to give the web folder path to the view.
+	 * 
+	 */
+	protected function selectWebFolder() {
+	    $this->setData('webFolder', BASE_WWW);
 	}
 }
