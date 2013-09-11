@@ -1,5 +1,5 @@
 <?php
-/*  
+/*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -27,8 +27,7 @@
  * @package taoItems
  * @subpackage models_classes
  */
-class taoItems_models_classes_ItemsService
-    extends tao_models_classes_GenerisService
+class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisService
 {
 
     /**
@@ -62,6 +61,7 @@ class taoItems_models_classes_ItemsService
      * @access private
      * @var string
      */
+
     const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
 
     // --- OPERATIONS ---
@@ -73,18 +73,17 @@ class taoItems_models_classes_ItemsService
      * @author Joel Bout, <joel@taotesting.com>
      * @return void
      */
-    public function __construct()
-    {
-		parent::__construct();
-		$this->itemClass			= new core_kernel_classes_Class( TAO_ITEM_CLASS );
-		$this->itemModelProperty	= new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
-		$this->itemContentProperty	= new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
+    public function __construct(){
+        parent::__construct();
+        $this->itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
+        $this->itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
+        $this->itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
     }
 
-    public function getRootClass() {
-    	return $this->itemClass;
+    public function getRootClass(){
+        return $this->itemClass;
     }
-    
+
     /**
      * get an item subclass by uri. 
      * If the uri is not set, it returns the  item class (the top level class.
@@ -96,19 +95,17 @@ class taoItems_models_classes_ItemsService
      * @return core_kernel_classes_Class
      * @deprecated
      */
-    public function getItemClass($uri = '')
-    {
+    public function getItemClass($uri = ''){
         $returnValue = null;
 
-		if(empty($uri) && !is_null($this->itemClass)){
-			$returnValue= $this->itemClass;
-		}
-		else{
-			$clazz = new core_kernel_classes_Class($uri);
-			if($this->isItemClass($clazz)){
-				$returnValue = $clazz;
-			}
-		}
+        if(empty($uri) && !is_null($this->itemClass)){
+            $returnValue = $this->itemClass;
+        }else{
+            $clazz = new core_kernel_classes_Class($uri);
+            if($this->isItemClass($clazz)){
+                $returnValue = $clazz;
+            }
+        }
 
         return $returnValue;
     }
@@ -121,21 +118,20 @@ class taoItems_models_classes_ItemsService
      * @param  Class clazz
      * @return boolean
      */
-    public function isItemClass( core_kernel_classes_Class $clazz)
-    {
+    public function isItemClass(core_kernel_classes_Class $clazz){
         $returnValue = (bool) false;
 
-		if($this->itemClass->getUri() == $clazz->getUri()){
-			return true;
-		}
+        if($this->itemClass->getUri() == $clazz->getUri()){
+            return true;
+        }
 
-		foreach($clazz->getParentClasses(true) as $parent){
+        foreach($clazz->getParentClasses(true) as $parent){
 
-			if($parent->getUri() == $this->itemClass->getUri()){
-				$returnValue = true;
-				break;
-			}
-		}
+            if($parent->getUri() == $this->itemClass->getUri()){
+                $returnValue = true;
+                break;
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -148,23 +144,21 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return boolean
      */
-    public function deleteItem( core_kernel_classes_Resource $item)
-    {
+    public function deleteItem(core_kernel_classes_Resource $item){
         $returnValue = (bool) false;
 
-		if(!is_null($item)){
+        if(!is_null($item)){
 
-			$returnValue = $this->deleteItemContent($item);
+            $returnValue = $this->deleteItemContent($item);
 
-			//TODO : should the runtimeFolder be language dependent as well?
-			$runtimeFolder = $this->getRuntimeFolder($item);
-			if (is_dir($runtimeFolder)) {
-				tao_helpers_File::remove($runtimeFolder, true);
-			}
+            //TODO : should the runtimeFolder be language dependent as well?
+            $runtimeFolder = $this->getRuntimeFolder($item);
+            if(is_dir($runtimeFolder)){
+                tao_helpers_File::remove($runtimeFolder, true);
+            }
 
-			$returnValue &= $item->delete(true);
-
-		}
+            $returnValue &= $item->delete(true);
+        }
 
         return (bool) $returnValue;
     }
@@ -177,15 +171,14 @@ class taoItems_models_classes_ItemsService
      * @param  Class clazz
      * @return boolean
      */
-    public function deleteItemClass( core_kernel_classes_Class $clazz)
-    {
+    public function deleteItemClass(core_kernel_classes_Class $clazz){
         $returnValue = (bool) false;
 
-		if(!is_null($clazz)){
-			if($this->isItemClass($clazz)){
-				$returnValue = $clazz->delete();
-			}
-		}
+        if(!is_null($clazz)){
+            if($this->isItemClass($clazz)){
+                $returnValue = $clazz->delete();
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -199,23 +192,21 @@ class taoItems_models_classes_ItemsService
      * @param  string lang
      * @return string
      */
-    public function getDefaultItemFolder( core_kernel_classes_Resource $item, $lang = '')
-    {
+    public function getDefaultItemFolder(core_kernel_classes_Resource $item, $lang = ''){
         $returnValue = (string) '';
 
-		if(!is_null($item)){
+        if(!is_null($item)){
 
-			if(empty($lang)){
-				$session = core_kernel_classes_Session::singleton();
-				$lang = $session->getDataLanguage();
-			}
+            if(empty($lang)){
+                $session = core_kernel_classes_Session::singleton();
+                $lang = $session->getDataLanguage();
+            }
 
-			$itemRepo = $this->getDefaultFileSource();
-			$repositoryPath = $itemRepo->getPath();
-			$repositoryPath = substr($repositoryPath,strlen($repositoryPath)-1,1)==DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
-			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
-
-		}
+            $itemRepo = $this->getDefaultFileSource();
+            $repositoryPath = $itemRepo->getPath();
+            $repositoryPath = substr($repositoryPath, strlen($repositoryPath) - 1, 1) == DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
+            $returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
+        }
 
         return (string) $returnValue;
     }
@@ -228,15 +219,14 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return string
      */
-    public function getRuntimeFolder( core_kernel_classes_Resource $item)
-    {
+    public function getRuntimeFolder(core_kernel_classes_Resource $item){
         $returnValue = (string) '';
 
-		if(!is_null($item)){
-			$folderName = substr($item->getUri(), strpos($item->getUri(), '#') + 1);
-			$basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
-			$returnValue = $basePreview . $folderName;
-		}
+        if(!is_null($item)){
+            $folderName = substr($item->getUri(), strpos($item->getUri(), '#') + 1);
+            $basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
+            $returnValue = $basePreview.$folderName;
+        }
 
         return (string) $returnValue;
     }
@@ -250,12 +240,11 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
-    public function setDefaultItemContent( core_kernel_classes_Resource $item)
-    {
+    public function setDefaultItemContent(core_kernel_classes_Resource $item){
         $returnValue = null;
-		
-		//@todo : to be completed
-		$returnValue = $item;
+
+        //@todo : to be completed
+        $returnValue = $item;
 
         return $returnValue;
     }
@@ -271,41 +260,39 @@ class taoItems_models_classes_ItemsService
      * @param  string lang
      * @return string
      */
-    public function getItemContent( core_kernel_classes_Resource $item, $preview = false, $lang = '')
-    {
+    public function getItemContent(core_kernel_classes_Resource $item, $preview = false, $lang = ''){
         $returnValue = (string) '';
 
-		common_Logger::i('Get itemContent for item '.$item->getUri());
+        common_Logger::i('Get itemContent for item '.$item->getUri());
 
-		if(!is_null($item)){
+        if(!is_null($item)){
 
-			$itemContent = null;
+            $itemContent = null;
 
-			if(empty($lang)){
-				$itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
-			}
-			else{
-				$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-			}
+            if(empty($lang)){
+                $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
+            }else{
+                $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+            }
 
-			if($itemContents->count() > 0){
-				$itemContent = $itemContents->get(0);
-			}
+            if($itemContents->count() > 0){
+                $itemContent = $itemContents->get(0);
+            }
 
-			if(!is_null($itemContent) && $this->isItemModelDefined($item)){
+            if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 
-				if(core_kernel_file_File::isFile($itemContent)){
+                if(core_kernel_file_File::isFile($itemContent)){
 
-					$file = new core_kernel_file_File($itemContent->getUri());
-					$returnValue = file_get_contents($file->getAbsolutePath());
-					if ($returnValue == false) {
-						common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
-					}
-				}
-			} else {
-				common_Logger::w('No itemContent for item '.$item->getUri());
-			}
-		}
+                    $file = new core_kernel_file_File($itemContent->getUri());
+                    $returnValue = file_get_contents($file->getAbsolutePath());
+                    if($returnValue == false){
+                        common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
+                    }
+                }
+            }else{
+                common_Logger::w('No itemContent for item '.$item->getUri());
+            }
+        }
 
         return (string) $returnValue;
     }
@@ -319,19 +306,18 @@ class taoItems_models_classes_ItemsService
      * @param  string lang
      * @return boolean
      */
-    public function hasItemContent( core_kernel_classes_Resource $item, $lang = '')
-    {
+    public function hasItemContent(core_kernel_classes_Resource $item, $lang = ''){
         $returnValue = (bool) false;
 
-		if(!is_null($item)){
+        if(!is_null($item)){
 
-			if(empty($lang)){
-				$lang = $this->getSessionLg();
-			}
+            if(empty($lang)){
+                $lang = $this->getSessionLg();
+            }
 
-			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-			$returnValue = ($itemContents->count() > 0);
-		}
+            $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+            $returnValue = ($itemContents->count() > 0);
+        }
 
         return (bool) $returnValue;
     }
@@ -347,43 +333,40 @@ class taoItems_models_classes_ItemsService
      * @param  string commitMessage
      * @return boolean
      */
-    public function setItemContent( core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = '')
-    {
+    public function setItemContent(core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = ''){
         $returnValue = (bool) false;
 
-		if(is_null($item) && !$this->isItemModelDefined($item)) {
-			throw new common_exception_Error('No item or itemmodel in '.__FUNCTION__);
-		}
-		
-		$lang = empty($lang) ? $lang = $this->getSessionLg() : $lang;
-		$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-		$dataFile = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        if(is_null($item) && !$this->isItemModelDefined($item)){
+            throw new common_exception_Error('No item or itemmodel in '.__FUNCTION__);
+        }
 
-		if($this->hasItemContent($item, $lang)){
+        $lang = empty($lang) ? $lang = $this->getSessionLg() : $lang;
+        $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
+        $dataFile = (string) $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 
-			$itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-			$itemContent = $itemContents->get(0);
-			if(!core_kernel_file_File::isFile($itemContent)){
-				throw new common_Exception('Item '.$item->getUri().' has none file itemContent');
-			}
-			$file = new core_kernel_versioning_File($itemContent);
-			$returnValue = $file->setContent($content);
-			
-		} else {
+        if($this->hasItemContent($item, $lang)){
 
-			$repository = $this->getDefaultFileSource();
-			$file = $repository->createFile(
-				$dataFile,
-				tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang
-			);
-			$item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
-			$file->setContent($content);
-			$returnValue = $file->add(true, true);
-		}
-		
-		if ($commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
-			$returnValue = $file->commit($commitMessage);
-		}	
+            $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+            $itemContent = $itemContents->get(0);
+            if(!core_kernel_file_File::isFile($itemContent)){
+                throw new common_Exception('Item '.$item->getUri().' has none file itemContent');
+            }
+            $file = new core_kernel_versioning_File($itemContent);
+            $returnValue = $file->setContent($content);
+        }else{
+
+            $repository = $this->getDefaultFileSource();
+            $file = $repository->createFile(
+                    $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang
+            );
+            $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
+            $file->setContent($content);
+            $returnValue = $file->add(true, true);
+        }
+
+        if($commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
+            $returnValue = $file->commit($commitMessage);
+        }
 
         return (bool) $returnValue;
     }
@@ -397,16 +380,15 @@ class taoItems_models_classes_ItemsService
      * @param  array models the list of URI of the itemModel to check
      * @return boolean
      */
-    public function hasItemModel( core_kernel_classes_Resource $item, $models)
-    {
+    public function hasItemModel(core_kernel_classes_Resource $item, $models){
         $returnValue = (bool) false;
 
-		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-		if($itemModel instanceof core_kernel_classes_Resource){
-			if(in_array($itemModel->getUri(), $models)){
-				$returnValue = true;
-			}
-		}
+        $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+        if($itemModel instanceof core_kernel_classes_Resource){
+            if(in_array($itemModel->getUri(), $models)){
+                $returnValue = true;
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -419,23 +401,20 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return boolean
      */
-    public function isItemModelDefined( core_kernel_classes_Resource $item)
-    {
+    public function isItemModelDefined(core_kernel_classes_Resource $item){
         $returnValue = (bool) false;
 
-		if(!is_null($item)){
+        if(!is_null($item)){
 
-			$model = $item->getOnePropertyValue($this->itemModelProperty);
-		 	if ($model instanceof core_kernel_classes_Literal){
-				if(strlen((string)$model) > 0){
-					$returnValue = true;
-				}
-			}
-			else if(!is_null($model)){
-				$returnValue = true;
-			}
-
-		}
+            $model = $item->getOnePropertyValue($this->itemModelProperty);
+            if($model instanceof core_kernel_classes_Literal){
+                if(strlen((string) $model) > 0){
+                    $returnValue = true;
+                }
+            }else if(!is_null($model)){
+                $returnValue = true;
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -448,16 +427,15 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
-    public function getModelRuntime( core_kernel_classes_Resource $item)
-    {
+    public function getModelRuntime(core_kernel_classes_Resource $item){
         $returnValue = null;
 
-		if(!is_null($item)){
-			$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-			if(!is_null($itemModel)){
-				$returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
-			}
-		}
+        if(!is_null($item)){
+            $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+            if(!is_null($itemModel)){
+                $returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+            }
+        }
 
         return $returnValue;
     }
@@ -471,27 +449,25 @@ class taoItems_models_classes_ItemsService
      * @param  array status
      * @return boolean
      */
-    public function hasModelStatus( core_kernel_classes_Resource $item, $status)
-    {
+    public function hasModelStatus(core_kernel_classes_Resource $item, $status){
         $returnValue = (bool) false;
 
-		if(!is_null($item)){
-			if(!is_array($status) && is_string($status)){
-				$status = array($status);
-			}
-			try{
-				$itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-				if($itemModel instanceof core_kernel_classes_Resource){
-					$itemModelStatus = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY));
-					if(in_array($itemModelStatus->getUri(), $status)){
-						$returnValue = true;
-					}
-				}
-			}
-			catch(common_exception_EmptyProperty $ce){
-				$returnValue = false;
-			}
-		}
+        if(!is_null($item)){
+            if(!is_array($status) && is_string($status)){
+                $status = array($status);
+            }
+            try{
+                $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
+                if($itemModel instanceof core_kernel_classes_Resource){
+                    $itemModelStatus = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY));
+                    if(in_array($itemModelStatus->getUri(), $status)){
+                        $returnValue = true;
+                    }
+                }
+            }catch(common_exception_EmptyProperty $ce){
+                $returnValue = false;
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -505,19 +481,18 @@ class taoItems_models_classes_ItemsService
      * @param  string language
      * @param  string destination
      * @param  array options
-	 * @return boolean
+     * @return boolean
      */
-    public function deployItem( core_kernel_classes_Resource $item, $language, $destination, $options = array())
-    {
+    public function deployItem(core_kernel_classes_Resource $item, $language, $destination, $options = array()){
         $returnValue = (bool) false;
 
-		$itemModel = $this->getItemModel($item);
-		if (!is_null($itemModel)) {
-			$impl = $this->getItemModelImplementation($itemModel);
-			if (!is_null($impl)) {
-				$returnValue = $impl->deployItem($item, $language, $destination, $options); 
-			}
-		}
+        $itemModel = $this->getItemModel($item);
+        if(!is_null($itemModel)){
+            $impl = $this->getItemModelImplementation($itemModel);
+            if(!is_null($impl)){
+                $returnValue = $impl->deployItem($item, $language, $destination, $options);
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -530,13 +505,12 @@ class taoItems_models_classes_ItemsService
      * @param  string itemUri
      * @return string
      */
-    public function getAuthoringFileUriByItem($itemUri)
-    {
+    public function getAuthoringFileUriByItem($itemUri){
         $returnValue = (string) '';
 
-		if(strlen($itemUri) > 0){
-			$returnValue = BASE_DATA.'/'.tao_helpers_Uri::encode($itemUri).'.xml';
-		}
+        if(strlen($itemUri) > 0){
+            $returnValue = BASE_DATA.'/'.tao_helpers_Uri::encode($itemUri).'.xml';
+        }
 
         return (string) $returnValue;
     }
@@ -549,19 +523,17 @@ class taoItems_models_classes_ItemsService
      * @param  string uri
      * @return string
      */
-    public function getAuthoringFileItemByUri($uri)
-    {
+    public function getAuthoringFileItemByUri($uri){
         $returnValue = (string) '';
 
-		if(strlen($uri) > 0){
-			if(file_exists($uri)){
-				$returnValue = tao_helpers_Uri::decode(
-					str_replace(BASE_DATA, '',
-						str_replace('.xml', '', $uri)
-					)
-				);
-			}
-		}
+        if(strlen($uri) > 0){
+            if(file_exists($uri)){
+                $returnValue = tao_helpers_Uri::decode(
+                                str_replace(BASE_DATA, '', str_replace('.xml', '', $uri)
+                                )
+                );
+            }
+        }
 
         return (string) $returnValue;
     }
@@ -574,16 +546,15 @@ class taoItems_models_classes_ItemsService
      * @param  string itemUri
      * @return string
      */
-    public function getAuthoringFile($itemUri)
-    {
+    public function getAuthoringFile($itemUri){
         $returnValue = (string) '';
 
-		$uri = $this->getAuthoringFileUriByItem($itemUri);
+        $uri = $this->getAuthoringFileUriByItem($itemUri);
 
-		if(!file_exists($uri)){
-			file_put_contents($uri, '<?xml version="1.0" encoding="utf-8" ?>');
-		}
-		$returnValue = $uri;
+        if(!file_exists($uri)){
+            file_put_contents($uri, '<?xml version="1.0" encoding="utf-8" ?>');
+        }
+        $returnValue = $uri;
 
         return (string) $returnValue;
     }
@@ -597,18 +568,17 @@ class taoItems_models_classes_ItemsService
      * @param  boolean fallback
      * @return string
      */
-    public function getTempAuthoringFile($itemUri, $fallback = false)
-    {
+    public function getTempAuthoringFile($itemUri, $fallback = false){
         $returnValue = (string) '';
 
-		if(strlen($itemUri) > 0){
-			$returnValue = BASE_DATA.'tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';
-			if(!file_exists($returnValue)){
-				if($fallback){	//fallback in case of error otheerwise create  the file
-					$returnValue = $this->getAuthoringFile($itemUri);
-				}
-			}
-		}
+        if(strlen($itemUri) > 0){
+            $returnValue = BASE_DATA.'tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';
+            if(!file_exists($returnValue)){
+                if($fallback){ //fallback in case of error otheerwise create  the file
+                    $returnValue = $this->getAuthoringFile($itemUri);
+                }
+            }
+        }
 
         return (string) $returnValue;
     }
@@ -621,33 +591,23 @@ class taoItems_models_classes_ItemsService
      * @param  Resource itemRdf
      * @return array
      */
-    public function getMatchingData( core_kernel_classes_Resource $itemRdf)
-    {
+    public function getMatchingData(core_kernel_classes_Resource $itemRdf){
         $returnValue = array();
 
-		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
-		
-		/* @todo reevaluate client side evaluation */
-		if ($impl instanceof taoQTI_models_classes_ItemModel) {
-				
-				$item = null;
-				$qtiService = taoQTI_models_classes_QTI_Service::singleton();
-				$itemSerial = taoQTI_helpers_qti_ItemAuthoring::getAuthoringItem($itemRdf);
-				if(!empty($itemSerial)){//load item from cache
-					taoQTI_models_classes_QTI_Data::setPersistence(true);
-					$item = $qtiService->getItemBySerial($itemSerial);
-				}
-				if(is_null($item)){
-					$item = $qtiService->getDataItemByRdfItem($itemRdf);
-				}
-				
-				if(!is_null($item)){
-					//@todo cache matching data by rdf item
-					$returnValue = $item->getMatchingData();
-				}else{
-					throw new common_Exception('cannot load QTI item for matching data');
-				}
-		}
+        $impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
+
+        /* @todo reevaluate client side evaluation */
+        if($impl instanceof taoQTI_models_classes_ItemModel){
+
+            $qtiService = taoQTI_models_classes_QTI_Service::singleton();
+            $item = $qtiService->getDataItemByRdfItem($itemRdf);
+            if(!is_null($item)){
+                //@todo cache matching data by rdf item
+                $returnValue = $item->getMatchingData();
+            }else{
+                throw new common_Exception('cannot load QTI item for matching data');
+            }
+        }
 
         return (array) $returnValue;
     }
@@ -661,16 +621,15 @@ class taoItems_models_classes_ItemsService
      * @param  responses
      * @return array
      */
-    public function evaluate( core_kernel_classes_Resource $itemRdf,    $responses)
-    {
+    public function evaluate(core_kernel_classes_Resource $itemRdf, $responses){
         $returnValue = array();
 
-		$impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
-		if (in_array('taoItems_models_classes_evaluatableItemModel', class_implements($impl))) {
-			$returnValue = $impl->evaluate($itemRdf, $responses);
-		} else {
-			throw new common_exception_Error('Evaluate called on non-evaluatable item model');
-		}
+        $impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
+        if(in_array('taoItems_models_classes_evaluatableItemModel', class_implements($impl))){
+            $returnValue = $impl->evaluate($itemRdf, $responses);
+        }else{
+            throw new common_exception_Error('Evaluate called on non-evaluatable item model');
+        }
 
         return (array) $returnValue;
     }
@@ -684,73 +643,70 @@ class taoItems_models_classes_ItemsService
      * @param  Class clazz
      * @return core_kernel_classes_Resource
      */
-    public function cloneInstance( core_kernel_classes_Resource $instance,  core_kernel_classes_Class $clazz = null)
-    {
+    public function cloneInstance(core_kernel_classes_Resource $instance, core_kernel_classes_Class $clazz = null){
         $returnValue = null;
 
-   		$returnValue = $this->createInstance($clazz);
-		if(!is_null($returnValue)){
+        $returnValue = $this->createInstance($clazz);
+        if(!is_null($returnValue)){
 
-			$itemFolder = $this->getItemFolder($instance);
-			$fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
+            $itemFolder = $this->getItemFolder($instance);
+            $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
 
-			foreach($clazz->getProperties(true) as $property){
+            foreach($clazz->getProperties(true) as $property){
 
-				if($property->getUri() == RDFS_TYPE){
-					continue;
-				}
+                if($property->getUri() == RDFS_TYPE){
+                    continue;
+                }
 
-				$range = $property->getRange();
+                $range = $property->getRange();
 
-				if (!is_null($range)) {
-					if($range->getUri() == CLASS_GENERIS_FILE){
-	
-						foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
-							$file = new core_kernel_versioning_File($propertyValue->getUri());
-							$repo = $file->getRepository();
-							$relPath = basename($file->getAbsolutePath());
-							if(!empty($relPath)){
-								$newPath = tao_helpers_File::concat(array($this->getItemFolder($returnValue), $relPath));
-								common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
-								tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
-								if(file_exists($newPath)){
-									$subpath = substr($newPath, strlen($repo->getPath()));
-									$newFile = $repo->createFile(
-										(string)$file->getOnePropertyValue($fileNameProp),
-										dirname($subpath).'/'
-									);
-									$returnValue->setPropertyValue($property, $newFile->getUri());
-									$newFile->add(true, true);
-									$newFile->commit('Clone of '.$instance->getUri(), true);
-								}
-							}
-						}
-					}
-					else{
-						foreach($instance->getPropertyValues($property) as $propertyValue){
-							$returnValue->setPropertyValue($property, $propertyValue);
-						}
-					}
-				} else {
-					common_Logger::w('Missing range for property '.$property->getUri());					
-				}
-			}
-			$label = $instance->getLabel();
-			$cloneLabel = "$label bis";
-			if(preg_match("/bis/", $label)){
-				$cloneNumber = (int)preg_replace("/^(.?)*bis/", "", $label);
-				$cloneNumber++;
-				$cloneLabel = preg_replace("/bis(.?)*$/", "", $label)."bis $cloneNumber" ;
-			}
+                if(!is_null($range)){
+                    if($range->getUri() == CLASS_GENERIS_FILE){
 
-			$returnValue->setLabel($cloneLabel);
+                        foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+                            $file = new core_kernel_versioning_File($propertyValue->getUri());
+                            $repo = $file->getRepository();
+                            $relPath = basename($file->getAbsolutePath());
+                            if(!empty($relPath)){
+                                $newPath = tao_helpers_File::concat(array($this->getItemFolder($returnValue), $relPath));
+                                common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
+                                tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
+                                if(file_exists($newPath)){
+                                    $subpath = substr($newPath, strlen($repo->getPath()));
+                                    $newFile = $repo->createFile(
+                                            (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
+                                    );
+                                    $returnValue->setPropertyValue($property, $newFile->getUri());
+                                    $newFile->add(true, true);
+                                    $newFile->commit('Clone of '.$instance->getUri(), true);
+                                }
+                            }
+                        }
+                    }else{
+                        foreach($instance->getPropertyValues($property) as $propertyValue){
+                            $returnValue->setPropertyValue($property, $propertyValue);
+                        }
+                    }
+                }else{
+                    common_Logger::w('Missing range for property '.$property->getUri());
+                }
+            }
+            $label = $instance->getLabel();
+            $cloneLabel = "$label bis";
+            if(preg_match("/bis/", $label)){
+                $cloneNumber = (int) preg_replace("/^(.?)*bis/", "", $label);
+                $cloneNumber++;
+                $cloneLabel = preg_replace("/bis(.?)*$/", "", $label)."bis $cloneNumber";
+            }
 
-			//Measurements
-			$measurements = $this->getItemMeasurements($instance);
-			if (count($measurements) > 0) {
-				$this->setItemMeasurements($returnValue, $measurements);
-			}
-		}
+            $returnValue->setLabel($cloneLabel);
+
+            //Measurements
+            $measurements = $this->getItemMeasurements($instance);
+            if(count($measurements) > 0){
+                $this->setItemMeasurements($returnValue, $measurements);
+            }
+        }
 
         return $returnValue;
     }
@@ -764,31 +720,28 @@ class taoItems_models_classes_ItemsService
      * @param  array measurements
      * @return taoItems_models_classes_Matching_bool
      */
-    public function setItemMeasurements( core_kernel_classes_Resource $item, $measurements)
-    {
+    public function setItemMeasurements(core_kernel_classes_Resource $item, $measurements){
         $returnValue = (bool) false;
 
         // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037CE begin
-		$hasMeasurement = new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY);
-		$item->removePropertyValues($hasMeasurement);
-		foreach ($measurements as $measurement) {
-			$measurementres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class(TAO_ITEM_MEASURMENT));
-			$measurementPropertiesValues = array(
-				TAO_ITEM_IDENTIFIER_PROPERTY		=> $measurement->getIdentifier(),
-				TAO_ITEM_DESCRIPTION_PROPERTY		=> $measurement->getDescription(),
-				TAO_ITEM_MEASURMENT_HUMAN_ASSISTED	=> $measurement->isHumanAssisted()
-					? new core_kernel_classes_Resource(GENERIS_TRUE)
-					: new core_kernel_classes_Resource(GENERIS_FALSE)
-			);
-			if (!is_null($measurement->getScale())) {
-				$scaleres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class($measurement->getScale()->getClassUri()));
-				$scaleres->setPropertiesValues($measurement->getScale()->toProperties());
-				$measurementPropertiesValues[TAO_ITEM_SCALE_PROPERTY] = $scaleres->getUri();
-			}
-			$measurementres->setPropertiesValues($measurementPropertiesValues);
-			$item->setPropertyValue($hasMeasurement, $measurementres);
-		}
-		$returnValue = true;
+        $hasMeasurement = new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY);
+        $item->removePropertyValues($hasMeasurement);
+        foreach($measurements as $measurement){
+            $measurementres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class(TAO_ITEM_MEASURMENT));
+            $measurementPropertiesValues = array(
+                TAO_ITEM_IDENTIFIER_PROPERTY => $measurement->getIdentifier(),
+                TAO_ITEM_DESCRIPTION_PROPERTY => $measurement->getDescription(),
+                TAO_ITEM_MEASURMENT_HUMAN_ASSISTED => $measurement->isHumanAssisted() ? new core_kernel_classes_Resource(GENERIS_TRUE) : new core_kernel_classes_Resource(GENERIS_FALSE)
+            );
+            if(!is_null($measurement->getScale())){
+                $scaleres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class($measurement->getScale()->getClassUri()));
+                $scaleres->setPropertiesValues($measurement->getScale()->toProperties());
+                $measurementPropertiesValues[TAO_ITEM_SCALE_PROPERTY] = $scaleres->getUri();
+            }
+            $measurementres->setPropertiesValues($measurementPropertiesValues);
+            $item->setPropertyValue($hasMeasurement, $measurementres);
+        }
+        $returnValue = true;
 
         return (bool) $returnValue;
     }
@@ -801,40 +754,39 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return array
      */
-    public function getItemMeasurements( core_kernel_classes_Resource $item)
-    {
+    public function getItemMeasurements(core_kernel_classes_Resource $item){
         $returnValue = array();
 
-		foreach($item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY)) as $uri) {
-			$measuremenRessource = new core_kernel_classes_Resource($uri);
-			$properties = $measuremenRessource->getPropertiesValues(array(
-				new core_kernel_classes_Property(TAO_ITEM_IDENTIFIER_PROPERTY),
-				new core_kernel_classes_Property(TAO_ITEM_DESCRIPTION_PROPERTY),
-				new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY),
-				new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_HUMAN_ASSISTED)
-			));
-			if (empty($properties[TAO_ITEM_IDENTIFIER_PROPERTY])) {
-				throw new common_exception_Error('Missing identifier for Measurement');
-			}
-			$identifier = (string)array_pop($properties[TAO_ITEM_IDENTIFIER_PROPERTY]);
-			if (!empty($properties[TAO_ITEM_SCALE_PROPERTY])) {
-				$scale = taoItems_models_classes_Scale_Scale::buildFromRessource(array_pop($properties[TAO_ITEM_SCALE_PROPERTY]));
-			}
-			$desc = '';
-			if (!empty($properties[TAO_ITEM_DESCRIPTION_PROPERTY])) {
-				foreach ($properties[TAO_ITEM_DESCRIPTION_PROPERTY] as $subdesc) {
-					$desc .= $subdesc;
-				}
-			}
-			$returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $desc);
-			if (!empty($scale) && !is_null($scale)) {
-				$returnValue[$identifier]->setScale($scale);
-			}
-			if (!empty($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED])) {
-				$assisted = array_pop($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED]);
-				$returnValue[$identifier]->setHumanAssisted($assisted->getUri() == GENERIS_TRUE);
-			}
-		}
+        foreach($item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY)) as $uri){
+            $measuremenRessource = new core_kernel_classes_Resource($uri);
+            $properties = $measuremenRessource->getPropertiesValues(array(
+                new core_kernel_classes_Property(TAO_ITEM_IDENTIFIER_PROPERTY),
+                new core_kernel_classes_Property(TAO_ITEM_DESCRIPTION_PROPERTY),
+                new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY),
+                new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_HUMAN_ASSISTED)
+            ));
+            if(empty($properties[TAO_ITEM_IDENTIFIER_PROPERTY])){
+                throw new common_exception_Error('Missing identifier for Measurement');
+            }
+            $identifier = (string) array_pop($properties[TAO_ITEM_IDENTIFIER_PROPERTY]);
+            if(!empty($properties[TAO_ITEM_SCALE_PROPERTY])){
+                $scale = taoItems_models_classes_Scale_Scale::buildFromRessource(array_pop($properties[TAO_ITEM_SCALE_PROPERTY]));
+            }
+            $desc = '';
+            if(!empty($properties[TAO_ITEM_DESCRIPTION_PROPERTY])){
+                foreach($properties[TAO_ITEM_DESCRIPTION_PROPERTY] as $subdesc){
+                    $desc .= $subdesc;
+                }
+            }
+            $returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $desc);
+            if(!empty($scale) && !is_null($scale)){
+                $returnValue[$identifier]->setScale($scale);
+            }
+            if(!empty($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED])){
+                $assisted = array_pop($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED]);
+                $returnValue[$identifier]->setHumanAssisted($assisted->getUri() == GENERIS_TRUE);
+            }
+        }
 
         return (array) $returnValue;
     }
@@ -847,14 +799,13 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
-    public function getItemModel( core_kernel_classes_Resource $item)
-    {
+    public function getItemModel(core_kernel_classes_Resource $item){
         $returnValue = null;
 
-		$itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-		if($itemModel instanceof core_kernel_classes_Resource){
-			$returnValue = $itemModel;
-		}
+        $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+        if($itemModel instanceof core_kernel_classes_Resource){
+            $returnValue = $itemModel;
+        }
 
         return $returnValue;
     }
@@ -867,16 +818,15 @@ class taoItems_models_classes_ItemsService
      * @author Joel Bout, <joel@taotesting.com>
      * @return string
      */
-    public function getSessionLg()
-    {
+    public function getSessionLg(){
         $returnValue = (string) '';
 
-		$session = core_kernel_classes_Session::singleton();
-		if ($session->getDataLanguage() != '') {
-			$returnValue = $session->getDataLanguage();
-		} else {
-			throw new Exception('the data language of the user cannot be found in session');
-		}
+        $session = core_kernel_classes_Session::singleton();
+        if($session->getDataLanguage() != ''){
+            $returnValue = $session->getDataLanguage();
+        }else{
+            throw new Exception('the data language of the user cannot be found in session');
+        }
 
         return (string) $returnValue;
     }
@@ -889,28 +839,26 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return boolean
      */
-    public function deleteItemContent( core_kernel_classes_Resource $item)
-    {
+    public function deleteItemContent(core_kernel_classes_Resource $item){
         $returnValue = (bool) false;
 
         //delete the folder for all languages!
-		foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
-			$files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-			foreach($files->getIterator() as $file){
-				$file = new core_kernel_file_File($file);
-				if (core_kernel_versioning_File::isVersionedFile($file)) {
-					$file = new core_kernel_versioning_File($file);
-				}
-				try{
-					$file->delete();
-				} catch (core_kernel_versioning_exception_FileUnversionedException $e) {
-					// file was not versioned after all, ignore in delte
-				}
-			}
-			
-		}
+        foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
+            $files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+            foreach($files->getIterator() as $file){
+                $file = new core_kernel_file_File($file);
+                if(core_kernel_versioning_File::isVersionedFile($file)){
+                    $file = new core_kernel_versioning_File($file);
+                }
+                try{
+                    $file->delete();
+                }catch(core_kernel_versioning_exception_FileUnversionedException $e){
+                    // file was not versioned after all, ignore in delte
+                }
+            }
+        }
 
-		$returnValue = true;
+        $returnValue = true;
 
         return (bool) $returnValue;
     }
@@ -923,24 +871,23 @@ class taoItems_models_classes_ItemsService
      * @param  Resource itemModel
      * @return taoItems_models_classes_itemModel
      */
-    public function getItemModelImplementation( core_kernel_classes_Resource $itemModel)
-    {
+    public function getItemModelImplementation(core_kernel_classes_Resource $itemModel){
         $returnValue = null;
 
-		$services = $itemModel->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
-		if (count($services) > 0) {
-			if (count($services) > 1) {
-				throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
-			}
-			$serviceName = (string)current($services);
-			if (class_exists($serviceName) && in_array('taoItems_models_classes_itemModel', class_implements($serviceName))) {
-				$returnValue = new $serviceName();
-			} else {
-				throw new common_exception_Error('Item model service '.$serviceName.' not found, or not compatible for item model '.$itemModel->getLabel());
-			}
-		} else {
-			common_Logger::d('No implementation for '.$itemModel->getLabel());
-		}
+        $services = $itemModel->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
+        if(count($services) > 0){
+            if(count($services) > 1){
+                throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
+            }
+            $serviceName = (string) current($services);
+            if(class_exists($serviceName) && in_array('taoItems_models_classes_itemModel', class_implements($serviceName))){
+                $returnValue = new $serviceName();
+            }else{
+                throw new common_exception_Error('Item model service '.$serviceName.' not found, or not compatible for item model '.$itemModel->getLabel());
+            }
+        }else{
+            common_Logger::d('No implementation for '.$itemModel->getLabel());
+        }
 
         return $returnValue;
     }
@@ -953,17 +900,16 @@ class taoItems_models_classes_ItemsService
      * @param  Resource item
      * @return boolean
      */
-    public function isItemVersioned( core_kernel_classes_Resource $item)
-    {
+    public function isItemVersioned(core_kernel_classes_Resource $item){
         $returnValue = (bool) false;
 
-		$files = $item->getPropertyValues($this->itemContentProperty);
-		foreach ($files as $file) {
-			// theoreticaly this should always be no or a single file 
-			if ($file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))) {
-				$returnValue = true;
-			}
-		}
+        $files = $item->getPropertyValues($this->itemContentProperty);
+        foreach($files as $file){
+            // theoreticaly this should always be no or a single file 
+            if($file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))){
+                $returnValue = true;
+            }
+        }
 
         return (bool) $returnValue;
     }
@@ -977,32 +923,31 @@ class taoItems_models_classes_ItemsService
      * @param  string lang
      * @return string
      */
-    public function getItemFolder( core_kernel_classes_Resource $item, $lang = '')
-    {
+    public function getItemFolder(core_kernel_classes_Resource $item, $lang = ''){
         $returnValue = (string) '';
 
-		if ($lang === '') {
-			$files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-		} else {
-			$files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $lang)->toArray();
-		}
-		if (count($files) == 0) {
-			// no content found assign default
-			$returnValue = $this->getDefaultItemFolder($item, $lang);
-		} else {
-			if (count($files) > 1) {
-				throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
-			}
-			$content = new core_kernel_file_File(current($files));
-			$returnValue = dirname($content->getAbsolutePath()).DIRECTORY_SEPARATOR;
-		}
+        if($lang === ''){
+            $files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        }else{
+            $files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $lang)->toArray();
+        }
+        if(count($files) == 0){
+            // no content found assign default
+            $returnValue = $this->getDefaultItemFolder($item, $lang);
+        }else{
+            if(count($files) > 1){
+                throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
+            }
+            $content = new core_kernel_file_File(current($files));
+            $returnValue = dirname($content->getAbsolutePath()).DIRECTORY_SEPARATOR;
+        }
 
         return (string) $returnValue;
     }
-    
-    public function getCompiler(core_kernel_classes_Resource $item) {
+
+    public function getCompiler(core_kernel_classes_Resource $item){
         $itemModel = $this->getItemModel($item);
-        if (is_null($itemModel)) {
+        if(is_null($itemModel)){
             throw new common_exception_Error('undefined itemmodel for test '.$item->getUri());
         }
         return $this->getItemModelImplementation($itemModel)->getCompiler($item);
@@ -1016,9 +961,8 @@ class taoItems_models_classes_ItemsService
      * @param  Repository filesource
      * @return mixed
      */
-    public function setDefaultFilesource( core_kernel_versioning_Repository $filesource)
-    {
-		$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+    public function setDefaultFilesource(core_kernel_versioning_Repository $filesource){
+        $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
         $ext->setConfig(self::CONFIG_DEFAULT_FILESOURCE, $filesource->getUri());
     }
 
@@ -1029,21 +973,18 @@ class taoItems_models_classes_ItemsService
      * @author Joel Bout, <joel@taotesting.com>
      * @return core_kernel_versioning_Repository
      */
-    public function getDefaultFileSource()
-    {
+    public function getDefaultFileSource(){
         $returnValue = null;
 
-    	$ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-		$uri = $ext->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
-		if (!empty($uri)) {
-			$returnValue = new core_kernel_versioning_Repository($uri);
-		} else {
-			throw new common_Exception('No default repository defined for Items storage.');
-		}
+        $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+        $uri = $ext->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
+        if(!empty($uri)){
+            $returnValue = new core_kernel_versioning_Repository($uri);
+        }else{
+            throw new common_Exception('No default repository defined for Items storage.');
+        }
 
         return $returnValue;
     }
 
-} /* end of class taoItems_models_classes_ItemsService */
-
-?>
+}
