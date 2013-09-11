@@ -29,8 +29,6 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	
 	public function index(){
 
-		$session = PHPSession::singleton();
-		
 		$userId = common_session_SessionManager::getSession()->getUserUri();
 		if(is_null($userId)){
 			throw new common_exception_Error('No user is logged in');
@@ -73,33 +71,6 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		}
 	}
 	
-	public function saveVariables() {
-	    /*
-	    $user = new core_kernel_classes_Resource(core_kernel_classes_Session::singleton()->getUserUri());
-        $success = tao_models_classes_service_state_VariableProxy::singleton()->set(
-            $user,
-            $this->getRequestParameter('id'),
-            $this->getRequestParameter('data')
-        );
-        */
-	    $success = false;
-		echo json_encode($success);
-	}
-	
-	public function getVariables() {
-	    /*
-	    $user = new core_kernel_classes_Resource(core_kernel_classes_Session::singleton()->getUserUri());
-        $variables = tao_models_classes_service_state_VariableProxy::singleton()->get(
-            $user,
-            $this->getRequestParameter('id')
-        );
-        */
-	    $variables = null;
-		echo json_encode(array(
-			'success' => $variables !== null,
-			'data' => $variables
-		));
-	}
 	
 	/**
 	 * Get the ResultServer API call to be used by the item.
