@@ -19,33 +19,39 @@
  */
 
 /**
- * Generic item compiler
+ * Generic item compiler.
  *
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
+ * @author Jérôme Bogaerts, <jerome@taotesting.com>
  * @package taoItems
  * @subpackage models_classes
  */
 class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
 {
     /**
+     * Compile an item.
      * 
      * @param core_kernel_file_File $destinationDirectory
-     * @throws common_Exception
+     * @throws taoItems_models_classes_CompilationFailedException
      * @return tao_models_classes_service_ServiceCall
      */
     public function compile(core_kernel_file_File $destinationDirectory) {
         $item = $this->getResource();
+        $itemUri = $item->getUri();
         $itemService = taoItems_models_classes_ItemsService::singleton();
         if (! $itemService->isItemModelDefined($item)) {
-            throw new common_Exception('Item ' . $item->getUri() . ' has no item model during compilation');
+            throw new taoItems_models_classes_CompilationFailedException("No relevant Item Model found for item '${itemUri}' at compilation time.");
         }
         
-        $langs = $item->getUsedLanguages(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        $langs = $this->getContentUsedLanguages();
         foreach ($langs as $compilationLanguage) {
-        	$compiledFolder = $destinationDirectory->getAbsolutePath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
-        	if(!is_dir($compiledFolder)){
-        		mkdir($compiledFolder);
+        	$compiledFolder = $this->getLanguageCompilationPath($destinationDirectory, $compilationLanguage);
+        	if (!is_dir($compiledFolder)){
+        		if (!@mkdir($compiledFolder)) {
+        		    $msg = "Could not create language specific directory for item '${itemUri}' at compilation time.";
+        		    throw new taoItems_models_classes_CompilationFailedException($msg);
+        		}
         	}
         	$itemService = taoItems_models_classes_ItemsService::singleton();
         	$itemService->deployItem($item, $compilationLanguage, $compiledFolder);
@@ -53,7 +59,34 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         return $this->createService($item, $destinationDirectory);
     }
     
-    protected function createService(core_kernel_classes_Resource $item, $destinationDirectory) {
+    /**
+     * Get the languages in use for the item content.
+     * 
+     * @return array An array of language tags (string).
+     */
+    protected function getContentUsedLanguages() {
+        return $this->getResource()->getUsedLanguages(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+    }
+    
+    /**
+     * Get the absolute path of the language specific compilation folder for this item to be compiled.
+     * 
+     * @param core_kernel_file_File $destinationDirectory
+     * @param string $compilationLanguage A language tag.
+     * @return string The absolute path to the language specific compilation folder for this item to be compiled.
+     */
+    protected function getLanguageCompilationPath(core_kernel_file_File $destinationDirectory, $compilationLanguage) {
+        return $destinationDirectory->getAbsolutePath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
+    }
+    
+    /**
+     * Create the item's ServiceCall.
+     * 
+     * @param core_kernel_classes_Resource $item
+     * @param core_kernel_file_File $destinationDirectory
+     * @return tao_models_classes_service_ServiceCall
+     */
+    protected function createService(core_kernel_classes_Resource $item, core_kernel_file_File $destinationDirectory) {
         $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_SERVICE_ITEMRUNNER));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMPATH),
