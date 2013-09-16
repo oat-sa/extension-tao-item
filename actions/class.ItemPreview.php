@@ -82,23 +82,8 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 	}
 
 	public function getPreviewUrl($item, $options = array()) {
-		
-		$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
-    	if (!$dom->loadHTML($this->getRenderedItem($item))){
-    		$msg = "An error occured while loading the XML content of the rendered item.";
-    		throw new taoItems_models_classes_ItemModelException($msg);
-    	}
-		$isLegacyItem = taoItems_helpers_Xhtml::hasScriptElements($dom, '/taoApi/i');
-    	
 		$code = base64_encode($item->getUri());
-		unset($options['uri'], $options['classUri']);
-		if ($isLegacyItem) {
-			common_Logger::i('Legacy API found');
-			return _url('render/'.$code.'/index.php', 'LegacyPreviewApi', 'taoItems', $options);
-		} else {
-			common_Logger::i('Item API 2.0 assumed');
-			return _url('render/'.$code.'/index.php', 'ItemPreview', 'taoItems', $options);
-		}
+		return _url('render/'.$code.'/index.php', 'ItemPreview', 'taoItems', $options);
 	}
 	
 	public function render() {
