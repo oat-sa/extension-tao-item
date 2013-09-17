@@ -24,7 +24,7 @@
     <wf:PropertyFormalParametersName><![CDATA[itemUri]]></wf:PropertyFormalParametersName>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner">
-    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassSupportServices"/>
+    <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassDeliveryServices"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Runner]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Embed a run an item into a Delivery. This service initialize the TAO Apis and contexts]]></rdfs:comment>
     <wf:PropertySupportServicesUrl><![CDATA[/taoItems/ItemRunner/index?itemPath=^itemPath&resultServer=^resultServer]]></wf:PropertySupportServicesUrl>
