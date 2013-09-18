@@ -473,28 +473,25 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
     }
 
     /**
-     * Deploy the item in parameter into the path.
+     * render used for deploy and preview
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
-     * @param  string language
-     * @param  string destination
-     * @param  array options
-     * @return boolean
+     * @return string
+     * @throws taoItems_models_classes_ItemModelException
      */
-    public function deployItem(core_kernel_classes_Resource $item, $language, $destination, $options = array()){
-        $returnValue = (bool) false;
+    public function render(core_kernel_classes_Resource $item, $language){
 
         $itemModel = $this->getItemModel($item);
-        if(!is_null($itemModel)){
-            $impl = $this->getItemModelImplementation($itemModel);
-            if(!is_null($impl)){
-                $returnValue = $impl->deployItem($item, $language, $destination, $options);
-            }
+        if(is_null($itemModel)){
+            throw new common_exception_NoImplementation('No item model for item '.$item->getUri());
         }
-
-        return (bool) $returnValue;
+        $impl = $this->getItemModelImplementation($itemModel);
+        if(is_null($impl)){
+            throw new common_exception_NoImplementation('No implementation for model '.$itemModel->getUri());
+        }
+        return $impl->render($item, $language);
     }
 
     /**
@@ -607,28 +604,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             }else{
                 throw new common_Exception('cannot load QTI item for matching data');
             }
-        }
-
-        return (array) $returnValue;
-    }
-
-    /**
-     * Service to evaluate an item
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource itemRdf
-     * @param  responses
-     * @return array
-     */
-    public function evaluate(core_kernel_classes_Resource $itemRdf, $responses){
-        $returnValue = array();
-
-        $impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
-        if(in_array('taoItems_models_classes_evaluatableItemModel', class_implements($impl))){
-            $returnValue = $impl->evaluate($itemRdf, $responses);
-        }else{
-            throw new common_exception_Error('Evaluate called on non-evaluatable item model');
         }
 
         return (array) $returnValue;

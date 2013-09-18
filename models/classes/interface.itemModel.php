@@ -46,26 +46,12 @@ interface taoItems_models_classes_itemModel
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  Resource item
-     * @return string
+     * @param  string languageCode the langauge code the item should be rendered in
+     * @return string the html representation of the item
      * @throws taoItems_models_classes_ItemModelException
      */
-    public function render( core_kernel_classes_Resource $item);
+    public function render( core_kernel_classes_Resource $item, $languageCode);
 	
-    /**
-     * deploy used to create a stand-alone
-	 * runnable version of the item
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @param  string language
-	 * @param  string destination
-	 * @param  array options
-	 * @return boolean
-     * @throws taoItems_models_classes_ItemModelException
-     */
-	public function deployItem( core_kernel_classes_Resource $item, $language, $destination, $options = array());
-
 	/**
 	 * Returns a compiler for the item 
 	 * 

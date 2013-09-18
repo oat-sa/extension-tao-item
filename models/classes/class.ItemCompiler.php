@@ -54,7 +54,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         		}
         	}
         	$itemService = taoItems_models_classes_ItemsService::singleton();
-        	$itemService->deployItem($item, $compilationLanguage, $compiledFolder);
+        	$this->deployItem($item, $compilationLanguage, $compiledFolder);
         }
         return $this->createService($item, $destinationDirectory);
     }
@@ -77,6 +77,33 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      */
     protected function getLanguageCompilationPath(core_kernel_file_File $destinationDirectory, $compilationLanguage) {
         return $destinationDirectory->getAbsolutePath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * deploys the item into the given absolute directory 
+     * 
+     * @param core_kernel_classes_Resource $item
+     * @param string $languageCode
+     * @param string $compiledDirectory
+     * @return boolean
+     */
+    protected function deployItem(core_kernel_classes_Resource $item, $languageCode, $compiledDirectory) {
+        $itemService = taoItems_models_classes_ItemsService::singleton();
+        	
+        // copy local files
+        $source = $itemService->getItemFolder($item, $languageCode);
+        taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
+        
+        // render item
+        
+        $xhtml = $itemService->render($item, $languageCode);
+        	
+        // retrieve external resources
+        $xhtml = taoItems_helpers_Deployment::retrieveExternalResources($xhtml, $compiledDirectory);
+         
+        // write index.html
+        file_put_contents($compiledDirectory.'index.html', $xhtml);
+        return true;
     }
     
     /**
