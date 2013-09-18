@@ -738,11 +738,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
 		try{
 			//output direclty the itemContent as XML
-			$preview = false;
-			if($this->hasRequestParameter('preview')){
-				$preview = (bool) $this->getRequestParameter('preview');
-			}
-			print $this->service->getItemContent($this->getCurrentInstance(), $preview);
+			print $this->service->getItemContent($this->getCurrentInstance());
 
 		}
 		catch(Exception $e){
@@ -773,7 +769,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				$filename = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
         	}
 
-			$itemContent = $this->service->getItemContent($instance, false);
+			$itemContent = $this->service->getItemContent($instance);
 			$size = strlen($itemContent);
 
 			$this->setContentHeader('text/xml');

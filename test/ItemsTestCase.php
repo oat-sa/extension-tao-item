@@ -118,7 +118,7 @@ class ItemsTestCase extends UnitTestCase {
 		$this->assertEqual('test 2', $this->itemsService->getItemContent($item));
 		
 		$this->assertTrue($this->itemsService->setItemContent($item, 'test FR', 'FR'));
-		$this->assertEqual('test FR', $this->itemsService->getItemContent($item, false, 'FR'));
+		$this->assertEqual('test FR', $this->itemsService->getItemContent($item, 'FR'));
 		
 		$this->assertTrue($this->itemsService->deleteItem($item));
 	}

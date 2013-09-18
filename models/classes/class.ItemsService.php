@@ -260,7 +260,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      * @param  string lang
      * @return string
      */
-    public function getItemContent(core_kernel_classes_Resource $item, $preview = false, $lang = ''){
+    public function getItemContent(core_kernel_classes_Resource $item, $lang = ''){
         $returnValue = (string) '';
 
         common_Logger::i('Get itemContent for item '.$item->getUri());

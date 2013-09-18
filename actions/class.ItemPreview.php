@@ -110,7 +110,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 		if (is_null($impl)) {
 			throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
 		}
-		return $impl->render($item);
+		return $impl->render($item, '');
 	}
 	
 	private function renderItem($item) {
