@@ -31,7 +31,6 @@ ItemPreviewImpl.prototype.connect = function(frame){
 	if (typeof(frame.contentWindow.onItemApiReady) == "function") {
 		frame.contentWindow.onItemApiReady(this);
 	}
-	console.log('ItemPreviewImpl connected');
 }
 
 // Response 
@@ -46,8 +45,6 @@ ItemPreviewImpl.prototype.traceEvents = function(eventArray) {
 	for (var attrname in eventArray) {
 		this.events[attrname] = eventArray[attrname];
 	}
-
-	console.log('Got events: '.eventArray);
 }
 
 ItemPreviewImpl.prototype.beforeFinish = function(callback) {
@@ -59,7 +56,6 @@ ItemPreviewImpl.prototype.saveScores = function(valueArray) {
 	for (var attrname in valueArray) {
 		this.scores[attrname] = valueArray[attrname];
 	}
-	console.log(valueArray);
 }
 
 // Variables

@@ -9,9 +9,10 @@
 		<script type='text/javascript'>
 		    var resultApi = <?=get_data('resultJsApi');?>;
 			var itemId = <?=json_encode(get_data('itemId'));?>;
+			var itemPath = '<?=get_data('itemPath')?>';
 		</script>
 	</head>
 	<body>
-		<iframe id='item-container' src="<?=get_data('itemPath')?>" class="toolframe" frameborder="0" style="width:100%;overflow:hidden"></iframe>
+		<iframe id='item-container' class="toolframe" frameborder="0" style="width:100%;overflow:hidden"></iframe>
 	</body>
 </html>

@@ -41,14 +41,14 @@ function onItemApiReady() {
 ////////////////////
 
 function getEndorsment(){
-	console.log('deprecated getEndorsment');
+	
 }
 function setEndorsment(endorsment){
-	console.log('deprecated setEndorsment');
+	
 }
 
 function getScore(){
-	console.log('deprecated getScore');
+	
 }
 
 function setRecoveryContext(identifier, value) {
@@ -70,15 +70,15 @@ function setScore(score){
 }
 
 function getScoreRange(){
-	console.log('deprecated getScoreRange');
+	
 }
 
 function setScoreRange(max, min){
-	console.log('deprecated setScoreRange');
+	
 }
 
 function getAnsweredValues(){
-	console.log('deprecated getAnsweredValues');
+	
 }
 
 /**
@@ -101,7 +101,7 @@ function setAnsweredValues(encodedValues){
  * @returns {Object} all the data related to the subject
  */
 function getSubject(){
-	console.log('deprecated getSubject');
+	
 }
 
 /**
@@ -111,7 +111,7 @@ function getSubject(){
  * @returns {String} the subject's login
  */
 function getSubjectLogin(){
-	console.log('deprecated getSubjectLogin');
+	
 }
 
 /**
@@ -121,7 +121,7 @@ function getSubjectLogin(){
  * @returns {Object} the subject's name
  */
 function getSubjectName(){
-	console.log('todo getSubjectName');
+	
 }
 
 /**
@@ -142,7 +142,7 @@ function getItem(){
  * @returns {Object} the test's data (uri, label)
  */
 function getTest(){
-	console.log('deprecated getTest');
+	
 }
 
 /**
@@ -152,7 +152,7 @@ function getTest(){
  * @returns {Object} the delivery's data (uri, label)
  */
 function getDelivery(){
-	console.log('deprecated getDelivery');
+	
 }
 
 
@@ -185,7 +185,7 @@ function setUserVar(key, value){
  * @returns {String|number|boolean}
  */
 function getUserVar(key){
-	console.log('deprecated getUserVar');
+	
 }
 
 
@@ -247,7 +247,6 @@ _itemApi.beforeFinish(function() {
  */
 function finish(){
 	_itemApi.finish();
-	console.log('finished');
 }
 
   //////////////////////////////

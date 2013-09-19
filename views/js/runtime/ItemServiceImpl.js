@@ -24,7 +24,6 @@ ItemServiceImpl.prototype.connect = function(frame){
 	if (typeof(frame.contentWindow.onItemApiReady) == "function") {
 		frame.contentWindow.onItemApiReady(this);
 	}
-	console.log('ItemServiceImpl connected');
 };
 
 // Response 
@@ -39,8 +38,6 @@ ItemServiceImpl.prototype.traceEvents = function(eventArray) {
 	for (var attrname in eventArray) {
 		this.events[attrname] = eventArray[attrname];
 	}
-
-	console.log('Got scores: '.eventArray);
 };
 
 // Scoring
@@ -48,17 +45,14 @@ ItemServiceImpl.prototype.saveScores = function(valueArray) {
 	for (var attrname in valueArray) {
 		this.scores[attrname] = valueArray[attrname];
 	}
-	console.log('Got scores: '.valueArray);
 };
 
 // Flow
 ItemServiceImpl.prototype.beforeFinish = function(callback) {
-	console.log('beforeFinish received by ItemServiceImpl');
 	this.beforeFinishCallbacks.push(callback);
 };
 
 ItemServiceImpl.prototype.finish = function() {
-	console.log('Running ' + this.beforeFinishCallbacks.length + ' registered events');
 	for (var i = 0; i < this.beforeFinishCallbacks.length; i++) {
 		this.beforeFinishCallbacks[i]();
 	};
@@ -66,9 +60,6 @@ ItemServiceImpl.prototype.finish = function() {
 	this.serviceApi.setState(JSON.stringify(this.stateVariables), function(itemApi) {
 		
 		return function() {
-			console.log('Responses ', itemApi.responses);	
-			console.log('Scores ', itemApi.scores);	
-			console.log('Events ', itemApi.events);
 			//todo add item, call id etc
 			
 			if (itemApi.resultApi != null) {
