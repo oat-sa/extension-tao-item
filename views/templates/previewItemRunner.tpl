@@ -1,7 +1,7 @@
-<link rel="stylesheet" type="text/css" href="<?=BASE_WWW?>css/preview.css" />
-<script type="text/javascript" src="<?=BASE_WWW?>js/ItemApi/ItemPreviewImpl.js"></script>
-<script type="text/javascript" src="<?=BASE_WWW?>js/preview-console.js"></script>
-<script type="text/javascript" src="<?=BASE_WWW?>js/previewItemRunner.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
+<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/ItemApi/ItemPreviewImpl.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/preview-console.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/previewItemRunner.js"></script>
 
 <div class="main-container">
 
@@ -9,7 +9,7 @@
 		<?=get_data('previewTitle')?>
 		<?if(get_data('preview')):?>
 		<span id="preview-options-opener">
-			<a href="#" ><img src="<?=BASE_WWW?>/img/options.png" class="icon" alt="options" /><?=__('Options')?><span class="ui-icon ui-icon-carat-1-e"></span></a>
+			<a href="#" ><img src="<?=ROOT_URL?>taoItems/views//img/options.png" class="icon" alt="options" /><?=__('Options')?><span class="ui-icon ui-icon-carat-1-e"></span></a>
 		</span>
 		<?endif?>
 	</div>

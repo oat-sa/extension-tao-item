@@ -78,7 +78,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 
 		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
 
-		$this->setView('previewItemRunner.tpl');
+		$this->setView('previewItemRunner.tpl', 'taoItems');
 	}
 
 	public function getPreviewUrl($item, $options = array()) {

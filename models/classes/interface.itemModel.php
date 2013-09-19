@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -16,6 +16,7 @@
  * 
  * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ *               2013 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  * 
  */
 
@@ -51,7 +52,14 @@ interface taoItems_models_classes_itemModel
      * @throws taoItems_models_classes_ItemModelException
      */
     public function render( core_kernel_classes_Resource $item, $languageCode);
-	
+
+    /**
+     * 
+     * @param core_kernel_classes_Resource $item
+     * @param unknown $languageCode
+     */
+    public function getPreviewUrl( core_kernel_classes_Resource $item, $languageCode);
+    
 	/**
 	 * Returns a compiler for the item 
 	 * 
@@ -60,5 +68,3 @@ interface taoItems_models_classes_itemModel
 	 */
 	public function getCompiler( core_kernel_classes_Resource $item);
 }
-
-?>

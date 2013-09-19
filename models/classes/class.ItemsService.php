@@ -720,6 +720,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
 
         return (bool) $returnValue;
     }
+    
+    public function getPreviewUrl(core_kernel_classes_Resource $item, $lang = '') {
+        $itemModel = $this->getItemModel($item);
+        common_Logger::i('Building preview URL for '.$item);
+        if(is_null($itemModel)){
+            return null;
+        }
+        return $this->getItemModelImplementation($itemModel)->getPreviewUrl($item, $lang);
+    }
 
     /**
      * Short description of method getItemMeasurements
