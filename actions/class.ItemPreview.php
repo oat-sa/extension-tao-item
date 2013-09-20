@@ -104,7 +104,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 	 * @return string A string representing JavaScript instructions.
 	 */
 	protected function getResultServerApi() {
-	    return taoResultServer_helpers_ResultServerJsApi::getServiceApi();
+	    return 'new ConsoleResultServer()';
 	}
 	
 	/**
@@ -113,6 +113,6 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 	 * @return string
 	 */
 	protected function getResultServerApiPath() {
-	    return 'taoResultServer/views/js/ResultServerApi.js';
+	    return 'taoItems/views/js/runtime/ConsoleResultServer.js';
 	}
 }
