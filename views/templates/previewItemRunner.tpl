@@ -1,27 +1,30 @@
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
-<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/ItemApi/ItemPreviewImpl.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL?>tao/views/js/serviceApi/ServiceApi.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL?>tao/views/js/serviceApi/PseudoStorage.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/runtime/ItemServiceImpl.js"></script>
 <script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/preview-console.js"></script>
 <script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/previewItemRunner.js"></script>
+<script type="text/javascript" src="<?=ROOT_URL.get_data('resultJsApiPath');?>"></script>
+<script type='text/javascript'>
+    var resultApi = <?=get_data('resultJsApi');?>;
+    var serviceApi = new ServiceApi(<?=tao_helpers_Javascript::buildObject(get_data('previewUrl'))?>, {}, 'preview', new PseudoStorage());
+	var api = new ItemServiceImpl(serviceApi);
+	$('#preview-container').unbind('load').load(function() {return function(api, frame) {
+		api.connect(frame);
+	}(api, this)});
+	$('#preview-container').attr('src', serviceApi.getCallUrl());    
+</script>
 
 <div class="main-container">
 
 	<div class="ui-widget ui-state-default ui-widget-header ui-corner-top container-title" >
-		<?=get_data('previewTitle')?>
-		<?if(get_data('preview')):?>
-		<span id="preview-options-opener">
-			<a href="#" ><img src="<?=ROOT_URL?>taoItems/views//img/options.png" class="icon" alt="options" /><?=__('Options')?><span class="ui-icon ui-icon-carat-1-e"></span></a>
-		</span>
-		<?endif?>
+		<?= __('Preview')?>
 	</div>
 	<div class="ui-widget ui-widget-content">
 	
-	<?if(get_data('preview')):?>
+	<?if(has_data('previewUrl')):?>
 		
-		<div id='preview-options'>
-			<?=get_data('optionsForm')?>
-		</div>
-	
-		<iframe id='preview-container' name="preview-container" src="<?=get_data('previewUrl')?>" />
+		<iframe id='preview-container' name="preview-container"></iframe>
 		<!-- to emulate wf navigaton: <button id='finishButton' ><?=__('Finish')?></button> -->
 		
 		<div id='preview-console'>
@@ -36,7 +39,7 @@
 
 	<?else:?>
 			<h3><?=__('PREVIEW BOX')?></h3>
-			<p><?=get_data('previewMsg')?></p>
+			<p><?=__("Not yet available")?></p>
 	<?endif?>
 	</div>
 </div>

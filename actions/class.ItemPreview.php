@@ -33,50 +33,19 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 
 	public function index(){
 		$this->setData('preview', false);
-		$this->setData('previewMsg', __("Not yet available"));
 
 		$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
 		$itemService = taoItems_models_classes_ItemsService::singleton();
 		if ($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)) {
-			$this->setData('preview', true);
 
-			$options = array(
-				'uri'		=>	tao_helpers_Uri::encode($item->getUri()),
-				'context'	=> false,
-				'match'		=> 'client'
-			);
-
-			if ($this->hasSessionAttribute('previewOpts')) {
-				$options = array_merge($options, $this->getSessionAttribute('previewOpts'));
-			}
-
-			//create the options form
-			$formContainer = new taoItems_actions_form_PreviewOptions($options);
-			$myForm = $formContainer->getForm();
-			if ($myForm->isSubmited()) {
-				if ($myForm->isValid()) {
-					$previewOpts = $myForm->getValues();
-					$options = array_merge($options, $previewOpts);
-					$this->setSessionAttribute('previewOpts', $previewOpts);
-				}
-			}
-			$this->setData('optionsForm', $myForm->render());
-
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
-
+	    	$this->setData('resultJsApi', $this->getResultServerApi());
+	    	$this->setData('resultJsApiPath', $this->getResultServerApiPath());
+	    	
 			//this is this url that will contains the preview
 			//@see taoItems_actions_LegacyPreviewApi
 			$this->setData('previewUrl', $this->getPreviewUrl($item));
 		}
-
-		$previewTitle = __('Preview');
-		if ($this->hasRequestParameter('previewTitle')) {
-			$previewTitle = $this->getRequestParameter('previewTitle');
-		}
-		$this->setData('previewTitle', $previewTitle);
-
-		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
 
 		$this->setView('previewItemRunner.tpl', 'taoItems');
 	}
@@ -128,5 +97,22 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 			throw new tao_models_classes_FileNotFoundException($filename);
 		}
 	}
+	
+	/**
+	 * Get the ResultServer API call to be used by the item.
+	 *
+	 * @return string A string representing JavaScript instructions.
+	 */
+	protected function getResultServerApi() {
+	    return taoResultServer_helpers_ResultServerJsApi::getServiceApi();
+	}
+	
+	/**
+	 * Get the path from ROOT_URL where the ResultServerApi implementation is found on the server.
+	 *
+	 * @return string
+	 */
+	protected function getResultServerApiPath() {
+	    return 'taoResultServer/views/js/ResultServerApi.js';
+	}
 }
-?>

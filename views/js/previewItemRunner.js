@@ -1,19 +1,4 @@
-var api = new ItemPreviewImpl();
 
-var frame = document.getElementById('preview-container');
-if (frame != null) {
-	if (jQuery.browser.msie) {
-		this.frame.onreadystatechange = function(){	
-			if(this.readyState == 'complete'){
-				api.connect(frame);	
-			}
-		};
-	} else {
-		this.frame.onload = function(){
-			api.connect(frame);	
-		};
-	}
-}
 
 $(document).ready(function(){
 	$('#finishButton').click(function() {
