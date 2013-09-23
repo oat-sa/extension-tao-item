@@ -18,6 +18,7 @@
 				uiBootstrap.tabs.tabs('enable', authoringIndex);
 			}
 		<?endif;?>
+        <?if(get_data('isPreviewEnabled')):?>
 			if(ctx_action != 'preview'){
 				uiBootstrap.tabs.tabs('url', previewIndex, 
 				    <?= tao_helpers_Javascript::buildObject(
@@ -28,6 +29,7 @@
 			    );
 				uiBootstrap.tabs.tabs('enable', previewIndex);
 			}
+        <?endif;?>    
 		<?if(get_data('label')):?>
 			setAuthoringItemLabel("<?=get_data('label')?>");
 		<?endif;?>	

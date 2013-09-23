@@ -1,4 +1,6 @@
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
+
+<?if(has_data('previewUrl')):?>
 <script type="text/javascript" src="<?=ROOT_URL?>tao/views/js/serviceApi/ServiceApi.js"></script>
 <script type="text/javascript" src="<?=ROOT_URL?>tao/views/js/serviceApi/PseudoStorage.js"></script>
 <script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/runtime/ItemServiceImpl.js"></script>
@@ -14,6 +16,7 @@
 	}(api, this)});
 	$('#preview-container').attr('src', serviceApi.getCallUrl());    
 </script>
+<?endif?>
 
 <div class="main-container">
 
