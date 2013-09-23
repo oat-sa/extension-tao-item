@@ -44,7 +44,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		//the service is initialized by default
 		$this->service = taoItems_models_classes_ItemsService::singleton();
 		$this->defaultData();
-		$this->setData('modelDefined', false);
 
 	}
 	
@@ -118,12 +117,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		 
 		$this->setData('deprecatedOptions', json_encode($deprecatedOptions));
 
+		$hasAuthoring = false;
+		$hasPreview = false;
 		$modelUri = $itemModelElt->getEvaluatedValue();
 		if (is_string($modelUri) && !empty($modelUri)) {
 			$currentModel = new core_kernel_classes_Resource($modelUri);
-			$hasAuthoring = count($currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY))) > 0;
-		} else {
-			$hasAuthoring = false;
+			$authoring = $currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
+    		$isDeprecated =  $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
+    		$hasPreview = !$isDeprecated;
+			if (count($authoring) > 0 && !$isDeprecated) {
+			    $hasAuthoring = true;
+			}
 		}
 
 		if($myForm->isSubmited()){
@@ -146,17 +150,14 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
 		$this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
 
-		$modelDefined = $this->service->isItemModelDefined($item);
-		$isDeprecated =  $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
-		if(!$modelDefined || $isDeprecated){
+		if(!$hasAuthoring){
 			$myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 		}
 
 		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
-		$this->setData('modelDefined', $modelDefined);
-		$this->setData('isDeprecated', $isDeprecated);
+		$this->setData('isPreviewEnabled', $hasPreview);
 		$this->setData('isAuthoringEnabled', $hasAuthoring);
 
 		$this->setData('formTitle', __('Edit Item'));
