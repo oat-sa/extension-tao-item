@@ -27,7 +27,7 @@
  * @subpackage models_classes
  */
 class taoItems_models_classes_CompilationFailedException
-    extends common_Exception
+    extends tao_models_classes_CompilationFailedException
 {
     
 }
