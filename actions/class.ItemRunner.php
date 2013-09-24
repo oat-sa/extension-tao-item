@@ -46,6 +46,10 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		}
 		
 		$directoryResource = new core_kernel_file_File(tao_helpers_Uri::decode($this->getRequestParameter('itemPath')));
+		$basepath = $directoryResource->getAbsolutePath().DIRECTORY_SEPARATOR;
+		if (!file_exists($basepath.$lang) && file_exists($basepath.DEFAULT_LANG)) {
+		    $lang = DEFAULT_LANG;
+		}
 
 		$baseUrl = taoDelivery_models_classes_RuntimeAccess::getAccessProvider()->getAccessUrl($directoryResource);
 		
