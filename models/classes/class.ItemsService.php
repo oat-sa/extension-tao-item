@@ -609,81 +609,31 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         return (array) $returnValue;
     }
 
-    /**
-     * Short description of method cloneInstance
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource instance
-     * @param  Class clazz
-     * @return core_kernel_classes_Resource
-     */
-    public function cloneInstance(core_kernel_classes_Resource $instance, core_kernel_classes_Class $clazz = null){
-        $returnValue = null;
-
-        $returnValue = $this->createInstance($clazz);
-        if(!is_null($returnValue)){
-
-            $itemFolder = $this->getItemFolder($instance);
+    protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
+        if ($property->getUri() == TAO_ITEM_CONTENT_PROPERTY) {
             $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
-
-            foreach($clazz->getProperties(true) as $property){
-
-                if($property->getUri() == RDFS_TYPE){
-                    continue;
-                }
-
-                $range = $property->getRange();
-
-                if(!is_null($range)){
-                    if($range->getUri() == CLASS_GENERIS_FILE){
-
-                        foreach($instance->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
-                            $file = new core_kernel_versioning_File($propertyValue->getUri());
-                            $repo = $file->getRepository();
-                            $relPath = basename($file->getAbsolutePath());
-                            if(!empty($relPath)){
-                                $newPath = tao_helpers_File::concat(array($this->getItemFolder($returnValue), $relPath));
-                                common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
-                                tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
-                                if(file_exists($newPath)){
-                                    $subpath = substr($newPath, strlen($repo->getPath()));
-                                    $newFile = $repo->createFile(
-                                            (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
-                                    );
-                                    $returnValue->setPropertyValue($property, $newFile->getUri());
-                                    $newFile->add(true, true);
-                                    $newFile->commit('Clone of '.$instance->getUri(), true);
-                                }
-                            }
-                        }
-                    }else{
-                        foreach($instance->getPropertyValues($property) as $propertyValue){
-                            $returnValue->setPropertyValue($property, $propertyValue);
-                        }
+            foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+                $file = new core_kernel_versioning_File($propertyValue->getUri());
+                $repo = $file->getRepository();
+                $relPath = basename($file->getAbsolutePath());
+                if(!empty($relPath)){
+                    $newPath = tao_helpers_File::concat(array($this->getItemFolder($destination), $relPath));
+                    common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
+                    tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
+                    if(file_exists($newPath)){
+                        $subpath = substr($newPath, strlen($repo->getPath()));
+                        $newFile = $repo->createFile(
+                            (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
+                        );
+                        $destination->setPropertyValue($property, $newFile->getUri());
+                        $newFile->add(true, true);
+                        $newFile->commit('Clone of '.$source->getUri(), true);
                     }
-                }else{
-                    common_Logger::w('Missing range for property '.$property->getUri());
                 }
             }
-            $label = $instance->getLabel();
-            $cloneLabel = "$label bis";
-            if(preg_match("/bis/", $label)){
-                $cloneNumber = (int) preg_replace("/^(.?)*bis/", "", $label);
-                $cloneNumber++;
-                $cloneLabel = preg_replace("/bis(.?)*$/", "", $label)."bis $cloneNumber";
-            }
-
-            $returnValue->setLabel($cloneLabel);
-
-            //Measurements
-            $measurements = $this->getItemMeasurements($instance);
-            if(count($measurements) > 0){
-                $this->setItemMeasurements($returnValue, $measurements);
-            }
+        } else {
+            return parent::cloneInstanceProperty($source, $destination, $property);
         }
-
-        return $returnValue;
     }
 
     /**
