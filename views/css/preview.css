@@ -24,7 +24,7 @@ iframe#preview-container{
 	border:none;
 }
 
-.fullScreen{
+.fullScreen, html{
     height:100%;
 }
 .fullScreen iframe#preview-container{
