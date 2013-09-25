@@ -33,21 +33,28 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 
 	public function index(){
 		$this->setData('preview', false);
+                
+                if($this->hasRequestParameter('fullScreen')){
+                    $template = 'fsPreviewItemRunner.tpl';
+                } else {
+                    $template = 'previewItemRunner.tpl';
+                }
 
 		$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
 		$itemService = taoItems_models_classes_ItemsService::singleton();
 		if ($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)) {
 
-	    	$this->setData('resultJsApi', $this->getResultServerApi());
-	    	$this->setData('resultJsApiPath', $this->getResultServerApiPath());
+                    $this->setData('resultJsApi', $this->getResultServerApi());
+                    $this->setData('resultJsApiPath', $this->getResultServerApiPath());
 	    	
-			//this is this url that will contains the preview
-			//@see taoItems_actions_LegacyPreviewApi
-			$this->setData('previewUrl', $this->getPreviewUrl($item));
+                    //this is this url that will contains the preview
+                    //@see taoItems_actions_LegacyPreviewApi
+                    $previewUrl = $this->getPreviewUrl($item);
+                    $this->setData('previewUrl', $previewUrl);
 		}
 
-		$this->setView('previewItemRunner.tpl', 'taoItems');
+		$this->setView($template, 'taoItems');
 	}
 
 	public function getPreviewUrl($item, $options = array()) {

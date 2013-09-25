@@ -3,7 +3,7 @@ function ConsoleResultServer(){
 
 ConsoleResultServer.prototype.submitItemVariables = function(itemId, serviceCallId, responses, scores, events, callback){
 
-	previewConsole = $('#preview-console');
+	var previewConsole = $('#preview-console');
 	if (previewConsole.length > 0){
 		//In the preview console
 		var niceResponses = '';
