@@ -53,7 +53,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 
 		$baseUrl = taoDelivery_models_classes_RuntimeAccess::getAccessProvider()->getAccessUrl($directoryResource);
 		
-		$this->setData('itemPath', $baseUrl.$lang.DIRECTORY_SEPARATOR.'index.html');
+		$this->setData('itemPath', $baseUrl.$lang.'/index.html');
 		$this->setData('itemId', $this->getRequestParameter('itemUri'));
 		$this->setData('resultJsApi', $this->getResultServerApi());
 		$this->setData('resultJsApiPath', $this->getResultServerApiPath());
