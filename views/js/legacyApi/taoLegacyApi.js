@@ -260,7 +260,6 @@ function finish(){
  * @returns {String} the token
  */
 function getToken(){
-	console.log('deprecated');
 }
 
 /**
@@ -280,7 +279,6 @@ function getToken(){
  * @param {String} [settings.method = "post"] HTTP method to push the data <b>(get|post)</b>
  */
 function initDataSource(environment, settings){
-	console.log('deprecated initDataSource');
 }
 
 /**
@@ -291,7 +289,6 @@ function initDataSource(environment, settings){
  * @param {Object} source
  */
 function initManualDataSource(source){
-	console.log('deprecated initManualDataSource');
 }
 
 
@@ -312,7 +309,6 @@ function initManualDataSource(source){
  * @param {boolean}[settings.clearAfter= true]	if the variables stacks are cleared once the push is done
  */
 function initPush(environment, settings){
-		console.log('deprecated initPush');
 }
 
 
@@ -322,7 +318,6 @@ function initPush(environment, settings){
  * @function
  */
 function push(){
-		console.log('deprecated push');
 }
 
 /*
@@ -345,7 +340,6 @@ beforeFinish(push);
 * @param {mixed} data any data strucuture you want to trace
 */
 function logEvent(elementName, eventType, data){
-		console.log('logEvent');
 }
 
 /**
@@ -356,7 +350,6 @@ function logEvent(elementName, eventType, data){
 * @param {mixed} data 
 */
 function logCustomEvent(eventName, data){
-		console.log('logCustomEvent');
 }
 
 function initEventServices(var1, var2) {
