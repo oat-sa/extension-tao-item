@@ -142,7 +142,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				$item = $binder->bind($properties);
 				$item = $this->service->setDefaultItemContent($item);
 				
-				$this->setData('label', $item->getLabel());//in case item label has been changed
+                //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
+                $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
+				$this->setData('label', ($label != null) ? $label->literal : '');
 				$this->setData('message', __('Item saved'));
 				$this->setData('reload', true);
 			}
