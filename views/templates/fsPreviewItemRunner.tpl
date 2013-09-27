@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?=PRODUCT_NAME?> <?=TAO_VERSION?></title>
        
-        
+        <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/style.css" />
         <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css" />
         <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
         
@@ -44,7 +44,7 @@
             <iframe id='preview-container' name="preview-container"></iframe>
             <!-- to emulate wf navigaton: <button id='finishButton' ><?=__('Finish')?></button> -->
 
-            <div id='preview-console'>
+            <div id='preview-console' class="ui-widget">
                     <div class="console-control">
                             <span class="ui-icon ui-icon-circle-close" title="<?=__('close')?>"></span>
                             <span class="ui-icon ui-icon-circle-plus toggler" title="<?=__('show/hide')?>"></span>
