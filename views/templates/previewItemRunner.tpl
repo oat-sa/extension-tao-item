@@ -10,11 +10,13 @@
 <script type='text/javascript'>
     var resultApi = <?=get_data('resultJsApi');?>;
     var serviceApi = new ServiceApi(<?=tao_helpers_Javascript::buildObject(get_data('previewUrl'))?>, {}, 'preview', new PseudoStorage());
-	var api = new ItemServiceImpl(serviceApi);
-	$('#preview-container').unbind('load').load(function() {return function(api, frame) {
-		api.connect(frame);
-	}(api, this)});
-	$('#preview-container').attr('src', serviceApi.getCallUrl());    
+    var api = new ItemServiceImpl(serviceApi);
+    $('#preview-container').unbind('load').load(function() {
+        return function(api, frame) {
+            api.connect(frame);
+	}(api, this)
+    });
+    $('#preview-container').attr('src', serviceApi.getCallUrl());    
 </script>
 <?endif?>
 

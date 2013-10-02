@@ -17,10 +17,12 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
+
+
 /**
  * Get an url-formated parameters string, parse it and return a JSONized object
  * @param {String} params
- * @return {Object}
+ * @returns {Object}
  */
 function unserializeUrl(params){
     var data = {};
@@ -47,44 +49,42 @@ function unserializeUrl(params){
 
 
 $(document).ready(function(){
+    
 	var timer = new Date();
 	
 	//get the console element in the top page
-	var previewConsole = $('#preview-console', window.top.document);
+	var $previewConsole = $('#preview-console', window.top.document);
+        var $consoleCtrls = $('.console-control', $previewConsole);
+        var $consoleContent = $('.console-content', $previewConsole);
+        var $consoleContentList = $('.console-content > ul', $previewConsole);
 	
 	//attach an updateConsole event, tobe triggered
-	previewConsole.bind('updateConsole', function(event, type, message){
+	$previewConsole.bind('updateConsole', function(event, type, message){
 		var hour = timer.getHours();
 		var min	 = timer.getMinutes();
 		var sec	 = timer.getSeconds();
 		var logTime = ((hour>10)? hour : '0'+hour ) + ':' + ((min>10)? min : '0'+min) + ':' + ((sec>10)? sec: '0'+sec);
-		$(this).find('ul').append('<li><b>[' +  logTime  + '] ' + type + '</b>: ' + message + '</li>');
+		$consoleContentList.append('<li><b>[' +  logTime  + '] ' + type + '</b>: ' + message + '</li>');
 	});
 	
 	//controls: close console
-	previewConsole.find(".console-control .ui-icon-circle-close").bind('click', function(){
-		previewConsole.unbind('updateConsole').hide();
-		return false;
+	$(".ui-icon-circle-close", $consoleCtrls).on('click', function(event){
+                event.preventDefault();
+		$previewConsole.hide();
 	});
 	
 	//controls: clean console
-	previewConsole.find(".console-control .ui-icon-trash").bind('click', function(){
-		previewConsole.find('div.console-content').empty();
-		return false;
+        $('.ui-icon-trash', $consoleCtrls).on('click', function(event){
+                event.preventDefault();
+		$consoleContentList.empty();
 	});
 	
 	//controls: show/hide console
-	previewConsole.find(".console-control .toggler").bind('click', function(e){
-		previewConsole.find('div.console-content').toggle();
-		if($(this).hasClass('ui-icon-circle-minus')){
-			previewConsole.height('16px');
-			$(this).removeClass('ui-icon-circle-minus').addClass('ui-icon-circle-plus');
-		}
-		else{
-			previewConsole.height('150px');
-			$(this).removeClass('ui-icon-circle-plus').addClass('ui-icon-circle-minus');
-		}
-		return false;
+        $(".toggler", $consoleCtrls).on('click', function(event){
+                event.preventDefault();
+		$consoleContent.toggle();
+                $(this).toggleClass('ui-icon-circle-minus', true)
+                        .toggleClass('ui-icon-circle-plus', true);
 	});
 	
 	//log in the console the ajax request to the Preview Api
@@ -97,13 +97,13 @@ $(document).ready(function(){
 			if(/save$/.test(settings.url)){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
 				for(var key in data){
-					if(key != 'token'){
+					if(key !== 'token'){
 						message += '<br />' + key + ' = '  + data[key] ;
 					}
 				}
-				if(message != ''){
+				if(message !== ''){
 					message += '<br />';
-					previewConsole.trigger('updateConsole', ['push data', message]);
+					$previewConsole.trigger('updateConsole', ['push data', message]);
 				}
 			}
 			
@@ -115,13 +115,13 @@ $(document).ready(function(){
 						try{
 							var eventData = $.parseJSON(data.events[index]);
 							message += '<br />' + eventData.type + ' on element ' + eventData.name;
-							if(eventData.id != 'noID'){
+							if(eventData.id !== 'noID'){
 								message += '[id=' + eventData.id +']';
 							}
 						}catch(exp){ }
 					}
 					message += '<br />';
-					previewConsole.trigger('updateConsole', ['trace events', message]);
+					$previewConsole.trigger('updateConsole', ['trace events', message]);
 				}
 			}
 			
@@ -129,24 +129,24 @@ $(document).ready(function(){
 			else if(/saveContext$/.test(settings.url)){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
 					for(key in data){
-						if(key != 'token'){
+						if(key !== 'token'){
 							message += '<br />' + key + ' = ' + data[key];
 						}
 					}
 					message += '<br />';
-					previewConsole.trigger('updateConsole', ['save context', message]);				
+					$previewConsole.trigger('updateConsole', ['save context', message]);				
 			}
 			
 			//wfApi retrieve context 
 			else if(/retrieveContext$/.test(settings.url)){
 				var data = unserializeUrl(decodeURIComponent(settings.data));
 					for(key in data){
-						if(key != 'token'){
+						if(key !== 'token'){
 							message += '<br />' + key + ' = ' + data[key];
 						}
 					}
 					message += '<br />';
-					previewConsole.trigger('updateConsole', ['retrieved context', message]);				
+					$previewConsole.trigger('updateConsole', ['retrieved context', message]);				
 			}
 			
 			//taoMatching data
@@ -162,7 +162,7 @@ $(document).ready(function(){
 						//console.log(exp);
 					}
 					message += '<br />';
-					previewConsole.trigger('updateConsole', ['sent answers', message]);
+					$previewConsole.trigger('updateConsole', ['sent answers', message]);
 				}
 			}
 			
@@ -173,15 +173,9 @@ $(document).ready(function(){
 							settings.url + ' ? ' + 
 							decodeURIComponent(settings.data) + ' => ' +
 							request.responseText;
-				previewConsole.trigger('updateConsole', ['remote request', message]);
+				$previewConsole.trigger('updateConsole', ['remote request', message]);
 			}
 		}
 		
 	});
-	/*
-	afterFinish(function(){
-		previewConsole.trigger('updateConsole', ['state', 'item is now finished!']);
-	})
-	*/;
-	
 });

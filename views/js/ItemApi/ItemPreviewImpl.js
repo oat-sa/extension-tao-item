@@ -28,7 +28,7 @@ function ItemPreviewImpl() {
 
 ItemPreviewImpl.prototype.connect = function(frame){
 	frame.contentWindow.itemApi = this;
-	if (typeof(frame.contentWindow.onItemApiReady) == "function") {
+	if (typeof(frame.contentWindow.onItemApiReady) === "function") {
 		frame.contentWindow.onItemApiReady(this);
 	}
 }
