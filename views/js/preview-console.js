@@ -83,8 +83,8 @@ $(document).ready(function(){
         $(".toggler", $consoleCtrls).on('click', function(event){
                 event.preventDefault();
 		$consoleContent.toggle();
-                $(this).toggleClass('ui-icon-circle-minus', true)
-                        .toggleClass('ui-icon-circle-plus', true);
+                $(this).toggleClass('ui-icon-circle-minus')
+                        .toggleClass('ui-icon-circle-plus');
 	});
 	
 	//log in the console the ajax request to the Preview Api
