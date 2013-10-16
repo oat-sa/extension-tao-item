@@ -22,7 +22,7 @@ msgstr "Une erreur est survenue durant l'import"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Éditeur"
+msgstr "Éditeur "
 
 msgid "Back"
 msgstr "Retour"
@@ -50,7 +50,7 @@ msgid "Debug Mode"
 msgstr "Mode de débogage"
 
 msgid "delete"
-msgstr "supprimer"
+msgstr "Supprimer"
 
 msgid "Disabled"
 msgstr "Désactivé"
@@ -59,22 +59,22 @@ msgid "Download item content"
 msgstr "Télécharger le contenu de l'item"
 
 msgid "duplicate"
-msgstr "dupliquer"
+msgstr "Dupliquer"
 
 msgid "Edit Item"
-msgstr "Modifier un item"
+msgstr "Modification de l'item"
 
 msgid "Edit item"
 msgstr "Modifier un item"
 
 msgid "Edit item class"
-msgstr "Éditer la classe item"
+msgstr "Édition de la classe item"
 
 msgid "Enabled"
 msgstr "Activé"
 
 msgid "export"
-msgstr "exporter"
+msgstr "Exporter"
 
 msgid "Fake delivery"
 msgstr "Fausse délivrance"
@@ -89,7 +89,7 @@ msgid "Finish"
 msgstr ""
 
 msgid "import"
-msgstr "importer"
+msgstr "Importer"
 
 msgid "Item content saved"
 msgstr "Le contenu de l'item a été enregistré."
@@ -123,17 +123,17 @@ msgid "items imported successfully"
 msgstr "item importées avec succès"
 
 msgid "Items library"
-msgstr "Bibliothèque d'items"
+msgstr "Banque d'items"
 
 msgid "lists"
-msgstr "listes"
+msgstr "Listes"
 
 msgid "Manage item content"
 msgstr "Gérer le contenu de l'item"
 
 #, tao-public
 msgid "Manage items"
-msgstr "Gérer les items"
+msgstr "Gestion des items"
 
 msgid "Manage the item versioned content"
 msgstr "Gérer le contenu de l'item versionné"
@@ -142,16 +142,16 @@ msgid "Matching side"
 msgstr "Côté associé"
 
 msgid "meta data"
-msgstr "méta-données"
+msgstr "Méta-\ndonnées"
 
 msgid "move"
-msgstr "déplacer"
+msgstr "Déplacer"
 
 msgid "new class"
-msgstr "nouvelle classe"
+msgstr "Créer classe"
 
 msgid "new item"
-msgstr "nouvel item"
+msgstr "Créer item"
 
 msgid "No item type selected for the current item."
 msgstr "Pas de modèle d'item sélectionné pour cet item."
@@ -170,7 +170,7 @@ msgid "Preview"
 msgstr "Aperçu "
 
 msgid "preview"
-msgstr "aperçu"
+msgstr "Prévisua-\nliser"
 
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
@@ -185,7 +185,7 @@ msgid "revision restored : "
 msgstr "révision restaurée :"
 
 msgid "search"
-msgstr "rechercher"
+msgstr "Rechercher"
 
 msgid "Server"
 msgstr "Serveur"
@@ -197,7 +197,7 @@ msgid "the file was not uploaded successfully"
 msgstr "le fichier n'a pas été téléversé avec succès"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Le module Items vous permet la création et le design d'items et d'exercices."
+msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
 
 msgid "Unable to copy the resources"
 msgstr "Impossible de copier les ressources"
@@ -227,4 +227,40 @@ msgid "Save"
 msgstr "Enregistrer"
 
 msgid "A Zip archive containing the QTI items (XML), their resources (images, videos...) and an IMS manifest file (XML)."
-msgstr "Une archive zippée contenant les items QTI (XML), leurs ressources (images, vidéos, etc.) et un fichier de manifeste IMS (XML)."
+msgstr "Une archive zippée contenant les items QTI (XML), leurs ressources (images, vidéos, etc.) et un fichier manifeste IMS (XML)."
+
+msgid "Label"
+msgstr "Libellé"
+
+msgid "Logged in as:"
+msgstr "Connecté en tant que : "
+
+msgid "Settings"
+msgstr "Réglages"
+
+msgid "User Management"
+msgstr "Gestion des utilisateurs"
+
+msgid "fixed"
+msgstr "fixé"
+
+msgid "Order Interaction Editor"
+msgstr "Éditeur de l'ordre des interactions"
+
+#msgid "Export"
+#msgstr "Exporter"
+
+msgid "expand"
+msgstr "Développer"
+
+msgid "show property"
+msgstr "Montrer propriété"
+
+msgid "hide property"
+msgstr "Cacher propriété"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Time dependent"
+msgstr "Time dependent (fr)"
