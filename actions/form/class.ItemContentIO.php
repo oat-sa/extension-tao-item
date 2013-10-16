@@ -132,7 +132,7 @@ class taoItems_actions_form_ItemContentIO
 		
 		if (!$itemService->hasItemModel($this->instance, array(TAO_ITEM_MODEL_PAPERBASED))) {
 			$disableValidationElt = tao_helpers_form_FormFactory::getElement("disable_validation", 'Checkbox');
-			$disableValidationElt->setDescription("Disable validation");
+			$disableValidationElt->setDescription(__("Disable validation"));
 			$disableValidationElt->setOptions(array("on" => ""));
 			$this->form->addElement($disableValidationElt);
 			$this->form->createGroup('import', 'Import item content',  array($importFileElt->getName(), $disableValidationElt->getName()));
