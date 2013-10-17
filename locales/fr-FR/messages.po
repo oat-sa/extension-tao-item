@@ -226,6 +226,9 @@ msgstr "mauvais format de fichier"
 msgid "Save"
 msgstr "Enregistrer"
 
+msgid "Enables you to export an Open Web Item."
+msgstr "Vous permet d'exporter un Open Web Item."
+
 msgid "A Zip archive containing the QTI items (XML), their resources (images, videos...) and an IMS manifest file (XML)."
 msgstr "Une archive zippée contenant les items QTI (XML), leurs ressources (images, vidéos, etc.) et un fichier manifeste IMS (XML)."
 
