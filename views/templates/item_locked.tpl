@@ -23,7 +23,7 @@
 </div>
 <script src="<?= ROOT_URL ?>tao/views/js/lock.js" />
 <script>
-    var lock = new Lock('<?=get_data('uri')?>');
+    var lock = new Lock('<?=get_data('itemUri')?>');
     $("#release").click(function() {
 	lock.release();
     }
