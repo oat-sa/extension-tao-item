@@ -85,12 +85,21 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 	public function editItem()
 	{
 
-		$itemClass = $this->getCurrentClass();
+
+
+        $itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
+
+        if (tao_models_classes_lock_OntoLock::singleton()->isLocked($item)) {
+            $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($item);
+            $this->setData('label', $item->getLabel());
+            $this->setData('epoch', $lockData->getEpoch());
+            $this->setData('owner', $lockData->getOwner()->getUri());
+            $this->setView('item_locked.tpl');
+        } else {
 
 		$formContainer = new taoItems_actions_form_Item($itemClass, $item);
 		$myForm = $formContainer->getForm();
-
 		/*
 		 * crapy way to add the status of the item model
 		 * @todo set this in the taoItems_actions_form_Item
@@ -166,6 +175,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		$this->setData('myForm', $myForm->render());
 
 		$this->setView('item_form.tpl');
+        }
 	}
 
 	public function itemVersionedContentIO(){
