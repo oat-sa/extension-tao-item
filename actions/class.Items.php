@@ -93,6 +93,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         if (tao_models_classes_lock_OntoLock::singleton()->isLocked($item)) {
             $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($item);
             $this->setData('label', $item->getLabel());
+            $this->setData('itemUri', tao_helpers_Uri::encode($item->getUri()));
             $this->setData('epoch', $lockData->getEpoch());
             $this->setData('owner', $lockData->getOwner()->getUri());
             $this->setView('item_locked.tpl');
