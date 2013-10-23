@@ -805,12 +805,26 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 	 */
 	public function authoring()
 	{
-
 		$this->setData('error', false);
 
 		try{
 			$item = $this->getCurrentInstance();
-			$itemClass = $this->getCurrentClass();
+            $itemClass = $this->getCurrentClass();
+            /*
+            note about lock;
+              The eventual presenc of a lock is anticipated in the frontend when the item is selected (Items/editItem)
+              and the authoring tab is not enabled, just in case of controller triggered by other means and
+             to avoid to get the error at saving time
+             */
+            if (tao_models_classes_lock_OntoLock::singleton()->isLocked($item)) {
+                $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($item);
+                $this->setData('label', $item->getLabel());
+                $this->setData('itemUri', tao_helpers_Uri::encode($item->getUri()));
+                $this->setData('epoch', $lockData->getEpoch());
+                $this->setData('owner', $lockData->getOwner()->getUri());
+                $this->setView('item_locked.tpl');
+                exit();
+            }
 
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			if($itemModel instanceof core_kernel_classes_Resource){
@@ -819,6 +833,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                 if($authoring instanceof core_kernel_classes_Literal){
 
+                    //sets the lock with the conencted user as owner
+                    tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
+                    
 					$this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->getUri()).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
 
 				}
