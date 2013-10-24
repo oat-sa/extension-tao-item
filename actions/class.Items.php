@@ -74,6 +74,41 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		return taoItems_models_classes_ItemsService::singleton();
 	}
 
+    /**
+     * If you want striclty to check if the resource is locked, you should use tao_models_classes_lock_OntoLock::singleton()->isLocked($resource)
+     * Controller level convenience method to check if @resource is being locked, prepare data ans sets view, todo ppl to be moved higher
+     * @return boolean
+     */
+    private function isLocked($resource, $view){
+         if (tao_models_classes_lock_OntoLock::singleton()->isLocked($resource)) {
+                $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($resource);
+                $this->setData('label', $resource->getLabel());
+                $this->setData('itemUri', tao_helpers_Uri::encode($resource->getUri()));
+                $this->setData('epoch', $lockData->getEpoch());
+                $this->setData('owner', $lockData->getOwner()->getUri());
+                $ownerLogin = '';
+                try {
+                    $ownerLogin = $lockData->getOwner()->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
+                    
+                } catch (Exception $e) {
+                    $ownerLogin = 'Unknown User';
+                }
+                $ownerEmail = '';
+                try {
+                    $ownerEmail = $lockData->getOwner()->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_MAIL));
+
+                } catch (Exception $e) {
+                    $ownerEmail = 'Unknown Email';
+                }
+                $this->setData('ownerLogin', $ownerLogin);
+                $this->setView($view);
+              
+                
+                return true;
+            } else {
+                return false;
+            }
+    }
 /*
  * controller actions
  */
@@ -90,15 +125,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         $itemClass = $this->getCurrentClass();
 		$item = $this->getCurrentInstance();
 
-        if (tao_models_classes_lock_OntoLock::singleton()->isLocked($item)) {
-            $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($item);
-            $this->setData('label', $item->getLabel());
-            $this->setData('itemUri', tao_helpers_Uri::encode($item->getUri()));
-            $this->setData('epoch', $lockData->getEpoch());
-            $this->setData('owner', $lockData->getOwner()->getUri());
-            $this->setView('item_locked.tpl');
-        } else {
-
+        if (!$this->isLocked($item, 'item_locked.tpl')) {
+        
+        //$this->setView('item_locked.tpl');
 		$formContainer = new taoItems_actions_form_Item($itemClass, $item);
 		$myForm = $formContainer->getForm();
 		/*
@@ -805,47 +834,26 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 	 */
 	public function authoring()
 	{
+        $item = $this->getCurrentInstance();
+        $itemClass = $this->getCurrentClass();
+        if (!$this->isLocked($item, 'item_locked.tpl')) {
 		$this->setData('error', false);
-
 		try{
-			$item = $this->getCurrentInstance();
-            $itemClass = $this->getCurrentClass();
-            /*
-            note about lock;
-              The eventual presenc of a lock is anticipated in the frontend when the item is selected (Items/editItem)
-              and the authoring tab is not enabled, just in case of controller triggered by other means and
-             to avoid to get the error at saving time
-             */
-            if (tao_models_classes_lock_OntoLock::singleton()->isLocked($item)) {
-                $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($item);
-                $this->setData('label', $item->getLabel());
-                $this->setData('itemUri', tao_helpers_Uri::encode($item->getUri()));
-                $this->setData('epoch', $lockData->getEpoch());
-                $this->setData('owner', $lockData->getOwner()->getUri());
-                $this->setView('item_locked.tpl');
-                exit();
-            }
-
+			
 			$itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 			if($itemModel instanceof core_kernel_classes_Resource){
-
 				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
-
                 if($authoring instanceof core_kernel_classes_Literal){
-
                     //sets the lock with the conencted user as owner
                     tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
                     
 					$this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->getUri()).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
-
 				}
 			}
 			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
-
 		}
 		catch(Exception $e){
 			$this->setData('error', true);
-
                         //build clear error or warning message:
                         if(!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource){
                                 $errorMsg = __('No item authoring tool available for the selected type of item: '.$itemModel->getLabel());
@@ -856,8 +864,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		}
 		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
 		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
-
 		$this->setView('authoring.tpl');
+         }
 	}
 
 	/**
