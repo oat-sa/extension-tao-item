@@ -74,41 +74,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 		return taoItems_models_classes_ItemsService::singleton();
 	}
 
-    /**
-     * If you want striclty to check if the resource is locked, you should use tao_models_classes_lock_OntoLock::singleton()->isLocked($resource)
-     * Controller level convenience method to check if @resource is being locked, prepare data ans sets view, todo ppl to be moved higher
-     * @return boolean
-     */
-    private function isLocked($resource, $view){
-         if (tao_models_classes_lock_OntoLock::singleton()->isLocked($resource)) {
-                $lockData = tao_models_classes_lock_OntoLock::singleton()->getLockData($resource);
-                $this->setData('label', $resource->getLabel());
-                $this->setData('itemUri', tao_helpers_Uri::encode($resource->getUri()));
-                $this->setData('epoch', $lockData->getEpoch());
-                $this->setData('owner', $lockData->getOwner()->getUri());
-                $ownerLogin = '';
-                try {
-                    $ownerLogin = $lockData->getOwner()->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_LOGIN));
-                    
-                } catch (Exception $e) {
-                    $ownerLogin = 'Unknown User';
-                }
-                $ownerEmail = '';
-                try {
-                    $ownerEmail = $lockData->getOwner()->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_USER_MAIL));
 
-                } catch (Exception $e) {
-                    $ownerEmail = 'Unknown Email';
-                }
-                $this->setData('ownerLogin', $ownerLogin);
-                $this->setView($view);
-              
-                
-                return true;
-            } else {
-                return false;
-            }
-    }
 /*
  * controller actions
  */
