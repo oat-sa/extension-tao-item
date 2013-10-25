@@ -919,5 +919,22 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
 
         return $returnValue;
     }
+    
+    /**
+     * Get items of a specific model
+     * @param string|core_kernel_classes_Resource $itemModel - the item model URI
+     * @return core_kernel_classes_Resource[] the found items
+     */
+    public function getAllByModel($itemModel){
+        if(!empty($itemModel)){
+            $uri = ($itemModel instanceof core_kernel_classes_Resource) ? $itemModel->getUri() : $itemModel;
+            return $this->itemClass->searchInstances(array(
+                    $this->itemModelProperty => $uri
+                ), array(
+                    'recursive' => true
+                ));
+        }
+        return array();
+    }
 
 }
