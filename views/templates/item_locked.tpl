@@ -19,23 +19,46 @@
 		    <tr><td class="fieldLabel"><?=__('Locking Date:')?></td><td class="fieldValue"><?=get_data('epoch')?></td></tr>
 		    <tr />
 		</table>
-		<span class="button" id="release">
-		<?=__('ReleaseLock')?>
-		</span>
+		
 	    </span>
-	    
+	    <span class="boxContent">
+		<?php
+		    if (get_data('isOwner')) {
+		?>
+		<br />
+		<?=__('As the owner of this resource, you may release the lock')?>
+		
+		<span class="button" id="release">
+		    <?=__('ReleaseLock')?>
+		</span>
+		<?php
+		    } else {
+		?>
+		<br />
+		<?=__('Please contact the owner of the resource to unlock it')?>
+		<?php
+		    }
+		?>
+	    </span>
 	</span>
     
 </div>
 <script src="<?= ROOT_URL ?>tao/views/js/lock.js" />
 <script>
+
     var lock = new Lock('<?=get_data('itemUri')?>');
     $("#release").click(function() {
 	lock.release();
     }
     );
-    
 </script>
+
+<script type="text/javascript">
+
+            uiBootstrap.tabs.tabs('enable', helpers.getTabIndexByName('items_preview'));
+
+</script>
+
 <?if(!get_data('isDeprecated')):?>
 	<? include('footer.tpl') ?>
 <?endif?>
