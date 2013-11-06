@@ -259,7 +259,7 @@ class taoItems_scripts_MigrateLegacyItems
         $returnValue = new core_kernel_classes_Resource($uri);
         
         $isItem = false;
-        foreach($returnValue->getType() as $type){
+        foreach($returnValue->getTypes() as $type){
         	if($itemService->isItemClass($type)){
         			 $isItem = true;
         			 break;
