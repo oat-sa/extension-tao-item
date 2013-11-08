@@ -45,7 +45,6 @@
 </div>
 <script src="<?= ROOT_URL ?>tao/views/js/lock.js" />
 <script>
-
     var lock = new Lock('<?=get_data('itemUri')?>');
     $("#release").click(function() {
 	lock.release();
@@ -54,9 +53,7 @@
 </script>
 
 <script type="text/javascript">
-
-            uiBootstrap.tabs.tabs('enable', helpers.getTabIndexByName('items_preview'));
-
+       uiBootstrap.tabs.tabs('enable', helpers.getTabIndexByName('items_preview'));
 </script>
 
 <?if(!get_data('isDeprecated')):?>
