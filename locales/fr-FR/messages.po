@@ -170,7 +170,7 @@ msgid "Preview"
 msgstr "Aperçu "
 
 msgid "preview"
-msgstr "Prévisua-\nliser"
+msgstr "Aperçu"
 
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
