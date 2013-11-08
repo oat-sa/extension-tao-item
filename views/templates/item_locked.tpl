@@ -46,8 +46,19 @@
 <script src="<?= ROOT_URL ?>tao/views/js/lock.js" />
 <script>
     var lock = new Lock('<?=get_data('itemUri')?>');
+    var successCallBack = function () {
+	helpers._load(
+		helpers.getMainContainerSelector(),
+		helpers._url(
+			ctx_form_action,
+			ctx_form_module,
+			ctx_form_extension
+		    ),//how to retrieve current action, controller, ?
+		data
+		);
+	}
     $("#release").click(function() {
-	lock.release();
+	lock.release(successCallBack,successCallBack);
     }
     );
 </script>
