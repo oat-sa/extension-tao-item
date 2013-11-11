@@ -80,7 +80,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 		}
 	}
 	
-	private function getRenderedItem($item) {
+	protected function getRenderedItem($item) {
 		$itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
 		$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
 		if (is_null($impl)) {
