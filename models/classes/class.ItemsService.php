@@ -929,7 +929,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         if(!empty($itemModel)){
             $uri = ($itemModel instanceof core_kernel_classes_Resource) ? $itemModel->getUri() : $itemModel;
             return $this->itemClass->searchInstances(array(
-                    $this->itemModelProperty => $uri
+                    $this->itemModelProperty->getUri() => $uri
                 ), array(
                     'recursive' => true
                 ));
