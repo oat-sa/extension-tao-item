@@ -267,3 +267,6 @@ msgstr "Supprimer"
 
 msgid "Time dependent"
 msgstr "Time dependent (fr)"
+
+msgid "Beta version"
+msgstr "Version bêta"
