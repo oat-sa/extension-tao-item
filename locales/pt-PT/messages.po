@@ -1,288 +1,315 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.5-alpha\n"
-"PO-Revision-Date: 2013-06-18T15:46:19\n"
-"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"PO-Revision-Date: 2013-11-11 12:52-0000\n"
+"Last-Translator: Paulo Amorim <paulo@amorims.com>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.5.7\n"
 
-msgid "A QTI item file is an XML file following the version 2.0 of the QTI standard."
+msgid ""
+"A QTI item file is an XML file following the version 2.0 of the QTI standard."
 msgstr ""
+"Um ficheiro do item QTI é um ficheiro XML seguindo a versão 2.0 do padrão "
+"QTI."
 
-msgid "A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI resources to import."
+msgid ""
+"A QTI package is a Zip archive containing a imsmanifest.xml file and the QTI "
+"resources to import."
 msgstr ""
+"Um pacote QTI é um ficheiro Zip contendo um ficheiro imsmanifest.xml e os "
+"recursos QTI para importar."
 
-msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
+msgid ""
+"A series of different templates are provided to the Item authors such as "
+"multiple choice questions, puzzle design, text with gaps, etc."
 msgstr ""
+"Uma série de modelos diferentes são fornecidos pelos autores do item, tais "
+"como questões de múltipla escolha, quebra-cabeça, o texto com as lacunas, "
+"etc."
 
 msgid "Add the source file"
-msgstr ""
+msgstr "Adicionar ficheiro fonte"
 
 msgid "An error occured during the import"
-msgstr ""
+msgstr "Ocorreu um erro durante a importação"
 
 msgid "An error occured while saving the item"
-msgstr ""
+msgstr "Um erro ocorreu durante o guardar item"
 
 msgid "An error occurs during the import"
-msgstr ""
+msgstr "Um erro ocorreu durante a importação"
 
-msgid "An Open Web Item package is a Zip archive containing an index.html file with the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, video, etc.)."
+msgid ""
+"An Open Web Item package is a Zip archive containing an index.html file with "
+"the XHTML 1.0 Transitional Doctype and resources (images, scripts, css, "
+"video, etc.)."
 msgstr ""
+"Um pacote de item Open Web é um arquivo Zip contendo um ficheiro index.html "
+"com o XHTML 1.0 Doctype transaccional e recursos (imagens, scripts, CSS, "
+"vídeo, etc)."
 
-#, tao-public
 msgid "Authoring"
-msgstr ""
+msgstr "Autor"
 
 msgid "Back"
-msgstr ""
+msgstr "Voltar"
 
 msgid "Class saved"
-msgstr ""
+msgstr "Disciplina guardada"
 
 msgid "clean up"
-msgstr ""
+msgstr "Limpeza"
 
 msgid "Client"
-msgstr ""
+msgstr "Cliente"
 
 msgid "close"
-msgstr ""
+msgstr "Fechar"
 
 msgid "Content"
-msgstr ""
+msgstr "Conteúdo"
 
-#, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Criar e desenvolver items e exercícios"
 
 msgid "Debug Mode"
-msgstr ""
+msgstr "Modo de depuração"
 
 msgid "delete"
-msgstr ""
+msgstr "Eliminar"
 
 msgid "Disabled"
-msgstr ""
+msgstr "Desligado"
 
 msgid "Download item content"
-msgstr ""
+msgstr "Baixar conteúdo de item"
 
 msgid "duplicate"
-msgstr ""
+msgstr "duplicado"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Editar item"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Editar Item"
 
 msgid "Edit item class"
-msgstr ""
+msgstr "Editar item de disciplina"
 
 msgid "Enabled"
-msgstr ""
+msgstr "Ligado"
 
-msgid "Enables you to export a ZIP archive containing one folder for each exported item. Each  folder is composed by a main XML file (the item's data) and  by externals resources (media, manifests, etc.)"
+msgid ""
+"Enables you to export a ZIP archive containing one folder for each exported "
+"item. Each  folder is composed by a main XML file (the item's data) and  by "
+"externals resources (media, manifests, etc.)"
 msgstr ""
+"Permite a exportação um arquivo ZIP que contém uma pasta para cada item "
+"exportado. Cada pasta é composta por um ficheiro  XML principal (dados do "
+"item) e por recursos de fontes externas (mídia, manifestos, etc)"
 
 msgid "Enables you to export an IMS QTI Package."
-msgstr ""
+msgstr "Permite exportar um pacote IMS QTI."
 
 msgid "export"
-msgstr ""
+msgstr "exportar"
 
 msgid "Export Options"
-msgstr ""
+msgstr "Opções de exportação"
 
 msgid "Fake delivery"
-msgstr ""
+msgstr "Falsa distribuição"
 
 msgid "Fake process"
-msgstr ""
+msgstr "Falso processo"
 
 msgid "Fake test"
-msgstr ""
+msgstr "Teste falso"
 
 msgid "File name"
-msgstr ""
+msgstr "Nome de ficheiro"
 
 msgid "Finish"
-msgstr ""
+msgstr "Terminar"
 
 msgid "import"
-msgstr ""
+msgstr "importar"
 
 msgid "Item content saved"
-msgstr ""
+msgstr "Conteúdo do item guardado"
 
 msgid "item content successfully imported"
-msgstr ""
+msgstr "conteúdo do item importado com sucesso"
 
 msgid "item imported successfully"
-msgstr ""
+msgstr "item importado com sucesso"
 
 msgid "Item imported successfully"
-msgstr ""
+msgstr "Item importado com sucesso"
 
 msgid "Item saved"
-msgstr ""
+msgstr "Item guardado"
 
 msgid "Item saving failed"
-msgstr ""
+msgstr "Guardar do item falhou"
 
 msgid "Item successfully saved"
-msgstr ""
+msgstr "Item guardado com sucesso"
 
 msgid "item versioned content deleted"
-msgstr ""
+msgstr "Conteúdo do item versionado eliminado"
 
 msgid "item versioned content saved"
-msgstr ""
+msgstr "Conteúdo do item versionado guardado"
 
-#, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Items"
 
 msgid "items imported successfully"
-msgstr ""
+msgstr "Items importados com sucesso"
 
 msgid "Items library"
-msgstr ""
+msgstr "Biblioteca de items"
 
 msgid "lists"
-msgstr ""
+msgstr "Listas"
 
 msgid "Manage item content"
-msgstr ""
+msgstr "Gerir conteúdo do item"
 
-#, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Gerir items"
 
 msgid "Manage the item versioned content"
-msgstr ""
+msgstr "Gerir conteúdo do item versionado"
 
 msgid "Matching side"
-msgstr ""
+msgstr "Lado correspondente"
 
 msgid "Max filesize"
-msgstr ""
+msgstr "Tamanho MAX de ficheiro"
 
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 msgid "meta data"
-msgstr ""
+msgstr "Meta dados"
 
 msgid "move"
-msgstr ""
+msgstr "Mover"
 
 msgid "new class"
-msgstr ""
+msgstr "Nova disciplina"
 
 msgid "new item"
-msgstr ""
+msgstr "Novo item"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Nenhum tipo de item seleccionado para o item actual"
 
 msgid "No items of could be imported successfuly"
-msgstr ""
+msgstr "Nenhum item foi importado com sucesso"
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Ainda não se encontra disponível"
 
 msgid "Open Web Item Package"
-msgstr ""
+msgstr "Abrir pacote de item web"
 
 msgid "Options"
-msgstr ""
+msgstr "opções"
 
 msgid "Paper-based Item"
-msgstr ""
+msgstr "Item baseado em papel"
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Por favor seleccione 1º o tipo de item"
 
-#, tao-public
 msgid "Preview"
-msgstr ""
+msgstr "Prever"
 
 msgid "preview"
-msgstr ""
+msgstr "prever"
 
 msgid "PREVIEW BOX"
-msgstr ""
+msgstr "CAIXA DE PREVISÃO"
 
 msgid "Preview Console"
-msgstr ""
+msgstr "Consola de previsão"
 
 msgid "QTI Item"
-msgstr ""
+msgstr "Item QTI"
 
 msgid "QTI Package"
-msgstr ""
+msgstr "Pacote QTY"
 
 msgid "Recovery context"
-msgstr ""
+msgstr "Contexto de recuperação"
 
 msgid "revision restored : "
-msgstr ""
+msgstr "revisão restaurada:"
 
 msgid "search"
-msgstr ""
+msgstr "procurar"
 
 msgid "Server"
-msgstr ""
+msgstr "Servidor"
 
 msgid "show/hide"
-msgstr ""
+msgstr "Mostrar/Esconder"
 
 msgid "the file was not uploaded successfully"
-msgstr ""
+msgstr "O ficheiro foi enviado com sucesso"
 
-msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgid "Test takers"
+msgstr "Examinado"
+
+msgid ""
+"The Items module enables the creation and design of items and exercises."
+msgstr "O modulo de items permite a criação de items e exercícios"
 
 msgid "Unable to copy the resources"
-msgstr ""
+msgstr "Impossível copiar recursos"
 
 msgid "unable to extract archive content, please check your tmp dir"
 msgstr ""
+"impossível de extrair conteúdo do ficheiro, por favor verifique a sua "
+"directoria TMP "
 
 msgid "Unable to move"
-msgstr ""
+msgstr "Impossível mover"
 
 msgid "Upload a QTI Package File"
-msgstr ""
+msgstr "Enviar pacote de ficheiros QTI"
 
 msgid "Upload an Open Web Item Package File"
-msgstr ""
+msgstr "Enviar e abrir pacote de ficheiros web item"
 
 msgid "Upload an paper-based Item"
-msgstr ""
+msgstr "Enviar pacote de item tipo papel"
 
 msgid "Upload QTI File"
-msgstr ""
+msgstr "Enviar ficheiro QTI"
 
 msgid "Upload the item content"
-msgstr ""
+msgstr "Enviar conteúdo de item"
 
 msgid "Validation failed"
-msgstr ""
+msgstr "Validação falhou"
 
 msgid "Validation has failed"
-msgstr ""
+msgstr "A validação falhou"
 
 msgid "Validation of the imported file has failed"
-msgstr ""
+msgstr "A validação do ficheiro importado falhou"
 
 msgid "VersionedContent"
-msgstr ""
+msgstr "Conteúdo versionado"
 
 msgid "wrong file format"
-msgstr ""
-
+msgstr "Ficheiro com o formato errado"
