@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.5-alpha\n"
-"PO-Revision-Date: 2013-09-06 09:30+0000\n"
+"Project-Id-Version: TAO v2.6-alpha\n"
+"PO-Revision-Date: 2013-11-20T14:43:58\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -11,14 +11,11 @@ msgstr ""
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr "Différents modèles sont fournis aux auteurs d'items tels que les questions à choix multiple, l'éditeur de puzzle, les textes à trous, etc."
 
-msgid "An error occured during the import"
-msgstr "Une erreur est survenue pendant l'import"
-
 msgid "An error occured while saving the item"
 msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
 
-msgid "An error occurs during the import"
-msgstr "Une erreur est survenue durant l'import"
+msgid "As the owner of this resource, you may release the lock"
+msgstr ""
 
 #, tao-public
 msgid "Authoring"
@@ -33,27 +30,15 @@ msgstr "Classe enregistrée"
 msgid "clean up"
 msgstr "nettoyer"
 
-msgid "Client"
-msgstr "Client"
-
 msgid "close"
 msgstr "fermer"
-
-msgid "Content"
-msgstr "Contenu"
 
 #, tao-public
 msgid "Create and design items and exercises."
 msgstr "Concevoir des items et exercices."
 
-msgid "Debug Mode"
-msgstr "Mode de débogage"
-
 msgid "delete"
 msgstr "Supprimer"
-
-msgid "Disabled"
-msgstr "Désactivé"
 
 msgid "Download item content"
 msgstr "Télécharger le contenu de l'item"
@@ -70,20 +55,8 @@ msgstr "Modifier un item"
 msgid "Edit item class"
 msgstr "Édition de la classe item"
 
-msgid "Enabled"
-msgstr "Activé"
-
 msgid "export"
 msgstr "Exporter"
-
-msgid "Fake delivery"
-msgstr "Fausse délivrance"
-
-msgid "Fake process"
-msgstr "Faux processus"
-
-msgid "Fake test"
-msgstr "Faux test"
 
 msgid "Finish"
 msgstr ""
@@ -91,14 +64,11 @@ msgstr ""
 msgid "import"
 msgstr "Importer"
 
-msgid "Item content saved"
-msgstr "Le contenu de l'item a été enregistré."
+msgid "Item Locked"
+msgstr ""
 
-msgid "item content successfully imported"
-msgstr "contenu de l'item importé avec succès"
-
-msgid "Item imported successfully"
-msgstr "Item importé avec succès"
+msgid "Item Locked:"
+msgstr ""
 
 msgid "Item saved"
 msgstr "Item enregistré"
@@ -109,18 +79,9 @@ msgstr "La sauvegarde de l'item a échoué"
 msgid "Item successfully saved"
 msgstr "L'item a été enregistré avec succès."
 
-msgid "item versioned content deleted"
-msgstr "contenu de l'item versionné supprimé"
-
-msgid "item versioned content saved"
-msgstr "contenu de l'item versionné sauvegardé"
-
 #, tao-public
 msgid "Items"
 msgstr "Items"
-
-msgid "items imported successfully"
-msgstr "item importées avec succès"
 
 msgid "Items library"
 msgstr "Banque d'items"
@@ -128,21 +89,19 @@ msgstr "Banque d'items"
 msgid "lists"
 msgstr "Listes"
 
-msgid "Manage item content"
-msgstr "Gérer le contenu de l'item"
+msgid "Lock Owner:"
+msgstr ""
+
+msgid "Locking Date:"
+msgstr ""
 
 #, tao-public
 msgid "Manage items"
 msgstr "Gestion des items"
 
-msgid "Manage the item versioned content"
-msgstr "Gérer le contenu de l'item versionné"
-
-msgid "Matching side"
-msgstr "Côté associé"
-
 msgid "meta data"
-msgstr "Méta-\ndonnées"
+msgstr "Méta-\n"
+"données"
 
 msgid "move"
 msgstr "Déplacer"
@@ -159,18 +118,18 @@ msgstr "Pas de modèle d'item sélectionné pour cet item."
 msgid "Not yet available"
 msgstr "Pas encore disponible"
 
-msgid "Options"
-msgstr "Options"
+msgid "Please contact the owner of the resource to unlock it"
+msgstr ""
 
 msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
 
+msgid "preview"
+msgstr "Aperçu"
+
 #, tao-public
 msgid "Preview"
 msgstr "Aperçu "
-
-msgid "preview"
-msgstr "Aperçu"
 
 msgid "PREVIEW BOX"
 msgstr "Prévisualisation"
@@ -178,95 +137,21 @@ msgstr "Prévisualisation"
 msgid "Preview Console"
 msgstr "Moniteur de prévisualisation"
 
-msgid "Recovery context"
-msgstr "Restauration du contexte"
-
-msgid "revision restored : "
-msgstr "révision restaurée :"
+msgid "ReleaseLock"
+msgstr ""
 
 msgid "search"
 msgstr "Rechercher"
 
-msgid "Server"
-msgstr "Serveur"
-
 msgid "show/hide"
 msgstr "montrer/cacher"
-
-msgid "the file was not uploaded successfully"
-msgstr "le fichier n'a pas été téléversé avec succès"
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
 
-msgid "Unable to copy the resources"
-msgstr "Impossible de copier les ressources"
-
-msgid "unable to extract archive content, please check your tmp dir"
-msgstr "impossible d'extraire le contenu de l'archive"
-
-msgid "Unable to move"
-msgstr "Impossible à déplacer"
-
-msgid "Upload the item content"
-msgstr "Téléverser le contenu de l'item"
+msgid "This item is currently being edited and has been locked"
+msgstr ""
 
 msgid "Validation has failed"
 msgstr "La validation a échoué"
 
-msgid "Validation of the imported file has failed"
-msgstr "La validation des fichiers importés a échoué"
-
-msgid "VersionedContent"
-msgstr "Contenu versionné"
-
-msgid "wrong file format"
-msgstr "mauvais format de fichier"
-
-msgid "Save"
-msgstr "Enregistrer"
-
-msgid "Enables you to export an Open Web Item."
-msgstr "Vous permet d'exporter un Open Web Item."
-
-msgid "A Zip archive containing the QTI items (XML), their resources (images, videos...) and an IMS manifest file (XML)."
-msgstr "Une archive zippée contenant les items QTI (XML), leurs ressources (images, vidéos, etc.) et un fichier manifeste IMS (XML)."
-
-msgid "Label"
-msgstr "Libellé"
-
-msgid "Logged in as:"
-msgstr "Connecté en tant que : "
-
-msgid "Settings"
-msgstr "Réglages"
-
-msgid "User Management"
-msgstr "Gestion des utilisateurs"
-
-msgid "fixed"
-msgstr "fixé"
-
-msgid "Order Interaction Editor"
-msgstr "Éditeur de l'ordre des interactions"
-
-#msgid "Export"
-#msgstr "Exporter"
-
-msgid "expand"
-msgstr "Développer"
-
-msgid "show property"
-msgstr "Montrer propriété"
-
-msgid "hide property"
-msgstr "Cacher propriété"
-
-msgid "Delete"
-msgstr "Supprimer"
-
-msgid "Time dependent"
-msgstr "Time dependent (fr)"
-
-msgid "Beta version"
-msgstr "Version bêta"

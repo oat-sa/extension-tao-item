@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/Ontologies/TAOItem.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Item">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#Item
@@ -14,7 +14,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Item]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#Item
@@ -24,7 +24,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item Content
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
@@ -32,7 +32,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Item Content]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item Content
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
@@ -42,7 +42,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Original Filename
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
@@ -50,7 +50,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Original Filename]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Original Filename
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
@@ -60,7 +60,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item Models
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
@@ -68,7 +68,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Item Models]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item Models
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
@@ -78,7 +78,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item Model
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
@@ -86,7 +86,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Item Model]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Item Model
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
@@ -96,7 +96,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Runtime
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
@@ -104,7 +104,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Runtime]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Runtime
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
@@ -114,7 +114,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Deliverable
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
@@ -122,7 +122,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Deliverable]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Items of model are deliverable
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
@@ -132,7 +132,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source itemmodel service
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
@@ -140,7 +140,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[itemmodel service]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source service of the item model
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
@@ -150,7 +150,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Delivery Target
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
@@ -158,7 +158,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Delivery Target]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Delivery Target
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
@@ -168,7 +168,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Online Delivery Target
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
@@ -176,7 +176,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Online Delivery Target]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Online Delivery Target
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
@@ -186,7 +186,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Paper-based Delivery Target
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
@@ -194,7 +194,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Paper-based Delivery Target]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Paper-based Delivery Target
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
@@ -204,7 +204,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Authoring
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
@@ -212,7 +212,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Authoring]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Authoring
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
@@ -220,27 +220,9 @@
     -->
     <rdfs:comment xml:lang="es-ES"><![CDATA[Authoring]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML">
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage es-ES
-    @source Open Web Item
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="es-ES"><![CDATA[Open Web Item]]></rdfs:label>
-    <!--
-    @sourceLanguage en-US
-    @targetLanguage es-ES
-    @source Open Web Items model
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="es-ES"><![CDATA[Open Web Items model]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Data File Name
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
@@ -248,7 +230,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Data File Name]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source the filename used to store the item content for this model
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
@@ -258,7 +240,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Model Status
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus
@@ -268,7 +250,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Stable
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
@@ -276,7 +258,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Stable]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source This item  model can be used in production
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
@@ -286,7 +268,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Deprecated
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
@@ -294,7 +276,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Deprecated]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source This item model is not supported anymore, we advise to migrate your items
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
@@ -304,7 +286,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Development
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
@@ -312,7 +294,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Development]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source this item model has not been tested in a production environment, we advise to be carefull with it
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
@@ -322,7 +304,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Experimental
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
@@ -330,7 +312,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Experimental]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source this item model is still in conception, but you can try it, give your feedback and it will be improved.
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
@@ -340,7 +322,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Status
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
@@ -348,7 +330,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Status]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source The status of an item model
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
@@ -358,7 +340,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole">
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source Items Manager
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
@@ -366,7 +348,7 @@
     -->
     <rdfs:label xml:lang="es-ES"><![CDATA[Items Manager]]></rdfs:label>
     <!--
-    @sourceLanguage en-US
+    @sourceLanguage EN
     @targetLanguage es-ES
     @source The Items Manager Role
     @subject http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole

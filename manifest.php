@@ -40,7 +40,6 @@ return array(
 	),
 	'install' => array(
 		'rdf' => array(
-			dirname(__FILE__). '/models/ontology/aclrole.rdf',
 		    dirname(__FILE__). '/models/ontology/taoitem.rdf',
 		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf'
 		),
@@ -53,6 +52,10 @@ return array(
 		)
 	),
 	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
+    'acl' => array(
+        array('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', array('ext'=>'taoItems')),
+        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', array('ext'=>'taoItems', 'mod' => 'ItemRunner')),
+    ),    
 	'optimizableClasses' => array(
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',

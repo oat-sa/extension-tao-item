@@ -220,24 +220,6 @@
     -->
     <rdfs:comment xml:lang="pt-PT"><![CDATA[Authoring]]></rdfs:comment>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML">
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Open Web Item
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML
-    @predicate http://www.w3.org/2000/01/rdf-schema#label
-    -->
-    <rdfs:label xml:lang="pt-PT"><![CDATA[Open Web Item]]></rdfs:label>
-    <!--
-    @sourceLanguage EN
-    @targetLanguage pt-PT
-    @source Open Web Items model
-    @subject http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML
-    @predicate http://www.w3.org/2000/01/rdf-schema#comment
-    -->
-    <rdfs:comment xml:lang="pt-PT"><![CDATA[Open Web Items model]]></rdfs:comment>
-  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName">
     <!--
     @sourceLanguage EN

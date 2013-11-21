@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.5-rc01\n"
-"PO-Revision-Date: 2013-10-09T11:07:54\n"
+"Project-Id-Version: TAO v2.6-alpha\n"
+"PO-Revision-Date: 2013-11-20T14:43:58\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: id-ID\n"
@@ -11,13 +11,10 @@ msgstr ""
 msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
 msgstr ""
 
-msgid "An error occured during the import"
-msgstr ""
-
 msgid "An error occured while saving the item"
 msgstr ""
 
-msgid "An error occurs during the import"
+msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
 #, tao-public
@@ -33,26 +30,14 @@ msgstr ""
 msgid "clean up"
 msgstr ""
 
-msgid "Client"
-msgstr ""
-
 msgid "close"
-msgstr ""
-
-msgid "Content"
 msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "Debug Mode"
-msgstr ""
-
 msgid "delete"
-msgstr ""
-
-msgid "Disabled"
 msgstr ""
 
 msgid "Download item content"
@@ -61,16 +46,13 @@ msgstr ""
 msgid "duplicate"
 msgstr ""
 
-msgid "Edit item"
-msgstr ""
-
 msgid "Edit Item"
 msgstr ""
 
-msgid "Edit item class"
+msgid "Edit item"
 msgstr ""
 
-msgid "Enabled"
+msgid "Edit item class"
 msgstr ""
 
 msgid "export"
@@ -82,13 +64,10 @@ msgstr ""
 msgid "import"
 msgstr ""
 
-msgid "Item content saved"
+msgid "Item Locked"
 msgstr ""
 
-msgid "item content successfully imported"
-msgstr ""
-
-msgid "Item imported successfully"
+msgid "Item Locked:"
 msgstr ""
 
 msgid "Item saved"
@@ -100,17 +79,8 @@ msgstr ""
 msgid "Item successfully saved"
 msgstr ""
 
-msgid "item versioned content deleted"
-msgstr ""
-
-msgid "item versioned content saved"
-msgstr ""
-
 #, tao-public
 msgid "Items"
-msgstr ""
-
-msgid "items imported successfully"
 msgstr ""
 
 msgid "Items library"
@@ -119,17 +89,14 @@ msgstr ""
 msgid "lists"
 msgstr ""
 
-msgid "Manage item content"
+msgid "Lock Owner:"
+msgstr ""
+
+msgid "Locking Date:"
 msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
-
-msgid "Manage the item versioned content"
-msgstr ""
-
-msgid "Matching side"
 msgstr ""
 
 msgid "meta data"
@@ -150,6 +117,9 @@ msgstr ""
 msgid "Not yet available"
 msgstr ""
 
+msgid "Please contact the owner of the resource to unlock it"
+msgstr ""
+
 msgid "Please select first the item type!"
 msgstr ""
 
@@ -166,48 +136,21 @@ msgstr ""
 msgid "Preview Console"
 msgstr ""
 
-msgid "Recovery context"
-msgstr ""
-
-msgid "revision restored : "
+msgid "ReleaseLock"
 msgstr ""
 
 msgid "search"
 msgstr ""
 
-msgid "Server"
-msgstr ""
-
 msgid "show/hide"
-msgstr ""
-
-msgid "the file was not uploaded successfully"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr ""
 
-msgid "Unable to copy the resources"
-msgstr ""
-
-msgid "unable to extract archive content, please check your tmp dir"
-msgstr ""
-
-msgid "Unable to move"
-msgstr ""
-
-msgid "Upload the item content"
+msgid "This item is currently being edited and has been locked"
 msgstr ""
 
 msgid "Validation has failed"
-msgstr ""
-
-msgid "Validation of the imported file has failed"
-msgstr ""
-
-msgid "VersionedContent"
-msgstr ""
-
-msgid "wrong file format"
 msgstr ""
 
