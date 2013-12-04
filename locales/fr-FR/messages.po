@@ -132,7 +132,7 @@ msgid "Preview"
 msgstr "Aperçu "
 
 msgid "PREVIEW BOX"
-msgstr "Prévisualisation"
+msgstr "Aperçu"
 
 msgid "Preview Console"
 msgstr "Moniteur de prévisualisation"
