@@ -101,26 +101,6 @@ class ItemsTestCase extends UnitTestCase {
 		
 		$this->assertTrue($subItemClass->delete());
 	}
-	
-	public function testItemContent(){
-		//create an instance of the Item class
-		$itemClass = $this->itemsService->getRootClass();
-		$item = $this->itemsService->createInstance($itemClass, 'test content');
-		$this->assertIsA($item, 'core_kernel_classes_Resource');
-		$this->assertEqual('test content', $item->getLabel());
-		
-		$item->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
-		
-		$this->assertFalse($this->itemsService->hasItemContent($item));
-		
-		//must use setItemContent and getItemContent
-		$this->assertTrue($this->itemsService->setItemContent($item, 'test 2'));
-		$this->assertEqual('test 2', $this->itemsService->getItemContent($item));
-		
-		$this->assertTrue($this->itemsService->setItemContent($item, 'test FR', 'FR'));
-		$this->assertEqual('test FR', $this->itemsService->getItemContent($item, 'FR'));
-		
-		$this->assertTrue($this->itemsService->deleteItem($item));
-	}
+
 }
 ?>
