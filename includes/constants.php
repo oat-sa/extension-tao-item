@@ -36,7 +36,6 @@ $todefine = array(
 	'TAO_ITEM_MODEL_AUTHORING_PROPERTY' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring',
 	'TAO_ITEM_MODEL_DATAFILE_PROPERTY'	=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName',
 	'TAO_ITEM_MODEL_QTI'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI',
-	'TAO_ITEM_MODEL_XHTML'				=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#XHTML',
 	'TAO_ITEM_MODEL_PAPERBASED'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#Paperbased',
 	'PROPERTY_ITEM_MODEL_SERVICE'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService',
 
