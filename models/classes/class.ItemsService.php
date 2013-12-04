@@ -580,35 +580,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         return (string) $returnValue;
     }
 
-    /**
-     * Service to get the matching data of an item
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource itemRdf
-     * @return array
-     */
-    public function getMatchingData(core_kernel_classes_Resource $itemRdf){
-        $returnValue = array();
-
-        $impl = $this->getItemModelImplementation($this->getItemModel($itemRdf));
-
-        /* @todo reevaluate client side evaluation */
-        if($impl instanceof taoQTI_models_classes_ItemModel){
-
-            $qtiService = taoQTI_models_classes_QTI_Service::singleton();
-            $item = $qtiService->getDataItemByRdfItem($itemRdf);
-            if(!is_null($item)){
-                //@todo cache matching data by rdf item
-                $returnValue = $item->getMatchingData();
-            }else{
-                throw new common_Exception('cannot load QTI item for matching data');
-            }
-        }
-
-        return (array) $returnValue;
-    }
-
     protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
         if ($property->getUri() == TAO_ITEM_CONTENT_PROPERTY) {
             $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
