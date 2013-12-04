@@ -135,7 +135,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		$previewData = $this->initPreview($item, $itemClass);
 		if(count($previewData) == 0){
 			$this->setData('preview', false);
-			$this->setData('previewMsg', __("Not yet available"));
+			$this->setData('previewMsg', __('Not yet available'));
 		}
 		else{
 			$this->setData('preview', true);
