@@ -38,7 +38,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		
 		if ($this->hasRequestParameter('serviceCallId')) {
     		$serviceCallId = $this->getRequestParameter('serviceCallId');
-            $variableData = tao_models_classes_service_state_Service::singleton()->get($userId, $serviceCallId);
+            $variableData = tao_models_classes_service_StateStorage::singleton()->get($userId, $serviceCallId);
     		$this->setData('storageData', array(
     			'serial'	=> $serviceCallId,
     			'data'		=> is_null($variableData) ? array() : $variableData
