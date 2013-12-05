@@ -15,11 +15,11 @@ msgid "An error occured while saving the item"
 msgstr "Um erro ocorreu durante o guardar item"
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr ""
+msgstr "Como proprietário deste recurso, pode desbloquear"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Autor"
+msgstr "Criador"
 
 msgid "Back"
 msgstr "Voltar"
@@ -44,7 +44,7 @@ msgid "Download item content"
 msgstr "Baixar conteúdo de item"
 
 msgid "duplicate"
-msgstr "duplicado"
+msgstr "duplicar"
 
 msgid "Edit Item"
 msgstr "Editar Item"
@@ -65,10 +65,10 @@ msgid "import"
 msgstr "importar"
 
 msgid "Item Locked"
-msgstr ""
+msgstr "O item bloqueado"
 
 msgid "Item Locked:"
-msgstr ""
+msgstr "Item bloqueado:"
 
 msgid "Item saved"
 msgstr "Item guardado"
@@ -90,10 +90,10 @@ msgid "lists"
 msgstr "Listas"
 
 msgid "Lock Owner:"
-msgstr ""
+msgstr "Proprietário do bloqueio:"
 
 msgid "Locking Date:"
-msgstr ""
+msgstr "Data de bloqueio:"
 
 #, tao-public
 msgid "Manage items"
@@ -103,7 +103,7 @@ msgid "meta data"
 msgstr "Meta dados"
 
 msgid "move"
-msgstr "Mover"
+msgstr "mover"
 
 msgid "new class"
 msgstr "Nova disciplina"
@@ -118,7 +118,7 @@ msgid "Not yet available"
 msgstr "Ainda não se encontra disponível"
 
 msgid "Please contact the owner of the resource to unlock it"
-msgstr ""
+msgstr "Por favor contacte o proprietário do recurso para desbloquear"
 
 msgid "Please select first the item type!"
 msgstr "Por favor seleccione 1º o tipo de item"
@@ -137,7 +137,7 @@ msgid "Preview Console"
 msgstr "Consola de previsão"
 
 msgid "ReleaseLock"
-msgstr ""
+msgstr "Desbloquear"
 
 msgid "search"
 msgstr "procurar"
@@ -149,7 +149,7 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "O modulo de items permite a criação de items e exercícios"
 
 msgid "This item is currently being edited and has been locked"
-msgstr ""
+msgstr "Este item está a ser editado e foi bloqueado"
 
 msgid "Validation has failed"
 msgstr "A validação falhou"
