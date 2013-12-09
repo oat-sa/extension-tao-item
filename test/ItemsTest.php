@@ -20,7 +20,7 @@
  */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -29,7 +29,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package taoItems
  * @subpackage test
  */
-class ItemsTestCase extends UnitTestCase {
+class ItemsTestCase extends TaoPhpUnitTestRunner {
 	
 	/**
 	 * 
@@ -41,7 +41,8 @@ class ItemsTestCase extends UnitTestCase {
 	 * tests initialization
 	 */
 	public function setUp(){		
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
+		$this->itemsService = taoItems_models_classes_ItemsService::singleton();
 	}
 	
 	/**
@@ -51,11 +52,9 @@ class ItemsTestCase extends UnitTestCase {
 	 */
 	public function testService(){
 		
-		$itemsService = taoItems_models_classes_ItemsService::singleton();
-		$this->assertIsA($itemsService, 'tao_models_classes_Service');
-		$this->assertIsA($itemsService, 'taoItems_models_classes_ItemsService');
+		$this->assertIsA($this->itemsService, 'tao_models_classes_Service');
+		$this->assertIsA($this->itemsService, 'taoItems_models_classes_ItemsService');
 		
-		$this->itemsService = $itemsService;
 	}
 	
 	/**
@@ -67,30 +66,30 @@ class ItemsTestCase extends UnitTestCase {
 		$this->assertTrue(defined('TAO_ITEM_CLASS'));
 		$itemClass = $this->itemsService->getRootClass();
 		$this->assertIsA($itemClass, 'core_kernel_classes_Class');
-		$this->assertEqual(TAO_ITEM_CLASS, $itemClass->getUri());
+		$this->assertEquals(TAO_ITEM_CLASS, $itemClass->getUri());
 		
 		//create a subclass
 		$subItemClassLabel = 'subItem class';
 		$subItemClass = $this->itemsService->createSubClass($itemClass, $subItemClassLabel);
 		$this->assertIsA($subItemClass, 'core_kernel_classes_Class');
-		$this->assertEqual($subItemClassLabel, $subItemClass->getLabel());
+		$this->assertEquals($subItemClassLabel, $subItemClass->getLabel());
 		$this->assertTrue($this->itemsService->isItemClass($subItemClass));
 		
 		//create an instance of the Item class
 		$itemInstanceLabel = 'item instance';
 		$itemInstance = $this->itemsService->createInstance($itemClass, $itemInstanceLabel);
 		$this->assertIsA($itemInstance, 'core_kernel_classes_Resource');
-		$this->assertEqual($itemInstanceLabel, $itemInstance->getLabel());
+		$this->assertEquals($itemInstanceLabel, $itemInstance->getLabel());
 		
 		//create instance of subItem
 		$subItemInstanceLabel = 'subItem instance';
 		$subItemInstance = $this->itemsService->createInstance($subItemClass, $subItemInstanceLabel);
 		$this->assertIsA($subItemInstance, 'core_kernel_classes_Resource');
-		$this->assertEqual($subItemInstanceLabel, $subItemInstance->getLabel());
+		$this->assertEquals($subItemInstanceLabel, $subItemInstance->getLabel());
 		
 		$subItemInstanceLabel2 = 'my sub item instance';
 		$subItemInstance->setLabel($subItemInstanceLabel2);
-		$this->assertEqual($subItemInstanceLabel2, $subItemInstance->getLabel());
+		$this->assertEquals($subItemInstanceLabel2, $subItemInstance->getLabel());
 		
 		//delete group instance
 		$this->assertTrue($itemInstance->delete());

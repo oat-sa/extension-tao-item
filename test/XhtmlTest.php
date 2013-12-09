@@ -20,7 +20,7 @@
 */
 ?>
 <?php
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -30,15 +30,15 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package taoItems
  * @subpackage test
  */
-class XhtmlTestCase extends UnitTestCase {
+class XhtmlTestCase extends TaoPhpUnitTestRunner {
 
 	public function testGetScriptElements() {
 		$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'xhtml' . DIRECTORY_SEPARATOR . 'raw.html';
 		try{
 			$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
 			if (@$dom->load($file)){
-				$this->assertEqual(2, count(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jquery-/')));
-				$this->assertEqual(0, count(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jQuery-/')));
+				$this->assertEquals(2, count(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jquery-/')));
+				$this->assertEquals(0, count(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jQuery-/')));
 			}
 			else{
 				$this->assertTrue(false, "An error occured while loading '${file}'.");
@@ -54,7 +54,8 @@ class XhtmlTestCase extends UnitTestCase {
 		try{
 			$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
 			if (@$dom->load($file)){
-				$this->assertTrue(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jquery-/'));
+				$this->assertNotEquals(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jquery-/'),false);
+				$this->assertNotNull(taoItems_helpers_Xhtml::getScriptElements($dom, '/^jquery-/'),false);
 			}
 			else{
 				$this->assertTrue(false, "An error occured while loading '${file}'.");
@@ -70,7 +71,7 @@ class XhtmlTestCase extends UnitTestCase {
 		try{
 			$dom = new DOMDocument('1.0', TAO_DEFAULT_ENCODING);
 			if (@$dom->load($file)){
-				$this->assertEqual(2, taoItems_helpers_Xhtml::removeScriptElements($dom, '/^jquery-/'));
+				$this->assertEquals(2, taoItems_helpers_Xhtml::removeScriptElements($dom, '/^jquery-/'));
 				$this->assertFalse(taoItems_helpers_Xhtml::hasScriptElements($dom, '/jquery/'));
 			}
 			else{
@@ -90,7 +91,7 @@ class XhtmlTestCase extends UnitTestCase {
 				// -- Append
 				taoItems_helpers_Xhtml::addScriptElement($dom, 'scripts/taoMatching.js');
 				$addedElements = taoItems_helpers_Xhtml::getScriptElements($dom, '/^taomatching.js/iu');
-				$this->assertEqual(1, count($addedElements));
+				$this->assertEquals(1, count($addedElements));
 				$added = $addedElements[0];
 				
 				// Was it really appended?
@@ -104,7 +105,7 @@ class XhtmlTestCase extends UnitTestCase {
 				// -- Prepend
 				taoItems_helpers_Xhtml::addScriptElement($dom, 'http://www.taotesting.com/scripts/wfapi.min.js', $append = false);
 				$addedElements = taoItems_helpers_Xhtml::getScriptElements($dom, '/wfapi\.min/');
-				$this->assertEqual(1, count($addedElements));
+				$this->assertEquals(1, count($addedElements));
 				$added = $addedElements[0];
 
 				// Was it really prepended?
