@@ -94,7 +94,7 @@ class taoItems_helpers_Deployment
         if(!preg_match('@^'.BASE_URL.'@', $url)){
 
             common_Logger::d('Downloading '.$url);
-            set_time_limit(0);
+            helpers_TimeOutHelper::setTimeOutLimit(helpers_TimeOutHelper::NO_TIMEOUT);
             $fp = fopen($destination.$fileName, 'w+');
             $curlHandler = curl_init();
             curl_setopt($curlHandler, CURLOPT_URL, $url);
@@ -119,6 +119,7 @@ class taoItems_helpers_Deployment
             curl_exec($curlHandler);
             curl_close($curlHandler);
             fclose($fp);
+            helpers_TimeOutHelper::reset();
         }else{
             common_Logger::d('Skipped download of '.$url);
             return false;
