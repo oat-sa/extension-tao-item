@@ -45,15 +45,13 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
     		));
 		}
 		
-		$directoryResource = new core_kernel_file_File(tao_helpers_Uri::decode($this->getRequestParameter('itemPath')));
-		$basepath = $directoryResource->getAbsolutePath().DIRECTORY_SEPARATOR;
+		$directory = $this->getDirectory($this->getRequestParameter('itemPath'));
+		$basepath = $directory->getPath();
 		if (!file_exists($basepath.$lang) && file_exists($basepath.DEFAULT_LANG)) {
 		    $lang = DEFAULT_LANG;
 		}
 
-		$baseUrl = taoDelivery_models_classes_RuntimeAccess::getAccessProvider()->getAccessUrl($directoryResource);
-		
-		$this->setData('itemPath', $baseUrl.$lang.'/index.html');
+		$this->setData('itemPath', $directory->getPublicAccessUrl().$lang.'/index.html');
 		$this->setData('itemId', $this->getRequestParameter('itemUri'));
 		$this->setData('resultJsApi', $this->getResultServerApi());
 		$this->setData('resultJsApiPath', $this->getResultServerApiPath());
