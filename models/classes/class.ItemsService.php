@@ -848,13 +848,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
 
         return (string) $returnValue;
     }
-
-    public function getCompiler(core_kernel_classes_Resource $item){
+    
+    public function getCompilerClass(core_kernel_classes_Resource $item) {
         $itemModel = $this->getItemModel($item);
         if(is_null($itemModel)){
             throw new common_exception_Error('undefined itemmodel for test '.$item->getUri());
         }
-        return $this->getItemModelImplementation($itemModel)->getCompiler($item);
+        return $this->getItemModelImplementation($itemModel)->getCompilerClass();;
     }
 
     /**

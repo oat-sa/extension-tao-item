@@ -61,10 +61,9 @@ interface taoItems_models_classes_itemModel
     public function getPreviewUrl( core_kernel_classes_Resource $item, $languageCode);
     
 	/**
-	 * Returns a compiler for the item 
+	 * Returns a compiler class for the item 
 	 * 
-	 * @param core_kernel_classes_Resource $item
 	 * @return tao_models_classes_Compiler
 	 */
-	public function getCompiler( core_kernel_classes_Resource $item);
+	public function getCompilerClass();
 }

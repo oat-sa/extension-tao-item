@@ -36,7 +36,8 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @throws taoItems_models_classes_CompilationFailedException
      * @return tao_models_classes_service_ServiceCall
      */
-    public function compile(core_kernel_file_File $destinationDirectory) {
+    public function compile() {
+        $destinationDirectory = $this->spawnPublicDirectory();
         $item = $this->getResource();
         $itemUri = $item->getUri();
         $itemService = taoItems_models_classes_ItemsService::singleton();
@@ -75,8 +76,8 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @param string $compilationLanguage A language tag.
      * @return string The absolute path to the language specific compilation folder for this item to be compiled.
      */
-    protected function getLanguageCompilationPath(core_kernel_file_File $destinationDirectory, $compilationLanguage) {
-        return $destinationDirectory->getAbsolutePath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
+    protected function getLanguageCompilationPath($destinationDirectory, $compilationLanguage) {
+        return $destinationDirectory->getPath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -110,14 +111,14 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * Create the item's ServiceCall.
      * 
      * @param core_kernel_classes_Resource $item
-     * @param core_kernel_file_File $destinationDirectory
+     * @param tao_models_classes_service_StorageDirectory $destinationDirectory
      * @return tao_models_classes_service_ServiceCall
      */
-    protected function createService(core_kernel_classes_Resource $item, core_kernel_file_File $destinationDirectory) {
+    protected function createService(core_kernel_classes_Resource $item, tao_models_classes_service_StorageDirectory $destinationDirectory) {
         $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_SERVICE_ITEMRUNNER));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMPATH),
-            $destinationDirectory
+            $destinationDirectory->getId()
         ));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
             new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMURI),
@@ -125,5 +126,9 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         ));
         
         return $service;        
+    }
+    
+    protected function getSubCompilerClass($resource) {
+        throw new common_Exception('Items cannot include other resources');
     }
 }
