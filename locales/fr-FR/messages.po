@@ -15,7 +15,7 @@ msgid "An error occured while saving the item"
 msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr ""
+msgstr "En tant que propriétaire de la ressource, vous pouvez la déverrouiller."
 
 #, tao-public
 msgid "Authoring"
@@ -59,7 +59,7 @@ msgid "export"
 msgstr "Exporter"
 
 msgid "Finish"
-msgstr ""
+msgstr "Terminer"
 
 msgid "import"
 msgstr "Importer"
