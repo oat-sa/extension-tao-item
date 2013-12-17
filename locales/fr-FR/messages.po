@@ -65,10 +65,10 @@ msgid "import"
 msgstr "Importer"
 
 msgid "Item Locked"
-msgstr ""
+msgstr "Item verrouillé"
 
 msgid "Item Locked:"
-msgstr ""
+msgstr "Item verrouillé :"
 
 msgid "Item saved"
 msgstr "Item enregistré"
@@ -90,10 +90,10 @@ msgid "lists"
 msgstr "Listes"
 
 msgid "Lock Owner:"
-msgstr ""
+msgstr "Propriétaire du verrou :"
 
 msgid "Locking Date:"
-msgstr ""
+msgstr "Date de verrouillage :"
 
 #, tao-public
 msgid "Manage items"
@@ -120,6 +120,7 @@ msgstr "Pas encore disponible"
 
 msgid "Please contact the owner of the resource to unlock it"
 msgstr ""
+"Veuillez contacter le propriétaire de la ressource pour la déverrouiller."
 
 msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
@@ -138,7 +139,7 @@ msgid "Preview Console"
 msgstr "Moniteur de prévisualisation"
 
 msgid "ReleaseLock"
-msgstr ""
+msgstr "Déverrouiller"
 
 msgid "search"
 msgstr "Rechercher"
@@ -150,7 +151,7 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
 
 msgid "This item is currently being edited and has been locked"
-msgstr ""
+msgstr "Cet item est en cours d'édition et a été verrouillé."
 
 msgid "Validation has failed"
 msgstr "La validation a échoué"
