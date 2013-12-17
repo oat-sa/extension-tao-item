@@ -60,20 +60,6 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		$this->selectWebFolder();	
 	}
 	
-	public function access() {
-		$provider = new tao_models_classes_fsAccess_ActionAccessProvider();
-		$filename = $provider->decodeUrl($_SERVER['REQUEST_URI']);
-		if (file_exists($filename)) {
-			$mimeType = tao_helpers_File::getMimeType($filename);
-			header('Content-Type: '.$mimeType);
-			$fp = fopen($filename, 'rb');
- 			fpassthru($fp);
-		} else {
-			throw new tao_models_classes_FileNotFoundException($filename);
-		}
-	}
-	
-	
 	/**
 	 * Get the ResultServer API call to be used by the item.
 	 * 
