@@ -63,13 +63,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 	}
 	
 	public function render() {
-		// @TODO Copy/past of resolver in need of refactoring
-		$rootUrlPath	= parse_url(ROOT_URL, PHP_URL_PATH);
-		$absPath		= parse_url('/'.ltrim($_SERVER['REQUEST_URI'], '/'), PHP_URL_PATH);
-		if (substr($absPath, 0, strlen($rootUrlPath)) != $rootUrlPath ) {
-			throw new ResolverException('Request Uri '.$request.' outside of TAO path '.ROOT_URL);
-		}
-		$relPath		= substr($absPath, strlen($rootUrlPath));
+		$relPath		= tao_helpers_Request::getRelativeUrl();
 		list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);;
 		$uri = base64_decode($codedUri);
 		$item = new core_kernel_classes_Resource($uri);
