@@ -90,13 +90,7 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 	private function renderResource($item, $path) {
 		$folder = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item);
 		$filename = $folder.$path;
-		if (file_exists($filename)) {
-			$mimeType = tao_helpers_File::getMimeType($filename);
-			header('Content-Type: '.$mimeType); 
-			echo file_get_contents($filename);
-		} else {
-			throw new tao_models_classes_FileNotFoundException($filename);
-		}
+		tao_helpers_Http::returnFile($filename);
 	}
 	
 	/**
