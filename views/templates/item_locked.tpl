@@ -43,28 +43,22 @@
 	</span>
     
 </div>
-<script src="<?= ROOT_URL ?>tao/views/js/lock.js" />
-<script>
-    var lock = new Lock('<?=get_data('itemUri')?>');
-    var successCallBack = function () {
-	helpers._load(
-		helpers.getMainContainerSelector(),
-		helpers._url(
-			ctx_form_action,
-			ctx_form_module,
-			ctx_form_extension
-		    ),//how to retrieve current action, controller, ?
-		data
-		);
-	}
-    $("#release").click(function() {
-	lock.release(successCallBack,successCallBack);
-    }
-    );
-</script>
-
 <script type="text/javascript">
-       uiBootstrap.tabs.tabs('enable', helpers.getTabIndexByName('items_preview'));
+    require(['jquery', 'helpers', 'lock'], function($, helpers, Lock){
+        var lock = new Lock('<?=get_data('itemUri')?>');
+        var successCallBack = function successCallBack() {
+            helpers._load(
+                helpers.getMainContainerSelector(),
+                "<?=_url(null, null, null, array('uri' => get_data('itemUri')))?>"
+            );
+        };
+        
+        $("#release").click(function() {
+            lock.release(successCallBack, successCallBack);
+        });
+
+        $('#tabs').tabs('enable', helpers.getTabIndexByName('items_preview'));
+    });
 </script>
 
 <?if(!get_data('isDeprecated')):?>

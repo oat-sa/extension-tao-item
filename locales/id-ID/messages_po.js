@@ -1,8 +1,8 @@
 /* auto generated content */
-/* lang: es-ES */
+/* lang: id-ID */
 define(function(){
  return {
-   langCode : 'es-ES',
+   langCode : 'id-ID',
    i18n_tr : []
  };
 });

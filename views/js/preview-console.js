@@ -17,38 +17,38 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-
-
-/**
- * Get an url-formated parameters string, parse it and return a JSONized object
- * @param {String} params
- * @returns {Object}
- */
-function unserializeUrl(params){
-    var data = {};
-    var hashes = params.split('&');
-    for(var i in hashes){
-		if(typeof hashes[i] == 'string'){
-			var hash = hashes[i].split('=');
-			if(hash.length == 2){
-				if(/\[\]$/.test(hash[0])){
-					var key = hash[0].replace(/\[\]$/, '');
-					if(typeof(data[key]) == "undefined"){
-						data[key] = [];
-					}
-					data[key].push(hash[1]);
-				}
-				else{
-					data[hash[0]] = hash[1];
-				}
-			}
-		}
+define(['jquery'], function($){
+    /**
+     * Get an url-formated parameters string, parse it and return a JSONized object
+     * @param {String} params
+     * @returns {Object}
+     */
+    function unserializeUrl(params){
+        var data = {};
+        var hashes = params.split('&');
+        for(var i in hashes){
+                    if(typeof hashes[i] == 'string'){
+                            var hash = hashes[i].split('=');
+                            if(hash.length == 2){
+                                    if(/\[\]$/.test(hash[0])){
+                                            var key = hash[0].replace(/\[\]$/, '');
+                                            if(typeof(data[key]) == "undefined"){
+                                                    data[key] = [];
+                                            }
+                                            data[key].push(hash[1]);
+                                    }
+                                    else{
+                                            data[hash[0]] = hash[1];
+                                    }
+                            }
+                    }
+        }
+        return data;
     }
-    return data;
-}
-
-
-$(document).ready(function(){
+    
+    return {
+        
+        setup : function(){
     
 	var timer = new Date();
 	
@@ -176,6 +176,7 @@ $(document).ready(function(){
 				$previewConsole.trigger('updateConsole', ['remote request', message]);
 			}
 		}
-		
-	});
+            });
+        }
+    };
 });

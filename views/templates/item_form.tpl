@@ -9,26 +9,27 @@
 	</div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		var deprecated = <?=get_data('deprecatedOptions')?>;
-		$(':radio').each(function(){
-			if($.inArray($(this).val(), deprecated) > -1){
-				$(this).attr('disabled', 'true');
-				$("label[for='"+$(this).attr('id')+"']").css('color', '#A0A0A0');
-			}
-		});
+    require(['jquery', 'helpers', 'uiBootstrap'], function($, helpers, uiBootstrap){
+        var $tabs = uiBootstrap.tabs;
+        var deprecated = <?=get_data('deprecatedOptions')?>;
+        $(':radio').each(function(){
+                if($.inArray($(this).val(), deprecated) > -1){
+                        $(this).attr('disabled', 'true');
+                        $("label[for='"+$(this).attr('id')+"']").css('color', '#A0A0A0');
+                }
+        });
 		
     	<?if(get_data('isPreviewEnabled') !== true):?>
-            uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_preview'));
+            $tabs.tabs('disable', helpers.getTabIndexByName('items_preview'));
         <?endif?>
 		
-		<?if(!get_data('isAuthoringEnabled')):?>
+	<?if(!get_data('isAuthoringEnabled')):?>
     		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
     		$authoringButton.hide();
-			uiBootstrap.tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
-		<?endif;?>
+		$tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
+	<?endif;?>
 
-	});
+    });
 </script>
 <?if(!get_data('isDeprecated')):?>
 	<? include('footer.tpl') ?>

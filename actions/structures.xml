@@ -20,14 +20,14 @@
 				</trees>
 				<actions>
 					<action name="search" url="/taoItems/Items/search" context="*" />
-					<action name="new class" js="generisActions.subClass" url="/taoItems/Items/addItemClass" context="class" />
-					<action name="new item" js="generisActions.instanciate" url="/taoItems/Items/addInstance" context="class" />
-					<action name="delete" js="generisActions.removeNode" url="/taoItems/Items/delete" context="resource" />
-					<action name="duplicate" js="generisActions.duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" />
-					<action name="move" js="generisActions.moveNode" url="/taoItems/Items/moveInstance" context="instance" />
-					<action name="preview" js="generisActions.fullScreen" url="/taoItems/Items/fullScreenPreview" context="instance" />
+					<action name="new class" js="subClass" url="/taoItems/Items/addItemClass" context="class" />
+					<action name="new item" js="instanciate" url="/taoItems/Items/addInstance" context="class" />
+					<action name="delete" js="removeNode" url="/taoItems/Items/delete" context="resource" />
+					<action name="duplicate" js="duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" />
+					<action name="move" js="moveNode" url="/taoItems/Items/moveInstance" context="instance" />
+					<action name="preview" js="fullScreen" url="/taoItems/Items/fullScreenPreview" context="instance" />
 					<action name="lists"  url="/tao/Lists/index"  context="*" />
-					<action name="meta data" js="generisActions.loadMetaData" url="/tao/MetaData/getMetaData"  context="resource" />
+					<action name="meta data" js="loadMetaData" url="/tao/MetaData/getMetaData"  context="resource" />
 					<action name="export" url="/taoItems/ItemExport/index"  context="resource" />
 					<action name="import" url="/taoItems/ItemImport/index"  context="class" />
 				</actions>

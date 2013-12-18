@@ -35,14 +35,13 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		}
 		$lang = core_kernel_classes_Session::singleton()->getDataLanguage();
 
-		
 		if ($this->hasRequestParameter('serviceCallId')) {
-    		$serviceCallId = $this->getRequestParameter('serviceCallId');
-            $variableData = tao_models_classes_service_StateStorage::singleton()->get($userId, $serviceCallId);
-    		$this->setData('storageData', array(
-    			'serial'	=> $serviceCallId,
-    			'data'		=> is_null($variableData) ? array() : $variableData
-    		));
+                    $serviceCallId = $this->getRequestParameter('serviceCallId');
+                    $variableData = tao_models_classes_service_StateStorage::singleton()->get($userId, $serviceCallId);
+                    $this->setData('storageData', array(
+                            'serial'	=> $serviceCallId,
+                            'data'		=> is_null($variableData) ? array() : $variableData
+                    ));
 		}
 		
 		$directory = $this->getDirectory($this->getRequestParameter('itemPath'));
@@ -53,29 +52,11 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 
 		$this->setData('itemPath', $directory->getPublicAccessUrl().$lang.'/index.html');
 		$this->setData('itemId', $this->getRequestParameter('itemUri'));
-		$this->setData('resultJsApi', $this->getResultServerApi());
-		$this->setData('resultJsApiPath', $this->getResultServerApiPath());
+		$this->setData('resultServerEndpoint', $this->getResultServerEndpoint());
+                $this->setData('resultServerParams', $this->getResultServerParams());
+                $this->setData('client_config_url', $this->getClientConfigUrl());
 		
 		$this->selectView();
-		$this->selectWebFolder();	
-	}
-	
-	/**
-	 * Get the ResultServer API call to be used by the item.
-	 * 
-	 * @return string A string representing JavaScript instructions.
-	 */
-	protected function getResultServerApi() {
-	    return taoResultServer_helpers_ResultServerJsApi::getServiceApi();
-	}
-	
-	/**
-	 * Get the path from ROOT_URL where the ResultServerApi implementation is found on the server.
-	 * 
-	 * @return string
-	 */
-	protected function getResultServerApiPath() {
-	    return 'taoResultServer/views/js/ResultServerApi.js';
 	}
 	
 	/**
@@ -85,14 +66,20 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	protected function selectView() {
 	    $this->setView('runtime/item_runner.tpl', 'taoItems');
 	}
-	
-	/**
-	 * The implementation of this method calls ItemRunner::setData with key
-	 * 'webFolder' to give the web folder path to the view.
-	 * 
-	 */
-	protected function selectWebFolder() {
-	    $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-	    $this->setData('webFolder', $ext->getConstant('BASE_WWW'));
-	}
+        
+        /**
+         * Get the URL of the result server
+         * @return string
+         */
+        protected function getResultServerEndpoint(){
+            return _url('', 'ResultServerStateFull', 'taoResultServer');
+        }
+        
+        /**
+         * Get extra parameters to give the result server
+         * @return array an assoc array of additional parameters
+         */
+        protected function getResultServerParams(){
+            return array();
+        }
 }

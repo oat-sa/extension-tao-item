@@ -1,94 +1,92 @@
-function ItemServiceImpl(serviceApi) {
+define(['jquery', 'json2'], function($, JSON){
 
-	// temporary fix
-	if (typeof itemId !== "undefined") {
-		this.itemId = itemId;
-	}
-	
-	this.serviceApi = serviceApi;
-	this.responses = {};
-	this.scores = {};
-	this.events = {};
-	
-	var rawstate = serviceApi.getState();
-	var state = (typeof rawstate == 'undefined' || rawstate == null) ? {} : $.parseJSON(rawstate);
-	this.stateVariables = typeof state == 'object' ? state : {};
-	
-	this.resultApi = (typeof resultApi == 'undefined' || resultApi == null) ? null : resultApi;
-	
-	this.beforeFinishCallbacks = new Array();
-}
+    function ItemServiceImpl(data) {
 
-ItemServiceImpl.prototype.connect = function(frame){
-	frame.contentWindow.itemApi = this;
-	if (typeof(frame.contentWindow.onItemApiReady) == "function") {
-		frame.contentWindow.onItemApiReady(this);
-	}
-};
+        this.itemId = data.itemId;
+        this.serviceApi = data.serviceApi;
+        this.resultApi = data.resultApi || null;
+        this.responses = {};
+        this.scores = {};
+        this.events = {};
+        this.connected = false;
 
-// Response 
+        var rawstate = this.serviceApi.getState();
+        var state = (typeof rawstate === 'undefined' || rawstate === null) ? {} : $.parseJSON(rawstate);
+        this.stateVariables = typeof state === 'object' ? state : {};
 
-ItemServiceImpl.prototype.saveResponses = function(valueArray){
-	for (var attrname in valueArray) {
-		this.responses[attrname] = valueArray[attrname];
-	}
-};
+        this.beforeFinishCallbacks = [];
+    }
 
-ItemServiceImpl.prototype.traceEvents = function(eventArray) {
-	for (var attrname in eventArray) {
-		this.events[attrname] = eventArray[attrname];
-	}
-};
+    ItemServiceImpl.prototype.connect = function(frame){
+        if(this.connected === false && frame.contentWindow){
+            frame.contentWindow.itemApi = this;
+            if (typeof(frame.contentWindow.onItemApiReady) === "function") {
+                frame.contentWindow.onItemApiReady(this);
+                this.connected = true;
+            }
+        }
+    };
 
-// Scoring
-ItemServiceImpl.prototype.saveScores = function(valueArray) {
-	for (var attrname in valueArray) {
-		this.scores[attrname] = valueArray[attrname];
-	}
-};
+    // Response 
 
-// Flow
-ItemServiceImpl.prototype.beforeFinish = function(callback) {
-	this.beforeFinishCallbacks.push(callback);
-};
+    ItemServiceImpl.prototype.saveResponses = function(valueArray){
+        for (var attrname in valueArray) {
+                this.responses[attrname] = valueArray[attrname];
+        }
+    };
 
-ItemServiceImpl.prototype.finish = function() {
-	for (var i = 0; i < this.beforeFinishCallbacks.length; i++) {
-		this.beforeFinishCallbacks[i]();
-	};
+    ItemServiceImpl.prototype.traceEvents = function(eventArray) {
+        for (var attrname in eventArray) {
+                this.events[attrname] = eventArray[attrname];
+        }
+    };
 
-	this.serviceApi.setState(JSON.stringify(this.stateVariables), function(itemApi) {
-		
-		return function() {
-			//todo add item, call id etc
-			
-			if (itemApi.resultApi != null) {
-				itemApi.resultApi.submitItemVariables(
-						itemApi.itemId,
-						itemApi.serviceApi.getServiceCallId(),
-						itemApi.responses,
-						itemApi.scores,
-						itemApi.events,
-						function() {
-							itemApi.serviceApi.finish();
-						}
-				);
-			} else {
-				itemApi.serviceApi.finish();
-			}
-		};
-	}(this));		
-};
+    // Scoring
+    ItemServiceImpl.prototype.saveScores = function(valueArray) {
+        for (var attrname in valueArray) {
+                this.scores[attrname] = valueArray[attrname];
+        }
+    };
 
-ItemServiceImpl.prototype.getVariable = function(identifier, callback) {
-	if (typeof callback == 'function') {
-		callback((typeof this.stateVariables[identifier] == 'undefined')
-			? null
-			: this.stateVariables[identifier]
-		);
-	}
-};
+    // Flow
+    ItemServiceImpl.prototype.beforeFinish = function(callback) {
+        this.beforeFinishCallbacks.push(callback);
+    };
 
-ItemServiceImpl.prototype.setVariable = function(identifier, value) {
-	this.stateVariables[identifier] = value;
-};
+    ItemServiceImpl.prototype.finish = function() {
+        var self = this;
+        for (var i = 0; i < this.beforeFinishCallbacks.length; i++) {
+                this.beforeFinishCallbacks[i]();
+        };
+
+        this.serviceApi.setState(JSON.stringify(this.stateVariables), function() {
+            //todo add item, call id etc
+            if (self.resultApi) {
+                    self.resultApi.submitItemVariables(
+                        self.itemId,
+                        self.serviceApi.getServiceCallId(),
+                        self.responses,
+                        self.scores,
+                        self.events,
+                        function() {
+                            self.serviceApi.finish();
+                        }
+                    );
+            } else {
+                self.serviceApi.finish();
+            }
+        });
+    };
+
+    ItemServiceImpl.prototype.getVariable = function(identifier, callback) {
+        if (typeof callback === 'function') {
+            callback(this.stateVariables[identifier] || null);
+        }
+    };
+
+    ItemServiceImpl.prototype.setVariable = function(identifier, value) {
+        this.stateVariables[identifier] = value;
+    };
+    
+    return ItemServiceImpl;
+});

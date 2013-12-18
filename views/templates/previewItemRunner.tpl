@@ -1,22 +1,17 @@
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
 
 <?if(has_data('previewUrl')):?>
-<script type="text/javascript" src="<?=ROOT_URL?>tao/views/js/serviceApi/ServiceApi.js"></script>
-<script type="text/javascript" src="<?=ROOT_URL?>tao/views/js/serviceApi/PseudoStorage.js"></script>
-<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/runtime/ItemServiceImpl.js"></script>
-<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/preview-console.js"></script>
-<script type="text/javascript" src="<?=ROOT_URL?>taoItems/views/js/previewItemRunner.js"></script>
-<script type="text/javascript" src="<?=ROOT_URL.get_data('resultJsApiPath');?>"></script>
 <script type='text/javascript'>
-    var resultApi = <?=get_data('resultJsApi');?>;
-    var serviceApi = new ServiceApi(<?=tao_helpers_Javascript::buildObject(get_data('previewUrl'))?>, {}, 'preview', new PseudoStorage());
-    var api = new ItemServiceImpl(serviceApi);
-    $('#preview-container').unbind('load').load(function() {
-        return function(api, frame) {
-            api.connect(frame);
-	}(api, this)
-    });
-    $('#preview-container').attr('src', serviceApi.getCallUrl());    
+requirejs.config({
+   config: {
+       'taoItems/controller/preview/itemRunner' : {
+           <?if(has_data('resultServer')):?>
+           resultServer : <?=json_encode(get_data('resultServer'))?>,
+           <?endif?>
+           previewUrl : <?=json_encode(get_data('previewUrl'))?>
+       }
+   } 
+});
 </script>
 <?endif?>
 

@@ -51,14 +51,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 	 */
 	protected function defaultData()
 	{
-		parent::defaultData();
-		if($this->hasRequestParameter('uri')) {
-			$uri = $this->getRequestParameter('uri');
-			if (!empty($uri)) {
-				$item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($uri));
-				$this->setData('label', $item->getLabel());
-			}
-		}
+            parent::defaultData();
+            if($this->hasRequestParameter('uri')) {
+                $uri = $this->getRequestParameter('uri');
+                $classUri = $this->getRequestParameter('classUri');
+                if (!empty($uri)) {
+                    $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($uri));
+                    $this->setData('label', $item->getLabel());
+                    $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', array('uri' => $uri, 'classUri' => $classUri)));
+                    $this->setData('previewUrl', $this->service->getPreviewUrl($item));
+                }
+            }
 	}
 /*
  * conveniance methods

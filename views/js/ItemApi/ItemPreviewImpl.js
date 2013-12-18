@@ -22,15 +22,19 @@ function ItemPreviewImpl() {
 	this.responses = {};
 	this.scores = {};
 	this.events = {};
+        this.connected = false;
 	
 	this.beforeFinishCallbacks = new Array();
 }
 
 ItemPreviewImpl.prototype.connect = function(frame){
+    if(this.connected === false && frame.contentWindow){
 	frame.contentWindow.itemApi = this;
 	if (typeof(frame.contentWindow.onItemApiReady) === "function") {
 		frame.contentWindow.onItemApiReady(this);
+                this.connected = true;
 	}
+    }
 }
 
 // Response 
@@ -98,8 +102,5 @@ ItemPreviewImpl.prototype.log = function(title, message) {
 	if (previewConsole.length > 0){
 		//In the preview console
 		previewConsole.trigger('updateConsole', [title, message]);
-	} else {
-		//outside preview container
-		util.log(title + ': ' + message);
-	}
+	} 
 }
