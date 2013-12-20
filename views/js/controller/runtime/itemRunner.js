@@ -62,12 +62,15 @@ define(['jquery', 'lodash', 'iframeResizer'],
                               itemApi.connect(frame);
                         });
 
-                    }).attr('src', itemPath);
+                    })
+                    .attr('src', itemPath);
 
                 };
                 
                 //tell the parent he can trigger onServiceApiReady
-                window.parent.$(window.parent.document).trigger('serviceready');
+                if (window.parent && window.parent !== window && window.parent.$) {
+                    window.parent.$(window.parent.document).trigger('serviceready');
+                }
             });
         }
     };
