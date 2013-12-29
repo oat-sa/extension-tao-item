@@ -376,6 +376,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 				$authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
                 if($authoring instanceof core_kernel_classes_Literal){
                     //sets the lock with the conencted user as owner
+                  $authoring = 'taoQTI/QtiCreator/index';
                     tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
                     
 					$this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->getUri()).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
