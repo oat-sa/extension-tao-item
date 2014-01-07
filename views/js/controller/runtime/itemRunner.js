@@ -17,8 +17,8 @@
  *
  *
  */
-define(['jquery', 'lodash', 'iframeResizer'], 
-        function($, _, iframeResizer){
+define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier'], 
+        function($, _, iframeResizer, iframeNotifier){
     
     var itemRunner = {
         start : function(options){
@@ -68,9 +68,7 @@ define(['jquery', 'lodash', 'iframeResizer'],
                 };
                 
                 //tell the parent he can trigger onServiceApiReady
-                if (window.parent && window.parent !== window && window.parent.$) {
-                    window.parent.$(window.parent.document).trigger('serviceready');
-                }
+                iframeNotifier.parent('serviceready');
             });
         }
     };
