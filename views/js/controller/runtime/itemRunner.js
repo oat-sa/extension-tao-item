@@ -49,10 +49,11 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier'],
                         resultApi: resultServerApi
                     }, itemService.params));
 
-                    iframeResizer.autoHeight($frame);
+                    iframeResizer.autoHeight($frame, 'body', 10);
+                    
                     $frame.load(function(){
                         var frame = this;
-
+                        
                         //try to connect the api on frame load
                         itemApi.connect(frame);
 
