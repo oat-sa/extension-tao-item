@@ -457,7 +457,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
                 $status = array($status);
             }
             try{
-                $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
+                $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
                 if($itemModel instanceof core_kernel_classes_Resource){
                     $itemModelStatus = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY));
                     if(in_array($itemModelStatus->getUri(), $status)){
