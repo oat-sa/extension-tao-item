@@ -17,8 +17,8 @@
  *
  *
  */
-define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/PseudoStorage', 'taoItems/runtime/ItemServiceImpl', 'taoItems/preview-console'], 
-        function(module, $, _, ServiceApi, PseudoStorage, ItemServiceImpl, previewConsole ){
+define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/PseudoStorage', 'serviceApi/UserInfoService', 'taoItems/runtime/ItemServiceImpl', 'taoItems/preview-console'], 
+        function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceImpl, previewConsole ){
     
     var previewItemRunner = {
         start : function(options){
@@ -40,7 +40,7 @@ define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/Pseud
                 
                 var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
                 
-                var serviceApi = new ServiceApi(conf.previewUrl, {}, 'preview', new PseudoStorage());
+                var serviceApi = new ServiceApi(conf.previewUrl, {}, 'preview', new PseudoStorage(), new UserInfoService(conf.userInfoServiceRequestUrl, {}));
                 var itemApi = new ItemServiceImpl({
                     serviceApi  : serviceApi,
                     resultApi   : resultServerApi

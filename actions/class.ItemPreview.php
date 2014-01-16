@@ -46,11 +46,11 @@ class taoItems_actions_ItemPreview extends tao_actions_Api {
 		$itemService = taoItems_models_classes_ItemsService::singleton();
 		if ($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)) {
 
-                    //this is this url that will contains the preview
-                    //@see taoItems_actions_LegacyPreviewApi
-                    $previewUrl = $this->getPreviewUrl($item);
-                    $this->setData('previewUrl', $previewUrl);
-                    $this->setData('resultServer', $this->getResultServer());
+            //this is this url that will contains the preview
+            //@see taoItems_actions_LegacyPreviewApi
+            $previewUrl = $this->getPreviewUrl($item);
+            $this->setData('previewUrl', $previewUrl);
+            $this->setData('resultServer', $this->getResultServer());
 		}
 
 		$this->setView($template, 'taoItems');

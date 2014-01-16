@@ -46,6 +46,10 @@ ItemApi.prototype.saveResponses = function(valueArray) {
 	this.__delegate((function(valueArray) {return function(implementation) {implementation.saveResponses(valueArray);}})(valueArray));
 };
 
+ItemApi.prototype.getUserPropertyValues = function(property, callback) {
+	this.__delegate((function(property, callback) {return function(property, implementation) {implementation.getUserPropertyValues(property, callback);}})(callback));
+};
+
 // Scoring
 ItemApi.prototype.saveScores = function(valueArray) {
 	this.__delegate((function(valueArray) {return function(implementation) {implementation.saveScores(valueArray);}})(valueArray));

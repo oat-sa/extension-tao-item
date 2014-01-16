@@ -48,6 +48,10 @@ define(['jquery', 'json2'], function($, JSON){
         }
     };
 
+    ItemServiceImpl.prototype.getUserPropertyValues =  function(property, callback) {
+        this.serviceApi.getUserPropertyValues(property, callback);
+    };
+
     // Flow
     ItemServiceImpl.prototype.beforeFinish = function(callback) {
         this.beforeFinishCallbacks.push(callback);

@@ -8,7 +8,8 @@ requirejs.config({
            <?if(has_data('resultServer')):?>
            resultServer : <?=json_encode(get_data('resultServer'))?>,
            <?endif?>
-           previewUrl : <?=json_encode(get_data('previewUrl'))?>
+           previewUrl : <?=json_encode(get_data('previewUrl'))?>,
+           userInfoServiceRequestUrl : <?=json_encode(_url('getUserPropertyValues', 'ServiceModule', 'tao'))?>
        }
    } 
 });
