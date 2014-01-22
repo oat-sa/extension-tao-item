@@ -31,8 +31,9 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 
 return array(
 	'name' => 'taoItems',
-	'description' => 'the TAO Items extension provides the item creation, authoring and managment',
-	'version' => '2.4',
+	'description' => 'TAO Items extension',
+    'license' => 'GPL-2.0',
+    'version' => '2.4',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'dependencies' => array('tao'),
 	'models' => array(
