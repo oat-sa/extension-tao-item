@@ -17,8 +17,8 @@
  *
  *
  */
-define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/PseudoStorage', 'serviceApi/UserInfoService', 'taoItems/runtime/ItemServiceImpl', 'taoItems/preview-console'], 
-        function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceImpl, previewConsole ){
+define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/PseudoStorage', 'serviceApi/UserInfoService', 'taoItems/runtime/ItemServiceImpl', 'taoItems/preview-console', 'urlParser'], 
+        function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceImpl, previewConsole,  UrlParser){
     
     var previewItemRunner = {
         start : function(options){
@@ -35,7 +35,7 @@ define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/Pseud
                     params  : {}
                 });
                 
-                //load dynamically the right ResultServerApi
+            //load dynamically the right ResultServerApi
             require([resultServer.module], function(ResultServerApi){
                 
                 var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
@@ -45,20 +45,30 @@ define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/Pseud
                     serviceApi  : serviceApi,
                     resultApi   : resultServerApi
                 });
+                var callUrl = serviceApi.getCallUrl();       
+                var isCORSAllowed = new UrlParser(callUrl).checkCORS();
                 
-                $('#preview-container').load(function() {
+                 var $frame = $('#preview-container')
+                         
+                 $frame.on('load', function() {
                     var frame = this;
 
-                    //try to connect the api on frame load
+                    //1st try to connect the api on frame load
                     itemApi.connect(frame);
 
-                    //or when the specific event is triggered
+                    //if we are  in the same domain, we add a variable
+                    //to the frame window, so the frame knows it can communicate
+                    //with the parent
+                    if(isCORSAllowed === true){
+                        frame.contentWindow.__knownParent__ = true;
+                    } 
+                    //then we can wait a specific event triggered from the item
                     $(document).on('itemready', function(){
                         itemApi.connect(frame);
                     });
+                    
                 });
-                
-                 $('#preview-container').attr('src', serviceApi.getCallUrl());
+                $('#preview-container').attr('src', serviceApi.getCallUrl());
 
                 $('#finishButton').click(function() {
                     itemApi.finish();
