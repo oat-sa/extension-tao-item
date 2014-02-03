@@ -21,6 +21,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
         function($, _, iframeResizer, iframeNotifier, UrlParser){
     
     var itemRunner = {
+        
         start : function(options){
            
             var $frame = $('#item-container');
@@ -35,6 +36,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                 module : 'taoItems/runtime/ItemServiceImpl',
                 params  : {}
             });
+            var clientConfigUrl = options.clientConfigUrl;
             
             //load dynamically the right ItemService and ResultServerApi
             require([itemService.module, resultServer.module], function(ItemService, ResultServerApi){
@@ -49,9 +51,11 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         resultApi: resultServerApi
                     }, itemService.params));
 
-                    iframeResizer.autoHeight($frame, 'body', 10);
-                    var isCORSAllowed = new UrlParser(itemPath).checkCORS();
+                    var itemUrl = new UrlParser(itemPath);
+                    var isCORSAllowed = itemUrl.checkCORS();
+                    itemUrl.addParam('clientConfigUrl', clientConfigUrl);
                     
+                    iframeResizer.autoHeight($frame, 'body', 10);
                     $frame.on('load', function(){
                         var frame = this;
                         
@@ -69,7 +73,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             itemApi.connect(frame);
                         });
                     })
-                    .attr('src', itemPath);
+                    .attr('src', itemUrl.getUrl());
 
                 };
                 

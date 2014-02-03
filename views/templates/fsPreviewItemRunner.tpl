@@ -12,13 +12,15 @@
          <script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/require.js"></script>
             <script type="text/javascript">
             (function(){
-                require(['<?=get_data('client_config_url')?>'], function(){
+                var clientConfigUrl = '<?=get_data('client_config_url')?>';
+                require([clientConfigUrl], function(){
                     require(['taoItems/controller/preview/itemRunner'], function(itemRunner){
                         itemRunner.start({
                              <?if(has_data('resultServer')):?>
                             resultServer : <?=json_encode(get_data('resultServer'))?>,
                             <?endif?>
-                            previewUrl : <?=json_encode(get_data('previewUrl'))?>
+                            previewUrl : <?=json_encode(get_data('previewUrl'))?>,
+                            clientConfigUrl : clientConfigUrl
                         });
                     });
                 });

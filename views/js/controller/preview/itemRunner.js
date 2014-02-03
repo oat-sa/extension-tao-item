@@ -21,6 +21,7 @@ define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/Pseud
         function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceImpl, previewConsole,  UrlParser){
     
     var previewItemRunner = {
+        
         start : function(options){
            
            var conf = _.merge(module.config(), options || {});
@@ -38,41 +39,53 @@ define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/Pseud
             //load dynamically the right ResultServerApi
             require([resultServer.module], function(ResultServerApi){
                 
-                var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
-                
-                var serviceApi = new ServiceApi(conf.previewUrl, {}, 'preview', new PseudoStorage(), new UserInfoService(conf.userInfoServiceRequestUrl, {}));
-                var itemApi = new ItemServiceImpl({
-                    serviceApi  : serviceApi,
-                    resultApi   : resultServerApi
-                });
-                var callUrl = serviceApi.getCallUrl();       
-                var isCORSAllowed = new UrlParser(callUrl).checkCORS();
-                
-                 var $frame = $('#preview-container')
-                         
-                 $frame.on('load', function() {
-                    var frame = this;
-
-                    //1st try to connect the api on frame load
-                    itemApi.connect(frame);
-
-                    //if we are  in the same domain, we add a variable
-                    //to the frame window, so the frame knows it can communicate
-                    //with the parent
-                    if(isCORSAllowed === true){
-                        frame.contentWindow.__knownParent__ = true;
-                    } 
-                    //then we can wait a specific event triggered from the item
-                    $(document).on('itemready', function(){
-                        itemApi.connect(frame);
+                    var resultServerApi = new ResultServerApi(
+                        resultServer.endpoint, 
+                        resultServer.params
+                    );
+            
+                    var serviceApi = new ServiceApi(
+                        conf.previewUrl, 
+                        {}, 
+                        'preview', 
+                        new PseudoStorage(), 
+                        new UserInfoService(conf.userInfoServiceRequestUrl, {})
+                    );
+            
+                    var itemApi = new ItemServiceImpl({
+                        serviceApi: serviceApi,
+                        resultApi: resultServerApi
                     });
-                    
-                });
-                $('#preview-container').attr('src', serviceApi.getCallUrl());
 
-                $('#finishButton').click(function() {
-                    itemApi.finish();
-                });
+                    var callUrl = new UrlParser(serviceApi.getCallUrl());
+                    var isCORSAllowed = callUrl.checkCORS();
+                    callUrl.addParam('clientConfigUrl', conf.clientConfigUrl);
+
+                    var $frame = $('#preview-container');
+
+                    $frame.on('load', function() {
+                        var frame = this;
+
+                        //1st try to connect the api on frame load
+                        itemApi.connect(frame);
+
+                        //if we are  in the same domain, we add a variable
+                        //to the frame window, so the frame knows it can communicate
+                        //with the parent
+                        if (isCORSAllowed === true) {
+                            frame.contentWindow.__knownParent__ = true;
+                        }
+                        //then we can wait a specific event triggered from the item
+                        $(document).on('itemready', function() {
+                            itemApi.connect(frame);
+                        });
+
+                    });
+                    $('#preview-container').attr('src', callUrl.getUrl());
+
+                    $('#finishButton').click(function() {
+                        itemApi.finish();
+                    });
            });
        }
      }
@@ -80,20 +93,3 @@ define(['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/Pseud
    
    return previewItemRunner;
 });
-
-//            //preview form toggling
-//            $('#preview-options-opener').click(function(){
-//                    var fromClass 	= 'ui-icon-carat-1-s';
-//                    var toClass 	= 'ui-icon-carat-1-e';
-//                    if($('#preview-options').css('display') == 'none'){
-//                            fromClass 	= 'ui-icon-carat-1-e';
-//                            toClass 	= 'ui-icon-carat-1-s';
-//                    }
-//                    $(this).find('span.ui-icon').switchClass(fromClass,toClass);
-//                    $('#preview-options').toggle();
-//            });
-//
-//            //prevent wrong iframe loading from chrome
-//            if($.browser.webkit){
-//                    $("#preview-container").attr('src', $("#preview-container").attr('src'));
-//            }
