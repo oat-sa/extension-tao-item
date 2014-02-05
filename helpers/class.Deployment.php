@@ -74,6 +74,8 @@ class taoItems_helpers_Deployment
             $mediaPath = self::retrieveFile($decodedMediaUrl, $destination);
             if(!empty($mediaPath) && $mediaPath !== false){
                 $xhtml = str_replace($mediaUrl, basename($mediaPath), $xhtml, $replaced); //replace only when copyFile is successful
+            } else {
+                
             }
         }
         return $xhtml;
@@ -90,8 +92,8 @@ class taoItems_helpers_Deployment
         }
 
         // Since the file has not been downloaded yet, start downloading it using cUrl
-        // Only if the resource is external to TAO or in the filemanager of the current instance.
-        if(!preg_match('@^'.BASE_URL.'@', $url)){
+        // Only if the resource is external, else we copy it
+        if(!preg_match('@^'.ROOT_URL.'@', $url)){
 
             common_Logger::d('Downloading '.$url);
             helpers_TimeOutHelper::setTimeOutLimit(helpers_TimeOutHelper::NO_TIMEOUT);
@@ -116,12 +118,14 @@ class taoItems_helpers_Deployment
                     curl_setopt($curlHandler, CURLOPT_USERPWD, USE_HTTP_USER.":".USE_HTTP_PASS);
                 }
             }
-            curl_exec($curlHandler);
+            $success = curl_exec($curlHandler);
             curl_close($curlHandler);
             fclose($fp);
             helpers_TimeOutHelper::reset();
         }else{
-            common_Logger::d('Skipped download of '.$url);
+            $path = tao_helpers_File::getPathFromUrl($url);
+            common_Logger::d('Copying '.$path);
+            $success = helpers_File::copy($path, $destination.$fileName);
             return false;
         }
 
