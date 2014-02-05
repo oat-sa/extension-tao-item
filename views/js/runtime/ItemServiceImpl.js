@@ -1,4 +1,4 @@
-define(['jquery', 'json2'], function($, JSON){
+define(['jquery'], function($){
 
     function ItemServiceImpl(data) {
 
