@@ -126,7 +126,9 @@ class taoItems_helpers_Deployment
             $path = tao_helpers_File::getPathFromUrl($url);
             common_Logger::d('Copying '.$path);
             $success = helpers_File::copy($path, $destination.$fileName);
-            return false;
+            if ($success == false) {
+                return false;
+            }
         }
 
         return $destination.$fileName;
