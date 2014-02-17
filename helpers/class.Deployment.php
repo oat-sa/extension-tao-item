@@ -81,23 +81,30 @@ class taoItems_helpers_Deployment
         return $xhtml;
     }
 
-    protected static function retrieveFile($url, $destination){
+    /**
+     * Retrieve a file from a given $url and copy it to its final $destination.
+     * 
+     * @param string $url The URL to be dereferenced.
+     * @param string $destination The destination of the retrieved file, on the file system.
+     * @return boolean|string false If an error occurs during the retrieval/copy process, or the final destination name if it succeeds.
+     */
+    public static function retrieveFile($url, $destination){
 
         $fileName = basename($url);
         //check file name compatibility: 
         //e.g. if a file with a common name (e.g. car.jpg, house.png, sound.mp3) already exists in the destination folder
-        while(file_exists($destination.$fileName)){
+        while (file_exists($destination . $fileName)) {
             $lastDot = strrpos($fileName, '.');
-            $fileName = substr($fileName, 0, $lastDot).'_'.substr($fileName, $lastDot);
+            $fileName = substr($fileName, 0, $lastDot) . '_' . substr($fileName, $lastDot);
         }
 
         // Since the file has not been downloaded yet, start downloading it using cUrl
         // Only if the resource is external, else we copy it
-        if(!preg_match('@^'.ROOT_URL.'@', $url)){
+        if (!preg_match('@^' . ROOT_URL . '@', $url)) {
 
             common_Logger::d('Downloading '.$url);
             helpers_TimeOutHelper::setTimeOutLimit(helpers_TimeOutHelper::NO_TIMEOUT);
-            $fp = fopen($destination.$fileName, 'w+');
+            $fp = fopen($destination . $fileName, 'w+');
             $curlHandler = curl_init();
             curl_setopt($curlHandler, CURLOPT_URL, $url);
             curl_setopt($curlHandler, CURLOPT_FILE, $fp);
@@ -105,33 +112,40 @@ class taoItems_helpers_Deployment
             curl_setopt($curlHandler, CURLOPT_FOLLOWLOCATION, true);
 
             //if there is an http auth on the local domain, it's mandatory to auth with curl
-            if(USE_HTTP_AUTH){
+            if (USE_HTTP_AUTH) {
+                
                 $addAuth = false;
                 $domains = array('localhost', '127.0.0.1', ROOT_URL);
+                
                 foreach($domains as $domain){
-                    if(preg_match("/".preg_quote($domain, '/')."/", $url)){
+                    if (preg_match("/" . preg_quote($domain, '/') . "/", $url)) {
                         $addAuth = true;
                     }
                 }
-                if($addAuth){
+                
+                if ($addAuth) {
                     curl_setopt($curlHandler, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-                    curl_setopt($curlHandler, CURLOPT_USERPWD, USE_HTTP_USER.":".USE_HTTP_PASS);
+                    curl_setopt($curlHandler, CURLOPT_USERPWD, USE_HTTP_USER . ":" . USE_HTTP_PASS);
                 }
             }
+            
             $success = curl_exec($curlHandler);
             curl_close($curlHandler);
             fclose($fp);
             helpers_TimeOutHelper::reset();
-        }else{
-            $path = tao_helpers_File::getPathFromUrl($url);
-            common_Logger::d('Copying '.$path);
-            $success = helpers_File::copy($path, $destination.$fileName);
-            if ($success == false) {
-                return false;
-            }
         }
-
-        return $destination.$fileName;
+        else {
+            $path = tao_helpers_File::getPathFromUrl($url);
+            common_Logger::d('Copying ' . $path);
+            $success = helpers_File::copy($path, $destination.$fileName);
+        }
+        
+        if ($success == false) {
+            return false;
+        }
+        else {
+            return $destination . $fileName;
+        }
     }
 
 }
