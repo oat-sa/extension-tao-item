@@ -33,16 +33,26 @@ class taoItems_helpers_Deployment
 
     private static $defaultMedia = array("jpg", "jpeg", "png", "gif", "mp3", 'mp4', 'webm', 'swf', 'wma', 'wav', 'css', 'js');
 
-    public static function copyResources($sourceFolder, $destination, $excludeFiles = array()){
+    /**
+     * Copy the resources from one directory to another
+     * 
+     * @param string $sourceDirectory
+     * @param string $destinationDirectory
+     * @param array $excludeFiles
+     * @return boolean
+     */
+    public static function copyResources($sourceDirectory, $destinationDirectory, $excludeFiles = array()){
         //copy the resources
         $exclude = array_merge($excludeFiles, array('.', '..', '.svn'));
-        foreach(scandir($sourceFolder) as $file){
+        $success = true;
+        foreach(scandir($sourceDirectory) as $file){
             if(!in_array($file, $exclude)){
-                tao_helpers_File::copy(
-                        $sourceFolder.$file, $destination.$file, true
+                $success &= tao_helpers_File::copy(
+                    $sourceDirectory.$file, $destinationDirectory.$file, true
                 );
             }
         }
+        return $success;
     }
 
     public static function retrieveExternalResources($xhtml, $destination){
