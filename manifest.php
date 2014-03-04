@@ -45,7 +45,6 @@ return array(
 		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf'
 		),
 		'checks' => array(
-			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_data', 'location' => 'taoItems/data/itemdata', 'rights' => 'rw')),
 			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_includes', 'location' => 'taoItems/includes', 'rights' => 'rw'))
 		),
 		'php'	=> array(
