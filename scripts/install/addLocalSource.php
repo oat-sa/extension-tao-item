@@ -19,11 +19,11 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
-$extension = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-$dataPath = $extension ->getConstant('BASE_PATH') . 'data' . DIRECTORY_SEPARATOR . 'itemdata' . DIRECTORY_SEPARATOR;
-helpers_File::emptyDirectory($dataPath);
+
+$dataPath = FILES_PATH . 'taoItems' . DIRECTORY_SEPARATOR. 'itemData' . DIRECTORY_SEPARATOR;
+if (file_exists($dataPath)) {
+    helpers_File::emptyDirectory($dataPath);
+}
 
 $source = tao_models_classes_FileSourceService::singleton()->addLocalSource('itemDirectory', $dataPath);
 taoItems_models_classes_ItemsService::singleton()->setDefaultFileSource($source);
