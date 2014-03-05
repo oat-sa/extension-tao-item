@@ -44,9 +44,6 @@ return array(
 		    dirname(__FILE__). '/models/ontology/taoitem.rdf',
 		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf'
 		),
-		'checks' => array(
-			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoItems_includes', 'location' => 'taoItems/includes', 'rights' => 'rw'))
-		),
 		'php'	=> array(
 			dirname(__FILE__).'/scripts/install/addLocalSource.php',
 		)
