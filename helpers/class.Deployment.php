@@ -55,11 +55,22 @@ class taoItems_helpers_Deployment
         return $success;
     }
 
+    /**
+     * 
+     * @param unknown $xhtml
+     * @param unknown $destination
+     * @return common_report_Report
+     */
     public static function retrieveExternalResources($xhtml, $destination){
         
         if(!file_exists($destination)){
             if(!mkdir($destination)){
-                throw new common_Exception('Folder '.$destination.' could not be created');
+                common_Logger::e('Folder '.$destination.' could not be created');
+                return new common_report_Report(
+                    common_report_Report::TYPE_ERROR,
+                    __('Unable to create deployement directory'),
+                    $xhtml
+                );
             }
         }
 
@@ -70,6 +81,8 @@ class taoItems_helpers_Deployment
         preg_match_all($expr, $xhtml, $mediaList, PREG_PATTERN_ORDER);
 
         $uniqueMediaList = array_unique($mediaList[0]);
+
+        $report = new common_report_Report(common_report_Report::TYPE_SUCCESS, __('Retrieving external resources'));
         
         foreach($uniqueMediaList as $mediaUrl){
             // This is a file that has to be stored in the item compilation folder itself...
@@ -85,10 +98,14 @@ class taoItems_helpers_Deployment
             if(!empty($mediaPath) && $mediaPath !== false){
                 $xhtml = str_replace($mediaUrl, basename($mediaPath), $xhtml, $replaced); //replace only when copyFile is successful
             } else {
-                
+                $report->add(new common_report_Report(common_report_Report::TYPE_ERROR, __('Failed retrieving %s', $decodedMediaUrl)));
+                $report->setType(common_report_Report::TYPE_ERROR);
             }
         }
-        return $xhtml;
+        if ($report->getType() == common_report_Report::TYPE_SUCCESS) {
+            $report->setData($xhtml);
+        }
+        return $report;
     }
 
     /**
@@ -139,7 +156,9 @@ class taoItems_helpers_Deployment
                 }
             }
             
-            $success = curl_exec($curlHandler);
+            curl_exec($curlHandler);
+            $httpCode = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
+            $success = $httpCode == 200;
             curl_close($curlHandler);
             fclose($fp);
             helpers_TimeOutHelper::reset();
@@ -151,6 +170,7 @@ class taoItems_helpers_Deployment
         }
         
         if ($success == false) {
+            common_Logger::w('Unable to retrieve '.$url);
             return false;
         }
         else {

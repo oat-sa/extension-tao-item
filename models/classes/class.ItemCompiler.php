@@ -40,9 +40,9 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         $destinationDirectory = $this->spawnPublicDirectory();
         $item = $this->getResource();
         $itemUri = $item->getUri();
-        $itemService = taoItems_models_classes_ItemsService::singleton();
-        if (! $itemService->isItemModelDefined($item)) {
-            throw new taoItems_models_classes_CompilationFailedException("No relevant Item Model found for item '${itemUri}' at compilation time.");
+        $report = new common_report_Report(common_report_Report::TYPE_SUCCESS, __('Published %s', $item->getLabel()));
+        if (! taoItems_models_classes_ItemsService::singleton()->isItemModelDefined($item)) {
+            return $this->fail(__('Item \'%s\' has no model', $item->getLabel()));
         }
         
         $langs = $this->getContentUsedLanguages();
@@ -50,14 +50,23 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         	$compiledFolder = $this->getLanguageCompilationPath($destinationDirectory, $compilationLanguage);
         	if (!is_dir($compiledFolder)){
         		if (!@mkdir($compiledFolder)) {
-        		    $msg = "Could not create language specific directory for item '${itemUri}' at compilation time.";
-        		    throw new taoItems_models_classes_CompilationFailedException($msg);
+        		    common_Logger::e('Could not create directory '.$compiledFolder, 'COMPILER');
+        		    return $this->fail(__('Could not create language specific directory for item \'%s\'', $item->getLabel()));
         		}
         	}
-        	$itemService = taoItems_models_classes_ItemsService::singleton();
-        	$this->deployItem($item, $compilationLanguage, $compiledFolder);
+        	$langReport = $this->deployItem($item, $compilationLanguage, $compiledFolder);
+        	$report->add($langReport);
+        	if ($langReport->getType() == common_report_Report::TYPE_ERROR) {
+        	    $report->setType(common_report_Report::TYPE_ERROR);
+        	    break;
+        	}
         }
-        return $this->createService($item, $destinationDirectory);
+        if ($report->getType() == common_report_Report::TYPE_SUCCESS) {
+            $report->setData($this->createService($item, $destinationDirectory));
+        } else {
+            $report->setMessage(__('Failed to publish %s', $item->getLabel()));
+        }
+        return $report;
     }
     
     /**
@@ -86,25 +95,35 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @param core_kernel_classes_Resource $item
      * @param string $languageCode
      * @param string $compiledDirectory
-     * @return boolean
+     * @return common_report_Report
      */
     protected function deployItem(core_kernel_classes_Resource $item, $languageCode, $compiledDirectory) {
         $itemService = taoItems_models_classes_ItemsService::singleton();
         	
         // copy local files
         $source = $itemService->getItemFolder($item, $languageCode);
-        taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
+        $success = taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
+        if (!$success) {
+            return $this->fail(__('Unable to copy resources for language %s', $languageCode));
+        }
         
         // render item
         
         $xhtml = $itemService->render($item, $languageCode);
         	
         // retrieve external resources
-        $xhtml = taoItems_helpers_Deployment::retrieveExternalResources($xhtml, $compiledDirectory);
-         
-        // write index.html
-        file_put_contents($compiledDirectory.'index.html', $xhtml);
-        return true;
+        $subReport = taoItems_helpers_Deployment::retrieveExternalResources($xhtml, $compiledDirectory);
+        if ($subReport->getType() == common_report_Report::TYPE_SUCCESS) {
+            $xhtml = $subReport->getData();
+            // write index.html
+            file_put_contents($compiledDirectory.'index.html', $xhtml);
+            return new common_report_Report(
+                common_report_Report::TYPE_SUCCESS,
+                __('Published "%1$s" in language "%2$s"', $item->getLabel(), $languageCode)
+            );
+        } else {
+            return $subReport;
+        }
     }
     
     /**
@@ -128,7 +147,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         return $service;        
     }
     
-    protected function getSubCompilerClass($resource) {
+    protected function getSubCompilerClass(core_kernel_classes_Resource $resource) {
         throw new common_Exception('Items cannot include other resources');
     }
 }
