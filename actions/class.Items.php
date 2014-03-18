@@ -243,23 +243,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * Sub Class
-     * @return void
-     */
-    public function addItemClass(){
-        if(!tao_helpers_Request::isAjax()){
-            throw new Exception("wrong request mode");
-        }
-        $subClass = $this->service->createSubClass($this->getCurrentClass());
-        if($subClass instanceof core_kernel_classes_Class){
-            echo json_encode(array(
-                'label' => $subClass->getLabel(),
-                'uri' => tao_helpers_Uri::encode($subClass->getUri())
-            ));
-        }
-    }
-
-    /**
      * delete an item or an item class
      * called via ajax
      * @see TaoModule::delete
@@ -358,7 +341,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     if($authoring instanceof core_kernel_classes_Literal){
                         //sets the lock with the conencted user as owner
 //@todo: remove this as soon as the new QTI creator is ready
-                 // $authoring = 'taoQTI/QtiCreator/index';
+//                  $authoring = 'taoQTI/QtiCreator/index';
                         tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
 
                         $this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->getUri()).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));

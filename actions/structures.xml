@@ -12,7 +12,7 @@
 						editClassUrl="/taoItems/Items/editItemClass"
 						editInstanceUrl="/taoItems/Items/editItem"
 						addInstanceUrl="/taoItems/Items/addInstance"
-						addSubClassUrl="/taoItems/Items/addItemClass"
+						addSubClassUrl="/taoItems/Items/addSubClass"
 						deleteUrl="/taoItems/Items/delete"
 						duplicateUrl="/taoItems/Items/cloneInstance"
 						moveInstanceUrl="/taoItems/Items/moveInstance"
@@ -20,7 +20,7 @@
 				</trees>
 				<actions>
 					<action name="search" url="/taoItems/Items/search" context="*" />
-					<action name="new class" js="subClass" url="/taoItems/Items/addItemClass" context="class" />
+					<action name="new class" js="subClass" url="/taoItems/Items/addSubClass" context="class" />
 					<action name="new item" js="instanciate" url="/taoItems/Items/addInstance" context="class" />
 					<action name="delete" js="removeNode" url="/taoItems/Items/delete" context="resource" />
 					<action name="duplicate" js="duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" />
