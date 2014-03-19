@@ -52,8 +52,8 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * @param ZipArchive $zip The ZIP archive were the files have to be exported.
 	 */
 	public function __construct(core_kernel_classes_Resource $item, ZipArchive $zip) {
-		$this->item = $item;
-		$this->zip = $zip;
+	    $this->setItem($item);
+		$this->setZip($zip);
 	}
 	
 	/**
@@ -62,11 +62,7 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * @return taoItems_models_classes_ItemsService A TAO Item Service.
 	 */
 	protected function getItemService() {
-		$returnValue = null;
-		
-		$returnValue =  taoItems_models_classes_ItemsService::singleton();
-		
-		return $returnValue;
+		return taoItems_models_classes_ItemsService::singleton();
 	}
 	
 	/**
@@ -75,11 +71,11 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * @return core_kernel_classes_Resource The currently exported item.
 	 */
 	protected function getItem() {
-		$returnValue = null;
-		
-		$returnValue = $this->item;
-		
-		return $returnValue;
+		return $this->item;
+	}
+	
+	protected function setItem(core_kernel_classes_Resource $item) {
+	    $this->item = $item;
 	}
 	
 	/**
@@ -87,12 +83,12 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * 
 	 * @return ZipArchive A created and open ZipArchive instance.
 	 */
-	protected function getZip() {
-		$returnValue = null;
-		
-		$returnValue = $this->zip;
-		
-		return $returnValue;
+	public function getZip() {
+		return $this->zip;
+	}
+	
+	public function setZip(ZipArchive $zip) {
+	    $this->zip = $zip;
 	}
 	
 	/**
@@ -101,15 +97,12 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * @return core_kernel_classes_Resource A resource depicting the Item Model.
 	 */
 	protected function getItemModel() {
-		$returnValue = null;
-		
 		try {
-			$returnValue = $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-		} catch (common_Exception $e) {
-			$returnValue = null;
+			return $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+		} 
+		catch (common_Exception $e) {
+			return null;
 		}
-		
-		return $returnValue;
 	}
 	
 	/**
