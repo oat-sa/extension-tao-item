@@ -183,7 +183,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         $itemModel = $this->service->getItemModel($item);
         if($itemModel != null && $itemModel->getUri() == TAO_ITEM_MODEL_QTI){
-            $this->redirect(_url('index', 'QtiPreview', 'taoQTI', $options));
+            $this->redirect(_url('index', 'QtiPreview', 'taoQtiItem', $options));
         }else{
             $this->redirect(_url('index', 'ItemPreview', 'taoItems', $options));
         }
@@ -342,7 +342,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         //sets the lock with the conencted user as owner
 //@todo: remove this as soon as the new QTI creator is ready
                        if(!empty($_COOKIE['layout']) && $_COOKIE['layout'] === 'new') {
-                            $authoring = 'taoQTI/QtiCreator/index';
+                            $authoring = 'taoQtiItem/QtiCreator/index';
                        }
                         tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
 
