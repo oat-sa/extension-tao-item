@@ -449,31 +449,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * Authoring File mappgin service:
-     * Send into the request the parameters id and/or uri or nothing.
-     * Must be called via Ajax.
-     * Render json response {id: id, uri: uri}
-     * @return void
-     */
-    public function getAuthoringFile(){
-
-        if(!tao_helpers_Request::isAjax()){
-            throw new Exception("wrong request mode");
-        }
-
-        $itemUri = $this->getRequestParameter('id');
-        $uriParam = $this->getRequestParameter('uri');
-
-        $authoringFileData = array();
-
-        if(!$uriParam){
-            $authoringFileData = $this->service->getItemFolder($itemUri).'/black.xml';
-        }
-
-        echo json_encode($authoringFileData);
-    }
-
-    /**
      * get the  BLACK/HAWAI  temporary authoring file
      * @return void
      */

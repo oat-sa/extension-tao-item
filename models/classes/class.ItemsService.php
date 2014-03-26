@@ -150,13 +150,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         if(!is_null($item)){
 
             $returnValue = $this->deleteItemContent($item);
-
-            //TODO : should the runtimeFolder be language dependent as well?
-            $runtimeFolder = $this->getRuntimeFolder($item);
-            if(is_dir($runtimeFolder)){
-                tao_helpers_File::remove($runtimeFolder, true);
-            }
-
             $returnValue &= $item->delete(true);
         }
 
@@ -206,26 +199,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             $repositoryPath = $itemRepo->getPath();
             $repositoryPath = substr($repositoryPath, strlen($repositoryPath) - 1, 1) == DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
             $returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
-        }
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Short description of method getRuntimeFolder
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @return string
-     */
-    public function getRuntimeFolder(core_kernel_classes_Resource $item){
-        $returnValue = (string) '';
-
-        if(!is_null($item)){
-            $folderName = substr($item->getUri(), strpos($item->getUri(), '#') + 1);
-            $basePreview = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems')->getConstant('BASE_PREVIEW');
-            $returnValue = $basePreview.$folderName;
         }
 
         return (string) $returnValue;
@@ -492,92 +465,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             throw new common_exception_NoImplementation('No implementation for model '.$itemModel->getUri());
         }
         return $impl->render($item, $language);
-    }
-
-    /**
-     * Get the file linked to an item
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  string itemUri
-     * @return string
-     */
-    public function getAuthoringFileUriByItem($itemUri){
-        $returnValue = (string) '';
-
-        if(strlen($itemUri) > 0){
-            $returnValue = BASE_DATA.'/'.tao_helpers_Uri::encode($itemUri).'.xml';
-        }
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * get the item uri linked to the given file
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  string uri
-     * @return string
-     */
-    public function getAuthoringFileItemByUri($uri){
-        $returnValue = (string) '';
-
-        if(strlen($uri) > 0){
-            if(file_exists($uri)){
-                $returnValue = tao_helpers_Uri::decode(
-                                str_replace(BASE_DATA, '', str_replace('.xml', '', $uri)
-                                )
-                );
-            }
-        }
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Get the file linked to an item
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  string itemUri
-     * @return string
-     */
-    public function getAuthoringFile($itemUri){
-        $returnValue = (string) '';
-
-        $uri = $this->getAuthoringFileUriByItem($itemUri);
-
-        if(!file_exists($uri)){
-            file_put_contents($uri, '<?xml version="1.0" encoding="utf-8" ?>');
-        }
-        $returnValue = $uri;
-
-        return (string) $returnValue;
-    }
-
-    /**
-     * Service to get the temporary authoring file
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  string itemUri
-     * @param  boolean fallback
-     * @return string
-     */
-    public function getTempAuthoringFile($itemUri, $fallback = false){
-        $returnValue = (string) '';
-
-        if(strlen($itemUri) > 0){
-            $returnValue = BASE_DATA.'tmp_'.tao_helpers_Uri::encode($itemUri).'.xml';
-            if(!file_exists($returnValue)){
-                if($fallback){ //fallback in case of error otheerwise create  the file
-                    $returnValue = $this->getAuthoringFile($itemUri);
-                }
-            }
-        }
-
-        return (string) $returnValue;
     }
 
     protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
