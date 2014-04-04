@@ -24,7 +24,7 @@
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
- * @subpackage models_classes
+ 
  */
 class taoItems_models_classes_CompilationFailedException
     extends tao_models_classes_CompilationFailedException

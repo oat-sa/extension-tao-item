@@ -38,7 +38,7 @@
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
- * @subpackage models
+ 
  */
 abstract class taoItems_models_classes_ItemExporter {
 

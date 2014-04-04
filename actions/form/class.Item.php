@@ -25,7 +25,7 @@
  * @access public
  * @author Bertrand Chevrier, <bertrand.chevrier@tudor.lu>
  * @package taoItems
- * @subpackage actions_form
+ 
  */
 class taoItems_actions_form_Item extends tao_actions_form_Instance
 {

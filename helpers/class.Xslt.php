@@ -25,7 +25,7 @@
  * @access public
  * @author Matteo Melis
  * @package taoItems
- * @subpackage helpers
+ 
  */
 class taoItems_helpers_Xslt
 {

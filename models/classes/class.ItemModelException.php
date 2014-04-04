@@ -24,7 +24,7 @@
  * 
  * @author Jerome Bogaerts <jerome@taotesting.com>
  * @package taoItems
- * @subpackage models_classes
+ 
  */
 class taoItems_models_classes_ItemModelException
 {

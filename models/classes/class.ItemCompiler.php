@@ -25,7 +25,7 @@
  * @author Joel Bout, <joel@taotesting.com>
  * @author Jérôme Bogaerts, <jerome@taotesting.com>
  * @package taoItems
- * @subpackage models_classes
+ 
  */
 class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
 {

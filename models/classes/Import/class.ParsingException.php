@@ -24,7 +24,7 @@
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
- * @subpackage models_classes_import
+ 
  */
 class taoItems_models_classes_Import_ParsingException
     extends taoItems_models_classes_Import_ImportException

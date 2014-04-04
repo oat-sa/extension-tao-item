@@ -28,7 +28,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  *
  * @author Jerome Bogaerts, <jerome@taotesting.com>
  * @package taoItems
- * @subpackage test
+ 
  */
 class XhtmlTestCase extends TaoPhpUnitTestRunner {
 

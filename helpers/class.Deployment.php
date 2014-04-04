@@ -26,7 +26,7 @@
  * @access public
  * @author Bout Joel, <joel@taotesting.com>
  * @package taoItems
- * @subpackage helpers
+ 
  */
 class taoItems_helpers_Deployment
 {

@@ -23,7 +23,7 @@
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
- * @subpackage actions
+ 
  */
 class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 	
