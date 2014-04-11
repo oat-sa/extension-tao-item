@@ -1,4 +1,8 @@
-<? include(TAO_TPL_PATH . 'form_context.tpl') ?>
+<?php
+use oat\tao\helpers\Template;
+
+Template::inc('form_context.tpl', 'tao');
+?>
 <link rel="stylesheet" type="text/css" href="<?= ROOT_URL ?>tao/views/css/layout.css" />
 <div class="main-container">
 <div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
