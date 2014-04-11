@@ -23,5 +23,6 @@ Template::inc('form_context.tpl', 'tao');
 		<?=get_data('myForm')?>
 	</div>
 </div>
-
-<? include('footer.tpl') ?>
+<?php
+Template::inc('footer.tpl');
+?>

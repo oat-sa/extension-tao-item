@@ -1,3 +1,6 @@
+<?php
+use oat\tao\helpers\Template;
+?>
 <?if(get_data('error')):?>
 	<div class="main-container" style='height:100px;'>
 		<div class="ui-state-error ui-corner-all" style="padding:5px;">
@@ -33,5 +36,6 @@
 </div>
 
 <?endif?>
-
-<?include('footer.tpl')?>
+<?php
+Template::inc('footer.tpl');
+?>

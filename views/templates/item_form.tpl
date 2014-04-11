@@ -34,6 +34,7 @@ Template::inc('form_context.tpl', 'tao');
 
     });
 </script>
-<?if(!get_data('isDeprecated')):?>
-	<? include('footer.tpl') ?>
-<?endif?>
+<?php
+if(!get_data('isDeprecated')) {
+    Template::inc('footer.tpl');
+}
