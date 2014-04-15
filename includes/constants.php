@@ -66,6 +66,7 @@ $todefine = array(
     
     'INSTANCE_SERVICE_ITEMRUNNER'      => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner',
     'INSTANCE_FORMALPARAM_ITEMPATH'    => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath',
+    'INSTANCE_FORMALPARAM_ITEMDATAPATH'    => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath',
 	'INSTANCE_FORMALPARAM_ITEMURI'     => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri',
     'INSTANCE_FORMALPARAM_RESULTSERVER' => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver'
 );
