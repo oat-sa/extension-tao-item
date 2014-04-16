@@ -115,7 +115,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Class clazz
+     * @param  core_kernel_classes_Class clazz
      * @return boolean
      */
     public function isItemClass(core_kernel_classes_Class $clazz){
@@ -141,7 +141,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
+     * @param  core_kernel_classes_Resource item
      * @return boolean
      */
     public function deleteItem(core_kernel_classes_Resource $item){
@@ -161,7 +161,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Class clazz
+     * @param  core_kernel_classes_Class clazz
      * @return boolean
      */
     public function deleteItemClass(core_kernel_classes_Class $clazz){
@@ -181,7 +181,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
+     * @param  core_kernel_classes_Resource item
      * @param  string lang
      * @return string
      */
@@ -210,7 +210,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
+     * @param  core_kernel_classes_Resource item
      * @return core_kernel_classes_Resource
      */
     public function setDefaultItemContent(core_kernel_classes_Resource $item){
