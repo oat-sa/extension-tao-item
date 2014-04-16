@@ -1,10 +1,11 @@
 define(['jquery'], function($){
 
     function ItemServiceImpl(data) {
-
+        
         this.itemId = data.itemId;
         this.serviceApi = data.serviceApi;
         this.resultApi = data.resultApi || null;
+        this.params = data.params || {};
         this.responses = {};
         this.scores = {};
         this.events = {};
@@ -72,6 +73,7 @@ define(['jquery'], function($){
                         self.responses,
                         self.scores,
                         self.events,
+                        self.params,
                         function() {
                             self.serviceApi.finish();
                         }

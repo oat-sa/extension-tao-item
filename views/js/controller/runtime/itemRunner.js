@@ -17,71 +17,71 @@
  *
  *
  */
-define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'], 
-        function($, _, iframeResizer, iframeNotifier, UrlParser){
-    
-    var itemRunner = {
-        
-        start : function(options){
-           
-            var $frame = $('#item-container');
-            
-            var itemId = options.itemId;
-            var itemPath = options.itemPath;
-            var resultServer = _.defaults(options.resultServer, {
-                module : 'taoResultServer/ResultServerApi',
-                params  : {}
-            });
-            var itemService = _.defaults(options.itemService, {
-                module : 'taoItems/runtime/ItemServiceImpl',
-                params  : {}
-            });
-            var clientConfigUrl = options.clientConfigUrl;
-            
-            //load dynamically the right ItemService and ResultServerApi
-            require([itemService.module, resultServer.module], function(ItemService, ResultServerApi){
-                
-                var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
-                
-                window.onServiceApiReady = function(serviceApi){
-                
-                    var itemApi = new ItemService(_.merge({
-                        serviceApi : serviceApi,
-                        itemId: itemId,
-                        resultApi: resultServerApi
-                    }, itemService.params));
+define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
+    function($, _, iframeResizer, iframeNotifier, UrlParser){
 
-                    var itemUrl = new UrlParser(itemPath);
-                    var isCORSAllowed = itemUrl.checkCORS();
-                    itemUrl.addParam('clientConfigUrl', clientConfigUrl);
-                    
-                    iframeResizer.autoHeight($frame, 'body', 10);
-                    $frame.on('load', function(){
-                        var frame = this;
-                        
-                        //1st try to connect the api on frame load
-                        itemApi.connect(frame);
+        var itemRunner = {
+            start : function(options){
 
-                        //if we are  in the same domain, we add a variable
-                        //to the frame window, so the frame knows it can communicate
-                        //with the parent
-                        if(isCORSAllowed === true){
-                            frame.contentWindow.__knownParent__ = true;
-                        } 
-                        //then we can wait a specific event triggered from the item
-                        $(document).on('itemready', function(){
+                var $frame = $('#item-container');
+
+                var itemId = options.itemId;
+                var itemPath = options.itemPath;
+                var resultServer = _.defaults(options.resultServer, {
+                    module : 'taoResultServer/ResultServerApi',
+                    params : {}
+                });
+                var itemService = _.defaults(options.itemService, {
+                    module : 'taoItems/runtime/ItemServiceImpl',
+                    params : {}
+                });
+                var clientConfigUrl = options.clientConfigUrl;
+
+                //load dynamically the right ItemService and ResultServerApi
+                require([itemService.module, resultServer.module], function(ItemService, ResultServerApi){
+
+                    var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
+
+                    window.onServiceApiReady = function(serviceApi){
+
+                        var itemApi = new ItemService(_.merge({
+                            serviceApi : serviceApi,
+                            itemId : itemId,
+                            resultApi : resultServerApi
+                        }, {
+                            params : itemService.params
+                        }));
+
+                        var itemUrl = new UrlParser(itemPath);
+                        var isCORSAllowed = itemUrl.checkCORS();
+                        itemUrl.addParam('clientConfigUrl', clientConfigUrl);
+
+                        iframeResizer.autoHeight($frame, 'body', 10);
+                        $frame.on('load', function(){
+                            var frame = this;
+
+                            //1st try to connect the api on frame load
                             itemApi.connect(frame);
-                        });
-                    })
-                    .attr('src', itemUrl.getUrl());
 
-                };
-                
-                //tell the parent he can trigger onServiceApiReady
-                iframeNotifier.parent('serviceready');
-            });
-        }
-    };
-    
-    return itemRunner;
-});
+                            //if we are  in the same domain, we add a variable
+                            //to the frame window, so the frame knows it can communicate
+                            //with the parent
+                            if(isCORSAllowed === true){
+                                frame.contentWindow.__knownParent__ = true;
+                            }
+                            //then we can wait a specific event triggered from the item
+                            $(document).on('itemready', function(){
+                                itemApi.connect(frame);
+                            });
+                        }).attr('src', itemUrl.getUrl());
+
+                    };
+
+                    //tell the parent he can trigger onServiceApiReady
+                    iframeNotifier.parent('serviceready');
+                });
+            }
+        };
+
+        return itemRunner;
+    });
