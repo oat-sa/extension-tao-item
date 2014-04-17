@@ -1,5 +1,5 @@
 <?php
-/*  
+/*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -21,86 +21,97 @@
  */
 ?>
 <?php
+
 /**
  * experimental preview API 
  *
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @package taoItems
- 
+
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-class taoItems_actions_ItemPreview extends tao_actions_Api {
+class taoItems_actions_ItemPreview extends tao_actions_Api
+{
 
-	public function index(){
-            $this->setData('preview', false);
-                
-            if($this->hasRequestParameter('fullScreen')){
-                $this->setData('client_config_url', $this->getClientConfigUrl());
-                $template = 'fsPreviewItemRunner.tpl';
-            } else {
-                $template = 'previewItemRunner.tpl';
-            }
+    public function index(){
+        $this->setData('preview', false);
 
-            $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
+        if($this->hasRequestParameter('fullScreen')){
+            $this->setData('client_config_url', $this->getClientConfigUrl());
+            $template = 'fsPreviewItemRunner.tpl';
+        }else{
+            $template = 'previewItemRunner.tpl';
+        }
 
-            $itemService = taoItems_models_classes_ItemsService::singleton();
-            if ($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)) {
+        $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
-                //this is this url that will contains the preview
-                //@see taoItems_actions_LegacyPreviewApi
-                $previewUrl = $this->getPreviewUrl($item);
-                $this->setData('previewUrl', $previewUrl);
-                $this->setData('client_config_url', $this->getClientConfigUrl());
-                $this->setData('resultServer', $this->getResultServer());
-            }
+        $itemService = taoItems_models_classes_ItemsService::singleton();
+        if($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)){
 
-            $this->setView($template, 'taoItems');
-	}
+            //this is this url that will contains the preview
+            //@see taoItems_actions_LegacyPreviewApi
+            $previewUrl = $this->getPreviewUrl($item);
+            $this->setData('previewUrl', $previewUrl);
+            $this->setData('client_config_url', $this->getClientConfigUrl());
+            $this->setData('resultServer', $this->getResultServer());
+        }
 
-	public function getPreviewUrl($item, $options = array()) {
-		$code = base64_encode($item->getUri());
-		return _url('render/'.$code.'/index.php', 'ItemPreview', 'taoItems', $options);
-	}
-	
-	public function render() {
-		$relPath		= tao_helpers_Request::getRelativeUrl();
-		list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);;
-		$uri = base64_decode($codedUri);
-		$item = new core_kernel_classes_Resource($uri);
-		if ($path == 'index.php') {
-			$this->renderItem($item);
-		} else {
-			$this->renderResource($item, $path);
-		}
-	}
-	
-	protected function getRenderedItem($item) {
-		$itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-		$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
-		if (is_null($impl)) {
-			throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
-		}
-		return $impl->render($item, '');
-	}
-	
-	private function renderItem($item) {
-		echo $this->getRenderedItem($item);
-	}
-	
-	private function renderResource($item, $path) {
-		$folder = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item);
-		$filename = $folder.$path;
-		tao_helpers_Http::returnFile($filename);
-	}
+        $this->setView($template, 'taoItems');
+    }
+
+    public function getPreviewUrl($item, $options = array()){
+        $code = base64_encode($item->getUri());
+        return _url('render/'.$code.'/index.php', 'ItemPreview', 'taoItems', $options);
+    }
+
+    public function render(){
+        $relPath = tao_helpers_Request::getRelativeUrl();
+        list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);
         
-        /**
-        * Get the ResultServer API call to be used by the item.
-        *
-        * @return string A string representing JavaScript instructions.
-        */
-       protected function getResultServer(){
-           return array(
-               'module'    => 'taoItems/runtime/ConsoleResultServer'
-           );
-       }
+        $uri = base64_decode($codedUri);
+        $item = new core_kernel_classes_Resource($uri);
+        if($path == 'index.php'){
+            $this->renderItem($item);
+        }else{
+            $this->renderResource($item, $path);
+        }
+    }
+
+    protected function getRenderedItem($item){
+        $itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+        $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
+        if(is_null($impl)){
+            throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
+        }
+        return $impl->render($item, '');
+    }
+
+    private function renderItem($item){
+        echo $this->getRenderedItem($item);
+    }
+
+    private function renderResource($item, $path){
+        
+        //@todo : allow preview in a language other than the one in the session
+        $lang = core_kernel_classes_Session::singleton()->getDataLanguage();
+        $folder = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
+        if(tao_helpers_File::securityCheck($path, true)){
+            $filename = $folder.$path;
+            tao_helpers_Http::returnFile($filename);
+        }else{
+            throw new common_exception_Error('invalid item preview file path');
+        }
+    }
+
+    /**
+     * Get the ResultServer API call to be used by the item.
+     *
+     * @return string A string representing JavaScript instructions.
+     */
+    protected function getResultServer(){
+        return array(
+            'module' => 'taoItems/runtime/ConsoleResultServer'
+        );
+    }
+
 }
