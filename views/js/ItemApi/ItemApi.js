@@ -114,11 +114,11 @@ ItemApi.prototype.getVariable = function(identifier, callback) {
     })(identifier, callback));
 };
 
-// Persistence
-ItemApi.prototype.persist = function(callback) {
+// Submission of data.
+ItemApi.prototype.submit = function(callback) {
     this.__delegate((function(identifier, callback) {
         return function(implementation) {
-            implementation.persist(callback);
+            implementation.submit(callback);
         }
     })(callback));
 };

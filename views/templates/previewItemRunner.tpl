@@ -16,9 +16,7 @@ requirejs.config({
 });
 
 $(document).ready(function() {
-	console.log("<?= get_data('previewUrl')?>".indexOf('Qti'));
 	if ("<?= get_data('previewUrl')?>".indexOf('Qti') != -1) {
-		console.log('yeah!');
 		$('#submit > button').css('display', 'inline').click(function() {
 			$('#preview-container')[0].contentWindow.qtiRunner.validate();
 		});

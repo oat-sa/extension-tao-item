@@ -66,12 +66,12 @@ define([ 'jquery' ], function($) {
             this.beforeFinishCallbacks[i]();
         }
 
-        this.persist(function() {
+        this.submit(function() {
             self.serviceApi.finish();
         });
     };
 
-    ItemServiceImpl.prototype.persist = function(after) {
+    ItemServiceImpl.prototype.submit = function(after) {
         var self = this;
 
         this.serviceApi.setState(JSON.stringify(self.stateVariables),
@@ -83,7 +83,7 @@ define([ 'jquery' ], function($) {
                                 .submitItemVariables(self.itemId,
                                         self.serviceApi.getServiceCallId(),
                                         self.responses, self.scores,
-                                        self.events, after);
+                                        self.events, self.params, after);
                     } else {
                         after();
                     }
