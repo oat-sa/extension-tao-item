@@ -14,6 +14,16 @@ requirejs.config({
        }
    } 
 });
+
+$(document).ready(function() {
+	console.log("<?= get_data('previewUrl')?>".indexOf('Qti'));
+	if ("<?= get_data('previewUrl')?>".indexOf('Qti') != -1) {
+		console.log('yeah!');
+		$('#submit > button').css('display', 'inline').click(function() {
+			$('#preview-container')[0].contentWindow.qtiRunner.validate();
+		});
+	}
+});
 </script>
 <?endif?>
 
@@ -28,7 +38,9 @@ requirejs.config({
 		
 		<iframe id='preview-container' name="preview-container"></iframe>
 		<!-- to emulate wf navigaton: <button id='finishButton' ><?=__('Finish')?></button> -->
-		
+		<div id="submit" class="tao-scope">
+			<button class="btn-info">Submit</button>
+		</div>
 		<div id='preview-console'>
 			<div class="console-control">
 				<span class="ui-icon ui-icon-circle-close" title="<?=__('close')?>"></span>

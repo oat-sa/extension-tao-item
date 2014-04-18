@@ -109,3 +109,12 @@ div#preview-options{
 div#preview-options div.xhtml_form {border: 1px dashed #FDD5DF; background-color: white; padding:0 10px 5px;}
 div#preview-options div.xhtml_form form select {margin-left:50%;}
 div#preview-options div.xhtml_form .form_desc {width:50%;}
+
+#submit {
+    margin: auto; 
+    width: 200px;  
+}
+
+#submit > button {
+    display: none;
+}
