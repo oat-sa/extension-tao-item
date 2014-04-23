@@ -37,7 +37,7 @@ $(document).ready(function() {
 		<iframe id='preview-container' name="preview-container"></iframe>
 		<!-- to emulate wf navigaton: <button id='finishButton' ><?=__('Finish')?></button> -->
 		<div id="submit" class="tao-scope">
-			<button class="btn-info">Submit</button>
+			<button class="btn-info"><?= __("Submit"); ?></button>
 		</div>
 		<div id='preview-console'>
 			<div class="console-control">
