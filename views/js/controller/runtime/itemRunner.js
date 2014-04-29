@@ -56,6 +56,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         var isCORSAllowed = itemUrl.checkCORS();
                         itemUrl.addParam('clientConfigUrl', clientConfigUrl);
 
+                        iframeResizer.autoHeight($frame, 'body', 10);
                         $frame.on('load', function(){
                             var frame = this;
 
@@ -71,9 +72,6 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             //then we can wait a specific event triggered from the item
                             $(document).on('itemready', function(){
                                 itemApi.connect(frame);
-                                $frame.css('height', '100%');
-                                $frame.contents().find('html, body')
-                                        .css('height', '100%');
                             });
                         }).attr('src', itemUrl.getUrl());
 
