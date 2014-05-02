@@ -34,17 +34,21 @@ class taoItems_helpers_ResourceManager
         $data = array(
             'path' => $relPath
         );
-        if ($depth > 0) {
+        if ($depth > 0 ) {
             $children = array();
-            foreach (new DirectoryIterator($path) as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    $subPath = rtrim($relPath, '/').'/'.$fileinfo->getFilename();
-                    if ($fileinfo->isDir()) {
-                        $children[] = self::buildDirectory($item, $lang, $subPath, $depth-1);
-                    } else {
-                        $children[] = self::buildFile($item, $lang, $subPath);
+            if (is_dir($path)) {
+                foreach (new DirectoryIterator($path) as $fileinfo) {
+                    if (!$fileinfo->isDot()) {
+                        $subPath = rtrim($relPath, '/').'/'.$fileinfo->getFilename();
+                        if ($fileinfo->isDir()) {
+                            $children[] = self::buildDirectory($item, $lang, $subPath, $depth-1);
+                        } else {
+                            $children[] = self::buildFile($item, $lang, $subPath);
+                        }
                     }
                 }
+            } else {
+                common_Logger::w('"'.$path.'" is not a directory');
             }
             $data['children'] = $children;
         } else {

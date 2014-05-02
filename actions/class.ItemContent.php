@@ -73,13 +73,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
         
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
-        $relPath = ltrim($this->getRequestParameter('path'), '/');
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+        $relPath = trim($this->getRequestParameter('path'), '/');
+        $relPath = empty($relPath) ? '' : $relPath.'/';
         
         $files = tao_helpers_Http::getFiles();
-        move_uploaded_file($files['content']["tmp_name"], $baseDir.$relPath);
+        $fileName = $files['content']['name'];
         
-        $fileData = taoItems_helpers_ResourceManager::buildFile($item, $itemLang, $relPath);
+        move_uploaded_file($files['content']["tmp_name"], $baseDir.$relPath.$fileName);
+        
+        $fileData = taoItems_helpers_ResourceManager::buildFile($item, $itemLang, $relPath.$fileName);
         echo json_encode($fileData);
     }
 
@@ -104,7 +107,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
         
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
         $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
         
         tao_helpers_Http::returnFile($path);
