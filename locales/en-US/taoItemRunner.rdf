@@ -22,6 +22,24 @@
     -->
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Path]]]></rdfs:comment>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath">
+    <!--
+    @sourceLanguage EN
+    @targetLanguage en-US
+    @source Item Private Data Path
+    @subject http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
+    @predicate http://www.w3.org/2000/01/rdf-schema#label
+    -->
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Private Data Path]]></rdfs:label>
+    <!--
+    @sourceLanguage EN
+    @targetLanguage en-US
+    @source Item Private Data Path]
+    @subject http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
+    @predicate http://www.w3.org/2000/01/rdf-schema#comment
+    -->
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Private Data Path]]]></rdfs:comment>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver">
     <!--
     @sourceLanguage EN
