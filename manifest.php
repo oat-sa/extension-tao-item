@@ -31,11 +31,14 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 
 return array(
 	'name' => 'taoItems',
+    'label' => 'Item core extension',
 	'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '2.4',
+    'version' => '2.6',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
-	'dependencies' => array('tao'),
+	'requires' => array(
+	    'tao' => '2.6'
+    ),
 	'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
 	),
