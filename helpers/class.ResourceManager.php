@@ -26,7 +26,7 @@
 class taoItems_helpers_ResourceManager
 {
     
-    public static function buildDirectory(core_kernel_classes_Resource $item, $lang, $relPath = '/', $depth = 1) {
+    public static function buildDirectory(core_kernel_classes_Resource $item, $lang, $relPath = '/', $depth = 1, $filters = array()) {
         
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
         $path = $baseDir.ltrim($relPath, '/');
@@ -41,9 +41,12 @@ class taoItems_helpers_ResourceManager
                     if (!$fileinfo->isDot()) {
                         $subPath = rtrim($relPath, '/').'/'.$fileinfo->getFilename();
                         if ($fileinfo->isDir()) {
-                            $children[] = self::buildDirectory($item, $lang, $subPath, $depth-1);
+                            $children[] = self::buildDirectory($item, $lang, $subPath, $depth-1, $filters);
                         } else {
-                            $children[] = self::buildFile($item, $lang, $subPath);
+                            $file = self::buildFile($item, $lang, $subPath, $filters);
+                            if(!is_null($file)){
+                                $children[] = $file;
+                            }
                         }
                     }
                 }
@@ -57,16 +60,21 @@ class taoItems_helpers_ResourceManager
         return $data;
     }
     
-    public static function buildFile(core_kernel_classes_Resource $item, $lang, $relPath) {
+    public static function buildFile(core_kernel_classes_Resource $item, $lang, $relPath, $filters = array()) {
+        $file = null;
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
         $path = $baseDir.ltrim($relPath, '/');
-        
-        return array(
-        	'name' => basename($path),
-        	'mime' => tao_helpers_File::getMimeType($path),
-        	'size' => filesize($path),
-            'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $item->getUri(),'lang' => $lang, 'path' => $relPath))
-        );
+        $mime = tao_helpers_File::getMimeType($path);
+
+        if(count($filters) == 0 || in_array($mime, $filters)){
+            $file = array(
+                'name' => basename($path),
+                'mime' => $mime,
+                'size' => filesize($path),
+                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $item->getUri(),'lang' => $lang, 'path' => $relPath))
+            );
+        }
+        return $file;
     }
     
 }

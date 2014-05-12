@@ -44,11 +44,23 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
         $itemLang = $this->getRequestParameter('lang');
-        
+
         $subPath = $this->hasRequestParameter('path') ? $this->getRequestParameter('path') : '/';
         $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
+       
+        //build filters
+        $filters = array();
+        if($this->hasRequestParameter('filters')){
+            $filterParameter = $this->getRequestParameter('filters');
+            if(!empty($filterParameter)){
+                if(preg_match('/\/*/', $filterParameter)){
+                    common_Logger::w('Stars mime type are not yet supported, filter "'. $filterParameter . '" will fail');
+                }
+                $filters = array_map('trim', explode(',', $filterParameter));
+            }
+        } 
         
-        $data = taoItems_helpers_ResourceManager::buildDirectory($item, $itemLang, $subPath, $depth);
+        $data = taoItems_helpers_ResourceManager::buildDirectory($item, $itemLang, $subPath, $depth, $filters);
         echo json_encode($data);
     }
     
