@@ -78,6 +78,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $relPath = empty($relPath) ? '' : $relPath.'/';
         
         $files = tao_helpers_Http::getFiles();
+
         $fileName = $files['content']['name'];
         
         move_uploaded_file($files['content']["tmp_name"], $baseDir.$relPath.$fileName);
@@ -87,8 +88,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     }
 
     /**
-     * Download a file to the item directory
-     * 
+     * Download a file to the item directory* 
      * @throws common_exception_MissingParameter
      */
     public function download() {
@@ -111,5 +111,39 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
         
         tao_helpers_Http::returnFile($path);
+    }
+    
+    /**
+     * Delete a file from the item directory
+     * 
+     * @throws common_exception_MissingParameter
+     */
+    public function delete() {
+
+        $deleted = false;
+
+        if (!$this->hasRequestParameter('uri')) {
+            throw new common_exception_MissingParameter('uri', __METHOD__);
+        }
+        $itemUri = $this->getRequestParameter('uri');
+        $item = new core_kernel_classes_Resource($itemUri);
+        
+        if (!$this->hasRequestParameter('lang')) {
+            throw new common_exception_MissingParameter('lang', __METHOD__);
+        }
+        $itemLang = $this->getRequestParameter('lang');
+        
+        if (!$this->hasRequestParameter('path')) {
+            throw new common_exception_MissingParameter('path', __METHOD__);
+        }
+        
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+        $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
+
+        //TODO path traversal and null byte poison check ? 
+        if(is_file($path) && !is_dir($path)){
+            $deleted = unlink($path);
+        } 
+        echo json_encode(array('deleted' => $deleted));
     }
 }

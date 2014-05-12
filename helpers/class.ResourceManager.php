@@ -61,7 +61,6 @@ class taoItems_helpers_ResourceManager
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
         $path = $baseDir.ltrim($relPath, '/');
         
-        tao_helpers_File::getMimeType($path);
         return array(
         	'name' => basename($path),
         	'mime' => tao_helpers_File::getMimeType($path),
