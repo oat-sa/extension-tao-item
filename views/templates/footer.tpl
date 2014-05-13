@@ -5,7 +5,7 @@ requirejs.config({
             'action' : "<?=get_data('action')?>",
             'uri' : "<?=get_data('uri')?>",
             'classUri' : "<?=get_data('classUri')?>",
-            'label' : "<?=get_data('label')?>",
+            'label' : <?=json_encode(get_data('label'))?>,
         <?if(get_data('reload')):?>
             'reload' : "<?=get_data('reload')?>",
         <?endif?>

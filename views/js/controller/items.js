@@ -26,11 +26,9 @@ define(['jquery', 'i18n', 'helpers', 'uiBootstrap', 'module'], function ($, __, 
         function setAuthoringItemLabel(label){
             var authoringLabel = (label) ? __('Authoring') + ': ' + label : __('Authoring');
             var previewLabel = (label) ?__('Preview') + ': ' + label : __('Preview') ;
-            $('a#items_authoring').html(authoringLabel).attr('title', authoringLabel);
-            $('a#items_preview').html(previewLabel).attr('title', previewLabel);
+            $('a#items_authoring').text(authoringLabel).attr('title', authoringLabel);
+            $('a#items_preview').text(previewLabel).attr('title', previewLabel);
         }
-        
-       
         
         return {
             start : function(){
