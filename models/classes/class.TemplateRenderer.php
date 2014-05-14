@@ -64,7 +64,7 @@ class taoItems_models_classes_TemplateRenderer
      */
     public function __construct($templatePath, $variables = array())
     {
-        // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A1 begin
+        
         
     	if (!file_exists($templatePath)
     		|| !is_readable($templatePath)
@@ -80,7 +80,7 @@ class taoItems_models_classes_TemplateRenderer
     	
     	$this->renderer = new Renderer($templatePath, $variables);
     	
-        // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A1 end
+        
     }
 
     /**
@@ -94,7 +94,7 @@ class taoItems_models_classes_TemplateRenderer
      */
     public static function setContext($parameters, $prefix = '')
     {
-        // section 127-0-1-1-3c043620:12bd493a38b:-8000:000000000000272E begin
+        
         
     	self::$context = array();
     	
@@ -102,7 +102,7 @@ class taoItems_models_classes_TemplateRenderer
     		self::$context[$prefix . $key] = $value;
     	}
     	
-        // section 127-0-1-1-3c043620:12bd493a38b:-8000:000000000000272E end
+        
     }
 
     /**
@@ -115,9 +115,9 @@ class taoItems_models_classes_TemplateRenderer
      */
     public function setTemplate($templatePath)
     {
-        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C81 begin
+        
         $this->renderer->setTemplate($templatePath);
-        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C81 end
+        
     }
 
     /**
@@ -131,9 +131,9 @@ class taoItems_models_classes_TemplateRenderer
      */
     public function setData($key, $value)
     {
-        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C7D begin
+        
         $this->renderer->setData($key, $value);
-        // section 10-30-1--78--43051535:13d25564359:-8000:0000000000003C7D end
+        
     }
 
     /**
@@ -147,10 +147,10 @@ class taoItems_models_classes_TemplateRenderer
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A5 begin
+        
         $this->renderer->setMultipleData(self::$context);
     	$returnValue = $this->renderer->render();
-        // section 127-0-1-1-649cc98e:12ad7cf4ab2:-8000:00000000000025A5 end
+        
 
         return (string) $returnValue;
     }

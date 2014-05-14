@@ -79,10 +79,10 @@ class taoItems_models_classes_Measurement
      */
     public function __construct($identifier, $description = null)
     {
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D8 begin
+        
         $this->identifier	= $identifier;
         $this->description	= $description;
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037D8 end
+        
     }
 
     /**
@@ -96,9 +96,9 @@ class taoItems_models_classes_Measurement
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037DD begin
+        
         $returnValue = $this->identifier;
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037DD end
+        
 
         return (string) $returnValue;
     }
@@ -114,9 +114,9 @@ class taoItems_models_classes_Measurement
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1-6e4e28d3:1358714af41:-8000:00000000000037EE begin
+        
         $returnValue = $this->description;
-        // section 127-0-1-1-6e4e28d3:1358714af41:-8000:00000000000037EE end
+        
 
         return (string) $returnValue;
     }
@@ -131,9 +131,9 @@ class taoItems_models_classes_Measurement
      */
     public function setHumanAssisted($humanAssisted)
     {
-        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC8 begin
+        
         $this->humanAssisted = $humanAssisted;
-        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC8 end
+        
     }
 
     /**
@@ -147,9 +147,9 @@ class taoItems_models_classes_Measurement
     {
         $returnValue = (bool) false;
 
-        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC6 begin
+        
         $returnValue = $this->humanAssisted; 
-        // section 127-0-1-1--28e405a3:1362f0fe41e:-8000:0000000000003BC6 end
+        
 
         return (bool) $returnValue;
     }
@@ -165,9 +165,9 @@ class taoItems_models_classes_Measurement
     {
         $returnValue = null;
 
-        // section 127-0-1-1-6e4e28d3:1358714af41:-8000:00000000000037EC begin
+        
         $returnValue = $this->scale;
-        // section 127-0-1-1-6e4e28d3:1358714af41:-8000:00000000000037EC end
+        
 
         return $returnValue;
     }
@@ -182,9 +182,9 @@ class taoItems_models_classes_Measurement
      */
     public function setScale( taoItems_models_classes_Scale_Scale $scale)
     {
-        // section 127-0-1-1-67366732:1359ace6a59:-8000:000000000000382E begin
+        
         $this->scale = $scale;
-        // section 127-0-1-1-67366732:1359ace6a59:-8000:000000000000382E end
+        
     }
 
     /**
@@ -196,9 +196,9 @@ class taoItems_models_classes_Measurement
      */
     public function removeScale()
     {
-        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003831 begin
+        
         $this->scale = null;
-        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003831 end
+        
     }
 
 } /* end of class taoItems_models_classes_Measurement */

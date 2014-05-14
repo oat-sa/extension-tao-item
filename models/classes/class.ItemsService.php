@@ -506,7 +506,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
     public function setItemMeasurements(core_kernel_classes_Resource $item, $measurements){
         $returnValue = (bool) false;
 
-        // section 127-0-1-1-5b188be2:135856942ab:-8000:00000000000037CE begin
+        
         $hasMeasurement = new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY);
         $item->removePropertyValues($hasMeasurement);
         foreach($measurements as $measurement){

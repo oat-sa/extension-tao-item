@@ -49,7 +49,7 @@ abstract class taoItems_models_classes_Scale_Scale
     {
         $returnValue = null;
 
-        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003824 begin
+        
         foreach ($ressource->getTypes() as $type) {
 	        try {
 	        	$returnValue = self::createByClass($type->getUri());
@@ -69,7 +69,7 @@ abstract class taoItems_models_classes_Scale_Scale
     	if ($returnValue instanceof taoItems_models_classes_Scale_Discrete) {
     		$returnValue->distance = (string)$ressource->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY));
     	}
-        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003824 end
+        
 
         return $returnValue;
     }
@@ -85,7 +85,7 @@ abstract class taoItems_models_classes_Scale_Scale
     {
         $returnValue = array();
 
-        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003829 begin
+        
         if ($this instanceof taoItems_models_classes_Scale_Numerical) {
         	$returnValue[TAO_ITEM_LOWER_BOUND_PROPERTY] = $this->lowerBound;
         	$returnValue[TAO_ITEM_UPPER_BOUND_PROPERTY] = $this->upperBound;
@@ -93,7 +93,7 @@ abstract class taoItems_models_classes_Scale_Scale
         if ($this instanceof taoItems_models_classes_Scale_Discrete) {
         	$returnValue[TAO_ITEM_DISCRETE_SCALE_DISTANCE_PROPERTY] = $this->distance;
         };
-        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003829 end
+        
 
         return (array) $returnValue;
     }
@@ -109,12 +109,12 @@ abstract class taoItems_models_classes_Scale_Scale
     {
         $returnValue = (string) '';
 
-        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003827 begin
+        
         if (!defined(get_class($this).'::CLASS_URI')) {
         	throw new common_exception_Error('Missing CLASS_URI for Scale Implementation '.get_class($this));
         }
         $returnValue = static::CLASS_URI;
-        // section 127-0-1-1--7ddc6625:1358a866f6a:-8000:0000000000003827 end
+        
 
         return (string) $returnValue;
     }
@@ -131,7 +131,7 @@ abstract class taoItems_models_classes_Scale_Scale
     {
         $returnValue = null;
 
-        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003826 begin
+        
 		switch ($uri) {
         	case taoItems_models_classes_Scale_Discrete::CLASS_URI:
         		$returnValue = new taoItems_models_classes_Scale_Discrete();
@@ -145,7 +145,7 @@ abstract class taoItems_models_classes_Scale_Scale
         	default:
         		throw new common_Exception('Unknown Scale Type for '.$uri);	
         }
-        // section 127-0-1-1-67366732:1359ace6a59:-8000:0000000000003826 end
+        
 
         return $returnValue;
     }
