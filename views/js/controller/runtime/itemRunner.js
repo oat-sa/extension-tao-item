@@ -61,6 +61,9 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             var frame = this;
 
                             //1st try to connect the api on frame load
+                            $(document).on('itemloaded', function() {
+                                iframeNotifier.parent('serviceloaded');
+                            });
                             itemApi.connect(frame);
 
                             //if we are  in the same domain, we add a variable
