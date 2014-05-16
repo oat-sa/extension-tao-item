@@ -198,7 +198,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             $itemRepo = $this->getDefaultFileSource();
             $repositoryPath = $itemRepo->getPath();
             $repositoryPath = substr($repositoryPath, strlen($repositoryPath) - 1, 1) == DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
-            $returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang;
+			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang.DIRECTORY_SEPARATOR;
         }
 
         return (string) $returnValue;
