@@ -22,6 +22,7 @@ define([ 'jquery' ], function($) {
     ItemServiceImpl.prototype.connect = function(frame) {
         if (this.connected === false && frame.contentWindow) {
             frame.contentWindow.itemApi = this;
+            
             if (typeof (frame.contentWindow.onItemApiReady) === "function") {
                 frame.contentWindow.onItemApiReady(this);
                 this.connected = true;

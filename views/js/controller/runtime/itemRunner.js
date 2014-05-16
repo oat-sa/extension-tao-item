@@ -23,8 +23,8 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
         var itemRunner = {
             start : function(options){
 
-                var $frame = $('#item-container');
-
+                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;height:100%;overflow:hidden" scrolling="no"></iframe>');
+                $frame.appendTo('body');
                 var itemId = options.itemId;
                 var itemPath = options.itemPath;
                 var resultServer = _.defaults(options.resultServer, {
@@ -43,7 +43,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                     var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
 
                     window.onServiceApiReady = function(serviceApi){
-
+                        
                         var itemApi = new ItemService(_.merge({
                             serviceApi : serviceApi,
                             itemId : itemId,
@@ -57,27 +57,39 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         itemUrl.addParam('clientConfigUrl', clientConfigUrl);
 
                         iframeResizer.autoHeight($frame, 'body', 10);
-                        $frame.on('load', function(){
-                            var frame = this;
-
-                            //1st try to connect the api on frame load
-                            $(document).on('itemloaded', function() {
-                                iframeNotifier.parent('serviceloaded');
-                            });
-                            itemApi.connect(frame);
-
-                            //if we are  in the same domain, we add a variable
-                            //to the frame window, so the frame knows it can communicate
-                            //with the parent
-                            if(isCORSAllowed === true){
-                                frame.contentWindow.__knownParent__ = true;
-                            }
-                            //then we can wait a specific event triggered from the item
-                            $(document).on('itemready', function(){
-                                itemApi.connect(frame);
-                            });
-                        }).attr('src', itemUrl.getUrl());
-
+                        
+                        $(document).on('itemloaded', function() {
+                            iframeNotifier.parent('serviceloaded');
+                        });
+                        
+                        $(document).on('itemready', function() {
+                            // item is ready, we can connect.
+                            itemApi.connect($frame[0]);
+                        });
+                        
+                        if (navigator.userAgent.indexOf("MSIE") > -1 && !window.opera) {
+                            // IE i.e. Internet Explorer
+                            $frame[0].onreadystatechange = function() {
+                                
+                                if ($frame[0].readyState == "complete") {
+                                    
+                                    if (isCORSAllowed === true) {
+                                        this.contentWindow.__knownParent__ = true;
+                                    }
+                                }
+                            };
+                        } 
+                        else {
+                            // Not IE a.k.a. Real Browser.
+                            
+                            $frame[0].onload = function(){
+                                if (isCORSAllowed === true) {
+                                    this.contentWindow.__knownParent__ = true;
+                                }
+                            };
+                        }
+                        
+                        $frame[0].src = itemUrl.getUrl();
                     };
 
                     //tell the parent he can trigger onServiceApiReady
