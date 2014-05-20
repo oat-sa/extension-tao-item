@@ -206,20 +206,29 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
 
     /**
      * define the content of item to be inserted by default (to prevent null
-     * after creation)
+     * after creation).
+     * The item content's folder is created.
      *
      * @access public
-     * @author Joel Bout, <joel@taotesting.com>
+     * @author Bertrand Chevrier <bertrand@taotesting.com>
      * @param  core_kernel_classes_Resource item
-     * @return core_kernel_classes_Resource
+     * @return core_kernel_classes_Resource the same item
      */
     public function setDefaultItemContent(core_kernel_classes_Resource $item){
-        $returnValue = null;
 
-        //@todo : to be completed
-        $returnValue = $item;
+        if(!is_null($item)){
 
-        return $returnValue;
+            //we create the item folder by default. 
+            //TODO this should be implemented through the filesystem abstraction but it doesn't work for directory
+            $itemFolder = $this->getDefaultItemFolder($item);
+            if(!file_exists($itemFolder) && strpos($itemFolder, ROOT_PATH) >= 0){
+                if(!mkdir($itemFolder, 0770, true)){
+                    common_Logger::w('Unable to create default item folder at location : ' . $itemFolder);
+                }
+            }
+        }
+
+        return $item;
     }
 
     /**
