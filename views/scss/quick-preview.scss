@@ -1,0 +1,10 @@
+@import "../../../tao/views/scss/inc/bootstrap";
+@import "../../../taoQtiItem/views/scss/inc/preview";
+
+.quick-preview {
+    iframe {
+        min-height: 100%;
+        min-width: 100%;
+        overflow: auto
+    }
+}

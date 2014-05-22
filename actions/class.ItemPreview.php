@@ -39,7 +39,14 @@ class taoItems_actions_ItemPreview extends tao_actions_Api
         if($this->hasRequestParameter('fullScreen')){
             $this->setData('client_config_url', $this->getClientConfigUrl());
             $template = 'fsPreviewItemRunner.tpl';
-        }else{
+        }
+
+        else if($this->hasRequestParameter('quick')){
+            $this->setData('client_config_url', $this->getClientConfigUrl());
+            $template = 'quickPreviewItemRunner.tpl';
+        }
+
+        else{
             $template = 'previewItemRunner.tpl';
         }
 
