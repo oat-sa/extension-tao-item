@@ -29,5 +29,46 @@
  */
 class taoItems_actions_form_Item extends tao_actions_form_Instance
 {
-
+    /**
+     * (non-PHPdoc)
+     * @see tao_actions_form_Instance::initElements()
+     */
+    protected function initElements()
+    {
+        parent::initElements();
+        
+        $elementId = tao_helpers_Uri::encode(TAO_ITEM_MODEL_PROPERTY);
+        $ele = $this->form->getElement($elementId);
+        $ele->feed();
+        $modelUri = $ele->getEvaluatedValue();
+        
+        if (empty($modelUri)) {
+            
+            // remove deprecated models
+            $statusProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY);
+            $options = array();
+            foreach ($ele->getOptions() as $optUri => $optLabel) {
+                $model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
+                $status = $model->getOnePropertyValue($statusProperty);
+                if(!is_null($status) && $status->getUri() != TAO_ITEM_MODEL_STATUS_DEPRECATED){
+                    $options[$optUri] = $optLabel; 
+                }
+            }
+            $ele->setOptions($options);
+            
+        } else {
+            // replace radio with hidden element
+            $this->form->removeElement($elementId);
+            $itemModelElt = tao_helpers_form_FormFactory::getElement($elementId, 'Hidden');
+            $itemModelElt->setValue($modelUri);
+            $this->form->addElement($itemModelElt);
+            
+            // display model label
+            $model = new core_kernel_classes_Resource($modelUri);
+            $itemModelLabelElt = tao_helpers_form_FormFactory::getElement('itemModelLabel', 'Label');
+            $itemModelLabelElt->setDescription(__('Item Model'));
+            $itemModelLabelElt->setValue($model->getLabel());
+            $this->form->addElement($itemModelLabelElt);
+        }
+    }
 }

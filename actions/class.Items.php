@@ -92,44 +92,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             //$this->setView('item_locked.tpl');
             $formContainer = new taoItems_actions_form_Item($itemClass, $item);
             $myForm = $formContainer->getForm();
-            /*
-             * crapy way to add the status of the item model
-             * @todo set this in the taoItems_actions_form_Item
-             * */
-            $deprecatedOptions = array();
-            $statusProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY);
-            $itemModelElt = $myForm->getElement(tao_helpers_Uri::encode(TAO_ITEM_MODEL_PROPERTY));
-            $options = $itemModelElt->getOptions();
-            foreach($options as $optUri => $optLabel){
-                $model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
-                $status = $model->getOnePropertyValue($statusProperty);
-                $statusLabel = (!is_null($status)) ? trim($status->getLabel()) : '';
-                if(!empty($statusLabel)){
-                    //in the case it is a stable one, implicit (may be misleading otherwise)
-                    //$options[$optUri] = $optLabel . " ($statusLabel)";
-                }
-                if(!is_null($status)){
-                    if($status->getUri() == TAO_ITEM_MODEL_STATUS_DEPRECATED){
-                        $deprecatedOptions[] = $optUri;
-                    }
-                }
-            }
-            $itemModelElt->setOptions($options);
-
-            $this->setData('deprecatedOptions', json_encode($deprecatedOptions));
-
-            $hasAuthoring = false;
-            $hasPreview = false;
-            $modelUri = $itemModelElt->getEvaluatedValue();
-            if(is_string($modelUri) && !empty($modelUri)){
-                $currentModel = new core_kernel_classes_Resource($modelUri);
-                $authoring = $currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
-                $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
-                $hasPreview = !$isDeprecated;
-                if(count($authoring) > 0 && !$isDeprecated){
-                    $hasAuthoring = true;
-                }
-            }
 
             if($myForm->isSubmited()){
                 if($myForm->isValid()){
@@ -148,6 +110,19 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $this->setData('label', ($label != null) ? $label->literal : '');
                     $this->setData('message', __('Item saved'));
                     $this->setData('reload', true);
+                }
+            }
+            
+            $currentModel = $this->service->getItemModel($item);
+            
+            $hasAuthoring = false;
+            $hasPreview = false;
+            if(!empty($currentModel)) {
+                $authoring = $currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
+                $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
+                $hasPreview = !$isDeprecated;
+                if(count($authoring) > 0 && !$isDeprecated){
+                    $hasAuthoring = true;
                 }
             }
 

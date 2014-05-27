@@ -14,13 +14,6 @@ Template::inc('form_context.tpl', 'tao');
 <script type="text/javascript">
     require(['jquery', 'helpers', 'uiBootstrap'], function($, helpers, uiBootstrap){
         var $tabs = uiBootstrap.tabs;
-        var deprecated = <?=get_data('deprecatedOptions')?>;
-        $(':radio').each(function(){
-                if($.inArray($(this).val(), deprecated) > -1){
-                        $(this).attr('disabled', 'true');
-                        $("label[for='"+$(this).attr('id')+"']").css('color', '#A0A0A0');
-                }
-        });
 		
     	<?if(get_data('isPreviewEnabled') !== true):?>
             $tabs.tabs('disable', helpers.getTabIndexByName('items_preview'));
