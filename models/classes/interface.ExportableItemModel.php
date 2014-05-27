@@ -20,30 +20,11 @@
  */
 
 /**
- * evaluates the responses for an item
- * and returns the outcomes as an associative array
+ * please use tao_models_classes_export_ExportProvider
  *
- * @access public
  * @author Joel Bout, <joel@taotesting.com>
- * @package taoItems
- 
+ * @deprecated
  */
-interface taoItems_models_classes_ExportableItemModel
-    extends taoItems_models_classes_itemModel
-{
-
-
-    // --- OPERATIONS ---
-
-    /**
-     * Short description of method evaluate
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @param  array responses
-     * @return array
-     */
-    public function getExportHandlers();
-
+interface taoItems_models_classes_ExportableItemModel extends tao_models_classes_export_ExportProvider {
+	
 }

@@ -20,31 +20,10 @@
  */
 
 /**
- * interface implemented by itemModels that provide
- * an import 
+ * please use tao_models_classes_import_ImportProvider
  *
- * @access public
  * @author Joel Bout, <joel@taotesting.com>
- * @package taoItems
- 
+ * @deprecated
  */
-interface taoItems_models_classes_ImportableItemModel
-    extends taoItems_models_classes_itemModel
-{
-
-
-    // --- OPERATIONS ---
-
-    /**
-     * Gets the import handlers that can be used to import
-     * items of this item type
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @return array
-     */
-    public function getImportHandlers();
-
+interface taoItems_models_classes_ImportableItemModel extends tao_models_classes_import_ImportProvider {
 }
-
-?>
