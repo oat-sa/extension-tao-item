@@ -34,7 +34,7 @@
 
 <?if(has_data('previewUrl')):?>
 
-    <iframe id='preview-container' name="preview-container"></iframe>
+    <iframe id='preview-container' name="preview-container" style="min-height: 100% !important"></iframe>
     <!-- to emulate wf navigation: <button id='finishButton' ><?=__('Finish')?></button> -->
 
     <!--div id='preview-console' class="ui-widget">
