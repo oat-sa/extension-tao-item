@@ -120,7 +120,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             if(!empty($currentModel)) {
                 $authoring = $currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
                 $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
-                $hasPreview = !$isDeprecated;
+                $hasPreview = !$isDeprecated && $this->service->hasItemContent($item);
                 if(count($authoring) > 0 && !$isDeprecated){
                     $hasAuthoring = true;
                 }
