@@ -1,8 +1,6 @@
 <?php
-$GLOBALS['__l10n']["A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."]="D'Item Ersteller kënnen op eng Lëscht vun Viirlagen zréckgraifen wéi z.B. mutliple choice Froen, Puzzle Froen, Lückentext, asw.";
 $GLOBALS['__l10n']["Add / Edit lists"]="Lëschten dobeisetzen / editéiren";
 $GLOBALS['__l10n']["Add property"]="Proprietéit dobeisetzen";
-$GLOBALS['__l10n']["Add the source file"]="Quellfichier unhaenken";
 $GLOBALS['__l10n']["An error occured during user deletion"]="Während dem Läschen vum User gouf et e Fehler";
 $GLOBALS['__l10n']["An error occured while saving the item"]="Beim Spaicheren vum Item gouf et e Fehler";
 $GLOBALS['__l10n']["Back"]="Zréck";
@@ -87,13 +85,11 @@ $GLOBALS['__l10n']["Translate to"]="Iwersetzen no";
 $GLOBALS['__l10n']["Translation parameters"]="Iwersetzungsparameter";
 $GLOBALS['__l10n']["Translation saved"]="Iwersetzung gespaichert";
 $GLOBALS['__l10n']["Type"]="Typ";
-$GLOBALS['__l10n']["Upload CSV File"]="CSF Fichier eroplueden";
 $GLOBALS['__l10n']["Use the * character to replace any string"]="Benotzt den * fir eng Zeecheketten ze ersetzen";
 $GLOBALS['__l10n']["User"]="User";
 $GLOBALS['__l10n']["User added"]="User dobeigesaat";
 $GLOBALS['__l10n']["User deleted successfully"]="User erfollegraich geläscht";
 $GLOBALS['__l10n']["User saved"]="User gespaichert";
-$GLOBALS['__l10n']["Users"]="Useren";
 $GLOBALS['__l10n']["You cannot modify this property"]="Dir kënnt des Proprietéit net änneren";
 
 ?>

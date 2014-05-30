@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-alpha\n"
-"PO-Revision-Date: 2013-11-20T14:43:58\n"
+"Project-Id-Version: TAO v2.6-beta2\n"
+"PO-Revision-Date: 2014-05-30T15:53:59\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr "Différents modèles sont fournis aux auteurs d'items tels que les questions à choix multiple, l'éditeur de puzzle, les textes à trous, etc."
 
 msgid "An error occured while saving the item"
 msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
@@ -46,11 +43,11 @@ msgstr "Télécharger le contenu de l'item"
 msgid "duplicate"
 msgstr "Dupliquer"
 
-msgid "Edit Item"
-msgstr "Modification de l'item"
-
 msgid "Edit item"
 msgstr "Modifier un item"
+
+msgid "Edit Item"
+msgstr "Modification de l'item"
 
 msgid "Edit item class"
 msgstr "Édition de la classe item"
@@ -69,6 +66,9 @@ msgstr "Item verrouillé"
 
 msgid "Item Locked:"
 msgstr "Item verrouillé :"
+
+msgid "Item Model"
+msgstr ""
 
 msgid "Item saved"
 msgstr "Item enregistré"
@@ -119,8 +119,7 @@ msgid "Not yet available"
 msgstr "Pas encore disponible"
 
 msgid "Please contact the owner of the resource to unlock it"
-msgstr ""
-"Veuillez contacter le propriétaire de la ressource pour la déverrouiller."
+msgstr "Veuillez contacter le propriétaire de la ressource pour la déverrouiller."
 
 msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
@@ -141,17 +140,26 @@ msgstr "Moniteur de prévisualisation"
 msgid "ReleaseLock"
 msgstr "Déverrouiller"
 
+msgid "Retrieving external resources"
+msgstr ""
+
 msgid "search"
 msgstr "Rechercher"
 
 msgid "show/hide"
 msgstr "montrer/cacher"
 
+msgid "Submit"
+msgstr ""
+
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
 
 msgid "This item is currently being edited and has been locked"
 msgstr "Cet item est en cours d'édition et a été verrouillé."
+
+msgid "Unable to create deployement directory"
+msgstr ""
 
 msgid "Validation has failed"
 msgstr "La validation a échoué"

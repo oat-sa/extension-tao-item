@@ -1,15 +1,12 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-alpha\n"
-"PO-Revision-Date: 2013-11-20T14:43:58\n"
+"Project-Id-Version: TAO v2.6-beta2\n"
+"PO-Revision-Date: 2014-05-30T15:54:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sv-SE\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "A series of different templates are provided to the Item authors such as multiple choice questions, puzzle design, text with gaps, etc."
-msgstr "En rad olika mallar finns tillgängliga för frågans skapare, så som flervalsfrågor, puzzel, text med ifyllningsrutor etc."
 
 msgid "An error occured while saving the item"
 msgstr "Ett fel uppstod medan frågan sparades"
@@ -46,10 +43,10 @@ msgstr "Ladda ner frågeinnehåll"
 msgid "duplicate"
 msgstr "dublett"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "Redigera fråga"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "Redigera fråga"
 
 msgid "Edit item class"
@@ -68,6 +65,9 @@ msgid "Item Locked"
 msgstr ""
 
 msgid "Item Locked:"
+msgstr ""
+
+msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
@@ -139,16 +139,25 @@ msgstr "Förhandsvisningsbord"
 msgid "ReleaseLock"
 msgstr ""
 
+msgid "Retrieving external resources"
+msgstr ""
+
 msgid "search"
 msgstr "sök"
 
 msgid "show/hide"
 msgstr "visa/dölj"
 
+msgid "Submit"
+msgstr ""
+
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 
 msgid "This item is currently being edited and has been locked"
+msgstr ""
+
+msgid "Unable to create deployement directory"
 msgstr ""
 
 msgid "Validation has failed"
