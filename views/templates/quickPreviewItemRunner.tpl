@@ -20,7 +20,8 @@
                             resultServer : <?=json_encode(get_data('resultServer'))?>,
                             <?endif?>
                             previewUrl : <?=json_encode(get_data('previewUrl'))?>,
-                            clientConfigUrl : clientConfigUrl
+                            clientConfigUrl : clientConfigUrl,
+                            context: 'quick-preview'
                         });
                     });
                 });
