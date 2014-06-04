@@ -73,6 +73,8 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                                 
                                 if ($frame[0].readyState == "complete") {
                                     
+                                    itemApi.connect($frame[0]);
+                                    
                                     if (isCORSAllowed === true) {
                                         this.contentWindow.__knownParent__ = true;
                                     }
@@ -83,6 +85,9 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             // Not IE a.k.a. Real Browser.
                             
                             $frame[0].onload = function(){
+                                
+                                itemApi.connect($frame[0]);
+                                
                                 if (isCORSAllowed === true) {
                                     this.contentWindow.__knownParent__ = true;
                                 }
