@@ -632,11 +632,11 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
     }
 
     /**
-     * Short description of method deleteItemContent
+     * Deletes the content but does not unreference it
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
+     * @param  core_kernel_classes_Resource item
      * @return boolean
      */
     public function deleteItemContent(core_kernel_classes_Resource $item){
@@ -646,14 +646,16 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
             $files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
             foreach($files->getIterator() as $file){
-                $file = new core_kernel_file_File($file);
-                if(core_kernel_versioning_File::isVersionedFile($file)){
-                    $file = new core_kernel_versioning_File($file);
-                }
-                try{
-                    $file->delete();
-                }catch(core_kernel_versioning_exception_FileUnversionedException $e){
-                    // file was not versioned after all, ignore in delte
+                if ($file instanceof core_kernel_classes_Resource) {
+                    $file = new core_kernel_file_File($file);
+                    if(core_kernel_versioning_File::isVersionedFile($file)){
+                        $file = new core_kernel_versioning_File($file);
+                    }
+                    try{
+                        $file->delete();
+                    }catch(core_kernel_versioning_exception_FileUnversionedException $e){
+                        // file was not versioned after all, ignore in delte
+                    }
                 }
             }
         }
