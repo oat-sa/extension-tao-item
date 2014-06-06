@@ -97,6 +97,8 @@ DO NOT EDIT!     * *      '-'-'\_      /'._.'
       margin-top: 1px; }
     .preview-overlay .preview-utility-bar-inner .mobile-device-selector {
       width: 200px; }
+    .preview-overlay .preview-utility-bar-inner .preview-type-selector {
+      width: 140px; }
     .preview-overlay .preview-utility-bar-inner .orientation-selector,
     .preview-overlay .preview-utility-bar-inner .desktop-device-selector {
       width: 130px; }
