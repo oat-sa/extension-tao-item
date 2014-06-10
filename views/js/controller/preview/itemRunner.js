@@ -65,6 +65,10 @@ function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceIm
 
                 var $frame = $('#preview-container');
 
+                if(!conf.context || conf.context !== 'quick-preview'){
+                    iframeResizer.autoHeight($frame, 'body', 10);
+                }
+
                 $frame.on('load', function() {
                     var frame = this,
                         $thisFrame = $(this);
@@ -72,9 +76,6 @@ function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceIm
                     if(conf.context && conf.context === 'quick-preview'){
                         $thisFrame.height('100%');
                         top.$(top.document).trigger('iframeheightchange', { height: $thisFrame.height() });
-                    }
-                    else {
-                        iframeResizer.autoHeight($thisFrame, 'body', 10);
                     }
 
                     //1st try to connect the api on frame load
