@@ -67,34 +67,14 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             itemApi.connect($frame[0]);
                         });
                         
-                        if (navigator.userAgent.indexOf("MSIE") > -1 && !window.opera) {
-                            // IE i.e. Internet Explorer
-                            $frame[0].onreadystatechange = function() {
-                                
-                                if ($frame[0].readyState == "complete") {
-                                    
-                                    itemApi.connect($frame[0]);
-                                    
-                                    if (isCORSAllowed === true) {
-                                        this.contentWindow.__knownParent__ = true;
-                                    }
-                                }
-                            };
-                        } 
-                        else {
-                            // Not IE a.k.a. Real Browser.
+                        $frame.on('load', function(){
+                            itemApi.connect($frame[0]);
                             
-                            $frame[0].onload = function(){
-                                
-                                itemApi.connect($frame[0]);
-                                
-                                if (isCORSAllowed === true) {
-                                    this.contentWindow.__knownParent__ = true;
-                                }
-                            };
-                        }
-                        
-                        $frame[0].src = itemUrl.getUrl();
+                            if (isCORSAllowed === true) {
+                                this.contentWindow.__knownParent__ = true;
+                            }
+                        });                        
+                        $frame.attr('src', itemUrl.getUrl());
                     };
 
                     //tell the parent he can trigger onServiceApiReady
