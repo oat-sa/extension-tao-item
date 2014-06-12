@@ -137,21 +137,20 @@ abstract class taoItems_models_classes_ItemExporter {
 		if (is_dir($src)) {
 			// Go deeper in folder hierarchy !
 			$src .= DIRECTORY_SEPARATOR;
-			$dest .= DIRECTORY_SEPARATOR;
+			$dest .= '/';
 			// Recursively copy.
 			$content = scandir($src);
 			
 			foreach ($content as $file) {
 				// avoid . , .. , .svn etc ...
 				if(!preg_match("/^\./", $file)) {
-					$done += $this->addFile($src.$file, $dest.$file);
-					
+					$done += $this->addFile($src . $file, $dest . $file);
 				}
 			}
 		}
 		else {
 			// Simply copy the file. Beware of leading slashes
-			if($zip->addFile($src, ltrim($dest, DIRECTORY_SEPARATOR))){
+			if($zip->addFile($src, ltrim($dest, "/\\"))){
 				$done++;
 			}
 		}
