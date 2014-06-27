@@ -24,10 +24,9 @@ define(function(){
     
     return {
          'Items': {
-            'deps' : 'controller/items',
             'actions' : {
-                'getSectionActions' : 'controller/main/actions',
-                'getSectionTrees' : 'controller/main/trees'
+                'editItem' : 'controller/items',
+                'editItemClass' : 'controller/items'
             }
         },
         'ItemPreview' : {

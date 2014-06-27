@@ -33,6 +33,7 @@ define(['jquery', 'i18n', 'helpers', 'uiBootstrap', 'module'], function ($, __, 
         return {
             start : function(){
                 var conf = module.config();
+
                 if(conf.uri && conf.classUri){
                     if(conf.isAuthoringEnabled === true && conf.action !== 'authoring'){
                         $tabs.tabs('url', authoringIndex, conf.authoringUrl);

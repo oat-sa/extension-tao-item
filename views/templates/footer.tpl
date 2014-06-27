@@ -2,24 +2,16 @@
 requirejs.config({
     config: {
         'taoItems/controller/items': {
-            'action' : "<?=get_data('action')?>",
-            'uri' : "<?=get_data('uri')?>",
-            'classUri' : "<?=get_data('classUri')?>",
-            'label' : <?=json_encode(get_data('label'))?>,
-        <?if(get_data('reload')):?>
-            'reload' : "<?=get_data('reload')?>",
-        <?endif?>
-        <?if(has_data('message')):?>
-            'message' : "<?=get_data('message')?>",
-        <?endif?>
-        <?if(has_data('isAuthoringEnabled')):?>
-            'isAuthoringEnabled' : <?=get_data('isAuthoringEnabled') ? 'true' : 'false'?>,
-        <?endif?>
-        <?if(has_data('isPreviewEnabled')):?>
-            'isPreviewEnabled' : <?=get_data('isPreviewEnabled') ? 'true' : 'false'?>,
-        <?endif?>
-            'authoringUrl' : "<?=get_data('authoringUrl')?>",
-            'previewUrl' : "<?=get_data('previewUrl')?>"
+            'action'                : <?=json_encode(get_data('action'))?>,
+            'uri'                   : <?=json_encode(get_data('uri'))?>,
+            'classUri'              : <?=json_encode(get_data('classUri'))?>,
+            'label'                 : <?=json_encode(get_data('label'))?>,
+            'reload'                : <?=has_data('reload') ? 'true' : 'false' ?>,
+            'message'               : <?=has_data('message') ? json_encode(get_data('message')) : 'false' ?>,
+            'isAuthoringEnabled'    : <?=get_data('isAuthoringEnabled') ? 'true' : 'false'?>,
+            'isPreviewEnabled'      : <?=get_data('isPreviewEnabled') ? 'true' : 'false'?>,
+            'authoringUrl'          : <?=json_encode(get_data('authoringUrl'))?>,
+            'previewUrl'            : <?=json_encode(get_data('previewUrl'))?>
         }
     }
 });
