@@ -4,9 +4,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?=PRODUCT_NAME?> <?=TAO_VERSION?></title>
        
-        <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/style.css" />
+        <!--link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/style.css" />
         <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css" />
-        <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
+        <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" /-->
+    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>tao/views/css/tao-main-style.css" />
+    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
+    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
 
         <?if(has_data('previewUrl')):?>
          <script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/require.js"></script>
