@@ -18,6 +18,7 @@ requirejs.config({
    } 
 });
 
+
 $(document).ready(function() {
 	if ("<?= get_data('previewUrl')?>".indexOf('Qti') != -1) {
 		$('#submit > button').css('display', 'inline').click(function() {
