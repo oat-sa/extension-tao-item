@@ -24,10 +24,7 @@ define(function(){
     
     return {
          'Items': {
-            'actions' : {
-                'editItem' : 'controller/items',
-                'editItemClass' : 'controller/items'
-            }
+            'deps': 'controller/items'
         },
         'ItemPreview' : {
             'actions' : {
