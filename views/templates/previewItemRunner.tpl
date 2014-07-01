@@ -1,4 +1,4 @@
-<!--link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" /-->
+<link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>tao/views/css/tao-main-style.css" />
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
