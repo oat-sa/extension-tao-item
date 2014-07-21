@@ -41,7 +41,7 @@
 	"role": "Developer"
 	}
     ],
-    "description" : "TAO's extension to manage items",
+    "description" : "extension to manage items",
     "support": {
 	"forum": "http://forum.taotesting.com",
 	"issues": "http://forge.taotesting.com"
