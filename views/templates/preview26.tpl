@@ -1,5 +1,15 @@
 <link rel="stylesheet" type="text/css" href="<?= ROOT_URL ?>taoItems/views/css/preview.css"/>
 <link rel="stylesheet" type="text/css" href="<?= ROOT_URL ?>taoItems/views/css/quick-preview.css"/>
+<style>
+
+
+    iframe {
+        border: none;
+        min-width: 100% !important;
+        min-height: 100% !important;
+
+    }
+</style>
 
 <? if(has_data('previewUrl')): ?>
     <script>
@@ -11,7 +21,8 @@
                     <?endif?>
                     previewUrl: <?=json_encode(get_data('previewUrl'))?>,
                     userInfoServiceRequestUrl: <?=json_encode(_url('getUserPropertyValues', 'ServiceModule', 'tao'))?>,
-                    clientConfigUrl: '<?=get_data('client_config_url')?>'
+                    clientConfigUrl: '<?=get_data('client_config_url')?>',
+                    context: 'preview26'
                 }
             }
         });
