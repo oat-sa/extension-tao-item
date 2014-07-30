@@ -38,7 +38,7 @@
     <iframe id='preview-container' name="preview-container" style="min-height: 100% !important"></iframe>
     <!-- to emulate wf navigation: <button id='finishButton' ><?=__('Finish')?></button> -->
 
-    <!--div id='preview-console' class="ui-widget">
+    <div id='preview-console' class="ui-widget">
         <div class="console-control">
             <span class="ui-icon ui-icon-circle-close" title="<?=__('close')?>"></span>
             <span class="ui-icon ui-icon-circle-plus toggler" title="<?=__('show/hide')?>"></span>
@@ -46,7 +46,7 @@
             <?=__('Preview Console')?>
         </div>
         <div class="console-content"><ul></ul></div>
-    </div-->
+    </div>
     <?else:?>
     <h3><?=__('PREVIEW BOX')?></h3>
     <p><?=__("Not yet available")?></p>
@@ -54,3 +54,4 @@
 
 </body>
 </html>
+

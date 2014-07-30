@@ -18,90 +18,105 @@
  *
  */
 define(
-['module', 'jquery', 'lodash', 'serviceApi/ServiceApi', 'serviceApi/PseudoStorage', 
-'serviceApi/UserInfoService', 'taoItems/runtime/ItemServiceImpl', 'taoItems/preview-console', 'urlParser', 'iframeResizer'], 
-function(module, $, _, ServiceApi, PseudoStorage, UserInfoService, ItemServiceImpl, previewConsole,  UrlParser, iframeResizer){
-    
-    var previewItemRunner = {
-        
-        start : function(options){
-           
-           var conf = _.merge(module.config(), options || {});
-           
-           if(conf.previewUrl){
-                
-                previewConsole.setup();
-               
-                var resultServer = _.defaults(conf.resultServer, {
-                    module : 'taoResultServer/ResultServerApi',
-                    endpoint : '',
-                    params  : {}
-                });
-                
-            //load dynamically the right ResultServerApi
-            require([resultServer.module], function(ResultServerApi){
-                
-                var resultServerApi = new ResultServerApi(
-                    resultServer.endpoint, 
-                    resultServer.params
-                );
+    [
+        'module',
+        'jquery',
+        'lodash',
+        'serviceApi/ServiceApi',
+        'serviceApi/PseudoStorage',
+        'serviceApi/UserInfoService',
+        'taoItems/runtime/ItemServiceImpl',
+        'taoItems/preview-console',
+        'urlParser',
+        'iframeResizer'
+    ],
+    function (
+        module,
+        $,
+        _,
+        ServiceApi,
+        PseudoStorage,
+        UserInfoService,
+        ItemServiceImpl,
+        previewConsole,
+        UrlParser,
+        iframeResizer
+        ) {
 
-                var serviceApi = new ServiceApi(
-                    conf.previewUrl, 
-                    {}, 
-                    'preview', 
-                    new PseudoStorage(), 
-                    new UserInfoService(conf.userInfoServiceRequestUrl, {})
-                );
+        var previewItemRunner = {
 
-                var itemApi = new ItemServiceImpl({
-                    serviceApi: serviceApi,
-                    resultApi: resultServerApi
-                });
+            start: function (options) {
 
-                var callUrl = new UrlParser(serviceApi.getCallUrl());
-                var isCORSAllowed = callUrl.checkCORS();
-                callUrl.addParam('clientConfigUrl', conf.clientConfigUrl);
+                var conf = _.merge(module.config(), options || {});
 
-                var $frame = $('#preview-container');
+                if (conf.previewUrl) {
 
-                if(!conf.context || conf.context !== 'quick-preview'){
-                    iframeResizer.autoHeight($frame, 'body', 10);
-                }
+                    previewConsole.setup();
 
-                $frame.on('load', function() {
-                    var frame = this,
-                        $thisFrame = $(this);
-
-                    if(conf.context && conf.context === 'quick-preview'){
-                        $thisFrame.height('100%');
-                        top.$(top.document).trigger('iframeheightchange', { height: $thisFrame.height() });
-                    }
-
-                    //1st try to connect the api on frame load
-                    itemApi.connect(frame);
-
-                    //if we are  in the same domain, we add a variable
-                    //to the frame window, so the frame knows it can communicate
-                    //with the parent
-                    if (isCORSAllowed === true) {
-                        frame.contentWindow.__knownParent__ = true;
-                    }
-                    //then we can wait a specific event triggered from the item
-                    $(document).on('itemready', function() {
-                        itemApi.connect(frame);
+                    var resultServer = _.defaults(conf.resultServer, {
+                        module: 'taoResultServer/ResultServerApi',
+                        endpoint: '',
+                        params: {}
                     });
 
-                });
-                $('#preview-container').attr('src', callUrl.getUrl());
+                    //load dynamically the right ResultServerApi
+                    require([resultServer.module], function (ResultServerApi) {
 
-                $('#finishButton').click(function() {
-                    itemApi.finish();
-                });
-           });
-       }
-     }
-   };
-   
-   return previewItemRunner;
-});
+                        var resultServerApi = new ResultServerApi(
+                            resultServer.endpoint,
+                            resultServer.params
+                        );
+
+                        var serviceApi = new ServiceApi(
+                            conf.previewUrl,
+                            {},
+                            'preview',
+                            new PseudoStorage(),
+                            new UserInfoService(conf.userInfoServiceRequestUrl, {})
+                        );
+
+                        var itemApi = new ItemServiceImpl({
+                            serviceApi: serviceApi,
+                            resultApi: resultServerApi
+                        });
+
+                        var callUrl = new UrlParser(serviceApi.getCallUrl());
+                        var isCORSAllowed = callUrl.checkCORS();
+                        callUrl.addParam('clientConfigUrl', conf.clientConfigUrl);
+
+                        var $frame = $('#preview-container');
+
+                        iframeResizer.autoHeight($frame, 'body', 10);
+
+
+
+                        $frame.on('load', function () {
+                            var frame = this;
+
+                            //1st try to connect the api on frame load
+                            itemApi.connect(frame);
+
+                            //if we are  in the same domain, we add a variable
+                            //to the frame window, so the frame knows it can communicate
+                            //with the parent
+                            if (isCORSAllowed === true) {
+                                frame.contentWindow.__knownParent__ = true;
+                            }
+                            //then we can wait a specific event triggered from the item
+                            $(document).on('itemready', function () {
+                                itemApi.connect(frame);
+                            });
+
+                        });
+                        $('#preview-container').attr('src', callUrl.getUrl());
+
+                        $('#finishButton').click(function () {
+                            itemApi.finish();
+                        });
+                    });
+                }
+            }
+        };
+
+        return previewItemRunner;
+    });

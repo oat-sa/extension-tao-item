@@ -18,6 +18,8 @@
  *               
  * 
  */
+
+use oat\tao\helpers\FileUploadException;
  
 /**
  * Items Content Controller provide access to the files of an item
@@ -84,21 +86,30 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        
+    
+        //as upload may be called multiple times, we remove the session lock as soon as possible
+        session_write_close();
+       
 		//TODO path traversal and null byte poison check ? 
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
         $relPath = trim($this->getRequestParameter('path'), '/');
         $relPath = empty($relPath) ? '' : $relPath.'/';
-        
-        $file = tao_helpers_Http::getUploadedFile('content');
-        $fileName = $file['name'];
-        
-        if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
-            throw new common_exception_Error('Unable to move uploaded file');
-        } 
-        
-        $fileData = taoItems_helpers_ResourceManager::buildFile($item, $itemLang, $relPath.$fileName);
-        echo json_encode($fileData);    
+      
+        try{ 
+            $file = tao_helpers_Http::getUploadedFile('content');
+            $fileName = $file['name'];
+            
+            if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
+                throw new common_exception_Error('Unable to move uploaded file');
+            } 
+            
+            $fileData = taoItems_helpers_ResourceManager::buildFile($item, $itemLang, $relPath.$fileName);
+            echo json_encode($fileData);    
+
+        } catch(FileUploadException $fe){
+            
+            echo json_encode(array( 'error' => $fe->getMessage()));    
+        }
     }
 
     /**
