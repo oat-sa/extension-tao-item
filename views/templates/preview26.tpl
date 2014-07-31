@@ -29,9 +29,14 @@
 
         $(document).ready(function () {
             if ("<?= get_data('previewUrl')?>".indexOf('Qti') != -1) {
-                $('#preview-submit-button').css('display', 'inline').click(function () {
-                    $('#preview-container')[0].contentWindow.qtiRunner.validate();
-                });
+                
+                $('#preview-submit-button')
+                    .css('display', 'inline')
+                    .off('click')
+                    .on('click', function () {
+                        $('#preview-container')[0].contentWindow.qtiRunner.validate();
+                    });
+                    
             }
         });
 
