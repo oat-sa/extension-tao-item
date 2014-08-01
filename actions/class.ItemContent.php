@@ -184,6 +184,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @author Dieter Raber
      */
     private function removeSpecChars($string, $repl='-', $lower=true) {
+        $lastDot = strrpos($string, '.');
+        $file = $lastDot ? substr($string, 0, $lastDot) : $string;
+        $ending = $lastDot ? substr($string, $lastDot+1) : '';
         $spec_chars = array (
             'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'Ae', 'Å' => 'A','Æ' => 'A', 'Ç' => 'C',
             'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I',
@@ -199,8 +202,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             '!' => $repl, '"' => $repl, '`' => $repl, '°' => $repl, '%' => $repl, ' ' => $repl,
             '  ' => $repl, '{' => $repl, '}' => $repl, '#' => $repl, '’' => $repl
         );
-        $string = strtr($string, $spec_chars);
-        $string = trim(preg_replace("~[^a-z0-9]+~i", $repl, $string), $repl);
+        $string = strtr($file, $spec_chars);
+        $string = trim(preg_replace("~[^a-z0-9]+~i", $repl, $string), $repl).(strlen($ending) == 0 ? '' : '.'.$ending);
         return $lower ? strtolower($string) : $string;
     }
 }
