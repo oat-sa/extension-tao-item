@@ -97,7 +97,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
       
         try{ 
             $file = tao_helpers_Http::getUploadedFile('content');
-            $fileName = $file['name'];
+            
+            $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+            $fileName = tao_helpers_File::getSafeFileName($file['name'], $baseDir.ltrim($relPath, '/'));
             
             if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
                 throw new common_exception_Error('Unable to move uploaded file');
