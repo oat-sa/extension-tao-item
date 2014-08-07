@@ -338,39 +338,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * use the xml content in session and set it to the item
-     * forwarded to the index action
-     * @return void
-     */
-    public function saveItemContent(){
-
-        $message = __('An error occured while saving the item');
-
-        if(isset($_SESSION['instance']) && isset($_SESSION['xml'])){
-
-            $item = new core_kernel_classes_Resource($_SESSION['instance']);
-            if($this->service->isItemModelDefined($item)){
-
-                $itemContentSaved = $this->service->setItemContent($item, $_SESSION['xml']);
-
-                if(!$itemContentSaved){
-                    $message = __('Item saving failed');
-                }else{
-                    $this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
-                    $message = __('Item successfully saved');
-                }
-            }
-
-            if(tao_helpers_Context::check('STANDALONE_MODE')){
-                $itemClass = $this->service->getClass($item);
-                $this->redirect(_url('authoring', 'SaSItems', 'taoItems', array('uri' => tao_helpers_Uri::encode($item->getUri()).'&classUri='.tao_helpers_Uri::encode($itemClass->getUri()), 'classUri' => tao_helpers_Uri::encode($itemClass->getUri()), 'message' => urlencode($message))));
-            }else{
-                $this->redirect(_url('index', 'Main', 'tao', array('message' => urlencode($message))));
-            }
-        }
-    }
-
-    /**
      * Load an item external media
      * It prevents to get it direclty in the data folder that access is denied
      *
