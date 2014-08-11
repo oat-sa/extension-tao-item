@@ -40,8 +40,10 @@ define(['jquery', 'i18n', 'helpers', 'uiBootstrap', 'module'], function ($, __, 
                         $tabs.tabs('enable', authoringIndex);
                     }
                     if(conf.isPreviewEnabled === true && conf.action !== 'preview'){
-                        $tabs.tabs('url', previewIndex, conf.previewUrl);
-                        $tabs.tabs('enable', previewIndex);
+                    	if (previewIndex >= 0) {
+	                        $tabs.tabs('url', previewIndex, conf.previewUrl);
+	                        $tabs.tabs('enable', previewIndex);
+                    	}
                     }
                     if(conf.label){
                         setAuthoringItemLabel(conf.label);
