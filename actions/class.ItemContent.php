@@ -86,10 +86,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = tao_helpers_File::getSafeFileName($this->getRequestParameter('path'));
-        $fileExists = $baseDir.file_exists($path);
+        $path = $this->getRequestParameter('path');
+        $safeName = dirname($path).'/'.tao_helpers_File::getSafeFileName(basename($path));
+        $fileExists = file_exists($baseDir.$safeName); 
         
         echo json_encode(array(
         	'exists' => $fileExists
