@@ -46,6 +46,11 @@ class taoItems_actions_ItemPreview extends tao_actions_Api
             $template = 'quickPreviewItemRunner.tpl';
         }
 
+        else if($this->hasRequestParameter('twosix')){
+            $this->setData('client_config_url', $this->getClientConfigUrl());
+            $template = 'preview26.tpl';
+        }
+
         else{
             $template = 'previewItemRunner.tpl';
         }
