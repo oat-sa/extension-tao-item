@@ -67,6 +67,36 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     }
     
     /**
+     * Returns whenever or not a file exists at the indicated path
+     * 
+     * @throws common_exception_MissingParameter
+     */
+    public function fileExists() {
+        if (!$this->hasRequestParameter('uri')) {
+            throw new common_exception_MissingParameter('uri', __METHOD__);
+        }
+        $itemUri = $this->getRequestParameter('uri');
+        $item = new core_kernel_classes_Resource($itemUri);
+        
+        if (!$this->hasRequestParameter('lang')) {
+            throw new common_exception_MissingParameter('lang', __METHOD__);
+        }
+        $itemLang = $this->getRequestParameter('lang');
+        
+        if (!$this->hasRequestParameter('path')) {
+            throw new common_exception_MissingParameter('path', __METHOD__);
+        }
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+        $path = $this->getRequestParameter('path');
+        $safeName = dirname($path).'/'.tao_helpers_File::getSafeFileName(basename($path));
+        $fileExists = file_exists($baseDir.$safeName); 
+        
+        echo json_encode(array(
+        	'exists' => $fileExists
+        ));
+    }   
+     
+    /**
      * Upload a file to the item directory
      * 
      * @throws common_exception_MissingParameter
@@ -97,7 +127,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
       
         try{ 
             $file = tao_helpers_Http::getUploadedFile('content');
-            $fileName = $this->removeSpecChars($file['name']);
+            
+            $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+            $fileName = tao_helpers_File::getSafeFileName($file['name']);
             
             if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
                 throw new common_exception_Error('Unable to move uploaded file');
@@ -170,40 +202,5 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $deleted = unlink($path);
         } 
         echo json_encode(array('deleted' => $deleted));
-    }
-    
-    /**
-     * This function removes all special characters from a string. They are replaced by $repl,
-     * multiple $repl are replaced by just one, $repl is also trimmed from the beginning and the end
-     * of the string.
-     *
-     * @param string $string the original text
-     * @param string $repl the replacement, - by default
-     * @param bool $lower return string in lower case, true by default
-     * @return string $string the modified string
-     * @author Dieter Raber
-     */
-    private function removeSpecChars($string, $repl='-', $lower=true) {
-        $lastDot = strrpos($string, '.');
-        $file = $lastDot ? substr($string, 0, $lastDot) : $string;
-        $ending = $lastDot ? substr($string, $lastDot+1) : '';
-        $spec_chars = array (
-            'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'Ae', 'Å' => 'A','Æ' => 'A', 'Ç' => 'C',
-            'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I',
-            'Ï' => 'I', 'Ð' => 'E', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O',
-            'Ö' => 'Oe', 'Ø' => 'O', 'Ù' => 'U', 'Ú' => 'U','Û' => 'U', 'Ü' => 'Ue', 'Ý' => 'Y',
-            'Þ' => 'T', 'ß' => 'ss', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'ae',
-            'å' => 'a', 'æ' => 'ae', 'ç' => 'c', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
-            'ì' => 'i', 'í' => 'i', 'î' => 'i',  'ï' => 'i', 'ð' => 'e', 'ñ' => 'n', 'ò' => 'o',
-            'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'oe', 'ø' => 'o', 'ù' => 'u', 'ú' => 'u',
-            'û' => 'u', 'ü' => 'ue', 'ý' => 'y', 'þ' => 't', 'ÿ' => 'y', ' ' => $repl, '?' => $repl,
-            '\'' => $repl, '.' => $repl, '/' => $repl, '&' => $repl, ')' => $repl, '(' => $repl,
-            '[' => $repl, ']' => $repl, '_' => $repl, ',' => $repl, ':' => $repl, '-' => $repl,
-            '!' => $repl, '"' => $repl, '`' => $repl, '°' => $repl, '%' => $repl, ' ' => $repl,
-            '  ' => $repl, '{' => $repl, '}' => $repl, '#' => $repl, '’' => $repl
-        );
-        $string = strtr($file, $spec_chars);
-        $string = trim(preg_replace("~[^a-z0-9]+~i", $repl, $string), $repl).(strlen($ending) == 0 ? '' : '.'.$ending);
-        return $lower ? strtolower($string) : $string;
     }
 }
