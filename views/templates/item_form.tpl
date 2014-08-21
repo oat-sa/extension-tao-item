@@ -3,6 +3,9 @@ use oat\tao\helpers\Template;
 
 Template::inc('form_context.tpl', 'tao');
 ?>
+
+
+
 <div class="main-container">
 	<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
 		<?=get_data('formTitle')?>
@@ -11,6 +14,10 @@ Template::inc('form_context.tpl', 'tao');
 		<?=get_data('myForm')?>
 	</div>
 </div>
+
+
+
+
 <script type="text/javascript">
     require(['jquery', 'helpers', 'uiBootstrap'], function($, helpers, uiBootstrap){
         var $tabs = uiBootstrap.tabs;
