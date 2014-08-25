@@ -9,22 +9,25 @@
 					<tree name="Items library"
 						className="Item"
 						dataUrl="/taoItems/Items/getOntologyData"
-						editClassUrl="/taoItems/Items/editItemClass"
-						editInstanceUrl="/taoItems/Items/editItem"
-						addInstanceUrl="/taoItems/Items/addInstance"
-						addSubClassUrl="/taoItems/Items/addSubClass"
-						deleteUrl="/taoItems/Items/delete"
-						duplicateUrl="/taoItems/Items/cloneInstance"
-						moveInstanceUrl="/taoItems/Items/moveInstance"
+                        selectClass="edit class"
+                        selectInstance="edit item"
+                        moveInstance="move"
+                        delete="delete" 
 					/>
 				</trees>
 				<actions>
+                    <!-- hidden -->
+					<action name="edit class" url="/taoItems/Items/editItemClass" group="none" context="class" />
+					<action name="edit item"  url="/taoItems/Items/editItem"      group="none" context="instance" />
+					<action name="move"       url="/taoItems/Items/moveInstance"  group="none" context="instance" binding="moveNode" />
+
+                    
 					<action name="search" url="/taoItems/Items/search" context="*" />
 					<action name="new class" js="subClass" url="/taoItems/Items/addSubClass" context="class" />
 					<action name="new item" js="instanciate" url="/taoItems/Items/addInstance" context="class" />
 					<action name="delete" js="removeNode" url="/taoItems/Items/delete" context="resource" />
 					<action name="duplicate" js="duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" />
-					<action name="move" js="moveNode" url="/taoItems/Items/moveInstance" context="instance" />
+
 					<action name="preview" js="fullScreen" url="/taoItems/Items/fullScreenPreview" context="instance" />
 					<action name="lists"  url="/tao/Lists/index"  context="*" />
 					<action name="meta data" js="loadMetaData" url="/tao/MetaData/getMetaData"  context="resource" />
