@@ -1,18 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+use oat\tao\helpers\Template;
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?=PRODUCT_NAME?> <?=TAO_VERSION?></title>
        
-        <!--link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/style.css" />
-        <link rel="stylesheet" type="text/css" href="<?=TAOBASE_WWW?>css/custom-theme/jquery-ui-1.8.22.custom.css" /-->
-        <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
-    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>tao/views/css/tao-main-style.css" />
-    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
-    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
+    <link rel="stylesheet" type="text/css" href="<?= Template::css('preview.css','taoItems') ?>" />
+    <link rel="stylesheet" type="text/css" href="<?= Template::css('tao-main-style.css', 'tao') ?>" />
+    <link rel="stylesheet" type="text/css" href="<?= Template::css('qti.css', 'taoQtiItem') ?>" />
+    <link rel="stylesheet" type="text/css" href="<?= Template::css('quick-preview.css', 'taoItems') ?>" />
 
         <?if(has_data('previewUrl')):?>
-         <script type="text/javascript" src="<?=TAOBASE_WWW?>js/lib/require.js"></script>
+         <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>"></script>
             <script type="text/javascript">
             (function(){
                 var clientConfigUrl = '<?=get_data('client_config_url')?>';
