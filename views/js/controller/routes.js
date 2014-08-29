@@ -24,7 +24,10 @@ define(function(){
     
     return {
          'Items': {
-            'deps': 'controller/items'
+            'deps': 'controller/items',
+             'actions' : {
+                 'fullScreenPreview' : 'controller/preview/itemRunner'
+             }
         },
         'ItemPreview' : {
             'actions' : {
