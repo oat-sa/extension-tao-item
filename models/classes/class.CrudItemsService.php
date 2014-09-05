@@ -40,12 +40,7 @@ class taoItems_models_classes_CrudItemsService
     public function getRootClass(){
 		return $this->itemClass;
 	}
-    public function get($uri){
-	return parent::get($uri);
-    }
-    public function getAll(){
-	return parent::getAll();
-    }
+
     
     public function delete( $resource){
          taoItems_models_classes_ItemsService::singleton()->deleteItem(new core_kernel_classes_Resource($resource));
@@ -53,9 +48,7 @@ class taoItems_models_classes_CrudItemsService
          return true;
     }
 
-    public function deleteAll(){
-	return parent::deleteAll();
-    }
+
     /**
      * @param array parameters an array of property uri and values
      */
@@ -83,10 +76,7 @@ class taoItems_models_classes_CrudItemsService
 		return $resource;
     }
 
-	public function update($uri,array $propertiesValues){
-		parent::update($uri, $propertiesValues);
-		//throw new common_exception_NotImplemented();
-	}
+
     
 } /* end of class taoItems_models_classes_ItemsService */
 
