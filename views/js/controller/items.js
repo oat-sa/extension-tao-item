@@ -18,7 +18,7 @@
  *
  */
 define(['jquery', 'i18n', 'helpers', 'uiBootstrap', 'module'], function ($, __, helpers, uiBootstrap, module) {
-        
+
         var $tabs = uiBootstrap.tabs;
         var authoringIndex = helpers.getTabIndexByName('items_authoring');
         var previewIndex = helpers.getTabIndexByName('items_preview');

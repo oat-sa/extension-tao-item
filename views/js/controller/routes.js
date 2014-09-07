@@ -23,12 +23,6 @@ define(function(){
     'use strict';
     
     return {
-         'Items': {
-            'deps': 'controller/items',
-             'actions' : {
-                 'fullScreenPreview' : 'controller/preview/itemRunner'
-             }
-        },
         'ItemPreview' : {
             'actions' : {
                 'index' : 'controller/preview/itemRunner'
