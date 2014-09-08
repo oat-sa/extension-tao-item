@@ -55,6 +55,8 @@ return array(
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', array('ext'=>'taoItems')),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', array('ext'=>'taoItems', 'mod' => 'ItemRunner')),
+        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoItems','mod' => 'RestItems')),
+        
     ),    
 	'optimizableClasses' => array(
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
