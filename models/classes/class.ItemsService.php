@@ -73,7 +73,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      * @author Joel Bout, <joel@taotesting.com>
      * @return void
      */
-    public function __construct(){
+    protected function __construct(){
         parent::__construct();
         $this->itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
         $this->itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
