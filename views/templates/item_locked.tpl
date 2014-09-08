@@ -14,7 +14,7 @@ Template::inc('form_context.tpl', 'tao');
 		<?=__('This item is currently being edited and has been locked')?>
 	    </span>
 	    <span class="boxLogo">
-		<img src="<?=TAOBASE_WWW?>/img/lock.png" />
+		<img src="<?= Template::img('lock.png', 'tao') ?>" />
 	    </span>
 	    <span class="boxContent">
 		<table class=>
