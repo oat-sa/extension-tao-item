@@ -14,27 +14,3 @@ Template::inc('form_context.tpl', 'tao');
 		<?=get_data('myForm')?>
 	</div>
 </div>
-
-
-
-
-<script type="text/javascript">
-    require(['jquery', 'helpers', 'uiBootstrap'], function($, helpers, uiBootstrap){
-        var $tabs = uiBootstrap.tabs;
-		
-    	<?if(get_data('isPreviewEnabled') !== true):?>
-            $tabs.tabs('disable', helpers.getTabIndexByName('items_preview'));
-        <?endif?>
-		
-	<?if(!get_data('isAuthoringEnabled')):?>
-    		var $authoringButton = $('input[name="<?=tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY)?>"]');
-    		$authoringButton.hide();
-		$tabs.tabs('disable', helpers.getTabIndexByName('items_authoring'));
-	<?endif;?>
-
-    });
-</script>
-<?php
-if(!get_data('isDeprecated')) {
-    Template::inc('footer.tpl');
-}

@@ -67,6 +67,36 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     }
     
     /**
+     * Returns whenever or not a file exists at the indicated path
+     * 
+     * @throws common_exception_MissingParameter
+     */
+    public function fileExists() {
+        if (!$this->hasRequestParameter('uri')) {
+            throw new common_exception_MissingParameter('uri', __METHOD__);
+        }
+        $itemUri = $this->getRequestParameter('uri');
+        $item = new core_kernel_classes_Resource($itemUri);
+        
+        if (!$this->hasRequestParameter('lang')) {
+            throw new common_exception_MissingParameter('lang', __METHOD__);
+        }
+        $itemLang = $this->getRequestParameter('lang');
+        
+        if (!$this->hasRequestParameter('path')) {
+            throw new common_exception_MissingParameter('path', __METHOD__);
+        }
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+        $path = $this->getRequestParameter('path');
+        $safeName = dirname($path).'/'.tao_helpers_File::getSafeFileName(basename($path));
+        $fileExists = file_exists($baseDir.$safeName); 
+        
+        echo json_encode(array(
+        	'exists' => $fileExists
+        ));
+    }   
+     
+    /**
      * Upload a file to the item directory
      * 
      * @throws common_exception_MissingParameter
@@ -97,7 +127,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
       
         try{ 
             $file = tao_helpers_Http::getUploadedFile('content');
-            $fileName = $file['name'];
+            
+            $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
+            $fileName = tao_helpers_File::getSafeFileName($file['name']);
             
             if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
                 throw new common_exception_Error('Unable to move uploaded file');

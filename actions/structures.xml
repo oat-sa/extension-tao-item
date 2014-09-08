@@ -8,18 +8,21 @@
             <section id="manage_items" name="Manage items" url="/taoItems/Items/index">
                 <trees>
                     <tree name="Items library"
-                          className="Item"
-                          dataUrl="/taoItems/Items/getOntologyData"
-                          editClassUrl="/taoItems/Items/editItemClass"
-                          editInstanceUrl="/taoItems/Items/editItem"
-                          addInstanceUrl="/taoItems/Items/addInstance"
-                          addSubClassUrl="/taoItems/Items/addSubClass"
-                          deleteUrl="/taoItems/Items/delete"
-                          duplicateUrl="/taoItems/Items/cloneInstance"
-                          moveInstanceUrl="/taoItems/Items/moveInstance"
-                            />
+                        className="Item"
+                        dataUrl="/taoItems/Items/getOntologyData"
+                        selectClass="Edit class"
+                        selectInstance="Edit item"
+                        moveInstance="Move"
+                        delete="Delete" 
+                    />
                 </trees>
                 <actions>
+
+                    <!-- hidden -->
+                    <action name="Edit class" url="/taoItems/Items/editItemClass" group="none" context="class" />
+                    <action name="Edit item"  url="/taoItems/Items/editItem"      group="none" context="instance" />
+
+
                     <action name="Search" url="/tao/Roles/search" context="*" group="filter">
                         <icon id="icon-find"/>
                     </action>
@@ -35,7 +38,7 @@
                     <action name="Duplicate" js="duplicateNode" url="/taoItems/Items/cloneInstance" context="instance" group="tree">
                         <icon id="icon-copy"/>
                     </action>
-                    <action name="Move" js="moveNode" url="/taoItems/Items/moveInstance" context="instance" group="tree">
+                    <action name="Move" js="moveNode" url="/taoItems/Items/moveInstance" context="instance" group="tree" binding="moveNode">
                         <icon id="icon-move-item"/>
                     </action>
                     <action name="Preview" js="fullScreen" url="/taoItems/Items/fullScreenPreview" context="instance" group="content">
