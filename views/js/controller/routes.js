@@ -23,9 +23,6 @@ define(function(){
     'use strict';
     
     return {
-         'Items': {
-            'deps': 'controller/items'
-        },
         'ItemPreview' : {
             'actions' : {
                 'index' : 'controller/preview/itemRunner'
