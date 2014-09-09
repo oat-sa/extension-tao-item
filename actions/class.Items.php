@@ -79,10 +79,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * edit an item instance
+     * @requiresPrivilege uri WRITE 
      */
     public function editItem(){
-
-
 
         $itemClass = $this->getCurrentClass();
         $item = $this->getCurrentInstance();
@@ -194,6 +193,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Edit a class
+     * @requiresPrivilege uri WRITE 
      */
     public function editItemClass(){
         $clazz = $this->getCurrentClass();
@@ -220,6 +220,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * delete an item or an item class
      * called via ajax
+     * @requiresPrivilege uri WRITE 
      * @see TaoModule::delete
      * @return void
      */
@@ -239,6 +240,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * @see TaoModule::translateInstance
+     * @requiresPrivilege uri WRITE 
      * @return void
      */
     public function translateInstance(){
