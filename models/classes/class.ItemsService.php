@@ -502,41 +502,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             return parent::cloneInstanceProperty($source, $destination, $property);
         }
     }
-
-    /**
-     * Short description of method setItemMeasurements
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @param  array measurements
-     * @return taoItems_models_classes_Matching_bool
-     */
-    public function setItemMeasurements(core_kernel_classes_Resource $item, $measurements){
-        $returnValue = (bool) false;
-
-        
-        $hasMeasurement = new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY);
-        $item->removePropertyValues($hasMeasurement);
-        foreach($measurements as $measurement){
-            $measurementres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class(TAO_ITEM_MEASURMENT));
-            $measurementPropertiesValues = array(
-                TAO_ITEM_IDENTIFIER_PROPERTY => $measurement->getIdentifier(),
-                TAO_ITEM_DESCRIPTION_PROPERTY => $measurement->getDescription(),
-                TAO_ITEM_MEASURMENT_HUMAN_ASSISTED => $measurement->isHumanAssisted() ? new core_kernel_classes_Resource(GENERIS_TRUE) : new core_kernel_classes_Resource(GENERIS_FALSE)
-            );
-            if(!is_null($measurement->getScale())){
-                $scaleres = core_kernel_classes_ResourceFactory::create(new core_kernel_classes_Class($measurement->getScale()->getClassUri()));
-                $scaleres->setPropertiesValues($measurement->getScale()->toProperties());
-                $measurementPropertiesValues[TAO_ITEM_SCALE_PROPERTY] = $scaleres->getUri();
-            }
-            $measurementres->setPropertiesValues($measurementPropertiesValues);
-            $item->setPropertyValue($hasMeasurement, $measurementres);
-        }
-        $returnValue = true;
-
-        return (bool) $returnValue;
-    }
     
     public function getPreviewUrl(core_kernel_classes_Resource $item, $lang = '') {
         $itemModel = $this->getItemModel($item);
@@ -544,51 +509,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             return null;
         }
         return $this->getItemModelImplementation($itemModel)->getPreviewUrl($item, $lang);
-    }
-
-    /**
-     * Short description of method getItemMeasurements
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @return array
-     */
-    public function getItemMeasurements(core_kernel_classes_Resource $item){
-        $returnValue = array();
-
-        foreach($item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_PROPERTY)) as $uri){
-            $measuremenRessource = new core_kernel_classes_Resource($uri);
-            $properties = $measuremenRessource->getPropertiesValues(array(
-                new core_kernel_classes_Property(TAO_ITEM_IDENTIFIER_PROPERTY),
-                new core_kernel_classes_Property(TAO_ITEM_DESCRIPTION_PROPERTY),
-                new core_kernel_classes_Property(TAO_ITEM_SCALE_PROPERTY),
-                new core_kernel_classes_Property(TAO_ITEM_MEASURMENT_HUMAN_ASSISTED)
-            ));
-            if(empty($properties[TAO_ITEM_IDENTIFIER_PROPERTY])){
-                throw new common_exception_Error('Missing identifier for Measurement');
-            }
-            $identifier = (string) array_pop($properties[TAO_ITEM_IDENTIFIER_PROPERTY]);
-            if(!empty($properties[TAO_ITEM_SCALE_PROPERTY])){
-                $scale = taoItems_models_classes_Scale_Scale::buildFromRessource(array_pop($properties[TAO_ITEM_SCALE_PROPERTY]));
-            }
-            $desc = '';
-            if(!empty($properties[TAO_ITEM_DESCRIPTION_PROPERTY])){
-                foreach($properties[TAO_ITEM_DESCRIPTION_PROPERTY] as $subdesc){
-                    $desc .= $subdesc;
-                }
-            }
-            $returnValue[$identifier] = new taoItems_models_classes_Measurement($identifier, $desc);
-            if(!empty($scale) && !is_null($scale)){
-                $returnValue[$identifier]->setScale($scale);
-            }
-            if(!empty($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED])){
-                $assisted = array_pop($properties[TAO_ITEM_MEASURMENT_HUMAN_ASSISTED]);
-                $returnValue[$identifier]->setHumanAssisted($assisted->getUri() == GENERIS_TRUE);
-            }
-        }
-
-        return (array) $returnValue;
     }
 
     /**
