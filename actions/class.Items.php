@@ -223,6 +223,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * @requiresRight uri WRITE 
      * @see TaoModule::delete
      * @return void
+     * @throws Exception
      */
     public function delete(){
         if(!tao_helpers_Request::isAjax()){
