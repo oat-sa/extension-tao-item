@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE extension SYSTEM "../../tao/doc/structures.dtd">
+<!DOCTYPE structures SYSTEM "../../tao/doc/structures.dtd">
 <structures>
-    <structure id="items" name="Items" level="0" visible="true">
+    <structure id="items" name="Items" level="0" group="main">
         <description>Create and design items and exercises.</description>
         <icon id="icon-item"/>
         <sections>
@@ -18,15 +18,16 @@
                 </trees>
                 <actions>
 
-                    <!-- hidden -->
-                    <action name="Edit class" url="/taoItems/Items/editItemClass" group="content" context="class" />
-                    <action name="Edit item"  url="/taoItems/Items/editItem"      group="content" context="instance" />
-
-
-                    <!--<action name="Edit item" url="/taoItems/Items/editItem" context="*" group="content" binding="launchFinder">
+                    <action name="Edit class" url="/taoItems/Items/editItemClass" group="content" context="class">
                         <icon id="icon-edit"/>
-                    </action>-->
-                    <action name="Find" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
+                    </action>
+                    <action name="Edit item"  url="/taoItems/Items/editItem"      group="content" context="instance">
+                        <icon id="icon-edit"/>
+                    </action>
+                    <action name="Filter" context="*" group="search" binding="launchFinder">
+                        <icon id="icon-filter"/>
+                    </action>
+                    <action name="Search" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
                         <icon id="icon-find"/>
                     </action>
                     <action name="New class" url="/taoItems/Items/addSubClass" context="class" group="content" binding="subClass">
@@ -50,9 +51,6 @@
                     <action name="Lists" url="/tao/Lists/index" context="*" group="tree">
                         <icon id="icon-ul"/>
                     </action>
-                    <action name="Metadata" url="/tao/MetaData/getMetaData" context="resource" group="tree" binding="loadMetaData">
-                        <icon id="icon-meta-data"/>
-                    </action>  
                     <action name="Export" url="/taoItems/ItemExport/index" context="resource" group="content">
                         <icon id="icon-export"/>
                     </action>
