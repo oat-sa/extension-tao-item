@@ -3,15 +3,12 @@ use oat\tao\helpers\Template;
 
 Template::inc('form_context.tpl', 'tao');
 ?>
+
+
+
 <div class="main-container">
-	<div id="form-title" class="ui-widget-header ui-corner-top ui-state-default">
-		<?=get_data('formTitle')?>
-	</div>
-	<div id="form-container" class="ui-widget-content ui-corner-bottom">
+	<h2><?=get_data('formTitle')?></h2>
+	<div class="form-content">
 		<?=get_data('myForm')?>
 	</div>
 </div>
-<?php
-if(!get_data('isDeprecated')) {
-    Template::inc('footer.tpl');
-}
