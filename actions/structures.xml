@@ -24,7 +24,7 @@
                     <action name="Edit item"  url="/taoItems/Items/editItem"      group="content" context="instance">
                         <icon id="icon-edit"/>
                     </action>
-                    <action name="Filter" context="*" group="search" binding="launchFinder">
+                    <action name="Filter" context="*" group="search" binding="filter">
                         <icon id="icon-filter"/>
                     </action>
                     <action name="Search" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
