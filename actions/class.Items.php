@@ -61,6 +61,22 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
     }
 
+    /**
+     * overwrite the parent addInstance to add the requiresRight only in Items
+     * @requiresRight classUri WRITE
+     */
+    public function addInstance(){
+        parent::addInstance();
+    }
+
+    /**
+     * overwrite the parent addSubClass to add the requiresRight only in Items
+     * @requiresRight classUri WRITE
+     */
+    public function addSubClass(){
+        parent::addSubClass();
+    }
+
     /*
      * conveniance methods
      */
