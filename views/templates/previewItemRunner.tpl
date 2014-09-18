@@ -3,14 +3,14 @@
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
 <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
 
-<?if(has_data('previewUrl')):?>
+<?php if(has_data('previewUrl')):?>
 <script type='text/javascript'>
 requirejs.config({
    config: {
        'taoItems/controller/preview/itemRunner' : {
-           <?if(has_data('resultServer')):?>
+           <?php if(has_data('resultServer')):?>
            resultServer : <?=json_encode(get_data('resultServer'))?>,
-           <?endif?>
+           <?php endif?>
            previewUrl : <?=json_encode(get_data('previewUrl'))?>,
            userInfoServiceRequestUrl : <?=json_encode(_url('getUserPropertyValues', 'ServiceModule', 'tao'))?>,
            clientConfigUrl : '<?=get_data('client_config_url')?>'
@@ -27,7 +27,7 @@ $(document).ready(function() {
 	}
 });
 </script>
-<?endif?>
+<?php endif?>
 
 <div class="main-container">
 
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	</div>
 	<div class="ui-widget ui-widget-content">
 	
-	<?if(has_data('previewUrl')):?>
+	<?php if(has_data('previewUrl')):?>
 		
 		<iframe id='preview-container' name="preview-container"></iframe>
 		<!-- to emulate wf navigaton: <button id='finishButton' ><?=__('Finish')?></button> -->
@@ -56,6 +56,6 @@ $(document).ready(function() {
 	<?else:?>
 			<h3><?=__('PREVIEW BOX')?></h3>
 			<p><?=__("Not yet available")?></p>
-	<?endif?>
+	<?php endif?>
 	</div>
 </div>

@@ -34,9 +34,9 @@
 	</script>
 
 	<!-- JS REQUIRED -->
-	<?if(!$ctx_raw_preview):?>
+	<?php if(!$ctx_raw_preview):?>
 	<script type="text/javascript" src="<?=$ctx_root_url?>/wfEngine/views/js/wfApi/wfApi.min.js"></script>
-	<?endif?>
+	<?php endif?>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoApi/taoApi.min.js"></script>
 	<script type="text/javascript" src="<?=$ctx_base_www?>js/taoMatching/taoMatching.min.js"></script>
 </head>

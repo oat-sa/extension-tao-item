@@ -11,14 +11,14 @@
     }
 </style>
 
-<? if(has_data('previewUrl')): ?>
+<?php if(has_data('previewUrl')): ?>
     <script>
         requirejs.config({
             config: {
                 'taoItems/controller/preview/itemRunner': {
-                    <?if(has_data('resultServer')):?>
+                    <?php if(has_data('resultServer')):?>
                     resultServer: <?=json_encode(get_data('resultServer'))?>,
-                    <?endif?>
+                    <?php endif?>
                     previewUrl: <?=json_encode(get_data('previewUrl'))?>,
                     userInfoServiceRequestUrl: <?=json_encode(_url('getUserPropertyValues', 'ServiceModule', 'tao'))?>,
                     clientConfigUrl: '<?=get_data('client_config_url')?>',
@@ -41,7 +41,7 @@
         });
 
     </script>
-<? endif ?>
+<?php endif ?>
 
 
 <iframe id="preview-container" name="preview-container"></iframe>

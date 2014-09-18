@@ -46,7 +46,7 @@
 
 		test("Test the API with a Manual Data Source", function() {
 			var taoEnv = new Object();
-			taoEnv['token'] = "7114e56cb3b9423314a425500afb41fc56183000";			//the token must comes from the server: taoEnv['token'] = "<? echo $token; ?>";
+			taoEnv['token'] = "7114e56cb3b9423314a425500afb41fc56183000";			//the token must comes from the server: taoEnv['token'] = "<?php echo $token; ?>";
 			taoEnv['localNamespace'] = "http://tao.localdomain/middleware/mytao.rdf";
 			taoEnv[URI.PROCESS] = {'uri': "http://tao.localdomain/middleware/mytao.rdf#i1123467865"};
 			taoEnv[URI.PROCESS][URI.LABEL] = "Bachelor MATH 2010 SES012";

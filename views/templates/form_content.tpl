@@ -9,16 +9,16 @@ Template::inc('form_context.tpl', 'tao');
 		<?=get_data('formTitle')?>
 	</div>
 	<div id="form-container" class="ui-widget-content ui-corner-bottom">
-		<?if(count(get_data('importErrors')) > 0):?>
+		<?php if(count(get_data('importErrors')) > 0):?>
 			<fieldset class='ui-state-error'>
 				<legend><strong><?=__('Validation has failed')?></strong></legend>
 				<ul id='error-details'>
-				<?foreach(get_data('importErrors') as $ierror):?>
+				<?php foreach(get_data('importErrors') as $ierror):?>
 					<li><?=$ierror['message']?></li>
-				<?endforeach?>
+				<?php endforeach?>
 				</ul>
 			</fieldset>
-		<?endif?>
+		<?php endif?>
 	
 		<?=get_data('myForm')?>
 	</div>

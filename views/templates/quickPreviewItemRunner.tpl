@@ -10,7 +10,7 @@ use oat\tao\helpers\Template;
     <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
     <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
 
-        <?if(has_data('previewUrl')):?>
+        <?php if(has_data('previewUrl')):?>
          <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>"></script>
             <script type="text/javascript">
             (function(){
@@ -18,9 +18,9 @@ use oat\tao\helpers\Template;
                 require([clientConfigUrl], function(){
                     require(['taoItems/controller/preview/itemRunner'], function(itemRunner){
                         itemRunner.start({
-                             <?if(has_data('resultServer')):?>
+                             <?php if(has_data('resultServer')):?>
                             resultServer : <?=json_encode(get_data('resultServer'))?>,
-                            <?endif?>
+                            <?php endif?>
                             previewUrl : <?=json_encode(get_data('previewUrl'))?>,
                             clientConfigUrl : clientConfigUrl,
                             context: 'quick-preview'
@@ -30,12 +30,12 @@ use oat\tao\helpers\Template;
             }());
         </script>
 
-        <?endif?>
+        <?php endif?>
 
 </head>
 <body>
 
-<?if(has_data('previewUrl')):?>
+<?php if(has_data('previewUrl')):?>
 
     <iframe id='preview-container' name="preview-container" style="min-height: 100% !important"></iframe>
     <!-- to emulate wf navigation: <button id='finishButton' ><?=__('Finish')?></button> -->
@@ -52,7 +52,7 @@ use oat\tao\helpers\Template;
     <?else:?>
     <h3><?=__('PREVIEW BOX')?></h3>
     <p><?=__("Not yet available")?></p>
-    <?endif?>
+    <?php endif?>
 
 </body>
 </html>
