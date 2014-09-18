@@ -49,7 +49,7 @@ use oat\tao\helpers\Template;
         </div>
         <div class="console-content"><ul></ul></div>
     </div>
-    <?else:?>
+    <?php else:?>
     <h3><?=__('PREVIEW BOX')?></h3>
     <p><?=__("Not yet available")?></p>
     <?php endif?>
