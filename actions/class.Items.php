@@ -246,24 +246,36 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * delete an item or an item class
+     * delete an item
      * called via ajax
      * @requiresRight uri WRITE 
-     * @see TaoModule::delete
      * @return void
      * @throws Exception
      */
-    public function delete(){
+    public function deleteItem(){
         if(!tao_helpers_Request::isAjax()){
             throw new Exception("wrong request mode");
         }
 
         $deleted = false;
-        if($this->getRequestParameter('uri')){
-            $deleted = $this->service->deleteItem($this->getCurrentInstance());
-        }else{
-            $deleted = $this->service->deleteItemClass($this->getCurrentClass());
+        $deleted = $this->service->deleteItem($this->getCurrentInstance());
+        echo json_encode(array('deleted' => $deleted));
+    }
+
+    /**
+     * delete an item class
+     * called via ajax
+     * @requiresRight uri WRITE
+     * @return void
+     * @throws Exception
+     */
+    public function deleteClass(){
+        if(!tao_helpers_Request::isAjax()){
+            throw new Exception("wrong request mode");
         }
+
+        $deleted = false;
+        $deleted = $this->service->deleteItemClass($this->getCurrentClass());
         echo json_encode(array('deleted' => $deleted));
     }
 

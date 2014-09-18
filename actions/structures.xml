@@ -37,7 +37,10 @@
                     <action name="New item" url="/taoItems/Items/addInstance" context="class" group="content" binding="instanciate">
                         <icon id="icon-item"/>
                     </action>
-                    <action name="Delete" url="/taoItems/Items/delete" context="resource" group="tree" binding="removeNode">
+                    <action name="Delete" url="/taoItems/Items/deleteItem" context="instance" group="tree" binding="removeNode" >
+                        <icon id="icon-bin"/>
+                    </action>
+                    <action name="Delete" url="/taoItems/Items/deleteClass" context="class" group="tree" binding="removeNode" >
                         <icon id="icon-bin"/>
                     </action>
                     <action name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
