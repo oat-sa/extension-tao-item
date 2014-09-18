@@ -94,6 +94,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      */
 
     /**
+     * get the class content
+     * 
+     * @requiresRight classUri WRITE
+     */
+    public function getOntologyData()
+    {
+        return parent::getOntologyData();
+    }
+    
+    /**
      * edit an item instance
      * @requiresRight uri WRITE
      */

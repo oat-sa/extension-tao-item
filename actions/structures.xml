@@ -10,6 +10,7 @@
                     <tree name="Items library"
                         className="Item"
                         dataUrl="/taoItems/Items/getOntologyData"
+                        rootNode="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"
                         selectClass="Edit class"
                         selectInstance="Edit item"
                         moveInstance="Move"
