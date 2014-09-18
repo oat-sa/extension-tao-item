@@ -221,7 +221,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Edit a class
-     * requiresRight classUri WRITE 
+     * @requiresRight classUri WRITE 
      */
     public function editItemClass(){
         $clazz = $this->getCurrentClass();
