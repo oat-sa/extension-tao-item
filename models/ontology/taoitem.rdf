@@ -116,7 +116,7 @@
     <item:ItemModelStatus rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated"/>
     <item:ModelTarget rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget"/>
   </rdf:Description>
-  -->
+  
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
@@ -129,7 +129,6 @@
     <rdfs:seeAlso xml:lang="en-US"/>
     <rdfs:isDefinedBy xml:lang="en-US"/>
   </rdf:Description>
-   <!-- DEPRECATED
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#Hawai">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels"/>
     <item:ItemRuntime xml:lang="en-US"><![CDATA[hawai.swf]]></item:ItemRuntime>

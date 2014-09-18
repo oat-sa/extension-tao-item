@@ -132,28 +132,20 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             
             $currentModel = $this->service->getItemModel($item);
             
-            $hasAuthoring = false;
             $hasPreview = false;
             if(!empty($currentModel)) {
-                $authoring = $currentModel->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
                 $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->service->hasItemContent($item);
-                if(count($authoring) > 0 && !$isDeprecated){
-                    $hasAuthoring = true;
-                }
             }
 
             $this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
 
-            if(!$hasAuthoring){
-                $myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
-            }
+            $myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 
             $this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
             $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
             $this->setData('isPreviewEnabled', $hasPreview);
-            $this->setData('isAuthoringEnabled', $hasAuthoring);
 
             $this->setData('formTitle', __('Edit Item'));
             $this->setData('myForm', $myForm->render());
@@ -327,21 +319,23 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function authoring(){
         $item = $this->getCurrentInstance();
         $itemClass = $this->getCurrentClass();
+
         if(!$this->isLocked($item, 'item_locked.tpl')){
             $this->setData('error', false);
             try{
 
-                $itemModel = $item->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-                if($itemModel instanceof core_kernel_classes_Resource){
-                    $authoring = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_AUTHORING_PROPERTY));
-                    if($authoring instanceof core_kernel_classes_Literal){
-                        //sets the lock with the conencted user as owner
+                $itemModel = $this->service->getItemModel($item);
+                if(!is_null($itemModel)){
+                    $itemModelImpl = $this->service->getItemModelImplementation($itemModel);
+                    $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
+                    if(!empty($authoringUrl)){
                         tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
-
-                        $this->redirect(ROOT_URL.(string) $authoring.'?instance='.urlencode($item->getUri()).'&STANDALONE_MODE='.intval(tao_helpers_Context::check('STANDALONE_MODE')));
+                        $this->redirect($authoringUrl);
                     }
                 }
+                throw new common_exception_NoImplementation();
                 $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
+
             }catch(Exception $e){
                 $this->setData('error', true);
                 //build clear error or warning message:
@@ -352,10 +346,12 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 }
                 $this->setData('errorMsg', $errorMsg);
             }
-            $this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
-            $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
-            $this->setView('authoring.tpl');
         }
+
+        //TODO do not show a tempalte but send an error instead
+        $this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+        $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
+        $this->setView('authoring.tpl');
     }
 
     /**

@@ -60,6 +60,13 @@ interface taoItems_models_classes_itemModel
      */
     public function getPreviewUrl( core_kernel_classes_Resource $item, $languageCode);
     
+    /**
+     * Get the full url of the implementation authoring 
+     * @param core_kernel_classes_Resource $item
+     * @return string the authoring URL
+     */
+    public function getAuthoringUrl( core_kernel_classes_Resource $item);
+
 	/**
 	 * Returns a compiler class for the item 
 	 * 
