@@ -25,6 +25,9 @@
                     <action name="Edit item"  url="/taoItems/Items/editItem"      group="content" context="instance">
                         <icon id="icon-edit"/>
                     </action>
+                    <action name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor">
+                        <icon id="icon-edit"/>
+                    </action>
                     <action name="Filter" context="*" group="search" binding="filter">
                         <icon id="icon-filter"/>
                     </action>
