@@ -352,7 +352,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
                         tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
-                        $this->redirect($authoringUrl);
+
+                        return $this->forwardUrl($authoringUrl);
                     }
                 }
                 throw new common_exception_NoImplementation();
@@ -371,9 +372,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
 
         //TODO do not show a tempalte but send an error instead
-        $this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
-        $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
-        $this->setView('authoring.tpl');
+        //$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+        //$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
+        //$this->setView('authoring.tpl');
     }
 
     /**
