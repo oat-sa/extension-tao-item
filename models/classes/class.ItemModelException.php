@@ -26,8 +26,7 @@
  * @package taoItems
  
  */
-class taoItems_models_classes_ItemModelException
+class taoItems_models_classes_ItemModelException  extends common_Exception
 {
 	
 }
-?>
