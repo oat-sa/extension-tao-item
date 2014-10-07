@@ -11,60 +11,59 @@
                         className="Item"
                         dataUrl="/taoItems/Items/getOntologyData"
                         rootNode="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"
-                        selectClass="Edit class"
-                        selectInstance="Edit item"
-                        moveInstance="Move"
-                        delete="Delete" 
+                        selectClass="item-class-properties"
+                        selectInstance="item-properties"
+                        moveInstance="item-move"
+                        delete="item-delete" 
                     />
                 </trees>
                 <actions>
-
-                    <action name="Edit class" url="/taoItems/Items/editItemClass" group="content" context="class">
+                    <action id="item-class-properties" name="Properties" url="/taoItems/Items/editItemClass" group="content" context="class">
                         <icon id="icon-edit"/>
                     </action>
-                    <action name="Edit item"  url="/taoItems/Items/editItem"      group="content" context="instance">
+                    <action id="item-properties" name="Properties"  url="/taoItems/Items/editItem"      group="content" context="instance">
                         <icon id="icon-edit"/>
                     </action>
-                    <action name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor">
+                    <action id="item-authoring" name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor">
                         <icon id="icon-edit"/>
                     </action>
-                    <action name="Filter" context="*" group="search" binding="filter">
+                    <action id="item-filter" name="Filter" context="*" group="search" binding="filter">
                         <icon id="icon-filter"/>
                     </action>
-                    <action name="Search" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
+                    <action id="item-search" name="Search" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
                         <icon id="icon-find"/>
                     </action>
-                    <action name="New class" url="/taoItems/Items/addSubClass" context="class" group="content" binding="subClass">
+                    <action id="item-class-new" name="New class" url="/taoItems/Items/addSubClass" context="class" group="content" binding="subClass">
                         <icon id="icon-folder-open"/>
                     </action>
-                    <action name="New item" url="/taoItems/Items/addInstance" context="class" group="content" binding="instanciate">
+                    <action id="item-new" name="New item" url="/taoItems/Items/addInstance" context="class" group="content" binding="instanciate">
                         <icon id="icon-item"/>
                     </action>
-                    <action name="Delete" url="/taoItems/Items/deleteItem" context="instance" group="tree" binding="removeNode" >
+                    <action id="item-delete" name="Delete" url="/taoItems/Items/deleteItem" context="instance" group="tree" binding="removeNode" >
                         <icon id="icon-bin"/>
                     </action>
-                    <action name="Delete" url="/taoItems/Items/deleteClass" context="class" group="tree" binding="removeNode" >
+                    <action id="item-class-delete" name="Delete" url="/taoItems/Items/deleteClass" context="class" group="tree" binding="removeNode" >
                         <icon id="icon-bin"/>
                     </action>
-                    <action name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
+                    <action id="item-duplicate" name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
                         <icon id="icon-copy"/>
                     </action>
-                    <action name="Move" url="/taoItems/Items/moveInstance" context="instance" group="tree" binding="moveNode">
+                    <action id="item-move" name="Move" url="/taoItems/Items/moveInstance" context="instance" group="none" binding="moveNode">
                         <icon id="icon-move-item"/>
                     </action>
-                    <action name="Preview" url="/taoItems/Items/fullScreenPreview" context="instance" group="content" binding="fullScreen">
+                    <action id="item-preview" name="Preview" url="/taoItems/Items/fullScreenPreview" context="instance" group="content" binding="fullScreen">
                         <icon id="icon-preview"/>
                     </action>
-                    <action name="Lists" url="/tao/Lists/index" context="*" group="tree">
+                    <action id="item-lists" name="Lists" url="/tao/Lists/index" context="*" group="tree">
                         <icon id="icon-ul"/>
                     </action>
-                    <action name="Export" url="/taoItems/ItemExport/index" context="resource" group="content">
+                    <action id="item-export" name="Export" url="/taoItems/ItemExport/index" context="resource" group="content">
                         <icon id="icon-export"/>
                     </action>
-                    <action name="Import" url="/taoItems/ItemImport/index" context="class" group="content">
+                    <action id="item-import" name="Import" url="/taoItems/ItemImport/index" context="class" group="content">
                         <icon id="icon-import"/>
                     </action>
-                    <action name="Translate" url="/taoItems/Items/translateInstance" context="instance" group="content">
+                    <action id="item-translate" name="Translate" url="/taoItems/Items/translateInstance" context="instance" group="content">
                         <icon id="icon-translate"/>
                     </action>
                 </actions>

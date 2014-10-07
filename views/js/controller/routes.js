@@ -23,6 +23,11 @@ define(function(){
     'use strict';
     
     return {
+        'Items' : {
+            'actions' : {
+                'editItem' : 'controller/items/edit'
+            }
+        },
         'ItemPreview' : {
             'actions' : {
                 'index' : 'controller/preview/itemRunner'

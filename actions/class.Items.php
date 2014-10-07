@@ -141,9 +141,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             }
             
             $currentModel = $this->service->getItemModel($item);
-            
             $hasPreview = false;
+            $hasModel   = false;
             if(!empty($currentModel)) {
+                $hasModel = true;
                 $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->service->hasItemContent($item);
             }
@@ -156,6 +157,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
             $this->setData('isPreviewEnabled', $hasPreview);
+            $this->setData('isAuthoringEnabled', $hasModel);
 
             $this->setData('formTitle', __('Edit Item'));
             $this->setData('myForm', $myForm->render());

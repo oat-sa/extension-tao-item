@@ -13,3 +13,14 @@ Template::inc('form_context.tpl', 'tao');
     </div>
 </div>
 <div class="data-container-wrapper flex-container-remaining"></div>
+
+<script>
+requirejs.config({
+    config: {
+        'taoItems/controller/items/edit': {
+            'isPreviewEnabled' : <?= json_encode(get_data('isPreviewEnabled')) ?>,
+            'isAuthoringEnabled' : <?= json_encode(get_data('isAuthoringEnabled')) ?>
+        }
+    }
+});
+</script>
