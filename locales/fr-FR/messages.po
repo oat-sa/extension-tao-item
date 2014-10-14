@@ -1,166 +1,162 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-RC03\n"
-"PO-Revision-Date: 2014-06-20T16:26:23\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:42:30\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: fr-FR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr "En tant que propriétaire de la ressource, vous pouvez la déverrouiller."
+msgstr ""
 
-#, tao-public
 msgid "Authoring"
-msgstr "Éditeur "
+msgstr ""
 
 msgid "Back"
-msgstr "Retour"
+msgstr ""
 
 msgid "Class saved"
-msgstr "Classe enregistrée"
+msgstr ""
 
 msgid "clean up"
-msgstr "nettoyer"
+msgstr ""
 
 msgid "close"
-msgstr "fermer"
+msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Concevoir des items et exercices."
+msgstr ""
 
-msgid "delete"
-msgstr "Supprimer"
+msgid "Delete"
+msgstr ""
 
 msgid "Download item content"
-msgstr "Télécharger le contenu de l'item"
+msgstr ""
 
-msgid "duplicate"
-msgstr "Dupliquer"
+msgid "Duplicate"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Modifier un item"
+msgstr ""
 
 msgid "Edit Item"
-msgstr "Modification de l'item"
+msgstr ""
 
 msgid "Edit item class"
-msgstr "Édition de la classe item"
+msgstr ""
 
-msgid "export"
-msgstr "Exporter"
+msgid "Export"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
 
 msgid "Finish"
-msgstr "Terminer"
+msgstr ""
 
-msgid "import"
-msgstr "Importer"
+msgid "Import"
+msgstr ""
 
 msgid "Item Locked"
-msgstr "Item verrouillé"
+msgstr ""
 
 msgid "Item Locked:"
-msgstr "Item verrouillé :"
+msgstr ""
 
 msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr "Item enregistré"
-
-msgid "Item saving failed"
-msgstr "La sauvegarde de l'item a échoué"
-
-msgid "Item successfully saved"
-msgstr "L'item a été enregistré avec succès."
+msgstr ""
 
 #, tao-public
 msgid "Items"
-msgstr "Items"
+msgstr ""
 
 msgid "Items library"
-msgstr "Banque d'items"
+msgstr ""
 
-msgid "lists"
-msgstr "Listes"
+msgid "Lists"
+msgstr ""
 
 msgid "Lock Owner:"
-msgstr "Propriétaire du verrou :"
+msgstr ""
 
 msgid "Locking Date:"
-msgstr "Date de verrouillage :"
+msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr "Gestion des items"
+msgstr ""
 
-msgid "meta data"
-msgstr "Méta-\n"
-"données"
+msgid "Move"
+msgstr ""
 
-msgid "move"
-msgstr "Déplacer"
+msgid "New class"
+msgstr ""
 
-msgid "new class"
-msgstr "Créer classe"
-
-msgid "new item"
-msgstr "Créer item"
+msgid "New item"
+msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Pas de modèle d'item sélectionné pour cet item."
+msgstr ""
 
 msgid "Not yet available"
-msgstr "Pas encore disponible"
+msgstr ""
 
 msgid "Please contact the owner of the resource to unlock it"
-msgstr "Veuillez contacter le propriétaire de la ressource pour la déverrouiller."
+msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Veuillez sélectionner d'abord un type d'item !"
+msgstr ""
 
-msgid "preview"
-msgstr "Aperçu"
-
-#, tao-public
 msgid "Preview"
-msgstr "Aperçu "
+msgstr ""
 
 msgid "PREVIEW BOX"
-msgstr "Aperçu"
+msgstr ""
 
 msgid "Preview Console"
-msgstr "Moniteur de prévisualisation"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
 
 msgid "ReleaseLock"
-msgstr "Déverrouiller"
+msgstr ""
 
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "search"
-msgstr "Rechercher"
+msgid "Search"
+msgstr ""
 
 msgid "show/hide"
-msgstr "montrer/cacher"
+msgstr ""
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
+msgstr ""
 
 msgid "This item is currently being edited and has been locked"
-msgstr "Cet item est en cours d'édition et a été verrouillé."
+msgstr ""
+
+msgid "Translate"
+msgstr ""
 
 msgid "Unable to create deployement directory"
 msgstr ""
 
 msgid "Validation has failed"
-msgstr "La validation a échoué"
+msgstr ""
 

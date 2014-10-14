@@ -1,165 +1,162 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-RC03\n"
-"PO-Revision-Date: 2014-06-20T16:26:23\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:42:31\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr "Um erro ocorreu durante o guardar item"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr "Como proprietário deste recurso, pode desbloquear"
+msgstr ""
 
-#, tao-public
 msgid "Authoring"
-msgstr "Criador"
+msgstr ""
 
 msgid "Back"
-msgstr "Voltar"
+msgstr ""
 
 msgid "Class saved"
-msgstr "Disciplina guardada"
+msgstr ""
 
 msgid "clean up"
-msgstr "Limpeza"
+msgstr ""
 
 msgid "close"
-msgstr "Fechar"
+msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Criar e desenvolver items e exercícios"
+msgstr ""
 
-msgid "delete"
-msgstr "Eliminar"
+msgid "Delete"
+msgstr ""
 
 msgid "Download item content"
-msgstr "Baixar conteúdo de item"
+msgstr ""
 
-msgid "duplicate"
-msgstr "duplicar"
+msgid "Duplicate"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Editar item"
+msgstr ""
 
 msgid "Edit Item"
-msgstr "Editar Item"
+msgstr ""
 
 msgid "Edit item class"
-msgstr "Editar item de disciplina"
+msgstr ""
 
-msgid "export"
-msgstr "exportar"
+msgid "Export"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
 
 msgid "Finish"
-msgstr "Terminar"
+msgstr ""
 
-msgid "import"
-msgstr "importar"
+msgid "Import"
+msgstr ""
 
 msgid "Item Locked"
-msgstr "O item bloqueado"
+msgstr ""
 
 msgid "Item Locked:"
-msgstr "Item bloqueado:"
+msgstr ""
 
 msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr "Item guardado"
-
-msgid "Item saving failed"
-msgstr "Guardar do item falhou"
-
-msgid "Item successfully saved"
-msgstr "Item guardado com sucesso"
+msgstr ""
 
 #, tao-public
 msgid "Items"
-msgstr "Items"
+msgstr ""
 
 msgid "Items library"
-msgstr "Biblioteca de items"
+msgstr ""
 
-msgid "lists"
-msgstr "Listas"
+msgid "Lists"
+msgstr ""
 
 msgid "Lock Owner:"
-msgstr "Proprietário do bloqueio:"
+msgstr ""
 
 msgid "Locking Date:"
-msgstr "Data de bloqueio:"
+msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr "Gerir items"
+msgstr ""
 
-msgid "meta data"
-msgstr "Meta dados"
+msgid "Move"
+msgstr ""
 
-msgid "move"
-msgstr "mover"
+msgid "New class"
+msgstr ""
 
-msgid "new class"
-msgstr "Nova disciplina"
-
-msgid "new item"
-msgstr "Novo item"
+msgid "New item"
+msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Nenhum tipo de item seleccionado para o item actual"
+msgstr ""
 
 msgid "Not yet available"
-msgstr "Ainda não se encontra disponível"
+msgstr ""
 
 msgid "Please contact the owner of the resource to unlock it"
-msgstr "Por favor contacte o proprietário do recurso para desbloquear"
+msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Por favor seleccione 1º o tipo de item"
+msgstr ""
 
-msgid "preview"
-msgstr "prever"
-
-#, tao-public
 msgid "Preview"
-msgstr "Prever"
+msgstr ""
 
 msgid "PREVIEW BOX"
-msgstr "CAIXA DE PREVISÃO"
+msgstr ""
 
 msgid "Preview Console"
-msgstr "Consola de previsão"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
 
 msgid "ReleaseLock"
-msgstr "Desbloquear"
+msgstr ""
 
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "search"
-msgstr "procurar"
+msgid "Search"
+msgstr ""
 
 msgid "show/hide"
-msgstr "Mostrar/Esconder"
+msgstr ""
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "O modulo de items permite a criação de items e exercícios"
+msgstr ""
 
 msgid "This item is currently being edited and has been locked"
-msgstr "Este item está a ser editado e foi bloqueado"
+msgstr ""
+
+msgid "Translate"
+msgstr ""
 
 msgid "Unable to create deployement directory"
 msgstr ""
 
 msgid "Validation has failed"
-msgstr "A validação falhou"
+msgstr ""
 

@@ -1,28 +1,29 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-RC03\n"
-"PO-Revision-Date: 2014-06-20T16:26:23\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:42:30\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de-DE\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: de-DE\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr "Ein Fehler ist während des Speicherns des Items aufgetreten"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
-#, tao-public
 msgid "Authoring"
 msgstr ""
 
 msgid "Back"
-msgstr "Zurück"
+msgstr ""
 
 msgid "Class saved"
-msgstr "Klasse gespeichert"
+msgstr ""
 
 msgid "clean up"
 msgstr ""
@@ -34,31 +35,34 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "delete"
-msgstr "löschen"
+msgid "Delete"
+msgstr ""
 
 msgid "Download item content"
 msgstr ""
 
-msgid "duplicate"
-msgstr "duplizieren"
+msgid "Duplicate"
+msgstr ""
 
 msgid "Edit item"
 msgstr ""
 
 msgid "Edit Item"
-msgstr "Item bearbeiten"
+msgstr ""
 
 msgid "Edit item class"
 msgstr ""
 
-msgid "export"
-msgstr "Export"
+msgid "Export"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
 
 msgid "Finish"
 msgstr ""
 
-msgid "import"
+msgid "Import"
 msgstr ""
 
 msgid "Item Locked"
@@ -71,22 +75,16 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr "Item gespeichert"
-
-msgid "Item saving failed"
-msgstr ""
-
-msgid "Item successfully saved"
 msgstr ""
 
 #, tao-public
 msgid "Items"
-msgstr "Items"
+msgstr ""
 
 msgid "Items library"
 msgstr ""
 
-msgid "lists"
+msgid "Lists"
 msgstr ""
 
 msgid "Lock Owner:"
@@ -97,19 +95,16 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr "Items verwalten"
-
-msgid "meta data"
-msgstr "Meta-Daten"
-
-msgid "move"
 msgstr ""
 
-msgid "new class"
-msgstr "neue Klasse"
+msgid "Move"
+msgstr ""
 
-msgid "new item"
-msgstr "neues Item"
+msgid "New class"
+msgstr ""
+
+msgid "New item"
+msgstr ""
 
 msgid "No item type selected for the current item."
 msgstr ""
@@ -123,17 +118,16 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr ""
 
-msgid "preview"
-msgstr "Vorschau"
-
-#, tao-public
 msgid "Preview"
-msgstr "Vorschau"
+msgstr ""
 
 msgid "PREVIEW BOX"
-msgstr "VORSCHAU BOX"
+msgstr ""
 
 msgid "Preview Console"
+msgstr ""
+
+msgid "Properties"
 msgstr ""
 
 msgid "ReleaseLock"
@@ -142,8 +136,8 @@ msgstr ""
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "search"
-msgstr "suchen"
+msgid "Search"
+msgstr ""
 
 msgid "show/hide"
 msgstr ""
@@ -152,9 +146,12 @@ msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Das Item-Modul ermöglicht das Erstellen und Entwickeln von Items und Übungen."
+msgstr ""
 
 msgid "This item is currently being edited and has been locked"
+msgstr ""
+
+msgid "Translate"
 msgstr ""
 
 msgid "Unable to create deployement directory"

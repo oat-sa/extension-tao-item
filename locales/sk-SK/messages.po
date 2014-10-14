@@ -1,20 +1,21 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-RC03\n"
-"PO-Revision-Date: 2014-06-20T16:26:23\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:42:31\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk-SK\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: sk-SK\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr ""
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
-#, tao-public
 msgid "Authoring"
 msgstr ""
 
@@ -34,13 +35,13 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "delete"
+msgid "Delete"
 msgstr ""
 
 msgid "Download item content"
 msgstr ""
 
-msgid "duplicate"
+msgid "Duplicate"
 msgstr ""
 
 msgid "Edit item"
@@ -52,13 +53,16 @@ msgstr ""
 msgid "Edit item class"
 msgstr ""
 
-msgid "export"
+msgid "Export"
+msgstr ""
+
+msgid "Filter"
 msgstr ""
 
 msgid "Finish"
 msgstr ""
 
-msgid "import"
+msgid "Import"
 msgstr ""
 
 msgid "Item Locked"
@@ -73,12 +77,6 @@ msgstr ""
 msgid "Item saved"
 msgstr ""
 
-msgid "Item saving failed"
-msgstr ""
-
-msgid "Item successfully saved"
-msgstr ""
-
 #, tao-public
 msgid "Items"
 msgstr ""
@@ -86,7 +84,7 @@ msgstr ""
 msgid "Items library"
 msgstr ""
 
-msgid "lists"
+msgid "Lists"
 msgstr ""
 
 msgid "Lock Owner:"
@@ -99,16 +97,13 @@ msgstr ""
 msgid "Manage items"
 msgstr ""
 
-msgid "meta data"
+msgid "Move"
 msgstr ""
 
-msgid "move"
+msgid "New class"
 msgstr ""
 
-msgid "new class"
-msgstr ""
-
-msgid "new item"
+msgid "New item"
 msgstr ""
 
 msgid "No item type selected for the current item."
@@ -123,10 +118,6 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr ""
 
-msgid "preview"
-msgstr ""
-
-#, tao-public
 msgid "Preview"
 msgstr ""
 
@@ -136,13 +127,16 @@ msgstr ""
 msgid "Preview Console"
 msgstr ""
 
+msgid "Properties"
+msgstr ""
+
 msgid "ReleaseLock"
 msgstr ""
 
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "search"
+msgid "Search"
 msgstr ""
 
 msgid "show/hide"
@@ -155,6 +149,9 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr ""
 
 msgid "This item is currently being edited and has been locked"
+msgstr ""
+
+msgid "Translate"
 msgstr ""
 
 msgid "Unable to create deployement directory"
