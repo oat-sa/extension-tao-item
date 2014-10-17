@@ -134,6 +134,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                     //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                     $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
+                    $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
                     $this->setData('label', ($label != null) ? $label->literal : '');
                     $this->setData('message', __('Item saved'));
                     $this->setData('reload', true);
@@ -148,8 +149,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->service->hasItemContent($item);
             }
-
-            $this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($item->getUri()));
 
             $myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 
@@ -228,7 +227,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         if($myForm->isSubmited()){
             if($myForm->isValid()){
                 if($clazz instanceof core_kernel_classes_Resource){
-                    $this->setSessionAttribute("showNodeUri", tao_helpers_Uri::encode($clazz->getUri()));
+                    $this->setData("selectNode", tao_helpers_Uri::encode($clazz->getUri()));
                 }
                 $this->setData('message', __('Class saved'));
                 $this->setData('reload', true);
