@@ -1,7 +1,5 @@
 <?php
 use oat\tao\helpers\Template;
-
-Template::inc('form_context.tpl', 'tao');
 ?>
 
 <header class="section-header flex-container-full">
@@ -12,7 +10,6 @@ Template::inc('form_context.tpl', 'tao');
         <?=get_data('myForm')?>
     </div>
 </div>
-<div class="data-container-wrapper flex-container-remaining"></div>
 
 <script>
 requirejs.config({
@@ -24,3 +21,5 @@ requirejs.config({
     }
 });
 </script>
+
+<?php Template::inc('footer.tpl', 'tao'); ?>

@@ -236,7 +236,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
         $this->setData('formTitle', __('Edit item class'));
         $this->setData('myForm', $myForm->render());
-        $this->setView('form.tpl');
+        $this->setView('form.tpl', 'tao');
     }
 
     /**
@@ -372,11 +372,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('errorMsg', $errorMsg);
             }
         }
-
-        //TODO do not show a tempalte but send an error instead
-        //$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
-        //$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
-        //$this->setView('authoring.tpl');
     }
 
     /**
