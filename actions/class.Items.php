@@ -422,45 +422,5 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
     }
 
-    /**
-     * get the  BLACK/HAWAI  temporary authoring file
-     * @return void
-     */
-    public function loadTempAuthoringFile(){
-        header("Content-Type: text/xml; charset utf-8");
-        if($this->hasRequestParameter('instance')){
-            $uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
-            $item = new core_kernel_classes_Resource($uri);
-            $itemFolder = $this->service->getItemFolder($item);
-            if(is_dir($itemFolder)){
-                $tmpFile = $itemFolder.'/tmp_black.xml';
-                if(file_exists($tmpFile)){
-                    echo file_get_contents($tmpFile);
-                    return;
-                }
-            }
-        }
-        //print an empty response
-        echo '<?xml version="1.0" encoding="utf-8" ?>';
-    }
-
-    /**
-     * save the BLACK/HAWAI temporary authoring file
-     * @return void
-     */
-    public function saveTempAuthoringFile(){
-        if($this->hasRequestParameter('instance')){
-            $uri = tao_helpers_Uri::decode($this->getRequestParameter('instance'));
-            $xml = $this->getRequestParameter('xml');
-            $item = new core_kernel_classes_Resource($uri);
-            $itemFolder = $this->service->getItemFolder($item);
-            if(!is_dir($itemFolder)){
-                mkdir($itemFolder);
-            }
-            if(is_dir($itemFolder)){
-                file_put_contents($itemFolder.'/tmp_black.xml', html_entity_decode($xml));
-            }
-        }
-    }
 
 }
