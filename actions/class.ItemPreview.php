@@ -70,7 +70,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 
     public function getPreviewUrl($item, $options = array()){
         $code = base64_encode($item->getUri());
-        return _url('render/'.$code.'/index.php', 'ItemPreview', 'taoItems', $options);
+        return _url('render/'.$code.'/index', 'ItemPreview', 'taoItems', $options);
     }
 
     public function render(){
@@ -79,7 +79,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         
         $uri = base64_decode($codedUri);
         $item = new core_kernel_classes_Resource($uri);
-        if($path == 'index.php'){
+        if($path == 'index'){
             $this->renderItem($item);
         } else {
             $this->renderResource($item, urldecode($path));
