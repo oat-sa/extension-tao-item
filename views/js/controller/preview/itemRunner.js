@@ -26,7 +26,7 @@ define(
         'serviceApi/PseudoStorage',
         'serviceApi/UserInfoService',
         'taoItems/runtime/ItemServiceImpl',
-        'taoItems/preview-console',
+        'taoItems/preview/preview-console',
         'urlParser',
         'iframeResizer'
     ],
