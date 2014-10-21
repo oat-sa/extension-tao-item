@@ -1,5 +1,6 @@
-<link rel="stylesheet" type="text/css" href="<?= ROOT_URL ?>taoItems/views/css/preview.css"/>
-<link rel="stylesheet" type="text/css" href="<?= ROOT_URL ?>taoItems/views/css/quick-preview.css"/>
+<?php
+use oat\tao\helpers\Template;
+?><link rel="stylesheet" href="<?= Template::css('preview.css', 'taoItems') ?>" />
 <style>
 
 

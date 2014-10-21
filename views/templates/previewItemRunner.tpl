@@ -1,10 +1,11 @@
-<link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/preview.css" />
-<link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>tao/views/css/tao-main-style.css" />
-<link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
-<link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
+<?php
+use oat\tao\helpers\Template;
+?><link rel="stylesheet" type="text/css" <?= Template::css('tao-main-style.css', 'tao') ?> />
+<link rel="stylesheet" type="text/css" <?= Template::css('qti.css', 'taoQtiItem') ?> />
+<link rel="stylesheet" type="text/css" <?= Template::css('preview.css', 'taoItems') ?> />
 
 <?php if(has_data('previewUrl')):?>
-<script type='text/javascript'>
+<script>
 requirejs.config({
    config: {
        'taoItems/controller/preview/itemRunner' : {

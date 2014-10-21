@@ -5,14 +5,14 @@ use oat\tao\helpers\Template;
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?=PRODUCT_NAME?> <?=TAO_VERSION?></title>
-       
-    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>tao/views/css/tao-main-style.css" />
-    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoQtiItem/views/css/qti.css" />
-    <link rel="stylesheet" type="text/css" href="<?=ROOT_URL?>taoItems/views/css/quick-preview.css" />
+
+    <link rel="stylesheet" type="text/css" <?= Template::css('tao-main-style.css', 'tao') ?> />
+    <link rel="stylesheet" type="text/css" <?= Template::css('qti.css', 'taoQtiItem') ?> />
+    <link rel="stylesheet" type="text/css" <?= Template::css('preview.css', 'taoItems') ?> />
 
         <?php if(has_data('previewUrl')):?>
-         <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>"></script>
-            <script type="text/javascript">
+         <script src="<?= Template::js('lib/require.js', 'tao')?>"></script>
+            <script>
             (function(){
                 var clientConfigUrl = '<?=get_data('client_config_url')?>';
                 require([clientConfigUrl], function(){

@@ -5,11 +5,10 @@ use oat\tao\helpers\Template;
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?=PRODUCT_NAME?> <?=TAO_VERSION?></title>
-       
-    <link rel="stylesheet" type="text/css" href="<?= Template::css('preview.css','taoItems') ?>" />
+
     <link rel="stylesheet" type="text/css" href="<?= Template::css('tao-main-style.css', 'tao') ?>" />
     <link rel="stylesheet" type="text/css" href="<?= Template::css('qti.css', 'taoQtiItem') ?>" />
-    <link rel="stylesheet" type="text/css" href="<?= Template::css('quick-preview.css', 'taoItems') ?>" />
+    <link rel="stylesheet" type="text/css" href="<?= Template::css('preview.css','taoItems') ?>" />
 
         <?php if(has_data('previewUrl')):?>
          <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>"></script>
