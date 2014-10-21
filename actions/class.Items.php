@@ -280,7 +280,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * delete an item class
      * called via ajax
-     * @requiresRight uri WRITE
+     * @requiresRight classUri WRITE
      * @return void
      * @throws Exception
      */
