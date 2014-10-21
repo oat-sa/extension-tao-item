@@ -8,13 +8,10 @@ define([
     'tpl!taoItems/preview/tpl/preview',
     'taoQtiItem/qtiCreator/editor/styleEditor/styleEditor',
     'helpers',
-    'iframeResizer',
-    'taoQtiItem/qtiCreator/model/helper/event',
-    'taoQtiItem/qtiCreator/helper/itemSerializer',
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, commonRenderer, deviceList, previewTpl, styleEditor, helpers, iframeResizer, event, itemSerializer) {
+], function ($, _, __, strPad, commonRenderer, deviceList, previewTpl, styleEditor, helpers) {
     'use strict';
 
     var overlay,
@@ -38,12 +35,11 @@ define([
             height: 0
         },
         scaleFactor = 1,
-        askForSave = false,
-        lastItemData,
         typeDependant,
         $feedbackBox,
         $console,
-        previewContainerMaxWidth;
+        previewContainerMaxWidth,
+        itemUri;
 
 
     /**
@@ -364,10 +360,10 @@ define([
 
     };
 
-    var _adaptFrameSize = function() {
+    var _adaptFrameSize = function () {
 
         var $previewContainer = $('.preview-container'),
-            $iframe = (function() {
+            $iframe = (function () {
                 $iframe = $previewContainer.find('iframe');
                 $iframe.height('');
                 return $iframe;
@@ -375,10 +371,10 @@ define([
             contentHeight = $iframe.contents().outerHeight(),
             containerHeight = $previewContainer.innerHeight();
 
-        if(previewType !== 'standard') {
-          if(contentHeight < containerHeight) {
-              contentHeight = containerHeight;
-          }
+        if (previewType !== 'standard') {
+            if (contentHeight < containerHeight) {
+                contentHeight = containerHeight;
+            }
         }
         else {
             $previewContainer.height(contentHeight + 10);
@@ -440,12 +436,33 @@ define([
 
 
     /**
-     * Remove possibly existing widgets and create a new one
-     *
-     * @param item
-     * @private
+     * Display the preview
      */
-    var _initWidget = function () {
+    var show = function () {
+
+        $.ajax({
+            url: itemUri,
+            dataType: 'html'
+        }).done(function (data) {
+            $('.preview-item-container').html(data);
+        });
+
+        // $.show() does not work from the item manager
+        // this is either a miracle or a jquery bug
+        // overlay.hide().show();
+        overlay[0].style.display = 'block';
+        overlay.height($doc.outerHeight());
+        overlay.find('select:visible').trigger('change');
+        _scale();
+        _positionPreview();
+    };
+
+    /**
+     * Create preview
+     *
+     * @param string _itemUri
+     */
+    var init = function (_itemUri) {
 
         $('.preview-overlay').remove();
         container = null;
@@ -456,9 +473,7 @@ define([
             previewType: previewType
         }));
 
-
         $body.append(overlay);
-
 
         previewContainerMaxWidth = parseInt($('.preview-container').css('max-width'), 10);
 
@@ -467,23 +482,16 @@ define([
             $feedbackBox.hide();
         }
 
-
         $console = overlay.find('#preview-console');
 
         _initConsole();
-
         _updateStandardPreviewSize();
-
         _setupTypeDependantElements();
-
         _setupDeviceSelectors();
         _setupOrientationSelectors();
         _setupViewSelector();
-
         _setupClosers();
-
         _computeScaleFactor();
-
         _setPreviewType(previewType);
         _setOrientation(orientation);
 
@@ -496,129 +504,16 @@ define([
             _computeScaleFactor();
             _scale();
         });
-    };
-
-    /**
-     * Confirm to save the item
-     */
-    var _confirmPreview = function () {
-
-        var confirmBox = $('.preview-modal-feedback'),
-            cancel = confirmBox.find('.cancel'),
-            save = confirmBox.find('.save'),
-            close = confirmBox.find('.modal-close');
-
-        confirmBox.modal({ width: 500 });
-
-        save.on('click', function () {
-            overlay.trigger('save.preview');
-            confirmBox.modal('close');
-        });
-
-        cancel.on('click', function () {
-            confirmBox.modal('close');
-        });
-    };
 
 
-    /**
-     * Display the preview
-     *
-     * @private
-     */
-    var _showWidget = function (launcher, itemWidget) {
-
-        //run the preview
-        var preview = function () {
-            var itemUri = helpers._url('index', 'QtiPreview', 'taoQtiItem') + '?uri=' + encodeURIComponent(itemWidget.itemUri) + '&' + 'twosix=1';
-
-            $.ajax({
-                url: itemUri,
-                dataType: 'html'
-            }).done(function (data) {
-                $('.preview-item-container').html(data);
-            });
-
-            previewType = $(launcher).data('preview-type') || 'desktop';
-
-            overlay.show();
-            overlay.height($doc.outerHeight());
-            overlay.find('select:visible').trigger('change');
+        itemUri = helpers._url('index', 'QtiPreview', 'taoQtiItem') + '?uri=' + encodeURIComponent(_itemUri) + '&' + 'twosix=1';
 
 
-            _scale();
-
-            _positionPreview();
-
-            return true;
-        };
-
-        //compare the current item with the last serialized to see if there is any change
-        if (!askForSave) {
-            var currentItemData = itemSerializer.serialize(itemWidget.element);
-            if (lastItemData !== currentItemData || currentItemData === '') {
-                lastItemData = currentItemData;
-                askForSave = true;
-            }
-        }
-
-        // wait for confirmation to save the item
-        if (askForSave) {
-            _confirmPreview();
-            overlay.on('save.preview', function () {
-                overlay.off('save.preview');
-                askForSave = false;
-                $.when(styleEditor.save(), itemWidget.save()).done(function () {
-                    preview();
-                });
-            });
-        }
-        else {
-            //or show the preview
-            preview();
-        }
-    };
-
-    /**
-     * Create preview
-     *
-     * @param {jQueryElement} launchers - buttons to launch preview
-     * @param {Object} widget - the item's widget
-     */
-    var init = function (launchers, itemWidget) {
-
-        //serialize the item and keeps the result
-        var serializeItem = function serializeItem() {
-            lastItemData = itemSerializer.serialize(itemWidget.element);
-        };
-
-        //serialize the item at the initialization level
-        //TODO wait for an item ready event
-        setTimeout(serializeItem, 500);
-
-        //get the last value by saving
-        $('#save-trigger').on('click.qti-creator', serializeItem);
-
-
-        _initWidget();
-
-        $doc
-            /*.on('iframeheightchange', function (e, data) {
-                console.log('change')
-                _updateStandardPreviewSize(data.height);
-            })*/
-            .on('stylechange.qti-creator', function () {
-                //we need to save before preview of style has changed (because style content is not part of the item model)
-                askForSave = true;
-            });
-
-
-        $(launchers).on('click', function () {
-            _showWidget(this, itemWidget);
-        });
+        return overlay;
     };
 
     return {
-        init: init
+        init: init,
+        show: show
     };
 });

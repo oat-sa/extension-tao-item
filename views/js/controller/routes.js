@@ -24,6 +24,7 @@ define(function(){
     
     return {
         'Items' : {
+            'deps' : 'controller/items/action',
             'actions' : {
                 'editItem' : 'controller/items/edit'
             }

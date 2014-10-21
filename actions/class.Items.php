@@ -166,14 +166,36 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * Display directly the content of the preview, outside any container
-     */
+ * Display directly the content of the preview, outside any container
+ */
     public function fullScreenPreview(){
         $item = $this->getCurrentInstance();
 
         $options = array(
             'uri' => $this->getRequestParameter('uri'),
             'fullScreen' => true
+        );
+
+        $itemModel = $this->service->getItemModel($item);
+        if($itemModel != null && $itemModel->getUri() == TAO_ITEM_MODEL_QTI){
+            $this->redirect(_url('index', 'QtiPreview', 'taoQtiItem', $options));
+        }else{
+            $this->redirect(_url('index', 'ItemPreview', 'taoItems', $options));
+        }
+    }
+
+    /**
+     * Display directly the content of the preview, outside any container
+     *
+     * Modified version of self::fullScreenPreview()
+     * @Todo remove self::fullScreenPreview() as soon as this works as intended
+     */
+    public function itemPreview(){
+        $item = $this->getCurrentInstance();
+
+        $options = array(
+            'uri' => $this->getRequestParameter('uri'),
+            'fullScreen' => false
         );
 
         $itemModel = $this->service->getItemModel($item);

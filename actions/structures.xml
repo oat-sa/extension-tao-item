@@ -51,7 +51,7 @@
                     <action id="item-move" name="Move" url="/taoItems/Items/moveInstance" context="instance" group="none" binding="moveNode">
                         <icon id="icon-move-item"/>
                     </action>
-                    <action id="item-preview" name="Preview" url="/taoItems/Items/fullScreenPreview" context="instance" group="content" binding="fullScreen">
+                    <action id="item-preview" name="Preview" url="/taoItems/ItemPreview/index" context="instance" group="content" binding="itemPreview">
                         <icon id="icon-preview"/>
                     </action>
                     <action id="item-lists" name="Lists" url="/tao/Lists/index" context="*" group="tree">
