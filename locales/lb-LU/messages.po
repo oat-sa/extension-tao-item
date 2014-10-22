@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.7\n"
-"PO-Revision-Date: 2014-10-14T10:42:31\n"
+"Project-Id-Version: TAO v3.0\n"
+"PO-Revision-Date: 2014-10-21T07:52:01\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: lb-LU\n"
@@ -13,13 +13,13 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "Actual size"
+msgstr ""
+
 msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
 msgid "Authoring"
-msgstr ""
-
-msgid "Back"
 msgstr ""
 
 msgid "Class saved"
@@ -31,11 +31,23 @@ msgstr ""
 msgid "close"
 msgstr ""
 
+msgid "Close"
+msgstr ""
+
+msgid "Close console"
+msgstr ""
+
 #, tao-public
 msgid "Create and design items and exercises."
 msgstr ""
 
 msgid "Delete"
+msgstr ""
+
+msgid "Desktop preview"
+msgstr ""
+
+msgid "Don’t show this again!"
 msgstr ""
 
 msgid "Download item content"
@@ -44,10 +56,10 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr ""
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr ""
 
 msgid "Edit item class"
@@ -84,6 +96,9 @@ msgstr ""
 msgid "Items library"
 msgstr ""
 
+msgid "Landscape"
+msgstr ""
+
 msgid "Lists"
 msgstr ""
 
@@ -95,6 +110,9 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
+msgstr ""
+
+msgid "Mobile preview"
 msgstr ""
 
 msgid "Move"
@@ -118,6 +136,9 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr ""
 
+msgid "Portrait"
+msgstr ""
+
 msgid "Preview"
 msgstr ""
 
@@ -133,7 +154,13 @@ msgstr ""
 msgid "ReleaseLock"
 msgstr ""
 
+msgid "Remove this message"
+msgstr ""
+
 msgid "Retrieving external resources"
+msgstr ""
+
+msgid "Scale "
 msgstr ""
 
 msgid "Search"
@@ -151,12 +178,15 @@ msgstr ""
 msgid "This item is currently being edited and has been locked"
 msgstr ""
 
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr ""
+
 msgid "Translate"
 msgstr ""
 
 msgid "Unable to create deployement directory"
 msgstr ""
 
-msgid "Validation has failed"
+msgid "Unable to release the lock"
 msgstr ""
 
