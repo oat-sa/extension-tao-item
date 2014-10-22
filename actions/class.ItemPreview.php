@@ -30,6 +30,9 @@
 class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 {
 
+    /**
+     * @requiresRight uri READ
+     */
     public function index(){
         $this->setData('preview', false);
 

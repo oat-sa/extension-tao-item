@@ -76,6 +76,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function addSubClass(){
         parent::addSubClass();
     }
+    
+    /**
+     * overwrite the parent cloneInstance to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::cloneInstance()
+     * @requiresRight uri READ
+     * @requiresRight classUri WRITE
+     */
+    public function cloneInstance()
+    {
+        return parent::cloneInstance();
+    }
 
     /*
      * conveniance methods
@@ -96,7 +107,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * get the class content
      * 
-     * @requiresRight classUri WRITE
+     * @requiresRight classUri READ
      */
     public function getOntologyData()
     {
@@ -105,7 +116,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     
     /**
      * edit an item instance
-     * @requiresRight uri WRITE
+     * @requiresRight uri READ
      */
     public function editItem(){
 
@@ -167,7 +178,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Edit a class
-     * @requiresRight classUri WRITE 
+     * @requiresRight classUri READ 
      */
     public function editItemClass(){
         $clazz = $this->getCurrentClass();
@@ -262,6 +273,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Download the content of the item in parameter
+     * @requiresRight uri READ
+     * @deprecated
      */
     public function downloadItemContent(){
 
@@ -290,7 +303,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Item Authoring tool loader action
-     * @return void
+     * @requiresRight uri WRITE
      */
     public function authoring(){
         $item = $this->getCurrentInstance();
@@ -329,7 +342,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * Load an item external media
      * It prevents to get it direclty in the data folder that access is denied
-     *
+     * @requiresRight uri READ
+     * @deprecated
      */
     public function getMediaResource(){
 
