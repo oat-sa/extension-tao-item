@@ -374,7 +374,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $itemModelImpl = $this->service->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
-                        tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
+                        tao_models_classes_lock_DbLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
 
                         return $this->forwardUrl($authoringUrl);
                     }
