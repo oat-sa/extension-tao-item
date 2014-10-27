@@ -61,33 +61,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
     }
 
-    /**
-     * overwrite the parent addInstance to add the requiresRight only in Items
-     * @requiresRight classUri WRITE
-     */
-    public function addInstance(){
-        parent::addInstance();
-    }
-
-    /**
-     * overwrite the parent addSubClass to add the requiresRight only in Items
-     * @requiresRight classUri WRITE
-     */
-    public function addSubClass(){
-        parent::addSubClass();
-    }
-    
-    /**
-     * overwrite the parent cloneInstance to add the requiresRight only in Items
-     * @see tao_actions_TaoModule::cloneInstance()
-     * @requiresRight uri READ
-     * @requiresRight classUri WRITE
-     */
-    public function cloneInstance()
-    {
-        return parent::cloneInstance();
-    }
-
     /*
      * conveniance methods
      */
@@ -104,9 +77,48 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * controller actions
      */
 
+
     /**
-     * get the class content
-     * 
+     * overwrite the parent addInstance to add the requiresRight only in Items
+     * @requiresRight id WRITE
+     */
+    public function addInstance(){
+        parent::addInstance();
+    }
+    
+    /**
+     * overwrite the parent addSubClass to add the requiresRight only in Items
+     * @requiresRight id WRITE
+     */
+    public function addSubClass(){
+        parent::addSubClass();
+    }
+    
+    /**
+     * overwrite the parent cloneInstance to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::cloneInstance()
+     * @requiresRight id READ
+     * @requiresRight classUri WRITE
+     */
+    public function cloneInstance()
+    {
+        return parent::cloneInstance();
+    }
+    
+    /**
+     * overwrite the parent moveInstance to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::moveInstance()
+     * @requiresRight id WRITE
+     * @requiresRight destinationClassUri WRITE
+     */
+    public function moveInstance()
+    {
+        return parent::moveInstance();
+    }
+    
+    /**
+     * overwrite the parent getOntologyData to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::getOntologyData()
      * @requiresRight classUri READ
      */
     public function getOntologyData()
@@ -116,11 +128,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     
     /**
      * edit an item instance
-     * @requiresRight uri READ
+     * @requiresRight id READ
      */
     public function editItem(){
-
-
 
         $itemClass = $this->getCurrentClass();
         $item = $this->getCurrentInstance();
@@ -163,9 +173,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
 
-            $this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
-            $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
-
             $this->setData('isPreviewEnabled', $hasPreview);
             $this->setData('isAuthoringEnabled', $hasModel);
 
@@ -178,10 +185,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Edit a class
-     * @requiresRight classUri READ 
+     * @requiresRight id READ 
      */
     public function editItemClass(){
-        $clazz = $this->getCurrentClass();
+        $clazz = new core_kernel_classes_Class($this->getRequestParameter('id'));
 
         if($this->hasRequestParameter('property_mode')){
             $this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
@@ -213,16 +220,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         if(!tao_helpers_Request::isAjax()){
             throw new Exception("wrong request mode");
         }
+        
+        $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
 
-        $deleted = false;
-        $deleted = $this->service->deleteItem($this->getCurrentInstance());
+        $deleted = $this->service->deleteItem($item);
         echo json_encode(array('deleted' => $deleted));
     }
 
     /**
      * delete an item class
      * called via ajax
-     * @requiresRight classUri WRITE
+     * @requiresRight id WRITE
      * @return void
      * @throws Exception
      */
@@ -231,8 +239,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             throw new Exception("wrong request mode");
         }
 
-        $deleted = false;
-        $deleted = $this->service->deleteItemClass($this->getCurrentClass());
+        $clazz = new core_kernel_classes_Class($this->getRequestParameter('id')); 
+        $deleted = $this->service->deleteItemClass($clazz);
         echo json_encode(array('deleted' => $deleted));
     }
 
@@ -303,11 +311,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Item Authoring tool loader action
-     * @requiresRight uri WRITE
+     * @requiresRight id WRITE
      */
     public function authoring(){
-        $item = $this->getCurrentInstance();
-        $itemClass = $this->getCurrentClass();
+        $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
             $this->setData('error', false);

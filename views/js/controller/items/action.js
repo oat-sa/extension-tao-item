@@ -6,7 +6,7 @@ define([
 ], function(binder, uri, preview){
 
     binder.register('itemPreview', function itemPreview(actionContext){
-        preview.init(uri.decode(actionContext.uri));
+        preview.init(actionContext.id);
         preview.show();
     });
 
