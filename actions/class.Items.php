@@ -193,17 +193,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function itemPreview(){
         $item = $this->getCurrentInstance();
 
-        $options = array(
-            'uri' => $this->getRequestParameter('uri'),
-            'fullScreen' => false
-        );
 
-        $itemModel = $this->service->getItemModel($item);
-        if($itemModel != null && $itemModel->getUri() == TAO_ITEM_MODEL_QTI){
+        $this->service->getPreviewUrl($item);
+      /*  if($itemModel != null && $itemModel->getUri() == TAO_ITEM_MODEL_QTI){
             $this->redirect(_url('index', 'QtiPreview', 'taoQtiItem', $options));
         }else{
             $this->redirect(_url('index', 'ItemPreview', 'taoItems', $options));
-        }
+        }*/
     }
 
     /**

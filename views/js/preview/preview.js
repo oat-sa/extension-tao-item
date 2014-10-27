@@ -505,8 +505,9 @@ define([
             _scale();
         });
 
+        itemUri = _itemUri;
 
-        itemUri = helpers._url('index', 'QtiPreview', 'taoQtiItem') + '?uri=' + encodeURIComponent(_itemUri) + '&' + 'twosix=1';
+        //itemUri = helpers._url('index', 'QtiPreview', 'taoQtiItem') + '?uri=' + encodeURIComponent(_itemUri) + '&' + 'twosix=1';
 
 
         return overlay;

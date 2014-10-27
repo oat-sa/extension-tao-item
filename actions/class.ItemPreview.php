@@ -68,7 +68,14 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $this->setView($template, 'taoItems');
     }
 
-    public function getPreviewUrl($item, $options = array()){
+    public function exposePreviewUrl() {
+
+        $item = $this->getCurrentInstance();
+        return $this->returnJson(array('url' => $this->service->getPreviewUrl($item)));
+    }
+
+
+    protected function getPreviewUrl($item, $options = array()){
         $code = base64_encode($item->getUri());
         return _url('render/'.$code.'/index', 'ItemPreview', 'taoItems', $options);
     }
