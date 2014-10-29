@@ -5,12 +5,10 @@ define([
     'util/strPad',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
-    'taoQtiItem/qtiCreator/editor/styleEditor/styleEditor',
-    'helpers',
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, deviceList, previewTpl, styleEditor, helpers) {
+], function ($, _, __, strPad, deviceList, previewTpl) {
     'use strict';
 
     var overlay,
