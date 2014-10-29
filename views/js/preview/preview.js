@@ -3,7 +3,6 @@ define([
     'lodash',
     'i18n',
     'util/strPad',
-    'taoQtiItem/qtiCreator/helper/commonRenderer',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'taoQtiItem/qtiCreator/editor/styleEditor/styleEditor',
@@ -11,7 +10,7 @@ define([
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, commonRenderer, deviceList, previewTpl, styleEditor, helpers) {
+], function ($, _, __, strPad, deviceList, previewTpl, styleEditor, helpers) {
     'use strict';
 
     var overlay,
@@ -296,7 +295,7 @@ define([
         var $iframe = $('#preview-iframe');
 
         $closer.on('click', function () {
-            commonRenderer.setContext($('.item-editor-item'));
+//            commonRenderer.setContext($('.item-editor-item'));
             overlay.hide();
 
             //empty the iframe
