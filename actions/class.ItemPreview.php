@@ -40,9 +40,6 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
      * @requiresRight uri READ
      */
     public function index(){
-        $this->setData('preview', false);
-        $this->setData('client_config_url', $this->getClientConfigUrl());
-
         $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
         $itemService = taoItems_models_classes_ItemsService::singleton();
@@ -57,7 +54,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
             $this->setData('resultServer', $this->getResultServer());
         }
 
-        $this->setView('preview.tpl', 'taoItems');
+        $this->setView('ItemPreview/index.tpl', 'taoItems');
     }
 
     protected function getPreviewUrl($item, $options = array()){

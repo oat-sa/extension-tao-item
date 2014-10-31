@@ -179,7 +179,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $this->setData('formTitle', __('Edit Item'));
             $this->setData('myForm', $myForm->render());
 
-            $this->setView('item_form.tpl');
+            $this->setView('Items/editItem.tpl');
         }
     }
 
@@ -251,7 +251,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      */
     public function translateInstance(){
         parent::translateInstance();
-        $this->setView('form.tpl');
+        $this->setView('form.tpl', 'tao');
     }
 
     /**
