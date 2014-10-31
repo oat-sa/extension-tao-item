@@ -3,12 +3,12 @@ define([
     'uri',
     'jquery',
     'context',
-    'taoItems/preview/preview'
-], function(binder, uri, $, context, preview){
+    'taoItems/preview/preview',
+    'helpers'
+], function(binder, uri, $, context, preview, helpers){
 
     binder.register('itemPreview', function itemPreview(actionContext){
-        console.log(context.root_url + context.shownExtension + '/ItemPreview/forwardMe?uri=' + actionContext.uri)
-        preview.init(context.root_url + context.shownExtension + '/ItemPreview/forwardMe?uri=' + actionContext.uri);
+        preview.init(helpers._url('forwardMe', 'ItemPreview', context.shownExtension, {uri : actionContext.id}));
         preview.show();
     });
 
