@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -25,7 +25,6 @@
  *
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
- 
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 class taoItems_actions_Items extends tao_actions_SaSModule
@@ -127,6 +126,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
     
     /**
+     * overwrite the parent getOntologyData to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::removeClassProperty()
+     * @requiresRight classUri WRITE
+     */
+    public function removeClassProperty()
+    {
+        return parent::removeClassProperty();
+    }
+    
+    /**
      * edit an item instance
      * @requiresRight id READ
      */
@@ -137,29 +146,33 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
 
-            //$this->setView('item_locked.tpl');
             $formContainer = new taoItems_actions_form_Item($itemClass, $item);
             $myForm = $formContainer->getForm();
+            
+            if ($this->hasWriteAccess($item->getUri())) {
 
-            if($myForm->isSubmited()){
-                if($myForm->isValid()){
-
-                    $properties = $myForm->getValues();
-                    unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
-                    unset($properties['warning']);
-
-                    //bind item properties and set default content:
-                    $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
-                    $item = $binder->bind($properties);
-                    $item = $this->service->setDefaultItemContent($item);
-
-                    //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
-                    $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
-                    $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
-                    $this->setData('label', ($label != null) ? $label->literal : '');
-                    $this->setData('message', __('Item saved'));
-                    $this->setData('reload', true);
+                if($myForm->isSubmited() && $this->hasWriteAccess($item->getUri())){
+                    if($myForm->isValid()){
+    
+                        $properties = $myForm->getValues();
+                        unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
+                        unset($properties['warning']);
+    
+                        //bind item properties and set default content:
+                        $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
+                        $item = $binder->bind($properties);
+                        $item = $this->service->setDefaultItemContent($item);
+    
+                        //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
+                        $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
+                        $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
+                        $this->setData('label', ($label != null) ? $label->literal : '');
+                        $this->setData('message', __('Item saved'));
+                        $this->setData('reload', true);
+                    }
                 }
+            } else {
+                $myForm->setActions(array());
             }
             
             $currentModel = $this->service->getItemModel($item);
@@ -195,14 +208,19 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
 
         $myForm = $this->editClass($clazz, $this->service->getRootClass());
-        if($myForm->isSubmited()){
-            if($myForm->isValid()){
-                if($clazz instanceof core_kernel_classes_Resource){
-                    $this->setData("selectNode", tao_helpers_Uri::encode($clazz->getUri()));
+        
+        if ($this->hasWriteAccess($clazz->getUri())) {
+            if($myForm->isSubmited()){
+                if($myForm->isValid()){
+                    if($clazz instanceof core_kernel_classes_Resource){
+                        $this->setData("selectNode", tao_helpers_Uri::encode($clazz->getUri()));
+                    }
+                    $this->setData('message', __('Class saved'));
+                    $this->setData('reload', true);
                 }
-                $this->setData('message', __('Class saved'));
-                $this->setData('reload', true);
             }
+        } else {
+            $myForm->setActions(array());
         }
         $this->setData('formTitle', __('Edit item class'));
         $this->setData('myForm', $myForm->render());
@@ -395,6 +413,4 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             }
         }
     }
-
-
 }
