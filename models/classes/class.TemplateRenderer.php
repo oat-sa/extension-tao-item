@@ -155,6 +155,4 @@ class taoItems_models_classes_TemplateRenderer
         return (string) $returnValue;
     }
 
-} /* end of class taoItems_models_classes_TemplateRenderer */
-
-?>
+}
