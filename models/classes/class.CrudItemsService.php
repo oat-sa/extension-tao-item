@@ -78,6 +78,4 @@ class taoItems_models_classes_CrudItemsService
 
 
     
-} /* end of class taoItems_models_classes_ItemsService */
-
-?>
+}
