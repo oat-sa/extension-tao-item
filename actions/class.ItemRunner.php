@@ -53,8 +53,9 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		$this->setData('itemPath', $directory->getPublicAccessUrl().$lang.'/index.html');
 		$this->setData('itemId', $this->getRequestParameter('itemUri'));
 		$this->setData('resultServerEndpoint', $this->getResultServerEndpoint());
-                $this->setData('resultServerParams', $this->getResultServerParams());
-                $this->setData('client_config_url', $this->getClientConfigUrl());
+        $this->setData('resultServerParams', $this->getResultServerParams());
+        $this->setData('client_timeout', $this->getClientTimeout());
+        $this->setData('client_config_url', $this->getClientConfigUrl());
 		
 		$this->selectView();
 	}
