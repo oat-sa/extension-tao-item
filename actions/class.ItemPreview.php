@@ -29,32 +29,17 @@
  */
 class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 {
-
+    public function forwardMe(){
+        $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
+        $lang = DEFAULT_LANG;
+        $previewUrl = taoItems_models_classes_ItemsService::singleton()->getPreviewUrl($item, $lang);
+        $this->forwardUrl($previewUrl);
+    }
+    
     /**
      * @requiresRight uri READ
      */
     public function index(){
-        $this->setData('preview', false);
-
-        if($this->hasRequestParameter('fullScreen')){
-            $this->setData('client_config_url', $this->getClientConfigUrl());
-            $template = 'fsPreviewItemRunner.tpl';
-        }
-
-        else if($this->hasRequestParameter('quick')){
-            $this->setData('client_config_url', $this->getClientConfigUrl());
-            $template = 'quickPreviewItemRunner.tpl';
-        }
-
-        else if($this->hasRequestParameter('twosix')){
-            $this->setData('client_config_url', $this->getClientConfigUrl());
-            $template = 'preview26.tpl';
-        }
-
-        else{
-            $template = 'previewItemRunner.tpl';
-        }
-
         $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
         $itemService = taoItems_models_classes_ItemsService::singleton();
@@ -63,20 +48,14 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
             //this is this url that will contains the preview
             //@see taoItems_actions_LegacyPreviewApi
             $previewUrl = $this->getPreviewUrl($item);
+            
             $this->setData('previewUrl', $previewUrl);
             $this->setData('client_config_url', $this->getClientConfigUrl());
             $this->setData('resultServer', $this->getResultServer());
         }
 
-        $this->setView($template, 'taoItems');
+        $this->setView('ItemPreview/index.tpl', 'taoItems');
     }
-
-    public function exposePreviewUrl() {
-
-        $item = $this->getCurrentInstance();
-        return $this->returnJson(array('url' => $this->service->getPreviewUrl($item)));
-    }
-
 
     protected function getPreviewUrl($item, $options = array()){
         $code = base64_encode($item->getUri());

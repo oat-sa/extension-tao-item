@@ -1,12 +1,14 @@
-
 define([
     'layout/actions/binder',
     'uri',
-    'taoItems/preview/preview'
-], function(binder, uri, preview){
+    'jquery',
+    'context',
+    'taoItems/preview/preview',
+    'helpers'
+], function(binder, uri, $, context, preview, helpers){
 
     binder.register('itemPreview', function itemPreview(actionContext){
-        preview.init(actionContext.id);
+        preview.init(helpers._url('forwardMe', 'ItemPreview', context.shownExtension, {uri : actionContext.id}));
         preview.show();
     });
 

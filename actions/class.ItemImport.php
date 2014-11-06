@@ -32,6 +32,17 @@
  */
 class taoItems_actions_ItemImport extends tao_actions_Import {
 	
+    /**
+     * overwrite the parent index to add the requiresRight for Items only
+     * 
+     * @requiresRight id WRITE
+     * @see tao_actions_Import::index()
+     */
+    public function index()
+    {
+        parent::index();
+    }
+
 	public function getAvailableImportHandlers() {
 		$returnValue = parent::getAvailableImportHandlers();
 
@@ -48,4 +59,3 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 		return $returnValue;
 	}
 }
-?>
