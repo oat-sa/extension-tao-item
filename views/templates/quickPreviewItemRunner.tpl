@@ -15,6 +15,7 @@ use oat\tao\helpers\Template;
             <script>
             (function(){
                 var clientConfigUrl = '<?=get_data('client_config_url')?>';
+                requirejs.config({waitSeconds : <?=get_data('client_timeout')?>});
                 require([clientConfigUrl], function(){
                     require(['taoItems/controller/preview/itemRunner'], function(itemRunner){
                         itemRunner.start({
@@ -23,6 +24,7 @@ use oat\tao\helpers\Template;
                             <?php endif?>
                             previewUrl : <?=json_encode(get_data('previewUrl'))?>,
                             clientConfigUrl : clientConfigUrl,
+                            timeout : <?=get_data('client_timeout')?>, 
                             context: 'quick-preview'
                         });
                     });

@@ -14,7 +14,8 @@ requirejs.config({
            <?php endif?>
            previewUrl : <?=json_encode(get_data('previewUrl'))?>,
            userInfoServiceRequestUrl : <?=json_encode(_url('getUserPropertyValues', 'ServiceModule', 'tao'))?>,
-           clientConfigUrl : '<?=get_data('client_config_url')?>'
+           clientConfigUrl : '<?=get_data('client_config_url')?>',
+           timeout : <?=get_data('client_timeout')?>
        }
    } 
 });

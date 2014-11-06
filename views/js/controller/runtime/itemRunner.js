@@ -36,6 +36,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                     params : {}
                 });
                 var clientConfigUrl = options.clientConfigUrl;
+                var timeout = options.timeout || 30;
 
                 //load dynamically the right ItemService and ResultServerApi
                 require([itemService.module, resultServer.module], function(ItemService, ResultServerApi){
@@ -55,6 +56,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         var itemUrl = new UrlParser(itemPath);
                         var isCORSAllowed = itemUrl.checkCORS();
                         itemUrl.addParam('clientConfigUrl', clientConfigUrl);
+                        itemUrl.addParam('timeout', timeout);
 
                         iframeResizer.autoHeight($frame, 'body', 10);
                         
@@ -73,7 +75,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             if (isCORSAllowed === true) {
                                 this.contentWindow.__knownParent__ = true;
                             }
-                        });                        
+                        }); 
                         $frame.attr('src', itemUrl.getUrl());
                     };
 
