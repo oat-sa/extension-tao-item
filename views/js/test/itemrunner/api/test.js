@@ -11,6 +11,7 @@ define(['jquery', 'taoItems/runtime/itemRunner'], function($, itemRunner){
         expect(1);
 
         throws(function(){
+            itemRunner();
             throw new Error();
         }, Error, 'An error is thrown');
     });
