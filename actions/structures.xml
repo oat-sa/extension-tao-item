@@ -27,12 +27,9 @@
                     <action id="item-authoring" name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor">
                         <icon id="icon-edit"/>
                     </action>
-                    <action id="item-filter" name="Filter" context="*" group="search" binding="filter">
+                    <!--action id="item-filter" name="Filter" context="*" group="search" binding="filter">
                         <icon id="icon-filter"/>
-                    </action>
-                    <action id="item-search" name="Search" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
-                        <icon id="icon-find"/>
-                    </action>
+                    </action-->
                     <action id="item-class-new" name="New class" url="/taoItems/Items/addSubClass" context="class" group="content" binding="subClass">
                         <icon id="icon-folder-open"/>
                     </action>
@@ -65,6 +62,9 @@
                     </action>
                     <action id="item-translate" name="Translate" url="/taoItems/Items/translateInstance" context="instance" group="content">
                         <icon id="icon-translate"/>
+                    </action>
+                    <action id="item-search" name="Search Items" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
+                        <icon id="icon-find"/>
                     </action>
                 </actions>
             </section>
