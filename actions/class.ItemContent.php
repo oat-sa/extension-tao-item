@@ -33,7 +33,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private function getImplementationClass($identifier){
         $implementations = array(
             'local' => 'taoItems_helpers_ResourceManager',
-            'mediamanager' => 'oat\taoMediaManager\helpers\MediaManagerBrowser'
+            'mediamanager' => 'oat\taoMediaManager\model\MediaManagerBrowser'
         );
         if(array_key_exists($identifier,$implementations)){
             return $implementations[$identifier];
@@ -59,6 +59,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         $itemLang = $this->getRequestParameter('lang');
 
+        $options = array('item'=>$item, 'lang'=>$itemLang);
+
         $subPath = $this->hasRequestParameter('path') ? $this->getRequestParameter('path') : '/';
         $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
        
@@ -81,7 +83,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         $clazz = $this->getImplementationClass($identifier);
-        $resourceManager = new $clazz(array('item'=>$item, 'lang'=>$itemLang));
+        $resourceManager = new $clazz($options);
         $data = $resourceManager->getDirectory($subPath, $filters, $depth);
 
         echo json_encode($data);
@@ -170,25 +172,32 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function download() {
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
+
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
-        
-        tao_helpers_Http::returnFile($path);
+
+        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
+        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+        $clazz = $this->getImplementationClass($identifier);
+        $mediaBrowser = new $clazz($options);
+
+        $mediaBrowser->download($subPath);
     }
     
     /**

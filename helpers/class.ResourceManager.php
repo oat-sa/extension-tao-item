@@ -89,7 +89,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser
                 'name' => basename($path),
                 'mime' => $mime,
                 'size' => filesize($path),
-                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $relPath))
+                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => 'local'.$relPath))
             );
         }
         return $file;
@@ -97,7 +97,10 @@ class taoItems_helpers_ResourceManager implements MediaBrowser
 
     public function download($filename){
 
-        return $filename;
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
+        $path = $baseDir.ltrim($filename, '/');
+
+        tao_helpers_Http::returnFile($path);
     }
     
 }
