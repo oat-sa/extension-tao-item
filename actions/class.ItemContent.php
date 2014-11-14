@@ -29,6 +29,18 @@ use oat\tao\helpers\FileUploadException;
  */
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
+
+    private function getImplementationClass($identifier){
+        $implementations = array(
+            'local' => 'taoItems_helpers_ResourceManager',
+            'mediamanager' => 'oat\taoMediaManager\helpers\MediaManagerBrowser'
+        );
+        if(array_key_exists($identifier,$implementations)){
+            return $implementations[$identifier];
+        }
+        return 'taoItems_helpers_ResourceManager';
+    }
+
     /**
      * Returns a json encoded array describign a directory
      * 
@@ -61,8 +73,17 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
         } 
-        
-        $data = taoItems_helpers_ResourceManager::buildDirectory($item, $itemLang, $subPath, $depth, $filters);
+
+        $identifier = substr($subPath, 0, strpos($subPath, '/'));
+        $subPath = substr($subPath, strpos($subPath, '/'));
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+        $clazz = $this->getImplementationClass($identifier);
+        $resourceManager = new $clazz(array('item'=>$item, 'lang'=>$itemLang));
+        $data = $resourceManager->getDirectory($subPath, $filters, $depth);
+
         echo json_encode($data);
     }
     
