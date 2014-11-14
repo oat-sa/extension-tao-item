@@ -70,32 +70,42 @@ Once the provider has been registered.
 define(['itemRunner'], function(itemRunner){
 
     var itemData = {
-        //some JSON data
+        //an object that represents the item
     };    
 
+    var initialState = {
+        //an object with item current state
+    };
 
-    itemRunner('qti', itemData)
-        .on('statechange', function(state){
-            //oh something has changed in the item, I'll store the state.
+                                        //itemRunner is a factory that creates a chainable instance.
+    itemRunner('qti', itemData)         //qti is the name of the provider registered previously 
+
+        .on('init', function(){         //if the initialization is asynchronous it's better to render once init is done
+            this.render(document.getElementById('item-container'));
         })
-        .on('ready', function(){
-            var self = this;
 
-            //the user can start working, you can hide the loader, start a timer, etc.
-            
-            //here this is the item runner, so you have access to getState, getResponses, etc.
+        .on('ready', function(){       //the user can start working, you can hide the loader, start a timer, etc.
+            var self = this;           //here this is the item runner, so you have access to getState, getResponses, etc.
 
-            //or implement the next feature
+            //you can implement here the previous/next features, for example
             document.getElementById('next').addEventListener('click', function(){
                 self.getResponses();    //store the responses
                 self.getState();        //store the state
                 //forward to next item.
             });
         })
-        .init()
-        .render(document.getElementById('item-container'));
 
-   
+        .on('statechange', function(state){
+            //oh something has changed in the item, you can store the state.
+        })
+
+        .on('responsechange', function(response){
+            //oh something the response has changed
+        })
+
+        .setState(initialState)
+
+        .init();    //let's start
 });
 ```
 
