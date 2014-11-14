@@ -1,6 +1,6 @@
 # Runner quick overview
 
-> The API isn't yet stable. There should'nt be major changes expect for the `init` and the `ready` event.
+> The API is still to be comfirmed. There should'nt be major changes expect for the `init` and the `ready` event.
 
 ## Concept
  
@@ -109,11 +109,10 @@ define(['itemRunner'], function(itemRunner){
 });
 ```
 
-## JsDoc
-
-
 ## Test
 
-
+Run in your browser, from a valid TAO distribution following the test case: `http://{TAO_HOST}/taoItems/views/js/test/runner/api/test.html?coverage=true` 
 
 ## Build
+
+_TBD_
