@@ -46,19 +46,52 @@ define(['jquery', 'lodash'], function($, _){
      * @exports itemRunner
      * @namespace itemRunnerFactory
      *
+     * @param {String} [providerName] - the name of a provider previously registered see {@link itemRunnerFactory#register}
      * @param {Object} [data] - the data of the item to run
      * @param {Object} [data.state] - the initial state of the the item
      * 
      *
      * @returns {ItemRunner} 
      */
-    var itemRunnerFactory = function itemRunnerFactory(data){
-        
-        data = data || {};
+    var itemRunnerFactory = function itemRunnerFactory(providerName, data){
 
+        //optional params based on type
+        if(_.isPlainObject(providerName)){
+            data = providerName;
+            providerName = undefined;
+        } 
+        data = data || {};
 
         //contains the bound events.
         var events = {};
+
+        /*
+         * Select the provider
+         */
+
+        var provider;
+        var providers = itemRunnerFactory.providers;
+        
+        //check a provider is available
+        if(!providers || _.size(providers) === 0){
+            throw new Error('No provider regitered');
+        }
+
+        if(_.isString(providerName) && providerName.length > 0){
+            provider = providers[providerName];
+        } else if(_.size(providers) === 1) {
+
+            //if there is only one provider, then we take this one
+            providerName = _.keys(providers)[0];
+            provider = providers[providerName];
+        }
+
+        //now we should have a provider
+        if(!provider){
+            throw new Error('No candidate found for the provider');
+        }
+       
+         
 
        /**
         * The ItemRunner
@@ -70,6 +103,66 @@ define(['jquery', 'lodash'], function($, _){
         * @lends itemRunnerFactory
         */
         var ItemRunner = {
+
+            /**
+             * Initialize the runner. 
+             * @param {Object} [newData] - just in case you want to change item data (it should not occurs in most case)
+             * @returns {ItemRunner} to chain calls
+             * @fires ItemRunner#init
+             */
+            init : function(newData){
+                var self = this;
+
+                if(newData){
+                    data = _.merge(data, newData);
+                }
+        
+                /**
+                 * Calls provider's initialization with item data.
+                 * @callback InitItemProvider
+                 * @param {Object} data - the item data
+                 * @param {Function} done - call once the initialization is done
+                 */
+                provider.init.call(this, data, function(){
+
+                    /**
+                     * the runner has initialized correclty the item
+                     * @event ItemRunner#init
+                     */
+                    self.trigger('init');
+                });
+
+                return this;
+            },
+
+            /**
+             * Initialize the current item. 
+             * @param {HTMLElement|jQueryElement} elt - the DOM element that is going to contain the rendered item.
+             * @returns {ItemRunner} to chain calls
+             * @fires ItemRunner#ready
+             */
+           render : function(elt){
+                var self = this;
+
+                if(!elt instanceof HTMLElement || !elt instanceof $){
+                    throw new TypeError('A valid HTMLElement (or a jquery element) at least is required to render the item');
+                }
+                
+                /**
+                 * Calls the provider's render
+                 * @callback InitItemProvider
+                 * @param {Object} data - the item data
+                 * @param {Function} done - call once the initialization is done
+                 */
+                provider.render.call(this, elt, function(){
+
+                    /**
+                     * the runner has initialized correclty the item
+                     * @event ItemRunner#ready
+                     */
+                    self.trigger('ready');
+                });
+           },
 
            /**
             * Get the current state of the running item.
@@ -111,10 +204,6 @@ define(['jquery', 'lodash'], function($, _){
            },
 
            addResponse : function(response){
-
-           },
-
-           render : function(elt){
 
            },
 
@@ -176,6 +265,35 @@ define(['jquery', 'lodash'], function($, _){
         };
 
         return ItemRunner;
+    };
+
+    /**
+     * Register an <i>Item Runtime Provider</i> into the item runner. 
+     * The provider provides the behavior required by the item runner.
+     *
+     * @param {String} name - the provider name will be used to select the provider while instantiating the runner
+     *
+     * @param {Object} provider - the Item Runtime Provider as a plain object. The itemRunner forwards encapsulate and delegate calls to the provider.
+     * @param {InitProvider} provider.init - the init function is the only function required. It takes itemData and the done callback in parameter.
+     * @param {Function} [provider.render] - the render function takes a dom element (or a jQuery element)  and the done callback in parameter.
+     * @param {Function} [provider.getState] - the getState must return an object.
+     * @param {Function} [provider.setState] - the setState function takes an object in parameter. 
+     * @param {Function} [provider.getResponses] - returns an Array containing the responses.
+     * @param {Function} [provider.setResponses] - takes an Array of the responses in parameter.
+     * 
+     * @throws TypeError when a wrong provider is given or an empty name.
+     */
+    itemRunnerFactory.register = function registerProvider(name, provider){
+        //type checking
+        if(!_.isString(name) || name.length <= 0){
+            throw new TypeError('It is required to give a name to your provider.');
+        }      
+        if(!_.isPlainObject(provider) || !_.isFunction(provider.init)){
+            throw new TypeError('A provider is an object that contains an init function.');
+        }      
+
+        this.providers = this.providers || {};
+        this.providers[name] = provider;
     };
 
     return itemRunnerFactory;

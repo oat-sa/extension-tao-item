@@ -20,7 +20,7 @@
             require(['/tao/ClientConfig/config'], function(){
                 
                 //load the test
-                require(['taoItems/test/itemrunner/api/test'], function(){
+                require(['taoItems/test/runner/api/test'], function(){
                     
                     //Tests loaded, run tests
                     QUnit.start();
@@ -31,6 +31,7 @@
     <body>
         <div id="qunit"></div>
         <div id="qunit-fixture">
+            <div id="item-container"></div>
         </div>  
     </body>
 </html>
