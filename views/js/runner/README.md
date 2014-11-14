@@ -1,6 +1,11 @@
 # Runner quick overview
 
-> The API is still to be comfirmed. There should'nt be major changes expect for the `init` and the `ready` event.
+> The API is in draft
+
+There should'nt be major changes expect for the following points:
+ - `init` may also received the state (but it seems setState to be sufficient)
+ - the `ready` event may be renamed to `render` or aliased.
+ - some other events can appears
 
 ## Concept
  
@@ -36,18 +41,18 @@ It works in 2 steps:
 +--------------------------------------------------+               +----------------------------------------------+
 |    ItemRunner                                    |               |    Provider                                  |
 |--------------------------------------------------|               |----------------------------------------------|
-|    ItemRunner : construct(Object itemData)       |               |                                              |
+|    <construct>(Object itemData) : ItemRunner     |               |                                              |
 |                                                  |  delegates    |                                              |
-|    ItemRunner : init()                         +------------------->  void   : init(Object data, Func done)     |
-|    ItemRunner : render(HTMLElement elt)        +------------------->  void   :render(HTMLElement elt, Func done)|
-|    Object     : getState()                     +------------------->  Object : getState()                       |
-|    ItemRunner : setState(Object state)         +------------------->  void   :setState(Object state)            |
-|    Array      : getResponses()                 +------------------->  Array  : getResponses()                   |
-|    ItemRunner : setResponses(Array responses)  +------------------->  void   :setResponses(Array responses)     |
+|    init() : ItemRunner                        +------------------->  init(Object data, Func done) : void        |
+|    render(HTMLElement elt) : ItemRunner       +------------------->  render(HTMLElement elt, Func done) : void  |
+|    getState() : Object                        +------------------->  getState() : Object                        |
+|    setState(Object state) : ItemRunner        +------------------->  setState(Object state) : void              |
+|    getResponses() : Array                     +------------------->  getResponses() : Array                     |
+|    clear() : ItemRunner                       +------------------->  clear() : void                             |
 |                                                  |               |                                              |
-|    ItemRunner : on(event,Func handler)           |               |                                              |
-|    ItemRunner : off(event)                       |               |                                              |
-|    ItemRunner : trigger(event)                   |               |                                              |
+|    on(event,Func handler) : ItemRunner           |               |                                              |
+|    off(event) : ItemRunner                       |               |                                              |
+|    trigger(event) : ItemRunner                   |               |                                              |
 +--------------------------------------------------+               +----------------------------------------------+
 ```
 
@@ -80,17 +85,24 @@ define(['itemRunner'], function(itemRunner){
                                         //itemRunner is a factory that creates a chainable instance.
     itemRunner('qti', itemData)         //qti is the name of the provider registered previously 
 
+		.on('error', function(err){         
+			//gracefull error handling
+        })
+
         .on('init', function(){         //if the initialization is asynchronous it's better to render once init is done
             this.render(document.getElementById('item-container'));
         })
 
-        .on('ready', function(){       //the user can start working, you can hide the loader, start a timer, etc.
+        .on('ready', function(){       //ready when render is finished. The test taker can start working, you can hide the loader, start a timer, etc.
             var self = this;           //here this is the item runner, so you have access to getState, getResponses, etc.
 
             //you can implement here the previous/next features, for example
             document.getElementById('next').addEventListener('click', function(){
                 self.getResponses();    //store the responses
                 self.getState();        //store the state
+
+				self.clear(); 			//destroy the item propertly
+
                 //forward to next item.
             });
         })
@@ -99,15 +111,24 @@ define(['itemRunner'], function(itemRunner){
             //oh something has changed in the item, you can store the state.
         })
 
-        .on('responsechange', function(response){
-            //oh something the response has changed
-        })
-
         .setState(initialState)
 
         .init();    //let's start
 });
 ```
+
+## API
+
+> Formal API is going to be generated using JsDoc. 
+
+Implemented events are : 
+
+ - `error` : any time, when somthing goes wrong
+ - `init`  : once the initialization step is finished
+ - `ready` : once the item is rendered and ready to be taken
+ - `clear` : once the item is destroyed
+ - `statechange` : each time the state has changed ( except using the public `setState`  - _to be confirmed_ )
+ - `responsechange` : each time a response changes. It doesn't give you the last response but all responses entered by a test taker. Usefull to track user actions (_to be confirmed_ )
 
 ## Test
 

@@ -23,6 +23,10 @@ define(function(){
             done();
         },
 
+        clear : function(done){
+            this.container.innerHTML = ''; 
+        },
+
         getState : function(){
             return { value : this.container.value };
         },
@@ -33,10 +37,6 @@ define(function(){
 
         getResponses : function(){
             return [this.container.value];
-        },
-
-        setResponses : function(responses){
-            this.setState({value : responses[0]});
         }
     };
 

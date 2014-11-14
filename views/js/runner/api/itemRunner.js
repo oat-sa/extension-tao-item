@@ -164,6 +164,10 @@ define(['jquery', 'lodash'], function($, _){
                 });
            },
 
+           clear : function(){
+                
+           },
+
            /**
             * Get the current state of the running item.
             * @returns {Object} state
@@ -196,14 +200,6 @@ define(['jquery', 'lodash'], function($, _){
            },
 
            getResponses : function(){
-
-           },
-
-           setResponses : function(responses){
-
-           },
-
-           addResponse : function(response){
 
            },
 
