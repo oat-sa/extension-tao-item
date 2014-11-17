@@ -201,7 +201,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * @requiresRight id READ 
      */
     public function editItemClass(){
-        $clazz = new core_kernel_classes_Class($this->getRequestParameter('id'));
+        $clazz = new core_kernel_classes_Class(tao_helpers_Uri::decode($this->getRequestParameter('id')));
 
         if($this->hasRequestParameter('property_mode')){
             $this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
