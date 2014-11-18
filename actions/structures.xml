@@ -63,9 +63,7 @@
                     <action id="item-translate" name="Translate" url="/taoItems/Items/translateInstance" context="instance" group="content">
                         <icon id="icon-translate"/>
                     </action>
-                    <action id="item-search" name="Search Items" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
-                        <icon id="icon-find"/>
-                    </action>
+                    <action id="item-search" name="Search Items" url="/taoItems/Items/searchParams" context="*" group="search"></action>
                 </actions>
             </section>
         </sections>
