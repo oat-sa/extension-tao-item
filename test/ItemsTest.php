@@ -186,8 +186,9 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testClone($instance)
     {
-        $clone = $this->itemsService->cloneInstance($instance);
-        $this->assertNotSame($clone, $instance);
+        $clone = $instance->duplicate();
+        $this->assertInstanceOf('\core_kernel_classes_Resource', $clone);
+        $this->assertTrue($clone->exists());
         $this->assertTrue($this->itemsService->deleteItem($clone));
     }
 
