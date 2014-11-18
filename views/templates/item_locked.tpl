@@ -34,23 +34,27 @@ use oat\tao\helpers\Template;
     
 </div>
 <script type="text/javascript">
-require(
-['jquery', 'i18n', 'helpers', 'lock', 'layout/section', 'ui/feedback'], 
-function($, __, helpers, Lock, sectionApi, feedback){
+    require(['jquery', 'i18n', 'helpers', 'lock', 'layout/section', 'ui/feedback'], function ($, __, helpers, Lock, sectionApi, feedback) {
+        'use strict';
 
-    var uri = <?=json_encode(get_data('itemUri'))?>;
-    var dest = helpers._url('editItem', 'Items', 'taoItems', {uri : uri});
+        var uri = <?= json_encode(get_data('itemUri')) ?>,
+            dest = helpers._url('editItem', 'Items', 'taoItems'),
+            successCallBack = function successCallBack() {
+                    sectionApi.current().loadContentBlock(dest, {
+                        uri: uri,
+                        id: <?= json_encode(get_data('id')) ?>,
+                        classUri: <?= json_encode(get_data('classUri')) ?>
+                });
+            },
 
-    var successCallBack = function successCallBack() {
-        sectionApi.current().loadContentBlock(dest);
-    };
-    var errorBack = function errorBack(){
-        feedback().error(__('Unable to release the lock'));
-    };
-    $("#release").click(function(e) {
-        e.preventDefault();
-        new Lock(uri).release(successCallBack, errorBack);
-    });
-});
+            errorBack = function errorBack() {
+                feedback().error(__('Unable to release the lock'));
+            };
+
+        $("#release").click(function (e) {
+            e.preventDefault();
+            new Lock(uri).release(successCallBack, errorBack);
+        });
+})
 </script>
 <?php Template::inc('footer.tpl', 'tao'); ?>
