@@ -13,30 +13,49 @@ define(function(){
 
         render : function(elt, done){
             var self = this;
+            var input;
             var type = this._data.type || 'text';
+            var val  = this._data.value || '';
 
-            elt.innerHTML = '<input type="' + type  +'"/>';
-            elt.addEventListener('change', function(){
-                self.trigger('statechange', { value : elt.value });
+            elt.innerHTML = '<input type="' + type  +'" value="'  + val + '"/>';
+            input = elt.querySelector('input');
+            input.addEventListener('change', function(){
+                self.trigger('statechange', { value : input.value });
             });
-            this.container = elt;
+
             done();
         },
 
-        clear : function(done){
-            this.container.innerHTML = ''; 
+        clear : function(elt, done){
+            elt.innerHTML = '';
+            done(); 
         },
 
         getState : function(){
-            return { value : this.container.value };
+            var state = {
+                value : null
+            };
+            var input = this.container.querySelector('input');
+            if(input){
+                state.value = input.value;
+            }
+            return state;
         },
 
         setState : function(state){
-            this.container.value = state.value; 
+            var input = this.container.querySelector('input');
+            if(input && state && typeof state.value !== 'undefined'){
+                input.value = state.value;
+            }
         },
 
         getResponses : function(){
-            return [this.container.value];
+            var responses = [];
+            var input = this.container.querySelector('input');
+            if(input){
+                responses.push(input.value);
+            }
+            return responses;
         }
     };
 

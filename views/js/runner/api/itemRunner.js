@@ -48,8 +48,6 @@ define(['jquery', 'lodash'], function($, _){
      *
      * @param {String} [providerName] - the name of a provider previously registered see {@link itemRunnerFactory#register}
      * @param {Object} [data] - the data of the item to run
-     * @param {Object} [data.state] - the initial state of the the item
-     * 
      *
      * @returns {ItemRunner} 
      */
@@ -90,7 +88,6 @@ define(['jquery', 'lodash'], function($, _){
         if(!provider){
             throw new Error('No candidate found for the provider');
         }
-       
          
 
        /**
@@ -105,75 +102,173 @@ define(['jquery', 'lodash'], function($, _){
         var ItemRunner = {
 
             /**
+             * Items container
+             * @type {HTMLElement}
+             */
+            container : null,
+
+            /**
              * Initialize the runner. 
              * @param {Object} [newData] - just in case you want to change item data (it should not occurs in most case)
              * @returns {ItemRunner} to chain calls
+             * 
              * @fires ItemRunner#init
              */
             init : function(newData){
                 var self = this;
 
-                if(newData){
-                    data = _.merge(data, newData);
-                }
-        
                 /**
-                 * Calls provider's initialization with item data.
-                 * @callback InitItemProvider
-                 * @param {Object} data - the item data
-                 * @param {Function} done - call once the initialization is done
+                 * Call back when init is done
                  */
-                provider.init.call(this, data, function(){
-
+                var initDone = function initDone(){
                     /**
                      * the runner has initialized correclty the item
                      * @event ItemRunner#init
                      */
                     self.trigger('init');
-                });
+                };
+
+                //merge data 
+                if(newData){
+                    data = _.merge(data, newData);
+                }
+      
+                if(_.isFunction(provider.init)){
+
+                    /**
+                     * Calls provider's initialization with item data.
+                     * @callback InitItemProvider
+                     * @param {Object} data - the item data
+                     * @param {Function} done - call once the initialization is done
+                     */
+                    provider.init.call(this, data, initDone);
+
+                } else {
+                    initDone();
+                }
 
                 return this;
             },
 
             /**
              * Initialize the current item. 
+             * 
              * @param {HTMLElement|jQueryElement} elt - the DOM element that is going to contain the rendered item.
              * @returns {ItemRunner} to chain calls
+             * 
              * @fires ItemRunner#ready
+             * @fires ItemRunner#render
+             * @fires ItemRunner#error if the elt isn't valid
+             *
+             * @fires ItemRunner#statechange the provider is reponsible to trigger this event
+             * @fires ItemRunner#responsechange  the provider is reponsible to trigger this event
              */
            render : function(elt){
                 var self = this;
-
-                if(!elt instanceof HTMLElement || !elt instanceof $){
-                    throw new TypeError('A valid HTMLElement (or a jquery element) at least is required to render the item');
-                }
                 
                 /**
-                 * Calls the provider's render
-                 * @callback InitItemProvider
-                 * @param {Object} data - the item data
-                 * @param {Function} done - call once the initialization is done
+                 * Call back when render is done
                  */
-                provider.render.call(this, elt, function(){
+                var renderDone = function renderDone (){
 
                     /**
-                     * the runner has initialized correclty the item
+                     * The item is rendered
+                     * @event ItemRunner#render
+                     */
+                    self.trigger('render');
+
+                    /**
+                     * The item is ready. 
+                     * Alias of {@link ItemRunner#render}
                      * @event ItemRunner#ready
                      */
                     self.trigger('ready');
-                });
+                };
+
+                //check elt
+                if( !(elt instanceof HTMLElement) && !(elt instanceof $) ){
+                    return self.trigger('error', 'A valid HTMLElement (or a jquery element) at least is required to render the item');
+                }
+
+                //we keep a reference to the container
+                if(elt instanceof $){
+                    this.container = elt.get(0);
+                } else {
+                    this.container = elt;
+                }
+
+                if(_.isFunction(provider.render)){
+
+                    /**
+                     * Calls the provider's render
+                     * @callback RendertItemProvider
+                     * @param {HTMLElement} elt - the element to render inside
+                     * @param {Function} done - call once the render is done
+                     */
+                    provider.render.call(this, this.container, renderDone);
+
+                } else {
+                    renderDone();
+                }
+
+                return this;
            },
 
+           /**
+            * Clear the running item.
+            * @returns {ItemRunner}
+            * 
+            * @fires ItemRunner#clear
+            */
            clear : function(){
+                var self = this;
                 
+                /**
+                 * Call back when clear is done
+                 */
+                var clearDone = function clearDone (){
+
+                    /**
+                     * The item is ready. 
+                     * @event ItemRunner#clear
+                     */
+                    self.trigger('clear');
+                };
+
+                if(_.isFunction(provider.clear)){
+
+                    /**
+                     * Calls the provider's clear
+                     * @callback ClearItemProvider
+                     * @param {HTMLElement} elt - item's container
+                     * @param {Function} done - call once the initialization is done
+                     */
+                    provider.clear.call(this, this.container, clearDone);
+
+                } else {
+                    clearDone();
+                }
+
+                return this;
            },
 
            /**
             * Get the current state of the running item.
-            * @returns {Object} state
+            *
+            * @returns {Object|Null} state
             */
            getState : function(){
-                return data.state;
+                var state = null;
+                if(_.isFunction(provider.getState)){
+
+                    /**
+                     * Calls the provider's getState
+                     * @callback GetStateItemProvider
+                     * @returns {Object} the state 
+                     */
+                    state = provider.getState.call(this);
+                }
+                return state;
            },
 
            /**
@@ -181,26 +276,46 @@ define(['jquery', 'lodash'], function($, _){
             * This should have the effect to restore the item state.
             * 
             * @param {Object} state - the new state
-            * @returns {ItemRunner} 
-            * @fires ItemRunner#statechange
+            * @returns {ItemRunner}
+            *  
+            * @fires ItemRunner#error if the state type doesn't match
             */
            setState : function(state){
 
-                //TODO verfy the state type and trigger an error accordingly
-
-                data.state = state;
+                if(!_.isPlainObject(state)){
+                    return this.trigger('error', "The item's state must be a JavaScript Plain Object: " + (typeof state) + ' given');
+                }
     
-                /**
-                 * @event ItemRunner#statechange
-                 * @param {Object} state - the new state
-                 */
-                this.trigger('statechange', data.state);
+                if(_.isFunction(provider.setState)){
+
+                    /**
+                     * Calls the provider's setState
+                     * @callback SetStateItemProvider
+                     * @param {Object} state -  the state to set
+                     */
+                    provider.setState.call(this, state);
+                }
 
                 return this;
            },
 
+           /**
+            * Get the responses of the running item.
+            *
+            * @returns {Array} state
+            */
            getResponses : function(){
+                var responses = []; 
+                if(_.isFunction(provider.getResponses)){
 
+                    /**
+                     * Calls the provider's getResponses
+                     * @callback GetResponsesItemProvider
+                     * @returns {Array} the responses
+                     */
+                    responses = responses.concat(provider.getResponses.call(this));
+                }
+                return responses;
            },
 
            /**
@@ -270,12 +385,12 @@ define(['jquery', 'lodash'], function($, _){
      * @param {String} name - the provider name will be used to select the provider while instantiating the runner
      *
      * @param {Object} provider - the Item Runtime Provider as a plain object. The itemRunner forwards encapsulate and delegate calls to the provider.
-     * @param {InitProvider} provider.init - the init function is the only function required. It takes itemData and the done callback in parameter.
-     * @param {Function} [provider.render] - the render function takes a dom element (or a jQuery element)  and the done callback in parameter.
-     * @param {Function} [provider.getState] - the getState must return an object.
-     * @param {Function} [provider.setState] - the setState function takes an object in parameter. 
-     * @param {Function} [provider.getResponses] - returns an Array containing the responses.
-     * @param {Function} [provider.setResponses] - takes an Array of the responses in parameter.
+     * @param {InitItemProvider} provider.init - the provider initializes the item from it's data, for example loading libraries, add some listeners, etc.
+     * @param {RenderItemProvider} provider.render - the provider renders the item within the given container element.
+     * @param {ClearItemProvider} [provider.clear] - the provider clears the item. 
+     * @param {GetStateItemProvider} [provider.getState] - the provider get the item's state.
+     * @param {SetStateItemProvider} [provider.setState] - the provider restore the item to the given state. 
+     * @param {GetRespnsesItemProvider} [provider.getResponses] - the provider gives the current responses.
      * 
      * @throws TypeError when a wrong provider is given or an empty name.
      */
@@ -284,8 +399,8 @@ define(['jquery', 'lodash'], function($, _){
         if(!_.isString(name) || name.length <= 0){
             throw new TypeError('It is required to give a name to your provider.');
         }      
-        if(!_.isPlainObject(provider) || !_.isFunction(provider.init)){
-            throw new TypeError('A provider is an object that contains an init function.');
+        if(!_.isPlainObject(provider) || (!_.isFunction(provider.init) && !_.isFunction(provider.render))){
+            throw new TypeError('A provider is an object that contains at least an init function or a render function.');
         }      
 
         this.providers = this.providers || {};
