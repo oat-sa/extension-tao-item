@@ -31,14 +31,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
 
     private function getImplementationClass($identifier){
-        $implementations = array(
-            'local' => 'taoItems_helpers_ResourceManager',
-            'mediamanager' => 'oat\taoMediaManager\model\MediaManagerBrowser'
-        );
-        if(array_key_exists($identifier,$implementations)){
-            return $implementations[$identifier];
+
+        if($identifier === 'local'){
+            return 'taoItems_helpers_ResourceManager';
         }
-        return 'taoItems_helpers_ResourceManager';
+        return \oat\tao\model\media\MediaSource::getMediaSource($identifier);
     }
 
     /**
