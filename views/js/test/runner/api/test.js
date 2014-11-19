@@ -348,6 +348,28 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
         .render($container);
     });
 
+    QUnit.asyncTest('set initial state', function(assert){
+        QUnit.expect(3);
+       
+        var $container = $('#item-container');
+        assert.equal($container.length, 1, 'the item container exists');
+ 
+        itemRunner.register('dummyProvider', dummyProvider);
+
+        var runner = itemRunner('dummyProvider', {
+            type: 'number'
+        }).on('render', function(){
+            var $input = $('input', $container);
+            assert.equal($input.length, 1, 'the container contains an input');
+            assert.equal($input.val(), 13, 'the input value has the initial state');
+
+            QUnit.start();
+        })
+        .init()
+        .setState({ value : 13 })
+        .render($container);
+    });
+
     QUnit.asyncTest('set a wrong state', function(assert){
         QUnit.expect(2);
        

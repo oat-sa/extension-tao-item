@@ -40,9 +40,11 @@ define(['jquery', 'lodash'], function($, _){
      *                    })
      *                    .on('response', function(){
      *
-     *                    })          
+     *                    })
+     *                   .init() 
      *                   .render($('.item-container'));
      *          });
+     *
      * @exports itemRunner
      * @namespace itemRunnerFactory
      *
@@ -62,6 +64,12 @@ define(['jquery', 'lodash'], function($, _){
 
         //contains the bound events.
         var events = {};
+
+        //to know if the item has been rendered at least once
+        var rendered = false;
+
+        //store a pending state to apply
+        var pendingState;
 
         /*
          * Select the provider
@@ -170,6 +178,16 @@ define(['jquery', 'lodash'], function($, _){
                  * Call back when render is done
                  */
                 var renderDone = function renderDone (){
+
+                    if(rendered === false){
+                        rendered = true;
+    
+                        //apply a pending state if it has been defined before the rendering
+                        if(pendingState){
+                            self.setState(pendingState);
+                            pendingState = undefined;
+                        }
+                    }
 
                     /**
                      * The item is rendered
@@ -285,17 +303,22 @@ define(['jquery', 'lodash'], function($, _){
                 if(!_.isPlainObject(state)){
                     return this.trigger('error', "The item's state must be a JavaScript Plain Object: " + (typeof state) + ' given');
                 }
+
+                //the state will be applied only when the rendering is made
+                if(rendered === false){
+                    pendingState = state;
+                } else {
     
-                if(_.isFunction(provider.setState)){
+                    if(_.isFunction(provider.setState)){
 
-                    /**
-                     * Calls the provider's setState
-                     * @callback SetStateItemProvider
-                     * @param {Object} state -  the state to set
-                     */
-                    provider.setState.call(this, state);
+                        /**
+                         * Calls the provider's setState
+                         * @callback SetStateItemProvider
+                         * @param {Object} state -  the state to set
+                         */
+                        provider.setState.call(this, state);
+                    }
                 }
-
                 return this;
            },
 
