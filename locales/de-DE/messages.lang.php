@@ -31,6 +31,7 @@ $GLOBALS['__l10n']["List"]="Auflisten";
 $GLOBALS['__l10n']["List values"]="Werte auflisten";
 $GLOBALS['__l10n']["Manage data list"]="Daten-Liste verwalten";
 $GLOBALS['__l10n']["Manage items"]="Items verwalten";
+$GLOBALS['__l10n']["Manage test takers"]="Testpersonen verwalten";
 $GLOBALS['__l10n']["Meta Data"]="Meta-Daten";
 $GLOBALS['__l10n']["My settings"]="Meine Einstellungen";
 $GLOBALS['__l10n']["New password"]="Neues Passwort";

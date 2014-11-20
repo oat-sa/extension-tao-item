@@ -85,6 +85,7 @@ $GLOBALS['__l10n']["Local Data (the local namespace containing only the data ins
 $GLOBALS['__l10n']["Login"]="الدخول";
 $GLOBALS['__l10n']["Manage data list"]="إدارة قائمة البيانات";
 $GLOBALS['__l10n']["Manage items"]="ادارة الاسئلة";
+$GLOBALS['__l10n']["Manage test takers"]="إدارة المتقدمين للاختبار";
 $GLOBALS['__l10n']["Manage users"]="إدارة المستخدمين";
 $GLOBALS['__l10n']["Map the properties to the CSV columns"]="CSV اختر الخصائص المتعلقة بالاعمدة";
 $GLOBALS['__l10n']["Meta Data"]="بيانات التعريف";

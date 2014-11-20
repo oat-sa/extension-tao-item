@@ -31,6 +31,7 @@ $GLOBALS['__l10n']["List"]="Lëscht";
 $GLOBALS['__l10n']["List values"]="Werter uweisen";
 $GLOBALS['__l10n']["Manage data list"]="Daten Lëschten verwalten";
 $GLOBALS['__l10n']["Manage items"]="Itemen verwalten";
+$GLOBALS['__l10n']["Manage test takers"]="Testpersounen verwalten";
 $GLOBALS['__l10n']["Meta Data"]="Logout";
 $GLOBALS['__l10n']["My settings"]="Meng Astellungen";
 $GLOBALS['__l10n']["New password"]="Neit Passwuert";

@@ -76,6 +76,7 @@ $GLOBALS['__l10n']["Local Data (the local namespace containing only the data ins
 $GLOBALS['__l10n']["Login"]="Inloggning";
 $GLOBALS['__l10n']["Manage data list"]="Hantera datalista";
 $GLOBALS['__l10n']["Manage items"]="Hantera frågor";
+$GLOBALS['__l10n']["Manage test takers"]="Hantera testtagare";
 $GLOBALS['__l10n']["Manage users"]="Hantera användare";
 $GLOBALS['__l10n']["Map the properties to the CSV columns"]="Kartlägg egenskaper hos CSV-kolumner";
 $GLOBALS['__l10n']["Meta Data"]="Metadata";
