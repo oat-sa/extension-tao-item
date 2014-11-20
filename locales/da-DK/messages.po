@@ -1,34 +1,29 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T10:36:33\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: da-DK\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
-msgid "An error occured while saving the item"
-msgstr "En fejl opstod mens item blev gemt"
+msgid "Actual size"
+msgstr ""
 
 msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
-#, tao-public
 msgid "Authoring"
 msgstr "Oprette"
 
-msgid "Back"
-msgstr "Tilbage"
-
 msgid "Class saved"
 msgstr "Klasse gemt"
-
-msgid "clean up"
-msgstr "ryd op"
-
-msgid "close"
-msgstr "luk"
 
 msgid "Close"
 msgstr ""
@@ -40,8 +35,8 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr "Opret og design items og øvelser."
 
-msgid "delete"
-msgstr "slet"
+msgid "Delete"
+msgstr ""
 
 msgid "Desktop preview"
 msgstr ""
@@ -49,29 +44,26 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr "Hent item indhold"
-
-msgid "duplicate"
-msgstr "kopier"
-
-msgid "Edit item"
-msgstr "Rediger item"
+msgid "Duplicate"
+msgstr ""
 
 msgid "Edit Item"
 msgstr "Rediger Item"
 
+msgid "Edit item"
+msgstr "Rediger item"
+
 msgid "Edit item class"
 msgstr "Rediger item klasse"
 
-msgid "export"
-msgstr "eksport"
-
-msgid "Finish"
+msgid "Export"
 msgstr ""
 
-msgid "import"
-msgstr "importere"
+msgid "Filter"
+msgstr ""
+
+msgid "Import"
+msgstr ""
 
 msgid "Item Locked"
 msgstr ""
@@ -85,12 +77,6 @@ msgstr ""
 msgid "Item saved"
 msgstr "Item gemt"
 
-msgid "Item saving failed"
-msgstr "Item blev ikke gemt"
-
-msgid "Item successfully saved"
-msgstr "Item gemt"
-
 #, tao-public
 msgid "Items"
 msgstr "Item"
@@ -98,8 +84,11 @@ msgstr "Item"
 msgid "Items library"
 msgstr "Item arkiv"
 
-msgid "lists"
-msgstr "lister"
+msgid "Landscape"
+msgstr ""
+
+msgid "Lists"
+msgstr ""
 
 msgid "Lock Owner:"
 msgstr ""
@@ -111,17 +100,17 @@ msgstr ""
 msgid "Manage items"
 msgstr "Administrere item"
 
-msgid "meta data"
-msgstr "metadata"
+msgid "Mobile preview"
+msgstr ""
 
-msgid "move"
-msgstr "flyt"
+msgid "Move"
+msgstr ""
 
-msgid "new class"
-msgstr "ny klasse"
+msgid "New class"
+msgstr ""
 
-msgid "new item"
-msgstr "nyt item"
+msgid "New item"
+msgstr ""
 
 msgid "No item type selected for the current item."
 msgstr "Ingen item type er valgt til denne item."
@@ -135,18 +124,14 @@ msgstr ""
 msgid "Please select first the item type!"
 msgstr "Vælg først item type!"
 
-msgid "preview"
-msgstr "forhåndsvisning"
+msgid "Portrait"
+msgstr ""
 
-#, tao-public
 msgid "Preview"
 msgstr "Forhåndsvisning"
 
-msgid "PREVIEW BOX"
-msgstr "FORHÅNDSVISNINGS BOKS"
-
-msgid "Preview Console"
-msgstr "Forhåndsvisningsbord"
+msgid "Properties"
+msgstr ""
 
 msgid "ReleaseLock"
 msgstr ""
@@ -157,11 +142,11 @@ msgstr ""
 msgid "Retrieving external resources"
 msgstr ""
 
+msgid "Scale "
+msgstr ""
+
 msgid "Search"
 msgstr "Søg"
-
-msgid "show/hide"
-msgstr "vis/skjul"
 
 msgid "Submit"
 msgstr ""
@@ -172,9 +157,15 @@ msgstr "Item modulet lader dig oprette og designe item og øvelser."
 msgid "This item is currently being edited and has been locked"
 msgstr ""
 
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr ""
+
+msgid "Translate"
+msgstr ""
+
 msgid "Unable to create deployement directory"
 msgstr ""
 
-msgid "Validation has failed"
-msgstr "Valideringen mislykkedes"
+msgid "Unable to release the lock"
+msgstr ""
 
