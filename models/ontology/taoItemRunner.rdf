@@ -8,7 +8,7 @@
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath">
     <rdf:type rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassFormalParameters"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Path]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Item Path]]]></rdfs:comment>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Path]]></rdfs:comment>
     <wf:PropertyFormalParametersName><![CDATA[itemPath]]></wf:PropertyFormalParametersName>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath">
