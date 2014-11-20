@@ -64,13 +64,13 @@ msgstr "تعديل السؤال"
 msgid "Edit item class"
 msgstr ""
 
-msgid "export"
+msgid "Export"
 msgstr "تصدير"
 
 msgid "Finish"
 msgstr ""
 
-msgid "import"
+msgid "Import"
 msgstr "استيراد"
 
 msgid "Item Locked"
