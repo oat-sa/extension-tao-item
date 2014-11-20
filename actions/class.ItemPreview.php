@@ -20,7 +20,7 @@
  *               2013 (update and modification) Open Assessment Technologies SA;
  */
 
-use \oat\taoMediaManager\model\SimpleFileManagement;
+use \oat\taoMediaManager\model\FileManager;
 /**
  * Preview API 
  *
@@ -102,7 +102,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
                 $filename = $folder.$subPath;
             }
             else if($identifier === 'mediamanager'){
-                $fileManager = new SimpleFileManagement();
+                $fileManager = FileManager::getPermissionModel();
                 $filename = $fileManager->retrieveFile($subPath);
             }
             else{
