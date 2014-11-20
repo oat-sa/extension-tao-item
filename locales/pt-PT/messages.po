@@ -1,46 +1,32 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:01\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T10:43:57\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr "Um erro ocorreu durante o guardar item"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
 msgstr ""
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr ""
-
-msgid "Authoring"
-msgstr ""
-
-msgid "As the owner of this resource, you may release the lock"
 msgstr "Como proprietário deste recurso, pode desbloquear"
 
-#, tao-public
 msgid "Authoring"
 msgstr "Criador"
-
-msgid "Back"
-msgstr "Voltar"
 
 msgid "Class saved"
 msgstr "Disciplina guardada"
 
-msgid "clean up"
-msgstr "Limpeza"
-
-msgid "close"
-msgstr "Fechar"
-
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 msgid "Close console"
 msgstr ""
@@ -49,8 +35,8 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr "Criar e desenvolver items e exercícios"
 
-msgid "delete"
-msgstr "Eliminar"
+msgid "Delete"
+msgstr ""
 
 msgid "Desktop preview"
 msgstr ""
@@ -58,26 +44,26 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr "Baixar conteúdo de item"
-
-msgid "duplicate"
-msgstr "duplicar"
+msgid "Duplicate"
+msgstr "Duplicar"
 
 msgid "Edit Item"
 msgstr "Editar Item"
 
+msgid "Edit item"
+msgstr "Editar item"
+
 msgid "Edit item class"
 msgstr "Editar item de disciplina"
 
-msgid "export"
-msgstr "exportar"
+msgid "Export"
+msgstr "Exportar"
 
-msgid "Finish"
-msgstr "Terminar"
+msgid "Filter"
+msgstr ""
 
-msgid "import"
-msgstr "importar"
+msgid "Import"
+msgstr "Importar"
 
 msgid "Item Locked"
 msgstr "O item bloqueado"
@@ -90,12 +76,6 @@ msgstr ""
 
 msgid "Item saved"
 msgstr "Item guardado"
-
-msgid "Item saving failed"
-msgstr "Guardar do item falhou"
-
-msgid "Item successfully saved"
-msgstr "Item guardado com sucesso"
 
 #, tao-public
 msgid "Items"
@@ -126,13 +106,10 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
-msgid "move"
-msgstr "mover"
-
-msgid "new class"
+msgid "New class"
 msgstr "Nova disciplina"
 
-msgid "new item"
+msgid "New item"
 msgstr "Novo item"
 
 msgid "No item type selected for the current item."
@@ -147,20 +124,14 @@ msgstr "Por favor contacte o proprietário do recurso para desbloquear"
 msgid "Please select first the item type!"
 msgstr "Por favor seleccione 1º o tipo de item"
 
-msgid "preview"
-msgstr "prever"
-
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
 msgstr "Prever"
 
-msgid "PREVIEW BOX"
-msgstr "CAIXA DE PREVISÃO"
-
-msgid "Preview Console"
-msgstr "Consola de previsão"
+msgid "Properties"
+msgstr ""
 
 msgid "ReleaseLock"
 msgstr "Desbloquear"
@@ -176,9 +147,6 @@ msgstr ""
 
 msgid "Search"
 msgstr "Procurar"
-
-msgid "show/hide"
-msgstr "Mostrar/Esconder"
 
 msgid "Submit"
 msgstr ""
@@ -200,7 +168,4 @@ msgstr ""
 
 msgid "Unable to release the lock"
 msgstr ""
-
-msgid "Validation has failed"
-msgstr "A validação falhou"
 

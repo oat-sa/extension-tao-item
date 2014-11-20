@@ -1,15 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:02\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T10:43:57\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-SG\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: zh-SG\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr ""
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
 msgstr ""
@@ -23,12 +25,6 @@ msgstr ""
 msgid "Class saved"
 msgstr ""
 
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
-
 msgid "Close"
 msgstr ""
 
@@ -39,7 +35,7 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "delete"
+msgid "Delete"
 msgstr ""
 
 msgid "Desktop preview"
@@ -48,10 +44,7 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr ""
-
-msgid "duplicate"
+msgid "Duplicate"
 msgstr ""
 
 msgid "Edit Item"
@@ -63,13 +56,13 @@ msgstr ""
 msgid "Edit item class"
 msgstr ""
 
-msgid "export"
+msgid "Export"
 msgstr ""
 
-msgid "Finish"
+msgid "Filter"
 msgstr ""
 
-msgid "import"
+msgid "Import"
 msgstr ""
 
 msgid "Item Locked"
@@ -82,12 +75,6 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
-
-msgid "Item saving failed"
-msgstr ""
-
-msgid "Item successfully saved"
 msgstr ""
 
 #, tao-public
@@ -119,13 +106,10 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
-msgid "move"
+msgid "New class"
 msgstr ""
 
-msgid "new class"
-msgstr ""
-
-msgid "new item"
+msgid "New item"
 msgstr ""
 
 msgid "No item type selected for the current item."
@@ -143,17 +127,10 @@ msgstr ""
 msgid "Portrait"
 msgstr ""
 
-msgid "preview"
-msgstr ""
-
-#, tao-public
 msgid "Preview"
 msgstr ""
 
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Preview Console"
+msgid "Properties"
 msgstr ""
 
 msgid "ReleaseLock"
@@ -169,9 +146,6 @@ msgid "Scale "
 msgstr ""
 
 msgid "Search"
-msgstr ""
-
-msgid "show/hide"
 msgstr ""
 
 msgid "Submit"

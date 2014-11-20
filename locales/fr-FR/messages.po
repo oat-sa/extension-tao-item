@@ -1,43 +1,29 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T10:43:56\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: fr-FR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "An error occured while saving the item"
-msgstr "Une erreur est survenue pendant la sauvegarde de l'item"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
 msgstr ""
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr ""
-
-msgid "Authoring"
-msgstr ""
-
-msgid "As the owner of this resource, you may release the lock"
 msgstr "En tant que propriétaire de la ressource, vous pouvez la déverrouiller."
 
-#, tao-public
 msgid "Authoring"
 msgstr "Éditeur "
 
-msgid "Back"
-msgstr "Retour"
-
 msgid "Class saved"
 msgstr "Classe enregistrée"
-
-msgid "clean up"
-msgstr "nettoyer"
-
-msgid "close"
-msgstr "fermer"
 
 msgid "Close"
 msgstr ""
@@ -49,7 +35,7 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr "Concevoir des items et exercices."
 
-msgid "delete"
+msgid "Delete"
 msgstr "Supprimer"
 
 msgid "Desktop preview"
@@ -58,25 +44,25 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr "Télécharger le contenu de l'item"
-
-msgid "duplicate"
+msgid "Duplicate"
 msgstr "Dupliquer"
 
 msgid "Edit Item"
 msgstr "Modifier un item"
 
+msgid "Edit item"
+msgstr ""
+
 msgid "Edit item class"
 msgstr "Édition de la classe item"
 
-msgid "export"
-msgstr "Exporter"
+msgid "Export"
+msgstr "Dupliquer"
 
-msgid "Finish"
-msgstr "Terminer"
+msgid "Filter"
+msgstr "Filtrer"
 
-msgid "import"
+msgid "Import"
 msgstr "Importer"
 
 msgid "Item Locked"
@@ -91,12 +77,6 @@ msgstr ""
 msgid "Item saved"
 msgstr "Item enregistré"
 
-msgid "Item saving failed"
-msgstr "La sauvegarde de l'item a échoué"
-
-msgid "Item successfully saved"
-msgstr "L'item a été enregistré avec succès."
-
 #, tao-public
 msgid "Items"
 msgstr "Items"
@@ -110,7 +90,6 @@ msgstr ""
 msgid "Lists"
 msgstr "Listes"
 
-
 msgid "Lock Owner:"
 msgstr "Propriétaire du verrou :"
 
@@ -121,21 +100,17 @@ msgstr "Date de verrouillage :"
 msgid "Manage items"
 msgstr "Gestion des items"
 
-
 msgid "Mobile preview"
 msgstr ""
 
 msgid "Move"
 msgstr "Déplacer"
 
-msgid "move"
-msgstr "déplacer"
-
-msgid "new class"
+msgid "New class"
 msgstr "Créer classe"
 
-msgid "new item"
-msgstr "Créer item"
+msgid "New item"
+msgstr "Créer classe"
 
 msgid "No item type selected for the current item."
 msgstr "Pas de modèle d'item sélectionné pour cet item."
@@ -149,21 +124,14 @@ msgstr "Veuillez contacter le propriétaire de la ressource pour la déverrouill
 msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
 
-msgid "preview"
-msgstr "Aperçu"
-
-
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
 msgstr "Aperçu "
 
-msgid "PREVIEW BOX"
-msgstr "Aperçu"
-
-msgid "Preview Console"
-msgstr "Moniteur de prévisualisation"
+msgid "Properties"
+msgstr ""
 
 msgid "ReleaseLock"
 msgstr "Déverrouiller"
@@ -179,9 +147,6 @@ msgstr ""
 
 msgid "Search"
 msgstr "Rechercher"
-
-msgid "show/hide"
-msgstr "montrer/cacher"
 
 msgid "Submit"
 msgstr ""
@@ -203,8 +168,4 @@ msgstr "Impossible de créer le repertoire pour le deploiement"
 
 msgid "Unable to release the lock"
 msgstr ""
-
-msgid "Validation has failed"
-msgstr "La validation a échoué"
-
 
