@@ -1,6 +1,5 @@
 msgid ""
 msgstr ""
-<<<<<<< HEAD
 "Project-Id-Version: TAO v3.0\n"
 "PO-Revision-Date: 2014-10-21T07:52:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
@@ -12,7 +11,7 @@ msgstr ""
 msgid "An error occured while saving the item"
 msgstr "En fejl opstod mens item blev gemt"
 
-msgid "Actual size"
+msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
 #, tao-public
@@ -21,7 +20,6 @@ msgstr "Oprette"
 
 msgid "Back"
 msgstr "Tilbage"
->>>>>>> parent of 771088a... update locales
 
 msgid "Class saved"
 msgstr "Klasse gemt"
