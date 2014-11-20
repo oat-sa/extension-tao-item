@@ -8,6 +8,9 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Actual size"
+msgstr ""
+
 msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
@@ -28,7 +31,7 @@ msgid "close"
 msgstr "اغلاق"
 
 msgid "Close"
-msgstr ""
+msgstr "اغلاق"
 
 msgid "Close console"
 msgstr ""
@@ -37,7 +40,7 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "delete"
+msgid "Delete"
 msgstr "حذف"
 
 msgid "Desktop preview"
@@ -49,7 +52,7 @@ msgstr ""
 msgid "Download item content"
 msgstr ""
 
-msgid "duplicate"
+msgid "Duplicate"
 msgstr "تكرار"
 
 msgid "Edit item"
@@ -166,6 +169,8 @@ msgstr "Le module Items vous permet la création et le design d'items et d'exerc
 msgid "This item is currently being edited and has been locked"
 msgstr ""
 
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr ""
 
 msgid "Unable to create deployement directory"
 msgstr ""
