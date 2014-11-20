@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:02\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:49\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sv-SE\n"
@@ -20,19 +20,13 @@ msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
 msgid "Authoring"
-msgstr ""
+msgstr "Skapa"
 
 msgid "Class saved"
-msgstr ""
-
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
+msgstr "Klass sparad"
 
 msgid "Close"
-msgstr ""
+msgstr "Stäng"
 
 msgid "Close console"
 msgstr ""
@@ -42,7 +36,7 @@ msgid "Create and design items and exercises."
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Da bort"
 
 msgid "Desktop preview"
 msgstr ""
@@ -50,14 +44,11 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr ""
-
 msgid "Duplicate"
-msgstr ""
+msgstr "Dublett"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Redigera fråga"
 
 msgid "Edit item"
 msgstr ""
@@ -66,16 +57,13 @@ msgid "Edit item class"
 msgstr ""
 
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "Filter"
 msgstr ""
 
-msgid "Finish"
-msgstr ""
-
 msgid "Import"
-msgstr ""
+msgstr "Importera"
 
 msgid "Item Locked"
 msgstr ""
@@ -87,11 +75,11 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "Fråga sparad"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Frågor"
 
 msgid "Items library"
 msgstr ""
@@ -100,7 +88,7 @@ msgid "Landscape"
 msgstr ""
 
 msgid "Lists"
-msgstr ""
+msgstr "Listor"
 
 msgid "Lock Owner:"
 msgstr ""
@@ -110,43 +98,37 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Hantera frågor"
 
 msgid "Mobile preview"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Flytta"
 
 msgid "New class"
-msgstr ""
+msgstr "ny klass"
 
 msgid "New item"
-msgstr ""
+msgstr "Ny fråga"
 
 msgid "No item type selected for the current item."
 msgstr ""
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Inte tillgänglig än"
 
 msgid "Please contact the owner of the resource to unlock it"
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Var vänlig välj först frågetyp!"
 
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
-
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Preview Console"
-msgstr ""
+msgstr "Förhandsvisning"
 
 msgid "Properties"
 msgstr ""
@@ -166,14 +148,11 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-msgid "show/hide"
-msgstr ""
-
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 
 msgid "This item is currently being edited and has been locked"
 msgstr ""
