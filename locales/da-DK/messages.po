@@ -1,35 +1,36 @@
 msgid ""
 msgstr ""
+<<<<<<< HEAD
 "Project-Id-Version: TAO v3.0\n"
 "PO-Revision-Date: 2014-10-21T07:52:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
-"sourceLanguage: en-US\n"
-"targetLanguage: da-DK\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: .\n"
+
+msgid "An error occured while saving the item"
+msgstr "En fejl opstod mens item blev gemt"
 
 msgid "Actual size"
 msgstr ""
 
-msgid "As the owner of this resource, you may release the lock"
-msgstr ""
-
+#, tao-public
 msgid "Authoring"
-msgstr ""
+msgstr "Oprette"
+
+msgid "Back"
+msgstr "Tilbage"
+>>>>>>> parent of 771088a... update locales
 
 msgid "Class saved"
-msgstr ""
+msgstr "Klasse gemt"
 
 msgid "clean up"
-msgstr ""
+msgstr "ryd op"
 
 msgid "close"
-msgstr ""
+msgstr "luk"
 
 msgid "Close"
 msgstr ""
@@ -39,10 +40,10 @@ msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Opret og design items og øvelser."
 
-msgid "Delete"
-msgstr ""
+msgid "delete"
+msgstr "slet"
 
 msgid "Desktop preview"
 msgstr ""
@@ -51,31 +52,28 @@ msgid "Don’t show this again!"
 msgstr ""
 
 msgid "Download item content"
-msgstr ""
+msgstr "Hent item indhold"
 
-msgid "Duplicate"
-msgstr ""
-
-msgid "Edit Item"
-msgstr ""
+msgid "duplicate"
+msgstr "kopier"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Rediger item"
+
+msgid "Edit Item"
+msgstr "Rediger Item"
 
 msgid "Edit item class"
-msgstr ""
+msgstr "Rediger item klasse"
 
-msgid "Export"
-msgstr ""
-
-msgid "Filter"
-msgstr ""
+msgid "export"
+msgstr "eksport"
 
 msgid "Finish"
 msgstr ""
 
-msgid "Import"
-msgstr ""
+msgid "import"
+msgstr "importere"
 
 msgid "Item Locked"
 msgstr ""
@@ -87,20 +85,23 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "Item gemt"
+
+msgid "Item saving failed"
+msgstr "Item blev ikke gemt"
+
+msgid "Item successfully saved"
+msgstr "Item gemt"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Item"
 
 msgid "Items library"
-msgstr ""
+msgstr "Item arkiv"
 
-msgid "Landscape"
-msgstr ""
-
-msgid "Lists"
-msgstr ""
+msgid "lists"
+msgstr "lister"
 
 msgid "Lock Owner:"
 msgstr ""
@@ -110,46 +111,44 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Administrere item"
 
-msgid "Mobile preview"
-msgstr ""
+msgid "meta data"
+msgstr "metadata"
 
-msgid "Move"
-msgstr ""
+msgid "move"
+msgstr "flyt"
 
-msgid "New class"
-msgstr ""
+msgid "new class"
+msgstr "ny klasse"
 
-msgid "New item"
-msgstr ""
+msgid "new item"
+msgstr "nyt item"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Ingen item type er valgt til denne item."
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Ikke tilgængeligt endnu"
 
 msgid "Please contact the owner of the resource to unlock it"
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Vælg først item type!"
 
-msgid "Portrait"
-msgstr ""
+msgid "preview"
+msgstr "forhåndsvisning"
 
+#, tao-public
 msgid "Preview"
-msgstr ""
+msgstr "Forhåndsvisning"
 
 msgid "PREVIEW BOX"
-msgstr ""
+msgstr "FORHÅNDSVISNINGS BOKS"
 
 msgid "Preview Console"
-msgstr ""
-
-msgid "Properties"
-msgstr ""
+msgstr "Forhåndsvisningsbord"
 
 msgid "ReleaseLock"
 msgstr ""
@@ -160,33 +159,24 @@ msgstr ""
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "Scale "
-msgstr ""
-
 msgid "Search"
-msgstr ""
+msgstr "Søg"
 
 msgid "show/hide"
-msgstr ""
+msgstr "vis/skjul"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Item modulet lader dig oprette og designe item og øvelser."
 
 msgid "This item is currently being edited and has been locked"
-msgstr ""
-
-msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr ""
-
-msgid "Translate"
 msgstr ""
 
 msgid "Unable to create deployement directory"
 msgstr ""
 
-msgid "Unable to release the lock"
-msgstr ""
+msgid "Validation has failed"
+msgstr "Valideringen mislykkedes"
 

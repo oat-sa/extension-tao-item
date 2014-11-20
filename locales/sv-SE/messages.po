@@ -5,13 +5,11 @@ msgstr ""
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sv-SE\n"
-"sourceLanguage: en-US\n"
-"targetLanguage: sv-SE\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: .\n"
+
+msgid "An error occured while saving the item"
+msgstr "Ett fel uppstod medan frågan sparades"
 
 msgid "Actual size"
 msgstr ""
@@ -19,17 +17,21 @@ msgstr ""
 msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
+#, tao-public
 msgid "Authoring"
-msgstr ""
+msgstr "Skapa"
+
+msgid "Back"
+msgstr "Bakåt"
 
 msgid "Class saved"
-msgstr ""
+msgstr "Klass sparad"
 
 msgid "clean up"
-msgstr ""
+msgstr "städa upp"
 
 msgid "close"
-msgstr ""
+msgstr "stäng"
 
 msgid "Close"
 msgstr ""
@@ -41,8 +43,8 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "Delete"
-msgstr ""
+msgid "delete"
+msgstr "ta bort"
 
 msgid "Desktop preview"
 msgstr ""
@@ -51,31 +53,25 @@ msgid "Don’t show this again!"
 msgstr ""
 
 msgid "Download item content"
-msgstr ""
+msgstr "Ladda ner frågeinnehåll"
 
-msgid "Duplicate"
-msgstr ""
+msgid "duplicate"
+msgstr "dublett"
 
 msgid "Edit Item"
-msgstr ""
-
-msgid "Edit item"
-msgstr ""
+msgstr "Redigera fråga"
 
 msgid "Edit item class"
 msgstr ""
 
-msgid "Export"
-msgstr ""
-
-msgid "Filter"
-msgstr ""
+msgid "export"
+msgstr "export"
 
 msgid "Finish"
 msgstr ""
 
-msgid "Import"
-msgstr ""
+msgid "import"
+msgstr "importera"
 
 msgid "Item Locked"
 msgstr ""
@@ -87,11 +83,17 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
+msgstr "Fråga sparad"
+
+msgid "Item saving failed"
+msgstr ""
+
+msgid "Item successfully saved"
 msgstr ""
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Frågor"
 
 msgid "Items library"
 msgstr ""
@@ -100,7 +102,7 @@ msgid "Landscape"
 msgstr ""
 
 msgid "Lists"
-msgstr ""
+msgstr "Listor"
 
 msgid "Lock Owner:"
 msgstr ""
@@ -110,7 +112,7 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Hantera frågor"
 
 msgid "Mobile preview"
 msgstr ""
@@ -118,38 +120,41 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
-msgid "New class"
-msgstr ""
+msgid "move"
+msgstr "flytta"
 
-msgid "New item"
-msgstr ""
+msgid "new class"
+msgstr "ny klass"
+
+msgid "new item"
+msgstr "ny fråga"
 
 msgid "No item type selected for the current item."
 msgstr ""
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Inte tillgänglig än"
 
 msgid "Please contact the owner of the resource to unlock it"
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Var vänlig välj först frågetyp!"
+
+msgid "preview"
+msgstr "förhandsvisning"
 
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
+msgstr "Förhandsvisning"
 
 msgid "PREVIEW BOX"
-msgstr ""
+msgstr "FÖRHANDSVISNINGSBOX"
 
 msgid "Preview Console"
-msgstr ""
-
-msgid "Properties"
-msgstr ""
+msgstr "Förhandsvisningsbord"
 
 msgid "ReleaseLock"
 msgstr ""
@@ -160,24 +165,30 @@ msgstr ""
 msgid "Retrieving external resources"
 msgstr ""
 
+<<<<<<< HEAD
 msgid "Scale "
 msgstr ""
 
 msgid "Search"
 msgstr ""
+=======
+msgid "search"
+msgstr "sök"
+>>>>>>> parent of 771088a... update locales
 
 msgid "show/hide"
-msgstr ""
+msgstr "visa/dölj"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 
 msgid "This item is currently being edited and has been locked"
 msgstr ""
 
+<<<<<<< HEAD
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
@@ -189,4 +200,11 @@ msgstr ""
 
 msgid "Unable to release the lock"
 msgstr ""
+=======
+msgid "Unable to create deployement directory"
+msgstr ""
+
+msgid "Validation has failed"
+msgstr "Verifierande misslyckades"
+>>>>>>> parent of 771088a... update locales
 

@@ -5,13 +5,11 @@ msgstr ""
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pl-PL\n"
-"sourceLanguage: en-US\n"
-"targetLanguage: pl-PL\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: .\n"
+
+msgid "An error occured while saving the item"
+msgstr ""
 
 msgid "Actual size"
 msgstr ""
@@ -41,7 +39,7 @@ msgstr ""
 msgid "Create and design items and exercises."
 msgstr ""
 
-msgid "Delete"
+msgid "delete"
 msgstr ""
 
 msgid "Desktop preview"
@@ -53,7 +51,7 @@ msgstr ""
 msgid "Download item content"
 msgstr ""
 
-msgid "Duplicate"
+msgid "duplicate"
 msgstr ""
 
 msgid "Edit Item"
@@ -65,16 +63,13 @@ msgstr ""
 msgid "Edit item class"
 msgstr ""
 
-msgid "Export"
-msgstr ""
-
-msgid "Filter"
+msgid "export"
 msgstr ""
 
 msgid "Finish"
 msgstr ""
 
-msgid "Import"
+msgid "import"
 msgstr ""
 
 msgid "Item Locked"
@@ -87,6 +82,12 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
+msgstr ""
+
+msgid "Item saving failed"
+msgstr ""
+
+msgid "Item successfully saved"
 msgstr ""
 
 #, tao-public
@@ -118,10 +119,13 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
-msgid "New class"
+msgid "move"
 msgstr ""
 
-msgid "New item"
+msgid "new class"
+msgstr ""
+
+msgid "new item"
 msgstr ""
 
 msgid "No item type selected for the current item."
@@ -139,6 +143,9 @@ msgstr ""
 msgid "Portrait"
 msgstr ""
 
+msgid "preview"
+msgstr ""
+
 msgid "Preview"
 msgstr ""
 
@@ -146,9 +153,6 @@ msgid "PREVIEW BOX"
 msgstr ""
 
 msgid "Preview Console"
-msgstr ""
-
-msgid "Properties"
 msgstr ""
 
 msgid "ReleaseLock"

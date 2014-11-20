@@ -5,13 +5,11 @@ msgstr ""
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
-"sourceLanguage: en-US\n"
-"targetLanguage: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: .\n"
+
+msgid "An error occured while saving the item"
+msgstr "Um erro ocorreu durante o guardar item"
 
 msgid "Actual size"
 msgstr ""
@@ -22,14 +20,24 @@ msgstr ""
 msgid "Authoring"
 msgstr ""
 
+msgid "As the owner of this resource, you may release the lock"
+msgstr "Como proprietário deste recurso, pode desbloquear"
+
+#, tao-public
+msgid "Authoring"
+msgstr "Criador"
+
+msgid "Back"
+msgstr "Voltar"
+
 msgid "Class saved"
-msgstr ""
+msgstr "Disciplina guardada"
 
 msgid "clean up"
-msgstr ""
+msgstr "Limpeza"
 
 msgid "close"
-msgstr ""
+msgstr "Fechar"
 
 msgid "Close"
 msgstr ""
@@ -39,10 +47,10 @@ msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Criar e desenvolver items e exercícios"
 
-msgid "Delete"
-msgstr ""
+msgid "delete"
+msgstr "Eliminar"
 
 msgid "Desktop preview"
 msgstr ""
@@ -51,66 +59,66 @@ msgid "Don’t show this again!"
 msgstr ""
 
 msgid "Download item content"
-msgstr ""
+msgstr "Baixar conteúdo de item"
 
-msgid "Duplicate"
-msgstr ""
+msgid "duplicate"
+msgstr "duplicar"
 
 msgid "Edit Item"
-msgstr ""
-
-msgid "Edit item"
-msgstr ""
+msgstr "Editar Item"
 
 msgid "Edit item class"
-msgstr ""
+msgstr "Editar item de disciplina"
 
-msgid "Export"
-msgstr ""
-
-msgid "Filter"
-msgstr ""
+msgid "export"
+msgstr "exportar"
 
 msgid "Finish"
-msgstr ""
+msgstr "Terminar"
 
-msgid "Import"
-msgstr ""
+msgid "import"
+msgstr "importar"
 
 msgid "Item Locked"
-msgstr ""
+msgstr "O item bloqueado"
 
 msgid "Item Locked:"
-msgstr ""
+msgstr "Item bloqueado:"
 
 msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "Item guardado"
+
+msgid "Item saving failed"
+msgstr "Guardar do item falhou"
+
+msgid "Item successfully saved"
+msgstr "Item guardado com sucesso"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Items"
 
 msgid "Items library"
-msgstr ""
+msgstr "Biblioteca de items"
 
 msgid "Landscape"
 msgstr ""
 
 msgid "Lists"
-msgstr ""
+msgstr "Listas"
 
 msgid "Lock Owner:"
-msgstr ""
+msgstr "Proprietário do bloqueio:"
 
 msgid "Locking Date:"
-msgstr ""
+msgstr "Data de bloqueio:"
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Gerir items"
 
 msgid "Mobile preview"
 msgstr ""
@@ -118,41 +126,44 @@ msgstr ""
 msgid "Move"
 msgstr ""
 
-msgid "New class"
-msgstr ""
+msgid "move"
+msgstr "mover"
 
-msgid "New item"
-msgstr ""
+msgid "new class"
+msgstr "Nova disciplina"
+
+msgid "new item"
+msgstr "Novo item"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Nenhum tipo de item seleccionado para o item actual"
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Ainda não se encontra disponível"
 
 msgid "Please contact the owner of the resource to unlock it"
-msgstr ""
+msgstr "Por favor contacte o proprietário do recurso para desbloquear"
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Por favor seleccione 1º o tipo de item"
+
+msgid "preview"
+msgstr "prever"
 
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
+msgstr "Prever"
 
 msgid "PREVIEW BOX"
-msgstr ""
+msgstr "CAIXA DE PREVISÃO"
 
 msgid "Preview Console"
-msgstr ""
-
-msgid "Properties"
-msgstr ""
+msgstr "Consola de previsão"
 
 msgid "ReleaseLock"
-msgstr ""
+msgstr "Desbloquear"
 
 msgid "Remove this message"
 msgstr ""
@@ -164,19 +175,19 @@ msgid "Scale "
 msgstr ""
 
 msgid "Search"
-msgstr ""
+msgstr "Procurar"
 
 msgid "show/hide"
-msgstr ""
+msgstr "Mostrar/Esconder"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "O modulo de items permite a criação de items e exercícios"
 
 msgid "This item is currently being edited and has been locked"
-msgstr ""
+msgstr "Este item está a ser editado e foi bloqueado"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
@@ -189,4 +200,7 @@ msgstr ""
 
 msgid "Unable to release the lock"
 msgstr ""
+
+msgid "Validation has failed"
+msgstr "A validação falhou"
 
