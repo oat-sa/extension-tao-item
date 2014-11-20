@@ -26,7 +26,7 @@ msgid "Class saved"
 msgstr "Klasse gemt"
 
 msgid "Close"
-msgstr ""
+msgstr "Luk"
 
 msgid "Close console"
 msgstr ""
@@ -36,7 +36,7 @@ msgid "Create and design items and exercises."
 msgstr "Opret og design items og øvelser."
 
 msgid "Delete"
-msgstr ""
+msgstr "Slet"
 
 msgid "Desktop preview"
 msgstr ""
@@ -57,7 +57,7 @@ msgid "Edit item class"
 msgstr "Rediger item klasse"
 
 msgid "Export"
-msgstr ""
+msgstr "Eksport"
 
 msgid "Filter"
 msgstr ""
@@ -104,7 +104,7 @@ msgid "Mobile preview"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Flyt"
 
 msgid "New class"
 msgstr ""
