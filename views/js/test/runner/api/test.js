@@ -251,6 +251,32 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
         .render($container);
     });
 
+    QUnit.asyncTest('Render sync with init async', function(assert){
+        QUnit.expect(2);
+       
+        var $container = $('#item-container');
+        assert.equal($container.length, 1, 'the item container exists');
+
+        itemRunner.register('dummyProvider', _.defaults({
+            init: function(data, done){
+                var self = this;
+                setTimeout(function(){
+                    self._data = data;
+                    done(); 
+                }, 100);
+            }
+        }, dummyProvider));
+
+        itemRunner('dummyProvider', {
+            type: 'text'
+        }).on('render', function(){
+            assert.ok(true, 'Rendered done');
+            QUnit.start();
+        })
+        .init()
+        .render($container);
+    });
+
 
 // itemRunner().clear()
 

@@ -65,11 +65,17 @@ define(['jquery', 'lodash'], function($, _){
         //contains the bound events.
         var events = {};
 
-        //to know if the item has been rendered at least once
-        var rendered = false;
-
-        //store a pending state to apply
-        var pendingState;
+        //flow structure to manage sync calls in an async context.
+        var flow = {
+            init : {
+                done: false,
+                pending : []
+            },
+            render : {
+                done: false,
+                pending : []
+            }
+        };
 
         /*
          * Select the provider
@@ -129,6 +135,19 @@ define(['jquery', 'lodash'], function($, _){
                  * Call back when init is done
                  */
                 var initDone = function initDone(){
+
+                   //manage pending tasks the first time
+                    if(flow.init.done === false){
+                        flow.init.done = true;
+    
+                        _.forEach(flow.init.pending, function(pendingTask){
+                            if(_.isFunction(pendingTask)){
+                                pendingTask.call(self);
+                            }
+                        });
+                        flow.init.pending = [];
+                    }
+
                     /**
                      * the runner has initialized correclty the item
                      * @event ItemRunner#init
@@ -179,14 +198,16 @@ define(['jquery', 'lodash'], function($, _){
                  */
                 var renderDone = function renderDone (){
 
-                    if(rendered === false){
-                        rendered = true;
+                    //manage pending tasks the first time
+                    if(flow.render.done === false){
+                        flow.render.done = true;
     
-                        //apply a pending state if it has been defined before the rendering
-                        if(pendingState){
-                            self.setState(pendingState);
-                            pendingState = undefined;
-                        }
+                        _.forEach(flow.render.pending, function(pendingTask){
+                            if(_.isFunction(pendingTask)){
+                                pendingTask.call(self);
+                            }
+                        });
+                        flow.render.pending = [];
                     }
 
                     /**
@@ -208,25 +229,34 @@ define(['jquery', 'lodash'], function($, _){
                     return self.trigger('error', 'A valid HTMLElement (or a jquery element) at least is required to render the item');
                 }
 
-                //we keep a reference to the container
-                if(elt instanceof $){
-                    this.container = elt.get(0);
+                if(flow.init.done === false){
+                    flow.init.pending.push(function(){
+                        this.render(elt);
+                    });
                 } else {
-                    this.container = elt;
-                }
 
-                if(_.isFunction(provider.render)){
+                    //we keep a reference to the container
+                    if(elt instanceof $){
+                        this.container = elt.get(0);
+                    } else {
+                        this.container = elt;
+                    }
 
-                    /**
-                     * Calls the provider's render
-                     * @callback RendertItemProvider
-                     * @param {HTMLElement} elt - the element to render inside
-                     * @param {Function} done - call once the render is done
-                     */
-                    provider.render.call(this, this.container, renderDone);
+                    //the state will be applied only when the rendering is made
 
-                } else {
-                    renderDone();
+                    if(_.isFunction(provider.render)){
+
+                        /**
+                         * Calls the provider's render
+                         * @callback RendertItemProvider
+                         * @param {HTMLElement} elt - the element to render inside
+                         * @param {Function} done - call once the render is done
+                         */
+                        provider.render.call(this, this.container, renderDone);
+
+                    } else {
+                        renderDone();
+                    }
                 }
 
                 return this;
@@ -305,8 +335,10 @@ define(['jquery', 'lodash'], function($, _){
                 }
 
                 //the state will be applied only when the rendering is made
-                if(rendered === false){
-                    pendingState = state;
+                if(flow.render.done === false){
+                    flow.render.pending.push(function(){
+                        this.setState(state);
+                    });
                 } else {
     
                     if(_.isFunction(provider.setState)){
