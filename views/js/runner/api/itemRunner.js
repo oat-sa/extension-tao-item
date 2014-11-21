@@ -357,7 +357,7 @@ define(['jquery', 'lodash'], function($, _){
            /**
             * Get the responses of the running item.
             *
-            * @returns {Array} state
+            * @returns {Array} the item's responses
             */
            getResponses : function(){
                 var responses = []; 
