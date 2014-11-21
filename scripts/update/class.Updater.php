@@ -19,8 +19,6 @@
  *
  */
 
-use common_ext_ExtensionsManager;
-
 /**
  * 
  * @author Joel Bout <joel@taotesting.com>
@@ -39,14 +37,14 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         //migrate from 2.6 to 2.6.1
         if ($currentVersion == '2.6') {
 
-            $ext = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+            $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
             $file = $ext->getDir().'models'.DIRECTORY_SEPARATOR.'ontology'.DIRECTORY_SEPARATOR.'indexation.rdf';
             
-            $adapter = new \tao_helpers_data_GenerisAdapterRdf();
+            $adapter = new tao_helpers_data_GenerisAdapterRdf();
             if($adapter->import($file)){
                 $currentVersion = '2.6.1';
             } else{
-                \common_Logger::w('Import failed for '.$file);
+                common_Logger::w('Import failed for '.$file);
             }
         }
         
