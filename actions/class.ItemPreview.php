@@ -20,6 +20,7 @@
  *               2013 (update and modification) Open Assessment Technologies SA;
  */
 
+use \oat\taoMediaManager\model\FileManager;
 /**
  * Preview API 
  *
@@ -89,12 +90,24 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     }
 
     private function renderResource($item, $path){
-        
+
+        $identifier = substr($path, 0, strpos($path, '/'));
+        $subPath = substr($path, strpos($path, '/') + 1);
+
         //@todo : allow preview in a language other than the one in the session
         $lang = core_kernel_classes_Session::singleton()->getDataLanguage();
         $folder = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
         if(tao_helpers_File::securityCheck($path, true)){
-            $filename = $folder.$path;
+            if($identifier === 'local'){
+                $filename = $folder.$subPath;
+            }
+            else if($identifier === 'mediamanager'){
+                $fileManager = FileManager::getPermissionModel();
+                $filename = $fileManager->retrieveFile($subPath);
+            }
+            else{
+                $filename = $folder.$path;
+            }
             tao_helpers_Http::returnFile($filename);
         }else{
             throw new common_exception_Error('invalid item preview file path');
