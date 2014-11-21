@@ -20,6 +20,7 @@
   	<rdfs:label xml:lang="en-US"><![CDATA[Item Model Index]]></rdfs:label>
   	<tao:IndexIdentifier><![CDATA[model]]></tao:IndexIdentifier>
   	<tao:IndexTokenizer rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#LabelTokenizer"/>
+  	<tao:IndexFuzzyMatching rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#False" />
   </rdf:Description>
   
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel">
@@ -32,6 +33,7 @@
   	<rdfs:label xml:lang="en-US"><![CDATA[Item Content Index]]></rdfs:label>
   	<tao:IndexIdentifier><![CDATA[content]]></tao:IndexIdentifier>
   	<tao:IndexTokenizer rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer"/>
+  	<tao:IndexFuzzyMatching rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True" />
   </rdf:Description>
   
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent">

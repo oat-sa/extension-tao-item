@@ -35,7 +35,7 @@ class taoItems_models_classes_search_ItemContentTokenizer implements Tokenizer
         foreach ($values as $valueUri) {
             $file = new core_kernel_file_File($valueUri);
             $content = file_get_contents($file->getAbsolutePath());
-            if($returnValue === false){
+            if($content === false){
                 common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
             } else {
                 $contentStrings[] = $content;
