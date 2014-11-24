@@ -19,12 +19,14 @@
  * 
  */
 use oat\tao\model\media\MediaBrowser;
+use oat\tao\model\media\MediaManagement;
+use \oat\tao\helpers\FileUploadException;
 
 /**
  * This helper class aims at formating the item content folder description
  *
  */
-class taoItems_helpers_ResourceManager implements MediaBrowser
+class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
 {
 
     private $item;
@@ -102,5 +104,30 @@ class taoItems_helpers_ResourceManager implements MediaBrowser
 
         tao_helpers_Http::returnFile($path);
     }
-    
+
+    public function upload($file, $path)
+    {
+
+        try{
+            $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
+            $fileName = tao_helpers_File::getSafeFileName($file["name"]);
+            common_Logger::w('filename : '.$fileName);
+
+            if(!move_uploaded_file($file["tmp_name"], $baseDir.$path.$fileName)){
+                throw new common_exception_Error('Unable to move uploaded file');
+            }
+
+            $fileData = $this->getFileInfo('/'.$path.$fileName, array());
+            return $fileData;
+
+        } catch(FileUploadException $fe){
+
+            return array( 'error' => $fe->getMessage());
+        }
+    }
+
+    public function delete($filename)
+    {
+        // TODO: Implement delete() method.
+    }
 }
