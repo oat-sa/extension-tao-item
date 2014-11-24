@@ -143,6 +143,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 		//TODO path traversal and null byte poison check ? 
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
         $relPath = trim($this->getRequestParameter('path'), '/');
+        $relPath = substr($relPath, strpos($relPath, '/') + 1);
         $relPath = empty($relPath) ? '' : $relPath.'/';
       
         try{ 
@@ -154,8 +155,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
                 throw new common_exception_Error('Unable to move uploaded file');
             } 
-            
-            $fileData = taoItems_helpers_ResourceManager::buildFile($item, $itemLang, $relPath.$fileName);
+
+            $resourceManager = new taoItems_helpers_ResourceManager(array('item' => $item, 'lang' => $itemLang));
+            $fileData = $resourceManager->getFileInfo('/'.$relPath.$fileName, array());
             echo json_encode($fileData);    
 
         } catch(FileUploadException $fe){
@@ -222,7 +224,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
+        $relPath = ltrim($this->getRequestParameter('path'), '/');
+        $relPath = substr($relPath, strpos($relPath, '/'));
+        $path = $baseDir.$relPath;
 
         //TODO path traversal and null byte poison check ? 
         if(is_file($path) && !is_dir($path)){
