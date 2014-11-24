@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de-DE\n"
@@ -23,13 +23,7 @@ msgid "Authoring"
 msgstr ""
 
 msgid "Class saved"
-msgstr ""
-
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
+msgstr "Klasse gespeichert"
 
 msgid "Close"
 msgstr ""
@@ -42,7 +36,7 @@ msgid "Create and design items and exercises."
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 msgid "Desktop preview"
 msgstr ""
@@ -50,14 +44,11 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr ""
-
 msgid "Duplicate"
 msgstr ""
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Item bearbeiten"
 
 msgid "Edit item"
 msgstr ""
@@ -66,12 +57,9 @@ msgid "Edit item class"
 msgstr ""
 
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "Filter"
-msgstr ""
-
-msgid "Finish"
 msgstr ""
 
 msgid "Import"
@@ -87,11 +75,11 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "Item gespeichert"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Items"
 
 msgid "Items library"
 msgstr ""
@@ -110,7 +98,7 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Items verwalten"
 
 msgid "Mobile preview"
 msgstr ""
@@ -140,13 +128,7 @@ msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
-
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Preview Console"
-msgstr ""
+msgstr "Vorschau"
 
 msgid "Properties"
 msgstr ""
@@ -164,16 +146,13 @@ msgid "Scale "
 msgstr ""
 
 msgid "Search"
-msgstr ""
-
-msgid "show/hide"
-msgstr ""
+msgstr "Suchen"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Das Item-Modul ermöglicht das Erstellen und Entwickeln von Items und Übungen."
 
 msgid "This item is currently being edited and has been locked"
 msgstr ""

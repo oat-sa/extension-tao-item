@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
@@ -18,7 +18,7 @@ msgstr "Item Path"
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Path"
-msgstr "Item Path]"
+msgstr "Item Path"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -28,7 +28,7 @@ msgstr "Item Private Data Path"
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Private Data Path"
-msgstr "Item Private Data Path]"
+msgstr "Item Private Data Path"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -57,6 +57,6 @@ msgstr "Item Runner"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Item Runner"
-msgstr "Embed a run an item into a Delivery. This service initialize the TAO Apis and contexts"
+msgid "Embed a run an item into a Delivery. This service initialize the TAO Apis and contexts"
+msgstr ""
 

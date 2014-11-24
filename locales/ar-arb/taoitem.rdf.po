@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar-arb\n"
@@ -77,8 +77,8 @@ msgstr "Deliverable"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Deliverable"
-msgstr "Items of model are deliverable"
+msgid "Items of model are deliverable"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -87,8 +87,8 @@ msgstr "itemmodel service"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "itemmodel service"
-msgstr "service of the item model"
+msgid "service of the item model"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -119,16 +119,6 @@ msgstr "Paper-based Delivery Target"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
 msgstr "Paper-based Delivery Target"
-
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
-msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
-msgid "Authoring"
-msgstr "Authoring"
-
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
-msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Authoring"
-msgstr "Authoring"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -137,8 +127,8 @@ msgstr "Data File Name"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Data File Name"
-msgstr "the filename used to store the item content for this model"
+msgid "the filename used to store the item content for this model"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -152,8 +142,8 @@ msgstr "Stable"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Stable"
-msgstr "This item  model can be used in production"
+msgid "This item  model can be used in production"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -162,8 +152,8 @@ msgstr "Deprecated"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Deprecated"
-msgstr "This item model is not supported anymore, we advise to migrate your items"
+msgid "This item model is not supported anymore, we advise to migrate your items"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -172,8 +162,8 @@ msgstr "Development"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Development"
-msgstr "this item model has not been tested in a production environment, we advise to be carefull with it"
+msgid "this item model has not been tested in a production environment, we advise to be carefull with it"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -182,8 +172,8 @@ msgstr "Experimental"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Experimental"
-msgstr "this item model is still in conception, but you can try it, give your feedback and it will be improved."
+msgid "this item model is still in conception, but you can try it, give your feedback and it will be improved."
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -192,13 +182,68 @@ msgstr "Status"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "Status"
-msgstr "The status of an item model"
+msgid "The status of an item model"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Items Manager"
 msgstr "Items Manager"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Items Manager Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deliverable"
+msgstr "Items of model are deliverable"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "itemmodel service"
+msgstr "service of the item model"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring"
+msgstr "Authoring"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Authoring"
+msgstr "Authoring"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Data File Name"
+msgstr "the filename used to store the item content for this model"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Stable"
+msgstr "This item  model can be used in production"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deprecated"
+msgstr "This item model is not supported anymore, we advise to migrate your items"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Development"
+msgstr "this item model has not been tested in a production environment, we advise to be carefull with it"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Experimental"
+msgstr "this item model is still in conception, but you can try it, give your feedback and it will be improved."
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Status"
+msgstr "The status of an item model"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
