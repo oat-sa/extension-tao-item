@@ -102,7 +102,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
                 $filename = $folder.$subPath;
             }
             else if($identifier === 'mediamanager'){
-                $fileManager = FileManager::getPermissionModel();
+                $fileManager = FileManager::getFileManagementModel();
                 $filename = $fileManager->retrieveFile($subPath);
             }
             else{
