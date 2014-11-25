@@ -70,17 +70,17 @@ define(['scorer'], function(scorer){
     };
 
                                         //scorer is a factory that creates a chainable instance.
-    itemRunner('qti', itemData)         //qti is the name of the provider registered previously 
+    scorer('qti')                       //qti is the name of the provider registered previously
 
 		.on('error', function(err){         
 			//gracefull error handling
         })
 
-        .on('outcome', function(outcome){         //we've got some outcome
-            
+        .on('outcome', function(outcome){       //we've got some outcome
+            //outcome contains the SCORE and other outcome variables
         })
 
-        .process(responses, processing);    //let's start
+        .process(responses, processing);        //let's start scoring
 });
 ```
 
