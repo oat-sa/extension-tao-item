@@ -100,25 +100,37 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function fileExists() {
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
+
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = $this->getRequestParameter('path');
-        $safeName = dirname($path).'/'.tao_helpers_File::getSafeFileName(basename($path));
-        $fileExists = file_exists($baseDir.$safeName); 
-        
+
+        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
+        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+        $clazz = $this->getBrowserImplementationClass($identifier);
+        $mediaBrowser = new $clazz($options);
+        /** @var oat\tao\model\media\MediaBrowser $mediaBrowser */
+        $fileInfo = $mediaBrowser->getFileInfo($subPath, array());
+        $fileExists = true;
+        if(is_null($fileInfo)){
+            $fileExists = false;
+        }
+
         echo json_encode(array(
         	'exists' => $fileExists
         ));
