@@ -128,6 +128,16 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
 
     public function delete($filename)
     {
-        // TODO: Implement delete() method.
+        $deleted = false;
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
+
+        $path = $baseDir.$filename;
+
+        //TODO path traversal and null byte poison check ?
+        if(is_file($path) && !is_dir($path)){
+            $deleted = unlink($path);
+        }
+
+        return $deleted;
     }
 }

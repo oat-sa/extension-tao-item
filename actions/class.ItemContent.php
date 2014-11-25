@@ -212,32 +212,34 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete() {
 
-        $deleted = false;
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
+        }
 
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
-        }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $relPath = ltrim($this->getRequestParameter('path'), '/');
-        $relPath = substr($relPath, strpos($relPath, '/'));
-        $path = $baseDir.$relPath;
 
-        //TODO path traversal and null byte poison check ? 
-        if(is_file($path) && !is_dir($path)){
-            $deleted = unlink($path);
-        } 
+        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
+        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+
+        $clazz = $this->getManagementImplementationClass($identifier);
+        $mediaManagement = new $clazz($options);
+
+        $deleted = $mediaManagement->delete($subPath);
+
         echo json_encode(array('deleted' => $deleted));
     }
 }
