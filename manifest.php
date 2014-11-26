@@ -34,7 +34,7 @@ return array(
     'label' => 'Item core extension',
 	'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '2.6.1',
+    'version' => '2.6',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'requires' => array(
 	    'tao' => '>=2.7'
@@ -45,8 +45,7 @@ return array(
 	'install' => array(
 		'rdf' => array(
 		    dirname(__FILE__). '/models/ontology/taoitem.rdf',
-		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf',
-		    dirname(__FILE__). '/models/ontology/indexation.rdf'
+		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf'
 		),
 		'php'	=> array(
 			dirname(__FILE__).'/scripts/install/addLocalSource.php',
