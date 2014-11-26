@@ -461,6 +461,10 @@ define([
      */
     var init = function (_itemUri) {
 
+        if(!_itemUri || _itemUri.length === 0){
+            throw new TypeError('Wrong URI');
+        }
+
         $('.preview-overlay').remove();
         container = null;
         overlay = $(previewTpl({
