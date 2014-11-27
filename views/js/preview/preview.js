@@ -361,9 +361,9 @@ define([
 
         var $previewContainer = $('.preview-container'),
             $iframe = (function () {
-                $iframe = $previewContainer.find('iframe');
-                $iframe.height('');
-                return $iframe;
+                var _iframe = $previewContainer.find('iframe');
+                _iframe.height('');
+                return _iframe;
             }()),
             contentHeight = $iframe.contents().outerHeight(),
             containerHeight = $previewContainer.innerHeight();
@@ -448,7 +448,7 @@ define([
         // this is either a miracle or a jquery bug
         // overlay.hide().show();
         overlay[0].style.display = 'block';
-        overlay.height($doc.outerHeight());
+        overlay.height('100%');
         overlay.find('select:visible').trigger('change');
         _scale();
         _positionPreview();
@@ -503,9 +503,6 @@ define([
         });
 
         itemUri = _itemUri;
-
-        //itemUri = helpers._url('index', 'QtiPreview', 'taoQtiItem') + '?uri=' + encodeURIComponent(_itemUri) + '&' + 'twosix=1';
-
 
         return overlay;
     };
