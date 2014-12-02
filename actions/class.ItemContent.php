@@ -19,8 +19,7 @@
  * 
  */
 
-use oat\tao\helpers\FileUploadException;
- 
+
 /**
  * Items Content Controller provide access to the files of an item
  *
@@ -88,8 +87,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         $clazz = $this->getBrowserImplementationClass($identifier);
-        $resourceManager = new $clazz($options);
-        $data = $resourceManager->getDirectory($subPath, $filters, $depth);
+        $resourceBrowser = new $clazz($options);
+        $data = $resourceBrowser->getDirectory($subPath, $filters, $depth);
 
         echo json_encode($data);
     }
@@ -179,7 +178,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $mediaManagement = new $clazz($options);
 
         $file = tao_helpers_Http::getUploadedFile('content');
-        $filedata = $mediaManagement->upload($file,$subPath);
+
+        $filedata = $mediaManagement->upload($file['tmp_name'], $file['name'], $subPath);
 
         echo json_encode($filedata);
     }

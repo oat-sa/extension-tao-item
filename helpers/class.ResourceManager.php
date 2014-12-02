@@ -106,15 +106,14 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         tao_helpers_Http::returnFile($path);
     }
 
-    public function upload($file, $path)
+    public function upload($fileTmp, $fileName, $path)
     {
 
         try{
             $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
-            $fileName = tao_helpers_File::getSafeFileName($file["name"]);
-            common_Logger::w('filename : '.$fileName);
+            $fileName = tao_helpers_File::getSafeFileName($fileName);
 
-            if(!move_uploaded_file($file["tmp_name"], $baseDir.$path.$fileName)){
+            if(!move_uploaded_file($fileTmp, $baseDir.$path.$fileName)){
                 throw new common_exception_Error('Unable to move uploaded file');
             }
 
