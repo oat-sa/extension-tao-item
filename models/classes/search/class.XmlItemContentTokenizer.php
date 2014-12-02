@@ -1,5 +1,4 @@
 <?php
-
 /**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,37 +19,35 @@
  */
 
 use oat\tao\model\search\tokenizer\Tokenizer;
-use oat\tao\model\search\tokenizer\RawValue;
 
 /**
- * Item content tokenizer.
+ * XML Based Item Tokenizer.
+ * 
+ * This Tokenizer implementation retrieves all text nodes of given
+ * XML files as the final list of tokens.
  *
- * @author Joel Bout <joel@taotesting.com>
  * @author Jérôme Bogaerts <jerome@taotesting.com>
  */
-class taoItems_models_classes_search_ItemContentTokenizer implements Tokenizer
+class taoItems_models_classes_search_XmlItemContentTokenizer implements Tokenizer
 {
     public function getStrings($values)
     {
         $contentStrings = array();
         
-        $xmlTokenizer = new taoItems_models_classes_search_XmlItemContentTokenizer();
-        $rawTokenizer = new RawValue();
+        if (is_array($values) === false) {
+            $values = array($values);
+        }
         
-        foreach ($values as $valueUri) {
-            $file = new core_kernel_file_File($valueUri);
-            $content = file_get_contents($file->getAbsolutePath());
-            if ($content === false) {
-                common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
-            } else {
-                // Try to make it a DOM Document...
-                $dom = new DOMDocument('1.0', 'UTF-8');
+        foreach ($values as $value) {
+            if ($value instanceof DOMDocument) {
+                $xpath = new DOMXPath($value);
+                $textNodes = $xpath->query('//text()');
+                unset($xpath);
                 
-                if (@$dom->loadXML($content) === true) {
-                    $contentStrings = array_merge($contentStrings, $xmlTokenizer->getStrings($dom));
-                    unset($dom);
-                } else {
-                    $contentStrings = array_merge($contentStrings, $rawTokenizer->getStrings($content));
+                foreach ($textNodes as $textNode) {
+                    if (ctype_space($textNode->wholeText) === false) {
+                        $contentStrings[] = trim($textNode->wholeText);
+                    }
                 }
             }
         }
