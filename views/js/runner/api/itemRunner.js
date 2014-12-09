@@ -276,6 +276,8 @@ define(['jquery', 'lodash'], function($, _){
                  */
                 var clearDone = function clearDone (){
 
+                    events = {};
+
                     /**
                      * The item is ready. 
                      * @event ItemRunner#clear
