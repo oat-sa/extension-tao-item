@@ -55,7 +55,10 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
                 }
             }
             $ele->setOptions($options);
-            
+            if(count($options) === 1){
+                $ele->setValue(array_shift(array_keys($options)));
+            }
+
         } else {
             // replace radio with hidden element
             $this->form->removeElement($elementId);
