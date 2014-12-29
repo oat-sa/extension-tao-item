@@ -51,7 +51,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             
             // double check
             $index = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex');
-            $default = $index->getPropertiesValues(new core_kernel_classes_Property('http://www.tao.lu/Ontologies/TAO.rdf#IndexDefaultSearch'));
+            $default = $index->getPropertyValues(new core_kernel_classes_Property('http://www.tao.lu/Ontologies/TAO.rdf#IndexDefaultSearch'));
             
             if (count($default) == 0) {
                 
