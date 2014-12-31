@@ -190,10 +190,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
 
         if(!is_null($item)){
 
-            if(empty($lang)){
-                $session = core_kernel_classes_Session::singleton();
-                $lang = $session->getDataLanguage();
-            }
+            $lang = empty($lang) ? $this->getSessionLg() : $lang;
 
             $itemRepo = $this->getDefaultFileSource();
             $repositoryPath = $itemRepo->getPath();
@@ -539,16 +536,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      * @return string
      */
     public function getSessionLg(){
-        $returnValue = (string) '';
 
-        $session = core_kernel_classes_Session::singleton();
-        if($session->getDataLanguage() != ''){
-            $returnValue = $session->getDataLanguage();
-        }else{
+        $sessionLang = \common_session_SessionManager::getSession()->getDataLanguage();
+        if(empty($sessionLang)){
             throw new Exception('the data language of the user cannot be found in session');
         }
 
-        return (string) $returnValue;
+        return (string) $sessionLang;
     }
 
     /**
