@@ -49,7 +49,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         }
 
         $data = array(
-            'path' => 'local'.$relPath,
+            'path' => $relPath,
             'label' => $label
         );
 
@@ -92,7 +92,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
                 'name' => basename($path),
                 'mime' => $mime,
                 'size' => filesize($path),
-                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => 'local'.$relPath))
+                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $relPath))
             );
         }
         return $file;

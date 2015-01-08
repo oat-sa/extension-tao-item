@@ -31,7 +31,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getBrowserImplementationClass($identifier){
 
-        if($identifier === 'local'){
+        if($identifier === ''){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
@@ -39,7 +39,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getManagementImplementationClass($identifier){
 
-        if($identifier === 'local'){
+        if($identifier === ''){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
@@ -78,10 +78,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 }
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
-        } 
+        }
 
-        $identifier = substr($subPath, 0, strpos($subPath, '/'));
-        $subPath = substr($subPath, strpos($subPath, '/'));
+        $identifier = '';
+        if(strpos($subPath, '://') !== false){
+            $identifier = substr($subPath, 0, strpos($subPath, '://'));
+            $subPath = substr($subPath, strpos($subPath, '://') + 3);
+        }
+
         if(strlen($subPath) === 0){
             $subPath = '/';
         }
@@ -205,12 +209,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
 
-        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
-        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        $identifier = '';
+        $subPath = $this->getRequestParameter('path');
+        if(strpos($subPath, '/') !== false){
+            $identifier = substr($subPath, 0, strpos($subPath, '/'));
+            $subPath = substr($subPath, strpos($subPath, '/') + 1);
+        }
+
         if(strlen($subPath) === 0){
             $subPath = '/';
         }
-
         $clazz = $this->getBrowserImplementationClass($identifier);
         $mediaBrowser = new $clazz($options);
 
