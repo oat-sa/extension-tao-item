@@ -81,11 +81,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         $identifier = '';
-        if(strpos($subPath, '://') !== false){
-            $identifier = substr($subPath, 0, strpos($subPath, '://'));
-            $subPath = substr($subPath, strpos($subPath, '://') + 3);
+        $pos = strpos($subPath, '/');
+        if($pos !== false && $pos !== 0){
+            $identifier = substr($subPath, 0, strpos($subPath, '/'));
+            $subPath = substr($subPath, strpos($subPath, '/') + 1);
         }
-
         if(strlen($subPath) === 0){
             $subPath = '/';
         }
