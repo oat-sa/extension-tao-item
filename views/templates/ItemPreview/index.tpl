@@ -1,6 +1,7 @@
 <?php
 use oat\tao\helpers\Template;
-?><link rel="stylesheet" href="<?= Template::css('preview.css', 'taoItems') ?>" />
+?>
+<link rel="stylesheet" href="<?= Template::css('preview.css', 'taoItems') ?>" />
 <style>
 
 
@@ -28,8 +29,7 @@ use oat\tao\helpers\Template;
                 }
             }
         });
-
-        $(document).ready(function () {
+        require(['jquery'], function($){
             if ("<?= get_data('previewUrl')?>".indexOf('Qti') != -1) {
                 
                 $('#preview-submit-button')
@@ -41,7 +41,6 @@ use oat\tao\helpers\Template;
                     
             }
         });
-
     </script>
 <?php endif ?>
 
