@@ -25,7 +25,8 @@ use \core_kernel_classes_Resource;
 use oat\taoItems\model\pack\ItemPack;
 
 /**
- * To allow packing of Item
+ * To allow packing of Item. The goal of the packaging is to reprensent the data needed
+ * to run an item (ie. an ItemPack). 
  * 
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
