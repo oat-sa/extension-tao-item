@@ -83,8 +83,8 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
     public function getFileInfo($relPath, $acceptableMime) {
         $file = null;
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
-        $filename = tao_helpers_File::getSafeFileName(basename($relPath));
-        $dir = dirname($relPath);
+        $filename = basename($relPath);
+        $dir = ltrim(dirname($relPath),'/');
         $path = $baseDir.$dir.'/'.$filename;
         $mime = tao_helpers_File::getMimeType($path);
         if((count($acceptableMime) == 0 || in_array($mime, $acceptableMime)) && file_exists($path)){
