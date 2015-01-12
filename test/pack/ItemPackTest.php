@@ -33,16 +33,96 @@ class ItemPackTest extends TaoPhpUnitTestRunner
 {
 
     /**
+     * Test creating an ItemPack
+     */
+    public function testConstructor(){
+        $type = 'qti';
+        $data = array('foo' => 'bar');
+
+        $pack = new ItemPack($type, $data);
+        $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $pack);
+        $this->assertEquals($type, $pack->getType());
+        $this->assertEquals($data, $pack->getData());
+    }
+
+    /**
+     * Test assigning assets to a pack
+     */
+    public function testSetAssets(){
+
+        $pack = new ItemPack('qti', array('foo' => 'bar'));
+        $jsAssets = array(
+            'lodash.js',
+            'jquery.js'
+        );
+        $cssAssets = array('style.css');
+
+        $pack->setAssets('js', $jsAssets);
+
+        $this->assertEquals($jsAssets, $pack->getAssets('js'));
+        $this->assertEquals(array(), $pack->getAssets('css'));
+
+        
+        $pack->setAssets('css', $cssAssets);
+
+        $this->assertEquals($cssAssets, $pack->getAssets('css'));
+    }
+
+    /**
+     * Test the constructor with an empty type
+     * @expectedException InvalidArgumentException
+     */
+    public function testWrongTypeConstructor(){
+        new ItemPack(null, array());
+    }
+
+    /**
+     * Test the constructor with invalid data
+     * @expectedException InvalidArgumentException
+     */
+    public function testWrongDataConstructor(){
+        new ItemPack('qti', '{"foo":"bar"}');
+    }
+
+    /**
+     * Test assigning unallowed assets
+     * @expectedException InvalidArgumentException
+     */
+    public function testWrongAssetType(){
+        $pack = new ItemPack('qti', array('foo' => 'bar'));
+        $pack->setAssets('coffescript', array('jquery.coffee'));
+    }
+
+    /**
+     * Test set wrong assets type
+     * @expectedException InvalidArgumentException
+     */
+    public function testWrongAssets(){
+        $pack = new ItemPack('qti', array('foo' => 'bar'));
+        $pack->setAssets('js', 'jquery.js');
+    }
+
+    /**
      * Provides data to test the bundle
      * @return array() the data
      */     
     public function jsonSerializableProvider(){
+        
         $data = array();
 
         $pack1 = new ItemPack('qti', array('foo' => 'bar'));
-        $json1 = '{"type":"qti","data":{"foo":"bar"}}';
+        $json1 = '{"type":"qti","data":{"foo":"bar"},"assets":[]}';
         $data[0] = array($pack1, $json1);
-    
+   
+        
+        $pack2 = new ItemPack('owi', array('foo' => 'bar'));
+        $pack2->setAssets('js', array(
+            'lodash.js',
+            'jquery.js'
+        ));
+        $json2 = '{"type":"owi","data":{"foo":"bar"},"assets":{"js":["lodash.js","jquery.js"]}}';
+        $data[1] = array($pack2, $json2);
+ 
         return $data;
     }   
  
@@ -54,7 +134,7 @@ class ItemPackTest extends TaoPhpUnitTestRunner
      */
     public function testSerialization($itemPack, $expectedJson){
        
-       $this->assertInstanceOf('ItemPack', $itemPack);
+       $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $itemPack);
        $this->assertTrue(is_string($expectedJson));
        $this->assertEquals($expectedJson, json_encode($itemPack));
     }
