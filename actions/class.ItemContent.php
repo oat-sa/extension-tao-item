@@ -31,7 +31,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getBrowserImplementationClass($identifier){
 
-        if($identifier === ''){
+        if(in_array($identifier,array('', 'local'))){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
@@ -39,7 +39,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getManagementImplementationClass($identifier){
 
-        if($identifier === ''){
+        if(in_array($identifier,array('', 'local'))){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
