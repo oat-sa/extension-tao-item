@@ -21,6 +21,8 @@ namespace oat\taoItems\test\pack;
 
 use \core_kernel_classes_Resource;
 use oat\taoItems\model\pack\Packer;
+use oat\taoItems\model\pack\Packable;
+use oat\taoItems\model\pack\ItemPack;
 use oat\tao\test\TaoPhpUnitTestRunner;
  
 
@@ -51,6 +53,8 @@ class ItemPackTest extends TaoPhpUnitTestRunner
      * Test assigning assets to a pack
      */
     public function testPack(){
+        $item = new core_kernel_classes_Resource('foo');
+        $model = new core_kernel_classes_Resource('fooModel');
 
         $serviceMock = $this
                         ->getMockBuilder('\taoItems_models_classes_ItemsService')
@@ -61,13 +65,131 @@ class ItemPackTest extends TaoPhpUnitTestRunner
                         ->getMockBuilder('\taoItems_models_classes_itemModel')
                         ->getMock();
 
-        $packerMock = $this
-                        ->getMockBuilder('oat\taoItems\model\pack\Packable')
-                        ->getMock();
+
+        $packerMock = new PackerMock(); 
 
         $modelMock
             ->method('getPackerClass')
-            ->will($this->returnValue('Bar'));
+            ->will($this->returnValue(get_class($packerMock)));
+                        
+        $serviceMock
+            ->method('getItemModel')
+            ->will($this->returnValue(new core_kernel_classes_Resource('fooModel')));
+        
+        $serviceMock
+            ->method('getItemModelImplementation')
+            ->with($this->equalTo($model))
+            ->will($this->returnValue($modelMock));
+
+        $serviceMock
+            ->method('singleton')
+            ->will($this->returnValue($serviceMock));
+
+
+        $packer = new Packer($item);
+ 
+        $prop = new \ReflectionProperty('oat\taoItems\model\pack\Packer', 'itemService');
+        $prop->setAccessible(true);
+        $prop->setValue($packer, $serviceMock); 
+
+
+        $result = $packer->pack();
+        $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $result);
+        $this->assertEquals('qti', $result->getType());
+        $this->assertEquals(array('uri' => $item->getUri()), $result->getData());
+        
+    }
+
+    /**
+     * Test the exception chain when the item has no model
+     * 
+     * @expectedException \common_Exception
+     */
+    public function testNoItemModel(){
+        $item = new core_kernel_classes_Resource('foo');
+
+        $serviceMock = $this
+                        ->getMockBuilder('\taoItems_models_classes_ItemsService')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+    
+        $serviceMock
+            ->method('getItemModel')
+            ->will($this->returnValue(null));
+        
+        $serviceMock
+            ->method('singleton')
+            ->will($this->returnValue($serviceMock));
+
+
+        $packer = new Packer($item);
+ 
+        $prop = new \ReflectionProperty('oat\taoItems\model\pack\Packer', 'itemService');
+        $prop->setAccessible(true);
+        $prop->setValue($packer, $serviceMock); 
+
+        $packer->pack();
+    }
+
+    /**
+     * Test the exception chain when there is no implementations for a model
+     * 
+     * @expectedException \common_Exception
+     */
+    public function testNoModelImplementation(){
+        $item = new core_kernel_classes_Resource('foo');
+        $model = new core_kernel_classes_Resource('fooModel');
+
+        $serviceMock = $this
+                        ->getMockBuilder('\taoItems_models_classes_ItemsService')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+    
+        $serviceMock
+            ->method('getItemModel')
+            ->will($this->returnValue($model));
+        
+        $serviceMock
+            ->method('getItemModelImplementation')
+            ->with($this->equalTo($model))
+            ->will($this->returnValue(null));
+
+        $serviceMock
+            ->method('singleton')
+            ->will($this->returnValue($serviceMock));
+
+
+        $packer = new Packer($item);
+ 
+        $prop = new \ReflectionProperty('oat\taoItems\model\pack\Packer', 'itemService');
+        $prop->setAccessible(true);
+        $prop->setValue($packer, $serviceMock); 
+
+        $packer->pack();
+    }
+
+    /**
+     * Test the exception chain when the model does not return a correct packer class
+     * 
+     * @expectedException \common_Exception
+     */
+    public function testNoPackerClass(){
+
+        $item = new core_kernel_classes_Resource('foo');
+
+        $serviceMock = $this
+                        ->getMockBuilder('\taoItems_models_classes_ItemsService')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+    
+        $modelMock = $this
+                        ->getMockBuilder('\taoItems_models_classes_itemModel')
+                        ->getMock();
+
+
+        $modelMock
+            ->method('getPackerClass')
+            ->will($this->returnValue(null));
                         
         $serviceMock
             ->method('getItemModel')
@@ -77,30 +199,68 @@ class ItemPackTest extends TaoPhpUnitTestRunner
             ->method('getItemModelImplementation')
             ->will($this->returnValue($modelMock));
 
-         $serviceMock
+        $serviceMock
             ->method('singleton')
-            ->will($this->returnValue($serviceMock));
+            ->will($this->returnSelf());
 
 
-        $item = new core_kernel_classes_Resource('foo');
         $packer = new Packer($item);
  
         $prop = new \ReflectionProperty('oat\taoItems\model\pack\Packer', 'itemService');
         $prop->setAccessible(true);
         $prop->setValue($packer, $serviceMock); 
 
-
-
         $packer->pack();
     }
 
     /**
-     * Test the constructor with an empty type
-     * @expectedException InvalidArgumentException
+     * Test the exception chain when the model returns a wrong packer class
+     * 
+     * @expectedException \common_Exception
      */
-    //public function testWrongTypeConstructor(){
-        //new ItemPack(null, array());
-    //}
+    public function testWrongPackerClass(){
+
+        $item = new core_kernel_classes_Resource('foo');
+
+        $serviceMock = $this
+                        ->getMockBuilder('\taoItems_models_classes_ItemsService')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+    
+        $modelMock = $this
+                        ->getMockBuilder('\taoItems_models_classes_itemModel')
+                        ->getMock();
+
+        $modelMock
+            ->method('getPackerClass')
+            ->will($this->returnValue("stdClass"));
+                        
+        $serviceMock
+            ->method('getItemModel')
+            ->will($this->returnValue(new core_kernel_classes_Resource('fooModel')));
+        
+        $serviceMock
+            ->method('getItemModelImplementation')
+            ->will($this->returnValue($modelMock));
+
+        $serviceMock
+            ->method('singleton')
+            ->will($this->returnSelf());
 
 
+        $packer = new Packer($item);
+ 
+        $prop = new \ReflectionProperty('oat\taoItems\model\pack\Packer', 'itemService');
+        $prop->setAccessible(true);
+        $prop->setValue($packer, $serviceMock); 
+
+        $packer->pack();
+    }
+}
+
+//use an old school mock as the Packer create it's own instance from the class
+class PackerMock implements Packable{
+    public function packItem(core_kernel_classes_Resource $item){
+        return new ItemPack('qti', array('uri' => $item->getUri()));
+    }
 }
