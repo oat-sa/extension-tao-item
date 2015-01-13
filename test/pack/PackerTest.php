@@ -32,7 +32,7 @@ use oat\tao\test\TaoPhpUnitTestRunner;
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
  */
-class ItemPackTest extends TaoPhpUnitTestRunner
+class PackerTest extends TaoPhpUnitTestRunner
 {
 
     public function setUp()
@@ -76,6 +76,10 @@ class ItemPackTest extends TaoPhpUnitTestRunner
             ->method('getItemModel')
             ->will($this->returnValue(new core_kernel_classes_Resource('fooModel')));
         
+        $serviceMock
+            ->method('getItemContent')
+            ->will($this->returnValue(''));
+
         $serviceMock
             ->method('getItemModelImplementation')
             ->with($this->equalTo($model))
@@ -260,7 +264,7 @@ class ItemPackTest extends TaoPhpUnitTestRunner
 
 //use an old school mock as the Packer create it's own instance from the class
 class PackerMock implements Packable{
-    public function packItem(core_kernel_classes_Resource $item){
+    public function packItem(core_kernel_classes_Resource $item, $content){
         return new ItemPack('qti', array('uri' => $item->getUri()));
     }
 }

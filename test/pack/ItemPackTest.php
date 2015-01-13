@@ -22,8 +22,6 @@ namespace oat\taoItems\test\pack;
 use oat\taoItems\model\pack\ItemPack;
 use oat\tao\test\TaoPhpUnitTestRunner;
  
-include_once dirname(__FILE__) . '/../includes/raw_start.php';
-
 /**
  * Test the class {@link ItemPack}
  *  

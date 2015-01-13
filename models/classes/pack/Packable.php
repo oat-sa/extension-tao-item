@@ -36,7 +36,8 @@ interface Packable
      * Create a pack for an item.
      *
      * @param core_kernel_classes_Resource $item the item to pack
+     * @param string $content the item content
      * @return ItemPack
      */
-    public function packItem(core_kernel_classes_Resource $item);
+    public function packItem(core_kernel_classes_Resource $item, $content);
 } 

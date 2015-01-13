@@ -27,6 +27,7 @@ use \common_exception_NoImplementation;
 use \ReflectionClass;
 use \ReflectionException;
 use \common_Exception;
+use \Exception;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -43,6 +44,12 @@ class Packer
      */
     private $item;
 
+    /**
+     * The lang of the item to pack
+     * @var string
+     */
+    private $lang;
+
     /** 
      * The item service 
      * @var taoItems_models_classes_ItemsService
@@ -53,8 +60,9 @@ class Packer
      * Create a packer for an item
      * @param core_kernel_classes_Resource $item
      */
-    public function __construct(core_kernel_classes_Resource $item){
+    public function __construct(core_kernel_classes_Resource $item, $lang = ''){
         $this->item = $item;
+        $this->lang = $lang;
         $this->itemService = taoItems_models_classes_ItemsService::singleton();
     }
     
@@ -79,11 +87,7 @@ class Packer
         }
 
         //then retrieve the packer class and instantiate it
-        try{
-            $packerClass = new ReflectionClass($impl->getPackerClass());
-        } catch(ReflectionException $re){
-            throw new common_exception_NoImplementation('The packer class seems to be not implemented : ' . $re->getMessage());
-        }
+        $packerClass = new ReflectionClass($impl->getPackerClass());
         if(is_null($packerClass) || !$packerClass->implementsInterface('oat\taoItems\model\pack\Packable')){
             throw new common_exception_NoImplementation('The packer class seems to be not implemented');
         }
@@ -103,10 +107,12 @@ class Packer
             //call the factory to get the itemPacker implementation
             $itemPacker = $this->getItemPacker();
 
-            //then create the pack
-            $itemPack = $itemPacker->packItem($this->item);
+            $content = $this->itemService->getItemContent($this->item, $this->lang);
 
-        } catch(common_Exception $e){
+            //then create the pack
+            $itemPack = $itemPacker->packItem($this->item, $content);
+
+        } catch(Exception $e){
             throw new common_Exception('The item '. $this->item->getUri() .' cannot be packed : ' . $e->getMessage());
         }
 
