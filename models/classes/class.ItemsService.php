@@ -473,30 +473,39 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         return $impl->render($item, $language);
     }
 
+    /**
+     * Woraround for item content
+     * (non-PHPdoc)
+     * @see tao_models_classes_GenerisService::cloneInstanceProperty()
+     */
     protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
         if ($property->getUri() == TAO_ITEM_CONTENT_PROPERTY) {
-            $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
-            foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
-                $file = new core_kernel_versioning_File($propertyValue->getUri());
-                $repo = $file->getRepository();
-                $relPath = basename($file->getAbsolutePath());
-                if(!empty($relPath)){
-                    $newPath = tao_helpers_File::concat(array($this->getItemFolder($destination), $relPath));
-                    common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
-                    tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
-                    if(file_exists($newPath)){
-                        $subpath = substr($newPath, strlen($repo->getPath()));
-                        $newFile = $repo->createFile(
-                            (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
-                        );
-                        $destination->setPropertyValue($property, $newFile->getUri());
-                        $newFile->add(true, true);
-                        $newFile->commit('Clone of '.$source->getUri(), true);
-                    }
-                }
-            }
+            return $this->cloneItemContent($source, $destination, $property);
         } else {
             return parent::cloneInstanceProperty($source, $destination, $property);
+        }
+    }
+    
+    protected function cloneItemContent($source, $destination, $property) {
+        $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
+        foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+            $file = new core_kernel_versioning_File($propertyValue->getUri());
+            $repo = $file->getRepository();
+            $relPath = basename($file->getAbsolutePath());
+            if(!empty($relPath)){
+                $newPath = tao_helpers_File::concat(array($this->getItemFolder($destination), $relPath));
+                common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
+                tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
+                if(file_exists($newPath)){
+                    $subpath = substr($newPath, strlen($repo->getPath()));
+                    $newFile = $repo->createFile(
+                        (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
+                    );
+                    $destination->setPropertyValue($property, $newFile->getUri());
+                    $newFile->add(true, true);
+                    $newFile->commit('Clone of '.$source->getUri(), true);
+                }
+            }
         }
     }
     
