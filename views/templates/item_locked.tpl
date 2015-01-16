@@ -26,6 +26,11 @@ use oat\tao\helpers\Template;
             <em><?=__('As the owner of this resource, you may release the lock')?></em>
             <button id="release" class="btn btn-warning"><?=__('ReleaseLock')?></button>
         </p>
+		<?php elseif (get_data('isAdmin')) : ?>
+		<p>
+            <em><?=__('As the system administration, you may release the lock')?></em>
+            <button id="release" class="btn btn-warning"><?=__('ReleaseLock')?></button>
+        </p>
 		<?php else : ?>
 		<p><em><?=__('Please contact the owner of the resource to unlock it')?></em></p>
 		<?php endif;?>
