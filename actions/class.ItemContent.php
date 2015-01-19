@@ -31,7 +31,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getBrowserImplementationClass($identifier){
 
-        if($identifier === ''){
+        if(in_array($identifier,array('', 'local'))){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
@@ -39,7 +39,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getManagementImplementationClass($identifier){
 
-        if($identifier === ''){
+        if(in_array($identifier,array('', 'local'))){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
@@ -164,11 +164,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
 
-        $relPath = trim($this->getRequestParameter('path'), '/');
         if($this->hasRequestParameter('relPath')){
-            $relPath = trim($this->getRequestParameter('relPath'), '/');
+            $relPath = $this->getRequestParameter('relPath');
         }
-        if(!strpos($relPath, '/')){
+        if(strpos($relPath, '/') === false){
             $identifier = $relPath;
             $subPath = '/';
         }
@@ -176,6 +175,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $identifier = substr($relPath, 0, strpos($relPath, '/'));
             $subPath = substr($relPath, strpos($relPath, '/') + 1);
         }
+        $identifier = trim($identifier);
         $subPath = empty($subPath) ? '' : $subPath.'/';
 
         $clazz = $this->getManagementImplementationClass($identifier);
