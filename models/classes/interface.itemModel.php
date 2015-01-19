@@ -73,4 +73,14 @@ interface taoItems_models_classes_itemModel
 	 * @return tao_models_classes_Compiler
 	 */
 	public function getCompilerClass();
+
+	/**
+	 * Return the Packable implementation for the given item model.
+     * Packing is an alternative to Compilation. A Packer generates the 
+     * data needed to run an item where the compiler creates a stand alone
+     * item. 
+	 * 
+	 * @return oat\taoItems\model\pack\Packable the packer class to instantiate 
+	 */
+    public function getPackerClass();
 }
