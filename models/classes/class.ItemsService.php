@@ -257,7 +257,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             if($itemContents->count() > 0){
                 $itemContent = $itemContents->get(0);
             }
-
+            //if no itemContent is set get the default one and copy it into a new repository
+            else{
+                $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
+                if($itemContents->count() > 0){
+                    $itemContent = $itemContents->get(0);
+                    $this->setDefaultItemContent($item, $itemContent, $lang);
+                    tao_helpers_File::copy($this->getItemFolder($item, DEFAULT_LANG), $this->getItemFolder($item, $lang));
+                }
+            }
             if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 
                 if(core_kernel_file_File::isFile($itemContent)){
