@@ -23,6 +23,8 @@ namespace oat\taoItems\model\asset;
 
 use \core_kernel_classes_Resource;
 use \taoItems_models_classes_ItemsService;
+use \common_Exception;
+use \tao_helpers_File;
 
 /**
  * To allow packing of Item. The goal of the packaging is to reprensent the data needed
@@ -67,7 +69,7 @@ class Loader
      *
      * @param string $assetPath the asset path
      * @return null|string the asset content or null if not stored locally
-     * @throws common_exception_Error if the resource cannot be retrieved
+     * @throws common_Exception if the resource cannot be retrieved
      */
     public function getAssetContent($assetPath)
     {
@@ -77,14 +79,18 @@ class Loader
         if(!empty($assetPath) && array_key_exists('path', $parsedUrl) && !array_key_exists('host', $parsedUrl)){
             $folder = $this->itemService->getItemFolder($this->item, $this->lang);
             if(tao_helpers_File::securityCheck($assetPath, true)){
+
+                if(!preg_match("/(\\/|\\\)$/", $folder)){
+                    $folder .= DIRECTORY_SEPARATOR;
+                }
                 $filename = $folder.$assetPath;
                 if(file_exists($filename)){
                     return file_get_contents($filename);
                 } else {
-                    throw new common_exception_Error('The unable to retrieve content of asset ' . $assetPath . ' at ' . $filename );
+                    throw new common_Exception('The unable to retrieve content of asset ' . $assetPath . ' at ' . $filename );
                 }
             } else {
-                throw new common_exception_Error('A file path did not match the security policy');
+                throw new common_Exception('A file path did not match the security policy');
             }
         }
 
