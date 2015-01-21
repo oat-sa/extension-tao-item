@@ -263,8 +263,8 @@ class PackerTest extends TaoPhpUnitTestRunner
 }
 
 //use an old school mock as the Packer create it's own instance from the class
-//class PackerMock implements Packable{
-    //public function packItem(core_kernel_classes_Resource $item, $path){
-        //return new ItemPack('qti', array('uri' => $item->getUri()));
-    //}
-//}
+class PackerMock implements Packable{
+    public function packItem(core_kernel_classes_Resource $item, $path){
+        return new ItemPack('qti', array('uri' => $item->getUri()));
+    }
+}
