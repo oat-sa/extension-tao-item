@@ -107,11 +107,10 @@ class Packer
             //call the factory to get the itemPacker implementation
             $itemPacker = $this->getItemPacker();
 
-            $content = $this->itemService->getItemContent($this->item, $this->lang);
-            $path    =$this->itemService->getItemFolder($this->item, $this->lang);
+            $path = $this->itemService->getItemFolder($this->item, $this->lang);
 
             //then create the pack
-            $itemPack = $itemPacker->packItem($this->item, $content, $path);
+            $itemPack = $itemPacker->packItem($this->item, $path);
 
         } catch(Exception $e){
             throw new common_Exception('The item '. $this->item->getUri() .' cannot be packed : ' . $e->getMessage());
