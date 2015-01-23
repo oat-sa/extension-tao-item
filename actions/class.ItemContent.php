@@ -164,8 +164,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
 
+        $relPath = '';
         if($this->hasRequestParameter('relPath')){
             $relPath = $this->getRequestParameter('relPath');
+        }
+
+        //if the string contains something else than letters, numbers or / throw an exception
+        if(!preg_match('#^$|^[\w\/\-\._]+$#', $relPath)){
+            throw new InvalidArgumentException('The request parameter is invalid');
         }
         if(strpos($relPath, '/') === false){
             $identifier = $relPath;
