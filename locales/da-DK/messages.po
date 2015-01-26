@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
@@ -20,29 +20,23 @@ msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
 msgid "Authoring"
-msgstr ""
+msgstr "Oprette"
 
 msgid "Class saved"
-msgstr ""
-
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
+msgstr "Klasse gemt"
 
 msgid "Close"
-msgstr ""
+msgstr "Luk"
 
 msgid "Close console"
 msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Opret og design items og øvelser."
 
 msgid "Delete"
-msgstr ""
+msgstr "Slet"
 
 msgid "Desktop preview"
 msgstr ""
@@ -50,28 +44,22 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr ""
-
 msgid "Duplicate"
 msgstr ""
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Rediger Item"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Rediger item"
 
 msgid "Edit item class"
-msgstr ""
+msgstr "Rediger item klasse"
 
 msgid "Export"
-msgstr ""
+msgstr "Eksport"
 
 msgid "Filter"
-msgstr ""
-
-msgid "Finish"
 msgstr ""
 
 msgid "Import"
@@ -87,14 +75,14 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "Item gemt"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Item"
 
 msgid "Items library"
-msgstr ""
+msgstr "Item arkiv"
 
 msgid "Landscape"
 msgstr ""
@@ -110,13 +98,13 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Administrere item"
 
 msgid "Mobile preview"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Flyt"
 
 msgid "New class"
 msgstr ""
@@ -125,28 +113,22 @@ msgid "New item"
 msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Ingen item type er valgt til denne item."
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Ikke tilgængeligt endnu"
 
 msgid "Please contact the owner of the resource to unlock it"
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Vælg først item type!"
 
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
-
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Preview Console"
-msgstr ""
+msgstr "Forhåndsvisning"
 
 msgid "Properties"
 msgstr ""
@@ -164,16 +146,13 @@ msgid "Scale "
 msgstr ""
 
 msgid "Search"
-msgstr ""
-
-msgid "show/hide"
-msgstr ""
+msgstr "Søg"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Item modulet lader dig oprette og designe item og øvelser."
 
 msgid "This item is currently being edited and has been locked"
 msgstr ""

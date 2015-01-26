@@ -37,10 +37,6 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
     {
         parent::initElements();
         
-        $hiddenId = tao_helpers_form_FormFactory::getElement('id', 'Hidden');
-        $hiddenId->setValue($this->getInstance()->getUri());
-        $this->form->addElement($hiddenId);
-        
         $elementId = tao_helpers_Uri::encode(TAO_ITEM_MODEL_PROPERTY);
         $ele = $this->form->getElement($elementId);
         $ele->feed();
@@ -59,7 +55,10 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
                 }
             }
             $ele->setOptions($options);
-            
+            if(count($options) === 1){
+                $ele->setValue(array_shift(array_keys($options)));
+            }
+
         } else {
             // replace radio with hidden element
             $this->form->removeElement($elementId);

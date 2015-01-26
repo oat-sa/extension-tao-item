@@ -207,7 +207,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
         }
 
-        $myForm = $this->editClass($clazz, $this->service->getRootClass());
+        $myForm = $this->getClassForm($clazz, $this->service->getRootClass());
         
         if ($this->hasWriteAccess($clazz->getUri())) {
             if($myForm->isSubmited()){

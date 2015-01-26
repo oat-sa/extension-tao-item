@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar-arb\n"
@@ -20,19 +20,13 @@ msgid "As the owner of this resource, you may release the lock"
 msgstr ""
 
 msgid "Authoring"
-msgstr ""
+msgstr "التأليف"
 
 msgid "Class saved"
-msgstr ""
-
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
+msgstr "Classe enregistrée"
 
 msgid "Close"
-msgstr ""
+msgstr "اغلاق"
 
 msgid "Close console"
 msgstr ""
@@ -42,7 +36,7 @@ msgid "Create and design items and exercises."
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 msgid "Desktop preview"
 msgstr ""
@@ -50,32 +44,26 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr ""
-
 msgid "Duplicate"
-msgstr ""
+msgstr "تكرار"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "تعديل السؤال"
 
 msgid "Edit item"
-msgstr ""
+msgstr "تعديل السؤال"
 
 msgid "Edit item class"
 msgstr ""
 
 msgid "Export"
-msgstr ""
+msgstr "تصدير"
 
 msgid "Filter"
 msgstr ""
 
-msgid "Finish"
-msgstr ""
-
 msgid "Import"
-msgstr ""
+msgstr "استيراد"
 
 msgid "Item Locked"
 msgstr ""
@@ -87,11 +75,11 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "تم حفظ السؤال"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "الاسئلة"
 
 msgid "Items library"
 msgstr ""
@@ -110,7 +98,7 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "ادارة الاسئلة"
 
 msgid "Mobile preview"
 msgstr ""
@@ -119,34 +107,28 @@ msgid "Move"
 msgstr ""
 
 msgid "New class"
-msgstr ""
+msgstr "التحرك"
 
 msgid "New item"
-msgstr ""
+msgstr "سؤال جديد"
 
 msgid "No item type selected for the current item."
 msgstr ""
 
 msgid "Not yet available"
-msgstr ""
+msgstr "غير متوفرة حتى الآن"
 
 msgid "Please contact the owner of the resource to unlock it"
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "!الرجاء اولا تحديد نوع السؤال"
 
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
-
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Preview Console"
-msgstr ""
+msgstr "معاينة"
 
 msgid "Properties"
 msgstr ""
@@ -164,16 +146,13 @@ msgid "Scale "
 msgstr ""
 
 msgid "Search"
-msgstr ""
-
-msgid "show/hide"
-msgstr ""
+msgstr "بحث"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Le module Items vous permet la création et le design d'items et d'exercises."
 
 msgid "This item is currently being edited and has been locked"
 msgstr ""

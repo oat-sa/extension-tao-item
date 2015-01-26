@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.0\n"
-"PO-Revision-Date: 2014-10-21T07:52:00\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-11-20T14:46:48\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -17,19 +17,13 @@ msgid "Actual size"
 msgstr ""
 
 msgid "As the owner of this resource, you may release the lock"
-msgstr ""
+msgstr "En tant que propriétaire de la ressource, vous pouvez la déverrouiller."
 
 msgid "Authoring"
-msgstr ""
+msgstr "Éditeur "
 
 msgid "Class saved"
-msgstr ""
-
-msgid "clean up"
-msgstr ""
-
-msgid "close"
-msgstr ""
+msgstr "Classe enregistrée"
 
 msgid "Close"
 msgstr ""
@@ -39,10 +33,10 @@ msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Concevoir des items et exercices."
 
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 msgid "Desktop preview"
 msgstr ""
@@ -50,109 +44,97 @@ msgstr ""
 msgid "Don’t show this again!"
 msgstr ""
 
-msgid "Download item content"
-msgstr ""
-
 msgid "Duplicate"
-msgstr ""
+msgstr "Dupliquer"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Modifier un item"
 
 msgid "Edit item"
 msgstr ""
 
 msgid "Edit item class"
-msgstr ""
+msgstr "Édition de la classe item"
 
 msgid "Export"
-msgstr ""
+msgstr "Dupliquer"
 
 msgid "Filter"
-msgstr ""
-
-msgid "Finish"
-msgstr ""
+msgstr "Filtrer"
 
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 msgid "Item Locked"
-msgstr ""
+msgstr "Item verrouillé"
 
 msgid "Item Locked:"
-msgstr ""
+msgstr "Item verrouillé :"
 
 msgid "Item Model"
 msgstr ""
 
 msgid "Item saved"
-msgstr ""
+msgstr "Item enregistré"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Items"
 
 msgid "Items library"
-msgstr ""
+msgstr "Banque d'items"
 
 msgid "Landscape"
 msgstr ""
 
 msgid "Lists"
-msgstr ""
+msgstr "Listes"
 
 msgid "Lock Owner:"
-msgstr ""
+msgstr "Propriétaire du verrou :"
 
 msgid "Locking Date:"
-msgstr ""
+msgstr "Date de verrouillage :"
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Gestion des items"
 
 msgid "Mobile preview"
 msgstr ""
 
 msgid "Move"
-msgstr ""
+msgstr "Déplacer"
 
 msgid "New class"
-msgstr ""
+msgstr "Créer classe"
 
 msgid "New item"
-msgstr ""
+msgstr "Créer classe"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Pas de modèle d'item sélectionné pour cet item."
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Pas encore disponible"
 
 msgid "Please contact the owner of the resource to unlock it"
-msgstr ""
+msgstr "Veuillez contacter le propriétaire de la ressource pour la déverrouiller."
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Veuillez sélectionner d'abord un type d'item !"
 
 msgid "Portrait"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
-
-msgid "PREVIEW BOX"
-msgstr ""
-
-msgid "Preview Console"
-msgstr ""
+msgstr "Aperçu "
 
 msgid "Properties"
 msgstr ""
 
 msgid "ReleaseLock"
-msgstr ""
+msgstr "Déverrouiller"
 
 msgid "Remove this message"
 msgstr ""
@@ -164,28 +146,25 @@ msgid "Scale "
 msgstr ""
 
 msgid "Search"
-msgstr ""
-
-msgid "show/hide"
-msgstr ""
+msgstr "Rechercher"
 
 msgid "Submit"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
 
 msgid "This item is currently being edited and has been locked"
-msgstr ""
+msgstr "Cet item est en cours d'édition et a été verrouillé"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
 msgid "Translate"
-msgstr ""
+msgstr "Traduire"
 
 msgid "Unable to create deployement directory"
-msgstr ""
+msgstr "Impossible de créer le repertoire pour le deploiement"
 
 msgid "Unable to release the lock"
 msgstr ""

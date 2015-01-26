@@ -19,8 +19,7 @@
  * 
  */
 
-use oat\tao\helpers\FileUploadException;
- 
+
 /**
  * Items Content Controller provide access to the files of an item
  *
@@ -29,6 +28,23 @@ use oat\tao\helpers\FileUploadException;
  */
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
+
+    private function getBrowserImplementationClass($identifier){
+
+        if(in_array($identifier,array('', 'local'))){
+            return 'taoItems_helpers_ResourceManager';
+        }
+        return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
+    }
+
+    private function getManagementImplementationClass($identifier){
+
+        if(in_array($identifier,array('', 'local'))){
+            return 'taoItems_helpers_ResourceManager';
+        }
+        return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
+    }
+
     /**
      * Returns a json encoded array describign a directory
      * 
@@ -47,6 +63,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         $itemLang = $this->getRequestParameter('lang');
 
+        $options = array('item'=>$item, 'lang'=>$itemLang);
+
         $subPath = $this->hasRequestParameter('path') ? $this->getRequestParameter('path') : '/';
         $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
        
@@ -60,9 +78,22 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 }
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
-        } 
-        
-        $data = taoItems_helpers_ResourceManager::buildDirectory($item, $itemLang, $subPath, $depth, $filters);
+        }
+
+        $identifier = '';
+        $pos = strpos($subPath, '/');
+        if($pos !== false && $pos !== 0){
+            $identifier = substr($subPath, 0, strpos($subPath, '/'));
+            $subPath = substr($subPath, strpos($subPath, '/') + 1);
+        }
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+        $clazz = $this->getBrowserImplementationClass($identifier);
+        $resourceBrowser = new $clazz($options);
+        $data = $resourceBrowser->getDirectory($subPath, $filters, $depth);
+
         echo json_encode($data);
     }
     
@@ -72,25 +103,37 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function fileExists() {
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
+
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = $this->getRequestParameter('path');
-        $safeName = dirname($path).'/'.tao_helpers_File::getSafeFileName(basename($path));
-        $fileExists = file_exists($baseDir.$safeName); 
-        
+
+        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
+        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+        $clazz = $this->getBrowserImplementationClass($identifier);
+        $mediaBrowser = new $clazz($options);
+        /** @var oat\tao\model\media\MediaBrowser $mediaBrowser */
+        $fileInfo = $mediaBrowser->getFileInfo($subPath, array());
+        $fileExists = true;
+        if(is_null($fileInfo)){
+            $fileExists = false;
+        }
+
         echo json_encode(array(
         	'exists' => $fileExists
         ));
@@ -102,46 +145,53 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function upload() {
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        //as upload may be called multiple times, we remove the session lock as soon as possible
+        session_write_close();
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
+
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-    
-        //as upload may be called multiple times, we remove the session lock as soon as possible
-        session_write_close();
-       
-		//TODO path traversal and null byte poison check ? 
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $relPath = trim($this->getRequestParameter('path'), '/');
-        $relPath = empty($relPath) ? '' : $relPath.'/';
-      
-        try{ 
-            $file = tao_helpers_Http::getUploadedFile('content');
-            
-            $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-            $fileName = tao_helpers_File::getSafeFileName($file['name']);
-            
-            if(!move_uploaded_file($file["tmp_name"], $baseDir.$relPath.$fileName)){
-                throw new common_exception_Error('Unable to move uploaded file');
-            } 
-            
-            $fileData = taoItems_helpers_ResourceManager::buildFile($item, $itemLang, $relPath.$fileName);
-            echo json_encode($fileData);    
 
-        } catch(FileUploadException $fe){
-            
-            echo json_encode(array( 'error' => $fe->getMessage()));    
+
+        $relPath = '';
+        if($this->hasRequestParameter('relPath')){
+            $relPath = $this->getRequestParameter('relPath');
         }
+
+        //if the string contains something else than letters, numbers or / throw an exception
+        if(!preg_match('#^$|^[\w\/\-\._]+$#', $relPath)){
+            throw new InvalidArgumentException('The request parameter is invalid');
+        }
+        if(strpos($relPath, '/') === false){
+            $identifier = $relPath;
+            $subPath = '/';
+        }
+        else{
+            $identifier = substr($relPath, 0, strpos($relPath, '/'));
+            $subPath = substr($relPath, strpos($relPath, '/') + 1);
+        }
+        $identifier = trim($identifier);
+        $subPath = empty($subPath) ? '' : $subPath.'/';
+
+        $clazz = $this->getManagementImplementationClass($identifier);
+        $mediaManagement = new $clazz($options);
+
+        $file = tao_helpers_Http::getUploadedFile('content');
+
+        $filedata = $mediaManagement->upload($file['tmp_name'], $file['name'], $subPath);
+
+        echo json_encode($filedata);
     }
 
     /**
@@ -149,25 +199,36 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function download() {
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
+
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
-        
-        tao_helpers_Http::returnFile($path);
+
+        $identifier = '';
+        $subPath = $this->getRequestParameter('path');
+        if(strpos($subPath, '/') !== false){
+            $identifier = substr($subPath, 0, strpos($subPath, '/'));
+            $subPath = substr($subPath, strpos($subPath, '/') + 1);
+        }
+
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+        $clazz = $this->getBrowserImplementationClass($identifier);
+        $mediaBrowser = new $clazz($options);
+
+        $mediaBrowser->download($subPath);
     }
     
     /**
@@ -177,30 +238,34 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete() {
 
-        $deleted = false;
+        $options = array();
+        if ($this->hasRequestParameter('uri')) {
+            $itemUri = $this->getRequestParameter('uri');
+            $item = new core_kernel_classes_Resource($itemUri);
+            $options['item'] = $item;
+        }
 
-        if (!$this->hasRequestParameter('uri')) {
-            throw new common_exception_MissingParameter('uri', __METHOD__);
+        if ($this->hasRequestParameter('lang')) {
+            $itemLang = $this->getRequestParameter('lang');
+            $options['lang'] = $itemLang;
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
-        if (!$this->hasRequestParameter('lang')) {
-            throw new common_exception_MissingParameter('lang', __METHOD__);
-        }
-        $itemLang = $this->getRequestParameter('lang');
-        
+
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $itemLang);
-        $path = $baseDir.ltrim($this->getRequestParameter('path'), '/');
 
-        //TODO path traversal and null byte poison check ? 
-        if(is_file($path) && !is_dir($path)){
-            $deleted = unlink($path);
-        } 
+        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
+        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        if(strlen($subPath) === 0){
+            $subPath = '/';
+        }
+
+
+        $clazz = $this->getManagementImplementationClass($identifier);
+        $mediaManagement = new $clazz($options);
+
+        $deleted = $mediaManagement->delete($subPath);
+
         echo json_encode(array('deleted' => $deleted));
     }
 }
