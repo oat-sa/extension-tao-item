@@ -8,7 +8,7 @@ There should'nt be major changes expect for the following points:
  - some other events can appears
 
 ## Concept
- 
+
 The `ItemRunner` is the public API. A TestRunner calls the `ItemRunner` with itemData to render it and manage it's lifecycle.
 
 It works in 2 steps:
@@ -21,20 +21,20 @@ It works in 2 steps:
 |   ItemRunner   <------+------+ QtiRuntimeProvider |
 |                |1,n   |      |                    |
 +----------------+      |      +--------------------+
-                        |                            
+                        |
                         |      +--------------------+
                         |      |                    |
                         +------+ OWIRuntimeProvider |
                         |      |                    |
                         |      +--------------------+
-                        |                            
+                        |
                         |      +--------------------+
                         |      |                    |
                         +------+ SomeOtherProvider  |
                                |                    |
                                +--------------------+
 ```
-   
+
 2. Create an `ItemRunner` instance for each item to render.
 
 ```
@@ -76,16 +76,16 @@ define(['itemRunner'], function(itemRunner){
 
     var itemData = {
         //an object that represents the item
-    };    
+    };
 
     var initialState = {
         //an object with item current state
     };
 
                                         //itemRunner is a factory that creates a chainable instance.
-    itemRunner('qti', itemData)         //qti is the name of the provider registered previously 
+    itemRunner('qti', itemData)         //qti is the name of the provider registered previously
 
-		.on('error', function(err){         
+		.on('error', function(err){
 			//gracefull error handling
         })
 
@@ -119,9 +119,9 @@ define(['itemRunner'], function(itemRunner){
 
 ## API
 
-> Formal API is going to be generated using JsDoc. 
+> Formal API is going to be generated using JsDoc.
 
-Implemented events are : 
+Implemented events are :
 
  - `error` : any time, when somthing goes wrong
  - `init`  : once the initialization step is finished
@@ -129,10 +129,11 @@ Implemented events are :
  - `clear` : once the item is destroyed
  - `statechange` : each time the state has changed ( except using the public `setState`  - _to be confirmed_ )
  - `responsechange` : each time a response changes. It doesn't give you the last response but all responses entered by a test taker. Usefull to track user actions (_to be confirmed_ )
+ - `endattempt` : the item informs the end of the attempt
 
 ## Test
 
-Run in your browser, from a valid TAO distribution following the test case: `http://{TAO_HOST}/taoItems/views/js/test/runner/api/test.html?coverage=true` 
+Run in your browser, from a valid TAO distribution following the test case: `http://{TAO_HOST}/taoItems/views/js/test/runner/api/test.html?coverage=true`
 
 ## Build
 
