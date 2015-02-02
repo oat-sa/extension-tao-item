@@ -19,6 +19,8 @@
  *
  */
 
+use oat\tao\scripts\update\OntologyUpdater;
+
 /**
  * 
  * @author Joel Bout <joel@taotesting.com>
@@ -69,6 +71,14 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
                 common_Logger::w('Defautl Search already set');
                 $currentVersion = '2.6.2';
             }
+        }
+        
+        if ($currentVersion == '2.6.2') {
+            
+            OntologyUpdater::correctModelId(dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_1.rdf');
+            OntologyUpdater::correctModelId(dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_2.rdf');
+            $currentVersion = '2.6.3';
+        
         }
         
         return $currentVersion;
