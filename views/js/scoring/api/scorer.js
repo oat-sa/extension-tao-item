@@ -1,20 +1,20 @@
-/*  
+/*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2014 (original work) Open Assessment Technlogies SA (under the project TAO-PRODUCT);
- * 
+ *
  */
 
 /**
@@ -24,10 +24,10 @@ define(['jquery', 'lodash'], function($, _){
     'use strict';
 
     /**
-     * 
+     *
      * Builds a brand new {@link Scorer}.
      *
-     * <strong>The factory is an internal mechanism to create encapsulated contexts. 
+     * <strong>The factory is an internal mechanism to create encapsulated contexts.
      *  I suggest you to use directly the name <i>scorer</i> when you require this module.</strong>
      *
      * @example require(['scorer'], function(scorer){
@@ -47,7 +47,7 @@ define(['jquery', 'lodash'], function($, _){
      * @param {String} [providerName] - the name of a provider previously registered see {@link scorerFactory#register}
      * @param {Object} [options] - scorer options
      *
-     * @returns {Scorer} 
+     * @returns {Scorer}
      */
     var scorerFactory = function scorerFactory(providerName, options){
 
@@ -55,7 +55,7 @@ define(['jquery', 'lodash'], function($, _){
         if(_.isPlainObject(providerName)){
             options = providerName;
             providerName = undefined;
-        } 
+        }
         options = options || {};
 
         //contains the bound events.
@@ -67,7 +67,7 @@ define(['jquery', 'lodash'], function($, _){
 
         var provider;
         var providers = scorerFactory.providers;
-        
+
         //check a provider is available
         if(!providers || _.size(providers) === 0){
             throw new Error('No provider regitered');
@@ -86,7 +86,7 @@ define(['jquery', 'lodash'], function($, _){
         if(!provider){
             throw new Error('No candidate found for the provider');
         }
-         
+
 
        /**
         * The Scorer
@@ -103,7 +103,7 @@ define(['jquery', 'lodash'], function($, _){
             * Process the response
             * @param {Object[]} responses - the responses to score
             * @param {Object} responseProcessing - how to grade the response
-            * @fires Scorer#outcome 
+            * @fires Scorer#outcome
             */
            process : function(responses, responseProcessing){
                 var self = this;
@@ -130,13 +130,13 @@ define(['jquery', 'lodash'], function($, _){
             * will all be executed.
             *
             * @example scorer()
-            *               .on('outcome', function(outcome){ 
-            *               
+            *               .on('outcome', function(outcome){
+            *
             *               });
             *
             * @param {String} name - the name of the event to listen
-            * @param {Function} handler - the callback to run once the event is triggered. It's executed with the current scorer context (ie. this 
-            * @returns {Scorer} 
+            * @param {Function} handler - the callback to run once the event is triggered. It's executed with the current scorer context (ie. this
+            * @returns {Scorer}
             */
             on : function(name, handler){
                 if(_.isString(name) && _.isFunction(handler)){
@@ -185,24 +185,24 @@ define(['jquery', 'lodash'], function($, _){
     };
 
     /**
-     * Register an <i>Scoring Provider</i> into the scorer. 
+     * Register an <i>Scoring Provider</i> into the scorer.
      * The provider provides the behavior required by the scorer.
      *
      * @param {String} name - the provider name will be used to select the provider.
      *
      * @param {Object} provider - the Scoring Provier as a plain object. The scorer forwards encapsulate and delegate calls to the provider.
      * @param {ProcessScoringProvider} provider.process - how to process the responses to create an outcome
-     * 
+     *
      * @throws TypeError when a wrong provider is given or an empty name.
      */
     scorerFactory.register = function registerProvider(name, provider){
         //type checking
         if(!_.isString(name) || name.length <= 0){
             throw new TypeError('It is required to give a name to your provider.');
-        }      
+        }
         if(!_.isPlainObject(provider) || !_.isFunction(provider.process)){
             throw new TypeError('A provider is an object that contains a process function.');
-        }      
+        }
 
         this.providers = this.providers || {};
         this.providers[name] = provider;
@@ -210,4 +210,4 @@ define(['jquery', 'lodash'], function($, _){
 
     return scorerFactory;
 });
-   
+
