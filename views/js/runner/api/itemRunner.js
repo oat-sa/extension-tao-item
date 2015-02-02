@@ -276,7 +276,7 @@ define(['jquery', 'lodash'], function($, _){
                  */
                 var clearDone = function clearDone (){
 
-                    events = {};
+                    //events = {};
 
                     /**
                      * The item is ready.
@@ -284,7 +284,6 @@ define(['jquery', 'lodash'], function($, _){
                      */
                     self.trigger('clear');
                 };
-
                 if(_.isFunction(provider.clear)){
 
                     /**
