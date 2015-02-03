@@ -31,7 +31,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getBrowserImplementationClass($identifier){
 
-        if($identifier === 'local'){
+        if(in_array($identifier,array('', 'local'))){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
@@ -39,7 +39,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getManagementImplementationClass($identifier){
 
-        if($identifier === 'local'){
+        if(in_array($identifier,array('', 'local'))){
             return 'taoItems_helpers_ResourceManager';
         }
         return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
@@ -78,10 +78,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 }
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
-        } 
+        }
 
-        $identifier = substr($subPath, 0, strpos($subPath, '/'));
-        $subPath = substr($subPath, strpos($subPath, '/'));
+        $identifier = '';
+        $pos = strpos($subPath, '/');
+        if($pos !== false && $pos !== 0){
+            $identifier = substr($subPath, 0, strpos($subPath, '/'));
+            $subPath = substr($subPath, strpos($subPath, '/') + 1);
+        }
         if(strlen($subPath) === 0){
             $subPath = '/';
         }
@@ -160,11 +164,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
 
-        $relPath = trim($this->getRequestParameter('path'), '/');
+        $relPath = '';
         if($this->hasRequestParameter('relPath')){
-            $relPath = trim($this->getRequestParameter('relPath'), '/');
+            $relPath = $this->getRequestParameter('relPath');
         }
-        if(!strpos($relPath, '/')){
+
+        //if the string contains something else than letters, numbers or / throw an exception
+        if(!preg_match('#^$|^[\w\/\-\._]+$#', $relPath)){
+            throw new InvalidArgumentException('The request parameter is invalid');
+        }
+        if(strpos($relPath, '/') === false){
             $identifier = $relPath;
             $subPath = '/';
         }
@@ -172,6 +181,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $identifier = substr($relPath, 0, strpos($relPath, '/'));
             $subPath = substr($relPath, strpos($relPath, '/') + 1);
         }
+        $identifier = trim($identifier);
         $subPath = empty($subPath) ? '' : $subPath.'/';
 
         $clazz = $this->getManagementImplementationClass($identifier);
@@ -205,12 +215,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
 
-        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
-        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
+        $identifier = '';
+        $subPath = $this->getRequestParameter('path');
+        if(strpos($subPath, '/') !== false){
+            $identifier = substr($subPath, 0, strpos($subPath, '/'));
+            $subPath = substr($subPath, strpos($subPath, '/') + 1);
+        }
+
         if(strlen($subPath) === 0){
             $subPath = '/';
         }
-
         $clazz = $this->getBrowserImplementationClass($identifier);
         $mediaBrowser = new $clazz($options);
 

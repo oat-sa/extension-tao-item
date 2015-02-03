@@ -190,10 +190,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
 
         if(!is_null($item)){
 
-            if(empty($lang)){
-                $session = core_kernel_classes_Session::singleton();
-                $lang = $session->getDataLanguage();
-            }
+            $lang = empty($lang) ? $this->getSessionLg() : $lang;
 
             $itemRepo = $this->getDefaultFileSource();
             $repositoryPath = $itemRepo->getPath();
@@ -260,7 +257,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             if($itemContents->count() > 0){
                 $itemContent = $itemContents->get(0);
             }
-
+            //if no itemContent is set get the default one and copy it into a new repository
+            else{
+                $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
+                if($itemContents->count() > 0){
+                    $itemContent = $itemContents->get(0);
+                    $this->setDefaultItemContent($item, $itemContent, $lang);
+                    tao_helpers_File::copy($this->getItemFolder($item, DEFAULT_LANG), $this->getItemFolder($item, $lang));
+                }
+            }
             if(!is_null($itemContent) && $this->isItemModelDefined($item)){
 
                 if(core_kernel_file_File::isFile($itemContent)){
@@ -476,30 +481,39 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
         return $impl->render($item, $language);
     }
 
+    /**
+     * Woraround for item content
+     * (non-PHPdoc)
+     * @see tao_models_classes_GenerisService::cloneInstanceProperty()
+     */
     protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
         if ($property->getUri() == TAO_ITEM_CONTENT_PROPERTY) {
-            $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
-            foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
-                $file = new core_kernel_versioning_File($propertyValue->getUri());
-                $repo = $file->getRepository();
-                $relPath = basename($file->getAbsolutePath());
-                if(!empty($relPath)){
-                    $newPath = tao_helpers_File::concat(array($this->getItemFolder($destination), $relPath));
-                    common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
-                    tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
-                    if(file_exists($newPath)){
-                        $subpath = substr($newPath, strlen($repo->getPath()));
-                        $newFile = $repo->createFile(
-                            (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
-                        );
-                        $destination->setPropertyValue($property, $newFile->getUri());
-                        $newFile->add(true, true);
-                        $newFile->commit('Clone of '.$source->getUri(), true);
-                    }
-                }
-            }
+            return $this->cloneItemContent($source, $destination, $property);
         } else {
             return parent::cloneInstanceProperty($source, $destination, $property);
+        }
+    }
+    
+    protected function cloneItemContent($source, $destination, $property) {
+        $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
+        foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+            $file = new core_kernel_versioning_File($propertyValue->getUri());
+            $repo = $file->getRepository();
+            $relPath = basename($file->getAbsolutePath());
+            if(!empty($relPath)){
+                $newPath = tao_helpers_File::concat(array($this->getItemFolder($destination), $relPath));
+                common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
+                tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
+                if(file_exists($newPath)){
+                    $subpath = substr($newPath, strlen($repo->getPath()));
+                    $newFile = $repo->createFile(
+                        (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
+                    );
+                    $destination->setPropertyValue($property, $newFile->getUri());
+                    $newFile->add(true, true);
+                    $newFile->commit('Clone of '.$source->getUri(), true);
+                }
+            }
         }
     }
     
@@ -539,16 +553,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      * @return string
      */
     public function getSessionLg(){
-        $returnValue = (string) '';
 
-        $session = core_kernel_classes_Session::singleton();
-        if($session->getDataLanguage() != ''){
-            $returnValue = $session->getDataLanguage();
-        }else{
+        $sessionLang = \common_session_SessionManager::getSession()->getDataLanguage();
+        if(empty($sessionLang)){
             throw new Exception('the data language of the user cannot be found in session');
         }
 
-        return (string) $returnValue;
+        return (string) $sessionLang;
     }
 
     /**

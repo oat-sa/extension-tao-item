@@ -34,7 +34,7 @@ return array(
     'label' => 'Item core extension',
 	'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '2.6.1',
+    'version' => '2.6.3',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
 	'requires' => array(
 	    'tao' => '>=2.7'

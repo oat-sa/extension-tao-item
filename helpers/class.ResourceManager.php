@@ -32,16 +32,14 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
     private $item;
     private $lang;
 
-    public function __construct($datas){
-        $this->item = (isset($datas['item'])) ? $datas['item'] : null;
-        $this->lang = (isset($datas['lang'])) ? $datas['lang'] : '';
+    public function __construct($data){
+        $this->item = (isset($data['item'])) ? $data['item'] : null;
+        $this->lang = (isset($data['lang'])) ? $data['lang'] : '';
 
     }
     
     public function getDirectory($relPath = '/', $acceptableMime = array(), $depth = 1) {
-
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
-        $path = $baseDir.ltrim($relPath, '/');
+        $sysPath = $this->getSysPath($relPath);
 
         $label = substr($relPath,strrpos($relPath, '/') + 1);
         if(!$label){
@@ -49,14 +47,14 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         }
 
         $data = array(
-            'path' => 'local'.$relPath,
+            'path' => $relPath,
             'label' => $label
         );
 
         if ($depth > 0 ) {
             $children = array();
-            if (is_dir($path)) {
-                foreach (new DirectoryIterator($path) as $fileinfo) {
+            if (is_dir($sysPath)) {
+                foreach (new DirectoryIterator($sysPath) as $fileinfo) {
                     if (!$fileinfo->isDot()) {
                         $subPath = rtrim($relPath, '/').'/'.$fileinfo->getFilename();
                         if ($fileinfo->isDir()) {
@@ -70,7 +68,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
                     }
                 }
             } else {
-                common_Logger::w('"'.$path.'" is not a directory');
+                common_Logger::w('"'.$sysPath.'" is not a directory');
             }
             $data['children'] = $children;
         }
@@ -82,17 +80,19 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
 
     public function getFileInfo($relPath, $acceptableMime) {
         $file = null;
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
-        $filename = tao_helpers_File::getSafeFileName(basename($relPath));
-        $dir = dirname($relPath);
-        $path = $baseDir.$dir.'/'.$filename;
-        $mime = tao_helpers_File::getMimeType($path);
-        if((count($acceptableMime) == 0 || in_array($mime, $acceptableMime)) && file_exists($path)){
+
+        $filename = basename($relPath);
+        $dir = ltrim(dirname($relPath),'/');
+
+        $sysPath = $this->getSysPath($dir.'/'.$filename);
+
+        $mime = tao_helpers_File::getMimeType($sysPath);
+        if((count($acceptableMime) == 0 || in_array($mime, $acceptableMime)) && file_exists($sysPath)){
             $file = array(
-                'name' => basename($path),
+                'name' => basename($sysPath),
                 'mime' => $mime,
-                'size' => filesize($path),
-                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => 'local'.$relPath))
+                'size' => filesize($sysPath),
+                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $relPath))
             );
         }
         return $file;
@@ -100,24 +100,23 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
 
     public function download($filename){
 
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
-        $path = $baseDir.ltrim($filename, '/');
-
-        tao_helpers_Http::returnFile($path);
+        $sysPath = $this->getSysPath($filename);
+        tao_helpers_Http::returnFile($sysPath);
     }
 
-    public function upload($fileTmp, $fileName, $path)
+    public function upload($fileTmp, $fileName, $subPath)
     {
 
         try{
-            $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
             $fileName = tao_helpers_File::getSafeFileName($fileName);
 
-            if(!move_uploaded_file($fileTmp, $baseDir.$path.$fileName)){
+            $sysPath = $this->getSysPath($subPath.$fileName);
+
+            if(!move_uploaded_file($fileTmp, $sysPath)){
                 throw new common_exception_Error('Unable to move uploaded file');
             }
 
-            $fileData = $this->getFileInfo('/'.$path.$fileName, array());
+            $fileData = $this->getFileInfo('/'.$subPath.$fileName, array());
             return $fileData;
 
         } catch(FileUploadException $fe){
@@ -129,15 +128,28 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
     public function delete($filename)
     {
         $deleted = false;
-        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
 
-        $path = $baseDir.$filename;
-
-        //TODO path traversal and null byte poison check ?
-        if(is_file($path) && !is_dir($path)){
-            $deleted = unlink($path);
+        $sysPath = $this->getSysPath($filename);
+        if(is_file($sysPath) && !is_dir($sysPath)){
+            $deleted = unlink($sysPath);
         }
 
         return $deleted;
+    }
+
+    /**
+     * @param $relPath
+     * @return string
+     * @throws common_exception_Error
+     */
+    private function getSysPath($relPath){
+        $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
+
+        $sysPath = $baseDir.ltrim($relPath, '/');
+        if(!tao_helpers_File::securityCheck($sysPath)){
+            throw new common_exception_Error(__('Your path contains error'));
+        }
+
+        return $sysPath;
     }
 }

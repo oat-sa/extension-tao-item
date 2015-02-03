@@ -33,7 +33,7 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		if(is_null($userId)){
 			throw new common_exception_Error('No user is logged in');
 		}
-		$lang = core_kernel_classes_Session::singleton()->getDataLanguage();
+		$lang = common_session_SessionManager::getSession()->getDataLanguage();
 
 		if ($this->hasRequestParameter('serviceCallId')) {
                     $serviceCallId = $this->getRequestParameter('serviceCallId');
