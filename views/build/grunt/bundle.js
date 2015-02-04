@@ -7,12 +7,12 @@ module.exports = function(grunt) {
     var root        = grunt.option('root');
     var libs        = grunt.option('mainlibs');
     var ext         = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
-    var out         = 'output/taoItems';
+    var out         = 'output';
 
     /**
      * Remove bundled and bundling files
      */
-    clean.taoitemsbundle = [out,  root + '/taoItems/views/js/controllers.min.js'];
+    clean.taoitemsbundle = [out];
 
     /**
      * Compile tao files into a bundle
