@@ -31,8 +31,10 @@ class RestTaoItemsTest extends RestTestCase
 {
     public function serviceProvider(){
         return array(
-            array('taoItems/RestItems')
+            array('taoItems/RestItems',TAO_ITEM_CLASS)
         );
     }
+    
+
 }
 
