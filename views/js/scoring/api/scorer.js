@@ -102,20 +102,22 @@ define(['jquery', 'lodash'], function($, _){
            /**
             * Process the response
             * @param {Object[]} responses - the responses to score
-            * @param {Object} responseProcessing - how to grade the response
+            * @param {Object} processingData - all the data needed to grade/process the response
             * @fires Scorer#outcome
+            * @fires Scorer#error
             */
-           process : function(responses, responseProcessing){
+           process : function(responses, processingData){
                 var self = this;
                 if(_.isFunction(provider.process)){
 
                     /**
-                     * Calls the provider's render
-                     * @callback RendertItemProvider
-                     * @param {HTMLElement} elt - the element to render inside
+                     * Calls the provider's process
+                     * @callback ProcessScoringProvider
+                     * @param {Object[]} responses - the responses to score
+                     * @param {Object} processingData - all the data needed to grade/process the response
                      * @param {Function} done - call once the render is done
                      */
-                    provider.process.call(this, responses, function proceed(outcome){
+                    provider.process.call(this, responses, processingData, function proceed(outcome){
                         if(!_.isPlainObject(outcome)){
                             return self.trigger('error', 'The given outcome is not formated correctly. An object is expected but a ' + (typeof outcome) + ' given');
                         }
