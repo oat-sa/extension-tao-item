@@ -189,7 +189,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $file = tao_helpers_Http::getUploadedFile('content');
 
-        $filedata = $mediaManagement->upload($file['tmp_name'], $file['name'], $subPath);
+        if (!is_uploaded_file($file['tmp_name'])) {
+            throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
+        }
+        $filedata = $mediaManagement->add($file['tmp_name'], $file['name'], $subPath);
 
         echo json_encode($filedata);
     }
