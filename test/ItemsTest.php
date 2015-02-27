@@ -180,6 +180,22 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertNotFalse($this->itemsService->setDefaultFilesource($source));
     }
 
+    public function testIsItemClass()
+    {
+        $clazz = $this->prophesize('core_kernel_classes_Class');
+        $clazz->getUri()->willReturn(TAO_ITEM_CLASS);   
+        $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()))
+        
+        $parent = $this->prophesize('core_kernel_classes_Class');
+        $clazz->getUri()->willReturn(TAO_ITEM_CLASS);
+        $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()))
+    }
+    
+    public function testGetItemContent()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        $item->getPropertyValuesCollection(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY))->willReturn();
+    }
 
     /**
      * @depends testInstantiateClass
