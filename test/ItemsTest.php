@@ -156,7 +156,8 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertNotNull($this->itemsService->setItemContent($instance, 'test2'));
         $this->assertEquals('test2', $this->itemsService->getItemContent($instance));
 
-        $this->assertEquals('', $this->itemsService->getItemContent($instance, 'BY'));
+        //if no itemContent is set get the default one and copy it into a new repository
+        $this->assertEquals('test2', $this->itemsService->getItemContent($instance, 'BY'));
 
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
