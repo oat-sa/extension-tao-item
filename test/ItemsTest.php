@@ -25,6 +25,7 @@ use core_kernel_classes_Property;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use taoItems_models_classes_ItemsService;
+use Prophecy\Argument;
 
 
 /**
@@ -270,6 +271,9 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertNull($this->itemsService->getItemModelImplementation($itemModelProphecy->reveal()));
     }
     
+    
+    
+    
     public function testGetDefaultFileSource()
     {
         $this->assertInstanceOf('core_kernel_versioning_Repository', $this->itemsService->getDefaultFileSource());
@@ -298,6 +302,20 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         
     }
     
+    
+    public function testIsItemVersioned()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        $file = $this->prophesize('core_kernel_classes_Resource');
+        $file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))
+            ->willReturn(true);
+        $item->getPropertyValues(Argument::which('getUri' , TAO_ITEM_CONTENT_PROPERTY))
+            ->willReturn(array($file->reveal()));
+        
+        $this->assertTrue($this->itemsService->isItemVersioned($item->reveal()));
+    }
+    
+        
     public function testIsItemModelDefined()
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
