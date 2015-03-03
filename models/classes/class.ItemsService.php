@@ -257,8 +257,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
             if($itemContents->count() > 0){
                 $itemContent = $itemContents->get(0);
             }
-            //if no itemContent is set get the default one and copy it into a new repository
-            else{
+            //if no itemContent is set for the lang get the default one and copy it into a new repository
+            else if(!empty($lang)){
                 $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
                 if($itemContents->count() > 0){
                     $itemContent = $itemContents->get(0);
