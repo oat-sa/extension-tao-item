@@ -104,7 +104,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         tao_helpers_Http::returnFile($sysPath);
     }
 
-    public function upload($fileTmp, $fileName, $subPath)
+    public function add($source, $fileName, $subPath)
     {
 
         try{
@@ -112,8 +112,8 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
 
             $sysPath = $this->getSysPath($subPath.$fileName);
 
-            if(!move_uploaded_file($fileTmp, $sysPath)){
-                throw new common_exception_Error('Unable to move uploaded file');
+            if(!tao_helpers_File::copy($source, $sysPath)){
+                throw new common_exception_Error('Unable to move file '.$source);
             }
 
             $fileData = $this->getFileInfo('/'.$subPath.$fileName, array());
