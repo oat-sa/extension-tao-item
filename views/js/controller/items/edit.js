@@ -1,5 +1,6 @@
 
-define(['module', 'layout/actions'], function(module, actions){
+define(['module', 'layout/actions', 'jquery','helpers','ui/lock'],
+	function(module, actions, $, helpers, lock){
 
         var editItemController = {
             start : function(options){
@@ -17,7 +18,29 @@ define(['module', 'layout/actions'], function(module, actions){
                 if(authoringAction){
                     authoringAction.state.disabled = !config.isAuthoringEnabled;
                 }
-                actions.updateState(); 
+                actions.updateState();
+                
+                if(config.msg !== false){
+                    var lk = lock($('#lock-box')).hasLock(config.msg,
+                        {
+                            released : function(){
+                                console.log('released');
+                                this.close();
+                            },
+                            failed : function(){
+                                console.log('failed');
+                                this.close();
+                            },
+                            url: helpers._url('release','Lock','tao'),
+                            uri: config.uri
+                        });
+                    $('#release').on('click',function(){
+                        lk.release();
+                    });
+                    $('#lock-box').on('released-lock', function(){
+                        console.log('released');
+                    });
+                }
             }
         };
 
