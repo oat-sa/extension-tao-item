@@ -26,6 +26,7 @@ use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use taoItems_models_classes_ItemsService;
 use Prophecy\Argument;
+use oat\taoOpenWebItem\model\OwiItemModel;
 
 
 /**
@@ -142,14 +143,13 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testItemContent($instance)
     {
-
-        $this->assertFalse($this->itemsService->hasItemModel($instance, [TAO_ITEM_MODEL_XHTML]));
+        $this->assertFalse($this->itemsService->hasItemModel($instance, [OwiItemModel::ITEMMODEL_URI]));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
         $this->itemsService->setDefaultItemContent($instance);
         $this->assertFileExists($this->itemsService->getDefaultItemFolder($instance));
 
-        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
+        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), OwiItemModel::ITEMMODEL_URI);
 
         //is really empty
         $this->assertFalse($this->itemsService->hasItemContent($instance));
@@ -165,8 +165,8 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
 
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
-        $this->assertStringStartsWith(ROOT_URL, $instance->getUri());
-        $this->assertTrue($this->itemsService->hasItemModel($instance, [TAO_ITEM_MODEL_XHTML]));
+        $this->assertStringStartsWith(LOCAL_NAMESPACE, $instance->getUri());
+        $this->assertTrue($this->itemsService->hasItemModel($instance, [OwiItemModel::ITEMMODEL_URI]));
 
         $this->assertStringStartsWith(ROOT_URL, $this->itemsService->getPreviewUrl($instance));
 
