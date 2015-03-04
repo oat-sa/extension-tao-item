@@ -1,4 +1,5 @@
 <?php
+use oat\tao\model\lock\LockManager;
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -142,13 +143,19 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisSer
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  core_kernel_classes_Resource item
+     * @throws common_exception_Unauthorized
      * @return boolean
      */
     public function deleteItem(core_kernel_classes_Resource $item){
         $returnValue = (bool) false;
+        
+        $lock = LockManager::getImplementation()->getLockData($item);
+        if (LockManager::getImplementation()->isLocked($item)) {
+            $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
+            LockManager::getImplementation()->releaseLock($item, $userId);
+        }
 
         if(!is_null($item)){
-
             $returnValue = $this->deleteItemContent($item);
             $returnValue &= $item->delete(true);
         }
