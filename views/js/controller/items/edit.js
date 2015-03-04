@@ -1,6 +1,6 @@
 
-define(['module', 'layout/actions', 'jquery','helpers','ui/lock'],
-	function(module, actions, $, helpers, lock){
+define(['module', 'layout/actions', 'jquery','helpers','ui/lock', 'ui/feedback', 'i18n'],
+	function(module, actions, $, helpers, lock, feedback, __){
 
         var editItemController = {
             start : function(options){
@@ -23,23 +23,16 @@ define(['module', 'layout/actions', 'jquery','helpers','ui/lock'],
                 if(config.msg !== false){
                     var lk = lock($('#lock-box')).hasLock(config.msg,
                         {
-                            released : function(){
-                                console.log('released');
+                            released : function() {
+                            	feedback().success(__('The item has been released'));
                                 this.close();
                             },
-                            failed : function(){
-                                console.log('failed');
-                                this.close();
+                            failed : function() {
+                            	feedback().error(__('The item could not be released'));
                             },
                             url: helpers._url('release','Lock','tao'),
                             uri: config.uri
                         });
-                    $('#release').on('click',function(){
-                        lk.release();
-                    });
-                    $('#lock-box').on('released-lock', function(){
-                        console.log('released');
-                    });
                 }
             }
         };
