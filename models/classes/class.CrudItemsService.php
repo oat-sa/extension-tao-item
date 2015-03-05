@@ -41,6 +41,9 @@ class taoItems_models_classes_CrudItemsService
 		return $this->itemClass;
 	}
 
+	protected function getClassService(){
+	    return $this->itemsServices;
+	}
     
     public function delete( $resource){
          taoItems_models_classes_ItemsService::singleton()->deleteItem(new core_kernel_classes_Resource($resource));

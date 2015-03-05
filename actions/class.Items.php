@@ -1,4 +1,5 @@
 <?php
+use oat\tao\model\lock\LockManager;
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -146,6 +147,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
 
+            // my lock
+            $lock = LockManager::getImplementation()->getLockData($item);
+            if (!is_null($lock) && $lock->getOwnerId() == common_session_SessionManager::getSession()->getUser()->getIdentifier()) {
+                $this->setData('lockDate', $lock->getCreationTime());
+                $this->setData('id', $item->getUri());
+            }
+            
             $formContainer = new taoItems_actions_form_Item($itemClass, $item);
             $myForm = $formContainer->getForm();
             
@@ -335,6 +343,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
+            
             $this->setData('error', false);
             try{
 
@@ -343,7 +352,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $itemModelImpl = $this->service->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
-                        tao_models_classes_lock_OntoLock::singleton()->setLock($item, tao_models_classes_UserService::singleton()->getCurrentUser());
+                        LockManager::getImplementation()->setLock($item, common_session_SessionManager::getSession()->getUser()->getIdentifier());
 
                         return $this->forwardUrl($authoringUrl);
                     }
@@ -351,11 +360,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 throw new common_exception_NoImplementation();
                 $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
 
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 $this->setData('error', true);
                 //build clear error or warning message:
                 if(!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource){
-                    $errorMsg = __('No item authoring tool available for the selected type of item: '.$itemModel->getLabel());
+                    $errorMsg = __('No item authoring tool available for the selected type of item: %s'.$itemModel->getLabel());
                 }else{
                     $errorMsg = __('No item type selected for the current item.')." {$item->getLabel()} ".__('Please select first the item type!');
                 }
