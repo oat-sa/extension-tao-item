@@ -147,6 +147,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
 
+            // my lock
+            $lock = LockManager::getImplementation()->getLockData($item);
+            if (!is_null($lock) && $lock->getOwnerId() == common_session_SessionManager::getSession()->getUser()->getIdentifier()) {
+                $this->setData('lockDate', $lock->getCreationTime());
+                $this->setData('id', $item->getUri());
+            }
+            
             $formContainer = new taoItems_actions_form_Item($itemClass, $item);
             $myForm = $formContainer->getForm();
             
