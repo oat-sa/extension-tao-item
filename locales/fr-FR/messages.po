@@ -1,32 +1,38 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC04\n"
-"PO-Revision-Date: 2015-03-06T15:32:48\n"
-"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
-"MIME-Version: 1.0\n"
+"Project-Id-Version: TAO 3.0\n"
+"PO-Revision-Date: 2014-12-09 14:01+0000\n"
+"Last-Translator: lionel <lionel@taotesting.com>\n"
 "Language: fr-FR\n"
-"sourceLanguage: en-US\n"
-"targetLanguage: fr-FR\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: fr-FR\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-POOTLE-MTIME: 1418133705.000000\n"
 
 msgid "Actual size"
-msgstr ""
+msgstr "Taille réelle"
+
+msgid "As the owner of this resource, you may release the lock"
+msgstr "En tant que propriétaire de la ressource, vous pouvez la déverrouiller."
 
 msgid "Authoring"
-msgstr "Éditeur "
+msgstr "Éditeur"
 
 msgid "Class saved"
 msgstr "Classe enregistrée"
 
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 msgid "Close console"
-msgstr ""
+msgstr "Fermer la console"
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -48,7 +54,7 @@ msgid "Edit Item"
 msgstr "Modifier un item"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Éditer l'élément"
 
 msgid "Edit item class"
 msgstr "Édition de la classe item"
@@ -61,6 +67,12 @@ msgstr "Filtrer"
 
 msgid "Import"
 msgstr "Importer"
+
+msgid "Item Locked"
+msgstr "Item verrouillé"
+
+msgid "Item Locked:"
+msgstr "Item verrouillé :"
 
 msgid "Item Model"
 msgstr ""
@@ -80,6 +92,12 @@ msgstr ""
 
 msgid "Lists"
 msgstr "Listes"
+
+msgid "Lock Owner:"
+msgstr "Propriétaire du verrou :"
+
+msgid "Locking Date:"
+msgstr "Date de verrouillage :"
 
 #, tao-public
 msgid "Manage items"
@@ -103,6 +121,9 @@ msgstr "Pas de modèle d'item sélectionné pour cet item."
 msgid "Not yet available"
 msgstr "Pas encore disponible"
 
+msgid "Please contact the owner of the resource to unlock it"
+msgstr "Veuillez contacter le propriétaire de la ressource pour la déverrouiller."
+
 msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
 
@@ -114,6 +135,9 @@ msgstr "Aperçu "
 
 msgid "Properties"
 msgstr ""
+
+msgid "ReleaseLock"
+msgstr "Déverrouiller"
 
 msgid "Remove this message"
 msgstr ""
@@ -130,14 +154,11 @@ msgstr "Rechercher"
 msgid "Submit"
 msgstr ""
 
-msgid "The item could not be released"
-msgstr ""
-
-msgid "The item has been released"
-msgstr ""
-
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Le module <i>Items</i> permet la création et le design d'items et d'exercices."
+
+msgid "This item is currently being edited and has been locked"
+msgstr "Cet item est en cours d'édition et a été verrouillé"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
@@ -148,9 +169,5 @@ msgstr "Traduire"
 msgid "Unable to create deployement directory"
 msgstr "Impossible de créer le repertoire pour le deploiement"
 
-msgid "You checked out this %1s %2s ago', 'item', tao_helpers_Date::displayInterval(get_data('lockDate"
+msgid "Unable to release the lock"
 msgstr ""
-
-msgid "Your path contains error"
-msgstr ""
-
