@@ -205,4 +205,12 @@
   	<rdfs:label xml:lang="en-US"><![CDATA[Items Manager]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[The Items Manager Role]]></rdfs:comment>
   </rdf:Description>
+  
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor">
+  	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#UserRole"/>
+  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole"/>
+  	<rdfs:label xml:lang="en-US"><![CDATA[Item Author]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[The Item Author Role]]></rdfs:comment>
+  </rdf:Description>
+  
 </rdf:RDF>
