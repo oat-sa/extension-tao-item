@@ -43,7 +43,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
         parent::index();
     }
 
-	public function getAvailableExportHandlers() {
+	protected function getAvailableExportHandlers() {
 		$returnValue = parent::getAvailableExportHandlers();
 		
 		$resources = $this->getResourcesToExport();
