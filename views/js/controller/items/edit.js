@@ -20,20 +20,7 @@ define(['module', 'layout/actions', 'jquery','helpers','ui/lock', 'ui/feedback',
                 }
                 actions.updateState();
                 
-                if(config.msg !== false){
-                    var lk = lock($('#lock-box')).hasLock(config.msg,
-                        {
-                            released : function() {
-                            	feedback().success(__('The item has been released'));
-                                this.close();
-                            },
-                            failed : function() {
-                            	feedback().error(__('The item could not be released'));
-                            },
-                            url: helpers._url('release','Lock','tao'),
-                            uri: config.uri
-                        });
-                }
+                $('#lock-box').each(function() {lock($(this)).register()});
             }
         };
 
