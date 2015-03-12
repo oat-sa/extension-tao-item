@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -16,13 +16,18 @@
  * 
  * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- * 
+ *               2015 (update and modification) Open Assessment Technologies SA
  */
 namespace oat\taoItems\test;
 
 use oat\tao\test\TaoPhpUnitTestRunner;
+use core_kernel_classes_Property;
+use core_kernel_classes_Class;
+use core_kernel_classes_Resource;
+use taoItems_models_classes_ItemsService;
+use Prophecy\Argument;
+use oat\taoOpenWebItem\model\OwiItemModel;
 
-//include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
  *
@@ -138,14 +143,13 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testItemContent($instance)
     {
-
-        $this->assertFalse($this->itemsService->hasItemModel($instance, [TAO_ITEM_MODEL_XHTML]));
+        $this->assertFalse($this->itemsService->hasItemModel($instance, [OwiItemModel::ITEMMODEL_URI]));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
         $this->itemsService->setDefaultItemContent($instance);
         $this->assertFileExists($this->itemsService->getDefaultItemFolder($instance));
 
-        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), TAO_ITEM_MODEL_XHTML);
+        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), OwiItemModel::ITEMMODEL_URI);
 
         //is really empty
         $this->assertFalse($this->itemsService->hasItemContent($instance));
@@ -156,12 +160,13 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertNotNull($this->itemsService->setItemContent($instance, 'test2'));
         $this->assertEquals('test2', $this->itemsService->getItemContent($instance));
 
-        $this->assertEquals('', $this->itemsService->getItemContent($instance, 'BY'));
+        //if no itemContent is set get the default one and copy it into a new repository
+        $this->assertEquals('test2', $this->itemsService->getItemContent($instance, 'BY'));
 
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
-        $this->assertStringStartsWith(ROOT_URL, $instance->getUri());
-        $this->assertTrue($this->itemsService->hasItemModel($instance, [TAO_ITEM_MODEL_XHTML]));
+        $this->assertStringStartsWith(LOCAL_NAMESPACE, $instance->getUri());
+        $this->assertTrue($this->itemsService->hasItemModel($instance, [OwiItemModel::ITEMMODEL_URI]));
 
         $this->assertStringStartsWith(ROOT_URL, $this->itemsService->getPreviewUrl($instance));
 
@@ -179,6 +184,152 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertNotFalse($this->itemsService->setDefaultFilesource($source));
     }
 
+    public function testIsItemClass()
+    {
+        $clazz = $this->prophesize('core_kernel_classes_Class');
+        $clazz->getUri()->willReturn(TAO_ITEM_CLASS);   
+        $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
+        
+        
+        $clazz = $this->prophesize('core_kernel_classes_Class');
+        $clazz->getUri()->willReturn('uri');
+        
+        $parent = $this->prophesize('core_kernel_classes_Class');
+        $parent->getUri()->willReturn(TAO_ITEM_CLASS);
+        
+        $clazz->getParentClasses(true)->willReturn(array($parent->reveal()));
+        $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
+    }
+    
+    public function testGetModelRuntime()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        $itemModel = $this->prophesize('core_kernel_classes_Resource');
+        $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY))
+            ->willReturn('returnValue');
+        $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY))
+            ->willReturn($itemModel->reveal());
+        
+        $this->assertEquals('returnValue', $this->itemsService->getModelRuntime($item->reveal()));
+    }
+    
+    public function testGetItemModel()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
+        $itemModel = $itemModelProphecy->reveal();
+        $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY))
+        ->willReturn($itemModel);
+        $this->assertEquals($itemModel, $this->itemsService->getItemModel($item->reveal()));
+    }
+    
+    
+    public function testGetPreviewUrl()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+        ->willReturn(array());
+        $itemModel = $itemModelProphecy->reveal();
+        $this->assertNull($this->itemsService->getPreviewUrl($item->reveal()));
+                
+    }
+    
+
+    public function testGetItemModelImplementation()
+    {
+        $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+            ->willReturn(array('#fakeUri','#toto'));
+        $itemModelProphecy->getLabel()->willReturn('foo');
+        
+        try {
+            $this->itemsService->getItemModelImplementation($itemModelProphecy->reveal());
+            $this->fail('an exception should have been raised');
+        }
+        catch (\common_Exception $e) {
+            $this->assertInstanceOf('common_exception_Error', $e);
+            $this->assertEquals('Conflicting services for itemmodel foo', $e->getMessage());         
+        }
+        
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+        ->willReturn(array('#fakeUri'));
+        $itemModelProphecy->getLabel()->willReturn('foo');
+        
+        try {
+            $this->itemsService->getItemModelImplementation($itemModelProphecy->reveal());
+            $this->fail('an exception should have been raised');
+        }
+        catch (\common_Exception $e) {
+            $this->assertInstanceOf('common_exception_Error', $e);
+            $this->assertEquals('Item model service #fakeUri not found, or not compatible for item model foo', $e->getMessage());
+        
+        }
+        
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+            ->willReturn(array());
+        $this->assertNull($this->itemsService->getItemModelImplementation($itemModelProphecy->reveal()));
+    }
+    
+    
+    
+    
+    public function testGetDefaultFileSource()
+    {
+        $this->assertInstanceOf('core_kernel_versioning_Repository', $this->itemsService->getDefaultFileSource());
+        $ext = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+        $oldConfig = $ext->getConfig(taoItems_models_classes_ItemsService::CONFIG_DEFAULT_FILESOURCE);
+        try {
+            $this->assertTrue(
+                $ext->setConfig(
+                    taoItems_models_classes_ItemsService::CONFIG_DEFAULT_FILESOURCE,
+                    array()
+                )
+            );
+            
+            $this->itemsService->getDefaultFileSource();
+        }
+        catch (\common_Exception $e) {
+            $this->assertEquals('No default repository defined for Items storage.', $e->getMessage());
+            
+        }
+        $this->assertTrue(
+            $ext->setConfig(
+                taoItems_models_classes_ItemsService::CONFIG_DEFAULT_FILESOURCE,
+                $oldConfig)
+        );
+        
+        
+    }
+    
+    
+    public function testIsItemVersioned()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        $file = $this->prophesize('core_kernel_classes_Resource');
+        $file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))
+            ->willReturn(true);
+        $item->getPropertyValues(Argument::which('getUri' , TAO_ITEM_CONTENT_PROPERTY))
+            ->willReturn(array($file->reveal()));
+        
+        $this->assertTrue($this->itemsService->isItemVersioned($item->reveal()));
+    }
+    
+        
+    public function testIsItemModelDefined()
+    {
+        $item = $this->prophesize('core_kernel_classes_Resource');
+        
+        $this->assertFalse($this->itemsService->isItemModelDefined($item->reveal()));
+        
+        $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY))
+            ->willReturn('notnull');        
+        $this->assertTrue($this->itemsService->isItemModelDefined($item->reveal()));
+        
+        $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY))
+        ->willReturn(new \core_kernel_classes_Literal('notnull'));
+        $this->assertTrue($this->itemsService->isItemModelDefined($item->reveal()));
+    }
 
     /**
      * @depends testInstantiateClass

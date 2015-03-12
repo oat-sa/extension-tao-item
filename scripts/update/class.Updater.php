@@ -20,6 +20,7 @@
  */
 
 use oat\tao\scripts\update\OntologyUpdater;
+use oat\taoItems\model\ontology\ItemAuthorRole;
 
 /**
  * 
@@ -80,6 +81,21 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $currentVersion = '2.6.3';
         
         }
+        
+        if ($currentVersion == '2.6.3') {
+            // update user roles
+            $class = new core_kernel_classes_Class(CLASS_TAO_USER);
+            $itemManagers = $class->searchInstances(array(
+	               PROPERTY_USER_ROLES => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole'
+                ),array('recursive' => true, 'like' => false)
+            );
+            foreach ($itemManagers as $user) {
+                $user->setPropertyValue(new core_kernel_classes_Property(PROPERTY_USER_ROLES),ItemAuthorRole::INSTANCE_URI);
+            }
+            //$currentVersion = '2.6.4';
+        
+        }
+        
         
         return $currentVersion;
     }

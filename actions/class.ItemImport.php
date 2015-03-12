@@ -43,7 +43,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
         parent::index();
     }
 
-	public function getAvailableImportHandlers() {
+	protected function getAvailableImportHandlers() {
 		$returnValue = parent::getAvailableImportHandlers();
 
 		$itemModelClass = new core_kernel_classes_Class(TAO_ITEM_MODEL_CLASS); 
