@@ -92,7 +92,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             foreach ($itemManagers as $user) {
                 $user->setPropertyValue(new core_kernel_classes_Property(PROPERTY_USER_ROLES),ItemAuthorRole::INSTANCE_URI);
             }
-            //$currentVersion = '2.6.4';
+            $currentVersion = '2.6.4';
         
         }
         
