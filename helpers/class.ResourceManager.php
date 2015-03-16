@@ -37,7 +37,11 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         $this->lang = (isset($data['lang'])) ? $data['lang'] : '';
 
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::getDirectory
+     */
     public function getDirectory($relPath = '/', $acceptableMime = array(), $depth = 1) {
         $sysPath = $this->getSysPath($relPath);
 
@@ -78,6 +82,11 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         return $data;
     }
 
+
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::getFileInfo
+     */
     public function getFileInfo($relPath, $acceptableMime) {
         $file = null;
 
@@ -98,25 +107,34 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         return $file;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::download
+     */
     public function download($filename){
 
         $sysPath = $this->getSysPath($filename);
         tao_helpers_Http::returnFile($sysPath);
     }
 
-    public function add($source, $fileName, $subPath)
+
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaManagement::add
+     */
+    public function add($source, $fileName, $parent)
     {
 
         try{
             $fileName = tao_helpers_File::getSafeFileName($fileName);
 
-            $sysPath = $this->getSysPath($subPath.$fileName);
+            $sysPath = $this->getSysPath($parent.$fileName);
 
             if(!tao_helpers_File::copy($source, $sysPath)){
                 throw new common_exception_Error('Unable to move file '.$source);
             }
 
-            $fileData = $this->getFileInfo('/'.$subPath.$fileName, array());
+            $fileData = $this->getFileInfo('/'.$parent.$fileName, array());
             return $fileData;
 
         } catch(FileUploadException $fe){
@@ -125,6 +143,10 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaManagement::delete
+     */
     public function delete($filename)
     {
         $deleted = false;
