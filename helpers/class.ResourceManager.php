@@ -37,17 +37,21 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         $this->lang = (isset($data['lang'])) ? $data['lang'] : '';
 
     }
-    
-    public function getDirectory($relPath = '/', $acceptableMime = array(), $depth = 1) {
-        $sysPath = $this->getSysPath($relPath);
 
-        $label = substr($relPath,strrpos($relPath, '/') + 1);
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::getDirectory
+     */
+    public function getDirectory($parentLink = '/', $acceptableMime = array(), $depth = 1) {
+        $sysPath = $this->getSysPath($parentLink);
+
+        $label = substr($parentLink,strrpos($parentLink, '/') + 1);
         if(!$label){
             $label = 'local';
         }
 
         $data = array(
-            'path' => $relPath,
+            'path' => $parentLink,
             'label' => $label
         );
 
@@ -56,12 +60,12 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
             if (is_dir($sysPath)) {
                 foreach (new DirectoryIterator($sysPath) as $fileinfo) {
                     if (!$fileinfo->isDot()) {
-                        $subPath = rtrim($relPath, '/').'/'.$fileinfo->getFilename();
+                        $subPath = rtrim($parentLink, '/').'/'.$fileinfo->getFilename();
                         if ($fileinfo->isDir()) {
                             $children[] = $this->getDirectory($subPath, $acceptableMime, $depth - 1);
                         } else {
                             $file = $this->getFileInfo($subPath, $acceptableMime);
-                            if(!is_null($file)){
+                            if(!is_null($file) && (count($acceptableMime) == 0 || in_array($file['mime'], $acceptableMime))){
                                 $children[] = $file;
                             }
                         }
@@ -73,58 +77,70 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
             $data['children'] = $children;
         }
         else{
-                $data['url'] = _url('files', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $relPath));
+                $data['url'] = _url('files', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $parentLink));
         }
         return $data;
     }
 
-    public function getFileInfo($relPath, $acceptableMime) {
+
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::getFileInfo
+     */
+    public function getFileInfo($link) {
         $file = null;
 
-        $filename = basename($relPath);
-        $dir = ltrim(dirname($relPath),'/');
+        $filename = basename($link);
+        $dir = ltrim(dirname($link),'/');
 
         $sysPath = $this->getSysPath($dir.'/'.$filename);
 
         $mime = tao_helpers_File::getMimeType($sysPath);
-        if((count($acceptableMime) == 0 || in_array($mime, $acceptableMime)) && file_exists($sysPath)){
+        if(file_exists($sysPath)){
             $file = array(
                 'name' => basename($sysPath),
                 'mime' => $mime,
                 'size' => filesize($sysPath),
-                'url' => _url('download', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $relPath))
             );
         }
         return $file;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::download
+     */
     public function download($filename){
 
         $sysPath = $this->getSysPath($filename);
         tao_helpers_Http::returnFile($sysPath);
     }
 
-    public function add($source, $fileName, $subPath)
+
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaManagement::add
+     */
+    public function add($source, $fileName, $parent)
     {
 
-        try{
-            $fileName = tao_helpers_File::getSafeFileName($fileName);
+        $fileName = tao_helpers_File::getSafeFileName($fileName);
 
-            $sysPath = $this->getSysPath($subPath.$fileName);
+        $sysPath = $this->getSysPath($parent.$fileName);
 
-            if(!tao_helpers_File::copy($source, $sysPath)){
-                throw new common_exception_Error('Unable to move file '.$source);
-            }
-
-            $fileData = $this->getFileInfo('/'.$subPath.$fileName, array());
-            return $fileData;
-
-        } catch(FileUploadException $fe){
-
-            return array( 'error' => $fe->getMessage());
+        if(!tao_helpers_File::copy($source, $sysPath)){
+            throw new common_exception_Error('Unable to move file '.$source);
         }
+
+        $fileData = $this->getFileInfo('/'.$parent.$fileName, array());
+        return $fileData;
+
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaManagement::delete
+     */
     public function delete($filename)
     {
         $deleted = false;
@@ -138,14 +154,14 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
     }
 
     /**
-     * @param $relPath
+     * @param $parentLink
      * @return string
      * @throws common_exception_Error
      */
-    private function getSysPath($relPath){
+    private function getSysPath($parentLink){
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
 
-        $sysPath = $baseDir.ltrim($relPath, '/');
+        $sysPath = $baseDir.ltrim($parentLink, '/');
         if(!tao_helpers_File::securityCheck($sysPath)){
             throw new common_exception_Error(__('Your path contains error'));
         }

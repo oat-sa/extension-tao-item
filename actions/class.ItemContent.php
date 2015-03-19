@@ -126,8 +126,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         $clazz = $this->getBrowserImplementationClass($identifier);
-        $mediaBrowser = new $clazz($options);
         /** @var oat\tao\model\media\MediaBrowser $mediaBrowser */
+        $mediaBrowser = new $clazz($options);
         $fileInfo = $mediaBrowser->getFileInfo($subPath, array());
         $fileExists = true;
         if(is_null($fileInfo)){
