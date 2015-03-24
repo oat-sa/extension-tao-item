@@ -28,7 +28,7 @@ use oat\tao\model\lock\LockManager;
  * @package taoItems
  
  */
-class taoItems_models_classes_ItemsService extends tao_models_classes_GenerisService
+class taoItems_models_classes_ItemsService extends tao_models_classes_ClassService
 {
 
     /**
