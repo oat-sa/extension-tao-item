@@ -43,7 +43,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
         parent::index();
     }
 
-	public function getAvailableExportHandlers() {
+	protected function getAvailableExportHandlers() {
 		$returnValue = parent::getAvailableExportHandlers();
 		
 		$resources = $this->getResourcesToExport();
@@ -65,4 +65,22 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 		
 		return $returnValue;
 	}
+    
+    /**
+     * Function returns items to export. 
+     * Items that has no content (<b>QTI items</b> without <i>qti.xml</i> file or empty <b>Open Web Items</b>) will be filtered
+     * @return core_kernel_classes_Resource[] An array of items.
+     */
+    protected function getResourcesToExport()
+    {
+        $resources = parent::getResourcesToExport();
+        $service = taoItems_models_classes_ItemsService::singleton();
+        
+        $resources = array_filter($resources, function ($val) use ($service) {
+            return $service->hasItemContent($val);
+        });
+        
+        return $resources;
+    }
+
 }
