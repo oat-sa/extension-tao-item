@@ -97,7 +97,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * overwrite the parent cloneInstance to add the requiresRight only in Items
      * @see tao_actions_TaoModule::cloneInstance()
-     * @requiresRight id READ
+     * @requiresRight uri READ
      * @requiresRight classUri WRITE
      */
     public function cloneInstance()
