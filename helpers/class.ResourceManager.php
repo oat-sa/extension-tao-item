@@ -18,15 +18,13 @@
  *               
  * 
  */
-use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\MediaManagement;
-use \oat\tao\helpers\FileUploadException;
 
 /**
  * This helper class aims at formating the item content folder description
  *
  */
-class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
+class taoItems_helpers_ResourceManager implements MediaManagement
 {
 
     private $item;
@@ -99,6 +97,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
         if(file_exists($sysPath)){
             $file = array(
                 'name' => basename($sysPath),
+                'uri' => $dir.'/'.$filename,
                 'mime' => $mime,
                 'size' => filesize($sysPath),
             );
@@ -113,7 +112,10 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
     public function download($filename){
 
         $sysPath = $this->getSysPath($filename);
-        tao_helpers_Http::returnFile($sysPath);
+        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
+            $sysPath = $sysPath.'.js';
+        }
+        return $sysPath;
     }
 
 
