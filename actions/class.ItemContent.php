@@ -29,22 +29,6 @@
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
 
-    private function getBrowserImplementationClass($identifier){
-
-        if(in_array($identifier,array('', 'local'))){
-            return 'taoItems_helpers_ResourceManager';
-        }
-        return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
-    }
-
-    private function getManagementImplementationClass($identifier){
-
-        if(in_array($identifier,array('', 'local'))){
-            return 'taoItems_helpers_ResourceManager';
-        }
-        return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
-    }
-
     /**
      * Returns a json encoded array describign a directory
      * 
@@ -80,19 +64,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
 
-        $identifier = '';
-        $pos = strpos($subPath, '/');
-        if($pos !== false && $pos !== 0){
-            $identifier = substr($subPath, 0, strpos($subPath, '/'));
-            $subPath = substr($subPath, strpos($subPath, '/') + 1);
-        }
-        if(strlen($subPath) === 0){
-            $subPath = '/';
+        $data = array();
+        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($subPath, $options);
+        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($subPath);
+        if($browser !== false){
+            $data = $browser->getDirectory($mediaInfo['link'], $filters, $depth);
         }
 
-        $clazz = $this->getBrowserImplementationClass($identifier);
-        $resourceBrowser = new $clazz($options);
-        $data = $resourceBrowser->getDirectory($subPath, $filters, $depth);
 
         echo json_encode($data);
     }
@@ -118,22 +96,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
+        $path = $this->getRequestParameter('path');
 
-        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
-        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
-        if(strlen($subPath) === 0){
-            $subPath = '/';
+
+        $fileExists = false;
+        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $options);
+        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($path);
+        if($browser !== false){
+            $fileInfo = $browser->getFileInfo($mediaInfo['link'], array());
+            if(!is_null($fileInfo)){
+                $fileExists = true;
+            }
         }
-
-        $clazz = $this->getBrowserImplementationClass($identifier);
-        /** @var oat\tao\model\media\MediaBrowser $mediaBrowser */
-        $mediaBrowser = new $clazz($options);
-        $fileInfo = $mediaBrowser->getFileInfo($subPath, array());
-        $fileExists = true;
-        if(is_null($fileInfo)){
-            $fileExists = false;
-        }
-
         echo json_encode(array(
         	'exists' => $fileExists
         ));
@@ -170,29 +144,25 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         //if the string contains something else than letters, numbers or / throw an exception
-        if(!preg_match('#^$|^[\w\/\-\._]+$#', $relPath)){
-            throw new InvalidArgumentException('The request parameter is invalid');
-        }
-        if(strpos($relPath, '/') === false){
-            $identifier = $relPath;
-            $subPath = '/';
+//        if(!preg_match('#^$|^[\w\/\-\._]+$#', $relPath)){
+//            throw new InvalidArgumentException('The request parameter is invalid');
+//        }
+
+        $filedata = false;
+
+        $management = \oat\taoItems\model\ItemMediaRetrieval::getManagementImplementation($relPath, $options);
+        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($relPath);
+        if($management !== false){
+
+            $file = tao_helpers_Http::getUploadedFile('content');
+            if (!is_uploaded_file($file['tmp_name'])) {
+                throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
+            }
+            $filedata = $management->add($file['tmp_name'], $file['name'], $mediaInfo['link']);
         }
         else{
-            $identifier = substr($relPath, 0, strpos($relPath, '/'));
-            $subPath = substr($relPath, strpos($relPath, '/') + 1);
+            throw new common_exception_Error('Can\'t find resource manager with identifier' . $mediaInfo['link']);
         }
-        $identifier = trim($identifier);
-        $subPath = empty($subPath) ? '' : $subPath.'/';
-
-        $clazz = $this->getManagementImplementationClass($identifier);
-        $mediaManagement = new $clazz($options);
-
-        $file = tao_helpers_Http::getUploadedFile('content');
-
-        if (!is_uploaded_file($file['tmp_name'])) {
-            throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
-        }
-        $filedata = $mediaManagement->add($file['tmp_name'], $file['name'], $subPath);
 
         echo json_encode($filedata);
     }
@@ -218,20 +188,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
 
-        $identifier = '';
-        $subPath = $this->getRequestParameter('path');
-        if(strpos($subPath, '/') !== false){
-            $identifier = substr($subPath, 0, strpos($subPath, '/'));
-            $subPath = substr($subPath, strpos($subPath, '/') + 1);
-        }
 
-        if(strlen($subPath) === 0){
-            $subPath = '/';
-        }
-        $clazz = $this->getBrowserImplementationClass($identifier);
-        $mediaBrowser = new $clazz($options);
 
-        $mediaBrowser->download($subPath);
+        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($this->getRequestParameter('path'), $options);
+        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($this->getRequestParameter('path'));
+        if($browser !== false){
+            $filePath = $browser->download($mediaInfo['link']);
+            \tao_helpers_Http::returnFile($filePath);
+        }
     }
     
     /**
@@ -257,17 +221,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
 
-        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
-        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
-        if(strlen($subPath) === 0){
-            $subPath = '/';
+        $deleted = false;
+
+        $mediaManagement = \oat\taoItems\model\ItemMediaRetrieval::getManagementImplementation($this->getRequestParameter('path'), $options);
+        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($this->getRequestParameter('path'));
+        if($mediaManagement !== false){
+            $deleted = $mediaManagement->delete($mediaInfo['link']);
         }
-
-
-        $clazz = $this->getManagementImplementationClass($identifier);
-        $mediaManagement = new $clazz($options);
-
-        $deleted = $mediaManagement->delete($subPath);
 
         echo json_encode(array('deleted' => $deleted));
     }

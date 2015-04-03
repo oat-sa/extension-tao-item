@@ -91,25 +91,20 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 
     private function renderResource($item, $path){
 
-        $identifier = '';
-        $subPath = $path;
-        if(strpos($path, '://') !== false){
-            $identifier = substr($path, 0, strpos($path, '://'));
-            $subPath = substr($path, strpos($path, '://') + 3);
-        }
-
-        //@todo : allow preview in a language other than the one in the session
         $lang = common_session_SessionManager::getSession()->getDataLanguage();
-        $folder = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
+        $data = array('item' => $item, 'lang' => $lang);
         if(tao_helpers_File::securityCheck($path, true)){
-            if($identifier === 'taomgr'){
-                $fileManager = FileManager::getFileManagementModel();
-                $filename = $fileManager->retrieveFile($subPath);
+            $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $data);
+            $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($path);
+            if($browser !== false){
+
+                $filePath = $browser->download($mediaInfo['link']);
+                \tao_helpers_Http::returnFile($filePath);
             }
             else{
-                $filename = $folder.$path;
+                throw new Exception();
             }
-            tao_helpers_Http::returnFile($filename);
+
         }else{
             throw new common_exception_Error('invalid item preview file path');
         }
