@@ -349,7 +349,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testDeleteClass($class)
     {
-        $this->assertTrue($this->itemsService->deleteItemClass($class));
+        $this->assertTrue($this->itemsService->deleteClass($class));
     }
 
     /**
