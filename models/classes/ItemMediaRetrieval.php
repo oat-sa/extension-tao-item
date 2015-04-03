@@ -12,20 +12,20 @@ use oat\tao\helpers\MediaRetrieval;
 class ItemMediaRetrieval extends MediaRetrieval{
 
 
-    public static function getBrowserImplementation($path, $options = array()){
-        $browser =  parent::getBrowserImplementation($path, $options);
+    public static function getBrowserImplementation($path, $options = array(), &$link = null){
+        $browser =  parent::getBrowserImplementation($path, $options, $link);
         if($browser === false){
             $mediaInfo = self::getLinkAndIdentifier($path);
-            extract($mediaInfo);
-            if(self::isIdentifierValid($identifier)){
+            $link = $mediaInfo['link'];
+            if(self::isIdentifierValid($mediaInfo['identifier'])){
                 return new \taoItems_helpers_ResourceManager($options);
             }
         }
         return $browser;
     }
 
-    public static function getManagementImplementation($path, $options = array()){
-        $impl = self::getBrowserImplementation($path, $options);
+    public static function getManagementImplementation($path, $options = array(), &$link = null){
+        $impl = self::getBrowserImplementation($path, $options, $link);
 
         if(in_array('oat\tao\model\media\MediaManagement', class_implements($impl))){
             return $impl;

@@ -65,10 +65,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         $data = array();
-        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($subPath, $options);
-        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($subPath);
+        $link = '';
+        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($subPath, $options, $link);
         if($browser !== false){
-            $data = $browser->getDirectory($mediaInfo['link'], $filters, $depth);
+            $data = $browser->getDirectory($link, $filters, $depth);
         }
 
 
@@ -100,10 +100,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
 
         $fileExists = false;
-        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $options);
-        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($path);
+        $link = '';
+        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $options, $link);
         if($browser !== false){
-            $fileInfo = $browser->getFileInfo($mediaInfo['link'], array());
+            $fileInfo = $browser->getFileInfo($link, array());
             if(!is_null($fileInfo)){
                 $fileExists = true;
             }
@@ -150,18 +150,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $filedata = false;
 
-        $management = \oat\taoItems\model\ItemMediaRetrieval::getManagementImplementation($relPath, $options);
-        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($relPath);
+        $link = '';
+        $management = \oat\taoItems\model\ItemMediaRetrieval::getManagementImplementation($relPath, $options, $link);
         if($management !== false){
 
             $file = tao_helpers_Http::getUploadedFile('content');
             if (!is_uploaded_file($file['tmp_name'])) {
                 throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
             }
-            $filedata = $management->add($file['tmp_name'], $file['name'], $mediaInfo['link']);
+            $filedata = $management->add($file['tmp_name'], $file['name'], $link);
         }
         else{
-            throw new common_exception_Error('Can\'t find resource manager with identifier' . $mediaInfo['link']);
+            throw new common_exception_Error('Can\'t find resource manager for path' . $relPath);
         }
 
         echo json_encode($filedata);
@@ -188,12 +188,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
 
-
-
-        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($this->getRequestParameter('path'), $options);
-        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($this->getRequestParameter('path'));
+        $link = '';
+        $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($this->getRequestParameter('path'), $options, $link);
         if($browser !== false){
-            $filePath = $browser->download($mediaInfo['link']);
+            $filePath = $browser->download($link);
             \tao_helpers_Http::returnFile($filePath);
         }
     }
@@ -223,10 +221,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $deleted = false;
 
-        $mediaManagement = \oat\taoItems\model\ItemMediaRetrieval::getManagementImplementation($this->getRequestParameter('path'), $options);
-        $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($this->getRequestParameter('path'));
+        $link = '';
+        $mediaManagement = \oat\taoItems\model\ItemMediaRetrieval::getManagementImplementation($this->getRequestParameter('path'), $options, $link);
         if($mediaManagement !== false){
-            $deleted = $mediaManagement->delete($mediaInfo['link']);
+            $deleted = $mediaManagement->delete($link);
         }
 
         echo json_encode(array('deleted' => $deleted));

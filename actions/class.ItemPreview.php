@@ -94,11 +94,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $lang = common_session_SessionManager::getSession()->getDataLanguage();
         $data = array('item' => $item, 'lang' => $lang);
         if(tao_helpers_File::securityCheck($path, true)){
-            $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $data);
-            $mediaInfo = \oat\taoItems\model\ItemMediaRetrieval::getLinkAndIdentifier($path);
+            $link = '';
+            $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $data, $link);
             if($browser !== false){
-
-                $filePath = $browser->download($mediaInfo['link']);
+                $filePath = $browser->download($link);
                 \tao_helpers_Http::returnFile($filePath);
             }
             else{
