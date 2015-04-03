@@ -56,7 +56,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($uri));
                 $this->setData('label', $item->getLabel());
                 $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', array('uri' => $uri, 'classUri' => $classUri)));
-                $this->setData('previewUrl', $this->service->getPreviewUrl($item));
+                $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));
             }
         }
     }
@@ -66,8 +66,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      */
 
     /**
-     * get the main class
-     * @return core_kernel_classes_Classes
+     * (non-PHPdoc)
+     * @see tao_actions_RdfController::getClassService()
      */
     protected function getClassService(){
         return taoItems_models_classes_ItemsService::singleton();
@@ -97,7 +97,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * overwrite the parent cloneInstance to add the requiresRight only in Items
      * @see tao_actions_TaoModule::cloneInstance()
-     * @requiresRight id READ
+     * @requiresRight uri READ
      * @requiresRight classUri WRITE
      */
     public function cloneInstance()
@@ -169,7 +169,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                         $item = $binder->bind($properties);
-                        $item = $this->service->setDefaultItemContent($item);
+                        $item = $this->getClassService()->setDefaultItemContent($item);
     
                         //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                         $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
@@ -183,13 +183,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $myForm->setActions(array());
             }
             
-            $currentModel = $this->service->getItemModel($item);
+            $currentModel = $this->getClassService()->getItemModel($item);
             $hasPreview = false;
             $hasModel   = false;
             if(!empty($currentModel)) {
                 $hasModel = true;
-                $isDeprecated = $this->service->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
-                $hasPreview = !$isDeprecated && $this->service->hasItemContent($item);
+                $isDeprecated = $this->getClassService()->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
+                $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 
             $myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
@@ -215,7 +215,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
         }
 
-        $myForm = $this->getClassForm($clazz, $this->service->getRootClass());
+        $myForm = $this->getClassForm($clazz, $this->getClassService()->getRootClass());
         
         if ($this->hasWriteAccess($clazz->getUri())) {
             if($myForm->isSubmited()){
@@ -249,7 +249,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         
         $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
 
-        $deleted = $this->service->deleteItem($item);
+        $deleted = $this->getClassService()->deleteItem($item);
         echo json_encode(array('deleted' => $deleted));
     }
 
@@ -257,17 +257,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * delete an item class
      * called via ajax
      * @requiresRight id WRITE
-     * @return void
      * @throws Exception
      */
-    public function deleteClass(){
-        if(!tao_helpers_Request::isAjax()){
-            throw new Exception("wrong request mode");
-        }
-
-        $clazz = new core_kernel_classes_Class($this->getRequestParameter('id')); 
-        $deleted = $this->service->deleteItemClass($clazz);
-        echo json_encode(array('deleted' => $deleted));
+    public function deleteClass()
+    {
+        return parent::deleteClass();
     }
 
     /**
@@ -291,7 +285,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         try{
             //output direclty the itemContent as XML
-            print $this->service->getItemContent($this->getCurrentInstance());
+            print $this->getClassService()->getItemContent($this->getCurrentInstance());
         }catch(Exception $e){
             //print an empty response
             print '<?xml version="1.0" encoding="utf-8" ?>';
@@ -313,7 +307,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function downloadItemContent(){
 
         $instance = $this->getCurrentInstance();
-        if($this->service->isItemModelDefined($instance)){
+        if($this->getClassService()->isItemModelDefined($instance)){
 
             $itemModel = $instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
             $filename = $instance->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY));
@@ -321,7 +315,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $filename = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
             }
 
-            $itemContent = $this->service->getItemContent($instance);
+            $itemContent = $this->getClassService()->getItemContent($instance);
             $size = strlen($itemContent);
 
             $this->setContentHeader('text/xml');
@@ -347,9 +341,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $this->setData('error', false);
             try{
 
-                $itemModel = $this->service->getItemModel($item);
+                $itemModel = $this->getClassService()->getItemModel($item);
                 if(!is_null($itemModel)){
-                    $itemModelImpl = $this->service->getItemModelImplementation($itemModel);
+                    $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
                         LockManager::getImplementation()->setLock($item, common_session_SessionManager::getSession()->getUser()->getIdentifier());
@@ -388,7 +382,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $item = $this->getCurrentInstance();
             }else if($this->hasSessionAttribute('uri') && $this->hasSessionAttribute('classUri')){
                 $classUri = tao_helpers_Uri::decode($this->getSessionAttribute('classUri'));
-                if($this->service->isItemClass(new core_kernel_classes_Class($classUri))){
+                if($this->getClassService()->isItemClass(new core_kernel_classes_Class($classUri))){
                     $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getSessionAttribute('uri')));
                 }
             }
@@ -406,7 +400,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     // look in the item's dedicated folder. it should be a resource
                     // that is local to the item, not it the file manager
                     // $folder is the item's dedicated folder path, $path the path to the resource, relative to $folder
-                    $folder = $this->service->getItemFolder($item);
+                    $folder = $this->getClassService()->getItemFolder($item);
                     $resource = tao_helpers_File::concat(array($folder, $path));
                 }
 
