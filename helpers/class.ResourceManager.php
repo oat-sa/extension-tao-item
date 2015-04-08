@@ -75,7 +75,7 @@ class taoItems_helpers_ResourceManager implements MediaManagement
             $data['children'] = $children;
         }
         else{
-                $data['url'] = _url('files', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $parentLink));
+                $data['parent'] = $parentLink;
         }
         return $data;
     }

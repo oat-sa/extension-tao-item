@@ -69,6 +69,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($subPath, $options, $link);
         if($browser !== false){
             $data = $browser->getDirectory($link, $filters, $depth);
+            foreach($data['children'] as &$child){
+                if(isset($child['parent'])){
+                    $child['url'] = \tao_helpers_Uri::url(
+                        'files',
+                        'ItemContent',
+                        'taoItems',
+                        array('uri' => $itemUri,'lang' => $itemLang, 'path' => $child['parent']));
+                    unset($child['parent']);
+                }
+            }
         }
 
 
