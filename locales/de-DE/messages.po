@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC04\n"
-"PO-Revision-Date: 2015-03-06T15:32:47\n"
+"Project-Id-Version: TAO 3.0-RC05\n"
+"PO-Revision-Date: 2015-04-08T14:38:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de-DE\n"
@@ -44,11 +44,11 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-msgid "Edit Item"
-msgstr "Item bearbeiten"
-
 msgid "Edit item"
 msgstr ""
+
+msgid "Edit Item"
+msgstr "Item bearbeiten"
 
 msgid "Edit item class"
 msgstr ""
@@ -130,12 +130,6 @@ msgstr "Suchen"
 msgid "Submit"
 msgstr ""
 
-msgid "The item could not be released"
-msgstr ""
-
-msgid "The item has been released"
-msgstr ""
-
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Das Item-Modul ermöglicht das Erstellen und Entwickeln von Items und Übungen."
 
@@ -148,7 +142,7 @@ msgstr ""
 msgid "Unable to create deployement directory"
 msgstr ""
 
-msgid "You checked out this %1s %2s ago', 'item', tao_helpers_Date::displayInterval(get_data('lockDate"
+msgid "You checked out this item %2s ago', tao_helpers_Date::displayInterval(get_data('lockDate"
 msgstr ""
 
 msgid "Your path contains error"
