@@ -143,7 +143,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testItemContent($instance)
     {
-        $this->assertFalse($this->itemsService->hasItemModel($instance, [OwiItemModel::ITEMMODEL_URI]));
+        $this->assertFalse($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
         $this->itemsService->setDefaultItemContent($instance);
@@ -166,7 +166,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
         $this->assertStringStartsWith(LOCAL_NAMESPACE, $instance->getUri());
-        $this->assertTrue($this->itemsService->hasItemModel($instance, [OwiItemModel::ITEMMODEL_URI]));
+        $this->assertTrue($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
 
         $this->assertStringStartsWith(ROOT_URL, $this->itemsService->getPreviewUrl($instance));
 
