@@ -537,6 +537,20 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         return $returnValue;
     }
+    
+    /**
+     * Set the model of an item
+     * 
+     * @param core_kernel_classes_Resource $item
+     * @param core_kernel_classes_Resource $model
+     * @return boolean
+     */
+    public function setItemModel(core_kernel_classes_Resource $item, core_kernel_classes_Resource $model)
+    {
+        $modelProp = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
+        return $item->editPropertyValues($modelProp, $model);
+    }
+    
 
     /**
      * Rertrieve current user's language from the session object to know where
