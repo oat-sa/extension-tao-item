@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.0-RC05\n"
-"PO-Revision-Date: 2015-04-08T14:38:15\n"
+"PO-Revision-Date: 2015-04-09T09:09:28\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -16,6 +16,7 @@ msgstr ""
 msgid "Actual size"
 msgstr "實際尺寸"
 
+#, tao-public
 msgid "Authoring"
 msgstr "創作"
 
@@ -32,6 +33,7 @@ msgstr "關閉控制台"
 msgid "Create and design items and exercises."
 msgstr "建立和設計項目（試題）以及練習。"
 
+#, tao-public
 msgid "Delete"
 msgstr "刪除"
 
@@ -41,24 +43,28 @@ msgstr "桌面預覽"
 msgid "Don’t show this again!"
 msgstr "不要再顯示此訊息。"
 
+#, tao-public
 msgid "Duplicate"
 msgstr "複製"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "編輯項目(試題)"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "編輯項目(試題)"
 
 msgid "Edit item class"
 msgstr "編輯項目（試題）類"
 
+#, tao-public
 msgid "Export"
 msgstr "匯出"
 
+#, tao-public
 msgid "Filter"
 msgstr "過濾條件"
 
+#, tao-public
 msgid "Import"
 msgstr "匯入"
 
@@ -72,12 +78,14 @@ msgstr "項目（考題）已儲存"
 msgid "Items"
 msgstr "項目(試題)"
 
+#, tao-public
 msgid "Items library"
 msgstr "項目(試題)書庫"
 
 msgid "Landscape"
 msgstr "橫向"
 
+#, tao-public
 msgid "Lists"
 msgstr "清單"
 
@@ -88,14 +96,13 @@ msgstr "管理項目(試題)"
 msgid "Mobile preview"
 msgstr "移動預覽"
 
+#, tao-public
 msgid "Move"
 msgstr "移動"
 
+#, tao-public
 msgid "New class"
 msgstr "新類別"
-
-msgid "New item"
-msgstr "新增項目(試題)"
 
 msgid "No item type selected for the current item."
 msgstr "當前選定的項目(試題)沒有項目類型。 "
@@ -109,9 +116,11 @@ msgstr "請選擇第一個項目（考題）類型。"
 msgid "Portrait"
 msgstr "直向"
 
+#, tao-public
 msgid "Preview"
 msgstr "預覽"
 
+#, tao-public
 msgid "Properties"
 msgstr "屬性"
 
@@ -124,6 +133,7 @@ msgstr "檢索外部資源"
 msgid "Scale "
 msgstr "測量"
 
+#, tao-public
 msgid "Search"
 msgstr "搜索"
 
@@ -136,6 +146,7 @@ msgstr "該項目（試題）模塊使項目（試題）和練習能夠建立和
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "該預覽可縮放到適合您的屏幕。最終的表現可能不同。"
 
+#, tao-public
 msgid "Translate"
 msgstr "翻譯"
 
