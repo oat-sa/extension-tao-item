@@ -48,14 +48,14 @@
                     <action id="item-move" name="Move" url="/taoItems/Items/moveInstance" context="instance" group="none" binding="moveNode">
                         <icon id="icon-move-item"/>
                     </action>
-                    <action id="item-lists" name="Lists" url="/tao/Lists/index" context="*" group="tree">
-                        <icon id="icon-ul"/>
+                    <action id="item-import" name="Import" url="/taoItems/ItemImport/index" context="resource" group="tree" binding="loadClass">
+                        <icon id="icon-import"/>
                     </action>
                     <action id="item-export" name="Export" url="/taoItems/ItemExport/index" context="resource" group="tree">
                         <icon id="icon-export"/>
                     </action>
-                    <action id="item-import" name="Import" url="/taoItems/ItemImport/index" context="resource" group="tree" binding="loadClass">
-                        <icon id="icon-import"/>
+                    <action id="item-lists" name="Lists" url="/tao/Lists/index" context="*" group="tree">
+                        <icon id="icon-ul"/>
                     </action>
                     <action id="item-translate" name="Translate" url="/taoItems/Items/translateInstance" context="instance" group="content">
                         <icon id="icon-translate"/>
