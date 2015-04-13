@@ -138,49 +138,36 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
+     * please call deleteResource() instead
+     * @deprecated
+     */
+    public function deleteItem(core_kernel_classes_Resource $item){
+        return $this->deleteResource($item);
+    }
+    
+    /**
      * delete an item
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  core_kernel_classes_Resource item
+     * @param core_kernel_classes_Resource $resource
      * @throws common_exception_Unauthorized
      * @return boolean
      */
-    public function deleteItem(core_kernel_classes_Resource $item){
-        $returnValue = (bool) false;
-        
-        $lock = LockManager::getImplementation()->getLockData($item);
-        if (LockManager::getImplementation()->isLocked($item)) {
+    public function deleteResource(core_kernel_classes_Resource $resource)
+    {
+        if (LockManager::getImplementation()->isLocked($resource)) {
             $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
-            LockManager::getImplementation()->releaseLock($item, $userId);
+            LockManager::getImplementation()->releaseLock($resource, $userId);
         }
-
-        if(!is_null($item)){
-            $returnValue = $this->deleteItemContent($item);
-            $returnValue &= $item->delete(true);
-        }
-
-        return (bool) $returnValue;
+        
+        return $this->deleteItemContent($resource) && parent::deleteResource($resource);
     }
 
     /**
      * delete an item class or subclass
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  core_kernel_classes_Class clazz
-     * @return boolean
+     * @deprecated
      */
-    public function deleteItemClass(core_kernel_classes_Class $clazz){
-        $returnValue = (bool) false;
-
-        if(!is_null($clazz)){
-            if($this->isItemClass($clazz)){
-                $returnValue = $clazz->delete();
-            }
-        }
-
-        return (bool) $returnValue;
+    public function deleteItemClass(core_kernel_classes_Class $clazz)
+    {
+        return $this->deleteClass($clazz);
     }
 
     /**
@@ -550,6 +537,20 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         return $returnValue;
     }
+    
+    /**
+     * Set the model of an item
+     * 
+     * @param core_kernel_classes_Resource $item
+     * @param core_kernel_classes_Resource $model
+     * @return boolean
+     */
+    public function setItemModel(core_kernel_classes_Resource $item, core_kernel_classes_Resource $model)
+    {
+        $modelProp = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
+        return $item->editPropertyValues($modelProp, $model);
+    }
+    
 
     /**
      * Rertrieve current user's language from the session object to know where

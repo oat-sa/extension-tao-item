@@ -97,7 +97,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * overwrite the parent cloneInstance to add the requiresRight only in Items
      * @see tao_actions_TaoModule::cloneInstance()
-     * @requiresRight id READ
+     * @requiresRight uri READ
      * @requiresRight classUri WRITE
      */
     public function cloneInstance()
@@ -238,19 +238,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * delete an item
      * called via ajax
-     * @requiresRight uri WRITE 
+     * @requiresRight id WRITE 
      * @return void
      * @throws Exception
      */
-    public function deleteItem(){
-        if(!tao_helpers_Request::isAjax()){
-            throw new Exception("wrong request mode");
-        }
-        
-        $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
-
-        $deleted = $this->getClassService()->deleteItem($item);
-        echo json_encode(array('deleted' => $deleted));
+    public function deleteItem()
+    {
+        return parent::deleteResource();
     }
 
     /**
