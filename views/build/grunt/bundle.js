@@ -48,7 +48,10 @@ module.exports = function(grunt) {
      */
     uglify.legacyApi = {
         files: [
-            { src : root + '/taoItems/views/js/legacyApi/taoLegacyApi.js', dest : root + '/taoItems/views/js/legacyApi/taoLegacyApi.min.js'}
+            { dest : root + '/taoItems/views/js/legacyApi/taoLegacyApi.min.js', src : [
+                root + '/taoItems/views/js/ItemApi/ItemApi.js',
+                root + '/taoItems/views/js/legacyApi/taoLegacyApi.js'
+            ]}
         ]
     };
 
