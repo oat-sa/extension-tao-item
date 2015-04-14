@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     var requirejs   = grunt.config('requirejs') || {};
     var clean       = grunt.config('clean') || {};
     var copy        = grunt.config('copy') || {};
+    var uglify      = grunt.config('uglify') || {};
 
     var root        = grunt.option('root');
     var libs        = grunt.option('mainlibs');
@@ -41,9 +42,32 @@ module.exports = function(grunt) {
         ]
     };
 
+
+    /*
+     * Manual bundle of the legacy API and the OWI API
+     */
+    uglify.legacyApi = {
+        files: [
+            { src : root + '/taoItems/views/js/legacyApi/taoLegacyApi.js', dest : root + '/taoItems/views/js/legacyApi/taoLegacyApi.min.js'}
+        ]
+    };
+
+    uglify.taoApi = {
+        files: [
+            { dest : root + '/taoItems/views/js/taoApi/taoApi.min.js', src: [
+                    root + '/taoItems/views/js/taoApi/src/constants.js',
+                    root + '/taoItems/views/js/taoApi/src/core.js',
+                    root + '/taoItems/views/js/taoApi/src/events.js',
+                    root + '/taoItems/views/js/taoApi/src/api.js'
+                ]
+            }
+        ]
+    };
+
     grunt.config('clean', clean);
     grunt.config('requirejs', requirejs);
     grunt.config('copy', copy);
+    grunt.config('uglify', uglify);
 
     // bundle task
     grunt.registerTask('taoitemsbundle', ['clean:taoitemsbundle', 'requirejs:taoitemsbundle', 'copy:taoitemsbundle']);
