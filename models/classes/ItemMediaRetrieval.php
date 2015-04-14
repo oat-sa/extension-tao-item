@@ -33,7 +33,7 @@ class ItemMediaRetrieval extends MediaRetrieval{
             $mediaInfo = self::getLinkAndIdentifier($path);
             $link = $mediaInfo['link'];
             if(self::isIdentifierValid($mediaInfo['identifier'])){
-                return new \taoItems_helpers_ResourceManager($options);
+                return new ItemMediaSource($options);
             }
         }
         return $browser;

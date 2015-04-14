@@ -18,13 +18,17 @@
  *               
  * 
  */
-use oat\tao\model\media\MediaManagement;
+namespace oat\taoItems\model;
 
+use oat\tao\model\media\MediaManagement;
+use tao_helpers_File;
+use taoItems_models_classes_ItemsService;
+use DirectoryIterator;
 /**
- * This helper class aims at formating the item content folder description
- *
+ * This media source gives access to files that are part of the item
+ * and are addressed in a relative way
  */
-class taoItems_helpers_ResourceManager implements MediaManagement
+class ItemMediaSource implements MediaManagement
 {
 
     private $item;
