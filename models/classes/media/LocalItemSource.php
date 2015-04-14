@@ -18,7 +18,7 @@
  *               
  * 
  */
-namespace oat\taoItems\model;
+namespace oat\taoItems\model\media;
 
 use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
@@ -28,7 +28,7 @@ use DirectoryIterator;
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
  */
-class ItemMediaSource implements MediaManagement
+class LocalItemSource implements MediaManagement
 {
 
     private $item;

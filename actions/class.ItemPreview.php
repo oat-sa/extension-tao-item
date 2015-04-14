@@ -21,6 +21,7 @@
  */
 
 use \oat\taoMediaManager\model\FileManager;
+use oat\taoItems\model\media\ItemMediaResolver;
 /**
  * Preview API 
  *
@@ -92,21 +93,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     private function renderResource($item, $path){
 
         $lang = common_session_SessionManager::getSession()->getDataLanguage();
-        $data = array('item' => $item, 'lang' => $lang);
-        if(tao_helpers_File::securityCheck($path, true)){
-            $link = '';
-            $browser = \oat\taoItems\model\ItemMediaRetrieval::getBrowserImplementation($path, $data, $link);
-            if($browser !== false){
-                $filePath = $browser->download($link);
-                \tao_helpers_Http::returnFile($filePath);
-            }
-            else{
-                throw new Exception();
-            }
-
-        }else{
-            throw new common_exception_Error('invalid item preview file path');
-        }
+        $resolver = new ItemMediaResolver($item, $lang);
+        $asset = $resolver->resolve($path);
+        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
+        \tao_helpers_Http::returnFile($filePath);
     }
 
     /**
