@@ -44,12 +44,13 @@ class LocalItemSource implements MediaManagement
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
      */
-    public function getDirectory($parentLink = '/', $acceptableMime = array(), $depth = 1) {
+    public function getDirectory($parentLink = '', $acceptableMime = array(), $depth = 1) {
         $sysPath = $this->getSysPath($parentLink);
 
         $label = substr($parentLink,strrpos($parentLink, '/') + 1);
         if(!$label){
             $label = 'local';
+            $parentLink = '/';
         }
 
         $data = array(
