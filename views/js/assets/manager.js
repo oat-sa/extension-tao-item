@@ -33,7 +33,7 @@ define([
      * @typedef AssetStrategy Defines a way to resolve an asset path
      * @property {String} name - the strategy name
      * @property {Boolean} [parseURL = false] - if true to URL will be parsed so handle's url parameter will be an object.
-     * @property {assetStragegyHandle} handle - how to resolve the strategy.
+     * @property {assetStrategyHandle} handle - how to resolve the strategy.
      */
 
     /**
@@ -103,7 +103,7 @@ define([
              * @param {AssetStrategy} strategy - the strategy to add
              * @throws {TypeError} if the strategy isn't defined correctly
              */
-            addStragegy : function addStragegy (strategy){
+            addStrategy : function addStrategy (strategy){
 
                 if(!_.isPlainObject(strategy) || !_.isFunction(strategy.handle) || !_.isString(strategy.name)){
                     throw new TypeError('An asset resolution strategy is an object with a handle method and a name');
@@ -171,11 +171,11 @@ define([
 
             //if it's an object we add it directly
             if(_.isPlainObject(strategy)){
-                assetManager.addStragegy(strategy);
+                assetManager.addStrategy(strategy);
 
             //if it's a function, we create the strategy with a generated name
             } else if(_.isFunction(strategy)){
-                assetManager.addStragegy({
+                assetManager.addStrategy({
                     name   : 'strategy_' + (assetManager._strategies.length + 1),
                     handle : strategy
                 });

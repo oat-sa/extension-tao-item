@@ -12,7 +12,7 @@ define([
         var assetManager = assetManagerFactory();
 
         assert.ok(typeof assetManager === 'object', "The factory creates an object");
-        assert.ok(typeof assetManager.addStragegy === 'function', "The manager has a method addStragegy");
+        assert.ok(typeof assetManager.addStrategy === 'function', "The manager has a method addStrategy");
         assert.ok(typeof assetManager.resolve === 'function', "The manager has a method resolve");
         assert.ok(typeof assetManager.resolveBy === 'function', "The manager has a method resolveBy");
     });
@@ -24,17 +24,17 @@ define([
         var assetManager = assetManagerFactory();
 
         assert.throws(function(){
-            assetManager.addStragegy(null);
+            assetManager.addStrategy(null);
         }, TypeError, 'The strategy must be an object');
 
         assert.throws(function(){
-            assetManager.addStragegy({
+            assetManager.addStrategy({
                 foo : true
             });
         }, TypeError, 'The strategy must have a name');
 
         assert.throws(function(){
-            assetManager.addStragegy({
+            assetManager.addStrategy({
                 name : 'foo'
             });
         }, TypeError, 'The strategy must have a handle method');
@@ -50,7 +50,7 @@ define([
             handle : function(){}
         };
 
-        assetManager.addStragegy(strategy);
+        assetManager.addStrategy(strategy);
 
         assert.equal(assetManager._strategies[0].name, strategy.name, 'The strategy has been added');
     });
