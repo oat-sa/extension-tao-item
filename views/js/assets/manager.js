@@ -163,6 +163,15 @@ define([
                     resolved = strategy.handle(inputUrl, data);
                 }
                 return resolved;
+            },
+
+            /**
+             * When the cache is used, it could be useful to clear the cache
+             */
+            clearCache : function clearCache(){
+                if(options.cache){
+                    cache = {};
+                }
             }
         };
 

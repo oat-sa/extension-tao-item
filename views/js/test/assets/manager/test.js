@@ -5,7 +5,7 @@ define([
 
     QUnit.module('API');
 
-    QUnit.test('module', 6, function(assert){
+    QUnit.test('module', 7, function(assert){
         assert.ok(typeof assetManagerFactory !== 'undefined', "The module exports something");
         assert.ok(typeof assetManagerFactory === 'function', "The module exports a function");
 
@@ -15,6 +15,7 @@ define([
         assert.ok(typeof assetManager.addStrategy === 'function', "The manager has a method addStrategy");
         assert.ok(typeof assetManager.resolve === 'function', "The manager has a method resolve");
         assert.ok(typeof assetManager.resolveBy === 'function', "The manager has a method resolveBy");
+        assert.ok(typeof assetManager.clearCache === 'function', "The manager has a method clearCache");
     });
 
     QUnit.module('Strategy');
@@ -73,7 +74,7 @@ define([
         assert.equal(result, 'foobar', 'The strategy has resolved');
     });
 
-    QUnit.test('multiple strategies resolution', 7, function(assert){
+    QUnit.test('multiple strategies resolution', 8, function(assert){
 
         var assetManager = assetManagerFactory([{
             name : 'foo',
@@ -101,13 +102,14 @@ define([
         var res2 = assetManager.resolve('bar');
         assert.equal(res2, 'boobar', 'The path is resolved by boo');
 
-        assetManager.resolveBy('foo', 'far');
+        var res3 = assetManager.resolveBy('foo', 'far');
+        assert.equal(res3, 'foofar', 'The path is resolved by foo');
 
-        var res3 = assetManager.resolve('moo');
-        assert.equal(res3, '', 'The path is not resolved');
-
-        var res4 = assetManager.resolveBy('too');
+        var res4 = assetManager.resolve('moo');
         assert.equal(res4, '', 'The path is not resolved');
+
+        var res5 = assetManager.resolveBy('too');
+        assert.equal(res5, '', 'The path is not resolved');
     });
 
     QUnit.test('anonymous strategies', 4, function(assert){
@@ -177,7 +179,7 @@ define([
 
     });
 
-    QUnit.test('use caching', 6, function(assert){
+    QUnit.test('use caching', 8, function(assert){
 
         var strategy = {
             name : 'foo',
@@ -198,6 +200,10 @@ define([
         assert.equal(cacheAssetManager.resolve('bar.html'), 'match_1', 'The url resolve from strategy');
         assert.equal(cacheAssetManager.resolve('bar.html'), 'match_1', 'The url resolve from cache');
         assert.equal(cacheAssetManager.resolve('bar.html'), 'match_1', 'The url resolve from cache');
+
+        cacheAssetManager.clearCache();
+        assert.equal(cacheAssetManager.resolve('bar.html'), 'match_2', 'The url resolve from strategy after clearing the cache');
+        assert.equal(cacheAssetManager.resolve('bar.html'), 'match_2', 'The url resolve from cache');
     });
 
 
