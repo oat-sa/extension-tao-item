@@ -41,9 +41,9 @@ define([
         }, TypeError, 'The strategy must have a handle method');
 
         assert.throws(function(){
-            assetManager.addStragegies([{
+            assetManager.addStrategy({
                name : null
-            }]);
+            });
         }, TypeError, 'The strategy must have a name');
 
         var strategy = {
