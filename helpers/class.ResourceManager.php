@@ -123,8 +123,9 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
      */
     public function add($source, $fileName, $parent)
     {
-
-        $fileName = tao_helpers_File::getSafeFileName($fileName);
+        if (!\tao_helpers_File::securityCheck($fileName, true)) {
+            throw new \common_Exception('Unsecured filename "'.$fileName.'"');
+        }         
 
         $sysPath = $this->getSysPath($parent.$fileName);
 
