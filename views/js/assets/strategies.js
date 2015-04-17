@@ -36,24 +36,28 @@ define([
      */
     var strategies = {
 
+        //the baseUrl concats the baseUrl in data if the url is relative
         baseUrl : {
             name : 'baseUrl',
             handle : function handle(url, data){
                 if(data.baseUrl && urlUtil.isRelative(url)){
-                    //empty string is required to concatenate url
-                    //if it's a parsed url, it needs to be called via toString
-                    return data.baseUrl + '' + url;
+
+                    //is slashcat we manage slash concact
+                    if(data.slashcat === true){
+                        return data.baseUrl.replace(/\/$/, '') + '/' + url.toString().replace(/^\.\//, '').replace(/^\//, '');
+                    }
+
+                    return data.baseUrl + url.toString();
                 }
             }
         },
 
+        //absolute URL are just left intact
         external : {
             name : 'external',
             handle : function handle(url, data){
                 if(urlUtil.isAbsolute(url)){
-                    //empty string is required to concatenate url
-                    //if it's a parsed url, it needs to be called via toString
-                    return url + '';
+                    return url.toString();
                 }
             }
         }
