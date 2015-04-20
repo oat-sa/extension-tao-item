@@ -24,6 +24,7 @@ use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
+use League\Flysystem\FileNotFoundException;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -111,6 +112,8 @@ class LocalItemSource implements MediaManagement
                 'mime' => $mime,
                 'size' => filesize($sysPath),
             );
+        } else {
+            throw new \tao_models_classes_FileNotFoundException($link);
         }
         return $file;
     }
