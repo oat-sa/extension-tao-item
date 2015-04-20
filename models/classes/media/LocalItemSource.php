@@ -47,9 +47,10 @@ class LocalItemSource implements MediaManagement
     public function getDirectory($parentLink = '', $acceptableMime = array(), $depth = 1) {
         $sysPath = $this->getSysPath($parentLink);
 
-        $label = $parentLink;
-        if(strrpos($parentLink, '/') !== false){
+        $label = rtrim($parentLink,'/');
+        if(strrpos($parentLink, '/') !== false && substr($parentLink, -1) !== '/'){
             $label = substr($parentLink,strrpos($parentLink, '/') + 1);
+            $parentLink = $parentLink.'/';
         }
 
         if(in_array($parentLink,array('','/'))){
