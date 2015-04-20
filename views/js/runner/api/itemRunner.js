@@ -53,7 +53,7 @@ define(['jquery', 'lodash'], function($, _){
      *
      * @returns {ItemRunner}
      */
-    var itemRunnerFactory = function itemRunnerFactory(providerName, data){
+    var itemRunnerFactory = function itemRunnerFactory(providerName, data, options){
 
         //optional params based on type
         if(_.isPlainObject(providerName)){
@@ -120,6 +120,8 @@ define(['jquery', 'lodash'], function($, _){
              * @type {HTMLElement}
              */
             container : null,
+
+            options   : options || {},
 
             /**
              * Initialize the runner.
