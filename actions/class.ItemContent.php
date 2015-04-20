@@ -91,12 +91,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
         $itemLang = $this->getRequestParameter('lang');
         
-        $resolver = new ItemMediaResolver($item, $itemLang);
-        $asset = $resolver->resolve($this->getRequestParameter('path'));
-        $fileInfo = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
-        
+        try {
+            $resolver = new ItemMediaResolver($item, $itemLang);
+            $asset = $resolver->resolve($this->getRequestParameter('path'));
+            $fileInfo = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+            $found = true;
+        } catch (tao_models_classes_FileNotFoundException $exception) {
+            $found = false;
+        }        
         return $this->returnJson(array(
-            'exists' => !is_null($fileInfo)
+            'exists' => $found
         ));
     }   
      
