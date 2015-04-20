@@ -65,7 +65,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $asset = $resolver->resolve($this->getRequestParameter('path'));
         $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth);
         foreach($data['children'] as &$child){
-            common_Logger::i(implode(',', array_keys($child)));
             if(isset($child['parent'])){
                 $child['url'] = \tao_helpers_Uri::url(
                     'files',
