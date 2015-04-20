@@ -55,7 +55,7 @@ class LocalItemSource implements MediaManagement
         }
 
         if(in_array($parentLink,array('','/'))){
-            $label = 'local';
+            $label = $this->item->getLabel();
             $parentLink = '/';
         }
 
