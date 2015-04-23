@@ -81,7 +81,7 @@ class LocalItemSource implements MediaManagement
                     }
                 }
             } else {
-                common_Logger::w('"'.$sysPath.'" is not a directory');
+                \common_Logger::w('"'.$sysPath.'" is not a directory');
             }
             $data['children'] = $children;
         }
