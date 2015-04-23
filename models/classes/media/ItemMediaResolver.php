@@ -21,6 +21,7 @@
 
 namespace oat\taoItems\model\media;
 
+use oat\tao\model\media\sourceStrategy\Base64Source;
 use oat\tao\model\media\TaoMediaResolver;
 use oat\tao\model\media\MediaAsset;
 
@@ -39,7 +40,10 @@ class ItemMediaResolver extends TaoMediaResolver {
     public function resolve($url)
     {
         $urlParts = parse_url($url);
-        if (!isset($urlParts['scheme']) || !isset($urlParts['host'])) {
+        //base 64 encoded file
+        if (preg_match('/^data:[^\/]+\/[^;]+(;charset=[\w]+)?;base64,/', $url)) {
+            return new MediaAsset(new Base64Source(), $url);
+        } else if (!isset($urlParts['scheme']) || !isset($urlParts['host'])) {
             return new MediaAsset($this->localMediaSource, ltrim($url, '/'));
         } else {
             return parent::resolve($url);
