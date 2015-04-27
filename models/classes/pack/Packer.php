@@ -58,7 +58,9 @@ class Packer
 
     /**
      * Create a packer for an item
+     *
      * @param core_kernel_classes_Resource $item
+     * @param string $lang
      */
     public function __construct(core_kernel_classes_Resource $item, $lang = ''){
         $this->item = $item;

@@ -23,6 +23,7 @@ namespace oat\taoItems\model\pack;
 
 use \InvalidArgumentException;
 use \JsonSerializable;
+use oat\taoItems\model\pack\encoders\Encoding;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -57,12 +58,34 @@ class ItemPack implements JsonSerializable
      * @var array
      */
     private $assets = array();
-  
+
+    /**
+     * Determines what type of assets should be packed as well as packer
+     * @example array('css'=>'base64')
+     * @var array
+     */
+    protected $assetEncoders = array(
+        'js'    => 'none',
+        'css'   => 'none',
+        'font'  => 'none',
+        'img'   => 'none',
+        'audio' => 'none',
+        'video' => 'none'
+    );
+
+    /**
+     * Should be @import or url() processed
+     * @var bool
+     */
+    protected $nestedResourcesInclusion = true;
+
+
     /**
      * Creates an ItemPack with the required data.
-     * 
+     *
      * @param string $type the item type
      * @param array $data the item data
+     *
      * @throw InvalidArgumentException
      */
     public function __construct($type, $data)
@@ -75,6 +98,7 @@ class ItemPack implements JsonSerializable
         }
         $this->type = $type;
         $this->data = $data;
+
     }
 
     /**
@@ -97,12 +121,14 @@ class ItemPack implements JsonSerializable
 
     /**
      * Set item's assets of a given type to the pack.
-     * 
-     * @param string $type the assets type, one of those who are supported. 
+     *
+     * @param string $type the assets type, one of those who are supported.
      * @param string[] $assets the list of assets' URL to load
+     * @param string $basePath
+     *
      * @throw InvalidArgumentException
      */
-    public function setAssets($type, $assets)
+    public function setAssets($type, $assets, $basePath)
     {
         if(!in_array($type, self::$assetTypes)){
             throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
@@ -111,7 +137,13 @@ class ItemPack implements JsonSerializable
             throw new InvalidArgumentException('Assests should be an array, "' . gettype($assets) . '" given');
         }
 
-        $this->assets[$type] = $assets;
+        /**
+         * @var Encoding $encoder
+         */
+        $encoder = EncoderService::singleton()->get( $this->assetEncoders[$type], $basePath );
+        foreach ($assets as $asset) {
+            $this->assets[$type][] = $encoder->encode( $asset );
+        }
     }
  
     /**
@@ -139,5 +171,39 @@ class ItemPack implements JsonSerializable
             'assets'    => $this->assets
         );
     }
+
+    /**
+     * @return array
+     */
+    public function getAssetEncoders()
+    {
+        return $this->assetEncoders;
+    }
+
+    /**
+     * @param array $assetEncoders
+     */
+    public function setAssetEncoders( $assetEncoders )
+    {
+        //@TODO re-encode currently assigned assets using new encoders
+        $this->assetEncoders = $assetEncoders;
+
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNestedResourcesInclusion()
+    {
+        return $this->nestedResourcesInclusion;
+    }
+
+    /**
+     * @param boolean $nestedResourcesInclusion
+     */
+    public function setNestedResourcesInclusion( $nestedResourcesInclusion )
+    {
+        $this->nestedResourcesInclusion = (boolean)$nestedResourcesInclusion;
+    }
+
 }
-?>
