@@ -105,6 +105,9 @@ class LocalItemSource implements MediaManagement
         $sysPath = $this->getSysPath($dir.'/'.$filename);
 
         $mime = tao_helpers_File::getMimeType($sysPath);
+        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
+            $sysPath = $sysPath.'.js';
+        }
         if(file_exists($sysPath)){
             $file = array(
                 'name' => basename($sysPath),
