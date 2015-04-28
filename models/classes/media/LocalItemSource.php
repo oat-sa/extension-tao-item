@@ -113,6 +113,7 @@ class LocalItemSource implements MediaManagement
                 'name' => basename($sysPath),
                 'uri' => $dir.'/'.$filename,
                 'mime' => $mime,
+                'filePath' => $dir.'/'.basename($sysPath),
                 'size' => filesize($sysPath),
             );
         } else {
