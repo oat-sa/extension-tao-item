@@ -21,7 +21,8 @@ requirejs.config({
     config: {
         'taoItems/controller/items/edit': {
             'isPreviewEnabled' : <?= json_encode(get_data('isPreviewEnabled')) ?>,
-            'isAuthoringEnabled' : <?= json_encode(get_data('isAuthoringEnabled')) ?>
+            'isAuthoringEnabled' : <?= json_encode(get_data('isAuthoringEnabled')) ?>,
+            'checkoutMessage' : <?= json_encode(get_data('checkoutMessage')) ?>
         }
     }
 });
