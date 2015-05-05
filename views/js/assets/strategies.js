@@ -39,7 +39,7 @@ define([
         //the baseUrl concats the baseUrl in data if the url is relative
         baseUrl : {
             name : 'baseUrl',
-            handle : function handle(url, data){
+            handle : function handleBaseUrl(url, data){
                 if(typeof data.baseUrl === 'string' && urlUtil.isRelative(url)){
 
                     //is slashcat we manage slash concact
@@ -55,8 +55,18 @@ define([
         //absolute URL are just left intact
         external : {
             name : 'external',
-            handle : function handle(url, data){
+            handle : function handleExternal(url, data){
                 if(urlUtil.isAbsolute(url)){
+                    return url.toString();
+                }
+            }
+        },
+
+        //the base64 encoded resources are also left intact
+        base64 : {
+            name : 'base64',
+            handle : function handleB64(url){
+                if(urlUtil.isBase64(url)){
                     return url.toString();
                 }
             }
