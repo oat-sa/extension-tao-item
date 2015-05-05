@@ -194,8 +194,6 @@ define([
                     cache[url] = resolved;
                 }
 
-                console.log('Resolved', inputUrl, 'to', resolved);
-
                 return resolved;
             },
 
