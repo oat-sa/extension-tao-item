@@ -176,9 +176,45 @@ define([
         assert.equal(res2, 'https://tao.test/bar.html', 'The path is resolved');
 
         assert.notEqual(res1, res2, 'The resolution is different in contexts');
-
     });
 
+    QUnit.test('update the data context', 10, function(assert){
+
+        var base = "http://t.ao/";
+        var base2 = "https://tao.test/";
+        var base3 = "//taotesting.com/";
+        var path = 'bar.html';
+
+        var strategies = [{
+            name : 'foo',
+            handle : function(path, data){
+                return  data.base + path ;
+            }
+        }];
+
+        var assetManager = assetManagerFactory(strategies, {base : base });
+
+        assert.equal(assetManager.getData('base'), base, 'The base are the same');
+        assert.deepEqual(assetManager.getData(), { base : base }, 'The context is the same');
+
+        var res1 = assetManager.resolve(path);
+        assert.equal(res1, base + path , 'The path is resolved');
+        assert.equal(res1, 'http://t.ao/bar.html', 'The path is resolved');
+
+        assetManager.setData('base', base2);
+        assert.equal(assetManager.getData('base'), base2, 'The base are the same');
+
+        var res2 = assetManager.resolve(path);
+        assert.equal(res2, base2 + path , 'The path is resolved');
+        assert.equal(res2, 'https://tao.test/bar.html', 'The path is resolved');
+
+        assetManager.setData( { 'base' :  base3});
+        assert.equal(assetManager.getData('base'), base3, 'The base are the same');
+
+        var res3 = assetManager.resolve(path);
+        assert.equal(res3, base3 + path , 'The path is resolved');
+        assert.equal(res3, '//taotesting.com/bar.html', 'The path is resolved');
+    });
     QUnit.test('use caching', 8, function(assert){
 
         var strategy = {

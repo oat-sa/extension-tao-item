@@ -40,7 +40,7 @@ define([
         baseUrl : {
             name : 'baseUrl',
             handle : function handle(url, data){
-                if(data.baseUrl && urlUtil.isRelative(url)){
+                if(typeof data.baseUrl === 'string' && urlUtil.isRelative(url)){
 
                     //is slashcat we manage slash concact
                     if(data.slashcat === true){

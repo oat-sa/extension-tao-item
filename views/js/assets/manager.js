@@ -113,6 +113,56 @@ define([
             },
 
             /**
+             * Change the strategies
+             * @param {AssetStrategy[]} strategies - the strategies
+             * @throws {TypeError} if the strategy isn't defined correctly
+             */
+            setStrategies : function setStrategies(newStrategies){
+                var self = this;
+
+                //assign the strategies to the assetManager
+                _.forEach(newStrategies, function(strategy){
+
+                    //if it's an object we add it directly
+                    if(_.isPlainObject(strategy)){
+                        assetManager.addStrategy(strategy);
+
+                    //if it's a function, we create the strategy with a generated name
+                    } else if(_.isFunction(strategy)){
+                        self.addStrategy({
+                            name   : 'strategy_' + (self._strategies.length + 1),
+                            handle : strategy
+                        });
+                    }
+                });
+            },
+
+            /**
+             * Set context data
+             * @param {String|Object} [key] - the key of the data to set or the data values if it's an object
+             * @param {*} [value] - the value to set if a key is given
+             */
+            setData : function setData(key, value){
+                if(_.isString(key) && typeof value !== 'undefined'){
+                    data[key] = value;
+                } else if(_.isPlainObject(key)){
+                    data = key;
+                }
+            },
+
+            /**
+             * Get context data
+             * @param {String} [key] - if we want the value of a particuar key
+             * @returns {Object|*} all the data or the proprety value if key is given
+             */
+            getData : function getData(key){
+                if(_.isString(key)){
+                    return data[key];
+                }
+                return data;
+            },
+
+            /**
              * Resolve the given URL against the strategies
              * @param {String} url - the URL to resolve
              * @returns {String?} the resolved URL or nothing
@@ -143,6 +193,8 @@ define([
                 if(options.cache){
                     cache[url] = resolved;
                 }
+
+                console.log('Resolved', inputUrl, 'to', resolved);
 
                 return resolved;
             },
@@ -175,21 +227,7 @@ define([
             }
         };
 
-        //assign the strategies to the assetManager
-        _.forEach(strategies, function(strategy){
-
-            //if it's an object we add it directly
-            if(_.isPlainObject(strategy)){
-                assetManager.addStrategy(strategy);
-
-            //if it's a function, we create the strategy with a generated name
-            } else if(_.isFunction(strategy)){
-                assetManager.addStrategy({
-                    name   : 'strategy_' + (assetManager._strategies.length + 1),
-                    handle : strategy
-                });
-            }
-        });
+        assetManager.setStrategies(strategies);
 
         return assetManager;
     };
