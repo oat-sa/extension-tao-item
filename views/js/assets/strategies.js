@@ -76,7 +76,8 @@ define([
         taomedia : {
             name : 'taomedia',
             handle : function handleTaoMedia(url, data){
-                var baseUrl = data.baseUrl || '';
+                //either a baseUrl is given or if empty, taomedia resources are managed as relative resources
+                var baseUrl = data.baseUrl || './';
                 if( (typeof url === 'object' && url.protocol === 'taomedia') ||
                     (/^taomedia:\/\//.test(url.toString())) ){
                     return baseUrl + url.toString();
