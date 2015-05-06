@@ -138,6 +138,7 @@ class ItemPack implements JsonSerializable
         }
 
         /**
+         * Apply active encoder immediately
          * @var Encoding $encoder
          */
         $encoder = EncoderService::singleton()->get( $this->assetEncoders[$type], $basePath );

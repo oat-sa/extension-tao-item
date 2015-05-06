@@ -22,6 +22,11 @@ namespace oat\taoItems\model\pack\encoders;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
 use tao_helpers_File;
 
+/**
+ * Class Base64fileEncoder
+ * Helper, encode file by uri for embedding  using base64 algorithm
+ * @package oat\taoItems\model\pack\encoders
+ */
 class Base64fileEncoder implements Encoding
 {
     /**
@@ -29,6 +34,9 @@ class Base64fileEncoder implements Encoding
      */
     private $path;
 
+    /**
+     * Applied data-uri format placeholder
+     */
     const DATA_PREFIX = 'data:%s;';
 
     /**
@@ -38,7 +46,6 @@ class Base64fileEncoder implements Encoding
      */
     public function __construct( $path = '' )
     {
-
         $this->path = $path;
     }
 
@@ -51,6 +58,11 @@ class Base64fileEncoder implements Encoding
      */
     public function encode( $data )
     {
+        //skip  if external resource
+        if (filter_var( $data, FILTER_VALIDATE_URL )) {
+            return $data;
+        }
+
         $fullPath = $this->path . DIRECTORY_SEPARATOR . $data;
         if (file_exists( $fullPath )) {
             return sprintf(self::DATA_PREFIX, tao_helpers_File::getMimeType($fullPath)) . base64_encode( file_get_contents( $fullPath ) );

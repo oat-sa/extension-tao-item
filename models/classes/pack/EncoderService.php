@@ -22,15 +22,20 @@
 namespace oat\taoItems\model\pack;
 
 use oat\taoItems\model\pack\encoders\Encoding;
-use Prophecy\Exception\Doubler\ClassNotFoundException;
 use tao_models_classes_Service;
 
+/**
+ * Class EncoderService
+ * Factory retrieve encoder by his name
+ * @package oat\taoItems\model\pack
+ */
 class EncoderService extends tao_models_classes_Service
 {
     /**
      * @param $type
      *
      * @return Encoding
+     * @throws ExceptionMissingEncoder
      */
     public function get( $type )
     {
@@ -50,6 +55,6 @@ class EncoderService extends tao_models_classes_Service
             return $result;
 
         }
-        throw new ClassNotFoundException( 'Encoder missing ', $class );
+        throw new ExceptionMissingEncoder( 'Encoder missing ', $class );
     }
 }

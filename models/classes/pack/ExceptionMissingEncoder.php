@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,29 +18,13 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  * @author Mikhail Kamarouski, <kamarouski@1pt.com>
  */
-namespace oat\taoItems\model\pack\encoders;
 
-use oat\taoItems\model\pack\ExceptionMissingAsset;
+namespace oat\taoItems\model\pack;
 
-/**
- * Class Base64Encoder
- * Helper, encode file for embedding  using base64 algorithm
- * @package oat\taoItems\model\pack\encoders
- */
-class Base64Encoder implements Encoding
+
+use common_Exception;
+
+class ExceptionMissingEncoder extends common_Exception
 {
 
-    /**
-     * @param string $data content to encode
-     *
-     * @return string
-     * @throws ExceptionMissingAsset
-     */
-    public function encode( $data )
-    {
-        if (is_string( $data )) {
-            return base64_encode( $data );
-        }
-        throw new ExceptionMissingAsset( 'Incorrect asset type - cann\'t be encoded ' . $data );
-    }
 }
