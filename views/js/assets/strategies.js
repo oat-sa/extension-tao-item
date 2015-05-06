@@ -40,7 +40,7 @@ define([
         baseUrl : {
             name : 'baseUrl',
             handle : function handleBaseUrl(url, data){
-                if(typeof data.baseUrl === 'string' && urlUtil.isRelative(url)){
+                if(typeof data.baseUrl === 'string' && (urlUtil.isRelative(url)) ){
 
                     //is slashcat we manage slash concact
                     if(data.slashcat === true){
@@ -68,6 +68,18 @@ define([
             handle : function handleB64(url){
                 if(urlUtil.isBase64(url)){
                     return url.toString();
+                }
+            }
+        },
+
+        //special tao media protocol
+        taomedia : {
+            name : 'taomedia',
+            handle : function handleTaoMedia(url, data){
+                var baseUrl = data.baseUrl || '';
+                if( (typeof url === 'object' && url.protocol === 'taomedia') ||
+                    (/^taomedia:\/\//.test(url.toString())) ){
+                    return baseUrl + url.toString();
                 }
             }
         }
