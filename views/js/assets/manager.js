@@ -32,7 +32,6 @@ define([
     /**
      * @typedef AssetStrategy Defines a way to resolve an asset path
      * @property {String} name - the strategy name
-     * @property {Boolean} [parseURL = false] - if true to URL will be parsed so handle's url parameter will be an object.
      * @property {assetStrategyHandle} handle - how to resolve the strategy.
      */
 
@@ -84,7 +83,9 @@ define([
 
         strategies = _.isArray(strategies) ? strategies : [strategies];
         data       = data || {};
-        options    = options || {};
+        options    = _.defaults(options || {}, {
+            parseUrl : true
+        });
 
         /**
          * A brand new asset manager is created by the factory
