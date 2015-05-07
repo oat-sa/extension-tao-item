@@ -81,7 +81,7 @@ class LocalItemSource implements MediaManagement
                     }
                 }
             } else {
-                common_Logger::w('"'.$sysPath.'" is not a directory');
+                \common_Logger::w('"'.$sysPath.'" is not a directory');
             }
             $data['children'] = $children;
         }
@@ -105,11 +105,15 @@ class LocalItemSource implements MediaManagement
         $sysPath = $this->getSysPath($dir.'/'.$filename);
 
         $mime = tao_helpers_File::getMimeType($sysPath);
+        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
+            $sysPath = $sysPath.'.js';
+        }
         if(file_exists($sysPath)){
             $file = array(
                 'name' => basename($sysPath),
                 'uri' => $dir.'/'.$filename,
                 'mime' => $mime,
+                'filePath' => $dir.'/'.basename($sysPath),
                 'size' => filesize($sysPath),
             );
         } else {
