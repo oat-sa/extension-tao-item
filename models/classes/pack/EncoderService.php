@@ -55,6 +55,6 @@ class EncoderService extends tao_models_classes_Service
             return $result;
 
         }
-        throw new ExceptionMissingEncoder( 'Encoder missing ', $class );
+        throw new ExceptionMissingEncoder( 'Encoder missing : ' .  $class );
     }
 }
