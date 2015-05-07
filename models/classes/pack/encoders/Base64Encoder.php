@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,29 +15,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * @author Mikhail Kamarouski, <kamarouski@1pt.com>
  */
+namespace oat\taoItems\model\pack\encoders;
 
-namespace oat\taoItems\model\pack;
-
-use \core_kernel_classes_Resource;
-use oat\taoItems\model\pack\ItemPack;
+use oat\taoItems\model\pack\ExceptionMissingAsset;
 
 /**
- * To allow packing of Item. The goal of the packaging is to reprensent the data needed
- * to run an item (ie. an ItemPack).
- *
- * @author Bertrand Chevrier <bertrand@taotesting.com>
+ * Class Base64Encoder
+ * Helper, encode file for embedding  using base64 algorithm
+ * @package oat\taoItems\model\pack\encoders
  */
-interface Packable
+class Base64Encoder implements Encoding
 {
+
     /**
-     * Create a pack for an item.
+     * @param string $data content to encode
      *
-     * @param core_kernel_classes_Resource $item the item to pack
-     * @param string $path the path of the item folder
-     *
-     * @return \oat\taoItems\model\pack\ItemPack
+     * @return string
+     * @throws ExceptionMissingAsset
      */
-    public function packItem(core_kernel_classes_Resource $item, $path);
+    public function encode( $data )
+    {
+        if (is_string( $data )) {
+            return base64_encode( $data );
+        }
+        throw new ExceptionMissingAsset( 'Incorrect asset type - cann\'t be encoded ' . $data );
+    }
 }

@@ -16,29 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * @author Mikhail Kamarouski, <kamarouski@1pt.com>
  */
 
 namespace oat\taoItems\model\pack;
 
-use \core_kernel_classes_Resource;
-use oat\taoItems\model\pack\ItemPack;
 
-/**
- * To allow packing of Item. The goal of the packaging is to reprensent the data needed
- * to run an item (ie. an ItemPack).
- *
- * @author Bertrand Chevrier <bertrand@taotesting.com>
- */
-interface Packable
+use common_Exception;
+
+class ExceptionMissingEncoder extends common_Exception
 {
-    /**
-     * Create a pack for an item.
-     *
-     * @param core_kernel_classes_Resource $item the item to pack
-     * @param string $path the path of the item folder
-     *
-     * @return \oat\taoItems\model\pack\ItemPack
-     */
-    public function packItem(core_kernel_classes_Resource $item, $path);
+
 }
