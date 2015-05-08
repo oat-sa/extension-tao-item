@@ -99,16 +99,20 @@ class Packer
 
     /**
      * Pack an item.
-     *
+     * @param array $assetEncoders  the list of encoders to use in packing (configure the item packer)
+     * @param boolean $nestedResourcesInclusion
      * @return ItemPack of the item. It can be serialized directly.
      * @throws common_Exception
      */
-    public function pack()
+    public function pack($assetEncoders = array(), $nestedResourcesInclusion = true)
     {
 
         try {
             //call the factory to get the itemPacker implementation
             $itemPacker = $this->getItemPacker();
+
+            $itemPacker->setAssetEncoders($assetEncoders);
+            $itemPacker->setNestedResourcesInclusion($nestedResourcesInclusion);
 
             //then create the pack
             $itemPack = $itemPacker->packItem($this->item, $this->lang);
