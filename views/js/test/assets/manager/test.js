@@ -79,14 +79,14 @@ define([
         var assetManager = assetManagerFactory([{
             name : 'foo',
             handle : function(path, data){
-                if(path === 'far'){
+                if(path.toString() === 'far'){
                     return 'foo' + path ;
                 }
             }
         }, {
             name : 'boo',
             handle : function(path, data){
-                if(path === 'bar'){
+                if(path.toString() === 'bar'){
                     return 'boo' + path ;
                 }
             }
@@ -116,11 +116,11 @@ define([
 
         var assetManager = assetManagerFactory([
         function(path, data){
-            if(path === 'far'){
+            if(path.toString() === 'far'){
                 return 'foo' + path ;
             }
         }, function(path, data){
-            if(path === 'bar'){
+            if(path.toString() === 'bar'){
                 return 'boo' + path ;
             }
         }]);
