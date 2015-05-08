@@ -31,18 +31,15 @@ use oat\tao\helpers\Template;
         });
         require(['jquery'], function($){
             if ("<?= get_data('previewUrl')?>".indexOf('Qti') != -1) {
-                
+
                 $('#preview-submit-button')
                     .css('display', 'inline')
                     .off('click')
                     .on('click', function () {
                         $('#preview-container')[0].contentWindow.qtiRunner.validate();
                     });
-                    
+
             }
         });
     </script>
 <?php endif ?>
-
-
-<iframe id="preview-container" name="preview-container"></iframe>
