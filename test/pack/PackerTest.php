@@ -20,6 +20,7 @@
 namespace oat\taoItems\test\pack;
 
 use \core_kernel_classes_Resource;
+use oat\taoItems\model\pack\ItemPacker;
 use oat\taoItems\model\pack\Packer;
 use oat\taoItems\model\pack\Packable;
 use oat\taoItems\model\pack\ItemPack;
@@ -263,8 +264,8 @@ class PackerTest extends TaoPhpUnitTestRunner
 }
 
 //use an old school mock as the Packer create it's own instance from the class
-class PackerMock implements Packable{
-    public function packItem(core_kernel_classes_Resource $item, $path){
+class PackerMock extends ItemPacker{
+    public function packItem(core_kernel_classes_Resource $item, $lang){
         return new ItemPack('qti', array('uri' => $item->getUri()));
     }
 }

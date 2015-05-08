@@ -88,7 +88,7 @@ abstract class ItemPacker
     /**
      * @param array $assetEncoders
      */
-    public function setAssetEncoders( array $assetEncoders )
+    public function setAssetEncoders(array $assetEncoders)
     {
         $this->assetEncoders = $assetEncoders;
     }
@@ -104,7 +104,7 @@ abstract class ItemPacker
     /**
      * @param boolean $nestedResourcesInclusion
      */
-    public function setNestedResourcesInclusion( $nestedResourcesInclusion )
+    public function setNestedResourcesInclusion($nestedResourcesInclusion)
     {
         $this->nestedResourcesInclusion = $nestedResourcesInclusion;
     }
