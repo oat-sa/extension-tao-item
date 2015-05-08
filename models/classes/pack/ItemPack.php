@@ -1,22 +1,22 @@
 <?php
 
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- * 
+ *
  */
 
 namespace oat\taoItems\model\pack;
@@ -31,7 +31,7 @@ use oat\taoItems\model\pack\encoders\Encoding;
  * @package taoItems
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
-class ItemPack implements JsonSerializable 
+class ItemPack implements JsonSerializable
 {
 
     /**
@@ -40,7 +40,7 @@ class ItemPack implements JsonSerializable
      */
     private static $assetTypes = array('js', 'css', 'font', 'img', 'audio', 'video');
 
-    
+
     /**
      * The item type
      * @var string
@@ -107,16 +107,16 @@ class ItemPack implements JsonSerializable
      */
     public function getType()
     {
-        return $this->type;   
-    } 
-    
+        return $this->type;
+    }
+
     /**
      * Get the item data
      * @return array the data
      */
     public function getData()
     {
-        return $this->data;   
+        return $this->data;
     }
 
     /**
@@ -143,14 +143,14 @@ class ItemPack implements JsonSerializable
          */
         $encoder = EncoderService::singleton()->get( $this->assetEncoders[$type], $basePath );
         foreach ($assets as $asset) {
-            $this->assets[$type][] = $encoder->encode( $asset );
+            $this->assets[$type][$asset] = $encoder->encode( $asset );
         }
     }
- 
+
     /**
      * Get item's assets of a given type.
-     * 
-     * @param string $type the assets type, one of those who are supported 
+     *
+     * @param string $type the assets type, one of those who are supported
      * @return string[] the list of assets' URL to load
      */
     public function getAssets($type)
