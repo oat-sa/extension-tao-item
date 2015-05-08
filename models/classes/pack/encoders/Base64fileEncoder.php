@@ -37,7 +37,7 @@ class Base64fileEncoder implements Encoding
     /**
      * Applied data-uri format placeholder
      */
-    const DATA_PREFIX = 'data:%s;';
+    const DATA_PREFIX = 'data:%s;base64,%s';
 
     /**
      * Base64fileEncoder constructor.
@@ -65,7 +65,7 @@ class Base64fileEncoder implements Encoding
 
         $fullPath = $this->path . DIRECTORY_SEPARATOR . $data;
         if (file_exists( $fullPath )) {
-            return sprintf(self::DATA_PREFIX, tao_helpers_File::getMimeType($fullPath)) . base64_encode( file_get_contents( $fullPath ) );
+            return sprintf(self::DATA_PREFIX, tao_helpers_File::getMimeType($fullPath), base64_encode( file_get_contents( $fullPath ) ));
         }
 
         throw new ExceptionMissingAsset( 'Assets not found ' . $this->path . '/' . $data );
