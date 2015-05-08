@@ -121,6 +121,8 @@ define([
             setStrategies : function setStrategies(newStrategies){
                 var self = this;
 
+                this._strategies = [];
+
                 //assign the strategies to the assetManager
                 _.forEach(newStrategies, function(strategy){
 
