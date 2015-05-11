@@ -70,7 +70,7 @@ abstract class ItemPacker
      * @return string
      * @throws common_Exception
      */
-    protected function getPath(core_kernel_classes_Resource $item, $lang)
+    protected function getPath(core_kernel_classes_Resource $item, $lang = "")
     {
         $path = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
         return $path;
