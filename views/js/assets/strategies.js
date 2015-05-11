@@ -42,12 +42,14 @@ define([
             handle : function handleBaseUrl(url, data){
                 if(typeof data.baseUrl === 'string' && (urlUtil.isRelative(url)) ){
 
+                    console.log(url + '');
+
                     //is slashcat we manage slash concact
                     if(data.slashcat === true){
                         return data.baseUrl.replace(/\/$/, '') + '/' + url.toString().replace(/^\.\//, '').replace(/^\//, '');
                     }
 
-                    return data.baseUrl + url.toString();
+                    return data.baseUrl + url.toString().replace(/^\.?\//, '');
                 }
             }
         },
