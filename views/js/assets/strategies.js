@@ -47,7 +47,7 @@ define([
                         return data.baseUrl.replace(/\/$/, '') + '/' + url.toString().replace(/^\.\//, '').replace(/^\//, '');
                     }
 
-                    return data.baseUrl + url.toString();
+                    return data.baseUrl + url.toString().replace(/^\.?\//, '');
                 }
             }
         },
