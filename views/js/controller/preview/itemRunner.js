@@ -84,7 +84,8 @@ define(
                         var isCORSAllowed = callUrl.checkCORS();
                         callUrl.addParam('clientConfigUrl', conf.clientConfigUrl);
 
-                        var $frame = $('#preview-container');
+                        //the iframe is 1st detached and then attached with src in order to prevent adding an entry in the history
+                        var $frame = $('<iframe id="preview-container" name="preview-container" src="' + callUrl.getUrl() + '"></iframe>');
 
                         iframeResizer.autoHeight($frame, 'body', 10);
 
@@ -106,9 +107,9 @@ define(
                             $(document).on('itemready', function () {
                                 itemApi.connect(frame);
                             });
-
                         });
-                        $('#preview-container').attr('src', callUrl.getUrl());
+
+                        $('.preview-item-container').append($frame);
 
                         $('#finishButton').click(function () {
                             itemApi.finish();
