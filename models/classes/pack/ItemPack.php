@@ -186,9 +186,13 @@ class ItemPack implements JsonSerializable
      */
     public function setAssetEncoders( $assetEncoders )
     {
-        //@TODO re-encode currently assigned assets using new encoders
-        $this->assetEncoders = $assetEncoders;
-
+        foreach($assetEncoders as $type => $encoder){
+            if($encoder == ''){
+                $this->assetEncoders[$type] = 'none';
+            } else {
+                $this->assetEncoders[$type] = $encoder;
+            }
+        }
     }
 
     /**
