@@ -20,7 +20,6 @@
  */
 
 use oat\tao\model\search\tokenizer\Tokenizer;
-use oat\tao\model\search\tokenizer\RawValue;
 
 /**
  * Item content tokenizer.
@@ -35,13 +34,12 @@ class taoItems_models_classes_search_ItemContentTokenizer implements Tokenizer
         $contentStrings = array();
         
         $xmlTokenizer = new taoItems_models_classes_search_XmlItemContentTokenizer();
-        $rawTokenizer = new RawValue();
         
         foreach ($values as $valueUri) {
             $file = new core_kernel_file_File($valueUri);
             $content = file_get_contents($file->getAbsolutePath());
             if ($content === false) {
-                common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
+                common_Logger::w('File '.$file->getAbsolutePath().' not found for item');
             } else {
                 // Try to make it a DOM Document...
                 $dom = new DOMDocument('1.0', 'UTF-8');
@@ -50,7 +48,7 @@ class taoItems_models_classes_search_ItemContentTokenizer implements Tokenizer
                     $contentStrings = array_merge($contentStrings, $xmlTokenizer->getStrings($dom));
                     unset($dom);
                 } else {
-                    $contentStrings = array_merge($contentStrings, $rawTokenizer->getStrings($content));
+                    common_Logger::d('Skipped non XML content for '.$file->getUri());
                 }
             }
         }
