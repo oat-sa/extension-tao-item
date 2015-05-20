@@ -39,7 +39,7 @@ class taoItems_models_classes_search_ItemContentTokenizer implements Tokenizer
             $file = new core_kernel_file_File($valueUri);
             $content = file_get_contents($file->getAbsolutePath());
             if ($content === false) {
-                common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$file->getUri());
+                common_Logger::w('File '.$file->getAbsolutePath().' not found for item');
             } else {
                 // Try to make it a DOM Document...
                 $dom = new DOMDocument('1.0', 'UTF-8');
