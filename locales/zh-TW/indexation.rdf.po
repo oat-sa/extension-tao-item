@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC05\n"
-"PO-Revision-Date: 2015-04-13T09:46:27\n"
+"Project-Id-Version: TAO 3.0.0\n"
+"PO-Revision-Date: 2015-04-30T09:08:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -13,20 +13,20 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Tokenizer"
-msgstr "項目(試題)內容標記生成器"
+msgstr "題目內容標記生成器"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Tokenizer using the item content"
-msgstr "標記生成器使用項目(試題)內容"
+msgstr "標記生成器使用題目內容"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelIndex
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model Index"
-msgstr "項目(試題)模型索引"
+msgstr "題目模型索引"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Index"
-msgstr "項目(試題)內容索引"
+msgstr "題目內容索引"
 
