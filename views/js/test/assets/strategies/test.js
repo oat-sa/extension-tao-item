@@ -54,7 +54,7 @@ define([
         title    : 'relative URL current directory',
         baseUrl  : 'http://tao.localdomain?path=',
         url      : './test/test.html',
-        resolved : 'http://tao.localdomain?path=./test/test.html'
+        resolved : 'http://tao.localdomain?path=test/test.html'
     }];
 
     QUnit
