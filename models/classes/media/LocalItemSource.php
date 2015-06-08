@@ -140,7 +140,7 @@ class LocalItemSource implements MediaManagement
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaManagement::add
      */
-    public function add($source, $fileName, $parent)
+    public function add($source, $fileName, $parent, $stimulus)
     {
         if (!\tao_helpers_File::securityCheck($fileName, true)) {
             throw new \common_Exception('Unsecured filename "'.$fileName.'"');
@@ -149,7 +149,7 @@ class LocalItemSource implements MediaManagement
         $sysPath = $this->getSysPath($parent.$fileName);
 
         if(!tao_helpers_File::copy($source, $sysPath)){
-            throw new common_exception_Error('Unable to move file '.$source);
+            throw new \common_exception_Error('Unable to move file '.$source);
         }
 
         $fileData = $this->getFileInfo('/'.$parent.$fileName, array());
