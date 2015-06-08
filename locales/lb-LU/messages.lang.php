@@ -58,7 +58,6 @@ $GLOBALS['__l10n']["Settings"]="Astellungen";
 $GLOBALS['__l10n']["Test takers library"]="Testpersounen Sammlung";
 $GLOBALS['__l10n']["Tests"]="Tester";
 $GLOBALS['__l10n']["Tests library"]="Test Sammlung";
-$GLOBALS['__l10n']["The format of this field is not valid."]="Den Format vun desem Datenfeld as nit valid.";
 $GLOBALS['__l10n']["The Items module enables the creation and design of items and exercises."]="Den Item Modul erlaabt d'Erstellen an formatéiren vun Itemen an Aufgaben";
 $GLOBALS['__l10n']["The uploaded file is too large"]="De ropgeluedene Fichier as ze grouss";
 $GLOBALS['__l10n']["This field is too long"]="Dëst Datenfeld as ze laang";
