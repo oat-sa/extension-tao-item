@@ -404,18 +404,18 @@ define([
            /**
             * Get the responses of the running item.
             *
-            * @returns {Array} the item's responses
+            * @returns {Object} the item's responses
             */
            getResponses : function(){
-                var responses = [];
+                var responses = {};
                 if(_.isFunction(provider.getResponses)){
 
                     /**
                      * Calls the provider's getResponses
                      * @callback GetResponsesItemProvider
-                     * @returns {Array} the responses
+                     * @returns {Object} the responses
                      */
-                    responses = responses.concat(provider.getResponses.call(this));
+                    responses = provider.getResponses.call(this);
                 }
                 return responses;
            },
