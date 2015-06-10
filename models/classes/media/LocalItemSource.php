@@ -140,7 +140,7 @@ class LocalItemSource implements MediaManagement
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaManagement::add
      */
-    public function add($source, $fileName, $parent, $stimulus)
+    public function add($source, $fileName, $parent, $stimulus = false)
     {
         if (!\tao_helpers_File::securityCheck($fileName, true)) {
             throw new \common_Exception('Unsecured filename "'.$fileName.'"');
