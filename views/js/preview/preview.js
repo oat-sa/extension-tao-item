@@ -1,3 +1,21 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2015 (original work) Open Assessment Techniologies SA
+ *
+ */
 define([
     'jquery',
     'lodash',
@@ -5,10 +23,11 @@ define([
     'util/strPad',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
+    'ui/themes',
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, deviceList, previewTpl) {
+], function ($, _, __, strPad, deviceList, previewTpl, themeHandler) {
     'use strict';
 
     var overlay,
@@ -20,6 +39,7 @@ define([
             mobile: __('Mobile preview'),
             standard: __('Actual size')
         },
+        themes = themeHandler.getAvailable('items') || [],
         $doc = $(document),
         $window = $(window),
         $body = $(document.body),
@@ -37,7 +57,6 @@ define([
         $console,
         previewContainerMaxWidth,
         itemUri;
-
 
     /**
      * Create data set for device selectors
@@ -156,7 +175,7 @@ define([
      * @private
      */
     var _positionPreview = function () {
-        $('.preview-canvas').css({ paddingTop: $('.preview-utility-bar').outerHeight() + 5 })
+        $('.preview-canvas').css({ paddingTop: $('.preview-utility-bar').outerHeight() + 5 });
     };
 
 
@@ -320,6 +339,26 @@ define([
     };
 
     /**
+     * Build options for themes
+     *
+     * @todo is there a way to know the selected theme?
+     *
+     * @returns {Array}
+     * @private
+     */
+    var _getThemes = function() {
+        var options = [];
+        _(themes).forEach(function (data) {
+            options.push({
+                value: data.id,
+                label: data.name,
+                selected: false
+            });
+        });
+        return options;
+    };
+
+    /**
      * Build options for preview types
      *
      * @returns {Array}
@@ -351,6 +390,22 @@ define([
             _setPreviewType(value);
 
             $('.' + value + '-device-selector').trigger('change');
+        }).select2({
+            minimumResultsForSearch: -1
+        });
+
+    };
+
+
+    /**
+     * Select preview theme
+     *
+     * @private
+     */
+    var _setupThemeSelector = function () {
+
+        $('select.preview-theme-selector').on('change',function () {
+            $('.qti-item').trigger('themechange', [$(this).val()]);
         }).select2({
             minimumResultsForSearch: -1
         });
@@ -409,9 +464,9 @@ define([
                     strPad(timer.getMinutes(), 2, '0', 'STR_PAD_LEFT'),
                     strPad(timer.getSeconds(), 2, '0', 'STR_PAD_LEFT')
                 ].join(':'),
-                msgStr = '<span class="log-time">' + strPad(logTime, 12, ' ') + '</span> '
-                    + '<span class="log-type">' + strPad(type, 18, ' ') + '</span> '
-                    + '<span class="log-message">' + strPad(message, 18, ' ') + '</span>';
+                msgStr = '<span class="log-time">' + strPad(logTime, 12, ' ') + '</span> ' +
+                    '<span class="log-type">' + strPad(type, 18, ' ') + '</span> ' +
+                    '<span class="log-message">' + strPad(message, 18, ' ') + '</span>';
             $listing.append('<li><pre>' + msgStr + '</pre></li>');
             if (!$body.is(':visible')) {
                 $body.slideDown('slow', function () {
@@ -471,7 +526,8 @@ define([
             mobileDevices: _getDeviceSelectorData('mobile'),
             desktopDevices: _getDeviceSelectorData('desktop'),
             previewTypes: _getPreviewTypes(),
-            previewType: previewType
+            previewType: previewType,
+            themes: _getThemes()
         }));
 
         $body.append(overlay);
@@ -491,6 +547,7 @@ define([
         _setupDeviceSelectors();
         _setupOrientationSelectors();
         _setupViewSelector();
+        _setupThemeSelector();
         _setupClosers();
         _computeScaleFactor();
         _setPreviewType(previewType);

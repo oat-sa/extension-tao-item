@@ -11,6 +11,13 @@
                         <option value="{{value}}" {{#if selected}}selected="selected"{{/if}}>{{label}}</option>
                         {{/each}}
                     </select>
+                    {{#if themes}}
+                    <select class="preview-theme-selector">
+                        {{#each themes}}
+                        <option value="{{value}}" {{#if selected}}selected="selected"{{/if}}>{{label}}</option>
+                        {{/each}}
+                    </select>
+                    {{/if}}
                 </div>
                 <div class="col-6 standard-only device-type-and-orientation"></div>
                 <div class="col-6 desktop-only device-type-and-orientation">
