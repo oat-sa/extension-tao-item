@@ -11,6 +11,13 @@
                         <option value="{{value}}" {{#if selected}}selected="selected"{{/if}}>{{label}}</option>
                         {{/each}}
                     </select>
+                    {{#if themes}}
+                    <select class="preview-theme-selector">
+                        {{#each themes}}
+                        <option value="{{value}}" {{#if selected}}selected="selected"{{/if}}>{{label}}</option>
+                        {{/each}}
+                    </select>
+                    {{/if}}
                 </div>
                 <div class="col-6 standard-only device-type-and-orientation"></div>
                 <div class="col-6 desktop-only device-type-and-orientation">
@@ -33,15 +40,10 @@
                     </select>
                 </div>
                 <div class="col-2">
-                    <!--label>
-                        <input type="checkbox"/>
-                        <span class="icon-checkbox"></span>
-                        {{__ 'Scale '}}
-                    </label-->
-                        <span class="btn-info small preview-closer rgt">
-                            {{__ 'Close'}}
-                            <span class="icon-close r"></span>
-                        </span>
+                    <span class="btn-info small preview-closer rgt">
+                        {{__ 'Close'}}
+                        <span class="icon-close r"></span>
+                    </span>
                 </div>
             </div>
             <div class="preview-message-box">
@@ -54,7 +56,6 @@
             </div>
         </form>
         <div class="preview-canvas">
-
             <div class="preview-scale-container">
                 <div class="{{previewType}}-preview-frame preview-outer-frame {{previewType}}-preview-landscape">
                     <div class="{{previewType}}-preview-container preview-container">
@@ -66,7 +67,6 @@
     </div>
     <div id="preview-console">
         <span class="icon-close preview-console-closer" title="{{__ 'Close console'}}"></span>
-
         <div class="preview-console-header grid-row clearfix">
             <div class="col-12">
                 <button type="button" class="btn-info small rgt" id="preview-submit-button">{{__ 'Submit'}}</button>
