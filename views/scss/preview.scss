@@ -37,6 +37,10 @@ $previewToolbarWidth: 900px;
     .preview-container {
         background: white;
         overflow:auto;
+
+        .preview-item-container, #preview-container {
+            min-height: calc(100vh - 130px) !important;
+        }
     }
     .preview-container-outer {
         display: table;
@@ -84,6 +88,9 @@ $previewToolbarWidth: 900px;
             width: 200px;
         }
         .preview-type-selector {
+            width: 140px;
+        }
+        .preview-theme-selector {
             width: 140px;
         }
         .orientation-selector,
@@ -156,6 +163,7 @@ $previewToolbarWidth: 900px;
 
 
 
+
     .preview-message-box {
         .feedback-info {
             margin: 10px auto 0px;
@@ -224,6 +232,7 @@ $previewToolbarWidth: 900px;
     .mobile-preview-item-container {
         height: 100%;
     }
+
     .mobile-preview-frame {
         &.mobile-preview-landscape {
             padding: 40px 40px;
