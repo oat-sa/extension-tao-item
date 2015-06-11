@@ -357,6 +357,24 @@ define([
 
     };
 
+
+    /**
+     * Select preview theme
+     *
+     * @private
+     */
+    var _setupThemeSelector = function () {
+        $('select.preview-theme-selector').on('change',function () {
+            var iframe = document.getElementById('preview-container');
+            var iframeDoc = iframe.contentWindow || iframe.contentDocument;
+            iframeDoc.$('.qti-item').trigger('themechange', [$(this).val()]);
+
+        }).select2({
+            minimumResultsForSearch: -1
+        });
+
+    };
+
     var _adaptFrameSize = function () {
 
         var $previewContainer = $('.preview-container'),
@@ -449,7 +467,7 @@ define([
         // overlay.hide().show();
         overlay[0].style.display = 'block';
         overlay.height('100%');
-        overlay.find('select:visible').trigger('change');
+        overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
         _scale();
         _positionPreview();
     };
