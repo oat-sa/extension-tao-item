@@ -25,6 +25,7 @@ use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
 use League\Flysystem\FileNotFoundException;
+use Jig\Utils\FsUtils;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -111,7 +112,7 @@ class LocalItemSource implements MediaManagement
         if(file_exists($sysPath)){
             $file = array(
                 'name' => basename($sysPath),
-                'uri' => $dir.'/'.$filename,
+                'uri' => FsUtils::normalizePath($dir.'/'.$filename),
                 'mime' => $mime,
                 'filePath' => $dir.'/'.basename($sysPath),
                 'size' => filesize($sysPath),
