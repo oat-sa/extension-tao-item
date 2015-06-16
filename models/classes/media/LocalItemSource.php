@@ -24,7 +24,6 @@ use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
-use League\Flysystem\FileNotFoundException;
 use Jig\Utils\FsUtils;
 /**
  * This media source gives access to files that are part of the item
@@ -42,6 +41,11 @@ class LocalItemSource implements MediaManagement
 
     }
 
+    public function getItem()
+    {
+        return $this->item;
+    }
+    
     /**
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
