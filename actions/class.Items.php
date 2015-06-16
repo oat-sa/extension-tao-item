@@ -153,6 +153,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('lockDate', $lock->getCreationTime());
                 $this->setData('id', $item->getUri());
             }
+            $checkoutMessage = '';
+            if(get_class(LockManager::getImplementation()) !== 'oat\tao\model\lock\implementation\NoLock'){
+                $checkoutMessage = __('%s checked out successfully', $item->getLabel());
+            }
             
             $formContainer = new taoItems_actions_form_Item($itemClass, $item);
             $myForm = $formContainer->getForm();
@@ -196,6 +200,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $this->setData('isPreviewEnabled', $hasPreview);
             $this->setData('isAuthoringEnabled', $hasModel);
+            $this->setData('checkoutMessage', $checkoutMessage);
 
             $this->setData('formTitle', __('Edit Item'));
             $this->setData('myForm', $myForm->render());
