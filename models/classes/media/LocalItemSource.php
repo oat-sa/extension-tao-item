@@ -24,7 +24,6 @@ use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
-use Jig\Utils\FsUtils;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
