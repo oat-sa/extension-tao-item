@@ -35,10 +35,6 @@ class LocalItemSourceTest extends TaoPhpUnitTestRunner {
         common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
     }
 
-    public function tearDown()
-    {
-        //$this->item->delete();
-    }
 
     public function testAdd()
     {
