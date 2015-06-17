@@ -102,23 +102,14 @@ class LocalItemSource implements MediaManagement
      * @see \oat\tao\model\media\MediaBrowser::getFileInfo
      */
     public function getFileInfo($link) {
-        $file = null;
 
-        $filename = basename($link);
-        $dir = ltrim(dirname($link),'/');
-
-        $sysPath = $this->getSysPath($dir.'/'.$filename);
-
-        $mime = tao_helpers_File::getMimeType($sysPath);
-        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
-            $sysPath = $sysPath.'.js';
-        }
+        $sysPath = $this->getSysPath($link);
         if(file_exists($sysPath)){
             $file = array(
-                'name' => basename($sysPath),
-                'uri' => FsUtils::normalizePath($dir.'/'.$filename),
-                'mime' => $mime,
-                'filePath' => $dir.'/'.basename($sysPath),
+                'name' => basename($link),
+                'uri' => $link,
+                'mime' => tao_helpers_File::getMimeType($sysPath),
+                'filePath' => $link,
                 'size' => filesize($sysPath),
             );
         } else {
@@ -157,7 +148,7 @@ class LocalItemSource implements MediaManagement
             throw new common_exception_Error('Unable to move file '.$source);
         }
 
-        $fileData = $this->getFileInfo('/'.$parent.$fileName, array());
+        $fileData = $this->getFileInfo('/'.ltrim($parent, '/').$fileName, array());
         return $fileData;
 
     }

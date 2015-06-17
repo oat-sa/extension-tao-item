@@ -53,10 +53,13 @@ class LocalItemSourceTest extends TaoPhpUnitTestRunner {
 	    ));
         $sampleFile = dirname(__DIR__).DIRECTORY_SEPARATOR.'samples'.DIRECTORY_SEPARATOR.'asset'.DIRECTORY_SEPARATOR.'sample.css';
 	    $info = $source->add($sampleFile, 'example.txt', '/');
-	    $link = $info['uri'];
 
-	    $this->assertEquals('/example.txt', $link);
-	    
+	    $this->assertEquals('example.txt', $info['name']);
+	    $this->assertEquals('/example.txt', $info['uri']);
+	    $this->assertEquals('/example.txt', $info['filePath']);
+	     
+	    // this is only true for local item source 
+	    $link = $info['uri'];
 	    $asset = new MediaAsset($source, $link);
 	    
 	    return $asset;
