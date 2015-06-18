@@ -24,7 +24,6 @@ use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
-use League\Flysystem\FileNotFoundException;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -41,6 +40,11 @@ class LocalItemSource implements MediaManagement
 
     }
 
+    public function getItem()
+    {
+        return $this->item;
+    }
+    
     /**
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
@@ -97,23 +101,14 @@ class LocalItemSource implements MediaManagement
      * @see \oat\tao\model\media\MediaBrowser::getFileInfo
      */
     public function getFileInfo($link) {
-        $file = null;
 
-        $filename = basename($link);
-        $dir = ltrim(dirname($link),'/');
-
-        $sysPath = $this->getSysPath($dir.'/'.$filename);
-
-        $mime = tao_helpers_File::getMimeType($sysPath);
-        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
-            $sysPath = $sysPath.'.js';
-        }
+        $sysPath = $this->getSysPath($link);
         if(file_exists($sysPath)){
             $file = array(
-                'name' => basename($sysPath),
-                'uri' => $dir.'/'.$filename,
-                'mime' => $mime,
-                'filePath' => $dir.'/'.basename($sysPath),
+                'name' => basename($link),
+                'uri' => $link,
+                'mime' => tao_helpers_File::getMimeType($sysPath),
+                'filePath' => $link,
                 'size' => filesize($sysPath),
             );
         } else {
@@ -152,7 +147,7 @@ class LocalItemSource implements MediaManagement
             throw new common_exception_Error('Unable to move file '.$source);
         }
 
-        $fileData = $this->getFileInfo('/'.$parent.$fileName, array());
+        $fileData = $this->getFileInfo('/'.ltrim($parent, '/').$fileName, array());
         return $fileData;
 
     }
