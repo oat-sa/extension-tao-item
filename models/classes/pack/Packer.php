@@ -24,8 +24,6 @@ namespace oat\taoItems\model\pack;
 use \core_kernel_classes_Resource;
 use \taoItems_models_classes_ItemsService;
 use \common_exception_NoImplementation;
-use \ReflectionClass;
-use \ReflectionException;
 use \common_Exception;
 use \Exception;
 
@@ -58,9 +56,12 @@ class Packer
 
     /**
      * Create a packer for an item
+     *
      * @param core_kernel_classes_Resource $item
+     * @param string $lang
      */
-    public function __construct(core_kernel_classes_Resource $item, $lang = ''){
+    public function __construct(core_kernel_classes_Resource $item, $lang = '')
+    {
         $this->item = $item;
         $this->lang = $lang;
         $this->itemService = taoItems_models_classes_ItemsService::singleton();
@@ -72,51 +73,56 @@ class Packer
      * @return Packable the item packer implementation
      * @throws common_exception_NoImplementation
      */
-    private function getItemPacker(){
+    private function getItemPacker()
+    {
 
         //look at the item model
         $itemModel = $this->itemService->getItemModel($this->item);
-        if(is_null($itemModel)){
-            throw new common_exception_NoImplementation('No item model for item '.$this->item->getUri());
+        if (is_null($itemModel)) {
+            throw new common_exception_NoImplementation('No item model for item ' . $this->item->getUri());
         }
 
         //get the itemModel implementation for this model
         $impl = $this->itemService->getItemModelImplementation($itemModel);
-        if(is_null($impl)){
-            throw new common_exception_NoImplementation('No implementation for model '.$itemModel->getUri());
+        if (is_null($impl)) {
+            throw new common_exception_NoImplementation('No implementation for model ' . $itemModel->getUri());
         }
 
         //then retrieve the packer class and instantiate it
-        $packerClass = new ReflectionClass($impl->getPackerClass());
-        if(is_null($packerClass) || !$packerClass->implementsInterface('oat\taoItems\model\pack\Packable')){
+        $packerClass = $impl->getPackerClass();
+        if (is_null($packerClass) || get_parent_class($packerClass) !== 'oat\taoItems\model\pack\ItemPacker') {
             throw new common_exception_NoImplementation('The packer class seems to be not implemented');
         }
 
-        return $packerClass->newInstance();
+        return new $packerClass();
     }
 
     /**
      * Pack an item.
-     *
+     * @param array $assetEncoders  the list of encoders to use in packing (configure the item packer)
+     * @param boolean $nestedResourcesInclusion
      * @return ItemPack of the item. It can be serialized directly.
      * @throws common_Exception
      */
-    public function pack(){
+    public function pack($assetEncoders = array(), $nestedResourcesInclusion = true)
+    {
 
-        try{
+        try {
             //call the factory to get the itemPacker implementation
             $itemPacker = $this->getItemPacker();
 
-            $path = $this->itemService->getItemFolder($this->item, $this->lang);
+            $itemPacker->setAssetEncoders($assetEncoders);
+            $itemPacker->setNestedResourcesInclusion($nestedResourcesInclusion);
 
             //then create the pack
-            $itemPack = $itemPacker->packItem($this->item, $path);
+            $itemPack = $itemPacker->packItem($this->item, $this->lang);
 
-        } catch(Exception $e){
-            throw new common_Exception('The item '. $this->item->getUri() .' cannot be packed : ' . $e->getMessage());
+        } catch (Exception $e) {
+            throw new common_Exception('The item ' . $this->item->getUri() . ' cannot be packed : ' . $e->getMessage());
         }
 
         return $itemPack;
     }
 }
+
 ?>

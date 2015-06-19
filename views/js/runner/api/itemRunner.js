@@ -20,7 +20,11 @@
 /**
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
-define(['jquery', 'lodash'], function($, _){
+define([
+    'jquery',
+    'lodash',
+    'taoItems/assets/manager'
+], function($, _, assetManagerFactory){
     'use strict';
 
      /**
@@ -55,12 +59,10 @@ define(['jquery', 'lodash'], function($, _){
      */
     var itemRunnerFactory = function itemRunnerFactory(providerName, data, options){
 
-        //optional params based on type
-        if(_.isPlainObject(providerName)){
-            data = providerName;
-            providerName = undefined;
-        }
-        data = data || {};
+        var ItemRunner,
+            provider,
+            providers,
+            assetManager;
 
         //contains the bound events.
         var events = {};
@@ -77,12 +79,19 @@ define(['jquery', 'lodash'], function($, _){
             }
         };
 
+        //optional params based on type
+        if(_.isPlainObject(providerName)){
+            data = providerName;
+            providerName = undefined;
+        }
+
+        data = data || {};
+        options = options || {};
+
         /*
          * Select the provider
          */
-
-        var provider;
-        var providers = itemRunnerFactory.providers;
+        providers = itemRunnerFactory.providers;
 
         //check a provider is available
         if(!providers || _.size(providers) === 0){
@@ -103,6 +112,11 @@ define(['jquery', 'lodash'], function($, _){
             throw new Error('No candidate found for the provider');
         }
 
+        //set up a default assetManager using a "do nothing" strategy
+        assetManager = options.assetManager || assetManagerFactory(function defaultStrategy(url){
+            return url.toString();
+        });
+
 
        /**
         * The ItemRunner
@@ -113,7 +127,7 @@ define(['jquery', 'lodash'], function($, _){
         * @type {ItemRunner}
         * @lends itemRunnerFactory
         */
-        var ItemRunner = {
+        ItemRunner = {
 
             /**
              * Items container
@@ -121,7 +135,18 @@ define(['jquery', 'lodash'], function($, _){
              */
             container : null,
 
-            options   : options || {},
+            /**
+             * The asset manager used to resolve asset
+             * @see taoItems/asset/manager
+             * @type {AssetManager}
+             */
+            assetManager : assetManager,
+
+            /**
+             * To give options to the item runner provider
+             * @type {Object}
+             */
+            options : options,
 
             /**
              * Initialize the runner.
@@ -174,6 +199,25 @@ define(['jquery', 'lodash'], function($, _){
 
                 } else {
                     initDone();
+                }
+
+                return this;
+            },
+
+            /**
+             * Configure the assetManager
+             * @see taoItems/assets/manager
+             * @param {AssetStrategy[]} strategies - the resolving strategies
+             * @param {Object} [data] - the context data
+             * @param {Object} [options] - the asset manager options
+             * @returns {ItemRunner} to chain calls
+             */
+            assets : function assets(strategies, data, options){
+
+                try{
+                    this.assetManager = assetManagerFactory(strategies, data, options);
+                } catch( err ){
+                    this.trigger('error', 'Something was wrong while configuring the asset manager : ' + err);
                 }
 
                 return this;
@@ -360,18 +404,18 @@ define(['jquery', 'lodash'], function($, _){
            /**
             * Get the responses of the running item.
             *
-            * @returns {Array} the item's responses
+            * @returns {Object} the item's responses
             */
            getResponses : function(){
-                var responses = [];
+                var responses = {};
                 if(_.isFunction(provider.getResponses)){
 
                     /**
                      * Calls the provider's getResponses
                      * @callback GetResponsesItemProvider
-                     * @returns {Array} the responses
+                     * @returns {Object} the responses
                      */
-                    responses = responses.concat(provider.getResponses.call(this));
+                    responses = provider.getResponses.call(this);
                 }
                 return responses;
            },

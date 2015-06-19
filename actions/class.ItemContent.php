@@ -1,4 +1,5 @@
 <?php
+use oat\taoItems\model\media\ItemMediaResolver;
 /**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,22 +30,6 @@
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
 
-    private function getBrowserImplementationClass($identifier){
-
-        if(in_array($identifier,array('', 'local'))){
-            return 'taoItems_helpers_ResourceManager';
-        }
-        return \oat\tao\model\media\MediaSource::getMediaBrowserSource($identifier);
-    }
-
-    private function getManagementImplementationClass($identifier){
-
-        if(in_array($identifier,array('', 'local'))){
-            return 'taoItems_helpers_ResourceManager';
-        }
-        return \oat\tao\model\media\MediaSource::getMediaManagementSource($identifier);
-    }
-
     /**
      * Returns a json encoded array describign a directory
      * 
@@ -63,11 +48,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         $itemLang = $this->getRequestParameter('lang');
 
-        $options = array('item'=>$item, 'lang'=>$itemLang);
-
-        $subPath = $this->hasRequestParameter('path') ? $this->getRequestParameter('path') : '/';
-        $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
-       
         //build filters
         $filters = array();
         if($this->hasRequestParameter('filters')){
@@ -79,22 +59,23 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
         }
-
-        $identifier = '';
-        $pos = strpos($subPath, '/');
-        if($pos !== false && $pos !== 0){
-            $identifier = substr($subPath, 0, strpos($subPath, '/'));
-            $subPath = substr($subPath, strpos($subPath, '/') + 1);
+        $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
+        
+        $resolver = new ItemMediaResolver($item, $itemLang);
+        $asset = $resolver->resolve($this->getRequestParameter('path'));
+        $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth);
+        foreach($data['children'] as &$child){
+            if(isset($child['parent'])){
+                $child['url'] = \tao_helpers_Uri::url(
+                    'files',
+                    'ItemContent',
+                    'taoItems',
+                    array('uri' => $itemUri,'lang' => $itemLang, '1' => $child['parent']));
+                unset($child['parent']);
+            }
         }
-        if(strlen($subPath) === 0){
-            $subPath = '/';
-        }
-
-        $clazz = $this->getBrowserImplementationClass($identifier);
-        $resourceBrowser = new $clazz($options);
-        $data = $resourceBrowser->getDirectory($subPath, $filters, $depth);
-
-        echo json_encode($data);
+        
+        $this->returnJson($data);
     }
     
     /**
@@ -103,39 +84,23 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function fileExists() {
-        $options = array();
-        if ($this->hasRequestParameter('uri')) {
-            $itemUri = $this->getRequestParameter('uri');
-            $item = new core_kernel_classes_Resource($itemUri);
-            $options['item'] = $item;
+        if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
+            throw new common_exception_MissingParameter();
         }
-
-        if ($this->hasRequestParameter('lang')) {
-            $itemLang = $this->getRequestParameter('lang');
-            $options['lang'] = $itemLang;
-        }
-
-        if (!$this->hasRequestParameter('path')) {
-            throw new common_exception_MissingParameter('path', __METHOD__);
-        }
-
-        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
-        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
-        if(strlen($subPath) === 0){
-            $subPath = '/';
-        }
-
-        $clazz = $this->getBrowserImplementationClass($identifier);
-        /** @var oat\tao\model\media\MediaBrowser $mediaBrowser */
-        $mediaBrowser = new $clazz($options);
-        $fileInfo = $mediaBrowser->getFileInfo($subPath, array());
-        $fileExists = true;
-        if(is_null($fileInfo)){
-            $fileExists = false;
-        }
-
-        echo json_encode(array(
-        	'exists' => $fileExists
+        
+        $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
+        $itemLang = $this->getRequestParameter('lang');
+        
+        try {
+            $resolver = new ItemMediaResolver($item, $itemLang);
+            $asset = $resolver->resolve($this->getRequestParameter('path'));
+            $fileInfo = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+            $found = true;
+        } catch (tao_models_classes_FileNotFoundException $exception) {
+            $found = false;
+        }        
+        return $this->returnJson(array(
+            'exists' => $found
         ));
     }   
      
@@ -147,54 +112,41 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     public function upload() {
         //as upload may be called multiple times, we remove the session lock as soon as possible
         session_write_close();
-        $options = array();
         if ($this->hasRequestParameter('uri')) {
             $itemUri = $this->getRequestParameter('uri');
             $item = new core_kernel_classes_Resource($itemUri);
-            $options['item'] = $item;
         }
 
         if ($this->hasRequestParameter('lang')) {
             $itemLang = $this->getRequestParameter('lang');
-            $options['lang'] = $itemLang;
         }
 
         if (!$this->hasRequestParameter('path')) {
             throw new common_exception_MissingParameter('path', __METHOD__);
         }
 
+        if (!$this->hasRequestParameter('filters')) {
+            throw new common_exception_MissingParameter('filters', __METHOD__);
+        }
+        $filters = explode(',', $this->getRequestParameter('filters'));
 
-        $relPath = '';
-        if($this->hasRequestParameter('relPath')){
-            $relPath = $this->getRequestParameter('relPath');
-        }
-
-        //if the string contains something else than letters, numbers or / throw an exception
-        if(!preg_match('#^$|^[\w\/\-\._]+$#', $relPath)){
-            throw new InvalidArgumentException('The request parameter is invalid');
-        }
-        if(strpos($relPath, '/') === false){
-            $identifier = $relPath;
-            $subPath = '/';
-        }
-        else{
-            $identifier = substr($relPath, 0, strpos($relPath, '/'));
-            $subPath = substr($relPath, strpos($relPath, '/') + 1);
-        }
-        $identifier = trim($identifier);
-        $subPath = empty($subPath) ? '' : $subPath.'/';
-
-        $clazz = $this->getManagementImplementationClass($identifier);
-        $mediaManagement = new $clazz($options);
+        $resolver = new ItemMediaResolver($item, $itemLang);
+        $asset = $resolver->resolve($this->getRequestParameter('relPath'));
 
         $file = tao_helpers_Http::getUploadedFile('content');
-
         if (!is_uploaded_file($file['tmp_name'])) {
             throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
         }
-        $filedata = $mediaManagement->add($file['tmp_name'], $file['name'], $subPath);
 
-        echo json_encode($filedata);
+        $mime = \tao_helpers_File::getMimeType($file['tmp_name']);
+        if(in_array($mime, $filters)){
+            $filedata = $asset->getMediaSource()->add($file['tmp_name'], $file['name'], $asset->getMediaIdentifier());
+        }
+        else{
+            throw new \oat\tao\helpers\FileUploadException('The file you tried to upload is not valid');
+        }
+
+        $this->returnJson($filedata);
     }
 
     /**
@@ -202,36 +154,17 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function download() {
-        $options = array();
-        if ($this->hasRequestParameter('uri')) {
-            $itemUri = $this->getRequestParameter('uri');
-            $item = new core_kernel_classes_Resource($itemUri);
-            $options['item'] = $item;
+        if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
+            throw new common_exception_MissingParameter();
         }
 
-        if ($this->hasRequestParameter('lang')) {
-            $itemLang = $this->getRequestParameter('lang');
-            $options['lang'] = $itemLang;
-        }
-
-        if (!$this->hasRequestParameter('path')) {
-            throw new common_exception_MissingParameter('path', __METHOD__);
-        }
-
-        $identifier = '';
-        $subPath = $this->getRequestParameter('path');
-        if(strpos($subPath, '/') !== false){
-            $identifier = substr($subPath, 0, strpos($subPath, '/'));
-            $subPath = substr($subPath, strpos($subPath, '/') + 1);
-        }
-
-        if(strlen($subPath) === 0){
-            $subPath = '/';
-        }
-        $clazz = $this->getBrowserImplementationClass($identifier);
-        $mediaBrowser = new $clazz($options);
-
-        $mediaBrowser->download($subPath);
+        $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
+        $itemLang = $this->getRequestParameter('lang');
+        
+        $resolver = new ItemMediaResolver($item, $itemLang);
+        $asset = $resolver->resolve($this->getRequestParameter('path'));
+        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
+        return \tao_helpers_Http::returnFile($filePath);
     }
     
     /**
@@ -240,35 +173,32 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws common_exception_MissingParameter
      */
     public function delete() {
-
-        $options = array();
-        if ($this->hasRequestParameter('uri')) {
-            $itemUri = $this->getRequestParameter('uri');
-            $item = new core_kernel_classes_Resource($itemUri);
-            $options['item'] = $item;
+        if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
+            throw new common_exception_MissingParameter();
         }
-
-        if ($this->hasRequestParameter('lang')) {
-            $itemLang = $this->getRequestParameter('lang');
-            $options['lang'] = $itemLang;
-        }
-
-        if (!$this->hasRequestParameter('path')) {
-            throw new common_exception_MissingParameter('path', __METHOD__);
-        }
-
-        $identifier = substr($this->getRequestParameter('path'), 0, strpos($this->getRequestParameter('path'), '/'));
-        $subPath = substr($this->getRequestParameter('path'), strpos($this->getRequestParameter('path'), '/'));
-        if(strlen($subPath) === 0){
-            $subPath = '/';
-        }
-
-
-        $clazz = $this->getManagementImplementationClass($identifier);
-        $mediaManagement = new $clazz($options);
-
-        $deleted = $mediaManagement->delete($subPath);
-
-        echo json_encode(array('deleted' => $deleted));
+        
+        $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
+        $itemLang = $this->getRequestParameter('lang');
+        
+        $resolver = new ItemMediaResolver($item, $itemLang);
+        $asset = $resolver->resolve($this->getRequestParameter('path'));
+        $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
+        
+        return $this->returnJson(array('deleted' => $deleted));
+    }
+    
+    /**
+     * Get the media source based on the partial url
+     * 
+     * @param string $urlPrefix
+     * @param core_kernel_classes_resource $item
+     * @param string $itemLang
+     * @return \oat\tao\model\media\MediaBrowser
+     */
+    protected function getMediaSource($urlPrefix, $item, $itemLang)
+    {
+        $resolver = new ItemMediaResolver($item, $itemLang);
+        $asset = $resolver->resolve($urlPrefix);
+        return $asset->getMediaSource();
     }
 }

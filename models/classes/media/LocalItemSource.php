@@ -18,15 +18,17 @@
  *               
  * 
  */
-use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\MediaManagement;
-use \oat\tao\helpers\FileUploadException;
+namespace oat\taoItems\model\media;
 
+use oat\tao\model\media\MediaManagement;
+use tao_helpers_File;
+use taoItems_models_classes_ItemsService;
+use DirectoryIterator;
 /**
- * This helper class aims at formating the item content folder description
- *
+ * This media source gives access to files that are part of the item
+ * and are addressed in a relative way
  */
-class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
+class LocalItemSource implements MediaManagement
 {
 
     private $item;
@@ -38,16 +40,27 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
 
     }
 
+    public function getItem()
+    {
+        return $this->item;
+    }
+    
     /**
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
      */
-    public function getDirectory($parentLink = '/', $acceptableMime = array(), $depth = 1) {
+    public function getDirectory($parentLink = '', $acceptableMime = array(), $depth = 1) {
         $sysPath = $this->getSysPath($parentLink);
 
-        $label = substr($parentLink,strrpos($parentLink, '/') + 1);
-        if(!$label){
-            $label = 'local';
+        $label = rtrim($parentLink,'/');
+        if(strrpos($parentLink, '/') !== false && substr($parentLink, -1) !== '/'){
+            $label = substr($parentLink,strrpos($parentLink, '/') + 1);
+            $parentLink = $parentLink.'/';
+        }
+
+        if(in_array($parentLink,array('','/'))){
+            $label = $this->item->getLabel();
+            $parentLink = '/';
         }
 
         $data = array(
@@ -72,12 +85,12 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
                     }
                 }
             } else {
-                common_Logger::w('"'.$sysPath.'" is not a directory');
+                \common_Logger::w('"'.$sysPath.'" is not a directory');
             }
             $data['children'] = $children;
         }
         else{
-                $data['url'] = _url('files', 'ItemContent', 'taoItems', array('uri' => $this->item->getUri(),'lang' => $this->lang, 'path' => $parentLink));
+                $data['parent'] = $parentLink;
         }
         return $data;
     }
@@ -88,20 +101,18 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
      * @see \oat\tao\model\media\MediaBrowser::getFileInfo
      */
     public function getFileInfo($link) {
-        $file = null;
 
-        $filename = basename($link);
-        $dir = ltrim(dirname($link),'/');
-
-        $sysPath = $this->getSysPath($dir.'/'.$filename);
-
-        $mime = tao_helpers_File::getMimeType($sysPath);
+        $sysPath = $this->getSysPath($link);
         if(file_exists($sysPath)){
             $file = array(
-                'name' => basename($sysPath),
-                'mime' => $mime,
+                'name' => basename($link),
+                'uri' => $link,
+                'mime' => tao_helpers_File::getMimeType($sysPath),
+                'filePath' => $link,
                 'size' => filesize($sysPath),
             );
+        } else {
+            throw new \tao_models_classes_FileNotFoundException($link);
         }
         return $file;
     }
@@ -113,7 +124,10 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
     public function download($filename){
 
         $sysPath = $this->getSysPath($filename);
-        tao_helpers_Http::returnFile($sysPath);
+        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
+            $sysPath = $sysPath.'.js';
+        }
+        return $sysPath;
     }
 
 
@@ -133,7 +147,7 @@ class taoItems_helpers_ResourceManager implements MediaBrowser, MediaManagement
             throw new common_exception_Error('Unable to move file '.$source);
         }
 
-        $fileData = $this->getFileInfo('/'.$parent.$fileName, array());
+        $fileData = $this->getFileInfo('/'.ltrim($parent, '/').$fileName, array());
         return $fileData;
 
     }
