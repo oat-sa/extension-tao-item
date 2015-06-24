@@ -11,7 +11,7 @@
                         <option value="{{value}}" {{#if selected}}selected="selected"{{/if}}>{{label}}</option>
                         {{/each}}
                     </select>
-                    {{#if themes}}
+                    {{#if hasThemes}}
                     <select class="preview-theme-selector">
                         {{#each themes}}
                         <option value="{{value}}" {{#if selected}}selected="selected"{{/if}}>{{label}}</option>
