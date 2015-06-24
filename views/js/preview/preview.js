@@ -529,7 +529,8 @@ define([
             desktopDevices: _getDeviceSelectorData('desktop'),
             previewTypes: _getPreviewTypes(),
             previewType: previewType,
-            themes: _getThemes()
+            themes: _getThemes(),
+            hasThemes: _.size(themes) > 1
         }));
 
         $body.append(overlay);
