@@ -46,4 +46,4 @@ class ItemMediaResolver extends TaoMediaResolver {
         }
     }
 
-} 
+}
