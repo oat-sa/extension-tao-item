@@ -111,42 +111,56 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function upload() {
         //as upload may be called multiple times, we remove the session lock as soon as possible
-        session_write_close();
-        if ($this->hasRequestParameter('uri')) {
-            $itemUri = $this->getRequestParameter('uri');
-            $item = new core_kernel_classes_Resource($itemUri);
-        }
+        try{
+            session_write_close();
+            if ($this->hasRequestParameter('uri')) {
+                $itemUri = $this->getRequestParameter('uri');
+                $item = new core_kernel_classes_Resource($itemUri);
+            }
 
-        if ($this->hasRequestParameter('lang')) {
-            $itemLang = $this->getRequestParameter('lang');
-        }
+            if ($this->hasRequestParameter('lang')) {
+                $itemLang = $this->getRequestParameter('lang');
+            }
 
-        if (!$this->hasRequestParameter('path')) {
-            throw new common_exception_MissingParameter('path', __METHOD__);
-        }
+            if (!$this->hasRequestParameter('path')) {
+                throw new common_exception_MissingParameter('path', __METHOD__);
+            }
 
-        if (!$this->hasRequestParameter('filters')) {
-            throw new common_exception_MissingParameter('filters', __METHOD__);
-        }
-        $filters = explode(',', $this->getRequestParameter('filters'));
+            if (!$this->hasRequestParameter('filters')) {
+                throw new common_exception_MissingParameter('filters', __METHOD__);
+            }
+            $filters = explode(',', $this->getRequestParameter('filters'));
 
-        $resolver = new ItemMediaResolver($item, $itemLang);
-        $asset = $resolver->resolve($this->getRequestParameter('relPath'));
+            $resolver = new ItemMediaResolver($item, $itemLang);
+            $asset = $resolver->resolve($this->getRequestParameter('relPath'));
 
-        $file = tao_helpers_Http::getUploadedFile('content');
-        if (!is_uploaded_file($file['tmp_name'])) {
-            throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
-        }
+            $file = tao_helpers_Http::getUploadedFile('content');
+            if (!is_uploaded_file($file['tmp_name'])) {
+                throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
+            }
 
-        $mime = \tao_helpers_File::getMimeType($file['tmp_name']);
-        if(in_array($mime, $filters)){
-            $filedata = $asset->getMediaSource()->add($file['tmp_name'], $file['name'], $asset->getMediaIdentifier());
+            $mime = \tao_helpers_File::getMimeType($file['tmp_name']);
+            if(in_array($mime, $filters)){
+                $filedata = $asset->getMediaSource()->add($file['tmp_name'], $file['name'], $asset->getMediaIdentifier());
+            }
+            else{
+                throw new \oat\tao\helpers\FileUploadException('The file you tried to upload is not valid');
+            }
+            $this->returnJson($filedata);
+            return;
         }
-        else{
-            throw new \oat\tao\helpers\FileUploadException('The file you tried to upload is not valid');
+        catch(\oat\tao\model\accessControl\data\PermissionException $e){
+            $message = $e->getMessage();
         }
+        catch(\oat\tao\helpers\FileUploadException $e){
+            $message = $e->getMessage();
+        }
+        catch(common_Exception $e){
+            common_Logger::w($e->getMessage());
+            $message = _('Unable to upload file');
+        }
+        $this->returnJson(array('error' => $message));
 
-        $this->returnJson($filedata);
     }
 
     /**
