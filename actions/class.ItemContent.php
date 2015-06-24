@@ -147,10 +147,19 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 throw new \oat\tao\helpers\FileUploadException('The file you tried to upload is not valid');
             }
             $this->returnJson($filedata);
+            return;
+        }
+        catch(\oat\tao\model\accessControl\data\PermissionException $e){
+            $message = $e->getMessage();
+        }
+        catch(\oat\tao\helpers\FileUploadException $e){
+            $message = $e->getMessage();
         }
         catch(common_Exception $e){
-            $this->returnJson(array('error' => $e->getMessage()));
+            common_Logger::w($e->getMessage());
+            $message = _('Unable to upload file');
         }
+        $this->returnJson(array('error' => $message));
 
     }
 
