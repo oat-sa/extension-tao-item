@@ -37,19 +37,23 @@ class taoItems_models_classes_search_ItemContentTokenizer implements Tokenizer
         
         foreach ($values as $valueUri) {
             $file = new core_kernel_file_File($valueUri);
-            $content = file_get_contents($file->getAbsolutePath());
-            if ($content === false) {
-                common_Logger::w('File '.$file->getAbsolutePath().' not found for item');
-            } else {
-                // Try to make it a DOM Document...
-                $dom = new DOMDocument('1.0', 'UTF-8');
-                
-                if (@$dom->loadXML($content) === true) {
-                    $contentStrings = array_merge($contentStrings, $xmlTokenizer->getStrings($dom));
-                    unset($dom);
+            try {
+                $content = file_get_contents($file->getAbsolutePath());
+                if ($content === false) {
+                    common_Logger::w('File '.$file->getAbsolutePath().' not found for item');
                 } else {
-                    common_Logger::d('Skipped non XML content for '.$file->getUri());
+                    // Try to make it a DOM Document...
+                    $dom = new DOMDocument('1.0', 'UTF-8');
+                    
+                    if (@$dom->loadXML($content) === true) {
+                        $contentStrings = array_merge($contentStrings, $xmlTokenizer->getStrings($dom));
+                        unset($dom);
+                    } else {
+                        common_Logger::d('Skipped non XML content for '.$file->getUri());
+                    }
                 }
+            } catch (common_Exception $exc) {
+                common_Logger::w('Invalid file '.$valueUri.' for ItemContentTokenizer: '.$exc->getMessage());
             }
         }
         
