@@ -135,13 +135,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $asset = $resolver->resolve($this->getRequestParameter('relPath'));
 
             $file = tao_helpers_Http::getUploadedFile('content');
-            if (!is_uploaded_file($file['tmp_name'])) {
-                throw new common_exception_Error('Non uploaded file "'.$file['tmp_name'].'" returned from tao_helpers_Http::getUploadedFile()');
+            $fileTmpName = $file['tmp_name'].'_'.$file['name'];
+            if (!tao_helpers_File::copy($file['tmp_name'], $fileTmpName)) {
+                throw new common_exception_Error('impossible to copy '.$file['tmp_name'].' to '.$fileTmpName);
             }
 
             $mime = \tao_helpers_File::getMimeType($file['tmp_name']);
             if(in_array($mime, $filters)){
-                $filedata = $asset->getMediaSource()->add($file['tmp_name'], $file['name'], $asset->getMediaIdentifier());
+                $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'], $asset->getMediaIdentifier());
             }
             else{
                 throw new \oat\tao\helpers\FileUploadException('The file you tried to upload is not valid');
