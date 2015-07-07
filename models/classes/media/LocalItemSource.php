@@ -20,6 +20,7 @@
  */
 namespace oat\taoItems\model\media;
 
+use common_exception_Error;
 use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
