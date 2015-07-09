@@ -434,7 +434,7 @@ define([
             $previewContainer.height(contentHeight + 10);
         }
 
-        $iframe.height(contentHeight);
+        $iframe.height(contentHeight-10);
     };
 
 

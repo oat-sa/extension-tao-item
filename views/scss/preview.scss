@@ -13,12 +13,16 @@ $previewToolbarWidth: 900px;
     top: 0;
     background: rgba(0, 0, 0, 0.7);
     &.preview-desktop {
+        overflow: hidden;
+
         .mobile-only,
         .standard-only {
             display: none !important;
         }
     }
     &.preview-mobile {
+        overflow: hidden;
+
         .desktop-only,
         .standard-only {
             display: none !important;
@@ -37,11 +41,14 @@ $previewToolbarWidth: 900px;
     .preview-container {
         background: white;
         overflow:auto;
+    }
 
+    .standard-preview-container {
         .preview-item-container, #preview-container {
             min-height: calc(100vh - 130px) !important;
         }
     }
+
     .preview-container-outer {
         display: table;
         padding: 0 0 20px 0;
