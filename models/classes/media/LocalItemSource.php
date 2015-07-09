@@ -20,6 +20,7 @@
  */
 namespace oat\taoItems\model\media;
 
+use common_exception_Error;
 use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
@@ -31,7 +32,11 @@ use DirectoryIterator;
 class LocalItemSource implements MediaManagement
 {
 
+    /**
+     * @return \core_kernel_classes_Resource
+     */
     private $item;
+    
     private $lang;
 
     public function __construct($data){
@@ -40,6 +45,9 @@ class LocalItemSource implements MediaManagement
 
     }
 
+    /**
+     * @return \core_kernel_classes_Resource
+     */
     public function getItem()
     {
         return $this->item;
@@ -124,8 +132,12 @@ class LocalItemSource implements MediaManagement
     public function download($filename){
 
         $sysPath = $this->getSysPath($filename);
-        if(!file_exists($sysPath) && file_exists($sysPath.'.js')){
-            $sysPath = $sysPath.'.js';
+        if(!file_exists($sysPath)) {
+            if (file_exists($sysPath.'.js')) {
+                $sysPath = $sysPath.'.js';
+            } else {
+                throw new \tao_models_classes_FileNotFoundException($filename);
+            }
         }
         return $sysPath;
     }
@@ -144,7 +156,7 @@ class LocalItemSource implements MediaManagement
         $sysPath = $this->getSysPath($parent.$fileName);
 
         if(!tao_helpers_File::copy($source, $sysPath)){
-            throw new common_exception_Error('Unable to move file '.$source);
+            throw new \common_exception_Error('Unable to move file '.$source);
         }
 
         $fileData = $this->getFileInfo('/'.ltrim($parent, '/').$fileName, array());
@@ -173,7 +185,8 @@ class LocalItemSource implements MediaManagement
      * @return string
      * @throws common_exception_Error
      */
-    private function getSysPath($parentLink){
+    private function getSysPath($parentLink)
+    {
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
 
         $sysPath = $baseDir.ltrim($parentLink, '/');
