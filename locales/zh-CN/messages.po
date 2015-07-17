@@ -1,17 +1,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.1.0-rc01\n"
-"PO-Revision-Date: 2015-06-24T17:23:11\n"
-"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
-"MIME-Version: 1.0\n"
+"PO-Revision-Date: 2015-04-30 17:20+0000\n"
+"Last-Translator: Michael <michael.t@examguardian.com>\n"
 "Language: zh-CN\n"
-"sourceLanguage: en-US\n"
-"targetLanguage: zh-CN\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.5.1-rc1\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: zh-CN\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-POOTLE-MTIME: 1430414400.000000\n"
 
 msgid "Actual size"
 msgstr "实际尺寸"
@@ -41,7 +44,7 @@ msgid "Desktop preview"
 msgstr "桌面预览"
 
 msgid "Don’t show this again!"
-msgstr "不要再显示此讯息。"
+msgstr "不要再显示这项讯息。"
 
 #, tao-public
 msgid "Duplicate"
@@ -125,7 +128,7 @@ msgid "Properties"
 msgstr "属性"
 
 msgid "Remove this message"
-msgstr "消除此讯息"
+msgstr "消除这个讯息"
 
 msgid "Retrieving external resources"
 msgstr "检索外部资源"
@@ -141,7 +144,7 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "该题目模块使题目和练习能够建立和设计。"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "该预览可缩放到适合您的屏幕。 最终的表现可能不同。"
+msgstr "这个预览可缩放到适合您的屏幕。 最终的表现可能不同。"
 
 #, tao-public
 msgid "Translate"
@@ -151,8 +154,7 @@ msgid "Unable to create deployement directory"
 msgstr "无法建立部署目录"
 
 msgid "You checked out this item %2s ago', tao_helpers_Date::displayInterval(get_data('lockDate"
-msgstr "你在这日期借出次题目%2s', tao_helpers_Date::displayInterval(get_data('lockDate"
+msgstr "你在这个日期借出次题目%2s', tao_helpers_Date::displayInterval(get_data('lockDate"
 
 msgid "Your path contains error"
 msgstr "您的路径有错误"
-
