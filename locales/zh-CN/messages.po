@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.1-dev\n"
-"PO-Revision-Date: 2015-06-18T15:38:24\n"
+"Project-Id-Version: TAO v3.1.0-sprint03\n"
+"PO-Revision-Date: 2015-07-21T16:25:15\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-CN\n"
@@ -29,6 +29,9 @@ msgstr "关闭"
 msgid "Close console"
 msgstr "关闭控制台"
 
+msgid "Could not create language specific directory for item \'%s\"
+msgstr ""
+
 #, tao-public
 msgid "Create and design items and exercises."
 msgstr "创建和设计题目以及练习。"
@@ -41,16 +44,16 @@ msgid "Desktop preview"
 msgstr "桌面预览"
 
 msgid "Don’t show this again!"
-msgstr "不要再显示此讯息。"
+msgstr "不要再显示这项讯息。"
 
 #, tao-public
 msgid "Duplicate"
 msgstr "复制"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "编辑题目"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "编辑题目"
 
 msgid "Edit item class"
@@ -60,6 +63,12 @@ msgstr "编辑题目类"
 msgid "Export"
 msgstr "导出"
 
+msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Failed to publish %s"
+msgstr ""
+
 #, tao-public
 msgid "Filter"
 msgstr "过滤条件"
@@ -67,6 +76,9 @@ msgstr "过滤条件"
 #, tao-public
 msgid "Import"
 msgstr "导入"
+
+msgid "Item \'%s\' has no model"
+msgstr ""
 
 msgid "Item Model"
 msgstr "题目模式"
@@ -104,6 +116,9 @@ msgstr "移动"
 msgid "New class"
 msgstr "新类别"
 
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr ""
+
 msgid "No item type selected for the current item."
 msgstr "当前选定的题目没有项目类型。"
 
@@ -124,8 +139,14 @@ msgstr "预览"
 msgid "Properties"
 msgstr "属性"
 
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr ""
+
+msgid "Published %s"
+msgstr ""
+
 msgid "Remove this message"
-msgstr "消除此讯息"
+msgstr "消除这个讯息"
 
 msgid "Retrieving external resources"
 msgstr "检索外部资源"
@@ -141,17 +162,20 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "该题目模块使题目和练习能够建立和设计。"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "该预览可缩放到适合您的屏幕。 最终的表现可能不同。"
+msgstr "这个预览可缩放到适合您的屏幕。 最终的表现可能不同。"
 
 #, tao-public
 msgid "Translate"
 msgstr "翻译"
 
+msgid "Unable to copy resources for language %s"
+msgstr ""
+
 msgid "Unable to create deployement directory"
 msgstr "无法建立部署目录"
 
-msgid "You checked out this item %2s ago', tao_helpers_Date::displayInterval(get_data('lockDate"
-msgstr "你在这日期借出次题目%2s', tao_helpers_Date::displayInterval(get_data('lockDate"
+msgid "You checked out this item %2s ago"
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "您的路径有错误"
