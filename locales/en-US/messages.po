@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-rc01\n"
-"PO-Revision-Date: 2015-06-24T17:23:09\n"
+"Project-Id-Version: TAO v3.1.0-sprint03\n"
+"PO-Revision-Date: 2015-07-21T16:25:12\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -29,6 +29,9 @@ msgstr ""
 msgid "Close console"
 msgstr ""
 
+msgid "Could not create language specific directory for item \'%s\"
+msgstr ""
+
 #, tao-public
 msgid "Create and design items and exercises."
 msgstr ""
@@ -47,10 +50,10 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr ""
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr ""
 
 msgid "Edit item class"
@@ -60,12 +63,21 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
+msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Failed to publish %s"
+msgstr ""
+
 #, tao-public
 msgid "Filter"
 msgstr ""
 
 #, tao-public
 msgid "Import"
+msgstr ""
+
+msgid "Item \'%s\' has no model"
 msgstr ""
 
 msgid "Item Model"
@@ -104,6 +116,9 @@ msgstr ""
 msgid "New class"
 msgstr ""
 
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr ""
+
 msgid "No item type selected for the current item."
 msgstr ""
 
@@ -122,6 +137,12 @@ msgstr ""
 
 #, tao-public
 msgid "Properties"
+msgstr ""
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr ""
+
+msgid "Published %s"
 msgstr ""
 
 msgid "Remove this message"
@@ -147,10 +168,13 @@ msgstr ""
 msgid "Translate"
 msgstr ""
 
+msgid "Unable to copy resources for language %s"
+msgstr ""
+
 msgid "Unable to create deployement directory"
 msgstr ""
 
-msgid "You checked out this item %2s ago', tao_helpers_Date::displayInterval(get_data('lockDate"
+msgid "You checked out this item %2s ago"
 msgstr ""
 
 msgid "Your path contains error"

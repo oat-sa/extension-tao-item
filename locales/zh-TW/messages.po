@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-rc01\n"
-"PO-Revision-Date: 2015-06-24T17:23:11\n"
+"Project-Id-Version: TAO v3.1.0-sprint03\n"
+"PO-Revision-Date: 2015-07-21T16:25:15\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -29,6 +29,9 @@ msgstr "關閉"
 msgid "Close console"
 msgstr "關閉控制台"
 
+msgid "Could not create language specific directory for item \'%s\"
+msgstr ""
+
 #, tao-public
 msgid "Create and design items and exercises."
 msgstr "建立和設計題目以及練習。"
@@ -47,10 +50,10 @@ msgstr "不要再顯示此訊息。"
 msgid "Duplicate"
 msgstr "複製"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "編輯題目"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "編輯題目"
 
 msgid "Edit item class"
@@ -60,6 +63,12 @@ msgstr "編輯題目類"
 msgid "Export"
 msgstr "匯出"
 
+msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Failed to publish %s"
+msgstr ""
+
 #, tao-public
 msgid "Filter"
 msgstr "過濾條件"
@@ -67,6 +76,9 @@ msgstr "過濾條件"
 #, tao-public
 msgid "Import"
 msgstr "匯入"
+
+msgid "Item \'%s\' has no model"
+msgstr ""
 
 msgid "Item Model"
 msgstr "題目模式"
@@ -104,6 +116,9 @@ msgstr "移動"
 msgid "New class"
 msgstr "新類別"
 
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr ""
+
 msgid "No item type selected for the current item."
 msgstr "當前選定的題目沒有項目類型。"
 
@@ -123,6 +138,12 @@ msgstr "預覽"
 #, tao-public
 msgid "Properties"
 msgstr "屬性"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr ""
+
+msgid "Published %s"
+msgstr ""
 
 msgid "Remove this message"
 msgstr "消除此訊息"
@@ -147,11 +168,14 @@ msgstr "該預覽可縮放到適合您的屏幕。最終的表現可能不同。
 msgid "Translate"
 msgstr "翻譯"
 
+msgid "Unable to copy resources for language %s"
+msgstr ""
+
 msgid "Unable to create deployement directory"
 msgstr "無法建立部署目錄"
 
-msgid "You checked out this item %2s ago', tao_helpers_Date::displayInterval(get_data('lockDate"
-msgstr "你在這日期借出次題目 %2s', tao_helpers_Date::displayInterval(get_data('lockDate"
+msgid "You checked out this item %2s ago"
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "您的路徑有錯誤"
