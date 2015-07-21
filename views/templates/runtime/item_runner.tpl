@@ -1,10 +1,11 @@
 <?php
 use oat\tao\helpers\Template;
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+?><!doctype html>
 <html>
 	<head>
-            <script type="text/javascript" src="<?= Template::js('lib/require.js', 'tao')?>"></script>
-            <script type="text/javascript">
+            <link src="<?=Template::css('normalize.css', 'tao')?>"/>
+            <script src="<?= Template::js('lib/require.js', 'tao')?>"></script>
+            <script>
             (function(){
                 var clientConfigUrl = '<?=get_data('client_config_url')?>';
                 requirejs.config({waitSeconds : <?=get_data('client_timeout')?>});
@@ -27,5 +28,7 @@ use oat\tao\helpers\Template;
             }());
             </script>
 	</head>
-	<body></body>
+	<body>
+        
+    </body>
 </html>
