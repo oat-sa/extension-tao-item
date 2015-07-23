@@ -49,8 +49,8 @@
         "tao-extension-name": "taoItems"
     },
     "require": {
-        "oat-sa/oatbox-extension-installer": "dev-master"
-
+        "oat-sa/oatbox-extension-installer": "dev-master",
+        "oat-sa/extension-tao-backoffice": "dev-develop"
     },
 	"autoload" : {
 		"psr-4" : {
