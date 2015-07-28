@@ -102,6 +102,9 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         if ($currentVersion == '2.6.5') {
             $currentVersion = '2.7.0';
         }
+        if ($currentVersion == '2.7.0') {
+            $currentVersion = '2.8';
+        }
         return $currentVersion;
     }
 }
