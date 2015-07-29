@@ -39,9 +39,6 @@ $todefine = array(
 	'PROPERTY_ITEM_MODEL_SERVICE'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService',
 
 	'TAO_ITEM_SOURCENAME_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName',
-	'TAO_ITEM_MODELTARGET_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget',
-	'TAO_ITEM_ONLINE_TARGET'			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget',
-	'TAO_ITEM_PAPERBASED_TARGET'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget',
 	
 	'TAO_ITEM_MODEL_STATUS_PROPERTY'		=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus',
 	'TAO_ITEM_MODEL_STATUS_STABLE' 			=> 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable',
@@ -55,4 +52,3 @@ $todefine = array(
 	'INSTANCE_FORMALPARAM_ITEMURI'     => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri',
     'INSTANCE_FORMALPARAM_RESULTSERVER' => 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver'
 );
-?>

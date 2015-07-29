@@ -61,7 +61,6 @@ return array(
 	'optimizableClasses' => array(
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',
-			'http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget',
 			'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus'
 	),
 	'constants' => array(
