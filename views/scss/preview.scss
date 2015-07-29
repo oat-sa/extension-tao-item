@@ -2,6 +2,13 @@
 
 $previewToolbarWidth: 900px;
 
+body {
+    &.preview-mode {
+        height: 100vh !important;
+        max-height: 100vh;
+        overflow: hidden;
+    }
+}
 .preview-overlay {
     overflow-x: hidden;
     display: none;
@@ -10,21 +17,24 @@ $previewToolbarWidth: 900px;
     z-index: 19995;
     position: absolute;
     left: 0;
-    top: 0;
+
     background: rgba(0, 0, 0, 0.7);
     &.preview-desktop {
+        overflow: hidden;
         .mobile-only,
         .standard-only {
             display: none !important;
         }
     }
     &.preview-mobile {
+        overflow: hidden;
         .desktop-only,
         .standard-only {
             display: none !important;
         }
     }
     &.preview-standard {
+        overflow-x: hidden;
         .desktop-only,
         .mobile-only {
             display: none !important;
@@ -44,7 +54,7 @@ $previewToolbarWidth: 900px;
     }
     .preview-container-outer {
         display: table;
-        padding: 0 0 20px 0;
+        padding: 0;
         width: 100%;
         height: 100%;
     }

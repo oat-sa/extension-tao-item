@@ -47,7 +47,7 @@ define([
             width: $window.innerWidth(),
             height: $window.innerHeight()
         },
-        maxDeviceSize = {
+        sizeSettings = {
             width: 0,
             height: 0
         },
@@ -79,12 +79,6 @@ define([
 
         _.forEach(devices, function (value) {
 
-            // figure out the widest possible screen to calculate the scale factor
-            maxDeviceSize = {
-                width: Math.max(maxDeviceSize.width, value.width),
-                height: Math.max(maxDeviceSize.height, value.height)
-            };
-
             options.push({
                 value: value.label,
                 label: value.label,
@@ -110,7 +104,7 @@ define([
     /**
      * Change the class name of all type dependant elements
      *
-     * @param type
+     * @param {String} newType
      */
     var _setPreviewType = function (newType) {
 
@@ -119,8 +113,8 @@ define([
         }
         var re = new RegExp(previewType, 'g');
 
-        typeDependant.each(function () {
-            this.className = this.className.replace(re, newType);
+        typeDependant.each(function (i, el) {
+            el.className = el.className.replace(re, newType);
         });
 
         previewType = newType;
@@ -130,7 +124,7 @@ define([
     /**
      * Set orientation
      *
-     * @param newOrientation
+     * @param {String} newOrientation
      * @private
      */
     var _setOrientation = function (newOrientation) {
@@ -152,6 +146,8 @@ define([
      * @private
      */
     var _scale = function () {
+
+        _computeScaleFactor();
 
         var $scaleContainer = $('.preview-scale-container'),
             _scaleFactor = previewType === 'standard' ? 1 : scaleFactor,
@@ -175,7 +171,10 @@ define([
      * @private
      */
     var _positionPreview = function () {
-        $('.preview-canvas').css({ paddingTop: $('.preview-utility-bar').outerHeight() + 5 });
+        var topBarHeight = $(".preview-utility-bar").outerHeight();
+
+        overlay[0].style.top = topBarHeight + 'px';
+        overlay[0].style.maxHeight = 'calc(100vh - ' + topBarHeight + 'px - ' + $console.outerHeight() + 'px )';
     };
 
 
@@ -194,8 +193,8 @@ define([
         // 150/200 = device frames plus toolbar plus console plus some margin
 
         var requiredSize = {
-            width: maxDeviceSize.width + 150,
-            height: maxDeviceSize.height + 275
+            width: sizeSettings.width + 150,
+            height: sizeSettings.height + 275
         };
 
         if (requiredSize.width > screenSize.width) {
@@ -224,7 +223,6 @@ define([
                 option = this.nodeName.toLowerCase() === 'select' ? this.options[this.selectedIndex] : this,
                 type = elem.data('target'),
                 val = $(option).data('value').split(','),
-                sizeSettings,
                 i = val.length,
                 container = overlay.find('.' + type + '-preview-container');
 
@@ -249,6 +247,7 @@ define([
             if (sizeSettings.width === container.width() && sizeSettings.height === container.height()) {
                 return false;
             }
+
             _setPreviewType(type);
             container.css(sizeSettings);
             _scale();
@@ -276,7 +275,6 @@ define([
             var type = $(this).data('target'),
                 previewFrame = $('.' + type + '-preview-frame'),
                 container = previewFrame.find('.' + type + '-preview-container'),
-                sizeSettings,
                 newOrientation = $(this).val();
 
             if (newOrientation === orientation) {
@@ -289,11 +287,12 @@ define([
             };
 
             container.css(sizeSettings);
+
+            _setOrientation(newOrientation);
+
             _scale();
             _adaptFrameSize();
 
-
-            _setOrientation(newOrientation);
 
         }).select2({
             minimumResultsForSearch: -1
@@ -314,6 +313,7 @@ define([
         $closer.on('click', function () {
 //            commonRenderer.setContext($('.item-editor-item'));
             overlay.hide();
+            $body.removeClass('preview-mode');
 
             //empty the iframe
             $iframe.off('load').attr('src', 'about:blank');
@@ -498,23 +498,39 @@ define([
             url: itemUri,
             dataType: 'html'
         }).done(function (data) {
+
+            $body.addClass('preview-mode');
+
+            overlay[0].style.display = 'block';
+
+            overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
+            _scale();
+            _positionPreview();
+
             $('.preview-item-container').html(data);
         });
 
         // $.show() does not work from the item manager
         // this is either a miracle or a jquery bug
         // overlay.hide().show();
-        overlay[0].style.display = 'block';
-        overlay.height('100%');
-        overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
-        _scale();
-        _positionPreview();
+
     };
+
+    /**
+     * Setting up screen size according preview viewport size
+     * @private
+     */
+    function _setupScreenSize() {
+        screenSize = {
+            width: $('.preview-overlay').innerWidth(),
+            height: $('.preview-overlay').innerHeight()
+        };
+    }
 
     /**
      * Create preview
      *
-     * @param string _itemUri
+     * @param {String} _itemUri
      */
     var init = function (_itemUri) {
 
@@ -552,15 +568,13 @@ define([
         _setupViewSelector();
         _setupThemeSelector();
         _setupClosers();
+        _setupScreenSize();
         _computeScaleFactor();
         _setPreviewType(previewType);
         _setOrientation(orientation);
 
-        $window.on('resize orientationchange', function (e) {
-            screenSize = {
-                width: $window.innerWidth(),
-                height: $window.innerHeight()
-            };
+        $window.on('resize orientationchange', function () {
+            _setupScreenSize();
             _updateStandardPreviewSize();
             _computeScaleFactor();
             _scale();
