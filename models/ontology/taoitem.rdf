@@ -36,7 +36,7 @@
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels">
     <rdfs:label xml:lang="en-US"><![CDATA[Item Models]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Models]]></rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#SystemObject"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
