@@ -76,65 +76,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /*
      * controller actions
      */
-
-
-    /**
-     * overwrite the parent addInstance to add the requiresRight only in Items
-     * @requiresRight id WRITE
-     */
-    public function addInstance(){
-        parent::addInstance();
-    }
-    
-    /**
-     * overwrite the parent addSubClass to add the requiresRight only in Items
-     * @requiresRight id WRITE
-     */
-    public function addSubClass(){
-        parent::addSubClass();
-    }
-    
-    /**
-     * overwrite the parent cloneInstance to add the requiresRight only in Items
-     * @see tao_actions_TaoModule::cloneInstance()
-     * @requiresRight uri READ
-     * @requiresRight classUri WRITE
-     */
-    public function cloneInstance()
-    {
-        return parent::cloneInstance();
-    }
-    
-    /**
-     * overwrite the parent moveInstance to add the requiresRight only in Items
-     * @see tao_actions_TaoModule::moveInstance()
-     * @requiresRight uri WRITE
-     * @requiresRight destinationClassUri WRITE
-     */
-    public function moveInstance()
-    {
-        return parent::moveInstance();
-    }
-    
-    /**
-     * overwrite the parent getOntologyData to add the requiresRight only in Items
-     * @see tao_actions_TaoModule::getOntologyData()
-     * @requiresRight classUri READ
-     */
-    public function getOntologyData()
-    {
-        return parent::getOntologyData();
-    }
-    
-    /**
-     * overwrite the parent getOntologyData to add the requiresRight only in Items
-     * @see tao_actions_TaoModule::removeClassProperty()
-     * @requiresRight classUri WRITE
-     */
-    public function removeClassProperty()
-    {
-        return parent::removeClassProperty();
-    }
     
     /**
      * edit an item instance
@@ -257,16 +198,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function deleteClass()
     {
         return parent::deleteClass();
-    }
-
-    /**
-     * @see TaoModule::translateInstance
-     * @requiresRight uri WRITE 
-     * @return void
-     */
-    public function translateInstance(){
-        parent::translateInstance();
-        $this->setView('form.tpl', 'tao');
     }
 
     /**

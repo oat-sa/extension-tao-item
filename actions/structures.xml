@@ -18,7 +18,7 @@
                     />
                 </trees>
                 <actions allowClassActions="true">
-                    <action id="item-class-properties" name="Properties" url="/taoItems/Items/editItemClass" group="content" context="class">
+                    <action id="item-class-properties" name="Properties" url="/tao/PropertiesAuthoring/index" group="content" context="class">
                         <icon id="icon-edit"/>
                     </action>
                     <action id="item-properties" name="Properties"  url="/taoItems/Items/editItem"      group="content" context="instance">

@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,29 +19,16 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
+
 /**
  * This controller provide the actions to export items 
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
- 
  *
  */
 class taoItems_actions_ItemExport extends tao_actions_Export {
-
-    /**
-     * overwrite the parent index to add the requiresRight for Items only
-     *
-     * @requiresRight id READ
-     * @see tao_actions_Import::index()
-     */
-    public function index()
-    {
-        parent::index();
-    }
 
 	protected function getAvailableExportHandlers() {
 		$returnValue = parent::getAvailableExportHandlers();
