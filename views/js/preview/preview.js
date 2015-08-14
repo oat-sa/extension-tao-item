@@ -42,7 +42,6 @@ define([
             standard: __('Actual size')
         },
         themeObj = themeHandler.get('items') || {},
-        themes = themeHandler.getAvailable('items') || [],
         $doc = $(document),
         $window = $(window),
         $body = $(document.body),
@@ -60,7 +59,6 @@ define([
         $console,
         previewContainerMaxWidth,
         itemUri;
-
 
 
     /**
@@ -356,7 +354,7 @@ define([
         var activeTheme = themeLoader(themeObj).getActiveTheme();
 
         var options = [];
-        _(themes).forEach(function (data) {
+        _(themeObj.available).forEach(function (data) {
             options.push({
                 value: data.id,
                 label: data.name,
@@ -554,7 +552,7 @@ define([
             previewTypes: _getPreviewTypes(),
             previewType: previewType,
             themes: _getThemes(),
-            hasThemes: _.size(themes) > 1
+            hasThemes: _.size(themeObj.available) > 1
         }));
 
         $body.append(overlay);
