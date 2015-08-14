@@ -62,9 +62,11 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         
                         $(document).on('itemloaded', function() {
                             iframeNotifier.parent('serviceloaded');
-                        });
-                        
-                        $(document).on('itemready', function() {
+                        }).on('responsechange', function(e, responseId, response){
+                            iframeNotifier.parent('responsechange', [responseId, response]);
+                        }).on('stateready', function(e, elmentId, state){
+                            iframeNotifier.parent('stateready', [elmentId, state]);
+                        }).on('itemready', function() {
                             // item is ready, we can connect.
                             itemApi.connect($frame[0]);
                         });
