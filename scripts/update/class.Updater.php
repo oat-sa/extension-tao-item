@@ -105,6 +105,15 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         if ($currentVersion == '2.7.0') {
             $currentVersion = '2.8';
         }
+        // fix itemModelLabelProp
+        if ($currentVersion == '2.8') {
+            $fakeProperty = new core_kernel_classes_Property('itemModelLabel');
+            $iterator = new core_kernel_classes_ResourceIterator(array(taoItems_models_classes_ItemsService::singleton()->getRootClass()));
+            foreach ($iterator as $resource) {
+                $resource->removePropertyValues($fakeProperty);
+            }
+            $currentVersion = '2.8.1';
+        }
         return $currentVersion;
     }
 }

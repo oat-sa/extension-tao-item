@@ -136,11 +136,12 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
             $file = tao_helpers_Http::getUploadedFile('content');
             $fileTmpName = $file['tmp_name'].'_'.$file['name'];
+            
             if (!tao_helpers_File::copy($file['tmp_name'], $fileTmpName)) {
                 throw new common_exception_Error('impossible to copy '.$file['tmp_name'].' to '.$fileTmpName);
             }
 
-            $mime = \tao_helpers_File::getMimeType($file['tmp_name']);
+            $mime = \tao_helpers_File::getMimeType($fileTmpName);
             if(in_array($mime, $filters)){
                 $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'], $asset->getMediaIdentifier());
             }

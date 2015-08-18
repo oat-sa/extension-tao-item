@@ -24,11 +24,13 @@ define([
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
+    'ui/themeLoader',
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, deviceList, previewTpl, themeHandler) {
+], function ($, _, __, strPad, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
+
 
     var overlay,
         container,
@@ -39,7 +41,7 @@ define([
             mobile: __('Mobile preview'),
             standard: __('Actual size')
         },
-        themes = themeHandler.getAvailable('items') || [],
+        themeObj = themeHandler.get('items') || {},
         $doc = $(document),
         $window = $(window),
         $body = $(document.body),
@@ -57,6 +59,7 @@ define([
         $console,
         previewContainerMaxWidth,
         itemUri;
+
 
     /**
      * Create data set for device selectors
@@ -347,12 +350,15 @@ define([
      * @private
      */
     var _getThemes = function() {
+
+        var activeTheme = themeLoader(themeObj).getActiveTheme();
+
         var options = [];
-        _(themes).forEach(function (data) {
+        _(themeObj.available).forEach(function (data) {
             options.push({
                 value: data.id,
                 label: data.name,
-                selected: false
+                selected: data.id === activeTheme
             });
         });
         return options;
@@ -546,7 +552,7 @@ define([
             previewTypes: _getPreviewTypes(),
             previewType: previewType,
             themes: _getThemes(),
-            hasThemes: _.size(themes) > 1
+            hasThemes: _.size(themeObj.available) > 1
         }));
 
         $body.append(overlay);

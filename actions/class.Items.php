@@ -165,6 +165,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         $properties = $myForm->getValues();
                         unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
                         unset($properties['warning']);
+                        unset($properties['itemModelLabel']);
     
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
