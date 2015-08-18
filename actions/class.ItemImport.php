@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -17,32 +17,24 @@
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ *               2013-     (update and modification) Open Assessment Technologies SA;
  * 
  */
-?>
-<?php
+
 /**
  * This controller provide the actions to import items 
  * 
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
- 
  *
  */
 class taoItems_actions_ItemImport extends tao_actions_Import {
 	
     /**
-     * overwrite the parent index to add the requiresRight for Items only
-     * 
-     * @requiresRight id WRITE
-     * @see tao_actions_Import::index()
+     * (non-PHPdoc)
+     * @see tao_actions_Import::getAvailableImportHandlers()
      */
-    public function index()
-    {
-        parent::index();
-    }
-
 	protected function getAvailableImportHandlers() {
 		$returnValue = parent::getAvailableImportHandlers();
 
