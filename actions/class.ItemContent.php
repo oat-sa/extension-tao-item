@@ -52,7 +52,15 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $filters = array();
         if($this->hasRequestParameter('filters')){
             $filterParameter = $this->getRequestParameter('filters');
-            if(!empty($filterParameter)){
+            if(is_array($filterParameter)){
+                foreach($filterParameter as $filter){
+                    if(preg_match('/\/\*/', $filter['mime'])){
+                        common_Logger::w('Stars mime type are not yet supported, filter "'. $filter['mime'] . '" will fail');
+                    }
+                    $filters[] = $filter['mime'];
+                }
+            }
+            else{
                 if(preg_match('/\/\*/', $filterParameter)){
                     common_Logger::w('Stars mime type are not yet supported, filter "'. $filterParameter . '" will fail');
                 }
@@ -129,7 +137,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             if (!$this->hasRequestParameter('filters')) {
                 throw new common_exception_MissingParameter('filters', __METHOD__);
             }
-            $filters = explode(',', $this->getRequestParameter('filters'));
+            $filters = $this->getRequestParameter('filters');
 
             $resolver = new ItemMediaResolver($item, $itemLang);
             $asset = $resolver->resolve($this->getRequestParameter('relPath'));
@@ -142,12 +150,33 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
 
             $mime = \tao_helpers_File::getMimeType($fileTmpName);
-            if(in_array($mime, $filters)){
-                $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'], $asset->getMediaIdentifier());
+            if (is_string($filters)) {
+                // the mime type is part of the $filters
+                $filters = explode(',', $filters);
+                if ((in_array($mime, $filters))) {
+                    $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'],
+                        $asset->getMediaIdentifier());
+                } else {
+                    throw new \oat\tao\helpers\FileUploadException(__('The file you tried to upload is not valid'));
+                }
+            } else {
+                $valid = false;
+                // OR the extension is part of the filter and it correspond to the mime type
+                foreach ($filters as $filter) {
+                    if ($filter['mime'] === $mime &&
+                        (!isset($filter['extension']) || $filter['extension'] === \tao_helpers_File::getFileExtention($fileTmpName))
+                    ) {
+                        $valid = true;
+                    }
+                }
+                if ($valid) {
+                    $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'],
+                        $asset->getMediaIdentifier());
+                } else {
+                    throw new \oat\tao\helpers\FileUploadException(__('The file you tried to upload is not valid'));
+                }
             }
-            else{
-                throw new \oat\tao\helpers\FileUploadException('The file you tried to upload is not valid');
-            }
+
             $this->returnJson($filedata);
             return;
         }
