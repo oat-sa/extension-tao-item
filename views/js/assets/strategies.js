@@ -44,10 +44,11 @@ define([
 
                     //is slashcat we manage slash concact
                     if(data.slashcat === true){
-                        return data.baseUrl.replace(/\/$/, '') + '/' + url.toString().replace(/^\.\//, '').replace(/^\//, '');
+                        return data.baseUrl.replace(/\/$/, '') + '/' + url.directory.replace(/^\.\//, '').replace(/^\//, '')
+                            + encodeURIComponent(url.file.replace(/^\.\//, '').replace(/^\//, ''));
                     }
 
-                    return data.baseUrl + url.toString().replace(/^\.?\//, '');
+                    return data.baseUrl + url.directory.replace(/^\.?\//, '') + encodeURIComponent(url.file.replace(/^\.?\//, ''));
                 }
             }
         },
