@@ -55,6 +55,17 @@ define([
         baseUrl  : 'http://tao.localdomain?path=',
         url      : './test/test.html',
         resolved : 'http://tao.localdomain?path=test/test.html'
+    }, {
+        title    : 'relative URL current directory with encodable characters',
+        baseUrl  : 'http://tao.locstrategy aldomain?path=',
+        url      : './test/t>es+t.html',
+        resolved : 'http://tao.localdomain?path=test/t%3Ees%2Bt.html'
+    } ,{
+        title    : 'relative URL current directory with encodable characters',
+        slashcat   : true,
+        baseUrl  : 'http://tao.localdomain?path=',
+        url      : './test/t>es+t.html',
+        resolved : 'http://tao.localdomain?path=/test/t%3Ees%2Bt.html'
     }];
 
     QUnit
