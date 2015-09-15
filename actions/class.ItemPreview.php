@@ -70,10 +70,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         
         $uri = base64_decode($codedUri);
         $item = new core_kernel_classes_Resource($uri);
-        if($path == 'index'){
+        if($path === 'index'){
             $this->renderItem($item);
         } else {
-            $this->renderResource($item, urldecode($path));
+            $this->renderResource($item, rawurldecode($path));
         }
     }
 

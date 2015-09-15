@@ -197,6 +197,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     /**
      * Download a file to the item directory* 
      * @throws common_exception_MissingParameter
+     * @throws common_exception_Error
+     * @throws tao_models_classes_FileNotFoundException
      */
     public function download() {
         if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
@@ -207,7 +209,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $itemLang = $this->getRequestParameter('lang');
         
         $resolver = new ItemMediaResolver($item, $itemLang);
-        $asset = $resolver->resolve($this->getRequestParameter('path'));
+
+        $rawParams = $this->getRequest()->getRawParameters();//have to use raw value to respect special characters in names
+        $asset = $resolver->resolve($rawParams['path']);
         $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
         return \tao_helpers_Http::returnFile($filePath);
     }
