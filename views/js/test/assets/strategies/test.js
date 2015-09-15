@@ -57,7 +57,7 @@ define([
         resolved : 'http://tao.localdomain?path=test/test.html'
     }, {
         title    : 'relative URL current directory with encodable characters',
-        baseUrl  : 'http://tao.locstrategy aldomain?path=',
+        baseUrl  : 'http://tao.localdomain?path=',
         url      : './test/t>es+t.html',
         resolved : 'http://tao.localdomain?path=test/t%3Ees%2Bt.html'
     } ,{
