@@ -17,7 +17,7 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\pack;
+namespace oat\taoItems\test\asset;
 
 use \core_kernel_classes_Resource;
 use oat\taoItems\model\asset\Loader;
@@ -62,13 +62,13 @@ class LoaderTest extends TaoPhpUnitTestRunner
      */
     public function testLoadingRelAsset(){
 
-        $samplePath = dirname(__FILE__).'/../samples/asset';
+        $samplePath = dirname(__FILE__).'/../samples/asset/';
         $item = new core_kernel_classes_Resource('foo');
 
         $this->assertTrue(file_exists($samplePath));
 
         $serviceMock = $this
-                        ->getMockBuilder('\taoItems_models_classes_ItemsService')
+                        ->getMockBuilder('taoItems_models_classes_ItemsService')
                         ->disableOriginalConstructor()
                         ->getMock();
 
@@ -76,20 +76,17 @@ class LoaderTest extends TaoPhpUnitTestRunner
             ->method('getItemFolder')
             ->will($this->returnValue($samplePath));
 
-        $serviceMock
-            ->method('singleton')
-            ->will($this->returnValue($serviceMock));
-
         $loader = new Loader($item);
 
-        $prop = new \ReflectionProperty('oat\taoItems\model\asset\Loader', 'itemService');
-        $prop->setAccessible(true);
-        $prop->setValue($loader, $serviceMock);
+        $ref = new \ReflectionProperty('tao_models_classes_Service', 'instances');
+        $ref->setAccessible(true);
+        $ref->setValue(null, array('taoItems_models_classes_ItemsService' => $serviceMock));
 
         $sampleCss = $loader->getAssetContent('sample.css');
 
         $this->assertTrue(is_string($sampleCss));
         $this->assertTrue(strlen($sampleCss) > 0);
+        $ref->setValue(null, array());
     }
 
     /**
@@ -98,29 +95,12 @@ class LoaderTest extends TaoPhpUnitTestRunner
      */
     public function testLoadingWrongAsset(){
 
-        $samplePath = dirname(__FILE__).'/../samples/asset';
+        $samplePath = dirname(__FILE__).'/../samples/asset/';
         $item = new core_kernel_classes_Resource('foo');
 
         $this->assertTrue(file_exists($samplePath));
 
-        $serviceMock = $this
-                        ->getMockBuilder('\taoItems_models_classes_ItemsService')
-                        ->disableOriginalConstructor()
-                        ->getMock();
-
-        $serviceMock
-            ->method('getItemFolder')
-            ->will($this->returnValue($samplePath));
-
-        $serviceMock
-            ->method('singleton')
-            ->will($this->returnValue($serviceMock));
-
         $loader = new Loader($item);
-
-        $prop = new \ReflectionProperty('oat\taoItems\model\asset\Loader', 'itemService');
-        $prop->setAccessible(true);
-        $prop->setValue($loader, $serviceMock);
 
         $loader->getAssetContent('zandle.css');
     }
