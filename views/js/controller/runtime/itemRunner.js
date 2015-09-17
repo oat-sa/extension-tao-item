@@ -73,6 +73,10 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                             itemApi.connect($frame[0]);
                         });
 
+                        $(window).on('resize', _.debounce(function () {
+                            $frame.height($frame.contents().height());
+                        }, 50));
+
                         $frame.on('load', function(){
                             itemApi.connect($frame[0]);
 
