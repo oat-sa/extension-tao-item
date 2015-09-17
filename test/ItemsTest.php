@@ -161,6 +161,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $itemModels = new core_kernel_classes_Class(TAO_ITEM_MODEL_CLASS);
         $itemModel->setType($itemModels);
         $itemModel->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY), 'myFile.xml');
+        $itemModel->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY), TAO_ITEM_MODEL_STATUS_STABLE);
         $itemModel->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE), get_class($itemModelMock));
 
         $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), $itemModel);
