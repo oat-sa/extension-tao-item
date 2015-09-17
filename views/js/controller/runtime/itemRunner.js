@@ -61,7 +61,9 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
 
                         $(document).on('itemloaded', function() {
                             iframeNotifier.parent('serviceloaded');
-                            $frame.height($frame.contents().outerHeight(true));
+
+                            $frame.height($frame.contents().height());
+
                         }).on('responsechange', function(e, responseId, response){
                             iframeNotifier.parent('responsechange', [responseId, response]);
                         }).on('stateready', function(e, elmentId, state){
