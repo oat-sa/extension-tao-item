@@ -25,11 +25,13 @@ define(function(){
     return {
         'Items' : {
             'deps' : 'controller/items/action',
+            'css'  : 'preview',
             'actions' : {
                 'editItem' : 'controller/items/edit'
             }
         },
         'ItemPreview' : {
+            'css'  : 'preview',
             'actions' : {
                 'index' : 'controller/preview/itemRunner'
             }
