@@ -1,5 +1,5 @@
 <div class="preview-overlay tao-scope overlay preview-{{previewType}} item-no-print"
-     style="overflow-x: hidden;display:none">
+     style="display:none">
     <div class="preview-container-outer">
         <form class="preview-utility-bar plain">
             <div class="preview-utility-bar-inner grid-row">

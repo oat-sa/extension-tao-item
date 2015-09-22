@@ -17,8 +17,9 @@
  *
  *
  */
-define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
-    function($, _, iframeResizer, iframeNotifier, UrlParser){
+define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
+    function($, _, iframeNotifier, UrlParser){
+        'use strict';
 
         var itemRunner = {
             start : function(options){
@@ -44,7 +45,7 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                     var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
 
                     window.onServiceApiReady = function(serviceApi){
-                        
+
                         var itemApi = new ItemService(_.merge({
                             serviceApi : serviceApi,
                             itemId : itemId,
@@ -58,10 +59,11 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         itemUrl.addParam('clientConfigUrl', clientConfigUrl);
                         itemUrl.addParam('timeout', timeout);
 
-                        iframeResizer.autoHeight($frame, 'body', 10);
-                        
                         $(document).on('itemloaded', function() {
                             iframeNotifier.parent('serviceloaded');
+
+                            $frame.height($frame.contents().height());
+
                         }).on('responsechange', function(e, responseId, response){
                             iframeNotifier.parent('responsechange', [responseId, response]);
                         }).on('stateready', function(e, elmentId, state){
@@ -70,14 +72,19 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                             // item is ready, we can connect.
                             itemApi.connect($frame[0]);
                         });
-                        
+
+                        $(window).on('resize', _.debounce(function () {
+                            $frame.height($frame.contents().height());
+                        }, 50));
+
                         $frame.on('load', function(){
                             itemApi.connect($frame[0]);
-                            
+
                             if (isCORSAllowed === true) {
                                 this.contentWindow.__knownParent__ = true;
                             }
-                        }); 
+
+                        });
                         $frame.attr('src', itemUrl.getUrl());
                     };
 

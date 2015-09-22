@@ -158,7 +158,7 @@ define([
             left = (screenSize.width - containerScaledWidth) / 2;
 
         $scaleContainer.css({
-            left: left,
+            left: left > 0 ? left : 0,
             '-webkit-transform': 'scale(' + _scaleFactor + ',' + _scaleFactor + ')',
             '-ms-transform': 'scale(' + _scaleFactor + ',' + _scaleFactor + ')',
             'transform': 'scale(' + _scaleFactor + ',' + _scaleFactor + ')',

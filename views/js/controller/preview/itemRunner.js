@@ -28,7 +28,6 @@ define(
         'taoItems/runtime/ItemServiceImpl',
         'taoItems/preview/preview-console',
         'urlParser',
-        'iframeResizer'
     ],
     function (
         module,
@@ -39,8 +38,7 @@ define(
         UserInfoService,
         ItemServiceImpl,
         previewConsole,
-        UrlParser,
-        iframeResizer
+        UrlParser
         ) {
 
         var previewItemRunner = {
@@ -86,9 +84,6 @@ define(
 
                         //the iframe is 1st detached and then attached with src in order to prevent adding an entry in the history
                         var $frame = $('<iframe id="preview-container" name="preview-container" src="' + callUrl.getUrl() + '"></iframe>');
-
-                        iframeResizer.autoHeight($frame, 'body', 10);
-
 
 
                         $frame.on('load', function () {
