@@ -28,6 +28,10 @@ module.exports = function(grunt) {
                 name: 'taoItems/controller/routes',
                 include : ext.getExtensionsControllers(['taoItems']),
                 exclude : ['mathJax', 'mediaElement'].concat(libs)
+            }, {
+                name: 'taoItems/controller/runtime/itemRunner',
+                include: ['lib/require', 'taoItems/itemRunner'],
+                exclude : ['json!i18ntr/messages.json']
             }]
         }
     };
@@ -38,8 +42,22 @@ module.exports = function(grunt) {
     copy.taoitemsbundle = {
         files: [
             { src: [out + '/taoItems/controller/routes.js'],  dest: root + '/taoItems/views/js/controllers.min.js' },
-            { src: [out + '/taoItems/controller/routes.js.map'],  dest: root + '/taoItems/views/js/controllers.min.js.map' }
-        ]
+            { src: [out + '/taoItems/controller/routes.js.map'],  dest: root + '/taoItems/views/js/controllers.min.js.map' },
+            { src: [out + '/taoItems/controller/runtime/itemRunner.js'],  dest: root + '/taoItems/views/js/itemRunner.min.js' },
+            { src: [out + '/taoItems/controller/runtime/itemRunner.js.map'],  dest: root + '/taoItems/views/js/itemRunner.min.js.map' },
+        ],
+        options : {
+            process: function (content, srcpath) {
+                //because we change the bundle names during copy
+                if(/routes\.js$/.test(srcpath)){
+                    return content.replace('routes.js.map', 'controllers.min.js.map');
+                }
+                if(/itemRunner\.js$/.test(srcpath)){
+                    return content.replace('itemRunner.js.map', 'itemRunner.min.js.map');
+                }
+                return content;
+            }
+        }
     };
 
 

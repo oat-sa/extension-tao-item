@@ -14,27 +14,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * Copyright (c) 2014 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- * 
- * 
  */
 
-//@see http://forge.taotesting.com/projects/tao/wiki/Front_js
-define(function(){
+/**
+ * The loader dedicated to the item runner page
+ * @author Bertrand Chevrier <bertrand@taotesting.com>
+ */
+(function(window){
     'use strict';
-    
-    return {
-        'Items' : {
-            'deps' : 'controller/items/action',
-            'css'  : 'preview',
-            'actions' : {
-                'editItem' : 'controller/items/edit'
-            }
-        },
-        'ItemPreview' : {
-            'css'  : 'preview',
-            'actions' : {
-                'index' : 'controller/preview/itemRunner'
-            }
-        }
-    };
-});
+
+    //the url of the app config is set into the data-config attr of the loader.
+    var appConfig = document.getElementById('amd-loader').getAttribute('data-config');
+    require([appConfig], function(){
+        require(['taoItems/controller/runtime/itemRunner'], function (itemRunner) {
+            itemRunner.start(window.itemRunnerOptions);
+        });
+    });
+}(window));
