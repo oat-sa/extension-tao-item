@@ -24,7 +24,7 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
         var itemRunner = {
             start : function(options){
 
-                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;height:100%;overflow:hidden" scrolling="auto"></iframe>');
+                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;min-height:100%;overflow:hidden" scrolling="auto"></iframe>');
                 $frame.appendTo('body');
                 var itemId = options.itemId;
                 var itemPath = options.itemPath;
