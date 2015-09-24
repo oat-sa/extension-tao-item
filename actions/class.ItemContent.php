@@ -201,8 +201,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @throws tao_models_classes_FileNotFoundException
      */
     public function download() {
+        $svgzSupport = false;
         if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
             throw new common_exception_MissingParameter();
+        }
+
+        if($this->hasRequestParameter('svgzsupport')){
+            $svgzSupport = true;
         }
 
         $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
@@ -213,7 +218,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $rawParams = $this->getRequest()->getRawParameters();//have to use raw value to respect special characters in names
         $asset = $resolver->resolve($rawParams['path']);
         $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
-        return \tao_helpers_Http::returnFile($filePath);
+
+        \tao_helpers_Http::returnFile($filePath, true, $svgzSupport);
     }
     
     /**
