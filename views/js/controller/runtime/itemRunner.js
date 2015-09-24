@@ -24,7 +24,7 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
         var itemRunner = {
             start : function(options){
 
-                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;min-height:100%;overflow:hidden" scrolling="auto"></iframe>');
+                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;min-height:100%;" scrolling="no"></iframe>');
                 $frame.appendTo('body');
                 var itemId = options.itemId;
                 var itemPath = options.itemPath;
@@ -60,9 +60,8 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                         itemUrl.addParam('timeout', timeout);
 
                         $(document).on('itemloaded', function() {
-                            iframeNotifier.parent('serviceloaded');
-
                             $frame.height($frame.contents().height());
+                            iframeNotifier.parent('serviceloaded');
 
                         }).on('responsechange', function(e, responseId, response){
                             iframeNotifier.parent('responsechange', [responseId, response]);
