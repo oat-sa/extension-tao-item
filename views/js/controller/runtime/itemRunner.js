@@ -72,10 +72,6 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                             itemApi.connect($frame[0]);
                         });
 
-                        $(window).on('resize', _.debounce(function () {
-                            $frame.height($frame.contents().height());
-                        }, 50));
-
                         $frame.on('load', function(){
                             itemApi.connect($frame[0]);
 
@@ -83,6 +79,9 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                                 this.contentWindow.__knownParent__ = true;
                             }
 
+                            $(window).on('resize', _.throttle(function () {
+                                $frame.height($frame.contents().height());
+                            }, 50));
                         });
                         $frame.attr('src', itemUrl.getUrl());
                     };
