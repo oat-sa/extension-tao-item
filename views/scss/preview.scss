@@ -33,7 +33,7 @@ body {
         }
     }
     &.preview-standard {
-        overflow: hidden;
+        overflow: visible;
         .desktop-only,
         .mobile-only {
             display: none !important;
