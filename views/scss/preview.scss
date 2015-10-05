@@ -19,14 +19,14 @@ body {
 
     background: rgba(0, 0, 0, 0.7);
     &.preview-desktop {
-        overflow: hidden;
+        overflow: visible;
         .mobile-only,
         .standard-only {
             display: none !important;
         }
     }
     &.preview-mobile {
-        overflow: hidden;
+        overflow: visible;
         .desktop-only,
         .standard-only {
             display: none !important;
