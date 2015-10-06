@@ -46,7 +46,7 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
 
                     var setIframeHeight = function(height) {
                         $frame.css({
-                            minHeight: height || $frame.contents().height()
+                            height: height || $frame.contents().outerHeight(true)
                         });
                     };
 
