@@ -24,7 +24,7 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
         var itemRunner = {
             start : function(options){
 
-                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;min-height:100%;" scrolling="no"></iframe>');
+                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;" scrolling="no"></iframe>');
                 $frame.appendTo('body');
                 var itemId = options.itemId;
                 var itemPath = options.itemPath;
@@ -44,6 +44,12 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
 
                     var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
 
+                    var setIframeHeight = function(height) {
+                        $frame.css({
+                            height: height || $frame.contents().outerHeight(true)
+                        });
+                    };
+
                     window.onServiceApiReady = function(serviceApi){
 
                         var itemApi = new ItemService(_.merge({
@@ -60,9 +66,12 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                         itemUrl.addParam('timeout', timeout);
 
                         $(document).on('itemloaded', function() {
-                            $frame.height($frame.contents().height());
+                            setIframeHeight();
                             iframeNotifier.parent('serviceloaded');
 
+                            $frame.contents().find('img').on('load', _.throttle(function() {
+                                setIframeHeight();
+                            }, 50));
                         }).on('responsechange', function(e, responseId, response){
                             iframeNotifier.parent('responsechange', [responseId, response]);
                         }).on('stateready', function(e, elmentId, state){
@@ -79,9 +88,9 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                                 this.contentWindow.__knownParent__ = true;
                             }
 
-                            $(window).on('resize', _.throttle(function () {
-                                $frame.height($frame.contents().height());
-                            }, 50));
+                            $('body').on('setheight', function(event, height) {
+                                setIframeHeight(height);
+                            });
                         });
                         $frame.attr('src', itemUrl.getUrl());
                     };
