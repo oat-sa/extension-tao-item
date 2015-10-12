@@ -28,7 +28,7 @@ use oat\tao\helpers\Template;
             }());
             </script>
 	</head>
-	<body>
+	<body class="tao-item-scope">
         
     </body>
 </html>
