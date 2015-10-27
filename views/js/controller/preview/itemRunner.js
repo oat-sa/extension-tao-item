@@ -101,7 +101,7 @@ define(
                                 frame.contentWindow.__knownParent__ = true;
                             }
                             //then we can wait a specific event triggered from the item
-                            $(document).on('itemready', function () {
+                            $(document).off('itemready').on('itemready', function () {
                                 itemApi.connect(frame);
                                 if(frame.contentWindow.__knownParent__) {
                                     frame.contentWindow.document.body.className += ' tao-preview-scope';
