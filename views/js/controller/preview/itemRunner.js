@@ -27,7 +27,7 @@ define(
         'serviceApi/UserInfoService',
         'taoItems/runtime/ItemServiceImpl',
         'taoItems/preview/preview-console',
-        'urlParser',
+        'urlParser'
     ],
     function (
         module,
@@ -40,6 +40,8 @@ define(
         previewConsole,
         UrlParser
         ) {
+
+        'use strict';
 
         var previewItemRunner = {
 
@@ -99,8 +101,11 @@ define(
                                 frame.contentWindow.__knownParent__ = true;
                             }
                             //then we can wait a specific event triggered from the item
-                            $(document).on('itemready', function () {
+                            $(document).off('itemready').on('itemready', function () {
                                 itemApi.connect(frame);
+                                if(frame.contentWindow.__knownParent__) {
+                                    frame.contentWindow.document.body.className += ' tao-preview-scope';
+                                }
                             });
                         });
 
