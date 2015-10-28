@@ -68,7 +68,10 @@
     <div id="preview-console">
         <span class="icon-close preview-console-closer" title="{{__ 'Close console'}}"></span>
         <div class="preview-console-header grid-row clearfix">
-            <div class="col-12">
+            <div class="col-10">
+                <button type="button" class="btn-info small rgt" id="delete-me">{{__ 'dummy'}}</button>
+            </div>
+            <div class="col-2">
                 <button type="button" class="btn-info small rgt" id="preview-submit-button">{{__ 'Submit'}}</button>
             </div>
         </div>

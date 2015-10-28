@@ -21,6 +21,8 @@ define([
     'lodash',
     'i18n',
     'util/strPad',
+    'module',
+    'taoItems/preview/actionBarTools',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
@@ -28,7 +30,7 @@ define([
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, deviceList, previewTpl, themeHandler, themeLoader) {
+], function ($, _, __, strPad, module, actionBarTools, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
 
 
@@ -539,6 +541,22 @@ define([
      * @param {String} _itemUri
      */
     var init = function (_itemUri) {
+
+
+        /* test code */
+        console.log(actionBarTools, module.config())
+
+
+        var config = module.config();
+        if (config) {
+            //actionBarTools.register(config.qtiTools);
+        }
+
+
+
+        /* end test code */
+
+
 
         if(!_itemUri || _itemUri.length === 0){
             throw new TypeError('Wrong URI');

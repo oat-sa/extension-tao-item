@@ -140,6 +140,9 @@ body {
             width: $previewToolbarWidth;
             margin: auto;
             padding: 2px 0;
+            [class*=" col-"], [class^="col-"] {
+                margin-bottom: 0 !important;
+            }
         }
         .preview-console-body {
             margin: 2px;
