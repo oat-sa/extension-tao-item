@@ -101,22 +101,30 @@ define([
      * @param {String} [toolconfig.icon] - the icon to be displayed in the button
      * @param {String} [toolconfig.title] - the title to be displayed in the button
      * @param {Array} [toolconfig.items] - an optional list of menu items
-     * @param {Object} testContext - the complete state of the test
+     * // @param {Object} testContext - the complete state of the test
      * @param {Object} testRunner - the test runner instance
      * @fires ready.actionBarHook when the hook has been initialized
      * @returns {Promise}
      */
-    function initQtiTool($toolsContainer, id, toolconfig, testContext, testRunner) {
+    function initExtraButtons($toolsContainer, id, toolconfig) {
+
+        var testMock, testContext, testRunner;
+
+        if (_.isString(toolconfig)) {
+            toolconfig = {
+                hook: toolconfig,
+                mocks: {}
+            };
+        }
+
+        testMock = toolconfig.testMock || {};
+        testRunner = testMock.testRunner || {};
+        testContext = testRunner.testContext || {};
 
         // the tool is always initialized before the item is loaded, so we can safely false the flag
         itemIsLoaded = false;
         tools[id] = null;
 
-        if (_.isString(toolconfig)) {
-            toolconfig = {
-                hook: toolconfig
-            };
-        }
 
         return new Promise(function(resolve) {
             if (isValidConfig(toolconfig)) {
@@ -125,6 +133,7 @@ define([
 
                     var $button;
                     var $existingBtn;
+
 
                     if (isValidHook(hook)) {
                         //init the control
@@ -137,6 +146,7 @@ define([
                             $existingBtn.remove();
                         }
 
+                        console.log(id, isValidHook(hook), hook.isVisible(),testContext, testRunner)
                         //check if the tool is to be available
                         if (hook.isVisible()) {
                             //keep access to the tool
@@ -267,6 +277,6 @@ define([
 
     return {
         isValid: isValidConfig,
-        initQtiTool: initQtiTool
+        initExtraButtons: initExtraButtons
     };
 });

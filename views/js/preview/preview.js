@@ -22,7 +22,7 @@ define([
     'i18n',
     'util/strPad',
     'module',
-    'taoItems/preview/actionBarTools',
+    'taoItems/preview/actionBarHook',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
@@ -30,7 +30,7 @@ define([
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, module, actionBarTools, deviceList, previewTpl, themeHandler, themeLoader) {
+], function ($, _, __, strPad, module, actionBarHook, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
 
 
@@ -461,11 +461,19 @@ define([
         $selector.val(valueStr).data('value', valueStr);
     };
 
+
+    /**
+     * Console
+     *
+     * @private
+     */
     var _initConsole = function () {
 
         var $body = $console.find('.preview-console-body'),
             $listing = $body.find('ul'),
             $closer = $console.find('.preview-console-closer');
+
+        console.log($console.length, $body.length, $listing, $closer)
 
         $console.off('updateConsole').on('updateConsole', function (event, type, message) {
             var timer = new Date(),
@@ -498,6 +506,24 @@ define([
 
 
     /**
+     * Custom Buttons, usually defined in a custom extension
+     *
+     * @private
+     */
+    var _initCustomButtons = function _initCustomButtons() {
+
+        var config = module.config(),
+            buttons = config.extraButtons || {},
+            $container = $('.extra-button-action-bar');
+
+        _.forIn(buttons, function(config, id) {
+            actionBarHook.initExtraButtons($container, id, config);
+        });
+
+    };
+
+
+    /**
      * Display the preview
      */
     var show = function () {
@@ -509,6 +535,9 @@ define([
 
             $body.addClass('preview-mode');
 
+            // $.show() does not work from the item manager
+            // this is either a miracle or a jquery bug
+            // overlay.hide().show();
             overlay[0].style.display = 'block';
 
             overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
@@ -518,9 +547,6 @@ define([
             $('.preview-item-container').html(data);
         });
 
-        // $.show() does not work from the item manager
-        // this is either a miracle or a jquery bug
-        // overlay.hide().show();
 
     };
 
@@ -541,22 +567,6 @@ define([
      * @param {String} _itemUri
      */
     var init = function (_itemUri) {
-
-
-        /* test code */
-        console.log(actionBarTools, module.config())
-
-
-        var config = module.config();
-        if (config) {
-            //actionBarTools.register(config.qtiTools);
-        }
-
-
-
-        /* end test code */
-
-
 
         if(!_itemUri || _itemUri.length === 0){
             throw new TypeError('Wrong URI');
@@ -584,6 +594,7 @@ define([
 
         $console = overlay.find('#preview-console');
 
+        _initCustomButtons();
         _initConsole();
         _updateStandardPreviewSize();
         _setupTypeDependantElements();
