@@ -473,8 +473,6 @@ define([
             $listing = $body.find('ul'),
             $closer = $console.find('.preview-console-closer');
 
-        console.log($console.length, $body.length, $listing, $closer)
-
         $console.off('updateConsole').on('updateConsole', function (event, type, message) {
             var timer = new Date(),
                 logTime = [
