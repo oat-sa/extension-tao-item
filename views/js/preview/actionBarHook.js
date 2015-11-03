@@ -35,14 +35,8 @@ define([
      * @type {String}
      * @private
      */
-    var _ns = '.actionBarHook';
+    var _ns = '.previewActionBarHook';
 
-    /**
-     * We need to access the root document to listen for some events
-     * @type {jQuery}
-     * @private
-     */
-    var $doc = $(document);
 
     /**
      * List of loaded and visible hooks
@@ -51,20 +45,6 @@ define([
      */
     var tools = {};
 
-    /**
-     * Flag set to true when the item is loaded
-     * @type {Boolean}
-     * @private
-     */
-    var itemIsLoaded = false;
-
-    // catch the item loaded event
-    $doc.off(_ns).on('serviceloaded' + _ns, function() {
-        itemIsLoaded = true;
-        _.forEach(tools, function(tool) {
-            triggerItemLoaded(tool);
-        });
-    });
 
     /**
      * Check that the toolConfig is correct
@@ -108,21 +88,12 @@ define([
      */
     function initExtraButtons($toolsContainer, id, toolconfig) {
 
-        var testMock, testContext, testRunner;
-
         if (_.isString(toolconfig)) {
             toolconfig = {
-                hook: toolconfig,
-                mocks: {}
+                hook: toolconfig
             };
         }
 
-        testMock = toolconfig.testMock || {};
-        testRunner = testMock.testRunner || {};
-        testContext = testRunner.testContext || {};
-
-        // the tool is always initialized before the item is loaded, so we can safely false the flag
-        itemIsLoaded = false;
         tools[id] = null;
 
 
@@ -134,10 +105,9 @@ define([
                     var $button;
                     var $existingBtn;
 
-
                     if (isValidHook(hook)) {
                         //init the control
-                        hook.init(id, toolconfig, testContext, testRunner);
+                        hook.init(id, toolconfig);
 
                         //if an instance of the tool is already attached, remove it:
                         $existingBtn = $toolsContainer.children('[data-control="' + id + '"]');
@@ -146,26 +116,19 @@ define([
                             $existingBtn.remove();
                         }
 
-                        console.log(id, isValidHook(hook), hook.isVisible(),testContext, testRunner)
-                        //check if the tool is to be available
-                        if (hook.isVisible()) {
-                            //keep access to the tool
-                            tools[id] = hook;
+                        //keep access to the tool
+                        tools[id] = hook;
 
-                            // renders the button from the config
-                            $button = hook.render();
+                        // renders the button from the config
+                        $button = hook.render();
 
-                            //only attach the button to the dom when everything is ready
-                            _appendInOrder($toolsContainer, $button);
+                        //only attach the button to the dom when everything is ready
+                        _appendInOrder($toolsContainer, $button);
 
-                            //ready !
-                            $button.trigger('ready' + _ns, [hook]);
+                        //ready !
+                        $button.trigger('ready' + _ns, [hook]);
 
-                            //fires the itemLoaded event if the item has already been loaded
-                            if (itemIsLoaded) {
-                                triggerItemLoaded(hook);
-                            }
-                        }
+                        triggerItemLoaded(hook);
 
                         resolve(hook);
                     } else {

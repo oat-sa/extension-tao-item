@@ -21,8 +21,6 @@ define([
     'lodash',
     'i18n',
     'util/strPad',
-    'module',
-    'taoItems/preview/actionBarHook',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
@@ -30,7 +28,7 @@ define([
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, module, actionBarHook, deviceList, previewTpl, themeHandler, themeLoader) {
+], function ($, _, __, strPad, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
 
 
@@ -468,7 +466,6 @@ define([
      * @private
      */
     var _initConsole = function () {
-
         var $body = $console.find('.preview-console-body'),
             $listing = $body.find('ul'),
             $closer = $console.find('.preview-console-closer');
@@ -502,23 +499,6 @@ define([
         });
     };
 
-
-    /**
-     * Custom Buttons, usually defined in a custom extension
-     *
-     * @private
-     */
-    var _initCustomButtons = function _initCustomButtons() {
-
-        var config = module.config(),
-            buttons = config.extraButtons || {},
-            $container = $('.extra-button-action-bar');
-
-        _.forIn(buttons, function(config, id) {
-            actionBarHook.initExtraButtons($container, id, config);
-        });
-
-    };
 
 
     /**
@@ -592,7 +572,6 @@ define([
 
         $console = overlay.find('#preview-console');
 
-        _initCustomButtons();
         _initConsole();
         _updateStandardPreviewSize();
         _setupTypeDependantElements();
