@@ -40,7 +40,6 @@ class PreviewClientConfigRegistry extends ClientLibConfigRegistry
      */
     public function registerQtiTools($name, $toolConfig){
         $newConfig = array('extraButtons' => array());
-        //@todo validate tool config structure before registration
         $newConfig['extraButtons'][$name] = $toolConfig;
         $this->register(self::AMD, $newConfig);
     }
