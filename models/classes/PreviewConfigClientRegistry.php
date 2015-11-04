@@ -30,15 +30,15 @@ use oat\tao\model\ClientLibConfigRegistry;
 class PreviewClientConfigRegistry extends ClientLibConfigRegistry
 {
 
-    const AMD = 'taoItem/preview/preview';
+    const AMD = 'taoItems/controller/preview/itemRunner';
 
     /**
-     * Register a qti tool in the client lib config registry
+     * Register an extra button for the preview in the client lib config registry
      * 
      * @param string $name
      * @param array $toolConfig
      */
-    public function registerQtiTools($name, $toolConfig){
+    public function registerPreviewExtraButtons($name, $toolConfig){
         $newConfig = array('extraButtons' => array());
         $newConfig['extraButtons'][$name] = $toolConfig;
         $this->register(self::AMD, $newConfig);
