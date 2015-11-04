@@ -27,6 +27,7 @@ define(
         'serviceApi/UserInfoService',
         'taoItems/runtime/ItemServiceImpl',
         'taoItems/preview/preview-console',
+        'taoItems/preview/actionBarHook',
         'urlParser'
     ],
     function (
@@ -38,10 +39,30 @@ define(
         UserInfoService,
         ItemServiceImpl,
         previewConsole,
+        actionBarHook,
         UrlParser
         ) {
 
         'use strict';
+
+
+        /**
+         * Custom Buttons, usually defined in a custom extension
+         *
+         * @private
+         */
+        var _initCustomButtons = function _initCustomButtons() {
+
+            var config = module.config(),
+                buttons = config.extraButtons || {},
+                $container = $('.extra-button-action-bar');
+
+
+            _.forIn(buttons, function(config, id) {
+                actionBarHook.initExtraButtons($container, id, config);
+            });
+
+        };
 
         var previewItemRunner = {
 
@@ -105,7 +126,9 @@ define(
                                 itemApi.connect(frame);
                                 if(frame.contentWindow.__knownParent__) {
                                     frame.contentWindow.document.body.className += ' tao-preview-scope';
-                                }
+
+                                    _initCustomButtons();
+                                } 
                             });
                         });
 

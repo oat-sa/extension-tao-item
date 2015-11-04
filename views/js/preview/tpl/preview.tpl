@@ -65,15 +65,26 @@
             </div>
         </div>
     </div>
+
+
     <div id="preview-console">
         <span class="icon-close preview-console-closer" title="{{__ 'Close console'}}"></span>
         <div class="preview-console-header grid-row clearfix">
-            <div class="col-12">
-                <button type="button" class="btn-info small rgt" id="preview-submit-button">{{__ 'Submit'}}</button>
-            </div>
+            <ul class="col-10 plain action-bar extra-button-action-bar horizontal-action-bar">
+            </ul>
+            <ul class="col-2 plain action-bar console-button-action-bar horizontal-action-bar">
+                <li class="small btn-info action action-button rgt" id="preview-submit-button">
+                    <a class="li-inner" href="#">
+                        <span class="label">{{__ 'Submit'}}</span>
+                    </a>
+                </li>
+            </ul>
         </div>
         <div class="preview-console-body clear">
             <ul></ul>
         </div>
     </div>
 </div>
+
+
+
