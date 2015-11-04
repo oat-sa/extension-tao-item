@@ -18,7 +18,7 @@
  *
  */
 
-namespace oat\taoItems\models;
+namespace oat\taoItems\model;
 
 use oat\tao\model\ClientLibConfigRegistry;
 
