@@ -459,8 +459,13 @@ define([
         $selector.val(valueStr).data('value', valueStr);
     };
 
-    var _initConsole = function () {
 
+    /**
+     * Console
+     *
+     * @private
+     */
+    var _initConsole = function () {
         var $body = $console.find('.preview-console-body'),
             $listing = $body.find('ul'),
             $closer = $console.find('.preview-console-closer');
@@ -495,6 +500,7 @@ define([
     };
 
 
+
     /**
      * Display the preview
      */
@@ -507,6 +513,9 @@ define([
 
             $body.addClass('preview-mode');
 
+            // $.show() does not work from the item manager
+            // this is either a miracle or a jquery bug
+            // overlay.hide().show();
             overlay[0].style.display = 'block';
 
             overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
@@ -516,9 +525,6 @@ define([
             $('.preview-item-container').html(data);
         });
 
-        // $.show() does not work from the item manager
-        // this is either a miracle or a jquery bug
-        // overlay.hide().show();
 
     };
 
