@@ -314,6 +314,7 @@ define([
         var $iframe = $('#preview-iframe');
 
         $closer.on('click', function () {
+            $doc.trigger('itemunload.preview');
 //            commonRenderer.setContext($('.item-editor-item'));
             overlay.hide();
             $body.removeClass('preview-mode');

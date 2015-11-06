@@ -47,6 +47,30 @@ define([
 
 
     /**
+     *
+     * @type {*|jQuery|HTMLElement}
+     */
+    var $toolContainers = $();
+
+
+    /**
+     * Remove tools when closing the item
+     */
+    $(document).off('.preview').on('itemunload.preview', function () {
+        $toolContainers.each(function () {
+            var $toolContainer = $(this);
+            _.forEach(tools, function (tool, id) {
+                var $btn = $toolContainer.children('[data-control="' + id + '"]');
+                if ($btn.length) {
+                    tool.clear($btn);
+                    $btn.remove();
+                }
+            });
+        });
+    });
+
+
+    /**
      * Check that the toolConfig is correct
      *
      * @param {Object} toolconfig
@@ -86,7 +110,7 @@ define([
      * @fires ready.actionBarHook when the hook has been initialized
      * @returns {Promise}
      */
-    function initExtraButtons($toolsContainer, id, toolconfig) {
+    function initExtraButtons($toolContainer, id, toolconfig) {
 
         if (_.isString(toolconfig)) {
             toolconfig = {
@@ -96,6 +120,7 @@ define([
 
         tools[id] = null;
 
+        $toolContainers = $toolContainers.add($toolContainer);
 
         return new Promise(function(resolve) {
             if (isValidConfig(toolconfig)) {
@@ -110,7 +135,7 @@ define([
                         hook.init(id, toolconfig);
 
                         //if an instance of the tool is already attached, remove it:
-                        $existingBtn = $toolsContainer.children('[data-control="' + id + '"]');
+                        $existingBtn = $toolContainer.children('[data-control="' + id + '"]');
                         if ($existingBtn.length) {
                             hook.clear($existingBtn);
                             $existingBtn.remove();
@@ -123,7 +148,7 @@ define([
                         $button = hook.render();
 
                         //only attach the button to the dom when everything is ready
-                        _appendInOrder($toolsContainer, $button);
+                        _appendInOrder($toolContainer, $button);
 
                         //ready !
                         $button.trigger('ready' + _ns, [hook]);
