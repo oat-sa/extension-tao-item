@@ -148,15 +148,17 @@ body {
             }
         }
 
-        // action bars
-        .action-bar {
+
+        // action bar at bottom
+        .extra-button-action-bar {
+            overflow:visible;
             li {
                 margin: 0 5px;
                 &.btn-info {
                     border-color: white(.3);
                     &.btn-group {
                         border:none !important;
-                        overflow:hidden;
+                        overflow:visible;
                         padding:0;
                         a {
                             float:left;
