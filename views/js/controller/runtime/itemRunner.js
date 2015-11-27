@@ -45,9 +45,11 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                     var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
 
                     var setIframeHeight = function(height) {
-                        $frame.css({
-                            height: height || $frame.contents().outerHeight(true)
-                        });
+                        if (!height) {
+                            height = $frame.contents().outerHeight(true);
+                            iframeNotifier.parent('heightchange', height);
+                        }
+                        $frame.css({height: height});
                     };
 
                     window.onServiceApiReady = function(serviceApi){
