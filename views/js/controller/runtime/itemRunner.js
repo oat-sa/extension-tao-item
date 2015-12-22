@@ -44,12 +44,24 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
 
                     var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
 
-                    var setIframeHeight = function(height) {
-                        if (!height) {
-                            height = $frame.contents().outerHeight(true);
-                            iframeNotifier.parent('heightchange', height);
+                    var setIframeHeight = function(newHeight) {
+
+                        var neverResized = $frame.height() === 150;
+
+                        var resize = function resize(newHeight, notifyParent) {
+                            $frame.css({height: newHeight});
+                            if(notifyParent) {
+                                iframeNotifier.parent('heightchange', newHeight);
+                            }
+                        };
+
+                        resize(newHeight || $frame.contents().outerHeight(true), !newHeight);
+
+                        if(neverResized) {
+                            _.delay(function() {
+                                resize($frame.contents().outerHeight(true), true);
+                            }, 200);
                         }
-                        $frame.css({height: height});
                     };
 
                     window.onServiceApiReady = function(serviceApi){
