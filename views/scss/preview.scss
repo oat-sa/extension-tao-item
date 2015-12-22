@@ -1,6 +1,6 @@
 @import "inc/bootstrap";
 
-$previewToolbarWidth: 900px;
+$previewToolbarWidth: 1024px;
 
 body {
     &.preview-mode {
@@ -10,7 +10,6 @@ body {
     }
 }
 .preview-overlay {
-    overflow-x: hidden;
     display: none;
     width: 100%;
     height: 100%;
@@ -20,21 +19,21 @@ body {
 
     background: rgba(0, 0, 0, 0.7);
     &.preview-desktop {
-        overflow: hidden;
+        overflow: visible;
         .mobile-only,
         .standard-only {
             display: none !important;
         }
     }
     &.preview-mobile {
-        overflow: hidden;
+        overflow: visible;
         .desktop-only,
         .standard-only {
             display: none !important;
         }
     }
     &.preview-standard {
-        overflow-x: hidden;
+        overflow: visible;
         .desktop-only,
         .mobile-only {
             display: none !important;
@@ -78,7 +77,8 @@ body {
     }
 
     .preview-utility-bar-inner {
-        width: $previewToolbarWidth;
+        max-width: $previewToolbarWidth;
+        width: 100%;
         margin: auto;
         h1 {
             @include font-size(18);
@@ -116,34 +116,91 @@ body {
     #preview-console {
         // reset from legacy code
         margin: 0;
-        padding: 3px;
+        padding: 0;
         border: none;
         z-index: auto;
         // end reset
 
-        background: mix(#fff, $grey, 85%);
+        background: whiten($info, .1);
         position: fixed;
         bottom: 0;
         left: 0;
         width: 100%;
-        border-top: 1px solid $websiteBorder;
         .preview-console-closer {
             position: absolute;
             right: 10px;
             top: 10px;
             cursor: pointer;
+            color: white(.9);
             &:hover {
-                color: $info;
+                color: white;
             }
             display: none;
+            text-shadow: none;
         }
         .preview-console-header {
-            width: $previewToolbarWidth;
+            max-width: $previewToolbarWidth;
+            width: 100%;
             margin: auto;
-            padding: 2px 0;
+            padding: 0;
+            [class*=" col-"], [class^="col-"] {
+                margin-bottom: 0 !important;
+            }
+        }
+
+
+        // action bar at bottom
+        .extra-button-action-bar {
+            overflow:visible;
+            li {
+                margin: 0 5px;
+                &.btn-info {
+                    border-color: white(.3);
+                    &.btn-group {
+                        border:none !important;
+                        overflow:visible;
+                        padding:0;
+                        a {
+                            float:left;
+                            margin: 0 2px;
+                            padding: 0 15px;
+                            border: 1px solid white(.3);
+                            border-radius: 0px;
+                            display: inline-block;
+                            height: inherit;
+                            &:first-of-type {
+                                border-top-left-radius: 3px;
+                                border-bottom-left-radius: 3px;
+                                margin-left: 0;
+                            }
+                            &:last-of-type {
+                                border-top-right-radius: 3px;
+                                border-bottom-right-radius: 3px;
+                                margin-right: 0;
+                            }
+                            &:hover, &.active {
+                                border-color: white(.8);
+                            }
+                            .no-label {
+                                padding-right: 0;
+                            }
+                        }
+                    }
+                    &:hover, &.active {
+                        border-color: white(.8);
+                    }
+                }
+            }
+            &.horizontal-action-bar {
+                &.bottom-action-bar {
+                    overflow: visible;
+                    .action {
+                        line-height: 1.6;
+                    }
+                }
+            }
         }
         .preview-console-body {
-            margin: 2px;
             display:none;
             ul {
                 padding: 5px;
@@ -152,7 +209,6 @@ body {
                 height: 300px;
                 overflow: auto;
                 background: rgb(43, 43, 43);
-                border: 1px inset $websiteBorder;
                 font-family: $monospaceFont;
                 color: $textHighlight;
                 .log-time {

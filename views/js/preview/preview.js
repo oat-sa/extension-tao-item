@@ -24,11 +24,13 @@ define([
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
+    'ui/themeLoader',
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, deviceList, previewTpl, themeHandler) {
+], function ($, _, __, strPad, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
+
 
     var overlay,
         container,
@@ -39,7 +41,7 @@ define([
             mobile: __('Mobile preview'),
             standard: __('Actual size')
         },
-        themes = themeHandler.getAvailable('items') || [],
+        themeObj = themeHandler.get('items') || {},
         $doc = $(document),
         $window = $(window),
         $body = $(document.body),
@@ -57,6 +59,7 @@ define([
         $console,
         previewContainerMaxWidth,
         itemUri;
+
 
     /**
      * Create data set for device selectors
@@ -155,7 +158,7 @@ define([
             left = (screenSize.width - containerScaledWidth) / 2;
 
         $scaleContainer.css({
-            left: left,
+            left: left > 0 ? left : 0,
             '-webkit-transform': 'scale(' + _scaleFactor + ',' + _scaleFactor + ')',
             '-ms-transform': 'scale(' + _scaleFactor + ',' + _scaleFactor + ')',
             'transform': 'scale(' + _scaleFactor + ',' + _scaleFactor + ')',
@@ -311,6 +314,7 @@ define([
         var $iframe = $('#preview-iframe');
 
         $closer.on('click', function () {
+            $doc.trigger('itemunload.preview');
 //            commonRenderer.setContext($('.item-editor-item'));
             overlay.hide();
             $body.removeClass('preview-mode');
@@ -347,12 +351,15 @@ define([
      * @private
      */
     var _getThemes = function() {
+
+        var activeTheme = themeLoader(themeObj).getActiveTheme();
+
         var options = [];
-        _(themes).forEach(function (data) {
+        _(themeObj.available).forEach(function (data) {
             options.push({
                 value: data.id,
                 label: data.name,
-                selected: false
+                selected: data.id === activeTheme
             });
         });
         return options;
@@ -453,8 +460,13 @@ define([
         $selector.val(valueStr).data('value', valueStr);
     };
 
-    var _initConsole = function () {
 
+    /**
+     * Console
+     *
+     * @private
+     */
+    var _initConsole = function () {
         var $body = $console.find('.preview-console-body'),
             $listing = $body.find('ul'),
             $closer = $console.find('.preview-console-closer');
@@ -489,6 +501,7 @@ define([
     };
 
 
+
     /**
      * Display the preview
      */
@@ -501,6 +514,9 @@ define([
 
             $body.addClass('preview-mode');
 
+            // $.show() does not work from the item manager
+            // this is either a miracle or a jquery bug
+            // overlay.hide().show();
             overlay[0].style.display = 'block';
 
             overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
@@ -510,9 +526,6 @@ define([
             $('.preview-item-container').html(data);
         });
 
-        // $.show() does not work from the item manager
-        // this is either a miracle or a jquery bug
-        // overlay.hide().show();
 
     };
 
@@ -546,7 +559,7 @@ define([
             previewTypes: _getPreviewTypes(),
             previewType: previewType,
             themes: _getThemes(),
-            hasThemes: _.size(themes) > 1
+            hasThemes: _.size(themeObj.available) > 1
         }));
 
         $body.append(overlay);

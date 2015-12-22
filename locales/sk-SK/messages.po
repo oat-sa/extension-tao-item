@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-22T13:39:25\n"
+"PO-Revision-Date: 2015-12-22T15:52:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk-SK\n"
@@ -50,10 +50,10 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr ""
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr ""
 
 msgid "Edit item class"
@@ -152,6 +152,9 @@ msgid "Search"
 msgstr ""
 
 msgid "Submit"
+msgstr ""
+
+msgid "The file you tried to upload is not valid"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
