@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.1.0-sprint03\n"
-"PO-Revision-Date: 2015-07-21T16:25:13\n"
+"Project-Id-Version: TAO 3.1.0-sprint04\n"
+"PO-Revision-Date: 2015-12-22T13:38:01\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: is-IS\n"
@@ -27,7 +27,7 @@ msgid "Close"
 msgstr "Loka"
 
 msgid "Close console"
-msgstr ""
+msgstr "Loka stjórnborði"
 
 msgid "Could not create language specific directory for item \'%s\"
 msgstr ""
@@ -81,7 +81,7 @@ msgid "Item \'%s\' has no model"
 msgstr ""
 
 msgid "Item Model"
-msgstr ""
+msgstr "Atriðalíkan"
 
 msgid "Item saved"
 msgstr "Atriði vistað"
@@ -98,15 +98,11 @@ msgid "Landscape"
 msgstr "Langsnið"
 
 #, tao-public
-msgid "Lists"
-msgstr "Listar"
-
-#, tao-public
 msgid "Manage items"
 msgstr "Atriðastjórnun"
 
 msgid "Mobile preview"
-msgstr ""
+msgstr "Forskoðun í farsíma"
 
 #, tao-public
 msgid "Move"
@@ -120,7 +116,7 @@ msgid "No item authoring tool available for the selected type of item: %s"
 msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Engin atriðisháttur valinn fyrir núverandi atriði."
 
 msgid "Not yet available"
 msgstr "Ekki tiltækt"
@@ -129,7 +125,7 @@ msgid "Please select first the item type!"
 msgstr "Veldu fyrst tegund atriðis!"
 
 msgid "Portrait"
-msgstr ""
+msgstr "Lóðrétt"
 
 #, tao-public
 msgid "Preview"
@@ -149,7 +145,7 @@ msgid "Remove this message"
 msgstr "Fjarlægja þessi skilaboð"
 
 msgid "Retrieving external resources"
-msgstr ""
+msgstr "Sæki ytri tilföng"
 
 #, tao-public
 msgid "Search"
@@ -159,10 +155,10 @@ msgid "Submit"
 msgstr "Senda"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Atriðaeiningin gerir kleift að búa til og hanna atriði og æfingar."
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr ""
+msgstr "Þessa forskoðun má kvarða svo að hún passi á skjáinn. Lokaútlit kann að vera mismunandi."
 
 #, tao-public
 msgid "Translate"
@@ -172,7 +168,7 @@ msgid "Unable to copy resources for language %s"
 msgstr ""
 
 msgid "Unable to create deployement directory"
-msgstr ""
+msgstr "Get ekki búið til skráasafn fyrir útfærslur"
 
 msgid "You checked out this item %2s ago"
 msgstr ""

@@ -1,12 +1,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.1.0-sprint04\n"
-"PO-Revision-Date: 2015-12-22T13:38:00\n"
+"PO-Revision-Date: 2015-12-22T13:38:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: es-ES\n"
+"Language: uk-UA\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: es-ES\n"
+"targetLanguage: uk-UA\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
@@ -14,26 +14,23 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
-msgstr "Tamaño actual"
+msgstr ""
 
 #, tao-public
 msgid "Authoring"
-msgstr "Autoria"
+msgstr ""
 
 msgid "Class saved"
-msgstr "Clase guardada"
+msgstr ""
 
 msgid "Close"
-msgstr "Cerrar"
+msgstr ""
 
 msgid "Close console"
-msgstr "Cerrar consola"
+msgstr ""
 
 msgid "Could not create language specific directory for item \'%s\"
-msgstr "No puede crear el lenguaje en el directorio especificado para el articulo \\'%s\\"\n"
-"\n"
-"#, tao-public\n"
-"msgid "
+msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -41,141 +38,141 @@ msgstr ""
 
 #, tao-public
 msgid "Delete"
-msgstr "Eliminar"
+msgstr ""
 
 msgid "Desktop preview"
-msgstr "Vista previa del escritorio"
+msgstr ""
 
 msgid "Don’t show this again!"
-msgstr "No volver a mostrar esto!"
+msgstr ""
 
 #, tao-public
 msgid "Duplicate"
-msgstr "Duplicar"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Editar elemento"
+msgstr ""
 
 msgid "Edit Item"
-msgstr "Editar Elemento"
+msgstr ""
 
 msgid "Edit item class"
-msgstr "Editar elemento de clase"
+msgstr ""
 
 #, tao-public
 msgid "Export"
-msgstr "Exportar"
+msgstr ""
 
 msgid "Failed retrieving %s"
-msgstr "Error recuperando %s"
+msgstr ""
 
 msgid "Failed to publish %s"
-msgstr "Error al publicar %s"
+msgstr ""
 
 #, tao-public
 msgid "Filter"
-msgstr "Filtro"
+msgstr ""
 
 #, tao-public
 msgid "Import"
-msgstr "Importar"
+msgstr ""
 
 msgid "Item \'%s\' has no model"
-msgstr "Elemento \\'%s\\' no tiene modelo"
+msgstr ""
 
 msgid "Item Model"
-msgstr "Modelo de elemento"
+msgstr ""
 
 msgid "Item saved"
-msgstr "Elemento fguardado"
+msgstr ""
 
 #, tao-public
 msgid "Items"
-msgstr "Elementos"
+msgstr ""
 
 #, tao-public
 msgid "Items library"
-msgstr "Biblioteca de elementos"
+msgstr ""
 
 msgid "Landscape"
-msgstr "Horizontal"
+msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr "Gestionar elementos"
+msgstr ""
 
 msgid "Mobile preview"
-msgstr "Vista previa para móviles"
+msgstr ""
 
 #, tao-public
 msgid "Move"
-msgstr "Mover"
+msgstr ""
 
 #, tao-public
 msgid "New class"
-msgstr "Nueva clase"
+msgstr ""
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Ninguna herramienta de elemento de autoria disponible para el tipo seleccionado del elemento: %s"
+msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Ningún tipo de elemento seleccionado para el elemento actual."
+msgstr ""
 
 msgid "Not yet available"
-msgstr "No disponible aún"
+msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Por favor seleccione primero el tipo de elemento!"
+msgstr ""
 
 msgid "Portrait"
-msgstr "Vertical"
+msgstr ""
 
 #, tao-public
 msgid "Preview"
-msgstr "Vista previa"
+msgstr ""
 
 #, tao-public
 msgid "Properties"
-msgstr "Propiedades"
+msgstr ""
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr "Publicado \"%1$s\" en idioma \"%2$s"
+msgstr ""
 
 msgid "Published %s"
-msgstr "Publicado %s"
+msgstr ""
 
 msgid "Remove this message"
-msgstr "Remover este mensaje"
+msgstr ""
 
 msgid "Retrieving external resources"
-msgstr "Recuperando recursos externos"
+msgstr ""
 
 #, tao-public
 msgid "Search"
-msgstr "Buscar"
+msgstr ""
 
 msgid "Submit"
-msgstr "Enviar"
+msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "El módulo de Elementos permite la creación y diseño de elementos y ejercicios."
+msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "Esta vista previa puede ser escalada para adaptarse a su pantalla. El renderizado final puede diferir."
+msgstr ""
 
 #, tao-public
 msgid "Translate"
-msgstr "Traducción"
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
-msgstr "No se puede copiar recurso para idioma %s"
+msgstr ""
 
 msgid "Unable to create deployement directory"
-msgstr "No se puede crear directorio desarrollo"
+msgstr ""
 
 msgid "You checked out this item %2s ago"
-msgstr "Marcó este elemento hace %2s"
+msgstr ""
 
 msgid "Your path contains error"
-msgstr "Su ruta contiene errores"
+msgstr ""
 

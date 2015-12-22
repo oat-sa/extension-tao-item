@@ -1,12 +1,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.1.0-sprint04\n"
-"PO-Revision-Date: 2015-12-22T13:38:01\n"
+"PO-Revision-Date: 2015-12-22T13:38:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: is-IS\n"
+"Language: uk-UA\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: is-IS\n"
+"targetLanguage: uk-UA\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
@@ -23,10 +23,10 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelIndex
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model Index"
-msgstr "Yfirlit yfir Atriðislíkön"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Index"
-msgstr "Yfirlit yfir Atriðisinnihald"
+msgstr ""
 
