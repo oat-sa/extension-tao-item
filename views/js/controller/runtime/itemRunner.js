@@ -17,13 +17,14 @@
  *
  *
  */
-define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
-    function($, _, iframeResizer, iframeNotifier, UrlParser){
+define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
+    function($, _, iframeNotifier, UrlParser){
+        'use strict';
 
         var itemRunner = {
             start : function(options){
 
-                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;height:100%;overflow:hidden" scrolling="no"></iframe>');
+                var $frame = $('<iframe id="item-container" class="toolframe" frameborder="0" style="width:100%;" scrolling="no"></iframe>');
                 $frame.appendTo('body');
                 var itemId = options.itemId;
                 var itemPath = options.itemPath;
@@ -43,8 +44,28 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
 
                     var resultServerApi = new ResultServerApi(resultServer.endpoint, resultServer.params);
 
+                    var setIframeHeight = function(newHeight) {
+
+                        var neverResized = $frame.height() === 150;
+
+                        var resize = function resize(newHeight, notifyParent) {
+                            $frame.css({height: newHeight});
+                            if(notifyParent) {
+                                iframeNotifier.parent('heightchange', newHeight);
+                            }
+                        };
+
+                        resize(newHeight || $frame.contents().outerHeight(true), !newHeight);
+
+                        if(neverResized) {
+                            _.delay(function() {
+                                resize($frame.contents().outerHeight(true), true);
+                            }, 200);
+                        }
+                    };
+
                     window.onServiceApiReady = function(serviceApi){
-                        
+
                         var itemApi = new ItemService(_.merge({
                             serviceApi : serviceApi,
                             itemId : itemId,
@@ -58,24 +79,33 @@ define(['jquery', 'lodash', 'iframeResizer', 'iframeNotifier', 'urlParser'],
                         itemUrl.addParam('clientConfigUrl', clientConfigUrl);
                         itemUrl.addParam('timeout', timeout);
 
-                        iframeResizer.autoHeight($frame, 'body', 10);
-                        
                         $(document).on('itemloaded', function() {
+                            setIframeHeight();
                             iframeNotifier.parent('serviceloaded');
-                        });
-                        
-                        $(document).on('itemready', function() {
+
+                            $frame.contents().find('img').on('load', _.throttle(function() {
+                                setIframeHeight();
+                            }, 50));
+                        }).on('responsechange', function(e, responseId, response){
+                            iframeNotifier.parent('responsechange', [responseId, response]);
+                        }).on('stateready', function(e, elmentId, state){
+                            iframeNotifier.parent('stateready', [elmentId, state]);
+                        }).on('itemready', function() {
                             // item is ready, we can connect.
                             itemApi.connect($frame[0]);
                         });
-                        
+
                         $frame.on('load', function(){
                             itemApi.connect($frame[0]);
-                            
+
                             if (isCORSAllowed === true) {
                                 this.contentWindow.__knownParent__ = true;
                             }
-                        }); 
+
+                            $('body').on('setheight', function(event, height) {
+                                setIframeHeight(height);
+                            });
+                        });
                         $frame.attr('src', itemUrl.getUrl());
                     };
 

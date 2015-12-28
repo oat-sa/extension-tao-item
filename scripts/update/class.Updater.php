@@ -35,22 +35,22 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
      */
     public function update($initialVersion) {
         
-        $currentVersion = $initialVersion;
+     
         
         //migrate from 2.6 to 2.6.1
-        if ($currentVersion == '2.6') {
+        if ($this->isVersion('2.6')) {
         
             $file = dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_1.rdf';
         
             $adapter = new tao_helpers_data_GenerisAdapterRdf();
             if($adapter->import($file)){
-                $currentVersion = '2.6.1';
+                $$this->setVerion('2.6.1');
             } else{
                 common_Logger::w('Import failed for '.$file);
             }
         }
         
-        if ($currentVersion == '2.6.1') {
+        if ($this->isVersion('2.6.1')) {
             
             // double check
             $index = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex');
@@ -63,26 +63,26 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             
                 $adapter = new tao_helpers_data_GenerisAdapterRdf();
                 if($adapter->import($file)){
-                    $currentVersion = '2.6.2';
+                    $this->setVerion('2.6.2');
                 } else{
                     common_Logger::w('Import failed for '.$file);
                 }
                 
             } else {
                 common_Logger::w('Defautl Search already set');
-                $currentVersion = '2.6.2';
+                $$this->setVerion('2.6.2');
             }
         }
         
-        if ($currentVersion == '2.6.2') {
+        if ($this->isVersion('2.6.2')) {
             
             OntologyUpdater::correctModelId(dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_1.rdf');
             OntologyUpdater::correctModelId(dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_2.rdf');
-            $currentVersion = '2.6.3';
+            $this->setVerion('2.6.3');
         
         }
         
-        if ($currentVersion == '2.6.3') {
+        if ($this->isVersion('2.6.3')) {
             // update user roles
             $class = new core_kernel_classes_Class(CLASS_TAO_USER);
             $itemManagers = $class->searchInstances(array(
@@ -92,28 +92,27 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             foreach ($itemManagers as $user) {
                 $user->setPropertyValue(new core_kernel_classes_Property(PROPERTY_USER_ROLES),ItemAuthorRole::INSTANCE_URI);
             }
-            $currentVersion = '2.6.4';
+            $this->setVerion('2.6.4');
         
         }
         
-        if ($currentVersion == '2.6.4') {
-            $currentVersion = '2.6.5';
+        if ($this->isBetween('2.6.4','2.8')) {
+            $this->setVersion('2.8');
         }
-        if ($currentVersion == '2.6.5') {
-            $currentVersion = '2.7.0';
-        }
-        if ($currentVersion == '2.7.0') {
-            $currentVersion = '2.8';
-        }
+
         // fix itemModelLabelProp
-        if ($currentVersion == '2.8') {
+        if ($this->isVersion('2.8')) {
             $fakeProperty = new core_kernel_classes_Property('itemModelLabel');
             $iterator = new core_kernel_classes_ResourceIterator(array(taoItems_models_classes_ItemsService::singleton()->getRootClass()));
             foreach ($iterator as $resource) {
                 $resource->removePropertyValues($fakeProperty);
             }
-            $currentVersion = '2.8.1';
+            $this->setVersion('2.8.1');
         }
-        return $currentVersion;
+
+        if ($this->isVersion('2.8.1')) {
+            $this->setVersion('2.9');
+        }
+        return null;
     }
 }

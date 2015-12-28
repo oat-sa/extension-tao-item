@@ -27,8 +27,8 @@ define(
         'serviceApi/UserInfoService',
         'taoItems/runtime/ItemServiceImpl',
         'taoItems/preview/preview-console',
-        'urlParser',
-        'iframeResizer'
+        'taoItems/preview/actionBarHook',
+        'urlParser'
     ],
     function (
         module,
@@ -39,9 +39,30 @@ define(
         UserInfoService,
         ItemServiceImpl,
         previewConsole,
-        UrlParser,
-        iframeResizer
+        actionBarHook,
+        UrlParser
         ) {
+
+        'use strict';
+
+
+        /**
+         * Custom Buttons, usually defined in a custom extension
+         *
+         * @private
+         */
+        var _initCustomButtons = function _initCustomButtons() {
+
+            var config = module.config(),
+                buttons = config.extraButtons || {},
+                $container = $('.extra-button-action-bar');
+
+
+            _.forIn(buttons, function(config, id) {
+                actionBarHook.initExtraButtons($container, id, config);
+            });
+
+        };
 
         var previewItemRunner = {
 
@@ -87,9 +108,6 @@ define(
                         //the iframe is 1st detached and then attached with src in order to prevent adding an entry in the history
                         var $frame = $('<iframe id="preview-container" name="preview-container" src="' + callUrl.getUrl() + '"></iframe>');
 
-                        iframeResizer.autoHeight($frame, 'body', 10);
-
-
 
                         $frame.on('load', function () {
                             var frame = this;
@@ -104,8 +122,13 @@ define(
                                 frame.contentWindow.__knownParent__ = true;
                             }
                             //then we can wait a specific event triggered from the item
-                            $(document).on('itemready', function () {
+                            $(document).off('itemready').on('itemready', function () {
                                 itemApi.connect(frame);
+                                if(frame.contentWindow.__knownParent__) {
+                                    frame.contentWindow.document.body.className += ' tao-preview-scope';
+
+                                    _initCustomButtons();
+                                } 
                             });
                         });
 
