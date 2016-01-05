@@ -20,7 +20,6 @@
  *               2013 (update and modification) Open Assessment Technologies SA;
  */
 
-use \oat\taoMediaManager\model\FileManager;
 use oat\taoItems\model\media\ItemMediaResolver;
 /**
  * Preview API 
