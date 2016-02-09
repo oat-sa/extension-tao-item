@@ -23,13 +23,14 @@
 define([
     'jquery',
     'lodash',
+    'core/eventifier',
     'taoItems/assets/manager'
-], function($, _, assetManagerFactory){
+], function($, _, eventifier, assetManagerFactory){
     'use strict';
 
      /**
      *
-     * Builds a brand new {@link ItemRunner}.
+     * Builds a brand new {@link itemRunner}.
      *
      * <strong>The factory is an internal mechanism to create encapsulated contexts.
      *  I suggest you to use directly the name <i>itemRunner</i> when you require this module.</strong>
@@ -55,12 +56,11 @@ define([
      * @param {String} [providerName] - the name of a provider previously registered see {@link itemRunnerFactory#register}
      * @param {Object} [data] - the data of the item to run
      *
-     * @returns {ItemRunner}
+     * @returns {itemRunner}
      */
     var itemRunnerFactory = function itemRunnerFactory(providerName, data, options){
 
-        var ItemRunner,
-            provider,
+        var provider,
             providers,
             assetManager;
 
@@ -119,15 +119,15 @@ define([
 
 
        /**
-        * The ItemRunner
-        * @typedef {Object} ItemRunner
+        * The itemRunner
+        * @typedef {Object} itemRunner
         */
 
         /**
-        * @type {ItemRunner}
+        * @type {itemRunner}
         * @lends itemRunnerFactory
         */
-        ItemRunner = {
+        return eventifier({
 
             /**
              * Items container
@@ -151,9 +151,9 @@ define([
             /**
              * Initialize the runner.
              * @param {Object} [newData] - just in case you want to change item data (it should not occurs in most case)
-             * @returns {ItemRunner} to chain calls
+             * @returns {itemRunner} to chain calls
              *
-             * @fires ItemRunner#init
+             * @fires itemRunner#init
              */
             init : function(newData){
                 var self = this;
@@ -177,7 +177,7 @@ define([
 
                     /**
                      * the runner has initialized correclty the item
-                     * @event ItemRunner#init
+                     * @event itemRunner#init
                      */
                     self.trigger('init');
                 };
@@ -210,7 +210,7 @@ define([
              * @param {AssetStrategy[]} strategies - the resolving strategies
              * @param {Object} [data] - the context data
              * @param {Object} [options] - the asset manager options
-             * @returns {ItemRunner} to chain calls
+             * @returns {itemRunner} to chain calls
              */
             assets : function assets(strategies, data, options){
 
@@ -227,14 +227,14 @@ define([
              * Initialize the current item.
              *
              * @param {HTMLElement|jQueryElement} elt - the DOM element that is going to contain the rendered item.
-             * @returns {ItemRunner} to chain calls
+             * @returns {itemRunner} to chain calls
              *
-             * @fires ItemRunner#ready
-             * @fires ItemRunner#render
-             * @fires ItemRunner#error if the elt isn't valid
+             * @fires itemRunner#ready
+             * @fires itemRunner#render
+             * @fires itemRunner#error if the elt isn't valid
              *
-             * @fires ItemRunner#statechange the provider is reponsible to trigger this event
-             * @fires ItemRunner#responsechange  the provider is reponsible to trigger this event
+             * @fires itemRunner#statechange the provider is reponsible to trigger this event
+             * @fires itemRunner#responsechange  the provider is reponsible to trigger this event
              */
            render : function(elt){
                 var self = this;
@@ -258,14 +258,14 @@ define([
 
                     /**
                      * The item is rendered
-                     * @event ItemRunner#render
+                     * @event itemRunner#render
                      */
                     self.trigger('render');
 
                     /**
                      * The item is ready.
-                     * Alias of {@link ItemRunner#render}
-                     * @event ItemRunner#ready
+                     * Alias of {@link itemRunner#render}
+                     * @event itemRunner#ready
                      */
                     self.trigger('ready');
                 };
@@ -310,9 +310,9 @@ define([
 
            /**
             * Clear the running item.
-            * @returns {ItemRunner}
+            * @returns {itemRunner}
             *
-            * @fires ItemRunner#clear
+            * @fires itemRunner#clear
             */
            clear : function(){
                 var self = this;
@@ -326,7 +326,7 @@ define([
 
                     /**
                      * The item is ready.
-                     * @event ItemRunner#clear
+                     * @event itemRunner#clear
                      */
                     self.trigger('clear');
                 };
@@ -371,9 +371,9 @@ define([
             * This should have the effect to restore the item state.
             *
             * @param {Object} state - the new state
-            * @returns {ItemRunner}
+            * @returns {itemRunner}
             *
-            * @fires ItemRunner#error if the state type doesn't match
+            * @fires itemRunner#error if the state type doesn't match
             */
            setState : function(state){
 
@@ -418,66 +418,8 @@ define([
                     responses = provider.getResponses.call(this);
                 }
                 return responses;
-           },
-
-           /**
-            * Attach an event handler.
-            * Calling `on` with the same eventName multiple times add callbacks: they
-            * will all be executed.
-            *
-            * @example itemRunner()
-            *               .on('statechange', function(state){
-            *                   //state === this.getState()
-            *               });
-            *
-            * @param {String} name - the name of the event to listen
-            * @param {Function} handler - the callback to run once the event is triggered. It's executed with the current itemRunner context (ie. this
-            * @returns {ItemRunner}
-            */
-            on : function(name, handler){
-                if(_.isString(name) && _.isFunction(handler)){
-                    events[name] = events[name] || [];
-                    events[name].push(handler);
-                }
-                return this;
-            },
-
-            /**
-            * Remove handlers for an event.
-            *
-            * @example itemRunner().off('statechange');
-            *
-            * @param {String} name - the event name
-            * @returns {ItemRunner}
-            */
-            off : function(name){
-                if(_.isString(name)){
-                    events[name] = [];
-                }
-                return this;
-            },
-
-            /**
-            * Trigger an event manually.
-            *
-            * @example itemRunner().trigger('statechange', new State());
-            *
-            * @param {String} name - the name of the event to trigger
-            * @param {*} data - arguments given to the handlers
-            * @returns {ItemRunner}
-            */
-            trigger : function(name, data){
-                var self = this;
-                if(_.isString(name) && _.isArray(events[name])){
-                    _.forEach(events[name], function(event){
-                        event.call(self, data);
-                    });
-                }
-                return this;
-            }
-        };
-
-        return ItemRunner;
+           }
+        });
     };
 
     /**
