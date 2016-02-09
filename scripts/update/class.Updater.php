@@ -110,9 +110,8 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('2.8.1');
         }
 
-        if ($this->isVersion('2.8.1')) {
-            $this->setVersion('2.9');
-        }
+        $this->skip('2.8.1','2.9.2');
+        
         return null;
     }
 }
