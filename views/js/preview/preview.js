@@ -331,6 +331,7 @@ define([
 
         $feedbackCloser.on('click', function () {
             $feedbackBox.hide();
+            $body.addClass('no-preview-feedback');
             _positionPreview();
             _scale();
         });
@@ -569,6 +570,7 @@ define([
         $feedbackBox = overlay.find('.preview-message-box');
         if ($.cookie('hidePreviewFeedback')) {
             $feedbackBox.hide();
+            $body.addClass('no-preview-feedback');
         }
 
         $console = overlay.find('#preview-console');
