@@ -26,8 +26,8 @@ use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use taoItems_models_classes_ItemsService;
 use Prophecy\Argument;
-use oat\taoOpenWebItem\model\OwiItemModel;
 
+include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
  *
@@ -50,6 +50,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         TaoPhpUnitTestRunner::initTest();
         $this->itemsService = \taoItems_models_classes_ItemsService::singleton();
+        \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
     }
 
     /**
@@ -143,13 +144,38 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testItemContent($instance)
     {
-        $this->assertFalse($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
+
+        $this->assertFalse($this->itemsService->hasItemModel($instance, array('http://tao.local/mytao.rdf#MyItemModelUri')));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
         $this->itemsService->setDefaultItemContent($instance);
         $this->assertFileExists($this->itemsService->getDefaultItemFolder($instance));
 
-        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), OwiItemModel::ITEMMODEL_URI);
+        $itemModelMock = $this->getMock('oat\taoOpenWebItem\model\OwiItemModel', array('getCompilerClass'), array(), "", false);
+        $itemModelMock->expects($this->once())
+            ->method('getCompilerClass')
+            ->willReturn('myCompilerClass');
+
+
+        $itemModel = new core_kernel_classes_Class('http://tao.local/mytao.rdf#MyItemModelUri');
+        $itemModels = new core_kernel_classes_Class(TAO_ITEM_MODEL_CLASS);
+        $itemModel->setType($itemModels);
+        $itemModel->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY), 'myFile.xml');
+        $itemModel->setPropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY), TAO_ITEM_MODEL_STATUS_STABLE);
+        $itemModel->setPropertyValue(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE), get_class($itemModelMock));
+
+        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), $itemModel);
+
+        $serviceMock = $this->getMock('taoItems_models_classes_ItemsService', array('getItemModelImplementation', 'getItemModel'), array(), "", false);
+        $serviceMock->expects($this->once())
+            ->method('getItemModel')
+            ->with($instance)
+            ->willReturn($itemModel);
+
+        $serviceMock->expects($this->once())
+            ->method('getItemModelImplementation')
+            ->with($itemModel)
+            ->willReturn($itemModelMock);
 
         //is really empty
         $this->assertFalse($this->itemsService->hasItemContent($instance));
@@ -166,11 +192,11 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
         $this->assertStringStartsWith(LOCAL_NAMESPACE, $instance->getUri());
-        $this->assertTrue($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
+        $this->assertTrue($this->itemsService->hasItemModel($instance, array('http://tao.local/mytao.rdf#MyItemModelUri')));
 
         $this->assertStringStartsWith(ROOT_URL, $this->itemsService->getPreviewUrl($instance));
 
-        $this->assertEquals('taoItems_models_classes_ItemCompiler', $this->itemsService->getCompilerClass($instance));
+        $this->assertEquals('myCompilerClass', $serviceMock->getCompilerClass($instance));
 
         $this->assertEquals(count($this->itemsService->getAllByModel($instance)), 0);
         $this->assertEquals(count($this->itemsService->getAllByModel(null)), 0);
@@ -182,6 +208,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $dataPath = FILES_PATH . 'taoItems' . DIRECTORY_SEPARATOR. 'itemData' . DIRECTORY_SEPARATOR;
         $source = \tao_models_classes_FileSourceService::singleton()->addLocalSource('itemDirectory', $dataPath);
         $this->assertNotFalse($this->itemsService->setDefaultFilesource($source));
+        $itemModel->delete(true);
     }
 
     public function testIsItemClass()
