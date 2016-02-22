@@ -341,12 +341,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
                     $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang
             );
             $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
-            $file->setContent($content);
-            $returnValue = $file->add(true, true);
-        }
-
-        if($commitMessage != 'HOLD_COMMIT'){//hack to control commit or not
-            $returnValue = $file->commit($commitMessage);
+            $returnValue = $file->setContent($content);
         }
 
         return (bool) $returnValue;
@@ -587,14 +582,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             foreach($files->getIterator() as $file){
                 if ($file instanceof core_kernel_classes_Resource) {
                     $file = new core_kernel_file_File($file);
-                    if(core_kernel_versioning_File::isVersionedFile($file)){
-                        $file = new core_kernel_versioning_File($file);
-                    }
-                    try{
-                        $file->delete();
-                    }catch(core_kernel_versioning_exception_FileUnversionedException $e){
-                        // file was not versioned after all, ignore in delte
-                    }
+                    $file->delete();
                 }
             }
         }
@@ -631,28 +619,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         }
 
         return $returnValue;
-    }
-
-    /**
-     * Short description of method isItemVersioned
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @return boolean
-     */
-    public function isItemVersioned(core_kernel_classes_Resource $item){
-        $returnValue = (bool) false;
-
-        $files = $item->getPropertyValues($this->itemContentProperty);
-        foreach($files as $file){
-            // theoreticaly this should always be no or a single file 
-            if($file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))){
-                $returnValue = true;
-            }
-        }
-
-        return (bool) $returnValue;
     }
 
     /**
