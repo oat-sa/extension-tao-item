@@ -96,8 +96,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $resolver = new ItemMediaResolver($item, $lang);
         $asset = $resolver->resolve($path);
 
-        $renderer = $this->getServiceManager()->get(MediaRendererInterface::SERVICE_ID);
-        $renderer->render($asset->getMediaIdentifier());
+        $asset->getMediaSource()->render($asset->getMediaIdentifier());
     }
 
     /**

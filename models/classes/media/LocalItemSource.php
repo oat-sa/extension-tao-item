@@ -142,6 +142,14 @@ class LocalItemSource implements MediaManagement
         return $sysPath;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \oat\tao\model\media\MediaBrowser::render
+     */
+    public function render($link){
+        $filePath = $this->download($link);
+        \tao_helpers_Http::returnFile($filePath);
+    }
 
     /**
      * (non-PHPdoc)

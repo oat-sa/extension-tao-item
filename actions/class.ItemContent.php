@@ -20,6 +20,7 @@
  */
 
 use oat\taoItems\model\media\ItemMediaResolver;
+use oat\tao\model\media\MediaRendererInterface;
 /**
  * Items Content Controller provide access to the files of an item
  *
@@ -216,15 +217,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $rawParams = $this->getRequest()->getRawParameters();//have to use raw value to respect special characters in names
         $asset = $resolver->resolve($rawParams['path']);
-        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
-        
-        $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
-        
-        if ($info['mime'] != 'application/qti+xml') {
-            header('Content-Type: ' . $info['mime']);
-        }
-        
-        \tao_helpers_Http::returnFile($filePath, false, $svgzSupport);
+
+        $asset->getMediaSource()->render($asset->getMediaIdentifier());
     }
     
     /**
