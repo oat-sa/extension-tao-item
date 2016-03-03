@@ -21,6 +21,7 @@
  */
 
 use oat\taoItems\model\media\ItemMediaResolver;
+use oat\tao\model\media\MediaRendererInterface;
 /**
  * Preview API 
  *
@@ -94,8 +95,8 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $lang = common_session_SessionManager::getSession()->getDataLanguage();
         $resolver = new ItemMediaResolver($item, $lang);
         $asset = $resolver->resolve($path);
-        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
-        \tao_helpers_Http::returnFile($filePath);
+
+        $asset->getMediaSource()->render($asset->getMediaIdentifier());
     }
 
     /**
