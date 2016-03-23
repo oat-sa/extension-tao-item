@@ -111,6 +111,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('2.8.1','2.9.6');
+        $this->skip('2.9.6','2.9.7');
         
         return null;
     }
