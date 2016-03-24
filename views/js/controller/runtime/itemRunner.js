@@ -93,7 +93,7 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                         }).on('itemready', function() {
                             // item is ready, we can connect.
                             itemApi.connect($frame[0]);
-                        }).on('imageloaded', function() {
+                        }).on('itemcontentchange', function() {
                             setIframeHeight();
                         });
 

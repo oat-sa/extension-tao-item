@@ -301,20 +301,6 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         
         
     }
-    
-    
-    public function testIsItemVersioned()
-    {
-        $item = $this->prophesize('core_kernel_classes_Resource');
-        $file = $this->prophesize('core_kernel_classes_Resource');
-        $file->hasType(new core_kernel_classes_Class(CLASS_GENERIS_FILE))
-            ->willReturn(true);
-        $item->getPropertyValues(Argument::which('getUri' , TAO_ITEM_CONTENT_PROPERTY))
-            ->willReturn(array($file->reveal()));
-        
-        $this->assertTrue($this->itemsService->isItemVersioned($item->reveal()));
-    }
-    
         
     public function testIsItemModelDefined()
     {
