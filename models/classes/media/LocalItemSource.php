@@ -185,7 +185,7 @@ class LocalItemSource implements MediaManagement
     {
         $sysPath = $this->getSysPath($link);
         $fh = fopen($sysPath, 'r');
-        return new Stream($fh, ['size' => filesize($sysPath)]);
+        return new Stream($fh);
     }
 
     /**
