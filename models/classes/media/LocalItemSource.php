@@ -143,6 +143,10 @@ class LocalItemSource implements MediaManagement
         return $sysPath;
     }
 
+    public function getBaseName($link)
+    {
+        return basename($link);
+    }
 
     /**
      * (non-PHPdoc)
