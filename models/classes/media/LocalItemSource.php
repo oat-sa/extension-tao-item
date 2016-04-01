@@ -173,11 +173,11 @@ class LocalItemSource implements MediaManagement
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaManagement::delete
      */
-    public function delete($filename)
+    public function delete($link)
     {
         $deleted = false;
 
-        $sysPath = $this->getSysPath($filename);
+        $sysPath = $this->getSysPath($link);
         if(is_file($sysPath) && !is_dir($sysPath)){
             $deleted = unlink($sysPath);
         }
