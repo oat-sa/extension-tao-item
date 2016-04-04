@@ -25,6 +25,7 @@ use oat\tao\model\media\MediaManagement;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
+use Slim\Http\Stream;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -142,6 +143,10 @@ class LocalItemSource implements MediaManagement
         return $sysPath;
     }
 
+    public function getBaseName($link)
+    {
+        return basename($link);
+    }
 
     /**
      * (non-PHPdoc)
@@ -168,16 +173,23 @@ class LocalItemSource implements MediaManagement
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaManagement::delete
      */
-    public function delete($filename)
+    public function delete($link)
     {
         $deleted = false;
 
-        $sysPath = $this->getSysPath($filename);
+        $sysPath = $this->getSysPath($link);
         if(is_file($sysPath) && !is_dir($sysPath)){
             $deleted = unlink($sysPath);
         }
 
         return $deleted;
+    }
+    
+    public function getFileStream($link)
+    {
+        $sysPath = $this->getSysPath($link);
+        $fh = fopen($sysPath, 'r');
+        return new Stream($fh);
     }
 
     /**
