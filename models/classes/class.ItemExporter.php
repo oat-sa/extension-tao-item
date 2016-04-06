@@ -40,6 +40,9 @@
  * @package taoItems
  
  */
+
+use Psr\Http\Message\StreamInterface;
+
 abstract class taoItems_models_classes_ItemExporter {
 
 	private $item;
@@ -124,7 +127,7 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * For instance, if you want to copy the file 'taoItems/data/i123/item.xml' as 'myitem.xml' to your archive call addFile('path_to_item_location/item.xml', 'myitem.xml').
 	 * As a result, you will get a file entry in the final ZIP archive at '/i123/myitem.xml'.
 	 * 
-	 * @param string $src The path to the source file or folder to copy into the ZIP Archive.
+	 * @param string | StreamInterface $src The path to the source file or folder to copy into the ZIP Archive.
 	 * @param string *dest The <u>relative</u> to the destination within the ZIP archive.
 	 * @return integer The amount of files that were transfered from TAO to the ZIP archive within the method call.
 	 */
@@ -133,8 +136,11 @@ abstract class taoItems_models_classes_ItemExporter {
 
 		$done = 0;
 		$zip = $this->getZip();
-		
-		if (is_dir($src)) {
+		if ($src instanceof StreamInterface) {
+			if ($zip->addFromString(ltrim($dest, "/\\"), $src->getContents())) {
+				$done++;
+			}
+		} elseif (is_dir($src)) {
 			// Go deeper in folder hierarchy !
 			$src .= DIRECTORY_SEPARATOR;
 			$dest .= '/';
