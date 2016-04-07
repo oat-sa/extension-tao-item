@@ -132,38 +132,9 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * @return integer The amount of files that were transfered from TAO to the ZIP archive within the method call.
 	 */
 	public function addFile($src, $dest) {
-		$returnValue = null;
 
-		$done = 0;
 		$zip = $this->getZip();
-		if ($src instanceof StreamInterface) {
-			if ($zip->addFromString(ltrim($dest, "/\\"), $src->getContents())) {
-				$done++;
-			}
-		} elseif (is_dir($src)) {
-			// Go deeper in folder hierarchy !
-			$src .= DIRECTORY_SEPARATOR;
-			$dest .= '/';
-			// Recursively copy.
-			$content = scandir($src);
-			
-			foreach ($content as $file) {
-				// avoid . , .. , .svn etc ...
-				if(!preg_match("/^\./", $file)) {
-					$done += $this->addFile($src . $file, $dest . $file);
-				}
-			}
-		}
-		else {
-			// Simply copy the file. Beware of leading slashes
-			if($zip->addFile($src, ltrim($dest, "/\\"))){
-				$done++;
-			}
-		}
-		
-		$returnValue = $done;
-		
-		return $returnValue;
+		return tao_helpers_File::addFilesToZip($zip, $src, $dest);
 	}
 	
 	public abstract function export();
