@@ -105,6 +105,13 @@ define([ 'jquery' ], function($) {
         this.stateVariables[identifier] = value;
         this.serviceApi.setState(JSON.stringify(this.stateVariables));
     };
-
+    
+    ItemServiceImpl.prototype.setVariables = function(values) {
+        for(var v in values){
+            this.stateVariables[v] = values[v];
+        }
+        this.serviceApi.setState(JSON.stringify(this.stateVariables));
+    };
+    
     return ItemServiceImpl;
 });

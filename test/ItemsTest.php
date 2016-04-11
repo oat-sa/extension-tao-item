@@ -178,10 +178,6 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertContains('test2',$this->itemsService->render($instance, $this->itemsService->getSessionLg()));
 
         $this->assertFalse($this->itemsService->hasModelStatus($instance, array(TAO_ITEM_MODEL_STATUS_DEPRECATED)));
-
-        $dataPath = FILES_PATH . 'taoItems' . DIRECTORY_SEPARATOR. 'itemData' . DIRECTORY_SEPARATOR;
-        $source = \tao_models_classes_FileSourceService::singleton()->addLocalSource('itemDirectory', $dataPath);
-        $this->assertNotFalse($this->itemsService->setDefaultFilesource($source));
     }
 
     public function testIsItemClass()
