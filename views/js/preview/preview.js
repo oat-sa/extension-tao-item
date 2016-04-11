@@ -58,7 +58,8 @@ define([
         $feedbackBox,
         $console,
         previewContainerMaxWidth,
-        itemUri;
+        itemUri,
+        winScrollObj = { x:0, y:0 };
 
 
     /**
@@ -316,6 +317,9 @@ define([
         $closer.on('click', function () {
             $doc.trigger('itemunload.preview');
 //            commonRenderer.setContext($('.item-editor-item'));
+
+            window.scrollTo(winScrollObj.x, winScrollObj.y);
+
             overlay.hide();
             $body.removeClass('preview-mode');
 
@@ -512,6 +516,9 @@ define([
             url: itemUri,
             dataType: 'html'
         }).done(function (data) {
+
+            winScrollObj = { x: window.scrollX, y: window.scrollY };
+            window.scrollTo(0,0);
 
             $body.addClass('preview-mode');
 
