@@ -45,8 +45,8 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule {
 		}
 		
 		$directory = $this->getDirectory($this->getRequestParameter('itemPath'));
-		$basepath = $directory->getPath();
-		if (!file_exists($basepath.$lang) && file_exists($basepath.DEFAULT_LANG)) {
+
+		if (!$directory->has($lang) && $directory->has(DEFAULT_LANG)) {
 		    $lang = DEFAULT_LANG;
 		}
 
