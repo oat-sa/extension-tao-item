@@ -143,6 +143,9 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testItemContent($instance)
     {
+        if(!\common_ext_ExtensionsManager::singleton()->isInstalled('taoOpenWebItem')){
+            $this->markTestSkipped('The extension taoOpenWebItem is not installed.' );
+        }    
         $this->assertFalse($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
