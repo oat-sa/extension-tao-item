@@ -114,8 +114,8 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor">
   	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#AbstractRole"/>
-  	<rdfs:label xml:lang="en-US"><![CDATA[Item Author]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Item Authoring only Role]]></rdfs:comment>
+  	<rdfs:label xml:lang="en-US"><![CDATA[Restricted Item Author]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item authoring only Role]]></rdfs:comment>
   </rdf:Description>
   
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor">
