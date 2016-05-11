@@ -21,6 +21,7 @@ define([
     'lodash',
     'i18n',
     'util/strPad',
+    'core/promise',
     'json!taoItems/preview/resources/device-list.json',
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
@@ -28,7 +29,7 @@ define([
     'ui/modal',
     'select2',
     'jquery.cookie'
-], function ($, _, __, strPad, deviceList, previewTpl, themeHandler, themeLoader) {
+], function ($, _, __, strPad, Promise, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
 
 
@@ -509,32 +510,36 @@ define([
 
     /**
      * Display the preview
+     * @returns {Promise} resolve once the preview is shown
      */
     var show = function () {
+        return new Promise(function (resolve, reject){
+            $.ajax({
+                url: itemUri,
+                dataType: 'html'
+            }).done(function (data) {
 
-        $.ajax({
-            url: itemUri,
-            dataType: 'html'
-        }).done(function (data) {
+                winScrollObj = { x: window.scrollX, y: window.scrollY };
+                window.scrollTo(0,0);
 
-            winScrollObj = { x: window.scrollX, y: window.scrollY };
-            window.scrollTo(0,0);
+                $body.addClass('preview-mode');
 
-            $body.addClass('preview-mode');
+                // $.show() does not work from the item manager
+                // this is either a miracle or a jquery bug
+                // overlay.hide().show();
+                overlay[0].style.display = 'block';
 
-            // $.show() does not work from the item manager
-            // this is either a miracle or a jquery bug
-            // overlay.hide().show();
-            overlay[0].style.display = 'block';
+                overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
+                _scale();
+                _positionPreview();
 
-            overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
-            _scale();
-            _positionPreview();
+                $('.preview-item-container').html(data);
+                resolve();
 
-            $('.preview-item-container').html(data);
+            }).fail(function(xhr){
+                reject(new Error(__('Unable to render the item from %s : %s %s', itemUri, xhr.status, xhr.statusText)));
+            });
         });
-
-
     };
 
     /**
