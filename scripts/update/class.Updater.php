@@ -21,6 +21,8 @@
 
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\ontology\ItemAuthorRole;
+use oat\tao\model\accessControl\func\AclProxy;
+use oat\tao\model\accessControl\func\AccessRule;
 
 /**
  * 
@@ -112,6 +114,10 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
         $this->skip('2.8.1','2.14.0');
         
-        return null;
+        if ($this->isVersion('2.14.0')) {
+            OntologyUpdater::syncModels();
+            AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'));
+            $this->setVersion('2.15.0');
+        }
     }
 }
