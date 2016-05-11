@@ -17,20 +17,17 @@
  *
  *
  */
-define(
-    [
-        'module',
-        'jquery',
-        'lodash',
-        'serviceApi/ServiceApi',
-        'serviceApi/PseudoStorage',
-        'serviceApi/UserInfoService',
-        'taoItems/runtime/ItemServiceImpl',
-        'taoItems/preview/preview-console',
-        'taoItems/preview/actionBarHook',
-        'urlParser'
-    ],
-    function (
+define([
+    'module',
+    'jquery',
+    'lodash',
+    'serviceApi/ServiceApi',
+    'serviceApi/PseudoStorage',
+    'serviceApi/UserInfoService',
+    'taoItems/runtime/ItemServiceImpl',
+    'taoItems/preview/actionBarHook',
+    'urlParser'],
+function (
         module,
         $,
         _,
@@ -38,11 +35,9 @@ define(
         PseudoStorage,
         UserInfoService,
         ItemServiceImpl,
-        previewConsole,
         actionBarHook,
         UrlParser
-        ) {
-
+) {
         'use strict';
 
 
@@ -71,8 +66,6 @@ define(
                 var conf = _.merge(module.config(), options || {});
 
                 if (conf.previewUrl) {
-
-                    previewConsole.setup();
 
                     var resultServer = _.defaults(conf.resultServer, {
                         module: 'taoResultServer/ResultServerApi',
@@ -128,7 +121,7 @@ define(
                                     frame.contentWindow.document.body.className += ' tao-preview-scope';
 
                                     _initCustomButtons();
-                                } 
+                                }
                             });
                         });
 
