@@ -221,7 +221,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
         
         if ($info['mime'] != 'application/qti+xml') {
+            //xinclude, try to get embedded files
             header('Content-Type: ' . $info['mime']);
+        } else{
+            $filePath = \oat\taoMediaManager\helpers\SharedStimulus::embeddedAsset($filePath);
         }
         
         \tao_helpers_Http::returnFile($filePath, false, $svgzSupport);
