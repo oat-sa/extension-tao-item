@@ -119,5 +119,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'));
             $this->setVersion('2.15.0');
         }
+
+        $this->skip('2.15.0', '2.16.0');
     }
 }
