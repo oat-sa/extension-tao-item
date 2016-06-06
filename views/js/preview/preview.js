@@ -28,7 +28,8 @@ define([
     'ui/themeLoader',
     'ui/modal',
     'select2',
-    'jquery.cookie'
+    'jquery.cookie',
+    'css!taoItemsCss/preview'
 ], function ($, _, __, strPad, Promise, deviceList, previewTpl, themeHandler, themeLoader) {
     'use strict';
 

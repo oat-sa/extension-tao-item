@@ -26,19 +26,19 @@ define([
     'serviceApi/UserInfoService',
     'taoItems/runtime/ItemServiceImpl',
     'taoItems/preview/actionBarHook',
-    'urlParser'],
-function (
-        module,
-        $,
-        _,
-        ServiceApi,
-        PseudoStorage,
-        UserInfoService,
-        ItemServiceImpl,
-        actionBarHook,
-        UrlParser
+    'urlParser'
+], function (
+    module,
+    $,
+    _,
+    ServiceApi,
+    PseudoStorage,
+    UserInfoService,
+    ItemServiceImpl,
+    actionBarHook,
+    UrlParser
 ) {
-        'use strict';
+    'use strict';
 
 
         /**
