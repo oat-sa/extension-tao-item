@@ -1,5 +1,8 @@
 <?php
 use oat\tao\model\lock\LockManager;
+use oat\oatbox\filesystem\FileSystemService;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Directory;
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -671,6 +674,41 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     public function setDefaultFilesource(core_kernel_versioning_Repository $filesource){
         $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
         $ext->setConfig(self::CONFIG_DEFAULT_FILESOURCE, $filesource->getUri());
+    }
+
+    /**
+     * Returns the items flysystem directory
+     *
+     * @param core_kernel_classes_Resource $item
+     * @param string $language
+     * @throws common_Exception
+     * @return \League\Flysystem\Directory
+     */
+    public function getItemDirectory(core_kernel_classes_Resource $item, $language = '')
+    {
+        if($language === ''){
+            $files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        }else{
+            $files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $language)->toArray();
+        }
+        if(count($files) == 0){
+            $actualLang = empty($language) ? $this->getSessionLg() : $language;
+            $repository = $this->getDefaultFileSource();
+            $file = $repository->createFile(
+                '', tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$actualLang
+            );
+            $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $actualLang);
+        }else{
+            if(count($files) > 1){
+                throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
+            }
+            $file = new core_kernel_file_File(current($files));
+            $repository = $file->getFileSystem();
+        }
+        $fss = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
+        $fs = $fss->getFileSystem($repository->getUri());
+
+        return new Directory($fs, $file->getRelativePath());
     }
 
     /**
