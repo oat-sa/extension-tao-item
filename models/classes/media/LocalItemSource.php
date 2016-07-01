@@ -26,6 +26,7 @@ use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
 use Slim\Http\Stream;
+use League\Flysystem\File;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -154,19 +155,29 @@ class LocalItemSource implements MediaManagement
      */
     public function add($source, $fileName, $parent)
     {
-        if (!\tao_helpers_File::securityCheck($fileName, true)) {
-            throw new \common_Exception('Unsecured filename "'.$fileName.'"');
-        }         
-
-        $sysPath = $this->getSysPath($parent.$fileName);
-
-        if(!tao_helpers_File::copy($source, $sysPath)){
+        $link = '/'.ltrim($parent, '/').$fileName;
+        if (!\tao_helpers_File::securityCheck($link, true)) {
+            throw new \common_Exception('Unsecured filename "'.$link.'"');
+        }
+        
+        $dir = taoItems_models_classes_ItemsService::singleton()->getItemDirectory($this->item, $this->lang);
+        $file = new File($dir->getFilesystem(),$dir->getPath().DIRECTORY_SEPARATOR.$link);
+        
+        $f = fopen($source, 'r');
+        $writeSucces = $file->writeStream($f);
+        fclose($f);
+        
+        if (!$writeSucces) {
             throw new \common_exception_Error('Unable to move file '.$source);
         }
 
-        $fileData = $this->getFileInfo('/'.ltrim($parent, '/').$fileName, array());
-        return $fileData;
-
+        return array(
+            'name' => basename($link),
+            'uri' => $link,
+            'mime' => \tao_helpers_File::getMimeType($source),
+            'filePath' => $link,
+            'size' => filesize($source),
+        );
     }
 
     /**
