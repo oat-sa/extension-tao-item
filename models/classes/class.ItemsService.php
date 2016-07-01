@@ -694,8 +694,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         if(count($files) == 0){
             $actualLang = empty($language) ? $this->getSessionLg() : $language;
             $repository = $this->getDefaultFileSource();
+            // legacy item model
+            $dataFile = (string) $this->getItemModel($item)->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
             $file = $repository->createFile(
-                '', tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$actualLang
+                $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$actualLang
             );
             $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $actualLang);
         }else{
