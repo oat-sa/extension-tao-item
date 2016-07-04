@@ -113,14 +113,13 @@ class LocalItemSource implements MediaManagement
     public function getFileInfo($link) {
 
         $file = $this->getFile($link);
-        $sysPath = $this->getSysPath($link);
-        if(file_exists($sysPath)){
+        if ($file->exists()) {
             $file = array(
                 'name' => basename($link),
                 'uri' => $link,
-                'mime' => tao_helpers_File::getMimeType($sysPath),
+                'mime' => $file->getMimetype(),
                 'filePath' => $link,
-                'size' => filesize($sysPath),
+                'size' => $file->getSize(),
             );
         } else {
             throw new \tao_models_classes_FileNotFoundException($link);
@@ -194,11 +193,19 @@ class LocalItemSource implements MediaManagement
         return new Stream($this->getFile($link)->readStream());
     }
 
-    private function getSysPath($parentLink)
+    /**
+     * Returns the local path to the file
+     *  
+     * @deprecated only works on local filesystem
+     * @param string $link
+     * @throws common_exception_Error
+     * @return string
+     */
+    private function getSysPath($link)
     {
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
 
-        $sysPath = $baseDir.ltrim($parentLink, '/');
+        $sysPath = $baseDir.ltrim($link, '/');
         if(!tao_helpers_File::securityCheck($sysPath)){
             throw new common_exception_Error(__('Your path contains error'));
         }
