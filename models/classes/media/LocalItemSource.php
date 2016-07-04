@@ -26,6 +26,7 @@ use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use DirectoryIterator;
 use Slim\Http\Stream;
+use League\Flysystem\File;
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -111,14 +112,14 @@ class LocalItemSource implements MediaManagement
      */
     public function getFileInfo($link) {
 
-        $sysPath = $this->getSysPath($link);
-        if(file_exists($sysPath)){
+        $file = $this->getFile($link);
+        if ($file->exists()) {
             $file = array(
                 'name' => basename($link),
                 'uri' => $link,
-                'mime' => tao_helpers_File::getMimeType($sysPath),
+                'mime' => $file->getMimetype(),
                 'filePath' => $link,
-                'size' => filesize($sysPath),
+                'size' => $file->getSize(),
             );
         } else {
             throw new \tao_models_classes_FileNotFoundException($link);
@@ -130,17 +131,17 @@ class LocalItemSource implements MediaManagement
      * (non-PHPdoc)
      * @see \oat\tao\model\media\MediaBrowser::download
      */
-    public function download($filename){
+    public function download($link){
 
-        $sysPath = $this->getSysPath($filename);
-        if(!file_exists($sysPath)) {
-            if (file_exists($sysPath.'.js')) {
-                $sysPath = $sysPath.'.js';
-            } else {
-                throw new \tao_models_classes_FileNotFoundException($filename);
-            }
+        $tmpFile = \tao_helpers_File::createTempDir().$this->getBaseName($link);
+        $source = $this->getFile($link)->readStream();
+        $dest = fopen($tmpFile, 'w');
+        
+        while(($l=fread($source, 65536))) { 
+            fwrite($dest, $l);
         }
-        return $sysPath;
+        fclose($dest);
+        return $tmpFile;
     }
 
     public function getBaseName($link)
@@ -154,19 +155,28 @@ class LocalItemSource implements MediaManagement
      */
     public function add($source, $fileName, $parent)
     {
-        if (!\tao_helpers_File::securityCheck($fileName, true)) {
-            throw new \common_Exception('Unsecured filename "'.$fileName.'"');
-        }         
-
-        $sysPath = $this->getSysPath($parent.$fileName);
-
-        if(!tao_helpers_File::copy($source, $sysPath)){
+        $link = '/'.ltrim($parent, '/').$fileName;
+        if (!\tao_helpers_File::securityCheck($link, true)) {
+            throw new \common_Exception('Unsecured filename "'.$link.'"');
+        }
+        
+        $file = $this->getFile($link);
+        
+        $f = fopen($source, 'r');
+        $writeSucces = $file->writeStream($f);
+        fclose($f);
+        
+        if (!$writeSucces) {
             throw new \common_exception_Error('Unable to move file '.$source);
         }
 
-        $fileData = $this->getFileInfo('/'.ltrim($parent, '/').$fileName, array());
-        return $fileData;
-
+        return array(
+            'name' => basename($link),
+            'uri' => $link,
+            'mime' => \tao_helpers_File::getMimeType($source),
+            'filePath' => $link,
+            'size' => filesize($source),
+        );
     }
 
     /**
@@ -175,37 +185,47 @@ class LocalItemSource implements MediaManagement
      */
     public function delete($link)
     {
-        $deleted = false;
-
-        $sysPath = $this->getSysPath($link);
-        if(is_file($sysPath) && !is_dir($sysPath)){
-            $deleted = unlink($sysPath);
-        }
-
-        return $deleted;
+        return $this->getFile($link)->delete();
     }
     
     public function getFileStream($link)
     {
-        $sysPath = $this->getSysPath($link);
-        $fh = fopen($sysPath, 'r');
-        return new Stream($fh);
+        return new Stream($this->getFile($link)->readStream());
     }
 
     /**
-     * @param $parentLink
-     * @return string
+     * Returns the local path to the file
+     *  
+     * @deprecated only works on local filesystem
+     * @param string $link
      * @throws common_exception_Error
+     * @return string
      */
-    private function getSysPath($parentLink)
+    private function getSysPath($link)
     {
         $baseDir = taoItems_models_classes_ItemsService::singleton()->getItemFolder($this->item, $this->lang);
 
-        $sysPath = $baseDir.ltrim($parentLink, '/');
+        $sysPath = $baseDir.ltrim($link, '/');
         if(!tao_helpers_File::securityCheck($sysPath)){
             throw new common_exception_Error(__('Your path contains error'));
         }
 
         return $sysPath;
+    }
+    
+    
+    /**
+     * 
+     * @param string $parentLink
+     * @throws common_exception_Error
+     * @return \League\Flysystem\File
+     */
+    private function getFile($link)
+    {
+        if(!tao_helpers_File::securityCheck($link)){
+            throw new common_exception_Error(__('Your path contains error'));
+        }
+        $dir = taoItems_models_classes_ItemsService::singleton()->getItemDirectory($this->item, $this->lang);
+        return new File($dir->getFileSystem(), $dir->getPath().DIRECTORY_SEPARATOR.ltrim($link, DIRECTORY_SEPARATOR));
     }
 }
