@@ -129,7 +129,7 @@ class ItemPack implements JsonSerializable
      *
      * @throw InvalidArgumentException
      */
-    public function setAssets($type, $assets, $basePath)
+    public function setAssets($type, $assets)
     {
         if(!in_array($type, self::$assetTypes)){
             throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
@@ -142,7 +142,7 @@ class ItemPack implements JsonSerializable
          * Apply active encoder immediately
          * @var Encoding $encoder
          */
-        $encoder = EncoderService::singleton()->get( $this->assetEncoders[$type], $basePath );
+        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type]);
         foreach ($assets as $asset) {
             $this->assets[$type][$asset] = $encoder->encode( $asset );
         }
