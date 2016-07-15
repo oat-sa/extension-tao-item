@@ -66,13 +66,23 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     public function render(){
         $relPath = tao_helpers_Request::getRelativeUrl();
         list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);
-        
+
+        $path = rawurldecode($path);
+
+        $pathInfo =  parse_url($path);
+        if (isset($pathInfo['host'])) {
+            $rootInfo = parse_url(ROOT_URL);
+            if ($rootInfo['host'] !== $pathInfo['host']) {
+                throw new common_Exception('Only files from local domain available to rendering');
+            }
+        }
+
         $uri = base64_decode($codedUri);
         $item = new core_kernel_classes_Resource($uri);
         if($path === 'index'){
             $this->renderItem($item);
         } else {
-            $this->renderResource($item, rawurldecode($path));
+            $this->renderResource($item, $path);
         }
     }
 
