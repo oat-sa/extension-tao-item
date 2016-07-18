@@ -21,6 +21,9 @@
  */
 ?>
 <?php
+use oat\oatbox\event\EventManagerAwareTrait;
+use oat\taoItems\model\event\ItemExportEvent;
+
 /**
  * This controller provide the actions to export items 
  * 
@@ -31,6 +34,8 @@
  *
  */
 class taoItems_actions_ItemExport extends tao_actions_Export {
+
+    use EventManagerAwareTrait;
 
     /**
      * overwrite the parent index to add the requiresRight for Items only
@@ -81,6 +86,16 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
         });
         
         return $resources;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function sendFileToClient($file, $test)
+    {
+        $this->getEventManager()->trigger(new ItemExportEvent($test->getUri()));
+
+        parent::sendFileToClient($file, $test);
     }
 
 }

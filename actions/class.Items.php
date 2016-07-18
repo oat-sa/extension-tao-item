@@ -1,5 +1,8 @@
 <?php
+use oat\oatbox\event\EventManagerAwareTrait;
 use oat\tao\model\lock\LockManager;
+use oat\taoItems\model\event\ItemUpdatedEvent;
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,6 +33,8 @@ use oat\tao\model\lock\LockManager;
  */
 class taoItems_actions_Items extends tao_actions_SaSModule
 {
+
+    use EventManagerAwareTrait;
 
     /**
      * constructor: initialize the service and the default data
@@ -171,7 +176,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                         $item = $binder->bind($properties);
                         $item = $this->getClassService()->setDefaultItemContent($item);
-    
+
+                        $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
+
                         //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                         $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
                         $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));

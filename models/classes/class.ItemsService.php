@@ -1,8 +1,11 @@
 <?php
 use oat\tao\model\lock\LockManager;
 use oat\oatbox\filesystem\FileSystemService;
-use League\Flysystem\Filesystem;
 use League\Flysystem\Directory;
+use oat\taoItems\model\event\ItemDuplicatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
+use oat\taoItems\model\event\ItemUpdatedEvent;
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -160,8 +163,14 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
             LockManager::getImplementation()->releaseLock($resource, $userId);
         }
-        
-        return $this->deleteItemContent($resource) && parent::deleteResource($resource);
+
+        $result = $this->deleteItemContent($resource) && parent::deleteResource($resource);
+
+        if ($result) {
+            $this->getEventManager()->trigger(new ItemRemovedEvent($resource->getUri()));
+        }
+
+        return $result;
     }
 
     /**
@@ -311,14 +320,16 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @param  string content
-     * @param  string lang
-     * @param  string commitMessage
-     * @return boolean
+     * @param  core_kernel_classes_Resource $item
+     * @param  string $content
+     * @param  string $lang
+     * @param  string $commitMessage
+     * @return bool
+     * @throws common_Exception
+     * @throws common_exception_Error
      */
     public function setItemContent(core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = ''){
-        $returnValue = (bool) false;
+        $returnValue = false;
 
         if(is_null($item) && !$this->isItemModelDefined($item)){
             throw new common_exception_Error('No item or itemmodel in '.__FUNCTION__);
@@ -345,6 +356,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             );
             $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
             $returnValue = $file->setContent($content);
+        }
+
+        if ($returnValue) {
+            $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri()));
         }
 
         return (bool) $returnValue;
@@ -508,7 +523,17 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             }
         }
     }
-    
+
+    public function cloneInstance(core_kernel_classes_Resource $instance, core_kernel_classes_Class $clazz = null)
+    {
+        $result = parent::cloneInstance($instance, $clazz);
+        if ($result) {
+            $this->getEventManager()->trigger(new ItemDuplicatedEvent($instance->getUri(), $result->getUri()));
+        }
+        return $result;
+    }
+
+
     public function getPreviewUrl(core_kernel_classes_Resource $item, $lang = '') {
         $itemModel = $this->getItemModel($item);
         if(is_null($itemModel)){
