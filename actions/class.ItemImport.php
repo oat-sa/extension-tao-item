@@ -19,8 +19,8 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
+use oat\taoItems\model\event\ItemImportEvent;
+
 /**
  * This controller provide the actions to import items 
  * 
@@ -58,4 +58,14 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 		
 		return $returnValue;
 	}
+
+    /**
+     * @inheritdoc
+     */
+    protected function onAfterImport(common_report_Report $report)
+    {
+        if (common_report_Report::TYPE_SUCCESS == $report->getType()) {
+            $this->getEventManager()->trigger(new ItemImportEvent($report));
+        }
+    }
 }
