@@ -18,24 +18,19 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
+
 //TODO : to be generated !
 class taoItems_models_classes_exporter_DefaultItemExporter extends taoItems_models_classes_ItemExporter {
 
-	public function export($options = array()) {
-		
-		$zipToRoot = isset($options['zipToRoot'])?(bool)$options['zipToRoot']:false;
-		
-		$location = $this->getItemLocation();
-		if(is_dir(realpath($location))){
-			if($zipToRoot){
-				$this->addFile($location, '');
-			}else{
-				$this->addFile($location, basename($location));
-			}
+	public function export($options = array())
+	{
+		$location = $this->getItemDirectory()->readStream('qti.xml');
+		$zipToRoot = isset($options['zipToRoot']) ? (bool)$options['zipToRoot'] : false;
+		if ($zipToRoot) {
+			$this->addFile($location, '');
+		} else {
+			$this->addFile($location, basename($location));
 		}
 	}
 	
 }
-?>

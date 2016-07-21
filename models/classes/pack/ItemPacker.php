@@ -65,6 +65,8 @@ abstract class ItemPacker
 
 
     /**
+     * @deprecated by fly-authoring
+     *
      * @param core_kernel_classes_Resource $item
      * @param $lang
      * @return string
@@ -72,9 +74,7 @@ abstract class ItemPacker
      */
     protected function getPath(core_kernel_classes_Resource $item, $lang = "")
     {
-        $path = taoItems_models_classes_ItemsService::singleton()->getItemFolder($item, $lang);
-        return $path;
-
+        throw new \BadMethodCallException(__CLASS__ . ' - ' . __METHOD__ . ' disable by fly-authoring');
     }
 
     /**

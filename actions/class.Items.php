@@ -73,6 +73,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * (non-PHPdoc)
      * @see tao_actions_RdfController::getClassService()
+     * @return taoItems_models_classes_ItemsService
      */
     protected function getClassService(){
         return taoItems_models_classes_ItemsService::singleton();
@@ -175,7 +176,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                         $item = $binder->bind($properties);
-                        $item = $this->getClassService()->setDefaultItemContent($item);
+                        $this->getClassService()->getItemDirectory($item);
 
                         $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
 

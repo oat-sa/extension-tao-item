@@ -67,10 +67,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
-        
+
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($this->getRequestParameter('path'));
         $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth);
+        common_Logger::i(print_r($data, true));
         foreach($data['children'] as &$child){
             if(isset($child['parent'])){
                 $child['url'] = \tao_helpers_Uri::url(
@@ -81,7 +82,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 unset($child['parent']);
             }
         }
-        
+
         $this->returnJson($data);
     }
     
@@ -187,6 +188,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         catch(common_Exception $e){
             common_Logger::w($e->getMessage());
+            common_Logger::w($e->getTraceAsString());
             $message = _('Unable to upload file');
         }
         $this->returnJson(array('error' => $message));

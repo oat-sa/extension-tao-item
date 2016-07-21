@@ -86,7 +86,13 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @return string The absolute path to the language specific compilation folder for this item to be compiled.
      */
     protected function getLanguageCompilationPath($destinationDirectory, $compilationLanguage) {
+        commmon_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($destinationDirectory));
+        commmon_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($compilationLanguage));
         return $destinationDirectory->getPath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
+    }
+
+    protected function getLanguageCompilationDirectory($destinationDirectory, $compilationLanguage) {
+        return $destinationDirectory->getDirectory. DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -101,7 +107,8 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         $itemService = taoItems_models_classes_ItemsService::singleton();
         	
         // copy local files
-        $source = $itemService->getItemFolder($item, $languageCode);
+//        $source = $itemService->getItemFolder($item, $languageCode);
+        $source = $itemService->getItemDirectory($item, $languageCode);
         $success = taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
         if (!$success) {
             return $this->fail(__('Unable to copy resources for language %s', $languageCode));
