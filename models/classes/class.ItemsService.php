@@ -1,30 +1,30 @@
 <?php
-use oat\tao\model\lock\LockManager;
-use oat\oatbox\filesystem\FileSystemService;
-use League\Flysystem\Directory;
-use oat\taoItems\model\event\ItemDuplicatedEvent;
-use oat\taoItems\model\event\ItemRemovedEvent;
-use oat\taoItems\model\event\ItemUpdatedEvent;
-
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- * 
+ *
  */
+
+use oat\tao\model\lock\LockManager;
+use oat\oatbox\filesystem\FileSystemService;
+use oat\taoItems\model\event\ItemDuplicatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
+use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\tao\model\service\Directory;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -706,40 +706,49 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      *
      * @param core_kernel_classes_Resource $item
      * @param string $language
+     * @return Directory
+     * @throws Exception
      * @throws common_Exception
-     * @return \League\Flysystem\Directory
+     * @throws core_kernel_persistence_Exception
      */
     public function getItemDirectory(core_kernel_classes_Resource $item, $language = '')
     {
-        if($language === ''){
+        if ($language === '') {
             $files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
-        }else{
+        } else {
             $files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $language)->toArray();
         }
-        if(count($files) == 0){
-            $actualLang = empty($language) ? $this->getSessionLg() : $language;
-            $repository = $this->getDefaultFileSource();
-            // legacy item model
+
+        if (count($files) > 1) {
+            throw new common_Exception(__METHOD__ . ': Item ' . $item->getUri() . ' has multiple.');
+        }
+
+        if (count($files) == 0) {
             $model = $this->getItemModel($item);
             if (is_null($model)) {
-                throw new common_Exception('Call to '.__FUNCTION__.' for item without model');
+                throw new common_Exception('Call to ' . __FUNCTION__ . ' for item without model');
             }
-            $dataFile = (string)$model->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+
+            $actualLang = empty($language) ? $this->getSessionLg() : $language;
+            $repository = $this->getDefaultFileSource();
+
+            // legacy item model
+            $dataFile = (string) $model->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
             $file = $repository->createFile(
                 $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$actualLang
             );
+
             $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $actualLang);
-        }else{
-            if(count($files) > 1){
-                throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
-            }
+        } else {
             $file = new core_kernel_file_File(current($files));
             $repository = $file->getFileSystem();
         }
-        $fss = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
-        $fs = $fss->getFileSystem($repository->getUri());
 
-        return new Directory($fs, $file->getRelativePath());
+        $filesystem = $this->getServiceManager()
+            ->get(FileSystemService::SERVICE_ID)
+            ->getFileSystem($repository->getUri());
+
+        return new Directory($filesystem, $file->getRelativePath());
     }
 
     /**
