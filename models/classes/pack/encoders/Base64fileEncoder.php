@@ -19,8 +19,9 @@
  */
 namespace oat\taoItems\model\pack\encoders;
 
+use League\Flysystem\Directory;
+use League\Flysystem\File;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
-use tao_helpers_File;
 
 /**
  * Class Base64fileEncoder
@@ -30,9 +31,9 @@ use tao_helpers_File;
 class Base64fileEncoder implements Encoding
 {
     /**
-     * @var string
+     * @var Directory
      */
-    private $path;
+    private $directory;
 
     /**
      * Applied data-uri format placeholder
@@ -40,18 +41,25 @@ class Base64fileEncoder implements Encoding
     const DATA_PREFIX = 'data:%s;base64,%s';
 
     /**
+     * @var null|string
+     */
+    private $lang;
+
+    /**
      * Base64fileEncoder constructor.
      *
-     * @param string $path base path to resource
+     * @param \tao_models_classes_service_StorageDirectory $directory
+     * @param string $lang
      */
-    public function __construct( $path = '' )
+    public function __construct(\tao_models_classes_service_StorageDirectory $directory, $lang)
     {
-        $this->path = $path;
+        $this->directory = $directory;
+        $this->lang = $lang;
     }
 
 
     /**
-     * @param string $data path to file
+     * @param string $data name of the assert
      *
      * @return string
      * @throws ExceptionMissingAsset
@@ -63,11 +71,11 @@ class Base64fileEncoder implements Encoding
             return $data;
         }
 
-        $fullPath = $this->path . DIRECTORY_SEPARATOR . $data;
-        if (file_exists( $fullPath )) {
-            return sprintf(self::DATA_PREFIX, tao_helpers_File::getMimeType($fullPath), base64_encode( file_get_contents( $fullPath ) ));
+        if ($this->directory->has($this->lang . '/' . $data)) {
+            $file = $this->directory->read($this->lang . '/' . $data);
+            return sprintf(self::DATA_PREFIX, \tao_helpers_File::getMimeType($data, false), base64_encode($file));
         }
 
-        throw new ExceptionMissingAsset( 'Assets not found ' . $this->path . '/' . $data );
+        throw new ExceptionMissingAsset('Assets ' . $data . ' not found at ' . $this->directory->getPath() . ' for ' . $this->lang . ' locale');
     }
 }

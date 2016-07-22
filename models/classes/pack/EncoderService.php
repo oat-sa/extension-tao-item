@@ -22,6 +22,7 @@
 namespace oat\taoItems\model\pack;
 
 use oat\taoItems\model\pack\encoders\Encoding;
+use ReflectionClass;
 use tao_models_classes_Service;
 
 /**
@@ -45,15 +46,7 @@ class EncoderService extends tao_models_classes_Service
                 class_implements( $class )
             )
         ) {
-            $result = new $class;
-            if (method_exists( $result, '__construct' )) {
-                call_user_func_array(
-                    array( $result, '__construct' ),
-                    array_slice( (array) func_get_args(), 1, func_num_args() )
-                );
-            }
-            return $result;
-
+            return (new ReflectionClass($class))->newInstanceArgs(array_slice(func_get_args(), 1, func_num_args()));
         }
         throw new ExceptionMissingEncoder( 'Encoder missing : ' .  $class );
     }

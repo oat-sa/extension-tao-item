@@ -21,6 +21,13 @@ namespace oat\taoItems\model\pack\encoders;
 
 class NoneEncoder implements Encoding
 {
+    /**
+     * NoneEncoder constructor.
+     */
+    public function __construct()
+    {
+    }
+
 
     /**
      * @param $data
