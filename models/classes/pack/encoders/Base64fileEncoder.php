@@ -20,7 +20,6 @@
 namespace oat\taoItems\model\pack\encoders;
 
 use League\Flysystem\Directory;
-use League\Flysystem\File;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
 
 /**

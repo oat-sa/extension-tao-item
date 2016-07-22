@@ -58,13 +58,13 @@ class ItemPackTest extends TaoPhpUnitTestRunner
             'style/main.css' => 'style/main.css'
         );
 
-        $pack->setAssets('js', $jsAssets, '');
+        $pack->setAssets('js', $jsAssets, null, '');
 
         $this->assertEquals($jsAssets, $pack->getAssets('js'));
         $this->assertEquals(array(), $pack->getAssets('css'));
 
 
-        $pack->setAssets('css', $cssAssets, '');
+        $pack->setAssets('css', $cssAssets, null, '');
 
         $this->assertEquals($cssAssets, $pack->getAssets('css'));
     }
@@ -91,7 +91,7 @@ class ItemPackTest extends TaoPhpUnitTestRunner
      */
     public function testWrongAssetType(){
         $pack = new ItemPack('qti', array('foo' => 'bar'));
-        $pack->setAssets('coffescript', array('jquery.coffee'), '');
+        $pack->setAssets('coffescript', array('jquery.coffee'), null, '');
     }
 
     /**
@@ -100,7 +100,7 @@ class ItemPackTest extends TaoPhpUnitTestRunner
      */
     public function testWrongAssets(){
         $pack = new ItemPack('qti', array('foo' => 'bar'));
-        $pack->setAssets('js', 'jquery.js', '');
+        $pack->setAssets('js', 'jquery.js', null, '');
     }
 
     /**
@@ -120,7 +120,7 @@ class ItemPackTest extends TaoPhpUnitTestRunner
         $pack2->setAssets('js', array(
             'lodash.js',
             'jquery.js'
-        ), '');
+        ), null, '');
         $json2 = '{"type":"owi","data":{"foo":"bar"},"assets":{"js":{"lodash.js":"lodash.js","jquery.js":"jquery.js"}}}';
         $data[1] = array($pack2, $json2);
 
