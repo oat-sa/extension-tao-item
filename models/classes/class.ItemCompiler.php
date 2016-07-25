@@ -49,20 +49,13 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         $langs = $this->getContentUsedLanguages();
         foreach ($langs as $compilationLanguage) {
             try {
-                $compiledDirectory = taoItems_models_classes_ItemsService::singleton()->get($item, $compilationLanguage);
+                $compiledDirectory = taoItems_models_classes_ItemsService::singleton()->getItemDirectory($item, $compilationLanguage);
             } catch (common_Exception $e) {
-                common_Logger::e('Could not create  directory '.$compiledFolder, 'COMPILER');
+                common_Logger::e('Could not create directory for delivery compilation', 'COMPILER');
                 return $this->fail(__('Could not create language specific directory for item \'%s\'', $item->getLabel()));
             }
 
-        	$compiledFolder = $this->getLanguageCompilationPath($destinationDirectory, $compilationLanguage);
-        	if (!is_dir($compiledFolder)){
-        		if (!@mkdir($compiledFolder)) {
-        		    common_Logger::e('Could not create directory '.$compiledFolder, 'COMPILER');
-        		    return $this->fail(__('Could not create language specific directory for item \'%s\'', $item->getLabel()));
-        		}
-        	}
-        	$langReport = $this->deployItem($item, $compilationLanguage, $compiledFolder);
+        	$langReport = $this->deployItem($item, $compilationLanguage, $compiledDirectory);
         	$report->add($langReport);
         	if ($langReport->getType() == common_report_Report::TYPE_ERROR) {
         	    $report->setType(common_report_Report::TYPE_ERROR);
@@ -116,11 +109,11 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @param string $compiledDirectory
      * @return common_report_Report
      */
-    protected function deployItem(core_kernel_classes_Resource $item, $languageCode, $compiledDirectory) {
+    protected function deployItem(core_kernel_classes_Resource $item, $languageCode, $compiledDirectory)
+    {
         $itemService = taoItems_models_classes_ItemsService::singleton();
         	
         // copy local files
-//        $source = $itemService->getItemFolder($item, $languageCode);
         $source = $itemService->getItemDirectory($item, $languageCode);
         $success = taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
         if (!$success) {

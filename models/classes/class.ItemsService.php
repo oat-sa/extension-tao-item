@@ -620,7 +620,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
                 $itemDirectoryName = tao_helpers_Uri::getUniqueId($item->getUri());
                 if ($directory->hasDirectory($itemDirectoryName)) {
-                    $directory->removeDirectory($itemDirectoryName);
+                    $directory->deleteDirectory($itemDirectoryName);
                 }
             }
         }

@@ -99,8 +99,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         try {
             $resolver = new ItemMediaResolver($item, $itemLang);
             $asset = $resolver->resolve($this->getRequestParameter('path'));
-            $fileInfo = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
-            $found = true;
+            common_Logger::i(__CLASS__ . '  ' . __FUNCTION__);
+            $found = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
         } catch (tao_models_classes_FileNotFoundException $exception) {
             $found = false;
         }        
