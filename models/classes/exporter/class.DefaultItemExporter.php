@@ -1,5 +1,5 @@
 <?php
-/*  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -16,26 +16,21 @@
  * 
  * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- * 
+ * 				 2012-2016 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
-?>
-<?php
-//TODO : to be generated !
+
 class taoItems_models_classes_exporter_DefaultItemExporter extends taoItems_models_classes_ItemExporter {
 
-	public function export($options = array()) {
-		
-		$zipToRoot = isset($options['zipToRoot'])?(bool)$options['zipToRoot']:false;
-		
-		$location = $this->getItemLocation();
-		if(is_dir(realpath($location))){
-			if($zipToRoot){
-				$this->addFile($location, '');
-			}else{
-				$this->addFile($location, basename($location));
-			}
+	public function export($options = array())
+	{
+		$location = $this->getItemDirectory()->readStream('qti.xml');
+
+		$zipToRoot = isset($options['zipToRoot']) ? (bool)$options['zipToRoot'] : false;
+		if ($zipToRoot) {
+			$this->addFile($location, '');
+		} else {
+			$this->addFile($location, basename($location));
 		}
 	}
 	
 }
-?>
