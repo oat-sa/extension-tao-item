@@ -99,8 +99,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         try {
             $resolver = new ItemMediaResolver($item, $itemLang);
             $asset = $resolver->resolve($this->getRequestParameter('path'));
-            common_Logger::i(__CLASS__ . '  ' . __FUNCTION__);
-            $found = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+            $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+            $found = true;
         } catch (tao_models_classes_FileNotFoundException $exception) {
             $found = false;
         }        
@@ -185,7 +185,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         catch(common_Exception $e){
             common_Logger::w($e->getMessage());
-            common_Logger::w($e->getTraceAsString());
             $message = _('Unable to upload file');
         }
         $this->returnJson(array('error' => $message));

@@ -36,8 +36,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @throws taoItems_models_classes_CompilationFailedException
      * @return tao_models_classes_service_ServiceCall
      */
-    public function compile()
-    {
+    public function compile() {
         $destinationDirectory = $this->spawnPublicDirectory();
         $item = $this->getResource();
         $itemUri = $item->getUri();
@@ -45,22 +44,22 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         if (! taoItems_models_classes_ItemsService::singleton()->isItemModelDefined($item)) {
             return $this->fail(__('Item \'%s\' has no model', $item->getLabel()));
         }
-        
+
         $langs = $this->getContentUsedLanguages();
         foreach ($langs as $compilationLanguage) {
-            try {
-                $compiledDirectory = taoItems_models_classes_ItemsService::singleton()->getItemDirectory($item, $compilationLanguage);
-            } catch (common_Exception $e) {
-                common_Logger::e('Could not create directory for delivery compilation', 'COMPILER');
-                return $this->fail(__('Could not create language specific directory for item \'%s\'', $item->getLabel()));
+            $compiledFolder = $this->getLanguageCompilationPath($destinationDirectory, $compilationLanguage);
+            if (!is_dir($compiledFolder)){
+                if (!@mkdir($compiledFolder)) {
+                    common_Logger::e('Could not create directory '.$compiledFolder, 'COMPILER');
+                    return $this->fail(__('Could not create language specific directory for item \'%s\'', $item->getLabel()));
+                }
             }
-
-        	$langReport = $this->deployItem($item, $compilationLanguage, $compiledDirectory);
-        	$report->add($langReport);
-        	if ($langReport->getType() == common_report_Report::TYPE_ERROR) {
-        	    $report->setType(common_report_Report::TYPE_ERROR);
-        	    break;
-        	}
+            $langReport = $this->deployItem($item, $compilationLanguage, $compiledFolder);
+            $report->add($langReport);
+            if ($langReport->getType() == common_report_Report::TYPE_ERROR) {
+                $report->setType(common_report_Report::TYPE_ERROR);
+                break;
+            }
         }
         if ($report->getType() == common_report_Report::TYPE_SUCCESS) {
             $report->setData($this->createService($item, $destinationDirectory));
@@ -87,17 +86,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @return string The absolute path to the language specific compilation folder for this item to be compiled.
      */
     protected function getLanguageCompilationPath($destinationDirectory, $compilationLanguage) {
-        common_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($destinationDirectory));
-        common_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($compilationLanguage));
         return $destinationDirectory->getPath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
-    }
-
-    protected function getLanguageCompilationDirectory(\oat\tao\model\service\Directory $destinationDirectory, $compilationLanguage)
-    {
-        if (! $destinationDirectory->hasDirectory($compilationLanguage)) {
-            $destinationDirectory->addDirectory($compilationLanguage);
-        }
-        return $destinationDirectory->getDirectory($compilationLanguage);
     }
 
     /**
@@ -113,7 +102,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         $itemService = taoItems_models_classes_ItemsService::singleton();
         	
         // copy local files
-        $source = $itemService->getItemDirectory($item, $languageCode);
+        $source = $itemService->getItemFolder($item, $languageCode);
         $success = taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
         if (!$success) {
             return $this->fail(__('Unable to copy resources for language %s', $languageCode));
