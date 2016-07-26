@@ -87,18 +87,17 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @return string The absolute path to the language specific compilation folder for this item to be compiled.
      */
     protected function getLanguageCompilationPath($destinationDirectory, $compilationLanguage) {
-        commmon_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($destinationDirectory));
-        commmon_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($compilationLanguage));
+        common_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($destinationDirectory));
+        common_Logger::i(__CLASS__ . ' - ' . __FUNCTION__ . ' - ' . get_class($compilationLanguage));
         return $destinationDirectory->getPath(). DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
     }
 
-    protected function getLanguageCompilationDirectory(Directory $destinationDirectory, $compilationLanguage)
+    protected function getLanguageCompilationDirectory(\oat\tao\model\service\Directory $destinationDirectory, $compilationLanguage)
     {
-        taoItems_models_classes_ItemsService::singleton()->getItemDirectory(, $compilationLanguage);
-        if ($destinationDirectory->hasDirectory($compilationLanguage)) {
-            return $destinationDirectory->getDirectory()
+        if (! $destinationDirectory->hasDirectory($compilationLanguage)) {
+            $destinationDirectory->addDirectory($compilationLanguage);
         }
-        return $destinationDirectory->getDirectory. DIRECTORY_SEPARATOR . $compilationLanguage . DIRECTORY_SEPARATOR;
+        return $destinationDirectory->getDirectory($compilationLanguage);
     }
 
     /**

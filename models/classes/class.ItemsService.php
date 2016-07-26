@@ -193,7 +193,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return string
      */
     public function getDefaultItemFolder(core_kernel_classes_Resource $item, $lang = ''){
-        throw new BadMethodCallException(__CLASS__ . ' - ' . __METHOD__ . ' disable by fly-authoring');
         $returnValue = (string) '';
 
         if(!is_null($item)){
@@ -220,7 +219,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return core_kernel_classes_Resource the same item
      */
     public function setDefaultItemContent(core_kernel_classes_Resource $item){
-        throw new BadMethodCallException(__CLASS__ . ' - ' . __METHOD__ . ' disable by fly-authoring');
         if(!is_null($item)){
 
             //we create the item folder by default. 
@@ -250,7 +248,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return string
      */
     public function getItemContent(core_kernel_classes_Resource $item, $lang = ''){
-        throw new BadMethodCallException(__CLASS__ . ' - ' . __METHOD__ . ' disable by fly-authoring');
         $returnValue = (string) '';
 
         common_Logger::i('Get itemContent for item '.$item->getUri());
@@ -331,7 +328,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @throws common_exception_Error
      */
     public function setItemContent(core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = ''){
-        throw new BadMethodCallException(__CLASS__ . ' - ' . __METHOD__ . ' disable by fly-authoring');
         $returnValue = false;
 
 
@@ -678,7 +674,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return string
      */
     public function getItemFolder(core_kernel_classes_Resource $item, $lang = ''){
-        throw new BadMethodCallException(__CLASS__ . ' - ' . __METHOD__ . ' disable by fly-authoring');
         $returnValue = (string) '';
 
         if($lang === ''){
