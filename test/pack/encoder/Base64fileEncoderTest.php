@@ -48,7 +48,7 @@ class Base64fileEncoderTest extends TaoPhpUnitTestRunner
     {
 
         $directoryStorage = $this->getMockBuilder(\tao_models_classes_service_StorageDirectory::class)
-            ->setConstructorArgs([1, 2, 3, 4])
+            ->disableOriginalConstructor()
             ->getMock();
 
         $directoryStorage->method('has')->with('en_US/exist.css')->willReturn(true);
@@ -65,7 +65,7 @@ class Base64fileEncoderTest extends TaoPhpUnitTestRunner
     {
 
         $directoryStorage = $this->getMockBuilder(\tao_models_classes_service_StorageDirectory::class)
-            ->setConstructorArgs([1, 2, 3, 4])
+            ->disableOriginalConstructor()
             ->getMock();
 
         $directoryStorage->method('has')->with('en_US/notExist.css')->willReturn(false);

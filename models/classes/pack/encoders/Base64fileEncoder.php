@@ -75,6 +75,6 @@ class Base64fileEncoder implements Encoding
             return sprintf(self::DATA_PREFIX, \tao_helpers_File::getMimeType($data, false), base64_encode($file));
         }
 
-        throw new ExceptionMissingAsset('Assets ' . $data . ' not found at ' . $this->directory->getPath() . ' for ' . $this->lang . ' locale');
+        throw new ExceptionMissingAsset('Assets ' . $data . ' not found at ' . $this->directory->getRelativePath() . ' for ' . $this->lang . ' locale');
     }
 }
