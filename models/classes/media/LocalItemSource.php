@@ -21,17 +21,14 @@
 namespace oat\taoItems\model\media;
 
 use common_exception_Error;
-use League\Flysystem\FileNotFoundException;
-use oat\oatbox\filesystem\FileSystemService;
-use oat\oatbox\service\ServiceManager;
+use oat\oatbox\filesystem\Directory;
+use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaManagement;
-use oat\tao\model\service\Directory;
 use oat\taoQtiItem\model\qti\Item;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
-use DirectoryIterator;
 use Slim\Http\Stream;
-use League\Flysystem\File;
+
 /**
  * This media source gives access to files that are part of the item
  * and are addressed in a relative way
@@ -74,7 +71,6 @@ class LocalItemSource implements MediaManagement
      */
     public function getDirectory($parentLink = '', $acceptableMime = array(), $depth = 1)
     {
-
         if (! tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));
         }
@@ -86,7 +82,7 @@ class LocalItemSource implements MediaManagement
         }
 
         if(in_array($parentLink,array('','/'))){
-            $label = $this->item->getLabel();
+            $label = $this->getItem()->getLabel();
             $parentLink = '/';
         }
 
@@ -102,33 +98,23 @@ class LocalItemSource implements MediaManagement
 
         $children = array();
 
-        /** @var Directory $directory */
-        $subDirectory = null;
-
-        if ($parentLink == '/') {
-             $directory = $this->getItemDirectory();
-        } elseif ($this->getItemDirectory()->hasDirectory($parentLink)) {
-            $directory = $this->getItemDirectory()->getDirectory($parentLink);
+        /** @var \oat\oatbox\filesystem\Directory $directory */
+        $itemDirectory = $this->getItemDirectory();
+        if ($parentLink != '/') {
+            $directory = $itemDirectory->getDirectory($parentLink);
         } else {
-            throw new \FileNotFoundException($parentLink);
+            $directory = $itemDirectory;
         }
 
-        foreach($directory->getIterator() as $content) {
-            if (! $content->exists()) {
-                throw new \tao_models_classes_FileNotFoundException($content->getRelativePath());
-            }
-
-            if ($content->isFile()) {
-                try {
-                    $fileInfo = $content->getFileInfo();
-                    if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
-                        $children[] = $fileInfo;
-                    }
-                } catch (FileNotFoundException $e) {
-                    \common_Logger::i('Unable to retrieve fie information ("' . $e->getFile() . '")');
+        $iterator = $directory->getFlyIterator();
+        foreach ($iterator as $content) {
+            if ($content instanceof Directory) {
+                $children[] = $this->getDirectory($directory->getRelPath($content), $acceptableMime, $depth - 1);
+            } else {
+                $fileInfo = $this->getInfoFromFile($content, $itemDirectory->getRelPath($content));
+                if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
+                    $children[] = $fileInfo;
                 }
-            } elseif ($content->isDir()) {
-                $children[] = $content->getRelativePath();
             }
         }
 
@@ -147,13 +133,24 @@ class LocalItemSource implements MediaManagement
      */
     public function getFileInfo($link)
     {
-        /** @var \oat\tao\model\service\File $file */
-        $file = $this->getFile($link);
-        if (! $file->exists()) {
-            throw new \tao_models_classes_FileNotFoundException($file->getPath());
-        }
-        return $file->getFileInfo();
+        $link = trim($link, '/\\');
 
+        /** @var File $file */
+        $file = $this->getFile($link);
+        return $this->getInfoFromFile($file, $link);
+
+    }
+
+    protected function getInfoFromFile(File $file, $link)
+    {
+        $metadata = $file->getMetadata();
+        return array(
+            'name'     => $file->getBasename(),
+            'uri'      => $link,
+            'mime'     => $metadata['mimetype'],
+            'filePath' => $link,
+            'size'     => $metadata['size'],
+        );
     }
 
     /**
@@ -169,16 +166,14 @@ class LocalItemSource implements MediaManagement
     public function download($link)
     {
         $file = $this->getFile($link);
-        if (! $file->exists()) {
-            throw new \common_Exception('File to be copied does not exist ("' . $link . '").');
-        }
 
-        $tmpDir = \tao_helpers_File::createTempDir();
-        if (! is_dir($tmpDir . $file->getDirname())) {
-            mkdir($tmpDir . $file->getDirname(), 0755, true);
-        }
+        $relPath = $this->getItemDirectory()->getRelPath($file);
 
-        $tmpFile = $tmpDir . $file->getPath();
+        $tmpDir = rtrim(\tao_helpers_File::createTempDir(), '/');
+        $tmpFile = $tmpDir . $relPath;
+        if (! is_dir(dirname($tmpFile))) {
+            mkdir(dirname($tmpFile), 0755, true);
+        }
 
         if (($resource = fopen($tmpFile, 'w')) !== false) {
             stream_copy_to_stream($file->readStream(), $resource);
@@ -214,26 +209,24 @@ class LocalItemSource implements MediaManagement
      */
     public function add($source, $fileName, $parent)
     {
-        $link = '/'.ltrim($parent, '/') . $fileName;
-        if (! \tao_helpers_File::securityCheck($link, true)) {
-            throw new \common_Exception('Unsecured filename "'.$link.'"');
+        if (! \tao_helpers_File::securityCheck($fileName, true)) {
+            throw new \common_Exception('Unsecured filename "'.$fileName.'"');
         }
 
-        $filename = ltrim(ltrim($link, '/'), '\\');
-        $resource = fopen($source, 'r');
-
-        if ($this->getItemDirectory()->hasFile($filename)) {
-            $writeSuccess = $this->getItemDirectory()->updateStream($filename, $resource);
-        } else {
-            $writeSuccess = $this->getItemDirectory()->writeStream($filename, $resource);
+        if (($resource = fopen($source, 'r')) === false) {
+            throw new \common_Exception('Unable to read content of file ("' . $source . '")');
         }
+
+        $filePath = trim($parent, '/\\') . '/' . trim($fileName, '/\\');
+        $file = $this->getItemDirectory()->getFile($filePath);
+        $writeSuccess = $file->put($resource);
         fclose($resource);
 
         if (! $writeSuccess) {
-            throw new \common_Exception('Unable to write file ("' . $filename. '")');
+            throw new \common_Exception('Unable to write file ("' . $fileName . '")');
         }
 
-        return $this->getItemDirectory()->getFile($filename)->getFileInfo();
+        return $this->getInfoFromFile($file, $fileName);
     }
 
     /**
@@ -268,7 +261,7 @@ class LocalItemSource implements MediaManagement
      * Get file object associated to $link, search in main item directory or specific item directory
      *
      * @param $link
-     * @return \oat\tao\model\service\File
+     * @return File
      * @throws \common_Exception
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
@@ -279,35 +272,21 @@ class LocalItemSource implements MediaManagement
             throw new common_exception_Error(__('Your path contains error'));
         }
 
-        $service = taoItems_models_classes_ItemsService::singleton();
-        $repository = $service->getDefaultFileSource();
-        $filesystem = ServiceManager::getServiceManager()
-            ->get(FileSystemService::SERVICE_ID)
-            ->getFileSystem($repository->getUri());
-
-        $directory = new Directory($filesystem);
-        $filename = ltrim(ltrim($link, '/'), '\\');
-
-
-        if ($directory->hasFile($filename)) {
-            return $directory->getFile($filename);
-        } elseif ($this->getItemDirectory()->hasFile($filename)) {
-            return $this->getItemDirectory()->getFile($filename);
-        } else {
-            throw new \tao_models_classes_FileNotFoundException($filename);
+        $file = $this->getItemDirectory()->getFile($link);
+        if ($file->exists()) {
+            return $file;
         }
-
+        throw new \tao_models_classes_FileNotFoundException($link);
     }
 
     /**
      * Get item directory based on $this->item & $this->lang
      *
-     * @return Directory
+     * @return \oat\oatbox\filesystem\Directory
      * @throws \common_Exception
      */
-    private function getItemDirectory()
+    protected function getItemDirectory()
     {
         return taoItems_models_classes_ItemsService::singleton()->getItemDirectory($this->item, $this->lang);
     }
-
 }

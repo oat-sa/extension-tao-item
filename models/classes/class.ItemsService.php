@@ -721,7 +721,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      *
      * @param core_kernel_classes_Resource $item
      * @param string $language
-     * @return Directory
+     * @return \oat\oatbox\filesystem\Directory
      * @throws Exception
      * @throws common_Exception
      * @throws core_kernel_persistence_Exception
@@ -762,7 +762,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             ->get(FileSystemService::SERVICE_ID)
             ->getFileSystem($repository->getUri());
 
-        return new Directory($filesystem, $file->getRelativePath());
+        return new \oat\oatbox\filesystem\Directory($filesystem, $file->getRelativePath());
     }
 
     /**
