@@ -25,7 +25,6 @@ use oat\oatbox\filesystem\FileSystemService;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
-use oat\tao\model\service\Directory;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -612,12 +611,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
                 $filesystem = $this->getServiceManager()
                     ->get(FileSystemService::SERVICE_ID)
                     ->getFileSystem($repositoryUri);
-                $directory = new Directory($filesystem);
 
                 $itemDirectoryName = tao_helpers_Uri::getUniqueId($item->getUri());
-                if ($directory->hasDirectory($itemDirectoryName)) {
-                    $directory->deleteDirectory($itemDirectoryName);
-                }
+                $directory = new \oat\oatbox\filesystem\Directory($filesystem, $itemDirectoryName);
+                $directory->remove();
             }
         }
 
