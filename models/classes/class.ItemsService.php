@@ -21,10 +21,10 @@
  */
 
 use oat\tao\model\lock\LockManager;
-use oat\oatbox\filesystem\FileSystemService;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\oatbox\filesystem\utils\serializer\implementation\LegacyFileSerializer;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -185,6 +185,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     /**
      * Short description of method getDefaultItemFolder
      *
+     * @deprecated use getItemDirectory instead
+     *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
      * @param  core_kernel_classes_Resource item
@@ -211,6 +213,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * define the content of item to be inserted by default (to prevent null
      * after creation).
      * The item content's folder is created.
+     *
+     * @deprecated use getItemDirectory instead
      *
      * @access public
      * @author Bertrand Chevrier <bertrand@taotesting.com>
@@ -315,6 +319,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     /**
      * Short description of method setItemContent
+     *
+     * @deprecated use \oat\taoQtiItem\model\qti\Service::saveXmlItemToRdfItem instead
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
@@ -605,17 +611,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         // Delete item directory from filesystem
         $definitonFileValues = $item->getPropertyValues($this->itemContentProperty);
         if (! empty($definitonFileValues)) {
-            $definitonFile = new core_kernel_file_File(reset($definitonFileValues));
-            if (! is_null($definitonFile)) {
-                $repositoryUri = $definitonFile->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_FILE_FILESYSTEM))->getUri();
-                $filesystem = $this->getServiceManager()
-                    ->get(FileSystemService::SERVICE_ID)
-                    ->getFileSystem($repositoryUri);
+            $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
+            $directory = $serializer->unserializeDirectory(reset($definitonFileValues));
 
-                $itemDirectoryName = tao_helpers_Uri::getUniqueId($item->getUri());
-                $directory = new \oat\oatbox\filesystem\Directory($filesystem, $itemDirectoryName);
-                $directory->remove();
-            }
+            $directory = $serializer->serialize($directory);
+
+
+            $directory->remove();
         }
 
         //delete the folder for all languages!
@@ -725,41 +727,50 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     public function getItemDirectory(core_kernel_classes_Resource $item, $language = '')
     {
+        // Get file by language
         if ($language === '') {
             $files = $item->getPropertyValues($this->itemContentProperty);
         } else {
             $files = $item->getPropertyValuesByLg($this->itemContentProperty, $language)->toArray();
         }
 
+        // If multiple files then throw exception
         if (count($files) > 1) {
             throw new common_Exception(__METHOD__ . ': Item ' . $item->getUri() . ' has multiple.');
         }
 
-        if (count($files) == 0) {
-            $model = $this->getItemModel($item);
-            if (is_null($model)) {
-                throw new common_Exception('Call to ' . __FUNCTION__ . ' for item without model');
-            }
-
-            $actualLang = empty($language) ? $this->getSessionLg() : $language;
-            $repository = $this->getDefaultFileSource();
-
-            // legacy item model
-            $dataFile = (string) $model->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-            $file = $repository->createFile(
-                $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$actualLang
-            );
-            $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $actualLang);
-        } else {
-            $file = new core_kernel_file_File(current($files));
-            $repository = $file->getFileSystem();
+        // If there is one file then return directory
+        if (count($files) == 1) {
+            $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
+            return $serializer->unserializeDirectory(current($files)->getUri());
         }
 
-        $filesystem = $this->getServiceManager()
-            ->get(FileSystemService::SERVICE_ID)
-            ->getFileSystem($repository->getUri());
+        // Otherwise there is no file, create one and return directory
+        $model = $this->getItemModel($item);
+        if (is_null($model)) {
+            throw new common_Exception('Call to ' . __FUNCTION__ . ' for item without model');
+        }
 
-        return new \oat\oatbox\filesystem\Directory($filesystem, $file->getRelativePath());
+        // File does not exist, let's create it
+        $actualLang = empty($language) ? $this->getSessionLg() : $language;
+        $filePath = tao_helpers_Uri::getUniqueId($item->getUri())
+            . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $actualLang;
+
+        // Create item directory
+        $itemDirectory = $this->getItemRootDirectory()->getDirectory($filePath);
+        $itemDirectory->create();
+
+        // Set uri file value as serial to item persistence
+        $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
+        $serial = $serializer->serialize($itemDirectory);
+
+        $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
+
+        // Store file into persistence, purpose of serializer ?
+        $dataFile = (string) $model->getOnePropertyValue($this->getProperty(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        $serializer->serialize($itemDirectory->getFile($dataFile));
+
+        return $itemDirectory;
     }
 
     /**
@@ -779,7 +790,21 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         }
         return new core_kernel_versioning_Repository($uri);
     }
-    
+
+    /**
+     * @return \oat\oatbox\filesystem\Directory
+     * @throws common_ext_ExtensionException
+     */
+    public function getItemRootDirectory()
+    {
+        $uri = common_ext_ExtensionsManager::singleton()
+            ->getExtensionById('taoItems')
+            ->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
+
+        return $this->getServiceManager()
+            ->get(\oat\oatbox\filesystem\FileSystemService::SERVICE_ID)
+            ->getDirectory($uri);
+    }
     /**
      * Get items of a specific model
      * @param string|core_kernel_classes_Resource $itemModel - the item model URI
@@ -795,6 +820,19 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
                 ));
         }
         return array();
+    }
+
+    /**
+     * Get Directory following file persistence data through serializer
+     *
+     * @param core_kernel_file_File $file
+     * @return \oat\oatbox\filesystem\Directory
+     * @throws common_exception_InvalidArgumentType
+     */
+    protected function getDirectoryByResourceFile(core_kernel_file_File $file)
+    {
+        $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
+        return $serializer->unserializeDirectory($file->getUri());
     }
 
 }
