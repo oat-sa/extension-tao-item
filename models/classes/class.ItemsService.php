@@ -25,6 +25,7 @@ use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\oatbox\filesystem\utils\serializer\implementation\LegacyFileSerializer;
+use oat\generis\model\kernel\fileSystem\ResourceFileSerializer;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -758,10 +759,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         // Create item directory
         $itemDirectory = $this->getItemRootDirectory()->getDirectory($filePath);
-        $itemDirectory->create();
 
         // Set uri file value as serial to item persistence
-        $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
+        $serializer = $this->getServiceManager()->get(ResourceFileSerializer::SERVICE_ID);
         $serial = $serializer->serialize($itemDirectory);
 
         $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
