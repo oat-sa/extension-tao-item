@@ -177,7 +177,6 @@ class LocalItemSource implements MediaManagement
         if (($resource = fopen($tmpFile, 'w')) !== false) {
             stream_copy_to_stream($file->readStream(), $resource);
             fclose($resource);
-            print_r(file_get_contents($tmpFile));
             return $tmpFile;
         }
 
