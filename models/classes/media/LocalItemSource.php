@@ -37,13 +37,14 @@ class LocalItemSource implements MediaManagement
 {
 
     /**
-     * @return Item
+     * @var Item
      */
     private $item;
     
     private $lang;
 
-    public function __construct($data){
+    public function __construct($data)
+    {
         $this->item = (isset($data['item'])) ? $data['item'] : null;
         $this->lang = (isset($data['lang'])) ? $data['lang'] : '';
 
@@ -111,7 +112,7 @@ class LocalItemSource implements MediaManagement
             if ($content instanceof Directory) {
                 $children[] = $this->getDirectory($itemDirectory->getRelPath($content), $acceptableMime, $depth - 1);
             } else {
-                $fileInfo = $this->getInfoFromFile($content, $itemDirectory->getRelPath($content));
+                $fileInfo = $this->getInfoFromFile($content);
                 if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
                     $children[] = $fileInfo;
                 }
@@ -133,17 +134,15 @@ class LocalItemSource implements MediaManagement
      */
     public function getFileInfo($link)
     {
-        $link = trim($link, '/\\');
-
-        /** @var File $file */
-        $file = $this->getFile($link);
-        return $this->getInfoFromFile($file, $link);
+        return $this->getInfoFromFile($this->getFile($link));
 
     }
 
-    protected function getInfoFromFile(File $file, $link)
+    protected function getInfoFromFile(File $file)
     {
         $metadata = $file->getMetadata();
+        \common_Logger::i(print_r($metadata, true));
+        $link = $this->getItemDirectory()->getRelPath($file);
         return array(
             'name'     => $file->getBasename(),
             'uri'      => $link,
@@ -178,6 +177,7 @@ class LocalItemSource implements MediaManagement
         if (($resource = fopen($tmpFile, 'w')) !== false) {
             stream_copy_to_stream($file->readStream(), $resource);
             fclose($resource);
+            print_r(file_get_contents($tmpFile));
             return $tmpFile;
         }
 
@@ -217,8 +217,7 @@ class LocalItemSource implements MediaManagement
             throw new \common_Exception('Unable to read content of file ("' . $source . '")');
         }
 
-        $filePath = trim($parent, '/\\') . '/' . trim($fileName, '/\\');
-        $file = $this->getItemDirectory()->getFile($filePath);
+        $file = $this->getItemDirectory()->getDirectory($parent)->getFile($fileName);
         $writeSuccess = $file->put($resource);
         fclose($resource);
 
@@ -226,7 +225,7 @@ class LocalItemSource implements MediaManagement
             throw new \common_Exception('Unable to write file ("' . $fileName . '")');
         }
 
-        return $this->getInfoFromFile($file, $fileName);
+        return $this->getInfoFromFile($file);
     }
 
     /**

@@ -24,8 +24,9 @@ use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
-use oat\oatbox\filesystem\utils\serializer\implementation\LegacyFileSerializer;
-use oat\generis\model\kernel\fileSystem\ResourceFileSerializer;
+use oat\generis\model\kernel\fileSystem\FileReferenceSerializer;
+use oat\oatbox\filesystem\Directory;
+use oat\oatbox\filesystem\FileSystemService;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -37,55 +38,46 @@ use oat\generis\model\kernel\fileSystem\ResourceFileSerializer;
  */
 class taoItems_models_classes_ItemsService extends tao_models_classes_ClassService
 {
+    /**
+     * Key to use to store the default filesource to be used in for new items
+     *
+     * @var string
+     */
+    const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
+
+    /**
+     * Instance of the itemContent property
+     *
+     * @access public
+     * @var core_kernel_classes_Property
+     */
+    public $itemContentProperty = null;
 
     /**
      * The RDFS top level item class
      *
      * @access protected
-     * @var Class
+     * @var core_kernel_classes_Class
      */
     protected $itemClass = null;
 
     /**
-     * the instance of the itemModel property
+     * Instance of the itemModel property
      *
      * @access protected
-     * @var Property
+     * @var core_kernel_classes_Property
      */
     protected $itemModelProperty = null;
 
     /**
-     * the instance of the itemContent property
-     *
-     * @access public
-     * @var Property
+     * taoItems_models_classes_ItemsService constructor.
+     * Set $this->itemClass and related properties (model & content properties)
      */
-    public $itemContentProperty = null;
-
-    /**
-     * key to use to store dthe default filesource
-     * to be used in for new items
-     *
-     * @access private
-     * @var string
-     */
-
-    const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
-
-    // --- OPERATIONS ---
-
-    /**
-     * Short description of method __construct
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @return void
-     */
-    protected function __construct(){
-        parent::__construct();
+    protected function __construct()
+    {
         $this->itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
-        $this->itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
-        $this->itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
+        $this->itemModelProperty = $this->getProperty(TAO_ITEM_MODEL_PROPERTY);
+        $this->itemContentProperty = $this->getProperty(TAO_ITEM_CONTENT_PROPERTY);
     }
 
     public function getRootClass(){
@@ -109,7 +101,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         if(empty($uri) && !is_null($this->itemClass)){
             $returnValue = $this->itemClass;
         }else{
-            $clazz = new core_kernel_classes_Class($uri);
+            $clazz = $this->getClass($uri);
             if($this->isItemClass($clazz)){
                 $returnValue = $clazz;
             }
@@ -433,7 +425,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         if(!is_null($item)){
             $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
             if(!is_null($itemModel)){
-                $returnValue = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+                $returnValue = $itemModel->getOnePropertyValue($this->getProperty(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
             }
         }
 
@@ -459,7 +451,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             try{
                 $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
                 if($itemModel instanceof core_kernel_classes_Resource){
-                    $itemModelStatus = $itemModel->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY));
+                    $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(TAO_ITEM_MODEL_STATUS_PROPERTY));
                     if(in_array($itemModelStatus->getUri(), $status)){
                         $returnValue = true;
                     }
@@ -507,9 +499,14 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         }
     }
     
-    protected function cloneItemContent($source, $destination, $property) {
-        $fileNameProp = new core_kernel_classes_Property(PROPERTY_FILE_FILENAME);
+    protected function cloneItemContent($source, $destination, $property)
+    {
+        $fileNameProp = $this->getProperty(PROPERTY_FILE_FILENAME);
         foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+
+
+
+
             $file = new core_kernel_versioning_File($propertyValue->getUri());
             $repo = $file->getRepository();
             $relPath = basename($file->getAbsolutePath());
@@ -576,8 +573,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     public function setItemModel(core_kernel_classes_Resource $item, core_kernel_classes_Resource $model)
     {
-        $modelProp = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
-        return $item->editPropertyValues($modelProp, $model);
+        return $item->editPropertyValues($this->getProperty(TAO_ITEM_MODEL_PROPERTY), $model);
     }
     
 
@@ -612,13 +608,11 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         // Delete item directory from filesystem
         $definitonFileValues = $item->getPropertyValues($this->itemContentProperty);
         if (! empty($definitonFileValues)) {
-            $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
-            $directory = $serializer->unserializeDirectory(reset($definitonFileValues));
-
-            $directory = $serializer->serialize($directory);
-
-
-            $directory->remove();
+            /** @var Directory $directory */
+            $directory = $this->getFileReferenceSerializer()->unserializeDirectory(reset($definitonFileValues));
+            if ($directory->exists()) {
+                $directory->deleteSelf();
+            }
         }
 
         //delete the folder for all languages!
@@ -626,8 +620,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             $files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
             foreach($files->getIterator() as $file){
                 if ($file instanceof core_kernel_classes_Resource) {
-                    $file = new core_kernel_file_File($file);
-                    $file->delete();
+                    $this->getFileReferenceSerializer()->cleanUp($file->getUri());
                 }
             }
         }
@@ -646,7 +639,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     public function getItemModelImplementation(core_kernel_classes_Resource $itemModel){
         $returnValue = null;
 
-        $services = $itemModel->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
+        $services = $itemModel->getPropertyValues($this->getProperty(PROPERTY_ITEM_MODEL_SERVICE));
         if(count($services) > 0){
             if(count($services) > 1){
                 throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
@@ -666,6 +659,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     /**
      * Short description of method getItemFolder
+     *
+     * @deprecated use getItemDirectory instead
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
@@ -742,8 +737,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         // If there is one file then return directory
         if (count($files) == 1) {
-            $serializer = $this->getServiceManager()->get(ResourceFileSerializer::SERVICE_ID);
-            return $serializer->unserializeDirectory(reset($files));
+            return $this->getFileReferenceSerializer()->unserializeDirectory($this->getResource(current($files))->getUri());
         }
 
         // Otherwise there is no file, create one and return directory
@@ -761,20 +755,21 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $itemDirectory = $this->getDefaultItemDirectory()->getDirectory($filePath);
 
         // Set uri file value as serial to item persistence
-        $serializer = $this->getServiceManager()->get(ResourceFileSerializer::SERVICE_ID);
-        $serial = $serializer->serialize($itemDirectory);
+        $serial = $this->getFileReferenceSerializer()->serialize($itemDirectory);
 
         $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
 
         // Store file into persistence, purpose of serializer ?
         $dataFile = (string) $model->getOnePropertyValue($this->getProperty(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-        $serializer->serialize($itemDirectory->getFile($dataFile));
+        $this->getFileReferenceSerializer()->serialize($itemDirectory->getFile($dataFile));
 
         return $itemDirectory;
     }
 
     /**
      * Returns the filesource to use for new items
+     *
+     * @deprecated use getItemRootDirectory instead
      *
      * @return core_kernel_versioning_Repository
      * @throws common_Exception
@@ -803,7 +798,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             ->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
 
         return $this->getServiceManager()
-            ->get(\oat\oatbox\filesystem\FileSystemService::SERVICE_ID)
+            ->get(FileSystemService::SERVICE_ID)
             ->getDirectory($filesystemId);
     }
 
@@ -825,16 +820,12 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
-     * Get Directory following file persistence data through serializer
+     * Get serializer to persist filesystem object
      *
-     * @param core_kernel_file_File $file
-     * @return \oat\oatbox\filesystem\Directory
-     * @throws common_exception_InvalidArgumentType
+     * @return FileReferenceSerializer
      */
-    protected function getDirectoryByResourceFile(core_kernel_file_File $file)
+    protected function getFileReferenceSerializer()
     {
-        $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
-        return $serializer->unserializeDirectory($file->getUri());
+        return $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
     }
-
 }
