@@ -742,8 +742,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         // If there is one file then return directory
         if (count($files) == 1) {
-            $serializer = new \oat\oatbox\filesystem\utils\serializer\implementation\ResourceFileSerializer();
-            return $serializer->unserializeDirectory(current($files)->getUri());
+            $serializer = $this->getServiceManager()->get(ResourceFileSerializer::SERVICE_ID);
+            return $serializer->unserializeDirectory(reset($files));
         }
 
         // Otherwise there is no file, create one and return directory
@@ -758,7 +758,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $actualLang;
 
         // Create item directory
-        $itemDirectory = $this->getItemRootDirectory()->getDirectory($filePath);
+        $itemDirectory = $this->getDefaultItemDirectory()->getDirectory($filePath);
 
         // Set uri file value as serial to item persistence
         $serializer = $this->getServiceManager()->get(ResourceFileSerializer::SERVICE_ID);
@@ -792,19 +792,21 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
+     * Returns the defaul item directory
      * @return \oat\oatbox\filesystem\Directory
      * @throws common_ext_ExtensionException
      */
-    public function getItemRootDirectory()
+    public function getDefaultItemDirectory()
     {
-        $uri = common_ext_ExtensionsManager::singleton()
+        $filesystemId = common_ext_ExtensionsManager::singleton()
             ->getExtensionById('taoItems')
             ->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
 
         return $this->getServiceManager()
             ->get(\oat\oatbox\filesystem\FileSystemService::SERVICE_ID)
-            ->getDirectory($uri);
+            ->getDirectory($filesystemId);
     }
+
     /**
      * Get items of a specific model
      * @param string|core_kernel_classes_Resource $itemModel - the item model URI
