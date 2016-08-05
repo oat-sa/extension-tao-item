@@ -140,15 +140,13 @@ class LocalItemSource implements MediaManagement
 
     protected function getInfoFromFile(File $file)
     {
-        $metadata = $file->getMetadata();
-        \common_Logger::i(print_r($metadata, true));
         $link = $this->getItemDirectory()->getRelPath($file);
         return array(
             'name'     => $file->getBasename(),
             'uri'      => $link,
-            'mime'     => $metadata['mimetype'],
+            'mime'     => $file->getMimeType(),
             'filePath' => $link,
-            'size'     => $metadata['size'],
+            'size'     => $file->getSize(),
         );
     }
 
