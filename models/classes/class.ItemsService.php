@@ -24,7 +24,7 @@ use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
-use oat\generis\model\kernel\fileSystem\FileReferenceSerializer;
+use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
 
