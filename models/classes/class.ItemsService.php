@@ -24,7 +24,7 @@ use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
-use oat\generis\model\kernel\fileSystem\FileReferenceSerializer;
+use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
 
@@ -75,7 +75,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     protected function __construct()
     {
-        $this->itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
+        $this->itemClass = $this->getClass(TAO_ITEM_CLASS);
         $this->itemModelProperty = $this->getProperty(TAO_ITEM_MODEL_PROPERTY);
         $this->itemContentProperty = $this->getProperty(TAO_ITEM_CONTENT_PROPERTY);
     }
@@ -499,31 +499,32 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         }
     }
     
-    protected function cloneItemContent($source, $destination, $property)
-    {
-        $fileNameProp = $this->getProperty(PROPERTY_FILE_FILENAME);
-        foreach($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue){
+    protected function cloneItemContent(
+        core_kernel_classes_Resource $source,
+        core_kernel_classes_Resource $destination,
+        core_kernel_classes_Property $property
+    ) {
 
+        /** @var \oat\generis\model\fileReference\ResourceFileSerializer $serializer */
+        $serializer = $this->getFileReferenceSerializer();
 
+        $this->setItemModel($destination, $this->getItemModel($source));
+        $sourceItemDirectory = $this->getItemDirectory($source);
+        $destinationItemDirectory = $this->getItemDirectory($destination);
 
+        foreach ($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue) {
 
-            $file = new core_kernel_versioning_File($propertyValue->getUri());
-            $repo = $file->getRepository();
-            $relPath = basename($file->getAbsolutePath());
-            if(!empty($relPath)){
-                $newPath = tao_helpers_File::concat(array($this->getItemFolder($destination), $relPath));
-                common_Logger::i('copy '.dirname($file->getAbsolutePath()).' to '.dirname($newPath));
-                tao_helpers_File::copy(dirname($file->getAbsolutePath()), dirname($newPath), true);
-                if(file_exists($newPath)){
-                    $subpath = substr($newPath, strlen($repo->getPath()));
-                    $newFile = $repo->createFile(
-                        (string) $file->getOnePropertyValue($fileNameProp), dirname($subpath).'/'
-                    );
-                    $destination->setPropertyValue($property, $newFile->getUri());
-                    $newFile->add(true, true);
-                    $newFile->commit('Clone of '.$source->getUri(), true);
-                }
+            $sourceDirectory = $serializer->unserializeDirectory($propertyValue->getUri());
+            $iterator = $sourceDirectory->getFlyIterator(Directory::ITERATOR_FILE | Directory::ITERATOR_RECURSIVE);
+
+            while ($iterator->valid()) {
+                $newFile = $destinationItemDirectory->getFile($sourceItemDirectory->getRelPath($iterator->current()));
+                $newFile->write($iterator->current()->readPsrStream());
+                $serial = $serializer->serialize($newFile);
+//                $destination->setPropertyValue($property, $serial);
+                $iterator->next();
             }
+
         }
     }
 
@@ -732,6 +733,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         // If multiple files then throw exception
         if (count($files) > 1) {
+            common_Logger::i(print_r($files, true));
             throw new common_Exception(__METHOD__ . ': Item ' . $item->getUri() . ' has multiple.');
         }
 
