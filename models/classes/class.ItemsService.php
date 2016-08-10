@@ -498,33 +498,42 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             return parent::cloneInstanceProperty($source, $destination, $property);
         }
     }
-    
+
+    /**
+     * Clone item content
+     *
+     * @param core_kernel_classes_Resource $source
+     * @param core_kernel_classes_Resource $destination
+     * @param core_kernel_classes_Property $property
+     * @throws FileNotFoundException
+     * @throws \oat\generis\model\fileReference\FileSerializerException
+     * @throws common_Exception
+     */
     protected function cloneItemContent(
         core_kernel_classes_Resource $source,
         core_kernel_classes_Resource $destination,
         core_kernel_classes_Property $property
     ) {
 
-        /** @var \oat\generis\model\fileReference\ResourceFileSerializer $serializer */
         $serializer = $this->getFileReferenceSerializer();
-
         $this->setItemModel($destination, $this->getItemModel($source));
-        $sourceItemDirectory = $this->getItemDirectory($source);
-        $destinationItemDirectory = $this->getItemDirectory($destination);
 
-        foreach ($source->getPropertyValuesCollection($property)->getIterator() as $propertyValue) {
+        foreach($source->getUsedLanguages($this->itemContentProperty) as $lang) {
+            $sourceItemDirectory = $this->getItemDirectory($source, $lang);
+            $destinationItemDirectory = $this->getItemDirectory($destination, $lang);
 
-            $sourceDirectory = $serializer->unserializeDirectory($propertyValue->getUri());
-            $iterator = $sourceDirectory->getFlyIterator(Directory::ITERATOR_FILE | Directory::ITERATOR_RECURSIVE);
+            foreach ($source->getPropertyValuesCollection($property, array('lg' => $lang))->getIterator() as $propertyValue) {
+                $sourceDirectory = $serializer->unserializeDirectory($propertyValue->getUri());
+                $iterator = $sourceDirectory->getFlyIterator(Directory::ITERATOR_FILE | Directory::ITERATOR_RECURSIVE);
 
-            while ($iterator->valid()) {
-                $newFile = $destinationItemDirectory->getFile($sourceItemDirectory->getRelPath($iterator->current()));
-                $newFile->write($iterator->current()->readPsrStream());
-                $serial = $serializer->serialize($newFile);
-//                $destination->setPropertyValue($property, $serial);
-                $iterator->next();
+                foreach ($iterator as $iteratorFile) {
+                    $newFile = $destinationItemDirectory->getFile($sourceItemDirectory->getRelPath($iteratorFile));
+                    $newFile->write($iteratorFile->readStream());
+                }
+
+                $destinationDirectory = $destinationItemDirectory->getDirectory($sourceItemDirectory->getRelPath($sourceDirectory));
+                $serializer->serialize($destinationDirectory);
             }
-
         }
     }
 
