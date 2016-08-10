@@ -739,7 +739,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         // If there is one file then return directory
         if (count($files) == 1) {
-            return $this->getFileReferenceSerializer()->unserializeDirectory($this->getResource(current($files))->getUri());
+            $file = reset($files);
+            $file = is_object($file)  && $file instanceof core_kernel_classes_Resource ? $file->getUri() : (string) $file;
+            return $this->getFileReferenceSerializer()->unserializeDirectory($file);
         }
 
         // Otherwise there is no file, create one and return directory
