@@ -99,8 +99,9 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         if ($asset->getMediaSource() instanceof HttpSource) {
             throw new common_Exception('Only tao files available for rendering through item preview');
         }
-        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
-        \tao_helpers_Http::returnFile($filePath);
+        $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+        $stream = $asset->getMediaSource()->getFileStream($asset->getMediaIdentifier());
+        \tao_helpers_Http::returnStream($stream, $info['mime']);
     }
 
     /**
