@@ -30,46 +30,6 @@
 class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
 {
     /**
-     * Compile an item.
-     * 
-     * @param core_kernel_file_File $destinationDirectory
-     * @throws taoItems_models_classes_CompilationFailedException
-     * @return tao_models_classes_service_ServiceCall
-     */
-    public function compile() {
-        $destinationDirectory = $this->spawnPublicDirectory();
-        $item = $this->getResource();
-        $itemUri = $item->getUri();
-        $report = new common_report_Report(common_report_Report::TYPE_SUCCESS, __('Published %s', $item->getLabel()));
-        if (! taoItems_models_classes_ItemsService::singleton()->isItemModelDefined($item)) {
-            return $this->fail(__('Item \'%s\' has no model', $item->getLabel()));
-        }
-
-        $langs = $this->getContentUsedLanguages();
-        foreach ($langs as $compilationLanguage) {
-            $compiledFolder = $this->getLanguageCompilationPath($destinationDirectory, $compilationLanguage);
-            if (!is_dir($compiledFolder)){
-                if (!@mkdir($compiledFolder)) {
-                    common_Logger::e('Could not create directory '.$compiledFolder, 'COMPILER');
-                    return $this->fail(__('Could not create language specific directory for item \'%s\'', $item->getLabel()));
-                }
-            }
-            $langReport = $this->deployItem($item, $compilationLanguage, $compiledFolder);
-            $report->add($langReport);
-            if ($langReport->getType() == common_report_Report::TYPE_ERROR) {
-                $report->setType(common_report_Report::TYPE_ERROR);
-                break;
-            }
-        }
-        if ($report->getType() == common_report_Report::TYPE_SUCCESS) {
-            $report->setData($this->createService($item, $destinationDirectory));
-        } else {
-            $report->setMessage(__('Failed to publish %s', $item->getLabel()));
-        }
-        return $report;
-    }
-    
-    /**
      * Get the languages in use for the item content.
      * 
      * @return array An array of language tags (string).
