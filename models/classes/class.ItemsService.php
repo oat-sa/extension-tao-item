@@ -523,7 +523,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             $destinationItemDirectory = $this->getItemDirectory($destination, $lang);
 
             foreach ($source->getPropertyValuesCollection($property, array('lg' => $lang))->getIterator() as $propertyValue) {
-                $sourceDirectory = $serializer->unserializeDirectory($propertyValue->getUri());
+                $id = $propertyValue instanceof core_kernel_classes_Resource ? $propertyValue->getUri() : (string)$propertyValue;
+                $sourceDirectory = $serializer->unserializeDirectory($id);
                 $iterator = $sourceDirectory->getFlyIterator(Directory::ITERATOR_FILE | Directory::ITERATOR_RECURSIVE);
 
                 foreach ($iterator as $iteratorFile) {
