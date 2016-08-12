@@ -21,6 +21,7 @@
  */
 
 use oat\taoItems\model\media\ItemMediaResolver;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 /**
  * Preview API 
  *
@@ -68,15 +69,6 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);
 
         $path = rawurldecode($path);
-
-        $pathInfo =  parse_url($path);
-        if (isset($pathInfo['host'])) {
-            $rootInfo = parse_url(ROOT_URL);
-            if ($rootInfo['host'] !== $pathInfo['host']) {
-                throw new common_Exception('Only files from local domain available to rendering');
-            }
-        }
-
         $uri = base64_decode($codedUri);
         $item = new core_kernel_classes_Resource($uri);
         if($path === 'index'){
@@ -104,8 +96,12 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $lang = common_session_SessionManager::getSession()->getDataLanguage();
         $resolver = new ItemMediaResolver($item, $lang);
         $asset = $resolver->resolve($path);
-        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
-        \tao_helpers_Http::returnFile($filePath);
+        if ($asset->getMediaSource() instanceof HttpSource) {
+            throw new common_Exception('Only tao files available for rendering through item preview');
+        }
+        $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+        $stream = $asset->getMediaSource()->getFileStream($asset->getMediaIdentifier());
+        \tao_helpers_Http::returnStream($stream, $info['mime']);
     }
 
     /**
