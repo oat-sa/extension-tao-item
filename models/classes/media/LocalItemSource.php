@@ -250,7 +250,7 @@ class LocalItemSource implements MediaManagement
      */
     public function getFileStream($link)
     {
-        return $this->getFile($link)->readStream();
+        return $this->getFile($link)->readPsrStream();
     }
 
     /**
