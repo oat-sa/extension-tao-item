@@ -22,7 +22,6 @@ namespace oat\taoItems\test\pack;
 use \core_kernel_classes_Resource;
 use oat\taoItems\model\pack\ItemPacker;
 use oat\taoItems\model\pack\Packer;
-use oat\taoItems\model\pack\Packable;
 use oat\taoItems\model\pack\ItemPack;
 use oat\tao\test\TaoPhpUnitTestRunner;
 
@@ -66,6 +65,10 @@ class PackerTest extends TaoPhpUnitTestRunner
                         ->getMockBuilder('\taoItems_models_classes_itemModel')
                         ->getMock();
 
+        $directoryMock = $this
+            ->getMockBuilder(\tao_models_classes_service_StorageDirectory::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $packerMock = new PackerMock();
 
@@ -91,12 +94,18 @@ class PackerTest extends TaoPhpUnitTestRunner
             ->will($this->returnValue($serviceMock));
 
 
-        $packer = new Packer($item);
+        $packer = $this->getMockBuilder(Packer::class)
+            ->setConstructorArgs([$item])
+            ->setMethods(['getStorageDirectory'])
+            ->getMock();
 
-        $prop = new \ReflectionProperty('oat\taoItems\model\pack\Packer', 'itemService');
+        $prop = new \ReflectionProperty(Packer::class, 'itemService');
         $prop->setAccessible(true);
         $prop->setValue($packer, $serviceMock);
 
+        $packer
+            ->method('getStorageDirectory')
+            ->will($this->returnValue($directoryMock));
 
         $result = $packer->pack();
         $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $result);
@@ -265,7 +274,8 @@ class PackerTest extends TaoPhpUnitTestRunner
 
 //use an old school mock as the Packer create it's own instance from the class
 class PackerMock extends ItemPacker{
-    public function packItem(core_kernel_classes_Resource $item, $lang){
+    public function packItem(core_kernel_classes_Resource $item, $lang, $directory)
+    {
         return new ItemPack('qti', array('uri' => $item->getUri()));
     }
 }

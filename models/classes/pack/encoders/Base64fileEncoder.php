@@ -19,7 +19,6 @@
  */
 namespace oat\taoItems\model\pack\encoders;
 
-use League\Flysystem\Directory;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
 
 /**
@@ -30,7 +29,7 @@ use oat\taoItems\model\pack\ExceptionMissingAsset;
 class Base64fileEncoder implements Encoding
 {
     /**
-     * @var Directory
+     * @var \tao_models_classes_service_StorageDirectory
      */
     private $directory;
 
@@ -40,20 +39,13 @@ class Base64fileEncoder implements Encoding
     const DATA_PREFIX = 'data:%s;base64,%s';
 
     /**
-     * @var null|string
-     */
-    private $lang;
-
-    /**
      * Base64fileEncoder constructor.
      *
      * @param \tao_models_classes_service_StorageDirectory $directory
-     * @param string $lang
      */
-    public function __construct(\tao_models_classes_service_StorageDirectory $directory, $lang)
+    public function __construct(\tao_models_classes_service_StorageDirectory $directory)
     {
         $this->directory = $directory;
-        $this->lang = $lang;
     }
 
 
@@ -70,11 +62,12 @@ class Base64fileEncoder implements Encoding
             return $data;
         }
 
-        if ($this->directory->has($this->lang . '/' . $data)) {
-            $file = $this->directory->read($this->lang . '/' . $data);
-            return sprintf(self::DATA_PREFIX, \tao_helpers_File::getMimeType($data, false), base64_encode($file));
+        $file = $this->directory->getFile($data);
+
+        if ($file->exists()) {
+            return sprintf(self::DATA_PREFIX, $file->getMimeType(), base64_encode($file->read()));
         }
 
-        throw new ExceptionMissingAsset('Assets ' . $data . ' not found at ' . $this->directory->getRelativePath() . ' for ' . $this->lang . ' locale');
+        throw new ExceptionMissingAsset('Assets ' . $data . ' not found at ' . $file->getPrefix());
     }
 }
