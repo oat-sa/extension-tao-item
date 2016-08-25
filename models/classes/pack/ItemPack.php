@@ -81,17 +81,6 @@ class ItemPack implements JsonSerializable
     protected $nestedResourcesInclusion = true;
 
     /**
-     * @var \tao_models_classes_service_StorageDirectory
-     */
-    private $publicDirectory;
-
-    /**
-     * @var string
-     */
-    private $lang;
-
-
-    /**
      * Creates an ItemPack with the required data.
      *
      * @param string $type the item type
