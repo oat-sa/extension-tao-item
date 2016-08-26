@@ -46,6 +46,13 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 	protected function getAvailableImportHandlers() {
 		$returnValue = parent::getAvailableImportHandlers();
 
+		foreach (array_keys($returnValue) as $key) {
+			if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
+				$importer =  new \oat\taoItems\model\CsvImporter();
+				$returnValue[$key] = $importer;
+			}
+		}
+
 		$itemModelClass = new core_kernel_classes_Class(TAO_ITEM_MODEL_CLASS); 
 		foreach ($itemModelClass->getInstances() as $model) {
 			$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
@@ -55,7 +62,9 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 				}
 			}
 		}
-		
+
+
+
 		return $returnValue;
 	}
 
