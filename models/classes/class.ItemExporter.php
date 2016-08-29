@@ -18,8 +18,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
+
 /**
  * The ItemExporter class acts as the foundation for exporting item in XML packages. Developpers
  * who wants to create dedicated export behaviours can extend this class. To create a new export behaviour
@@ -111,15 +110,21 @@ abstract class taoItems_models_classes_ItemExporter {
 	/**
 	 * Gets the location of the item of the file system. Usually, it is a folder on the file system located
 	 * at /taoItems/data/i123 where i123 is the ID of the item in the knowledge base.
-	 * 
+	 *
+	 * @deprecated
 	 * @return string the location of the item on the file system.
 	 */
 	protected function getItemLocation() {
 		$returnValue = null;
 
 		$returnValue = $this->getItemService()->getItemFolder($this->getItem());
-		
+
 		return $returnValue;
+	}
+
+	protected function getItemDirectory()
+	{
+		return $this->getItemService()->getItemDirectory($this->getItem());
 	}
 	
 	/**
@@ -132,7 +137,6 @@ abstract class taoItems_models_classes_ItemExporter {
 	 * @return integer The amount of files that were transfered from TAO to the ZIP archive within the method call.
 	 */
 	public function addFile($src, $dest) {
-
 		$zip = $this->getZip();
 		return tao_helpers_File::addFilesToZip($zip, $src, $dest);
 	}

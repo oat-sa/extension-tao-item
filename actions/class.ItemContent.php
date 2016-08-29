@@ -67,7 +67,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
-        
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($this->getRequestParameter('path'));
         $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth);
@@ -81,7 +80,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 unset($child['parent']);
             }
         }
-        
         $this->returnJson($data);
     }
     
@@ -101,7 +99,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         try {
             $resolver = new ItemMediaResolver($item, $itemLang);
             $asset = $resolver->resolve($this->getRequestParameter('path'));
-            $fileInfo = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+            $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
             $found = true;
         } catch (tao_models_classes_FileNotFoundException $exception) {
             $found = false;

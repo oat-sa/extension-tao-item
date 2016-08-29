@@ -81,17 +81,6 @@ class ItemPack implements JsonSerializable
     protected $nestedResourcesInclusion = true;
 
     /**
-     * @var \tao_models_classes_service_StorageDirectory
-     */
-    private $publicDirectory;
-
-    /**
-     * @var string
-     */
-    private $lang;
-
-
-    /**
      * Creates an ItemPack with the required data.
      *
      * @param string $type the item type
@@ -137,11 +126,10 @@ class ItemPack implements JsonSerializable
      * @param string[] $assets the list of assets' URL to load
      *
      * @param \tao_models_classes_service_StorageDirectory $publicDirectory
-     * @param string $lang
      *
      * @throw InvalidArgumentException
      */
-    public function setAssets($type, $assets, $publicDirectory, $lang)
+    public function setAssets($type, $assets, $publicDirectory)
     {
         if(!in_array($type, self::$assetTypes)){
             throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
@@ -154,7 +142,7 @@ class ItemPack implements JsonSerializable
          * Apply active encoder immediately
          * @var Encoding $encoder
          */
-        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type], $publicDirectory, $lang);
+        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type], $publicDirectory);
         foreach ($assets as $asset) {
             $this->assets[$type][$asset] = $encoder->encode( $asset );
         }

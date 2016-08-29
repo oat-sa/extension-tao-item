@@ -19,6 +19,7 @@
  */
 namespace oat\taoItems\test\pack;
 
+use oat\oatbox\filesystem\File;
 use oat\tao\test\TaoPhpUnitTestRunner;
 use oat\taoItems\model\pack\encoders\Base64fileEncoder;
 
@@ -51,8 +52,15 @@ class Base64fileEncoderTest extends TaoPhpUnitTestRunner
             ->disableOriginalConstructor()
             ->getMock();
 
-        $directoryStorage->method('has')->with('en_US/exist.css')->willReturn(true);
-        $directoryStorage->method('read')->with('en_US/exist.css')->willReturn('value');
+        $file = $this->getMockBuilder(File::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file->method('exists')->willReturn(true);
+        $file->method('read')->willReturn('value');
+        $file->method('getMimeType')->willReturn('text/css');
+
+        $directoryStorage->method('getFile')->with('exist.css')->willReturn($file);
 
         $encoder = new Base64fileEncoder($directoryStorage, 'en_US');
         $this->assertEquals($expected, $encoder->encode($data));
@@ -68,7 +76,13 @@ class Base64fileEncoderTest extends TaoPhpUnitTestRunner
             ->disableOriginalConstructor()
             ->getMock();
 
-        $directoryStorage->method('has')->with('en_US/notExist.css')->willReturn(false);
+        $file = $this->getMockBuilder(File::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $file->method('exists')->willReturn(false);
+
+        $directoryStorage->method('getFile')->with('notExist.css')->willReturn($file);
 
         $encoder = new Base64fileEncoder($directoryStorage, 'en_US');
         $this->assertEquals('doesn\'t mater', $encoder->encode('notExist.css'));
