@@ -59,9 +59,10 @@ abstract class ItemPacker
      *
      * @param core_kernel_classes_Resource $item the item to pack
      * @param string $lang
+     * @param \tao_models_classes_service_StorageDirectory $directory
      * @return \oat\taoItems\model\pack\ItemPack
      */
-    abstract public function packItem(core_kernel_classes_Resource $item, $lang);
+    abstract public function packItem(core_kernel_classes_Resource $item, $lang, $directory);
 
 
     /**

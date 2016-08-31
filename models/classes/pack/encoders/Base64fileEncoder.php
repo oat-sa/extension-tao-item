@@ -20,7 +20,6 @@
 namespace oat\taoItems\model\pack\encoders;
 
 use oat\taoItems\model\pack\ExceptionMissingAsset;
-use tao_helpers_File;
 
 /**
  * Class Base64fileEncoder
@@ -30,9 +29,9 @@ use tao_helpers_File;
 class Base64fileEncoder implements Encoding
 {
     /**
-     * @var string
+     * @var \tao_models_classes_service_StorageDirectory
      */
-    private $path;
+    private $directory;
 
     /**
      * Applied data-uri format placeholder
@@ -42,16 +41,16 @@ class Base64fileEncoder implements Encoding
     /**
      * Base64fileEncoder constructor.
      *
-     * @param string $path base path to resource
+     * @param \tao_models_classes_service_StorageDirectory $directory
      */
-    public function __construct( $path = '' )
+    public function __construct(\tao_models_classes_service_StorageDirectory $directory)
     {
-        $this->path = $path;
+        $this->directory = $directory;
     }
 
 
     /**
-     * @param string $data path to file
+     * @param string $data name of the assert
      *
      * @return string
      * @throws ExceptionMissingAsset
@@ -63,11 +62,12 @@ class Base64fileEncoder implements Encoding
             return $data;
         }
 
-        $fullPath = $this->path . DIRECTORY_SEPARATOR . $data;
-        if (file_exists( $fullPath )) {
-            return sprintf(self::DATA_PREFIX, tao_helpers_File::getMimeType($fullPath), base64_encode( file_get_contents( $fullPath ) ));
+        $file = $this->directory->getFile($data);
+
+        if ($file->exists()) {
+            return sprintf(self::DATA_PREFIX, $file->getMimeType(), base64_encode($file->read()));
         }
 
-        throw new ExceptionMissingAsset( 'Assets not found ' . $this->path . '/' . $data );
+        throw new ExceptionMissingAsset('Assets ' . $data . ' not found at ' . $file->getPrefix());
     }
 }

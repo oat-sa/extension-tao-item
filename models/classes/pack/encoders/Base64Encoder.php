@@ -28,6 +28,9 @@ use oat\taoItems\model\pack\ExceptionMissingAsset;
  */
 class Base64Encoder implements Encoding
 {
+    public function __construct()
+    {
+    }
 
     /**
      * @param string $data content to encode
@@ -35,11 +38,11 @@ class Base64Encoder implements Encoding
      * @return string
      * @throws ExceptionMissingAsset
      */
-    public function encode( $data )
+    public function encode($data)
     {
-        if (is_string( $data )) {
-            return base64_encode( $data );
+        if (is_string($data)) {
+            return base64_encode($data);
         }
-        throw new ExceptionMissingAsset( 'Incorrect asset type - cann\'t be encoded ' . $data );
+        throw new ExceptionMissingAsset('Incorrect asset type - cann\'t be encoded ' . $data);
     }
 }
