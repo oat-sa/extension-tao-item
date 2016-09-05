@@ -418,7 +418,13 @@ define([
                     responses = provider.getResponses.call(this);
                 }
                 return responses;
-           }
+           },
+
+            renderFeedbacks : function renderFeedbacks(feedbacks, itemSession, done){
+                if(_.isFunction(provider.renderFeedbacks)) {
+                    provider.renderFeedbacks.call(this, feedbacks, itemSession, done);
+                }
+            }
         });
     };
 
