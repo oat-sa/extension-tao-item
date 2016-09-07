@@ -62,7 +62,7 @@ define(['lodash'], function(_){
         renderFeedbacks: function(feedbacks, itemSession, done){
             var renderingQueue = [];
 
-            _.each(feedbacks, function(val, key){
+            _.forEach(feedbacks, function(val, key){
                 if (itemSession.indexOf(key) === -1) {
                     return true;//continue with next feedback
                 }
