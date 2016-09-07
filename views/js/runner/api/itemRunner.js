@@ -420,6 +420,13 @@ define([
                 return responses;
            },
 
+            /**
+             * Render modalFeedbacks according to itemSession into the current item object
+             *
+             * @param feedbacks
+             * @param itemSession
+             * @param done
+             */
             renderFeedbacks : function renderFeedbacks(feedbacks, itemSession, done){
                 if(_.isFunction(provider.renderFeedbacks)) {
                     provider.renderFeedbacks.call(this, feedbacks, itemSession, done);
