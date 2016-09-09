@@ -26,6 +26,8 @@ use \taoItems_models_classes_ItemsService;
 use \common_exception_NoImplementation;
 use \common_Exception;
 use \Exception;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -33,8 +35,9 @@ use \Exception;
  * @package taoItems
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
-class Packer
+class Packer implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
 
     /**
      * The item to pack
@@ -70,7 +73,7 @@ class Packer
     /**
      * Get the packer for the item regarding it's implementation.
      *
-     * @return Packable the item packer implementation
+     * @return ItemPacker the item packer implementation
      * @throws common_exception_NoImplementation
      */
     private function getItemPacker()
@@ -99,7 +102,7 @@ class Packer
 
     /**
      * Pack an item.
-     * @param array $assetEncoders  the list of encoders to use in packing (configure the item packer)
+     * @param array $assetEncoders the list of encoders to use in packing (configure the item packer)
      * @param boolean $nestedResourcesInclusion
      * @return ItemPack of the item. It can be serialized directly.
      * @throws common_Exception
@@ -115,7 +118,7 @@ class Packer
             $itemPacker->setNestedResourcesInclusion($nestedResourcesInclusion);
 
             //then create the pack
-            $itemPack = $itemPacker->packItem($this->item, $this->lang);
+            $itemPack = $itemPacker->packItem($this->item, $this->lang, $this->getStorageDirectory());
 
         } catch (Exception $e) {
             throw new common_Exception('The item ' . $this->item->getUri() . ' cannot be packed : ' . $e->getMessage());
@@ -123,6 +126,22 @@ class Packer
 
         return $itemPack;
     }
-}
 
-?>
+    /**
+     * @return \tao_models_classes_service_StorageDirectory
+     */
+    protected function getStorageDirectory()
+    {
+        /** @var \oat\oatbox\filesystem\Directory $directory */
+        $directory = $this->itemService->getItemDirectory($this->item, $this->lang);
+
+        //we should use be language unaware for storage manipulation
+        $path = str_replace($this->lang, '', $directory->getPrefix());
+        $storageDirectory = new \tao_models_classes_service_StorageDirectory($this->item->getUri(),
+            $directory->getFilesystem()->getId(), $path);
+        $storageDirectory->setServiceLocator($this->getServiceLocator());
+
+
+        return $storageDirectory;
+    }
+}

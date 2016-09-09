@@ -595,5 +595,64 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             QUnit.start();
         }, 10);
     });
-});
 
+    module('ItemRunner renderFeedbacks', {
+        teardown : function(){
+            //reset the providers
+            delete itemRunner.providers;
+        }
+    });
+
+    QUnit.asyncTest('renderFeedbacks with empty queue', function(assert){
+        var $container;
+
+        QUnit.expect(3);
+
+        $container = $('#item-container');
+        assert.equal($container.length, 1, 'the item container exists');
+
+        itemRunner.register('dummyProvider', dummyProvider);
+
+        itemRunner('dummyProvider', {
+            type: 'number',
+            value : 0
+        }).on('render', function(){
+
+            this.renderFeedbacks([], [], function(renderingQueue){
+                assert.ok(renderingQueue instanceof Array, 'renderingQueue is an array');
+                assert.equal(renderingQueue.length, 0, 'renderingQueue is empty');
+
+                QUnit.start();
+            });
+        })
+            .init()
+            .render($container);
+    });
+
+    QUnit.asyncTest('getResponses after changes', function(assert){
+        var $container;
+
+        QUnit.expect(4);
+
+        $container = $('#item-container');
+        assert.equal($container.length, 1, 'the item container exists');
+
+        itemRunner.register('dummyProvider', dummyProvider);
+
+        itemRunner('dummyProvider', {
+            type: 'number',
+            value : 0
+        }).on('render', function(){
+
+            this.renderFeedbacks({f1: 'feedback1', f2: 'feedback2', f3: 'feedback3'}, ['f2'], function(renderingQueue){
+                assert.ok(renderingQueue instanceof Array, 'renderingQueue is an array');
+                assert.equal(renderingQueue.length, 1, 'renderingQueue contains one entry');
+                assert.equal(renderingQueue[0], 'feedback2', 'renderingQueue contains selected entry');
+
+                QUnit.start();
+            });
+        })
+            .init()
+            .render($container);
+    });
+});

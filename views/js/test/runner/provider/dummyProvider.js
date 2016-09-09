@@ -1,14 +1,15 @@
-define(function(){
+define(['lodash'], function(_){
+    'use strict';
 
     /**
      * Use for test  mocking.
-     * Create a dummy provider that runs input like items (just the input tag) 
-     */ 
+     * Create a dummy provider that runs input like items (just the input tag)
+     */
     var dummyItemRuntimeProvider = {
 
         init : function(data, done){
             this._data = data;
-            done(); 
+            done();
         },
 
         render : function(elt, done){
@@ -28,7 +29,7 @@ define(function(){
 
         clear : function(elt, done){
             elt.innerHTML = '';
-            done(); 
+            done();
         },
 
         getState : function(){
@@ -56,6 +57,19 @@ define(function(){
                 responses.push(input.value);
             }
             return responses;
+        },
+
+        renderFeedbacks: function(feedbacks, itemSession, done){
+            var renderingQueue = [];
+
+            _.forEach(feedbacks, function(val, key){
+                if (itemSession.indexOf(key) === -1) {
+                    return true;//continue with next feedback
+                }
+                renderingQueue.push(val);
+            });
+
+            done(renderingQueue);
         }
     };
 

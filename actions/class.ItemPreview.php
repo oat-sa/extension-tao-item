@@ -70,6 +70,9 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 
         $path = rawurldecode($path);
         $uri = base64_decode($codedUri);
+        if (!common_Utils::isUri($uri)) {
+            throw new common_exception_BadRequest('"'.$codedUri.'" does not decode to a valid item URI');
+        }
         $item = new core_kernel_classes_Resource($uri);
         if($path === 'index'){
             $this->renderItem($item);
