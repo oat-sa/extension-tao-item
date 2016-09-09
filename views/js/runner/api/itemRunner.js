@@ -418,7 +418,28 @@ define([
                     responses = provider.getResponses.call(this);
                 }
                 return responses;
-           }
+           },
+
+            /**
+             * Append the modalFeedbacks into the item and create queue of feedbacks that should be displayed to the user
+             *
+             * @param {Object|Array} feedbacks - all feedbacks of the item
+             * @param {Object|Array} itemSession - determine feedbacks which should be displayed
+             * @param {function} done(renderingQueue) - runs after loading feedbacks into the item
+             *      # have parameter {Object|Array} renderingQueue with prepared queue of the feedbacks for displaying to the user
+             *
+             *
+             * Example:
+             *
+             *    this.renderFeedbacks({f1: 'feedback1', f2: 'feedback2', f3: 'feedback3'}, ['f2'], function(renderingQueue){
+             *      renderingQueue; // {'feedback2'}
+             *    });
+             */
+            renderFeedbacks : function renderFeedbacks(feedbacks, itemSession, done){
+                if(_.isFunction(provider.renderFeedbacks)) {
+                    provider.renderFeedbacks.call(this, feedbacks, itemSession, done);
+                }
+            }
         });
     };
 
