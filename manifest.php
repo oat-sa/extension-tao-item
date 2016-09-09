@@ -29,9 +29,9 @@ $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 
 return array(
-	'name' => 'taoItems',
+    'name' => 'taoItems',
     'label' => 'Item core extension',
-	'description' => 'TAO Items extension',
+    'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
     'version' => '2.21.0',
 	'author' => 'Open Assessment Technologies, CRP Henri Tudor',
