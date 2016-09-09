@@ -596,8 +596,6 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
         }, 10);
     });
 
-// itemRunner().renderFeedbacks()
-
     module('ItemRunner renderFeedbacks', {
         teardown : function(){
             //reset the providers
