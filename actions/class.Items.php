@@ -176,7 +176,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                         $item = $binder->bind($properties);
-                        $this->getClassService()->getItemDirectory($item);
 
                         $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
 
