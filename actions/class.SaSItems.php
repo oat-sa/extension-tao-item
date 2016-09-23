@@ -99,7 +99,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		}
 		
 		$hiddenProperties = array(
-			TAO_ITEM_CONTENT_PROPERTY
+			taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
 		);
 		
 		$properties = array();

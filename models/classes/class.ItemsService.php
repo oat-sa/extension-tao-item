@@ -45,6 +45,12 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
 
+    const PROPERTY_ITEM_MODEL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+
+    const PROPERTY_ITEM_MODEL_SERVICE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService';
+
+    const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+
     /**
      * Instance of the itemContent property
      *
@@ -76,8 +82,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     protected function __construct()
     {
         $this->itemClass = $this->getClass(TAO_ITEM_CLASS);
-        $this->itemModelProperty = $this->getProperty(TAO_ITEM_MODEL_PROPERTY);
-        $this->itemContentProperty = $this->getProperty(TAO_ITEM_CONTENT_PROPERTY);
+        $this->itemModelProperty = $this->getProperty(self::PROPERTY_ITEM_MODEL);
+        $this->itemContentProperty = $this->getProperty(self::PROPERTY_ITEM_CONTENT);
     }
 
     public function getRootClass(){
@@ -492,7 +498,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @see tao_models_classes_GenerisService::cloneInstanceProperty()
      */
     protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
-        if ($property->getUri() == TAO_ITEM_CONTENT_PROPERTY) {
+        if ($property->getUri() == self::PROPERTY_ITEM_CONTENT) {
             return $this->cloneItemContent($source, $destination, $property);
         } else {
             return parent::cloneInstanceProperty($source, $destination, $property);
@@ -584,7 +590,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     public function setItemModel(core_kernel_classes_Resource $item, core_kernel_classes_Resource $model)
     {
-        return $item->editPropertyValues($this->getProperty(TAO_ITEM_MODEL_PROPERTY), $model);
+        return $item->editPropertyValues($this->getProperty(self::PROPERTY_ITEM_MODEL), $model);
     }
     
 
@@ -650,7 +656,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     public function getItemModelImplementation(core_kernel_classes_Resource $itemModel){
         $returnValue = null;
 
-        $services = $itemModel->getPropertyValues($this->getProperty(PROPERTY_ITEM_MODEL_SERVICE));
+        $services = $itemModel->getPropertyValues($this->getProperty(self::PROPERTY_ITEM_MODEL_SERVICE));
         if(count($services) > 0){
             if(count($services) > 1){
                 throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
@@ -683,9 +689,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $returnValue = (string) '';
 
         if($lang === ''){
-            $files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+            $files = $item->getPropertyValues($this->getProperty(self::PROPERTY_ITEM_CONTENT));
         }else{
-            $files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $lang)->toArray();
+            $files = $item->getPropertyValuesByLg($this->getProperty(self::PROPERTY_ITEM_CONTENT), $lang)->toArray();
         }
         if(count($files) == 0){
             // no content found assign default

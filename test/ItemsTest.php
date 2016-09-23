@@ -227,7 +227,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
         $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
         ->willReturn(array());
         $itemModel = $itemModelProphecy->reveal();
         $this->assertNull($this->itemsService->getPreviewUrl($item->reveal()));
@@ -238,7 +238,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     public function testGetItemModelImplementation()
     {
         $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
             ->willReturn(array('#fakeUri','#toto'));
         $itemModelProphecy->getLabel()->willReturn('foo');
         
@@ -251,7 +251,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
             $this->assertEquals('Conflicting services for itemmodel foo', $e->getMessage());         
         }
         
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
         ->willReturn(array('#fakeUri'));
         $itemModelProphecy->getLabel()->willReturn('foo');
         
@@ -265,7 +265,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         
         }
         
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE))
+        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
             ->willReturn(array());
         $this->assertNull($this->itemsService->getItemModelImplementation($itemModelProphecy->reveal()));
     }

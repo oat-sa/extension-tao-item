@@ -35,7 +35,7 @@ class CsvImporter extends \tao_models_classes_import_CsvImporter
     protected function getExludedProperties()
     {
        return array_merge(parent::getExludedProperties(), array(
-           TAO_ITEM_CONTENT_PROPERTY,
+           \taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT,
        ));
     }
 
