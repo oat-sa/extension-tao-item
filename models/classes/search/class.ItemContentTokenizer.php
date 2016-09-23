@@ -19,6 +19,7 @@
  */
 
 use oat\tao\model\search\tokenizer\ResourceTokenizer;
+use oat\taoItems\model\search\IndexableItemModel;
 
 /**
  * Item content tokenizer.
@@ -51,31 +52,22 @@ class taoItems_models_classes_search_ItemContentTokenizer implements ResourceTok
      * If not return null
      *
      * @param core_kernel_classes_Resource $resource
-     * @return ResourceTokenizer|null
+     * @return null|taoItems_models_classes_itemModel
      */
     protected function getItemContentTokenizer(core_kernel_classes_Resource $resource)
     {
+        $itemSerivce= taoItems_models_classes_ItemsService::singleton();
         try {
-            /** @var core_kernel_classes_Resource $model */
-            $model = $resource->getUniquePropertyValue($this->getProperty(TAO_ITEM_MODEL_PROPERTY));
-            if ($model->exists()) {
-                /** @var core_kernel_classes_Resource $tokenizer */
-                $tokenizer = $model->getUniquePropertyValue($this->getProperty(INDEX_PROPERTY_TOKENIZER));
-                if ($tokenizer->exists()) {
-                    $tokenizerClass = $tokenizer->getUniquePropertyValue($this->getProperty("http://www.tao.lu/Ontologies/TAO.rdf#TokenizerClass"));
-                    if ($tokenizerClass instanceof core_kernel_classes_Literal) {
-                        $impl = new $tokenizerClass->literal();
-                        if ($impl instanceof ResourceTokenizer) {
-                            return $impl;
-                        }
+            $model = $itemSerivce->getItemModel($resource);
+            if (! is_null($model)) {
+                $impl = $itemSerivce->getItemModelImplementation($model);
+                if (! is_null($impl)) {
+                    if ($impl instanceof IndexableItemModel) {
+                        return $impl->getItemContentTokenizer();
                     }
                 }
             }
-
-        }
-        catch (core_kernel_classes_EmptyProperty $e) {}
-        catch (core_kernel_classes_MultiplePropertyValuesException $e) {}
-
+        } catch (common_exception_Error $e) {}
         return null;
     }
 }
