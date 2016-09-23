@@ -61,16 +61,15 @@ class taoItems_models_classes_CrudItemsService
 			$propertiesValues[RDFS_LABEL] = "";
 		}
 		
-		/*if (isset($propertiesValues[TAO_ITEM_CONTENT_PROPERTY]))*/
 		$type = isset($propertiesValues[RDF_TYPE]) ? $propertiesValues[RDF_TYPE] : $this->getRootClass();
 		$label = $propertiesValues[RDFS_LABEL];
 		unset($propertiesValues[RDFS_LABEL]);
 		unset($propertiesValues[RDF_TYPE]);
 
 		$itemContent = null;
-		if (isset($propertiesValues[TAO_ITEM_CONTENT_PROPERTY])) {
-		    $itemContent = $propertiesValues[TAO_ITEM_CONTENT_PROPERTY];
-		    unset($propertiesValues[TAO_ITEM_CONTENT_PROPERTY]);
+		if (isset($propertiesValues[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT])) {
+		    $itemContent = $propertiesValues[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT];
+		    unset($propertiesValues[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
 		}
 		$resource =  parent::create($label, $type, $propertiesValues);
 		if (isset($itemContent)) {

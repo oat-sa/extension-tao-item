@@ -121,5 +121,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('2.15.0', '2.22.0');
+
     }
 }
