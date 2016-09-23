@@ -169,7 +169,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     if($myForm->isValid()){
     
                         $properties = $myForm->getValues();
-                        unset($properties[TAO_ITEM_CONTENT_PROPERTY]);
+                        unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
                         unset($properties['warning']);
                         unset($properties['itemModelLabel']);
     
@@ -200,7 +200,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 
-            $myForm->removeElement(tao_helpers_Uri::encode(TAO_ITEM_CONTENT_PROPERTY));
+            $myForm->removeElement(tao_helpers_Uri::encode(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
 
             $this->setData('isPreviewEnabled', $hasPreview);
             $this->setData('isAuthoringEnabled', $hasModel);
