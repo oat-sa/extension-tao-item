@@ -57,17 +57,15 @@ class taoItems_models_classes_search_ItemContentTokenizer implements ResourceTok
     protected function getItemContentTokenizer(core_kernel_classes_Resource $resource)
     {
         $itemService= taoItems_models_classes_ItemsService::singleton();
-        try {
-            $model = $itemService->getItemModel($resource);
-            if (! is_null($model)) {
-                $impl = $itemService->getItemModelImplementation($model);
-                if (! is_null($impl)) {
-                    if ($impl instanceof IndexableItemModel) {
-                        return $impl->getItemContentTokenizer();
-                    }
+        $model = $itemService->getItemModel($resource);
+        if (! is_null($model)) {
+            $impl = $itemService->getItemModelImplementation($model);
+            if (! is_null($impl)) {
+                if ($impl instanceof IndexableItemModel) {
+                    return $impl->getItemContentTokenizer();
                 }
             }
-        } catch (common_exception_Error $e) {}
+        }
         return null;
     }
 }
