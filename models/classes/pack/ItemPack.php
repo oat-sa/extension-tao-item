@@ -38,7 +38,7 @@ class ItemPack implements JsonSerializable
      * The supported assets types
      * @var string[]
      */
-    private static $assetTypes = array('js', 'css', 'font', 'img', 'audio', 'video', 'xinclude');
+    private static $assetTypes = array('asset', 'js', 'css', 'font', 'img', 'audio', 'video', 'xinclude');
 
 
     /**
@@ -65,6 +65,7 @@ class ItemPack implements JsonSerializable
      * @var array
      */
     protected $assetEncoders = array(
+        'asset'     => 'none',
         'js'        => 'none',
         'css'       => 'none',
         'font'      => 'none',
