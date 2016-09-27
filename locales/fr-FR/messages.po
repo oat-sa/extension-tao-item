@@ -61,7 +61,7 @@ msgstr "Édition de la classe item"
 
 #, tao-public
 msgid "Export"
-msgstr "Dupliquer"
+msgstr "Exporter"
 
 msgid "Failed retrieving %s"
 msgstr ""

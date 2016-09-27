@@ -33,8 +33,8 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule {
 	 */
 	protected function getParametersAliases(){
 	    return array_merge(parent::getParametersAliases(), array(
-		    "model"=> TAO_ITEM_MODEL_PROPERTY,
-		    "content" => TAO_ITEM_CONTENT_PROPERTY
+		    "model"=> taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL,
+		    "content" => taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
 		   
 	    ));
 	}

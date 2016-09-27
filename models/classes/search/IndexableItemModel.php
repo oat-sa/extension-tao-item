@@ -16,27 +16,18 @@
  *
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
- *
  */
-namespace oat\taoItems\model;
 
-/**
- * A custom item CSV importer
- *
- * @access public
- * @author Antoine Robin, <antoine@taotesting.com>
- */
-class CsvImporter extends \tao_models_classes_import_CsvImporter
+namespace oat\taoItems\model\search;
+
+use oat\tao\model\search\tokenizer\ResourceTokenizer;
+
+interface IndexableItemModel
 {
     /**
-     * (non-PHPdoc)
-     * @see tao_models_classes_import_CsvImporter::getExludedProperties()
+     * Provide the tokenizer to index item content
+     *
+     * @return ResourceTokenizer
      */
-    protected function getExludedProperties()
-    {
-       return array_merge(parent::getExludedProperties(), array(
-           \taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT,
-       ));
-    }
-
+    public function getItemContentTokenizer();
 }
