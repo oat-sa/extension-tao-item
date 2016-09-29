@@ -139,10 +139,7 @@ class Packer implements ServiceLocatorAwareInterface
 
         //we should use be language unaware for storage manipulation
         $path = str_replace($this->lang, '', $directory->getPrefix());
-        $storageDirectory = new Directory($directory->getFileSystem()->getId(), $path);
-        $storageDirectory->setServiceLocator($this->getServiceLocator());
 
-
-        return $storageDirectory;
+        return $this->itemService->getDefaultItemDirectory()->getDirectory($path);
     }
 }
