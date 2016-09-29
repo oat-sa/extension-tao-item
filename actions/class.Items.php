@@ -1,6 +1,8 @@
 <?php
+
 use oat\oatbox\event\EventManagerAwareTrait;
 use oat\tao\model\lock\LockManager;
+use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 
 /**
