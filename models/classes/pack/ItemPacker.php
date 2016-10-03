@@ -23,7 +23,7 @@ namespace oat\taoItems\model\pack;
 
 use \core_kernel_classes_Resource;
 use \common_Exception;
-use \taoItems_models_classes_ItemsService;
+use oat\oatbox\filesystem\Directory;
 
 /**
  * To allow packing of Item. The goal of the packaging is to represent the data needed
@@ -59,10 +59,10 @@ abstract class ItemPacker
      *
      * @param core_kernel_classes_Resource $item the item to pack
      * @param string $lang
-     * @param \tao_models_classes_service_StorageDirectory $directory
+     * @param Directory $directory
      * @return \oat\taoItems\model\pack\ItemPack
      */
-    abstract public function packItem(core_kernel_classes_Resource $item, $lang, $directory);
+    abstract public function packItem(core_kernel_classes_Resource $item, $lang, Directory $directory);
 
 
     /**
