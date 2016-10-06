@@ -24,6 +24,7 @@ use oat\tao\test\TaoPhpUnitTestRunner;
 use core_kernel_classes_Property;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
+use oat\taoQtiItem\model\ItemModel;
 use taoItems_models_classes_ItemsService;
 use Prophecy\Argument;
 use oat\taoOpenWebItem\model\OwiItemModel;
@@ -49,6 +50,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     public function setUp()
     {
         TaoPhpUnitTestRunner::initTest();
+        \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
         $this->itemsService = \taoItems_models_classes_ItemsService::singleton();
     }
 
@@ -134,6 +136,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertIsA($instance, 'core_kernel_classes_Resource');
         $this->assertEquals($label, $instance->getLabel());
         return $instance;
+
     }
 
 
@@ -143,42 +146,25 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testItemContent($instance)
     {
-        if(!\common_ext_ExtensionsManager::singleton()->isInstalled('taoOpenWebItem')){
-            $this->markTestSkipped('The extension taoOpenWebItem is not installed.' );
-        }    
-        $this->assertFalse($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
+        $this->assertFalse($this->itemsService->hasItemModel($instance, array(ItemModel::MODEL_URI)));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
-        $this->itemsService->setDefaultItemContent($instance);
-        $this->assertFileExists($this->itemsService->getDefaultItemFolder($instance));
+        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), ItemModel::MODEL_URI);
 
-        $instance->setPropertyValue(new \core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY), OwiItemModel::ITEMMODEL_URI);
-
-        //is really empty
-        $this->assertFalse($this->itemsService->hasItemContent($instance));
-        //we can set
-        $this->assertNotNull($this->itemsService->setItemContent($instance, 'test'));
-        $this->assertEquals('test', $this->itemsService->getItemContent($instance));
-//        and overwrite
-        $this->assertNotNull($this->itemsService->setItemContent($instance, 'test2'));
-        $this->assertEquals('test2', $this->itemsService->getItemContent($instance));
-
-        //if no itemContent is set get the default one and copy it into a new repository
-        $this->assertEquals('test2', $this->itemsService->getItemContent($instance, 'BY'));
+        $directory = $this->itemsService->getItemDirectory($instance);
+        $this->assertTrue($directory->getFile('qti.xml')->write('test'));
 
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
         $this->assertStringStartsWith(LOCAL_NAMESPACE, $instance->getUri());
-        $this->assertTrue($this->itemsService->hasItemModel($instance, array(OwiItemModel::ITEMMODEL_URI)));
+        $this->assertTrue($this->itemsService->hasItemModel($instance, array(ItemModel::MODEL_URI)));
 
         $this->assertStringStartsWith(ROOT_URL, $this->itemsService->getPreviewUrl($instance));
 
-        $this->assertEquals('taoItems_models_classes_ItemCompiler', $this->itemsService->getCompilerClass($instance));
+        $this->assertEquals('oat\taoQtiItem\model\QtiItemCompiler', $this->itemsService->getCompilerClass($instance));
 
         $this->assertEquals(count($this->itemsService->getAllByModel($instance)), 0);
         $this->assertEquals(count($this->itemsService->getAllByModel(null)), 0);
-
-        $this->assertContains('test2',$this->itemsService->render($instance, $this->itemsService->getSessionLg()));
 
         $this->assertFalse($this->itemsService->hasModelStatus($instance, array(TAO_ITEM_MODEL_STATUS_DEPRECATED)));
     }
@@ -322,9 +308,10 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testClone($instance)
     {
+        $this->itemsService->setItemModel($instance, new core_kernel_classes_Resource(ItemModel::MODEL_URI));
         $clone = $this->itemsService->cloneInstance($instance);
         $this->assertNotSame($clone, $instance);
-        $this->assertTrue($this->itemsService->deleteItem($clone));
+        $this->assertTrue($this->itemsService->deleteResource($clone));
     }
 
 
@@ -343,7 +330,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testDeleteInstance($instance)
     {
-        $this->assertTrue($this->itemsService->deleteItem($instance));
+        $this->assertTrue($this->itemsService->deleteResource($instance));
         $this->assertFalse($instance->exists());
     }
 

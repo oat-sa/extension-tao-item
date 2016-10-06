@@ -67,7 +67,6 @@ class Loader
 
     /**
      * Get the content of an asset.
-     * Only LOCAL assets are yet supported.
      *
      * @param string $assetPath the asset path
      * @return null|string the asset content or null if not stored locally
@@ -75,13 +74,14 @@ class Loader
      */
     public function getAssetContent($assetPath)
     {
-        
-        $resolver = new ItemMediaResolver($this->item, $this->lang);
-        
-        $mediaAsset = $resolver->resolve($assetPath);
+        $mediaAsset = $this->getItemMediaResolver()->resolve($assetPath);
         $mediaSource = $mediaAsset->getMediaSource();
         $srcPath = $mediaSource->download($mediaAsset->getMediaIdentifier());
         return file_get_contents($srcPath);
-        
+    }
+
+    protected function getItemMediaResolver()
+    {
+        return new ItemMediaResolver($this->item, $this->lang);
     }
 }
