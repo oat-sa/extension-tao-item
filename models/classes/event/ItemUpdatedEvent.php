@@ -51,8 +51,24 @@ class ItemUpdatedEvent implements Event, JsonSerializable
     {
         return get_class($this);
     }
-
+    
     /**
+     * event data getter 
+     * @return array
+     */
+    public function getData() {
+        return $this->data;
+    }
+    
+    /**
+     * event item URI getter 
+     * @return string
+     */
+    public function getItemUri() {
+        return $this->itemUri;
+    }
+
+        /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,

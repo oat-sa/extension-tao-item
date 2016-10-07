@@ -1,6 +1,8 @@
 <?php
+
 use oat\oatbox\event\EventManagerAwareTrait;
 use oat\tao\model\lock\LockManager;
+use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 
 /**
@@ -178,6 +180,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         $item = $binder->bind($properties);
 
                         $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
+                        $this->getEventManager()->trigger(new ItemRdfUpdatedEvent($item->getUri(), $properties));
 
                         //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                         $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
