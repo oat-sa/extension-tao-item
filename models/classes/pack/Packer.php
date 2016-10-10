@@ -22,6 +22,7 @@
 namespace oat\taoItems\model\pack;
 
 use \core_kernel_classes_Resource;
+use oat\oatbox\filesystem\Directory;
 use \taoItems_models_classes_ItemsService;
 use \common_exception_NoImplementation;
 use \common_Exception;
@@ -128,7 +129,8 @@ class Packer implements ServiceLocatorAwareInterface
     }
 
     /**
-     * @return \tao_models_classes_service_StorageDirectory
+     * @return Directory
+     * @throws \Exception
      */
     protected function getStorageDirectory()
     {
@@ -137,11 +139,7 @@ class Packer implements ServiceLocatorAwareInterface
 
         //we should use be language unaware for storage manipulation
         $path = str_replace($this->lang, '', $directory->getPrefix());
-        $storageDirectory = new \tao_models_classes_service_StorageDirectory($this->item->getUri(),
-            $directory->getFilesystem()->getId(), $path);
-        $storageDirectory->setServiceLocator($this->getServiceLocator());
 
-
-        return $storageDirectory;
+        return $this->itemService->getDefaultItemDirectory()->getDirectory($path);
     }
 }
