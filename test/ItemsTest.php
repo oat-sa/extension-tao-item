@@ -16,19 +16,15 @@
  * 
  * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *               2015 (update and modification) Open Assessment Technologies SA
+ *               2016 (update and modification) Open Assessment Technologies SA
  */
 namespace oat\taoItems\test;
 
 use oat\tao\test\TaoPhpUnitTestRunner;
 use core_kernel_classes_Property;
-use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use oat\taoQtiItem\model\ItemModel;
 use taoItems_models_classes_ItemsService;
-use Prophecy\Argument;
-use oat\taoOpenWebItem\model\OwiItemModel;
-
 
 /**
  *
@@ -62,8 +58,8 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     public function testService()
     {
 
-        $this->assertIsA($this->itemsService, '\tao_models_classes_Service');
-        $this->assertIsA($this->itemsService, '\taoItems_models_classes_ItemsService');
+        $this->assertInstanceOf(\tao_models_classes_Service::class, $this->itemsService);
+        $this->assertInstanceOf(taoItems_models_classes_ItemsService::class, $this->itemsService);
 
     }
 
@@ -74,7 +70,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         $this->assertTrue(defined('TAO_ITEM_CLASS'));
         $ItemClass = $this->itemsService->getRootClass();
-        $this->assertIsA($ItemClass, 'core_kernel_classes_Class');
+        $this->assertInstanceOf(\core_kernel_classes_Class::class, $ItemClass);
         $this->assertEquals(TAO_ITEM_CLASS, $ItemClass->getUri());
 
         return $ItemClass;
@@ -89,7 +85,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         $subItemClassLabel = 'subItem class';
         $subItemClass = $this->itemsService->createSubClass($ItemClass, $subItemClassLabel);
-        $this->assertIsA($subItemClass, 'core_kernel_classes_Class');
+        $this->assertInstanceOf(\core_kernel_classes_Class::class, $subItemClass);
         $this->assertEquals($subItemClassLabel, $subItemClass->getLabel());
 
         return $subItemClass;
@@ -125,7 +121,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     protected function instantiateClass($class, $label)
     {
         $instance = $this->itemsService->createInstance($class, $label);
-        $this->assertIsA($instance, 'core_kernel_classes_Resource');
+        $this->assertInstanceOf(core_kernel_classes_Resource::class, $instance);
         $this->assertEquals($label, $instance->getLabel());
 
         $this->assertTrue(defined('RDFS_LABEL'));
@@ -133,7 +129,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $instance->setLabel($label);
 
 
-        $this->assertIsA($instance, 'core_kernel_classes_Resource');
+        $this->assertInstanceOf(core_kernel_classes_Resource::class, $instance);
         $this->assertEquals($label, $instance->getLabel());
         return $instance;
 
