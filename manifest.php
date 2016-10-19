@@ -33,7 +33,7 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '2.22.2',
+    'version' => '2.23.0',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=0.8',
@@ -46,7 +46,8 @@ return array(
 		'rdf' => array(
 		    dirname(__FILE__). '/models/ontology/taoitem.rdf',
 		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf',
-		    dirname(__FILE__). '/models/ontology/indexation.rdf'
+		    dirname(__FILE__). '/models/ontology/indexation.rdf',
+		    dirname(__FILE__). '/models/ontology/category.rdf',
 		),
 		'php'	=> array(
 			dirname(__FILE__).'/scripts/install/addLocalSource.php',

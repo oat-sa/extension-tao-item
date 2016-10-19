@@ -23,27 +23,28 @@ use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\ontology\ItemAuthorRole;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
+use oat\taoItems\model\CategoryService;
 
 /**
- * 
+ *
  * @author Joel Bout <joel@taotesting.com>
  */
 class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
-    
+
     /**
-     * 
+     *
      * @param string $currentVersion
      * @return string $versionUpdatedTo
      */
     public function update($initialVersion) {
-        
-     
-        
+
+
+
         //migrate from 2.6 to 2.6.1
         if ($this->isVersion('2.6')) {
-        
+
             $file = dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_1.rdf';
-        
+
             $adapter = new tao_helpers_data_GenerisAdapterRdf();
             if($adapter->import($file)){
                 $$this->setVerion('2.6.1');
@@ -51,39 +52,39 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
                 common_Logger::w('Import failed for '.$file);
             }
         }
-        
+
         if ($this->isVersion('2.6.1')) {
-            
+
             // double check
             $index = new core_kernel_classes_Resource('http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex');
             $default = $index->getPropertyValues(new core_kernel_classes_Property('http://www.tao.lu/Ontologies/TAO.rdf#IndexDefaultSearch'));
-            
+
             if (count($default) == 0) {
-                
+
                 //no default search set, import
                 $file = dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_2.rdf';
-            
+
                 $adapter = new tao_helpers_data_GenerisAdapterRdf();
                 if($adapter->import($file)){
                     $this->setVerion('2.6.2');
                 } else{
                     common_Logger::w('Import failed for '.$file);
                 }
-                
+
             } else {
                 common_Logger::w('Defautl Search already set');
                 $$this->setVerion('2.6.2');
             }
         }
-        
+
         if ($this->isVersion('2.6.2')) {
-            
+
             OntologyUpdater::correctModelId(dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_1.rdf');
             OntologyUpdater::correctModelId(dirname(__FILE__).DIRECTORY_SEPARATOR.'indexation_2_6_2.rdf');
             $this->setVerion('2.6.3');
-        
+
         }
-        
+
         if ($this->isVersion('2.6.3')) {
             // update user roles
             $class = new core_kernel_classes_Class(CLASS_TAO_USER);
@@ -95,9 +96,9 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
                 $user->setPropertyValue(new core_kernel_classes_Property(PROPERTY_USER_ROLES),ItemAuthorRole::INSTANCE_URI);
             }
             $this->setVerion('2.6.4');
-        
+
         }
-        
+
         if ($this->isBetween('2.6.4','2.8')) {
             $this->setVersion('2.8');
         }
@@ -113,7 +114,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('2.8.1','2.14.0');
-        
+
         if ($this->isVersion('2.14.0')) {
             OntologyUpdater::syncModels();
             AclProxy::applyRule(new AccessRule('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'));
@@ -122,5 +123,15 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
         $this->skip('2.15.0', '2.22.2');
 
+        if ($this->isVersion('2.22.2')) {
+
+            OntologyUpdater::syncModels();
+
+            $categoryService = new CategoryService();
+            $categoryService->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(CategoryService::SERVICE_ID, $categoryService);
+
+            $this->setVersion('2.23.0');
+        }
     }
 }
