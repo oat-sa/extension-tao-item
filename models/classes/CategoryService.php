@@ -15,59 +15,91 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
- *
+ * Copyright (c) 2016 (original work) Open Assessment Technologies SA
  */
+
 namespace oat\taoItems\model;
 
+use core_kernel_classes_Class as RdfClass;
+use core_kernel_classes_Property as RdfProperty;
+use core_kernel_classes_Resource as RdfResource;
 use oat\oatbox\service\ConfigurableService;
+use taoItems_models_classes_ItemsService;
 
 /**
+ * Category management service.
+ * How to expose RDF properties to categorize them.
  *
- * @author Antoine Robin, <antoine@taotesting.com>
- * @package taoQtiItem
+ * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
 class CategoryService extends ConfigurableService
 {
-
     const SERVICE_ID = 'taoItems/Category';
 
+    const ITEM_CLASS_URI  = 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item';
     const EXPOSE_PROP_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory';
-
     const SUPPORTED_WIDGET_URIS = [
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox',
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#CheckBox',
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#RadioBox',
-        'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#ComboBox'
+        'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#ComboBox',
+        'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TreeBox'
     ];
+
+    const EXCLUDE_PROPS = [
+        'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel'
+    ];
+
+    /**
+     * @var taoItems_models_classes_ItemsService
+     */
+    protected $itemService;
 
     /**
      * Get the categories link to the list of items in parameter.
      * Theses categories come from a configurable list of properties.
      * The category label is also set in a configurable list
-     * @param \core_kernel_classes_Resource[] $items
+     *
+     * @param RdfResource[] $items the list of items
+     *
      * @return array of categories for specified items
-     * ['itemUri' => ['CATEGORY1', 'CATEGORY2']]
+     *               ['itemUri' => ['CATEGORY1', 'CATEGORY2']]
      */
-    public function getItemCategories(array $items)
+    public function getItemsCategories(array $items)
     {
         $categories = array();
-        $lookupProperties = $this->getOption('properties');
-        if (!empty($lookupProperties)) {
-            foreach ($items as $item) {
-                $itemCategories = array();
-                if($item instanceof \core_kernel_classes_Resource){
-                    $properties = $item->getPropertiesValues(array_keys($lookupProperties));
-                    foreach ($properties as $property => $propertyValues) {
-                        foreach ($propertyValues as $value) {
-                            $propertyValue = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string)$value;
-                            if(isset($lookupProperties[$property][$propertyValue])){
-                                $itemCategories[] = $lookupProperties[$property][$propertyValue];
-                            }
-                        }
+
+        foreach ($items as $item) {
+            $itemCategories = $this->getItemCategories($item);
+            if (count($itemCategories) > 0) {
+                $categories[$item->getUri()] = $itemCategories;
+            }
+        }
+
+        return $categories;
+    }
+
+    /**
+     * Get the categories of an item
+     *
+     * @param RdfResource $item the item
+     *
+     * @return string[] the list of categories
+     */
+    public function getItemCategories(RdfResource $item)
+    {
+        $categories = [];
+        foreach ($item->getTypes() as $class) {
+            $eligibleProperties = $this->getElligibleProperties($class);
+            $propertiesValues = $item->getPropertiesValues(array_keys($eligibleProperties));
+
+            foreach ($propertiesValues as $property => $propertyValues) {
+                foreach ($propertyValues as $value) {
+                    if ($value instanceof RdfResource) {
+                        $categories[] = self::sanitizeCategoryName($value->getLabel());
+                    } else {
+                        $categories[] = self::sanitizeCategoryName((string)$value);
                     }
-                    $categories[$item->getUri()] = $itemCategories;
                 }
             }
         }
@@ -75,29 +107,99 @@ class CategoryService extends ConfigurableService
         return $categories;
     }
 
-    public function getElligibleProperties(\core_kernel_classes_Class $class)
+    /**
+     * Sanitize the name of the category :
+     * Remove special chars, replaces spaces by dashes and limit the length to 32
+     *
+     * @param string $value the input value
+     *
+     * @return string the sanitized value
+     */
+    public static function sanitizeCategoryName($value)
     {
-        return array_filter($class->getProperties(), function ($property) {
-            return in_array($property->getWidget()->getUri(), self::SUPPORTED_WIDGET_URIS);
-        });
+        $output = preg_replace('/[^a-z0-9\- ]/', '',  strtolower($value));
+        $output = preg_replace('/\s+/', '-', trim($output));
+        return substr($output, 0, 32);
     }
 
-    public function doesExposeCategory($property)
+    /**
+     * Get the properties from a class that can be exposed
+     *
+     * @param RdfClass $class the $class
+     *
+     * @return RdfProperties[] the list of eligible properties
+     */
+    public function getElligibleProperties(RdfClass $class)
     {
-        $exposeProperty = new \core_kernel_classes_Property(self::EXPOSE_PROP_URI);
-        $expose = $property->getPropertyValue($exposeProperty);
+        $properties = $this->getItemService()->getClazzProperties($class, new RdfClass(self::ITEM_CLASS_URI));
+        return array_filter(
+            $properties,
+            function ($property) {
+                if(in_array($property->getUri(), self::EXCLUDE_PROPS)){
+                    return false;
+                }
+                $widget = $property->getWidget();
+                return !is_null($widget) && in_array($widget->getUri(), self::SUPPORTED_WIDGET_URIS);
+            }
+        );
+    }
+
+    /**
+     * Check if a property is exposed
+     *
+     * @param RdfPropery $property the property to check
+     *
+     * @return bool true if exposed
+     */
+    public function doesExposeCategory(RdfProperty $property)
+    {
+        $exposeProperty = new RdfProperty(self::EXPOSE_PROP_URI);
+        $expose = $property->getOnePropertyValue($exposeProperty);
 
         return !is_null($expose) && $expose->getUri() === GENERIS_TRUE;
     }
 
-    public function exposeCatogry($property, $value)
+    /**
+     * Expose or not a property
+     *
+     * @param RdfProperty $property the property to check
+     * @param bool        $value    true if exposed
+     *
+     * @return void
+     */
+    public function exposeCategory(RdfProperty $property, bool $value)
     {
-        $exposeProperty = new \core_kernel_classes_Property(self::EXPOSE_PROP_URI);
+        $exposeProperty = new RdfProperty(self::EXPOSE_PROP_URI);
 
         if ($value == true) {
             $property->setPropertyValue($exposeProperty, GENERIS_TRUE);
         } else {
-            $property->removePropertyValue($exposeProperty);
+            $property->removePropertyValue($exposeProperty, GENERIS_TRUE);
         }
+    }
+
+    /**
+     * Service getter and initializer.
+     *
+     * @return taoItems_models_classes_ItemsService the service
+     */
+    public function getItemService()
+    {
+        if (is_null($this->itemService)) {
+            $this->itemService = taoItems_models_classes_ItemsService::singleton();
+        }
+        return $this->itemService;
+    }
+
+    /**
+     * Service setter
+     *
+     * @param taoItems_models_classes_ItemsService $itemService the service
+     *
+     * @return void
+     */
+    public function setItemService(taoItems_models_classes_ItemsService $itemService)
+    {
+        $this->itemService = $itemService;
     }
 }

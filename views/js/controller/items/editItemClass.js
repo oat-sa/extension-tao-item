@@ -24,52 +24,75 @@
  */
 define([
     'jquery',
+    'lodash',
     'uri',
-    'ui/contextualPopup',
-    'tpl!taoItems/controller/items/category',
-    'context',
-    'module'
-], function($, uriUtil, contextualPopup, categoryTpl, context, module) {
+    'taoItems/component/category/switch',
+    'taoItems/provider/category',
+    'ui/feedback'
+], function($, _, uriUtil, categorySwitch, categoryProvider, feedback) {
     'use strict';
 
-    var injectCategoryAutoAdding = function injectCategoryAutoAdding($container) {
+    var provider  = categoryProvider();
 
-        $('.regular-property', $container).each(function(){
-            var $propertyContainer = $(this);
-            var $propertyToolbar = $('.property-heading-toolbar', $propertyContainer);
-            var propertyUri = uriUtil.decode($propertyContainer.attr('id'));
+    var injectButtonPlaceholder = function injectButtonPlaceholder(uri) {
+        var $propContainer = $('#property_' + uriUtil.encode(uri));
+        var $placeholder,
+            $propertyToolbar,
+            $editButton;
 
-            var $button = $(categoryTpl({
-                id : propertyUri
-            }));
+        if($propContainer.length && $propContainer.hasClass('regular-property')){
+            $placeholder     = $('<span>');
+            $propertyToolbar = $('.property-heading-toolbar', $propContainer);
+            $editButton      = $('.icon-edit', $propertyToolbar);
 
-            if ($('.icon-edit', $propertyToolbar).length) {
-                $button.insertAfter($('.icon-edit', $propertyToolbar));
+            if ($editButton.length) {
+                $placeholder.insertAfter($editButton);
             } else {
-                $propertyToolbar.append($button);
+                $propertyToolbar.append($placeholder);
             }
-        });
+        }
+        return $placeholder;
     };
+
+    var handleError = function handleError(err){
+        feedback().error(err.message);
+    };
+
+    var addCategorySwitch = function addCategorySwitch($container, propertyUri, exposed) {
+        categorySwitch($container, propertyUri, exposed)
+            .on('requestChange', function(propUri, value) {
+                var self = this;
+                this.setState('disabled', true);
+
+                provider
+                    .setExposed(propUri, value)
+                    .then(function(success){
+                        self.setState('disabled', false);
+                        if(success){
+                            self.setExposed(value);
+                        }
+                    })
+                    .catch(handleError);
+            });
+    };
+
 
     var indexCategoryController = {
 
         start : function start() {
-
-            var $container = $('#panel-manage_items .property-container');
             var classUri = $('#id').val();
-            $.getJSON('/taoItems/Category/get', { id: classUri }).done(function(res){
-                console.log(res);
-            });
 
-            //injectCategoryAutoAdding($container);
-
-            //$container
-                //.off('click.category', '.category-auto-adder')
-                //.on('click.category', '.category-auto-adder', function(e){
-                    //e.preventDefault();
-
-
-                //});
+            provider
+                .getExposedsByClass(classUri)
+                .then(function(results){
+                    _.forEach(results, function(exposed, uri){
+                        var $container = injectButtonPlaceholder(uri);
+                        if($container && $container.length){
+                            addCategorySwitch($container, uri, exposed);
+                        }
+                    });
+                })
+                .catch(handleError);
         }
     };
 
