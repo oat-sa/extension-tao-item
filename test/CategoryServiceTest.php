@@ -100,11 +100,11 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
         $fooClass = new RdfClass('foo');
 
         $eligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::SUPPORTED_WIDGET_URIS[0]));
+        $eligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
         $eligibleProp1->getUri()->willReturn('p1');
 
         $eligibleProp2 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::SUPPORTED_WIDGET_URIS[2]));
+        $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
         $eligibleProp2->getUri()->willReturn('p2');
 
         $notEligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
@@ -116,8 +116,8 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
         $notEligibleProp2->getUri()->willReturn('np2');
 
         $excludedProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $excludedProp1->getWidget()->willReturn(new RdfResource(CategoryService::SUPPORTED_WIDGET_URIS[0]));
-        $excludedProp1->getUri()->willReturn(CategoryService::EXCLUDE_PROPS[0]);
+        $excludedProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
+        $excludedProp1->getUri()->willReturn(CategoryService::$excludedPropUris[0]);
 
         $itemService = $this->prophesize('\taoItems_models_classes_ItemsService');
         $itemService->getClazzProperties($fooClass, Argument::any())->willReturn([
@@ -146,11 +146,11 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
         $fooClass = new RdfClass('foo');
 
         $eligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::SUPPORTED_WIDGET_URIS[0]));
+        $eligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
         $eligibleProp1->getUri()->willReturn('p1');
 
         $eligibleProp2 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::SUPPORTED_WIDGET_URIS[2]));
+        $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
         $eligibleProp2->getUri()->willReturn('p2');
 
         $p2Value = $this->prophesize('\core_kernel_classes_Resource');

@@ -38,7 +38,8 @@ class CategoryService extends ConfigurableService
 
     const ITEM_CLASS_URI  = 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item';
     const EXPOSE_PROP_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory';
-    const SUPPORTED_WIDGET_URIS = [
+
+    public static $supportedWidgetUris = [
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox',
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#CheckBox',
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#RadioBox',
@@ -46,7 +47,7 @@ class CategoryService extends ConfigurableService
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TreeBox'
     ];
 
-    const EXCLUDE_PROPS = [
+    public static $excludedPropUris = [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel'
     ];
 
@@ -135,11 +136,11 @@ class CategoryService extends ConfigurableService
         return array_filter(
             $properties,
             function ($property) {
-                if(in_array($property->getUri(), self::EXCLUDE_PROPS)){
+                if(in_array($property->getUri(), self::$excludedPropUris)){
                     return false;
                 }
                 $widget = $property->getWidget();
-                return !is_null($widget) && in_array($widget->getUri(), self::SUPPORTED_WIDGET_URIS);
+                return !is_null($widget) && in_array($widget->getUri(), self::$supportedWidgetUris);
             }
         );
     }
