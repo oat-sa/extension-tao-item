@@ -21,7 +21,7 @@
 
 namespace oat\taoItems\scripts\install;
 
-use common_ext_action_InstallAction as InstallAction;
+use oat\oatbox\extension\InstallAction;
 use oat\oatbox\service\ServiceManager;
 use oat\taoItems\model\CategoryService;
 
