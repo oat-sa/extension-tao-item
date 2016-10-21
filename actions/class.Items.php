@@ -148,8 +148,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * edit an item instance
      * @requiresRight id READ
      */
-    public function editItem(){
-
+    public function editItem()
+    {
         $itemClass = $this->getCurrentClass();
         $item = $this->getCurrentInstance();
 

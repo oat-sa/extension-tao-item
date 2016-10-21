@@ -25,6 +25,7 @@ use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaManagement;
 use oat\taoQtiItem\model\qti\Item;
+use Psr\Http\Message\StreamInterface;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
 use Slim\Http\Stream;
@@ -43,11 +44,12 @@ class LocalItemSource implements MediaManagement
     
     private $lang;
 
+    protected $itemService;
+
     public function __construct($data)
     {
         $this->item = (isset($data['item'])) ? $data['item'] : null;
         $this->lang = (isset($data['lang'])) ? $data['lang'] : '';
-
     }
 
     /**
@@ -244,7 +246,7 @@ class LocalItemSource implements MediaManagement
      *
      * @see tao/models/classes/media/MediaBrowser.php:getFileStream
      * @param string $link
-     * @return Stream
+     * @return StreamInterface
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
@@ -283,6 +285,9 @@ class LocalItemSource implements MediaManagement
      */
     protected function getItemDirectory()
     {
-        return taoItems_models_classes_ItemsService::singleton()->getItemDirectory($this->item, $this->lang);
+        if (! $this->itemService) {
+            $this->itemService = taoItems_models_classes_ItemsService::singleton();
+        }
+        return $this->itemService->getItemDirectory($this->item, $this->lang);
     }
 }

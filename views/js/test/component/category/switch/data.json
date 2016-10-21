@@ -1,0 +1,112 @@
+[
+  {
+    "NccerCardNumber": "15782409",
+    "FirstName": "froto",
+    "MiddleName": null,
+    "LastName": "baggins",
+    "AlternateId": "2222",
+    "AlernateIdTypeCode": "USAKDL",
+    "DateofBirth": "1998-06-28T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782575",
+    "FirstName": "Burns",
+    "MiddleName": "Huston",
+    "LastName": "Montgomery",
+    "AlternateId": "123456789",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1997-06-29T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782608",
+    "FirstName": "Aleh",
+    "MiddleName": null,
+    "LastName": "Baroness",
+    "AlternateId": "123456788",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1990-11-25T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782683",
+    "FirstName": "Alen",
+    "MiddleName": null,
+    "LastName": "Osiris",
+    "AlternateId": "123456787",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1997-01-03T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782704",
+    "FirstName": "Michael",
+    "MiddleName": null,
+    "LastName": "Blomberg",
+    "AlternateId": "123456786",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1991-08-06T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782758",
+    "FirstName": "Omar",
+    "MiddleName": "Vidal",
+    "LastName": "Meyer",
+    "AlternateId": "123456784",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1900-01-01T00:00:00",
+    "CityOfBirth": "Long Island, New York",
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782789",
+    "FirstName": "Mark",
+    "MiddleName": null,
+    "LastName": "Skorupski",
+    "AlternateId": "123456781",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1997-10-18T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782829",
+    "FirstName": "Thomas",
+    "MiddleName": null,
+    "LastName": "McWhorter",
+    "AlternateId": "123456782",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1900-01-01T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782840",
+    "FirstName": "Albert",
+    "MiddleName": null,
+    "LastName": "Ceros",
+    "AlternateId": "923456780",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1900-01-01T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  },
+  {
+    "NccerCardNumber": "15782864",
+    "FirstName": "Jesse",
+    "MiddleName": null,
+    "LastName": "Posa",
+    "AlternateId": "345678912",
+    "AlernateIdTypeCode": "USSSN",
+    "DateofBirth": "1900-01-01T00:00:00",
+    "CityOfBirth": null,
+    "ModifiedDate": null
+  }
+]
