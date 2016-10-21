@@ -17,6 +17,7 @@
  */
 
 /**
+ * A component to switch the exposition state for categories of a property
  *
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
@@ -39,17 +40,19 @@ define([
 
 
     /**
+     * The factory to create a new component
      *
      * @param {jQueryElement} $container - where to append the component
+     * @param {string} propertyId - to keep the property identifier
+     * @param {boolean} exposed - the initial exposition state
      *
      * @returns {categorySwitchComponent} the component
      *
-     * @throws {TypeError} whithout a user nor ids
+     * @throws {TypeError} whithout the propertyId
      */
     return function categorySwitchFactory($container, propertyId, exposed){
 
         var categorySwitchComponent;
-
 
         if(!propertyId){
             throw new TypeError('We need the property id');
@@ -61,6 +64,14 @@ define([
          */
         categorySwitchComponent =
             component({
+
+                /**
+                 * Change the current state
+                 *
+                 * @param {boolean} exposed - the new state
+                 *
+                 * @returns {categorySwitchComponent} chains
+                 */
                 setExposed : function setExposed(value){
                     if (!this.is('disabled')) {
                         this.setState('exposed', !!value);
@@ -79,7 +90,14 @@ define([
                             }
                         }
                     }
+                    return this;
                 },
+
+                /**
+                 * Check the exposition state
+                 *
+                 * @returns {boolean} the current state
+                 */
                 isExposed : function isExposed(){
                     return this.is('exposed');
                 }
@@ -100,6 +118,13 @@ define([
                         .on('click', function(e){
                             e.preventDefault();
                             if(!self.is('disabled')){
+
+                                /**
+                                 * We request a state change
+                                 * @event categorySwitchComponent#requestChange
+                                 * @param {string} propertyId - the property identifier
+                                 * @param {boolean} exposed - the requested exposition state
+                                 */
                                 self.trigger('requestChange', self.config.id, !self.is('exposed'));
                             }
                         });
