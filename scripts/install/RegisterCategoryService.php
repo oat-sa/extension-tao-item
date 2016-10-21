@@ -1,3 +1,4 @@
+<?php
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,27 +14,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2016 (original work) Open Assessment Technologies SA;
  *
  *
  */
 
-//@see http://forge.taotesting.com/projects/tao/wiki/Front_js
-define(function(){
-    'use strict';
+namespace oat\taoItems\scripts\install;
 
-    return {
-        'Items' : {
-            'deps' : 'controller/items/action',
-            'actions' : {
-                'editItem' : 'controller/items/edit',
-                'editItemClass': 'controller/items/editItemClass'
-            }
-        },
-        'ItemPreview' : {
-            'actions' : {
-                'index' : 'controller/preview/itemRunner'
-            }
-        }
-    };
-});
+use oat\oatbox\extension\InstallAction;
+use oat\oatbox\service\ServiceManager;
+use oat\taoItems\model\CategoryService;
+
+/**
+ * Register the category service
+ *
+ * @author Bertrand Chevrier <bertrand@taotesting.com>
+ */
+class RegisterCategoryService extends InstallAction
+{
+    /**
+     * @param $params
+     */
+    public function __invoke($params)
+    {
+        $serviceManager = ServiceManager::getServiceManager();
+
+        $service = new CategoryService();
+        $service->setServiceManager($serviceManager);
+        $serviceManager->register(CategoryService::SERVICE_ID, $service);
+    }
+}
+
