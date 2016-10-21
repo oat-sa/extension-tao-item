@@ -32,8 +32,13 @@ define([
 ], function($, _, uriUtil, categorySwitch, categoryProvider, feedback) {
     'use strict';
 
-    var provider  = categoryProvider();
+    var provider = categoryProvider();
 
+    /**
+     * We inject the placeholder of the switch for the given property
+     * @param {String} uri - the property uri
+     * @returns {jQueryElement} the placeholder if created
+     */
     var injectButtonPlaceholder = function injectButtonPlaceholder(uri) {
         var $propContainer = $('#property_' + uriUtil.encode(uri));
         var $placeholder,
@@ -54,12 +59,23 @@ define([
         return $placeholder;
     };
 
+    /**
+     * Display the error
+     * @param {Error} err - any error
+     */
     var handleError = function handleError(err){
         feedback().error(err.message);
     };
 
+    /**
+     * Acc the expose category switch component to the container
+     * @param {jQueryElement} $container - where to append the switch
+     * @param {String} propertyUri - the property URI
+     * @param {Boolean} exposed - the initial state
+     * @returns {categorySwitchComponent} the component
+     */
     var addCategorySwitch = function addCategorySwitch($container, propertyUri, exposed) {
-        categorySwitch($container, propertyUri, exposed)
+        return categorySwitch($container, propertyUri, exposed)
             .on('requestChange', function(propUri, value) {
                 var self = this;
                 this.setState('disabled', true);
@@ -76,15 +92,21 @@ define([
             });
     };
 
+    /**
+     * The contoller
+     */
+    return {
 
-    var indexCategoryController = {
-
+        /**
+         * Usual entry point
+         */
         start : function start() {
             var classUri = $('#id').val();
 
             provider
                 .getExposedsByClass(classUri)
                 .then(function(results){
+                    //we received the list of eligible properties and their expose state
                     _.forEach(results, function(exposed, uri){
                         var $container = injectButtonPlaceholder(uri);
                         if($container && $container.length){
@@ -95,6 +117,4 @@ define([
                 .catch(handleError);
         }
     };
-
-    return indexCategoryController;
 });

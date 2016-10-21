@@ -22,12 +22,11 @@
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
 define([
-    'jquery',
     'lodash',
     'i18n',
     'ui/component',
     'tpl!taoItems/component/category/switch'
-], function($, _, __, component, switchTpl){
+], function(_, __, component, switchTpl){
     'use strict';
 
     /**
@@ -35,7 +34,7 @@ define([
      */
     var titles = {
         expose : __('Expose the property value to create automated categories.'),
-        unexpose : __('The property is exposed to category addtion.&#13Remove exposition ?')
+        unexpose : __('The property is exposed to category addition.&#13Remove exposition ?')
     };
 
 

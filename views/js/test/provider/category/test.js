@@ -21,7 +21,8 @@
  */
 define([
     'taoItems/provider/category',
-], function(categoryProvider) {
+    'core/promise'
+], function(categoryProvider, Promise) {
     'use strict';
 
     var testConfig = {
