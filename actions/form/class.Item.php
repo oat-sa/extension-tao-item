@@ -56,7 +56,8 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
             }
             $ele->setOptions($options);
             if(count($options) === 1){
-                $ele->setValue(array_shift(array_keys($options)));
+                reset($options);
+                $ele->setValue(key($options));
             }
 
         } else {
