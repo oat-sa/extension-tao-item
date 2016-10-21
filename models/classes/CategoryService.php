@@ -168,7 +168,7 @@ class CategoryService extends ConfigurableService
      *
      * @return void
      */
-    public function exposeCategory(RdfProperty $property, bool $value)
+    public function exposeCategory(RdfProperty $property, $value)
     {
         $exposeProperty = new RdfProperty(self::EXPOSE_PROP_URI);
 
