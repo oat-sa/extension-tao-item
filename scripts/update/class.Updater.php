@@ -133,5 +133,10 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
             $this->setVersion('2.23.0');
         }
+
+        if ($this->isVersion('2.23.0')) {
+            OntologyUpdater::syncModels();
+            $this->setVersion('2.24.0');
+        }
     }
 }
