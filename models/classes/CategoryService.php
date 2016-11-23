@@ -24,6 +24,7 @@ use core_kernel_classes_Class as RdfClass;
 use core_kernel_classes_Property as RdfProperty;
 use core_kernel_classes_Resource as RdfResource;
 use oat\oatbox\service\ConfigurableService;
+use qtism\common\utils\Format;
 use taoItems_models_classes_ItemsService;
 
 /**
@@ -97,9 +98,13 @@ class CategoryService extends ConfigurableService
             foreach ($propertiesValues as $property => $propertyValues) {
                 foreach ($propertyValues as $value) {
                     if ($value instanceof RdfResource) {
-                        $categories[] = self::sanitizeCategoryName($value->getLabel());
+                        $sanitizedIdentifier = self::sanitizeCategoryName($value->getLabel());
                     } else {
-                        $categories[] = self::sanitizeCategoryName((string)$value);
+                        $sanitizedIdentifier = self::sanitizeCategoryName((string)$value);
+                    }
+
+                    if(Format::isIdentifier($sanitizedIdentifier)){
+                        $categories[] = $sanitizedIdentifier;
                     }
                 }
             }
@@ -110,7 +115,7 @@ class CategoryService extends ConfigurableService
 
     /**
      * Sanitize the name of the category :
-     * Remove special chars, replaces spaces by dashes and limit the length to 32
+     * Remove special chars, replaces spaces by dashes
      *
      * @param string $value the input value
      *
@@ -118,8 +123,8 @@ class CategoryService extends ConfigurableService
      */
     public static function sanitizeCategoryName($value)
     {
-        $output = preg_replace('/[^a-z0-9\- ]/', '',  strtolower($value));
-        $output = preg_replace('/\s+/', '-', trim($output));
+        $output = preg_replace('/\s+/', '-', trim($value));
+        $output = preg_replace('/[^a-z0-9\-_]/', '',  strtolower($output));
         return substr($output, 0, 32);
     }
 
