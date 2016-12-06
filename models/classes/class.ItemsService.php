@@ -548,6 +548,11 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         $result = parent::cloneInstance($instance, $clazz);
         if ($result) {
+            // Fixes duplicate item models after cloning.
+            $itemModels = $result->getPropertyValues($this->itemModelProperty);
+            if (count($itemModels) > 1) {
+                $result->editPropertyValues($this->itemModelProperty, current($itemModels));
+            }
             $this->getEventManager()->trigger(new ItemDuplicatedEvent($instance->getUri(), $result->getUri()));
         }
         return $result;
