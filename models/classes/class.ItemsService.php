@@ -723,14 +723,25 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     /**
      * sets the filesource to use for new items
      *
-     * @access public
+     * @deprecated
      * @author Joel Bout, <joel@taotesting.com>
      * @param  Repository filesource
-     * @return mixed
      */
-    public function setDefaultFilesource(core_kernel_versioning_Repository $filesource){
+    public function setDefaultFilesource(core_kernel_versioning_Repository $filesource)
+    {
+        $this->setDefaultFilesourceId($filesource->getUri());
+    }
+
+    /**
+     * sets the filesource to use for new items
+     *
+     * @author Joel Bout, <joel@taotesting.com>
+     * @param string $filesourceId
+     */
+    public function setDefaultFilesourceId($filesourceId)
+    {
         $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-        $ext->setConfig(self::CONFIG_DEFAULT_FILESOURCE, $filesource->getUri());
+        $ext->setConfig(self::CONFIG_DEFAULT_FILESOURCE, $filesourceId);
     }
 
     /**

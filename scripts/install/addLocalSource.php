@@ -1,5 +1,5 @@
 <?php
-/*  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,11 +19,18 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
+use oat\oatbox\filesystem\FileSystemService;
+use oat\oatbox\service\ServiceManager;
 
 $dataPath = FILES_PATH . 'taoItems' . DIRECTORY_SEPARATOR. 'itemData' . DIRECTORY_SEPARATOR;
 if (file_exists($dataPath)) {
     helpers_File::emptyDirectory($dataPath);
 }
 
-$source = tao_models_classes_FileSourceService::singleton()->addLocalSource('itemDirectory', $dataPath);
-taoItems_models_classes_ItemsService::singleton()->setDefaultFileSource($source);
+
+$serviceManager = ServiceManager::getServiceManager();
+$fsService = $serviceManager->get(FileSystemService::SERVICE_ID);
+$source = $fsService->createFileSystem('itemDirectory', 'taoItems/itemData');
+$serviceManager->register(FileSystemService::SERVICE_ID, $fsService);
+
+taoItems_models_classes_ItemsService::singleton()->setDefaultFilesourceId('itemDirectory');
