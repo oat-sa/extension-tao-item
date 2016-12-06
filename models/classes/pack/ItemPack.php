@@ -38,7 +38,7 @@ class ItemPack implements JsonSerializable
      * The supported assets types
      * @var string[]
      */
-    private static $assetTypes = array('document', 'js', 'css', 'font', 'img', 'audio', 'video', 'xinclude');
+    private static $assetTypes = array('html', 'document', 'js', 'css', 'font', 'img', 'audio', 'video', 'xinclude');
 
 
     /**
