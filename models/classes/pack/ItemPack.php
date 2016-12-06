@@ -65,6 +65,7 @@ class ItemPack implements JsonSerializable
      * @var array
      */
     protected $assetEncoders = array(
+        'html'     => 'none',
         'document'     => 'none',
         'js'        => 'none',
         'css'       => 'none',
