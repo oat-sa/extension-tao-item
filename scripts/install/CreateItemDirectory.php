@@ -37,10 +37,6 @@ class CreateItemDirectory extends InstallAction
      */
     public function __invoke($params)
     {
-        $dataPath = FILES_PATH . 'taoItems' . DIRECTORY_SEPARATOR. 'itemData' . DIRECTORY_SEPARATOR;
-        if (file_exists($dataPath)) {
-            helpers_File::emptyDirectory($dataPath);
-        }
         $fsService = $this->getServiceLocator()->get(FileSystemService::SERVICE_ID);
         if (!$fsService->hasDirectory('itemDirectory')) {
             $source = $fsService->createFileSystem('itemDirectory', 'taoItems/itemData');
