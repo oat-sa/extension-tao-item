@@ -138,6 +138,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             OntologyUpdater::syncModels();
             $this->setVersion('2.24.0');
         }
-        $this->skip('2.24.0', '2.24.3');
+        $this->skip('2.24.0', '2.25.1');
     }
 }
