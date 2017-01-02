@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -19,6 +19,8 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *
  */
+use oat\taoItems\scripts\install\RegisterCategoryService;
+use oat\taoItems\scripts\install\CreateItemDirectory;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -33,11 +35,11 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '2.25.0',
+    'version' => '2.25.1',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=0.8',
-        'generis' => '>=2.30.0',
+        'generis' => '>=3.14.0',
         'tao' => '>=7.27.0'
     ),
     'models' => array(
@@ -51,8 +53,8 @@ return array(
 		    dirname(__FILE__). '/models/ontology/category.rdf',
 		),
 		'php'	=> array(
-                    dirname(__FILE__).'/scripts/install/addLocalSource.php',
-                    'oat\\taoItems\\scripts\\install\\RegisterCategoryService'
+            CreateItemDirectory::class,
+            RegisterCategoryService::class
 		)
 	),
     'update' => 'taoItems_scripts_update_Updater',
