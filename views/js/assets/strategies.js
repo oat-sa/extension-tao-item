@@ -29,6 +29,24 @@ define([
     'use strict';
 
     /**
+     * Prepend a base to an URL
+     * @param {Object} url - a parsed URL
+     * @param {String} base - the base to prepend
+     * @param {Boolean} [slashcat = false] - remove dots, double slashes, etc.
+     * @returns {String} the URL
+     */
+    var prependToUrl = function prependToUrl(url, base, slashcat){
+
+        //is slashcat we manage slash concact
+        if(slashcat === true){
+            return base.replace(/\/$/, '') + '/' + url.directory.replace(/^\.\//, '').replace(/^\//, '')
+                + encodeURIComponent(url.file.replace(/^\.\//, '').replace(/^\//, ''));
+        }
+
+        return base + url.directory.replace(/^\.?\//, '') + encodeURIComponent(url.file.replace(/^\.?\//, ''));
+    };
+
+    /**
      * Unrelated strategies accessible by there name.
      * Remember to not use the whole object, but each one in an array since the order matters.
      *
@@ -41,14 +59,17 @@ define([
             name : 'baseUrl',
             handle : function handleBaseUrl(url, data){
                 if(typeof data.baseUrl === 'string' && (urlUtil.isRelative(url)) ){
+                    return prependToUrl(url, data.baseUrl, data.slashcat);
+                }
+            }
+        },
 
-                    //is slashcat we manage slash concact
-                    if(data.slashcat === true){
-                        return data.baseUrl.replace(/\/$/, '') + '/' + url.directory.replace(/^\.\//, '').replace(/^\//, '')
-                            + encodeURIComponent(url.file.replace(/^\.\//, '').replace(/^\//, ''));
-                    }
-
-                    return data.baseUrl + url.directory.replace(/^\.?\//, '') + encodeURIComponent(url.file.replace(/^\.?\//, ''));
+        //bust the cache for item CSS
+        itemCssNoCache : {
+            name : 'itemCssNoCache',
+            handle : function handleItemCss(url, data){
+                if(typeof data.baseUrl === 'string' && (urlUtil.isRelative(url)) && /\.css$/.test(url.file)) {
+                    return urlUtil.build(prependToUrl(url, data.baseUrl, data.slashcat), { bust : Date.now() });
                 }
             }
         },
@@ -56,7 +77,7 @@ define([
         //absolute URL are just left intact
         external : {
             name : 'external',
-            handle : function handleExternal(url, data){
+            handle : function handleExternal(url){
                 if(urlUtil.isAbsolute(url)){
                     return url.toString();
                 }
