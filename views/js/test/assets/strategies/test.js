@@ -2,7 +2,7 @@ define([
     'taoItems/assets/manager',
     'taoItems/assets/strategies'
 ], function(assetManagerFactory, strategies){
-
+    'use strict';
 
     QUnit.module('API');
 
@@ -146,5 +146,50 @@ define([
             var assetManager = assetManagerFactory(strategies.base64);
             assert.equal(assetManager.resolve(data.url), data.resolved, 'The Url is resolved');
         });
+
+
+    QUnit.module('itemCssNoCache strategy');
+
+    QUnit.test('expected strategy format', function(assert){
+
+        QUnit.expect(3);
+
+        assert.ok(typeof strategies.itemCssNoCache === 'object', "The strategy exists");
+        assert.equal(strategies.itemCssNoCache.name, 'itemCssNoCache', "The strategy has the correct name");
+        assert.ok(typeof strategies.itemCssNoCache.handle === 'function', "The strategy has an handler");
+    });
+
+    QUnit.cases([{
+        title    : 'absolute URL',
+        baseUrl  : 'http://tao.localdomain',
+        url      : 'http://tao.localdomain/test/test.css',
+        resolved : '',
+        bust     : false
+    }, {
+        title    : 'relative root URL',
+        baseUrl  : 'http://tao.localdomain/',
+        url      : '/test/test.css',
+        resolved : 'http://tao.localdomain/test/test.css',
+        bust     : true
+    }, {
+        title    : 'relative URL',
+        baseUrl  : 'http://tao.localdomain/',
+        url      : 'test/test.css',
+        resolved : 'http://tao.localdomain/test/test.css',
+        bust     : true
+    }])
+    .test('resolve ', function(data, assert){
+        var assetManager = assetManagerFactory(strategies.itemCssNoCache, {
+            baseUrl : data.baseUrl
+        });
+        var resolved = assetManager.resolve(data.url);
+
+        if(!resolved){
+            assert.ok(data.bust === false, 'No resolution, no buster');
+        } else {
+            assert.equal(resolved.split('?')[0], data.resolved, 'The Url is resolved');
+            assert.equal(/^bust=.*$/.test(resolved.split('?')[1]), data.bust, 'The resolved url has the expected buster');
+        }
+    });
 });
 
