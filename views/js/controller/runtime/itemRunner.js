@@ -83,6 +83,9 @@ define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
                             setIframeHeight();
                             iframeNotifier.parent('serviceloaded');
 
+                            //hot fix
+                            _.delay(setIframeHeight, 1600);
+
                             $frame.contents().find('img').on('load', _.throttle(function() {
                                 setIframeHeight();
                             }, 50));
