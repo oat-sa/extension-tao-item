@@ -18,8 +18,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-?>
-<?php
+
 /**
  * The ItemExporter class acts as the foundation for exporting item in XML packages. Developpers
  * who wants to create dedicated export behaviours can extend this class. To create a new export behaviour
@@ -98,7 +97,7 @@ abstract class taoItems_models_classes_ItemExporter {
 	 */
 	protected function getItemModel() {
 		try {
-			return $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+			return $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::TAO_ITEM_MODEL_PROPERTY));
 		} 
 		catch (common_Exception $e) {
 			return null;

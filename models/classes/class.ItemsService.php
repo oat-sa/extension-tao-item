@@ -39,6 +39,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     protected $itemClass = null;
 
+    const TAO_ITEM_MODEL_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+
+    const TAO_ITEM_MODEL_DATAFILE_PROPERTY	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
+
     /**
      * the instance of the itemModel property
      *
