@@ -51,6 +51,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
 
+    const TAO_ITEM_MODEL_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+
+    const TAO_ITEM_MODEL_DATAFILE_PROPERTY	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
+
     /**
      * Instance of the itemContent property
      *
