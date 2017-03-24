@@ -327,7 +327,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         $lang = empty($lang) ? $lang = $this->getSessionLg() : $lang;
         $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-        $dataFile = (string) $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        $dataFile = (string) $itemModel->getOnePropertyValue(new core_kernel_classes_Property(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 
         if($this->hasItemContent($item, $lang)){
 
