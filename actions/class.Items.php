@@ -317,7 +317,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $itemModel = $instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
             $filename = $instance->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY));
             if(is_null($filename)){
-                $filename = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+                $filename = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
             }
 
             $itemContent = $this->getClassService()->getItemContent($instance);
