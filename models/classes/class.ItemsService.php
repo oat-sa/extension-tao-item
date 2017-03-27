@@ -51,6 +51,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
 
+    const TAO_ITEM_MODEL_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+
+    const TAO_ITEM_MODEL_DATAFILE_PROPERTY	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
+
     /**
      * Instance of the itemContent property
      *
@@ -341,7 +345,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         $lang = empty($lang) ? $lang = $this->getSessionLg() : $lang;
         $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-        $dataFile = (string) $itemModel->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        $dataFile = (string) $itemModel->getOnePropertyValue(new core_kernel_classes_Property(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 
         if($this->hasItemContent($item, $lang)){
 
@@ -796,7 +800,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
 
         // Store file into persistence, purpose of serializer ?
-        $dataFile = (string) $model->getOnePropertyValue($this->getProperty(TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        $dataFile = (string) $model->getOnePropertyValue($this->getProperty(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
         $this->getFileReferenceSerializer()->serialize($itemDirectory->getFile($dataFile));
 
         return $itemDirectory;
