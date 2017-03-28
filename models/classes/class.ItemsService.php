@@ -39,6 +39,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     protected $itemClass = null;
 
+    const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+
     const TAO_ITEM_MODEL_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
 
     const TAO_ITEM_MODEL_DATAFILE_PROPERTY	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
@@ -81,8 +83,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     protected function __construct(){
         parent::__construct();
         $this->itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
-        $this->itemModelProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY);
-        $this->itemContentProperty = new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY);
+        $this->itemModelProperty = new core_kernel_classes_Property(self::TAO_ITEM_MODEL_PROPERTY);
+        $this->itemContentProperty = new core_kernel_classes_Property(self::PROPERTY_ITEM_CONTENT);
     }
 
     public function getRootClass(){
@@ -485,7 +487,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @see tao_models_classes_GenerisService::cloneInstanceProperty()
      */
     protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
-        if ($property->getUri() == TAO_ITEM_CONTENT_PROPERTY) {
+        if ($property->getUri() == self::PROPERTY_ITEM_CONTENT) {
             return $this->cloneItemContent($source, $destination, $property);
         } else {
             return parent::cloneInstanceProperty($source, $destination, $property);
@@ -672,9 +674,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $returnValue = (string) '';
 
         if($lang === ''){
-            $files = $item->getPropertyValues(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+            $files = $item->getPropertyValues(new core_kernel_classes_Property(self::PROPERTY_ITEM_CONTENT));
         }else{
-            $files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY), $lang)->toArray();
+            $files = $item->getPropertyValuesByLg(new core_kernel_classes_Property(self::PROPERTY_ITEM_CONTENT), $lang)->toArray();
         }
         if(count($files) == 0){
             // no content found assign default
