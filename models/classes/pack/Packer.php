@@ -77,7 +77,7 @@ class Packer implements ServiceLocatorAwareInterface
      * @return ItemPacker the item packer implementation
      * @throws common_exception_NoImplementation
      */
-    private function getItemPacker()
+    protected function getItemPacker()
     {
 
         //look at the item model
