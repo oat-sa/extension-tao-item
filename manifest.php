@@ -35,12 +35,12 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '3.0.1',
+    'version' => '4.0.0',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=0.8',
         'generis' => '>=3.14.0',
-        'tao' => '>=7.27.0'
+        'tao' => '>=9.0.0'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
@@ -87,8 +87,5 @@ return array(
 
 		#BASE URL (usually the domain root)
 		'BASE_URL'				=> ROOT_URL	.'taoItems/',
-
-		#BASE WWW the web resources path
-		'BASE_WWW'				=> ROOT_URL	.'taoItems/views/',
 	)
 );
