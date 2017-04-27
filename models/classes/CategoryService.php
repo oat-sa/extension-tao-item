@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA
  */
 
 namespace oat\taoItems\model;
@@ -24,7 +24,6 @@ use core_kernel_classes_Class as RdfClass;
 use core_kernel_classes_Property as RdfProperty;
 use core_kernel_classes_Resource as RdfResource;
 use oat\oatbox\service\ConfigurableService;
-use qtism\common\utils\Format;
 use taoItems_models_classes_ItemsService;
 
 /**
@@ -95,17 +94,14 @@ class CategoryService extends ConfigurableService
             $eligibleProperties = $this->getElligibleProperties($class);
             $propertiesValues = $item->getPropertiesValues(array_keys($eligibleProperties));
 
-            foreach ($propertiesValues as $property => $propertyValues) {
+            foreach ($propertiesValues as $propertyValues) {
                 foreach ($propertyValues as $value) {
                     if ($value instanceof RdfResource) {
                         $sanitizedIdentifier = self::sanitizeCategoryName($value->getLabel());
                     } else {
                         $sanitizedIdentifier = self::sanitizeCategoryName((string)$value);
                     }
-
-                    if(Format::isIdentifier($sanitizedIdentifier)){
-                        $categories[] = $sanitizedIdentifier;
-                    }
+                    $categories[] = $sanitizedIdentifier;
                 }
             }
         }
