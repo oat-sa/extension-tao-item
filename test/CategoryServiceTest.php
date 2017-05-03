@@ -50,6 +50,9 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
     {
         return [
             [" < Hello   My w!%'orld!! ", "hello-my-world"],
+            ["12hello", "hello"],
+            [" hello", "hello"],
+            ["!1h12ello ", "h12ello"],
             ["<span class='hello'>&nbsp;''hello</span> ", "span-classhellonbsphellospan"],
             ["averylongnamethatexceedtheexpectedthritytowcharacters", "averylongnamethatexceedtheexpect"]
         ];

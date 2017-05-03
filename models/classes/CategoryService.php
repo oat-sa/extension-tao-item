@@ -112,6 +112,7 @@ class CategoryService extends ConfigurableService
     /**
      * Sanitize the name of the category :
      * Remove special chars, replaces spaces by dashes
+     * and the beginning if it's not a letter.
      *
      * @param string $value the input value
      *
@@ -120,7 +121,8 @@ class CategoryService extends ConfigurableService
     public static function sanitizeCategoryName($value)
     {
         $output = preg_replace('/\s+/', '-', trim($value));
-        $output = preg_replace('/[^a-z0-9\-_]/', '',  strtolower($output));
+        $output = preg_replace('/[^a-z0-9\-]/', '',  strtolower($output));
+        $output = preg_replace('/^[0-9\-_]+/', '',  strtolower($output));
         return substr($output, 0, 32);
     }
 
