@@ -663,24 +663,26 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return taoItems_models_classes_itemModel
      */
     public function getItemModelImplementation(core_kernel_classes_Resource $itemModel){
-        $returnValue = null;
 
-        $services = $itemModel->getPropertyValues($this->getProperty(self::PROPERTY_ITEM_MODEL_SERVICE));
-        if(count($services) > 0){
-            if(count($services) > 1){
-                throw new common_exception_Error('Conflicting services for itemmodel '.$itemModel->getLabel());
-            }
-            $serviceName = (string) current($services);
-            if(class_exists($serviceName) && in_array('taoItems_models_classes_itemModel', class_implements($serviceName))){
-                $returnValue = new $serviceName();
-            }else{
-                throw new common_exception_Error('Item model service '.$serviceName.' not found, or not compatible for item model '.$itemModel->getLabel());
-            }
-        }else{
-            common_Logger::d('No implementation for '.$itemModel->getLabel());
+        $serviceId = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
+        if (empty($serviceId)) {
+            throw new common_exception_NoImplementation('No implementation found for item model '.$itemModel->getUri());
         }
+        try{
+            $itemModelService = $this->getServiceManager()->get($serviceId);
+        } catch(\oat\oatbox\service\ServiceNotFoundException $e){
+            if(!class_exists($serviceId)){
+                throw new common_exception_Error('Item model service '.$serviceId.' not found');
+            }
+            // for backward compatibility support classname instead of a serviceid
+            common_Logger::w('Outdated model definition "'.$serviceId.'", please use test model service');
+            $itemModelService = new $serviceId();
 
-        return $returnValue;
+        }
+        if (!$itemModelService instanceof \taoItems_models_classes_itemModel) {
+            throw new common_exception_Error('Item model service '.get_class($itemModelService).' not compatible for item model '.$itemModelService->getUri());
+        }
+        return $itemModelService;
     }
 
     /**
