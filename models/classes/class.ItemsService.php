@@ -27,6 +27,7 @@ use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\oatbox\service\ServiceNotFoundException;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -34,7 +35,6 @@ use oat\oatbox\filesystem\FileSystemService;
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
- 
  */
 class taoItems_models_classes_ItemsService extends tao_models_classes_ClassService
 {
@@ -53,7 +53,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     const TAO_ITEM_MODEL_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
 
-    const TAO_ITEM_MODEL_DATAFILE_PROPERTY	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
+    const TAO_ITEM_MODEL_DATAFILE_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
 
     /**
      * Instance of the itemContent property
@@ -90,12 +90,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $this->itemContentProperty = $this->getProperty(self::PROPERTY_ITEM_CONTENT);
     }
 
-    public function getRootClass(){
+    public function getRootClass()
+    {
         return $this->itemClass;
     }
 
     /**
-     * get an item subclass by uri. 
+     * get an item subclass by uri.
      * If the uri is not set, it returns the  item class (the top level class.
      * If the uri don't reference an item subclass, it returns null
      *
@@ -105,14 +106,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return core_kernel_classes_Class
      * @deprecated
      */
-    public function getItemClass($uri = ''){
+    public function getItemClass($uri = '')
+    {
         $returnValue = null;
 
-        if(empty($uri) && !is_null($this->itemClass)){
+        if (empty($uri) && !is_null($this->itemClass)) {
             $returnValue = $this->itemClass;
-        }else{
+        } else {
             $clazz = $this->getClass($uri);
-            if($this->isItemClass($clazz)){
+            if ($this->isItemClass($clazz)) {
                 $returnValue = $clazz;
             }
         }
@@ -128,32 +130,34 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  core_kernel_classes_Class clazz
      * @return boolean
      */
-    public function isItemClass(core_kernel_classes_Class $clazz){
-        $returnValue = (bool) false;
+    public function isItemClass(core_kernel_classes_Class $clazz)
+    {
+        $returnValue = (bool)false;
 
-        if($this->itemClass->getUri() == $clazz->getUri()){
+        if ($this->itemClass->getUri() == $clazz->getUri()) {
             return true;
         }
 
-        foreach($clazz->getParentClasses(true) as $parent){
+        foreach ($clazz->getParentClasses(true) as $parent) {
 
-            if($parent->getUri() == $this->itemClass->getUri()){
+            if ($parent->getUri() == $this->itemClass->getUri()) {
                 $returnValue = true;
                 break;
             }
         }
 
-        return (bool) $returnValue;
+        return (bool)$returnValue;
     }
 
     /**
      * please call deleteResource() instead
      * @deprecated
      */
-    public function deleteItem(core_kernel_classes_Resource $item){
+    public function deleteItem(core_kernel_classes_Resource $item)
+    {
         return $this->deleteResource($item);
     }
-    
+
     /**
      * delete an item
      * @param core_kernel_classes_Resource $resource
@@ -196,20 +200,21 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  string lang
      * @return string
      */
-    public function getDefaultItemFolder(core_kernel_classes_Resource $item, $lang = ''){
-        $returnValue = (string) '';
+    public function getDefaultItemFolder(core_kernel_classes_Resource $item, $lang = '')
+    {
+        $returnValue = (string)'';
 
-        if(!is_null($item)){
+        if (!is_null($item)) {
 
             $lang = empty($lang) ? $this->getSessionLg() : $lang;
 
             $itemRepo = $this->getDefaultFileSource();
             $repositoryPath = $itemRepo->getPath();
-            $repositoryPath = substr($repositoryPath, strlen($repositoryPath) - 1, 1) == DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath.DIRECTORY_SEPARATOR;
-			$returnValue = $repositoryPath.tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang.DIRECTORY_SEPARATOR;
+            $repositoryPath = substr($repositoryPath, strlen($repositoryPath) - 1, 1) == DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath . DIRECTORY_SEPARATOR;
+            $returnValue = $repositoryPath . tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR;
         }
 
-        return (string) $returnValue;
+        return (string)$returnValue;
     }
 
     /**
@@ -224,14 +229,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  core_kernel_classes_Resource item
      * @return core_kernel_classes_Resource the same item
      */
-    public function setDefaultItemContent(core_kernel_classes_Resource $item){
-        if(!is_null($item)){
+    public function setDefaultItemContent(core_kernel_classes_Resource $item)
+    {
+        if (!is_null($item)) {
 
             //we create the item folder by default. 
             //TODO this should be implemented through the filesystem abstraction but it doesn't work for directory
             $itemFolder = $this->getDefaultItemFolder($item);
-            if(!file_exists($itemFolder) && strpos($itemFolder, ROOT_PATH) >= 0){
-                if(!mkdir($itemFolder, 0770, true)){
+            if (!file_exists($itemFolder) && strpos($itemFolder, ROOT_PATH) >= 0) {
+                if (!mkdir($itemFolder, 0770, true)) {
                     common_Logger::w('Unable to create default item folder at location : ' . $itemFolder);
                 }
             }
@@ -241,7 +247,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
-     * Enables you to get the content of an item, 
+     * Enables you to get the content of an item,
      * usually an xml string
      *
      * @deprecated use \oat\taoQtiItem\model\qti\Service::getDataItemByRdfItem instead
@@ -253,49 +259,49 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  string lang
      * @return string
      */
-    public function getItemContent(core_kernel_classes_Resource $item, $lang = ''){
-        $returnValue = (string) '';
+    public function getItemContent(core_kernel_classes_Resource $item, $lang = '')
+    {
+        $returnValue = (string)'';
 
-        common_Logger::i('Get itemContent for item '.$item->getUri());
+        common_Logger::i('Get itemContent for item ' . $item->getUri());
 
-        if(!is_null($item)){
+        if (!is_null($item)) {
 
             $itemContent = null;
 
-            if(empty($lang)){
+            if (empty($lang)) {
                 $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
-            }else{
+            } else {
                 $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
             }
 
-            if($itemContents->count() > 0){
+            if ($itemContents->count() > 0) {
                 $itemContent = $itemContents->get(0);
-            }
-            //if no itemContent is set for the lang get the default one and copy it into a new repository
-            else if(!empty($lang)){
+            } //if no itemContent is set for the lang get the default one and copy it into a new repository
+            else if (!empty($lang)) {
                 $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
-                if($itemContents->count() > 0){
+                if ($itemContents->count() > 0) {
                     $itemContent = $itemContents->get(0);
                     $this->setDefaultItemContent($item, $itemContent, $lang);
                     tao_helpers_File::copy($this->getItemFolder($item, DEFAULT_LANG), $this->getItemFolder($item, $lang));
                 }
             }
-            if(!is_null($itemContent) && $this->isItemModelDefined($item)){
+            if (!is_null($itemContent) && $this->isItemModelDefined($item)) {
 
-                if(core_kernel_file_File::isFile($itemContent)){
+                if (core_kernel_file_File::isFile($itemContent)) {
 
                     $file = new core_kernel_file_File($itemContent->getUri());
                     $returnValue = file_get_contents($file->getAbsolutePath());
-                    if($returnValue == false){
-                        common_Logger::w('File '.$file->getAbsolutePath().' not found for fileressource '.$itemContent->getUri());
+                    if ($returnValue == false) {
+                        common_Logger::w('File ' . $file->getAbsolutePath() . ' not found for fileressource ' . $itemContent->getUri());
                     }
                 }
-            }else{
-                common_Logger::w('No itemContent for item '.$item->getUri());
+            } else {
+                common_Logger::w('No itemContent for item ' . $item->getUri());
             }
         }
 
-        return (string) $returnValue;
+        return (string)$returnValue;
     }
 
     /**
@@ -335,32 +341,33 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @throws common_Exception
      * @throws common_exception_Error
      */
-    public function setItemContent(core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = ''){
+    public function setItemContent(core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = '')
+    {
         $returnValue = false;
 
 
-        if(is_null($item) && !$this->isItemModelDefined($item)){
-            throw new common_exception_Error('No item or itemmodel in '.__FUNCTION__);
+        if (is_null($item) && !$this->isItemModelDefined($item)) {
+            throw new common_exception_Error('No item or itemmodel in ' . __FUNCTION__);
         }
 
         $lang = empty($lang) ? $lang = $this->getSessionLg() : $lang;
         $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-        $dataFile = (string) $itemModel->getOnePropertyValue(new core_kernel_classes_Property(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        $dataFile = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
 
-        if($this->hasItemContent($item, $lang)){
+        if ($this->hasItemContent($item, $lang)) {
 
             $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
             $itemContent = $itemContents->get(0);
-            if(!core_kernel_file_File::isFile($itemContent)){
-                throw new common_Exception('Item '.$item->getUri().' has none file itemContent');
+            if (!core_kernel_file_File::isFile($itemContent)) {
+                throw new common_Exception('Item ' . $item->getUri() . ' has none file itemContent');
             }
             $file = new core_kernel_versioning_File($itemContent);
             $returnValue = $file->setContent($content);
-        }else{
+        } else {
 
             $repository = $this->getDefaultFileSource();
             $file = $repository->createFile(
-                    $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()).DIRECTORY_SEPARATOR.'itemContent'.DIRECTORY_SEPARATOR.$lang
+                $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang
             );
             $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
             $returnValue = $file->setContent($content);
@@ -370,7 +377,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri()));
         }
 
-        return (bool) $returnValue;
+        return (bool)$returnValue;
     }
 
     /**
@@ -382,17 +389,18 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  array models the list of URI of the itemModel to check
      * @return boolean
      */
-    public function hasItemModel(core_kernel_classes_Resource $item, $models){
-        $returnValue = (bool) false;
+    public function hasItemModel(core_kernel_classes_Resource $item, $models)
+    {
+        $returnValue = (bool)false;
 
         $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-        if($itemModel instanceof core_kernel_classes_Resource){
-            if(in_array($itemModel->getUri(), $models)){
+        if ($itemModel instanceof core_kernel_classes_Resource) {
+            if (in_array($itemModel->getUri(), $models)) {
                 $returnValue = true;
             }
         }
 
-        return (bool) $returnValue;
+        return (bool)$returnValue;
     }
 
     /**
@@ -403,22 +411,23 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  Resource item
      * @return boolean
      */
-    public function isItemModelDefined(core_kernel_classes_Resource $item){
-        $returnValue = (bool) false;
+    public function isItemModelDefined(core_kernel_classes_Resource $item)
+    {
+        $returnValue = (bool)false;
 
-        if(!is_null($item)){
+        if (!is_null($item)) {
 
             $model = $item->getOnePropertyValue($this->itemModelProperty);
-            if($model instanceof core_kernel_classes_Literal){
-                if(strlen((string) $model) > 0){
+            if ($model instanceof core_kernel_classes_Literal) {
+                if (strlen((string)$model) > 0) {
                     $returnValue = true;
                 }
-            }else if(!is_null($model)){
+            } else if (!is_null($model)) {
                 $returnValue = true;
             }
         }
 
-        return (bool) $returnValue;
+        return (bool)$returnValue;
     }
 
     /**
@@ -429,12 +438,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
-    public function getModelRuntime(core_kernel_classes_Resource $item){
+    public function getModelRuntime(core_kernel_classes_Resource $item)
+    {
         $returnValue = null;
 
-        if(!is_null($item)){
+        if (!is_null($item)) {
             $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-            if(!is_null($itemModel)){
+            if (!is_null($itemModel)) {
                 $returnValue = $itemModel->getOnePropertyValue($this->getProperty(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
             }
         }
@@ -451,27 +461,28 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  array status
      * @return boolean
      */
-    public function hasModelStatus(core_kernel_classes_Resource $item, $status){
-        $returnValue = (bool) false;
+    public function hasModelStatus(core_kernel_classes_Resource $item, $status)
+    {
+        $returnValue = (bool)false;
 
-        if(!is_null($item)){
-            if(!is_array($status) && is_string($status)){
+        if (!is_null($item)) {
+            if (!is_array($status) && is_string($status)) {
                 $status = array($status);
             }
-            try{
+            try {
                 $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-                if($itemModel instanceof core_kernel_classes_Resource){
+                if ($itemModel instanceof core_kernel_classes_Resource) {
                     $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(TAO_ITEM_MODEL_STATUS_PROPERTY));
-                    if(in_array($itemModelStatus->getUri(), $status)){
+                    if (in_array($itemModelStatus->getUri(), $status)) {
                         $returnValue = true;
                     }
                 }
-            }catch(common_exception_EmptyProperty $ce){
+            } catch (common_exception_EmptyProperty $ce) {
                 $returnValue = false;
             }
         }
 
-        return (bool) $returnValue;
+        return (bool)$returnValue;
     }
 
     /**
@@ -483,15 +494,16 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @return string
      * @throws taoItems_models_classes_ItemModelException
      */
-    public function render(core_kernel_classes_Resource $item, $language){
+    public function render(core_kernel_classes_Resource $item, $language)
+    {
 
         $itemModel = $this->getItemModel($item);
-        if(is_null($itemModel)){
-            throw new common_exception_NoImplementation('No item model for item '.$item->getUri());
+        if (is_null($itemModel)) {
+            throw new common_exception_NoImplementation('No item model for item ' . $item->getUri());
         }
         $impl = $this->getItemModelImplementation($itemModel);
-        if(is_null($impl)){
-            throw new common_exception_NoImplementation('No implementation for model '.$itemModel->getUri());
+        if (is_null($impl)) {
+            throw new common_exception_NoImplementation('No implementation for model ' . $itemModel->getUri());
         }
         return $impl->render($item, $language);
     }
@@ -501,7 +513,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * (non-PHPdoc)
      * @see tao_models_classes_GenerisService::cloneInstanceProperty()
      */
-    protected function cloneInstanceProperty( core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property) {
+    protected function cloneInstanceProperty(core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property)
+    {
         if ($property->getUri() == self::PROPERTY_ITEM_CONTENT) {
             return $this->cloneItemContent($source, $destination, $property);
         } else {
@@ -523,12 +536,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         core_kernel_classes_Resource $source,
         core_kernel_classes_Resource $destination,
         core_kernel_classes_Property $property
-    ) {
+    )
+    {
 
         $serializer = $this->getFileReferenceSerializer();
         $this->setItemModel($destination, $this->getItemModel($source));
 
-        foreach($source->getUsedLanguages($this->itemContentProperty) as $lang) {
+        foreach ($source->getUsedLanguages($this->itemContentProperty) as $lang) {
             $sourceItemDirectory = $this->getItemDirectory($source, $lang);
             $destinationItemDirectory = $this->getItemDirectory($destination, $lang);
 
@@ -563,9 +577,10 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
 
-    public function getPreviewUrl(core_kernel_classes_Resource $item, $lang = '') {
+    public function getPreviewUrl(core_kernel_classes_Resource $item, $lang = '')
+    {
         $itemModel = $this->getItemModel($item);
-        if(is_null($itemModel)){
+        if (is_null($itemModel)) {
             return null;
         }
         return $this->getItemModelImplementation($itemModel)->getPreviewUrl($item, $lang);
@@ -579,20 +594,21 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  Resource item
      * @return core_kernel_classes_Resource
      */
-    public function getItemModel(core_kernel_classes_Resource $item){
+    public function getItemModel(core_kernel_classes_Resource $item)
+    {
         $returnValue = null;
 
         $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-        if($itemModel instanceof core_kernel_classes_Resource){
+        if ($itemModel instanceof core_kernel_classes_Resource) {
             $returnValue = $itemModel;
         }
 
         return $returnValue;
     }
-    
+
     /**
      * Set the model of an item
-     * 
+     *
      * @param core_kernel_classes_Resource $item
      * @param core_kernel_classes_Resource $model
      * @return boolean
@@ -601,7 +617,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         return $item->editPropertyValues($this->getProperty(self::PROPERTY_ITEM_MODEL), $model);
     }
-    
+
 
     /**
      * Rertrieve current user's language from the session object to know where
@@ -611,14 +627,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @author Joel Bout, <joel@taotesting.com>
      * @return string
      */
-    public function getSessionLg(){
+    public function getSessionLg()
+    {
 
         $sessionLang = \common_session_SessionManager::getSession()->getDataLanguage();
-        if(empty($sessionLang)){
+        if (empty($sessionLang)) {
             throw new Exception('the data language of the user cannot be found in session');
         }
 
-        return (string) $sessionLang;
+        return (string)$sessionLang;
     }
 
     /**
@@ -633,7 +650,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         // Delete item directory from filesystem
         $definitonFileValues = $item->getPropertyValues($this->itemContentProperty);
-        if (! empty($definitonFileValues)) {
+        if (!empty($definitonFileValues)) {
             /** @var Directory $directory */
             $directory = $this->getFileReferenceSerializer()->unserializeDirectory(reset($definitonFileValues));
             if ($directory->exists()) {
@@ -642,9 +659,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         }
 
         //delete the folder for all languages!
-        foreach($item->getUsedLanguages($this->itemContentProperty) as $lang){
+        foreach ($item->getUsedLanguages($this->itemContentProperty) as $lang) {
             $files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-            foreach($files->getIterator() as $file){
+            foreach ($files->getIterator() as $file) {
                 if ($file instanceof core_kernel_classes_Resource) {
                     $this->getFileReferenceSerializer()->cleanUp($file->getUri());
                 }
@@ -655,32 +672,35 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
-     * Short description of method getItemModelImplementation
+     * Get the correct implementation for a specific item model
      *
      * @access public
      * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource itemModel
-     * @return taoItems_models_classes_itemModel
+     * @param  core_kernel_classes_Resource $itemModel
+     * @return \taoItems_models_classes_itemModel
+     * @throws common_exception_NoImplementation
+     * @throws common_exception_Error
      */
-    public function getItemModelImplementation(core_kernel_classes_Resource $itemModel){
+    public function getItemModelImplementation(core_kernel_classes_Resource $itemModel)
+    {
 
-        $serviceId = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(PROPERTY_ITEM_MODEL_SERVICE));
+        $serviceId = (string)$itemModel->getOnePropertyValue($this->getProperty(PROPERTY_ITEM_MODEL_SERVICE));
         if (empty($serviceId)) {
-            throw new common_exception_NoImplementation('No implementation found for item model '.$itemModel->getUri());
+            throw new common_exception_NoImplementation('No implementation found for item model ' . $itemModel->getUri());
         }
-        try{
+        try {
             $itemModelService = $this->getServiceManager()->get($serviceId);
-        } catch(\oat\oatbox\service\ServiceNotFoundException $e){
-            if(!class_exists($serviceId)){
-                throw new common_exception_Error('Item model service '.$serviceId.' not found');
+        } catch (ServiceNotFoundException $e) {
+            if (!class_exists($serviceId)) {
+                throw new common_exception_Error('Item model service ' . $serviceId . ' not found');
             }
             // for backward compatibility support classname instead of a serviceid
-            common_Logger::w('Outdated model definition "'.$serviceId.'", please use test model service');
+            common_Logger::w('Outdated model definition "' . $serviceId . '", please use test model service');
             $itemModelService = new $serviceId();
 
         }
         if (!$itemModelService instanceof \taoItems_models_classes_itemModel) {
-            throw new common_exception_Error('Item model service '.get_class($itemModelService).' not compatible for item model '.$itemModelService->getUri());
+            throw new common_exception_Error('Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $itemModelService->getUri());
         }
         return $itemModelService;
     }
@@ -696,32 +716,34 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param  string lang
      * @return string
      */
-    public function getItemFolder(core_kernel_classes_Resource $item, $lang = ''){
-        $returnValue = (string) '';
+    public function getItemFolder(core_kernel_classes_Resource $item, $lang = '')
+    {
+        $returnValue = (string)'';
 
-        if($lang === ''){
+        if ($lang === '') {
             $files = $item->getPropertyValues($this->getProperty(self::PROPERTY_ITEM_CONTENT));
-        }else{
+        } else {
             $files = $item->getPropertyValuesByLg($this->getProperty(self::PROPERTY_ITEM_CONTENT), $lang)->toArray();
         }
-        if(count($files) == 0){
+        if (count($files) == 0) {
             // no content found assign default
             $returnValue = $this->getDefaultItemFolder($item, $lang);
-        }else{
-            if(count($files) > 1){
-                throw new common_Exception(__METHOD__.': Item '.$item->getUri().' has multiple.');
+        } else {
+            if (count($files) > 1) {
+                throw new common_Exception(__METHOD__ . ': Item ' . $item->getUri() . ' has multiple.');
             }
             $content = new core_kernel_file_File(current($files));
-            $returnValue = dirname($content->getAbsolutePath()).DIRECTORY_SEPARATOR;
+            $returnValue = dirname($content->getAbsolutePath()) . DIRECTORY_SEPARATOR;
         }
 
-        return (string) $returnValue;
+        return (string)$returnValue;
     }
-    
-    public function getCompilerClass(core_kernel_classes_Resource $item) {
+
+    public function getCompilerClass(core_kernel_classes_Resource $item)
+    {
         $itemModel = $this->getItemModel($item);
-        if(is_null($itemModel)){
-            throw new common_exception_Error('undefined itemmodel for test '.$item->getUri());
+        if (is_null($itemModel)) {
+            throw new common_exception_Error('undefined itemmodel for test ' . $item->getUri());
         }
         return $this->getItemModelImplementation($itemModel)->getCompilerClass();;
     }
@@ -778,7 +800,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         // If there is one file then return directory
         if (count($files) == 1) {
             $file = reset($files);
-            $file = is_object($file)  && $file instanceof core_kernel_classes_Resource ? $file->getUri() : (string) $file;
+            $file = is_object($file) && $file instanceof core_kernel_classes_Resource ? $file->getUri() : (string)$file;
             return $this->getFileReferenceSerializer()->unserializeDirectory($file);
         }
 
@@ -802,7 +824,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
 
         // Store file into persistence, purpose of serializer ?
-        $dataFile = (string) $model->getOnePropertyValue($this->getProperty(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
+        $dataFile = (string)$model->getOnePropertyValue($this->getProperty(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
         $this->getFileReferenceSerializer()->serialize($itemDirectory->getFile($dataFile));
 
         return $itemDirectory;
@@ -849,14 +871,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      * @param string|core_kernel_classes_Resource $itemModel - the item model URI
      * @return core_kernel_classes_Resource[] the found items
      */
-    public function getAllByModel($itemModel){
-        if(!empty($itemModel)){
+    public function getAllByModel($itemModel)
+    {
+        if (!empty($itemModel)) {
             $uri = ($itemModel instanceof core_kernel_classes_Resource) ? $itemModel->getUri() : $itemModel;
             return $this->itemClass->searchInstances(array(
-                    $this->itemModelProperty->getUri() => $uri
-                ), array(
-                    'recursive' => true
-                ));
+                $this->itemModelProperty->getUri() => $uri
+            ), array(
+                'recursive' => true
+            ));
         }
         return array();
     }
