@@ -103,7 +103,7 @@ define([
 
                         var state;
                         try {
-                            state = JSON.parse(conf.state);
+                            state = JSON.parse(window.atob(conf.state));
                         } catch(e) {
                             state = null;
                         }
