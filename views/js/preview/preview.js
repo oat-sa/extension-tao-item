@@ -359,16 +359,21 @@ define([
      */
     var _getThemes = function() {
 
-        var activeTheme = themeLoader(themeObj).getActiveTheme();
-
         var options = [];
-        _(themeObj.available).forEach(function (data) {
-            options.push({
-                value: data.id,
-                label: data.name,
-                selected: data.id === activeTheme
+        var activeTheme;
+
+        //don't load themes if there is none
+        if(_.isPlainObject(themeObj) && !_.isEmpty(themeObj.base)){
+            activeTheme = themeLoader(themeObj).getActiveTheme();
+
+            _(themeObj.available).forEach(function (data) {
+                options.push({
+                    value: data.id,
+                    label: data.name,
+                    selected: data.id === activeTheme
+                });
             });
-        });
+        }
         return options;
     };
 
