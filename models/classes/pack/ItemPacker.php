@@ -29,7 +29,7 @@ use oat\oatbox\filesystem\Directory;
  * To allow packing of Item. The goal of the packaging is to represent the data needed
  * to run an item (ie. an ItemPack).
  *
- * @package taoQtiItem
+ * @package taoItems
  */
 abstract class ItemPacker
 {
