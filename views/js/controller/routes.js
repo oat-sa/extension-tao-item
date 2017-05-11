@@ -34,6 +34,11 @@ define(function(){
             'actions' : {
                 'index' : 'controller/preview/itemRunner'
             }
+        },
+        'ItemExport' : {
+            'actions' : {
+                'index' : 'controller/export/index'
+            }
         }
     };
 });
