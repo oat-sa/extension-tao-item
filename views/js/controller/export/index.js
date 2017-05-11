@@ -16,29 +16,28 @@
  * Copyright (c) 2017 (original work) Open Assessment Technologies SA;
  *
  */
-define(['jquery', 'lodash'], function($, _){
+define(['jquery'], function($){
     'use strict';
-
-    var hasCheckedCheckbox = function hasCheckedCheckbox($container){
-        return ($container.find('.form-group :checkbox:checked').length > 0);
-    };
-
-    var updateSubmitter = function($container){
-        var $formSubmitter = $container.find('.form-submitter');
-        if(hasCheckedCheckbox($container)){
-            $formSubmitter.removeClass('disabled');
-        }else{
-            $formSubmitter.addClass('disabled');
-        }
-    };
 
     return {
         start : function start(){
             var $container = $('#exportChooser');
-            var update = _.partial(updateSubmitter, $container);
-            update.call();
-            $container
-                .on('change', ':checkbox', update);
+
+            /**
+             * toggle the state of the submitter (active/disable) according to number of checked elements
+             * @param $container
+             */
+            var updateSubmitter = function updateSubmitter(){
+                var $formSubmitter = $container.find('.form-submitter');
+                if($container.find('.form-group :checkbox:checked').length > 0){
+                    $formSubmitter.removeClass('disabled');
+                }else{
+                    $formSubmitter.addClass('disabled');
+                }
+            };
+
+            updateSubmitter();
+            $container.on('change', ':checkbox', updateSubmitter);
         }
     };
 });
