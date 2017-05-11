@@ -32,7 +32,7 @@ define([
     module,
     $,
     _,
-    encode,
+    encoder,
     ServiceApi,
     PseudoStorage,
     UserInfoService,
@@ -105,7 +105,7 @@ define([
 
                         var state;
                         try {
-                            state = JSON.parse(encode.decodeBase64(conf.state));
+                            state = JSON.parse(encoder.decodeBase64(conf.state));
                         } catch(e) {
                             state = null;
                         }
