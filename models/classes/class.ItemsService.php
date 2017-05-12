@@ -20,6 +20,7 @@
  *
  */
 
+use oat\oatbox\filesystem\File;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
@@ -287,13 +288,14 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
                 }
             }
             if (!is_null($itemContent) && $this->isItemModelDefined($item)) {
+                /** @var FileReferenceSerializer $fileService */
+                $fileService = $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
+                $file = $fileService->unserialize($itemContent);
 
-                if (core_kernel_file_File::isFile($itemContent)) {
-
-                    $file = new core_kernel_file_File($itemContent->getUri());
-                    $returnValue = file_get_contents($file->getAbsolutePath());
+                if ($file instanceof File) {
+                    $returnValue = $file->read();
                     if ($returnValue == false) {
-                        common_Logger::w('File ' . $file->getAbsolutePath() . ' not found for fileressource ' . $itemContent->getUri());
+                        common_Logger::w('File ' . $file->getPrefix() . ' not found for fileressource ' . $itemContent->getUri());
                     }
                 }
             } else {
@@ -358,9 +360,15 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
             $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
             $itemContent = $itemContents->get(0);
-            if (!core_kernel_file_File::isFile($itemContent)) {
+
+            /** @var FileReferenceSerializer $fileService */
+            $fileService = $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
+            $file = $fileService->unserialize($itemContent);
+
+            if (!$file instanceof File) {
                 throw new common_Exception('Item ' . $item->getUri() . ' has none file itemContent');
             }
+
             $file = new core_kernel_versioning_File($itemContent);
             $returnValue = $file->setContent($content);
         } else {
@@ -732,8 +740,11 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             if (count($files) > 1) {
                 throw new common_Exception(__METHOD__ . ': Item ' . $item->getUri() . ' has multiple.');
             }
-            $content = new core_kernel_file_File(current($files));
-            $returnValue = dirname($content->getAbsolutePath()) . DIRECTORY_SEPARATOR;
+
+            /** @var FileReferenceSerializer $fileService */
+            $fileService = $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
+            $file = $fileService->unserialize(current($files));
+            $returnValue = dirname($file->getPrefix()) . DIRECTORY_SEPARATOR;
         }
 
         return (string)$returnValue;
