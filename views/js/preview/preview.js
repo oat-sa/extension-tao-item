@@ -61,6 +61,7 @@ define([
         $console,
         previewContainerMaxWidth,
         itemUri,
+        state,
         winScrollObj = { x:0, y:0 };
 
 
@@ -359,16 +360,21 @@ define([
      */
     var _getThemes = function() {
 
-        var activeTheme = themeLoader(themeObj).getActiveTheme();
-
         var options = [];
-        _(themeObj.available).forEach(function (data) {
-            options.push({
-                value: data.id,
-                label: data.name,
-                selected: data.id === activeTheme
+        var activeTheme;
+
+        //don't load themes if there is none
+        if(_.isPlainObject(themeObj) && !_.isEmpty(themeObj.base)){
+            activeTheme = themeLoader(themeObj).getActiveTheme();
+
+            _(themeObj.available).forEach(function (data) {
+                options.push({
+                    value: data.id,
+                    label: data.name,
+                    selected: data.id === activeTheme
+                });
             });
-        });
+        }
         return options;
     };
 
@@ -517,7 +523,11 @@ define([
         return new Promise(function (resolve, reject){
             $.ajax({
                 url: itemUri,
-                dataType: 'html'
+                dataType: 'html',
+                type: 'POST',
+                data: {
+                    state: JSON.stringify(state)
+                }
             }).done(function (data) {
 
                 winScrollObj = { x: window.scrollX, y: window.scrollY };
@@ -558,8 +568,9 @@ define([
      * Create preview
      *
      * @param {String} _itemUri
+     * @param {Object} _state
      */
-    var init = function (_itemUri) {
+    var init = function (_itemUri, _state) {
 
         if(!_itemUri || _itemUri.length === 0){
             throw new TypeError('Wrong URI');
@@ -609,6 +620,7 @@ define([
         });
 
         itemUri = _itemUri;
+        state = _state;
 
         return overlay;
     };

@@ -21,6 +21,7 @@ define([
     'module',
     'jquery',
     'lodash',
+    'util/encode',
     'serviceApi/ServiceApi',
     'serviceApi/PseudoStorage',
     'serviceApi/UserInfoService',
@@ -31,6 +32,7 @@ define([
     module,
     $,
     _,
+    encoder,
     ServiceApi,
     PseudoStorage,
     UserInfoService,
@@ -101,6 +103,16 @@ define([
                         //the iframe is 1st detached and then attached with src in order to prevent adding an entry in the history
                         var $frame = $('<iframe id="preview-container" name="preview-container" src="' + callUrl.getUrl() + '"></iframe>');
 
+                        var state;
+                        try {
+                            state = JSON.parse(encoder.decodeBase64(conf.state));
+                        } catch(e) {
+                            state = null;
+                        }
+
+                        if (state) {
+                            itemApi.setVariables(state);
+                        }
 
                         $frame.on('load', function () {
                             var frame = this;

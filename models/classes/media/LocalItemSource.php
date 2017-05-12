@@ -24,7 +24,6 @@ use common_exception_Error;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaManagement;
-use oat\taoQtiItem\model\qti\Item;
 use Psr\Http\Message\StreamInterface;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
@@ -37,9 +36,6 @@ use Slim\Http\Stream;
 class LocalItemSource implements MediaManagement
 {
 
-    /**
-     * @var Item
-     */
     private $item;
     
     private $lang;
