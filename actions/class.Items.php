@@ -280,61 +280,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * Display the Item.ItemContent property value.
-     * It's used by the authoring runtime/tools to retrieve the content
-     * @return void
-     */
-    public function getItemContent(){
-
-        $this->setContentHeader('text/xml');
-
-        try{
-            //output direclty the itemContent as XML
-            print $this->getClassService()->getItemContent($this->getCurrentInstance());
-        }catch(Exception $e){
-            //print an empty response
-            print '<?xml version="1.0" encoding="utf-8" ?>';
-            if(DEBUG_MODE){
-                print '<exception><![CDATA[';
-                print $e;
-                print ']]></exception>';
-            }
-        }
-
-        return;
-    }
-
-    /**
-     * Download the content of the item in parameter
-     * @requiresRight uri READ
-     * @deprecated
-     */
-    public function downloadItemContent(){
-
-        $instance = $this->getCurrentInstance();
-        if($this->getClassService()->isItemModelDefined($instance)){
-
-            $itemModel = $instance->getUniquePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
-            $filename = $instance->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_SOURCENAME_PROPERTY));
-            if(is_null($filename)){
-                $filename = $itemModel->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-            }
-
-            $itemContent = $this->getClassService()->getItemContent($instance);
-            $size = strlen($itemContent);
-
-            $this->setContentHeader('text/xml');
-            header("Content-Length: $size");
-            header("Content-Disposition: attachment; filename=\"{$filename}\"");
-            header("Expires: 0");
-            header("Cache-Control: no-cache, must-revalidate");
-            header("Pragma: no-cache");
-            print $itemContent;
-            return;
-        }
-    }
-
-    /**
      * Item Authoring tool loader action
      * @requiresRight id WRITE
      */
@@ -368,56 +313,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $errorMsg = __('No item type selected for the current item.')." {$item->getLabel()} ".__('Please select first the item type!');
                 }
                 $this->setData('errorMsg', $errorMsg);
-            }
-        }
-    }
-
-    /**
-     * Load an item external media
-     * It prevents to get it direclty in the data folder that access is denied
-     * @requiresRight uri READ
-     * @deprecated
-     */
-    public function getMediaResource(){
-
-        if($this->hasRequestParameter('path')){
-
-            $item = null;
-            if($this->hasRequestParameter('uri') && $this->hasRequestParameter('classUri')){
-                $item = $this->getCurrentInstance();
-            }else if($this->hasSessionAttribute('uri') && $this->hasSessionAttribute('classUri')){
-                $classUri = tao_helpers_Uri::decode($this->getSessionAttribute('classUri'));
-                if($this->getClassService()->isItemClass(new core_kernel_classes_Class($classUri))){
-                    $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getSessionAttribute('uri')));
-                }
-            }
-
-            if(!is_null($item)){
-
-                $path = urldecode($this->getRequestParameter('path'));
-                if(!tao_helpers_File::securityCheck($path)){
-                    throw new Exception('Unauthorized path '.$path);
-                }
-                if(preg_match('/(.)+\/filemanager\/views\/data\//i', $path)){
-                    // check if the file is linked to the file manager
-                    $resource = preg_replace('/(.)+\/filemanager\/views\/data\//i', ROOT_PATH.'/filemanager/views/data/', $path);
-                }else{
-                    // look in the item's dedicated folder. it should be a resource
-                    // that is local to the item, not it the file manager
-                    // $folder is the item's dedicated folder path, $path the path to the resource, relative to $folder
-                    $folder = $this->getClassService()->getItemFolder($item);
-                    $resource = tao_helpers_File::concat(array($folder, $path));
-                }
-
-                if(file_exists($resource)){
-                    $mimeType = tao_helpers_File::getMimeType($resource);
-
-                    //allow only images, video, flash (and css?)
-                    if(preg_match("/^(image|video|audio|application\/x-shockwave-flash)/", $mimeType)){
-                        header("Content-Type: $mimeType; charset utf-8");
-                        print trim(file_get_contents($resource));
-                    }
-                }
             }
         }
     }

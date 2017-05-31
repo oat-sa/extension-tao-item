@@ -20,11 +20,9 @@
  *
  */
 
-use oat\oatbox\filesystem\File;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
-use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
@@ -191,122 +189,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
-     * Short description of method getDefaultItemFolder
-     *
-     * @deprecated use getItemDirectory instead
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  core_kernel_classes_Resource item
-     * @param  string lang
-     * @return string
-     */
-    public function getDefaultItemFolder(core_kernel_classes_Resource $item, $lang = '')
-    {
-        $returnValue = (string)'';
-
-        if (!is_null($item)) {
-
-            $lang = empty($lang) ? $this->getSessionLg() : $lang;
-
-            $itemRepo = $this->getDefaultFileSource();
-            $repositoryPath = $itemRepo->getPath();
-            $repositoryPath = substr($repositoryPath, strlen($repositoryPath) - 1, 1) == DIRECTORY_SEPARATOR ? $repositoryPath : $repositoryPath . DIRECTORY_SEPARATOR;
-            $returnValue = $repositoryPath . tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR;
-        }
-
-        return (string)$returnValue;
-    }
-
-    /**
-     * define the content of item to be inserted by default (to prevent null
-     * after creation).
-     * The item content's folder is created.
-     *
-     * @deprecated use getItemDirectory instead
-     *
-     * @access public
-     * @author Bertrand Chevrier <bertrand@taotesting.com>
-     * @param  core_kernel_classes_Resource item
-     * @return core_kernel_classes_Resource the same item
-     */
-    public function setDefaultItemContent(core_kernel_classes_Resource $item)
-    {
-        if (!is_null($item)) {
-
-            //we create the item folder by default. 
-            //TODO this should be implemented through the filesystem abstraction but it doesn't work for directory
-            $itemFolder = $this->getDefaultItemFolder($item);
-            if (!file_exists($itemFolder) && strpos($itemFolder, ROOT_PATH) >= 0) {
-                if (!mkdir($itemFolder, 0770, true)) {
-                    common_Logger::w('Unable to create default item folder at location : ' . $itemFolder);
-                }
-            }
-        }
-
-        return $item;
-    }
-
-    /**
-     * Enables you to get the content of an item,
-     * usually an xml string
-     *
-     * @deprecated use \oat\taoQtiItem\model\qti\Service::getDataItemByRdfItem instead
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @param  boolean preview
-     * @param  string lang
-     * @return string
-     */
-    public function getItemContent(core_kernel_classes_Resource $item, $lang = '')
-    {
-        $returnValue = (string)'';
-
-        common_Logger::i('Get itemContent for item ' . $item->getUri());
-
-        if (!is_null($item)) {
-
-            $itemContent = null;
-
-            if (empty($lang)) {
-                $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
-            } else {
-                $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-            }
-
-            if ($itemContents->count() > 0) {
-                $itemContent = $itemContents->get(0);
-            } //if no itemContent is set for the lang get the default one and copy it into a new repository
-            else if (!empty($lang)) {
-                $itemContents = $item->getPropertyValuesCollection($this->itemContentProperty);
-                if ($itemContents->count() > 0) {
-                    $itemContent = $itemContents->get(0);
-                    $this->setDefaultItemContent($item, $itemContent, $lang);
-                    tao_helpers_File::copy($this->getItemFolder($item, DEFAULT_LANG), $this->getItemFolder($item, $lang));
-                }
-            }
-            if (!is_null($itemContent) && $this->isItemModelDefined($item)) {
-                /** @var FileReferenceSerializer $fileService */
-                $fileService = $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
-                $file = $fileService->unserialize($itemContent);
-
-                if ($file instanceof File) {
-                    $returnValue = $file->read();
-                    if ($returnValue == false) {
-                        common_Logger::w('File ' . $file->getPrefix() . ' not found for fileressource ' . $itemContent->getUri());
-                    }
-                }
-            } else {
-                common_Logger::w('No itemContent for item ' . $item->getUri());
-            }
-        }
-
-        return (string)$returnValue;
-    }
-
-    /**
      * Check if the item has an itemContent Property
      *
      * @param core_kernel_classes_Resource $item
@@ -326,66 +208,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
         return !$itemContents->isEmpty();
-    }
-
-    /**
-     * Short description of method setItemContent
-     *
-     * @deprecated use \oat\taoQtiItem\model\qti\Service::saveXmlItemToRdfItem instead
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  core_kernel_classes_Resource $item
-     * @param  string $content
-     * @param  string $lang
-     * @param  string $commitMessage
-     * @return bool
-     * @throws common_Exception
-     * @throws common_exception_Error
-     */
-    public function setItemContent(core_kernel_classes_Resource $item, $content, $lang = '', $commitMessage = '')
-    {
-        $returnValue = false;
-
-
-        if (is_null($item) && !$this->isItemModelDefined($item)) {
-            throw new common_exception_Error('No item or itemmodel in ' . __FUNCTION__);
-        }
-
-        $lang = empty($lang) ? $lang = $this->getSessionLg() : $lang;
-        $itemModel = $item->getUniquePropertyValue($this->itemModelProperty);
-        $dataFile = (string)$itemModel->getOnePropertyValue(new core_kernel_classes_Property(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-
-        if ($this->hasItemContent($item, $lang)) {
-
-            $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
-            $itemContent = $itemContents->get(0);
-
-            /** @var FileReferenceSerializer $fileService */
-            $fileService = $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
-            $file = $fileService->unserialize($itemContent);
-
-            if (!$file instanceof File) {
-                throw new common_Exception('Item ' . $item->getUri() . ' has none file itemContent');
-            }
-
-            $file = new core_kernel_versioning_File($itemContent);
-            $returnValue = $file->setContent($content);
-        } else {
-
-            $repository = $this->getDefaultFileSource();
-            $file = $repository->createFile(
-                $dataFile, tao_helpers_Uri::getUniqueId($item->getUri()) . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $lang
-            );
-            $item->setPropertyValueByLg($this->itemContentProperty, $file->getUri(), $lang);
-            $returnValue = $file->setContent($content);
-        }
-
-        if ($returnValue) {
-            $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri()));
-        }
-
-        return (bool)$returnValue;
     }
 
     /**
@@ -713,43 +535,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         return $itemModelService;
     }
 
-    /**
-     * Short description of method getItemFolder
-     *
-     * @deprecated use getItemDirectory instead
-     *
-     * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Resource item
-     * @param  string lang
-     * @return string
-     */
-    public function getItemFolder(core_kernel_classes_Resource $item, $lang = '')
-    {
-        $returnValue = (string)'';
-
-        if ($lang === '') {
-            $files = $item->getPropertyValues($this->getProperty(self::PROPERTY_ITEM_CONTENT));
-        } else {
-            $files = $item->getPropertyValuesByLg($this->getProperty(self::PROPERTY_ITEM_CONTENT), $lang)->toArray();
-        }
-        if (count($files) == 0) {
-            // no content found assign default
-            $returnValue = $this->getDefaultItemFolder($item, $lang);
-        } else {
-            if (count($files) > 1) {
-                throw new common_Exception(__METHOD__ . ': Item ' . $item->getUri() . ' has multiple.');
-            }
-
-            /** @var FileReferenceSerializer $fileService */
-            $fileService = $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
-            $file = $fileService->unserialize(current($files));
-            $returnValue = dirname($file->getPrefix()) . DIRECTORY_SEPARATOR;
-        }
-
-        return (string)$returnValue;
-    }
-
     public function getCompilerClass(core_kernel_classes_Resource $item)
     {
         $itemModel = $this->getItemModel($item);
@@ -757,18 +542,6 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             throw new common_exception_Error('undefined itemmodel for test ' . $item->getUri());
         }
         return $this->getItemModelImplementation($itemModel)->getCompilerClass();;
-    }
-
-    /**
-     * sets the filesource to use for new items
-     *
-     * @deprecated
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param  Repository filesource
-     */
-    public function setDefaultFilesource(core_kernel_versioning_Repository $filesource)
-    {
-        $this->setDefaultFilesourceId($filesource->getUri());
     }
 
     /**
@@ -842,28 +615,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     }
 
     /**
-     * Returns the filesource to use for new items
-     *
-     * @deprecated use getItemRootDirectory instead
-     *
-     * @return core_kernel_versioning_Repository
-     * @throws common_Exception
-     * @throws common_ext_ExtensionException
-     */
-    public function getDefaultFileSource()
-    {
-        $uri = common_ext_ExtensionsManager::singleton()
-            ->getExtensionById('taoItems')
-            ->getConfig(self::CONFIG_DEFAULT_FILESOURCE);
-        if (empty($uri)) {
-            throw new common_Exception('No default repository defined for Items storage.');
-        }
-        return new core_kernel_versioning_Repository($uri);
-    }
-
-    /**
      * Returns the defaul item directory
-     * @return \oat\oatbox\filesystem\Directory
+     * @return Directory
      * @throws common_ext_ExtensionException
      */
     public function getDefaultItemDirectory()

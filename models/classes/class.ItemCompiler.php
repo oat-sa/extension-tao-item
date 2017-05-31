@@ -59,8 +59,8 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
         $itemService = taoItems_models_classes_ItemsService::singleton();
         	
         // copy local files
-        $source = $itemService->getItemFolder($item, $languageCode);
-        $success = taoItems_helpers_Deployment::copyResources($source, $compiledDirectory, array('index.html'));
+        $sourceDir = $itemService->getItemDirectory($item, $languageCode);
+        $success = taoItems_helpers_Deployment::copyResources($sourceDir->getPrefix(), $compiledDirectory, array('index.html'));
         if (!$success) {
             return $this->fail(__('Unable to copy resources for language %s', $languageCode));
         }

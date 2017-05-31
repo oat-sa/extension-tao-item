@@ -254,7 +254,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     
     
     
-    
+    /*
     public function testGetDefaultFileSource()
     {
         $this->assertInstanceOf('core_kernel_versioning_Repository', $this->itemsService->getDefaultFileSource());
@@ -281,7 +281,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         );
         
         
-    }
+    }*/
         
     public function testIsItemModelDefined()
     {
