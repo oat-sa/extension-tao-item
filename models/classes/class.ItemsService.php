@@ -514,7 +514,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     public function getItemModelImplementation(core_kernel_classes_Resource $itemModel)
     {
 
-        $serviceId = (string)$itemModel->getOnePropertyValue($this->getProperty(PROPERTY_ITEM_MODEL_SERVICE));
+        $serviceId = (string)$itemModel->getOnePropertyValue($this->getProperty(self::PROPERTY_ITEM_MODEL_SERVICE));
         if (empty($serviceId)) {
             throw new common_exception_NoImplementation('No implementation found for item model ' . $itemModel->getUri());
         }

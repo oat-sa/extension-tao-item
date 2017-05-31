@@ -26,11 +26,12 @@ define([
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
     'ui/themeLoader',
+    'urlParser',
     'ui/modal',
     'select2',
     'jquery.cookie',
     'css!taoItemsCss/preview'
-], function ($, _, __, strPad, Promise, deviceList, previewTpl, themeHandler, themeLoader) {
+], function ($, _, __, strPad, Promise, deviceList, previewTpl, themeHandler, themeLoader, UrlParser) {
     'use strict';
 
 
@@ -521,13 +522,13 @@ define([
      */
     var show = function () {
         return new Promise(function (resolve, reject){
+            var parsed = new UrlParser(itemUri);
+            parsed.params.state = JSON.stringify(state);
             $.ajax({
                 url: itemUri,
                 dataType: 'html',
-                type: 'POST',
-                data: {
-                    state: JSON.stringify(state)
-                }
+                method : 'POST',
+                data : parsed.params
             }).done(function (data) {
 
                 winScrollObj = { x: window.scrollX, y: window.scrollY };
@@ -543,7 +544,6 @@ define([
                 overlay.find('select:visible').not('.preview-theme-selector').trigger('change');
                 _scale();
                 _positionPreview();
-
                 $('.preview-item-container').html(data);
                 resolve();
 

@@ -21,6 +21,7 @@ define([
     'module',
     'jquery',
     'lodash',
+    'util/encode',
     'serviceApi/ServiceApi',
     'serviceApi/PseudoStorage',
     'serviceApi/UserInfoService',
@@ -31,6 +32,7 @@ define([
     module,
     $,
     _,
+    encoder,
     ServiceApi,
     PseudoStorage,
     UserInfoService,
@@ -103,7 +105,7 @@ define([
 
                         var state;
                         try {
-                            state = JSON.parse(window.atob(conf.state));
+                            state = JSON.parse(encoder.decodeBase64(conf.state));
                         } catch(e) {
                             state = null;
                         }
