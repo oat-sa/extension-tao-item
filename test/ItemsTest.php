@@ -251,38 +251,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
             ->willReturn(array());
         $this->assertNull($this->itemsService->getItemModelImplementation($itemModelProphecy->reveal()));
     }
-    
-    
-    
-    /*
-    public function testGetDefaultFileSource()
-    {
-        $this->assertInstanceOf('core_kernel_versioning_Repository', $this->itemsService->getDefaultFileSource());
-        $ext = \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
-        $oldConfig = $ext->getConfig(taoItems_models_classes_ItemsService::CONFIG_DEFAULT_FILESOURCE);
-        try {
-            $this->assertTrue(
-                $ext->setConfig(
-                    taoItems_models_classes_ItemsService::CONFIG_DEFAULT_FILESOURCE,
-                    array()
-                )
-            );
-            
-            $this->itemsService->getDefaultFileSource();
-        }
-        catch (\common_Exception $e) {
-            $this->assertEquals('No default repository defined for Items storage.', $e->getMessage());
-            
-        }
-        $this->assertTrue(
-            $ext->setConfig(
-                taoItems_models_classes_ItemsService::CONFIG_DEFAULT_FILESOURCE,
-                $oldConfig)
-        );
-        
-        
-    }*/
-        
+
     public function testIsItemModelDefined()
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
