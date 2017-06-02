@@ -20,8 +20,12 @@
 namespace oat\taoItems\test\pack;
 
 use oat\oatbox\filesystem\File;
+use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\tao\test\TaoPhpUnitTestRunner;
 use oat\taoItems\model\pack\encoders\Base64fileEncoder;
+use oat\taoMediaManager\model\MediaSource;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @package taoItems
@@ -34,8 +38,26 @@ class Base64fileEncoderTest extends TaoPhpUnitTestRunner
 
     public function resourceProvider()
     {
+        $stream = $this->getMockBuilder(StreamInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stream->method('getContents')->willReturn('value');
+
+        $mediaSource = $this->getMockBuilder(MediaSource::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mediaSource->method('getFileInfo')->willReturn(['mime' => 'text/css']);
+        $mediaSource->method('getFileStream')->willReturn($stream);
+
+        $mediaAsset = $this->getMockBuilder(MediaAsset::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('value');
+
         return [
             ['exist.css', 'data:text/css;base64,' . base64_encode('value')],
+            [$mediaAsset, 'data:text/css;base64,' . base64_encode('value')],
             ['http://google.com/styles.css', 'http://google.com/styles.css']
         ];
     }
