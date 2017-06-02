@@ -46,9 +46,7 @@ class EncoderService extends tao_models_classes_Service
                 class_implements( $class )
             )
         ) {
-            $encoder = (new ReflectionClass($class))->newInstanceArgs(array_slice(func_get_args(), 1, func_num_args()));
-            $this->getServiceLocator()->propagate($encoder);
-            return $encoder;
+            return (new ReflectionClass($class))->newInstanceArgs(array_slice(func_get_args(), 1, func_num_args()));
         }
         throw new ExceptionMissingEncoder( 'Encoder missing : ' .  $class );
     }

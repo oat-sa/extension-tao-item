@@ -22,18 +22,14 @@ namespace oat\taoItems\model\pack\encoders;
 use oat\tao\model\media\MediaAsset;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
 use oat\taoMediaManager\model\MediaSource;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 /**
  * Class Base64fileEncoder
  * Helper, encode file by uri for embedding  using base64 algorithm
  * @package oat\taoItems\model\pack\encoders
  */
-class Base64fileEncoder implements Encoding, ServiceLocatorAwareInterface
+class Base64fileEncoder implements Encoding
 {
-    use ServiceLocatorAwareTrait;
-
     /**
      * @var \tao_models_classes_service_StorageDirectory
      */
