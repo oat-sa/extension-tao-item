@@ -19,15 +19,21 @@
  */
 namespace oat\taoItems\model\pack\encoders;
 
+use oat\tao\model\media\MediaAsset;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
+use oat\taoMediaManager\model\MediaSource;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 /**
  * Class Base64fileEncoder
  * Helper, encode file by uri for embedding  using base64 algorithm
  * @package oat\taoItems\model\pack\encoders
  */
-class Base64fileEncoder implements Encoding
+class Base64fileEncoder implements Encoding, ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
     /**
      * @var \tao_models_classes_service_StorageDirectory
      */
@@ -50,7 +56,7 @@ class Base64fileEncoder implements Encoding
 
 
     /**
-     * @param string $data name of the assert
+     * @param string|MediaAsset $data name of the assert
      *
      * @return string
      * @throws ExceptionMissingAsset
@@ -60,6 +66,18 @@ class Base64fileEncoder implements Encoding
         //skip  if external resource
         if (filter_var( $data, FILTER_VALIDATE_URL )) {
             return $data;
+        }
+
+        if ($data instanceof MediaAsset) {
+            $mediaSource = $data->getMediaSource();
+            $data = $data->getMediaIdentifier();
+
+            if ($mediaSource instanceof MediaSource) {
+                $fileInfo = $mediaSource->getFileInfo($data);
+                $stream = $mediaSource->getFileStream($data);
+
+                return sprintf(self::DATA_PREFIX, $fileInfo['mime'], base64_encode($stream->getContents()));
+            }
         }
 
         $file = $this->directory->getFile($data);

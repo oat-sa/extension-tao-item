@@ -23,7 +23,7 @@ namespace oat\taoItems\model\pack\encoders;
 interface Encoding
 {
     /**
-     * @param $data
+     * @param mixed $data
      *
      * @return string
      */

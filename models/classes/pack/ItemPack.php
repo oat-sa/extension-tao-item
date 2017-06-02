@@ -23,6 +23,7 @@ namespace oat\taoItems\model\pack;
 
 use \InvalidArgumentException;
 use \JsonSerializable;
+use oat\tao\model\media\MediaAsset;
 use oat\taoItems\model\pack\encoders\Encoding;
 
 /**
@@ -146,7 +147,14 @@ class ItemPack implements JsonSerializable
          */
         $encoder = EncoderService::singleton()->get($this->assetEncoders[$type], $publicDirectory);
         foreach ($assets as $asset) {
-            $this->assets[$type][$asset] = $encoder->encode( $asset );
+            if ($asset instanceof MediaAsset) {
+                $mediaSource = $asset->getMediaSource();
+                $assetKey = $mediaSource->getBaseName($asset->getMediaIdentifier());
+            } else {
+                $assetKey = $asset;
+            }
+
+            $this->assets[$type][$assetKey] = $encoder->encode( $asset );
         }
     }
 
