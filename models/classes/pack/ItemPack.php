@@ -25,6 +25,7 @@ use \InvalidArgumentException;
 use \JsonSerializable;
 use oat\tao\model\media\MediaAsset;
 use oat\taoItems\model\pack\encoders\Encoding;
+use oat\taoMediaManager\model\MediaSource;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -149,7 +150,11 @@ class ItemPack implements JsonSerializable
         foreach ($assets as $asset) {
             if ($asset instanceof MediaAsset) {
                 $mediaSource = $asset->getMediaSource();
-                $assetKey = $mediaSource->getBaseName($asset->getMediaIdentifier());
+                if ($mediaSource instanceof MediaSource) {
+                    $assetKey = $asset->getMediaIdentifier();
+                } else {
+                    $assetKey = $mediaSource->getBaseName($asset->getMediaIdentifier());
+                }
             } else {
                 $assetKey = $asset;
             }
