@@ -19,6 +19,8 @@
  */
 namespace oat\taoItems\test\pack;
 
+use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\encoders\Base64Encoder;
 use oat\tao\test\TaoPhpUnitTestRunner;
 
@@ -35,6 +37,17 @@ class Base64EncoderTest extends TaoPhpUnitTestRunner
     {
         $encoder = new Base64Encoder();
         $this->assertEquals(base64_encode('value'), $encoder->encode('value'));
+    }
+
+    /**
+     * Test encoder with MediaAsset
+     */
+    public function testEncodeMediaAsset()
+    {
+        $encoder = new Base64Encoder();
+        $url = 'http://tao.dev/my/asset';
+        $asset = new MediaAsset(new HttpSource(), $url);
+        $this->assertEquals(base64_encode(basename($url)), $encoder->encode($asset));
     }
 
 }
