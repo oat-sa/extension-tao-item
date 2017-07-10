@@ -236,7 +236,7 @@ define([
              * @fires itemRunner#statechange the provider is reponsible to trigger this event
              * @fires itemRunner#responsechange  the provider is reponsible to trigger this event
              */
-           render : function(elt){
+           render : function(elt, options){
                 var self = this;
 
                 /**
@@ -270,14 +270,18 @@ define([
                     self.trigger('ready');
                 };
 
+                options = _.defaults(options || {}, {state : {}});
+
                 //check elt
                 if( !(elt instanceof HTMLElement) && !(elt instanceof $) ){
                     return self.trigger('error', 'A valid HTMLElement (or a jquery element) at least is required to render the item');
                 }
 
+                this.setState(options.state);
+
                 if(flow.init.done === false){
                     flow.init.pending.push(function(){
-                        this.render(elt);
+                        this.render(elt, options);
                     });
                 } else {
 
@@ -298,7 +302,7 @@ define([
                          * @param {HTMLElement} elt - the element to render inside
                          * @param {Function} done - call once the render is done
                          */
-                        provider.render.call(this, this.container, renderDone);
+                        provider.render.call(this, this.container, renderDone, options);
 
                     } else {
                         renderDone();
