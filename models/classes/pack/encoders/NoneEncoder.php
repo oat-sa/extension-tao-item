@@ -19,6 +19,8 @@
  */
 namespace oat\taoItems\model\pack\encoders;
 
+use oat\tao\model\media\MediaAsset;
+
 class NoneEncoder implements Encoding
 {
     /**
@@ -30,12 +32,16 @@ class NoneEncoder implements Encoding
 
 
     /**
-     * @param $data
+     * @param mixed $data
      *
      * @return string
      */
     public function encode( $data )
     {
+        if ($data instanceof MediaAsset) {
+            $mediaSource = $data->getMediaSource();
+            return $mediaSource->getBaseName($data->getMediaIdentifier());
+        }
         return $data;
     }
 }

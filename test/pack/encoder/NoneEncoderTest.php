@@ -19,6 +19,8 @@
  */
 namespace oat\taoItems\test\pack;
 
+use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\encoders\NoneEncoder;
 use oat\tao\test\TaoPhpUnitTestRunner;
 
@@ -37,4 +39,14 @@ class NoneEncoderTest extends TaoPhpUnitTestRunner
         $this->assertEquals('value', $encoder->encode('value'));
     }
 
+    /**
+     * Test encoder with MediaAsset
+     */
+    public function testEncodeMediaAsset()
+    {
+        $encoder = new NoneEncoder();
+        $url = 'http://tao.dev/my/asset';
+        $asset = new MediaAsset(new HttpSource(), $url);
+        $this->assertEquals(basename($url), $encoder->encode($asset));
+    }
 }
