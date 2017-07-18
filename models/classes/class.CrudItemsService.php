@@ -17,6 +17,8 @@
  * 
  */
 
+use \oat\taoQtiItem\model\qti\Service;
+
 /**
  * .Crud services implements basic CRUD services, orginally intended for REST controllers/ HTTP exception handlers
  *  Consequently the signatures and behaviors is closer to REST and throwing HTTP like exceptions
@@ -73,7 +75,7 @@ class taoItems_models_classes_CrudItemsService
 		}
 		$resource =  parent::create($label, $type, $propertiesValues);
 		if (isset($itemContent)) {
-		    $this->itemsServices->setItemContent($resource, $itemContent);
+            Service::singleton()->saveXmlItemToRdfItem($itemContent, $resource);
 		}
 		return $resource;
     }
