@@ -106,21 +106,6 @@ abstract class taoItems_models_classes_ItemExporter {
 			return null;
 		}
 	}
-	
-	/**
-	 * Gets the location of the item of the file system. Usually, it is a folder on the file system located
-	 * at /taoItems/data/i123 where i123 is the ID of the item in the knowledge base.
-	 *
-	 * @deprecated
-	 * @return string the location of the item on the file system.
-	 */
-	protected function getItemLocation() {
-		$returnValue = null;
-
-		$returnValue = $this->getItemService()->getItemFolder($this->getItem());
-
-		return $returnValue;
-	}
 
 	protected function getItemDirectory()
 	{
