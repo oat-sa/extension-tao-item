@@ -278,7 +278,9 @@ define([
                 }
 
                 //set item state to restore item state after rendering if the provider enables it
-                this.setState(options.state);
+                if(options.state){
+                    this.setState(options.state);
+                }
 
                 if(flow.init.done === false){
                     flow.init.pending.push(function(){
