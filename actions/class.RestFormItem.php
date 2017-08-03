@@ -22,7 +22,7 @@
  * Rest interface to manage forms to create and edit items
  *
  */
-class tao_actions_RestUser extends \tao_actions_RestResource
+class taoItems_actions_RestFormItem extends \tao_actions_RestResource
 {
 
     /**
@@ -55,7 +55,7 @@ class tao_actions_RestUser extends \tao_actions_RestResource
      */
     protected function getForm($instance)
     {
-        $form = new \tao_actions_form_RestItemForm($instance);
+        $form = new \taoItems_actions_form_RestItemForm($instance);
         $form->setServiceLocator($this->getServiceManager());
         return $form;
     }

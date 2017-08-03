@@ -46,9 +46,9 @@ class taoItems_actions_form_RestItemForm extends tao_actions_form_RestForm imple
     protected function getClassProperties()
     {
         $properties = parent::getClassProperties();
-        unset($properties[PROPERTY_ITEM_MODEL]);
-        unset($properties[PROPERTY_ITEM_CONTENT]);
-        unset($properties[PROPERTY_ITEM_CONTENT_SRC]);
+        unset($properties[self::PROPERTY_ITEM_MODEL]);
+        unset($properties[self::PROPERTY_ITEM_CONTENT]);
+        unset($properties[self::PROPERTY_ITEM_CONTENT_SRC]);
         return $properties;
     }
 
@@ -59,6 +59,6 @@ class taoItems_actions_form_RestItemForm extends tao_actions_form_RestForm imple
      */
     protected function getTopClass()
     {
-        return $this->getClass(self::CLASS_ASSESSMENT_OBJECT_URI);
+        return $this->getClass(self::CLASS_ASSESSMENT_OBJECT);
     }
 }
