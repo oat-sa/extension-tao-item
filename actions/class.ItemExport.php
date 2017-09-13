@@ -51,7 +51,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export {
 	protected function getAvailableExportHandlers() {
 		$returnValue = parent::getAvailableExportHandlers();
 
-        $itemModelClass = new core_kernel_classes_Class(TAO_ITEM_MODEL_CLASS);
+        $itemModelClass = new core_kernel_classes_Class(taoItems_models_classes_itemModel::MODELS_CLASS);
         $itemModels = $itemModelClass->getInstances();
 		foreach ($itemModels as $model) {
 			$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);

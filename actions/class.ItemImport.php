@@ -53,7 +53,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import {
 			}
 		}
 
-		$itemModelClass = new core_kernel_classes_Class(TAO_ITEM_MODEL_CLASS); 
+		$itemModelClass = new core_kernel_classes_Class(taoItems_models_classes_itemModel::MODELS_CLASS);
 		foreach ($itemModelClass->getInstances() as $model) {
 			$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
 			if (in_array('tao_models_classes_import_ImportProvider', class_implements($impl))) {
