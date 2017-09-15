@@ -20,6 +20,7 @@
 
 namespace oat\taoItems\test;
 
+use oat\tao\model\TaoOntology;
 use oat\tao\test\RestTestCase;
 
 /**
@@ -31,7 +32,7 @@ class RestTaoItemsTest extends RestTestCase
 {
     public function serviceProvider(){
         return array(
-            array('taoItems/RestItems',TAO_ITEM_CLASS)
+            array('taoItems/RestItems', TaoOntology::ITEM_CLASS)
         );
     }
     

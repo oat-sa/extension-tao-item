@@ -20,6 +20,7 @@
  */
 namespace oat\taoItems\test;
 
+use oat\tao\model\TaoOntology;
 use oat\tao\test\TaoPhpUnitTestRunner;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
@@ -68,10 +69,9 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testClassCreate()
     {
-        $this->assertTrue(defined('TAO_ITEM_CLASS'));
         $ItemClass = $this->itemsService->getRootClass();
         $this->assertInstanceOf(\core_kernel_classes_Class::class, $ItemClass);
-        $this->assertEquals(TAO_ITEM_CLASS, $ItemClass->getUri());
+        $this->assertEquals(TaoOntology::ITEM_CLASS, $ItemClass->getUri());
 
         return $ItemClass;
     }
@@ -168,7 +168,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     public function testIsItemClass()
     {
         $clazz = $this->prophesize('core_kernel_classes_Class');
-        $clazz->getUri()->willReturn(TAO_ITEM_CLASS);   
+        $clazz->getUri()->willReturn(TaoOntology::ITEM_CLASS);
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
         
         
@@ -176,7 +176,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $clazz->getUri()->willReturn('uri');
         
         $parent = $this->prophesize('core_kernel_classes_Class');
-        $parent->getUri()->willReturn(TAO_ITEM_CLASS);
+        $parent->getUri()->willReturn(TaoOntology::ITEM_CLASS);
         
         $clazz->getParentClasses(true)->willReturn(array($parent->reveal()));
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));

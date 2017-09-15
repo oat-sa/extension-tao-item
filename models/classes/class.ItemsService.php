@@ -21,6 +21,7 @@
  */
 
 use oat\tao\model\lock\LockManager;
+use oat\tao\model\TaoOntology;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
@@ -84,7 +85,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     protected function __construct()
     {
-        $this->itemClass = $this->getClass(TAO_ITEM_CLASS);
+        $this->itemClass = $this->getClass(TaoOntology::ITEM_CLASS);
         $this->itemModelProperty = $this->getProperty(self::PROPERTY_ITEM_MODEL);
         $this->itemContentProperty = $this->getProperty(self::PROPERTY_ITEM_CONTENT);
     }
