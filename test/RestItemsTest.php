@@ -32,7 +32,7 @@ class RestTaoItemsTest extends RestTestCase
 {
     public function serviceProvider(){
         return array(
-            array('taoItems/RestItems', TaoOntology::ITEM_CLASS)
+            array('taoItems/RestItems', TaoOntology::ITEM_CLASS_URI)
         );
     }
     

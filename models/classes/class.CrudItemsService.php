@@ -36,7 +36,7 @@ class taoItems_models_classes_CrudItemsService
 
     public function __construct(){
 		parent::__construct();
-		$this->itemClass = new core_kernel_classes_Class(TaoOntology::ITEM_CLASS);
+		$this->itemClass = new core_kernel_classes_Class(TaoOntology::ITEM_CLASS_URI);
 		$this->itemsServices = taoItems_models_classes_ItemsService::singleton();
     }
 

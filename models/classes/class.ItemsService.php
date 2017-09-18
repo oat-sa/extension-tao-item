@@ -85,7 +85,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     protected function __construct()
     {
-        $this->itemClass = $this->getClass(TaoOntology::ITEM_CLASS);
+        $this->itemClass = $this->getClass(TaoOntology::ITEM_CLASS_URI);
         $this->itemModelProperty = $this->getProperty(self::PROPERTY_ITEM_MODEL);
         $this->itemContentProperty = $this->getProperty(self::PROPERTY_ITEM_CONTENT);
     }

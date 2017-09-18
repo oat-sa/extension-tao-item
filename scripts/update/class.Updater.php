@@ -88,7 +88,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
         if ($this->isVersion('2.6.3')) {
             // update user roles
-            $class = new core_kernel_classes_Class(TaoOntology::CLASS_TAO_USER);
+            $class = new core_kernel_classes_Class(TaoOntology::CLASS_URI_TAO_USER);
             $itemManagers = $class->searchInstances(array(
 	               PROPERTY_USER_ROLES => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole'
                 ),array('recursive' => true, 'like' => false)
