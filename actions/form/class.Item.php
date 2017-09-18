@@ -47,12 +47,12 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
         if (empty($modelUri)) {
             
             // remove deprecated models
-            $statusProperty = new core_kernel_classes_Property(ItemModelStatus::STATUS_PROPERTY);
+            $statusProperty = new core_kernel_classes_Property(ItemModelStatus::CLASS_URI);
             $options = array();
             foreach ($ele->getOptions() as $optUri => $optLabel) {
                 $model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
                 $status = $model->getOnePropertyValue($statusProperty);
-                if(!is_null($status) && $status->getUri() != ItemModelStatus::STATUS_DEPRECATED){
+                if(!is_null($status) && $status->getUri() != ItemModelStatus::PROPERTY_DEPRECATED){
                     $options[$optUri] = $optLabel; 
                 }
             }

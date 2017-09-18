@@ -21,9 +21,13 @@ namespace oat\taoItems\model;
 
 interface ItemModelStatus
 {
-    const STATUS_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus';
-    const STATUS_STABLE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable';
-    const STATUS_DEPRECATED = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated';
-    const STATUS_DEV = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment';
-    const STATUS_EXPERIMENTAL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental';
+    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus';
+
+    const PROPERTY_STABLE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable';
+
+    const PROPERTY_DEPRECATED = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated';
+
+    const PROPERTY_DEV = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment';
+
+    const PROPERTY_EXPERIMENTAL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental';
 }

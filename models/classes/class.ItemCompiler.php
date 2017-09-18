@@ -92,13 +92,13 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @return tao_models_classes_service_ServiceCall
      */
     protected function createService(core_kernel_classes_Resource $item, tao_models_classes_service_StorageDirectory $destinationDirectory) {
-        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_SERVICE_ITEM_RUNNER));
+        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_INSTANCE_SERVICE_ITEM_RUNNER));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
-            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_FORMAL_PARAM_ITEM_PATH),
+            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_INSTANCE_FORMAL_PARAM_ITEM_PATH),
             $destinationDirectory->getId()
         ));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
-            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_FORMAL_PARAM_ITEM_URI),
+            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_INSTANCE_FORMAL_PARAM_ITEM_URI),
             $item
         ));
         

@@ -31,7 +31,7 @@
  */
 interface taoItems_models_classes_itemModel
 {
-    const MODELS_CLASS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
+    const PROPERTY_MODELS_CLASS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
     const PROPERTY_RUNTIME	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
     const PROPERTY_QTI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
 

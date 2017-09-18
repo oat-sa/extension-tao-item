@@ -164,7 +164,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertEquals(count($this->itemsService->getAllByModel($instance)), 0);
         $this->assertEquals(count($this->itemsService->getAllByModel(null)), 0);
 
-        $this->assertFalse($this->itemsService->hasModelStatus($instance, array(ItemModelStatus::STATUS_DEPRECATED)));
+        $this->assertFalse($this->itemsService->hasModelStatus($instance, array(ItemModelStatus::PROPERTY_DEPRECATED)));
     }
 
     public function testIsItemClass()

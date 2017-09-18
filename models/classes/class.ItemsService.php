@@ -53,10 +53,13 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     const TAO_ITEM_MODEL_DATAFILE_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
 
-    const INSTANCE_SERVICE_ITEM_RUNNER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
-    const INSTANCE_FORMAL_PARAM_ITEM_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath';
-    const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
-    const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
+    const PROPERTY_INSTANCE_SERVICE_ITEM_RUNNER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
+
+    const PROPERTY_INSTANCE_FORMAL_PARAM_ITEM_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath';
+
+    const PROPERTY_INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
+
+    const PROPERTY_INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
     /**
      * Instance of the itemContent property
      *
@@ -305,7 +308,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             try {
                 $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
                 if ($itemModel instanceof core_kernel_classes_Resource) {
-                    $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(ItemModelStatus::STATUS_PROPERTY));
+                    $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(ItemModelStatus::CLASS_URI));
                     if (in_array($itemModelStatus->getUri(), $status)) {
                         $returnValue = true;
                     }
