@@ -23,11 +23,11 @@ interface ItemModelStatus
 {
     const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus';
 
-    const PROPERTY_STABLE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable';
+    const INSTANCE_STABLE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable';
 
-    const PROPERTY_DEPRECATED = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated';
+    const INSTANCE_DEPRECATED = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated';
 
-    const PROPERTY_DEV = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment';
+    const INSTANCE_DEV = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment';
 
-    const PROPERTY_EXPERIMENTAL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental';
+    const INSTANCE_EXPERIMENTAL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental';
 }

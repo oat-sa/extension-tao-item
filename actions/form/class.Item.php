@@ -52,7 +52,7 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
             foreach ($ele->getOptions() as $optUri => $optLabel) {
                 $model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
                 $status = $model->getOnePropertyValue($statusProperty);
-                if(!is_null($status) && $status->getUri() != ItemModelStatus::PROPERTY_DEPRECATED){
+                if(!is_null($status) && $status->getUri() != ItemModelStatus::INSTANCE_DEPRECATED){
                     $options[$optUri] = $optLabel; 
                 }
             }

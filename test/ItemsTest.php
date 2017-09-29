@@ -164,7 +164,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertEquals(count($this->itemsService->getAllByModel($instance)), 0);
         $this->assertEquals(count($this->itemsService->getAllByModel(null)), 0);
 
-        $this->assertFalse($this->itemsService->hasModelStatus($instance, array(ItemModelStatus::PROPERTY_DEPRECATED)));
+        $this->assertFalse($this->itemsService->hasModelStatus($instance, array(ItemModelStatus::INSTANCE_DEPRECATED)));
     }
 
     public function testIsItemClass()
@@ -188,7 +188,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
         $itemModel = $this->prophesize('core_kernel_classes_Resource');
-        $itemModel->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_itemModel::PROPERTY_RUNTIME))
+        $itemModel->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME))
             ->willReturn('returnValue');
         $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
             ->willReturn($itemModel->reveal());

@@ -200,7 +200,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $hasModel   = false;
             if(!empty($currentModel)) {
                 $hasModel = true;
-                $isDeprecated = $this->getClassService()->hasModelStatus($item, array(ItemModelStatus::PROPERTY_DEPRECATED));
+                $isDeprecated = $this->getClassService()->hasModelStatus($item, array(ItemModelStatus::INSTANCE_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 

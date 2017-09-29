@@ -31,9 +31,9 @@
  */
 interface taoItems_models_classes_itemModel
 {
-    const PROPERTY_MODELS_CLASS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
-    const PROPERTY_RUNTIME	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
-    const PROPERTY_QTI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
+    const CLASS_URI_MODELS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
+    const CLASS_URI_RUNTIME	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
+    const ItemModelStatus = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
 
     /**
      * constructor called by itemService
