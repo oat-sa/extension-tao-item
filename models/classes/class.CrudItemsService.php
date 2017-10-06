@@ -17,6 +17,8 @@
  * 
  */
 
+use oat\generis\model\OntologyRdf;
+use oat\generis\model\OntologyRdfs;
 use \oat\taoQtiItem\model\qti\Service;
 
 /**
@@ -59,14 +61,14 @@ class taoItems_models_classes_CrudItemsService
      */
     public function createFromArray(array $propertiesValues){
 	
-	    if (!isset($propertiesValues[RDFS_LABEL])) {
-			$propertiesValues[RDFS_LABEL] = "";
+	    if (!isset($propertiesValues[OntologyRdfs::RDFS_LABEL])) {
+			$propertiesValues[OntologyRdfs::RDFS_LABEL] = "";
 		}
 		
-		$type = isset($propertiesValues[RDF_TYPE]) ? $propertiesValues[RDF_TYPE] : $this->getRootClass();
-		$label = $propertiesValues[RDFS_LABEL];
-		unset($propertiesValues[RDFS_LABEL]);
-		unset($propertiesValues[RDF_TYPE]);
+		$type = isset($propertiesValues[OntologyRdf::RDF_TYPE]) ? $propertiesValues[OntologyRdf::RDF_TYPE] : $this->getRootClass();
+		$label = $propertiesValues[OntologyRdfs::RDFS_LABEL];
+		unset($propertiesValues[OntologyRdfs::RDFS_LABEL]);
+		unset($propertiesValues[OntologyRdf::RDF_TYPE]);
 
 		$itemContent = null;
 		if (isset($propertiesValues[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT])) {

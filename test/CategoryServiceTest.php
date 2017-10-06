@@ -19,6 +19,7 @@
 
 namespace oat\taoQtiItem\test;
 
+use oat\generis\model\GenerisRdf;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 use core_kernel_classes_Class    as RdfClass;
@@ -75,15 +76,15 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
     {
         $categoryService = new CategoryService();
         $exposeProperty  = new RdfProperty(CategoryService::EXPOSE_PROP_URI);
-        $trueResource    = new RdfResource(GENERIS_TRUE);
-        $falseResource   = new RdfResource(GENERIS_FALSE);
+        $trueResource    = new RdfResource(GenerisRdf::GENERIS_TRUE);
+        $falseResource   = new RdfResource(GenerisRdf::GENERIS_FALSE);
 
         //prop value is GENERIS TRUE
         $propProphecy = $this->prophesize('\core_kernel_classes_Property');
         $propProphecy->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
         $this->assertTrue($categoryService->doesExposeCategory($propProphecy->reveal()), 'The property is exposed');
 
-        //prop value is GENERIS_FALSE
+        //prop value is GenerisRdf::GENERIS_FALSE
         $propProphecy = $this->prophesize('\core_kernel_classes_Property');
         $propProphecy->getOnePropertyValue($exposeProperty)->willReturn($falseResource);
         $this->assertFalse($categoryService->doesExposeCategory($propProphecy->reveal()), 'The property is not exposed');

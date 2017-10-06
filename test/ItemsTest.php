@@ -20,6 +20,7 @@
  */
 namespace oat\taoItems\test;
 
+use oat\generis\model\OntologyRdfs;
 use oat\tao\test\TaoPhpUnitTestRunner;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
@@ -124,8 +125,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertInstanceOf(core_kernel_classes_Resource::class, $instance);
         $this->assertEquals($label, $instance->getLabel());
 
-        $this->assertTrue(defined('RDFS_LABEL'));
-        $instance->removePropertyValues(new \core_kernel_classes_Property(RDFS_LABEL));
+        $instance->removePropertyValues(new \core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
         $instance->setLabel($label);
 
 
