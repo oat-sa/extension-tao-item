@@ -17,6 +17,7 @@
  * 
  */
 
+use oat\tao\model\TaoOntology;
 use oat\generis\model\OntologyRdf;
 use oat\generis\model\OntologyRdfs;
 use \oat\taoQtiItem\model\qti\Service;
@@ -37,7 +38,7 @@ class taoItems_models_classes_CrudItemsService
 
     public function __construct(){
 		parent::__construct();
-		$this->itemClass = new core_kernel_classes_Class(TAO_ITEM_CLASS);
+		$this->itemClass = new core_kernel_classes_Class(TaoOntology::ITEM_CLASS_URI);
 		$this->itemsServices = taoItems_models_classes_ItemsService::singleton();
     }
 
