@@ -84,7 +84,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     }
 
     protected function getRenderedItem($item){
-        $itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(TAO_ITEM_MODEL_PROPERTY));
+        $itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
         $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
         if(is_null($impl)){
             throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
