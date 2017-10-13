@@ -19,6 +19,8 @@
  * 
  */
 
+use oat\taoItems\model\ItemModelStatus;
+
 /**
  * Short description of class taoItems_actions_form_Item
  *
@@ -37,7 +39,7 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
     {
         parent::initElements();
         
-        $elementId = tao_helpers_Uri::encode(TAO_ITEM_MODEL_PROPERTY);
+        $elementId = tao_helpers_Uri::encode(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
         $ele = $this->form->getElement($elementId);
         $ele->feed();
         $modelUri = $ele->getEvaluatedValue();
@@ -45,12 +47,12 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
         if (empty($modelUri)) {
             
             // remove deprecated models
-            $statusProperty = new core_kernel_classes_Property(TAO_ITEM_MODEL_STATUS_PROPERTY);
+            $statusProperty = new core_kernel_classes_Property(ItemModelStatus::CLASS_URI);
             $options = array();
             foreach ($ele->getOptions() as $optUri => $optLabel) {
                 $model = new core_kernel_classes_Resource(tao_helpers_Uri::decode($optUri));
                 $status = $model->getOnePropertyValue($statusProperty);
-                if(!is_null($status) && $status->getUri() != TAO_ITEM_MODEL_STATUS_DEPRECATED){
+                if(!is_null($status) && $status->getUri() != ItemModelStatus::INSTANCE_DEPRECATED){
                     $options[$optUri] = $optLabel; 
                 }
             }

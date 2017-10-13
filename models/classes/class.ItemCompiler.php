@@ -43,7 +43,7 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @return array An array of language tags (string).
      */
     protected function getContentUsedLanguages() {
-        return $this->getResource()->getUsedLanguages(new core_kernel_classes_Property(TAO_ITEM_CONTENT_PROPERTY));
+        return $this->getResource()->getUsedLanguages(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
     }
     
     /**
@@ -92,13 +92,13 @@ class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
      * @return tao_models_classes_service_ServiceCall
      */
     protected function createService(core_kernel_classes_Resource $item, tao_models_classes_service_StorageDirectory $destinationDirectory) {
-        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(INSTANCE_SERVICE_ITEMRUNNER));
+        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_SERVICE_ITEM_RUNNER));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
-            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMPATH),
+            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_FORMAL_PARAM_ITEM_PATH),
             $destinationDirectory->getId()
         ));
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
-            new core_kernel_classes_Resource(INSTANCE_FORMALPARAM_ITEMURI),
+            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_FORMAL_PARAM_ITEM_URI),
             $item
         ));
         
