@@ -1,15 +1,16 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
 
-    var requirejs   = grunt.config('requirejs') || {};
-    var clean       = grunt.config('clean') || {};
-    var copy        = grunt.config('copy') || {};
-    var uglify      = grunt.config('uglify') || {};
+    var clean     = grunt.config('clean') || {};
+    var copy      = grunt.config('copy') || {};
+    var ext;
+    var libs      = grunt.option('mainlibs');
+    var out       = 'output';
+    var requirejs = grunt.config('requirejs') || {};
+    var root      = grunt.option('root');
+    var uglify    = grunt.config('uglify') || {};
 
-    var root        = grunt.option('root');
-    var libs        = grunt.option('mainlibs');
-    var ext         = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
-    var out         = 'output';
+    ext = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
 
     /**
      * Remove bundled and bundling files
@@ -21,17 +22,17 @@ module.exports = function(grunt) {
      */
     requirejs.taoitemsbundle = {
         options: {
-            baseUrl : '../js',
-            dir : out,
-            mainConfigFile : './config/requirejs.build.js',
-            paths : {
-                'taoItems' : root + '/taoItems/views/js',
-                'taoItemsCss' : root + '/taoItems/views/css'
+            baseUrl: '../js',
+            dir: out,
+            mainConfigFile: './config/requirejs.build.js',
+            paths: {
+                taoItems: root + '/taoItems/views/js',
+                taoItemsCss: root + '/taoItems/views/css'
             },
-            modules : [{
+            modules: [{
                 name: 'taoItems/controller/routes',
-                include : ext.getExtensionsControllers(['taoItems']),
-                exclude : ['mathJax'].concat(libs)
+                include: ext.getExtensionsControllers(['taoItems']),
+                exclude: ['mathJax'].concat(libs)
             }]
         }
     };
@@ -51,24 +52,25 @@ module.exports = function(grunt) {
      * Manual bundle of the legacy API and the OWI API
      */
     uglify.legacyApi = {
-        files: [
-            { dest : root + '/taoItems/views/js/legacyApi/taoLegacyApi.min.js', src : [
+        files: [{
+            dest: root + '/taoItems/views/js/legacyApi/taoLegacyApi.min.js',
+            src: [
                 root + '/taoItems/views/js/ItemApi/ItemApi.js',
                 root + '/taoItems/views/js/legacyApi/taoLegacyApi.js'
-            ]}
-        ]
+            ]
+        }]
     };
 
     uglify.taoApi = {
-        files: [
-            { dest : root + '/taoItems/views/js/taoApi/taoApi.min.js', src: [
-                    root + '/taoItems/views/js/taoApi/src/constants.js',
-                    root + '/taoItems/views/js/taoApi/src/core.js',
-                    root + '/taoItems/views/js/taoApi/src/events.js',
-                    root + '/taoItems/views/js/taoApi/src/api.js'
-                ]
-            }
-        ]
+        files: [{
+            dest : root + '/taoItems/views/js/taoApi/taoApi.min.js',
+            src: [
+                root + '/taoItems/views/js/taoApi/src/constants.js',
+                root + '/taoItems/views/js/taoApi/src/core.js',
+                root + '/taoItems/views/js/taoApi/src/events.js',
+                root + '/taoItems/views/js/taoApi/src/api.js'
+            ]
+        }]
     };
 
     grunt.config('clean', clean);
