@@ -96,11 +96,11 @@ abstract class taoItems_models_classes_ItemExporter {
 	/**
 	 * Obtains a reference on the Item Model related to the currently exported item instance.
 	 *
-	 * @return core_kernel_classes_Resource A resource depicting the Item Model.
-	 */
+	 * @return core_kernel_classes_Container
+     */
 	protected function getItemModel() {
 		try {
-			return $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::TAO_ITEM_MODEL_PROPERTY));
+			return $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
 		} 
 		catch (common_Exception $e) {
 			return null;

@@ -139,7 +139,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('2.24.0');
         }
 
-        $this->skip('2.24.0', '5.1.0');
+        $this->skip('2.24.0', '5.2.0');
 
         if ($this->isVersion('5.1.0')) {
             $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');

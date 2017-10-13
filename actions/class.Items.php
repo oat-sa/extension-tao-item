@@ -4,6 +4,7 @@ use oat\oatbox\event\EventManagerAwareTrait;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\taoItems\model\ItemModelStatus;
 
 /**
  * This program is free software; you can redistribute it and/or
@@ -199,7 +200,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $hasModel   = false;
             if(!empty($currentModel)) {
                 $hasModel = true;
-                $isDeprecated = $this->getClassService()->hasModelStatus($item, array(TAO_ITEM_MODEL_STATUS_DEPRECATED));
+                $isDeprecated = $this->getClassService()->hasModelStatus($item, array(ItemModelStatus::INSTANCE_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 

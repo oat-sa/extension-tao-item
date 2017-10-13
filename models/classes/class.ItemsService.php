@@ -27,6 +27,7 @@ use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceNotFoundException;
+use oat\taoItems\model\ItemModelStatus;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -46,14 +47,19 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     const PROPERTY_ITEM_MODEL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
 
-    const PROPERTY_ITEM_MODEL_SERVICE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService';
-
     const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
 
-    const TAO_ITEM_MODEL_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+    const PROPERTY_ITEM_MODEL_SERVICE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService';
 
     const TAO_ITEM_MODEL_DATAFILE_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
 
+    const INSTANCE_SERVICE_ITEM_RUNNER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
+
+    const INSTANCE_FORMAL_PARAM_ITEM_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath';
+
+    const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
+
+    const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
     /**
      * Instance of the itemContent property
      *
@@ -275,7 +281,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         if (!is_null($item)) {
             $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
             if (!is_null($itemModel)) {
-                $returnValue = $itemModel->getOnePropertyValue($this->getProperty(TAO_ITEM_MODEL_RUNTIME_PROPERTY));
+                $returnValue = $itemModel->getOnePropertyValue($this->getProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME));
             }
         }
 
@@ -302,7 +308,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             try {
                 $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
                 if ($itemModel instanceof core_kernel_classes_Resource) {
-                    $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(TAO_ITEM_MODEL_STATUS_PROPERTY));
+                    $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(ItemModelStatus::CLASS_URI));
                     if (in_array($itemModelStatus->getUri(), $status)) {
                         $returnValue = true;
                     }
