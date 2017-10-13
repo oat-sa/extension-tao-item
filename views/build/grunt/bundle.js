@@ -22,18 +22,13 @@ module.exports = function (grunt) {
      */
     requirejs.taoitemsbundle = {
         options: {
-            baseUrl: '../js',
-            dir: out,
-            mainConfigFile: './config/requirejs.build.js',
+            exclude: ['mathJax'].concat(libs),
+            include: ext.getExtensionsControllers(['taoItems']),
+            out: out + '/taoItems/controllers.min.js',
             paths: {
                 taoItems: root + '/taoItems/views/js',
                 taoItemsCss: root + '/taoItems/views/css'
-            },
-            modules: [{
-                name: 'taoItems/controller/routes',
-                include: ext.getExtensionsControllers(['taoItems']),
-                exclude: ['mathJax'].concat(libs)
-            }]
+            }
         }
     };
 
@@ -42,8 +37,8 @@ module.exports = function (grunt) {
      */
     copy.taoitemsbundle = {
         files: [
-            { src: [out + '/taoItems/controller/routes.js'],  dest: root + '/taoItems/views/js/controllers.min.js' },
-            { src: [out + '/taoItems/controller/routes.js.map'],  dest: root + '/taoItems/views/js/controllers.min.js.map' }
+            { src: [out + '/taoItems/controllers.min.js'],     dest: root + '/taoItems/views/dist/controllers.min.js' },
+            { src: [out + '/taoItems/controllers.min.js.map'], dest: root + '/taoItems/views/dist/controllers.min.js.map' }
         ]
     };
 
@@ -63,7 +58,7 @@ module.exports = function (grunt) {
 
     uglify.taoApi = {
         files: [{
-            dest : root + '/taoItems/views/js/taoApi/taoApi.min.js',
+            dest: root + '/taoItems/views/js/taoApi/taoApi.min.js',
             src: [
                 root + '/taoItems/views/js/taoApi/src/constants.js',
                 root + '/taoItems/views/js/taoApi/src/core.js',
