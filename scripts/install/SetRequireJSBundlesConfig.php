@@ -32,7 +32,7 @@ class SetRequireJSBundlesConfig extends InstallAction
         $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
         $ext->setConfig('requirejsbundles', array(
             array(
-                'name' => 'taoitemsbundle',
+                'name' => 'taoitems_bundle',
                 'path' => ROOT_URL . 'taoItems/views/dist/loader/controllers.min',
                 'modules' => array(
                     'taoItems/controller/items/action',
