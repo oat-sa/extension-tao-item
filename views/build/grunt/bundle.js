@@ -13,14 +13,9 @@ module.exports = function (grunt) {
     ext = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
 
     /**
-     * Remove bundled and bundling files
-     */
-    clean.taoitemsbundle = [out];
-
-    /**
      * Compile tao files into a bundle
      */
-    requirejs.taoitemsbundle = {
+    requirejs.taoitems_bundle = {
         options: {
             exclude: ['mathJax'].concat(libs),
             include: ext.getExtensionsControllers(['taoItems']),
@@ -35,7 +30,7 @@ module.exports = function (grunt) {
     /**
      * copy the bundles to the right place
      */
-    copy.taoitemsbundle = {
+    copy.taoitems_bundle = {
         files: [
             { src: [out + '/taoItems/controllers.min.js'],     dest: root + '/taoItems/views/dist/controllers.min.js' },
             { src: [out + '/taoItems/controllers.min.js.map'], dest: root + '/taoItems/views/dist/controllers.min.js.map' }
@@ -74,5 +69,5 @@ module.exports = function (grunt) {
     grunt.config('uglify', uglify);
 
     // bundle task
-    grunt.registerTask('taoitemsbundle', ['clean:taoitemsbundle', 'requirejs:taoitemsbundle', 'copy:taoitemsbundle']);
+    grunt.registerTask('taoitemsbundle', ['clean:bundle', 'requirejs:taoitems_bundle', 'copy:taoitems_bundle']);
 };
