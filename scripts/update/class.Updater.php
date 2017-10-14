@@ -140,5 +140,25 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('2.24.0', '5.2.0');
+
+        if ($this->isVersion('5.1.0')) {
+            $ext = common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+            $ext->setConfig('requirejsbundles', array(
+                array(
+                    'name' => 'taoitems_bundle',
+                    'path' => ROOT_URL . 'taoItems/views/dist/loader/controllers.min',
+                    'modules' => array(
+                        'taoItems/controller/items/action',
+                        'taoItems/controller/items/edit',
+                        'taoItems/controller/items/editItemClass',
+                        'taoItems/controller/preview/itemRunner',
+                        'taoItems/controller/routes',
+                        'taoItems/controller/runtime/itemRunner'
+                    ),
+                ),
+            ));
+
+            $this->setVersion('6.0.0');
+        }
     }
 }
