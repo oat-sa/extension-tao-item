@@ -35,7 +35,13 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
         $lang = DEFAULT_LANG;
         $previewUrl = taoItems_models_classes_ItemsService::singleton()->getPreviewUrl($item, $lang);
+
+        if (null === $previewUrl) {
+            throw new \common_exception_NotFound('Item not found');
+        }
+
         $this->forwardUrl($previewUrl);
+
     }
 
     /**
