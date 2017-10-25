@@ -37,7 +37,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $previewUrl = taoItems_models_classes_ItemsService::singleton()->getPreviewUrl($item, $lang);
 
         if (null === $previewUrl) {
-            throw new \common_exception_NotFound('Item not found');
+            throw new taoItems_models_classes_preview_ItemNotFoundException();
         }
 
         $this->forwardUrl($previewUrl);
