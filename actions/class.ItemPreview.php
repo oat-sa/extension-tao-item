@@ -22,6 +22,7 @@
 
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
+use oat\taoItems\model\preview\OntologyItemNotFoundException;
 /**
  * Preview API
  *
@@ -37,7 +38,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $previewUrl = taoItems_models_classes_ItemsService::singleton()->getPreviewUrl($item, $lang);
 
         if (null === $previewUrl) {
-            throw new taoItems_models_classes_preview_ItemNotFoundException();
+            throw new OntologyItemNotFoundException();
         }
 
         $this->forwardUrl($previewUrl);
