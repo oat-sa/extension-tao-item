@@ -39,10 +39,7 @@
                     <action id="item-class-new" name="New class" url="/taoItems/Items/addSubClass" context="resource" group="tree" binding="subClass">
                         <icon id="icon-folder-open"/>
                     </action>
-                    <action id="item-delete" name="Delete" url="/taoItems/Items/deleteItem" context="instance" group="tree" binding="removeNode" >
-                        <icon id="icon-bin"/>
-                    </action>
-                    <action id="item-class-delete" name="Delete" url="/taoItems/Items/deleteClass" context="class" group="tree" binding="removeNode" >
+                    <action id="item-delete-all" name="Delete" url="/taoItems/Items/deleteAll" context="resource" multiple="true" group="tree" binding="removeNodes">
                         <icon id="icon-bin"/>
                     </action>
                     <action id="item-move" name="Move" url="/taoItems/Items/moveInstance" context="instance" group="none" binding="moveNode">
