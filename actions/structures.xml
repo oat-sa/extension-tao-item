@@ -8,13 +8,14 @@
             <section id="manage_items" name="Manage items" url="/taoItems/Items/index">
                 <trees>
                     <tree name="Items library"
+                        type="resource-selector"
                         className="Item"
                         dataUrl="/taoItems/Items/getOntologyData"
                         rootNode="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"
                         selectClass="item-class-properties"
                         selectInstance="item-properties"
                         moveInstance="item-move"
-                        delete="item-delete" 
+                        delete="item-delete"
                     />
                 </trees>
                 <actions allowClassActions="true">
