@@ -19,6 +19,8 @@
  *
  */
 
+use oat\tao\model\TaoOntology;
+use oat\generis\model\GenerisRdf;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\ontology\ItemAuthorRole;
 use oat\tao\model\accessControl\func\AclProxy;
@@ -87,13 +89,13 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
         if ($this->isVersion('2.6.3')) {
             // update user roles
-            $class = new core_kernel_classes_Class(CLASS_TAO_USER);
+            $class = new core_kernel_classes_Class(TaoOntology::CLASS_URI_TAO_USER);
             $itemManagers = $class->searchInstances(array(
-	               PROPERTY_USER_ROLES => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole'
+	               GenerisRdf::PROPERTY_USER_ROLES => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole'
                 ),array('recursive' => true, 'like' => false)
             );
             foreach ($itemManagers as $user) {
-                $user->setPropertyValue(new core_kernel_classes_Property(PROPERTY_USER_ROLES),ItemAuthorRole::INSTANCE_URI);
+                $user->setPropertyValue(new core_kernel_classes_Property(GenerisRdf::PROPERTY_USER_ROLES),ItemAuthorRole::INSTANCE_URI);
             }
             $this->setVerion('2.6.4');
 
@@ -139,6 +141,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('2.24.0');
         }
 
-        $this->skip('2.24.0', '5.2.1');
+        $this->skip('2.24.0', '5.3.1');
     }
 }

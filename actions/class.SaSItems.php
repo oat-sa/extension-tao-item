@@ -21,6 +21,9 @@
  */
 ?>
 <?php
+
+use oat\generis\model\OntologyRdfs;
+
 /**
  * SaSItems Controller provide process services for in the Items
  * 
@@ -118,7 +121,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 			}
 			foreach($propValues as $propValue){	
 				$value = '';
-				if($range->getUri() == RDFS_LITERAL){
+				if($range->getUri() == OntologyRdfs::RDFS_LITERAL){
 					$value = (string)$propValue;
 				}
 				else {
