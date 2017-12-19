@@ -4,6 +4,9 @@ use oat\tao\helpers\Template;
 
 <header class="section-header flex-container-full">
     <h2><?=get_data('formTitle')?></h2>
+    <?php if(has_data('updatedAt')) : ?>
+        <p><?=__('Last updated on %2s', tao_helpers_Date::displayeDate(get_data('updatedAt')))?></p>
+    <?php endif; ?>
 </header>
 <div class="main-container flex-container-main-form">
     <?php if(has_data('lockDate')) : ?>

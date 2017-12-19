@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2015 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2015-2017 (original work) Open Assessment Technologies SA;
  *
  */
 
@@ -42,9 +42,19 @@ define([
      * @returns {String?} falsy if not resolved otherwise the resolved URL
      */
 
+    /**
+     * Check if the given object is a valid AssetStrategy
+     * @param {AssetStrategy} strategy
+     * @throws {TypeError}
+     */
+    var checkStrategy = function checkStrategy(strategy){
+        if(!_.isPlainObject(strategy) || !_.isFunction(strategy.handle) || !_.isString(strategy.name)){
+            throw new TypeError('An asset resolution strategy is an object with a handle method and a name');
+        }
+    };
 
     /**
-     * The assetManagerFactory create a new assetManager with the given resolution stratgies and a data context.
+     * The assetManagerFactory create a new assetManager with the given resolution strategies and a data context.
      *
      * @example
      *   //define AssetStrategies with a name and a handle method
@@ -71,7 +81,7 @@ define([
      * @param {AssetStrategy[]} strategies - the strategies
      * @param {Object} data - the context data
      * @param {Object} [options] - the manager options
-     * @param {Boolean} [options.parseUrl = true] - If the URL to give to the stragies should be parsed or given as it is.
+     * @param {Boolean} [options.parseUrl = true] - If the URL to give to the strategies should be parsed or given as it is.
      * @param {Boolean} [options.cache] - resolve the same URL only once and store the result in memory.
      *
      * @exports taoItems/assets/manager
@@ -99,18 +109,29 @@ define([
             _strategies : [],
 
             /**
-             * Add an asset resolution strategy.
+             * Add an asset resolution strategy at the end of the stack.
              * The strategies will be evaluated in the order they've been added.
              * @param {AssetStrategy} strategy - the strategy to add
              * @throws {TypeError} if the strategy isn't defined correctly
              */
             addStrategy : function addStrategy (strategy){
 
-                if(!_.isPlainObject(strategy) || !_.isFunction(strategy.handle) || !_.isString(strategy.name)){
-                    throw new TypeError('An asset resolution strategy is an object with a handle method and a name');
-                }
+                checkStrategy(strategy);
 
                 this._strategies.push(strategy);
+            },
+
+            /**
+             * Add an asset resolution strategy at the beginning of the stack.
+             * The strategies will be evaluated in the order they've been added.
+             * @param {AssetStrategy} strategy - the strategy to add
+             * @throws {TypeError} if the strategy isn't defined correctly
+             */
+            prependStrategy : function prependStrategy(strategy){
+
+                checkStrategy(strategy);
+
+                this._strategies.unshift(strategy);
             },
 
             /**
@@ -155,8 +176,8 @@ define([
 
             /**
              * Get context data
-             * @param {String} [key] - if we want the value of a particuar key
-             * @returns {Object|*} all the data or the proprety value if key is given
+             * @param {String} [key] - if we want the value of a particular key
+             * @returns {Object|*} all the data or the propriety value if key is given
              */
             getData : function getData(key){
                 if(_.isString(key)){
@@ -179,10 +200,10 @@ define([
                     return cache[url];
                 }
 
-                //parse the url ?
+                //parse the URL ?
                 inputUrl = options.parseUrl ? urlUtil.parse(url) : url;
 
-                //call strategies handlers, in their order until once returns somethin
+                //call strategies handlers, in their order until once returns something
                 _.forEach(this._strategies, function(strategy){
                     var result = strategy.handle(inputUrl, data);
                     if(result){
@@ -211,7 +232,7 @@ define([
                 var resolved = '';
                 var strategy = _.find(this._strategies, {name : name});
                 if(strategy){
-                    //parse the url ?
+                    //parse the URL ?
                     inputUrl = options.parseUrl ? urlUtil.parse(url) : url;
                     resolved = strategy.handle(inputUrl, data);
                 }

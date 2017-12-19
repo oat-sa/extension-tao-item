@@ -1,10 +1,12 @@
 <?php
 
+use oat\generis\model\OntologyRdfs;
 use oat\oatbox\event\EventManagerAwareTrait;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\ItemModelStatus;
+use oat\tao\model\resources\ResourceWatcher;
 
 /**
  * This program is free software; you can redistribute it and/or
@@ -184,7 +186,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         $this->getEventManager()->trigger(new ItemRdfUpdatedEvent($item->getUri(), $properties));
 
                         //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
-                        $label = $item->getOnePropertyValue(new core_kernel_classes_Property(RDFS_LABEL));
+                        $label = $item->getOnePropertyValue(new core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
                         $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
                         $this->setData('label', ($label != null) ? $label->literal : '');
                         $this->setData('message', __('Item saved'));
@@ -206,7 +208,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $myForm->removeElement(tao_helpers_Uri::encode(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
 
+
+            $updatedAt = $this->getServiceManager()->get(ResourceWatcher::SERVICE_ID)->getUpdatedAt($item);
             $this->setData('isPreviewEnabled', $hasPreview);
+            $this->setData('updatedAt', $updatedAt);
             $this->setData('isAuthoringEnabled', $hasModel);
 
             $this->setData('formTitle', __('Edit Item'));
