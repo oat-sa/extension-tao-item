@@ -6,7 +6,7 @@ use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\ItemModelStatus;
-use oat\tao\model\resources\ResourceUpdater;
+use oat\tao\model\resources\ResourceWatcher;
 
 /**
  * This program is free software; you can redistribute it and/or
@@ -209,7 +209,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $myForm->removeElement(tao_helpers_Uri::encode(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
 
 
-            $updatedAt = $this->getServiceManager()->get(ResourceUpdater::SERVICE_ID)->getUpdatedAt($item);
+            $updatedAt = $this->getServiceManager()->get(ResourceWatcher::SERVICE_ID)->getUpdatedAt($item);
             $this->setData('isPreviewEnabled', $hasPreview);
             $this->setData('updatedAt', $updatedAt);
             $this->setData('isAuthoringEnabled', $hasModel);
