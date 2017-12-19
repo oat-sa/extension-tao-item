@@ -1,18 +1,47 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2015-2017 (original work) Open Assessment Technologies SA;
+ *
+ */
+
+/**
+ * Test the module {@link taoItems/assets/manager}
+ *
+ * @author Bertrand Chevrier <bertrand@taotesting.com>
+ */
 define([
     'taoItems/assets/manager'
 ], function(assetManagerFactory){
-
+    'use strict';
 
     QUnit.module('API');
 
-    QUnit.test('module', 7, function(assert){
+    QUnit.test('module', function(assert){
+        var assetManager;
+
+        QUnit.expect(8);
+
         assert.ok(typeof assetManagerFactory !== 'undefined', "The module exports something");
         assert.ok(typeof assetManagerFactory === 'function', "The module exports a function");
 
-        var assetManager = assetManagerFactory();
+        assetManager = assetManagerFactory();
 
         assert.ok(typeof assetManager === 'object', "The factory creates an object");
         assert.ok(typeof assetManager.addStrategy === 'function', "The manager has a method addStrategy");
+        assert.ok(typeof assetManager.prependStrategy === 'function', "The manager has a method prependStrategy");
         assert.ok(typeof assetManager.resolve === 'function', "The manager has a method resolve");
         assert.ok(typeof assetManager.resolveBy === 'function', "The manager has a method resolveBy");
         assert.ok(typeof assetManager.clearCache === 'function', "The manager has a method clearCache");
@@ -20,9 +49,21 @@ define([
 
     QUnit.module('Strategy');
 
-    QUnit.test('expected strategy format', 5, function(assert){
+    QUnit.test('add a strategy', function(assert){
 
-        var assetManager = assetManagerFactory();
+        var strategy = {
+            name : 'foo',
+            handle : function(path, data){
+                return 'foo' + path ;
+            }
+        };
+        var newStrategy = {
+            name : 'bar',
+            handle : function(){}
+        };
+        var assetManager = assetManagerFactory(strategy);
+
+        QUnit.expect(7);
 
         assert.throws(function(){
             assetManager.addStrategy(null);
@@ -30,13 +71,13 @@ define([
 
         assert.throws(function(){
             assetManager.addStrategy({
-                foo : true
+                bar : true
             });
         }, TypeError, 'The strategy must have a name');
 
         assert.throws(function(){
             assetManager.addStrategy({
-                name : 'foo'
+                name : 'bar'
             });
         }, TypeError, 'The strategy must have a handle method');
 
@@ -46,14 +87,57 @@ define([
             });
         }, TypeError, 'The strategy must have a name');
 
+        assert.equal(assetManager._strategies.length, 1);
+        assetManager.addStrategy(newStrategy);
+
+        assert.equal(assetManager._strategies.length, 2);
+        assert.equal(assetManager._strategies[1].name, newStrategy.name, 'The strategy has been added');
+    });
+
+     QUnit.test('prepend a strategy', function(assert){
+
         var strategy = {
             name : 'foo',
+            handle : function(path, data){
+                return 'foo' + path ;
+            }
+        };
+        var newStrategy = {
+            name : 'bar',
             handle : function(){}
         };
+        var assetManager = assetManagerFactory(strategy);
 
-        assetManager.addStrategy(strategy);
+        QUnit.expect(7);
 
-        assert.equal(assetManager._strategies[0].name, strategy.name, 'The strategy has been added');
+        assert.throws(function(){
+            assetManager.prependStrategy(null);
+        }, TypeError, 'The strategy must be an object');
+
+        assert.throws(function(){
+            assetManager.prependStrategy({
+                foo : true
+            });
+        }, TypeError, 'The strategy must have a name');
+
+        assert.throws(function(){
+            assetManager.prependStrategy({
+                name : 'foo'
+            });
+        }, TypeError, 'The strategy must have a handle method');
+
+        assert.throws(function(){
+            assetManager.prependStrategy({
+               name : null
+            });
+        }, TypeError, 'The strategy must have a name');
+
+
+        assert.equal(assetManager._strategies.length, 1);
+        assetManager.prependStrategy(newStrategy);
+
+        assert.equal(assetManager._strategies.length, 2);
+        assert.equal(assetManager._strategies[0].name, newStrategy.name, 'The strategy has been prepended');
     });
 
 
