@@ -8,7 +8,6 @@
             <section id="manage_items" name="Manage items" url="/taoItems/Items/index">
                 <trees>
                     <tree name="Items library"
-                        type="resource-selector"
                         className="Item"
                         dataUrl="/taoItems/Items/getOntologyData"
                         rootNode="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"
