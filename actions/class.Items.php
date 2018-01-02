@@ -265,8 +265,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * delete all the sent resources
-     * @requiresRight ids WRITE
+     * delete a class
+     * @requiresRight id WRITE
      * @throws Exception
      */
     public function deleteClass()
@@ -275,45 +275,15 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * Delete all the sent resources
+     * Delete all given resources
      *
-     * TODO move to TAO once stable
-     * TODO set up data ACLs
+     * @requiresRight ids WRITE
      *
      * @throws Exception
      */
     public function deleteAll()
     {
-        $response = [
-            'success' => true,
-            'deleted' => []
-        ];
-        if (!tao_helpers_Request::isAjax()) {
-            throw new Exception("wrong request mode");
-        }
-
-        // Csrf token validation
-        $this->validateCsrf();
-
-        $ids = $this->getRequestParameter('ids');
-        foreach($ids as $id){
-            $deleted = false;
-            try {
-                $resource = new \core_kernel_classes_Resource($id);
-                if($resource->isClass()){
-                    $deleted = $this->getClassService()->deleteClass(new \core_kernel_classes_Class($id));
-                } else {
-                    $deleted = $this->getClassService()->deleteResource($resource);
-                }
-            } catch(\common_Exception $ce){
-                \common_Logger::w('Unable to remove resource ' . $id . ' : ' . $ce->getMessage());
-            }
-            if($deleted){
-                $response['deleted'][] = $id;
-            }
-        }
-
-        return $this->returnJson($response);
+        return parent::deleteAll();
     }
 
     /**
