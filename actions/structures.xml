@@ -30,12 +30,6 @@
                     <action id="item-authoring" name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor">
                         <icon id="icon-edit"/>
                     </action>
-                    <action id="item-filter" name="Filter" context="*" group="search" binding="filter">
-                        <icon id="icon-filter"/>
-                    </action>
-                    <action id="item-search" name="Search" url="/taoItems/Items/search" context="*" group="search" binding="launchFinder">
-                        <icon id="icon-find"/>
-                    </action>
                     <action id="item-class-new" name="New class" url="/taoItems/Items/addSubClass" context="resource" group="tree" binding="subClass">
                         <icon id="icon-folder-open"/>
                     </action>
