@@ -19,6 +19,7 @@
  *
  */
 
+use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\TaoOntology;
 use oat\generis\model\GenerisRdf;
 use oat\tao\scripts\update\OntologyUpdater;
@@ -26,6 +27,9 @@ use oat\taoItems\model\ontology\ItemAuthorRole;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
+use oat\taoItems\model\task\ExportItemByHandler;
+use oat\taoItems\model\task\ImportItemByHandler;
+use oat\taoTaskQueue\model\TaskLogInterface;
 
 /**
  *
@@ -142,5 +146,17 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('2.24.0', '5.4.1');
+
+        if ($this->isVersion('5.4.1')) {
+            /** @var TaskLogInterface|ConfigurableService $taskLogService */
+            $taskLogService = $this->getServiceManager()->get(TaskLogInterface::SERVICE_ID);
+
+            $taskLogService->linkTaskToCategory(ImportItemByHandler::class, TaskLogInterface::CATEGORY_IMPORT);
+            $taskLogService->linkTaskToCategory(ExportItemByHandler::class, TaskLogInterface::CATEGORY_EXPORT);
+
+            $this->getServiceManager()->register(TaskLogInterface::SERVICE_ID, $taskLogService);
+
+            $this->setVersion('5.5.0');
+        }
     }
 }

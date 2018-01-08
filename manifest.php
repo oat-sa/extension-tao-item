@@ -21,6 +21,7 @@
  */
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\CreateItemDirectory;
+use oat\taoItems\scripts\install\SetUpQueueTasks;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -35,12 +36,13 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '5.4.1',
+    'version' => '5.5.0',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=0.8',
         'generis' => '>=5.11.0',
-        'tao' => '>=14.12.0'
+        'tao' => '>=14.19.0',
+        'taoTaskQueue' => '>=0.14.0'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
@@ -54,7 +56,8 @@ return array(
 		),
 		'php'	=> array(
             CreateItemDirectory::class,
-            RegisterCategoryService::class
+            RegisterCategoryService::class,
+            SetUpQueueTasks::class
 		)
 	),
     'update' => 'taoItems_scripts_update_Updater',
