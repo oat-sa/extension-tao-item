@@ -21,7 +21,7 @@
 namespace oat\taoItems\model\task;
 
 use common_report_Report as Report;
-use oat\oatbox\event\EventManagerAwareTrait;
+use oat\oatbox\event\EventManager;
 use oat\oatbox\extension\AbstractAction;
 use oat\oatbox\service\ServiceManager;
 use oat\tao\model\upload\UploadService;
@@ -36,8 +36,6 @@ use oat\taoTaskQueue\model\Task\CallbackTaskInterface;
  */
 class ImportItemByHandler extends AbstractAction
 {
-    use EventManagerAwareTrait;
-
     const PARAM_IMPORT_HANDLER = 'import_handler';
     const PARAM_FORM_VALUES = 'form_values';
     const PARAM_PARENT_CLASS = 'parent_class_uri';
@@ -69,7 +67,7 @@ class ImportItemByHandler extends AbstractAction
     protected function onAfterImport(Report $report)
     {
         if (Report::TYPE_SUCCESS == $report->getType()) {
-            $this->getEventManager()->trigger(new ItemImportEvent($report));
+            $this->getServiceLocator()->get(EventManager::SERVICE_ID)->trigger(new ItemImportEvent($report));
         }
     }
 
@@ -79,12 +77,11 @@ class ImportItemByHandler extends AbstractAction
      * @param \core_kernel_classes_Class               $parentClass
      * @return CallbackTaskInterface
      * @throws \common_exception_NotAcceptable
+     *
+     * TODO: use a common service to create this task instead of static method and avoid usage of "ServiceManager::getServiceManager()"
      */
     public static function createTask(\tao_models_classes_import_ImportHandler $importer, \tao_helpers_form_Form $importForm, \core_kernel_classes_Class $parentClass)
     {
-        $action = new static();
-        $action->setServiceLocator(ServiceManager::getServiceManager());
-
         /** @var  UploadService $uploadService */
         $uploadService = ServiceManager::getServiceManager()->get(UploadService::SERVICE_ID);
         $file = $uploadService->getUploadedFlyFile($importForm->getValue('source')['uploaded_file']);
@@ -101,7 +98,7 @@ class ImportItemByHandler extends AbstractAction
         $queueDispatcher = ServiceManager::getServiceManager()->get(QueueDispatcher::SERVICE_ID);
 
         return $queueDispatcher->createTask(
-            $action,
+            new static(),
             [
                 self::PARAM_IMPORT_HANDLER => get_class($importer),
                 self::PARAM_FORM_VALUES => $formValues,

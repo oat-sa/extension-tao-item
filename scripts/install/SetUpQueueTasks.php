@@ -21,6 +21,7 @@ namespace oat\taoItems\scripts\install;
 
 use oat\oatbox\extension\InstallAction;
 use oat\oatbox\service\ConfigurableService;
+use oat\taoItems\model\task\ExportItemByHandler;
 use oat\taoItems\model\task\ImportItemByHandler;
 use oat\taoTaskQueue\model\TaskLogInterface;
 
@@ -37,6 +38,7 @@ class SetUpQueueTasks extends InstallAction
         $taskLogService = $this->getServiceManager()->get(TaskLogInterface::SERVICE_ID);
 
         $taskLogService->linkTaskToCategory(ImportItemByHandler::class, TaskLogInterface::CATEGORY_IMPORT);
+        $taskLogService->linkTaskToCategory(ExportItemByHandler::class, TaskLogInterface::CATEGORY_EXPORT);
 
         $this->registerService(TaskLogInterface::SERVICE_ID, $taskLogService);
 
