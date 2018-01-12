@@ -265,14 +265,25 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * delete an item class
-     * called via ajax
+     * delete a class
      * @requiresRight id WRITE
      * @throws Exception
      */
     public function deleteClass()
     {
         return parent::deleteClass();
+    }
+
+    /**
+     * Delete all given resources
+     *
+     * @requiresRight ids WRITE
+     *
+     * @throws Exception
+     */
+    public function deleteAll()
+    {
+        return parent::deleteAll();
     }
 
     /**
