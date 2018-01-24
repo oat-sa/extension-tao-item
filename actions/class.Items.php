@@ -172,11 +172,19 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                 if($myForm->isSubmited() && $this->hasWriteAccess($item->getUri())){
                     if($myForm->isValid()){
-    
-                        $properties = $myForm->getValues();
-                        unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
-                        unset($properties['warning']);
-                        unset($properties['itemModelLabel']);
+
+                        //Previously it was:
+                        //unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
+                        //unset($properties['warning']);
+                        //unset($properties['itemModelLabel']);
+                        //Now it's operated like that to unify the way the properties are filtered from results
+                        //and to remove those "hanging" unset parts from code
+                        $filterProperties = [
+                            taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT,
+                            'warning',
+                            'itemModelLabel'
+                        ];
+                        $properties = $myForm->getValues('', $filterProperties);
     
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
