@@ -145,9 +145,9 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('2.24.0');
         }
 
-        $this->skip('2.24.0', '5.4.1');
+        $this->skip('2.24.0', '5.5.1');
 
-        if ($this->isVersion('5.4.1')) {
+        if ($this->isVersion('5.5.1')) {
             /** @var TaskLogInterface|ConfigurableService $taskLogService */
             $taskLogService = $this->getServiceManager()->get(TaskLogInterface::SERVICE_ID);
 
@@ -156,7 +156,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
             $this->getServiceManager()->register(TaskLogInterface::SERVICE_ID, $taskLogService);
 
-            $this->setVersion('5.5.0');
+            $this->setVersion('5.6.0');
         }
     }
 }
