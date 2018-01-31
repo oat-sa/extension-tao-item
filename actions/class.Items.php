@@ -172,11 +172,12 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                 if($myForm->isSubmited() && $this->hasWriteAccess($item->getUri())){
                     if($myForm->isValid()){
-    
+
                         $properties = $myForm->getValues();
-                        unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
-                        unset($properties['warning']);
-                        unset($properties['itemModelLabel']);
+                        if (array_key_exists('warning', $properties)) {
+                            common_Logger::w( 'Warning property is still in use', ['backend']);
+                            unset($properties['warning']);
+                        }
     
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
@@ -206,10 +207,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 
-            $myForm->removeElement(tao_helpers_Uri::encode(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
-
-
-            $updatedAt = $this->getServiceManager()->get(ResourceWatcher::SERVICE_ID)->getUpdatedAt($item);
+            $updatedAt = $this->getServiceLocator()->get(ResourceWatcher::SERVICE_ID)->getUpdatedAt($item);
             $this->setData('isPreviewEnabled', $hasPreview);
             $this->setData('updatedAt', $updatedAt);
             $this->setData('isAuthoringEnabled', $hasModel);
