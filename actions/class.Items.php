@@ -174,7 +174,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     if($myForm->isValid()){
 
                         $properties = $myForm->getValues();
-                        unset($properties['warning']);
+                        if (array_key_exists('warning', $properties)) {
+                            common_Logger::w( 'Warning property is still in use', ['backend']);
+                            unset($properties['warning']);
+                        }
     
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
