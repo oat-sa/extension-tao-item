@@ -19,7 +19,6 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Content]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
     <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#File"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#Authoring"/>
     <generis:is_language_dependent rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
     <tao:TAOGUIOrder><![CDATA[20]]></tao:TAOGUIOrder>
   </rdf:Description>
