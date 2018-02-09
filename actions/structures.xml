@@ -57,6 +57,9 @@
                     <action id="item-duplicate" name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
                         <icon id="icon-copy"/>
                     </action>
+                    <action id="item-copy-to" name="Copy To" url="/taoItems/Items/copyInstance" context="instance" group="tree" binding="copyTo">
+                        <icon id="icon-copy"/>
+                    </action>
                 </actions>
             </section>
         </sections>
