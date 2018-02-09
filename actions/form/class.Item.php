@@ -67,14 +67,14 @@ class taoItems_actions_form_Item extends tao_actions_form_Instance
             $this->form->removeElement($elementId);
             $itemModelElt = tao_helpers_form_FormFactory::getElement($elementId, 'Hidden');
             $itemModelElt->setValue($modelUri);
-            $this->form->addElement($itemModelElt);
+            $this->form->addElement($itemModelElt, true);
             
             // display model label
             $model = new core_kernel_classes_Resource($modelUri);
             $itemModelLabelElt = tao_helpers_form_FormFactory::getElement('itemModelLabel', 'Label');
             $itemModelLabelElt->setDescription(__('Item Model'));
             $itemModelLabelElt->setValue($model->getLabel());
-            $this->form->addElement($itemModelLabelElt);
+            $this->form->addElement($itemModelLabelElt, true);
         }
     }
 }
