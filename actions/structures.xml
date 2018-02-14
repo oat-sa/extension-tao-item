@@ -11,17 +11,17 @@
                         className="Item"
                         dataUrl="/taoItems/Items/getOntologyData"
                         rootNode="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"
-                        selectClass="item-class"
+                        selectClass="item-class-properties"
                         selectInstance="item-properties"
                         moveInstance="item-move"
                         delete="item-delete"
                     />
                 </trees>
                 <actions allowClassActions="true">
-                    <action id="item-class" name="Edit item class" url="/taoItems/Items/editClassLabel" group="content" context="class">
+                    <action id="item-class-properties" name="Properties" url="/taoItems/Items/editClassLabel" group="content" context="class">
                         <icon id="icon-edit"/>
                     </action>
-                    <action id="item-class-properties" name="Manage Properties" url="/taoItems/Items/editItemClass" group="content" context="class">
+                    <action id="item-class-schema" name="Manage Schema" url="/taoItems/Items/editItemClass" group="content" context="class">
                         <icon id="icon-property-add"/>
                     </action>
                     <action id="item-properties" name="Properties"  url="/taoItems/Items/editItem"      group="content" context="instance">
