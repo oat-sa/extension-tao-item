@@ -238,14 +238,14 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     if($clazz instanceof core_kernel_classes_Resource){
                         $this->setData("selectNode", tao_helpers_Uri::encode($clazz->getUri()));
                     }
-                    $this->setData('message', __('Class saved'));
-                    $this->setData('reload', true);
+                    $this->setData('message', __('Class schema saved'));
+                    $this->setData('reload', false);
                 }
             }
         } else {
             $myForm->setActions(array());
         }
-        $this->setData('formTitle', __('Edit item class'));
+        $this->setData('formTitle', __('Manage item class schema'));
         $this->setData('myForm', $myForm->render());
         $this->setView('form.tpl', 'tao');
     }
