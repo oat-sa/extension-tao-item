@@ -25,6 +25,7 @@ use core_kernel_classes_Property as RdfProperty;
 use core_kernel_classes_Resource as RdfResource;
 use oat\oatbox\service\ConfigurableService;
 use taoItems_models_classes_ItemsService;
+use oat\generis\model\GenerisRdf;
 
 /**
  * Category management service.
