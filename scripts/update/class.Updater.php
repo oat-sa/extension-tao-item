@@ -148,6 +148,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
             $this->setVersion('5.6.0');
         }
-        $this->skip('5.6.0', '5.8.0');
+        $this->skip('5.6.0', '5.8.1');
     }
 }
