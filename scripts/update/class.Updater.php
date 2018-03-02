@@ -34,14 +34,12 @@ use oat\taoItems\model\CategoryService;
 class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
     /**
-     *
-     * @param string $currentVersion
-     * @return string $versionUpdatedTo
+     * @param $initialVersion
+     * @return string|void
+     * @throws common_Exception
+     * @throws common_exception_Error
      */
     public function update($initialVersion) {
-
-
-
         //migrate from 2.6 to 2.6.1
         if ($this->isVersion('2.6')) {
 
@@ -149,5 +147,11 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('5.6.0');
         }
         $this->skip('5.6.0', '5.8.1');
+
+        if ($this->isVersion('5.8.1')) {
+            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestItems')));
+            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')));
+            $this->setVersion('5.9.0');
+        }
     }
 }
