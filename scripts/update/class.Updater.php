@@ -19,10 +19,7 @@
  *
  */
 
-use oat\tao\model\TaoOntology;
-use oat\generis\model\GenerisRdf;
 use oat\tao\scripts\update\OntologyUpdater;
-use oat\taoItems\model\ontology\ItemAuthorRole;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
@@ -37,7 +34,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
      * @param $initialVersion
      * @return string|void
      * @throws common_Exception
-     * @throws common_exception_Error
      */
     public function update($initialVersion) {
 
