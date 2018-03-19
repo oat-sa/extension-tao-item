@@ -75,5 +75,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')));
             $this->setVersion('5.10.0');
         }
+        $this->skip('5.10.0', '5.11.0');
     }
 }
