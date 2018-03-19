@@ -45,7 +45,7 @@ class Base64EncoderTest extends TaoPhpUnitTestRunner
     public function testEncodeMediaAsset()
     {
         $encoder = new Base64Encoder();
-        $url = 'http://tao.dev/my/asset';
+        $url = 'https://www.taotesting.com/wp-content/uploads/2014/09/oat-header-logo.png';
         $asset = new MediaAsset(new HttpSource(), $url);
         $this->assertEquals(base64_encode(basename($url)), $encoder->encode($asset));
     }

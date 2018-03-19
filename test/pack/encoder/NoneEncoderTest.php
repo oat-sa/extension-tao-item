@@ -21,6 +21,7 @@ namespace oat\taoItems\test\pack;
 
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\sourceStrategy\HttpSource;
+use oat\taoItems\model\media\LocalItemSource;
 use oat\taoItems\model\pack\encoders\NoneEncoder;
 use oat\tao\test\TaoPhpUnitTestRunner;
 
@@ -40,13 +41,24 @@ class NoneEncoderTest extends TaoPhpUnitTestRunner
     }
 
     /**
+     * Test encoder with Http MediaAsset
+     */
+    public function testEncodeHttpMediaAsset()
+    {
+        $encoder = new NoneEncoder();
+        $url = 'https://www.taotesting.com/wp-content/uploads/2014/09/oat-header-logo.png';
+        $asset = new MediaAsset(new HttpSource(), $url);
+        $this->assertEquals($url, $encoder->encode($asset));
+    }
+
+    /**
      * Test encoder with MediaAsset
      */
     public function testEncodeMediaAsset()
     {
         $encoder = new NoneEncoder();
-        $url = 'http://tao.dev/my/asset';
-        $asset = new MediaAsset(new HttpSource(), $url);
+        $url = 'assets/test.png';
+        $asset = new MediaAsset(new LocalItemSource(array()), $url);
         $this->assertEquals(basename($url), $encoder->encode($asset));
     }
 }
