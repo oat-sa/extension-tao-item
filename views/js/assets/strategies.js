@@ -54,6 +54,20 @@ define([
      */
     var strategies = {
 
+        externalReplaced : {
+            name : 'externalReplaced',
+            handle : function handlePackedUrl(url, data){
+                if(!_.isUndefined(url.source) && !_.isUndefined(data.assets)) {
+                    for (var key in data.assets){
+                        if(data.assets.hasOwnProperty(key)){
+                            if(urlUtil.isAbsolute(data.assets[key][url.source])){
+                                return data.assets[key][url.source]
+                            }
+                        }
+                    }
+                }
+            }
+        },
         //the baseUrl concats the baseUrl in data if the url is relative
         baseUrl : {
             name : 'baseUrl',
