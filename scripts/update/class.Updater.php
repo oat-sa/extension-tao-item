@@ -23,6 +23,8 @@ use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
+use oat\taoItems\model\render\NoneItemReplacement;
+use oat\taoItems\model\render\ItemAssetsReplacement;
 
 /**
  *
@@ -75,6 +77,14 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')));
             $this->setVersion('5.10.0');
         }
-        $this->skip('5.10.0', '5.11.0');
+
+        if ($this->isVersion('5.10.0')) {
+
+
+            $replacementService = new NoneItemReplacement();
+            $this->getServiceManager()->register(ItemAssetsReplacement::SERVICE_ID, $replacementService);
+
+            $this->setVersion('5.11.0');
+        }
     }
 }
