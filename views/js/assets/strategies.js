@@ -24,8 +24,9 @@
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
 define([
-    'util/url'
-], function(urlUtil){
+    'util/url',
+    'lodash'
+], function(urlUtil, _){
     'use strict';
 
     /**
@@ -54,16 +55,16 @@ define([
      */
     var strategies = {
 
-        externalReplaced : {
-            name : 'externalReplaced',
+        //the packedUrl will replace the asset with the url given in the assets part
+        //the assetManager should add the assets part to data with .setData('assets' itemData.content.assets)
+        packedUrl : {
+            name : 'packedUrl',
             handle : function handlePackedUrl(url, data){
+                var type;
                 if(!_.isUndefined(url.source) && !_.isUndefined(data.assets)) {
-                    for (var key in data.assets){
-                        if(data.assets.hasOwnProperty(key)){
-                            if(urlUtil.isAbsolute(data.assets[key][url.source])){
-                                return data.assets[key][url.source]
-                            }
-                        }
+                    type = _.findKey(data.assets, url.source);
+                    if( type && urlUtil.isAbsolute(data.assets[type][url.source])){
+                        return data.assets[type][url.source];
                     }
                 }
             }

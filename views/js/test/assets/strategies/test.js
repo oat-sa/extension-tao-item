@@ -15,12 +15,12 @@ define([
 
     QUnit.test('expected strategy format', 3, function(assert){
 
-        assert.ok(typeof strategies.externalReplaced === 'object', "The external replaced strategy exists");
-        assert.equal(strategies.externalReplaced.name, 'externalReplaced', "The external replaced strategy has the right name");
-        assert.ok(typeof strategies.externalReplaced.handle === 'function', "The external replaced strategy has an handler");
+        assert.ok(typeof strategies.packedUrl === 'object', "The packed url strategy exists");
+        assert.equal(strategies.packedUrl.name, 'packedUrl', "The packed url strategy has the right name");
+        assert.ok(typeof strategies.packedUrl.handle === 'function', "The packed url strategy has an handler");
     });
 
-    var externalReplacedDataProvider = [{
+    var packedUrlDataProvider = [{
         title    : 'First img asset',
         url      : 'http://my.cdn/my/test.png',
         resolved : 'http://my.cdn/my/test.png?signed=true',
@@ -30,6 +30,21 @@ define([
         url      : 'http://my.cdn/my/test2.png',
         resolved : 'http://completely.different/url/test.png',
         assets   : {'img' : {'http://my.cdn/my/test.png': 'http://my.cdn/my/test.png?signed=true', 'http://my.cdn/my/test2.png': 'http://completely.different/url/test.png'}, "css" : {'http://my.cdn/my/test2.css': 'http://completely.different/url/test.css'}}
+    }, {
+        title    : 'Image placeholder',
+        url      : 'test.png',
+        resolved : 'http://my.cdn/my/test.png?signed=true',
+        assets : {'img' : {'test.png': 'http://my.cdn/my/test.png?signed=true'}}
+    }, {
+        title    : 'Not Absolute',
+        url      : 'test.png',
+        resolved : '',
+        assets : {'img' : {'test.png': 'test.png'}}
+    }, {
+        title    : 'URL to nopt absolute',
+        url      : 'http://my.cdn/my/test.png',
+        resolved : '',
+        assets : {'img' : {'http://my.cdn/my/test.png': 'test.png' } }
     }, {
         title    : 'CSS asset',
         url      : 'http://my.cdn/my/test2.css',
@@ -43,9 +58,9 @@ define([
     }];
 
     QUnit
-        .cases(externalReplacedDataProvider)
+        .cases(packedUrlDataProvider)
         .test('resolve ', function(data, assert){
-            var assetManager = assetManagerFactory(strategies.externalReplaced);
+            var assetManager = assetManagerFactory(strategies.packedUrl);
             assetManager.setData('assets', data.assets);
             assert.equal(assetManager.resolve(data.url), data.resolved, 'The Url is resolved');
         });
