@@ -26,6 +26,8 @@ use oat\taoItems\model\ontology\ItemAuthorRole;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
+use oat\taoItems\model\render\NoneItemReplacement;
+use oat\taoItems\model\render\ItemAssetsReplacement;
 
 /**
  *
@@ -149,5 +151,12 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('5.6.0');
         }
         $this->skip('5.6.0', '5.8.1');
+
+        if ($this->isVersion('5.8.1')) {
+            $replacementService = new NoneItemReplacement();
+            $this->getServiceManager()->register(ItemAssetsReplacement::SERVICE_ID, $replacementService);
+
+            $this->setVersion('5.8.2');
+        }
     }
 }
