@@ -19,13 +19,12 @@
  *
  */
 
-use oat\tao\model\TaoOntology;
-use oat\generis\model\GenerisRdf;
 use oat\tao\scripts\update\OntologyUpdater;
-use oat\taoItems\model\ontology\ItemAuthorRole;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
+use oat\taoItems\model\render\NoneItemReplacement;
+use oat\taoItems\model\render\ItemAssetsReplacement;
 
 /**
  *
@@ -34,9 +33,9 @@ use oat\taoItems\model\CategoryService;
 class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
     /**
-     *
-     * @param string $currentVersion
-     * @return string $versionUpdatedTo
+     * @param $initialVersion
+     * @return string|void
+     * @throws common_Exception
      */
     public function update($initialVersion) {
 
@@ -70,6 +69,24 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
 
             $this->setVersion('5.6.0');
         }
+
         $this->skip('5.6.0', '5.9.0');
+
+        if ($this->isVersion('5.9.0')) {
+            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestItems')));
+            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')));
+            $this->setVersion('5.10.0');
+        }
+
+        if ($this->isVersion('5.10.0')) {
+
+
+            $replacementService = new NoneItemReplacement();
+            $this->getServiceManager()->register(ItemAssetsReplacement::SERVICE_ID, $replacementService);
+
+            $this->setVersion('5.11.0');
+        }
+
+        $this->skip('5.11.0', '5.12.0');
     }
 }
