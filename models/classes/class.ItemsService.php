@@ -52,6 +52,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
     const PROPERTY_ITEM_MODEL_SERVICE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService';
 
+    const PROPERTY_ITEM_CONTENT_SRC = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName';
+
     const TAO_ITEM_MODEL_DATAFILE_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
 
     const INSTANCE_SERVICE_ITEM_RUNNER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
