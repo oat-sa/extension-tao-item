@@ -23,6 +23,8 @@
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
+use oat\taoItems\model\preview\previewers\ItemPreviewerService;
+
 /**
  * Preview API
  *
@@ -32,6 +34,22 @@ use oat\taoItems\model\preview\OntologyItemNotFoundException;
  */
 class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 {
+    /**
+     * List all registered providers
+     */
+    public function previewers() {
+        
+        $itemPreviewerService = $this->getServiceLocator()->get(ItemPreviewerService::SERVICE_ID);
+        $modules = $itemPreviewerService->getAllProviders();
+        
+        $response = [
+            'success' => true,
+            'data' => $modules
+        ];
+        
+        return $this->returnJson($response);
+    }
+    
     public function forwardMe(){
         $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
         $lang = DEFAULT_LANG;
