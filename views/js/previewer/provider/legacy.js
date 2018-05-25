@@ -35,9 +35,10 @@ define([
          *
          * @param {String} uri
          * @param {Object} state
+         * @param {Object} [config]
          * @returns {Object}
          */
-        init: function init(uri, state) {
+        init: function init(uri, state, config) {
             window.scrollTo(0,0);
             preview.init(urlHelper.route('forwardMe', 'ItemPreview', 'taoItems', {uri : uri}), state);
             preview.show();

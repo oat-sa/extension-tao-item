@@ -42,33 +42,47 @@ define([
     var logger = loggerFactory('taoItems/previewer');
 
     /**
+     * URL of the default service that will return the list of available previewers.
+     * @type {String}
+     */
+    var defaultServiceUrl = urlHelper.route('previewers', 'ItemPreview', 'taoItems');
+
+    /**
      * Loads and display the item previewer
      * @param {String} type
      * @param {String|Object} uri
      * @param {Object} state
+     * @param {Object} [config]
+     * @param {String} [config.url] - The URL of the service that will return the list of available previewers.
+     * @param {String} [config.readOnly] - Do not allow to modify the previewed item.
      * @returns {Promise}
      */
-    function previewerFactory(type, uri, state) {
-        return request(urlHelper.route('previewers', 'ItemPreview', 'taoItems'))
+    function previewerFactory(type, uri, state, config) {
+        config = _.defaults(config || {}, {
+            url: defaultServiceUrl,
+            logger: logger
+        });
+        return request(config.url)
             .then(function (modules) {
                 return providerLoaderFactory()
                     .addList(modules)
                     .load(context.bundle);
             })
             .then(function (providers) {
+                previewerFactory.registerProvider(legacyPreviewer.name, legacyPreviewer);
                 _.forEach(providers, function (provider) {
                     previewerFactory.registerProvider(provider.name, provider);
                 });
             })
             .then(function () {
-                return previewerFactory.getProvider(type);
+                return previewerFactory.getProvider(type || legacyPreviewer.name);
             })
             .catch(function (err) {
                 logger.error(err);
                 return legacyPreviewer;
             })
             .then(function (provider) {
-                return provider.init(uri, state);
+                return provider.init(uri, state, config);
             });
     }
 
