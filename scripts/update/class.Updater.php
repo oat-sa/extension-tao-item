@@ -25,6 +25,7 @@ use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
 use oat\taoItems\model\render\NoneItemReplacement;
 use oat\taoItems\model\render\ItemAssetsReplacement;
+use oat\taoItems\model\preview\previewers\ItemPreviewerService;
 
 /**
  *
@@ -88,5 +89,14 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('5.11.0', '5.12.1');
+
+        if ($this->isVersion('5.12.1')) {
+
+
+            $itemPreviewerService = new ItemPreviewerService();
+            $this->getServiceManager()->register(ItemPreviewerService::SERVICE_ID, $itemPreviewerService);
+
+            $this->setVersion('5.13.0');
+        }
     }
 }
