@@ -25,7 +25,7 @@ define([
     'core/providerLoader',
     'core/providerRegistry',
     'util/url',
-    'taoItems/previewer/provider/legacy'
+    'taoItems/previewer/adapter/legacy'
 ], function (
     _,
     context,
