@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "data": {
+    "taoItems\/test\/previewer\/factory\/adapterMock": {
+      "id": "mock",
+      "module": "taoItems\/test\/previewer\/factory\/adapterMock",
+      "bundle": "taoItems\/test\/previewer\/factory\/adapterMock.min",
+      "position": null,
+      "name": "Item Previewer",
+      "description": "implementation of the item previewer",
+      "category": "previewer",
+      "active": true,
+      "tags": [
+        "core",
+        "previewer"
+      ]
+    }
+  }
+}

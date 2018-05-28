@@ -22,7 +22,6 @@ define([
     'lodash',
     'context',
     'core/dataProvider/request',
-    'core/logger',
     'core/providerLoader',
     'core/providerRegistry',
     'util/url',
@@ -31,15 +30,12 @@ define([
     _,
     context,
     request,
-    loggerFactory,
     providerLoaderFactory,
     providerRegistry,
     urlHelper,
     legacyPreviewer
 ) {
     'use strict';
-
-    var logger = loggerFactory('taoItems/previewer');
 
     /**
      * URL of the default service that will return the list of available previewers.
@@ -60,8 +56,7 @@ define([
      */
     function previewerFactory(type, uri, state, config) {
         config = _.defaults(config || {}, {
-            url: defaultServiceUrl,
-            logger: logger
+            url: defaultServiceUrl
         });
         return request(config.url)
             .then(function (modules) {
@@ -77,10 +72,6 @@ define([
             })
             .then(function () {
                 return previewerFactory.getProvider(type || legacyPreviewer.name);
-            })
-            .catch(function (err) {
-                logger.error(err);
-                return legacyPreviewer;
             })
             .then(function (provider) {
                 return provider.init(uri, state, config);
