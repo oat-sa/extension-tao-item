@@ -39,6 +39,9 @@ define([
          * @returns {Object}
          */
         init: function init(uri, state, config) {
+            if (typeof uri === 'object' && uri.uri) {
+                uri = uri.uri;
+            }
             window.scrollTo(0,0);
             preview.init(urlHelper.route('forwardMe', 'ItemPreview', 'taoItems', {uri : uri}), state);
             preview.show();
