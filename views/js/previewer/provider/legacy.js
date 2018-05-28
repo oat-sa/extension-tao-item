@@ -33,9 +33,9 @@ define([
         /**
          * Builds and shows the legacy item previewer
          *
-         * @param {String} uri
-         * @param {Object} state
-         * @param {Object} [config]
+         * @param {String} uri - The URI of the item to load
+         * @param {Object} state - The state of the item
+         * @param {Object} [config] - Some config entries
          * @returns {Object}
          */
         init: function init(uri, state, config) {
