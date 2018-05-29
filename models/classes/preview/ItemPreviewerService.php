@@ -19,6 +19,7 @@
 
 namespace oat\taoItems\model\preview;
 
+use oat\oatbox\AbstractRegistry;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\ClientLibConfigRegistry;
 use oat\tao\model\modules\DynamicModule;
@@ -33,17 +34,50 @@ class ItemPreviewerService extends ConfigurableService
     const SERVICE_ID = 'taoItems/ItemPreviewer';
     const REGISTRY_ID = 'taoItems/previewer/factory';
     const PREVIEWERS_KEY = 'previewers';
+    
+    private $registry;
 
     /**
-     * @return \oat\oatbox\AbstractRegistry
+     * Sets the registry that contains the list of adapters
+     * @param AbstractRegistry $registry
      */
-    public function getRegistry()
+    public function setRegistry(AbstractRegistry $registry) 
     {
-        return ClientLibConfigRegistry::getRegistry();
+        $this->registry = $registry;    
     }
 
     /**
-     * Register a previewer adapter
+     * Gets the registry that contains the list of adapters
+     * @return AbstractRegistry
+     */
+    public function getRegistry()
+    {
+        if (!$this->registry) {
+            $this->registry = ClientLibConfigRegistry::getRegistry();
+        }
+        return $this->registry;
+    }
+
+    /**
+     * Gets the list of adapters
+     * @return array
+     */
+    public function getAdapters()
+    {
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ID)) {
+            $config = $registry->get(self::REGISTRY_ID);
+        }
+
+        if (isset($config[self::PREVIEWERS_KEY])) {
+            return $config[self::PREVIEWERS_KEY];
+        }
+        return [];
+    }
+
+    /**
+     * Registers a previewer adapter
      * @param DynamicModule $module the plugin to register
      * @return boolean true if registered
      */
@@ -65,7 +99,7 @@ class ItemPreviewerService extends ConfigurableService
     }
 
     /**
-     * Unregister a previewer adapter
+     * Unregisters a previewer adapter
      * @param string $moduleId
      * @return boolean true if unregistered
      */
@@ -78,7 +112,7 @@ class ItemPreviewerService extends ConfigurableService
             $config = $registry->get(self::REGISTRY_ID);
         }
 
-        if (isset($config[self::PREVIEWERS_KEY][$moduleId])) {
+        if (isset($config[self::PREVIEWERS_KEY]) && isset($config[self::PREVIEWERS_KEY][$moduleId])) {
             unset($config[self::PREVIEWERS_KEY][$moduleId]);
             $registry->set(self::REGISTRY_ID, $config);
             return true;
