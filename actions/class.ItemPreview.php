@@ -23,7 +23,6 @@
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
-use oat\taoItems\model\preview\previewers\ItemPreviewerService;
 
 /**
  * Preview API
@@ -34,7 +33,6 @@ use oat\taoItems\model\preview\previewers\ItemPreviewerService;
  */
 class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 {
-
     public function forwardMe(){
         $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
         $lang = DEFAULT_LANG;
