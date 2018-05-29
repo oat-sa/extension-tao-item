@@ -33,9 +33,7 @@ define([
     });
 
     QUnit.test('module', function (assert) {
-        var config = {
-            url: '/taoItems/views/js/test/previewer/factory/adapters.json'
-        };
+        var config = {};
         var uri = 'item1';
         var state = {
             RESPONSE: {
@@ -53,9 +51,7 @@ define([
     });
 
     QUnit.asyncTest('load adapter', function (assert) {
-        var config = {
-            url: '/taoItems/views/js/test/previewer/factory/adapters.json'
-        };
+        var config = {};
         var uri = 'item1';
         var state = {
             RESPONSE: {
@@ -84,9 +80,7 @@ define([
     });
 
     QUnit.asyncTest('legacy adapter', function (assert) {
-        var config = {
-            url: '/taoItems/views/js/test/previewer/factory/adapters.json'
-        };
+        var config = {};
         var uri = 'item1';
         var state = {
             RESPONSE: {
@@ -115,9 +109,7 @@ define([
     });
 
     QUnit.asyncTest('fallback adapter', function (assert) {
-        var config = {
-            url: '/taoItems/views/js/test/previewer/factory/adapters.json'
-        };
+        var config = {};
         var uri = 'item1';
         var state = {
             RESPONSE: {
@@ -137,33 +129,6 @@ define([
             })
             .catch(function () {
                 assert.ok(true, 'The factory should raise an error if the adapter is unknown');
-                QUnit.start();
-            });
-    });
-
-    QUnit.asyncTest('wrong adapter', function (assert) {
-        var config = {
-            url: '/taoItems/views/js/test/previewer/factory/wrong.json'
-        };
-        var uri = 'item1';
-        var state = {
-            RESPONSE: {
-                base: {
-                    string: null
-                }
-            }
-        };
-        var promise = previewerFactory('error', uri, state, config);
-
-        QUnit.expect(2);
-        assert.ok(promise instanceof Promise, "The factory produces a promise");
-        promise
-            .then(function () {
-                assert.ok(false, 'The factory should raise an error if the adapter is wrong');
-                QUnit.start();
-            })
-            .catch(function () {
-                assert.ok(true, 'The factory should raise an error if the adapter is wrong');
                 QUnit.start();
             });
     });

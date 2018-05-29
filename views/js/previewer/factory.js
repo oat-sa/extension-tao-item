@@ -21,7 +21,7 @@
 define([
     'lodash',
     'context',
-    'core/dataProvider/request',
+    'module',
     'core/providerLoader',
     'core/providerRegistry',
     'util/url',
@@ -29,7 +29,7 @@ define([
 ], function (
     _,
     context,
-    request,
+    module,
     providerLoaderFactory,
     providerRegistry,
     urlHelper,
@@ -49,21 +49,18 @@ define([
      * @param {String|Object} uri - The URI of the item to load
      * @param {Object} state - The state of the item
      * @param {Object} [config] - Some config entries
-     * @param {String} [config.url] - The URL of the service that will return the list of available previewers.
      * @param {String} [config.fullPage] - Force the previewer to occupy the full window.
      * @param {String} [config.readOnly] - Do not allow to modify the previewed item.
      * @returns {Promise}
      */
     function previewerFactory(type, uri, state, config) {
+        var moduleConfig = module.config();
         config = _.defaults(config || {}, {
             url: defaultServiceUrl
         });
-        return request(config.url)
-            .then(function (modules) {
-                return providerLoaderFactory()
-                    .addList(modules)
-                    .load(context.bundle);
-            })
+        return providerLoaderFactory()
+            .addList(moduleConfig && moduleConfig.previewers)
+            .load(context.bundle)
             .then(function (providers) {
                 previewerFactory.registerProvider(legacyPreviewer.name, legacyPreviewer);
                 _.forEach(providers, function (provider) {

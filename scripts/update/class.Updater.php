@@ -25,7 +25,7 @@ use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
 use oat\taoItems\model\render\NoneItemReplacement;
 use oat\taoItems\model\render\ItemAssetsReplacement;
-use oat\taoItems\model\preview\previewers\ItemPreviewerService;
+use oat\taoItems\model\preview\ItemPreviewerService;
 
 /**
  *

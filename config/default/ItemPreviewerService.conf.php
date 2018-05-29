@@ -18,4 +18,4 @@
  *               
  * 
  */  
-return new \oat\taoItems\model\preview\previewers\ItemPreviewerService();
+return new \oat\taoItems\model\preview\ItemPreviewerService();
