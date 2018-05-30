@@ -38,12 +38,6 @@ define([
     'use strict';
 
     /**
-     * URL of the default service that will return the list of available previewers.
-     * @type {String}
-     */
-    var defaultServiceUrl = urlHelper.route('previewers', 'ItemPreview', 'taoItems');
-
-    /**
      * Loads and display the item previewer
      * @param {String} type - The type of previewer
      * @param {String|Object} uri - The URI of the item to load
@@ -51,15 +45,13 @@ define([
      * @param {Object} [config] - Some config entries
      * @param {String} [config.fullPage] - Force the previewer to occupy the full window.
      * @param {String} [config.readOnly] - Do not allow to modify the previewed item.
+     * @param {Object} [config.previewers] - Optionally load static adapters. By default take them from the module's config.
      * @returns {Promise}
      */
     function previewerFactory(type, uri, state, config) {
-        var moduleConfig = module.config();
-        config = _.defaults(config || {}, {
-            url: defaultServiceUrl
-        });
+        config = _.defaults(config || {}, module.config());
         return providerLoaderFactory()
-            .addList(moduleConfig && moduleConfig.previewers)
+            .addList(config.previewers)
             .load(context.bundle)
             .then(function (providers) {
                 previewerFactory.registerProvider(legacyPreviewer.name, legacyPreviewer);
