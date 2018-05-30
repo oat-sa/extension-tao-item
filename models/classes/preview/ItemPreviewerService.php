@@ -32,7 +32,7 @@ use oat\tao\model\modules\DynamicModule;
 class ItemPreviewerService extends ConfigurableService
 {
     const SERVICE_ID = 'taoItems/ItemPreviewer';
-    const REGISTRY_ID = 'taoItems/previewer/factory';
+    const REGISTRY_ENTRY_KEY = 'taoItems/previewer/factory';
     const PREVIEWERS_KEY = 'previewers';
     
     private $registry;
@@ -66,8 +66,8 @@ class ItemPreviewerService extends ConfigurableService
     {
         $registry = $this->getRegistry();
         $config = [];
-        if ($registry->isRegistered(self::REGISTRY_ID)) {
-            $config = $registry->get(self::REGISTRY_ID);
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
 
         if (isset($config[self::PREVIEWERS_KEY])) {
@@ -87,12 +87,12 @@ class ItemPreviewerService extends ConfigurableService
 
             $registry = $this->getRegistry();
             $config = [];
-            if ($registry->isRegistered(self::REGISTRY_ID)) {
-                $config = $registry->get(self::REGISTRY_ID);
+            if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+                $config = $registry->get(self::REGISTRY_ENTRY_KEY);
             }
 
             $config[self::PREVIEWERS_KEY][$module->getModule()] = $module->toArray();
-            $registry->set(self::REGISTRY_ID, $config);
+            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
             return true;
         }
         return false;
@@ -108,13 +108,13 @@ class ItemPreviewerService extends ConfigurableService
 
         $registry = $this->getRegistry();
         $config = [];
-        if ($registry->isRegistered(self::REGISTRY_ID)) {
-            $config = $registry->get(self::REGISTRY_ID);
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
 
         if (isset($config[self::PREVIEWERS_KEY]) && isset($config[self::PREVIEWERS_KEY][$moduleId])) {
             unset($config[self::PREVIEWERS_KEY][$moduleId]);
-            $registry->set(self::REGISTRY_ID, $config);
+            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
             return true;
         }
         return false;
