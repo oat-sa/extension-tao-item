@@ -41,11 +41,11 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
     public function update($initialVersion) {
 
 
-        if ($this->isBetween('0.0.0', '2.14.0')) {
+        if ($this->isBetween('0.0.0', '2.8.0')) {
             throw new \common_exception_NotImplemented('Updates from versions prior to Tao 3.1 are not longer supported, please update to Tao 3.1 first');
         }
 
-        $this->skip('2.15.0', '2.22.3');
+        $this->skip('2.8.1', '2.22.3');
 
         if ($this->isVersion('2.22.3')) {
 
