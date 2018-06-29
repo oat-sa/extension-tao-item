@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Item Previewer Test - Factory</title>
+        <base href="../../../../../..//tao/views/" />
+        <link rel="stylesheet" type="text/css" href="js/lib/qunit/qunit.css">
+        <script type="text/javascript" src="js/lib/require.js"></script>
+        <script type="text/javascript" src="js/lib/qunit/qunit.js"></script>
+        <script type="text/javascript" src="js/lib/qunit/qunit-parameterize.js"></script>
+        <script type="text/javascript" src="js/lib/blanket/blanket.min.js"  data-cover-flag="branchTracking"  data-cover-only="previewer/factory.js"></script>
+
+        <script  type="text/javascript">
+
+             //don't start the test now
+            QUnit.config.autostart = false;
+
+            //load the config
+            require(['/tao/ClientConfig/config'], function(){
+
+                //some mocks
+                requirejs.config({
+                    "config": {
+                        "taoItems/previewer/factory": {
+                            previewers: {
+                                "taoItems\/test\/previewer\/factory\/adapterMock": {
+                                    "id": "mock",
+                                    "module": "taoItems\/test\/previewer\/factory\/adapterMock",
+                                    "bundle": "taoItems\/test\/previewer\/factory\/adapterMock.min",
+                                    "position": null,
+                                    "name": "Item Previewer",
+                                    "description": "implementation of the item previewer",
+                                    "category": "previewer",
+                                    "active": true,
+                                    "tags": [
+                                        "core",
+                                        "previewer"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "paths": {
+                        "taoItems/previewer/adapter/legacy" : "/taoItems/views/js/test/previewer/factory/legacyMock"
+                    }
+                });
+
+                //load the test
+                require(['taoItems/test/previewer/factory/test'], function(){
+
+                    //Tests loaded, run tests
+                    QUnit.start();
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+    </body>
+</html>
