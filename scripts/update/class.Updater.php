@@ -80,8 +80,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         if ($this->isVersion('5.10.0')) {
-
-
             $replacementService = new NoneItemReplacement();
             $this->getServiceManager()->register(ItemAssetsReplacement::SERVICE_ID, $replacementService);
 
@@ -91,13 +89,12 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         $this->skip('5.11.0', '5.12.2');
 
         if ($this->isVersion('5.12.2')) {
-
-
             $itemPreviewerService = new ItemPreviewerService();
             $this->getServiceManager()->register(ItemPreviewerService::SERVICE_ID, $itemPreviewerService);
 
             $this->setVersion('5.13.0');
         }
-        $this->skip('5.13.0', '5.13.1');
+
+        $this->skip('5.13.0', '5.14.0');
     }
 }

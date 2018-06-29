@@ -19,62 +19,49 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  * 
  */
-use oat\taoItems\model\event\ItemImportEvent;
 
 /**
- * This controller provide the actions to import items 
- * 
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
+ * This controller provide the actions to import items
+ *
+ * @author  CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  * @package taoItems
- 
  *
  */
-class taoItems_actions_ItemImport extends tao_actions_Import {
-	
+class taoItems_actions_ItemImport extends tao_actions_Import
+{
     /**
      * overwrite the parent index to add the requiresRight for Items only
-     * 
+     *
      * @requiresRight id WRITE
-     * @see tao_actions_Import::index()
+     * @see           tao_actions_Import::index()
      */
     public function index()
     {
         parent::index();
     }
 
-	protected function getAvailableImportHandlers() {
-		$returnValue = parent::getAvailableImportHandlers();
-
-		foreach (array_keys($returnValue) as $key) {
-			if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
-				$importer =  new \oat\taoItems\model\CsvImporter();
-				$returnValue[$key] = $importer;
-			}
-		}
-
-		$itemModelClass = new core_kernel_classes_Class(taoItems_models_classes_itemModel::CLASS_URI_MODELS);
-		foreach ($itemModelClass->getInstances() as $model) {
-			$impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
-			if (in_array('tao_models_classes_import_ImportProvider', class_implements($impl))) {
-				foreach ($impl->getImportHandlers() as $handler) {
-					array_unshift($returnValue, $handler);
-				}
-			}
-		}
-
-
-
-		return $returnValue;
-	}
-
-    /**
-     * @inheritdoc
-     */
-    protected function onAfterImport(common_report_Report $report)
+    protected function getAvailableImportHandlers()
     {
-        if (common_report_Report::TYPE_SUCCESS == $report->getType()) {
-            $this->getEventManager()->trigger(new ItemImportEvent($report));
+        $returnValue = parent::getAvailableImportHandlers();
+
+        foreach (array_keys($returnValue) as $key) {
+            if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
+                $importer = new \oat\taoItems\model\CsvImporter();
+                $returnValue[$key] = $importer;
+            }
         }
+
+        $itemModelClass = new core_kernel_classes_Class(taoItems_models_classes_itemModel::CLASS_URI_MODELS);
+        foreach ($itemModelClass->getInstances() as $model) {
+            $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
+            if (in_array('tao_models_classes_import_ImportProvider', class_implements($impl))) {
+                foreach ($impl->getImportHandlers() as $handler) {
+                    array_unshift($returnValue, $handler);
+                }
+            }
+        }
+
+        return $returnValue;
     }
 }
