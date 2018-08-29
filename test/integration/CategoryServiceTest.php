@@ -29,6 +29,8 @@ use oat\taoItems\model\CategoryService;
 use oat\tao\test\TaoPhpUnitTestRunner;
 use taoItems_models_classes_ItemsService;
 
+include_once dirname(__FILE__) . '/../../includes/raw_start.php';
+
 /**
  * CategoryService test
  *
