@@ -1,81 +1,51 @@
+/**
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2014-2018 (original work) Open Assessment Technologies SA;
+ */
+
+/**
+ * Configure the extension bundles
+ * @author Bertrand Chevrier <bertrand@taotesting.com>
+ */
 module.exports = function(grunt) {
     'use strict';
 
-    var requirejs   = grunt.config('requirejs') || {};
-    var clean       = grunt.config('clean') || {};
-    var copy        = grunt.config('copy') || {};
-    var uglify      = grunt.config('uglify') || {};
+    var root = grunt.option('root');
 
-    var root        = grunt.option('root');
-    var libs        = grunt.option('mainlibs');
-    var ext         = require(root + '/tao/views/build/tasks/helpers/extensions')(grunt, root);
-    var out         = 'output';
-
-    /**
-     * Remove bundled and bundling files
-     */
-    clean.taoitemsbundle = [out];
-
-    /**
-     * Compile tao files into a bundle
-     */
-    requirejs.taoitemsbundle = {
-        options: {
-            baseUrl : '../js',
-            dir : out,
-            mainConfigFile : './config/requirejs.build.js',
-            paths : {
-                'taoItems' : root + '/taoItems/views/js',
-                'taoItemsCss' : root + '/taoItems/views/css'
-            },
-            modules : [{
-                name: 'taoItems/controller/routes',
-                include : ext.getExtensionsControllers(['taoItems']),
-                exclude : ['mathJax'].concat(libs)
-            }]
-        }
-    };
-
-    /**
-     * copy the bundles to the right place
-     */
-    copy.taoitemsbundle = {
-        files: [
-            { src: [out + '/taoItems/controller/routes.js'],  dest: root + '/taoItems/views/js/controllers.min.js' },
-            { src: [out + '/taoItems/controller/routes.js.map'],  dest: root + '/taoItems/views/js/controllers.min.js.map' }
-        ]
-    };
-
-
-    /*
-     * Manual bundle of the legacy API and the OWI API
-     */
-    uglify.legacyApi = {
-        files: [
-            { dest : root + '/taoItems/views/js/legacyApi/taoLegacyApi.min.js', src : [
-                root + '/taoItems/views/js/ItemApi/ItemApi.js',
-                root + '/taoItems/views/js/legacyApi/taoLegacyApi.js'
-            ]}
-        ]
-    };
-
-    uglify.taoApi = {
-        files: [
-            { dest : root + '/taoItems/views/js/taoApi/taoApi.min.js', src: [
-                    root + '/taoItems/views/js/taoApi/src/constants.js',
-                    root + '/taoItems/views/js/taoApi/src/core.js',
-                    root + '/taoItems/views/js/taoApi/src/events.js',
-                    root + '/taoItems/views/js/taoApi/src/api.js'
-                ]
+    grunt.config.merge({
+        bundle : {
+            taoitems : {
+                options : {
+                    extension : 'taoItems',
+                    extensionPath : root + '/taoItems/views/js',
+                    outputDir : 'loader',
+                    bundles : [{
+                        name : 'taoItems',
+                        default : true,
+                        include : [
+                            'assets/**/*',
+                            'preview/**/*',
+                            'runner/**/*',
+                            'runtime/**/*'
+                        ]
+                    }]
+                }
             }
-        ]
-    };
+        }
+    });
 
-    grunt.config('clean', clean);
-    grunt.config('requirejs', requirejs);
-    grunt.config('copy', copy);
-    grunt.config('uglify', uglify);
-
-    // bundle task
-    grunt.registerTask('taoitemsbundle', ['clean:taoitemsbundle', 'requirejs:taoitemsbundle', 'copy:taoitemsbundle']);
+    grunt.registerTask('taoitemsbundle', ['bundle:taoitems']);
 };
