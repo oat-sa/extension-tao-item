@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:13:56\n"
+"Project-Id-Version: TAO 3.3.0-sprint86\n"
+"PO-Revision-Date: 2018-09-26T12:04:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -13,50 +13,50 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Path"
-msgstr ""
+msgstr "Item pad"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Path"
-msgstr ""
+msgstr "Item pad"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Private Data Path"
-msgstr ""
+msgstr "Item privé gegevens pad"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Private Data Path"
-msgstr ""
+msgstr "Item privé gegevens pad"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Resultserver"
-msgstr ""
+msgstr "Resultaatserver"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Resultserver"
-msgstr ""
+msgstr "Resultaatserver"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Uri"
-msgstr ""
+msgstr "Item Uri"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Uri"
-msgstr ""
+msgstr "Item Uri"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Runner"
-msgstr ""
+msgstr "Item starter"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Embed a run an item into a Delivery. This service initialize the TAO Apis and contexts"
-msgstr ""
+msgstr "Voeg een start een item in een pakket. Deze dienst initieert de TAO Apis en contexten"
 
