@@ -23,6 +23,7 @@
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
+
 /**
  * Preview API
  *

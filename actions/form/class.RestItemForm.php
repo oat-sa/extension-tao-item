@@ -33,10 +33,6 @@ class taoItems_actions_form_RestItemForm extends tao_actions_form_RestForm imple
 {
     use ServiceLocatorAwareTrait;
 
-    const CLASS_ASSESSMENT_OBJECT   = 'http://www.tao.lu/Ontologies/TAO.rdf#AssessmentContentObject';
-
-    const PROPERTY_ITEM_CONTENT_SRC = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName';
-
     /**
      * Get editable properties
      *
@@ -47,17 +43,7 @@ class taoItems_actions_form_RestItemForm extends tao_actions_form_RestForm imple
         $properties = parent::getClassProperties();
         unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL]);
         unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT]);
-        unset($properties[self::PROPERTY_ITEM_CONTENT_SRC]);
+        unset($properties[taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT_SRC]);
         return $properties;
-    }
-
-    /**
-     * Get the class associated to current form
-     *
-     * @return core_kernel_classes_Class
-     */
-    protected function getTopClass()
-    {
-        return $this->getClass(self::CLASS_ASSESSMENT_OBJECT);
     }
 }

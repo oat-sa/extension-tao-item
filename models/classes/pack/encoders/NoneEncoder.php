@@ -20,6 +20,7 @@
 namespace oat\taoItems\model\pack\encoders;
 
 use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 
 class NoneEncoder implements Encoding
 {
@@ -40,6 +41,9 @@ class NoneEncoder implements Encoding
     {
         if ($data instanceof MediaAsset) {
             $mediaSource = $data->getMediaSource();
+            if($mediaSource instanceof HttpSource){
+                return $data->getMediaIdentifier();
+            }
             return $mediaSource->getBaseName($data->getMediaIdentifier());
         }
         return $data;

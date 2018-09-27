@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -14,40 +14,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2018 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
 namespace oat\taoItems\test\pack;
 
-use oat\tao\model\media\MediaAsset;
-use oat\tao\model\media\sourceStrategy\HttpSource;
-use oat\taoItems\model\pack\encoders\Base64Encoder;
-use oat\tao\test\TaoPhpUnitTestRunner;
+use oat\taoItems\model\render\NoneItemReplacement;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @package taoItems
  */
-class Base64EncoderTest extends TaoPhpUnitTestRunner
+class NoneItemReplacementTest extends TestCase
 {
 
     /**
      * Test encoder
      */
-    public function testEncode()
+    public function testPostProcess()
     {
-        $encoder = new Base64Encoder();
-        $this->assertEquals(base64_encode('value'), $encoder->encode('value'));
-    }
-
-    /**
-     * Test encoder with MediaAsset
-     */
-    public function testEncodeMediaAsset()
-    {
-        $encoder = new Base64Encoder();
-        $url = 'http://tao.dev/my/asset';
-        $asset = new MediaAsset(new HttpSource(), $url);
-        $this->assertEquals(base64_encode(basename($url)), $encoder->encode($asset));
+        $replace = new NoneItemReplacement();
+        $this->assertEquals('value', $replace->postProcessAssets('value'));
+        $this->assertEquals('http://CDN/my/url', $replace->postProcessAssets('http://CDN/my/url'));
     }
 
 }

@@ -27,16 +27,8 @@
  * @package taoItems
  
  */
-class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
+abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_Compiler
 {
-    /**
-     * @throws common_exception_BadRequest
-     */
-    public function compile()
-    {
-        throw new common_exception_BadRequest();
-    }
-
     /**
      * Get the languages in use for the item content.
      * 

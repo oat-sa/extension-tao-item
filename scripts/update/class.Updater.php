@@ -23,6 +23,9 @@ use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
+use oat\taoItems\model\render\NoneItemReplacement;
+use oat\taoItems\model\render\ItemAssetsReplacement;
+use oat\taoItems\model\preview\ItemPreviewerService;
 
 /**
  *
@@ -38,11 +41,11 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
     public function update($initialVersion) {
 
 
-        if ($this->isBetween('0.0.0', '2.14.0')) {
+        if ($this->isBetween('0.0.0', '2.8.0')) {
             throw new \common_exception_NotImplemented('Updates from versions prior to Tao 3.1 are not longer supported, please update to Tao 3.1 first');
         }
 
-        $this->skip('2.15.0', '2.22.3');
+        $this->skip('2.8.1', '2.22.3');
 
         if ($this->isVersion('2.22.3')) {
 
@@ -75,5 +78,23 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')));
             $this->setVersion('5.10.0');
         }
+
+        if ($this->isVersion('5.10.0')) {
+            $replacementService = new NoneItemReplacement();
+            $this->getServiceManager()->register(ItemAssetsReplacement::SERVICE_ID, $replacementService);
+
+            $this->setVersion('5.11.0');
+        }
+
+        $this->skip('5.11.0', '5.12.2');
+
+        if ($this->isVersion('5.12.2')) {
+            $itemPreviewerService = new ItemPreviewerService();
+            $this->getServiceManager()->register(ItemPreviewerService::SERVICE_ID, $itemPreviewerService);
+
+            $this->setVersion('5.13.0');
+        }
+
+        $this->skip('5.13.0', '5.14.2');
     }
 }
