@@ -36,10 +36,16 @@ module.exports = function(grunt) {
                         name : 'taoItems',
                         default : true,
                         include : [
-                            'assets/**/*',
-                            'preview/**/*',
-                            'runner/**/*',
-                            'runtime/**/*'
+                            'taoItems/assets/**/*',
+                            'taoItems/preview/**/*',
+                            'taoItems/runner/**/*',
+                            'taoItems/runtime/**/*'
+                        ]
+                    }, {
+                        name : 'taoItemsRunner',
+                        include : [
+                            'taoItems/assets/**/*',
+                            'taoItems/runner/**/*'
                         ]
                     }]
                 }
