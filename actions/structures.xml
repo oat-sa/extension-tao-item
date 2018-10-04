@@ -63,6 +63,9 @@
                     <action id="item-copy-to" name="Copy To" url="/taoItems/Items/copyInstance" context="instance" group="tree" binding="copyTo">
                         <icon id="icon-copy"/>
                     </action>
+                    <action id="item-move-all" name="Copy All To" url="/taoItems/Items/moveAllInstances" context="resource" group="tree">
+                        <icon id="icon-copy"/>
+                    </action>
                 </actions>
             </section>
         </sections>
