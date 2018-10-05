@@ -38,6 +38,7 @@ module.exports = function(grunt) {
                         include : [
                             'taoItems/assets/**/*',
                             'taoItems/preview/**/*',
+                            'taoItems/previewer/**/*',
                             'taoItems/runner/**/*',
                             'taoItems/runtime/**/*'
                         ]
