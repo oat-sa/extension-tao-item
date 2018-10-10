@@ -13,20 +13,20 @@ use oat\tao\model\resources\ResourceWatcher;
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- * 
+ *
  */
 
 /**
@@ -96,7 +96,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function addInstance(){
         parent::addInstance();
     }
-    
+
     /**
      * overwrite the parent addSubClass to add the requiresRight only in Items
      * @requiresRight id WRITE
@@ -104,7 +104,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     public function addSubClass(){
         parent::addSubClass();
     }
-    
+
     /**
      * overwrite the parent cloneInstance to add the requiresRight only in Items
      * @see tao_actions_TaoModule::cloneInstance()
@@ -115,7 +115,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     {
         return parent::cloneInstance();
     }
-    
+
     /**
      * overwrite the parent moveInstance to add the requiresRight only in Items
      * @see tao_actions_TaoModule::moveInstance()
@@ -126,7 +126,27 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     {
         return parent::moveInstance();
     }
-    
+
+    /**
+     * overwrite the parent moveAllInstances to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::moveAllInstances()
+     * @requiresRight ids WRITE
+     */
+    public function moveResource()
+    {
+        return parent::moveAllInstances();
+    }
+
+    /**
+     * overwrite the parent moveAllInstances to add the requiresRight only in Items
+     * @see tao_actions_TaoModule::moveAllInstances()
+     * @requiresRight ids WRITE
+     */
+    public function moveAll()
+    {
+        return parent::moveAllInstances();
+    }
+
     /**
      * overwrite the parent getOntologyData to add the requiresRight only in Items
      * @see tao_actions_TaoModule::getOntologyData()
@@ -136,7 +156,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     {
         return parent::getOntologyData();
     }
-    
+
     /**
      * overwrite the parent getOntologyData to add the requiresRight only in Items
      * @see tao_actions_TaoModule::removeClassProperty()
@@ -146,7 +166,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     {
         return parent::removeClassProperty();
     }
-    
+
     /**
      * edit an item instance
      * @requiresRight id READ
@@ -164,10 +184,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('lockDate', $lock->getCreationTime());
                 $this->setData('id', $item->getUri());
             }
-            
+
             $formContainer = new taoItems_actions_form_Item($itemClass, $item);
             $myForm = $formContainer->getForm();
-            
+
             if ($this->hasWriteAccess($item->getUri())) {
 
                 if($myForm->isSubmited() && $this->hasWriteAccess($item->getUri())){
@@ -178,7 +198,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                             common_Logger::w( 'Warning property is still in use', ['backend']);
                             unset($properties['warning']);
                         }
-    
+
                         //bind item properties and set default content:
                         $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                         $item = $binder->bind($properties);
@@ -197,7 +217,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             } else {
                 $myForm->setActions(array());
             }
-            
+
             $currentModel = $this->getClassService()->getItemModel($item);
             $hasPreview = false;
             $hasModel   = false;
@@ -221,7 +241,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * Edit a class
-     * @requiresRight id READ 
+     * @requiresRight id READ
      */
     public function editItemClass(){
         $clazz = new core_kernel_classes_Class($this->getRequestParameter('id'));
@@ -231,7 +251,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
 
         $myForm = $this->getClassForm($clazz, $this->getClassService()->getRootClass());
-        
+
         if ($this->hasWriteAccess($clazz->getUri())) {
             if($myForm->isSubmited()){
                 if($myForm->isValid()){
@@ -253,7 +273,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * delete an item
      * called via ajax
-     * @requiresRight id WRITE 
+     * @requiresRight id WRITE
      * @return void
      * @throws Exception
      */
@@ -286,7 +306,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
     /**
      * @see TaoModule::translateInstance
-     * @requiresRight uri WRITE 
+     * @requiresRight uri WRITE
      * @return void
      */
     public function translateInstance(){
@@ -302,7 +322,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
-            
+
             $this->setData('error', false);
             try{
 
