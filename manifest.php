@@ -35,12 +35,12 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '5.14.3',
+    'version' => '6.1.1',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
-        'taoBackOffice' => '>=1.3.0',
+        'taoBackOffice' => '>=3.0.0',
         'generis' => '>=5.11.0',
-        'tao' => '>=19.9.0'
+        'tao' => '>=21.0.0'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'

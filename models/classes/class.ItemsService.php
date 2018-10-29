@@ -615,11 +615,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $serial = $this->getFileReferenceSerializer()->serialize($itemDirectory);
 
         $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
-
-        // Store file into persistence, purpose of serializer ?
-        $dataFile = (string)$model->getOnePropertyValue($this->getProperty(self::TAO_ITEM_MODEL_DATAFILE_PROPERTY));
-        $this->getFileReferenceSerializer()->serialize($itemDirectory->getFile($dataFile));
-
+        
         return $itemDirectory;
     }
 

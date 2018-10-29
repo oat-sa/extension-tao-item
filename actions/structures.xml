@@ -54,14 +54,17 @@
                     <action id="item-export" name="Export" url="/taoItems/ItemExport/index" context="resource" group="tree">
                         <icon id="icon-export"/>
                     </action>
-                    <action id="item-translate" name="Translate" url="/taoItems/Items/translateInstance" context="instance" group="content">
-                        <icon id="icon-translate"/>
-                    </action>
                     <action id="item-duplicate" name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
                         <icon id="icon-copy"/>
                     </action>
                     <action id="item-copy-to" name="Copy To" url="/taoItems/Items/copyInstance" context="instance" group="tree" binding="copyTo">
                         <icon id="icon-copy"/>
+                    </action>
+                    <action id="item-move-to" name="Move To" url="/taoItems/Items/moveResource" context="resource" group="tree" binding="moveTo">
+                        <icon id="icon-move-item"/>
+                    </action>
+                    <action id="item-move-all" name="Move To" url="/taoItems/Items/moveAll" context="resource" multiple="true" group="tree" binding="moveTo">
+                        <icon id="icon-move-item"/>
                     </action>
                 </actions>
             </section>
