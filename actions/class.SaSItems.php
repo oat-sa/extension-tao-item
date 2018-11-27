@@ -83,14 +83,17 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items {
 		$this->setData('myForm', $myForm->render());
 		$this->setView('form.tpl', 'tao');
 	}
-	
+
 	/**
 	 * view and item
+     * @throws common_exception_BadRequest
+     * @throws common_exception_Error
+     * @throws tao_models_classes_MissingRequestParameterException
 	 * @return void
 	 */
 	public function viewItem(){
 		if(!tao_helpers_Request::isAjax()){
-			throw new Exception("wrong request mode");
+			throw new common_exception_BadRequest('wrong request mode');
 		}
 		
 		$itemClass = $this->getCurrentClass();
