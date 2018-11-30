@@ -13,14 +13,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Technlogies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2014-2018 (original work) Open Assessment Technlogies SA (under the project TAO-PRODUCT);
  *
  */
 
 /**
+ * The TAO scoring library API,
+ * A
+ *
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
-define(['jquery', 'lodash'], function($, _){
+define(['lodash', 'core/eventifier'], function(_, eventifier){
     'use strict';
 
     /**
@@ -50,6 +53,8 @@ define(['jquery', 'lodash'], function($, _){
      * @returns {Scorer}
      */
     var scorerFactory = function scorerFactory(providerName, options){
+        var provider;
+        var providers;
 
         //optional params based on type
         if(_.isPlainObject(providerName)){
@@ -58,15 +63,10 @@ define(['jquery', 'lodash'], function($, _){
         }
         options = options || {};
 
-        //contains the bound events.
-        var events = {};
-
         /*
          * Select the provider
          */
-
-        var provider;
-        var providers = scorerFactory.providers;
+        providers = scorerFactory.providers;
 
         //check a provider is available
         if(!providers || _.size(providers) === 0){
@@ -88,25 +88,26 @@ define(['jquery', 'lodash'], function($, _){
         }
 
 
-       /**
-        * The Scorer
-        * @typedef {Object} Scorer
-        */
+        /**
+         * The Scorer
+         * @typedef {Object} scorer
+         */
 
         /**
-        * @type {Scorer}
-        * @lends scorerFactory
-        */
-        var Scorer = {
+         * @type {scorer}
+         * @lends scorerFactory
+         * @augments core/eventifier
+         */
+        return eventifier({
 
-           /**
-            * Process the response
-            * @param {Object[]} responses - the responses to score
-            * @param {Object} processingData - all the data needed to grade/process the response
-            * @fires Scorer#outcome
-            * @fires Scorer#error
-            */
-           process : function(responses, processingData){
+            /**
+             * Process the response
+             * @param {Object[]} responses - the responses to score
+             * @param {Object} processingData - all the data needed to grade/process the response
+             * @fires Scorer#outcome
+             * @fires Scorer#error
+             */
+            process : function process(responses, processingData){
                 var self = this;
                 if(_.isFunction(provider.process)){
 
@@ -117,73 +118,21 @@ define(['jquery', 'lodash'], function($, _){
                      * @param {Object} processingData - all the data needed to grade/process the response
                      * @param {Function} done - call once the render is done
                      */
-                    provider.process.call(this, responses, processingData, function proceed(outcome){
+                    provider.process.call(this, responses, processingData, function proceed(outcome, state){
                         if(!_.isPlainObject(outcome)){
                             return self.trigger('error', 'The given outcome is not formated correctly. An object is expected but a ' + (typeof outcome) + ' given');
                         }
-                        self.trigger('outcome', outcome);
+
+                        /**
+                         * Outcomes are produced
+                         * @param {Object} outcome - outcome variables
+                         * @param {Object} state - the scoring state
+                         */
+                        self.trigger('outcome', outcome, state);
                     });
                 }
-           },
-
-           /**
-            * Attach an event handler.
-            * Calling `on` with the same eventName multiple times add callbacks: they
-            * will all be executed.
-            *
-            * @example scorer()
-            *               .on('outcome', function(outcome){
-            *
-            *               });
-            *
-            * @param {String} name - the name of the event to listen
-            * @param {Function} handler - the callback to run once the event is triggered. It's executed with the current scorer context (ie. this
-            * @returns {Scorer}
-            */
-            on : function(name, handler){
-                if(_.isString(name) && _.isFunction(handler)){
-                    events[name] = events[name] || [];
-                    events[name].push(handler);
-                }
-                return this;
-            },
-
-            /**
-            * Remove handlers for an event.
-            *
-            * @example scorer().off('outcome');
-            *
-            * @param {String} name - the event name
-            * @returns {Scorer}
-            */
-            off : function(name){
-                if(_.isString(name)){
-                    events[name] = [];
-                }
-                return this;
-            },
-
-            /**
-            * Trigger an event manually.
-            *
-            * @example scorer().trigger('outcome', {SCORE : 12});
-            *
-            * @param {String} name - the name of the event to trigger
-            * @param {*} data - arguments given to the handlers
-            * @returns {Scorer}
-            */
-            trigger : function(name, data){
-                var self = this;
-                if(_.isString(name) && _.isArray(events[name])){
-                    _.forEach(events[name], function(event){
-                        event.call(self, data);
-                    });
-                }
-                return this;
             }
-        };
-
-        return Scorer;
+        });
     };
 
     /**
