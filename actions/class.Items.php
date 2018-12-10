@@ -2,6 +2,7 @@
 
 use oat\generis\model\OntologyRdfs;
 use oat\oatbox\event\EventManagerAwareTrait;
+use oat\tao\model\controller\SignedFormInstance;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
@@ -185,7 +186,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('id', $item->getUri());
             }
 
-            $formContainer = new taoItems_actions_form_Item($itemClass, $item);
+            $formContainer = new SignedFormInstance($itemClass, $item);
             $myForm = $formContainer->getForm();
 
             if ($this->hasWriteAccess($item->getUri())) {
