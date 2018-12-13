@@ -1,24 +1,26 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
- * Copyright (c) 2014 (original work) Open Assessment Technologies SA;
- *               
- * 
+ *
+ * Copyright (c) 2014-2018 (original work) Open Assessment Technologies SA;
+ *
  */
 
+use oat\generis\model\OntologyAwareTrait;
+use oat\tao\helpers\FileUploadException;
+use oat\tao\model\accessControl\data\PermissionException;
 use oat\taoItems\model\media\ItemMediaResolver;
 /**
  * Items Content Controller provide access to the files of an item
@@ -28,20 +30,22 @@ use oat\taoItems\model\media\ItemMediaResolver;
  */
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
+    use OntologyAwareTrait;
 
     /**
      * Returns a json encoded array describign a directory
-     * 
+     *
      * @throws common_exception_MissingParameter
      * @return string
      */
-    public function files() {
+    public function files()
+    {
         if (!$this->hasRequestParameter('uri')) {
             throw new common_exception_MissingParameter('uri', __METHOD__);
         }
         $itemUri = $this->getRequestParameter('uri');
-        $item = new core_kernel_classes_Resource($itemUri);
-        
+        $item = $this->getResource($itemUri);
+
         if (!$this->hasRequestParameter('lang')) {
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
@@ -54,14 +58,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             if(is_array($filterParameter)){
                 foreach($filterParameter as $filter){
                     if(preg_match('/\/\*/', $filter['mime'])){
-                        common_Logger::w('Stars mime type are not yet supported, filter "'. $filter['mime'] . '" will fail');
+                        $this->logWarning('Stars mime type are not yet supported, filter "'. $filter['mime'] . '" will fail');
                     }
                     $filters[] = $filter['mime'];
                 }
             }
             else{
                 if(preg_match('/\/\*/', $filterParameter)){
-                    common_Logger::w('Stars mime type are not yet supported, filter "'. $filterParameter . '" will fail');
+                    $this->logWarning('Stars mime type are not yet supported, filter "'. $filterParameter . '" will fail');
                 }
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
@@ -82,20 +86,21 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
         $this->returnJson($data);
     }
-    
+
     /**
      * Returns whenever or not a file exists at the indicated path
-     * 
+     *
      * @throws common_exception_MissingParameter
      */
-    public function fileExists() {
+    public function fileExists()
+    {
         if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
             throw new common_exception_MissingParameter();
         }
-        
-        $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
+
+        $item = $this->getResource($this->getRequestParameter('uri'));
         $itemLang = $this->getRequestParameter('lang');
-        
+
         try {
             $resolver = new ItemMediaResolver($item, $itemLang);
             $asset = $resolver->resolve($this->getRequestParameter('path'));
@@ -103,24 +108,25 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $found = true;
         } catch (tao_models_classes_FileNotFoundException $exception) {
             $found = false;
-        }        
+        }
         return $this->returnJson(array(
             'exists' => $found
         ));
-    }   
-     
+    }
+
     /**
      * Upload a file to the item directory
-     * 
+     *
      * @throws common_exception_MissingParameter
      */
-    public function upload() {
+    public function upload()
+    {
         //as upload may be called multiple times, we remove the session lock as soon as possible
         try{
             session_write_close();
             if ($this->hasRequestParameter('uri')) {
                 $itemUri = $this->getRequestParameter('uri');
-                $item = new core_kernel_classes_Resource($itemUri);
+                $item = $this->getResource($itemUri);
             }
 
             if ($this->hasRequestParameter('lang')) {
@@ -141,7 +147,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
             $file = tao_helpers_Http::getUploadedFile('content');
             $fileTmpName = $file['tmp_name'].'_'.$file['name'];
-            
+
             if (!tao_helpers_File::copy($file['tmp_name'], $fileTmpName)) {
                 throw new common_exception_Error('impossible to copy '.$file['tmp_name'].' to '.$fileTmpName);
             }
@@ -154,7 +160,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                     $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'],
                         $asset->getMediaIdentifier());
                 } else {
-                    throw new \oat\tao\helpers\FileUploadException(__('The file you tried to upload is not valid'));
+                    throw new FileUploadException(__('The file you tried to upload is not valid'));
                 }
             } else {
                 $valid = false;
@@ -170,21 +176,21 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                     $filedata = $asset->getMediaSource()->add($fileTmpName, $file['name'],
                         $asset->getMediaIdentifier());
                 } else {
-                    throw new \oat\tao\helpers\FileUploadException(__('The file you tried to upload is not valid'));
+                    throw new FileUploadException(__('The file you tried to upload is not valid'));
                 }
             }
 
             $this->returnJson($filedata);
             return;
         }
-        catch(\oat\tao\model\accessControl\data\PermissionException $e){
+        catch(PermissionException $e){
             $message = $e->getMessage();
         }
-        catch(\oat\tao\helpers\FileUploadException $e){
+        catch(FileUploadException $e){
             $message = $e->getMessage();
         }
         catch(common_Exception $e){
-            common_Logger::w($e->getMessage());
+            $this->logWarning($e->getMessage());
             $message = _('Unable to upload file');
         }
         $this->returnJson(array('error' => $message));
@@ -192,12 +198,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     }
 
     /**
-     * Download a file to the item directory* 
+     * Download a file to the item directory*
      * @throws common_exception_MissingParameter
      * @throws common_exception_Error
      * @throws tao_models_classes_FileNotFoundException
      */
-    public function download() {
+    public function download()
+    {
         $svgzSupport = false;
         if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
             throw new common_exception_MissingParameter();
@@ -207,47 +214,48 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $svgzSupport = true;
         }
 
-        $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
+        $item = $this->getResource($this->getRequestParameter('uri'));
         $itemLang = $this->getRequestParameter('lang');
-        
+
         $resolver = new ItemMediaResolver($item, $itemLang);
 
         $rawParams = $this->getRequest()->getRawParameters();//have to use raw value to respect special characters in names
         $asset = $resolver->resolve($rawParams['path']);
         $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
-        
+
         $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
-        
+
         if ($info['mime'] != 'application/qti+xml') {
             header('Content-Type: ' . $info['mime']);
         }
-        
+
         \tao_helpers_Http::returnFile($filePath, false, $svgzSupport);
     }
-    
+
     /**
      * Delete a file from the item directory
-     * 
+     *
      * @throws common_exception_MissingParameter
      */
-    public function delete() {
+    public function delete()
+    {
         if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
             throw new common_exception_MissingParameter();
         }
-        
-        $item = new core_kernel_classes_Resource($this->getRequestParameter('uri'));
+
+        $item = $this->getResource($this->getRequestParameter('uri'));
         $itemLang = $this->getRequestParameter('lang');
-        
+
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($this->getRequestParameter('path'));
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
-        
+
         return $this->returnJson(array('deleted' => $deleted));
     }
-    
+
     /**
      * Get the media source based on the partial url
-     * 
+     *
      * @param string $urlPrefix
      * @param core_kernel_classes_resource $item
      * @param string $itemLang
