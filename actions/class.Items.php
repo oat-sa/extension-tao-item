@@ -1,14 +1,4 @@
 <?php
-
-use oat\generis\model\OntologyRdfs;
-use oat\oatbox\event\EventManagerAwareTrait;
-use oat\tao\model\controller\SignedFormInstance;
-use oat\tao\model\lock\LockManager;
-use oat\taoItems\model\event\ItemRdfUpdatedEvent;
-use oat\taoItems\model\event\ItemUpdatedEvent;
-use oat\taoItems\model\ItemModelStatus;
-use oat\tao\model\resources\ResourceWatcher;
-
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,8 +17,19 @@ use oat\tao\model\resources\ResourceWatcher;
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ *               2012-2018 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
+use oat\generis\model\OntologyAwareTrait;
+use oat\generis\model\OntologyRdfs;
+use oat\oatbox\event\EventManagerAwareTrait;
+use oat\tao\model\lock\LockManager;
+use oat\taoItems\model\event\ItemRdfUpdatedEvent;
+use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\taoItems\model\ItemModelStatus;
+use oat\tao\model\resources\ResourceWatcher;
+use oat\tao\model\controller\SignedFormInstance;
 
 /**
  * Items Controller provide actions performed from url resolution
@@ -39,32 +40,20 @@ use oat\tao\model\resources\ResourceWatcher;
  */
 class taoItems_actions_Items extends tao_actions_SaSModule
 {
-
+    use OntologyAwareTrait;
     use EventManagerAwareTrait;
-
-    /**
-     * constructor: initialize the service and the default data
-     * @return  Items
-     */
-    public function __construct(){
-
-        parent::__construct();
-
-        //the service is initialized by default
-        $this->service = taoItems_models_classes_ItemsService::singleton();
-        $this->defaultData();
-    }
 
     /**
      * overwrite the parent defaultData, adding the item label to be sent to the view
      */
-    protected function defaultData(){
+    protected function defaultData()
+    {
         parent::defaultData();
         if($this->hasRequestParameter('uri')){
             $uri = $this->getRequestParameter('uri');
             $classUri = $this->getRequestParameter('classUri');
             if(!empty($uri)){
-                $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($uri));
+                $item = $this->getResource(tao_helpers_Uri::decode($uri));
                 $this->setData('label', $item->getLabel());
                 $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', array('uri' => $uri, 'classUri' => $classUri)));
                 $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));
@@ -72,29 +61,25 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         }
     }
 
-    /*
-     * conveniance methods
-     */
-
     /**
      * (non-PHPdoc)
      * @see tao_actions_RdfController::getClassService()
      * @return taoItems_models_classes_ItemsService
      */
-    protected function getClassService(){
-        return taoItems_models_classes_ItemsService::singleton();
+    protected function getClassService()
+    {
+        if (is_null($this->service)) {
+            $this->service = taoItems_models_classes_ItemsService::singleton();
+        }
+        return $this->service;
     }
-
-    /*
-     * controller actions
-     */
-
 
     /**
      * overwrite the parent addInstance to add the requiresRight only in Items
      * @requiresRight id WRITE
      */
-    public function addInstance(){
+    public function addInstance()
+    {
         parent::addInstance();
     }
 
@@ -102,7 +87,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * overwrite the parent addSubClass to add the requiresRight only in Items
      * @requiresRight id WRITE
      */
-    public function addSubClass(){
+    public function addSubClass()
+    {
         parent::addSubClass();
     }
 
@@ -159,21 +145,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * overwrite the parent getOntologyData to add the requiresRight only in Items
-     * @see tao_actions_TaoModule::removeClassProperty()
-     * @requiresRight classUri WRITE
-     */
-    public function removeClassProperty()
-    {
-        return parent::removeClassProperty();
-    }
-
-    /**
      * edit an item instance
      * @requiresRight id READ
      */
     public function editItem()
     {
+        $this->defaultData();
+
         $itemClass = $this->getCurrentClass();
         $item = $this->getCurrentInstance();
 
@@ -181,7 +159,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             // my lock
             $lock = LockManager::getImplementation()->getLockData($item);
-            if (!is_null($lock) && $lock->getOwnerId() == common_session_SessionManager::getSession()->getUser()->getIdentifier()) {
+            if (!is_null($lock) && $lock->getOwnerId() == $this->getSession()->getUser()->getIdentifier()) {
                 $this->setData('lockDate', $lock->getCreationTime());
                 $this->setData('id', $item->getUri());
             }
@@ -196,7 +174,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                         $properties = $myForm->getValues();
                         if (array_key_exists('warning', $properties)) {
-                            common_Logger::w( 'Warning property is still in use', ['backend']);
+                            $this->logWarning('Warning property is still in use', ['backend']);
                             unset($properties['warning']);
                         }
 
@@ -244,8 +222,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * Edit a class
      * @requiresRight id READ
      */
-    public function editItemClass(){
-        $clazz = new core_kernel_classes_Class($this->getRequestParameter('id'));
+    public function editItemClass()
+    {
+        $this->defaultData();
+
+        $clazz = $this->getClass($this->getRequestParameter('id'));
 
         if($this->hasRequestParameter('property_mode')){
             $this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
@@ -310,7 +291,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * @requiresRight uri WRITE
      * @return void
      */
-    public function translateInstance(){
+    public function translateInstance()
+    {
+        $this->defaultData();
         parent::translateInstance();
         $this->setView('form.tpl', 'tao');
     }
@@ -319,8 +302,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      * Item Authoring tool loader action
      * @requiresRight id WRITE
      */
-    public function authoring(){
-        $item = new core_kernel_classes_Resource($this->getRequestParameter('id'));
+    public function authoring()
+    {
+        $this->defaultData();
+
+        $item = $this->getResource($this->getRequestParameter('id'));
 
         if(!$this->isLocked($item, 'item_locked.tpl')){
 
@@ -332,7 +318,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
-                        LockManager::getImplementation()->setLock($item, common_session_SessionManager::getSession()->getUser()->getIdentifier());
+                        LockManager::getImplementation()->setLock($item, $this->getSession()->getUser()->getIdentifier());
 
                         return $this->forwardUrl($authoringUrl);
                     }
