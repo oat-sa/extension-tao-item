@@ -52,7 +52,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $uri = $this->getRequestParameter('uri');
             $classUri = $this->getRequestParameter('classUri');
             if(!empty($uri)){
-                $item = $this->getClass(tao_helpers_Uri::decode($uri));
+                $item = $this->getResource(tao_helpers_Uri::decode($uri));
                 $this->setData('label', $item->getLabel());
                 $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', array('uri' => $uri, 'classUri' => $classUri)));
                 $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));

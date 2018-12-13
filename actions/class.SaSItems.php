@@ -65,7 +65,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
 			if($myForm->isValid()){
 				$binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
 				$instance = $binder->bind($myForm->getValues());
-				$instance = $this->service->setDefaultItemContent($instance);
+				$instance = $this->getClassService()->setDefaultItemContent($instance);
 				$this->setData('message', __('Item saved'));
 			}
 		}
@@ -105,7 +105,7 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
 		);
 
 		$properties = array();
-		foreach($this->service->getClazzProperties($itemClass) as $property){
+		foreach($this->getClassService()->getClazzProperties($itemClass) as $property){
 			if(in_array($property->getUri(), $hiddenProperties)){
 				continue;
 			}
