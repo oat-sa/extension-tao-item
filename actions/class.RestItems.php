@@ -21,15 +21,18 @@
  */
 class taoItems_actions_RestItems extends tao_actions_CommonRestModule
 {
-
-	public function __construct()
+    /**
+     * @return taoItems_models_classes_CrudItemsService
+     */
+    protected function getCrudService()
     {
-		parent::__construct();
-		//The service taht implements or inherits get/getAll/getRootClass ... for that particular type of resources
-		$this->service = taoItems_models_classes_CrudItemsService::singleton();
-	}
+        if (!$this->service) {
+            $this->service = taoItems_models_classes_CrudItemsService::singleton();
+        }
+        return $this->service;
+    }
 
-	/**
+    /**
 	 * Optionnaly a specific rest controller may declare
 	 * aliases for parameters used for the rest communication
 	 */
@@ -41,19 +44,16 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
 
 	    ));
 	}
+
 	/**
 	 * Optionnal Requirements for parameters to be sent on every service
-	 *
+     * you may use either the alias or the uri, if the parameter identifier
+     * is set it will become mandatory for the method/operation in $key
+     * Default Parameters Requirents are applied
+     * type by default is not required and the root class type is applied
 	 */
 	protected function getParametersRequirements()
     {
-	    return array(
-		/** you may use either the alias or the uri, if the parameter identifier
-		 *  is set it will become mandatory for the method/operation in $key
-		* Default Parameters Requirents are applied
-		* type by default is not required and the root class type is applied
-		*/
-
-	    );
+	    return array();
 	}
 }
