@@ -36,7 +36,6 @@ define([
 
 
     var overlay,
-        container,
         orientation = 'landscape',
         previewType = 'standard',
         previewTypes = {
@@ -60,7 +59,6 @@ define([
         typeDependant,
         $feedbackBox,
         $console,
-        previewContainerMaxWidth,
         itemUri,
         state,
         winScrollObj = { x:0, y:0 };
@@ -115,11 +113,13 @@ define([
      * @param {String} newType
      */
     var _setPreviewType = function (newType) {
+        var re;
 
         if (newType === previewType) {
             return;
         }
-        var re = new RegExp(previewType, 'g');
+
+        re = new RegExp(previewType, 'g');
 
         typeDependant.each(function (i, el) {
             el.className = el.className.replace(re, newType);
@@ -136,12 +136,15 @@ define([
      * @private
      */
     var _setOrientation = function (newOrientation) {
+        var re;
+        var previewFrame;
+
         if (newOrientation === orientation) {
             return;
         }
 
-        var re = new RegExp(orientation, 'g'),
-            previewFrame = $('.preview-outer-frame')[0];
+        re = new RegExp(orientation, 'g');
+        previewFrame = $('.preview-outer-frame')[0];
 
         previewFrame.className = previewFrame.className.replace(re, newOrientation);
 
@@ -259,7 +262,6 @@ define([
             _setPreviewType(type);
             container.css(sizeSettings);
             _scale();
-            _adaptFrameSize();
         });
 
         previewDeviceSelectors.each(function () {
@@ -299,8 +301,6 @@ define([
             _setOrientation(newOrientation);
 
             _scale();
-            _adaptFrameSize();
-
 
         }).select2({
             minimumResultsForSearch: -1
@@ -320,7 +320,6 @@ define([
 
         $closer.on('click', function () {
             $doc.trigger('itemunload.preview');
-//            commonRenderer.setContext($('.item-editor-item'));
 
             window.scrollTo(winScrollObj.x, winScrollObj.y);
 
@@ -433,29 +432,6 @@ define([
             minimumResultsForSearch: -1
         });
 
-    };
-
-    var _adaptFrameSize = function () {
-
-        var $previewContainer = $('.preview-container'),
-            $iframe = (function () {
-                var _iframe = $previewContainer.find('iframe');
-                _iframe.height('');
-                return _iframe;
-            }()),
-            contentHeight = $iframe.contents().outerHeight(),
-            containerHeight = $previewContainer.innerHeight();
-
-        if (previewType !== 'standard') {
-            if (contentHeight < containerHeight) {
-                contentHeight = containerHeight;
-            }
-        }
-        else {
-            $previewContainer.height(contentHeight + 10);
-        }
-
-        $iframe.height(contentHeight);
     };
 
 
@@ -577,7 +553,6 @@ define([
         }
 
         $('.preview-overlay').remove();
-        container = null;
         overlay = $(previewTpl({
             mobileDevices: _getDeviceSelectorData('mobile'),
             desktopDevices: _getDeviceSelectorData('desktop'),
@@ -588,8 +563,6 @@ define([
         }));
 
         $body.append(overlay);
-
-        previewContainerMaxWidth = parseInt($('.preview-container').css('max-width'), 10);
 
         $feedbackBox = overlay.find('.preview-message-box');
         if ($.cookie('hidePreviewFeedback')) {
