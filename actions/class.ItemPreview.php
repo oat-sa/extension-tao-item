@@ -17,9 +17,10 @@
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *               2013 (update and modification) Open Assessment Technologies SA;
+ *               2013-2018(update and modification) Open Assessment Technologies SA;
  */
 
+use oat\generis\model\OntologyAwareTrait;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
@@ -33,8 +34,11 @@ use oat\taoItems\model\preview\OntologyItemNotFoundException;
  */
 class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 {
-    public function forwardMe(){
-        $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
+    use OntologyAwareTrait;
+
+    public function forwardMe()
+    {
+        $item = $this->getResource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
         $lang = DEFAULT_LANG;
         $previewUrl = taoItems_models_classes_ItemsService::singleton()->getPreviewUrl($item, $lang);
 
@@ -49,8 +53,9 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     /**
      * @requiresRight uri READ
      */
-    public function index(){
-        $item = new core_kernel_classes_Resource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
+    public function index()
+    {
+        $item = $this->getResource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
         $itemService = taoItems_models_classes_ItemsService::singleton();
         if($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)){
@@ -69,12 +74,14 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $this->setView('ItemPreview/index.tpl', 'taoItems');
     }
 
-    protected function getPreviewUrl($item, $options = array()){
+    protected function getPreviewUrl($item, $options = array())
+    {
         $code = base64_encode($item->getUri());
         return _url('render/'.$code.'/index', 'ItemPreview', 'taoItems', $options);
     }
 
-    public function render(){
+    public function render()
+    {
         $relPath = tao_helpers_Request::getRelativeUrl();
         list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);
 
@@ -83,7 +90,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         if (!common_Utils::isUri($uri)) {
             throw new common_exception_BadRequest('"'.$codedUri.'" does not decode to a valid item URI');
         }
-        $item = new core_kernel_classes_Resource($uri);
+        $item = $this->getResource($uri);
         if($path === 'index'){
             $this->renderItem($item);
         } else {
@@ -91,8 +98,9 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         }
     }
 
-    protected function getRenderedItem($item){
-        $itemModel = $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
+    protected function getRenderedItem($item)
+    {
+        $itemModel = $item->getOnePropertyValue($this->getProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
         $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
         if(is_null($impl)){
             throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
@@ -100,13 +108,14 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         return $impl->render($item, '');
     }
 
-    private function renderItem($item){
+    private function renderItem($item)
+    {
         echo $this->getRenderedItem($item);
     }
 
-    private function renderResource($item, $path){
-
-        $lang = common_session_SessionManager::getSession()->getDataLanguage();
+    private function renderResource($item, $path)
+    {
+        $lang = $this->getSession()->getDataLanguage();
         $resolver = new ItemMediaResolver($item, $lang);
         $asset = $resolver->resolve($path);
         if ($asset->getMediaSource() instanceof HttpSource) {
@@ -122,7 +131,8 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
      *
      * @return string A string representing JavaScript instructions.
      */
-    protected function getResultServer(){
+    protected function getResultServer()
+    {
         return array(
             'module' => 'taoItems/runtime/ConsoleResultServer'
         );

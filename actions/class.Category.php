@@ -14,11 +14,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2016-2018 (original work) Open Assessment Technologies SA
  *
  */
 
 use oat\taoItems\model\CategoryService;
+use oat\generis\model\OntologyAwareTrait;
 
 /**
  * Category controller
@@ -28,6 +29,7 @@ use oat\taoItems\model\CategoryService;
  */
 class taoItems_actions_Category extends tao_actions_CommonModule
 {
+    use OntologyAwareTrait;
 
     /**
      * Request
@@ -43,9 +45,9 @@ class taoItems_actions_Category extends tao_actions_CommonModule
             return $this->returnBadParameter('The class URI is required');
         }
 
-        $class = new \core_kernel_classes_Class($id);
+        $class = $this->getClass($id);
 
-        $service = $this->getServiceManager()->get(CategoryService::SERVICE_ID);
+        $service = $this->getServiceLocator()->get(CategoryService::SERVICE_ID);
 
         $data = [];
         $properties = $service->getElligibleProperties($class);
@@ -75,7 +77,7 @@ class taoItems_actions_Category extends tao_actions_CommonModule
             return $this->returnBadParameter('The exposed value is missing or incorrect');
         }
 
-        $service = $this->getServiceManager()->get(CategoryService::SERVICE_ID);
+        $service = $this->getServiceLocator()->get(CategoryService::SERVICE_ID);
         $service->exposeCategory(new \core_kernel_classes_Property($id), $exposed == 'true');
 
         return $this->returnSuccess(true);
@@ -84,7 +86,7 @@ class taoItems_actions_Category extends tao_actions_CommonModule
     /**
      * Format response when a wrong/missing parameter is sent
      *
-     * @param string $message the error message 
+     * @param string $message the error message
      *
      * @return void
      */
@@ -99,7 +101,7 @@ class taoItems_actions_Category extends tao_actions_CommonModule
     }
 
     /**
-     * Format successful response 
+     * Format successful response
      *
      * @param mixed $data the response data
      *

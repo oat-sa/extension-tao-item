@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint86\n"
-"PO-Revision-Date: 2018-09-26T12:04:41\n"
+"Project-Id-Version: TAO 3.3.0-sprint91\n"
+"PO-Revision-Date: 2018-12-14T14:15:27\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -113,6 +113,10 @@ msgid "Move"
 msgstr "Verplaatsen"
 
 #, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
 msgid "New class"
 msgstr "Nieuwe klasse"
 
@@ -162,10 +166,6 @@ msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Dit voorbeeld kan geschaald worden om op uw scherm te passen. Het eindresultaat kan afwijken."
-
-#, tao-public
-msgid "Translate"
-msgstr "Vertalen"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Niet in staat om de bronnen voor de taal %s te kopiëren "
