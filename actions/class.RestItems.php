@@ -33,7 +33,7 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
     }
 
     /**
-	 * Optionnaly a specific rest controller may declare
+	 * Optionally a specific rest controller may declare
 	 * aliases for parameters used for the rest communication
 	 */
 	protected function getParametersAliases()
@@ -46,10 +46,10 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
 	}
 
 	/**
-	 * Optionnal Requirements for parameters to be sent on every service
+	 * Optional Requirements for parameters to be sent on every service
      * you may use either the alias or the uri, if the parameter identifier
      * is set it will become mandatory for the method/operation in $key
-     * Default Parameters Requirents are applied
+     * Default Parameters Requirements are applied
      * type by default is not required and the root class type is applied
 	 */
 	protected function getParametersRequirements()
