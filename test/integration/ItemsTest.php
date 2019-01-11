@@ -20,7 +20,7 @@
  */
 namespace oat\taoItems\test;
 
-use oat\generis\model\data\ModelManager;
+use oat\generis\test\GenerisTestCase;
 use oat\tao\model\TaoOntology;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\test\TaoPhpUnitTestRunner;
@@ -32,18 +32,20 @@ use taoItems_models_classes_itemModel;
 use taoItems_models_classes_ItemsService;
 
 /**
- *
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
  */
-class ItemsTestCase extends TaoPhpUnitTestRunner
+class ItemsTest extends GenerisTestCase
 {
-
     /**
-     *
      * @var \taoItems_models_classes_ItemsService
      */
-    protected $itemsService = null;
+    private $itemsService;
+
+    /**
+     * @var \core_kernel_persistence_smoothsql_SmoothModel
+     */
+    private $ontologyMock;
 
     /**
      * tests initialization
@@ -52,7 +54,11 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         TaoPhpUnitTestRunner::initTest();
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
+
+        $this->ontologyMock = $this->getOntologyMock();
+
         $this->itemsService = \taoItems_models_classes_ItemsService::singleton();
+        $this->itemsService->setModel($this->ontologyMock);
     }
 
     /**
@@ -62,10 +68,8 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     public function testService()
     {
-
         $this->assertInstanceOf(\tao_models_classes_Service::class, $this->itemsService);
         $this->assertInstanceOf(taoItems_models_classes_ItemsService::class, $this->itemsService);
-
     }
 
     /**
@@ -192,27 +196,33 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
 
     public function testGetModelRuntime()
     {
-        $item = $this->prophesize('core_kernel_classes_Resource');
-        $itemModel = $this->prophesize('core_kernel_classes_Resource');
-        $itemModel->getOnePropertyValue($this->createTestProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME))
-            ->willReturn('returnValue');
-        $item->getOnePropertyValue($this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
-            ->willReturn($itemModel->reveal());
-        
-        $this->assertEquals('returnValue', $this->itemsService->getModelRuntime($item->reveal()));
+        $item = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
+        $itemModel = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
+
+        $itemModel->setPropertyValue(
+            $this->createTestProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME),
+            'returnValue'
+        );
+        $item->setPropertyValue(
+            $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL),
+            $itemModel
+        );
+
+        $this->assertEquals('returnValue', $this->itemsService->getModelRuntime($item));
     }
 
     public function testGetItemModel()
     {
-        $item = $this->prophesize('core_kernel_classes_Resource');
-        $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
-        $itemModel = $itemModelProphecy->reveal();
+        $item = $this->ontologyMock->getResource('item');
+        $this->assertNull($this->itemsService->getItemModel($item));
 
-        $item->getOnePropertyValue($this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
-            ->willReturn($itemModel);
-        $this->assertEquals($itemModel, $this->itemsService->getItemModel($item->reveal()));
+        $model = new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
+        $item->setPropertyValue(
+            $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL),
+            $model
+        );
+        $this->assertEquals($model, $this->itemsService->getItemModel($item));
     }
-    
     
     public function testGetPreviewUrl()
     {
@@ -227,36 +237,34 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
 
     public function testGetItemModelImplementation()
     {
-        $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
+        $item = $this->ontologyMock->getResource('item');
         $property = $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE);
 
-        $itemModelProphecy->getOnePropertyValue($property)->willReturn('#fakeUri');
+        $item->setPropertyValue($property, 'fakeUri');
 
         try {
-            $this->itemsService->getItemModelImplementation($itemModelProphecy->reveal());
+            $this->itemsService->getItemModelImplementation($item);
             $this->fail('an exception should have been raised');
         }
         catch (\common_Exception $e) {
             $this->assertInstanceOf('common_exception_Error', $e);
-            $this->assertEquals('Item model service #fakeUri not found', $e->getMessage());
+            $this->assertEquals('Item model service fakeUri not found', $e->getMessage());
         }
     }
 
     public function testIsItemModelDefined()
     {
-        $item = $this->prophesize('core_kernel_classes_Resource');
-        
-        $this->assertFalse($this->itemsService->isItemModelDefined($item->reveal()));
+        $item = $this->ontologyMock->getResource('item');
+
+        $this->assertFalse($this->itemsService->isItemModelDefined($item));
 
         $property = $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
-        
-        $item->getOnePropertyValue($property)
-            ->willReturn('notnull');        
-        $this->assertTrue($this->itemsService->isItemModelDefined($item->reveal()));
-        
-        $item->getOnePropertyValue($property)
-            ->willReturn(new \core_kernel_classes_Literal('notnull'));
-        $this->assertTrue($this->itemsService->isItemModelDefined($item->reveal()));
+
+        $item->setPropertyValue($property, 'notnull');
+        $this->assertTrue($this->itemsService->isItemModelDefined($item));
+
+        $item->setPropertyValue($property, new \core_kernel_classes_Literal('notnull'));
+        $this->assertTrue($this->itemsService->isItemModelDefined($item));
     }
 
     /**
@@ -297,9 +305,6 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
      */
     private function createTestProperty($type)
     {
-        $property = new core_kernel_classes_Property($type);
-        $property->setModel(ModelManager::getModel());
-
-        return $property;
+        return $this->ontologyMock->getProperty($type);
     }
 }
