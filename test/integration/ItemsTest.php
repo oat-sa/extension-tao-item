@@ -20,6 +20,7 @@
  */
 namespace oat\taoItems\test;
 
+use oat\generis\model\data\ModelManager;
 use oat\tao\model\TaoOntology;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\test\TaoPhpUnitTestRunner;
@@ -102,6 +103,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     public function testInstantiateClass($class)
     {
         $ItemInstanceLabel = 'Item instance';
+
         return $this->instantiateClass($class, $ItemInstanceLabel);
     }
 
@@ -113,6 +115,7 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     public function testInstantiateSubClass($class)
     {
         $subItemInstanceLabel = 'subItem instance';
+
         return $this->instantiateClass($class, $subItemInstanceLabel);
     }
 
@@ -127,14 +130,14 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertInstanceOf(core_kernel_classes_Resource::class, $instance);
         $this->assertEquals($label, $instance->getLabel());
 
-        $instance->removePropertyValues(new \core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
+        $instance->removePropertyValues($this->createTestProperty(OntologyRdfs::RDFS_LABEL));
         $instance->setLabel($label);
 
 
         $this->assertInstanceOf(core_kernel_classes_Resource::class, $instance);
         $this->assertEquals($label, $instance->getLabel());
-        return $instance;
 
+        return $instance;
     }
 
 
@@ -147,7 +150,10 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertFalse($this->itemsService->hasItemModel($instance, array(ItemModel::MODEL_URI)));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
-        $instance->setPropertyValue(new \core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL), ItemModel::MODEL_URI);
+        $instance->setPropertyValue(
+            $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL),
+            ItemModel::MODEL_URI
+        );
 
         $directory = $this->itemsService->getItemDirectory($instance);
         $this->assertTrue($directory->getFile('qti.xml')->write('test'));
@@ -184,27 +190,26 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
     }
 
-    // @todo fix unexpected method call
     public function testGetModelRuntime()
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
         $itemModel = $this->prophesize('core_kernel_classes_Resource');
-        $itemModel->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME))
+        $itemModel->getOnePropertyValue($this->createTestProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME))
             ->willReturn('returnValue');
-        $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
+        $item->getOnePropertyValue($this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
             ->willReturn($itemModel->reveal());
         
         $this->assertEquals('returnValue', $this->itemsService->getModelRuntime($item->reveal()));
     }
 
-    // @todo fix unexpected method call
     public function testGetItemModel()
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
         $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
         $itemModel = $itemModelProphecy->reveal();
-        $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
-        ->willReturn($itemModel);
+
+        $item->getOnePropertyValue($this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
+            ->willReturn($itemModel);
         $this->assertEquals($itemModel, $this->itemsService->getItemModel($item->reveal()));
     }
     
@@ -213,62 +218,44 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
         $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
-        ->willReturn(array());
-        $itemModel = $itemModelProphecy->reveal();
+
+        $itemModelProphecy->getPropertyValues($this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
+            ->willReturn(array());
+
         $this->assertNull($this->itemsService->getPreviewUrl($item->reveal()));
-                
     }
 
-    // @todo fix unexpected method call
     public function testGetItemModelImplementation()
     {
         $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
-            ->willReturn(array('#fakeUri','#toto'));
-        $itemModelProphecy->getLabel()->willReturn('foo');
-        
+        $property = $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE);
+
+        $itemModelProphecy->getOnePropertyValue($property)->willReturn('#fakeUri');
+
         try {
             $this->itemsService->getItemModelImplementation($itemModelProphecy->reveal());
             $this->fail('an exception should have been raised');
         }
         catch (\common_Exception $e) {
             $this->assertInstanceOf('common_exception_Error', $e);
-            $this->assertEquals('Conflicting services for itemmodel foo', $e->getMessage());         
+            $this->assertEquals('Item model service #fakeUri not found', $e->getMessage());
         }
-        
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
-        ->willReturn(array('#fakeUri'));
-        $itemModelProphecy->getLabel()->willReturn('foo');
-        
-        try {
-            $this->itemsService->getItemModelImplementation($itemModelProphecy->reveal());
-            $this->fail('an exception should have been raised');
-        }
-        catch (\common_Exception $e) {
-            $this->assertInstanceOf('common_exception_Error', $e);
-            $this->assertEquals('Item model service #fakeUri not found, or not compatible for item model foo', $e->getMessage());
-        
-        }
-        
-        $itemModelProphecy->getPropertyValues(new core_kernel_classes_Property(\taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
-            ->willReturn(array());
-        $this->assertNull($this->itemsService->getItemModelImplementation($itemModelProphecy->reveal()));
     }
 
-    // @todo fix unexpected method call
     public function testIsItemModelDefined()
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
         
         $this->assertFalse($this->itemsService->isItemModelDefined($item->reveal()));
+
+        $property = $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
         
-        $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
+        $item->getOnePropertyValue($property)
             ->willReturn('notnull');        
         $this->assertTrue($this->itemsService->isItemModelDefined($item->reveal()));
         
-        $item->getOnePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL))
-        ->willReturn(new \core_kernel_classes_Literal('notnull'));
+        $item->getOnePropertyValue($property)
+            ->willReturn(new \core_kernel_classes_Literal('notnull'));
         $this->assertTrue($this->itemsService->isItemModelDefined($item->reveal()));
     }
 
@@ -304,4 +291,15 @@ class ItemsTestCase extends TaoPhpUnitTestRunner
         $this->assertFalse($instance->exists());
     }
 
+    /**
+     * @param string $type
+     * @return core_kernel_classes_Property
+     */
+    private function createTestProperty($type)
+    {
+        $property = new core_kernel_classes_Property($type);
+        $property->setModel(ModelManager::getModel());
+
+        return $property;
+    }
 }
