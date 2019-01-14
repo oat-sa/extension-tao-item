@@ -197,7 +197,7 @@ class ItemsTest extends GenerisTestCase
     public function testGetModelRuntime()
     {
         $item = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
-        $itemModel = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
+        $itemModel = new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
 
         $itemModel->setPropertyValue(
             $this->createTestProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME),
