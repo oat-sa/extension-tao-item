@@ -1,19 +1,19 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *               2016 (update and modification) Open Assessment Technologies SA
@@ -182,22 +182,22 @@ class ItemsTest extends GenerisTestCase
         $clazz = $this->prophesize('core_kernel_classes_Class');
         $clazz->getUri()->willReturn(TaoOntology::ITEM_CLASS_URI);
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
-        
-        
+
+
         $clazz = $this->prophesize('core_kernel_classes_Class');
         $clazz->getUri()->willReturn('uri');
-        
+
         $parent = $this->prophesize('core_kernel_classes_Class');
         $parent->getUri()->willReturn(TaoOntology::ITEM_CLASS_URI);
-        
+
         $clazz->getParentClasses(true)->willReturn(array($parent->reveal()));
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
     }
 
     public function testGetModelRuntime()
     {
-        $item = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
-        $itemModel = new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
+        $item = $this->ontologyMock->getResource('resource');
+        $itemModel = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
 
         $itemModel->setPropertyValue(
             $this->createTestProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME),
@@ -216,14 +216,14 @@ class ItemsTest extends GenerisTestCase
         $item = $this->ontologyMock->getResource('item');
         $this->assertNull($this->itemsService->getItemModel($item));
 
-        $model = new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
+        $model = $this->ontologyMock->getResource(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL);
         $item->setPropertyValue(
             $this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL),
             $model
         );
-        $this->assertEquals($model, $this->itemsService->getItemModel($item));
+        $this->assertEquals($model->getUri(), $this->itemsService->getItemModel($item)->getUri());
     }
-    
+
     public function testGetPreviewUrl()
     {
         $item = $this->prophesize('core_kernel_classes_Resource');
