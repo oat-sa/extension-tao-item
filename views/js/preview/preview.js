@@ -322,12 +322,13 @@ define([
             $doc.trigger('itemunload.preview');
 
             window.scrollTo(winScrollObj.x, winScrollObj.y);
-
+            
             overlay.hide();
             $body.removeClass('preview-mode');
 
             //empty the iframe
             $iframe.off('load').attr('src', 'about:blank');
+            $(".preview-container").remove();
         });
 
         $doc.keyup(function (e) {
