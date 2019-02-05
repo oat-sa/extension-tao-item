@@ -36,7 +36,8 @@ use oat\tao\helpers\Template;
                 $('#preview-submit-button')
                     .css('display', 'inline')
                     .off('click')
-                    .on('click', function () {
+                    .on('click', function (e) {
+                        e.preventDefault();
                         $('#preview-container')[0].contentWindow.qtiRunner.validate();
                     });
 
