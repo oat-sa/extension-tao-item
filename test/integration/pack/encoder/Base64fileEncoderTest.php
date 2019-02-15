@@ -17,7 +17,7 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\pack;
+namespace oat\taoItems\test\integration\pack\encoder;
 
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaAsset;

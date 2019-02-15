@@ -18,7 +18,7 @@
  *
  */
 
-namespace oat\taoItems\test\preview;
+namespace oat\taoItems\test\integration\preview;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\ClientLibConfigRegistry;

@@ -19,6 +19,8 @@
  *
  */
 
+namespace oat\taoItems\test\integration;
+
 use oat\tao\test\TaoPhpUnitTestRunner;
 
 /**

@@ -18,7 +18,8 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *               2016 (update and modification) Open Assessment Technologies SA
  */
-namespace oat\taoItems\test;
+
+namespace oat\taoItems\test\integration;
 
 use oat\generis\test\GenerisTestCase;
 use oat\tao\model\TaoOntology;
