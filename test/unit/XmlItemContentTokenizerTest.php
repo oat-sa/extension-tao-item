@@ -22,6 +22,7 @@
 namespace oat\taoItems\test\unit;
 
 use oat\generis\test\TestCase;
+use taoItems_models_classes_search_XmlItemContentTokenizer as XmlItemContentTokenizer;
 
 /**
  * This class aims at testing tao_helpers_Xhtml.
@@ -34,7 +35,7 @@ class XmlItemContentTokenizerTest extends TestCase
 {
     public function testSimpleXmlContent()
     {
-        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->loadXML('
             <myTag attribute="blabla">
               <p>
@@ -43,7 +44,7 @@ class XmlItemContentTokenizerTest extends TestCase
             </myTag>
         ');
         
-        $tokenizer = new taoItems_models_classes_search_XmlItemContentTokenizer();
+        $tokenizer = new XmlItemContentTokenizer();
         $tokens = $tokenizer->getStrings($dom);
         
         $this->assertEquals('A paragraph', $tokens[0]);
