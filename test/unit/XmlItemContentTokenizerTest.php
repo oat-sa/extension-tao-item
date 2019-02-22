@@ -22,6 +22,7 @@
 namespace oat\taoItems\test\unit;
 
 use oat\generis\test\TestCase;
+use DOMDocument;
 use taoItems_models_classes_search_XmlItemContentTokenizer as XmlItemContentTokenizer;
 
 /**
@@ -35,7 +36,7 @@ class XmlItemContentTokenizerTest extends TestCase
 {
     public function testSimpleXmlContent()
     {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->loadXML('
             <myTag attribute="blabla">
               <p>

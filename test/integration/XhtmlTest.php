@@ -21,7 +21,11 @@
 
 namespace oat\taoItems\test\integration;
 
-use oat\tao\test\TaoPhpUnitTestRunner;
+use oat\generis\test\TestCase;
+use DOMDocument;
+use DOMException;
+use DOMXPath;
+use taoItems_helpers_Xhtml as taoItems_helpers_Xhtml;
 
 /**
  * This class aims at testing tao_helpers_Xhtml.
@@ -30,7 +34,7 @@ use oat\tao\test\TaoPhpUnitTestRunner;
  * @package taoItems
  
  */
-class XhtmlTestCase extends TaoPhpUnitTestRunner {
+class XhtmlTestCase extends TestCase {
 
 	public function testGetScriptElements() {
 		$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'xhtml' . DIRECTORY_SEPARATOR . 'raw.html';
