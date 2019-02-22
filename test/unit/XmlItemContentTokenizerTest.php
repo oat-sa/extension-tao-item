@@ -19,9 +19,9 @@
  *
  */
 
-namespace oat\taoItems\test\integration;
+namespace oat\taoItems\test\unit;
 
-use oat\tao\test\TaoPhpUnitTestRunner;
+use oat\generis\test\TestCase;
 
 /**
  * This class aims at testing tao_helpers_Xhtml.
@@ -30,7 +30,7 @@ use oat\tao\test\TaoPhpUnitTestRunner;
  * @package taoItems
  
  */
-class XmlItemContentTokenizerTest extends TaoPhpUnitTestRunner 
+class XmlItemContentTokenizerTest extends TestCase
 {
     public function testSimpleXmlContent()
     {

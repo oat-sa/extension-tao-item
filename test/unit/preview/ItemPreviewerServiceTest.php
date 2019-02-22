@@ -18,12 +18,12 @@
  *
  */
 
-namespace oat\taoItems\test\integration\preview;
+namespace oat\taoItems\test\unit\preview;
 
+use oat\generis\test\TestCase;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\ClientLibConfigRegistry;
 use oat\tao\model\modules\DynamicModule;
-use oat\tao\test\TaoPhpUnitTestRunner;
 use oat\taoItems\model\preview\ItemPreviewerService;
 use Prophecy\Argument;
 use Prophecy\Prophet;
@@ -33,7 +33,7 @@ use Prophecy\Prophet;
  *
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
-class ItemPreviewerServiceTest extends TaoPhpUnitTestRunner
+class ItemPreviewerServiceTest extends TestCase
 {
 
     //data to stub the registry content

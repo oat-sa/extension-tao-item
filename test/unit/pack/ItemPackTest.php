@@ -17,10 +17,10 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\integration\pack\encoder;
+namespace oat\taoItems\test\unit\pack;
 
+use oat\generis\test\TestCase;
 use oat\taoItems\model\pack\ItemPack;
-use oat\tao\test\TaoPhpUnitTestRunner;
 
 /**
  * Test the class {@link ItemPack}
@@ -28,7 +28,7 @@ use oat\tao\test\TaoPhpUnitTestRunner;
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
  */
-class ItemPackTest extends TaoPhpUnitTestRunner
+class ItemPackTest extends TestCase
 {
 
     /**

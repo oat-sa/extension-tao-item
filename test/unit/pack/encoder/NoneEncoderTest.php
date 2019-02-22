@@ -17,18 +17,18 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\integration\pack\encoder;
+namespace oat\taoItems\test\unit\pack\encoder;
 
+use oat\generis\test\TestCase;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\media\LocalItemSource;
 use oat\taoItems\model\pack\encoders\NoneEncoder;
-use oat\tao\test\TaoPhpUnitTestRunner;
 
 /**
  * @package taoItems
  */
-class NoneEncoderTest extends TaoPhpUnitTestRunner
+class NoneEncoderTest extends TestCase
 {
 
     /**
