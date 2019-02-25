@@ -18,7 +18,7 @@
  *
  */
 
-namespace oat\taoItems\test;
+namespace oat\taoItems\test\integration;
 
 use oat\tao\model\TaoOntology;
 use oat\tao\test\integration\RestTestCase;

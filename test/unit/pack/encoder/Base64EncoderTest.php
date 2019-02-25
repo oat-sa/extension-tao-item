@@ -17,19 +17,18 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\pack;
+namespace oat\taoItems\test\unit\pack\encoder;
 
+use oat\generis\test\TestCase;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\encoders\Base64Encoder;
-use oat\tao\test\TaoPhpUnitTestRunner;
 
 /**
  * @package taoItems
  */
-class Base64EncoderTest extends TaoPhpUnitTestRunner
+class Base64EncoderTest extends TestCase
 {
-
     /**
      * Test encoder
      */
@@ -49,5 +48,4 @@ class Base64EncoderTest extends TaoPhpUnitTestRunner
         $asset = new MediaAsset(new HttpSource(), $url);
         $this->assertEquals(base64_encode(basename($url)), $encoder->encode($asset));
     }
-
 }
