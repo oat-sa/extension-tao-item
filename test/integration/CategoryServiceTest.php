@@ -17,7 +17,7 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA
  */
 
-namespace oat\taoQtiItem\test;
+namespace oat\taoItems\test\integration;
 
 use oat\generis\model\GenerisRdf;
 use Prophecy\Argument;

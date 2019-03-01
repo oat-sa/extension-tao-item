@@ -19,7 +19,11 @@
  *
  */
 
-use oat\tao\test\TaoPhpUnitTestRunner;
+namespace oat\taoItems\test\unit;
+
+use oat\generis\test\TestCase;
+use DOMDocument;
+use taoItems_models_classes_search_XmlItemContentTokenizer as XmlItemContentTokenizer;
 
 /**
  * This class aims at testing tao_helpers_Xhtml.
@@ -28,7 +32,7 @@ use oat\tao\test\TaoPhpUnitTestRunner;
  * @package taoItems
  
  */
-class XmlItemContentTokenizerTest extends TaoPhpUnitTestRunner 
+class XmlItemContentTokenizerTest extends TestCase
 {
     public function testSimpleXmlContent()
     {
@@ -41,7 +45,7 @@ class XmlItemContentTokenizerTest extends TaoPhpUnitTestRunner
             </myTag>
         ');
         
-        $tokenizer = new taoItems_models_classes_search_XmlItemContentTokenizer();
+        $tokenizer = new XmlItemContentTokenizer();
         $tokens = $tokenizer->getStrings($dom);
         
         $this->assertEquals('A paragraph', $tokens[0]);
