@@ -18,21 +18,22 @@
 /**
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
-define([
+define( [
+    
     'jquery',
     'lodash',
     'core/promise',
     'taoItems/previewer/factory'
-], function ($, _, Promise, previewerFactory) {
+], function(  $, _, Promise, previewerFactory ) {
     'use strict';
 
-    QUnit.module('factory', {
-        teardown: function () {
+    QUnit.module( 'factory', {
+        afterEach: function( assert ) {
             previewerFactory.clearProviders();
         }
-    });
+    } );
 
-    QUnit.test('module', function (assert) {
+    QUnit.test( 'module', function( assert ) {
         var config = {};
         var uri = 'item1';
         var state = {
@@ -42,15 +43,16 @@ define([
                 }
             }
         };
-        QUnit.expect(5);
-        assert.equal(typeof previewerFactory, 'function', "The factory module exposes a function");
-        assert.equal(typeof previewerFactory.registerProvider, 'function', "The factory module exposes a function registerProvider()");
-        assert.equal(typeof previewerFactory.getProvider, 'function', "The factory module exposes a function getProvider()");
-        assert.ok(previewerFactory('mock', uri, state, config) instanceof Promise, "The factory produces a promise");
-        assert.notStrictEqual(previewerFactory('mock', uri, state, config), previewerFactory('mock', uri, state, config), "The factory provides a different promise on each call");
-    });
+        assert.expect( 5 );
+        assert.equal( typeof previewerFactory, 'function', 'The factory module exposes a function' );
+        assert.equal( typeof previewerFactory.registerProvider, 'function', 'The factory module exposes a function registerProvider()' );
+        assert.equal( typeof previewerFactory.getProvider, 'function', 'The factory module exposes a function getProvider()' );
+        assert.ok( previewerFactory( 'mock', uri, state, config ) instanceof Promise, 'The factory produces a promise' );
+        assert.notStrictEqual( previewerFactory( 'mock', uri, state, config ), previewerFactory( 'mock', uri, state, config ), 'The factory provides a different promise on each call' );
+    } );
 
-    QUnit.asyncTest('load adapter', function (assert) {
+    QUnit.test( 'load adapter', function( assert ) {
+        var ready = assert.async();
         var config = {};
         var uri = 'item1';
         var state = {
@@ -60,26 +62,27 @@ define([
                 }
             }
         };
-        var promise = previewerFactory('mock', uri, state, config);
+        var promise = previewerFactory( 'mock', uri, state, config );
 
-        QUnit.expect(5);
-        assert.ok(promise instanceof Promise, "The factory produces a promise");
+        assert.expect( 5 );
+        assert.ok( promise instanceof Promise, 'The factory produces a promise' );
         promise
-            .then(function (previewer) {
-                assert.equal(previewer.uri, uri, "The previewer contains the expected property (uri)");
-                assert.equal(previewer.state, state, "The previewer contains the expected property (state)");
-                assert.equal(previewer.config, config, "The previewer contains the expected property (config)");
-                assert.equal(previewer.type, 'mock', "The previewer has the right type");
-                QUnit.start();
-            })
-            .catch(function (err) {
-                console.error(err);
-                assert.ok(false, 'The factory should not fail');
-                QUnit.start();
-            });
-    });
+            .then( function( previewer ) {
+                assert.equal( previewer.uri, uri, 'The previewer contains the expected property (uri)' );
+                assert.equal( previewer.state, state, 'The previewer contains the expected property (state)' );
+                assert.equal( previewer.config, config, 'The previewer contains the expected property (config)' );
+                assert.equal( previewer.type, 'mock', 'The previewer has the right type' );
+                ready();
+            } )
+            .catch( function( err ) {
+                console.error( err );
+                assert.ok( false, 'The factory should not fail' );
+                ready();
+            } );
+    } );
 
-    QUnit.asyncTest('legacy adapter', function (assert) {
+    QUnit.test( 'legacy adapter', function( assert ) {
+        var ready = assert.async();
         var config = {};
         var uri = 'item1';
         var state = {
@@ -89,26 +92,27 @@ define([
                 }
             }
         };
-        var promise = previewerFactory('legacy', uri, state, config);
+        var promise = previewerFactory( 'legacy', uri, state, config );
 
-        QUnit.expect(5);
-        assert.ok(promise instanceof Promise, "The factory produces a promise");
+        assert.expect( 5 );
+        assert.ok( promise instanceof Promise, 'The factory produces a promise' );
         promise
-            .then(function (previewer) {
-                assert.equal(previewer.uri, uri, "The previewer contains the expected property (uri)");
-                assert.equal(previewer.state, state, "The previewer contains the expected property (state)");
-                assert.equal(previewer.config, config, "The previewer contains the expected property (config)");
-                assert.equal(previewer.type, 'legacy', "The previewer has the right type");
-                QUnit.start();
-            })
-            .catch(function (err) {
-                console.error(err);
-                assert.ok(false, 'The factory should not fail');
-                QUnit.start();
-            });
-    });
+            .then( function( previewer ) {
+                assert.equal( previewer.uri, uri, 'The previewer contains the expected property (uri)' );
+                assert.equal( previewer.state, state, 'The previewer contains the expected property (state)' );
+                assert.equal( previewer.config, config, 'The previewer contains the expected property (config)' );
+                assert.equal( previewer.type, 'legacy', 'The previewer has the right type' );
+                ready();
+            } )
+            .catch( function( err ) {
+                console.error( err );
+                assert.ok( false, 'The factory should not fail' );
+                ready();
+            } );
+    } );
 
-    QUnit.asyncTest('fallback adapter', function (assert) {
+    QUnit.test( 'fallback adapter', function( assert ) {
+        var ready = assert.async();
         var config = {};
         var uri = 'item1';
         var state = {
@@ -118,19 +122,19 @@ define([
                 }
             }
         };
-        var promise = previewerFactory('foo', uri, state, config);
+        var promise = previewerFactory( 'foo', uri, state, config );
 
-        QUnit.expect(2);
-        assert.ok(promise instanceof Promise, "The factory produces a promise");
+        assert.expect( 2 );
+        assert.ok( promise instanceof Promise, 'The factory produces a promise' );
         promise
-            .then(function () {
-                assert.ok(false, 'The factory should raise an error if the adapter is unknown');
-                QUnit.start();
-            })
-            .catch(function () {
-                assert.ok(true, 'The factory should raise an error if the adapter is unknown');
-                QUnit.start();
-            });
-    });
+            .then( function() {
+                assert.ok( false, 'The factory should raise an error if the adapter is unknown' );
+                ready();
+            } )
+            .catch( function() {
+                assert.ok( true, 'The factory should raise an error if the adapter is unknown' );
+                ready();
+            } );
+    } );
 
-});
+} );

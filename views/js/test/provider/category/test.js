@@ -19,135 +19,136 @@
 /**
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
-define([
-    'taoItems/provider/category',
-    'core/promise'
-], function(categoryProvider, Promise) {
+define( [  'taoItems/provider/category', 'core/promise' ], function(  categoryProvider, Promise ) {
     'use strict';
 
     var testConfig = {
-        getExposedsByClass : {
-            url : '/taoItems/views/js/test/provider/category/getExposedsByClass.json'
+        getExposedsByClass: {
+            url: '/taoItems/views/js/test/provider/category/getExposedsByClass.json'
         },
-        setExposed : {
-            url : '/taoItems/views/js/test/provider/category/setExposed.json'
+        setExposed: {
+            url: '/taoItems/views/js/test/provider/category/setExposed.json'
         }
     };
 
-    QUnit.module('API');
+    QUnit.module( 'API' );
 
-    QUnit.test('module', function(assert) {
-        QUnit.expect(3);
+    QUnit.test( 'module', function( assert ) {
+        assert.expect( 3 );
 
-        assert.equal(typeof categoryProvider, 'function', "The categoryProvider module exposes a function");
-        assert.equal(typeof categoryProvider(), 'object', "The categoryProvider factory produces an object");
-        assert.notStrictEqual(categoryProvider(), categoryProvider(), "The categoryProvider factory provides a different object on each call");
-    });
+        assert.equal( typeof categoryProvider, 'function', 'The categoryProvider module exposes a function' );
+        assert.equal( typeof categoryProvider(), 'object', 'The categoryProvider factory produces an object' );
+        assert.notStrictEqual( categoryProvider(), categoryProvider(), 'The categoryProvider factory provides a different object on each call' );
+    } );
 
-    QUnit.test('methods', function(assert) {
+    QUnit.test( 'methods', function( assert ) {
         var provider = categoryProvider();
 
-        QUnit.expect(3);
+        assert.expect( 3 );
 
-        assert.equal(typeof provider, 'object', "The categoryProvider factory produces an object");
-        assert.equal(typeof provider.getExposedsByClass, 'function', "The provider exposes the getExposedsByClass method");
-        assert.equal(typeof provider.setExposed, 'function', "The provider exposes the setExposed method");
-    });
+        assert.equal( typeof provider, 'object', 'The categoryProvider factory produces an object' );
+        assert.equal( typeof provider.getExposedsByClass, 'function', 'The provider exposes the getExposedsByClass method' );
+        assert.equal( typeof provider.setExposed, 'function', 'The provider exposes the setExposed method' );
+    } );
 
-    QUnit.module('getExposedsByClass');
+    QUnit.module( 'getExposedsByClass' );
 
-    QUnit.asyncTest('success', function(assert) {
+    QUnit.test( 'success', function( assert ) {
+        var ready = assert.async();
         var p;
         var provider = categoryProvider( testConfig );
 
-        QUnit.expect(4);
+        assert.expect( 4 );
 
-        p = provider.getExposedsByClass('classUri');
+        p = provider.getExposedsByClass( 'classUri' );
 
-        assert.ok(p instanceof Promise, 'The method returns a Promise');
+        assert.ok( p instanceof Promise, 'The method returns a Promise' );
 
-        p.then(function(results){
-            assert.equal(typeof results, 'object', 'The method resolve with an object');
-            assert.equal(typeof results['http://bertaodev/tao.rdf#i1476892921160365'], 'boolean', 'The result contains the correct values');
-            assert.equal(typeof results['http://bertaodev/tao.rdf#i1476892959348167'], 'boolean', 'The result contains the correct values');
-            QUnit.start();
-        }).catch(function(err){
-            assert.ok(false, 'The method should not reject : ' + err.message);
-            QUnit.start();
-        });
-    });
+        p.then( function( results ) {
+            assert.equal( typeof results, 'object', 'The method resolve with an object' );
+            assert.equal( typeof results[ 'http://bertaodev/tao.rdf#i1476892921160365' ], 'boolean', 'The result contains the correct values' );
+            assert.equal( typeof results[ 'http://bertaodev/tao.rdf#i1476892959348167' ], 'boolean', 'The result contains the correct values' );
+            ready();
+        } ).catch( function( err ) {
+            assert.ok( false, 'The method should not reject : ' + err.message );
+            ready();
+        } );
+    } );
 
-    QUnit.asyncTest('no uri', function(assert) {
+    QUnit.test( 'no uri', function( assert ) {
+        var ready = assert.async();
         var provider;
 
-        QUnit.expect(2);
+        assert.expect( 2 );
 
         provider = categoryProvider( testConfig );
 
-        provider.getExposedsByClass().then(function(){
-            assert.ok(false, 'The method must not resolve');
-            QUnit.start();
-        }).catch(function(err){
-            assert.ok(err instanceof TypeError, 'The method rejects');
-            assert.equal(err.message, 'The class URI must be provided in the id parameter', 'The method rejects with the correct message');
-            QUnit.start();
-        });
-    });
+        provider.getExposedsByClass().then( function() {
+            assert.ok( false, 'The method must not resolve' );
+            ready();
+        } ).catch( function( err ) {
+            assert.ok( err instanceof TypeError, 'The method rejects' );
+            assert.equal( err.message, 'The class URI must be provided in the id parameter', 'The method rejects with the correct message' );
+            ready();
+        } );
+    } );
 
+    QUnit.module( 'setExposed' );
 
-    QUnit.module('setExposed');
-
-    QUnit.asyncTest('success', function(assert) {
+    QUnit.test( 'success', function( assert ) {
+        var ready = assert.async();
         var p, provider;
 
-        QUnit.expect(2);
+        assert.expect( 2 );
 
         provider = categoryProvider( testConfig );
-        p = provider.setExposed('propUri', true);
+        p = provider.setExposed( 'propUri', true );
 
-        assert.ok(p instanceof Promise, 'The method returns a Promise');
+        assert.ok( p instanceof Promise, 'The method returns a Promise' );
 
-        p.then(function(result){
-            assert.ok(result, 'The method resolve with true');
+        p.then( function( result ) {
+            assert.ok( result, 'The method resolve with true' );
 
-            QUnit.start();
-        }).catch(function(err){
-            assert.ok(false, 'The method should not reject : ' + err.message);
-            QUnit.start();
-        });
-    });
+            ready();
+        } ).catch( function( err ) {
+            assert.ok( false, 'The method should not reject : ' + err.message );
+            ready();
+        } );
+    } );
 
-    QUnit.asyncTest('no uri', function(assert) {
+    QUnit.test( 'no uri', function( assert ) {
+        var ready = assert.async();
         var provider;
 
-        QUnit.expect(2);
+        assert.expect( 2 );
 
         provider = categoryProvider( testConfig );
 
-        provider.setExposed().then(function(){
-            assert.ok(false, 'The method must not resolve');
-            QUnit.start();
-        }).catch(function(err){
-            assert.ok(err instanceof TypeError, 'The method rejects');
-            assert.equal(err.message, 'The property URI must be provided in the id parameter', 'The method rejects with the correct message');
-            QUnit.start();
-        });
-    });
+        provider.setExposed().then( function() {
+            assert.ok( false, 'The method must not resolve' );
+            ready();
+        } ).catch( function( err ) {
+            assert.ok( err instanceof TypeError, 'The method rejects' );
+            assert.equal( err.message, 'The property URI must be provided in the id parameter', 'The method rejects with the correct message' );
+            ready();
+        } );
+    } );
 
-    QUnit.asyncTest('no value', function(assert) {
+    QUnit.test( 'no value', function( assert ) {
+        var ready = assert.async();
         var provider;
 
-        QUnit.expect(2);
+        assert.expect( 2 );
 
         provider = categoryProvider( testConfig );
 
-        provider.setExposed('propUri').then(function(){
-            assert.ok(false, 'The method must not resolve');
-            QUnit.start();
-        }).catch(function(err){
-            assert.ok(err instanceof TypeError, 'The method rejects');
-            assert.equal(err.message, 'The exposed value is required.', 'The method rejects with the correct message');
-            QUnit.start();
-        });
-    });
-});
+        provider.setExposed( 'propUri' ).then( function() {
+            assert.ok( false, 'The method must not resolve' );
+            ready();
+        } ).catch( function( err ) {
+            assert.ok( err instanceof TypeError, 'The method rejects' );
+            assert.equal( err.message, 'The exposed value is required.', 'The method rejects with the correct message' );
+            ready();
+        } );
+    } );
+} );
