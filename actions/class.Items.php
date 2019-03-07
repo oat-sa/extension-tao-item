@@ -23,7 +23,7 @@
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\generis\model\OntologyRdfs;
-use oat\oatbox\event\EventManagerAwareTrait;
+use oat\oatbox\event\EventManager;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
@@ -40,7 +40,11 @@ use oat\tao\model\resources\ResourceWatcher;
 class taoItems_actions_Items extends tao_actions_SaSModule
 {
     use OntologyAwareTrait;
-    use EventManagerAwareTrait;
+
+    protected function getEventManager()
+    {
+        return $this->getServiceLocator()->get(EventManager::SERVICE_ID);
+    }
 
     /**
      * overwrite the parent defaultData, adding the item label to be sent to the view
