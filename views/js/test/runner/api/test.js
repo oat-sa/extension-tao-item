@@ -3,7 +3,7 @@ define([
     'lodash',
     'taoItems/runner/api/itemRunner',
     'taoItems/test/runner/provider/dummyProvider'
-], function( $, _, itemRunner, dummyProvider) {
+], function($, _, itemRunner, dummyProvider) {
 
 
     QUnit.module('API');
@@ -15,10 +15,10 @@ define([
     });
 
 
-// itemRunner.register
+    // itemRunner.register
 
     QUnit.module('Register a Provider', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -54,7 +54,7 @@ define([
         assert.ok(typeof itemRunner.providers === 'undefined', 'the itemRunner comes without a provider');
 
         itemRunner.register('testProvider', {
-            init : function(){
+            init: function(){
             }
         });
         itemRunner();
@@ -65,10 +65,10 @@ define([
     });
 
 
-// itemRunner().init()
+    // itemRunner().init()
 
     QUnit.module('ItemRunner init', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -131,7 +131,7 @@ define([
 
             ready();
         }).init({
-            type : 'text'
+            type: 'text'
         });
     });
 
@@ -154,10 +154,10 @@ define([
     });
 
 
-// itemRunner().render()
+    // itemRunner().render()
 
     QUnit.module('ItemRunner render', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -221,7 +221,7 @@ define([
             type: 'search'
         }).on('error', function(message){
             assert.ok(typeof message === 'string', 'An error message is given');
-            assert.ok(message.length > 0 , 'A non empty message is given');
+            assert.ok(message.length > 0, 'A non empty message is given');
             ready();
         })
         .init()
@@ -238,7 +238,7 @@ define([
             type: 'search'
         }).on('error', function(message){
             assert.ok(typeof message === 'string', 'An error message is given');
-            assert.ok(message.length > 0 , 'A non empty message is given');
+            assert.ok(message.length > 0, 'A non empty message is given');
             ready();
         })
         .init()
@@ -293,10 +293,10 @@ define([
     });
 
 
-// itemRunner().clear()
+    // itemRunner().clear()
 
     QUnit.module('ItemRunner clear', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -355,11 +355,11 @@ define([
     });
 
 
-// itemRunner().get/setState()
-//             .on('statechange')
+    // itemRunner().get/setState()
+    //             .on('statechange')
 
     QUnit.module('ItemRunner state', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -376,13 +376,13 @@ define([
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
             var $input = $('input', $container);
             assert.equal($input.length, 1, 'the container contains an input');
             assert.equal($input.val(), 0, 'the input value is set before');
 
-            this.setState({ value : 12 });
+            this.setState({value: 12});
 
             assert.equal($input.val(), 12, 'the input value has changed regarding to the state');
 
@@ -411,7 +411,7 @@ define([
             ready();
         })
         .init()
-        .setState({ value : 13 })
+        .setState({value: 13})
         .render($container);
     });
 
@@ -423,11 +423,11 @@ define([
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         })
         .on('error', function(message){
             assert.ok(typeof message === 'string', 'An error message is given');
-            assert.ok(message.length > 0 , 'A non empty message is given');
+            assert.ok(message.length > 0, 'A non empty message is given');
             ready();
         })
         .init()
@@ -445,7 +445,7 @@ define([
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
             var state;
             var $input = $('input', $container);
@@ -454,7 +454,7 @@ define([
 
             state = this.getState();
 
-            assert.ok(typeof state === 'object' , 'the state is an object');
+            assert.ok(typeof state === 'object', 'the state is an object');
             assert.equal(state.value, 0, 'got the initial state');
 
             $input.val(14);
@@ -481,12 +481,12 @@ define([
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('statechange', function(state){
 
             var $input = $('input', $container);
 
-            assert.ok(typeof state === 'object' , 'the state is an object');
+            assert.ok(typeof state === 'object', 'the state is an object');
             assert.equal($input.length, 1, 'the container contains an input');
             assert.equal(state.value, 16, 'the state has the updated value');
             assert.equal($input.val(), state.value, 'the given state match the input value');
@@ -503,10 +503,10 @@ define([
     });
 
 
-// itemRunner().getResponses
+    // itemRunner().getResponses
 
     QUnit.module('ItemRunner getResponses', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -523,7 +523,7 @@ define([
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             var responses = this.getResponses();
@@ -549,7 +549,7 @@ define([
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             var $input = $('input', $container);
@@ -567,10 +567,10 @@ define([
         .render($container);
     });
 
-// itemRunner().on().off().trigger()
+    // itemRunner().on().off().trigger()
 
     QUnit.module('ItemRunner events', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
@@ -623,7 +623,7 @@ define([
     });
 
     QUnit.module('ItemRunner renderFeedbacks', {
-        afterEach : function(assert) {
+        afterEach: function(assert) {
             //reset the providers
             delete itemRunner.providers;
         }
@@ -642,7 +642,7 @@ define([
 
         itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             this.renderFeedbacks([], [], function(renderingQueue){
@@ -669,7 +669,7 @@ define([
 
         itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             this.renderFeedbacks({f1: 'feedback1', f2: 'feedback2', f3: 'feedback3'}, ['f2'], function(renderingQueue){

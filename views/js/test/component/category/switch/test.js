@@ -19,122 +19,124 @@
 /**
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
-define( [  'jquery', 'taoItems/component/category/switch' ], function(  $, categorySwitchComponent ) {
+define(['jquery', 'taoItems/component/category/switch'], function($, categorySwitchComponent) {
     'use strict';
 
     var cardComponentApi = [
-        { name: 'init', title: 'init' },
-        { name: 'destroy', title: 'destroy' },
-        { name: 'render', title: 'render' },
-        { name: 'show', title: 'show' },
-        { name: 'hide', title: 'hide' },
-        { name: 'enable', title: 'enable' },
-        { name: 'disable', title: 'disable' },
-        { name: 'is', title: 'is' },
-        { name: 'setState', title: 'setState' },
-        { name: 'getContainer', title: 'getContainer' },
-        { name: 'getElement', title: 'getElement' },
-        { name: 'getTemplate', title: 'getTemplate' },
-        { name: 'setTemplate', title: 'setTemplate' }
+        {name: 'init', title: 'init'},
+        {name: 'destroy', title: 'destroy'},
+        {name: 'render', title: 'render'},
+        {name: 'show', title: 'show'},
+        {name: 'hide', title: 'hide'},
+        {name: 'enable', title: 'enable'},
+        {name: 'disable', title: 'disable'},
+        {name: 'is', title: 'is'},
+        {name: 'setState', title: 'setState'},
+        {name: 'getContainer', title: 'getContainer'},
+        {name: 'getElement', title: 'getElement'},
+        {name: 'getTemplate', title: 'getTemplate'},
+        {name: 'setTemplate', title: 'setTemplate'}
     ];
 
-    QUnit.module( 'API' );
+    QUnit.module('API');
 
-    QUnit.test( 'module', function( assert ) {
-        assert.expect( 3 );
+    QUnit.test('module', function(assert) {
+        assert.expect(3);
 
-        assert.equal( typeof categorySwitchComponent, 'function', 'The cardComponent module exposes a function' );
-        assert.equal( typeof categorySwitchComponent( null, 'foo' ), 'object', 'The cardComponent factory produces an object' );
-        assert.notStrictEqual( categorySwitchComponent( null, 'foo' ), categorySwitchComponent( null, 'foo' ), 'The cardComponent factory provides a different object on each call' );
-    } );
+        assert.equal(typeof categorySwitchComponent, 'function', 'The cardComponent module exposes a function');
+        assert.equal(typeof categorySwitchComponent(null, 'foo'), 'object', 'The cardComponent factory produces an object');
+        assert.notStrictEqual(categorySwitchComponent(null, 'foo'), categorySwitchComponent(null, 'foo'), 'The cardComponent factory provides a different object on each call');
+    });
 
     QUnit
-        .cases.init( cardComponentApi )
-        .test( 'instance API ', function( data, assert ) {
-            var instance = categorySwitchComponent( null, 'foo' );
-            assert.equal( typeof instance[ data.name ], 'function', 'The cardComponent instance exposes a "' + data.title + '" function' );
-        } );
+        .cases.init(cardComponentApi)
+        .test('instance API ', function(data, assert) {
+            var instance = categorySwitchComponent(null, 'foo');
+            assert.equal(typeof instance[data.name], 'function', 'The cardComponent instance exposes a "' + data.title + '" function');
+        });
 
-    QUnit.test( 'Missing parameters', function( assert ) {
-        var $container = $( '#qunit-fixture' );
+    QUnit.test('Missing parameters', function(assert) {
+        var $container = $('#qunit-fixture');
 
-        assert.expect( 2 );
+        assert.expect(2);
 
-        assert.throws( categorySwitchComponent, TypeError, 'PropId must be defined' );
-        assert.throws( function() { categorySwitchComponent( $container ); }, TypeError, 'PropId must be defined' );
-    } );
+        assert.throws(categorySwitchComponent, TypeError, 'PropId must be defined');
+        assert.throws(function() {
+            categorySwitchComponent($container);
+        }, TypeError, 'PropId must be defined');
+    });
 
-    QUnit.module( 'Behavior' );
+    QUnit.module('Behavior');
 
-    QUnit.test( 'DOM rendering', function( assert ) {
+    QUnit.test('DOM rendering', function(assert) {
         var ready = assert.async();
-        var $container = $( '#qunit-fixture' );
+        var $container = $('#qunit-fixture');
 
-        assert.expect( 5 );
+        assert.expect(5);
 
-        categorySwitchComponent( $container, 'foo', true )
-            .on( 'render', function() {
+        categorySwitchComponent($container, 'foo', true)
+            .on('render', function() {
 
-                assert.equal( $( '.category-auto-adder', $container ).length, 1, 'The container has the component root element' );
-                assert.ok( $( '.category-auto-adder', $container ).hasClass( 'rendered' ), 'The component root element has the rendered class' );
-                assert.ok( $( '.category-auto-adder', $container ).hasClass( 'txt-success' ), 'The component root element has the txt-success class' );
-                assert.equal( $( '.category-auto-adder', $container ).data( 'id' ), 'foo', 'The id is correct element' );
-                assert.deepEqual( $( '.category-auto-adder', $container )[ 0 ], this.getElement()[ 0 ], 'The component element is correct' );
+                assert.equal($('.category-auto-adder', $container).length, 1, 'The container has the component root element');
+                assert.ok($('.category-auto-adder', $container).hasClass('rendered'), 'The component root element has the rendered class');
+                assert.ok($('.category-auto-adder', $container).hasClass('txt-success'), 'The component root element has the txt-success class');
+                assert.equal($('.category-auto-adder', $container).data('id'), 'foo', 'The id is correct element');
+                assert.deepEqual($('.category-auto-adder', $container)[0], this.getElement()[0], 'The component element is correct');
 
                 ready();
-            } );
-    } );
+            });
+    });
 
-    QUnit.test( 'request change', function( assert ) {
+    QUnit.test('request change', function(assert) {
         var ready = assert.async();
-        var $container = $( '#qunit-fixture' );
+        var $container = $('#qunit-fixture');
 
-        assert.expect( 3 );
+        assert.expect(3);
 
-        categorySwitchComponent( $container, 'foo', true )
-            .on( 'render', function() {
+        categorySwitchComponent($container, 'foo', true)
+            .on('render', function() {
                 var $element = this.getElement();
-                assert.equal( $element.length, 1, 'The container has the component root element' );
+                assert.equal($element.length, 1, 'The container has the component root element');
 
-                $element.trigger( 'click' );
-            } )
-            .on( 'requestChange', function( propUri, value ) {
+                $element.trigger('click');
+            })
+            .on('requestChange', function(propUri, value) {
 
-                assert.equal( propUri, 'foo', 'The property URI is correct' );
-                assert.equal( value, false, 'The exposed value is correct' );
+                assert.equal(propUri, 'foo', 'The property URI is correct');
+                assert.equal(value, false, 'The exposed value is correct');
                 ready();
-            } );
-    } );
+            });
+    });
 
-    QUnit.test( 'update value', function( assert ) {
+    QUnit.test('update value', function(assert) {
         var ready = assert.async();
-        var $container = $( '#qunit-fixture' );
+        var $container = $('#qunit-fixture');
 
-        assert.expect( 7 );
+        assert.expect(7);
 
-        categorySwitchComponent( $container, 'foo', true )
-            .on( 'render', function() {
+        categorySwitchComponent($container, 'foo', true)
+            .on('render', function() {
                 var $element = this.getElement();
-                assert.equal( $element.length, 1, 'The container has the component root element' );
-                assert.ok( $( '.category-auto-adder', $container ).hasClass( 'txt-success' ), 'The component root element has the txt-success class' );
+                assert.equal($element.length, 1, 'The container has the component root element');
+                assert.ok($('.category-auto-adder', $container).hasClass('txt-success'), 'The component root element has the txt-success class');
 
-                assert.ok( this.isExposed(), 'The prop is initialized exposed' );
+                assert.ok(this.isExposed(), 'The prop is initialized exposed');
 
-                $element.trigger( 'click' );
+                $element.trigger('click');
 
-            } )
-            .on( 'requestChange', function( propUri, value ) {
+            })
+            .on('requestChange', function(propUri, value) {
 
-                assert.equal( propUri, 'foo', 'The property URI is correct' );
-                assert.equal( value, false, 'The exposed value is correct' );
+                assert.equal(propUri, 'foo', 'The property URI is correct');
+                assert.equal(value, false, 'The exposed value is correct');
 
-                this.setExposed( value );
+                this.setExposed(value);
 
-                assert.ok( !$( '.category-auto-adder', $container ).hasClass( 'txt-success' ), 'The component root element has not the txt-success class' );
-                assert.ok( !this.isExposed(), 'The prop is not exposed anymore' );
+                assert.ok(!$('.category-auto-adder', $container).hasClass('txt-success'), 'The component root element has not the txt-success class');
+                assert.ok(!this.isExposed(), 'The prop is not exposed anymore');
 
                 ready();
-            } );
-    } );
+            });
+    });
 
-} );
+});
