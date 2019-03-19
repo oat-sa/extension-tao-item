@@ -111,13 +111,13 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 
     /**
      * Add the rendered item to psr7 response
-     * 
+     *
      * @param $item
      * @throws common_Exception
      */
     private function renderItem($item)
     {
-        $this->response = $this->response->withBody(stream_for($this->getRenderedItem($item))));
+        $this->response = $this->response->withBody(stream_for($this->getRenderedItem($item)));
     }
 
     private function renderResource($item, $path)
