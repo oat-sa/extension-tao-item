@@ -17,14 +17,14 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\pack;
+namespace oat\taoItems\test\integration\pack;
 
 use \core_kernel_classes_Resource;
+use oat\generis\test\TestCase;
 use oat\oatbox\filesystem\Directory;
 use oat\taoItems\model\pack\ItemPacker;
 use oat\taoItems\model\pack\Packer;
 use oat\taoItems\model\pack\ItemPack;
-use oat\tao\test\TaoPhpUnitTestRunner;
 
 
 /**
@@ -33,9 +33,8 @@ use oat\tao\test\TaoPhpUnitTestRunner;
  * @author Bertrand Chevrier, <taosupport@tudor.lu>
  * @package taoItems
  */
-class PackerTest extends TaoPhpUnitTestRunner
+class PackerTest extends TestCase
 {
-
     public function setUp()
     {
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');

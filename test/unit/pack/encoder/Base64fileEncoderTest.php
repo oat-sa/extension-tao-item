@@ -17,12 +17,12 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoItems\test\pack;
+namespace oat\taoItems\test\unit\pack\encoder;
 
+use oat\generis\test\TestCase;
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\sourceStrategy\HttpSource;
-use oat\tao\test\TaoPhpUnitTestRunner;
 use oat\taoItems\model\pack\encoders\Base64fileEncoder;
 use oat\taoMediaManager\model\MediaSource;
 use Psr\Http\Message\StreamInterface;
@@ -30,7 +30,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * @package taoItems
  */
-class Base64fileEncoderTest extends TaoPhpUnitTestRunner
+class Base64fileEncoderTest extends TestCase
 {
 
     protected $directoryStorage;
@@ -55,9 +55,20 @@ class Base64fileEncoderTest extends TaoPhpUnitTestRunner
         $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
         $mediaAsset->method('getMediaIdentifier')->willReturn('value');
 
+        $httpSource = $this->getMockBuilder(HttpSource::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mediaAssetHttpSource = $this->getMockBuilder(MediaAsset::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mediaAssetHttpSource->method('getMediaSource')->willReturn($httpSource);
+        $mediaAssetHttpSource->method('getMediaIdentifier')->willReturn('value');
+
         return [
             ['exist.css', 'data:text/css;base64,' . base64_encode('value')],
             [$mediaAsset, 'data:text/css;base64,' . base64_encode('value')],
+            [$mediaAssetHttpSource, 'value'],
             ['http://google.com/styles.css', 'http://google.com/styles.css']
         ];
     }

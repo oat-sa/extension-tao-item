@@ -20,6 +20,7 @@
 namespace oat\taoItems\model\pack\encoders;
 
 use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
 use oat\taoMediaManager\model\MediaSource;
 
@@ -67,6 +68,10 @@ class Base64fileEncoder implements Encoding
         if ($data instanceof MediaAsset) {
             $mediaSource = $data->getMediaSource();
             $data = $data->getMediaIdentifier();
+
+            if ($mediaSource instanceof HttpSource) {
+                return $data;
+            }
 
             if ($mediaSource instanceof MediaSource) {
                 $fileInfo = $mediaSource->getFileInfo($data);

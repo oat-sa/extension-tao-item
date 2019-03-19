@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2016-02-19T14:22:51\n"
+"Project-Id-Version: TAO 3.3.0-sprint97\n"
+"PO-Revision-Date: 2019-03-15T12:32:27\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -20,8 +20,8 @@ msgstr "Dimensione reale"
 msgid "Authoring"
 msgstr "Autore"
 
-msgid "Class saved"
-msgstr "Classe salvata"
+msgid "Class schema saved"
+msgstr ""
 
 msgid "Close"
 msgstr "Chiudi"
@@ -29,8 +29,9 @@ msgstr "Chiudi"
 msgid "Close console"
 msgstr "Chiudi la console"
 
-msgid "Could not create language specific directory for item \'%s\"
-msgstr "Non puoi creare una directory di item di una lingua specifica "
+#, tao-public
+msgid "Copy To"
+msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -50,38 +51,31 @@ msgstr "Non mostrare nuovamente"
 msgid "Duplicate"
 msgstr "Duplica"
 
-msgid "Edit Item"
-msgstr "Modifica item"
-
 msgid "Edit item"
 msgstr "Modifica item"
 
-msgid "Edit item class"
-msgstr "Modifica classe dell'item"
+msgid "Edit Item"
+msgstr "Modifica item"
 
 #, tao-public
 msgid "Export"
 msgstr "Esporta"
 
+msgid "Expose the property value to create automated categories."
+msgstr ""
+
 msgid "Failed retrieving %s"
 msgstr "Impossibile recuperare"
-
-msgid "Failed to publish %s"
-msgstr "Impossibile pubblicare"
-
-#, tao-public
-msgid "Filter"
-msgstr "Filtro"
 
 #, tao-public
 msgid "Import"
 msgstr "Importa"
 
-msgid "Item \'%s\' has no model"
-msgstr "Item \\'%s\\' non ha modello"
-
 msgid "Item Model"
 msgstr "Modello di item"
+
+msgid "Item not found"
+msgstr ""
 
 msgid "Item saved"
 msgstr "Item salvato"
@@ -97,9 +91,19 @@ msgstr "Raccolta item"
 msgid "Landscape"
 msgstr "Panorama"
 
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr ""
+
 #, tao-public
 msgid "Manage items"
 msgstr "Gestisci item"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
 
 msgid "Mobile preview"
 msgstr "Anteprima mobile"
@@ -107,6 +111,10 @@ msgstr "Anteprima mobile"
 #, tao-public
 msgid "Move"
 msgstr "Sposta"
+
+#, tao-public
+msgid "Move To"
+msgstr ""
 
 #, tao-public
 msgid "New class"
@@ -138,18 +146,11 @@ msgstr "Proprietà"
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "Pubblicato \"%1$s\" nella lingua \"%2$s"
 
-msgid "Published %s"
-msgstr "Pubblicato %s"
-
 msgid "Remove this message"
 msgstr "Rimuovi questo messaggio"
 
 msgid "Retrieving external resources"
 msgstr "Recupero risorse esterne"
-
-#, tao-public
-msgid "Search"
-msgstr "Cerca"
 
 msgid "Submit"
 msgstr "Invia"
@@ -160,18 +161,20 @@ msgstr "Il file che hai cercato di caricare non è valido"
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Il modulo item consente la creazione e la progettazione di item ed esercizi."
 
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Questa anteprima può essere rappresentata in scala sul monitor. La resa finale può differire"
-
-#, tao-public
-msgid "Translate"
-msgstr "Traduci"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Non in grado di copiare le risorse per la lingua %s"
 
 msgid "Unable to create deployement directory"
 msgstr "Impossibile creare la directory di dislocazione"
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr "Hai estratto questo item %2s"

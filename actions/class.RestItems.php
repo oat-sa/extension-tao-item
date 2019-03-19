@@ -15,6 +15,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
+
+use \oat\tao\model\routing\AnnotationReader\security;
+
 /**
  *
  * @author plichart
@@ -22,6 +25,10 @@
 class taoItems_actions_RestItems extends tao_actions_CommonRestModule
 {
 
+    /**
+     * taoItems_actions_RestItems constructor.
+     * @security("hide")
+     */
 	public function __construct()
     {
 		parent::__construct();
