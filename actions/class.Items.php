@@ -29,6 +29,7 @@ use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\resources\ResourceWatcher;
+use oat\tao\model\controller\SignedFormInstance;
 
 /**
  * Items Controller provide actions performed from url resolution
@@ -170,37 +171,36 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('id', $item->getUri());
             }
 
-            $formContainer = new taoItems_actions_form_Item($itemClass, $item);
+            $formContainer = new SignedFormInstance($itemClass, $item);
             $myForm = $formContainer->getForm();
 
-            if ($this->hasWriteAccess($item->getUri())) {
+            $itemUri = $item->getUri();
+            if ($this->hasWriteAccess($itemUri)) {
+                if($myForm->isSubmited() && $myForm->isValid()){
+                    $this->validateInstanceRoot($itemUri);
 
-                if($myForm->isSubmited() && $this->hasWriteAccess($item->getUri())){
-                    if($myForm->isValid()){
-
-                        $properties = $myForm->getValues();
-                        if (array_key_exists('warning', $properties)) {
-                            $this->logWarning('Warning property is still in use', ['backend']);
-                            unset($properties['warning']);
-                        }
-
-                        //bind item properties and set default content:
-                        $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
-                        $item = $binder->bind($properties);
-
-                        $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
-                        $this->getEventManager()->trigger(new ItemRdfUpdatedEvent($item->getUri(), $properties));
-
-                        //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
-                        $label = $item->getOnePropertyValue(new core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
-                        $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
-                        $this->setData('label', ($label != null) ? $label->literal : '');
-                        $this->setData('message', __('Item saved'));
-                        $this->setData('reload', true);
+                    $properties = $myForm->getValues();
+                    if (array_key_exists('warning', $properties)) {
+                        $this->logWarning('Warning property is still in use', ['backend']);
+                        unset($properties['warning']);
                     }
+
+                    //bind item properties and set default content:
+                    $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
+                    $item = $binder->bind($properties);
+
+                    $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
+                    $this->getEventManager()->trigger(new ItemRdfUpdatedEvent($item->getUri(), $properties));
+
+                    //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
+                    $label = $item->getOnePropertyValue(new core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
+                    $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
+                    $this->setData('label', ($label != null) ? $label->literal : '');
+                    $this->setData('message', __('Item saved'));
+                    $this->setData('reload', true);
                 }
             } else {
-                $myForm->setActions(array());
+                $myForm->setActions([]);
             }
 
             $currentModel = $this->getClassService()->getItemModel($item);
