@@ -333,6 +333,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
 
             } catch (Exception $e) {
+                if ($e instanceof InterruptedActionException) {
+                    throw $e;
+                }
                 $this->setData('error', true);
                 //build clear error or warning message:
                 if(!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource){
