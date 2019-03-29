@@ -1,26 +1,31 @@
-define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/runner/provider/dummyProvider'], function($, _, itemRunner, dummyProvider){
+define([
+    'jquery',
+    'lodash',
+    'taoItems/runner/api/itemRunner',
+    'taoItems/test/runner/provider/dummyProvider'
+], function($, _, itemRunner, dummyProvider) {
 
 
     QUnit.module('API');
 
     QUnit.test('module', function(assert){
-        assert.ok(typeof itemRunner !== 'undefined', "The module exports something");
-        assert.ok(typeof itemRunner === 'function', "The module exports a function");
-        assert.ok(typeof itemRunner.register === 'function', "The function has a property function register");
+        assert.ok(typeof itemRunner !== 'undefined', 'The module exports something');
+        assert.ok(typeof itemRunner === 'function', 'The module exports a function');
+        assert.ok(typeof itemRunner.register === 'function', 'The function has a property function register');
     });
 
 
-// itemRunner.register
+    // itemRunner.register
 
     QUnit.module('Register a Provider', {
-        teardown : function(){
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
     QUnit.test('Error without provider', function(assert){
-        QUnit.expect(1);
+        assert.expect(1);
 
         assert.throws(function(){
             itemRunner();
@@ -28,7 +33,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
     });
 
     QUnit.test('Error with a wrong provider', function(assert){
-        QUnit.expect(3);
+        assert.expect(3);
 
         assert.throws(function(){
             itemRunner.register('');
@@ -44,12 +49,12 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
     });
 
     QUnit.test('Register a minimal provider', function(assert){
-        QUnit.expect(4);
+        assert.expect(4);
 
-        assert.ok(typeof itemRunner.providers === 'undefined', "the itemRunner comes without a provider");
+        assert.ok(typeof itemRunner.providers === 'undefined', 'the itemRunner comes without a provider');
 
         itemRunner.register('testProvider', {
-            init : function(){
+            init: function(){
             }
         });
         itemRunner();
@@ -60,17 +65,18 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
     });
 
 
-// itemRunner().init()
+    // itemRunner().init()
 
-    module('ItemRunner init', {
-        teardown : function(){
+    QUnit.module('ItemRunner init', {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
-    QUnit.asyncTest('Initialize the runner', function(assert){
-        QUnit.expect(4);
+    QUnit.test('Initialize the runner', function(assert){
+        var ready = assert.async();
+        assert.expect(4);
 
         assert.throws(function(){
             itemRunner('dummyProvider', {});
@@ -89,12 +95,13 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.ok(typeof this._data === 'object', 'the itemRunner context got the data assigned');
             assert.equal(this._data.type, 'number', 'the itemRunner context got the right data assigned');
 
-            QUnit.start();
+            ready();
         }).init();
     });
 
-    QUnit.asyncTest('Get the default provider', function(assert){
-        QUnit.expect(2);
+    QUnit.test('Get the default provider', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         itemRunner.register('dummyProvider', dummyProvider);
 
@@ -105,12 +112,13 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.ok(typeof this._data === 'object', 'the itemRunner context got the data assigned');
             assert.equal(this._data.type, 'number', 'the itemRunner context got the right data assigned');
 
-            QUnit.start();
+            ready();
         }).init();
     });
 
-    QUnit.asyncTest('Initialize the item with new data', function(assert){
-        QUnit.expect(2);
+    QUnit.test('Initialize the item with new data', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         itemRunner.register('dummyProvider', dummyProvider);
 
@@ -121,15 +129,16 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.ok(typeof this._data === 'object', 'the itemRunner context got the data assigned');
             assert.equal(this._data.type, 'text', 'the itemRunner context got the right data assigned');
 
-            QUnit.start();
+            ready();
         }).init({
-            type : 'text'
+            type: 'text'
         });
     });
 
 
-    QUnit.asyncTest('No init in the provider', function(assert){
-        QUnit.expect(1);
+    QUnit.test('No init in the provider', function(assert){
+        var ready = assert.async();
+        assert.expect(1);
 
         itemRunner.register('dummyProvider', _.omit(dummyProvider, 'init'));
 
@@ -139,23 +148,24 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
             assert.ok(true, 'init is still called');
 
-            QUnit.start();
+            ready();
         })
         .init();
     });
 
 
-// itemRunner().render()
+    // itemRunner().render()
 
-    module('ItemRunner render', {
-        teardown : function(){
+    QUnit.module('ItemRunner render', {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
-    QUnit.asyncTest('Render an item from an HTMLElement', function(assert){
-        QUnit.expect(5);
+    QUnit.test('Render an item from an HTMLElement', function(assert){
+        var ready = assert.async();
+        assert.expect(5);
 
         var container = document.getElementById('item-container');
         assert.equal(container.id, 'item-container', 'the item container exists');
@@ -172,14 +182,15 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
             assert.equal(container.childNodes.length, 1, 'the container has now children');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render(container);
     });
 
-    QUnit.asyncTest('Render an item from a jQueryElement', function(assert){
-        QUnit.expect(4);
+    QUnit.test('Render an item from a jQueryElement', function(assert){
+        var ready = assert.async();
+        assert.expect(4);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -194,14 +205,15 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.equal($input.length, 1, 'the container contains an input');
             assert.equal($input.attr('type'), 'search', 'the input has the right type');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-    QUnit.asyncTest('Render an item into wrong element', function(assert){
-        QUnit.expect(2);
+    QUnit.test('Render an item into wrong element', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         itemRunner.register('dummyProvider', dummyProvider);
 
@@ -209,15 +221,16 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             type: 'search'
         }).on('error', function(message){
             assert.ok(typeof message === 'string', 'An error message is given');
-            assert.ok(message.length > 0 , 'A non empty message is given');
-            QUnit.start();
+            assert.ok(message.length > 0, 'A non empty message is given');
+            ready();
         })
         .init()
-        .render("item-container");
+        .render('item-container');
     });
 
-    QUnit.asyncTest('Render an item without element', function(assert){
-        QUnit.expect(2);
+    QUnit.test('Render an item without element', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         itemRunner.register('dummyProvider', dummyProvider);
 
@@ -225,15 +238,16 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             type: 'search'
         }).on('error', function(message){
             assert.ok(typeof message === 'string', 'An error message is given');
-            assert.ok(message.length > 0 , 'A non empty message is given');
-            QUnit.start();
+            assert.ok(message.length > 0, 'A non empty message is given');
+            ready();
         })
         .init()
         .render();
     });
 
-    QUnit.asyncTest('No clear in the provider', function(assert){
-        QUnit.expect(1);
+    QUnit.test('No clear in the provider', function(assert){
+        var ready = assert.async();
+        assert.expect(1);
 
         var $container = $('#item-container');
 
@@ -245,24 +259,25 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
             assert.ok(true, 'render is still called');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-    QUnit.asyncTest('Render sync with init async', function(assert){
-        QUnit.expect(2);
+    QUnit.test('Render sync with init async', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
 
         itemRunner.register('dummyProvider', _.defaults({
-            init: function(data, done){
+            init: function(data, ready){
                 var self = this;
                 setTimeout(function(){
                     self._data = data;
-                    done();
+                    ready();
                 }, 100);
             }
         }, dummyProvider));
@@ -271,24 +286,25 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             type: 'text'
         }).on('render', function(){
             assert.ok(true, 'Rendered done');
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
 
-// itemRunner().clear()
+    // itemRunner().clear()
 
-    module('ItemRunner clear', {
-        teardown : function(){
+    QUnit.module('ItemRunner clear', {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
-    QUnit.asyncTest('Clear a rendered element', function(assert){
-        QUnit.expect(4);
+    QUnit.test('Clear a rendered element', function(assert){
+        var ready = assert.async();
+        assert.expect(4);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -307,14 +323,15 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
             assert.equal($container.children().length, 0, 'the container children are removed');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-    QUnit.asyncTest('No clear in the provider', function(assert){
-        QUnit.expect(1);
+    QUnit.test('No clear in the provider', function(assert){
+        var ready = assert.async();
+        assert.expect(1);
 
         var $container = $('#item-container');
 
@@ -331,25 +348,26 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
             assert.ok(true, 'clear is still called');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
 
-// itemRunner().get/setState()
-//             .on('statechange')
+    // itemRunner().get/setState()
+    //             .on('statechange')
 
-    module('ItemRunner state', {
-        teardown : function(){
+    QUnit.module('ItemRunner state', {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
-    QUnit.asyncTest('setState after render', function(assert){
-        QUnit.expect(4);
+    QUnit.test('setState after render', function(assert){
+        var ready = assert.async();
+        assert.expect(4);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -358,24 +376,25 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
             var $input = $('input', $container);
             assert.equal($input.length, 1, 'the container contains an input');
             assert.equal($input.val(), 0, 'the input value is set before');
 
-            this.setState({ value : 12 });
+            this.setState({value: 12});
 
             assert.equal($input.val(), 12, 'the input value has changed regarding to the state');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-    QUnit.asyncTest('set initial state', function(assert){
-        QUnit.expect(3);
+    QUnit.test('set initial state', function(assert){
+        var ready = assert.async();
+        assert.expect(3);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -389,33 +408,35 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.equal($input.length, 1, 'the container contains an input');
             assert.equal($input.val(), 13, 'the input value has the initial state');
 
-            QUnit.start();
+            ready();
         })
         .init()
-        .setState({ value : 13 })
+        .setState({value: 13})
         .render($container);
     });
 
-    QUnit.asyncTest('set a wrong state', function(assert){
-        QUnit.expect(2);
+    QUnit.test('set a wrong state', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         itemRunner.register('dummyProvider', dummyProvider);
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         })
         .on('error', function(message){
             assert.ok(typeof message === 'string', 'An error message is given');
-            assert.ok(message.length > 0 , 'A non empty message is given');
-            QUnit.start();
+            assert.ok(message.length > 0, 'A non empty message is given');
+            ready();
         })
         .init()
         .setState([]);
     });
 
-    QUnit.asyncTest('get the current state', function(assert){
-        QUnit.expect(7);
+    QUnit.test('get the current state', function(assert){
+        var ready = assert.async();
+        assert.expect(7);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -424,7 +445,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
             var state;
             var $input = $('input', $container);
@@ -433,7 +454,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
             state = this.getState();
 
-            assert.ok(typeof state === 'object' , 'the state is an object');
+            assert.ok(typeof state === 'object', 'the state is an object');
             assert.equal(state.value, 0, 'got the initial state');
 
             $input.val(14);
@@ -443,14 +464,15 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.ok(typeof state === 'object', 'the state is an object');
             assert.equal(state.value, 14, 'got the last state value');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-    QUnit.asyncTest('listen for state change', function(assert){
-        QUnit.expect(5);
+    QUnit.test('listen for state change', function(assert){
+        var ready = assert.async();
+        assert.expect(5);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -459,21 +481,21 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('statechange', function(state){
 
             var $input = $('input', $container);
 
-            assert.ok(typeof state === 'object' , 'the state is an object');
+            assert.ok(typeof state === 'object', 'the state is an object');
             assert.equal($input.length, 1, 'the container contains an input');
             assert.equal(state.value, 16, 'the state has the updated value');
             assert.equal($input.val(), state.value, 'the given state match the input value');
 
-            QUnit.start();
+            ready();
         }).on('render', function(){
             var $input = $('input', $container);
-            var evt = document.createEvent("HTMLEvents");
-            evt.initEvent("change", false, true);
+            var evt = document.createEvent('HTMLEvents');
+            evt.initEvent('change', false, true);
             $input.val(16)[0].dispatchEvent(evt);
         })
         .init()
@@ -481,17 +503,18 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
     });
 
 
-// itemRunner().getResponses
+    // itemRunner().getResponses
 
-    module('ItemRunner getResponses', {
-        teardown : function(){
+    QUnit.module('ItemRunner getResponses', {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
-    QUnit.asyncTest('getResponses with no changes', function(assert){
-        QUnit.expect(4);
+    QUnit.test('getResponses with no changes', function(assert){
+        var ready = assert.async();
+        assert.expect(4);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -500,7 +523,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             var responses = this.getResponses();
@@ -509,14 +532,15 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.equal(responses.length, 1, 'responses contains one entry');
             assert.equal(responses[0], 0, 'response is the initial value');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-    QUnit.asyncTest('getResponses after changes', function(assert){
-        QUnit.expect(4);
+    QUnit.test('getResponses after changes', function(assert){
+        var ready = assert.async();
+        assert.expect(4);
 
         var $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -525,7 +549,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         var runner = itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             var $input = $('input', $container);
@@ -537,23 +561,24 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             assert.equal(responses.length, 1, 'responses contains one entry, the last response only');
             assert.equal(responses[0], 18, 'response is the initial value');
 
-            QUnit.start();
+            ready();
         })
         .init()
         .render($container);
     });
 
-// itemRunner().on().off().trigger()
+    // itemRunner().on().off().trigger()
 
-    module('ItemRunner events', {
-        teardown : function(){
+    QUnit.module('ItemRunner events', {
+        afterEach: function(assert) {
             //reset the provides
             itemRunner.providers = undefined;
         }
     });
 
-    QUnit.asyncTest('multiple events binding', function(assert){
-        QUnit.expect(2);
+    QUnit.test('multiple events binding', function(assert){
+        var ready = assert.async();
+        assert.expect(2);
 
         var inc = 0;
 
@@ -566,14 +591,15 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
             inc++;
         }).on('test', function(){
             assert.equal(inc, 1, 'first called 2nd');
-            QUnit.start();
+            ready();
         })
         .init()
         .trigger('test');
     });
 
-    QUnit.asyncTest('unbinding events', function(assert){
-        QUnit.expect(1);
+    QUnit.test('unbinding events', function(assert){
+        var ready = assert.async();
+        assert.expect(1);
 
         var inc = 0;
 
@@ -592,21 +618,22 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         setTimeout(function(){
             assert.ok(true, 'handlers not called after off');
-            QUnit.start();
+            ready();
         }, 10);
     });
 
-    module('ItemRunner renderFeedbacks', {
-        teardown : function(){
+    QUnit.module('ItemRunner renderFeedbacks', {
+        afterEach: function(assert) {
             //reset the providers
             delete itemRunner.providers;
         }
     });
 
-    QUnit.asyncTest('renderFeedbacks with empty queue', function(assert){
+    QUnit.test('renderFeedbacks with empty queue', function(assert){
+        var ready = assert.async();
         var $container;
 
-        QUnit.expect(3);
+        assert.expect(3);
 
         $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -615,24 +642,25 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             this.renderFeedbacks([], [], function(renderingQueue){
                 assert.ok(renderingQueue instanceof Array, 'renderingQueue is an array');
                 assert.equal(renderingQueue.length, 0, 'renderingQueue is empty');
 
-                QUnit.start();
+                ready();
             });
         })
             .init()
             .render($container);
     });
 
-    QUnit.asyncTest('getResponses after changes', function(assert){
+    QUnit.test('getResponses after changes', function(assert){
+        var ready = assert.async();
         var $container;
 
-        QUnit.expect(4);
+        assert.expect(4);
 
         $container = $('#item-container');
         assert.equal($container.length, 1, 'the item container exists');
@@ -641,7 +669,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
 
         itemRunner('dummyProvider', {
             type: 'number',
-            value : 0
+            value: 0
         }).on('render', function(){
 
             this.renderFeedbacks({f1: 'feedback1', f2: 'feedback2', f3: 'feedback3'}, ['f2'], function(renderingQueue){
@@ -649,7 +677,7 @@ define(['jquery', 'lodash', 'taoItems/runner/api/itemRunner', 'taoItems/test/run
                 assert.equal(renderingQueue.length, 1, 'renderingQueue contains one entry');
                 assert.equal(renderingQueue[0], 'feedback2', 'renderingQueue contains selected entry');
 
-                QUnit.start();
+                ready();
             });
         })
             .init()
