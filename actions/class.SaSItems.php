@@ -60,15 +60,15 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
 
 		$formContainer = new tao_actions_form_Instance($clazz, $instance);
 		$myForm = $formContainer->getForm();
+		$myForm->addCsrfTokenProtection();
 
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-				$binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
-				$instance = $binder->bind($myForm->getValues());
-				$instance = $this->getClassService()->setDefaultItemContent($instance);
-				$this->setData('message', __('Item saved'));
-			}
-		}
+		if($myForm->isSubmited() && $myForm->isValid()) {
+		    $this->validateCsrf();
+            $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
+            $instance = $binder->bind($myForm->getValues());
+            $instance = $this->getClassService()->setDefaultItemContent($instance);
+            $this->setData('message', __('Item saved'));
+        }
 
 		$this->setData('uri', tao_helpers_Uri::encode($instance->getUri()));
 		$this->setData('classUri', tao_helpers_Uri::encode($clazz->getUri()));

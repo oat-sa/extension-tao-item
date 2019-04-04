@@ -173,10 +173,12 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $formContainer = new SignedFormInstance($itemClass, $item);
             $myForm = $formContainer->getForm();
+            $myForm->addCsrfTokenProtection();
 
             $itemUri = $item->getUri();
             if ($this->hasWriteAccess($itemUri)) {
                 if($myForm->isSubmited() && $myForm->isValid()){
+                    $this->validateCsrf();
                     $this->validateInstanceRoot($itemUri);
 
                     $properties = $myForm->getValues();
