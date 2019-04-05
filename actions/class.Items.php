@@ -200,6 +200,12 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $this->setData('label', ($label != null) ? $label->literal : '');
                     $this->setData('message', __('Item saved'));
                     $this->setData('reload', true);
+
+                    $this->returnJson([
+                        'success' => true,
+                        'message' => __('Item saved')
+                    ]);
+                    return;
                 }
             } else {
                 $myForm->setActions([]);

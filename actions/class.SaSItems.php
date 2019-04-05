@@ -68,6 +68,11 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
             $instance = $binder->bind($myForm->getValues());
             $instance = $this->getClassService()->setDefaultItemContent($instance);
             $this->setData('message', __('Item saved'));
+            $this->returnJson([
+                'success' => true,
+                'message' => __('Item saved')
+            ]);
+            return;
         }
 
 		$this->setData('uri', tao_helpers_Uri::encode($instance->getUri()));
