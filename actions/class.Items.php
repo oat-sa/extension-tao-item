@@ -177,8 +177,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $itemUri = $item->getUri();
             if ($this->hasWriteAccess($itemUri)) {
-                if($myForm->isSubmited() && $myForm->isValid()){
-                    $this->validateCsrf();
+                if ($myForm->isSubmited() && $myForm->isValid()) {
                     $this->validateInstanceRoot($itemUri);
 
                     $properties = $myForm->getValues();
@@ -196,16 +195,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                     //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                     $label = $item->getOnePropertyValue(new core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
-                    $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
-                    $this->setData('label', ($label != null) ? $label->literal : '');
+                    $this->setData('selectNode', tao_helpers_Uri::encode($item->getUri()));
+                    $this->setData('label', ($label !== null) ? $label->literal : '');
                     $this->setData('message', __('Item saved'));
                     $this->setData('reload', true);
-
-                    $this->returnJson([
-                        'success' => true,
-                        'message' => __('Item saved')
-                    ]);
-                    return;
                 }
             } else {
                 $myForm->setActions([]);
@@ -214,7 +207,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $currentModel = $this->getClassService()->getItemModel($item);
             $hasPreview = false;
             $hasModel   = false;
-            if(!empty($currentModel)) {
+            if (!empty($currentModel)) {
                 $hasModel = true;
                 $isDeprecated = $this->getClassService()->hasModelStatus($item, array(ItemModelStatus::INSTANCE_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
@@ -318,6 +311,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      */
     public function authoring()
     {
+        $this->validateCsrf();
         $this->defaultData();
 
         $item = $this->getResource($this->getRequestParameter('id'));
@@ -328,7 +322,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             try{
 
                 $itemModel = $this->getClassService()->getItemModel($item);
-                if(!is_null($itemModel)){
+                if($itemModel !== null){
                     $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
