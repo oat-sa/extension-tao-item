@@ -311,7 +311,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      */
     public function authoring()
     {
-        $this->validateCsrf();
         $this->defaultData();
 
         $item = $this->getResource($this->getRequestParameter('id'));
