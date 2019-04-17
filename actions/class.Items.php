@@ -30,6 +30,7 @@ use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\resources\ResourceWatcher;
 use oat\tao\model\controller\SignedFormInstance;
+use tao_helpers_form_FormContainer as FormContainer;
 
 /**
  * Items Controller provide actions performed from url resolution
@@ -171,9 +172,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('id', $item->getUri());
             }
 
-            $formContainer = new SignedFormInstance($itemClass, $item);
+            $formContainer = new SignedFormInstance($itemClass, $item, [FormContainer::CSRF_PROTECTION_OPTION => true]);
             $myForm = $formContainer->getForm();
-            $myForm->addCsrfTokenProtection();
 
             $itemUri = $item->getUri();
             if ($this->hasWriteAccess($itemUri)) {

@@ -21,6 +21,7 @@
  */
 
 use oat\generis\model\OntologyRdfs;
+use tao_helpers_form_FormContainer as FormContainer;
 
 /**
  * SaSItems Controller provide process services for in the Items
@@ -58,9 +59,8 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
         $clazz = $this->getCurrentClass();
 		$instance = $this->getCurrentInstance();
 
-		$formContainer = new tao_actions_form_Instance($clazz, $instance);
+		$formContainer = new tao_actions_form_Instance($clazz, $instance, [FormContainer::CSRF_PROTECTION_OPTION => true]);
 		$myForm = $formContainer->getForm();
-		$myForm->addCsrfTokenProtection();
 
 		if($myForm->isSubmited() && $myForm->isValid()) {
             $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
