@@ -30,6 +30,7 @@ use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\resources\ResourceWatcher;
 use oat\tao\model\controller\SignedFormInstance;
+use tao_helpers_form_FormContainer as FormContainer;
 
 /**
  * Items Controller provide actions performed from url resolution
@@ -171,12 +172,12 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('id', $item->getUri());
             }
 
-            $formContainer = new SignedFormInstance($itemClass, $item);
+            $formContainer = new SignedFormInstance($itemClass, $item, [FormContainer::CSRF_PROTECTION_OPTION => true]);
             $myForm = $formContainer->getForm();
 
             $itemUri = $item->getUri();
             if ($this->hasWriteAccess($itemUri)) {
-                if($myForm->isSubmited() && $myForm->isValid()){
+                if ($myForm->isSubmited() && $myForm->isValid()) {
                     $this->validateInstanceRoot($itemUri);
 
                     $properties = $myForm->getValues();
@@ -194,8 +195,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                     //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                     $label = $item->getOnePropertyValue(new core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
-                    $this->setData("selectNode", tao_helpers_Uri::encode($item->getUri()));
-                    $this->setData('label', ($label != null) ? $label->literal : '');
+                    $this->setData('selectNode', tao_helpers_Uri::encode($item->getUri()));
+                    $this->setData('label', ($label !== null) ? $label->literal : '');
                     $this->setData('message', __('Item saved'));
                     $this->setData('reload', true);
                 }
@@ -206,7 +207,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $currentModel = $this->getClassService()->getItemModel($item);
             $hasPreview = false;
             $hasModel   = false;
-            if(!empty($currentModel)) {
+            if (!empty($currentModel)) {
                 $hasModel = true;
                 $isDeprecated = $this->getClassService()->hasModelStatus($item, array(ItemModelStatus::INSTANCE_DEPRECATED));
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
@@ -320,7 +321,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             try{
 
                 $itemModel = $this->getClassService()->getItemModel($item);
-                if(!is_null($itemModel)){
+                if($itemModel !== null){
                     $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if(!empty($authoringUrl)){
