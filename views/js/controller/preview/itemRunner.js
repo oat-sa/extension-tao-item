@@ -27,7 +27,8 @@ define([
     'serviceApi/UserInfoService',
     'taoItems/runtime/ItemServiceImpl',
     'taoItems/preview/actionBarHook',
-    'urlParser'
+    'urlParser',
+    'taoItems/previewer/factory',
 ], function (
     module,
     $,
@@ -38,33 +39,14 @@ define([
     UserInfoService,
     ItemServiceImpl,
     actionBarHook,
-    UrlParser
+    UrlParser,
+    previewerFactory,
 ) {
     'use strict';
-
-
-        /**
-         * Custom Buttons, usually defined in a custom extension
-         *
-         * @private
-         */
-        var _initCustomButtons = function _initCustomButtons() {
-
-            var config = module.config(),
-                buttons = config.extraButtons || {},
-                $container = $('.extra-button-action-bar');
-
-
-            _.forIn(buttons, function(config, id) {
-                actionBarHook.initExtraButtons($container, id, config);
-            });
-
-        };
 
         var previewItemRunner = {
 
             start: function (options) {
-
                 var conf = _.merge(module.config(), options || {});
 
                 if (conf.previewUrl) {
@@ -96,13 +78,6 @@ define([
                             resultApi: resultServerApi
                         });
 
-                        var callUrl = new UrlParser(serviceApi.getCallUrl());
-                        var isCORSAllowed = callUrl.checkCORS();
-                        callUrl.addParam('clientConfigUrl', conf.clientConfigUrl);
-
-                        //the iframe is 1st detached and then attached with src in order to prevent adding an entry in the history
-                        var $frame = $('<iframe id="preview-container" name="preview-container" src="' + callUrl.getUrl() + '"></iframe>');
-
                         var state;
                         try {
                             state = JSON.parse(encoder.decodeBase64(conf.state));
@@ -114,33 +89,18 @@ define([
                             itemApi.setVariables(state);
                         }
 
-                        $frame.on('load', function () {
-                            var frame = this;
+                        // if (deliveryId && resultId && itemDefinition) {
+                        var uri = {
+                            uri: itemApi.resultApi.itemUri,
+                            resultId: itemApi.itemId,
+                            itemDefinition: itemApi.itemDefinition,
+                            deliveryUri: itemApi.deliveryId
+                        };
+                        // }
 
-                            //1st try to connect the api on frame load
-                            itemApi.connect(frame);
-
-                            //if we are  in the same domain, we add a variable
-                            //to the frame window, so the frame knows it can communicate
-                            //with the parent
-                            if (isCORSAllowed === true) {
-                                frame.contentWindow.__knownParent__ = true;
-                            }
-                            //then we can wait a specific event triggered from the item
-                            $(document).off('itemready').on('itemready', function () {
-                                itemApi.connect(frame);
-                                if(frame.contentWindow.__knownParent__) {
-                                    frame.contentWindow.document.body.className += ' tao-preview-scope';
-
-                                    _initCustomButtons();
-                                }
-                            });
-                        });
-
-                        $('.preview-item-container').append($frame);
-
-                        $('#finishButton').click(function () {
-                            itemApi.finish();
+                        previewerFactory(type, uri, state, {
+                            readOnly: true,
+                            fullPage: true
                         });
                     });
                 }
