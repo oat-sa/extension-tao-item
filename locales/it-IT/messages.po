@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-01T09:23:58\n"
+"PO-Revision-Date: 2019-04-25T01:04:22\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -14,11 +14,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
-msgstr "Dimensione reale"
+msgstr "Dimensione attuale"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Autore"
+msgstr "Creazione"
 
 msgid "Class schema saved"
 msgstr ""
@@ -35,7 +35,7 @@ msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Crea e progetta item ed esercizi"
+msgstr ""
 
 #, tao-public
 msgid "Delete"
@@ -45,17 +45,17 @@ msgid "Desktop preview"
 msgstr "Anteprima desktop"
 
 msgid "Don’t show this again!"
-msgstr "Non mostrare nuovamente"
+msgstr "Non mostrare nuovamente!"
 
 #, tao-public
 msgid "Duplicate"
 msgstr "Duplica"
 
 msgid "Edit item"
-msgstr "Modifica item"
+msgstr "Modifica elemento"
 
 msgid "Edit Item"
-msgstr "Modifica item"
+msgstr "Modifica elemento"
 
 #, tao-public
 msgid "Export"
@@ -65,31 +65,31 @@ msgid "Expose the property value to create automated categories."
 msgstr ""
 
 msgid "Failed retrieving %s"
-msgstr "Impossibile recuperare"
+msgstr "Impossibile recuperare %s"
 
 #, tao-public
 msgid "Import"
 msgstr "Importa"
 
 msgid "Item Model"
-msgstr "Modello di item"
+msgstr "Modello di elemento"
 
 msgid "Item not found"
 msgstr ""
 
 msgid "Item saved"
-msgstr "Item salvato"
+msgstr "Elemento salvato"
 
 #, tao-public
 msgid "Items"
-msgstr "Item"
+msgstr "Elementi"
 
 #, tao-public
 msgid "Items library"
-msgstr "Raccolta item"
+msgstr "Libreria di elementi"
 
 msgid "Landscape"
-msgstr "Panorama"
+msgstr "Orizzontale"
 
 msgid "Last updated on %2s"
 msgstr ""
@@ -99,7 +99,7 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr "Gestisci item"
+msgstr "Gestisci elemento"
 
 #, tao-public
 msgid "Manage Schema"
@@ -121,19 +121,19 @@ msgid "New class"
 msgstr "Nuova classe"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Nessun tool di authoring di item disponibile per il tipo di item selezionato"
+msgstr "Nessuno strumento di creazione disponibile per il tipo di elemento selezionato: %s"
 
 msgid "No item type selected for the current item."
-msgstr "Nessun tipo di item selezionato per il corrente item"
+msgstr "Nessun tipo di elemento selezionato per il corrente elemento."
 
 msgid "Not yet available"
 msgstr "Non ancora disponibile"
 
 msgid "Please select first the item type!"
-msgstr "Prego, seleziona prima il tipo di item!"
+msgstr "Prego seleziona prima il tipo di elemento!"
 
 msgid "Portrait"
-msgstr "Ritratto"
+msgstr "Verticale"
 
 #, tao-public
 msgid "Preview"
@@ -144,7 +144,7 @@ msgid "Properties"
 msgstr "Proprietà"
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr "Pubblicato \"%1$s\" nella lingua \"%2$s"
+msgstr "Pubblicato \"%1$s\" in lingua \"%2$s"
 
 msgid "Remove this message"
 msgstr "Rimuovi questo messaggio"
@@ -159,26 +159,26 @@ msgid "The file you tried to upload is not valid"
 msgstr "Il file che hai cercato di caricare non è valido"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Il modulo item consente la creazione e la progettazione di item ed esercizi."
+msgstr "Il modulo elementi consente la creazione e la progettazione di elementi ed esercizi."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "Questa anteprima può essere rappresentata in scala sul monitor. La resa finale può differire"
+msgstr "Questa anteprima può essere ridimensionata per adattarsi allo schermo. Il rendering finale può differire."
 
 msgid "Unable to copy resources for language %s"
-msgstr "Non in grado di copiare le risorse per la lingua %s"
+msgstr "Impossibile copiare le risorse per la lingua %s"
 
 msgid "Unable to create deployement directory"
-msgstr "Impossibile creare la directory di dislocazione"
+msgstr "Impossibile creare la cartella di somministrazione"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "You checked out this item %2s ago"
-msgstr "Hai estratto questo item %2s"
+msgstr "Hai controllato questo elemento %2s fa"
 
 msgid "Your path contains error"
-msgstr "Il tuo percorso contiene errore"
+msgstr "Il percorso contiene errori"
 

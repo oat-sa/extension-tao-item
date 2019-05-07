@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-04-25T01:15:19\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: pt-BR\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: pt-BR\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Actual size"
+msgstr "Tamanho real"
+
+#, tao-public
+msgid "Authoring"
+msgstr "Elaboração"
+
+msgid "Class schema saved"
+msgstr ""
+
+msgid "Close"
+msgstr "Fechar"
+
+msgid "Close console"
+msgstr "Fechar o console"
+
+#, tao-public
+msgid "Copy To"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "Criar e editorar itens e exercícios."
+
+#, tao-public
+msgid "Delete"
+msgstr "Excluir"
+
+msgid "Desktop preview"
+msgstr "Pré-visualização da área de trabalho"
+
+msgid "Don’t show this again!"
+msgstr "Não exibir isto novamente"
+
+#, tao-public
+msgid "Duplicate"
+msgstr "Duplicar"
+
+msgid "Edit item"
+msgstr "Editar item"
+
+msgid "Edit Item"
+msgstr "Editar Item"
+
+#, tao-public
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Expose the property value to create automated categories."
+msgstr "Expor o valor da propriedade para criar categorias automatizadas."
+
+msgid "Failed retrieving %s"
+msgstr "Falha ao recuperar %s"
+
+#, tao-public
+msgid "Import"
+msgstr "Importar"
+
+msgid "Item Model"
+msgstr "Modelo de item"
+
+msgid "Item not found"
+msgstr ""
+
+msgid "Item saved"
+msgstr "Item salvo"
+
+#, tao-public
+msgid "Items"
+msgstr "Itens"
+
+#, tao-public
+msgid "Items library"
+msgstr "Biblioteca de itens"
+
+msgid "Landscape"
+msgstr "Paisagem"
+
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr "Gerenciar itens"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr "Pré-visualização para dispositivos móveis"
+
+#, tao-public
+msgid "Move"
+msgstr "Mover"
+
+#, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
+msgid "New class"
+msgstr "Nova classe"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "Nenhuma ferramenta de elaboração de itens disponível para o tipo de item selecionado: %s"
+
+msgid "No item type selected for the current item."
+msgstr "Nenhum tipo de item selecionado para o item atual."
+
+msgid "Not yet available"
+msgstr "Ainda não disponível"
+
+msgid "Please select first the item type!"
+msgstr "Favor, selecionar primeiro o tipo de item!"
+
+msgid "Portrait"
+msgstr "Retrato"
+
+#, tao-public
+msgid "Preview"
+msgstr "Pré-visualização"
+
+#, tao-public
+msgid "Properties"
+msgstr "Propriedades"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "Publicado \"%1$s\" no idioma \"%2$s"
+
+msgid "Remove this message"
+msgstr "Remover esta mensagem"
+
+msgid "Retrieving external resources"
+msgstr "Recuperando recursos externos"
+
+msgid "Submit"
+msgstr "Enviar"
+
+msgid "The file you tried to upload is not valid"
+msgstr "Arquivo não é válido para upload"
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "O módulo Itens permite a criação e editoração de itens e exercícios."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr "A propriedade está exposta a acréscimos de categoria. &#13 Remover exposição ?"
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "Esta pré-visualização pode ser dimensionada para caber na sua tela. A renderização final pode ser diferente."
+
+msgid "Unable to copy resources for language %s"
+msgstr "Não é possível copiar recursos para o idioma %s"
+
+msgid "Unable to create deployement directory"
+msgstr "Não é possível criar o diretório de implantação"
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "Não é possível renderizar o item de %s :%s %s"
+
+msgid "You checked out this item %2s ago"
+msgstr "Você verificou este item%2s atrás"
+
+msgid "Your path contains error"
+msgstr "Seu caminho contém erros"
+

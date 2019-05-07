@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-04-25T01:14:01\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: lt-LT\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: lt-LT\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Actual size"
+msgstr "Tikrasis dydis"
+
+#, tao-public
+msgid "Authoring"
+msgstr "Autorius"
+
+msgid "Class schema saved"
+msgstr ""
+
+msgid "Close"
+msgstr "Uždaryti"
+
+msgid "Close console"
+msgstr "Uždaryti konsolę"
+
+#, tao-public
+msgid "Copy To"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "Kurti ir redaguoti laukus ir uždavinius."
+
+#, tao-public
+msgid "Delete"
+msgstr "Ištrinti"
+
+msgid "Desktop preview"
+msgstr "Darbalaukio peržiūra"
+
+msgid "Don’t show this again!"
+msgstr "Daugiau šito nerodyti!"
+
+#, tao-public
+msgid "Duplicate"
+msgstr "Kurti kopiją"
+
+msgid "Edit item"
+msgstr "Redaguoti klausimą"
+
+msgid "Edit Item"
+msgstr "Redaguoti klausimą"
+
+#, tao-public
+msgid "Export"
+msgstr "Eksportuoti"
+
+msgid "Expose the property value to create automated categories."
+msgstr "Pateikti nuostatas automatinių kategorijų sukūrimui."
+
+msgid "Failed retrieving %s"
+msgstr "Nepavyko gauti %s"
+
+#, tao-public
+msgid "Import"
+msgstr "Importuoti"
+
+msgid "Item Model"
+msgstr "Klausimo modelis"
+
+msgid "Item not found"
+msgstr ""
+
+msgid "Item saved"
+msgstr "Klausimas išsaugotas"
+
+#, tao-public
+msgid "Items"
+msgstr "Klausimai"
+
+#, tao-public
+msgid "Items library"
+msgstr "Klausimų biblioteka"
+
+msgid "Landscape"
+msgstr "Išdėstymas"
+
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr "Tvarkyti klausimus"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr "Mobili peržiūra"
+
+#, tao-public
+msgid "Move"
+msgstr "Perkelti"
+
+#, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
+msgid "New class"
+msgstr "Nauja klasė"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "Nerastas autorizavimo įrankis pasirinktam klausimų tipui: %s"
+
+msgid "No item type selected for the current item."
+msgstr "Nepasirinktas klausimo tipas šiam klausimui."
+
+msgid "Not yet available"
+msgstr "Vis dar negalimas"
+
+msgid "Please select first the item type!"
+msgstr "Prašome pirma pasirinkti klausimo tipą!"
+
+msgid "Portrait"
+msgstr "Portretas"
+
+#, tao-public
+msgid "Preview"
+msgstr "Peržiūra"
+
+#, tao-public
+msgid "Properties"
+msgstr "Savybės"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "Paskelbta \"%1$s\", kalba \"%2$s"
+
+msgid "Remove this message"
+msgstr "Pašalinti šį pranešimą"
+
+msgid "Retrieving external resources"
+msgstr "Išorinių resursų gavimas"
+
+msgid "Submit"
+msgstr "Pateikti"
+
+msgid "The file you tried to upload is not valid"
+msgstr "Failas, kurį bandėte įkelti yra neteisingas"
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "Klausimų modulis leidžia kurti ir modeliuoti klausimus bei užduotis."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr "Šis parametras yra rodomas prie naujos kategorijos pridėjimo.&#13Nerodyti ?"
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "Šis rodinys gali būti didinamas arba mažinamas, pritaikant jūsų ekrano dydžiui."
+
+msgid "Unable to copy resources for language %s"
+msgstr "Nepavyko kopijuoti resursus kalbai %s"
+
+msgid "Unable to create deployement directory"
+msgstr "Neįmanoma sukurti katalogo diegimui."
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "Neįmanoma pateikti klausimo nuo %s : %s %s"
+
+msgid "You checked out this item %2s ago"
+msgstr "Jūs išregistravote šį klausimą prieš %2s."
+
+msgid "Your path contains error"
+msgstr "Jūsų kelias yra su klaidomis."
+

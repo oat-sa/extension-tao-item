@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-04-25T01:10:54\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ca-ES-valencia\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: ca-ES-valencia\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Actual size"
+msgstr "Mida real"
+
+#, tao-public
+msgid "Authoring"
+msgstr "Autoria"
+
+msgid "Class schema saved"
+msgstr ""
+
+msgid "Close"
+msgstr "Tanca"
+
+msgid "Close console"
+msgstr "Tanca la consola"
+
+#, tao-public
+msgid "Copy To"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "Crea i dissenya elements i exercicis."
+
+#, tao-public
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Desktop preview"
+msgstr "Previsualització de l'escriptori"
+
+msgid "Don’t show this again!"
+msgstr "No ho tornes a mostrar."
+
+#, tao-public
+msgid "Duplicate"
+msgstr "Duplica"
+
+msgid "Edit item"
+msgstr "Edita l'element"
+
+msgid "Edit Item"
+msgstr "Edita l'element"
+
+#, tao-public
+msgid "Export"
+msgstr "Exporta"
+
+msgid "Expose the property value to create automated categories."
+msgstr "Exposa el valor de la propietat per a crear categories automàtiques"
+
+msgid "Failed retrieving %s"
+msgstr "S'ha produït un error en recuperar %s"
+
+#, tao-public
+msgid "Import"
+msgstr "Importa"
+
+msgid "Item Model"
+msgstr "Model d'element"
+
+msgid "Item not found"
+msgstr ""
+
+msgid "Item saved"
+msgstr "Element guardat"
+
+#, tao-public
+msgid "Items"
+msgstr "Elements"
+
+#, tao-public
+msgid "Items library"
+msgstr "Biblioteca d'elements"
+
+msgid "Landscape"
+msgstr "Horitzontal"
+
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr "Gestiona els elements"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr "Previsualització per a mòbils"
+
+#, tao-public
+msgid "Move"
+msgstr "Mou"
+
+#, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
+msgid "New class"
+msgstr "Classe nova"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "No hi ha disponible cap eina d'autoria d'element per al tipus seleccionat de l'element: %s"
+
+msgid "No item type selected for the current item."
+msgstr "No s'ha seleccionat cap tipus d'element per a l'element actual."
+
+msgid "Not yet available"
+msgstr "No està disponible encara"
+
+msgid "Please select first the item type!"
+msgstr "Seleccioneu primer el tipus d'element"
+
+msgid "Portrait"
+msgstr "Vertical"
+
+#, tao-public
+msgid "Preview"
+msgstr "Previsualització"
+
+#, tao-public
+msgid "Properties"
+msgstr "Propietats"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "S'ha publicat \"%1$s\" en l'idioma \"%2$s"
+
+msgid "Remove this message"
+msgstr "Suprimeix aquest missatge"
+
+msgid "Retrieving external resources"
+msgstr "S'estan recuperant recursos externs"
+
+msgid "Submit"
+msgstr "Envia"
+
+msgid "The file you tried to upload is not valid"
+msgstr "El fitxer que proveu de pujar no és vàlid."
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "El mòdul «Elements» permet la creació i disseny d'elements i exercicis."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr "La propietat s'exposa a l'addició de categories.&#13Voleu eliminar l'exposició?"
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "Aquesta previsualització es pot redimensionar perquè s'ajuste a la pantalla. La renderització final pot ser diferent."
+
+msgid "Unable to copy resources for language %s"
+msgstr "No es poden copiar els recursos per a l'idioma %s"
+
+msgid "Unable to create deployement directory"
+msgstr "No es pot crear el directori d'implementació"
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "No es pot renderitzar l'element de %s: %s %s"
+
+msgid "You checked out this item %2s ago"
+msgstr "Vau comprovar aquest element fa %2s"
+
+msgid "Your path contains error"
+msgstr "El vostre camí conté com a mínim un error."
+
