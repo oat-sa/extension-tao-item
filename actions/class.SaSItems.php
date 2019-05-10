@@ -21,6 +21,7 @@
  */
 
 use oat\generis\model\OntologyRdfs;
+use tao_helpers_form_FormContainer as FormContainer;
 
 /**
  * SaSItems Controller provide process services for in the Items
@@ -58,17 +59,15 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
         $clazz = $this->getCurrentClass();
 		$instance = $this->getCurrentInstance();
 
-		$formContainer = new tao_actions_form_Instance($clazz, $instance);
+		$formContainer = new tao_actions_form_Instance($clazz, $instance, [FormContainer::CSRF_PROTECTION_OPTION => true]);
 		$myForm = $formContainer->getForm();
 
-		if($myForm->isSubmited()){
-			if($myForm->isValid()){
-				$binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
-				$instance = $binder->bind($myForm->getValues());
-				$instance = $this->getClassService()->setDefaultItemContent($instance);
-				$this->setData('message', __('Item saved'));
-			}
-		}
+		if($myForm->isSubmited() && $myForm->isValid()) {
+            $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
+            $instance = $binder->bind($myForm->getValues());
+            $instance = $this->getClassService()->setDefaultItemContent($instance);
+            $this->setData('message', __('Item saved'));
+        }
 
 		$this->setData('uri', tao_helpers_Uri::encode($instance->getUri()));
 		$this->setData('classUri', tao_helpers_Uri::encode($clazz->getUri()));
