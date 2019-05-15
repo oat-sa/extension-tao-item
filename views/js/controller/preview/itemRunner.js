@@ -59,6 +59,7 @@ define([
 
                     //load dynamically the right ResultServerApi
                     require([resultServer.module], function (ResultServerApi) {
+                        var type = 'qtiItem';
 
                         var resultServerApi = new ResultServerApi(
                             resultServer.endpoint,
@@ -89,19 +90,14 @@ define([
                             itemApi.setVariables(state);
                         }
 
-                        // if (deliveryId && resultId && itemDefinition) {
-                        var uri = {
-                            uri: itemApi.resultApi.itemUri,
-                            resultId: itemApi.itemId,
-                            itemDefinition: itemApi.itemDefinition,
-                            deliveryUri: itemApi.deliveryId
-                        };
-                        // }
+						var uri = {
+							itemUri: itemApi.resultApi.itemUri,
+						};
 
-                        previewerFactory(type, uri, state, {
-                            readOnly: true,
-                            fullPage: true
-                        });
+						previewerFactory(type, uri, state, {
+							readOnly: true,
+							fullPage: true
+						});
                     });
                 }
             }
