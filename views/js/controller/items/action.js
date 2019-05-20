@@ -21,14 +21,20 @@ define([
     'uri',
     'jquery',
     'context',
-    'taoItems/preview/preview',
-    'helpers'
-], function(binder, uri, $, context, preview, helpers){
+    'helpers',
+    'taoItems/previewer/factory',
+], function(binder, uri, $, context, helpers, previewerFactory){
     'use strict';
 
     binder.register('itemPreview', function itemPreview(actionContext){
-        preview.init(helpers._url('forwardMe', 'ItemPreview', context.shownExtension, {uri : actionContext.id}));
-        preview.show();
-    });
+      var type = 'qtiItem';
+      var uri = {
+        itemUri: actionContext.id,
+      };
 
+      previewerFactory(type, uri, { }, {
+        readOnly: true,
+        fullPage: true
+      });
+    });
 });
