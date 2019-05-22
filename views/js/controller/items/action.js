@@ -39,7 +39,7 @@ define([
         var config = _.merge(defaultConfig, module.config());
 
         previewerFactory(config.itemType, config.uri, config.state, {
-            readOnly: true,
+            readOnly: false,
             fullPage: true
         });
 	});
