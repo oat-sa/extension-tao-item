@@ -13,28 +13,36 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Techniologies SA
+ * Copyright (c) 2019 (original work) Open Assessment Techniologies SA
  *
  */
 define([
+    'lodash',
+    'module',
     'layout/actions/binder',
     'uri',
     'jquery',
     'context',
     'helpers',
     'taoItems/previewer/factory',
-], function(binder, uri, $, context, helpers, previewerFactory){
-    'use strict';
+], function(_,  module, binder, uri, $, context, helpers, previewerFactory){
+	'use strict';
 
-    binder.register('itemPreview', function itemPreview(actionContext){
-      var type = 'qtiItem';
-      var uri = {
-        itemUri: actionContext.id,
-      };
+    binder.register('itemPreview', function itemPreview(actionContext) {
+        var defaultConfig = {
+          itemType: 'qtiItem', // TODO: field name can be changed after backend fix (for getting itemType from config )
+          state: { },
+          uri: {
+              itemUri: actionContext.id,
+          },
+        };
+        var config = _.merge(defaultConfig, module.config());
 
-      previewerFactory(type, uri, { }, {
-        readOnly: true,
-        fullPage: true
-      });
-    });
+        previewerFactory(config.itemType, config.uri, config.state, {
+            readOnly: true,
+            fullPage: true
+        });
+	});
+
+
 });
