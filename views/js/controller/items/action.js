@@ -13,19 +13,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Techniologies SA
+ * Copyright (c) 2014 - 2019 (original work) Open Assessment Techniologies SA
  *
  */
 define([
     'lodash',
     'module',
     'layout/actions/binder',
-    'uri',
-    'jquery',
-    'context',
-    'helpers',
-    'taoItems/previewer/factory',
-], function(_,  module, binder, uri, $, context, helpers, previewerFactory){
+    'taoItems/previewer/factory'
+], function(_,  module, binder, previewerFactory){
 	'use strict';
 
     binder.register('itemPreview', function itemPreview(actionContext) {
