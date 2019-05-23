@@ -26,11 +26,11 @@ define([
 
     binder.register('itemPreview', function itemPreview(actionContext) {
         var defaultConfig = {
-          itemType: 'qtiItem', // TODO: field name can be changed after backend fix (for getting itemType from config )
-          state: { },
-          uri: {
-              itemUri: actionContext.id,
-          },
+            itemType: 'qtiItem', // TODO: field name can be changed after backend fix (for getting itemType from config )
+            state: { },
+            uri: {
+                itemUri: actionContext.id,
+            },
         };
         var config = _.merge(defaultConfig, module.config());
 
