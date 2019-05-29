@@ -27,7 +27,7 @@ define([
     'serviceApi/UserInfoService',
     'taoItems/runtime/ItemServiceImpl',
     'taoItems/preview/actionBarHook',
-    'urlParser'
+    'util/urlParser'
 ], function (
     module,
     $,
