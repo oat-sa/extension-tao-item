@@ -19,6 +19,8 @@
 /**
  * Configure the extension bundles
  * @author Bertrand Chevrier <bertrand@taotesting.com>
+ *
+ * @param {Object} grunt - the grunt instance (convention)
  */
 module.exports = function(grunt) {
     'use strict';
@@ -30,11 +32,12 @@ module.exports = function(grunt) {
             taoitems : {
                 options : {
                     extension : 'taoItems',
-                    extensionPath : root + '/taoItems/views/js',
+                    extensionPath : `${root}/taoItems/views/js`,
                     outputDir : 'loader',
                     bundles : [{
                         name : 'taoItems',
                         default : true,
+                        babel : true,
                         include : [
                             'taoItems/assets/**/*',
                             'taoItems/preview/**/*',
@@ -44,6 +47,7 @@ module.exports = function(grunt) {
                         ]
                     }, {
                         name : 'taoItemsRunner',
+                        babel : true,
                         include : [
                             'taoItems/assets/**/*',
                             'taoItems/runner/**/*'
