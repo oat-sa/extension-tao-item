@@ -17,7 +17,7 @@
  *
  *
  */
-define(['jquery', 'lodash', 'iframeNotifier', 'urlParser'],
+define(['jquery', 'lodash', 'iframeNotifier', 'util/urlParser'],
     function($, _, iframeNotifier, UrlParser){
         'use strict';
 

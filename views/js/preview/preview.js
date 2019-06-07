@@ -26,7 +26,7 @@ define([
     'tpl!taoItems/preview/tpl/preview',
     'ui/themes',
     'ui/themeLoader',
-    'urlParser',
+    'util/urlParser',
     'ui/modal',
     'select2',
     'jquery.cookie',
