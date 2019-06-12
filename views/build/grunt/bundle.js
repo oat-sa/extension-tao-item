@@ -49,8 +49,8 @@ module.exports = function(grunt) {
                         name : 'taoItemsRunner',
                         babel : true,
                         include : [
-                            'taoItems/assets/**/*',
-                            'taoItems/runner/**/*'
+                            '../node_modules/@oat-sa/tao-item-runner/dist/assets/**/*',
+                            '../node_modules/@oat-sa/tao-item-runner/dist/runner/**/*'
                         ]
                     }]
                 }
