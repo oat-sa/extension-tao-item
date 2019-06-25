@@ -1,0 +1,14 @@
+{
+  "name": "@oat-sa/tao-items",
+  "version": "0.1.0",
+  "license": "GPL-2.0",
+  "description": "taoItems frontend modules",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oat-sa/extension-tao-items.git"
+  },
+  "dependencies": {
+    "@oat-sa/tao-item-runner": "github:oat-sa/tao-item-runner-fe#feature/NEX-91/qunit-test-runner",
+    "@babel/polyfill": "^7.4.4"
+  }
+}
