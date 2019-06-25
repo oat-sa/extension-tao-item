@@ -21,6 +21,7 @@
  */
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\CreateItemDirectory;
+use oat\taoItems\scripts\install\RegisterNpmPaths;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -35,7 +36,7 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '8.2.0',
+    'version' => '9.0.0',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=3.0.0',
@@ -54,7 +55,8 @@ return array(
 		),
 		'php'	=> array(
             CreateItemDirectory::class,
-            RegisterCategoryService::class
+            RegisterCategoryService::class,
+            RegisterNpmPaths::class
 		)
 	),
     'update' => 'taoItems_scripts_update_Updater',

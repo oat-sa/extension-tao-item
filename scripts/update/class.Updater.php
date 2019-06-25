@@ -103,5 +103,15 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.1.0', '8.2.0');
+
+        if ($this->isVersion('8.2.0')) {
+            $assetService = $this->getServiceManager()->get(AssetService::SERVICE_ID);
+            $taoItemsNpmDist = $assetService->getJsBaseWww('taoItems') . '/node_modules/@oat-sa/tao-item-runner/dist';
+            $clientLibRegistry = ClientLibRegistry::getRegistry();
+            $clientLibRegistry->register('taoItems/assets', $taoItemsNpmDist . '/assets');
+            $clientLibRegistry->register('taoItems/runner', $taoItemsNpmDist . '/runner');
+            $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . '/scoring');    
+            $this->setVersion('9.0.0');
+        }
     }
 }
