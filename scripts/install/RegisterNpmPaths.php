@@ -38,11 +38,11 @@ class RegisterNpmPaths extends InstallAction
     public function __invoke($params)
     {
         $assetService = $this->getServiceManager()->get(AssetService::SERVICE_ID);
-        $taoItemsNpmDist = $assetService->getJsBaseWww('taoItems') . '/node_modules/@oat-sa/tao-item-runner/dist';
+        $taoItemsNpmDist = $assetService->getJsBaseWww('taoItems') . 'node_modules/@oat-sa/tao-item-runner/dist/';
         $clientLibRegistry = ClientLibRegistry::getRegistry();
-        $clientLibRegistry->register('taoItems/assets', $taoItemsNpmDist . '/assets');
-        $clientLibRegistry->register('taoItems/runner', $taoItemsNpmDist . '/runner');
-        $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . '/scoring');
+        $clientLibRegistry->register('taoItems/assets', $taoItemsNpmDist . 'assets');
+        $clientLibRegistry->register('taoItems/runner', $taoItemsNpmDist . 'runner');
+        $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . 'scoring');
         return \common_report_Report::createSuccess('npm paths for taoItems set up.');
     }
 }
