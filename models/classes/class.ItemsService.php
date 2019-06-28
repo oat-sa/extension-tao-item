@@ -29,6 +29,7 @@ use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceNotFoundException;
 use oat\taoItems\model\ItemModelStatus;
+use oat\tao\model\OntologyClassService;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -37,7 +38,7 @@ use oat\taoItems\model\ItemModelStatus;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  */
-class taoItems_models_classes_ItemsService extends tao_models_classes_ClassService
+class taoItems_models_classes_ItemsService extends OntologyClassService
 {
     /**
      * Key to use to store the default filesource to be used in for new items
