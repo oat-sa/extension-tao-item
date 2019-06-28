@@ -18,9 +18,6 @@
  *
  */
 
-use \oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
-use \oat\generis\model\user\PasswordConstraintsService;
-use \oat\oatbox\validator\ValidatorInterface;
 use \Zend\ServiceManager\ServiceLocatorAwareTrait;
 use \Zend\ServiceManager\ServiceLocatorAwareInterface;
 

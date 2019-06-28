@@ -28,7 +28,6 @@ use oat\taoItems\scripts\install\CreateItemDirectory;
  *
  */
 $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
-$taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 
 return array(
     'name' => 'taoItems',
@@ -40,7 +39,7 @@ return array(
     'requires' => array(
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=8.0.0',
-        'tao' => '>=36.1.0'
+        'tao' => '>=37.3.0'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
