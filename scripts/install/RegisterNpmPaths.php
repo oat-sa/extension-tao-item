@@ -43,6 +43,6 @@ class RegisterNpmPaths extends InstallAction
         $clientLibRegistry->register('taoItems/assets', $taoItemsNpmDist . 'assets');
         $clientLibRegistry->register('taoItems/runner', $taoItemsNpmDist . 'runner');
         $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . 'scoring');
-        return \common_report_Report::createSuccess('npm paths for taoItems set up.');
+        return \common_report_Report::createSuccess('extra paths for taoItems set up.');
     }
 }
