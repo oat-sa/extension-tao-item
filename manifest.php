@@ -56,7 +56,7 @@ return array(
 		'php'	=> array(
             CreateItemDirectory::class,
             RegisterCategoryService::class,
-            RegisterNpmPaths::class
+            RegisterNpmPaths::class,
 		)
 	),
     'update' => 'taoItems_scripts_update_Updater',
