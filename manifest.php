@@ -28,19 +28,18 @@ use oat\taoItems\scripts\install\CreateItemDirectory;
  *
  */
 $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
-$taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 
 return array(
     'name' => 'taoItems',
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '8.2.0',
+    'version' => '8.2.1',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=8.0.0',
-        'tao' => '>=36.1.0'
+        'tao' => '>=37.3.0'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
