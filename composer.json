@@ -46,10 +46,14 @@
     ],
     "type": "tao-extension",
     "extra": {
-        "tao-extension-name": "taoItems"
+        "tao-extension-name": "taoItems",
+        "npm-bridge": {
+            "arguments": ["--prefix", "views"]
+        }
     },
     "require": {
-        "oat-sa/oatbox-extension-installer": "~1.1||dev-master"
+        "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
+        "oat-sa/composer-npm-bridge": "^0.3.0"
     },
 	"autoload" : {
 		"psr-4" : {

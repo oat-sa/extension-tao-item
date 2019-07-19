@@ -34,6 +34,7 @@ module.exports = function(grunt) {
                     extension : 'taoItems',
                     extensionPath : `${root}/taoItems/views/js`,
                     outputDir : 'loader',
+                    paths: require('./paths.json'),
                     bundles : [{
                         name : 'taoItems',
                         default : true,

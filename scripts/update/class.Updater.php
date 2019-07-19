@@ -26,6 +26,8 @@ use oat\taoItems\model\CategoryService;
 use oat\taoItems\model\render\NoneItemReplacement;
 use oat\taoItems\model\render\ItemAssetsReplacement;
 use oat\taoItems\model\preview\ItemPreviewerService;
+use oat\tao\model\asset\AssetService;
+use oat\tao\model\ClientLibRegistry;
 
 /**
  *
@@ -103,5 +105,15 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.1.0', '8.2.1');
+
+        if ($this->isVersion('8.2.1')) {
+            $assetService = $this->getServiceManager()->get(AssetService::SERVICE_ID);
+            $taoItemsNpmDist = $assetService->getJsBaseWww('taoItems') . 'node_modules/@oat-sa/tao-item-runner/dist/';
+            $clientLibRegistry = ClientLibRegistry::getRegistry();
+            $clientLibRegistry->register('taoItems/assets', $taoItemsNpmDist . 'assets');
+            $clientLibRegistry->register('taoItems/runner', $taoItemsNpmDist . 'runner');
+            $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . 'scoring');    
+            $this->setVersion('9.0.0');
+        }
     }
 }
