@@ -115,5 +115,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . 'scoring');    
             $this->setVersion('9.0.0');
         }
+
+        $this->skip('9.0.0', '9.1.0');
     }
 }
