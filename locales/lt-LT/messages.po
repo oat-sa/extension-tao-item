@@ -143,8 +143,8 @@ msgstr "Peržiūra"
 msgid "Properties"
 msgstr "Savybės"
 
-msgid "Published \"%1$s\" in language \"%2$s"
-msgstr "Paskelbta \"%1$s\", kalba \"%2$s"
+msgid "Published \"%1$s\" in language \"%2$s\""
+msgstr "Paskelbta \"%1$s\", kalba \"%2$s\""
 
 msgid "Remove this message"
 msgstr "Pašalinti šį pranešimą"
