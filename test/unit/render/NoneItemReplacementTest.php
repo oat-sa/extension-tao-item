@@ -19,8 +19,8 @@
  */
 namespace oat\taoItems\test\pack;
 
+use oat\generis\test\TestCase;
 use oat\taoItems\model\render\NoneItemReplacement;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @package taoItems
