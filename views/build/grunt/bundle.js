@@ -13,12 +13,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014-2018 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2019 (original work) Open Assessment Technologies SA;
  */
 
 /**
  * Configure the extension bundles
  * @author Bertrand Chevrier <bertrand@taotesting.com>
+ *
+ * @param {Object} grunt - the grunt instance (convention)
  */
 module.exports = function(grunt) {
     'use strict';
@@ -30,11 +32,13 @@ module.exports = function(grunt) {
             taoitems : {
                 options : {
                     extension : 'taoItems',
-                    extensionPath : root + '/taoItems/views/js',
+                    extensionPath : `${root}/taoItems/views/js`,
                     outputDir : 'loader',
+                    paths: require('./paths.json'),
                     bundles : [{
                         name : 'taoItems',
                         default : true,
+                        babel : true,
                         include : [
                             'taoItems/assets/**/*',
                             'taoItems/preview/**/*',
@@ -44,6 +48,7 @@ module.exports = function(grunt) {
                         ]
                     }, {
                         name : 'taoItemsRunner',
+                        babel : true,
                         include : [
                             'taoItems/assets/**/*',
                             'taoItems/runner/**/*'

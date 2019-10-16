@@ -59,4 +59,12 @@ class ItemCreatedEvent implements Event, JsonSerializable
             'itemUri' => $this->itemUri
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function getItemUri()
+    {
+        return $this->itemUri;
+    }
 }

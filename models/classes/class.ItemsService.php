@@ -29,6 +29,7 @@ use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceNotFoundException;
 use oat\taoItems\model\ItemModelStatus;
+use oat\tao\model\OntologyClassService;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -37,7 +38,7 @@ use oat\taoItems\model\ItemModelStatus;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoItems
  */
-class taoItems_models_classes_ItemsService extends tao_models_classes_ClassService
+class taoItems_models_classes_ItemsService extends OntologyClassService
 {
     /**
      * Key to use to store the default filesource to be used in for new items
@@ -63,44 +64,20 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
 
     const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
-    /**
-     * Instance of the itemContent property
-     *
-     * @access public
-     * @var core_kernel_classes_Property
-     */
-    public $itemContentProperty = null;
-
-    /**
-     * The RDFS top level item class
-     *
-     * @access protected
-     * @var core_kernel_classes_Class
-     */
-    protected $itemClass = null;
-
-    /**
-     * Instance of the itemModel property
-     *
-     * @access protected
-     * @var core_kernel_classes_Property
-     */
-    protected $itemModelProperty = null;
-
-    /**
-     * taoItems_models_classes_ItemsService constructor.
-     * Set $this->itemClass and related properties (model & content properties)
-     */
-    protected function __construct()
-    {
-        $this->itemClass = $this->getClass(TaoOntology::ITEM_CLASS_URI);
-        $this->itemModelProperty = $this->getProperty(self::PROPERTY_ITEM_MODEL);
-        $this->itemContentProperty = $this->getProperty(self::PROPERTY_ITEM_CONTENT);
-    }
 
     public function getRootClass()
     {
-        return $this->itemClass;
+        return $this->getClass(TaoOntology::CLASS_URI_ITEM);
+    }
+
+    public function getItemModelProperty()
+    {
+        return $this->getProperty(self::PROPERTY_ITEM_MODEL);
+    }
+
+    public function getItemContentProperty()
+    {
+        return $this->getProperty(self::PROPERTY_ITEM_CONTENT);
     }
 
     /**
@@ -118,8 +95,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         $returnValue = null;
 
-        if (empty($uri) && !is_null($this->itemClass)) {
-            $returnValue = $this->itemClass;
+        if (empty($uri)) {
+            $returnValue = $this->getRootClass();
         } else {
             $clazz = $this->getClass($uri);
             if ($this->isItemClass($clazz)) {
@@ -140,21 +117,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
      */
     public function isItemClass(core_kernel_classes_Class $clazz)
     {
-        $returnValue = (bool)false;
-
-        if ($this->itemClass->getUri() == $clazz->getUri()) {
-            return true;
-        }
-
-        foreach ($clazz->getParentClasses(true) as $parent) {
-
-            if ($parent->getUri() == $this->itemClass->getUri()) {
-                $returnValue = true;
-                break;
-            }
-        }
-
-        return (bool)$returnValue;
+        return $clazz->equals($this->getRootClass()) || $clazz->isSubClassOf($this->getRootClass());
     }
 
     /**
@@ -215,7 +178,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
             $lang = $this->getSessionLg();
         }
 
-        $itemContents = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+        $itemContents = $item->getPropertyValuesByLg($this->getItemContentProperty(), $lang);
         return !$itemContents->isEmpty();
     }
 
@@ -232,7 +195,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         $returnValue = (bool)false;
 
-        $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+        $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
         if ($itemModel instanceof core_kernel_classes_Resource) {
             if (in_array($itemModel->getUri(), $models)) {
                 $returnValue = true;
@@ -256,7 +219,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
 
         if (!is_null($item)) {
 
-            $model = $item->getOnePropertyValue($this->itemModelProperty);
+            $model = $item->getOnePropertyValue($this->getItemModelProperty());
             if ($model instanceof core_kernel_classes_Literal) {
                 if (strlen((string)$model) > 0) {
                     $returnValue = true;
@@ -282,7 +245,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $returnValue = null;
 
         if (!is_null($item)) {
-            $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+            $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
             if (!is_null($itemModel)) {
                 $returnValue = $itemModel->getOnePropertyValue($this->getProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME));
             }
@@ -309,7 +272,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
                 $status = array($status);
             }
             try {
-                $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+                $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
                 if ($itemModel instanceof core_kernel_classes_Resource) {
                     $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(ItemModelStatus::CLASS_URI));
                     if (in_array($itemModelStatus->getUri(), $status)) {
@@ -381,7 +344,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $serializer = $this->getFileReferenceSerializer();
         $this->setItemModel($destination, $this->getItemModel($source));
 
-        foreach ($source->getUsedLanguages($this->itemContentProperty) as $lang) {
+        foreach ($source->getUsedLanguages($this->getItemContentProperty()) as $lang) {
             $sourceItemDirectory = $this->getItemDirectory($source, $lang);
             $destinationItemDirectory = $this->getItemDirectory($destination, $lang);
 
@@ -406,9 +369,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         $result = parent::cloneInstance($instance, $clazz);
         if ($result) {
             // Fixes duplicate item models after cloning.
-            $itemModels = $result->getPropertyValues($this->itemModelProperty);
+            $itemModels = $result->getPropertyValues($this->getItemModelProperty());
             if (count($itemModels) > 1) {
-                $result->editPropertyValues($this->itemModelProperty, current($itemModels));
+                $result->editPropertyValues($this->getItemModelProperty(), current($itemModels));
             }
             $this->getEventManager()->trigger(new ItemDuplicatedEvent($instance->getUri(), $result->getUri()));
         }
@@ -437,7 +400,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         $returnValue = null;
 
-        $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
+        $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
         if ($itemModel instanceof core_kernel_classes_Resource) {
             $returnValue = $itemModel;
         }
@@ -488,7 +451,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     public function deleteItemContent(core_kernel_classes_Resource $item)
     {
         // Delete item directory from filesystem
-        $definitonFileValues = $item->getPropertyValues($this->itemContentProperty);
+        $definitonFileValues = $item->getPropertyValues($this->getItemContentProperty());
         if (!empty($definitonFileValues)) {
             /** @var Directory $directory */
             $directory = $this->getFileReferenceSerializer()->unserializeDirectory(reset($definitonFileValues));
@@ -498,8 +461,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         }
 
         //delete the folder for all languages!
-        foreach ($item->getUsedLanguages($this->itemContentProperty) as $lang) {
-            $files = $item->getPropertyValuesByLg($this->itemContentProperty, $lang);
+        foreach ($item->getUsedLanguages($this->getItemContentProperty()) as $lang) {
+            $files = $item->getPropertyValuesByLg($this->getItemContentProperty(), $lang);
             foreach ($files->getIterator() as $file) {
                 if ($file instanceof core_kernel_classes_Resource) {
                     $this->getFileReferenceSerializer()->cleanUp($file->getUri());
@@ -579,9 +542,9 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         // Get file by language
         if ($language === '') {
-            $files = $item->getPropertyValues($this->itemContentProperty);
+            $files = $item->getPropertyValues($this->getItemContentProperty());
         } else {
-            $files = $item->getPropertyValuesByLg($this->itemContentProperty, $language)->toArray();
+            $files = $item->getPropertyValuesByLg($this->getItemContentProperty(), $language)->toArray();
         }
 
         // If multiple files then throw exception
@@ -614,7 +577,7 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
         // Set uri file value as serial to item persistence
         $serial = $this->getFileReferenceSerializer()->serialize($itemDirectory);
 
-        $item->setPropertyValueByLg($this->itemContentProperty, $serial, $actualLang);
+        $item->setPropertyValueByLg($this->getItemContentProperty(), $serial, $actualLang);
         
         return $itemDirectory;
     }
@@ -644,8 +607,8 @@ class taoItems_models_classes_ItemsService extends tao_models_classes_ClassServi
     {
         if (!empty($itemModel)) {
             $uri = ($itemModel instanceof core_kernel_classes_Resource) ? $itemModel->getUri() : $itemModel;
-            return $this->itemClass->searchInstances(array(
-                $this->itemModelProperty->getUri() => $uri
+            return $this->getRootClass()->searchInstances(array(
+                $this->getItemModelProperty()->getUri() => $uri
             ), array(
                 'recursive' => true
             ));
