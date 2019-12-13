@@ -40,7 +40,7 @@ return array(
     'requires' => array(
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=12.5.0',
-        'tao' => '>=39.7.0'
+        'tao' => '>=40.3.0'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
