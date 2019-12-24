@@ -112,7 +112,7 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $clientLibRegistry = ClientLibRegistry::getRegistry();
             $clientLibRegistry->register('taoItems/assets', $taoItemsNpmDist . 'assets');
             $clientLibRegistry->register('taoItems/runner', $taoItemsNpmDist . 'runner');
-            $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . 'scoring');    
+            $clientLibRegistry->register('taoItems/scoring', $taoItemsNpmDist . 'scoring');
             $this->setVersion('9.0.0');
         }
 
