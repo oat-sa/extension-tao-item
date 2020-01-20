@@ -18,7 +18,7 @@ msgstr "Tikrasis dydis"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Autorius"
+msgstr "Redagavimas"
 
 msgid "Class schema saved"
 msgstr "Klasės schema išsaugota"
@@ -52,10 +52,10 @@ msgid "Duplicate"
 msgstr "Kurti kopiją"
 
 msgid "Edit item"
-msgstr "Redaguoti elementą"
+msgstr "Redaguoti klausimą"
 
 msgid "Edit Item"
-msgstr "Redaguoti elementą"
+msgstr "Redaguoti klausimą"
 
 #, tao-public
 msgid "Export"
@@ -72,21 +72,21 @@ msgid "Import"
 msgstr "Importuoti"
 
 msgid "Item Model"
-msgstr "Elemento Modelis"
+msgstr "Klausimo modelis"
 
 msgid "Item not found"
 msgstr "Elementas nerastas"
 
 msgid "Item saved"
-msgstr "Elementas išsaugotas"
+msgstr "Klausimas išsaugotas"
 
 #, tao-public
 msgid "Items"
-msgstr "Elementai"
+msgstr "Klausimai"
 
 #, tao-public
 msgid "Items library"
-msgstr "Elementų biblioteka"
+msgstr "Klausimų biblioteka"
 
 msgid "Landscape"
 msgstr "Išdėstymas"
@@ -99,7 +99,7 @@ msgstr "Tvarkyti elemento klasės schemą"
 
 #, tao-public
 msgid "Manage items"
-msgstr "Tvarkyti elementus"
+msgstr "Tvarkyti klausimus"
 
 #, tao-public
 msgid "Manage Schema"
@@ -121,16 +121,16 @@ msgid "New class"
 msgstr "Nauja klasė"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Nerastas autorizavimo įrankis pasirinktam elemento tipui: %s"
+msgstr "Nerastas kūrimo įrankis pasirinktam klausimų tipui: %s"
 
 msgid "No item type selected for the current item."
-msgstr "Nepasirinktas elemento tipas šiam elementui."
+msgstr "Nepasirinktas klausimo tipas šiam klausimui."
 
 msgid "Not yet available"
 msgstr "Vis dar negalimas"
 
 msgid "Please select first the item type!"
-msgstr "Prašome pirma pasirinkti elemento tipą!"
+msgstr "Prašome pirma pasirinkti klausimo tipą!"
 
 msgid "Portrait"
 msgstr "Portretas"
@@ -174,10 +174,10 @@ msgid "Unable to create deployement directory"
 msgstr "Neįmanoma sukurti katalogo diegimui."
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr "Neįmanoma pateikti elemento nuo %s : %s %s"
+msgstr "Neįmanoma pateikti klausimo nuo %s : %s %s"
 
 msgid "You checked out this item %2s ago"
-msgstr "Jūs išregistravote šį elementą prieš %2s."
+msgstr "Jūs išregistravote šį klausimą prieš %2s."
 
 msgid "Your path contains error"
 msgstr "Jūsų kelias yra su klaidomis."

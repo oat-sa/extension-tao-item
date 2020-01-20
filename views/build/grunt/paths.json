@@ -1,5 +1,6 @@
 {
   "taoItems/assets" : "../../../taoItems/views/node_modules/@oat-sa/tao-item-runner/dist/assets",
   "taoItems/runner" : "../../../taoItems/views/node_modules/@oat-sa/tao-item-runner/dist/runner",
-  "taoItems/scoring": "../../../taoItems/views/node_modules/@oat-sa/tao-item-runner/dist/scoring"
+  "taoItems/scoring": "../../../taoItems/views/node_modules/@oat-sa/tao-item-runner/dist/scoring",
+  "taoItemsCss": "../../../taoItems/views/css"
 }
