@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,9 +35,10 @@ class ItemPackTest extends TestCase
     /**
      * Test creating an ItemPack
      */
-    public function testConstructor(){
+    public function testConstructor()
+    {
         $type = 'qti';
-        $data = array('foo' => 'bar');
+        $data = ['foo' => 'bar'];
 
         $pack = new ItemPack($type, $data);
         $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $pack);
@@ -47,21 +49,22 @@ class ItemPackTest extends TestCase
     /**
      * Test assigning assets to a pack
      */
-    public function testSetAssets(){
+    public function testSetAssets()
+    {
 
-        $pack = new ItemPack('qti', array('foo' => 'bar'));
-        $jsAssets = array(
+        $pack = new ItemPack('qti', ['foo' => 'bar']);
+        $jsAssets = [
             'lodash.js' => 'lodash.js',
             'jquery.js' => 'jquery.js'
-        );
-        $cssAssets = array(
+        ];
+        $cssAssets = [
             'style/main.css' => 'style/main.css'
-        );
+        ];
 
         $pack->setAssets('js', $jsAssets, null, '');
 
         $this->assertEquals($jsAssets, $pack->getAssets('js'));
-        $this->assertEquals(array(), $pack->getAssets('css'));
+        $this->assertEquals([], $pack->getAssets('css'));
 
 
         $pack->setAssets('css', $cssAssets, null, '');
@@ -73,15 +76,17 @@ class ItemPackTest extends TestCase
      * Test the constructor with an empty type
      * @expectedException InvalidArgumentException
      */
-    public function testWrongTypeConstructor(){
-        new ItemPack(null, array());
+    public function testWrongTypeConstructor()
+    {
+        new ItemPack(null, []);
     }
 
     /**
      * Test the constructor with invalid data
      * @expectedException InvalidArgumentException
      */
-    public function testWrongDataConstructor(){
+    public function testWrongDataConstructor()
+    {
         new ItemPack('qti', '{"foo":"bar"}');
     }
 
@@ -89,17 +94,19 @@ class ItemPackTest extends TestCase
      * Test assigning unallowed assets
      * @expectedException InvalidArgumentException
      */
-    public function testWrongAssetType(){
-        $pack = new ItemPack('qti', array('foo' => 'bar'));
-        $pack->setAssets('coffescript', array('jquery.coffee'), null, '');
+    public function testWrongAssetType()
+    {
+        $pack = new ItemPack('qti', ['foo' => 'bar']);
+        $pack->setAssets('coffescript', ['jquery.coffee'], null, '');
     }
 
     /**
      * Test set wrong assets type
      * @expectedException InvalidArgumentException
      */
-    public function testWrongAssets(){
-        $pack = new ItemPack('qti', array('foo' => 'bar'));
+    public function testWrongAssets()
+    {
+        $pack = new ItemPack('qti', ['foo' => 'bar']);
         $pack->setAssets('js', 'jquery.js', null, '');
     }
 
@@ -107,22 +114,23 @@ class ItemPackTest extends TestCase
      * Provides data to test the bundle
      * @return array() the data
      */
-    public function jsonSerializableProvider(){
+    public function jsonSerializableProvider()
+    {
 
-        $data = array();
+        $data = [];
 
-        $pack1 = new ItemPack('qti', array('foo' => 'bar'));
+        $pack1 = new ItemPack('qti', ['foo' => 'bar']);
         $json1 = '{"type":"qti","data":{"foo":"bar"},"assets":[]}';
-        $data[0] = array($pack1, $json1);
+        $data[0] = [$pack1, $json1];
 
 
-        $pack2 = new ItemPack('owi', array('foo' => 'bar'));
-        $pack2->setAssets('js', array(
+        $pack2 = new ItemPack('owi', ['foo' => 'bar']);
+        $pack2->setAssets('js', [
             'lodash.js',
             'jquery.js'
-        ), null, '');
+        ], null, '');
         $json2 = '{"type":"owi","data":{"foo":"bar"},"assets":{"js":{"lodash.js":"lodash.js","jquery.js":"jquery.js"}}}';
-        $data[1] = array($pack2, $json2);
+        $data[1] = [$pack2, $json2];
 
         return $data;
     }
@@ -133,11 +141,11 @@ class ItemPackTest extends TestCase
      * @param string $expectedJson
      * @dataProvider jsonSerializableProvider
      */
-    public function testSerialization($itemPack, $expectedJson){
+    public function testSerialization($itemPack, $expectedJson)
+    {
 
-       $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $itemPack);
-       $this->assertTrue(is_string($expectedJson));
-       $this->assertEquals($expectedJson, json_encode($itemPack));
+        $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $itemPack);
+        $this->assertTrue(is_string($expectedJson));
+        $this->assertEquals($expectedJson, json_encode($itemPack));
     }
-
 }

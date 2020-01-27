@@ -108,7 +108,7 @@ class Packer implements ServiceLocatorAwareInterface
      * @return ItemPack of the item. It can be serialized directly.
      * @throws common_Exception
      */
-    public function pack($assetEncoders = array(), $nestedResourcesInclusion = true)
+    public function pack($assetEncoders = [], $nestedResourcesInclusion = true)
     {
 
         try {
@@ -120,7 +120,6 @@ class Packer implements ServiceLocatorAwareInterface
 
             //then create the pack
             $itemPack = $itemPacker->packItem($this->item, $this->lang, $this->getStorageDirectory());
-
         } catch (Exception $e) {
             throw new common_Exception('The item ' . $this->item->getUri() . ' cannot be packed : ' . $e->getMessage());
         }

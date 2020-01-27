@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,9 +42,9 @@ class ItemPreviewerService extends ConfigurableService
      * Sets the registry that contains the list of adapters
      * @param AbstractRegistry $registry
      */
-    public function setRegistry(AbstractRegistry $registry) 
+    public function setRegistry(AbstractRegistry $registry)
     {
-        $this->registry = $registry;    
+        $this->registry = $registry;
     }
 
     /**
@@ -83,8 +84,7 @@ class ItemPreviewerService extends ConfigurableService
      */
     public function registerAdapter(DynamicModule $module)
     {
-        if(!is_null($module) && ! empty($module->getModule()) ) {
-
+        if (!is_null($module) && ! empty($module->getModule())) {
             $registry = $this->getRegistry();
             $config = [];
             if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {

@@ -21,7 +21,6 @@
 
 namespace oat\taoItems\model\pack;
 
-
 use common_Exception;
 
 class ExceptionMissingAsset extends common_Exception

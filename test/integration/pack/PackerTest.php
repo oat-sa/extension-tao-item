@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -26,7 +27,6 @@ use oat\taoItems\model\pack\ItemPacker;
 use oat\taoItems\model\pack\Packer;
 use oat\taoItems\model\pack\ItemPack;
 
-
 /**
  * Test the class {@link ItemPack}
  *
@@ -43,7 +43,8 @@ class PackerTest extends TestCase
     /**
      * Test creating an ItemPack
      */
-    public function testConstructor(){
+    public function testConstructor()
+    {
         $item = new core_kernel_classes_Resource('toto');
         $packer = new Packer($item);
         $this->assertInstanceOf('oat\taoItems\model\pack\Packer', $packer);
@@ -52,7 +53,8 @@ class PackerTest extends TestCase
     /**
      * Test assigning assets to a pack
      */
-    public function testPack(){
+    public function testPack()
+    {
         $item = new core_kernel_classes_Resource('foo');
         $model = new core_kernel_classes_Resource('fooModel');
 
@@ -106,8 +108,7 @@ class PackerTest extends TestCase
         $result = $packer->pack();
         $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $result);
         $this->assertEquals('qti', $result->getType());
-        $this->assertEquals(array('uri' => $item->getUri()), $result->getData());
-
+        $this->assertEquals(['uri' => $item->getUri()], $result->getData());
     }
 
     /**
@@ -115,7 +116,8 @@ class PackerTest extends TestCase
      *
      * @expectedException \common_Exception
      */
-    public function testNoItemModel(){
+    public function testNoItemModel()
+    {
         $item = new core_kernel_classes_Resource('foo');
 
         $serviceMock = $this
@@ -146,7 +148,8 @@ class PackerTest extends TestCase
      *
      * @expectedException \common_Exception
      */
-    public function testNoModelImplementation(){
+    public function testNoModelImplementation()
+    {
         $item = new core_kernel_classes_Resource('foo');
         $model = new core_kernel_classes_Resource('fooModel');
 
@@ -183,7 +186,8 @@ class PackerTest extends TestCase
      *
      * @expectedException \common_Exception
      */
-    public function testNoPackerClass(){
+    public function testNoPackerClass()
+    {
 
         $item = new core_kernel_classes_Resource('foo');
 
@@ -228,7 +232,8 @@ class PackerTest extends TestCase
      *
      * @expectedException \common_Exception
      */
-    public function testWrongPackerClass(){
+    public function testWrongPackerClass()
+    {
 
         $item = new core_kernel_classes_Resource('foo');
 
@@ -269,9 +274,10 @@ class PackerTest extends TestCase
 }
 
 //use an old school mock as the Packer create it's own instance from the class
-class PackerMock extends ItemPacker{
+class PackerMock extends ItemPacker
+{
     public function packItem(core_kernel_classes_Resource $item, $lang, Directory $directory)
     {
-        return new ItemPack('qti', array('uri' => $item->getUri()));
+        return new ItemPack('qti', ['uri' => $item->getUri()]);
     }
 }
