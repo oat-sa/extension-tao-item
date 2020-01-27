@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +20,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *
  */
+
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
@@ -28,67 +30,67 @@ use oat\taoItems\scripts\install\RegisterNpmPaths;
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  *
  */
-$extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
+$extpath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 
-return array(
+return [
     'name' => 'taoItems',
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '10.1.2',
+    'version' => '10.1.3',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
-    'requires' => array(
+    'requires' => [
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=12.5.0',
         'tao' => '>=38.5.0'
-    ),
-    'models' => array(
-		'http://www.tao.lu/Ontologies/TAOItem.rdf'
-	),
-	'install' => array(
-		'rdf' => array(
-		    dirname(__FILE__). '/models/ontology/taoitem.rdf',
-		    dirname(__FILE__). '/models/ontology/taoItemRunner.rdf',
-		    dirname(__FILE__). '/models/ontology/indexation.rdf',
-		    dirname(__FILE__). '/models/ontology/category.rdf',
-		),
-		'php'	=> array(
+    ],
+    'models' => [
+        'http://www.tao.lu/Ontologies/TAOItem.rdf'
+    ],
+    'install' => [
+        'rdf' => [
+            dirname(__FILE__) . '/models/ontology/taoitem.rdf',
+            dirname(__FILE__) . '/models/ontology/taoItemRunner.rdf',
+            dirname(__FILE__) . '/models/ontology/indexation.rdf',
+            dirname(__FILE__) . '/models/ontology/category.rdf',
+        ],
+        'php'   => [
             CreateItemDirectory::class,
             RegisterCategoryService::class,
             RegisterNpmPaths::class,
-		)
-	),
+        ]
+    ],
     'update' => 'taoItems_scripts_update_Updater',
-	'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
-    'acl' => array(
-        array('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', array('ext'=>'taoItems')),
-        array('grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'),
-        array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', array('ext'=>'taoItems', 'mod' => 'ItemRunner')),
-        array('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestItems')),
-        array('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')),
-    ),
-	'optimizableClasses' => array(
-			'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
-			'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',
-			'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus'
-	),
-	'constants' => array(
-		# actions directory
-		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
+    'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
+    'acl' => [
+        ['grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', ['ext' => 'taoItems']],
+        ['grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'],
+        ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', ['ext' => 'taoItems', 'mod' => 'ItemRunner']],
+        ['grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']],
+        ['grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
+    ],
+    'optimizableClasses' => [
+            'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+            'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',
+            'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus'
+    ],
+    'constants' => [
+        # actions directory
+        "DIR_ACTIONS"           => $extpath . "actions" . DIRECTORY_SEPARATOR,
 
-		# views directory
-		"DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
+        # views directory
+        "DIR_VIEWS"             => $extpath . "views" . DIRECTORY_SEPARATOR,
 
-		# default module name
-		'DEFAULT_MODULE_NAME'	=> 'Items',
+        # default module name
+        'DEFAULT_MODULE_NAME'   => 'Items',
 
-		#default action name
-		'DEFAULT_ACTION_NAME'	=> 'index',
+        #default action name
+        'DEFAULT_ACTION_NAME'   => 'index',
 
-		#BASE PATH: the root path in the file system (usually the document root)
-		'BASE_PATH'				=> $extpath,
+        #BASE PATH: the root path in the file system (usually the document root)
+        'BASE_PATH'             => $extpath,
 
-		#BASE URL (usually the domain root)
-		'BASE_URL'				=> ROOT_URL	.'taoItems/',
-	)
-);
+        #BASE URL (usually the domain root)
+        'BASE_URL'              => ROOT_URL . 'taoItems/',
+    ]
+];

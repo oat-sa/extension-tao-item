@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -218,13 +219,12 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         $returnValue = (bool)false;
 
         if (!is_null($item)) {
-
             $model = $item->getOnePropertyValue($this->getItemModelProperty());
             if ($model instanceof core_kernel_classes_Literal) {
                 if (strlen((string)$model) > 0) {
                     $returnValue = true;
                 }
-            } else if (!is_null($model)) {
+            } elseif (!is_null($model)) {
                 $returnValue = true;
             }
         }
@@ -269,7 +269,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
 
         if (!is_null($item)) {
             if (!is_array($status) && is_string($status)) {
-                $status = array($status);
+                $status = [$status];
             }
             try {
                 $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
@@ -338,8 +338,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         core_kernel_classes_Resource $source,
         core_kernel_classes_Resource $destination,
         core_kernel_classes_Property $property
-    )
-    {
+    ) {
 
         $serializer = $this->getFileReferenceSerializer();
         $this->setItemModel($destination, $this->getItemModel($source));
@@ -348,7 +347,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             $sourceItemDirectory = $this->getItemDirectory($source, $lang);
             $destinationItemDirectory = $this->getItemDirectory($destination, $lang);
 
-            foreach ($source->getPropertyValuesCollection($property, array('lg' => $lang))->getIterator() as $propertyValue) {
+            foreach ($source->getPropertyValuesCollection($property, ['lg' => $lang])->getIterator() as $propertyValue) {
                 $id = $propertyValue instanceof core_kernel_classes_Resource ? $propertyValue->getUri() : (string)$propertyValue;
                 $sourceDirectory = $serializer->unserializeDirectory($id);
                 $iterator = $sourceDirectory->getFlyIterator(Directory::ITERATOR_FILE | Directory::ITERATOR_RECURSIVE);
@@ -499,7 +498,6 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             // for backward compatibility support classname instead of a serviceid
             common_Logger::w('Outdated model definition "' . $serviceId . '", please use test model service');
             $itemModelService = new $serviceId();
-
         }
         if (!$itemModelService instanceof \taoItems_models_classes_itemModel) {
             throw new common_exception_Error('Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $itemModelService->getUri());
@@ -513,7 +511,8 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         if (is_null($itemModel)) {
             throw new common_exception_Error('undefined itemmodel for test ' . $item->getUri());
         }
-        return $this->getItemModelImplementation($itemModel)->getCompilerClass();;
+        return $this->getItemModelImplementation($itemModel)->getCompilerClass();
+        ;
     }
 
     /**
@@ -607,13 +606,13 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
     {
         if (!empty($itemModel)) {
             $uri = ($itemModel instanceof core_kernel_classes_Resource) ? $itemModel->getUri() : $itemModel;
-            return $this->getRootClass()->searchInstances(array(
+            return $this->getRootClass()->searchInstances([
                 $this->getItemModelProperty()->getUri() => $uri
-            ), array(
+            ], [
                 'recursive' => true
-            ));
+            ]);
         }
-        return array();
+        return [];
     }
 
     /**

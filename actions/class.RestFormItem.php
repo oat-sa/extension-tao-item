@@ -33,8 +33,7 @@ class taoItems_actions_RestFormItem extends \tao_actions_RestResource
     {
         if ($this->isRequestGet()) {
             return parent::create();
-        }
-        else {
+        } else {
             throw new \common_exception_Unauthorized();
         }
     }

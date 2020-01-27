@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,6 +26,7 @@ namespace oat\taoItems\model\event;
  *
  * @author Christophe GARCIA <christopheg@taotesting.com>
  */
-class ItemRdfUpdatedEvent extends ItemUpdatedEvent {
+class ItemRdfUpdatedEvent extends ItemUpdatedEvent
+{
     
 }

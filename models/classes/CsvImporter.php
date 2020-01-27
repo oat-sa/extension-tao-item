@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +19,7 @@
  *
  *
  */
+
 namespace oat\taoItems\model;
 
 /**
@@ -34,9 +36,8 @@ class CsvImporter extends \tao_models_classes_import_CsvImporter
      */
     protected function getExludedProperties()
     {
-       return array_merge(parent::getExludedProperties(), array(
+        return array_merge(parent::getExludedProperties(), [
            \taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT,
-       ));
+        ]);
     }
-
 }

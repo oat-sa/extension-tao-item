@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -152,7 +153,7 @@ class ItemsTest extends GenerisTestCase
      */
     public function testItemContent($instance)
     {
-        $this->assertFalse($this->itemsService->hasItemModel($instance, array(ItemModel::MODEL_URI)));
+        $this->assertFalse($this->itemsService->hasItemModel($instance, [ItemModel::MODEL_URI]));
         $this->assertFalse($this->itemsService->hasItemContent($instance));
 
         $instance->setPropertyValue(
@@ -166,7 +167,7 @@ class ItemsTest extends GenerisTestCase
         $this->assertTrue($this->itemsService->hasItemContent($instance));
 
         $this->assertStringStartsWith(LOCAL_NAMESPACE, $instance->getUri());
-        $this->assertTrue($this->itemsService->hasItemModel($instance, array(ItemModel::MODEL_URI)));
+        $this->assertTrue($this->itemsService->hasItemModel($instance, [ItemModel::MODEL_URI]));
 
         $this->assertStringStartsWith(ROOT_URL, $this->itemsService->getPreviewUrl($instance));
 
@@ -175,7 +176,7 @@ class ItemsTest extends GenerisTestCase
         $this->assertEquals(count($this->itemsService->getAllByModel($instance)), 0);
         $this->assertEquals(count($this->itemsService->getAllByModel(null)), 0);
 
-        $this->assertFalse($this->itemsService->hasModelStatus($instance, array(ItemModelStatus::INSTANCE_DEPRECATED)));
+        $this->assertFalse($this->itemsService->hasModelStatus($instance, [ItemModelStatus::INSTANCE_DEPRECATED]));
     }
 
     public function testIsItemClass()
@@ -191,7 +192,7 @@ class ItemsTest extends GenerisTestCase
         $parent = $this->prophesize('core_kernel_classes_Class');
         $parent->getUri()->willReturn(TaoOntology::ITEM_CLASS_URI);
 
-        $clazz->getParentClasses(true)->willReturn(array($parent->reveal()));
+        $clazz->getParentClasses(true)->willReturn([$parent->reveal()]);
         $this->assertTrue($this->itemsService->isItemClass($clazz->reveal()));
     }
 
@@ -232,7 +233,7 @@ class ItemsTest extends GenerisTestCase
         $itemModelProphecy = $this->prophesize('core_kernel_classes_Resource');
 
         $itemModelProphecy->getPropertyValues($this->createTestProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL_SERVICE))
-            ->willReturn(array());
+            ->willReturn([]);
 
         $this->assertNull($this->itemsService->getPreviewUrl($item->reveal()));
     }
@@ -247,8 +248,7 @@ class ItemsTest extends GenerisTestCase
         try {
             $this->itemsService->getItemModelImplementation($item);
             $this->fail('an exception should have been raised');
-        }
-        catch (\common_Exception $e) {
+        } catch (\common_Exception $e) {
             $this->assertInstanceOf('common_exception_Error', $e);
             $this->assertEquals('Item model service fakeUri not found', $e->getMessage());
         }

@@ -41,7 +41,7 @@ class ItemPack implements JsonSerializable
      * The supported assets types
      * @var string[]
      */
-    private static $assetTypes = array('html', 'document', 'js', 'css', 'font', 'img', 'audio', 'video', 'xinclude', 'apip');
+    private static $assetTypes = ['html', 'document', 'js', 'css', 'font', 'img', 'audio', 'video', 'xinclude', 'apip'];
 
 
     /**
@@ -54,20 +54,20 @@ class ItemPack implements JsonSerializable
      * The item data as arrays. Can be anything, just be careful of cyclic refs.
      * @var array
      */
-    private $data = array();
+    private $data = [];
 
     /**
      * The item's required assets by type
      * @var array
      */
-    private $assets = array();
+    private $assets = [];
 
     /**
      * Determines what type of assets should be packed as well as packer
      * @example array('css'=>'base64')
      * @var array
      */
-    protected $assetEncoders = array(
+    protected $assetEncoders = [
         'html'     => 'none',
         'document'     => 'none',
         'js'        => 'none',
@@ -78,7 +78,7 @@ class ItemPack implements JsonSerializable
         'video'     => 'none',
         'xinclude'  => 'none',
         'apip' => 'none',
-    );
+    ];
 
     /**
      * Should be @import or url() processed
@@ -96,15 +96,14 @@ class ItemPack implements JsonSerializable
      */
     public function __construct($type, $data)
     {
-        if(empty($type)){
+        if (empty($type)) {
             throw new InvalidArgumentException('Please provide and item type');
         }
-        if(!is_array($data)){
+        if (!is_array($data)) {
             throw new InvalidArgumentException('Please provide the item data as an array');
         }
         $this->type = $type;
         $this->data = $data;
-
     }
 
     /**
@@ -137,10 +136,10 @@ class ItemPack implements JsonSerializable
      */
     public function setAssets($type, $assets, $publicDirectory)
     {
-        if(!in_array($type, self::$assetTypes)){
+        if (!in_array($type, self::$assetTypes)) {
             throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
         }
-        if(!is_array($assets)){
+        if (!is_array($assets)) {
             throw new InvalidArgumentException('Assests should be an array, "' . gettype($assets) . '" given');
         }
 
@@ -161,7 +160,7 @@ class ItemPack implements JsonSerializable
                 $assetKey = $asset;
             }
 
-            $this->assets[$type][$assetKey] = $encoder->encode( $asset );
+            $this->assets[$type][$assetKey] = $encoder->encode($asset);
         }
     }
 
@@ -173,8 +172,8 @@ class ItemPack implements JsonSerializable
      */
     public function getAssets($type)
     {
-        if(!array_key_exists($type, $this->assets)){
-            return array();
+        if (!array_key_exists($type, $this->assets)) {
+            return [];
         }
         return $this->assets[$type];
     }
@@ -184,11 +183,11 @@ class ItemPack implements JsonSerializable
      */
     public function JsonSerialize()
     {
-        return array(
+        return [
             'type'      => $this->type,
             'data'      => $this->data,
             'assets'    => $this->assets
-        );
+        ];
     }
 
     /**
@@ -202,10 +201,10 @@ class ItemPack implements JsonSerializable
     /**
      * @param array $assetEncoders
      */
-    public function setAssetEncoders( $assetEncoders )
+    public function setAssetEncoders($assetEncoders)
     {
-        foreach($assetEncoders as $type => $encoder){
-            if($encoder == ''){
+        foreach ($assetEncoders as $type => $encoder) {
+            if ($encoder == '') {
                 $this->assetEncoders[$type] = 'none';
             } else {
                 $this->assetEncoders[$type] = $encoder;
@@ -224,9 +223,8 @@ class ItemPack implements JsonSerializable
     /**
      * @param boolean $nestedResourcesInclusion
      */
-    public function setNestedResourcesInclusion( $nestedResourcesInclusion )
+    public function setNestedResourcesInclusion($nestedResourcesInclusion)
     {
-        $this->nestedResourcesInclusion = (boolean)$nestedResourcesInclusion;
+        $this->nestedResourcesInclusion = (bool)$nestedResourcesInclusion;
     }
-
 }

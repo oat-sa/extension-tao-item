@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,6 +25,7 @@ use oat\generis\model\OntologyAwareTrait;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
+
 use function GuzzleHttp\Psr7\stream_for;
 
 /**
@@ -48,7 +50,6 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         }
 
         $this->forwardUrl($previewUrl);
-
     }
 
     /**
@@ -59,8 +60,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $item = $this->getResource(tao_helpers_Uri::decode($this->getRequestParameter('uri')));
 
         $itemService = taoItems_models_classes_ItemsService::singleton();
-        if($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)){
-
+        if ($itemService->hasItemContent($item) && $itemService->isItemModelDefined($item)) {
             //this is this url that will contains the preview
             //@see taoItems_actions_LegacyPreviewApi
             $previewUrl = $this->getPreviewUrl($item);
@@ -75,10 +75,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $this->setView('ItemPreview/index.tpl', 'taoItems');
     }
 
-    protected function getPreviewUrl($item, $options = array())
+    protected function getPreviewUrl($item, $options = [])
     {
         $code = base64_encode($item->getUri());
-        return _url('render/'.$code.'/index', 'ItemPreview', 'taoItems', $options);
+        return _url('render/' . $code . '/index', 'ItemPreview', 'taoItems', $options);
     }
 
     public function render()
@@ -89,10 +89,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $path = rawurldecode($path);
         $uri = base64_decode($codedUri);
         if (!common_Utils::isUri($uri)) {
-            throw new common_exception_BadRequest('"'.$codedUri.'" does not decode to a valid item URI');
+            throw new common_exception_BadRequest('"' . $codedUri . '" does not decode to a valid item URI');
         }
         $item = $this->getResource($uri);
-        if($path === 'index'){
+        if ($path === 'index') {
             $this->renderItem($item);
         } else {
             $this->renderResource($item, $path);
@@ -103,8 +103,8 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     {
         $itemModel = $item->getOnePropertyValue($this->getProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
         $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
-        if(is_null($impl)){
-            throw new common_Exception('preview not supported for this item type '.$itemModel->getUri());
+        if (is_null($impl)) {
+            throw new common_Exception('preview not supported for this item type ' . $itemModel->getUri());
         }
         return $impl->render($item, '');
     }
@@ -140,9 +140,8 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
      */
     protected function getResultServer()
     {
-        return array(
+        return [
             'module' => 'taoItems/runtime/ConsoleResultServer'
-        );
+        ];
     }
-
 }

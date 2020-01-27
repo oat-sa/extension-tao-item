@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,13 +58,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     protected function defaultData()
     {
         parent::defaultData();
-        if($this->hasRequestParameter('uri')){
+        if ($this->hasRequestParameter('uri')) {
             $uri = $this->getRequestParameter('uri');
             $classUri = $this->getRequestParameter('classUri');
-            if(!empty($uri)){
+            if (!empty($uri)) {
                 $item = $this->getResource(tao_helpers_Uri::decode($uri));
                 $this->setData('label', $item->getLabel());
-                $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', array('uri' => $uri, 'classUri' => $classUri)));
+                $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', ['uri' => $uri, 'classUri' => $classUri]));
                 $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));
             }
         }
@@ -163,8 +164,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         $itemClass = $this->getCurrentClass();
         $item = $this->getCurrentInstance();
 
-        if(!$this->isLocked($item, 'item_locked.tpl')){
-
+        if (!$this->isLocked($item, 'item_locked.tpl')) {
             // my lock
             $lock = LockManager::getImplementation()->getLockData($item);
             if (!is_null($lock) && $lock->getOwnerId() == $this->getSession()->getUser()->getIdentifier()) {
@@ -209,7 +209,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             $hasModel   = false;
             if (!empty($currentModel)) {
                 $hasModel = true;
-                $isDeprecated = $this->getClassService()->hasModelStatus($item, array(ItemModelStatus::INSTANCE_DEPRECATED));
+                $isDeprecated = $this->getClassService()->hasModelStatus($item, [ItemModelStatus::INSTANCE_DEPRECATED]);
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 
@@ -235,16 +235,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         $clazz = $this->getClass($this->getRequestParameter('id'));
 
-        if($this->hasRequestParameter('property_mode')){
+        if ($this->hasRequestParameter('property_mode')) {
             $this->setSessionAttribute('property_mode', $this->getRequestParameter('property_mode'));
         }
 
         $myForm = $this->getClassForm($clazz, $this->getClassService()->getRootClass());
 
         if ($this->hasWriteAccess($clazz->getUri())) {
-            if($myForm->isSubmited()){
-                if($myForm->isValid()){
-                    if($clazz instanceof core_kernel_classes_Resource){
+            if ($myForm->isSubmited()) {
+                if ($myForm->isValid()) {
+                    if ($clazz instanceof core_kernel_classes_Resource) {
                         $this->setData("selectNode", tao_helpers_Uri::encode($clazz->getUri()));
                     }
                     $this->setData('message', __('Class schema saved'));
@@ -252,7 +252,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 }
             }
         } else {
-            $myForm->setActions(array());
+            $myForm->setActions([]);
         }
         $this->setData('formTitle', __('Manage item class schema'));
         $this->setData('myForm', $myForm->render());
@@ -315,16 +315,14 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
         $item = $this->getResource($this->getRequestParameter('id'));
 
-        if(!$this->isLocked($item, 'item_locked.tpl')){
-
+        if (!$this->isLocked($item, 'item_locked.tpl')) {
             $this->setData('error', false);
-            try{
-
+            try {
                 $itemModel = $this->getClassService()->getItemModel($item);
-                if($itemModel !== null){
+                if ($itemModel !== null) {
                     $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
-                    if(!empty($authoringUrl)){
+                    if (!empty($authoringUrl)) {
                         LockManager::getImplementation()->setLock($item, $this->getSession()->getUser()->getIdentifier());
 
                         return $this->forwardUrl($authoringUrl);
@@ -332,17 +330,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 }
                 throw new common_exception_NoImplementation();
                 $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
-
             } catch (Exception $e) {
                 if ($e instanceof InterruptedActionException) {
                     throw $e;
                 }
                 $this->setData('error', true);
                 //build clear error or warning message:
-                if(!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource){
-                    $errorMsg = __('No item authoring tool available for the selected type of item: %s'.$itemModel->getLabel());
-                }else{
-                    $errorMsg = __('No item type selected for the current item.')." {$item->getLabel()} ".__('Please select first the item type!');
+                if (!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource) {
+                    $errorMsg = __('No item authoring tool available for the selected type of item: %s' . $itemModel->getLabel());
+                } else {
+                    $errorMsg = __('No item type selected for the current item.') . " {$item->getLabel()} " . __('Please select first the item type!');
                 }
                 $this->setData('errorMsg', $errorMsg);
             }
