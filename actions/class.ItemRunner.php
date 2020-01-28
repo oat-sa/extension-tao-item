@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,47 +30,47 @@ use oat\tao\model\state\StateStorage;
  */
 class taoItems_actions_ItemRunner extends tao_actions_ServiceModule
 {
-	public function index()
+    public function index()
     {
-		$userId = $this->getSession()->getUserUri();
-		if(is_null($userId)){
-			throw new common_exception_Error('No user is logged in');
-		}
-		$lang = $this->getSession()->getDataLanguage();
+        $userId = $this->getSession()->getUserUri();
+        if (is_null($userId)) {
+            throw new common_exception_Error('No user is logged in');
+        }
+        $lang = $this->getSession()->getDataLanguage();
 
-		if ($this->hasRequestParameter('serviceCallId')) {
+        if ($this->hasRequestParameter('serviceCallId')) {
                     $serviceCallId = $this->getRequestParameter('serviceCallId');
                     $variableData = $this->getServiceLocator()->get(StateStorage::SERVICE_ID)->get($userId, $serviceCallId);
-                    $this->setData('storageData', array(
-                            'serial'	=> $serviceCallId,
-                            'data'		=> is_null($variableData) ? array() : $variableData
-                    ));
-		}
+                    $this->setData('storageData', [
+                            'serial'    => $serviceCallId,
+                            'data'      => is_null($variableData) ? [] : $variableData
+                    ]);
+        }
 
-		$directory = $this->getDirectory($this->getRequestParameter('itemPath'));
+        $directory = $this->getDirectory($this->getRequestParameter('itemPath'));
 
-		if (!$directory->has($lang) && $directory->has(DEFAULT_LANG)) {
-		    $lang = DEFAULT_LANG;
-		}
+        if (!$directory->has($lang) && $directory->has(DEFAULT_LANG)) {
+            $lang = DEFAULT_LANG;
+        }
 
-		$this->setData('itemPath', $directory->getPublicAccessUrl().$lang.'/index.html');
-		$this->setData('itemId', $this->getRequestParameter('itemUri'));
-		$this->setData('resultServerEndpoint', $this->getResultServerEndpoint());
+        $this->setData('itemPath', $directory->getPublicAccessUrl() . $lang . '/index.html');
+        $this->setData('itemId', $this->getRequestParameter('itemUri'));
+        $this->setData('resultServerEndpoint', $this->getResultServerEndpoint());
         $this->setData('resultServerParams', $this->getResultServerParams());
         $this->setData('client_timeout', $this->getClientTimeout());
         $this->setData('client_config_url', $this->getClientConfigUrl());
 
-		$this->selectView();
-	}
+        $this->selectView();
+    }
 
-	/**
-	 * The implementation of this method calls ItemRunner::setView in order to
-	 * select the view to be displayed.
-	 */
-	protected function selectView()
+    /**
+     * The implementation of this method calls ItemRunner::setView in order to
+     * select the view to be displayed.
+     */
+    protected function selectView()
     {
-	    $this->setView('runtime/item_runner.tpl', 'taoItems');
-	}
+        $this->setView('runtime/item_runner.tpl', 'taoItems');
+    }
 
     /**
      * Get the URL of the result server
@@ -86,6 +87,6 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule
      */
     protected function getResultServerParams()
     {
-        return array();
+        return [];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +18,7 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  * @author Mikhail Kamarouski, <kamarouski@1pt.com>
  */
+
 namespace oat\taoItems\model\pack\encoders;
 
 use oat\tao\model\media\MediaAsset;
@@ -58,10 +60,10 @@ class Base64fileEncoder implements Encoding
      * @return string
      * @throws ExceptionMissingAsset
      */
-    public function encode( $data )
+    public function encode($data)
     {
         //skip  if external resource
-        if (filter_var( $data, FILTER_VALIDATE_URL )) {
+        if (filter_var($data, FILTER_VALIDATE_URL)) {
             return $data;
         }
 

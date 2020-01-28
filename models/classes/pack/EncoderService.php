@@ -38,16 +38,17 @@ class EncoderService extends tao_models_classes_Service
      * @return Encoding
      * @throws ExceptionMissingEncoder
      */
-    public function get( $type )
+    public function get($type)
     {
-        $class = __NAMESPACE__ . '\\encoders\\' . ucfirst( $type ) . 'Encoder';
-        if (class_exists( $class ) && in_array(
+        $class = __NAMESPACE__ . '\\encoders\\' . ucfirst($type) . 'Encoder';
+        if (
+            class_exists($class) && in_array(
                 'oat\taoItems\model\pack\encoders\Encoding',
-                class_implements( $class )
+                class_implements($class)
             )
         ) {
             return (new ReflectionClass($class))->newInstanceArgs(array_slice(func_get_args(), 1, func_num_args()));
         }
-        throw new ExceptionMissingEncoder( 'Encoder missing : ' .  $class );
+        throw new ExceptionMissingEncoder('Encoder missing : ' .  $class);
     }
 }

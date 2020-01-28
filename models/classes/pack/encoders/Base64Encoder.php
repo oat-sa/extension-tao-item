@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +18,7 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  * @author Mikhail Kamarouski, <kamarouski@1pt.com>
  */
+
 namespace oat\taoItems\model\pack\encoders;
 
 use oat\tao\model\media\MediaAsset;

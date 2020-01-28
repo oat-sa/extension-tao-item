@@ -18,6 +18,7 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  * @author Mikhail Kamarouski, <kamarouski@1pt.com>
  */
+
 namespace oat\taoItems\model\pack\encoders;
 
 interface Encoding
@@ -27,5 +28,5 @@ interface Encoding
      *
      * @return string
      */
-    public function encode( $data );
+    public function encode($data);
 }

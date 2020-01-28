@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +18,7 @@
  * Copyright (c) 2018 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoItems\test\pack;
 
 use oat\generis\test\TestCase;
@@ -37,5 +39,4 @@ class NoneItemReplacementTest extends TestCase
         $this->assertEquals('value', $replace->postProcessAssets('value'));
         $this->assertEquals('http://CDN/my/url', $replace->postProcessAssets('http://CDN/my/url'));
     }
-
 }

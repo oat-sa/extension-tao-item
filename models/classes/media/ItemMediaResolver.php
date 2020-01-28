@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,16 +25,17 @@ namespace oat\taoItems\model\media;
 use oat\tao\model\media\TaoMediaResolver;
 use oat\tao\model\media\MediaAsset;
 
-class ItemMediaResolver extends TaoMediaResolver {
+class ItemMediaResolver extends TaoMediaResolver
+{
     
     private $localMediaSource;
 
     public function __construct($item, $lang)
     {
-        $this->localMediaSource = new LocalItemSource(array(
-        	'item' => $item,
+        $this->localMediaSource = new LocalItemSource([
+            'item' => $item,
             'lang' => $lang
-        ));
+        ]);
     }
 
     public function resolve($url)
@@ -45,5 +47,4 @@ class ItemMediaResolver extends TaoMediaResolver {
             return parent::resolve($url);
         }
     }
-
 }

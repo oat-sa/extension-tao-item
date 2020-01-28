@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -39,16 +40,16 @@ abstract class ItemPacker
      * @example array('css'=>'base64')
      * @var array
      */
-    protected $assetEncoders = array( 'js'    => 'none',
+    protected $assetEncoders = [ 'js'    => 'none',
                                       'css'   => 'none',
                                       'font'  => 'none',
                                       'img'   => 'none',
                                       'audio' => 'none',
-                                      'video' => 'none');
+                                      'video' => 'none'];
 
     protected $nestedResourcesInclusion;
 
-    public function __construct($assetEncoders = array(), $nestedResourcesInclusion = true)
+    public function __construct($assetEncoders = [], $nestedResourcesInclusion = true)
     {
         $this->assetEncoders = array_merge($this->assetEncoders, $assetEncoders);
         $this->nestedResourcesInclusion = $nestedResourcesInclusion;
