@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2014 (original work) Open Assessment Technologies SA
  *
  */
@@ -26,16 +27,14 @@ use oat\tao\test\integration\RestTestCase;
 /**
  * connects as a client agent on the rest controller
  * @author patrick
- * 
+ *
  */
 class RestTaoItemsTest extends RestTestCase
 {
-    public function serviceProvider(){
-        return array(
-            array('taoItems/RestItems', TaoOntology::ITEM_CLASS_URI)
-        );
+    public function serviceProvider()
+    {
+        return [
+            ['taoItems/RestItems', TaoOntology::ITEM_CLASS_URI]
+        ];
     }
-    
-
 }
-

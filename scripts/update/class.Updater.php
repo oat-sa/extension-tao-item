@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,14 +34,16 @@ use oat\tao\model\ClientLibRegistry;
  *
  * @author Joel Bout <joel@taotesting.com>
  */
-class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
+class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater
+{
 
     /**
      * @param $initialVersion
      * @return string|void
      * @throws common_Exception
      */
-    public function update($initialVersion) {
+    public function update($initialVersion)
+    {
 
 
         if ($this->isBetween('0.0.0', '2.8.0')) {
@@ -50,7 +53,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         $this->skip('2.8.1', '2.22.3');
 
         if ($this->isVersion('2.22.3')) {
-
             OntologyUpdater::syncModels();
 
             $categoryService = new CategoryService();
@@ -76,8 +78,8 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         $this->skip('5.6.0', '5.9.0');
 
         if ($this->isVersion('5.9.0')) {
-            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestItems')));
-            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, array('ext'=>'taoItems', 'mod' => 'RestFormItem')));
+            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']));
+            AclProxy::applyRule(new AccessRule('grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']));
             $this->setVersion('5.10.0');
         }
 
@@ -116,6 +118,6 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
             $this->setVersion('9.0.0');
         }
 
-        $this->skip('9.0.0', '10.1.2');
+        $this->skip('9.0.0', '10.2.0');
     }
 }

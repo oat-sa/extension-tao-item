@@ -21,12 +21,12 @@
 
 /**
  * An Exception to be thrown when an exception in the context of ItemModel.
- * 
+ *
  * @author Jerome Bogaerts <jerome@taotesting.com>
  * @package taoItems
- 
+
  */
-class taoItems_models_classes_ItemModelException  extends common_Exception
+class taoItems_models_classes_ItemModelException extends common_Exception
 {
-	
+    
 }

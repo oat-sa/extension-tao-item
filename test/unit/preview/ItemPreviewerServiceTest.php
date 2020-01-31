@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -209,5 +210,4 @@ class ItemPreviewerServiceTest extends TestCase
 
         $this->assertEquals(false, $itemPreviewerService->unregisterAdapter('taoQtiTest/previewer/adapter/qtiTest'));
     }
-
 }

@@ -21,7 +21,6 @@
 
 namespace oat\taoItems\model\pack;
 
-
 use common_Exception;
 
 class ExceptionMissingEncoder extends common_Exception

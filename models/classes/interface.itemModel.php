@@ -32,8 +32,8 @@
 interface taoItems_models_classes_itemModel
 {
     const CLASS_URI_MODELS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
-    const CLASS_URI_RUNTIME	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
-    const CLASS_URI_QTI	= 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
+    const CLASS_URI_RUNTIME = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
+    const CLASS_URI_QTI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
 
     /**
      * constructor called by itemService
@@ -54,36 +54,36 @@ interface taoItems_models_classes_itemModel
      * @return string the html representation of the item
      * @throws taoItems_models_classes_ItemModelException
      */
-    public function render( core_kernel_classes_Resource $item, $languageCode);
+    public function render(core_kernel_classes_Resource $item, $languageCode);
 
     /**
      *
      * @param core_kernel_classes_Resource $item
      * @param unknown $languageCode
      */
-    public function getPreviewUrl( core_kernel_classes_Resource $item, $languageCode);
+    public function getPreviewUrl(core_kernel_classes_Resource $item, $languageCode);
 
     /**
      * Get the full url of the implementation authoring
      * @param core_kernel_classes_Resource $item
      * @return string the authoring URL
      */
-    public function getAuthoringUrl( core_kernel_classes_Resource $item);
+    public function getAuthoringUrl(core_kernel_classes_Resource $item);
 
-	/**
-	 * Returns a compiler class for the item
-	 *
-	 * @return tao_models_classes_Compiler
-	 */
-	public function getCompilerClass();
+    /**
+     * Returns a compiler class for the item
+     *
+     * @return tao_models_classes_Compiler
+     */
+    public function getCompilerClass();
 
-	/**
-	 * Return the Packable implementation for the given item model.
+    /**
+     * Return the Packable implementation for the given item model.
      * Packing is an alternative to Compilation. A Packer generates the
      * data needed to run an item where the compiler creates a stand alone
      * item.
-	 *
-	 * @return oat\taoItems\model\pack\ItemPacker the packer class to instantiate
-	 */
+     *
+     * @return oat\taoItems\model\pack\ItemPacker the packer class to instantiate
+     */
     public function getPackerClass();
 }

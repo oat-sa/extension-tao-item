@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +35,7 @@ use tao_helpers_form_FormContainer as FormContainer;
 class taoItems_actions_SaSItems extends taoItems_actions_Items
 {
 
-	/**
+    /**
      * overrided to prevent exception:
      * if no class is selected, the root class is returned
      * @see TaoModule::getCurrentClass()
@@ -43,113 +44,112 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
     protected function getCurrentClass()
     {
         if ($this->hasRequestParameter('classUri')) {
-        	return parent::getCurrentClass();
+            return parent::getCurrentClass();
         }
-		return $this->getRootClass();
+        return $this->getRootClass();
     }
 
-	/**
-	 * Edit an instances
-	 * @return void
-	 */
-	public function sasEditInstance()
+    /**
+     * Edit an instances
+     * @return void
+     */
+    public function sasEditInstance()
     {
         $this->loadStandaloneMode();
 
         $clazz = $this->getCurrentClass();
-		$instance = $this->getCurrentInstance();
+        $instance = $this->getCurrentInstance();
 
-		$formContainer = new tao_actions_form_Instance($clazz, $instance, [FormContainer::CSRF_PROTECTION_OPTION => true]);
-		$myForm = $formContainer->getForm();
+        $formContainer = new tao_actions_form_Instance($clazz, $instance, [FormContainer::CSRF_PROTECTION_OPTION => true]);
+        $myForm = $formContainer->getForm();
 
-		if($myForm->isSubmited() && $myForm->isValid()) {
+        if ($myForm->isSubmited() && $myForm->isValid()) {
             $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
             $instance = $binder->bind($myForm->getValues());
             $instance = $this->getClassService()->setDefaultItemContent($instance);
             $this->setData('message', __('Item saved'));
         }
 
-		$this->setData('uri', tao_helpers_Uri::encode($instance->getUri()));
-		$this->setData('classUri', tao_helpers_Uri::encode($clazz->getUri()));
-		$this->setData('formTitle', __('Edit item'));
-		$this->setData('myForm', $myForm->render());
-		$this->setView('form.tpl', 'tao');
-	}
+        $this->setData('uri', tao_helpers_Uri::encode($instance->getUri()));
+        $this->setData('classUri', tao_helpers_Uri::encode($clazz->getUri()));
+        $this->setData('formTitle', __('Edit item'));
+        $this->setData('myForm', $myForm->render());
+        $this->setView('form.tpl', 'tao');
+    }
 
-	/**
-	 * view and item
+    /**
+     * view and item
      * @throws common_exception_BadRequest
      * @throws common_exception_Error
      * @throws tao_models_classes_MissingRequestParameterException
-	 * @return void
-	 */
-	public function viewItem()
+     * @return void
+     */
+    public function viewItem()
     {
         $this->loadStandaloneMode();
 
-		if (!$this->isXmlHttpRequest()) {
-			throw new common_exception_BadRequest('wrong request mode');
-		}
+        if (!$this->isXmlHttpRequest()) {
+            throw new common_exception_BadRequest('wrong request mode');
+        }
 
-		$itemClass = $this->getCurrentClass();
-		$item = $this->getCurrentInstance();
+        $itemClass = $this->getCurrentClass();
+        $item = $this->getCurrentInstance();
 
-		$lang = null;
-		if($this->hasRequestParameter('target_lang')){
-			$lang = $this->getRequestParameter('target_lang');
-		}
+        $lang = null;
+        if ($this->hasRequestParameter('target_lang')) {
+            $lang = $this->getRequestParameter('target_lang');
+        }
 
-		$hiddenProperties = array(
-			taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
-		);
+        $hiddenProperties = [
+            taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
+        ];
 
-		$properties = array();
-		foreach($this->getClassService()->getClazzProperties($itemClass) as $property){
-			if(in_array($property->getUri(), $hiddenProperties)){
-				continue;
-			}
-			$range = $property->getRange();
+        $properties = [];
+        foreach ($this->getClassService()->getClazzProperties($itemClass) as $property) {
+            if (in_array($property->getUri(), $hiddenProperties)) {
+                continue;
+            }
+            $range = $property->getRange();
 
-			if(is_null($lang)){
-				$propValues = $item->getPropertyValues($property);
-			} else {
-				$propContainer = $item->getPropertyValuesByLg($property, $lang);
-				$propValues = $propContainer->getIterator();
-			}
-			foreach($propValues as $propValue){
-				if($range->getUri() == OntologyRdfs::RDFS_LITERAL){
-					$value = (string)$propValue;
-				} else {
-					$resource = new core_kernel_classes_Resource($propValue);
-					$value = $resource->getLabel();
-				}
-				$properties[] = array(
-					'name'	=> $property->getLabel(),
-					'value'	=> $value
-				);
-			}
-		}
+            if (is_null($lang)) {
+                $propValues = $item->getPropertyValues($property);
+            } else {
+                $propContainer = $item->getPropertyValuesByLg($property, $lang);
+                $propValues = $propContainer->getIterator();
+            }
+            foreach ($propValues as $propValue) {
+                if ($range->getUri() == OntologyRdfs::RDFS_LITERAL) {
+                    $value = (string)$propValue;
+                } else {
+                    $resource = new core_kernel_classes_Resource($propValue);
+                    $value = $resource->getLabel();
+                }
+                $properties[] = [
+                    'name'  => $property->getLabel(),
+                    'value' => $value
+                ];
+            }
+        }
 
-		$previewData = $this->initPreview($item, $itemClass);
-		if(count($previewData) == 0){
-			$this->setData('preview', false);
-			$this->setData('previewMsg', __('Not yet available'));
-		}
-		else{
-			$this->setData('preview', true);
-			$this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
-			foreach($previewData as $key => $value){
-				$this->setData($key, $value);
-			}
-		}
+        $previewData = $this->initPreview($item, $itemClass);
+        if (count($previewData) == 0) {
+            $this->setData('preview', false);
+            $this->setData('previewMsg', __('Not yet available'));
+        } else {
+            $this->setData('preview', true);
+            $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
+            foreach ($previewData as $key => $value) {
+                $this->setData($key, $value);
+            }
+        }
 
-		$this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
-		$this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
+        $this->setData('uri', tao_helpers_Uri::encode($item->getUri()));
+        $this->setData('classUri', tao_helpers_Uri::encode($itemClass->getUri()));
 
-		$this->setData('label', $item->getLabel());
-		$this->setData('itemProperties', $properties);
-		$this->setView('view.tpl');
-	}
+        $this->setData('label', $item->getLabel());
+        $this->setData('itemProperties', $properties);
+        $this->setView('view.tpl');
+    }
 
     /**
      * Load the standalone mode

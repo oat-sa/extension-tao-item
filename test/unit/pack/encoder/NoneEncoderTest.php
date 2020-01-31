@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -58,7 +59,7 @@ class NoneEncoderTest extends TestCase
     {
         $encoder = new NoneEncoder();
         $url = 'assets/test.png';
-        $asset = new MediaAsset(new LocalItemSource(array()), $url);
+        $asset = new MediaAsset(new LocalItemSource([]), $url);
         $this->assertEquals(basename($url), $encoder->encode($asset));
     }
 }
