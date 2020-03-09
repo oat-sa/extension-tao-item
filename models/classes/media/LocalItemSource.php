@@ -1,23 +1,25 @@
 <?php
-/**  
+
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2014 (original work) Open Assessment Technologies SA;
- *               
- * 
+ *
+ *
  */
+
 namespace oat\taoItems\model\media;
 
 use common_exception_Error;
@@ -68,34 +70,34 @@ class LocalItemSource implements MediaManagement
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
-    public function getDirectory($parentLink = '', $acceptableMime = array(), $depth = 1)
+    public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
     {
         if (! tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));
         }
 
-        $label = rtrim($parentLink,'/');
-        if(strrpos($parentLink, '/') !== false && substr($parentLink, -1) !== '/'){
-            $label = substr($parentLink,strrpos($parentLink, '/') + 1);
-            $parentLink = $parentLink.'/';
+        $label = rtrim($parentLink, '/');
+        if (strrpos($parentLink, '/') !== false && substr($parentLink, -1) !== '/') {
+            $label = substr($parentLink, strrpos($parentLink, '/') + 1);
+            $parentLink = $parentLink . '/';
         }
 
-        if(in_array($parentLink,array('','/'))){
+        if (in_array($parentLink, ['','/'])) {
             $label = $this->getItem()->getLabel();
             $parentLink = '/';
         }
 
-        $data = array(
+        $data = [
             'path' => $parentLink,
             'label' => $label
-        );
+        ];
 
         if ($depth <= 0) {
             $data['parent'] = $parentLink;
             return $data;
         }
 
-        $children = array();
+        $children = [];
 
         /** @var \oat\oatbox\filesystem\Directory $directory */
         $itemDirectory = $this->getItemDirectory();
@@ -133,19 +135,18 @@ class LocalItemSource implements MediaManagement
     public function getFileInfo($link)
     {
         return $this->getInfoFromFile($this->getFile($link));
-
     }
 
     protected function getInfoFromFile(File $file)
     {
         $link = $this->getItemDirectory()->getRelPath($file);
-        return array(
+        return [
             'name'     => $file->getBasename(),
             'uri'      => $link,
             'mime'     => $file->getMimeType(),
             'filePath' => $link,
             'size'     => $file->getSize(),
-        );
+        ];
     }
 
     /**
@@ -205,7 +206,7 @@ class LocalItemSource implements MediaManagement
     public function add($source, $fileName, $parent)
     {
         if (! \tao_helpers_File::securityCheck($fileName, true)) {
-            throw new \common_Exception('Unsecured filename "'.$fileName.'"');
+            throw new \common_Exception('Unsecured filename "' . $fileName . '"');
         }
 
         if (($resource = fopen($source, 'r')) === false) {
@@ -262,7 +263,7 @@ class LocalItemSource implements MediaManagement
      */
     private function getFile($link)
     {
-        if(!tao_helpers_File::securityCheck($link)){
+        if (!tao_helpers_File::securityCheck($link)) {
             throw new common_exception_Error(__('Your path contains error'));
         }
 

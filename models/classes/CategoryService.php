@@ -69,7 +69,7 @@ class CategoryService extends ConfigurableService
      */
     public function getItemsCategories(array $items)
     {
-        $categories = array();
+        $categories = [];
 
         foreach ($items as $item) {
             $itemCategories = $this->getItemCategories($item);
@@ -122,8 +122,8 @@ class CategoryService extends ConfigurableService
     public static function sanitizeCategoryName($value)
     {
         $output = preg_replace('/\s+/', '-', trim($value));
-        $output = preg_replace('/[^a-z0-9\-]/', '',  strtolower($output));
-        $output = preg_replace('/^[0-9\-_]+/', '',  strtolower($output));
+        $output = preg_replace('/[^a-z0-9\-]/', '', strtolower($output));
+        $output = preg_replace('/^[0-9\-_]+/', '', strtolower($output));
         return substr($output, 0, 32);
     }
 
@@ -140,7 +140,7 @@ class CategoryService extends ConfigurableService
         return array_filter(
             $properties,
             function ($property) {
-                if(in_array($property->getUri(), self::$excludedPropUris)){
+                if (in_array($property->getUri(), self::$excludedPropUris)) {
                     return false;
                 }
                 $widget = $property->getWidget();

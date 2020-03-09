@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +18,7 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA
  *
  */
+
 namespace oat\taoItems\model\event;
 
 use JsonSerializable;
@@ -53,18 +55,20 @@ class ItemUpdatedEvent implements Event, JsonSerializable
     }
     
     /**
-     * event data getter 
+     * event data getter
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
         return $this->data;
     }
     
     /**
-     * event item URI getter 
+     * event item URI getter
      * @return string
      */
-    public function getItemUri() {
+    public function getItemUri()
+    {
         return $this->itemUri;
     }
 

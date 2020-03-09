@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,12 +35,13 @@ class PreviewClientConfigRegistry extends ClientLibConfigRegistry
 
     /**
      * Register an extra button for the preview in the client lib config registry
-     * 
+     *
      * @param string $name
      * @param array $toolConfig
      */
-    public function registerPreviewExtraButtons($name, $toolConfig){
-        $newConfig = array('extraButtons' => array());
+    public function registerPreviewExtraButtons($name, $toolConfig)
+    {
+        $newConfig = ['extraButtons' => []];
         $newConfig['extraButtons'][$name] = $toolConfig;
         $this->register(self::AMD, $newConfig);
     }

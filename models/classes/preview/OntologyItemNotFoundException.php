@@ -28,5 +28,4 @@ class OntologyItemNotFoundException extends \Exception implements \common_except
     {
         return __('Item not found');
     }
-
 }

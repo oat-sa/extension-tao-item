@@ -59,7 +59,8 @@ class Loader
      * Create a packer for an item
      * @param core_kernel_classes_Resource $item
      */
-    public function __construct(core_kernel_classes_Resource $item, $lang = ''){
+    public function __construct(core_kernel_classes_Resource $item, $lang = '')
+    {
         $this->item = $item;
         $this->lang = $lang;
         $this->itemService = taoItems_models_classes_ItemsService::singleton();

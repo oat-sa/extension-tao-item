@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,38 +30,38 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
      * taoItems_actions_RestItems constructor.
      * @security("hide")
      */
-	public function __construct()
+    public function __construct()
     {
-		parent::__construct();
-		//The service taht implements or inherits get/getAll/getRootClass ... for that particular type of resources
-		$this->service = taoItems_models_classes_CrudItemsService::singleton();
-	}
+        parent::__construct();
+        //The service taht implements or inherits get/getAll/getRootClass ... for that particular type of resources
+        $this->service = taoItems_models_classes_CrudItemsService::singleton();
+    }
 
-	/**
-	 * Optionnaly a specific rest controller may declare
-	 * aliases for parameters used for the rest communication
-	 */
-	protected function getParametersAliases()
+    /**
+     * Optionnaly a specific rest controller may declare
+     * aliases for parameters used for the rest communication
+     */
+    protected function getParametersAliases()
     {
-	    return array_merge(parent::getParametersAliases(), array(
-		    "model"=> taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL,
-		    "content" => taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
+        return array_merge(parent::getParametersAliases(), [
+            "model" => taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL,
+            "content" => taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
 
-	    ));
-	}
-	/**
-	 * Optionnal Requirements for parameters to be sent on every service
-	 *
-	 */
-	protected function getParametersRequirements()
+        ]);
+    }
+    /**
+     * Optionnal Requirements for parameters to be sent on every service
+     *
+     */
+    protected function getParametersRequirements()
     {
-	    return array(
-		/** you may use either the alias or the uri, if the parameter identifier
-		 *  is set it will become mandatory for the method/operation in $key
-		* Default Parameters Requirents are applied
-		* type by default is not required and the root class type is applied
-		*/
+        return [
+        /** you may use either the alias or the uri, if the parameter identifier
+         *  is set it will become mandatory for the method/operation in $key
+        * Default Parameters Requirents are applied
+        * type by default is not required and the root class type is applied
+        */
 
-	    );
-	}
+        ];
+    }
 }
