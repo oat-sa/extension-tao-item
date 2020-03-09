@@ -8,6 +8,6 @@
     "url": "git+https://github.com/oat-sa/extension-tao-items.git"
   },
   "dependencies": {
-    "@oat-sa/tao-item-runner": "oat-sa/tao-item-runner-fe#breaking/TDR-10_upgrade-jquery"
+    "@oat-sa/tao-item-runner": "oat-sa/tao-item-runner-fe#breaking/TDR-10/upgrade-jquery-handlebars"
   }
 }
