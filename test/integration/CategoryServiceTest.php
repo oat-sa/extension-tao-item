@@ -42,7 +42,7 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
     /**
      * Tests initialization
      */
-    public function setUp()
+    public function setUp(): void
     {
         TaoPhpUnitTestRunner::initTest();
     }
