@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:07\n"
+"Project-Id-Version: TAO 3.4.0-sprint124\n"
+"PO-Revision-Date: 2020-03-20T11:16:56\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -21,7 +21,7 @@ msgid "Authoring"
 msgstr "Construeren"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Klasse-schema opgeslagen"
 
 msgid "Close"
 msgstr "Sluiten"
@@ -31,11 +31,11 @@ msgstr "Sluit console"
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Kopiëren naar"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Creëer en ontwerp items en oefeningen."
 
 #, tao-public
 msgid "Delete"
@@ -62,7 +62,7 @@ msgid "Export"
 msgstr "Exporteren"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Blootstellen van de waarde van het veld om geautomatiseerde categorieën te creëren."
 
 msgid "Failed retrieving %s"
 msgstr "Ophalen %s heeft gefaald"
@@ -75,7 +75,7 @@ msgid "Item Model"
 msgstr "Item Model"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Item niet gevonden"
 
 msgid "Item saved"
 msgstr "Item opgeslagen"
@@ -92,10 +92,10 @@ msgid "Landscape"
 msgstr "Liggend"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Laatst bijgewerkt op %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Beheer item klasse-schema"
 
 #, tao-public
 msgid "Manage items"
@@ -103,7 +103,7 @@ msgstr "Item beheer"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Beheer schema"
 
 msgid "Mobile preview"
 msgstr "Voorbeeld mobiel"
@@ -114,7 +114,7 @@ msgstr "Verplaatsen"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Verplaats naar"
 
 #, tao-public
 msgid "New class"
@@ -162,7 +162,7 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "De item module maakt het mogelijk om itemsen oefeningen aan te maken en te ontwerpen"
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "Het veld is blootgesteld aan categorie toevoeging.&#13Verwijder exposition?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Dit voorbeeld kan geschaald worden om op uw scherm te passen. Het eindresultaat kan afwijken."
@@ -174,7 +174,7 @@ msgid "Unable to create deployement directory"
 msgstr "Niet in staat om de uitlever map aan te maken"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "Kan het item niet weergeven van %s : %s %s"
 
 msgid "You checked out this item %2s ago"
 msgstr "U heeft dit item %2s geleden uitgecheckt"
