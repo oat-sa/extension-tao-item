@@ -53,12 +53,13 @@ class CategoryServiceTest extends TaoPhpUnitTestRunner
     public function categoryNames()
     {
         return [
-            [" < Hello   My w!%'orld!! ", "hello-my-world"],
-            ["12hello", "hello"],
-            [" hello", "hello"],
-            ["!1h12ello ", "h12ello"],
-            ["<span class='hello'>&nbsp;''hello</span> ", "span-classhellonbsphellospan"],
-            ["averylongnamethatexceedtheexpectedthritytowcharacters", "averylongnamethatexceedtheexpect"]
+            [" < Hello   My w!%'orld!! ", 'hello-my-world'],
+            ['12hello', 'hello'],
+            [' hello', 'hello'],
+            ['!1h12ello ', 'h12ello'],
+            ["<span class='hello'>&nbsp;''hello</span> ", 'span-classhellonbsphellospan'],
+            ['averylongnamethatexceedtheexpectedthritytowcharacters', 'averylongnamethatexceedtheexpect'],
+            ['ÆØÅ', 'æøå'],
         ];
     }
 
