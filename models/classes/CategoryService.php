@@ -122,7 +122,7 @@ class CategoryService extends ConfigurableService
     public static function sanitizeCategoryName($value)
     {
         $output = preg_replace('/\s+/', '-', trim($value));
-        $output = preg_replace('/[^\p{L}0-9\-]/', '', mb_strtolower($output));
+        $output = preg_replace('/[^\p{L}0-9\-]/u', '', mb_strtolower($output));
         $output = preg_replace('/^[0-9\-_]+/', '', $output);
         return mb_substr($output, 0, 32);
     }
