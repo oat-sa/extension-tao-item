@@ -30,11 +30,16 @@ class ItemCreatedEvent implements Event, JsonSerializable
     /** @var  string */
     protected $itemUri;
 
+    /** @var  string */
+    protected $itemContent;
+
     /**
      * @param String $itemUri
+     * @param String $itemContent
      */
-    public function __construct($itemUri)
+    public function __construct(string $itemUri, string $itemContent = null)
     {
+        $this->itemContent = $itemContent;
         $this->itemUri = $itemUri;
     }
 
@@ -68,5 +73,13 @@ class ItemCreatedEvent implements Event, JsonSerializable
     public function getItemUri()
     {
         return $this->itemUri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemContent()
+    {
+        return $this->itemContent;
     }
 }
