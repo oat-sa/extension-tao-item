@@ -21,7 +21,8 @@
 use oat\tao\model\TaoOntology;
 use oat\generis\model\OntologyRdf;
 use oat\generis\model\OntologyRdfs;
-use \oat\taoQtiItem\model\qti\Service;
+use oat\oatbox\event\EventManagerAwareTrait;
+use oat\taoItems\model\event\ItemCreatedEvent;
 
 /**
  * .Crud services implements basic CRUD services, orginally intended for REST controllers/ HTTP exception handlers
@@ -32,6 +33,8 @@ use \oat\taoQtiItem\model\qti\Service;
  */
 class taoItems_models_classes_CrudItemsService extends tao_models_classes_CrudService
 {
+    use EventManagerAwareTrait;
+
     protected $itemClass = null;
    
     protected $itemsServices = null;
@@ -83,7 +86,8 @@ class taoItems_models_classes_CrudItemsService extends tao_models_classes_CrudSe
         }
         $resource =  parent::create($label, $type, $propertiesValues);
         if (isset($itemContent)) {
-            Service::singleton()->saveXmlItemToRdfItem($itemContent, $resource);
+            $event = new ItemCreatedEvent($resource->getUri(), $itemContent);
+            $this->getEventManager()->trigger($event);
         }
         return $resource;
     }
