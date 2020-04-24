@@ -500,7 +500,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             $itemModelService = new $serviceId();
         }
         if (!$itemModelService instanceof \taoItems_models_classes_itemModel) {
-            throw new common_exception_Error('Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $itemModelService->getUri());
+            throw new common_exception_Error('Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $serviceId);
         }
         return $itemModelService;
     }
