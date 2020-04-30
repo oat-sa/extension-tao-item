@@ -82,7 +82,7 @@ msgstr "Item enregistré"
 
 #, tao-public
 msgid "Items"
-msgstr "Items"
+msgstr "Articles"
 
 #, tao-public
 msgid "Items library"
