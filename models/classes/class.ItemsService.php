@@ -317,9 +317,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     public function composeItemDirectoryPath(string $itemContentDirectoryName, string $actualLang): string
     {
-        $filePath = $itemContentDirectoryName
-            . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $actualLang;
-        return $filePath;
+        return  $itemContentDirectoryName . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $actualLang;
     }
 
     /**
