@@ -29,7 +29,6 @@ use oat\tao\model\media\MediaManagement;
 use Psr\Http\Message\StreamInterface;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
-use Slim\Http\Stream;
 
 /**
  * This media source gives access to files that are part of the item
@@ -137,6 +136,29 @@ class LocalItemSource implements MediaManagement
         return $this->getInfoFromFile($this->getFile($link));
     }
 
+    /**
+     * @param File $file
+     * @param string $sourceFile
+     * @return array
+     * @throws \common_Exception
+     * @throws \tao_models_classes_FileNotFoundException
+     */
+    protected function getInfoFromSource(File $file, string $sourceFile): array
+    {
+        if (file_exists($sourceFile)) {
+            $link = $this->getItemDirectory()->getRelPath($file);
+            return [
+                'name'     => $file->getBasename(),
+                'uri'      => $link,
+                'mime'     => tao_helpers_File::getMimeType($sourceFile),
+                'filePath' => $link,
+                'size'     => filesize($sourceFile),
+            ];
+        } else {
+            return $this->getInfoFromFile($file);
+        }
+    }
+
     protected function getInfoFromFile(File $file)
     {
         $link = $this->getItemDirectory()->getRelPath($file);
@@ -221,7 +243,7 @@ class LocalItemSource implements MediaManagement
             throw new \common_Exception('Unable to write file ("' . $fileName . '")');
         }
 
-        return $this->getInfoFromFile($file);
+        return $this->getInfoFromSource($file, $source);
     }
 
     /**
