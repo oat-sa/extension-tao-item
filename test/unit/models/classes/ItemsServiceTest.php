@@ -17,6 +17,8 @@
  * Copyright (c) 2020 (original work) Open Assessment Technologies SA ;
  */
 
+declare(strict_types=1);
+
 namespace oat\taoItems\test\unit\models\classes;
 
 use taoItems_models_classes_ItemsService;
@@ -26,14 +28,14 @@ class ItemsServiceTest extends TestCase
 {
     public function testComposeItemDirectoryPathReturnsStringPath()
     {
-        $object = new taoItems_models_classes_ItemsService();
+        $itemsService = new taoItems_models_classes_ItemsService();
 
         $itemDirectoryName = 'FAKE_DIRECTORY_NAME';
         $language = 'FAKE_LANGUAGE';
 
-        $result = $object->composeItemDirectoryPath($itemDirectoryName, $language);
+        $path = $itemsService->composeItemDirectoryPath($itemDirectoryName, $language);
 
-        self::assertIsString($result, 'Method must return string directory path.');
+        self::assertIsString($path, 'Method must return string directory path.');
     }
 }
 
