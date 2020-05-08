@@ -137,6 +137,9 @@ class LocalItemSource implements MediaManagement
     }
 
     /**
+     * Method should be used only after uploading local file, when metadata like file size and mime type
+     * of remote uploaded file are not critical. To get more precise info about remote file use getInfoFromFile().
+     *
      * @param File $file
      * @param string $sourceFile
      * @return array
