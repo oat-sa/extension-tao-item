@@ -311,6 +311,16 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
     }
 
     /**
+     * @param string $itemContentDirectoryName
+     * @param string $actualLang
+     * @return string
+     */
+    public function composeItemDirectoryPath(string $itemContentDirectoryName, string $actualLang): string
+    {
+        return  $itemContentDirectoryName . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $actualLang;
+    }
+
+    /**
      * Woraround for item content
      * (non-PHPdoc)
      * @see tao_models_classes_GenerisService::cloneInstanceProperty()
@@ -565,13 +575,14 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             throw new common_Exception('Call to ' . __FUNCTION__ . ' for item without model');
         }
 
+        $itemContentDirectoryName = tao_helpers_Uri::getUniqueId($item->getUri());
         // File does not exist, let's create it
         $actualLang = empty($language) ? $this->getSessionLg() : $language;
-        $filePath = tao_helpers_Uri::getUniqueId($item->getUri())
-            . DIRECTORY_SEPARATOR . 'itemContent' . DIRECTORY_SEPARATOR . $actualLang;
+
+        $directoryPath = $this->composeItemDirectoryPath($itemContentDirectoryName, $actualLang);
 
         // Create item directory
-        $itemDirectory = $this->getDefaultItemDirectory()->getDirectory($filePath);
+        $itemDirectory = $this->getDefaultItemDirectory()->getDirectory($directoryPath);
 
         // Set uri file value as serial to item persistence
         $serial = $this->getFileReferenceSerializer()->serialize($itemDirectory);
@@ -622,6 +633,6 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     protected function getFileReferenceSerializer()
     {
-        return $this->getServiceManager()->get(FileReferenceSerializer::SERVICE_ID);
+        return $this->getServiceLocator()->get(FileReferenceSerializer::SERVICE_ID);
     }
 }
