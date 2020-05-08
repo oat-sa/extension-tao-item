@@ -140,6 +140,8 @@ class LocalItemSource implements MediaManagement
      * Method should be used only after uploading local file, when metadata like file size and mime type
      * of remote uploaded file are not critical. To get more precise info about remote file use getInfoFromFile().
      *
+     * In case of using S3 Flysystem adapter the might be latency and file cannot be accessed right after upload.
+     *
      * @param File $file
      * @param string $sourceFile
      * @return array
