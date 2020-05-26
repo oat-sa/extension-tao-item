@@ -21,8 +21,9 @@
  *
  */
 
-use oat\taoItems\scripts\install\RegisterCategoryService;
+use oat\tao\model\user\TaoRoles;
 use oat\taoItems\scripts\install\CreateItemDirectory;
+use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 
 /*
@@ -30,14 +31,14 @@ use oat\taoItems\scripts\install\RegisterNpmPaths;
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  *
  */
-$extpath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+$extpath = __DIR__ . DIRECTORY_SEPARATOR;
 
 return [
     'name' => 'taoItems',
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '10.6.0',
+    'version' => '10.6.1',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => [
         'taoBackOffice' => '>=3.0.0',
@@ -49,10 +50,10 @@ return [
     ],
     'install' => [
         'rdf' => [
-            dirname(__FILE__) . '/models/ontology/taoitem.rdf',
-            dirname(__FILE__) . '/models/ontology/taoItemRunner.rdf',
-            dirname(__FILE__) . '/models/ontology/indexation.rdf',
-            dirname(__FILE__) . '/models/ontology/category.rdf',
+            __DIR__ . '/models/ontology/taoitem.rdf',
+            __DIR__ . '/models/ontology/taoItemRunner.rdf',
+            __DIR__ . '/models/ontology/indexation.rdf',
+            __DIR__ . '/models/ontology/category.rdf',
         ],
         'php'   => [
             CreateItemDirectory::class,
@@ -66,8 +67,8 @@ return [
         ['grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', ['ext' => 'taoItems']],
         ['grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'],
         ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', ['ext' => 'taoItems', 'mod' => 'ItemRunner']],
-        ['grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']],
-        ['grant', \oat\tao\model\user\TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
+        ['grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']],
+        ['grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
     ],
     'optimizableClasses' => [
             'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',

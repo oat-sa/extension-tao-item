@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016-2017 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2016-2020 (original work) Open Assessment Technologies SA
  */
 
 namespace oat\taoItems\model;
@@ -23,9 +23,9 @@ namespace oat\taoItems\model;
 use core_kernel_classes_Class as RdfClass;
 use core_kernel_classes_Property as RdfProperty;
 use core_kernel_classes_Resource as RdfResource;
+use oat\generis\model\GenerisRdf;
 use oat\oatbox\service\ConfigurableService;
 use taoItems_models_classes_ItemsService;
-use oat\generis\model\GenerisRdf;
 
 /**
  * Category management service.
@@ -92,8 +92,8 @@ class CategoryService extends ConfigurableService
     {
         $categories = [];
         foreach ($item->getTypes() as $class) {
-            $eligibleProperties = $this->getElligibleProperties($class);
-            $propertiesValues = $item->getPropertiesValues(array_keys($eligibleProperties));
+            $eligibleProperties = array_filter($this->getElligibleProperties($class), [$this, 'doesExposeCategory']);
+            $propertiesValues   = $item->getPropertiesValues(array_keys($eligibleProperties));
 
             foreach ($propertiesValues as $propertyValues) {
                 foreach ($propertyValues as $value) {
@@ -132,19 +132,22 @@ class CategoryService extends ConfigurableService
      *
      * @param RdfClass $class the $class
      *
-     * @return RdfProperties[] the list of eligible properties
+     * @return RdfProperty[] the list of eligible properties
      */
     public function getElligibleProperties(RdfClass $class)
     {
         $properties = $this->getItemService()->getClazzProperties($class, new RdfClass(self::ITEM_CLASS_URI));
+
         return array_filter(
             $properties,
-            function ($property) {
-                if (in_array($property->getUri(), self::$excludedPropUris)) {
+            static function (RdfProperty $property) {
+                if (in_array($property->getUri(), self::$excludedPropUris, true)) {
                     return false;
                 }
+
                 $widget = $property->getWidget();
-                return !is_null($widget) && in_array($widget->getUri(), self::$supportedWidgetUris);
+
+                return null !== $widget && in_array($widget->getUri(), self::$supportedWidgetUris, true);
             }
         );
     }
@@ -152,7 +155,7 @@ class CategoryService extends ConfigurableService
     /**
      * Check if a property is exposed
      *
-     * @param RdfPropery $property the property to check
+     * @param RdfProperty $property the property to check
      *
      * @return bool true if exposed
      */
