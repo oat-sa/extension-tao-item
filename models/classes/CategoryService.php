@@ -92,8 +92,8 @@ class CategoryService extends ConfigurableService
     {
         $categories = [];
         foreach ($item->getTypes() as $class) {
-            $eligibleProperties = $this->getElligibleProperties($class);
-            $propertiesValues = $item->getPropertiesValues(array_keys($eligibleProperties));
+            $eligibleProperties = array_filter($this->getElligibleProperties($class), [$this, 'doesExposeCategory']);
+            $propertiesValues   = $item->getPropertiesValues(array_keys($eligibleProperties));
 
             foreach ($propertiesValues as $propertyValues) {
                 foreach ($propertyValues as $value) {
@@ -140,11 +140,8 @@ class CategoryService extends ConfigurableService
 
         return array_filter(
             $properties,
-            function (RdfProperty $property) {
-                if (
-                    in_array($property->getUri(), self::$excludedPropUris, true)
-                    || !$this->doesExposeCategory($property)
-                ) {
+            static function (RdfProperty $property) {
+                if (in_array($property->getUri(), self::$excludedPropUris, true)) {
                     return false;
                 }
 
