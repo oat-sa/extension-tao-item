@@ -141,7 +141,7 @@ class CategoryServiceTest extends TestCase
         $fooClass       = new RdfClass('foo');
         $exposeProperty = new RdfProperty(CategoryService::EXPOSE_PROP_URI);
         $trueResource   = new RdfResource(GenerisRdf::GENERIS_TRUE);
-        $falseResource  = new RdfResource(GenerisRdf::GENERIS_TRUE);
+        $falseResource  = new RdfResource(GenerisRdf::GENERIS_FALSE);
 
         $eligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
         $eligibleProp1->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
@@ -162,10 +162,14 @@ class CategoryServiceTest extends TestCase
         $p2Value->getLabel()->willReturn('Yeah Moo');
 
         $item = $this->prophesize('\core_kernel_classes_Resource');
-        $item->getPropertiesValues(Argument::any())->willReturn([
-            'p1' => ['Foo', 'Yo _Bar '],
-            'p2' => [$p2Value->reveal()]
-        ]);
+        $item
+            ->getPropertiesValues(['p1', 'p2'])
+            ->willReturn(
+                [
+                    'p1' => ['Foo', 'Yo _Bar '],
+                    'p2' => [$p2Value->reveal()],
+                ]
+            );
         $item->getTypes()->willReturn([$fooClass]);
 
         $itemService = $this->prophesize('\taoItems_models_classes_ItemsService');
