@@ -153,6 +153,11 @@ class CategoryServiceTest extends TestCase
         $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
         $eligibleProp2->getUri()->willReturn('p2');
 
+        $eligibleProp3 = $this->prophesize('\core_kernel_classes_Property');
+        $eligibleProp3->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
+        $eligibleProp3->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[3]));
+        $eligibleProp3->getUri()->willReturn('p3');
+
         $notEligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
         $notEligibleProp1->getOnePropertyValue($exposeProperty)->willReturn($falseResource);
         $notEligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
@@ -163,11 +168,12 @@ class CategoryServiceTest extends TestCase
 
         $item = $this->prophesize('\core_kernel_classes_Resource');
         $item
-            ->getPropertiesValues(['p1', 'p2'])
+            ->getPropertiesValues(['p1', 'p2', 'p3'])
             ->willReturn(
                 [
                     'p1' => ['Foo', 'Yo _Bar '],
                     'p2' => [$p2Value->reveal()],
+                    'p3' => [''],
                 ]
             );
         $item->getTypes()->willReturn([$fooClass]);
@@ -179,6 +185,7 @@ class CategoryServiceTest extends TestCase
                 [
                     'p1'  => $eligibleProp1->reveal(),
                     'p2'  => $eligibleProp2->reveal(),
+                    'p3'  => $eligibleProp3->reveal(),
                     'np1' => $notEligibleProp1->reveal(),
                 ]
             );

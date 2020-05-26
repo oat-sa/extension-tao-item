@@ -91,6 +91,7 @@ class CategoryService extends ConfigurableService
     public function getItemCategories(RdfResource $item)
     {
         $categories = [];
+
         foreach ($item->getTypes() as $class) {
             $eligibleProperties = array_filter($this->getElligibleProperties($class), [$this, 'doesExposeCategory']);
             $propertiesValues   = $item->getPropertiesValues(array_keys($eligibleProperties));
@@ -102,7 +103,10 @@ class CategoryService extends ConfigurableService
                     } else {
                         $sanitizedIdentifier = self::sanitizeCategoryName((string)$value);
                     }
-                    $categories[] = $sanitizedIdentifier;
+
+                    if ($sanitizedIdentifier) {
+                        $categories[] = $sanitizedIdentifier;
+                    }
                 }
             }
         }
