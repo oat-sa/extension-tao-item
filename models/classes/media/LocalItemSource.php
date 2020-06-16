@@ -38,7 +38,7 @@ class LocalItemSource implements MediaManagement
 {
 
     private $item;
-    
+
     private $lang;
 
     protected $itemService;
@@ -313,5 +313,10 @@ class LocalItemSource implements MediaManagement
             $this->itemService = taoItems_models_classes_ItemsService::singleton();
         }
         return $this->itemService->getItemDirectory($this->item, $this->lang);
+    }
+
+    public function getProcessedFileStream(string $link): StreamInterface
+    {
+        return $this->getFileStream($link);
     }
 }

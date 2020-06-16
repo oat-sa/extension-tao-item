@@ -17,7 +17,7 @@
  *
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ *               2009-2020 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *
  */
 
@@ -38,12 +38,12 @@ return [
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '10.7.0',
+    'version' => '11.0.0',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => [
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=12.5.0',
-        'tao' => '>=38.5.0'
+        'tao' => '>=43.1.0'
     ],
     'models' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf'

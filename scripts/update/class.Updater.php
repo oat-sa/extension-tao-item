@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2020 (original work) Open Assessment Technologies SA;
  *
  *
  */
@@ -119,6 +119,6 @@ class taoItems_scripts_update_Updater extends common_ext_ExtensionUpdater
             $this->setVersion('9.0.0');
         }
 
-        $this->skip('9.0.0', '10.7.0');
+        $this->skip('9.0.0', '11.0.0');
     }
 }
