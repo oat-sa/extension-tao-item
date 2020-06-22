@@ -34,6 +34,7 @@ use oat\taoItems\model\render\NoneItemReplacement;
 /**
  *
  * @author Joel Bout <joel@taotesting.com>
+ * @deprecated use migrations instead. See https://github.com/oat-sa/generis/wiki/Tao-Update-Process
  */
 class taoItems_scripts_update_Updater extends common_ext_ExtensionUpdater
 {
@@ -120,5 +121,10 @@ class taoItems_scripts_update_Updater extends common_ext_ExtensionUpdater
         }
 
         $this->skip('9.0.0', '10.7.1');
+        
+        //Updater files are deprecated. Please use migrations.
+        //See: https://github.com/oat-sa/generis/wiki/Tao-Update-Process
+
+        $this->setVersion($this->getExtension()->getManifest()->getVersion());
     }
 }
