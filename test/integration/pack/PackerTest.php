@@ -20,6 +20,7 @@
  */
 namespace oat\taoItems\test\integration\pack;
 
+use common_Exception;
 use \core_kernel_classes_Resource;
 use oat\generis\test\TestCase;
 use oat\oatbox\filesystem\Directory;
@@ -35,7 +36,7 @@ use oat\taoItems\model\pack\ItemPack;
  */
 class PackerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         \common_ext_ExtensionsManager::singleton()->getExtensionById('taoItems');
     }
@@ -114,10 +115,10 @@ class PackerTest extends TestCase
     /**
      * Test the exception chain when the item has no model
      *
-     * @expectedException \common_Exception
      */
     public function testNoItemModel()
     {
+        $this->expectException(common_Exception::class);
         $item = new core_kernel_classes_Resource('foo');
 
         $serviceMock = $this
@@ -145,11 +146,10 @@ class PackerTest extends TestCase
 
     /**
      * Test the exception chain when there is no implementations for a model
-     *
-     * @expectedException \common_Exception
      */
     public function testNoModelImplementation()
     {
+        $this->expectException(common_Exception::class);
         $item = new core_kernel_classes_Resource('foo');
         $model = new core_kernel_classes_Resource('fooModel');
 
@@ -184,11 +184,10 @@ class PackerTest extends TestCase
     /**
      * Test the exception chain when the model does not return a correct packer class
      *
-     * @expectedException \common_Exception
      */
     public function testNoPackerClass()
     {
-
+        $this->expectException(common_Exception::class);
         $item = new core_kernel_classes_Resource('foo');
 
         $serviceMock = $this
@@ -230,11 +229,10 @@ class PackerTest extends TestCase
     /**
      * Test the exception chain when the model returns a wrong packer class
      *
-     * @expectedException \common_Exception
      */
     public function testWrongPackerClass()
     {
-
+        $this->expectException(common_Exception::class);
         $item = new core_kernel_classes_Resource('foo');
 
         $serviceMock = $this

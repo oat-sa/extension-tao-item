@@ -46,7 +46,6 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
         return array_merge(parent::getParametersAliases(), [
             "model" => taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL,
             "content" => taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT
-
         ]);
     }
     /**
