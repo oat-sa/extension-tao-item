@@ -15,9 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2015-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
+declare(strict_types=1);
 
 namespace oat\taoItems\model\pack;
 
@@ -128,40 +130,50 @@ class ItemPack implements JsonSerializable
      * Set item's assets of a given type to the pack.
      *
      * @param string $type the assets type, one of those who are supported.
-     * @param string[] $assets the list of assets' URL to load
-     *
-     * @param \tao_models_classes_service_StorageDirectory $publicDirectory
+     * @param array $assets the list of assets' URL to load
      *
      * @throw InvalidArgumentException
      */
-    public function setAssets($type, $assets, $publicDirectory)
+    public function setAssets(string $type, $assets): void
     {
-        if (!in_array($type, self::$assetTypes)) {
-            throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
-        }
         if (!is_array($assets)) {
             throw new InvalidArgumentException('Assests should be an array, "' . gettype($assets) . '" given');
         }
 
-        /**
-         * Apply active encoder immediately
-         * @var Encoding $encoder
-         */
-        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type], $publicDirectory);
         foreach ($assets as $asset) {
-            if ($asset instanceof MediaAsset) {
-                $mediaSource = $asset->getMediaSource();
-                if ($mediaSource instanceof MediaSource || $mediaSource instanceof HttpSource) {
-                    $assetKey = $asset->getMediaIdentifier();
-                } else {
-                    $assetKey = $mediaSource->getBaseName($asset->getMediaIdentifier());
-                }
+            $this->setAsset($type, $asset);
+        }
+    }
+
+    /**
+     * @param string $type
+     * @param string|MediaAsset $asset
+     *
+     * @throw InvalidArgumentException
+     */
+    public function setAsset(string $type, $asset): void
+    {
+        if (!in_array($type, self::$assetTypes)) {
+            throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
+        }
+
+        /** @var Encoding $encoder */
+        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type]);
+
+        if ($asset instanceof MediaAsset) {
+            $mediaSource = $asset->getMediaSource();
+
+            if ($mediaSource instanceof MediaSource || $mediaSource instanceof HttpSource) {
+                $assetKey = $asset->getMediaIdentifier();
             } else {
-                $assetKey = $asset;
+                $assetKey = $mediaSource->getBaseName($asset->getMediaIdentifier());
             }
 
-            $this->assets[$type][$assetKey] = $encoder->encode($asset);
+        } else {
+            $assetKey = $asset;
         }
+
+        $this->assets[$type][$assetKey] = $encoder->encode($asset);
     }
 
     /**
