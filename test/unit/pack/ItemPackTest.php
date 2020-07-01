@@ -90,7 +90,7 @@ class ItemPackTest extends TestCase
         $this->assertEquals([], $pack->getAssets('css'));
 
 
-        $pack->setAssets('css', $cssAsset);
+        $pack->setAsset('css', $cssAsset);
 
         $this->assertEquals([$cssAsset => $cssAsset], $pack->getAssets('css'));
     }
