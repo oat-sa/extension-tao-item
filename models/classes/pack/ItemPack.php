@@ -160,18 +160,7 @@ class ItemPack implements JsonSerializable
         /** @var Encoding $encoder */
         $encoder = EncoderService::singleton()->get($this->assetEncoders[$type]);
 
-        if ($asset instanceof MediaAsset) {
-            $mediaSource = $asset->getMediaSource();
-
-            if ($mediaSource instanceof MediaSource || $mediaSource instanceof HttpSource) {
-                $assetKey = $asset->getMediaIdentifier();
-            } else {
-                $assetKey = $mediaSource->getBaseName($asset->getMediaIdentifier());
-            }
-
-        } else {
-            $assetKey = $asset;
-        }
+        $assetKey = $this->getAssetKey($asset);
 
         $this->assets[$type][$assetKey] = $encoder->encode($asset);
     }
@@ -238,5 +227,20 @@ class ItemPack implements JsonSerializable
     public function setNestedResourcesInclusion($nestedResourcesInclusion)
     {
         $this->nestedResourcesInclusion = (bool)$nestedResourcesInclusion;
+    }
+
+    private function getAssetKey($asset): string
+    {
+        if (!$asset instanceof MediaAsset) {
+            return $asset;
+        }
+
+        $mediaSource = $asset->getMediaSource();
+
+        if ($mediaSource instanceof MediaSource || $mediaSource instanceof HttpSource) {
+            return $asset->getMediaIdentifier();
+        }
+
+        return $mediaSource->getBaseName($asset->getMediaIdentifier());
     }
 }
