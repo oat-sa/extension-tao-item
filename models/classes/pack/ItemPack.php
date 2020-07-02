@@ -29,6 +29,8 @@ use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\encoders\Encoding;
 use oat\taoMediaManager\model\MediaSource;
+use LogicException;
+use tao_models_classes_FileNotFoundException;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -229,9 +231,18 @@ class ItemPack implements JsonSerializable
         $this->nestedResourcesInclusion = (bool)$nestedResourcesInclusion;
     }
 
+    /**
+     * @param string|MediaAsset $asset
+     * @return string
+     * @throws tao_models_classes_FileNotFoundException
+     * @throws LogicException
+     */
     private function getAssetKey($asset): string
     {
         if (!$asset instanceof MediaAsset) {
+            if (!is_string($asset)) {
+                throw new LogicException('Item pack can only pack assets as string url or MediaAsset');
+            }
             return $asset;
         }
 
