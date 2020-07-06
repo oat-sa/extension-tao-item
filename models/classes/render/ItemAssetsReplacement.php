@@ -25,6 +25,8 @@ namespace oat\taoItems\model\render;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use oat\awsTools\AwsClient;
 use oat\oatbox\service\ConfigurableService;
+use common_report_Report;
+use oat\oatbox\filesystem\File;
 
 /**
  * Interface that define a post processing for item assets, CDN Signature, url modification ...
@@ -45,4 +47,12 @@ interface ItemAssetsReplacement
      * @return string the computed new link to the asset
      */
     public function postProcessAssets($asset);
+
+    /**
+     * Method that allows you to modify links to assets QTI test package to CloudFront before import
+     *
+     * @param File $file
+     * @return common_report_Report|null
+     */
+    public function cloudFrontification($file);
 }
