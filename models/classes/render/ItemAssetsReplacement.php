@@ -54,5 +54,5 @@ interface ItemAssetsReplacement
      * @param File $file
      * @return common_report_Report|null
      */
-    public function cloudFrontification($file);
+    public function replaceResourcesWithCloudfront($file);
 }

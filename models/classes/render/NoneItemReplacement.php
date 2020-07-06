@@ -45,7 +45,7 @@ class NoneItemReplacement extends ConfigurableService implements ItemAssetsRepla
     /**
      * @inheritdoc
      */
-    public function cloudFrontification($file)
+    public function replaceResourcesWithCloudfront($file)
     {
         return null;
     }
