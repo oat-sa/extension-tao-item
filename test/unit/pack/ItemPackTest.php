@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -15,13 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2015-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
+declare(strict_types=1);
+
 namespace oat\taoItems\test\unit\pack;
 
 use InvalidArgumentException;
 use oat\generis\test\TestCase;
+use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\ItemPack;
 
 /**
@@ -52,7 +57,6 @@ class ItemPackTest extends TestCase
      */
     public function testSetAssets()
     {
-
         $pack = new ItemPack('qti', ['foo' => 'bar']);
         $jsAssets = [
             'lodash.js' => 'lodash.js',
@@ -62,15 +66,47 @@ class ItemPackTest extends TestCase
             'style/main.css' => 'style/main.css'
         ];
 
-        $pack->setAssets('js', $jsAssets, null, '');
+        $pack->setAssets('js', $jsAssets);
 
         $this->assertEquals($jsAssets, $pack->getAssets('js'));
         $this->assertEquals([], $pack->getAssets('css'));
 
 
-        $pack->setAssets('css', $cssAssets, null, '');
+        $pack->setAssets('css', $cssAssets);
 
         $this->assertEquals($cssAssets, $pack->getAssets('css'));
+    }
+
+    public function testSetAssetWithRegularFile()
+    {
+        $pack = new ItemPack('qti', ['foo' => 'bar']);
+        $jsAsset = 'lodash.js';
+
+        $cssAsset = 'style/main.css';
+
+        $pack->setAsset('js', $jsAsset);
+
+        $this->assertEquals([$jsAsset => $jsAsset], $pack->getAssets('js'));
+        $this->assertEquals([], $pack->getAssets('css'));
+
+
+        $pack->setAsset('css', $cssAsset);
+
+        $this->assertEquals([$cssAsset => $cssAsset], $pack->getAssets('css'));
+    }
+
+    public function testSetAssetWithMediaSource()
+    {
+        $pack = new ItemPack('qti', ['foo' => 'bar']);
+
+        $asset = $this->createConfiguredMock(MediaAsset::class, [
+            'getMediaIdentifier' => 'fixture-id',
+            'getMediaSource' => new class extends HttpSource {}
+        ]);
+
+        $pack->setAsset('img', $asset);
+
+        $this->assertEquals(['fixture-id' => 'fixture-id'], $pack->getAssets('img'));
     }
 
     /**
@@ -98,7 +134,7 @@ class ItemPackTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $pack = new ItemPack('qti', ['foo' => 'bar']);
-        $pack->setAssets('coffescript', ['jquery.coffee'], null, '');
+        $pack->setAssets('coffescript', ['jquery.coffee']);
     }
 
     /**
@@ -108,7 +144,7 @@ class ItemPackTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $pack = new ItemPack('qti', ['foo' => 'bar']);
-        $pack->setAssets('js', 'jquery.js', null, '');
+        $pack->setAssets('js', 'jquery.js');
     }
 
     /**
@@ -117,7 +153,6 @@ class ItemPackTest extends TestCase
      */
     public function jsonSerializableProvider()
     {
-
         $data = [];
 
         $pack1 = new ItemPack('qti', ['foo' => 'bar']);
@@ -129,7 +164,7 @@ class ItemPackTest extends TestCase
         $pack2->setAssets('js', [
             'lodash.js',
             'jquery.js'
-        ], null, '');
+        ]);
         $json2 = '{"type":"owi","data":{"foo":"bar"},"assets":{"js":{"lodash.js":"lodash.js","jquery.js":"jquery.js"}}}';
         $data[1] = [$pack2, $json2];
 
@@ -144,7 +179,6 @@ class ItemPackTest extends TestCase
      */
     public function testSerialization($itemPack, $expectedJson)
     {
-
         $this->assertInstanceOf('oat\taoItems\model\pack\ItemPack', $itemPack);
         $this->assertTrue(is_string($expectedJson));
         $this->assertEquals($expectedJson, json_encode($itemPack));
