@@ -23,14 +23,14 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\pack;
 
-use \InvalidArgumentException;
-use \JsonSerializable;
-use oat\tao\model\media\MediaAsset;
-use oat\tao\model\media\sourceStrategy\HttpSource;
-use oat\taoItems\model\pack\encoders\Encoding;
-use oat\taoMediaManager\model\MediaSource;
 use LogicException;
-use tao_models_classes_FileNotFoundException;
+use \JsonSerializable;
+use \InvalidArgumentException;
+use oat\tao\model\media\MediaAsset;
+use oat\taoMediaManager\model\MediaSource;
+use oat\tao\model\media\sourceStrategy\HttpSource;
+use tao_models_classes_service_StorageDirectory as StorageDirectory;
+use tao_models_classes_FileNotFoundException as FileNotFoundException;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -133,37 +133,42 @@ class ItemPack implements JsonSerializable
      *
      * @param string $type the assets type, one of those who are supported.
      * @param array $assets the list of assets' URL to load
+     * @param StorageDirectory|null $publicDirectory
      *
-     * @throw InvalidArgumentException
+     * @throws ExceptionMissingEncoder
+     * @throws FileNotFoundException
      */
-    public function setAssets(string $type, $assets): void
+    public function setAssets(string $type, $assets, ?StorageDirectory $publicDirectory = null): void
     {
         if (!is_array($assets)) {
             throw new InvalidArgumentException('Assests should be an array, "' . gettype($assets) . '" given');
         }
 
         foreach ($assets as $asset) {
-            $this->setAsset($type, $asset);
+            $this->setAsset($type, $asset, $publicDirectory);
         }
     }
 
     /**
      * @param string $type
-     * @param string|MediaAsset $asset
+     * @param $asset
+     * @param StorageDirectory|null $publicDirectory
      *
-     * @throw InvalidArgumentException
+     * @throws ExceptionMissingEncoder
+     * @throws FileNotFoundException
      */
-    public function setAsset(string $type, $asset): void
+    public function setAsset(string $type, $asset, ?StorageDirectory $publicDirectory = null): void
     {
-        if (!in_array($type, self::$assetTypes)) {
-            throw new InvalidArgumentException('Unknow asset type "' . $type . '", it should be either ' . implode(', ', self::$assetTypes));
+        if (!in_array($type, self::$assetTypes, true)) {
+            throw new InvalidArgumentException(sprintf(
+                'Unknown asset type "%s", it should be either %s',
+                $type,
+                implode(', ', self::$assetTypes)
+            ));
         }
 
-        /** @var Encoding $encoder */
-        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type]);
-
+        $encoder = EncoderService::singleton()->get($this->assetEncoders[$type], $publicDirectory);
         $assetKey = $this->getAssetKey($asset);
-
         $this->assets[$type][$assetKey] = $encoder->encode($asset);
     }
 
@@ -233,9 +238,10 @@ class ItemPack implements JsonSerializable
 
     /**
      * @param string|MediaAsset $asset
-     * @return string
-     * @throws tao_models_classes_FileNotFoundException
+     *
+     * @throws FileNotFoundException
      * @throws LogicException
+     *@return string
      */
     private function getAssetKey($asset): string
     {
