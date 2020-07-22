@@ -240,8 +240,8 @@ class ItemPack implements JsonSerializable
      * @param string|MediaAsset $asset
      *
      * @throws FileNotFoundException
-     * @throws LogicException
-     *@return string
+     *
+     * @return string
      */
     private function getAssetKey($asset): string
     {
