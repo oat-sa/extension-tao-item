@@ -34,10 +34,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class Base64fileEncoderTest extends TestCase
 {
-
-    protected $directoryStorage;
-
-
     public function resourceProvider()
     {
         $stream = $this->getMockBuilder(StreamInterface::class)
@@ -97,7 +93,7 @@ class Base64fileEncoderTest extends TestCase
 
         $directoryStorage->method('getFile')->with('exist.css')->willReturn($file);
 
-        $encoder = new Base64fileEncoder($directoryStorage, 'en_US');
+        $encoder = new Base64fileEncoder($directoryStorage);
         $this->assertEquals($expected, $encoder->encode($data));
     }
 
@@ -116,7 +112,7 @@ class Base64fileEncoderTest extends TestCase
 
         $directoryStorage->method('getFile')->with('notExist.css')->willReturn($file);
 
-        $encoder = new Base64fileEncoder($directoryStorage, 'en_US');
+        $encoder = new Base64fileEncoder($directoryStorage);
         $this->assertEquals('doesn\'t mater', $encoder->encode('notExist.css'));
     }
 }
