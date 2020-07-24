@@ -71,7 +71,7 @@ class Base64fileEncoder implements Encoding
             $mediaSource = $data->getMediaSource();
             $data = $data->getMediaIdentifier();
 
-            if ($mediaSource instanceof HttpSource) {
+            if ($mediaSource instanceof HttpSource || preg_match('/^(data:.*;base64)/', $data)) {
                 return $data;
             }
 
