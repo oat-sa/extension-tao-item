@@ -31,6 +31,7 @@ use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceNotFoundException;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\OntologyClassService;
+use oat\taoQtiItem\helpers\QtiFile;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -180,7 +181,12 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         }
 
         $itemContents = $item->getPropertyValuesByLg($this->getItemContentProperty(), $lang);
-        return !$itemContents->isEmpty();
+
+        if ($itemContents->isEmpty()) {
+            return false;
+        }
+
+        return $this->getItemDirectory($item, $lang)->getFile(QtiFile::FILE)->exists();
     }
 
     /**
@@ -194,7 +200,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     public function hasItemModel(core_kernel_classes_Resource $item, $models)
     {
-        $returnValue = (bool)false;
+        $returnValue = false;
 
         $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
         if ($itemModel instanceof core_kernel_classes_Resource) {
@@ -203,7 +209,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             }
         }
 
-        return (bool)$returnValue;
+        return $returnValue;
     }
 
     /**
@@ -216,7 +222,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     public function isItemModelDefined(core_kernel_classes_Resource $item)
     {
-        $returnValue = (bool)false;
+        $returnValue = false;
 
         if (!is_null($item)) {
             $model = $item->getOnePropertyValue($this->getItemModelProperty());
@@ -229,7 +235,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             }
         }
 
-        return (bool)$returnValue;
+        return $returnValue;
     }
 
     /**
@@ -265,7 +271,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     public function hasModelStatus(core_kernel_classes_Resource $item, $status)
     {
-        $returnValue = (bool)false;
+        $returnValue = false;
 
         if (!is_null($item)) {
             if (!is_array($status) && is_string($status)) {
@@ -284,7 +290,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             }
         }
 
-        return (bool)$returnValue;
+        return $returnValue;
     }
 
     /**
@@ -298,7 +304,6 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     public function render(core_kernel_classes_Resource $item, $language)
     {
-
         $itemModel = $this->getItemModel($item);
         if (is_null($itemModel)) {
             throw new common_exception_NoImplementation('No item model for item ' . $item->getUri());
@@ -429,7 +434,6 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         return $item->editPropertyValues($this->getProperty(self::PROPERTY_ITEM_MODEL), $model);
     }
 
-
     /**
      * Rertrieve current user's language from the session object to know where
      * item content should be located
@@ -440,7 +444,6 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      */
     public function getSessionLg()
     {
-
         $sessionLang = \common_session_SessionManager::getSession()->getDataLanguage();
         if (empty($sessionLang)) {
             throw new Exception('the data language of the user cannot be found in session');
@@ -484,17 +487,17 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
 
     /**
      * Get the correct implementation for a specific item model
-     *
-     * @access public
      * @author Joel Bout, <joel@taotesting.com>
+     * @access public
+     *
      * @param  core_kernel_classes_Resource $itemModel
-     * @return \taoItems_models_classes_itemModel
+     *
+     * @return taoItems_models_classes_itemModel
      * @throws common_exception_NoImplementation
      * @throws common_exception_Error
      */
     public function getItemModelImplementation(core_kernel_classes_Resource $itemModel)
     {
-
         $serviceId = (string)$itemModel->getOnePropertyValue($this->getProperty(self::PROPERTY_ITEM_MODEL_SERVICE));
         if (empty($serviceId)) {
             throw new common_exception_NoImplementation('No implementation found for item model ' . $itemModel->getUri());
@@ -509,9 +512,10 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             common_Logger::w('Outdated model definition "' . $serviceId . '", please use test model service');
             $itemModelService = new $serviceId();
         }
-        if (!$itemModelService instanceof \taoItems_models_classes_itemModel) {
+        if (!$itemModelService instanceof taoItems_models_classes_itemModel) {
             throw new common_exception_Error('Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $serviceId);
         }
+
         return $itemModelService;
     }
 
@@ -522,7 +526,6 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             throw new common_exception_Error('undefined itemmodel for test ' . $item->getUri());
         }
         return $this->getItemModelImplementation($itemModel)->getCompilerClass();
-        ;
     }
 
     /**
@@ -588,7 +591,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         $serial = $this->getFileReferenceSerializer()->serialize($itemDirectory);
 
         $item->setPropertyValueByLg($this->getItemContentProperty(), $serial, $actualLang);
-        
+
         return $itemDirectory;
     }
 
