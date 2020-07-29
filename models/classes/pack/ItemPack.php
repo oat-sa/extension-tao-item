@@ -254,15 +254,16 @@ class ItemPack implements JsonSerializable
         }
 
         $mediaSource = $asset->getMediaSource();
+        $mediaIdentifier = $asset->getMediaIdentifier();
 
         if (
             $mediaSource instanceof MediaSource
             || $mediaSource instanceof HttpSource
-            || Base64::isEncodedImage($mediaSource)
+            || Base64::isEncodedImage($mediaIdentifier)
         ) {
-            return $asset->getMediaIdentifier();
+            return $mediaIdentifier;
         }
 
-        return $mediaSource->getBaseName($asset->getMediaIdentifier());
+        return $mediaSource->getBaseName($mediaIdentifier);
     }
 }

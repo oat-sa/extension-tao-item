@@ -135,13 +135,14 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $resolver = new ItemMediaResolver($item, $lang);
         $asset = $resolver->resolve($path);
         $mediaSource = $asset->getMediaSource();
+        $mediaIdentifier = $asset->getMediaIdentifier();
 
-        if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($mediaSource)) {
+        if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($mediaIdentifier)) {
             throw new common_Exception('Only tao files available for rendering through item preview');
         }
 
-        $info = $mediaSource->getFileInfo($asset->getMediaIdentifier());
-        $stream = $mediaSource->getFileStream($asset->getMediaIdentifier());
+        $info = $mediaSource->getFileInfo($mediaIdentifier);
+        $stream = $mediaSource->getFileStream($mediaIdentifier);
         \tao_helpers_Http::returnStream($stream, $info['mime']);
     }
 

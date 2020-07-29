@@ -53,12 +53,13 @@ class NoneEncoder implements Encoding
     {
         if ($data instanceof MediaAsset) {
             $mediaSource = $data->getMediaSource();
+            $mediaIdentifier = $data->getMediaIdentifier();
 
-            if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($mediaSource)) {
-                return $data->getMediaIdentifier();
+            if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($mediaIdentifier)) {
+                return $mediaIdentifier;
             }
 
-            return $mediaSource->getBaseName($data->getMediaIdentifier());
+            return $mediaSource->getBaseName($mediaIdentifier);
         }
 
         return $data;

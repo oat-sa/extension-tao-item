@@ -75,7 +75,7 @@ class Base64fileEncoder implements Encoding
             $mediaSource = $data->getMediaSource();
             $data = $data->getMediaIdentifier();
 
-            if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($mediaSource)) {
+            if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($data)) {
                 return $data;
             }
 
