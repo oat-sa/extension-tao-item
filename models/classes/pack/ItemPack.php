@@ -25,6 +25,7 @@ namespace oat\taoItems\model\pack;
 
 use LogicException;
 use \JsonSerializable;
+use oat\tao\helpers\Base64;
 use \InvalidArgumentException;
 use oat\tao\model\media\MediaAsset;
 use oat\taoMediaManager\model\MediaSource;
@@ -253,11 +254,16 @@ class ItemPack implements JsonSerializable
         }
 
         $mediaSource = $asset->getMediaSource();
+        $mediaIdentifier = $asset->getMediaIdentifier();
 
-        if ($mediaSource instanceof MediaSource || $mediaSource instanceof HttpSource) {
-            return $asset->getMediaIdentifier();
+        if (
+            $mediaSource instanceof MediaSource
+            || $mediaSource instanceof HttpSource
+            || Base64::isEncodedImage($mediaIdentifier)
+        ) {
+            return $mediaIdentifier;
         }
 
-        return $mediaSource->getBaseName($asset->getMediaIdentifier());
+        return $mediaSource->getBaseName($mediaIdentifier);
     }
 }

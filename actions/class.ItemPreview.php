@@ -21,6 +21,7 @@
  *               2013-2018(update and modification) Open Assessment Technologies SA;
  */
 
+use oat\tao\helpers\Base64;
 use oat\generis\model\OntologyAwareTrait;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
@@ -84,7 +85,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     public function render()
     {
         $relPath = tao_helpers_Request::getRelativeUrl();
-        list($extension, $module, $action, $codedUri, $path) = explode('/', $relPath, 5);
+        [$extension, $module, $action, $codedUri, $path] = explode('/', $relPath, 5);
 
         $path = rawurldecode($path);
         $uri = base64_decode($codedUri);
@@ -120,16 +121,28 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         $this->response = $this->response->withBody(stream_for($this->getRenderedItem($item)));
     }
 
+    /**
+     * @param $item
+     * @param $path
+     *
+     * @throws common_Exception
+     * @throws common_exception_Error
+     * @throws tao_models_classes_FileNotFoundException
+     */
     private function renderResource($item, $path)
     {
         $lang = $this->getSession()->getDataLanguage();
         $resolver = new ItemMediaResolver($item, $lang);
         $asset = $resolver->resolve($path);
-        if ($asset->getMediaSource() instanceof HttpSource) {
+        $mediaSource = $asset->getMediaSource();
+        $mediaIdentifier = $asset->getMediaIdentifier();
+
+        if ($mediaSource instanceof HttpSource || Base64::isEncodedImage($mediaIdentifier)) {
             throw new common_Exception('Only tao files available for rendering through item preview');
         }
-        $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
-        $stream = $asset->getMediaSource()->getFileStream($asset->getMediaIdentifier());
+
+        $info = $mediaSource->getFileInfo($mediaIdentifier);
+        $stream = $mediaSource->getFileStream($mediaIdentifier);
         \tao_helpers_Http::returnStream($stream, $info['mime']);
     }
 
