@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:07\n"
+"PO-Revision-Date: 2020-07-31T12:28:25\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ru-RU\n"
@@ -13,265 +13,265 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr ""
+msgstr "Элемент"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr ""
+msgstr "Элемент"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content"
-msgstr ""
+msgstr "Содержание элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content"
-msgstr ""
+msgstr "Содержание элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Original Filename"
-msgstr ""
+msgstr "Исходное имя файла"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Original Filename"
-msgstr ""
+msgstr "Исходное имя файла"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Models"
-msgstr ""
+msgstr "Модели элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Models"
-msgstr ""
+msgstr "Модели элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model"
-msgstr ""
+msgstr "Модель элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Model"
-msgstr ""
+msgstr "Модель элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Runtime"
-msgstr ""
+msgstr "Длительность"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Runtime"
-msgstr ""
+msgstr "Длительность"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "itemmodel service"
-msgstr ""
+msgstr "Сервис модели элементов"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "service of the item model"
-msgstr ""
+msgstr "сервис модели элементов"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Data File Name"
-msgstr ""
+msgstr "Имя файла данных"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "the filename used to store the item content for this model"
-msgstr ""
+msgstr "имя файла, используемого для хранения содержимого элемента для этой модели"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Model Status"
-msgstr ""
+msgstr "Состояние модели"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Stable"
-msgstr ""
+msgstr "Стабильный"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item  model can be used in production"
-msgstr ""
+msgstr "Эта модель элементов может использоваться в производстве"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deprecated"
-msgstr ""
+msgstr "Устаревшие"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item model is not supported anymore, we advise to migrate your items"
-msgstr ""
+msgstr "Эта модель элементов больше не поддерживается, мы советуем перенести ваши элементы"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Development"
-msgstr ""
+msgstr "Развитие"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "this item model has not been tested in a production environment, we advise to be carefull with it"
-msgstr ""
+msgstr "Эта модель элементов не тестировалась в производственной среде, мы советуем быть осторожными с ней"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Experimental"
-msgstr ""
+msgstr "Экспериментальный"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "this item model is still in conception, but you can try it, give your feedback and it will be improved."
-msgstr ""
+msgstr "Эта модель элемента все еще в зачатии, но вы можете попробовать ее, дать вашу обратную связь и она будет улучшена."
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The status of an item model"
-msgstr ""
+msgstr "Статус модели элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Items Manager"
-msgstr ""
+msgstr "Менеджер элементов"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Items Manager Role"
-msgstr ""
+msgstr "Роль Менеджера элементов"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Restricted Item Author"
-msgstr ""
+msgstr "Запрещенный автор вопроса"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item authoring only Role"
-msgstr ""
+msgstr "Право только редактировать вопросы"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Author"
-msgstr ""
+msgstr "Автор элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
-msgstr ""
+msgstr "Право создавать и управлять вопросами"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author Role"
-msgstr ""
+msgstr "Роль автора элемента"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deliverable"
-msgstr ""
+msgstr "Результат"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Items of model are deliverable"
-msgstr ""
+msgstr "Элементы модели могут быть доставлены"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Delivery Target"
-msgstr ""
+msgstr "Цель доставки"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Delivery Target"
-msgstr ""
+msgstr "Цель доставки"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Online Delivery Target"
-msgstr ""
+msgstr "Цель онлайн доставки"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Online Delivery Target"
-msgstr ""
+msgstr "Цель онлайн доставки"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Paper-based Delivery Target"
-msgstr ""
+msgstr "Цель доставки на бумаге"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
-msgstr ""
+msgstr "Цель доставки на бумаге"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Deliverable"
-msgstr ""
+msgstr "Доставляемый"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "itemmodel service"
-msgstr ""
+msgstr "Служба модели элементов"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Authoring"
-msgstr ""
+msgstr "Авторство"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Authoring"
-msgstr ""
+msgstr "Авторство"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Data File Name"
-msgstr ""
+msgstr "Название файла данных"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Stable"
-msgstr ""
+msgstr "Стабильный"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Deprecated"
-msgstr ""
+msgstr "Устаревший"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Development"
-msgstr ""
+msgstr "Разработка"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Experimental"
-msgstr ""
+msgstr "Экспериментальный"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Items Manager"
-msgstr ""
+msgstr "Менеджер элементов"
 

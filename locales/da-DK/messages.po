@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:06\n"
+"PO-Revision-Date: 2020-07-31T12:27:55\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
@@ -14,24 +14,24 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
-msgstr ""
+msgstr "Faktisk størrelse"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Oprette"
+msgstr "Redigering"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Mappeskema gemt"
 
 msgid "Close"
 msgstr "Luk"
 
 msgid "Close console"
-msgstr ""
+msgstr "Luk konsol"
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Kopier til"
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -42,14 +42,14 @@ msgid "Delete"
 msgstr "Slet"
 
 msgid "Desktop preview"
-msgstr ""
+msgstr "Forhåndsvisning på computerskærm"
 
 msgid "Don’t show this again!"
-msgstr ""
+msgstr "Vis ikke dette igen!"
 
 #, tao-public
 msgid "Duplicate"
-msgstr ""
+msgstr "Dupliker"
 
 msgid "Edit item"
 msgstr "Rediger item"
@@ -59,54 +59,54 @@ msgstr "Rediger Item"
 
 #, tao-public
 msgid "Export"
-msgstr "Eksport"
+msgstr "Eksporter"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Synliggør egenskabens værdi for at oprette automatiserede kategorier."
 
 msgid "Failed retrieving %s"
-msgstr ""
+msgstr "Lykkedes ikke med at hente %s"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 msgid "Item Model"
-msgstr ""
+msgstr "Item-model"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Itemmet blev ikke fundet"
 
 msgid "Item saved"
 msgstr "Item gemt"
 
 #, tao-public
 msgid "Items"
-msgstr "Item"
+msgstr "Items"
 
 #, tao-public
 msgid "Items library"
-msgstr "Item arkiv"
+msgstr "Itembibliotek"
 
 msgid "Landscape"
-msgstr ""
+msgstr "Liggende"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Sidst opdateret den %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Administrer itemmappeskema"
 
 #, tao-public
 msgid "Manage items"
-msgstr "Administrere item"
+msgstr "Administrer items"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Administrer skema"
 
 msgid "Mobile preview"
-msgstr ""
+msgstr "Forhåndsvisning på mobile enheder"
 
 #, tao-public
 msgid "Move"
@@ -114,26 +114,26 @@ msgstr "Flyt"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Flyt til"
 
 #, tao-public
 msgid "New class"
-msgstr ""
+msgstr "Ny mappe"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr ""
+msgstr "Intet itemredigeringsværktøj tilgængelig for den valgte type item: %s"
 
 msgid "No item type selected for the current item."
-msgstr "Ingen item type er valgt til denne item."
+msgstr "Ingen itemtype er valgt til det aktuelle item."
 
 msgid "Not yet available"
 msgstr "Ikke tilgængeligt endnu"
 
 msgid "Please select first the item type!"
-msgstr "Vælg først item type!"
+msgstr "Vælg først itemtype!"
 
 msgid "Portrait"
-msgstr ""
+msgstr "Stående"
 
 #, tao-public
 msgid "Preview"
@@ -141,44 +141,44 @@ msgstr "Forhåndsvisning"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Egenskaber"
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr ""
+msgstr "Offentliggjorde \"%1$s\" i sprog \"%2$s"
 
 msgid "Remove this message"
-msgstr ""
+msgstr "Fjern denne besked"
 
 msgid "Retrieving external resources"
-msgstr ""
+msgstr "Henter ekstern ressource"
 
 msgid "Submit"
-msgstr ""
+msgstr "Send"
 
 msgid "The file you tried to upload is not valid"
-msgstr ""
+msgstr "Filen som du forsøgte at uploade er ikke gyldig"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Item modulet lader dig oprette og designe item og øvelser."
+msgstr "Itemmodulet lader dig oprette og designe items og øvelser."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "Egenskaben er synlig for kategoritilføjelse.&#13Fjern synlighed ?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr ""
+msgstr "Denne forhåndsvisning kan være skaleret for at passe til din skærm. Den endelige visning kan være anderledes."
 
 msgid "Unable to copy resources for language %s"
-msgstr ""
+msgstr "Ikke i stand til at kopiere ressourcer for sprog %s"
 
 msgid "Unable to create deployement directory"
-msgstr ""
+msgstr "Ikke i stand til at oprette en udruldningsmappe"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "Ikke i stand til at vise itemmet fra %s : %s %s"
 
 msgid "You checked out this item %2s ago"
-msgstr ""
+msgstr "Du afsluttede dette item for %2s siden"
 
 msgid "Your path contains error"
-msgstr ""
+msgstr "Stien indeholder en fejl"
 

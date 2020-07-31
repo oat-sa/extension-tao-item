@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:06\n"
+"PO-Revision-Date: 2020-07-31T12:28:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -65,14 +65,14 @@ msgid "Expose the property value to create automated categories."
 msgstr ""
 
 msgid "Failed retrieving %s"
-msgstr "検索失敗 %s"
+msgstr "%s の取得失敗"
 
 #, tao-public
 msgid "Import"
 msgstr "インポート"
 
 msgid "Item Model"
-msgstr "アイテムも出る"
+msgstr "アイテムモデル"
 
 msgid "Item not found"
 msgstr ""
@@ -118,7 +118,7 @@ msgstr ""
 
 #, tao-public
 msgid "New class"
-msgstr "新規クラス"
+msgstr "新規フォルダー"
 
 msgid "No item authoring tool available for the selected type of item: %s"
 msgstr "選択されたタイプのアイテムを編集するツールがありません：%s"
@@ -150,7 +150,7 @@ msgid "Remove this message"
 msgstr "このメッセージを除く"
 
 msgid "Retrieving external resources"
-msgstr "外部リソース検索中"
+msgstr "外部リソース取得中"
 
 msgid "Submit"
 msgstr "送信"
@@ -174,7 +174,7 @@ msgid "Unable to create deployement directory"
 msgstr "実行ディレクトリーを作成できません。"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "アイテムのレンダリングができません %s : %s %s"
 
 msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
