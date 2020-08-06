@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:06\n"
+"PO-Revision-Date: 2020-07-31T12:28:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: es-ES\n"
@@ -21,7 +21,7 @@ msgid "Authoring"
 msgstr "Autoria"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Esquema de clase guardado"
 
 msgid "Close"
 msgstr "Cerrar"
@@ -31,11 +31,11 @@ msgstr "Cerrar consola"
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Copiar a"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Crear y diseñar elementos y ejercicios."
 
 #, tao-public
 msgid "Delete"
@@ -62,7 +62,7 @@ msgid "Export"
 msgstr "Exportar"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Exponer el valor de la propiedad para crear categorías automatizadas."
 
 msgid "Failed retrieving %s"
 msgstr "Error recuperando %s"
@@ -75,7 +75,7 @@ msgid "Item Model"
 msgstr "Modelo de elemento"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Elemento no encontrado"
 
 msgid "Item saved"
 msgstr "Elemento fguardado"
@@ -92,10 +92,10 @@ msgid "Landscape"
 msgstr "Horizontal"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Última actualización en %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Gestionar esquema de clase de elemento"
 
 #, tao-public
 msgid "Manage items"
@@ -103,7 +103,7 @@ msgstr "Gestionar elementos"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Gestionar esquema"
 
 msgid "Mobile preview"
 msgstr "Vista previa para móviles"
@@ -114,7 +114,7 @@ msgstr "Mover"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Mover a"
 
 #, tao-public
 msgid "New class"
@@ -156,13 +156,13 @@ msgid "Submit"
 msgstr "Enviar"
 
 msgid "The file you tried to upload is not valid"
-msgstr ""
+msgstr "El archivo que tu intentas subir no es válido"
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "El módulo de Elementos permite la creación y diseño de elementos y ejercicios."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "La propiedad está expuesta a la adición de categoría. ¿ &#13Remover exposición?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Esta vista previa puede ser escalada para adaptarse a su pantalla. El renderizado final puede diferir."
@@ -174,7 +174,7 @@ msgid "Unable to create deployement directory"
 msgstr "No se puede crear directorio desarrollo"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "No se puede representar el elemento desde %s: %s %s"
 
 msgid "You checked out this item %2s ago"
 msgstr "Marcó este elemento hace %2s"

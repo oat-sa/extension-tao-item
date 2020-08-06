@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:07\n"
+"PO-Revision-Date: 2020-07-31T12:28:25\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ru-RU\n"
@@ -14,171 +14,171 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "Actual size"
-msgstr ""
+msgstr "Фактический размер"
 
 #, tao-public
 msgid "Authoring"
-msgstr ""
+msgstr "Разработки"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Схема класса записана"
 
 msgid "Close"
-msgstr ""
+msgstr "Закрыть"
 
 msgid "Close console"
-msgstr ""
+msgstr "Закрыть консоли"
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Копировать в"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Создать и редактировать вопросы и упражнения."
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Desktop preview"
-msgstr ""
+msgstr "Предварительный просмотр рабочего стола"
 
 msgid "Don’t show this again!"
-msgstr ""
+msgstr "Больше не показывать это сообщение!"
 
 #, tao-public
 msgid "Duplicate"
-msgstr ""
+msgstr "Дублировать"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Редактировать элемент"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Редактировать элемент"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Экспортировать"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Раскрыть значения свойства, чтобы создать автоматические категории."
 
 msgid "Failed retrieving %s"
-msgstr ""
+msgstr "Проблема с получением %s"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Импортировать"
 
 msgid "Item Model"
-msgstr ""
+msgstr "Модель элементов"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Вопрос не найден"
 
 msgid "Item saved"
-msgstr ""
+msgstr "Элемент сохранен"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Элементы"
 
 #, tao-public
 msgid "Items library"
-msgstr ""
+msgstr "Библиотека элементов"
 
 msgid "Landscape"
-msgstr ""
+msgstr "Альбом"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Последнее обновление %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Управлять схемой классов вопроса"
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Управление элементами"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Управлять схемой"
 
 msgid "Mobile preview"
-msgstr ""
+msgstr "Мобильный предварительный просмотр"
 
 #, tao-public
 msgid "Move"
-msgstr ""
+msgstr "Передвигать"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Переместить в"
 
 #, tao-public
 msgid "New class"
-msgstr ""
+msgstr "Новый класс"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr ""
+msgstr "Для выбранного типа элемента не доступно средство разработки элементов: %s"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Не выбран тип элемента для текущего элемента."
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Пока не доступно"
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Пожалуйста, сначала выберите тип элемента!"
 
 msgid "Portrait"
-msgstr ""
+msgstr "Портрет"
 
 #, tao-public
 msgid "Preview"
-msgstr ""
+msgstr "Предварительный просмотр"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Свойства"
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr ""
+msgstr "Опубликовано \"%1$s\" на \"%2$s языке"
 
 msgid "Remove this message"
-msgstr ""
+msgstr "Удалить это сообщение"
 
 msgid "Retrieving external resources"
-msgstr ""
+msgstr "Извлечение внешних ресурсов"
 
 msgid "Submit"
-msgstr ""
+msgstr "Отправить"
 
 msgid "The file you tried to upload is not valid"
-msgstr ""
+msgstr "Файл, который вы пытались загрузить, является недопустимым"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Модуль Элементы позволяет создавать и проектировать элементы и упражнения."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "Свойство вставлено в категорию добавления..&#13Удалить ? "
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr ""
+msgstr "Этот предварительный просмотр может масштабироваться по размеру экрана. Окончательная визуализация может отличаться."
 
 msgid "Unable to copy resources for language %s"
-msgstr ""
+msgstr "Не удается скопировать ресурсы для языка %s"
 
 msgid "Unable to create deployement directory"
-msgstr ""
+msgstr "Не удается создать каталог развертывания"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "Не могу создать вопрос из %s : %s %s"
 
 msgid "You checked out this item %2s ago"
-msgstr ""
+msgstr "Вы проверяли этот вопрос %2s назад"
 
 msgid "Your path contains error"
-msgstr ""
+msgstr "Ваш путь содержит ошибку"
 

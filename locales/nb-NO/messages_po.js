@@ -1,0 +1,1 @@
+{"Authoring":"Innhold","Export":"Eksporter","Import":"Importer","Move":"Flytt","New test":"Ny test"}

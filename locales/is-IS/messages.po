@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.4.0-sprint121\n"
-"PO-Revision-Date: 2020-01-31T09:56:06\n"
+"PO-Revision-Date: 2020-07-31T12:28:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: is-IS\n"
@@ -31,7 +31,7 @@ msgstr "Loka stjórnborði"
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Afrita til"
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -114,7 +114,7 @@ msgstr "Færa"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Færa til"
 
 #, tao-public
 msgid "New class"
