@@ -35,7 +35,8 @@ class ItemPreviewerService extends ConfigurableService
     const SERVICE_ID = 'taoItems/ItemPreviewer';
     const REGISTRY_ENTRY_KEY = 'taoItems/previewer/factory';
     const PREVIEWERS_KEY = 'previewers';
-    
+    const PLUGINS_KEY = 'plugins';
+
     private $registry;
 
     /**
@@ -78,8 +79,26 @@ class ItemPreviewerService extends ConfigurableService
     }
 
     /**
+     * Gets the list of plugins
+     * @return array
+     */
+    public function getPlugins()
+    {
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+
+        if (isset($config[self::PLUGINS_KEY])) {
+            return $config[self::PLUGINS_KEY];
+        }
+        return [];
+    }
+
+    /**
      * Registers a previewer adapter
-     * @param DynamicModule $module the plugin to register
+     * @param DynamicModule $module the adapter to register
      * @return boolean true if registered
      */
     public function registerAdapter(DynamicModule $module)
@@ -118,5 +137,61 @@ class ItemPreviewerService extends ConfigurableService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Registers a previewer plugin
+     * @param DynamicModule $module the plugin to register
+     * @return boolean true if registered
+     */
+    public function registerPlugin(DynamicModule $module)
+    {
+        if (!is_null($module) && !empty($module->getModule())) {
+            $registry = $this->getRegistry();
+            $config = [];
+            if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+                $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+            }
+
+            $index = false;
+            if (isset($config[self::PLUGINS_KEY])) {
+                $index = array_search($module->getModule(), array_column($config[self::PLUGINS_KEY], 'module'));
+            }
+            if ($index === false) {
+                $config[self::PLUGINS_KEY][] = $module->toArray();
+            } else {
+                $config[self::PLUGINS_KEY][$index] = $module->toArray();
+            }
+            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Unregisters a previewer plugin
+     * @param string $moduleId
+     * @return boolean true if unregistered
+     */
+    public function unregisterPlugin($moduleId)
+    {
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+
+        $result = false;
+        if (isset($config[self::PLUGINS_KEY])) {
+            $config[self::PLUGINS_KEY] = array_filter(
+                $config[self::PLUGINS_KEY],
+                function ($plugin) use ($moduleId, &$result) {
+                    $result = $plugin['module'] == $moduleId;
+                    return !$result;
+                }
+            );
+            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+        }
+        return $result;
     }
 }
