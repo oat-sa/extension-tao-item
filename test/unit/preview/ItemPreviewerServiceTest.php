@@ -72,6 +72,38 @@ class ItemPreviewerServiceTest extends TestCase
                         'previewer'
                     ]
                 ]
+            ],
+            'plugins' => [
+                [
+                    'id' => 'plugin1',
+                    'module' => 'taoQtiTest/previewer/plugins/plugin1',
+                    'bundle' => 'taoQtiTest/loader/qtiPlugins.min',
+                    'position' => null,
+                    'name' => 'Plugin 1',
+                    'description' => 'Sample plugin 1',
+                    'category' => 'previewer',
+                    'active' => true,
+                    'tags' => [
+                        'core',
+                        'qti',
+                        'previewer'
+                    ]
+                ],
+                [
+                    'id' => 'plugin2',
+                    'module' => 'taoQtiTest/previewer/plugins/plugin2',
+                    'bundle' => 'taoQtiTest/loader/qtiPlugins.min',
+                    'position' => null,
+                    'name' => 'Plugin 2',
+                    'description' => 'Sample plugin 2',
+                    'category' => 'previewer',
+                    'active' => false,
+                    'tags' => [
+                        'core',
+                        'qti',
+                        'previewer'
+                    ]
+                ]
             ]
         ]
     ];
@@ -153,6 +185,46 @@ class ItemPreviewerServiceTest extends TestCase
     }
 
     /**
+     * Test the method ItemPreviewerService::getPlugins
+     */
+    public function testGetPlugins()
+    {
+        $itemPreviewerService = $this->getItemPreviewerService();
+
+        $plugins = $itemPreviewerService->getPlugins();
+
+        $this->assertEquals(2, count($plugins));
+
+        $this->assertArrayHasKey('0', $plugins);
+        $plugin0 = $plugins[0];
+        $this->assertArrayHasKey('id', $plugin0);
+        $this->assertArrayHasKey('module', $plugin0);
+        $this->assertArrayHasKey('bundle', $plugin0);
+        $this->assertArrayHasKey('category', $plugin0);
+        $this->assertArrayHasKey('active', $plugin0);
+
+        $this->assertEquals('plugin1', $plugin0['id']);
+        $this->assertEquals('taoQtiTest/previewer/plugins/plugin1', $plugin0['module']);
+        $this->assertEquals('taoQtiTest/loader/qtiPlugins.min', $plugin0['bundle']);
+        $this->assertEquals('previewer', $plugin0['category']);
+        $this->assertEquals(true, $plugin0['active']);
+
+        $this->assertArrayHasKey('1', $plugins);
+        $plugin1 = $plugins[1];
+        $this->assertArrayHasKey('id', $plugin1);
+        $this->assertArrayHasKey('module', $plugin1);
+        $this->assertArrayHasKey('bundle', $plugin1);
+        $this->assertArrayHasKey('category', $plugin1);
+        $this->assertArrayHasKey('active', $plugin1);
+
+        $this->assertEquals('plugin2', $plugin1['id']);
+        $this->assertEquals('taoQtiTest/previewer/plugins/plugin2', $plugin1['module']);
+        $this->assertEquals('taoQtiTest/loader/qtiPlugins.min', $plugin1['bundle']);
+        $this->assertEquals('previewer', $plugin1['category']);
+        $this->assertEquals(false, $plugin1['active']);
+    }
+
+    /**
      * Test the method ItemPreviewerService::registerAdapter
      */
     public function testRegisterAdapter()
@@ -200,7 +272,7 @@ class ItemPreviewerServiceTest extends TestCase
 
         $this->assertArrayHasKey('taoQtiTest/previewer/adapter/qtiItem', $adapters);
         $this->assertArrayHasKey('taoQtiTest/previewer/adapter/qtiTest', $adapters);
-        
+
         $this->assertEquals(true, $itemPreviewerService->unregisterAdapter('taoQtiTest/previewer/adapter/qtiTest'));
 
         $adapters = $itemPreviewerService->getAdapters();
@@ -209,5 +281,108 @@ class ItemPreviewerServiceTest extends TestCase
         $this->assertArrayNotHasKey('taoQtiTest/previewer/adapter/qtiTest', $adapters);
 
         $this->assertEquals(false, $itemPreviewerService->unregisterAdapter('taoQtiTest/previewer/adapter/qtiTest'));
+    }
+
+    /**
+     * Test the method ItemPreviewerService::registerPlugin
+     */
+    public function testRegisterPlugin()
+    {
+        $itemPreviewerService = $this->getItemPreviewerService();
+
+        $plugins = $itemPreviewerService->getPlugins();
+
+        $this->assertEquals(2, count($plugins));
+
+        $this->assertArrayHasKey('0', $plugins);
+        $this->assertArrayHasKey('id', $plugins[0]);
+        $this->assertEquals('plugin1', $plugins[0]['id']);
+
+        $this->assertArrayHasKey('1', $plugins);
+        $this->assertArrayHasKey('id', $plugins[1]);
+        $this->assertEquals('plugin2', $plugins[1]['id']);
+
+        $this->assertArrayNotHasKey('2', $plugins);
+
+        $module = DynamicModule::fromArray(
+            [
+                'id' => 'plugin3',
+                'module' => 'taoQtiTest/previewer/plugins/plugin3',
+                'bundle' => 'taoQtiTest/loader/qtiPlugins.min',
+                'name' => 'Plugin 3',
+                'description' => 'Sample plugin 3',
+                'category' => 'previewer',
+                'active' => true,
+                'tags' => []
+            ]
+        );
+        $this->assertEquals(true, $itemPreviewerService->registerPlugin($module));
+
+        $plugins = $itemPreviewerService->getPlugins();
+        $this->assertEquals(3, count($plugins));
+
+        $this->assertArrayHasKey('0', $plugins);
+        $this->assertArrayHasKey('id', $plugins[0]);
+        $this->assertEquals('plugin1', $plugins[0]['id']);
+
+        $this->assertArrayHasKey('1', $plugins);
+        $this->assertArrayHasKey('id', $plugins[1]);
+        $this->assertEquals('plugin2', $plugins[1]['id']);
+
+        $this->assertArrayHasKey('2', $plugins);
+        $this->assertArrayHasKey('id', $plugins[2]);
+        $this->assertEquals('plugin3', $plugins[2]['id']);
+
+        $module = DynamicModule::fromArray(
+            [
+                'id' => 'plugin3bis',
+                'module' => 'taoQtiTest/previewer/plugins/plugin3',
+                'bundle' => 'taoQtiTest/loader/qtiPlugins.min',
+                'name' => 'Plugin 3 bis',
+                'description' => 'Sample plugin 3',
+                'category' => 'previewer',
+                'active' => true,
+                'tags' => []
+            ]
+        );
+        $this->assertEquals(true, $itemPreviewerService->registerPlugin($module));
+
+        $plugins = $itemPreviewerService->getPlugins();
+        $this->assertEquals(3, count($plugins));
+        $this->assertArrayHasKey('2', $plugins);
+        $this->assertArrayHasKey('id', $plugins[2]);
+        $this->assertEquals('plugin3bis', $plugins[2]['id']);
+    }
+
+    /**
+     * Test the method ItemPreviewerService::unregisterPlugin
+     */
+    public function testUnregisterPlugin()
+    {
+        $itemPreviewerService = $this->getItemPreviewerService();
+
+        $plugins = $itemPreviewerService->getPlugins();
+
+        $this->assertEquals(2, count($plugins));
+
+        $this->assertArrayHasKey('0', $plugins);
+        $this->assertArrayHasKey('id', $plugins[0]);
+        $this->assertEquals('plugin1', $plugins[0]['id']);
+
+        $this->assertArrayHasKey('1', $plugins);
+        $this->assertArrayHasKey('id', $plugins[1]);
+        $this->assertEquals('plugin2', $plugins[1]['id']);
+
+        $this->assertEquals(true, $itemPreviewerService->unregisterPlugin('taoQtiTest/previewer/plugins/plugin2'));
+
+        $plugins = $itemPreviewerService->getPlugins();
+        $this->assertEquals(1, count($plugins));
+        $this->assertArrayHasKey('0', $plugins);
+        $this->assertArrayHasKey('id', $plugins[0]);
+        $this->assertEquals('plugin1', $plugins[0]['id']);
+
+        $this->assertArrayNotHasKey('1', $plugins);
+
+        $this->assertEquals(false, $itemPreviewerService->unregisterPlugin('taoQtiTest/previewer/plugins/plugin2'));
     }
 }
