@@ -33,9 +33,9 @@ use oat\tao\model\modules\DynamicModule;
 class ItemPreviewerService extends ConfigurableService
 {
     const SERVICE_ID = 'taoItems/ItemPreviewer';
-    const REGISTRY_ENTRY_KEY = 'taoItems/previewer/factory';
-    const PREVIEWERS_KEY = 'previewers';
-    const PLUGINS_KEY = 'plugins';
+    private const REGISTRY_ENTRY_KEY = 'taoItems/previewer/factory';
+    private const PREVIEWERS_KEY = 'previewers';
+    private const PLUGINS_KEY = 'plugins';
 
     private $registry;
 
