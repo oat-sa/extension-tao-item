@@ -143,14 +143,15 @@ class ItemPreviewerService extends ConfigurableService
         if (null === $module || empty($module->getModule())) {
             return false;
         }
+
+        $this->unregisterPlugin($module->getModule());
         
         $registry = $this->getRegistry();
         $config = [];
         if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
             $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
-
-        $this->unregisterPlugin($module->getModule());
+        
         $config[self::PLUGINS_KEY][] = $module->toArray();
         $registry->set(self::REGISTRY_ENTRY_KEY, $config);
         return true;
