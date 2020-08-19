@@ -101,7 +101,7 @@ class ItemPreviewerService extends ConfigurableService
      * @param DynamicModule $module the adapter to register
      * @return boolean true if registered
      */
-    public function registerAdapter(DynamicModule $module)
+    public function registerAdapter(DynamicModule $module): bool
     {
         if (!is_null($module) && ! empty($module->getModule())) {
             $registry = $this->getRegistry();
@@ -122,7 +122,7 @@ class ItemPreviewerService extends ConfigurableService
      * @param string $moduleId
      * @return boolean true if unregistered
      */
-    public function unregisterAdapter($moduleId)
+    public function unregisterAdapter($moduleId): bool
     {
 
         $registry = $this->getRegistry();
@@ -144,7 +144,7 @@ class ItemPreviewerService extends ConfigurableService
      * @param DynamicModule $module the plugin to register
      * @return boolean true if registered
      */
-    public function registerPlugin(DynamicModule $module)
+    public function registerPlugin(DynamicModule $module): bool
     {
         if (!is_null($module) && !empty($module->getModule())) {
             $registry = $this->getRegistry();
@@ -173,7 +173,7 @@ class ItemPreviewerService extends ConfigurableService
      * @param string $moduleId
      * @return boolean true if unregistered
      */
-    public function unregisterPlugin($moduleId)
+    public function unregisterPlugin($moduleId): bool
     {
         $registry = $this->getRegistry();
         $config = [];
