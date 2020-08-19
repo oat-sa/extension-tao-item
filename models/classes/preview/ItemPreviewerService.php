@@ -186,7 +186,7 @@ class ItemPreviewerService extends ConfigurableService
         if (isset($config[self::PLUGINS_KEY])) {
             $config[self::PLUGINS_KEY] = array_filter(
                 $config[self::PLUGINS_KEY],
-                function ($plugin) use ($moduleId, &$result) {
+                static function (array $plugin) use ($moduleId, &$result): bool {
                     $result = $plugin['module'] == $moduleId;
                     return !$result;
                 }
