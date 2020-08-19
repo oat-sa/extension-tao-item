@@ -103,18 +103,19 @@ class ItemPreviewerService extends ConfigurableService
      */
     public function registerAdapter(DynamicModule $module): bool
     {
-        if (!is_null($module) && ! empty($module->getModule())) {
-            $registry = $this->getRegistry();
-            $config = [];
-            if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
-                $config = $registry->get(self::REGISTRY_ENTRY_KEY);
-            }
-
-            $config[self::PREVIEWERS_KEY][$module->getModule()] = $module->toArray();
-            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
-            return true;
+        if (null === $module || empty($module->getModule())) {
+            return false;
         }
-        return false;
+        
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+
+        $config[self::PREVIEWERS_KEY][$module->getModule()] = $module->toArray();
+        $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+        return true;
     }
 
     /**
@@ -124,7 +125,6 @@ class ItemPreviewerService extends ConfigurableService
      */
     public function unregisterAdapter($moduleId): bool
     {
-
         $registry = $this->getRegistry();
         $config = [];
         if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
@@ -146,26 +146,27 @@ class ItemPreviewerService extends ConfigurableService
      */
     public function registerPlugin(DynamicModule $module): bool
     {
-        if (!is_null($module) && !empty($module->getModule())) {
-            $registry = $this->getRegistry();
-            $config = [];
-            if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
-                $config = $registry->get(self::REGISTRY_ENTRY_KEY);
-            }
-
-            $index = false;
-            if (isset($config[self::PLUGINS_KEY])) {
-                $index = array_search($module->getModule(), array_column($config[self::PLUGINS_KEY], 'module'));
-            }
-            if ($index === false) {
-                $config[self::PLUGINS_KEY][] = $module->toArray();
-            } else {
-                $config[self::PLUGINS_KEY][$index] = $module->toArray();
-            }
-            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
-            return true;
+        if (null === $module || empty($module->getModule())) {
+            return false;
         }
-        return false;
+        
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+
+        $index = false;
+        if (isset($config[self::PLUGINS_KEY])) {
+            $index = array_search($module->getModule(), array_column($config[self::PLUGINS_KEY], 'module'));
+        }
+        if ($index === false) {
+            $config[self::PLUGINS_KEY][] = $module->toArray();
+        } else {
+            $config[self::PLUGINS_KEY][$index] = $module->toArray();
+        }
+        $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+        return true;
     }
 
     /**
