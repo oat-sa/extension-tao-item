@@ -72,10 +72,7 @@ class ItemPreviewerService extends ConfigurableService
             $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
 
-        if (isset($config[self::PREVIEWERS_KEY])) {
-            return $config[self::PREVIEWERS_KEY];
-        }
-        return [];
+        return $config[self::PREVIEWERS_KEY] ?? [];
     }
 
     /**
@@ -90,10 +87,7 @@ class ItemPreviewerService extends ConfigurableService
             $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
 
-        if (isset($config[self::PLUGINS_KEY])) {
-            return $config[self::PLUGINS_KEY];
-        }
-        return [];
+        return $config[self::PLUGINS_KEY] ?? [];
     }
 
     /**
