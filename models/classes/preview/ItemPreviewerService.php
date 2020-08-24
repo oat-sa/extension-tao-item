@@ -33,9 +33,10 @@ use oat\tao\model\modules\DynamicModule;
 class ItemPreviewerService extends ConfigurableService
 {
     const SERVICE_ID = 'taoItems/ItemPreviewer';
-    const REGISTRY_ENTRY_KEY = 'taoItems/previewer/factory';
-    const PREVIEWERS_KEY = 'previewers';
-    
+    private const REGISTRY_ENTRY_KEY = 'taoItems/previewer/factory';
+    private const PREVIEWERS_KEY = 'previewers';
+    private const PLUGINS_KEY = 'plugins';
+
     private $registry;
 
     /**
@@ -71,31 +72,44 @@ class ItemPreviewerService extends ConfigurableService
             $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
 
-        if (isset($config[self::PREVIEWERS_KEY])) {
-            return $config[self::PREVIEWERS_KEY];
+        return $config[self::PREVIEWERS_KEY] ?? [];
+    }
+
+    /**
+     * Gets the list of plugins
+     * @return array
+     */
+    public function getPlugins()
+    {
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
-        return [];
+
+        return $config[self::PLUGINS_KEY] ?? [];
     }
 
     /**
      * Registers a previewer adapter
-     * @param DynamicModule $module the plugin to register
+     * @param DynamicModule $module the adapter to register
      * @return boolean true if registered
      */
-    public function registerAdapter(DynamicModule $module)
+    public function registerAdapter(DynamicModule $module): bool
     {
-        if (!is_null($module) && ! empty($module->getModule())) {
-            $registry = $this->getRegistry();
-            $config = [];
-            if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
-                $config = $registry->get(self::REGISTRY_ENTRY_KEY);
-            }
-
-            $config[self::PREVIEWERS_KEY][$module->getModule()] = $module->toArray();
-            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
-            return true;
+        if (null === $module || empty($module->getModule())) {
+            return false;
         }
-        return false;
+        
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+
+        $config[self::PREVIEWERS_KEY][$module->getModule()] = $module->toArray();
+        $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+        return true;
     }
 
     /**
@@ -103,9 +117,8 @@ class ItemPreviewerService extends ConfigurableService
      * @param string $moduleId
      * @return boolean true if unregistered
      */
-    public function unregisterAdapter($moduleId)
+    public function unregisterAdapter($moduleId): bool
     {
-
         $registry = $this->getRegistry();
         $config = [];
         if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
@@ -118,5 +131,56 @@ class ItemPreviewerService extends ConfigurableService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Registers a previewer plugin
+     * @param DynamicModule $module the plugin to register
+     * @return boolean true if registered
+     */
+    public function registerPlugin(DynamicModule $module): bool
+    {
+        if (null === $module || empty($module->getModule())) {
+            return false;
+        }
+
+        $this->unregisterPlugin($module->getModule());
+        
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+        
+        $config[self::PLUGINS_KEY][] = $module->toArray();
+        $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+        return true;
+    }
+
+    /**
+     * Unregisters a previewer plugin
+     * @param string $moduleId
+     * @return boolean true if unregistered
+     */
+    public function unregisterPlugin($moduleId): bool
+    {
+        $registry = $this->getRegistry();
+        $config = [];
+        if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
+            $config = $registry->get(self::REGISTRY_ENTRY_KEY);
+        }
+
+        $result = false;
+        if (isset($config[self::PLUGINS_KEY])) {
+            $config[self::PLUGINS_KEY] = array_filter(
+                $config[self::PLUGINS_KEY],
+                static function (array $plugin) use ($moduleId, &$result): bool {
+                    $result = $plugin['module'] == $moduleId;
+                    return !$result;
+                }
+            );
+            $registry->set(self::REGISTRY_ENTRY_KEY, $config);
+        }
+        return $result;
     }
 }
