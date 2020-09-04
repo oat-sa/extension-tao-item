@@ -132,34 +132,34 @@ class ItemPack implements JsonSerializable
     /**
      * Set item's assets of a given type to the pack.
      *
-     * @param string $type the assets type, one of those who are supported.
-     * @param array $assets the list of assets' URL to load
-     * @param StorageDirectory|null $publicDirectory
-     *
      * @throws ExceptionMissingEncoder
      * @throws FileNotFoundException
      */
-    public function setAssets(string $type, $assets, ?StorageDirectory $publicDirectory = null): void
-    {
+    public function setAssets(
+        string $type,
+        $assets,
+        ?StorageDirectory $publicDirectory = null,
+        bool $skipBinaries = false
+    ): void {
         if (!is_array($assets)) {
             throw new InvalidArgumentException('Assests should be an array, "' . gettype($assets) . '" given');
         }
 
         foreach ($assets as $asset) {
-            $this->setAsset($type, $asset, $publicDirectory);
+            $this->setAsset($type, $asset, $publicDirectory, $skipBinaries);
         }
     }
 
     /**
-     * @param string $type
-     * @param $asset
-     * @param StorageDirectory|null $publicDirectory
-     *
      * @throws ExceptionMissingEncoder
      * @throws FileNotFoundException
      */
-    public function setAsset(string $type, $asset, ?StorageDirectory $publicDirectory = null): void
-    {
+    public function setAsset(
+        string $type,
+        $asset,
+        ?StorageDirectory $publicDirectory = null,
+        bool $skipBinaries = false
+    ): void {
         if (!in_array($type, self::$assetTypes, true)) {
             throw new InvalidArgumentException(sprintf(
                 'Unknown asset type "%s", it should be either %s',
@@ -170,6 +170,9 @@ class ItemPack implements JsonSerializable
 
         $encoder = EncoderService::singleton()->get($this->assetEncoders[$type], $publicDirectory);
         $assetKey = $this->getAssetKey($asset);
+        if ($skipBinaries && Base64::isEncodedImage($asset->getMediaIdentifier())) {
+            return;
+        }
         $this->assets[$type][$assetKey] = $encoder->encode($asset);
     }
 
