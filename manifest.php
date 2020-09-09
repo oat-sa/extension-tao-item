@@ -44,7 +44,7 @@ return [
     'requires' => [
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=12.5.0',
-        'tao' => '>=45.10.0',
+        'tao' => '>=45.11.0',
     ],
     'models' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf',
