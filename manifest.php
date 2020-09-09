@@ -22,9 +22,10 @@
  */
 
 use oat\tao\model\user\TaoRoles;
+use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 use oat\taoItems\scripts\install\RegisterCategoryService;
-use oat\taoItems\scripts\install\RegisterNpmPaths;
+use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -43,10 +44,10 @@ return [
     'requires' => [
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=12.5.0',
-        'tao' => '>=45.10.0'
+        'tao' => '>=45.10.0',
     ],
     'models' => [
-        'http://www.tao.lu/Ontologies/TAOItem.rdf'
+        'http://www.tao.lu/Ontologies/TAOItem.rdf',
     ],
     'install' => [
         'rdf' => [
@@ -55,11 +56,12 @@ return [
             __DIR__ . '/models/ontology/indexation.rdf',
             __DIR__ . '/models/ontology/category.rdf',
         ],
-        'php'   => [
+        'php' => [
             CreateItemDirectory::class,
             RegisterCategoryService::class,
             RegisterNpmPaths::class,
-        ]
+            RegisterItemPreviewerRegistryService::class,
+        ],
     ],
     'update' => 'taoItems_scripts_update_Updater',
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
@@ -71,27 +73,27 @@ return [
         ['grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
     ],
     'optimizableClasses' => [
-            'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
-            'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',
-            'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus'
+        'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+        'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels',
+        'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus',
     ],
     'constants' => [
         # actions directory
-        "DIR_ACTIONS"           => $extpath . "actions" . DIRECTORY_SEPARATOR,
+        "DIR_ACTIONS" => $extpath . "actions" . DIRECTORY_SEPARATOR,
 
         # views directory
-        "DIR_VIEWS"             => $extpath . "views" . DIRECTORY_SEPARATOR,
+        "DIR_VIEWS" => $extpath . "views" . DIRECTORY_SEPARATOR,
 
         # default module name
-        'DEFAULT_MODULE_NAME'   => 'Items',
+        'DEFAULT_MODULE_NAME' => 'Items',
 
         #default action name
-        'DEFAULT_ACTION_NAME'   => 'index',
+        'DEFAULT_ACTION_NAME' => 'index',
 
         #BASE PATH: the root path in the file system (usually the document root)
-        'BASE_PATH'             => $extpath,
+        'BASE_PATH' => $extpath,
 
         #BASE URL (usually the domain root)
-        'BASE_URL'              => ROOT_URL . 'taoItems/',
-    ]
+        'BASE_URL' => ROOT_URL . 'taoItems/',
+    ],
 ];
