@@ -47,9 +47,7 @@ class RegisterItemPreviewerRegistryService extends InstallAction
     {
         $this->getServiceManager()->register(
             ItemPreviewerRegistryServiceInterface::SERVICE_ID,
-            new PreviewerRegistryService([
-                PreviewerRegistryService::OPTION_REGISTRY_ENTRY_KEY => ItemPreviewerRegistryServiceInterface::REGISTRY_ENTRY_KEY,
-            ])
+            new PreviewerRegistryService(ItemPreviewerRegistryServiceInterface::REGISTRY_ENTRY_KEY)
         );
     }
 }
