@@ -23,6 +23,7 @@
 
 use oat\tao\model\lock\LockManager;
 use oat\tao\model\TaoOntology;
+use oat\taoItems\model\event\ItemContentClonedEvent;
 use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
@@ -376,6 +377,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
                 $serializer->serialize($destinationDirectory);
             }
         }
+        $this->getEventManager()->trigger(
+            new ItemContentClonedEvent($source->getUri(), $destination->getUri())
+        );
     }
 
     public function cloneInstance(core_kernel_classes_Resource $instance, core_kernel_classes_Class $clazz = null)
