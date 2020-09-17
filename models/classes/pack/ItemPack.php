@@ -23,15 +23,15 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\pack;
 
+use InvalidArgumentException;
+use JsonSerializable;
 use LogicException;
-use \JsonSerializable;
 use oat\tao\helpers\Base64;
-use \InvalidArgumentException;
 use oat\tao\model\media\MediaAsset;
-use oat\taoMediaManager\model\MediaSource;
 use oat\tao\model\media\sourceStrategy\HttpSource;
-use tao_models_classes_service_StorageDirectory as StorageDirectory;
+use oat\taoMediaManager\model\MediaSource;
 use tao_models_classes_FileNotFoundException as FileNotFoundException;
+use tao_models_classes_service_StorageDirectory as StorageDirectory;
 
 /**
  * The Item Pack represents the item package data produced by the compilation.
@@ -41,7 +41,6 @@ use tao_models_classes_FileNotFoundException as FileNotFoundException;
  */
 class ItemPack implements JsonSerializable
 {
-
     /**
      * The supported assets types
      * @var string[]
@@ -59,7 +58,6 @@ class ItemPack implements JsonSerializable
         'apip',
         'pdf'
     ];
-
 
     /**
      * The item type
@@ -85,15 +83,15 @@ class ItemPack implements JsonSerializable
      * @var array
      */
     protected $assetEncoders = [
-        'html'     => 'none',
-        'document'     => 'none',
-        'js'        => 'none',
-        'css'       => 'none',
-        'font'      => 'none',
-        'img'       => 'none',
-        'audio'     => 'none',
-        'video'     => 'none',
-        'xinclude'  => 'none',
+        'html' => 'none',
+        'document' => 'none',
+        'js' => 'none',
+        'css' => 'none',
+        'font' => 'none',
+        'img' => 'none',
+        'audio' => 'none',
+        'video' => 'none',
+        'xinclude' => 'none',
         'apip' => 'none',
         'pdf' => 'none',
     ];
@@ -128,7 +126,7 @@ class ItemPack implements JsonSerializable
      * Get the item type
      * @return string the type
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -137,13 +135,18 @@ class ItemPack implements JsonSerializable
      * Get the item data
      * @return array the data
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
     /**
      * Set item's assets of a given type to the pack.
+     *
+     * @param string $type
+     * @param $assets
+     * @param StorageDirectory|null $publicDirectory
+     * @param bool $skipBinaries
      *
      * @throws ExceptionMissingEncoder
      * @throws FileNotFoundException
@@ -155,7 +158,7 @@ class ItemPack implements JsonSerializable
         bool $skipBinaries = false
     ): void {
         if (!is_array($assets)) {
-            throw new InvalidArgumentException('Assests should be an array, "' . gettype($assets) . '" given');
+            throw new InvalidArgumentException('Assets should be an array, "' . gettype($assets) . '" given');
         }
 
         foreach ($assets as $asset) {
@@ -164,6 +167,11 @@ class ItemPack implements JsonSerializable
     }
 
     /**
+     * @param string $type
+     * @param $asset
+     * @param StorageDirectory|null $publicDirectory
+     * @param bool $skipBinaries
+     *
      * @throws ExceptionMissingEncoder
      * @throws FileNotFoundException
      */
@@ -195,7 +203,7 @@ class ItemPack implements JsonSerializable
      * @param string $type the assets type, one of those who are supported
      * @return string[] the list of assets' URL to load
      */
-    public function getAssets($type)
+    public function getAssets(string $type): array
     {
         if (!array_key_exists($type, $this->assets)) {
             return [];
@@ -218,7 +226,7 @@ class ItemPack implements JsonSerializable
     /**
      * @return array
      */
-    public function getAssetEncoders()
+    public function getAssetEncoders(): array
     {
         return $this->assetEncoders;
     }
@@ -226,7 +234,7 @@ class ItemPack implements JsonSerializable
     /**
      * @param array $assetEncoders
      */
-    public function setAssetEncoders($assetEncoders)
+    public function setAssetEncoders(array $assetEncoders): void
     {
         foreach ($assetEncoders as $type => $encoder) {
             if ($encoder == '') {
@@ -240,7 +248,7 @@ class ItemPack implements JsonSerializable
     /**
      * @return boolean
      */
-    public function isNestedResourcesInclusion()
+    public function isNestedResourcesInclusion(): bool
     {
         return $this->nestedResourcesInclusion;
     }
@@ -248,7 +256,7 @@ class ItemPack implements JsonSerializable
     /**
      * @param boolean $nestedResourcesInclusion
      */
-    public function setNestedResourcesInclusion($nestedResourcesInclusion)
+    public function setNestedResourcesInclusion(bool $nestedResourcesInclusion): void
     {
         $this->nestedResourcesInclusion = (bool)$nestedResourcesInclusion;
     }
