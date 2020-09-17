@@ -29,6 +29,8 @@ use oat\tao\model\modules\DynamicModule;
  * Manage item previewers
  *
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
+ *
+ * @deprecated Use oat\taoItems\model\preview\ItemPreviewerRegistryServiceInterface instead
  */
 class ItemPreviewerService extends ConfigurableService
 {
@@ -100,7 +102,7 @@ class ItemPreviewerService extends ConfigurableService
         if (null === $module || empty($module->getModule())) {
             return false;
         }
-        
+
         $registry = $this->getRegistry();
         $config = [];
         if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
@@ -145,13 +147,13 @@ class ItemPreviewerService extends ConfigurableService
         }
 
         $this->unregisterPlugin($module->getModule());
-        
+
         $registry = $this->getRegistry();
         $config = [];
         if ($registry->isRegistered(self::REGISTRY_ENTRY_KEY)) {
             $config = $registry->get(self::REGISTRY_ENTRY_KEY);
         }
-        
+
         $config[self::PLUGINS_KEY][] = $module->toArray();
         $registry->set(self::REGISTRY_ENTRY_KEY, $config);
         return true;
