@@ -216,7 +216,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         $item = $this->getResource($params['uri']);
-        $itemLang = isset($params['lang']);
+        $itemLang = $params['lang'];
 
         $resolver = new ItemMediaResolver($item, $itemLang);
 
