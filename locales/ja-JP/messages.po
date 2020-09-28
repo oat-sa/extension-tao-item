@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint104\n"
-"PO-Revision-Date: 2019-06-07T09:16:24\n"
+"Project-Id-Version: TAO 3.4.0-sprint117\n"
+"PO-Revision-Date: 2020-09-22T16:02:14\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -21,7 +21,7 @@ msgid "Authoring"
 msgstr "オーサリング"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "クラススキーマを保存"
 
 msgid "Close"
 msgstr "閉じる"
@@ -31,7 +31,7 @@ msgstr "コンソールを閉じる"
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Copy to"
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -62,20 +62,20 @@ msgid "Export"
 msgstr "エクスポート"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "自動化されたカテゴリを作成するためのプロパティ値を公開します。"
 
 msgid "Failed retrieving %s"
-msgstr "検索失敗 %s"
+msgstr "%s の取得失敗"
 
 #, tao-public
 msgid "Import"
 msgstr "インポート"
 
 msgid "Item Model"
-msgstr "アイテムも出る"
+msgstr "アイテムモデル"
 
 msgid "Item not found"
-msgstr ""
+msgstr "アイテムがありません"
 
 msgid "Item saved"
 msgstr "アイテムが保存されました"
@@ -92,10 +92,10 @@ msgid "Landscape"
 msgstr "横に長く"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "最終更新日: %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "アイテムクラスのスキーマを管理する"
 
 #, tao-public
 msgid "Manage items"
@@ -103,7 +103,7 @@ msgstr "アイテム管理"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "スキーマ管理"
 
 msgid "Mobile preview"
 msgstr "モバイルプレビュー"
@@ -114,11 +114,11 @@ msgstr "移動"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Move　to"
 
 #, tao-public
 msgid "New class"
-msgstr "新規クラス"
+msgstr "新規フォルダー"
 
 msgid "No item authoring tool available for the selected type of item: %s"
 msgstr "選択されたタイプのアイテムを編集するツールがありません：%s"
@@ -150,7 +150,7 @@ msgid "Remove this message"
 msgstr "このメッセージを除く"
 
 msgid "Retrieving external resources"
-msgstr "外部リソース検索中"
+msgstr "外部リソース取得中"
 
 msgid "Submit"
 msgstr "送信"
@@ -162,7 +162,7 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "アイテムとエクササイズの作成とデザインがアイテムモジュールにより可能になっています。"
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "The property is exposed to category addition.&#13Remove exposition ?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
@@ -174,7 +174,7 @@ msgid "Unable to create deployement directory"
 msgstr "実行ディレクトリーを作成できません。"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "アイテムのレンダリングができません %s : %s %s"
 
 msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
