@@ -15,13 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014-2018 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2020 (original work) Open Assessment Technologies SA;
  *
  */
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
+use oat\tao\model\http\ContentDetector;
+use oat\tao\model\media\MediaBrowser;
 use oat\taoItems\model\media\ItemMediaResolver;
 
 /**
@@ -203,38 +205,29 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     }
 
     /**
-     * Download a file to the item directory*
      * @throws common_exception_MissingParameter
-     * @throws common_exception_Error
      * @throws tao_models_classes_FileNotFoundException
      */
-    public function download()
+    public function download(): void
     {
-        $svgzSupport = false;
-        if (!$this->hasRequestParameter('uri') || !$this->hasRequestParameter('path') || !$this->hasRequestParameter('lang')) {
+        $params = $this->getPsrRequest()->getQueryParams();
+        if (!isset($params['uri'], $params['path'], $params['lang'])) {
             throw new common_exception_MissingParameter();
         }
 
-        if ($this->hasRequestParameter('svgzsupport')) {
-            $svgzSupport = true;
-        }
-
-        $item = $this->getResource($this->getRequestParameter('uri'));
-        $itemLang = $this->getRequestParameter('lang');
+        $item = $this->getResource($params['uri']);
+        $itemLang = $params['lang'];
 
         $resolver = new ItemMediaResolver($item, $itemLang);
 
-        $rawParams = $this->getRequest()->getRawParameters();//have to use raw value to respect special characters in names
-        $asset = $resolver->resolve($rawParams['path']);
-        $filePath = $asset->getMediaSource()->download($asset->getMediaIdentifier());
+        $asset = $resolver->resolve($params['path']);
+        $stream = $asset->getMediaSource()->getFileStream($asset->getMediaIdentifier());
 
         $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
 
-        if ($info['mime'] != 'application/qti+xml') {
-            header('Content-Type: ' . $info['mime']);
-        }
+        $mime = $info['mime'] !== 'application/qti+xml' ? $info['mime'] : null;
 
-        \tao_helpers_Http::returnFile($filePath, false, $svgzSupport);
+        tao_helpers_Http::returnStream($stream, $mime, $this->getPsrRequest());
     }
 
     /**
@@ -264,12 +257,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * @param string $urlPrefix
      * @param core_kernel_classes_resource $item
      * @param string $itemLang
-     * @return \oat\tao\model\media\MediaBrowser
+     * @return MediaBrowser
      */
     protected function getMediaSource($urlPrefix, $item, $itemLang)
     {
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($urlPrefix);
         return $asset->getMediaSource();
+    }
+
+    private function getContentDetector(): ContentDetector
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(ContentDetector::class);
     }
 }
