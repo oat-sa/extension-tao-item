@@ -34,6 +34,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export
      * overwrite the parent index to add the requiresRight for Items only
      *
      * @requiresRight id READ
+     * @throws common_Exception
      * @see           tao_actions_Import::index()
      */
     public function index()
@@ -41,7 +42,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         parent::index();
     }
 
-    protected function getAvailableExportHandlers()
+    protected function getAvailableExportHandlers(): array
     {
         $returnValue = parent::getAvailableExportHandlers();
 
@@ -49,14 +50,48 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         $itemModels = $itemModelClass->getInstances();
         foreach ($itemModels as $model) {
             $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
-            if (in_array('tao_models_classes_export_ExportProvider', class_implements($impl))) {
+            if (in_array('tao_models_classes_export_ExportProvider', class_implements($impl), true)) {
                 foreach ($impl->getExportHandlers() as $handler) {
                     array_unshift($returnValue, $handler);
                 }
             }
         }
 
+        $instances = $this->getClassInstances();
+        if (!count($instances)) {
+            $returnValue = array_filter($returnValue,
+                static function (tao_models_classes_export_ExportHandler $handler) {
+                    return $handler instanceof tao_models_classes_export_RdfExporter;
+                });
+        }
+
+
         return $returnValue;
+    }
+
+    public function getClassInstances(): array
+    {
+        $instances = [];
+        $classUri = $this->hasPostParameter('classUri') ? $this->getPostParameter('classUri') : '';
+        if ($classUri) {
+            $class = $this->getClass(tao_helpers_Uri::decode($classUri));
+            $instances = $class->getInstances(true);
+        }
+        return $instances;
+    }
+
+    protected function getFormFactory(
+        array $handlers,
+        tao_models_classes_export_ExportHandler $exporter,
+        core_kernel_classes_Resource $selectedResource,
+        array $formData
+    ): tao_actions_form_Export {
+        $formFactory = parent::getFormFactory($handlers, $exporter, $selectedResource, $formData);
+        $instances = $this->getClassInstances();
+        if (!count($instances)) {
+            $formFactory->setInfoBox('<b>Note</b>: For empty classes, the RDF format<br />is the only available format.');
+        }
+        return $formFactory;
     }
 
     /**
