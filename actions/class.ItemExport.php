@@ -89,7 +89,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         $formFactory = parent::getFormFactory($handlers, $exporter, $selectedResource, $formData);
         $instances = $this->getClassInstances();
         if (!count($instances)) {
-            $formFactory->setInfoBox('<b>Note</b>: For empty classes, the RDF format<br />is the only available format.');
+            $formFactory->setInfoBox(__('<b>Note</b>: For empty classes, the RDF format<br />is the only available format.'));
         }
         return $formFactory;
     }
