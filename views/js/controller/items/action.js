@@ -123,7 +123,10 @@ define([
                         relatedClassTestsPopupTpl({
                             name,
                             number: relatedTests.length,
-                            tests: relatedTests
+                            numberOther: relatedTests.length - 3 > 0 ? relatedTests.length - 3 : 0,
+                            tests: relatedTests.length <= 3 ? relatedTests : relatedTests.slice(0, 3),
+                            multiple:  relatedTests.length > 1,
+                            multipleOthers: relatedTests.length - 3 > 1,
                         }),
                         () => accept(actionContext, this.url, resolve, reject),
                         () => cancel(reject)
