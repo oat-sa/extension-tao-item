@@ -33,6 +33,7 @@ define([
     'tpl!taoItems/controller/items/tpl/relatedTestsPopup',
     'tpl!taoItems/controller/items/tpl/relatedClassTestsPopup',
     'tpl!taoItems/controller/items/tpl/forbiddenClassAction',
+    'css!taoItems/controller/items/css/relatedTestsPopup.css',
 ], function (
     _,
     $,
@@ -72,10 +73,11 @@ define([
     binder.register('deleteItem', function (actionContext) {
         return new Promise((resolve, reject) => {
             checkRelations({
-                sourceId: actionContext.id
+                sourceId: actionContext.id,
+                type: 'item'
             })
             .then((responseRelated) => {
-                const relatedTests = responseRelated.data;
+                const relatedTests = responseRelated.data.relations;
                 const name = $('a.clicked', actionContext.tree).text().trim();
                 if (relatedTests.length === 0) {
                     confirmDialog(
@@ -88,7 +90,10 @@ define([
                         relatedTestsPopupTpl({
                             name,
                             number: relatedTests.length,
-                            tests: relatedTests
+                            numberOther: relatedTests.length - 3 > 0 ? relatedTests.length - 3 : 0,
+                            tests: relatedTests.length <= 3 ? relatedTests : relatedTests.slice(0, 3),
+                            multiple:  relatedTests.length > 1,
+                            multipleOthers: relatedTests.length - 3 > 1,
                         }),
                         () => accept(actionContext, this.url, resolve, reject),
                         () => cancel(reject)
@@ -101,10 +106,11 @@ define([
     binder.register('deleteItemClass', function (actionContext) {
         return new Promise((resolve, reject) => {
             checkRelations({
-                classId: actionContext.id
+                classId: actionContext.id,
+                type: 'item'
             })
             .then((responseRelated) => {
-                const relatedTests = responseRelated.data;
+                const relatedTests = responseRelated.data.relations;
                 const name = $('a.clicked', actionContext.tree).text().trim();
                 if (relatedTests.length === 0) {
                     confirmDeleteDialog(
@@ -137,7 +143,7 @@ define([
 
     function checkRelations(data) {
         return request({
-            url: urlUtil.route('relations', 'MediaRelations', 'taoMediaManager'),
+            url: urlUtil.route('index', 'ResourceRelations', 'tao'),
             data,
             method: 'GET',
             noToken: true
