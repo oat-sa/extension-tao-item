@@ -30,6 +30,7 @@ define([
     'ui/dialog/confirmDelete',
     'util/url',
     'uri',
+    'util/wrapLongWords',
     'tpl!taoItems/controller/items/tpl/relatedTestsPopup',
     'tpl!taoItems/controller/items/tpl/relatedClassTestsPopup',
     'tpl!taoItems/controller/items/tpl/forbiddenClassAction',
@@ -48,6 +49,7 @@ define([
     confirmDeleteDialog,
     urlUtil,
     uri,
+    wrapLongWords,
     relatedTestsPopupTpl,
     relatedClassTestsPopupTpl,
     forbiddenClassActionTpl
@@ -78,7 +80,7 @@ define([
             })
             .then((responseRelated) => {
                 const relatedTests = responseRelated.data.relations;
-                const name = $('a.clicked', actionContext.tree).text().trim();
+                const name = prepareName($('a.clicked', actionContext.tree).text().trim());
                 if (relatedTests.length === 0) {
                     confirmDialog(
                         `${__('Are you sure you want to delete the item')} <b>${name}</b>?`,
@@ -111,7 +113,7 @@ define([
             })
             .then((responseRelated) => {
                 const relatedTests = responseRelated.data.relations;
-                const name = $('a.clicked', actionContext.tree).text().trim();
+                const name = prepareName($('a.clicked', actionContext.tree).text().trim());
                 if (relatedTests.length === 0) {
                     confirmDeleteDialog(
                         `${__('Are you sure you want to delete the class')} <b>${name}</b> ${__('and all of its content?')}`,
@@ -186,5 +188,13 @@ define([
 
     function cancel(reject) {
         reject({ cancel: true });
+    }
+
+    function prepareName(name) {
+        if (name.length < 50) {
+            return name;
+        } else {
+            return wrapLongWords(name, 50);
+        }
     }
 });
