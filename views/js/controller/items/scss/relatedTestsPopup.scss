@@ -1,0 +1,12 @@
+.preview-modal-feedback {
+	&.modal{
+		.icon-warning {
+			font-size: 150%;
+			position: relative;
+			top: 2px;
+		}
+		.gray-others {
+			opacity: 0.4;
+		}
+	}
+}
