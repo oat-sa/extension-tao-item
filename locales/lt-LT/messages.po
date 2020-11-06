@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint138\n"
-"PO-Revision-Date: 2020-09-25T08:21:43\n"
+"Project-Id-Version: TAO 3.4.0-sprint141\n"
+"PO-Revision-Date: 2020-11-06T09:34:53\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: lt-LT\n"
@@ -13,8 +13,29 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr ""
+
 msgid "Actual size"
 msgstr "Tikrasis dydis"
+
+msgid "and"
+msgstr ""
+
+msgid "and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the item"
+msgstr ""
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete this item?"
+msgstr ""
 
 #, tao-public
 msgid "Authoring"
@@ -29,6 +50,9 @@ msgstr "Uždaryti"
 msgid "Close console"
 msgstr "Uždaryti konsolę"
 
+msgid "contains content that is currently in use."
+msgstr ""
+
 #, tao-public
 msgid "Copy To"
 msgstr "Kopijuoti Į"
@@ -41,6 +65,12 @@ msgstr "Kurti ir redaguoti laukus ir uždavinius."
 msgid "Delete"
 msgstr "Ištrinti"
 
+msgid "Deleting this class will break the"
+msgstr ""
+
+msgid "Deleting this item will break the"
+msgstr ""
+
 msgid "Desktop preview"
 msgstr "Darbalaukio peržiūra"
 
@@ -51,10 +81,10 @@ msgstr "Daugiau šito nerodyti!"
 msgid "Duplicate"
 msgstr "Kurti kopiją"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "Redaguoti klausimą"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "Redaguoti klausimą"
 
 #, tao-public
@@ -67,9 +97,15 @@ msgstr "Pateikti nuostatas automatinių kategorijų sukūrimui."
 msgid "Failed retrieving %s"
 msgstr "Nepavyko gauti %s"
 
+msgid "Forbidden action"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importuoti"
+
+msgid "is currently in use."
+msgstr ""
 
 msgid "Item Model"
 msgstr "Klausimo modelis"
@@ -129,6 +165,12 @@ msgstr "Nepasirinktas klausimo tipas šiam klausimui."
 msgid "Not yet available"
 msgstr "Vis dar negalimas"
 
+msgid "other"
+msgstr ""
+
+msgid "Please delete the subclasses before."
+msgstr ""
+
 msgid "Please select first the item type!"
 msgstr "Prašome pirma pasirinkti klausimo tipą!"
 
@@ -149,14 +191,29 @@ msgstr ""
 msgid "Remove this message"
 msgstr "Pašalinti šį pranešimą"
 
+msgid "Resource deleted"
+msgstr ""
+
 msgid "Retrieving external resources"
 msgstr "Išorinių resursų gavimas"
+
+msgid "s"
+msgstr ""
 
 msgid "Submit"
 msgstr "Pateikti"
 
+msgid "test"
+msgstr ""
+
+msgid "The class"
+msgstr ""
+
 msgid "The file you tried to upload is not valid"
 msgstr "Failas, kurį bandėte įkelti yra neteisingas"
+
+msgid "The item"
+msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Elementų modulis leidžia kurti ir modeliuoti elementus bei užduotis."
@@ -173,8 +230,20 @@ msgstr "Nepavyko kopijuoti resursus kalbai %s"
 msgid "Unable to create deployement directory"
 msgstr "Neįmanoma sukurti katalogo diegimui."
 
+msgid "Unable to delete the selected resource"
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Neįmanoma pateikti klausimo nuo %s : %s %s"
+
+msgid "using it:"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr "Jūs išregistravote šį klausimą prieš %2s."
