@@ -68,7 +68,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
 
     const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
 
-    const DIV_CLASS_EMPTY = '<div class="empty"';
+    private const DIV_CLASS_EMPTY = '<div class="empty"';
 
     public function getRootClass()
     {
