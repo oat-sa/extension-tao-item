@@ -58,15 +58,13 @@ define([
 
     binder.register('itemPreview', function itemPreview(actionContext) {
         var defaultConfig = {
-            itemType: 'qtiItem', // TODO: field name can be changed after backend fix (for getting itemType from config )
+            provider: 'qtiItem',
             state: {},
-            uri: {
-                itemUri: actionContext.id
-            }
+            uri: actionContext.id
         };
         var config = _.merge(defaultConfig, module.config());
 
-        previewerFactory(config.itemType, config.uri, config.state, {
+        previewerFactory(config.provider, config.uri, config.state, {
             readOnly: false,
             fullPage: true
         });
