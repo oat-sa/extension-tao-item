@@ -21,17 +21,17 @@
  *
  */
 
-use oat\tao\model\lock\LockManager;
-use oat\tao\model\TaoOntology;
-use oat\taoItems\model\event\ItemContentClonedEvent;
-use oat\taoItems\model\event\ItemDuplicatedEvent;
-use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ServiceNotFoundException;
-use oat\taoItems\model\ItemModelStatus;
+use oat\tao\model\lock\LockManager;
 use oat\tao\model\OntologyClassService;
+use oat\tao\model\TaoOntology;
+use oat\taoItems\model\event\ItemContentClonedEvent;
+use oat\taoItems\model\event\ItemDuplicatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
+use oat\taoItems\model\ItemModelStatus;
 use oat\taoQtiItem\helpers\QtiFile;
 
 /**
@@ -67,6 +67,8 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
     const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
 
     const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
+
+    private const DIV_CLASS_EMPTY = '<div class="empty"';
 
     public function getRootClass()
     {
@@ -187,7 +189,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             return false;
         }
 
-        return $this->getItemDirectory($item, $lang)->getFile(QtiFile::FILE)->exists();
+        $file = $this->getItemDirectory($item, $lang)->getFile(QtiFile::FILE);
+
+        return $file->exists() ? !(strpos($file->read(), self::DIV_CLASS_EMPTY) !== false) : false;
     }
 
     /**
