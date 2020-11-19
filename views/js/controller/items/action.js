@@ -57,12 +57,12 @@ define([
     'use strict';
 
     binder.register('itemPreview', function itemPreview(actionContext) {
-        var defaultConfig = {
+        const defaultConfig = {
             provider: 'qtiItem',
             state: {},
             uri: actionContext.id
         };
-        var config = _.merge(defaultConfig, module.config());
+        const config = _.merge(defaultConfig, module.config());
 
         previewerFactory(config.provider, config.uri, config.state, {
             readOnly: false,
