@@ -1,22 +1,22 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2014 (original work) Open Assessment Technologies SA;
- *               
- * 
+ *
+ *
  */
 namespace oat\taoItems\model\media;
 
@@ -27,7 +27,6 @@ use oat\tao\model\media\MediaManagement;
 use Psr\Http\Message\StreamInterface;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
-use Slim\Http\Stream;
 
 /**
  * This media source gives access to files that are part of the item
@@ -60,15 +59,16 @@ class LocalItemSource implements MediaManagement
      * Get a array representing the tree of directory
      *
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
-     * @param string $parentLink
-     * @param array $acceptableMime
-     * @param int $depth
-     * @return array
-     * @throws \FileNotFoundException
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
-    public function getDirectory($parentLink = '', $acceptableMime = array(), $depth = 1)
+    public function getDirectory(
+        string $parentLink = '',
+        array $acceptableMime = [],
+        int $depth = 1,
+        int $limit = 0,
+        int $offset = 0
+    ): array
     {
         if (! tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));
