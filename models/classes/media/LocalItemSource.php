@@ -61,15 +61,16 @@ class LocalItemSource implements MediaManagement
      * Get a array representing the tree of directory
      *
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
-     * @param string $parentLink
-     * @param array $acceptableMime
-     * @param int $depth
-     * @return array
-     * @throws \FileNotFoundException
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
-    public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
+    public function getDirectory(
+        string $parentLink = '',
+        array $acceptableMime = [],
+        int $depth = 1,
+        int $limit = 0,
+        int $offset = 0
+    ): array
     {
         if (! tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));

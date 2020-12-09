@@ -36,29 +36,33 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
     use OntologyAwareTrait;
 
+    private const DEFAULT_PAGINATION_LIMIT = 10;
+    private const DEFAULT_PAGINATION_OFFSET = 0;
+
     /**
-     * Returns a json encoded array describign a directory
+     * Returns a json encoded array describing a directory
      *
      * @throws common_exception_MissingParameter
-     * @return string
      */
-    public function files()
+    public function files(): void
     {
-        if (!$this->hasRequestParameter('uri')) {
+        $params = $this->getPsrRequest()->getQueryParams();
+
+        if (!isset($params['uri'])) {
             throw new common_exception_MissingParameter('uri', __METHOD__);
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = $this->getResource($itemUri);
+        $itemUri = $params['uri'];
+        $item = $this->getResource($params['uri']);
 
-        if (!$this->hasRequestParameter('lang')) {
+        if (!isset($params['lang'])) {
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
-        $itemLang = $this->getRequestParameter('lang');
+        $itemLang = $params['lang'];
 
         //build filters
         $filters = [];
-        if ($this->hasRequestParameter('filters')) {
-            $filterParameter = $this->getRequestParameter('filters');
+        if (isset($params['filters'])) {
+            $filterParameter = $params['filters'];
             if (is_array($filterParameter)) {
                 foreach ($filterParameter as $filter) {
                     if (preg_match('/\/\*/', $filter['mime'])) {
@@ -73,13 +77,17 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
         }
-        $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
+        $depth = isset($params['depth']) ? $params['depth'] : 1;
+        $limit = isset($params['limit']) ? $params['limit'] : self::DEFAULT_PAGINATION_LIMIT;
+        $offset = isset($params['offset']) ? $params['offset'] : self::DEFAULT_PAGINATION_OFFSET;
+
         $resolver = new ItemMediaResolver($item, $itemLang);
-        $asset = $resolver->resolve($this->getRequestParameter('path'));
-        $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth);
+        $asset = $resolver->resolve($params['path']);
+        $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth, $limit, $offset);
+
         foreach ($data['children'] as &$child) {
             if (isset($child['parent'])) {
-                $child['url'] = \tao_helpers_Uri::url(
+                $child['url'] = tao_helpers_Uri::url(
                     'files',
                     'ItemContent',
                     'taoItems',
