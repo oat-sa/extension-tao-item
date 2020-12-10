@@ -78,7 +78,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         $depth = isset($params['depth']) ? $params['depth'] : 1;
-        $limit = isset($params['limit']) ? $params['limit'] : self::DEFAULT_PAGINATION_LIMIT;
+        $limit = self::DEFAULT_PAGINATION_LIMIT;
         $offset = isset($params['offset']) ? $params['offset'] : self::DEFAULT_PAGINATION_OFFSET;
 
         $resolver = new ItemMediaResolver($item, $itemLang);
