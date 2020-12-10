@@ -108,6 +108,7 @@ class LocalItemSource implements MediaManagement
         }
 
         $iterator = $directory->getFlyIterator();
+        $total = 0;
         foreach ($iterator as $content) {
             if ($content instanceof Directory) {
                 $children[] = $this->getDirectory($itemDirectory->getRelPath($content), $acceptableMime, $depth - 1);
@@ -116,10 +117,12 @@ class LocalItemSource implements MediaManagement
                 if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
                     $children[] = $fileInfo;
                 }
+                $total++;
             }
         }
 
         $data['children'] = $children;
+        $data['total'] = $total;
         return $data;
     }
 
