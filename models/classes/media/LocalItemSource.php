@@ -66,22 +66,11 @@ class LocalItemSource implements MediaManagement
      * Get a array representing the tree of directory
      *
      * @see \oat\tao\model\media\MediaBrowser::getDirectory
-     * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
-    public function getDirectory(
-        $parentLink = '',
-        $acceptableMime = [],
-        $depth = 1
-    )
+    public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
     {
-        return $this->searchDirectories(
-            $parentLink,
-            $acceptableMime,
-            $depth,
-            0,
-            0
-        );
+        return $this->searchDirectories($parentLink, $acceptableMime, $depth, 0);
     }
 
     /**
