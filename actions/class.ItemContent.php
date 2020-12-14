@@ -52,13 +52,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         if (!isset($params['uri'])) {
             throw new common_exception_MissingParameter('uri', __METHOD__);
         }
-        $itemUri = $params['uri'];
-        $item = $this->getResource($params['uri']);
 
         if (!isset($params['lang'])) {
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
+
+        $itemUri = $params['uri'];
         $itemLang = $params['lang'];
+        $item = $this->getResource($params['uri']);
 
         //build filters
         $filters = [];
@@ -78,9 +79,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
         }
-        $depth = isset($params['depth']) ? $params['depth'] : 1;
+        $depth = $params['depth'] ?? 1;
         $limit = self::DEFAULT_PAGINATION_LIMIT;
-        $offset = isset($params['offset']) ? $params['offset'] : self::DEFAULT_PAGINATION_OFFSET;
+        $offset = $params['offset'] ?? self::DEFAULT_PAGINATION_OFFSET;
 
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($params['path']);
