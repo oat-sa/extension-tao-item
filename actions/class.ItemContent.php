@@ -79,14 +79,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         $depth = $params['depth'] ?? 1;
-        $limit = self::DEFAULT_PAGINATION_LIMIT;
-        $offset = $params['offset'] ?? self::DEFAULT_PAGINATION_OFFSET;
+        $childrenLimit = self::DEFAULT_PAGINATION_LIMIT;
+        $childrenOffset = $params['childrenOffset'] ?? self::DEFAULT_PAGINATION_OFFSET;
 
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($params['path']);
 
         $data = $asset->getMediaSource()->getDirectories(
-            new QueryObject($asset->getMediaIdentifier(), $filters, $depth, $limit, $offset)
+            new QueryObject($asset->getMediaIdentifier(), $filters, $depth, $childrenLimit, $childrenOffset)
         );
 
         foreach ($data['children'] as &$child) {
