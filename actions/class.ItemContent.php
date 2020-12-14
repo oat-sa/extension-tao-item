@@ -21,6 +21,9 @@
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
+use oat\tao\model\http\ContentDetector;
+use oat\tao\model\media\MediaBrowser;
+use oat\tao\model\media\MediaSource\QueryObject;
 use oat\taoItems\model\media\ItemMediaResolver;
 /**
  * Items Content Controller provide access to the files of an item
@@ -75,12 +78,15 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         $depth = isset($params['depth']) ? $params['depth'] : 1;
-        $limit = isset($params['limit']) ? $params['limit'] : self::DEFAULT_PAGINATION_LIMIT;
+        $limit = self::DEFAULT_PAGINATION_LIMIT;
         $offset = isset($params['offset']) ? $params['offset'] : self::DEFAULT_PAGINATION_OFFSET;
 
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($params['path']);
-        $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth, $limit, $offset);
+
+        $data = $asset->getMediaSource()->getDirectories(
+            new QueryObject($asset->getMediaIdentifier(), $filters, $depth, $limit, $offset)
+        );
 
         foreach ($data['children'] as &$child) {
             if (isset($child['parent'])) {
