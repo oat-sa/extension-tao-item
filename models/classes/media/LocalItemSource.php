@@ -60,8 +60,12 @@ class LocalItemSource implements MediaManagement
 
     public function getDirectories(QueryObject $params): array
     {
-        return $this->searchDirectories($params->getParentLink(), $params->getFilter(), $params->getDepth(),
-            $params->getChildrenLimit());
+        return $this->searchDirectories(
+            $params->getParentLink(), 
+            $params->getFilter(), 
+            $params->getDepth(),
+            $params->getChildrenLimit()
+        );
     }
 
     /**
