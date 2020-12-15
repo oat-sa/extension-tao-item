@@ -243,7 +243,7 @@ class LocalItemSource implements MediaManagement
         string $parentLink,
         array $acceptableMime,
         int $depth,
-        int $limit
+        int $childrenLimit
     ): array {
         if (!tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));
@@ -263,7 +263,7 @@ class LocalItemSource implements MediaManagement
         $data = [
             'path' => $parentLink,
             'label' => $label,
-            'limit' => $limit,
+            'childrenLimit' => $childrenLimit,
         ];
 
         if ($depth <= 0) {
@@ -286,7 +286,7 @@ class LocalItemSource implements MediaManagement
         foreach ($iterator as $content) {
             if ($content instanceof Directory) {
                 $children[] = $this->searchDirectories($itemDirectory->getRelPath($content), $acceptableMime,
-                    $depth - 1, $limit);
+                    $depth - 1, $childrenLimit);
             } else {
                 $fileInfo = $this->getInfoFromFile($content);
                 if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {

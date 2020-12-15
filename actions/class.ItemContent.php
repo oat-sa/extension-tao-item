@@ -79,14 +79,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         $depth = $params['depth'] ?? 1;
-        $childrenLimit = self::DEFAULT_PAGINATION_LIMIT;
+        $childrenLimit = $this->getPaginationLimit();
         $childrenOffset = $params['childrenOffset'] ?? self::DEFAULT_PAGINATION_OFFSET;
 
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($params['path']);
 
         $data = $asset->getMediaSource()->getDirectories(
-            new QueryObject($asset->getMediaIdentifier(), $filters, $depth, $childrenLimit, $childrenOffset)
+            new QueryObject($asset->getMediaIdentifier(), $filters, $depth, $childrenLimit, (int)$childrenOffset)
         );
 
         foreach ($data['children'] as &$child) {
@@ -281,5 +281,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($urlPrefix);
         return $asset->getMediaSource();
+    }
+
+    private function getContentDetector(): ContentDetector
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(ContentDetector::class);
+    }
+
+    private function getPaginationLimit(): int
+    {
+        return self::DEFAULT_PAGINATION_LIMIT;
     }
 }
