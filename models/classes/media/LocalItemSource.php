@@ -26,7 +26,7 @@ use common_exception_Error;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaManagement;
-use oat\tao\model\media\MediaSource\QueryObject;
+use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use Psr\Http\Message\StreamInterface;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
@@ -58,7 +58,7 @@ class LocalItemSource implements MediaManagement
         return $this->item;
     }
 
-    public function getDirectories(QueryObject $params): array
+    public function getDirectories(DirectorySearchQuery $params): array
     {
         return $this->searchDirectories($params->getParentLink(), $params->getFilter(), $params->getDepth(),
             $params->getChildrenLimit());

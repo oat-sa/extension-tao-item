@@ -24,7 +24,7 @@ use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
 use oat\tao\model\http\ContentDetector;
 use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\MediaSource\QueryObject;
+use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\taoItems\model\media\ItemMediaResolver;
 
 /**
@@ -87,7 +87,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $asset = $resolver->resolve($params['path']);
 
         $data = $asset->getMediaSource()->getDirectories(
-            new QueryObject($asset->getMediaIdentifier(), $filters, $depth, $childrenLimit, (int)$childrenOffset)
+            new DirectorySearchQuery($asset->getMediaIdentifier(), $filters, $depth, $childrenLimit, (int)$childrenOffset)
         );
 
         foreach ($data['children'] as &$child) {
