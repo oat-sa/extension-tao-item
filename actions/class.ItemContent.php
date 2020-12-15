@@ -49,11 +49,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getPsrRequest()->getQueryParams();
 
-        if (!isset($params['uri'])) {
+        if (empty($params['uri'])) {
             throw new common_exception_MissingParameter('uri', __METHOD__);
         }
 
-        if (!isset($params['lang'])) {
+        if (empty($params['lang'])) {
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
 
