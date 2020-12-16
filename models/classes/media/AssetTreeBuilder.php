@@ -31,9 +31,8 @@ class AssetTreeBuilder extends ConfigurableService
     public const SERVICE_ID = 'taoItems/AssetTreeBuilder';
 
     public const OPTION_PAGINATION_LIMIT = 'pagination_limit';
-
-    private const DEFAULT_PAGINATION_LIMIT = 15;
     public const DEFAULT_PAGINATION_OFFSET = 0;
+    private const DEFAULT_PAGINATION_LIMIT = 15;
 
     public function build(DirectorySearchQuery $search): array
     {

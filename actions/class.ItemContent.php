@@ -52,6 +52,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
 
+        if (empty($params['path'])) {
+            throw new common_exception_MissingParameter('path', __METHOD__);
+        }
+
         $itemLang = $params['lang'];
         $path = $params['path'];
         $itemUri = $params['uri'];
