@@ -290,14 +290,19 @@ class LocalItemSource implements MediaManagement
         $total = 0;
         foreach ($iterator as $content) {
             if ($content instanceof Directory) {
-                $children[] = $this->searchDirectories($itemDirectory->getRelPath($content), $acceptableMime,
-                    $depth - 1, $childrenLimit);
-            } else {
-                $fileInfo = $this->getInfoFromFile($content);
-                if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
-                    $children[] = $fileInfo;
-                    $total++;
-                }
+                $children[] = $this->searchDirectories(
+                    $itemDirectory->getRelPath($content),
+                    $acceptableMime,
+                    $depth - 1,
+                    $childrenLimit
+                );
+                continue;
+            }
+
+            $fileInfo = $this->getInfoFromFile($content);
+            if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
+                $children[] = $fileInfo;
+                $total++;
             }
         }
 
