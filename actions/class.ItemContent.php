@@ -23,6 +23,7 @@ use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
 use oat\tao\model\http\ContentDetector;
+use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
@@ -35,6 +36,7 @@ use oat\taoItems\model\media\ItemMediaResolver;
  */
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
+    use HttpJsonResponseTrait;
     use OntologyAwareTrait;
 
     /**
@@ -64,11 +66,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $resolver = new ItemMediaResolver($item, $itemLang);
         $asset = $resolver->resolve($path);
 
-        $search = new DirectorySearchQuery($asset, $itemUri, $itemLang, $filters, $depth, $childrenOffset);
+        $searchQuery = new DirectorySearchQuery($asset, $itemUri, $itemLang, $filters, $depth, $childrenOffset);
 
-        $data = $this->getAssetTreeBuilder()->build($search);
-
-        $this->returnJson($data);
+        $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
     }
 
     /**
