@@ -58,6 +58,11 @@ class LocalItemSource implements MediaManagement
         return $this->item;
     }
 
+    /**
+     * @throws \common_Exception
+     * @throws \tao_models_classes_FileNotFoundException
+     * @throws common_exception_Error
+     */
     public function getDirectories(DirectorySearchQuery $params): array
     {
         return $this->searchDirectories(
@@ -70,8 +75,9 @@ class LocalItemSource implements MediaManagement
 
     /**
      * Get a array representing the tree of directory
-     *
-     * @see \oat\tao\model\media\MediaBrowser::getDirectory
+     * @deprecated  in favor of MediaBrowser::getDirectories
+     * @throws \common_Exception
+     * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
     public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
@@ -272,6 +278,11 @@ class LocalItemSource implements MediaManagement
         return $this->itemService->getItemDirectory($this->item, $this->lang);
     }
 
+    /**
+     * @throws \common_Exception
+     * @throws \tao_models_classes_FileNotFoundException
+     * @throws common_exception_Error
+     */
     private function searchDirectories(
         string $parentLink,
         array $acceptableMime,
