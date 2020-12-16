@@ -268,6 +268,7 @@ class LocalItemSource implements MediaManagement
             'path' => $parentLink,
             'label' => $label,
             'childrenLimit' => $childrenLimit,
+            'total' => 0,
         ];
 
         if ($depth <= 0) {
