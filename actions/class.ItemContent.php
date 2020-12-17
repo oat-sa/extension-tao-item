@@ -34,7 +34,6 @@ use oat\taoItems\model\media\ItemMediaResolver;
  */
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
-    use HttpJsonResponseTrait;
     use OntologyAwareTrait;
 
     /**
@@ -42,7 +41,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function files(): void
     {
-        $params = $this->getPsrRequest()->getQueryParams();
+        $params = $this->getRequest()->getParameters();
 
         if (empty($params['uri'])) {
             throw new common_exception_MissingParameter('uri', __METHOD__);
@@ -70,7 +69,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $searchQuery = new DirectorySearchQuery($asset, $itemUri, $itemLang, $filters, $depth, $childrenOffset);
 
-        $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
+        $this->returnJson($this->getAssetTreeBuilder()->build($searchQuery));
     }
 
     /**

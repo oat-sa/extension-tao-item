@@ -23,6 +23,7 @@ use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\CategoryService;
+use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\render\NoneItemReplacement;
 use oat\taoItems\model\render\ItemAssetsReplacement;
 use oat\taoItems\model\preview\ItemPreviewerService;
@@ -103,5 +104,18 @@ class taoItems_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         }
 
         $this->skip('6.1.0', '6.6.1');
+
+        if ($this->isVersion('6.6.1')) {
+            $this->getServiceManager()->register(
+                AssetTreeBuilder::SERVICE_ID,
+                new AssetTreeBuilder(
+                    [
+                        AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 15,
+                    ]
+                )
+            );
+            $this->setVersion('6.1.1.1');
+        }
+
     }
 }
