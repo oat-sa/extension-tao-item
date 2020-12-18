@@ -26,6 +26,7 @@ use common_exception_Error;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaManagement;
+use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use Psr\Http\Message\StreamInterface;
 use tao_helpers_File;
 use taoItems_models_classes_ItemsService;
@@ -58,68 +59,30 @@ class LocalItemSource implements MediaManagement
     }
 
     /**
+     * @throws \common_Exception
+     * @throws \tao_models_classes_FileNotFoundException
+     * @throws common_exception_Error
+     */
+    public function getDirectories(DirectorySearchQuery $params): array
+    {
+        return $this->searchDirectories(
+            $params->getParentLink(), 
+            $params->getFilter(), 
+            $params->getDepth(),
+            $params->getChildrenLimit()
+        );
+    }
+
+    /**
      * Get a array representing the tree of directory
-     *
-     * @see \oat\tao\model\media\MediaBrowser::getDirectory
-     * @param string $parentLink
-     * @param array $acceptableMime
-     * @param int $depth
-     * @return array
-     * @throws \FileNotFoundException
+     * @deprecated  in favor of MediaBrowser::getDirectories
+     * @throws \common_Exception
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
      */
     public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
     {
-        if (! tao_helpers_File::securityCheck($parentLink)) {
-            throw new common_exception_Error(__('Your path contains error'));
-        }
-
-        $label = rtrim($parentLink, '/');
-        if (strrpos($parentLink, '/') !== false && substr($parentLink, -1) !== '/') {
-            $label = substr($parentLink, strrpos($parentLink, '/') + 1);
-            $parentLink = $parentLink . '/';
-        }
-
-        if (in_array($parentLink, ['','/'])) {
-            $label = $this->getItem()->getLabel();
-            $parentLink = '/';
-        }
-
-        $data = [
-            'path' => $parentLink,
-            'label' => $label
-        ];
-
-        if ($depth <= 0) {
-            $data['parent'] = $parentLink;
-            return $data;
-        }
-
-        $children = [];
-
-        /** @var \oat\oatbox\filesystem\Directory $directory */
-        $itemDirectory = $this->getItemDirectory();
-        if ($parentLink != '/') {
-            $directory = $itemDirectory->getDirectory($parentLink);
-        } else {
-            $directory = $itemDirectory;
-        }
-
-        $iterator = $directory->getFlyIterator();
-        foreach ($iterator as $content) {
-            if ($content instanceof Directory) {
-                $children[] = $this->getDirectory($itemDirectory->getRelPath($content), $acceptableMime, $depth - 1);
-            } else {
-                $fileInfo = $this->getInfoFromFile($content);
-                if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
-                    $children[] = $fileInfo;
-                }
-            }
-        }
-
-        $data['children'] = $children;
-        return $data;
+        return $this->searchDirectories($parentLink, $acceptableMime, $depth, 0);
     }
 
     /**
@@ -304,7 +267,7 @@ class LocalItemSource implements MediaManagement
     /**
      * Get item directory based on $this->item & $this->lang
      *
-     * @return \oat\oatbox\filesystem\Directory
+     * @return Directory
      * @throws \common_Exception
      */
     protected function getItemDirectory()
@@ -313,5 +276,79 @@ class LocalItemSource implements MediaManagement
             $this->itemService = taoItems_models_classes_ItemsService::singleton();
         }
         return $this->itemService->getItemDirectory($this->item, $this->lang);
+    }
+
+    /**
+     * @throws \common_Exception
+     * @throws \tao_models_classes_FileNotFoundException
+     * @throws common_exception_Error
+     */
+    private function searchDirectories(
+        string $parentLink,
+        array $acceptableMime,
+        int $depth,
+        int $childrenLimit
+    ): array {
+        if (!tao_helpers_File::securityCheck($parentLink)) {
+            throw new common_exception_Error(__('Your path contains error'));
+        }
+
+        $label = rtrim($parentLink, '/');
+        if (strrpos($parentLink, '/') !== false && substr($parentLink, -1) !== '/') {
+            $label = substr($parentLink, strrpos($parentLink, '/') + 1);
+            $parentLink = $parentLink . '/';
+        }
+
+        if (in_array($parentLink, ['', '/'])) {
+            $label = $this->getItem()->getLabel();
+            $parentLink = '/';
+        }
+
+        $data = [
+            'path' => $parentLink,
+            'label' => $label,
+            'childrenLimit' => $childrenLimit,
+            'total' => 0,
+        ];
+
+        if ($depth <= 0) {
+            $data['parent'] = $parentLink;
+            return $data;
+        }
+
+        $children = [];
+
+        /** @var Directory $directory */
+        $itemDirectory = $this->getItemDirectory();
+        if ($parentLink != '/') {
+            $directory = $itemDirectory->getDirectory($parentLink);
+        } else {
+            $directory = $itemDirectory;
+        }
+
+        $iterator = $directory->getFlyIterator();
+        $total = 0;
+        foreach ($iterator as $content) {
+            if ($content instanceof Directory) {
+                $children[] = $this->searchDirectories(
+                    $itemDirectory->getRelPath($content),
+                    $acceptableMime,
+                    $depth - 1,
+                    $childrenLimit
+                );
+                continue;
+            }
+
+            $fileInfo = $this->getInfoFromFile($content);
+            if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
+                $children[] = $fileInfo;
+                $total++;
+            }
+        }
+
+        $data['children'] = $children;
+        $data['total'] = $total;
+
+        return $data;
     }
 }

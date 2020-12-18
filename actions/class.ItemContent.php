@@ -23,72 +23,56 @@ use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
 use oat\tao\model\http\ContentDetector;
+use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaBrowser;
+use oat\tao\model\media\mediaSource\DirectorySearchQuery;
+use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\ItemMediaResolver;
 
 /**
  * Items Content Controller provide access to the files of an item
  *
  * @author Joel Bout, <joel@taotesting.com>
- * @package taoItems
  */
 class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
+    use HttpJsonResponseTrait;
     use OntologyAwareTrait;
 
     /**
-     * Returns a json encoded array describign a directory
-     *
      * @throws common_exception_MissingParameter
-     * @return string
      */
-    public function files()
+    public function files(): void
     {
-        if (!$this->hasRequestParameter('uri')) {
+        $params = $this->getPsrRequest()->getQueryParams();
+
+        if (empty($params['uri'])) {
             throw new common_exception_MissingParameter('uri', __METHOD__);
         }
-        $itemUri = $this->getRequestParameter('uri');
-        $item = $this->getResource($itemUri);
 
-        if (!$this->hasRequestParameter('lang')) {
+        if (empty($params['lang'])) {
             throw new common_exception_MissingParameter('lang', __METHOD__);
         }
-        $itemLang = $this->getRequestParameter('lang');
 
-        //build filters
-        $filters = [];
-        if ($this->hasRequestParameter('filters')) {
-            $filterParameter = $this->getRequestParameter('filters');
-            if (is_array($filterParameter)) {
-                foreach ($filterParameter as $filter) {
-                    if (preg_match('/\/\*/', $filter['mime'])) {
-                        $this->logWarning('Stars mime type are not yet supported, filter "' . $filter['mime'] . '" will fail');
-                    }
-                    $filters[] = $filter['mime'];
-                }
-            } else {
-                if (preg_match('/\/\*/', $filterParameter)) {
-                    $this->logWarning('Stars mime type are not yet supported, filter "' . $filterParameter . '" will fail');
-                }
-                $filters = array_map('trim', explode(',', $filterParameter));
-            }
+        if (empty($params['path'])) {
+            throw new common_exception_MissingParameter('path', __METHOD__);
         }
-        $depth = $this->hasRequestParameter('depth') ? $this->getRequestParameter('depth') : 1;
+
+        $itemLang = $params['lang'];
+        $path = $params['path'];
+        $itemUri = $params['uri'];
+        $depth = (int)($params['depth'] ?? 1);
+        $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
+
+        $item = $this->getResource($itemUri);
+        $filters = $this->buildFilters($params);
+
         $resolver = new ItemMediaResolver($item, $itemLang);
-        $asset = $resolver->resolve($this->getRequestParameter('path'));
-        $data = $asset->getMediaSource()->getDirectory($asset->getMediaIdentifier(), $filters, $depth);
-        foreach ($data['children'] as &$child) {
-            if (isset($child['parent'])) {
-                $child['url'] = \tao_helpers_Uri::url(
-                    'files',
-                    'ItemContent',
-                    'taoItems',
-                    ['uri' => $itemUri,'lang' => $itemLang, '1' => $child['parent']]
-                );
-                unset($child['parent']);
-            }
-        }
-        $this->returnJson($data);
+        $asset = $resolver->resolve($path);
+
+        $searchQuery = new DirectorySearchQuery($asset, $itemUri, $itemLang, $filters, $depth, $childrenOffset);
+
+        $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
     }
 
     /**
@@ -266,9 +250,38 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         return $asset->getMediaSource();
     }
 
+    private function buildFilters(array $params): array
+    {
+        $filters = [];
+        if (isset($params['filters'])) {
+            $filterParameter = $params['filters'];
+            if (is_array($filterParameter)) {
+                foreach ($filterParameter as $filter) {
+                    if (preg_match('/\/\*/', $filter['mime'])) {
+                        $this->logWarning('Stars mime type are not yet supported, filter "' . $filter['mime'] . '" will fail');
+                    }
+                    $filters[] = $filter['mime'];
+                }
+            } else {
+                if (preg_match('/\/\*/', $filterParameter)) {
+                    $this->logWarning('Stars mime type are not yet supported, filter "' . $filterParameter . '" will fail');
+                }
+                $filters = array_map('trim', explode(',', $filterParameter));
+            }
+        }
+        return $filters;
+    }
+
     private function getContentDetector(): ContentDetector
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(ContentDetector::class);
     }
+
+    /** @noinspection PhpIncompatibleReturnTypeInspection */
+    private function getAssetTreeBuilder(): AssetTreeBuilder
+    {
+        return  $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
+    }
+
 }
