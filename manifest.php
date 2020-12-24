@@ -39,7 +39,7 @@ return [
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '10.19.0',
+    'version' => '10.18.1',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => [
         'taoBackOffice' => '>=3.0.0',
