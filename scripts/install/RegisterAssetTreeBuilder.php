@@ -23,9 +23,6 @@ namespace oat\taoItems\scripts\install;
 use oat\oatbox\extension\InstallAction;
 use oat\tao\model\ClientLibRegistry;
 use oat\tao\model\asset\AssetService;
-
-namespace oat\taoItems\scripts\install;
-
 use oat\taoItems\model\media\AssetTreeBuilder;
 
 class RegisterAssetTreeBuilder extends InstallAction
