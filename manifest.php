@@ -19,6 +19,8 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *
  */
+
+use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 
@@ -35,12 +37,12 @@ return array(
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '6.6.2',
+    'version' => '6.6.1.1',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => array(
         'taoBackOffice' => '>=3.0.0',
         'generis' => '>=8.0.0',
-        'tao' => '>=24.0.0'
+        'tao' => '>=27.1.1.2'
     ),
     'models' => array(
 		'http://www.tao.lu/Ontologies/TAOItem.rdf'
@@ -54,7 +56,8 @@ return array(
 		),
 		'php'	=> array(
             CreateItemDirectory::class,
-            RegisterCategoryService::class
+            RegisterAssetTreeBuilder::class,
+            RegisterCategoryService::class,
 		)
 	),
     'update' => 'taoItems_scripts_update_Updater',
