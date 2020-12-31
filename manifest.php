@@ -22,6 +22,7 @@
  */
 
 use oat\tao\model\user\TaoRoles;
+use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 use oat\taoItems\scripts\install\RegisterCategoryService;
@@ -39,7 +40,7 @@ return [
     'label' => 'Item core extension',
     'description' => 'TAO Items extension',
     'license' => 'GPL-2.0',
-    'version' => '10.18.0',
+    'version' => '10.18.2',
     'author' => 'Open Assessment Technologies, CRP Henri Tudor',
     'requires' => [
         'taoBackOffice' => '>=3.0.0',
@@ -61,6 +62,7 @@ return [
             RegisterCategoryService::class,
             RegisterNpmPaths::class,
             RegisterItemPreviewerRegistryService::class,
+            RegisterAssetTreeBuilder::class,
         ],
     ],
     'update' => 'taoItems_scripts_update_Updater',
