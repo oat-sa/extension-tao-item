@@ -49,10 +49,14 @@ abstract class ItemPacker
 
     protected $nestedResourcesInclusion;
 
-    public function __construct($assetEncoders = [], $nestedResourcesInclusion = true)
+    /** @var bool */
+    protected $skipValidation;
+
+    public function __construct($assetEncoders = [], $nestedResourcesInclusion = true, bool $skipValidation = false)
     {
         $this->assetEncoders = array_merge($this->assetEncoders, $assetEncoders);
         $this->nestedResourcesInclusion = $nestedResourcesInclusion;
+        $this->skipValidation = $skipValidation;
     }
 
     /**
@@ -109,5 +113,10 @@ abstract class ItemPacker
     public function setNestedResourcesInclusion($nestedResourcesInclusion)
     {
         $this->nestedResourcesInclusion = $nestedResourcesInclusion;
+    }
+
+    public function setSkipValidation(bool $skipValidation): void
+    {
+        $this->skipValidation = $skipValidation;
     }
 }

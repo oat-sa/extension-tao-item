@@ -58,17 +58,21 @@ class Packer implements ServiceLocatorAwareInterface
      */
     private $itemService;
 
+    /** @var bool */
+    private $skipValidation;
+
     /**
      * Create a packer for an item
      *
      * @param core_kernel_classes_Resource $item
      * @param string $lang
      */
-    public function __construct(core_kernel_classes_Resource $item, $lang = '')
+    public function __construct(core_kernel_classes_Resource $item, $lang = '', bool $skipValidation = false)
     {
         $this->item = $item;
         $this->lang = $lang;
         $this->itemService = taoItems_models_classes_ItemsService::singleton();
+        $this->skipValidation = $skipValidation;
     }
 
     /**
@@ -117,6 +121,7 @@ class Packer implements ServiceLocatorAwareInterface
 
             $itemPacker->setAssetEncoders($assetEncoders);
             $itemPacker->setNestedResourcesInclusion($nestedResourcesInclusion);
+            $itemPacker->setSkipValidation($this->skipValidation);
 
             //then create the pack
             $itemPack = $itemPacker->packItem($this->item, $this->lang, $this->getStorageDirectory());
