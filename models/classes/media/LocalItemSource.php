@@ -205,8 +205,9 @@ class LocalItemSource implements MediaManagement
 
         $file = $this->getItemDirectory()->getDirectory($parent)->getFile($fileName);
         $writeSuccess = $file->put($resource);
-        fclose($resource);
-
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
         if (! $writeSuccess) {
             throw new \common_Exception('Unable to write file ("' . $fileName . '")');
         }
