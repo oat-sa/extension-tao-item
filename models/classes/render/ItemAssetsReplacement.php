@@ -22,10 +22,6 @@
 
 namespace oat\taoItems\model\render;
 
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use oat\awsTools\AwsClient;
-use oat\oatbox\service\ConfigurableService;
-
 /**
  * Interface that define a post processing for item assets, CDN Signature, url modification ...
  *
