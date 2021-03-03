@@ -50,7 +50,10 @@ class taoItems_actions_ItemImport extends tao_actions_Import
 
         foreach (array_keys($returnValue) as $key) {
             if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
-                $importer = new CsvImporter();
+                //@TODO @FIXME Inject this in the proper way
+                $importer = new \oat\taoQtiItem\model\import\ItemCsvImporter();
+                $importer->setServiceLocator($this->getServiceLocator());
+
                 $returnValue[$key] = $importer;
             }
         }
