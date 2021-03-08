@@ -18,10 +18,12 @@
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *               2012-2018 (update and modification) Open Assessment Technologies SA;
+ *               2012-2021 (update and modification) Open Assessment Technologies SA;
  */
 
-use oat\taoItems\model\CsvImporter;
+declare(strict_types=1);
+
+use oat\taoQtiItem\model\import\CsvItemImporter;
 
 /**
  * This controller provide the actions to import items
@@ -46,17 +48,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import
 
     protected function getAvailableImportHandlers()
     {
-        $returnValue = parent::getAvailableImportHandlers();
-
-        foreach (array_keys($returnValue) as $key) {
-            if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
-                //@TODO @FIXME Inject this in the proper way
-                $importer = new \oat\taoQtiItem\model\import\CsvItemImporter();
-                $importer->setServiceLocator($this->getServiceLocator());
-
-                $returnValue[$key] = $importer;
-            }
-        }
+        $returnValue = $this->replaceAvailableImportHandlers();
 
         $itemModelClass = $this->getClass(taoItems_models_classes_itemModel::CLASS_URI_MODELS);
         foreach ($itemModelClass->getInstances() as $model) {
@@ -65,6 +57,22 @@ class taoItems_actions_ItemImport extends tao_actions_Import
                 foreach ($impl->getImportHandlers() as $handler) {
                     array_unshift($returnValue, $handler);
                 }
+            }
+        }
+
+        return $returnValue;
+    }
+
+    private function replaceAvailableImportHandlers(): array
+    {
+        $returnValue = parent::getAvailableImportHandlers();
+
+        foreach (array_keys($returnValue) as $key) {
+            if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
+                $importer = new CsvItemImporter();
+                $importer->setServiceLocator($this->getServiceLocator());
+
+                $returnValue[$key] = $importer;
             }
         }
 
