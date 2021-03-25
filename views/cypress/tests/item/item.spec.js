@@ -22,13 +22,11 @@ describe('Items', () => {
     const newItemName = itemData.name;
 
     /**
-     * Set up the server & routes
      * Log in
      * Visit the page
      */
     beforeEach(() => {
         cy.setupServer();
-        cy.addTreeRoutes();
 
         cy.loginAsAdmin();
 
@@ -67,8 +65,6 @@ describe('Items', () => {
 
             cy.get(this.locators.actions.deleteItem).click();
             cy.get('.modal-body [data-control="ok"]').click();
-
-            cy.wait('@deleteItem');
         });
 
         it('has correct action buttons when item is selected', function() {

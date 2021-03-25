@@ -22,13 +22,11 @@ describe('Classes', () => {
     const newClassName = classData.name;
 
     /**
-     * - Set up the server & routes
      * - Log in
      * - Visit the page
      */
     beforeEach(() => {
         cy.setupServer();
-        cy.addTreeRoutes();
 
         cy.loginAsAdmin();
 
@@ -67,8 +65,6 @@ describe('Classes', () => {
 
             cy.get(this.locators.actions.deleteClass).click('center');
             cy.get('.modal-body [data-control="ok"]').click();
-
-            cy.wait('@deleteClass');
 
             cy.get(this.locators.itemsRootClass)
                 .contains(newClassName)
