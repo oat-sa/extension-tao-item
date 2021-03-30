@@ -260,6 +260,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
+     * View a class properties
+     * @requiresRight id READ
+     */
+    public function viewClassLabel()
+    {
+        parent::editClassLabel();
+    }
+
+
+    /**
      * delete an item
      * called via ajax
      * @requiresRight id WRITE
