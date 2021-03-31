@@ -154,6 +154,15 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
+     * view class label action
+     * @requiresRight classUri READ
+     */
+    public function viewClassLabel()
+    {
+        return parent::editClassLabel(true);
+    }
+
+    /**
      * edit an item instance
      * @requiresRight id READ
      */
