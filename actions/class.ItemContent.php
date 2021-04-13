@@ -26,6 +26,7 @@ use oat\tao\model\http\ContentDetector;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
+use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\ItemMediaResolver;
 
@@ -205,9 +206,15 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $resolver = new ItemMediaResolver($item, $itemLang);
 
         $asset = $resolver->resolve($params['path']);
-        $stream = $asset->getMediaSource()->getFileStream($asset->getMediaIdentifier());
+        $mediaSource = $asset->getMediaSource();
 
-        $info = $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
+        if ($mediaSource instanceof ProcessedFileStreamAware) {
+            $stream = $mediaSource->getProcessedFileStream($asset->getMediaIdentifier());
+        } else {
+            $stream = $mediaSource->getFileStream($asset->getMediaIdentifier());
+        }
+
+        $info = $mediaSource->getFileInfo($asset->getMediaIdentifier());
 
         $mime = $info['mime'] !== 'application/qti+xml' ? $info['mime'] : null;
 
