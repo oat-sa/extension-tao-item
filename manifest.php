@@ -22,6 +22,8 @@
  */
 
 use oat\tao\model\user\TaoRoles;
+use oat\taoItems\model\user\TaoItemsRoles;
+use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\scripts\install\CreateItemDirectory;
@@ -62,11 +64,36 @@ return [
     'update' => 'taoItems_scripts_update_Updater',
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
     'acl' => [
-        ['grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', ['ext' => 'taoItems']],
-        ['grant', 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'],
-        ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', ['ext' => 'taoItems', 'mod' => 'ItemRunner']],
-        ['grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']],
-        ['grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
+        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', ['ext' => 'taoItems']],
+        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'],
+        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', ['ext' => 'taoItems', 'mod' => 'ItemRunner']],
+        [AccessRule::GRANT, TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']],
+        [AccessRule::GRANT, TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'viewClassLabel']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'getOntologyData']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_EDITOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_CREATOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'addSubClass']
+        ],
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
