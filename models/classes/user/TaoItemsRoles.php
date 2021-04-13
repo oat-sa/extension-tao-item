@@ -24,6 +24,9 @@ namespace oat\taoItems\model\user;
 
 interface TaoItemsRoles
 {
+    public const ITEM_AUTHOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor';
+    public const ITEM_AUTHOR_ABSTRACT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor';
+    public const ITEM_MANAGER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole';
     public const ITEM_CLASS_NAVIGATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole';
     public const ITEM_CLASS_EDITOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole';
     public const ITEM_CLASS_CREATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole';

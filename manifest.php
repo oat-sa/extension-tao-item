@@ -24,16 +24,15 @@
 use oat\tao\model\user\TaoRoles;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
-use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 use oat\taoItems\scripts\install\RegisterCategoryService;
+use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- *
  */
 $extpath = __DIR__ . DIRECTORY_SEPARATOR;
 
@@ -62,13 +61,33 @@ return [
         ],
     ],
     'update' => 'taoItems_scripts_update_Updater',
-    'managementRole' => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole',
+    'managementRole' => TaoItemsRoles::ITEM_MANAGER,
     'acl' => [
-        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole', ['ext' => 'taoItems']],
-        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor', 'taoItems_actions_ItemContent'],
-        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole', ['ext' => 'taoItems', 'mod' => 'ItemRunner']],
-        [AccessRule::GRANT, TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']],
-        [AccessRule::GRANT, TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_MANAGER,
+            ['ext' => 'taoItems']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
+            'taoItems_actions_ItemContent'
+        ],
+        [
+            AccessRule::GRANT,
+            TaoRoles::DELIVERY,
+            ['ext' => 'taoItems', 'mod' => 'ItemRunner']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoRoles::REST_PUBLISHER,
+            ['ext' => 'taoItems', 'mod' => 'RestItems']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoRoles::REST_PUBLISHER,
+            ['ext' => 'taoItems', 'mod' => 'RestFormItem']
+        ],
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
@@ -102,10 +121,10 @@ return [
     ],
     'constants' => [
         # actions directory
-        "DIR_ACTIONS" => $extpath . "actions" . DIRECTORY_SEPARATOR,
+        'DIR_ACTIONS' => $extpath . 'actions' . DIRECTORY_SEPARATOR,
 
         # views directory
-        "DIR_VIEWS" => $extpath . "views" . DIRECTORY_SEPARATOR,
+        'DIR_VIEWS' => $extpath . 'views' . DIRECTORY_SEPARATOR,
 
         # default module name
         'DEFAULT_MODULE_NAME' => 'Items',
