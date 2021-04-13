@@ -142,12 +142,12 @@
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Class Editor]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Class Editor Role]]></rdfs:comment>
-    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#ItemClassNavigatorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Class Creator]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Class Creator Role]]></rdfs:comment>
-    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#ItemClassEditorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole"/>
   </rdf:Description>
 </rdf:RDF>
