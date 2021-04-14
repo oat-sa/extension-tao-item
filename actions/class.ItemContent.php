@@ -55,7 +55,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $filters = $this->buildFilters($params);
         $asset = $this->getMediaAssetByPSRQueryParams();
 
-        $searchQuery = new DirectorySearchQuery($asset, $params['uri'], $params['lang'], $filters, $depth, $childrenOffset);
+        $searchQuery = new DirectorySearchQuery(
+            $asset,
+            $params['uri'],
+            $params['lang'],
+            $filters,
+            $depth,
+            $childrenOffset
+        );
 
         $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
     }
@@ -74,7 +81,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $found = false;
         }
 
-        $this->setSuccessJsonResponse(['exists' => $found]);
+        $formatter = $this->getResponseFormatter()
+            ->withJsonHeader()
+            ->withBody(['exists' => $found]);
+        $this->setResponse($formatter->format($this->getPsrResponse()));
     }
 
     /**
@@ -82,6 +92,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function upload(): void
     {
+        $formatter = $this->getResponseFormatter()
+            ->withJsonHeader();
+
         //as upload may be called multiple times, we remove the session lock as soon as possible
         try {
             session_write_close();
@@ -148,13 +161,15 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 }
             }
 
-            $this->setSuccessJsonResponse($fileData);
+            $formatter->withBody($fileData);
         } catch (PermissionException | FileUploadException $e) {
-            $this->setErrorJsonResponse($e->getMessage());
+            $formatter->withBody(['error' => $e->getMessage()]);
         } catch (common_Exception $e) {
             $this->logWarning($e->getMessage());
-            $this->setErrorJsonResponse(_('Unable to upload file'));
+            $formatter->withBody(['error' => _('Unable to upload file')]);
         }
+
+        $this->setResponse($formatter->format($this->getPsrResponse()));
     }
 
     /**
@@ -182,7 +197,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $asset = $this->getMediaAssetByPSRQueryParams();
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
-        $this->setSuccessJsonResponse(['deleted' => $deleted]);
+        $formatter = $this->getResponseFormatter()
+            ->withJsonHeader()
+            ->withBody(['deleted' => $deleted]);
+        $this->setResponse($formatter->format($this->getPsrResponse()));
     }
 
     /**
