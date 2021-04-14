@@ -91,7 +91,12 @@ return [
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'viewClassLabel']
+            ['ext' => 'tao', 'mod' => 'Main', 'act' => 'index']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel']
         ],
         [
             AccessRule::GRANT,
@@ -102,11 +107,6 @@ return [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index']
-        ],
-        [
-            AccessRule::GRANT,
-            TaoItemsRoles::ITEM_CLASS_EDITOR,
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel']
         ],
         [
             AccessRule::GRANT,

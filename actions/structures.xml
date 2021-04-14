@@ -18,7 +18,7 @@
                     />
                 </trees>
                 <actions allowClassActions="true">
-                    <action id="item-class-properties" name="Properties" url="/taoItems/Items/viewClassLabel" group="content" context="class">
+                    <action id="item-class-properties" name="Properties" url="/taoItems/Items/editClassLabel" group="content" context="class">
                         <icon id="icon-edit"/>
                     </action>
                     <action id="item-class-schema" name="Manage Schema" url="/taoItems/Items/editItemClass" group="content" context="class">

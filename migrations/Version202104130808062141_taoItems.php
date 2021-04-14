@@ -33,12 +33,10 @@ final class Version202104130808062141_taoItems extends AbstractMigration
 {
     private const RULES = [
         TaoItemsRoles::ITEM_CLASS_NAVIGATOR => [
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'viewClassLabel'],
+            ['ext' => 'tao', 'mod' => 'Main', 'act' => 'index'],
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel'],
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'getOntologyData'],
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index'],
-        ],
-        TaoItemsRoles::ITEM_CLASS_EDITOR => [
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel'],
         ],
         TaoItemsRoles::ITEM_CLASS_CREATOR => [
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'addSubClass'],
