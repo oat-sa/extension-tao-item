@@ -53,7 +53,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
 
         $filters = $this->buildFilters($params);
-        $asset = $this->getMediaAssetByPSRQueryParams();
+        $asset = $this->getMediaAssetByPSRRequestQueryParams();
 
         $searchQuery = new DirectorySearchQuery(
             $asset,
@@ -74,7 +74,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     public function fileExists(): void
     {
         try {
-            $asset = $this->getMediaAssetByPSRQueryParams();
+            $asset = $this->getMediaAssetByPSRRequestQueryParams();
             $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
             $found = true;
         } catch (FileNotFoundException $exception) {
@@ -177,7 +177,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function download(): void
     {
-        $asset = $this->getMediaAssetByPSRQueryParams();
+        $asset = $this->getMediaAssetByPSRRequestQueryParams();
         $mediaSource = $asset->getMediaSource();
         $stream = $this->getMediaSourceFileStream($mediaSource, $asset);
 
@@ -194,7 +194,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete(): void
     {
-        $asset = $this->getMediaAssetByPSRQueryParams();
+        $asset = $this->getMediaAssetByPSRRequestQueryParams();
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
         $formatter = $this->getResponseFormatter()
@@ -206,7 +206,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     /**
      * @throws MissingParameterException|TaoMediaException
      */
-    protected function getMediaAssetByPSRQueryParams(): MediaAsset
+    protected function getMediaAssetByPSRRequestQueryParams(): MediaAsset
     {
         $params = $this->getPsrRequest()->getQueryParams();
 
