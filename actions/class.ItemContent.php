@@ -30,6 +30,7 @@ use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\ItemMediaResolver;
+use Psr\Http\Message\StreamInterface;
 use common_exception_MissingParameter as MissingParameterException;
 use tao_models_classes_FileNotFoundException as FileNotFoundException;
 
@@ -48,17 +49,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function files(): void
     {
-        $params = $this->getPsrRequest()->getQueryParams();
+        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
+        ['uri' => $uri, 'lang' => $lang, 'path' => $path] = $params;
+
         $depth = (int)($params['depth'] ?? 1);
         $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
 
         $filters = $this->buildFilters($params);
-        $asset = $this->getMediaAssetByPSRRequestQueryParams();
 
         $searchQuery = new DirectorySearchQuery(
-            $asset,
-            $params['uri'],
-            $params['lang'],
+            $this->resolveAsset($uri, $path, $lang),
+            $uri,
+            $lang,
             $filters,
             $depth,
             $childrenOffset
@@ -74,7 +76,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     public function fileExists(): void
     {
         try {
-            $asset = $this->getMediaAssetByPSRRequestQueryParams();
+            $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
+            $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+
             $asset->getMediaSource()->getFileInfo($asset->getMediaIdentifier());
             $found = true;
         } catch (FileNotFoundException $exception) {
@@ -98,26 +102,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         //as upload may be called multiple times, we remove the session lock as soon as possible
         try {
             session_write_close();
-            $params = $this->getPsrRequest()->getQueryParams();
 
-            if (empty($params['uri'])) {
-                throw new MissingParameterException('uri', __METHOD__);
-            }
-
-            if (empty($params['lang'])) {
-                throw new MissingParameterException('lang', __METHOD__);
-            }
-
-            if (empty($params['relPath'])) {
-                throw new MissingParameterException('relPath', __METHOD__);
-            }
-
-            if (empty($params['filters'])) {
-                throw new MissingParameterException('filters', __METHOD__);
-            }
-
-            $resolver = new ItemMediaResolver($params['uri'], $params['lang']);
-            $asset = $resolver->resolve($params['relPath']);
+            $params = $this->getRequiredQueryParams('uri', 'lang', 'relPath', 'filters');
+            ['uri' => $uri, 'lang' => $lang, 'relPath' => $relPath, 'filters' => $filters] = $params;
+            $asset = $this->resolveAsset($uri, $relPath, $lang);
 
             $file = tao_helpers_Http::getUploadedFile('content');
             $fileTmpName = $file['tmp_name'] . '_' . $file['name'];
@@ -127,9 +115,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
 
             $mime = tao_helpers_File::getMimeType($fileTmpName);
-            if (is_string($params['filters'])) {
+            if (is_string($filters)) {
                 // the mime type is part of the $filters
-                $filters = explode(',', $params['filters']);
+                $filters = explode(',', $filters);
                 if ((in_array($mime, $filters))) {
                     $fileData = $asset->getMediaSource()->add(
                         $fileTmpName,
@@ -142,10 +130,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             } else {
                 $valid = false;
                 // OR the extension is part of the filter and it correspond to the mime type
-                foreach ($params['filters'] as $filter) {
+                $fileExtension = tao_helpers_File::getFileExtention($fileTmpName);
+                foreach ($filters as $filter) {
                     if (
                         $filter['mime'] === $mime &&
-                        (!isset($filter['extension']) || $filter['extension'] === tao_helpers_File::getFileExtention($fileTmpName))
+                        (!isset($filter['extension']) || $filter['extension'] === $fileExtension)
                     ) {
                         $valid = true;
                     }
@@ -177,7 +166,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function download(): void
     {
-        $asset = $this->getMediaAssetByPSRRequestQueryParams();
+        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
+        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+
         $mediaSource = $asset->getMediaSource();
         $stream = $this->getMediaSourceFileStream($mediaSource, $asset);
 
@@ -194,7 +185,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete(): void
     {
-        $asset = $this->getMediaAssetByPSRRequestQueryParams();
+        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
+        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
         $formatter = $this->getResponseFormatter()
@@ -204,29 +197,31 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     }
 
     /**
-     * @throws MissingParameterException|TaoMediaException
+     * @throws TaoMediaException
      */
-    protected function getMediaAssetByPSRRequestQueryParams(): MediaAsset
+    private function resolveAsset(string $url, string $path, string $lang): MediaAsset
+    {
+        $item = $this->getResource($url);
+        $resolver = new ItemMediaResolver($item, $lang);
+
+        return $resolver->resolve($path);
+    }
+
+    /**
+     * Returns Query params if mandatory params not empty
+     *
+     * @throws MissingParameterException
+     */
+    private function getRequiredQueryParams(string ...$requiredKeys): array
     {
         $params = $this->getPsrRequest()->getQueryParams();
-
-        if (empty($params['uri'])) {
-            throw new MissingParameterException('uri', __METHOD__);
+        foreach ($requiredKeys as $key) {
+            if (!array_key_exists($key, $params) || empty($params[$key])) {
+                throw new MissingParameterException($key, __METHOD__);
+            }
         }
 
-        if (empty($params['lang'])) {
-            throw new MissingParameterException('lang', __METHOD__);
-        }
-
-        if (empty($params['path'])) {
-            throw new MissingParameterException('path', __METHOD__);
-        }
-
-        $item = $this->getResource($params['uri']);
-
-        $resolver = new ItemMediaResolver($item, $params['lang']);
-
-        return $resolver->resolve($params['path']);
+        return $params;
     }
 
     private function buildFilters(array $params): array
@@ -237,13 +232,17 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             if (is_array($filterParameter)) {
                 foreach ($filterParameter as $filter) {
                     if (preg_match('/\/\*/', $filter['mime'])) {
-                        $this->logWarning('Stars mime type are not yet supported, filter "' . $filter['mime'] . '" will fail');
+                        $this->logWarning(
+                            'Stars mime type are not yet supported, filter "' . $filter['mime'] . '" will fail'
+                        );
                     }
                     $filters[] = $filter['mime'];
                 }
             } else {
                 if (preg_match('/\/\*/', $filterParameter)) {
-                    $this->logWarning('Stars mime type are not yet supported, filter "' . $filterParameter . '" will fail');
+                    $this->logWarning(
+                        'Stars mime type are not yet supported, filter "' . $filterParameter . '" will fail'
+                    );
                 }
                 $filters = array_map('trim', explode(',', $filterParameter));
             }
@@ -259,7 +258,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     /**
      * @throws FileNotFoundException
      */
-    private function getMediaSourceFileStream(MediaBrowser $mediaSource, MediaAsset $asset)
+    private function getMediaSourceFileStream(MediaBrowser $mediaSource, MediaAsset $asset): StreamInterface
     {
         if ($mediaSource instanceof ProcessedFileStreamAware) {
             return $mediaSource->getProcessedFileStream($asset->getMediaIdentifier());
