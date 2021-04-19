@@ -22,12 +22,14 @@ declare(strict_types=1);
 
 namespace oat\taoItems\migrations;
 
+use taoItems_actions_Items;
 use Doctrine\DBAL\Schema\Schema;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\scripts\update\OntologyUpdater;
-use oat\tao\model\accessControl\func\AclProxy;
-use oat\tao\model\accessControl\func\AccessRule;
+use oat\tao\scripts\tools\accessControl\ApplyRules;
+use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
+use oat\tao\scripts\tools\accessControl\SetActionAccessPermissions;
 
 final class Version202104130808062141_taoItems extends AbstractMigration
 {
@@ -45,35 +47,50 @@ final class Version202104130808062141_taoItems extends AbstractMigration
 
     public function getDescription(): string
     {
-        return 'Create new class for item roles, new roles for item classes and assign permissions to them';
+        return 'Create new item class roles and assign permissions to them';
     }
 
     public function up(Schema $schema): void
     {
         OntologyUpdater::syncModels();
 
-        foreach (self::RULES as $role => $rules) {
-            foreach ($rules as $rule) {
-                AclProxy::applyRule($this->createAclRulesForRole($role, $rule));
-            }
-        }
+        $applyRules = $this->propagate(new ApplyRules());
+        $applyRules([
+            '--' . ApplyRules::OPTION_RULES, self::RULES,
+        ]);
+
+        $setActionAccessPermissions = $this->propagate(new SetActionAccessPermissions());
+        $setActionAccessPermissions([
+            '--' . SetActionAccessPermissions::OPTION_PERMISSIONS, [
+                taoItems_actions_Items::class => [
+                    'editClassLabel' => [
+                        TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::READ,
+                        TaoItemsRoles::ITEM_CLASS_EDITOR => ActionAccessControl::WRITE,
+                    ],
+                ],
+            ],
+        ]);
     }
 
     public function down(Schema $schema): void
     {
-        foreach (self::RULES as $role => $rules) {
-            foreach ($rules as $rule) {
-                AclProxy::revokeRule($this->createAclRulesForRole($role, $rule));
-            }
-        }
-    }
+        $applyRules = $this->propagate(new ApplyRules());
+        $applyRules([
+            '--' . ApplyRules::OPTION_REVOKE,
+            '--' . ApplyRules::OPTION_RULES, self::RULES,
+        ]);
 
-    private function createAclRulesForRole(string $role, array $rule): AccessRule
-    {
-        return new AccessRule(
-            AccessRule::GRANT,
-            $role,
-            $rule
-        );
+        $setActionAccessPermissions = $this->propagate(new SetActionAccessPermissions());
+        $setActionAccessPermissions([
+            '--' . SetActionAccessPermissions::OPTION_ACTION, SetActionAccessPermissions::ACTION_REMOVE,
+            '--' . SetActionAccessPermissions::OPTION_PERMISSIONS, [
+                taoItems_actions_Items::class => [
+                    'editClassLabel' => [
+                        TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
+                        TaoItemsRoles::ITEM_CLASS_EDITOR,
+                    ],
+                ],
+            ],
+        ]);
     }
 }
