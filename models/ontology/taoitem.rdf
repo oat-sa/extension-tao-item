@@ -129,14 +129,14 @@
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole">
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#UserRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Role]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Item User Role Class]]></rdfs:comment>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Role Class]]></rdfs:comment>
   </rdf:Description>
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Class Navigator]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Class Navigator Role]]></rdfs:comment>
-    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#BackOfficeRole"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
