@@ -20,30 +20,17 @@
 
 declare(strict_types=1);
 
-namespace oat\taoItems\migrations;
+namespace oat\taoItems\scripts\install;
 
 use taoItems_actions_Items;
-use Doctrine\DBAL\Schema\Schema;
+use oat\oatbox\extension\InstallAction;
 use oat\taoItems\model\user\TaoItemsRoles;
-use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\ActionAccessControl;
-use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\tools\accessControl\SetRolesAccess;
 
-final class Version202104130808062141_taoItems extends AbstractMigration
+class SetRolesPermissions extends InstallAction
 {
     private const CONFIG = [
-        SetRolesAccess::CONFIG_RULES => [
-            TaoItemsRoles::ITEM_CLASS_NAVIGATOR => [
-                ['ext' => 'tao', 'mod' => 'Main', 'act' => 'index'],
-                ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel'],
-                ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'getOntologyData'],
-                ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index'],
-            ],
-            TaoItemsRoles::ITEM_CLASS_CREATOR => [
-                ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'addSubClass'],
-            ],
-        ],
         SetRolesAccess::CONFIG_PERMISSIONS => [
             taoItems_actions_Items::class => [
                 'editClassLabel' => [
@@ -54,26 +41,10 @@ final class Version202104130808062141_taoItems extends AbstractMigration
         ],
     ];
 
-    public function getDescription(): string
-    {
-        return 'Create new item class roles and assign permissions to them';
-    }
-
-    public function up(Schema $schema): void
-    {
-        OntologyUpdater::syncModels();
-
-        $setRolesAccess = $this->propagate(new SetRolesAccess());
-        $setRolesAccess([
-            '--' . SetRolesAccess::OPTION_CONFIG, self::CONFIG,
-        ]);
-    }
-
-    public function down(Schema $schema): void
+    public function __invoke($params = [])
     {
         $setRolesAccess = $this->propagate(new SetRolesAccess());
         $setRolesAccess([
-            '--' . SetRolesAccess::OPTION_REVOKE,
             '--' . SetRolesAccess::OPTION_CONFIG, self::CONFIG,
         ]);
     }

@@ -25,11 +25,10 @@ use oat\tao\model\user\TaoRoles;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
-use oat\tao\model\accessControl\ActionAccessControl;
 use oat\taoItems\scripts\install\CreateItemDirectory;
+use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
-use oat\tao\scripts\tools\accessControl\SetActionAccessPermissions;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
 
 /*
@@ -60,19 +59,7 @@ return [
             RegisterNpmPaths::class,
             RegisterItemPreviewerRegistryService::class,
             RegisterAssetTreeBuilder::class,
-            [
-                SetActionAccessPermissions::class,
-                [
-                    '--' . SetActionAccessPermissions::OPTION_PERMISSIONS, [
-                        taoItems_actions_Items::class => [
-                            'editClassLabel' => [
-                                TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::READ,
-                                TaoItemsRoles::ITEM_CLASS_EDITOR => ActionAccessControl::WRITE,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            SetRolesPermissions::class,
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
