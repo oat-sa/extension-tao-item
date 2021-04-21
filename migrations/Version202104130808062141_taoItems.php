@@ -35,7 +35,6 @@ final class Version202104130808062141_taoItems extends AbstractMigration
     private const CONFIG = [
         SetRolesAccess::CONFIG_RULES => [
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR => [
-                ['ext' => 'tao', 'mod' => 'Main', 'act' => 'index'],
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel'],
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'getOntologyData'],
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index'],
