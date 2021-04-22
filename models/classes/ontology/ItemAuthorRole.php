@@ -23,5 +23,6 @@ namespace oat\taoItems\model\ontology;
 
 class ItemAuthorRole
 {
+    /** @deprecated Use \oat\taoItems\model\user\TaoItemsRoles::ITEM_AUTHOR */
     const INSTANCE_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor';
 }
