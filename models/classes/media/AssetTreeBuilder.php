@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoItems\model\media;
 
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use tao_helpers_Uri;
 
@@ -40,7 +41,13 @@ class AssetTreeBuilder extends ConfigurableService
 
         $search->setChildrenLimit($this->getPaginationLimit());
 
-        $data = $asset->getMediaSource()->getDirectories($search);
+        $mediaSource = $asset->getMediaSource();
+
+        if ($mediaSource instanceof AccessControlEnablerInterface) {
+            $mediaSource->enableAccessControl();
+        }
+
+        $data = $mediaSource->getDirectories($search);
 
         foreach ($data['children'] as &$child) {
             if (isset($child['parent'])) {
