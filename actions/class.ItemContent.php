@@ -22,12 +22,15 @@
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
+use oat\tao\model\accessControl\PermissionChecker;
+use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
+use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\ItemMediaResolver;
 use Psr\Http\Message\StreamInterface;
@@ -187,6 +190,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+        $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
+
+        if (!$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
+            throw new ResourceAccessDeniedException($resourceUri);
+        }
 
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
@@ -265,5 +273,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         return $mediaSource->getFileStream($asset->getMediaIdentifier());
+    }
+
+    private function getPermissionChecker(): PermissionCheckerInterface
+    {
+        return $this->getServiceLocator()->get(PermissionChecker::class);
     }
 }
