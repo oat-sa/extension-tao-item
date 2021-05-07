@@ -169,8 +169,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function download(): void
     {
-        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
-        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+        $asset = $this->getMediaAsset();
 
         $mediaSource = $asset->getMediaSource();
         $stream = $this->getMediaSourceFileStream($mediaSource, $asset);
@@ -188,6 +187,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete(): void
     {
+        $asset = $this->getMediaAsset();
+
+        $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
+
+        $formatter = $this->getResponseFormatter()
+            ->withJsonHeader()
+            ->withBody(['deleted' => $deleted]);
+        $this->setResponse($formatter->format($this->getPsrResponse()));
+    }
+
+    private function getMediaAsset(): ?MediaAsset
+    {
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
         $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
@@ -196,12 +207,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new ResourceAccessDeniedException($resourceUri);
         }
 
-        $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
-
-        $formatter = $this->getResponseFormatter()
-            ->withJsonHeader()
-            ->withBody(['deleted' => $deleted]);
-        $this->setResponse($formatter->format($this->getPsrResponse()));
+        return $asset;
     }
 
     /**
