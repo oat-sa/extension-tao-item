@@ -32,6 +32,7 @@ use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetTreeBuilder;
+use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
 use Psr\Http\Message\StreamInterface;
 use common_exception_MissingParameter as MissingParameterException;
@@ -264,7 +265,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         return $filters;
     }
 
-    private function getAssetTreeBuilder(): AssetTreeBuilder
+    private function getAssetTreeBuilder(): AssetTreeBuilderInterface
     {
         return $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
     }

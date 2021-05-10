@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2020-2021 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -27,7 +27,7 @@ use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use tao_helpers_Uri;
 
-class AssetTreeBuilder extends ConfigurableService
+class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface
 {
     public const SERVICE_ID = 'taoItems/AssetTreeBuilder';
 
@@ -55,11 +55,17 @@ class AssetTreeBuilder extends ConfigurableService
                     'files',
                     'ItemContent',
                     'taoItems',
-                    ['uri' => $search->getItemUri(), 'lang' => $search->getItemLang(), '1' => $child['parent']]
+                    [
+                        'uri' => $search->getItemUri(),
+                        'lang' => $search->getItemLang(),
+                        '1' => $child['parent']
+                    ]
                 );
+
                 unset($child['parent']);
             }
         }
+
         return $data;
     }
 
