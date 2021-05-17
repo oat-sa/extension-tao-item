@@ -24,6 +24,8 @@
 declare(strict_types=1);
 
 use oat\taoQtiItem\model\import\CsvItemImporter;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 
 /**
  * This controller provide the actions to import items
@@ -35,6 +37,8 @@ use oat\taoQtiItem\model\import\CsvItemImporter;
  */
 class taoItems_actions_ItemImport extends tao_actions_Import
 {
+    public const FEATURE_FLAG_TABULAR_IMPORT = 'FEATURE_FLAG_TABULAR_IMPORT';
+
     /**
      * overwrite the parent index to add the requiresRight for Items only
      *
@@ -69,13 +73,23 @@ class taoItems_actions_ItemImport extends tao_actions_Import
 
         foreach (array_keys($returnValue) as $key) {
             if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
-                $importer = new CsvItemImporter();
-                $importer->setServiceLocator($this->getServiceLocator());
-
-                $returnValue[$key] = $importer;
+                //Check feature flag for tabular import is enabled or not
+                if (!$this->getFeatureFlagChecker()->isEnabled(self::FEATURE_FLAG_TABULAR_IMPORT)) {
+                    // Remove CSV object if tabular import is disabled
+                    unset($returnValue[$key]);
+                } else {
+                    $importer = new CsvItemImporter();
+                    $importer->setServiceLocator($this->getServiceLocator());
+                    $returnValue[$key] = $importer;
+                }
             }
         }
 
         return $returnValue;
+    }
+
+    private function getFeatureFlagChecker(): FeatureFlagCheckerInterface
+    {
+        return $this->getServiceLocator()->get(FeatureFlagChecker::class);
     }
 }
