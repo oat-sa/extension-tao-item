@@ -37,7 +37,7 @@ use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
  */
 class taoItems_actions_ItemImport extends tao_actions_Import
 {
-    public const FEATURE_FLAG_TABULAR_IMPORT = 'FEATURE_FLAG_TABULAR_IMPORT';
+    public const FEATURE_FLAG_TABULAR_IMPORT = 'FEATURE_FLAG_TABULAR_IMPORT_ENABLED';
 
     /**
      * overwrite the parent index to add the requiresRight for Items only
@@ -73,15 +73,15 @@ class taoItems_actions_ItemImport extends tao_actions_Import
 
         foreach (array_keys($returnValue) as $key) {
             if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
-                //Check feature flag for tabular import is enabled or not
-                if (!$this->getFeatureFlagChecker()->isEnabled(self::FEATURE_FLAG_TABULAR_IMPORT)) {
-                    // Remove CSV object if tabular import is disabled
-                    unset($returnValue[$key]);
-                } else {
+                if ($this->getFeatureFlagChecker()->isEnabled(self::FEATURE_FLAG_TABULAR_IMPORT)) {
                     $importer = new CsvItemImporter();
                     $importer->setServiceLocator($this->getServiceLocator());
                     $returnValue[$key] = $importer;
+                    
+                    continue;
                 }
+                
+                unset($returnValue[$key]);
             }
         }
 
