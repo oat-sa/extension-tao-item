@@ -188,7 +188,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete(): void
     {
-        $asset = $this->getMediaAsset();
+        $asset = $this->getMediaAsset(true);
 
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
@@ -198,13 +198,17 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $this->setResponse($formatter->format($this->getPsrResponse()));
     }
 
-    private function getMediaAsset(): ?MediaAsset
+    private function getMediaAsset(bool $validateWriteAccess = false): ?MediaAsset
     {
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
         $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
 
-        if (!$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
+        if ($validateWriteAccess && !$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
+            throw new ResourceAccessDeniedException($resourceUri);
+        }
+
+        if (!$validateWriteAccess && !$this->getPermissionChecker()->hasReadAccess($resourceUri)) {
             throw new ResourceAccessDeniedException($resourceUri);
         }
 
