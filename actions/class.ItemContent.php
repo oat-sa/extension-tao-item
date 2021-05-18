@@ -22,13 +22,17 @@
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
 use oat\tao\model\accessControl\data\PermissionException;
+use oat\tao\model\accessControl\PermissionChecker;
+use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
+use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetTreeBuilder;
+use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
 use Psr\Http\Message\StreamInterface;
 use common_exception_MissingParameter as MissingParameterException;
@@ -166,8 +170,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function download(): void
     {
-        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
-        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+        $asset = $this->getMediaAsset();
 
         $mediaSource = $asset->getMediaSource();
         $stream = $this->getMediaSourceFileStream($mediaSource, $asset);
@@ -185,8 +188,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete(): void
     {
-        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
-        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+        $asset = $this->getMediaAsset(true);
 
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
@@ -194,6 +196,23 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             ->withJsonHeader()
             ->withBody(['deleted' => $deleted]);
         $this->setResponse($formatter->format($this->getPsrResponse()));
+    }
+
+    private function getMediaAsset(bool $validateWriteAccess = false): ?MediaAsset
+    {
+        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
+        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+        $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
+
+        if ($validateWriteAccess && !$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
+            throw new ResourceAccessDeniedException($resourceUri);
+        }
+
+        if (!$validateWriteAccess && !$this->getPermissionChecker()->hasReadAccess($resourceUri)) {
+            throw new ResourceAccessDeniedException($resourceUri);
+        }
+
+        return $asset;
     }
 
     /**
@@ -250,7 +269,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         return $filters;
     }
 
-    private function getAssetTreeBuilder(): AssetTreeBuilder
+    private function getAssetTreeBuilder(): AssetTreeBuilderInterface
     {
         return $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
     }
@@ -265,5 +284,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         return $mediaSource->getFileStream($asset->getMediaIdentifier());
+    }
+
+    private function getPermissionChecker(): PermissionCheckerInterface
+    {
+        return $this->getServiceLocator()->get(PermissionChecker::class);
     }
 }
