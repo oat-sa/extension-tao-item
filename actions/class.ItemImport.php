@@ -74,7 +74,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import
         foreach (array_keys($returnValue) as $key) {
             if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
                 if ($this->getFeatureFlagChecker()->isEnabled(self::FEATURE_FLAG_TABULAR_IMPORT)) {
-                    $importer = new CsvItemImporter();
+                    $importer = new CsvItemImporter($this->getPsrRequest());
                     $importer->setServiceLocator($this->getServiceLocator());
                     $returnValue[$key] = $importer;
                     
