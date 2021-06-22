@@ -63,52 +63,97 @@ return [
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
-    'managementRole' => TaoItemsRoles::ITEM_MANAGER,
+    'managementRole' => TaoItemsRoles::ITEMS_MANAGER,
     'acl' => [
         [
             AccessRule::GRANT,
-            TaoItemsRoles::ITEM_MANAGER,
-            ['ext' => 'taoItems']
+            TaoItemsRoles::ITEMS_MANAGER,
+            ['ext' => 'taoItems'],
         ],
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
-            'taoItems_actions_ItemContent'
+            'taoItems_actions_ItemContent',
         ],
         [
             AccessRule::GRANT,
             TaoRoles::DELIVERY,
-            ['ext' => 'taoItems', 'mod' => 'ItemRunner']
+            ['ext' => 'taoItems', 'mod' => 'ItemRunner'],
         ],
         [
             AccessRule::GRANT,
             TaoRoles::REST_PUBLISHER,
-            ['ext' => 'taoItems', 'mod' => 'RestItems']
+            ['ext' => 'taoItems', 'mod' => 'RestItems'],
         ],
         [
             AccessRule::GRANT,
             TaoRoles::REST_PUBLISHER,
-            ['ext' => 'taoItems', 'mod' => 'RestFormItem']
+            ['ext' => 'taoItems', 'mod' => 'RestFormItem'],
         ],
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel']
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editClassLabel'],
         ],
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'getOntologyData']
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'getOntologyData'],
         ],
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_NAVIGATOR,
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index']
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'index'],
         ],
         [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CLASS_CREATOR,
-            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'addSubClass']
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'addSubClass'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editItemClass'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'addClassProperty'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'removeClassProperty'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Category', 'act' => 'getExposedsByClass'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Category', 'act' => 'setExposed'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_VIEWER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editItem'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'cloneInstance'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'copyInstance'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_PREVIEWER,
+            ['ext' => 'taoItems', 'mod' => 'ItemPreview', 'act' => 'index'],
         ],
     ],
     'optimizableClasses' => [
