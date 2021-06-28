@@ -220,13 +220,6 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $this->setData('formTitle', __('Edit Item'));
             
-            if ($myForm->hasAsyncFileUpload()) {
-                $hiddenElement = \tao_helpers_form_FormFactory::getElement('check-file', 'hidden');
-                $hiddenElement->setValue(1);
-                $hiddenElement->addAttribute('data-id', 'schema');
-                $myForm->addElement($hiddenElement);
-            }
-
             $this->setData('myForm', $myForm->render());
 
             $this->setView('Items/editItem.tpl');
