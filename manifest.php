@@ -64,11 +64,11 @@ return [
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
-    'managementRole' => TaoItemsRoles::ITEMS_MANAGER,
+    'managementRole' => TaoItemsRoles::ITEM_MANAGER,
     'acl' => [
         [
             AccessRule::GRANT,
-            TaoItemsRoles::ITEMS_MANAGER,
+            TaoItemsRoles::ITEM_MANAGER,
             ['ext' => 'taoItems'],
         ],
         [
