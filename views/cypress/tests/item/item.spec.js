@@ -16,74 +16,67 @@
  * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
  */
 
-import itemData from './itemData';
 
 describe('Items', () => {
-    const newItemName = itemData.name;
+    const newClassName = 'Test E2E class';
+    const newItemName = 'Test E2E item';
+
+    const selectors = {
+        deleteItem: '[data-context="instance"][data-action="deleteItem"]',
+        deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
+        addItem: '[data-context="resource"][data-action="instanciate"]',
+        itemForm: 'form[action="/taoItems/Items/editItem"]',
+        itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
+        deleteConfirm: '[data-control="delete"]',
+        root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
+        nodeWithName: name => `li[title="${name}"] a`,
+    }
+
+    const itemsUrl = '/tao/Main/index?structure=items&ext=taoItems&section=manage_items';
 
     /**
      * Log in
      * Visit the page
      */
     beforeEach(() => {
-        cy.setupServer();
-
         cy.loginAsAdmin();
 
-        cy.loadItemsPage();
+        cy.visit(itemsUrl);
 
-        cy.fixture('locators').as('locators');
+        cy.get(selectors.root).then(root => {
+            if (root.find(selectors.nodeWithName(newClassName)).length === 0) {
+                cy.addClass(selectors.itemClassForm);
+                cy.renameSelected(selectors.itemClassForm, newClassName);
+            }
+        });
     });
 
     /**
      * Delete newly created items after each step
      */
     afterEach(() => {
-        if (Cypress.$(`[title="${newItemName}"]`).length > 0) {
-            cy.deleteItem(`[title="${newItemName}"]`);
-        }
+        cy.get(selectors.root).then(root => {
+            if (root.find(selectors.nodeWithName(newClassName)).length > 0) {
+                cy.deleteClass(selectors.itemClassForm, selectors.deleteClass, selectors.deleteConfirm, newClassName);
+            }
+        });
     });
 
     /**
-     * Item tests
+     * Tests
      */
     describe('Item creation, editing and deletion', () => {
-        it('can create and rename a new item', function() {
-            cy.addItem(this.locators.itemsRootClass);
-
-            cy.renameSelectedItem(newItemName);
-
-            cy.get(this.locators.itemsRootClass)
-                .contains(newItemName)
-                .should('exist');
+        it('can create and rename a new item', function () {
+            cy.selectNode(selectors.itemClassForm, newClassName);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.renameSelected(selectors.itemForm, newItemName);
         });
 
-        it('can delete item', function() {
-            cy.addItem(this.locators.itemsRootClass);
-
-            cy.renameSelectedItem(newItemName);
-
-            cy.get(this.locators.actions.deleteItem).click();
-            cy.get('.modal-body [data-control="ok"]').click();
-        });
-
-        it('has correct action buttons when item is selected', function() {
-            cy.addItem(this.locators.itemsRootClass);
-
-            cy.renameSelectedItem(newItemName);
-
-            cy.get(`[title="${newItemName}"]`)
-                .closest(this.locators.itemsRootClass)
-                .should('not.have.class', 'closed');
-
-            cy.get(this.locators.actionsContainer).within(() => {
-                ['newClass', 'deleteItem', 'import', 'export', 'moveTo', 'copyTo', 'duplicate', 'newItem'].forEach(
-                    action => {
-                        cy.get(this.locators.actions[action])
-                            .should('exist');
-                    }
-                );
-            });
+        it('can delete item', function () {
+            cy.selectNode(selectors.itemClassForm, newClassName);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.renameSelected(selectors.itemForm, newItemName);
+            cy.deleteNode(selectors.deleteItem, newItemName);
         });
     });
 });
