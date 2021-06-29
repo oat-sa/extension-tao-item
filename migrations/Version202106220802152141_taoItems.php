@@ -24,6 +24,7 @@ namespace oat\taoItems\migrations;
 
 use taoItems_actions_Items;
 use Doctrine\DBAL\Schema\Schema;
+use oat\taoBackOffice\controller\Lists;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\ActionAccessControl;
@@ -40,11 +41,12 @@ final class Version202106220802152141_taoItems extends AbstractMigration
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'removeClassProperty'],
                 ['ext' => 'taoItems', 'mod' => 'Category', 'act' => 'getExposedsByClass'],
                 ['ext' => 'taoItems', 'mod' => 'Category', 'act' => 'setExposed'],
+                Lists::class . '@getListElements',
             ],
             TaoItemsRoles::ITEM_VIEWER => [
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editItem'],
             ],
-            TaoItemsRoles::ITEM_MANAGER => [
+            TaoItemsRoles::ITEM_REPLICATOR => [
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'cloneInstance'],
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'copyInstance'],
             ],

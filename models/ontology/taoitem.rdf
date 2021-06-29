@@ -163,7 +163,7 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Viewer Role]]></rdfs:comment>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemManagerRole">
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole">
     <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Manager]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Manager Role]]></rdfs:comment>

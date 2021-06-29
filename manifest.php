@@ -22,6 +22,7 @@
  */
 
 use oat\tao\model\user\TaoRoles;
+use oat\taoBackOffice\controller\Lists;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
@@ -137,17 +138,22 @@ return [
         ],
         [
             AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            Lists::class . '@getListElements',
+        ],
+        [
+            AccessRule::GRANT,
             TaoItemsRoles::ITEM_VIEWER,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'editItem'],
         ],
         [
             AccessRule::GRANT,
-            TaoItemsRoles::ITEM_MANAGER,
+            TaoItemsRoles::ITEM_REPLICATOR,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'cloneInstance'],
         ],
         [
             AccessRule::GRANT,
-            TaoItemsRoles::ITEM_MANAGER,
+            TaoItemsRoles::ITEM_REPLICATOR,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'copyInstance'],
         ],
         [
