@@ -37,6 +37,10 @@ class SetRolesPermissions extends InstallAction
                     TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::READ,
                     TaoItemsRoles::ITEM_CLASS_EDITOR => ActionAccessControl::WRITE,
                 ],
+                'editItem' => [
+                    TaoItemsRoles::ITEM_VIEWER => ActionAccessControl::READ,
+                    TaoItemsRoles::ITEM_PROPERTIES_EDITOR => ActionAccessControl::WRITE,
+                ],
             ],
         ],
     ];

@@ -27,7 +27,14 @@ interface TaoItemsRoles
     public const ITEM_AUTHOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor';
     public const ITEM_AUTHOR_ABSTRACT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor';
     public const ITEM_MANAGER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole';
+
     public const ITEM_CLASS_NAVIGATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole';
     public const ITEM_CLASS_EDITOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole';
     public const ITEM_CLASS_CREATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole';
+    public const ITEM_CLASS_SCHEMA_MANAGER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole';
+
+    public const ITEM_VIEWER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole';
+    public const ITEM_REPLICATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole';
+    public const ITEM_PREVIEWER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole';
+    public const ITEM_PROPERTIES_EDITOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole';
 }
