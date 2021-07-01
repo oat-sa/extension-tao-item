@@ -172,11 +172,20 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('id', $item->getUri());
             }
 
-            $formContainer = new SignedFormInstance($itemClass, $item, [FormContainer::CSRF_PROTECTION_OPTION => true]);
+            $itemUri = $item->getUri();
+            $hasWriteAccess = $this->hasWriteAccess($itemUri) && $this->hasWriteAccessToAction(__FUNCTION__);
+
+            $formContainer = new SignedFormInstance(
+                $itemClass,
+                $item,
+                [
+                    FormContainer::CSRF_PROTECTION_OPTION => true,
+                    FormContainer::IS_DISABLED => !$hasWriteAccess,
+                ]
+            );
             $myForm = $formContainer->getForm();
 
-            $itemUri = $item->getUri();
-            if ($this->hasWriteAccess($itemUri)) {
+            if ($hasWriteAccess) {
                 if ($myForm->isSubmited() && $myForm->isValid()) {
                     $this->validateInstanceRoot($itemUri);
 

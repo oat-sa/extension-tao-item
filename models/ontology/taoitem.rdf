@@ -150,4 +150,35 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Class Creator Role]]></rdfs:comment>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Class Schema Manager]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Class Schema Manager Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Viewer]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Viewer Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Manager]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Manager Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Previewer]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Previewer Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Properties Editor]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Properties Editor Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole"/>
+  </rdf:Description>
 </rdf:RDF>
