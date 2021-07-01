@@ -43,12 +43,7 @@ describe('Items', () => {
 
         cy.visit(itemsUrl);
 
-        cy.get(selectors.root).then(root => {
-            if (root.find(selectors.nodeWithName(newClassName)).length === 0) {
-                cy.addClass(selectors.itemClassForm);
-                cy.renameSelected(selectors.itemClassForm, newClassName);
-            }
-        });
+        cy.addClassToRoot(selectors.root, selectors.itemClassForm, newClassName);
     });
 
     /**
