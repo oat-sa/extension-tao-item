@@ -126,7 +126,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     /**
      * overwrite the parent moveAllInstances to add the requiresRight only in Items
      * @see tao_actions_TaoModule::moveResource()
-     * @requiresRight uri WRITE
+     * @requiresRight classUri WRITE
      */
     public function moveResource()
     {
