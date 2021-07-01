@@ -16,23 +16,13 @@
  * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
  */
 
+import urls from '../utils/urls';
+import selectors from '../utils/selectors';
+
 
 describe('Items', () => {
     const newClassName = 'Test E2E class';
     const newItemName = 'Test E2E item';
-
-    const selectors = {
-        deleteItem: '[data-context="instance"][data-action="deleteItem"]',
-        deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
-        addItem: '[data-context="resource"][data-action="instanciate"]',
-        itemForm: 'form[action="/taoItems/Items/editItem"]',
-        itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
-        deleteConfirm: '[data-control="delete"]',
-        root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
-        nodeWithName: name => `li[title="${name}"] a`,
-    }
-
-    const itemsUrl = '/tao/Main/index?structure=items&ext=taoItems&section=manage_items';
 
     /**
      * Log in
@@ -41,7 +31,7 @@ describe('Items', () => {
     beforeEach(() => {
         cy.loginAsAdmin();
 
-        cy.visit(itemsUrl);
+        cy.visit(urls.items);
 
         cy.addClassToRoot(selectors.root, selectors.itemClassForm, newClassName);
     });
@@ -50,11 +40,13 @@ describe('Items', () => {
      * Delete newly created items after each step
      */
     afterEach(() => {
-        cy.get(selectors.root).then(root => {
-            if (root.find(selectors.nodeWithName(newClassName)).length > 0) {
-                cy.deleteClass(selectors.itemClassForm, selectors.deleteClass, selectors.deleteConfirm, newClassName);
-            }
-        });
+        cy.deleteClassFromRoot(
+            selectors.root,
+            selectors.itemClassForm,
+            selectors.deleteClass,
+            selectors.deleteConfirm,
+            newClassName
+        );
     });
 
     /**
