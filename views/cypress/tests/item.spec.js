@@ -21,49 +21,51 @@ import selectors from '../utils/selectors';
 
 
 describe('Items', () => {
-    const newClassName = 'Test E2E class';
-    const newItemName = 'Test E2E item';
+    const className = 'Test E2E class';
 
     /**
-     * Log in
      * Visit the page
      */
     beforeEach(() => {
-        cy.loginAsAdmin();
-
         cy.visit(urls.items);
-
-        cy.addClassToRoot(selectors.root, selectors.itemClassForm, newClassName);
     });
 
     /**
-     * Delete newly created items after each step
+     * Log in
      */
-    afterEach(() => {
-        cy.deleteClassFromRoot(
-            selectors.root,
-            selectors.itemClassForm,
-            selectors.deleteClass,
-            selectors.deleteConfirm,
-            newClassName
-        );
+    before(() => {
+        cy.loginAsAdmin();
     });
 
     /**
      * Tests
      */
     describe('Item creation, editing and deletion', () => {
+        it('can create a new item class', function () {
+            cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
+        });
+
         it('can create and rename a new item', function () {
-            cy.selectNode(selectors.itemClassForm, newClassName);
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
-            cy.renameSelected(selectors.itemForm, newItemName);
+            cy.renameSelected(selectors.itemForm, 'Test E2E item 1');
         });
 
         it('can delete item', function () {
-            cy.selectNode(selectors.itemClassForm, newClassName);
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
-            cy.renameSelected(selectors.itemForm, newItemName);
-            cy.deleteNode(selectors.deleteItem, newItemName);
+            cy.renameSelected(selectors.itemForm, 'Test E2E item 2');
+            cy.deleteNode(selectors.deleteItem, 'Test E2E item 2');
+        });
+
+        it('can delete item class', function () {
+            cy.deleteClassFromRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                selectors.deleteClass,
+                selectors.deleteConfirm,
+                className
+            );
         });
     });
 });
