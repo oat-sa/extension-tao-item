@@ -57,6 +57,8 @@ final class Version202107070802152141_taoItems extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // This role should have being applied in the past, so we should not roll it back
+        $this->throwIrreversibleMigrationException(
+            'This role should have been applied in the past, so we should not roll it back'
+        );
     }
 }
