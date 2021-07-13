@@ -35,6 +35,7 @@ use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
 use Psr\Http\Message\StreamInterface;
+use oat\taoMediaManager\model\MediaSource;
 use common_exception_MissingParameter as MissingParameterException;
 use tao_models_classes_FileNotFoundException as FileNotFoundException;
 
@@ -202,7 +203,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
-        $resourceUri = $params['uri'];
+
+        $mediaSource = $asset->getMediaSource();
+        if ($mediaSource instanceof MediaSource) {
+            $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
+        } else {
+            $resourceUri = $params['uri'];
+        }
 
         if ($validateWriteAccess && !$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
             throw new ResourceAccessDeniedException($resourceUri);
