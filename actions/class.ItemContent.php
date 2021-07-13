@@ -204,12 +204,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
 
-        $mediaSource = $asset->getMediaSource();
-        if ($mediaSource instanceof LocalItemSource) {
-            $resourceUri = $params['uri'];
-        } else {
-            $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
-        }
+        $resourceUri = $asset->getMediaSource() instanceof LocalItemSource
+            ? $params['uri']
+            : tao_helpers_Uri::decode($asset->getMediaIdentifier());
 
         if ($validateWriteAccess && !$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
             throw new ResourceAccessDeniedException($resourceUri);
