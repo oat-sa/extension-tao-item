@@ -34,8 +34,8 @@ use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
-use Psr\Http\Message\StreamInterface;
 use oat\taoMediaManager\model\MediaSource;
+use Psr\Http\Message\StreamInterface;
 use common_exception_MissingParameter as MissingParameterException;
 use tao_models_classes_FileNotFoundException as FileNotFoundException;
 
