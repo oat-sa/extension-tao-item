@@ -43,7 +43,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import
      * overwrite the parent index to add the requiresRight for Items only
      *
      * @requiresRight id WRITE
-     * @see           tao_actions_Import::index()
+     * @requiresRight classUri WRITE
      */
     public function index()
     {
@@ -77,10 +77,10 @@ class taoItems_actions_ItemImport extends tao_actions_Import
                     $importer = new CsvItemImporter($this->getPsrRequest());
                     $importer->setServiceLocator($this->getServiceLocator());
                     $returnValue[$key] = $importer;
-                    
+
                     continue;
                 }
-                
+
                 unset($returnValue[$key]);
             }
         }
