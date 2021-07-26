@@ -22,7 +22,7 @@ import selectors from '../utils/selectors';
 
 describe('Items', () => {
     const className = 'Test E2E class';
-    const classWhereMove = 'Test E2E class with moved classes';
+    const classMovedName = 'Test E2E class Moved';
 
     /**
      * Visit the page
@@ -69,11 +69,12 @@ describe('Items', () => {
             );
         });
 
-        it('can delete item class that is empty', function () {
-            cy.deleteEmptyClassFromRoot(
+        it('can delete empty item class', function () {
+            cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
+            cy.deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
-                selectors.moveClass,
+                selectors.deleteClass,
                 selectors.deleteConfirm,
                 className
             );
@@ -84,9 +85,9 @@ describe('Items', () => {
                 selectors.root,
                 selectors.itemClassForm,
                 selectors.moveClass,
-                selectors.moveConfirm,
+                selectors.moveConfirmSelector,
                 className,
-                classWhereMove
+                classMovedName
             );
         });
     });
