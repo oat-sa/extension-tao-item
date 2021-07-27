@@ -165,6 +165,11 @@ return [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_CONTENT_CREATOR,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'authoring'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'files'],
         ]
     ],
     'optimizableClasses' => [
