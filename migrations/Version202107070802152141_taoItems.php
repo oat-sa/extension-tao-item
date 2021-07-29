@@ -57,8 +57,10 @@ final class Version202107070802152141_taoItems extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->throwIrreversibleMigrationException(
-            'This role should have been applied in the past, so we should not roll it back'
-        );
+        $setRolesAccess = $this->propagate(new SetRolesAccess());
+        $setRolesAccess([
+            '--' . SetRolesAccess::OPTION_REVOKE,
+            '--' . SetRolesAccess::OPTION_CONFIG, self::CONFIG,
+        ]);
     }
 }
