@@ -91,4 +91,14 @@ describe('Items', () => {
             );
         });
     });
+
+    after(() => {
+        cy.deleteClassFromRoot(
+            selectors.root,
+            selectors.assetClassForm,
+            selectors.deleteClass,
+            selectors.deleteConfirm,
+            classMovedName
+        );
+    });
 });
