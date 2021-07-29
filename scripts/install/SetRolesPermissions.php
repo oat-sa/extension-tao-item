@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoItems\scripts\install;
 
 use taoItems_actions_Items;
+use taoItems_actions_ItemContent;
 use oat\oatbox\extension\InstallAction;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\ActionAccessControl;
@@ -40,6 +41,11 @@ class SetRolesPermissions extends InstallAction
                 'editItem' => [
                     TaoItemsRoles::ITEM_VIEWER => ActionAccessControl::READ,
                     TaoItemsRoles::ITEM_PROPERTIES_EDITOR => ActionAccessControl::WRITE,
+                ],
+            ],
+            taoItems_actions_ItemContent::class => [
+                'files' => [
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
                 ],
             ],
         ],
