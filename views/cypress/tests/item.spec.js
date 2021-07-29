@@ -22,6 +22,7 @@ import selectors from '../utils/selectors';
 
 describe('Items', () => {
     const className = 'Test E2E class';
+    const newPropertyName = 'I am a new property in testing, hi!';
 
     /**
      * Visit the page
@@ -43,6 +44,15 @@ describe('Items', () => {
     describe('Item creation, editing and deletion', () => {
         it('can create a new item class', function () {
             cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
+        });
+        it('can create and edit a new property for the class', function () {
+            cy.addPropertyToClass(
+                selectors.newClass,
+                selectors.editClass,
+                selectors.classOptions,
+                newPropertyName,
+                selectors.propertyEdit
+            );
         });
 
         it('can create and rename a new item', function () {
@@ -67,5 +77,6 @@ describe('Items', () => {
                 className
             );
         });
+
     });
 });
