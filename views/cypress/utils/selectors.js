@@ -6,7 +6,7 @@ export default {
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
     classOptions: '[action="/taoItems/Items/editItemClass"]',
-    editClass: 'ul[class="plain action-bar content-action-bar horizontal-action-bar"]',
+    editClass: '#item-class-schema',
     classForm: 'form[data-action= "/taoItems/Items/editItemClass"]',
     propertyEdit: 'div[class="form-group property-block regular-property property-edit-container-open"]',
     deleteConfirm: '[data-control="delete"]',
