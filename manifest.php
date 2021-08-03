@@ -161,6 +161,21 @@ return [
             TaoItemsRoles::ITEM_PREVIEWER,
             ['ext' => 'taoItems', 'mod' => 'ItemPreview', 'act' => 'index'],
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_PREVIEWER,
+            ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'files'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_PREVIEWER,
+            ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'download'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'authoring'],
+        ]
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',

@@ -37,4 +37,5 @@ interface TaoItemsRoles
     public const ITEM_REPLICATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole';
     public const ITEM_PREVIEWER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole';
     public const ITEM_PROPERTIES_EDITOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole';
+    public const ITEM_CONTENT_CREATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole';
 }
