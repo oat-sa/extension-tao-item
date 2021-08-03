@@ -22,6 +22,8 @@ import selectors from '../utils/selectors';
 
 describe('Items', () => {
     const className = 'Test E2E class';
+    const newPropertyName = 'I am a new property in testing, hi!';
+    const itemName = 'Test E2E item 1';
 
     /**
      * Visit the page
@@ -44,11 +46,26 @@ describe('Items', () => {
         it('can create a new item class', function () {
             cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
         });
+        it('can edit and add new property for the class', function () {
+            cy.addPropertyToClass(
+                className,
+                selectors.editClass,
+                selectors.classOptions,
+                newPropertyName,
+                selectors.propertyEdit
+            );
+        });
 
         it('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
-            cy.renameSelected(selectors.itemForm, 'Test E2E item 1');
+            cy.renameSelected(selectors.itemForm, itemName);
+        });
+
+        it('can give a property value to an item', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.assignValueToProperty(itemName, selectors.itemForm, selectors.selectTrue);
         });
 
         it('can delete item', function () {
@@ -67,5 +84,6 @@ describe('Items', () => {
                 className
             );
         });
+
     });
 });
