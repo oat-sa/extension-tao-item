@@ -80,20 +80,13 @@ describe('Items', () => {
             );
         });
 
-        it.only('can move item class', function () {
+        it('can move item class', function () {
             cy.moveClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
                 selectors.moveClass,
                 selectors.moveConfirmSelector,
                 className,
-                classMovedName
-            );
-            cy.deleteClassFromRoot(
-                selectors.root,
-                selectors.itemClassForm,
-                selectors.deleteClass,
-                selectors.deleteConfirm,
                 classMovedName
             );
         });
