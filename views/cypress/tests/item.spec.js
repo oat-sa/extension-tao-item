@@ -20,7 +20,7 @@ import urls from '../utils/urls';
 import selectors from '../utils/selectors';
 
 
-describe('Tests', () => {
+describe('Items', () => {
     const className = 'Test E2E class';
     const classMovedName = 'Test E2E class Moved';
 
@@ -28,7 +28,7 @@ describe('Tests', () => {
      * Visit the page
      */
     beforeEach(() => {
-        cy.visit(urls.tests);
+        cy.visit(urls.items);
     });
 
     /**
@@ -41,52 +41,59 @@ describe('Tests', () => {
     /**
      * Tests
      */
-    describe('Test creation, editing and deletion', () => {
-        it('can create a new test class', function () {
-            cy.addClassToRoot(selectors.root, selectors.testClassForm, className);
+    describe('Item creation, editing and deletion', () => {
+        it('can create a new item class', function () {
+            cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
         });
 
-        it('can create and rename a new test', function () {
-            cy.selectNode(selectors.root, selectors.testClassForm, className);
-            cy.addNode(selectors.testForm, selectors.addTest);
-            cy.renameSelected(selectors.testForm, 'Test E2E test 1');
+        it('can create and rename a new item', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.renameSelected(selectors.itemForm, 'Test E2E item 1');
         });
 
-        it('can delete test', function () {
-            cy.selectNode(selectors.root, selectors.testClassForm, className);
-            cy.addNode(selectors.testForm, selectors.addTest);
-            cy.renameSelected(selectors.testForm, 'Test E2E test 2');
-            cy.deleteNode(selectors.deleteTest, 'Test E2E test 2');
+        it('can delete item', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.renameSelected(selectors.itemForm, 'Test E2E item 2');
+            cy.deleteNode(selectors.deleteItem, 'Test E2E item 2');
         });
 
-        it('can delete test class', function () {
+        it('can delete item class', function () {
             cy.deleteClassFromRoot(
                 selectors.root,
-                selectors.testClassForm,
+                selectors.itemClassForm,
                 selectors.deleteClass,
                 selectors.deleteConfirm,
                 className
             );
         });
 
-        it('can delete empty test class', function () {
-            cy.addClassToRoot(selectors.root, selectors.testClassForm, className);
+        it('can delete empty item class', function () {
+            cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
             cy.deleteClassFromRoot(
                 selectors.root,
-                selectors.testClassForm,
+                selectors.itemClassForm,
                 selectors.deleteClass,
                 selectors.deleteConfirm,
                 className
             );
         });
 
-        it('can move test class', function () {
+        it.only('can move item class', function () {
             cy.moveClassFromRoot(
                 selectors.root,
-                selectors.testClassForm,
+                selectors.itemClassForm,
                 selectors.moveClass,
                 selectors.moveConfirmSelector,
                 className,
+                classMovedName
+            );
+            cy.deleteClassFromRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                selectors.deleteClass,
+                selectors.deleteConfirm,
                 classMovedName
             );
         });
@@ -95,7 +102,7 @@ describe('Tests', () => {
     after(() => {
         cy.deleteClassFromRoot(
             selectors.root,
-            selectors.testClassForm,
+            selectors.itemClassForm,
             selectors.deleteClass,
             selectors.deleteConfirm,
             classMovedName
