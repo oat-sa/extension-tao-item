@@ -20,53 +20,60 @@
 
 declare(strict_types=1);
 
-namespace oat\taoItems\scripts\install;
+namespace oat\taoItems\migrations;
 
-use taoItems_actions_Items;
-use taoItems_actions_ItemContent;
-use taoItems_actions_ItemImport;
-use oat\oatbox\extension\InstallAction;
+use Doctrine\DBAL\Schema\Schema;
 use oat\taoItems\model\user\TaoItemsRoles;
+use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\ActionAccessControl;
+use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\tools\accessControl\SetRolesAccess;
+use taoItems_actions_ItemImport;
 
-class SetRolesPermissions extends InstallAction
+final class Version202108030710512141_taoItems extends AbstractMigration
 {
     private const CONFIG = [
+        SetRolesAccess::CONFIG_RULES => [
+            TaoItemsRoles::ITEM_IMPORTER => [
+                ['ext' => 'taoItems', 'mod' => 'ItemImport', 'act' => 'index'],
+            ],
+            TaoItemsRoles::ITEM_DELETER => [
+                ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'deleteItem'],
+                ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
+            ],
+        ],
         SetRolesAccess::CONFIG_PERMISSIONS => [
-            taoItems_actions_Items::class => [
-                'editClassLabel' => [
-                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::READ,
-                    TaoItemsRoles::ITEM_CLASS_EDITOR => ActionAccessControl::WRITE,
-                ],
-                'editItem' => [
-                    TaoItemsRoles::ITEM_VIEWER => ActionAccessControl::READ,
-                    TaoItemsRoles::ITEM_PROPERTIES_EDITOR => ActionAccessControl::WRITE,
-                ],
-            ],
-            taoItems_actions_ItemContent::class => [
-                'files' => [
-                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
-                ],
-                'delete' => [
-                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
-                ],
-                'upload' => [
-                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
-                ],
-            ],
             taoItems_actions_ItemImport::class => [
                 'isImporter' => [
                     TaoItemsRoles::ITEM_IMPORTER => ActionAccessControl::DENY,
                 ],
             ],
-        ],
+        ]
     ];
 
-    public function __invoke($params = [])
+    public function getDescription(): string
+    {
+        return 'Configure permissions for Item Importer and Item Deleter role';
+    }
+
+    public function up(Schema $schema): void
+    {
+        OntologyUpdater::syncModels();
+
+        $setRolesAccess = $this->propagate(new SetRolesAccess());
+        $setRolesAccess(
+            [
+                '--' . SetRolesAccess::OPTION_CONFIG,
+                self::CONFIG,
+            ]
+        );
+    }
+
+    public function down(Schema $schema): void
     {
         $setRolesAccess = $this->propagate(new SetRolesAccess());
         $setRolesAccess([
+            '--' . SetRolesAccess::OPTION_REVOKE,
             '--' . SetRolesAccess::OPTION_CONFIG, self::CONFIG,
         ]);
     }
