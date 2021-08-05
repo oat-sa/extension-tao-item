@@ -123,7 +123,8 @@ describe('Items', () => {
                 selectors.editClassLabelUrl,
                 selectors.restResourceGetAll,
                 selectors.resourceRelations,
-                selectors.addSubClassUrl
+                selectors.addSubClassUrl,
+                true
             );
         });
     });
