@@ -67,7 +67,9 @@ describe('Items', () => {
                     selectors.deleteItem,
                     'Test E2E item 2',
                     selectors.treeRenderUrl,
-                    selectors.editItem
+                    selectors.editItem,
+                    false,
+                    true
                 );
         });
 
@@ -79,7 +81,9 @@ describe('Items', () => {
                 selectors.deleteConfirm,
                 className,
                 selectors.treeRenderUrl,
-                selectors.resourceRelations
+                selectors.resourceRelations,
+                false,
+                true
             );
         });
 
@@ -99,7 +103,9 @@ describe('Items', () => {
                     selectors.deleteConfirm,
                     className,
                     selectors.treeRenderUrl,
-                    selectors.resourceRelations
+                    selectors.resourceRelations,
+                    false,
+                    true
                 );
         });
 
