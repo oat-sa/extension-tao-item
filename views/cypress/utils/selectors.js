@@ -7,5 +7,11 @@ export default {
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
     deleteConfirm: '[data-control="delete"]',
-    root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]'
+    root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
+    editClassLabelUrl: 'taoItems/Items/editClassLabel',
+    editItemUrl: 'taoItems/Items/editItem',
+    treeRenderUrl: 'taoItems/Items',
+    addSubClassUrl: 'taoItems/Items/addSubClass',
+    restResourceGetAll: 'tao/RestResource/getAll',
+    resourceRelations: 'tao/ResourceRelations'
 };

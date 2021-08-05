@@ -19,7 +19,6 @@
 import urls from '../utils/urls';
 import selectors from '../utils/selectors';
 
-
 describe('Items', () => {
     const className = 'Test E2E class';
     const classMovedName = 'Test E2E class Moved';
@@ -43,7 +42,14 @@ describe('Items', () => {
      */
     describe('Item creation, editing and deletion', () => {
         it('can create a new item class', function () {
-            cy.addClassToRoot(selectors.root, selectors.itemClassForm, className);
+            cy.addClassToRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                className,
+                selectors.editClassLabelUrl,
+                selectors.treeRenderUrl,
+                selectors.addSubClassUrl
+            );
         });
 
         it('can create and rename a new item', function () {
@@ -56,7 +62,13 @@ describe('Items', () => {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
                 .renameSelected(selectors.itemForm, 'Test E2E item 2')
-                .deleteNode(selectors.root, selectors.deleteItem, 'Test E2E item 2');
+                .deleteNode(
+                    selectors.root,
+                    selectors.deleteItem,
+                    'Test E2E item 2',
+                    selectors.treeRenderUrl,
+                    selectors.editItem
+                );
         });
 
         it('can delete item class', function () {
@@ -65,22 +77,33 @@ describe('Items', () => {
                 selectors.itemClassForm,
                 selectors.deleteClass,
                 selectors.deleteConfirm,
-                className
+                className,
+                selectors.treeRenderUrl,
+                selectors.resourceRelations
             );
         });
 
         it('can delete empty item class', function () {
-            cy.addClassToRoot(selectors.root, selectors.itemClassForm, className)
+            cy.addClassToRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                className,
+                selectors.editClassLabelUrl,
+                selectors.treeRenderUrl,
+                selectors.addSubClassUrl
+            )
                 .deleteClassFromRoot(
                     selectors.root,
                     selectors.itemClassForm,
                     selectors.deleteClass,
                     selectors.deleteConfirm,
-                    className
+                    className,
+                    selectors.treeRenderUrl,
+                    selectors.resourceRelations
                 );
         });
 
-        it.only('can move item class', function () {
+        it('can move item class', function () {
             cy.moveClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -89,7 +112,12 @@ describe('Items', () => {
                 selectors.deleteClass,
                 selectors.deleteConfirm,
                 className,
-                classMovedName
+                classMovedName,
+                selectors.treeRenderUrl,
+                selectors.editClassLabelUrl,
+                selectors.restResourceGetAll,
+                selectors.resourceRelations,
+                selectors.addSubClassUrl
             );
         });
     });
