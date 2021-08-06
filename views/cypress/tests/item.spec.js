@@ -22,6 +22,8 @@ import selectors from '../utils/selectors';
 describe('Items', () => {
     const className = 'Test E2E class';
     const classMovedName = 'Test E2E class Moved';
+    const newPropertyName = 'I am a new property in testing, hi!';
+    const itemName = 'Test E2E item 1';
 
     /**
      * Visit the page
@@ -51,11 +53,26 @@ describe('Items', () => {
                 selectors.addSubClassUrl
             );
         });
+        it('can edit and add new property for the class', function () {
+            cy.addPropertyToClass(
+                className,
+                selectors.editClass,
+                selectors.classOptions,
+                newPropertyName,
+                selectors.propertyEdit
+            );
+        });
 
         it('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
                 .renameSelected(selectors.itemForm, 'Test E2E item 1');
+        });
+
+        it('can give a property value to an item', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.assignValueToProperty(itemName, selectors.itemForm, selectors.selectTrue);
         });
 
         it('can delete item', function () {
@@ -127,5 +144,6 @@ describe('Items', () => {
                 true
             );
         });
+
     });
 });
