@@ -24,7 +24,6 @@ namespace oat\taoItems\scripts\install;
 
 use taoItems_actions_Items;
 use taoItems_actions_ItemContent;
-use taoItems_actions_ItemImport;
 use oat\oatbox\extension\InstallAction;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\ActionAccessControl;

@@ -70,7 +70,7 @@ class taoItems_actions_ItemImport extends tao_actions_Import
     private function replaceAvailableImportHandlers(): array
     {
         $returnValue = parent::getAvailableImportHandlers();
-        
+
         foreach (array_keys($returnValue) as $key) {
             if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
                 if ($this->getFeatureFlagChecker()->isEnabled(self::FEATURE_FLAG_TABULAR_IMPORT)) {

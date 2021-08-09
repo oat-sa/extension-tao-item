@@ -28,7 +28,6 @@ use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\tools\accessControl\SetRolesAccess;
-use taoItems_actions_ItemImport;
 
 final class Version202108030710512141_taoItems extends AbstractMigration
 {
