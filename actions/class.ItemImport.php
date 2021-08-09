@@ -26,7 +26,6 @@ declare(strict_types=1);
 use oat\taoQtiItem\model\import\CsvItemImporter;
 use oat\tao\model\featureFlag\FeatureFlagChecker;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
-use oat\tao\model\accessControl\Context;
 
 /**
  * This controller provide the actions to import items
@@ -71,21 +70,8 @@ class taoItems_actions_ItemImport extends tao_actions_Import
     private function replaceAvailableImportHandlers(): array
     {
         $returnValue = parent::getAvailableImportHandlers();
-        $hasAccess = $this->hasReadAccessByContext(
-            new Context([
-                Context::PARAM_CONTROLLER => self::class,
-                Context::PARAM_ACTION => 'isImporter',
-            ])
-        );
+        
         foreach (array_keys($returnValue) as $key) {
-            if (
-                !$hasAccess &&
-                ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter ||
-                $returnValue[$key] instanceof \tao_models_classes_import_RdfImporter )
-            ) {
-                unset($returnValue[$key]);
-                continue;
-            }
             if ($returnValue[$key] instanceof \tao_models_classes_import_CsvImporter) {
                 if ($this->getFeatureFlagChecker()->isEnabled(self::FEATURE_FLAG_TABULAR_IMPORT)) {
                     $importer = new CsvItemImporter($this->getPsrRequest());

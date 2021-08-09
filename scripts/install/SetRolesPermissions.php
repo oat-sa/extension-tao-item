@@ -55,11 +55,6 @@ class SetRolesPermissions extends InstallAction
                     TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
                 ],
             ],
-            taoItems_actions_ItemImport::class => [
-                'isImporter' => [
-                    TaoItemsRoles::ITEM_IMPORTER => ActionAccessControl::DENY,
-                ],
-            ],
         ],
     ];
 

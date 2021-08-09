@@ -42,13 +42,6 @@ final class Version202108030710512141_taoItems extends AbstractMigration
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
             ],
         ],
-        SetRolesAccess::CONFIG_PERMISSIONS => [
-            taoItems_actions_ItemImport::class => [
-                'isImporter' => [
-                    TaoItemsRoles::ITEM_IMPORTER => ActionAccessControl::DENY,
-                ],
-            ],
-        ]
     ];
 
     public function getDescription(): string
