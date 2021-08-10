@@ -30,11 +30,14 @@ describe('Items', () => {
      */
     before(() => {
         cy.loginAsAdmin();
-        cy.intercept('GET', `**/${ selectors.treeRenderUrl }/getOntologyData**`).as('treeRender')
-        cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+        cy.intercept('GET', `**/${ selectors.treeRenderUrl }/getOntologyData**`).as('treeRender');
+        cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
         cy.visit(urls.items);
-        cy.wait('@treeRender')
-        cy.wait('@editClassLabel')
+        cy.wait('@treeRender', { requestTimeout: 10000 });
+        cy.get(`${selectors.root} a`)
+            .first()
+            .click();
+        cy.wait('@editClassLabel', { requestTimeout: 10000 });
     });
 
     /**
@@ -107,9 +110,9 @@ describe('Items', () => {
             .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
             .renameSelectedClass(selectors.itemClassForm, className);
 
-            cy.wait('@editClassLabel', { requestTimeout: 10000 })
+            cy.wait('@editClassLabel', { requestTimeout: 10000 });
 
-            .deleteClassFromRoot(
+            cy.deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
                 selectors.deleteClass,
