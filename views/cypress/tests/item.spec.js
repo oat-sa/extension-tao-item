@@ -26,17 +26,15 @@ describe('Items', () => {
     const itemName = 'Test E2E item 1';
 
     /**
-     * Visit the page
-     */
-    beforeEach(() => {
-        cy.visit(urls.items);
-    });
-
-    /**
      * Log in
      */
     before(() => {
         cy.loginAsAdmin();
+        cy.intercept('GET', `**/${ selectors.treeRenderUrl }/getOntologyData**`).as('treeRender')
+        cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+        cy.visit(urls.items);
+        cy.wait('@treeRender')
+        cy.wait('@editClassLabel')
     });
 
     /**
@@ -59,34 +57,30 @@ describe('Items', () => {
                 selectors.editClass,
                 selectors.classOptions,
                 newPropertyName,
-                selectors.propertyEdit
+                selectors.propertyEdit,
+                selectors.editClassUrl
             );
         });
 
         it('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
-                .renameSelected(selectors.itemForm, 'Test E2E item 1');
+                .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
         });
 
         it('can give a property value to an item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
-            cy.addNode(selectors.itemForm, selectors.addItem);
-            cy.assignValueToProperty(itemName, selectors.itemForm, selectors.selectTrue);
+            cy.assignValueToProperty(itemName, selectors.itemForm, selectors.selectTrue, selectors.treeRenderUrl);
         });
 
         it('can delete item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
-                .renameSelected(selectors.itemForm, 'Test E2E item 2')
+                .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 2')
                 .deleteNode(
                     selectors.root,
                     selectors.deleteItem,
                     'Test E2E item 2',
-                    selectors.treeRenderUrl,
-                    selectors.editItem,
-                    false,
-                    true
                 );
         });
 
@@ -97,7 +91,7 @@ describe('Items', () => {
                 selectors.deleteClass,
                 selectors.deleteConfirm,
                 className,
-                selectors.treeRenderUrl,
+                selectors.deleteClassUrl,
                 selectors.resourceRelations,
                 false,
                 true
@@ -105,28 +99,48 @@ describe('Items', () => {
         });
 
         it('can delete empty item class', function () {
-            cy.addClassToRoot(
+            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+            cy.get(`${selectors.root} a`)
+            .first()
+            .click()
+            .wait('@editClassLabel', { requestTimeout: 10000 })
+            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+            .renameSelectedClass(selectors.itemClassForm, className);
+
+            cy.wait('@editClassLabel', { requestTimeout: 10000 })
+
+            .deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
+                selectors.deleteClass,
+                selectors.deleteConfirm,
                 className,
-                selectors.editClassLabelUrl,
-                selectors.treeRenderUrl,
-                selectors.addSubClassUrl
-            )
-                .deleteClassFromRoot(
-                    selectors.root,
-                    selectors.itemClassForm,
-                    selectors.deleteClass,
-                    selectors.deleteConfirm,
-                    className,
-                    selectors.treeRenderUrl,
-                    selectors.resourceRelations,
-                    false,
-                    true
-                );
+                selectors.deleteClassUrl,
+                selectors.resourceRelations,
+                false,
+                true
+            );
         });
 
         it('can move item class', function () {
+            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+            cy.get(`${selectors.root} a`)
+            .first()
+            .click()
+            .wait('@editClassLabel', { requestTimeout: 10000 })
+            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+            .renameSelectedClass(selectors.itemClassForm, className);
+
+            cy.wait('@editClassLabel', { requestTimeout: 10000 })
+
+            cy.get(`${selectors.root} a`)
+            .first()
+            .click()
+            .wait('@editClassLabel', { requestTimeout: 10000 })
+            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+            .renameSelectedClass(selectors.itemClassForm, classMovedName);
+
+            cy.wait('@treeRender', { requestTimeout: 10000 })
             cy.moveClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -136,11 +150,8 @@ describe('Items', () => {
                 selectors.deleteConfirm,
                 className,
                 classMovedName,
-                selectors.treeRenderUrl,
-                selectors.editClassLabelUrl,
                 selectors.restResourceGetAll,
-                selectors.resourceRelations,
-                selectors.addSubClassUrl,
+                selectors.deleteClassUrl,
                 true
             );
         });

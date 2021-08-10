@@ -17,6 +17,8 @@ export default {
     editItemUrl: 'taoItems/Items/editItem',
     treeRenderUrl: 'taoItems/Items',
     addSubClassUrl: 'taoItems/Items/addSubClass',
+    editClassUrl: 'taoItems/Items/editItemClass',
+    deleteClassUrl: 'taoItems/Items/deleteClass',
     restResourceGetAll: 'tao/RestResource/getAll',
     resourceRelations: 'tao/ResourceRelations',
     selectTrue: 'input[type="radio"][value="http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_True"]'
