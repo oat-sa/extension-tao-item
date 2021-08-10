@@ -21,6 +21,7 @@
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
+use oat\tao\model\accessControl\Context;
 use oat\tao\model\accessControl\data\PermissionException;
 use oat\tao\model\accessControl\PermissionChecker;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
@@ -109,8 +110,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             session_write_close();
 
             $params = $this->getRequiredQueryParams('uri', 'lang', 'relPath', 'filters');
-            ['uri' => $uri, 'lang' => $lang, 'relPath' => $relPath, 'filters' => $filters] = $params;
-            $asset = $this->resolveAsset($uri, $relPath, $lang);
+            ['filters' => $filters] = $params;
+            $asset = $this->getMediaAsset('uploadAsset');
 
             $file = tao_helpers_Http::getUploadedFile('content');
             $fileTmpName = $file['tmp_name'] . '_' . $file['name'];
@@ -171,7 +172,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function download(): void
     {
-        $asset = $this->getMediaAsset();
+        $asset = $this->getMediaAsset('previewAsset');
 
         $mediaSource = $asset->getMediaSource();
         $stream = $this->getMediaSourceFileStream($mediaSource, $asset);
@@ -189,7 +190,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      */
     public function delete(): void
     {
-        $asset = $this->getMediaAsset(true);
+        $asset = $this->getMediaAsset('deleteAsset');
 
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
@@ -199,20 +200,37 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $this->setResponse($formatter->format($this->getPsrResponse()));
     }
 
-    private function getMediaAsset(bool $validateWriteAccess = false): ?MediaAsset
+    private function getMediaAsset(string $action): ?MediaAsset
     {
-        $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
-        $asset = $this->resolveAsset($params['uri'], $params['path'], $params['lang']);
+        $isWrite = in_array($action, ['deleteAsset', 'uploadAsset']);
+        $params = $this->getRequiredQueryParams('uri', 'lang');
+        $queryParams = $this->getPsrRequest()->getQueryParams();
+        $path = $queryParams['relPath'] ?? $queryParams['path'] ?? null;
+        $asset = $this->resolveAsset($params['uri'], $path, $params['lang']);
+        $resourceUri = $params['uri'];
+        $hasAccess = true;
 
-        $resourceUri = $asset->getMediaSource() instanceof LocalItemSource
-            ? $params['uri']
-            : tao_helpers_Uri::decode($asset->getMediaIdentifier());
-
-        if ($validateWriteAccess && !$this->getPermissionChecker()->hasWriteAccess($resourceUri)) {
-            throw new ResourceAccessDeniedException($resourceUri);
+        // We do not want to validate access for item gallery
+        if (!$asset->getMediaSource() instanceof LocalItemSource) {
+            $resourceUri = tao_helpers_Uri::decode($asset->getMediaIdentifier());
+            $context = new Context(
+                [
+                    Context::PARAM_CONTROLLER => taoItems_actions_ItemContent::class,
+                    Context::PARAM_ACTION => $action,
+                ]
+            );
+            $hasAccess = $isWrite ? $this->hasWriteAccessByContext($context) : $this->hasReadAccessByContext($context);
         }
 
-        if (!$validateWriteAccess && !$this->getPermissionChecker()->hasReadAccess($resourceUri)) {
+        if (!$isWrite) {
+            $hasAccess = $hasAccess && $this->getPermissionChecker()->hasReadAccess($resourceUri);
+        }
+
+        if ($isWrite) {
+            $hasAccess = $hasAccess && $this->getPermissionChecker()->hasWriteAccess($resourceUri);
+        }
+
+        if (!$hasAccess) {
             throw new ResourceAccessDeniedException($resourceUri);
         }
 
