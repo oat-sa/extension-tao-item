@@ -105,8 +105,7 @@ describe('Items', () => {
 
         it('can delete empty item class', function () {
             cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
-            cy.get(`${selectors.root} a`)
-            .first()
+            cy.getSettled(`${selectors.root} a:nth(0)`)
             .click()
             .wait('@editClassLabel', { requestTimeout: 10000 })
             .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
@@ -129,8 +128,7 @@ describe('Items', () => {
 
         it('can move item class', function () {
             cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
-            cy.get(`${selectors.root} a`)
-            .first()
+            cy.getSettled(`${selectors.root} a:nth(0)`)
             .click()
             .wait('@editClassLabel', { requestTimeout: 10000 })
             .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
@@ -138,8 +136,7 @@ describe('Items', () => {
 
             cy.wait('@editClassLabel', { requestTimeout: 10000 })
 
-            cy.get(`${selectors.root} a`)
-            .first()
+            cy.getSettled(`${selectors.root} a:nth(0)`)
             .click()
             .wait('@editClassLabel', { requestTimeout: 10000 })
             .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
