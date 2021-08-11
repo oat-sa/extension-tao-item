@@ -25,7 +25,6 @@ namespace oat\taoItems\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\scripts\update\OntologyUpdater;
-use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\tools\accessControl\SetRolesAccess;
 
@@ -40,12 +39,16 @@ final class Version202108030710512141_taoItems extends AbstractMigration
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'deleteItem'],
                 ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
             ],
+            TaoItemsRoles::ITEM_CONTENT_CREATOR => [
+                ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'fileExists'],
+                ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'upload'],
+            ],
         ],
     ];
 
     public function getDescription(): string
     {
-        return 'Configure permissions for Item Importer and Item Deleter role';
+        return 'Configure permissions for Item Importer, Deleter and content creator role';
     }
 
     public function up(Schema $schema): void
