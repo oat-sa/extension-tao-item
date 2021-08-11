@@ -54,6 +54,7 @@ describe('Items', () => {
                 selectors.addSubClassUrl
             );
         });
+
         it('can edit and add new property for the class', function () {
             cy.addPropertyToClass(
                 className,
@@ -83,6 +84,7 @@ describe('Items', () => {
                 .deleteNode(
                     selectors.root,
                     selectors.deleteItem,
+                    selectors.editItemUrl,
                     'Test E2E item 2',
                 );
         });
