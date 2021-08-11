@@ -191,6 +191,16 @@ return [
             TaoItemsRoles::ITEM_DELETER,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'fileExists'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'upload'],
+        ],
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
