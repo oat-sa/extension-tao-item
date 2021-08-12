@@ -44,7 +44,7 @@ describe('Items', () => {
     /**
      * Tests
      */
-    describe('Item creation, editing and deletion', () => {
+    describe('Item Class creation and editing', () => {
         it('can create a new item class', function () {
             cy.addClassToRoot(
                 selectors.root,
@@ -66,8 +66,10 @@ describe('Items', () => {
                 selectors.editClassUrl
             );
         });
+    });
 
-        it.only('can create and rename a new item', function () {
+    describe('Item creation and edition', () => {
+        it('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
                 .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
@@ -77,7 +79,9 @@ describe('Items', () => {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.assignValueToProperty(itemName, selectors.itemForm, selectors.selectTrue, selectors.treeRenderUrl);
         });
+    });
 
+    describe('Moving and deleting', () => {
         it('can delete item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
