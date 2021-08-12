@@ -202,7 +202,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getMediaAsset(string $action): ?MediaAsset
     {
-        $isWrite = in_array($action, ['deleteAsset', 'uploadAsset']);
+        $isWrite = in_array($action, ['deleteAsset', 'uploadAsset'], true);
         $params = $this->getRequiredQueryParams('uri', 'lang');
         $queryParams = $this->getPsrRequest()->getQueryParams();
         $path = $queryParams['relPath'] ?? $queryParams['path'] ?? null;
