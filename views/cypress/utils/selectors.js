@@ -1,6 +1,8 @@
 export default {
     deleteItem: '[data-context="instance"][data-action="deleteItem"]',
     deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
+    moveClass: '[id="item-move-to"][data-context="resource"][data-action="moveTo"]',
+    moveConfirmSelector: 'button[data-control="ok"]',
     newClass: '[data-context="resource"][data-action="subClass"]',
     addItem: '[data-context="resource"][data-action="instanciate"]',
     itemForm: 'form[action="/taoItems/Items/editItem"]',
@@ -10,6 +12,14 @@ export default {
     classForm: 'form[data-action= "/taoItems/Items/editItemClass"]',
     propertyEdit: 'div[class="form-group property-block regular-property property-edit-container-open"]',
     deleteConfirm: '[data-control="delete"]',
-    selectTrue: 'input[type="radio"][value="http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_True"]',
-    root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]'
+    root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
+    editClassLabelUrl: 'taoItems/Items/editClassLabel',
+    editItemUrl: 'taoItems/Items/editItem',
+    treeRenderUrl: 'taoItems/Items',
+    addSubClassUrl: 'taoItems/Items/addSubClass',
+    editClassUrl: 'taoItems/Items/editItemClass',
+    deleteClassUrl: 'taoItems/Items/deleteClass',
+    restResourceGetAll: 'tao/RestResource/getAll',
+    resourceRelations: 'tao/ResourceRelations',
+    selectTrue: 'input[type="radio"][value="http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_True"]'
 };
