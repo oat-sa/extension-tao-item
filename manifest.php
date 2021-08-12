@@ -191,6 +191,21 @@ return [
             TaoItemsRoles::ITEM_CONTENT_CREATOR,
             ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'upload'],
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_IMPORTER,
+            ['ext' => 'taoItems', 'mod' => 'ItemImport', 'act' => 'index'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_DELETER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'deleteItem'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_DELETER,
+            ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
+        ],
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
