@@ -15,8 +15,6 @@ final class Version202108100944252141_taoItems extends AbstractMigration
         SetRolesAccess::CONFIG_RULES => [
             TaoItemsRoles::ITEM_CONTENT_CREATOR => [
                 ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'delete'],
-                ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'fileExists'],
-                ['ext' => 'taoItems', 'mod' => 'ItemContent', 'act' => 'upload'],
             ],
         ],
     ];
