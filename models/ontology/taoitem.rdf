@@ -187,4 +187,22 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Content Creator Role]]></rdfs:comment>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Resource Creator]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Resource Creator Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Importer]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Importer Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Item Deleter]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Item Deleter Role]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole"/>
+  </rdf:Description>
 </rdf:RDF>
