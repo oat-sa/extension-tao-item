@@ -26,7 +26,8 @@ describe('Items', () => {
     const itemName = 'Test E2E item 1';
 
     /**
-     * Log in
+     * Log in and wait for render
+     * After @treeRender click root class
      */
     before(() => {
         cy.loginAsAdmin();
@@ -66,7 +67,7 @@ describe('Items', () => {
             );
         });
 
-        it('can create and rename a new item', function () {
+        it.only('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
                 .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
@@ -89,16 +90,35 @@ describe('Items', () => {
                 );
         });
 
+        it('can move item class', function () {
+            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
+
+            cy.getSettled(`${selectors.root} a:nth(0)`)
+            .click()
+            .wait('@editClassLabel', { requestTimeout: 10000 })
+            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+            .renameSelectedClass(selectors.itemClassForm, classMovedName);
+
+            cy.wait('@treeRender', { requestTimeout: 10000 });
+
+            cy.moveClassFromRoot(
+                selectors.root,
+                selectors.moveClass,
+                selectors.moveConfirmSelector,
+                className,
+                classMovedName,
+                selectors.restResourceGetAll
+            );
+        });
+
         it('can delete item class', function () {
             cy.deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
                 selectors.deleteClass,
                 selectors.deleteConfirm,
-                className,
+                classMovedName,
                 selectors.deleteClassUrl,
-                selectors.resourceRelations,
-                false,
                 true
             );
         });
@@ -125,38 +145,5 @@ describe('Items', () => {
                 true
             );
         });
-
-        it('can move item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
-            cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel', { requestTimeout: 10000 })
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, className);
-
-            cy.wait('@editClassLabel', { requestTimeout: 10000 })
-
-            cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel', { requestTimeout: 10000 })
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, classMovedName);
-
-            cy.wait('@treeRender', { requestTimeout: 10000 })
-            cy.moveClassFromRoot(
-                selectors.root,
-                selectors.itemClassForm,
-                selectors.moveClass,
-                selectors.moveConfirmSelector,
-                selectors.deleteClass,
-                selectors.deleteConfirm,
-                className,
-                classMovedName,
-                selectors.restResourceGetAll,
-                selectors.deleteClassUrl,
-                true
-            );
-        });
-
     });
 });
