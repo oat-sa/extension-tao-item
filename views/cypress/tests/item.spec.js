@@ -77,7 +77,7 @@ describe('Items', () => {
 
         it('can give a property value to an item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
-            cy.assignValueToProperty(itemName, selectors.itemForm, selectors.selectTrue, selectors.treeRenderUrl);
+            cy.assignValueToProperty(itemName, selectors.itemForm, `[data-testid="${newPropertyName}"]`, selectors.treeRenderUrl);
         });
     });
 
