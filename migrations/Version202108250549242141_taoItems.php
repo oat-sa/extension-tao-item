@@ -17,15 +17,6 @@ final class Version202108250549242141_taoItems extends AbstractMigration
     private const CONFIG = [
         SetRolesAccess::CONFIG_PERMISSIONS => [
             taoItems_actions_ItemContent::class => [
-                'upload' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
-                ],
-                'download' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
-                ],
-                'delete' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
-                ],
                 'previewAsset' => [
                     TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
                 ],
@@ -44,7 +35,7 @@ final class Version202108250549242141_taoItems extends AbstractMigration
 
     public function getDescription(): string
     {
-        return 'Configure insert/delete/download asset permissions for Item Content creator role';
+        return 'Configure insert/preview/delete/download asset permissions for Item Content creator role';
     }
 
     public function up(Schema $schema): void
