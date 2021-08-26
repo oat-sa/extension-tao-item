@@ -33,15 +33,36 @@ final class Version202108250549242141_taoItems extends AbstractMigration
         ],
     ];
 
+    private const REVOKE_CONFIG = [
+        SetRolesAccess::CONFIG_PERMISSIONS => [
+            taoItems_actions_ItemContent::class => [
+                'files' => [
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
+                ],
+                'delete' => [
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
+                ],
+                'upload' => [
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
+                ],
+            ],
+        ],
+    ];
+
     public function getDescription(): string
     {
-        return 'Configure insert/preview/delete/download asset permissions for Item Content creator role';
+        return 'Configure insert/preview/delete/download asset permissions for Item Content creator role. Also remove unnecessary permissions of Item Class navigator Role';
     }
 
     public function up(Schema $schema): void
     {
         OntologyUpdater::syncModels();
 
+        $setRolesAccess = $this->propagate(new SetRolesAccess());
+        $setRolesAccess([
+            '--' . SetRolesAccess::OPTION_REVOKE,
+            '--' . SetRolesAccess::OPTION_CONFIG, self::REVOKE_CONFIG,
+        ]);
         $setRolesAccess = $this->propagate(new SetRolesAccess());
         $setRolesAccess([
             '--' . SetRolesAccess::OPTION_CONFIG, self::CONFIG,
@@ -54,6 +75,10 @@ final class Version202108250549242141_taoItems extends AbstractMigration
         $setRolesAccess([
             '--' . SetRolesAccess::OPTION_REVOKE,
             '--' . SetRolesAccess::OPTION_CONFIG, self::CONFIG,
+        ]);
+        $setRolesAccess = $this->propagate(new SetRolesAccess());
+        $setRolesAccess([
+            '--' . SetRolesAccess::OPTION_CONFIG, self::REVOKE_CONFIG,
         ]);
     }
 }
