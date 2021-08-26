@@ -58,6 +58,18 @@ class SetRolesPermissions extends InstallAction
                 'download' => [
                     TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
                 ],
+                'previewAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
+                'downloadAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
+                'uploadAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
+                'deleteAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
             ],
         ],
     ];

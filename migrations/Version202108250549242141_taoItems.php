@@ -26,13 +26,25 @@ final class Version202108250549242141_taoItems extends AbstractMigration
                 'delete' => [
                     TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
                 ],
+                'previewAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
+                'downloadAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
+                'uploadAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
+                'deleteAsset' => [
+                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                ],
             ],
         ],
     ];
 
     public function getDescription(): string
     {
-        return 'configure deny for insert/delete/download actions for Item Content creator role';
+        return 'Configure insert/delete/download asset permissions for Item Content creator role';
     }
 
     public function up(Schema $schema): void
