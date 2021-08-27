@@ -44,17 +44,20 @@ class SetRolesPermissions extends InstallAction
                 ],
             ],
             taoItems_actions_ItemContent::class => [
+                'viewAsset' => [
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
+                ],
                 'previewAsset' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
                 ],
                 'downloadAsset' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
                 ],
                 'uploadAsset' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
                 ],
                 'deleteAsset' => [
-                    TaoItemsRoles::ITEM_CONTENT_CREATOR => ActionAccessControl::DENY,
+                    TaoItemsRoles::ITEM_CLASS_NAVIGATOR => ActionAccessControl::DENY,
                 ],
             ],
         ],
