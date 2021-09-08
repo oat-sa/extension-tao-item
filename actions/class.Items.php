@@ -275,6 +275,15 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
+     * Move class to another location
+     * @requiresRight classUri WRITE
+     */
+    public function moveClass()
+    {
+        return parent::moveResource();
+    }
+
+    /**
      * @see TaoModule::translateInstance
      * @requiresRight uri WRITE
      * @return void
