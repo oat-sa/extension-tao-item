@@ -1,7 +1,7 @@
 export default {
     deleteItem: '[data-context="instance"][data-action="deleteItem"]',
     deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
-    moveClass: '[id="item-move-to"][data-context="resource"][data-action="moveTo"]',
+    moveClass: '[id="class-move-to"][data-context="class"][data-action="moveTo"]',
     moveConfirmSelector: 'button[data-control="ok"]',
     newClass: '[data-context="resource"][data-action="subClass"]',
     addItem: '[data-context="resource"][data-action="instanciate"]',
