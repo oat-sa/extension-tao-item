@@ -72,7 +72,7 @@ describe('Items', () => {
         it('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
-                .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
+                .renameSelectedNode(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
         });
 
         it('can give a property value to an item', function () {
@@ -85,7 +85,7 @@ describe('Items', () => {
         it('can delete item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
-                .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 2')
+                .renameSelectedNode(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 2')
                 .deleteNode(
                     selectors.root,
                     selectors.deleteItem,
