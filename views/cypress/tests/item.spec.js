@@ -25,7 +25,7 @@ describe('Items', () => {
     const classMovedName = 'Test E2E class Moved';
     const newPropertyName = 'I am a new property in testing, hi!';
     const itemName = 'Test E2E item 1';
-    const importItemPath = `${paths.baseItemsPath}/fixtures/test_e2e_item_1.zip`;
+    const importItemsPath = `${paths.baseItemsPath}/fixtures/packages`;
 
     /**
      * Log in and wait for render
@@ -33,8 +33,8 @@ describe('Items', () => {
      */
     before(() => {
         cy.loginAsAdmin();
-        cy.intercept('GET', `**/${ selectors.treeRenderUrl }/getOntologyData**`).as('treeRender');
-        cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
+        cy.intercept('GET', `**/${selectors.treeRenderUrl}/getOntologyData**`).as('treeRender');
+        cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel');
         cy.visit(urls.items);
         cy.wait('@treeRender');
         cy.get(`${selectors.root} a`)
@@ -97,13 +97,13 @@ describe('Items', () => {
         });
 
         it('can move item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
+            cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel');
 
             cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel')
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, classMovedName);
+                .click()
+                .wait('@editClassLabel')
+                .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+                .renameSelectedClass(selectors.itemClassForm, classMovedName);
 
             cy.wait('@treeRender');
 
@@ -130,12 +130,12 @@ describe('Items', () => {
         });
 
         it('can delete empty item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+            cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel')
             cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel')
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, className);
+                .click()
+                .wait('@editClassLabel')
+                .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+                .renameSelectedClass(selectors.itemClassForm, className);
 
             cy.wait('@editClassLabel');
 
@@ -154,7 +154,7 @@ describe('Items', () => {
     });
 
     describe('Import', () => {
-        it('can import item', function () {
+        const importItemTest = filename => {
             cy.addClassToRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -166,7 +166,7 @@ describe('Items', () => {
 
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
 
-            cy.importToSelectedNode(selectors.importItem, importItemPath, className);
+            cy.importToSelectedNode(selectors.importItem, `${importItemsPath}/${filename}`, selectors.importItemUrl, className);
 
             cy.deleteClassFromRoot(
                 selectors.root,
@@ -177,6 +177,18 @@ describe('Items', () => {
                 selectors.deleteClassUrl,
                 true
             );
+        };
+
+        it('can import item', function () {
+            importItemTest('e2e_item.zip');
+        });
+
+        it('can import item with rich passage', function () {
+            importItemTest('e2e_item_rich_passage.zip');
+        });
+
+        it('can import item with shared stimulus', function () {
+            importItemTest('e2e_item_shared_stimulus.zip');
         });
     });
 });
