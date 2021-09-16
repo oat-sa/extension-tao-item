@@ -18,12 +18,14 @@
 
 import urls from '../utils/urls';
 import selectors from '../utils/selectors';
+import paths from '../utils/paths';
 
 describe('Items', () => {
     const className = 'Test E2E class';
     const classMovedName = 'Test E2E class Moved';
     const newPropertyName = 'I am a new property in testing, hi!';
     const itemName = 'Test E2E item 1';
+    const importItemPath = `${paths.baseItemsPath}/fixtures/test_e2e_item_1.zip`;
 
     /**
      * Log in and wait for render
@@ -146,6 +148,33 @@ describe('Items', () => {
                 selectors.deleteClassUrl,
                 selectors.resourceRelations,
                 false,
+                true
+            );
+        });
+    });
+
+    describe('Import', () => {
+        it('can import item', function () {
+            cy.addClassToRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                className,
+                selectors.editClassLabelUrl,
+                selectors.treeRenderUrl,
+                selectors.addSubClassUrl
+            );
+
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+
+            cy.importToSelectedNode(selectors.importItem, importItemPath, className);
+
+            cy.deleteClassFromRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                selectors.deleteClass,
+                selectors.deleteConfirm,
+                className,
+                selectors.deleteClassUrl,
                 true
             );
         });

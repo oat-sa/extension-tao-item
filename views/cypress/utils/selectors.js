@@ -5,6 +5,7 @@ export default {
     moveConfirmSelector: 'button[data-control="ok"]',
     newClass: '[data-context="resource"][data-action="subClass"]',
     addItem: '[data-context="resource"][data-action="instanciate"]',
+    importItem: '[data-context="resource"][data-action="loadClass"]',
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
     classOptions: '[action="/taoItems/Items/editItemClass"]',
@@ -20,5 +21,6 @@ export default {
     editClassUrl: 'taoItems/Items/editItemClass',
     deleteClassUrl: 'taoItems/Items/deleteClass',
     restResourceGetAll: 'tao/RestResource/getAll',
-    resourceRelations: 'tao/ResourceRelations'
+    resourceRelations: 'tao/ResourceRelations',
+    importItemUrl: 'taoItems/ItemImport/index'
 };
