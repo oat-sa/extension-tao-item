@@ -22,7 +22,7 @@ import paths from '../utils/paths';
 
 describe('Import/export items', () => {
     const className = 'Test E2E class';
-    const importItemsPath = `${paths.baseItemsPath}/fixtures/packages`;
+    const packagesPath = `${paths.baseItemsPath}/fixtures/packages`;
 
     /**
      * Log in and wait for render
@@ -52,7 +52,7 @@ describe('Import/export items', () => {
 
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
 
-            cy.importToSelectedClass(selectors.importItem, `${importItemsPath}/${filename}`, selectors.importItemUrl, className);
+            cy.importToSelectedClass(selectors.importItem, `${packagesPath}/${filename}`, selectors.importItemUrl, className);
 
             cy.deleteClassFromRoot(
                 selectors.root,
@@ -75,6 +75,47 @@ describe('Import/export items', () => {
 
         it('can import item with shared stimulus', function () {
             importItemTest('e2e_item_shared_stimulus.zip');
+        });
+    });
+
+    describe('Export items', () => {
+        const exportItemTest = filename => {
+            cy.addClassToRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                className,
+                selectors.editClassLabelUrl,
+                selectors.treeRenderUrl,
+                selectors.addSubClassUrl
+            );
+
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+
+            cy.importToSelectedClass(selectors.importItem, `${packagesPath}/${filename}`, selectors.importItemUrl, className);
+
+            cy.exportFromSelectedClass(selectors.exportItem, selectors.exportItemUrl, className);
+
+            cy.deleteClassFromRoot(
+                selectors.root,
+                selectors.itemClassForm,
+                selectors.deleteClass,
+                selectors.deleteConfirm,
+                className,
+                selectors.deleteClassUrl,
+                true
+            );
+        };
+
+        it('can export item', function () {
+            exportItemTest('e2e_item.zip');
+        });
+
+        it('can export item with rich passage', function () {
+            exportItemTest('e2e_item_rich_passage.zip');
+        });
+
+        it('can export item with shared stimulus', function () {
+            exportItemTest('e2e_item_shared_stimulus.zip');
         });
     });
 });
