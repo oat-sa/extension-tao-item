@@ -18,14 +18,12 @@
 
 import urls from '../utils/urls';
 import selectors from '../utils/selectors';
-import paths from '../utils/paths';
 
 describe('Items', () => {
     const className = 'Test E2E class';
     const classMovedName = 'Test E2E class Moved';
     const newPropertyName = 'I am a new property in testing, hi!';
     const itemName = 'Test E2E item 1';
-    const importItemsPath = `${paths.baseItemsPath}/fixtures/packages`;
 
     /**
      * Log in and wait for render
@@ -150,45 +148,6 @@ describe('Items', () => {
                 false,
                 true
             );
-        });
-    });
-
-    describe('Import', () => {
-        const importItemTest = filename => {
-            cy.addClassToRoot(
-                selectors.root,
-                selectors.itemClassForm,
-                className,
-                selectors.editClassLabelUrl,
-                selectors.treeRenderUrl,
-                selectors.addSubClassUrl
-            );
-
-            cy.selectNode(selectors.root, selectors.itemClassForm, className);
-
-            cy.importToSelectedNode(selectors.importItem, `${importItemsPath}/${filename}`, selectors.importItemUrl, className);
-
-            cy.deleteClassFromRoot(
-                selectors.root,
-                selectors.itemClassForm,
-                selectors.deleteClass,
-                selectors.deleteConfirm,
-                className,
-                selectors.deleteClassUrl,
-                true
-            );
-        };
-
-        it('can import item', function () {
-            importItemTest('e2e_item.zip');
-        });
-
-        it('can import item with rich passage', function () {
-            importItemTest('e2e_item_rich_passage.zip');
-        });
-
-        it('can import item with shared stimulus', function () {
-            importItemTest('e2e_item_shared_stimulus.zip');
         });
     });
 });
