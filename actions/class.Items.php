@@ -230,6 +230,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     }
                     $this->setData('message', __('Class schema saved'));
                     $this->setData('reload', false);
+
+                    $myForm = $this->getClassForm($clazz, $this->getClassService()->getRootClass());
                 }
             }
         } else {
