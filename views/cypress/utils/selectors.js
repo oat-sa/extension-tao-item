@@ -6,6 +6,7 @@ export default {
     newClass: '[data-context="resource"][data-action="subClass"]',
     addItem: '[data-context="resource"][data-action="instanciate"]',
     importItem: '[data-context="resource"][data-action="loadClass"]',
+    exportItem: '[data-context="resource"][data-action="load"]',
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
     classOptions: '[action="/taoItems/Items/editItemClass"]',
@@ -22,5 +23,6 @@ export default {
     deleteClassUrl: 'taoItems/Items/deleteClass',
     restResourceGetAll: 'tao/RestResource/getAll',
     resourceRelations: 'tao/ResourceRelations',
-    importItemUrl: 'taoItems/ItemImport/index'
+    importItemUrl: 'taoItems/ItemImport/index',
+    exportItemUrl: 'taoItems/ItemExport/index'
 };
