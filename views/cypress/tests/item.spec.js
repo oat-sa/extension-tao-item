@@ -31,8 +31,8 @@ describe('Items', () => {
      */
     before(() => {
         cy.loginAsAdmin();
-        cy.intercept('GET', `**/${ selectors.treeRenderUrl }/getOntologyData**`).as('treeRender');
-        cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
+        cy.intercept('GET', `**/${selectors.treeRenderUrl}/getOntologyData**`).as('treeRender');
+        cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel');
         cy.visit(urls.items);
         cy.wait('@treeRender');
         cy.get(`${selectors.root} a`)
@@ -95,13 +95,13 @@ describe('Items', () => {
         });
 
         it('can move item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
+            cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel');
 
             cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel')
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, classMovedName);
+                .click()
+                .wait('@editClassLabel')
+                .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+                .renameSelectedClass(selectors.itemClassForm, classMovedName);
 
             cy.wait('@treeRender');
 
@@ -128,12 +128,12 @@ describe('Items', () => {
         });
 
         it('can delete empty item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+            cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel')
             cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel')
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, className);
+                .click()
+                .wait('@editClassLabel')
+                .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+                .renameSelectedClass(selectors.itemClassForm, className);
 
             cy.wait('@editClassLabel');
 
