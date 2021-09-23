@@ -23,12 +23,7 @@ describe('Items Page', () => {
      * Visit the page
      */
     before(() => {
-        cy.loginAsAdmin();
-        cy.intercept('POST', '**/edit*').as('edit');
-        cy.visit(urls.items);
-        cy.wait('@edit', {
-            requestTimeout: 10000
-        });
+        cy.setupPage(urls.items);
     });
 
     describe('Items page', () => {

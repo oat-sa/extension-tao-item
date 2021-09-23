@@ -30,15 +30,12 @@ describe('Items', () => {
      * After @treeRender click root class
      */
     before(() => {
-        cy.loginAsAdmin();
-        cy.intercept('GET', `**/${ selectors.treeRenderUrl }/getOntologyData**`).as('treeRender');
-        cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
-        cy.visit(urls.items);
-        cy.wait('@treeRender', { requestTimeout: 10000 });
-        cy.get(`${selectors.root} a`)
-            .first()
-            .click();
-        cy.wait('@editClassLabel', { requestTimeout: 10000 });
+        cy.setup(
+            selectors.treeRenderUrl,
+            selectors.editClassLabelUrl,
+            urls.items,
+            selectors.root
+        );
     });
 
     /**
