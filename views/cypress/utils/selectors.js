@@ -1,10 +1,12 @@
 export default {
     deleteItem: '[data-context="instance"][data-action="deleteItem"]',
     deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
-    moveClass: '[id="item-move-to"][data-context="resource"][data-action="moveTo"]',
+    moveClass: '[id="class-move-to"][data-context="class"][data-action="moveTo"]',
     moveConfirmSelector: 'button[data-control="ok"]',
     newClass: '[data-context="resource"][data-action="subClass"]',
     addItem: '[data-context="resource"][data-action="instanciate"]',
+    importItem: '[data-context="resource"][data-action="loadClass"]',
+    exportItem: '[data-context="resource"][data-action="load"]',
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
     classOptions: '[action="/taoItems/Items/editItemClass"]',
@@ -20,5 +22,7 @@ export default {
     editClassUrl: 'taoItems/Items/editItemClass',
     deleteClassUrl: 'taoItems/Items/deleteClass',
     restResourceGetAll: 'tao/RestResource/getAll',
-    resourceRelations: 'tao/ResourceRelations'
+    resourceRelations: 'tao/ResourceRelations',
+    importItemUrl: 'taoItems/ItemImport/index',
+    exportItemUrl: 'taoItems/ItemExport/index'
 };

@@ -69,7 +69,7 @@ describe('Items', () => {
         it('can create and rename a new item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
-                .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
+                .renameSelectedNode(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 1');
         });
 
         it('can give a property value to an item', function () {
@@ -82,7 +82,7 @@ describe('Items', () => {
         it('can delete item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className)
                 .addNode(selectors.itemForm, selectors.addItem)
-                .renameSelectedItem(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 2')
+                .renameSelectedNode(selectors.itemForm, selectors.editItemUrl, 'Test E2E item 2')
                 .deleteNode(
                     selectors.root,
                     selectors.deleteItem,
@@ -92,15 +92,15 @@ describe('Items', () => {
         });
 
         it('can move item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
+            cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel');
 
             cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel', { requestTimeout: 10000 })
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, classMovedName);
+                .click()
+                .wait('@editClassLabel')
+                .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+                .renameSelectedClass(selectors.itemClassForm, classMovedName);
 
-            cy.wait('@treeRender', { requestTimeout: 10000 });
+            cy.wait('@treeRender');
 
             cy.moveClassFromRoot(
                 selectors.root,
@@ -125,14 +125,14 @@ describe('Items', () => {
         });
 
         it('can delete empty item class', function () {
-            cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel')
+            cy.intercept('POST', `**/${selectors.editClassLabelUrl}`).as('editClassLabel')
             cy.getSettled(`${selectors.root} a:nth(0)`)
-            .click()
-            .wait('@editClassLabel', { requestTimeout: 10000 })
-            .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
-            .renameSelectedClass(selectors.itemClassForm, className);
+                .click()
+                .wait('@editClassLabel')
+                .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
+                .renameSelectedClass(selectors.itemClassForm, className);
 
-            cy.wait('@editClassLabel', { requestTimeout: 10000 });
+            cy.wait('@editClassLabel');
 
             cy.deleteClassFromRoot(
                 selectors.root,
