@@ -1,28 +1,34 @@
 export default {
-    deleteItem: '[data-context="instance"][data-action="deleteItem"]',
-    deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
-    moveClass: '[id="class-move-to"][data-context="class"][data-action="moveTo"]',
-    moveConfirmSelector: 'button[data-control="ok"]',
-    newClass: '[data-context="resource"][data-action="subClass"]',
     addItem: '[data-context="resource"][data-action="instanciate"]',
-    importItem: '[data-context="resource"][data-action="loadClass"]',
+    addSubClassUrl: 'taoItems/Items/addSubClass',
+
+    classOptions: '[action="/taoItems/Items/editItemClass"]',
+
+    deleteConfirm: '[data-control="delete"]',
+    deleteClass: '[data-context="class"][data-action="deleteItemClass"]',
+    deleteClassUrl: 'taoItems/Items/deleteClass',
+    deleteItem: '[data-context="instance"][data-action="deleteItem"]',
+
+    editClass: '#item-class-schema',
+    editClassLabelUrl: 'taoItems/Items/editClassLabel',
+    editClassUrl: 'taoItems/Items/editItemClass',
+    editItemUrl: 'taoItems/Items/editItem',
     exportItem: '[data-context="resource"][data-action="load"]',
+    exportItemUrl: 'taoItems/ItemExport/index',
+
+    importItem: '[data-context="resource"][data-action="loadClass"]',
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
-    classOptions: '[action="/taoItems/Items/editItemClass"]',
-    editClass: '#item-class-schema',
-    classForm: 'form[data-action= "/taoItems/Items/editItemClass"]',
+    importItemUrl: 'taoItems/ItemImport/index',
+
+    moveClass: '[id="class-move-to"][data-context="class"][data-action="moveTo"]',
+    moveConfirmSelector: 'button[data-control="ok"]',
+
     propertyEdit: 'div[class="form-group property-block regular-property property-edit-container-open"]',
-    deleteConfirm: '[data-control="delete"]',
-    root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
-    editClassLabelUrl: 'taoItems/Items/editClassLabel',
-    editItemUrl: 'taoItems/Items/editItem',
-    treeRenderUrl: 'taoItems/Items',
-    addSubClassUrl: 'taoItems/Items/addSubClass',
-    editClassUrl: 'taoItems/Items/editItemClass',
-    deleteClassUrl: 'taoItems/Items/deleteClass',
+
     restResourceGetAll: 'tao/RestResource/getAll',
     resourceRelations: 'tao/ResourceRelations',
-    importItemUrl: 'taoItems/ItemImport/index',
-    exportItemUrl: 'taoItems/ItemExport/index'
+    root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
+
+    treeRenderUrl: 'taoItems/Items',
 };
