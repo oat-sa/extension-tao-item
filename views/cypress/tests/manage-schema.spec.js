@@ -54,7 +54,7 @@
                 );
             }
         });
-    })
+    });
 
     /**
      * Tests
@@ -103,8 +103,8 @@
               .contains('.property-heading-toolbar', className)
               .within(() => {
                 cy.get('.icon-edit').click();
-              })
-            cy.get('.property-edit-container [data-testid="Label"]').should('have.value', newPropertyName)
+              });
+            cy.get('.property-edit-container [data-testid="Label"]').should('have.value', newPropertyName);
         });
     });
 
