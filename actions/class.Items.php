@@ -22,16 +22,21 @@
  *
  */
 
-use oat\generis\model\OntologyAwareTrait;
-use oat\generis\model\OntologyRdfs;
+declare(strict_types=1);
+
 use oat\oatbox\event\EventManager;
+use oat\generis\model\OntologyRdfs;
 use oat\tao\model\lock\LockManager;
-use oat\taoItems\model\event\ItemRdfUpdatedEvent;
-use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\ItemModelStatus;
+use oat\tao\model\accessControl\Context;
+use oat\generis\model\OntologyAwareTrait;
 use oat\tao\model\resources\ResourceWatcher;
+use oat\oatbox\validator\ValidatorInterface;
+use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\tao\model\controller\SignedFormInstance;
+use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use tao_helpers_form_FormContainer as FormContainer;
+use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
 
 /**
  * Items Controller provide actions performed from url resolution
@@ -126,10 +131,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     }
 
     /**
-     * edit an item instance
+     * Edit an item instance
+     *
      * @requiresRight id READ
      */
-    public function editItem()
+    public function editItem(): void
     {
         $this->defaultData();
 
@@ -137,15 +143,22 @@ class taoItems_actions_Items extends tao_actions_SaSModule
         $item = $this->getCurrentInstance();
 
         if (!$this->isLocked($item, 'item_locked.tpl')) {
-            // my lock
             $lock = LockManager::getImplementation()->getLockData($item);
-            if (!is_null($lock) && $lock->getOwnerId() == $this->getSession()->getUser()->getIdentifier()) {
+
+            if ($lock !== null && $lock->getOwnerId() == $this->getSession()->getUser()->getIdentifier()) {
                 $this->setData('lockDate', $lock->getCreationTime());
                 $this->setData('id', $item->getUri());
             }
 
             $itemUri = $item->getUri();
-            $hasWriteAccess = $this->hasWriteAccess($itemUri) && $this->hasWriteAccessToAction(__FUNCTION__);
+            $context = new Context(
+                [
+                    Context::PARAM_CONTROLLER => self::class,
+                    Context::PARAM_ACTION => __FUNCTION__,
+                ]
+            );
+
+            $hasWriteAccess = $this->hasWriteAccess($itemUri) && $this->hasWriteAccessByContext($context);
 
             $formContainer = new SignedFormInstance(
                 $itemClass,
@@ -153,6 +166,11 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 [
                     FormContainer::CSRF_PROTECTION_OPTION => true,
                     FormContainer::IS_DISABLED => !$hasWriteAccess,
+                    FormContainer::ATTRIBUTE_VALIDATORS => [
+                        'data-depends-on-property' => [
+                            $this->getDependsOnPropertyValidator(),
+                        ],
+                    ],
                 ]
             );
             $myForm = $formContainer->getForm();
@@ -162,19 +180,20 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $this->validateInstanceRoot($itemUri);
 
                     $properties = $myForm->getValues();
+
                     if (array_key_exists('warning', $properties)) {
                         $this->logWarning('Warning property is still in use', ['backend']);
                         unset($properties['warning']);
                     }
 
-                    //bind item properties and set default content:
+                    // Bind item properties and set default content:
                     $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($item);
                     $item = $binder->bind($properties);
 
                     $this->getEventManager()->trigger(new ItemUpdatedEvent($item->getUri(), $properties));
                     $this->getEventManager()->trigger(new ItemRdfUpdatedEvent($item->getUri(), $properties));
 
-                    //if item label has been changed, do not use getLabel() to prevent cached value from lazy loading
+                    // If item label has been changed, do not use getLabel() to prevent cached value from lazy loading
                     $label = $item->getOnePropertyValue(new core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL));
                     $this->setData('selectNode', tao_helpers_Uri::encode($item->getUri()));
                     $this->setData('label', ($label !== null) ? $label->literal : '');
@@ -187,16 +206,16 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $currentModel = $this->getClassService()->getItemModel($item);
             $hasPreview = false;
-            $hasModel   = false;
+            $hasModel = false;
+
             if (!empty($currentModel)) {
                 $hasModel = true;
                 $isDeprecated = $this->getClassService()->hasModelStatus($item, [ItemModelStatus::INSTANCE_DEPRECATED]);
                 $hasPreview = !$isDeprecated && $this->getClassService()->hasItemContent($item);
             }
 
-            $updatedAt = $this->getServiceLocator()->get(ResourceWatcher::SERVICE_ID)->getUpdatedAt($item);
             $this->setData('isPreviewEnabled', $hasPreview);
-            $this->setData('updatedAt', $updatedAt);
+            $this->setData('updatedAt', $this->getResourceWatcher()->getUpdatedAt($item));
             $this->setData('isAuthoringEnabled', $hasModel);
 
             $this->setData('formTitle', __('Edit Item'));
@@ -334,5 +353,15 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('errorMsg', $errorMsg);
             }
         }
+    }
+
+    private function getDependsOnPropertyValidator(): ValidatorInterface
+    {
+        return $this->getPsrContainer()->get(DependsOnPropertyValidator::class);
+    }
+
+    private function getResourceWatcher(): ResourceWatcher
+    {
+        return $this->getPsrContainer()->get(ResourceWatcher::SERVICE_ID);
     }
 }
