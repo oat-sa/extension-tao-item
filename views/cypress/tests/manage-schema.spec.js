@@ -123,7 +123,7 @@
 
     describe('Delete property', () => {
         it('Remove property from main item class', function() {
-            cy.removePropertyFromClass(className, newPropertyName);
+            cy.removePropertyFromClass(className, newPropertyName, selectors.itemClassForm, selectors.editClass,  selectors.classOptions, selectors.editClassUrl);
         });
     });
 });
