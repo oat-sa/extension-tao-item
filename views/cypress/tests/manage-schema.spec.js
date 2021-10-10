@@ -24,6 +24,15 @@
     const newPropertyName = 'I am a new property in testing, hi!';
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
+    const options = {
+        nodeName: selectors.root,
+        className: className,
+        propertyName: newPropertyName,
+        nodePropertiesForm: selectors.itemClassForm,
+        manageSchemaSelector: selectors.editClass,
+        classOptions: selectors.classOptions,
+        editUrl: selectors.editClassUrl
+    };
 
     /**
      * Log in and wait for render
@@ -123,7 +132,7 @@
 
     describe('Delete property', () => {
         it('Remove property from main item class', function() {
-            cy.removePropertyFromClass(selectors.root, className, newPropertyName, selectors.itemClassForm, selectors.editClass,  selectors.classOptions, selectors.editClassUrl);
+            cy.removePropertyFromClass(options);
         });
 
         it('Check removed property is not present in child item anymore', function () {
