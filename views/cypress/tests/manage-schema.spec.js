@@ -125,5 +125,13 @@
         it('Remove property from main item class', function() {
             cy.removePropertyFromClass(selectors.root, className, newPropertyName, selectors.itemClassForm, selectors.editClass,  selectors.classOptions, selectors.editClassUrl);
         });
+
+        it('Check removed property is not present in child item anymore', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.intercept('POST', selectors.editItemUrl).as('editItem');
+            cy.getSettled(`li [title ="${childItemName}"] a`).last().click();
+            cy.wait('@editItem');
+            cy.get(`[data-testid="${newPropertyName}"]`).should('not.exist');
+        });
     });
 });
