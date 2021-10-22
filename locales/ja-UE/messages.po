@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 2021.10\n"
+"PO-Revision-Date: 2021-10-14T09:21:57\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ja-UE\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: ja-UE\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr ""
+
+msgid "Actual size"
+msgstr "実際の大きさ"
+
+msgid "and"
+msgstr ""
+
+msgid "and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the item"
+msgstr ""
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete this item?"
+msgstr ""
+
+#, tao-public
+msgid "Authoring"
+msgstr "オーサリング"
+
+msgid "Class schema saved"
+msgstr ""
+
+msgid "Close"
+msgstr "閉じる"
+
+msgid "Close console"
+msgstr "コンソールを閉じる"
+
+msgid "contains content that is currently in use."
+msgstr ""
+
+#, tao-public
+msgid "Copy To"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "アイテムとエクササイズの作成とデザイン"
+
+#, tao-public
+msgid "Delete"
+msgstr "削除"
+
+msgid "Deleting this class will break the"
+msgstr ""
+
+msgid "Deleting this item will break the"
+msgstr ""
+
+msgid "Desktop preview"
+msgstr "デスクトッププレビュー"
+
+msgid "Don’t show this again!"
+msgstr "以後表示しない！"
+
+#, tao-public
+msgid "Duplicate"
+msgstr "複製"
+
+msgid "Edit Item"
+msgstr "アイテム編集"
+
+msgid "Edit item"
+msgstr "アイテム編集"
+
+#, tao-public
+msgid "Export"
+msgstr "エクスポート"
+
+msgid "Expose the property value to create automated categories."
+msgstr ""
+
+msgid "Failed retrieving %s"
+msgstr "検索失敗 %s"
+
+msgid "Forbidden action"
+msgstr ""
+
+#, tao-public
+msgid "Import"
+msgstr "インポート"
+
+msgid "is currently in use."
+msgstr ""
+
+msgid "Item Model"
+msgstr "アイテムも出る"
+
+msgid "Item not found"
+msgstr ""
+
+msgid "Item saved"
+msgstr "アイテムが保存されました"
+
+#, tao-public
+msgid "Items"
+msgstr "アイテム"
+
+#, tao-public
+msgid "Items library"
+msgstr "アイテムライブラリ"
+
+msgid "Landscape"
+msgstr "横に長く"
+
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr "アイテム管理"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr "モバイルプレビュー"
+
+#, tao-public
+msgid "Move"
+msgstr "移動"
+
+#, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
+msgid "New class"
+msgstr "新規クラス"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "選択されたタイプのアイテムを編集するツールがありません：%s"
+
+msgid "No item type selected for the current item."
+msgstr "該当アイテムのタイプが選ばれていません。"
+
+msgid "Not yet available"
+msgstr "現在利用できません"
+
+msgid "other"
+msgstr ""
+
+msgid "Please delete the subclasses before."
+msgstr ""
+
+msgid "Please select first the item type!"
+msgstr "最初のアイテムタイプを選択してください！"
+
+msgid "Portrait"
+msgstr "縦長"
+
+#, tao-public
+msgid "Preview"
+msgstr "プレビュー"
+
+#, tao-public
+msgid "Properties"
+msgstr "プロパティ"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "言語 \"%2$sで\"%1$s\" が公開されました。"
+
+msgid "Remove this message"
+msgstr "このメッセージを除く"
+
+msgid "Resource deleted"
+msgstr ""
+
+msgid "Retrieving external resources"
+msgstr "外部リソース検索中"
+
+msgid "s"
+msgstr ""
+
+msgid "Submit"
+msgstr "送信"
+
+msgid "test"
+msgstr ""
+
+msgid "The class"
+msgstr ""
+
+msgid "The file you tried to upload is not valid"
+msgstr "アップロードしようとしたファイルは無効です。"
+
+msgid "The item"
+msgstr ""
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "アイテムとエクササイズの作成とデザインがアイテムモジュールにより可能になっています。"
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr ""
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
+
+msgid "Unable to copy resources for language %s"
+msgstr "言語 %s のリソースをコピーできません。"
+
+msgid "Unable to create deployement directory"
+msgstr "実行ディレクトリーを作成できません。"
+
+msgid "Unable to delete the selected resource"
+msgstr ""
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "using it:"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr ""
+
+msgid "You checked out this item %2s ago"
+msgstr "%2s 前にアイテムはチェックアウトされています。"
+
+msgid "Your path contains error"
+msgstr "パスにエラーがあります。"
+
