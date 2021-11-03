@@ -90,6 +90,30 @@
                 selectors.editClassUrl
             );
         });
+
+        it('validate restriction - notEmpty', function () {
+            cy.getSettled('span[class="icon-edit"]').last().click();
+            cy.get(selectors.propertyEdit).find('input[type="checkbox"]').first().check({force: true});
+            cy.intercept('POST', `**/${selectors.editClassUrl}`).as('editClass');
+            cy.get('button[type="submit"]').click();
+            cy.wait('@editClass');
+        });
+
+        it('validate restriction - languageDependant', function () {
+            cy.getSettled('span[class="icon-edit"]').last().click();
+            cy.get(selectors.propertyEdit).find('input[type="radio"]').eq(1).check({force: true});
+            cy.intercept('POST', `**/${selectors.editClassUrl}`).as('editClass');
+            cy.get('button[type="submit"]').click();
+            cy.wait('@editClass');
+        });
+
+        it('validate restriction - formFieldOrder', function () {
+            cy.getSettled('span[class="icon-edit"]').last().click();
+            cy.get(selectors.propertyEdit).find('input').eq(4).clear('input').type(newPropertyName);
+            cy.intercept('POST', `**/${selectors.editClassUrl}`).as('editClass');
+            cy.get('button[type="submit"]').click();
+            cy.wait('@editClass');
+        });
     });
 
     describe('Child Item Class', () => {
