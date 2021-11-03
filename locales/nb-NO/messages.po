@@ -1,0 +1,253 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 2021.10\n"
+"PO-Revision-Date: 2021-10-22T12:33:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: nb-NO\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: nb-NO\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr "<b>Merk</b>: For tomme klasser er RDF-formatet<br />det eneste tilgjengelige formatet."
+
+msgid "Actual size"
+msgstr "Faktisk størrelse"
+
+msgid "and"
+msgstr "og"
+
+msgid "and all of its content?"
+msgstr "og alt innholdet?"
+
+msgid "Are you sure you want to delete the class"
+msgstr "Er du sikker på at du vil slette mappen"
+
+msgid "Are you sure you want to delete the item"
+msgstr "Er du sikker på at du vil slette oppgaven"
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr "Er du sikker på at du vil slette denne mappen og innholdet i den?"
+
+msgid "Are you sure you want to delete this item?"
+msgstr "Er du sikker på at du vil slette denne oppgaven?"
+
+#, tao-public
+msgid "Authoring"
+msgstr "Forfatter"
+
+msgid "Class schema saved"
+msgstr "Mappeskjema lagret"
+
+msgid "Close"
+msgstr "Lukk"
+
+msgid "Close console"
+msgstr "Lukk konsollen"
+
+msgid "contains content that is currently in use."
+msgstr "inneholder innhold som er i bruk."
+
+#, tao-public
+msgid "Copy To"
+msgstr "Kopier til"
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "Opprett og design oppgaver."
+
+#, tao-public
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Deleting this class will break the"
+msgstr "Hvis du sletter denne mappen, brytes"
+
+msgid "Deleting this item will break the"
+msgstr "Hvis du sletter denne oppgaven, brytes"
+
+msgid "Desktop preview"
+msgstr "Forhåndsvisning av skrivebord"
+
+msgid "Don’t show this again!"
+msgstr "Ikke vis dette igjen!"
+
+#, tao-public
+msgid "Duplicate"
+msgstr "Dupliser"
+
+msgid "Edit Item"
+msgstr "Rediger Oppgave"
+
+msgid "Edit item"
+msgstr "Rediger oppgave"
+
+#, tao-public
+msgid "Export"
+msgstr "Eksporter"
+
+msgid "Expose the property value to create automated categories."
+msgstr "Vis egenskapsverdien for å lage automatiserte kategorier."
+
+msgid "Failed retrieving %s"
+msgstr "Kunne ikke hente %s"
+
+msgid "Forbidden action"
+msgstr "Ugyldig handling"
+
+#, tao-public
+msgid "Import"
+msgstr "Importer"
+
+msgid "is currently in use."
+msgstr "er i bruk."
+
+msgid "Item Model"
+msgstr "Oppgavemodell"
+
+msgid "Item not found"
+msgstr "Oppgave ikke funnet"
+
+msgid "Item saved"
+msgstr "Oppgave ble lagret"
+
+#, tao-public
+msgid "Items"
+msgstr "Oppgaver"
+
+#, tao-public
+msgid "Items library"
+msgstr "Oppgavebibliotek"
+
+msgid "Landscape"
+msgstr "Landskap"
+
+msgid "Last updated on %2s"
+msgstr "Sist oppdatert på %2s"
+
+msgid "Manage item class schema"
+msgstr "Administrer skjema for oppgavemappe"
+
+#, tao-public
+msgid "Manage items"
+msgstr "Administrer oppgaver"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr "Administrer skjema"
+
+msgid "Mobile preview"
+msgstr "Forhåndsvisning for mobil"
+
+#, tao-public
+msgid "Move"
+msgstr "Flytt"
+
+#, tao-public
+msgid "Move To"
+msgstr "Flytt til"
+
+#, tao-public
+msgid "New class"
+msgstr "Ny mappe"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "Ingen redigeringsverktøy  er tilgjengelig for den valgte oppgavetypen: %s"
+
+msgid "No item type selected for the current item."
+msgstr "Ingen oppgavetype valgt for gjeldende oppgave."
+
+msgid "Not yet available"
+msgstr "Ikke tilgjengelig enda"
+
+msgid "other"
+msgstr "annen"
+
+msgid "Please delete the subclasses before."
+msgstr "Slett undermappene før."
+
+msgid "Please select first the item type!"
+msgstr "Velg først oppgavetypen!"
+
+msgid "Portrait"
+msgstr "Portrett"
+
+#, tao-public
+msgid "Preview"
+msgstr "Forhåndsvisning"
+
+#, tao-public
+msgid "Properties"
+msgstr "Egenskaper"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "Publisert \"%1$s\" på språk \"%2$s"
+
+msgid "Remove this message"
+msgstr "Fjern denne meldingen"
+
+msgid "Resource deleted"
+msgstr "Ressurs slettet"
+
+msgid "Retrieving external resources"
+msgstr "Henter eksterne ressurser"
+
+msgid "s"
+msgstr "s"
+
+msgid "Submit"
+msgstr "Lever"
+
+msgid "test"
+msgstr "prøve"
+
+msgid "The class"
+msgstr "Mappen"
+
+msgid "The file you tried to upload is not valid"
+msgstr "Filen du prøvde å laste opp er ikke gyldig"
+
+msgid "The item"
+msgstr "Oppgaven"
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "Oppgavemodulen muliggjør oppretting og design av oppgaver."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr "Egenskapen er utsatt for kategoritillegg. &#13Fjerning av visning?"
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "Denne forhåndsvisningen kan skaleres for og tilpasses skjermen din. Den endelige gjengivelsen kan se annerledes ut."
+
+msgid "Unable to copy resources for language %s"
+msgstr "Kan ikke kopiere ressurser for språk %s"
+
+msgid "Unable to create deployement directory"
+msgstr "Kan ikke opprette distribusjonskatalog"
+
+msgid "Unable to delete the selected resource"
+msgstr "Kan ikke slette den valgte ressursen"
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "Kan ikke gjengi oppgaven fra %s: %s %s"
+
+msgid "using it:"
+msgstr "bruker det:"
+
+msgid "Warning"
+msgstr "Advarsel"
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr "som du prøver å slette er for stor og inneholder for mange undermapper."
+
+msgid "You checked out this item %2s ago"
+msgstr "Du sjekket ut denne oppgaven for %2s siden"
+
+msgid "Your path contains error"
+msgstr "Banen din inneholder feil"
+
