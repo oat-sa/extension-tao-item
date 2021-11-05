@@ -148,6 +148,10 @@
             cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
         });
 
+        it('appears error on save due to notEmpty restriction', function () {
+            cy.get('div[class="form-error"]').should('have.text', 'This field is required');
+        });
+
         it('child item inherits parent property and sets value', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.assignValueToProperty(childItemName, selectors.itemForm, `[data-testid="${newPropertyName}"]`, selectors.treeRenderUrl, selectors.editItemUrl);
