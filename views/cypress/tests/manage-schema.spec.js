@@ -92,27 +92,32 @@
         });
 
         it('validate restriction - notEmpty', function () {
-            cy.getSettled('span[class="icon-edit"]').last().click();
-            cy.get(selectors.propertyEdit).find('input[type="checkbox"]').first().check({force: true});
-            cy.intercept('POST', `**/${selectors.editClassUrl}`).as('editClass');
-            cy.get('button[type="submit"]').click();
-            cy.wait('@editClass');
+            const options = {
+                input: 'input[type="checkbox"]',
+                type: 'checkbox',
+                editClassSelector: selectors.editClassUrl
+            };
+            cy.findInputInManageSchema(options);
         });
 
         it('validate restriction - languageDependant', function () {
-            cy.getSettled('span[class="icon-edit"]').last().click();
-            cy.get(selectors.propertyEdit).find('input[type="radio"]').eq(1).check({force: true});
-            cy.intercept('POST', `**/${selectors.editClassUrl}`).as('editClass');
-            cy.get('button[type="submit"]').click();
-            cy.wait('@editClass');
+            const options = {
+                input: 'input[type="radio"]',
+                position: 1,
+                type: 'radio',
+                editClassSelector: selectors.editClassUrl
+            };
+            cy.findInputInManageSchema(options);
         });
 
         it('validate restriction - formFieldOrder', function () {
-            cy.getSettled('span[class="icon-edit"]').last().click();
-            cy.get(selectors.propertyEdit).find('input').eq(4).clear('input').type(newPropertyName);
-            cy.intercept('POST', `**/${selectors.editClassUrl}`).as('editClass');
-            cy.get('button[type="submit"]').click();
-            cy.wait('@editClass');
+            const options = {
+                input: 'input',
+                position: 4,
+                type: 'text',
+                editClassSelector: selectors.editClassUrl
+            };
+            cy.findInputInManageSchema(options);
         });
     });
 
