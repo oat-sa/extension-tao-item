@@ -28,8 +28,8 @@ export default {
 
     propertyEdit: 'div[class="form-group property-block regular-property property-edit-container-open"]',
 
-    restResourceGetAll: 'tao/RestResource/getAll',
-    resourceRelations: 'tao/ResourceRelations',
+    resourceGetAllUrl: 'tao/RestResource/getAll',
+    resourceRelationsUrl: 'tao/ResourceRelations',
     root: '[data-uri="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"]',
 
     treeRenderUrl: 'taoItems/Items',

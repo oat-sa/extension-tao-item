@@ -18,9 +18,10 @@
 
 import urls from '../utils/urls';
 import selectors from '../utils/selectors';
+import { getRandomNumber } from '../../../../tao/views/cypress/utils/helpers';
 
 describe('Items', () => {
-    const className = 'Test E2E class';
+    const className = `Test E2E class ${getRandomNumber()}`;
     const classMovedName = 'Test E2E class Moved';
     const newPropertyName = 'I am a new property in testing, hi!';
     const itemName = 'Test E2E item 1';
@@ -113,7 +114,7 @@ describe('Items', () => {
                 selectors.moveConfirmSelector,
                 className,
                 classMovedName,
-                selectors.restResourceGetAll
+                selectors.resourceGetAllUrl
             );
         });
 
@@ -146,7 +147,7 @@ describe('Items', () => {
                 selectors.deleteConfirm,
                 className,
                 selectors.deleteClassUrl,
-                selectors.resourceRelations,
+                selectors.resourceRelationsUrl,
                 false,
                 true
             );

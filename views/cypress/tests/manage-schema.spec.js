@@ -18,9 +18,10 @@
 
  import urls from '../utils/urls';
  import selectors from '../utils/selectors';
+ import { getRandomNumber } from '../../../../tao/views/cypress/utils/helpers';
 
  describe('Manage Schema', () => {
-    const className = 'Test E2E class';
+    const className = `Test E2E class ${getRandomNumber()}`;
     const newPropertyName = 'I am a new property in testing, hi!';
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
