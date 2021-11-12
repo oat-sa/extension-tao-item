@@ -52,21 +52,16 @@
     });
 
     after(() => {
-        cy.get(selectors.root).then(root => {
-            if (root.find(`li[title="${className}"] a`).length) {
-                cy.deleteClassFromRoot(
-                    selectors.root,
-                    selectors.itemClassForm,
-                    selectors.deleteClass,
-                    selectors.deleteConfirm,
-                    className,
-                    selectors.deleteClassUrl,
-                    selectors.resourceRelations,
-                    false,
-                    true
-                );
-            }
-        });
+        cy.deleteClassFromRoot(
+            selectors.root,
+            selectors.itemClassForm,
+            selectors.deleteClass,
+            selectors.deleteConfirm,
+            className,
+            selectors.deleteClassUrl,
+            selectors.resourceRelationsUrl,
+            true
+        );
     });
 
     /**
