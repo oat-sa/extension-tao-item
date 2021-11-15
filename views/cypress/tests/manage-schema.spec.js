@@ -111,13 +111,26 @@
         });
 
         it('validate restriction - formFieldOrder', function () {
+            const firstClassText = 'firstClassInOrder'
+            cy.addPropertyToClass(
+                className,
+                selectors.editClass,
+                selectors.classOptions,
+                'firstClassInOrder',
+                selectors.propertyEdit,
+                selectors.editClassUrl
+            );
             const options = {
                 input: 'input',
                 position: 4,
                 type: 'text',
-                editClassSelector: selectors.editClassUrl
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
+                newValue: 25
             };
             cy.findInputInManageSchema(options);
+            // cy.get('.property-container div').eq(6).find('span').text().should('have.value', firstClassText)
+            // cy.get('.property-container div').eq(7).find('span').text().should('have.value', newPropertyName)
         });
     });
 
