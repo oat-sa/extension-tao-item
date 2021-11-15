@@ -147,8 +147,6 @@ describe('Items', () => {
                 selectors.deleteConfirm,
                 className,
                 selectors.deleteClassUrl,
-                selectors.resourceRelationsUrl,
-                false,
                 true
             );
         });
