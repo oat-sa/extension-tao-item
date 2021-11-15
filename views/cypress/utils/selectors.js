@@ -2,6 +2,8 @@ export default {
     addItem: '[data-context="resource"][data-action="instanciate"]',
     addSubClassUrl: 'taoItems/Items/addSubClass',
 
+    booleanListValue: 'http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_Boolean',
+
     classOptions: '[action="/taoItems/Items/editItemClass"]',
 
     deleteConfirm: '[data-control="delete"]',

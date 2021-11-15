@@ -24,14 +24,17 @@
     const newPropertyName = 'I am a new property in testing, hi!';
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
+    const newPropertyAlias = 'testing_property_alias';
     const options = {
         nodeName: selectors.root,
         className: className,
         propertyName: newPropertyName,
+        propertyAlias: newPropertyAlias,
         nodePropertiesForm: selectors.itemClassForm,
         manageSchemaSelector: selectors.editClass,
         classOptions: selectors.classOptions,
-        editUrl: selectors.editClassUrl
+        editUrl: selectors.editClassUrl,
+        propertyEditSelector: selectors.propertyEdit
     };
 
     /**
@@ -81,14 +84,7 @@
         });
 
         it('can edit and add new property for the item class', function () {
-            cy.addPropertyToClass(
-                className,
-                selectors.editClass,
-                selectors.classOptions,
-                newPropertyName,
-                selectors.propertyEdit,
-                selectors.editClassUrl
-            );
+            cy.addPropertyToClass(options);
         });
 
         it('validate restriction - notEmpty', function () {
@@ -145,7 +141,7 @@
             cy.renameSelectedClass(selectors.itemClassForm, childClassName);
         });
 
-        it('child item class inherits parent property', function() {
+        it('child item class inherits parent property correctly', function() {
             cy.intercept('POST', `**/${ selectors.editClassUrl }`).as('editClass');
             cy.getSettled(selectors.editClass).click();
             cy.wait('@editClass');
@@ -155,7 +151,10 @@
               .within(() => {
                 cy.get('.icon-edit').click();
               });
-            cy.get('.property-edit-container [data-testid="Label"]').should('have.value', newPropertyName);
+            cy.getSettled('.property-edit-container [data-testid="Label"]').should('have.value', newPropertyName);
+            cy.getSettled('.property-edit-container [data-testid="Alias"]').should('have.value', newPropertyAlias);
+            cy.getSettled('.property-edit-container [data-testid="Type"]').should('have.value', 'list');
+            cy.getSettled('.property-edit-container [data-testid="List values"]').should('have.value', selectors.booleanListValue);
         });
     });
 

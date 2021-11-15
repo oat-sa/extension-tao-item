@@ -24,6 +24,18 @@ describe('Items', () => {
     const classMovedName = 'Test E2E class Moved';
     const newPropertyName = 'I am a new property in testing, hi!';
     const itemName = 'Test E2E item 1';
+    const newPropertyAlias = 'testing_property_alias';
+    const options = {
+        nodeName: selectors.root,
+        className: className,
+        propertyName: newPropertyName,
+        propertyAlias: newPropertyAlias,
+        nodePropertiesForm: selectors.itemClassForm,
+        manageSchemaSelector: selectors.editClass,
+        classOptions: selectors.classOptions,
+        editUrl: selectors.editClassUrl,
+        propertyEditSelector: selectors.propertyEdit
+    };
 
     /**
      * Log in and wait for render
@@ -54,14 +66,7 @@ describe('Items', () => {
         });
 
         it('can edit and add new property for the class', function () {
-            cy.addPropertyToClass(
-                className,
-                selectors.editClass,
-                selectors.classOptions,
-                newPropertyName,
-                selectors.propertyEdit,
-                selectors.editClassUrl
-            );
+            cy.addPropertyToClass(options);
         });
     });
 
