@@ -91,7 +91,8 @@
             const options = {
                 input: 'input[type="checkbox"]',
                 type: 'checkbox',
-                editClassSelector: selectors.editClassUrl
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
             };
             cy.findInputInManageSchema(options);
         });
@@ -101,22 +102,27 @@
                 input: 'input[type="radio"]',
                 position: 1,
                 type: 'radio',
-                editClassSelector: selectors.editClassUrl
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
             };
             cy.findInputInManageSchema(options);
         });
 
         it('validate restriction - formFieldOrder', function () {
-            const firstClassText = 'firstClassInOrder'
-            cy.addPropertyToClass(
-                className,
-                selectors.editClass,
-                selectors.classOptions,
-                'firstClassInOrder',
-                selectors.propertyEdit,
-                selectors.editClassUrl
-            );
-            const options = {
+            const secondClassText = 'secondClassInOrder'
+            const optionsToAddProperty = {
+                nodeName: selectors.root,
+                className: className,
+                propertyName: secondClassText,
+                propertyAlias: 'secondClassInOrderAlias',
+                nodePropertiesForm: selectors.itemClassForm,
+                manageSchemaSelector: selectors.editClass,
+                classOptions: selectors.classOptions,
+                editUrl: selectors.editClassUrl,
+                propertyEditSelector: selectors.propertyEdit
+            }
+            cy.addPropertyToClass(optionsToAddProperty);
+            const optionsToFindInput = {
                 input: 'input',
                 position: 4,
                 type: 'text',
@@ -124,9 +130,9 @@
                 propertyEdit: selectors.propertyEdit,
                 newValue: 25
             };
-            cy.findInputInManageSchema(options);
-            // cy.get('.property-container div').eq(6).find('span').text().should('have.value', firstClassText)
-            // cy.get('.property-container div').eq(7).find('span').text().should('have.value', newPropertyName)
+            cy.findInputInManageSchema(optionsToFindInput);
+            cy.get('.property-container div').eq(15).find('span').eq(0).should('have.text', newPropertyName);
+            cy.removePropertyFromClass(optionsToAddProperty);
         });
     });
 
