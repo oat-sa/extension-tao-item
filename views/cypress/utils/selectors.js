@@ -15,10 +15,10 @@ export default {
     editClassLabelUrl: 'taoItems/Items/editClassLabel',
     editClassUrl: 'taoItems/Items/editItemClass',
     editItemUrl: 'taoItems/Items/editItem',
-    exportItem: '[data-context="resource"][data-action="load"]',
+    exportItem: '#item-export',
     exportItemUrl: 'taoItems/ItemExport/index',
 
-    importItem: '[data-context="resource"][data-action="loadClass"]',
+    importItem: '#item-import',
     itemForm: 'form[action="/taoItems/Items/editItem"]',
     itemClassForm: 'form[action="/taoItems/Items/editClassLabel"]',
     importItemUrl: 'taoItems/ItemImport/index',

@@ -138,8 +138,6 @@ describe('Items', () => {
                 .addClass(selectors.itemClassForm, selectors.treeRenderUrl, selectors.addSubClassUrl)
                 .renameSelectedClass(selectors.itemClassForm, className);
 
-            cy.wait('@editClassLabel');
-
             cy.deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
