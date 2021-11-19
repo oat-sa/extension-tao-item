@@ -69,10 +69,6 @@ describe('Import/export items', () => {
             importItemTest('e2e_item.zip');
         });
 
-        it('can import item with rich passage', function () {
-            importItemTest('e2e_item_rich_passage.zip');
-        });
-
         it('can import item with shared stimulus', function () {
             importItemTest('e2e_item_shared_stimulus.zip');
         });
@@ -108,10 +104,6 @@ describe('Import/export items', () => {
 
         it('can export item', function () {
             exportItemTest('e2e_item.zip');
-        });
-
-        it('can export item with rich passage', function () {
-            exportItemTest('e2e_item_rich_passage.zip');
         });
 
         it('can export item with shared stimulus', function () {
