@@ -131,7 +131,8 @@
                 newValue: 25
             };
             cy.findInputInManageSchema(optionsToFindInput);
-            cy.get('.property-container div').eq(15).find('span').eq(0).should('have.text', newPropertyName);
+            cy.get('.property-container .property-heading-label').eq(5).should('have.text', secondClassText);
+            cy.get('.property-container .property-heading-label').eq(6).should('have.text', newPropertyName);
             cy.removePropertyFromClass(optionsToAddProperty);
         });
     });
