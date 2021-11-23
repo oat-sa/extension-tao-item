@@ -169,12 +169,21 @@
         it('create a new child item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.get(`input[data-testid="${ newPropertyName }"]`).eq(0).check({ force: true });
             cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
         });
 
         it('appears error on save due to notEmpty restriction', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.intercept('POST', `**${selectors.editItemUrl}`).as('edit')
+                .get('button[id="Save"]')
+                .click()
+                .wait('@edit')
             cy.get('div[class="form-error"]').should('have.text', 'This field is required');
+            cy.get(`input[data-testid="${ newPropertyName }"]`).eq(0).check({ force: true });
         });
+
 
         it('child item inherits parent property and sets value', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
