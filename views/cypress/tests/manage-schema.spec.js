@@ -22,6 +22,7 @@
  describe('Manage Schema', () => {
     const className = 'Test E2E class';
     const newPropertyName = 'I am a new property in testing, hi!';
+     const secondClassText = 'secondClassInOrder';
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
     const newPropertyAlias = 'testing_property_alias';
@@ -109,7 +110,6 @@
         });
 
         it('validate restriction - formFieldOrder', function () {
-            const secondClassText = 'secondClassInOrder'
             const optionsToAddProperty = {
                 nodeName: selectors.root,
                 className: className,
@@ -131,9 +131,6 @@
                 newValue: 25
             };
             cy.findInputInManageSchema(optionsToFindInput);
-            cy.get('.property-container .property-heading-label').eq(5).should('have.text', secondClassText);
-            cy.get('.property-container .property-heading-label').eq(6).should('have.text', newPropertyName);
-            cy.removePropertyFromClass(optionsToAddProperty);
         });
     });
 
@@ -158,10 +155,10 @@
               .within(() => {
                 cy.get('.icon-edit').click();
               });
-            cy.getSettled('.property-edit-container [data-testid="Label"]').should('have.value', newPropertyName);
-            cy.getSettled('.property-edit-container [data-testid="Alias"]').should('have.value', newPropertyAlias);
-            cy.getSettled('.property-edit-container [data-testid="Type"]').should('have.value', 'list');
-            cy.getSettled('.property-edit-container [data-testid="List values"]').should('have.value', selectors.booleanListValue);
+            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="Label"]').should('have.value', newPropertyName);
+            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="Alias"]').should('have.value', newPropertyAlias);
+            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="Type"]').should('have.value', 'list');
+            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="List values"]').should('have.value', selectors.booleanListValue);
         });
     });
 
@@ -171,6 +168,11 @@
             cy.addNode(selectors.itemForm, selectors.addItem);
             cy.get(`input[data-testid="${ newPropertyName }"]`).eq(0).check({ force: true });
             cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
+        });
+
+        it('validate form field order in child item', function () {
+            cy.get('form .form_desc').eq(3).should('have.text', newPropertyName + '*');
+            cy.get('form .form_desc').eq(5).should('have.text', secondClassText);
         });
 
         it('appears error on save due to notEmpty restriction', function () {
