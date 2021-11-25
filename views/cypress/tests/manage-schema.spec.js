@@ -155,10 +155,10 @@
               .within(() => {
                 cy.get('.icon-edit').click();
               });
-            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="Label"]').should('have.value', newPropertyName);
-            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="Alias"]').should('have.value', newPropertyAlias);
-            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="Type"]').should('have.value', 'list');
-            cy.getSettled('.property-edit-container[style="display: block;"] [data-testid="List values"]').should('have.value', selectors.booleanListValue);
+            cy.getSettled('.property-edit-container-open [data-testid="Label"]').should('have.value', newPropertyName);
+            cy.getSettled('.property-edit-container-open [data-testid="Alias"]').should('have.value', newPropertyAlias);
+            cy.getSettled('.property-edit-container-open [data-testid="Type"]').should('have.value', 'list');
+            cy.getSettled('.property-edit-container-open [data-testid="List values"]').should('have.value', selectors.booleanListValue);
         });
     });
 
