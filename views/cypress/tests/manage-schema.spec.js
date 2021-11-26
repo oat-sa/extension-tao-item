@@ -86,6 +86,15 @@
 
         it('can edit and add new property for the item class', function () {
             cy.addPropertyToClass(options);
+            const optionsToFindInput = {
+                input: 'input',
+                position: 4,
+                type: 'text',
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
+                newValue: 15
+            };
+            cy.findInputInManageSchema(optionsToFindInput);
         });
 
         it('validate restriction - notEmpty', function () {
