@@ -181,7 +181,7 @@
 
         it('validate form field order in child item', function () {
             cy.get('form .form_desc').eq(3).should('have.text', newPropertyName + '*');
-            cy.get('form .form_desc').eq(5).should('have.text', secondClassText);
+            cy.get('form .form_desc').eq(4).should('have.text', secondClassText);
         });
 
         it('appears error on save due to notEmpty restriction', function () {
