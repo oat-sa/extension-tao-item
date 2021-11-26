@@ -27,7 +27,7 @@ use oat\tao\model\media\MediaAsset;
 
 class ItemMediaResolver extends TaoMediaResolver
 {
-    
+
     private $localMediaSource;
 
     public function __construct($item, $lang)
@@ -41,7 +41,7 @@ class ItemMediaResolver extends TaoMediaResolver
     public function resolve($url)
     {
         $urlParts = parse_url($url);
-        if (!isset($urlParts['scheme']) || !isset($urlParts['host'])) {
+        if (!isset($urlParts['scheme']) || (!isset($urlParts['host']) && $urlParts['scheme'] !== 'data')) {
             return new MediaAsset($this->localMediaSource, ltrim($url, '/'));
         } else {
             return parent::resolve($url);
