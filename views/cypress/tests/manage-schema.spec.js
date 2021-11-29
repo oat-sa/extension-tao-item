@@ -23,6 +23,7 @@
  describe('Manage Schema', () => {
     const className = `Test E2E class ${getRandomNumber()}`;
     const newPropertyName = 'I am a new property in testing, hi!';
+     const secondClassText = 'secondClassInOrder';
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
     const newPropertyAlias = 'testing_property_alias';
@@ -80,6 +81,60 @@
 
         it('can edit and add new property for the item class', function () {
             cy.addPropertyToClass(options);
+            const optionsToFindInput = {
+                input: 'input',
+                position: 4,
+                type: 'text',
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
+                newValue: 15
+            };
+            cy.findInputInManageSchema(optionsToFindInput);
+        });
+
+        it('validate restriction - notEmpty', function () {
+            const options = {
+                input: 'input[type="checkbox"]',
+                type: 'checkbox',
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
+            };
+            cy.findInputInManageSchema(options);
+        });
+
+        it('validate restriction - languageDependant', function () {
+            const options = {
+                input: 'input[type="radio"]',
+                position: 1,
+                type: 'radio',
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
+            };
+            cy.findInputInManageSchema(options);
+        });
+
+        it('validate restriction - formFieldOrder', function () {
+            const optionsToAddProperty = {
+                nodeName: selectors.root,
+                className: className,
+                propertyName: secondClassText,
+                propertyAlias: 'secondClassInOrderAlias',
+                nodePropertiesForm: selectors.itemClassForm,
+                manageSchemaSelector: selectors.editClass,
+                classOptions: selectors.classOptions,
+                editUrl: selectors.editClassUrl,
+                propertyEditSelector: selectors.propertyEdit
+            }
+            cy.addPropertyToClass(optionsToAddProperty);
+            const optionsToFindInput = {
+                input: 'input',
+                position: 4,
+                type: 'text',
+                editClassSelector: selectors.editClassUrl,
+                propertyEdit: selectors.propertyEdit,
+                newValue: 25
+            };
+            cy.findInputInManageSchema(optionsToFindInput);
         });
     });
 
@@ -104,10 +159,10 @@
               .within(() => {
                 cy.get('.icon-edit').click();
               });
-            cy.getSettled('.property-edit-container [data-testid="Label"]').should('have.value', newPropertyName);
-            cy.getSettled('.property-edit-container [data-testid="Alias"]').should('have.value', newPropertyAlias);
-            cy.getSettled('.property-edit-container [data-testid="Type"]').should('have.value', 'list');
-            cy.getSettled('.property-edit-container [data-testid="List values"]').should('have.value', selectors.booleanListValue);
+            cy.getSettled('.property-edit-container-open [data-testid="Label"]').should('have.value', newPropertyName);
+            cy.getSettled('.property-edit-container-open [data-testid="Alias"]').should('have.value', newPropertyAlias);
+            cy.getSettled('.property-edit-container-open [data-testid="Type"]').should('have.value', 'list');
+            cy.getSettled('.property-edit-container-open [data-testid="List values"]').should('have.value', selectors.booleanListValue);
         });
     });
 
@@ -115,8 +170,26 @@
         it('create a new child item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.get(`input[data-testid="${ newPropertyName }"]`).eq(0).check({ force: true });
             cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
         });
+
+        it('validate form field order in child item', function () {
+            cy.get('form .form_desc').eq(3).should('have.text', newPropertyName + '*');
+            cy.get('form .form_desc').eq(4).should('have.text', secondClassText);
+        });
+
+        it('appears error on save due to notEmpty restriction', function () {
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
+            cy.addNode(selectors.itemForm, selectors.addItem);
+            cy.intercept('POST', `**${selectors.editItemUrl}`).as('edit')
+                .get('button[id="Save"]')
+                .click()
+                .wait('@edit')
+            cy.get('div[class="form-error"]').should('have.text', 'This field is required');
+            cy.get(`input[data-testid="${ newPropertyName }"]`).eq(0).check({ force: true });
+        });
+
 
         it('child item inherits parent property and sets value', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
