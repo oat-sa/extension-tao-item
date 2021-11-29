@@ -22,14 +22,12 @@
  import { getRandomNumber } from '../../../../tao/views/cypress/utils/helpers';
 
  describe('Resource properties - Cycle through simple types', () => {
-    const className = `Test E2E class 883`;
-    const newPropertyName = 'I am a new property in testing, hi!';
+    const className = `Test E2E class ${getRandomNumber()}`;
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
     const options = {
         nodeName: selectors.root,
         className: className,
-        propertyName: newPropertyName,
         nodePropertiesForm: selectors.itemClassForm,
         manageSchemaSelector: selectors.editClass,
         classOptions: selectors.classOptions,
@@ -51,17 +49,17 @@
         );
     });
 
-    // after(() => {
-    //     cy.deleteClassFromRoot(
-    //         selectors.root,
-    //         selectors.itemClassForm,
-    //         selectors.deleteClass,
-    //         selectors.deleteConfirm,
-    //         className,
-    //         selectors.deleteClassUrl,
-    //         true
-    //     );
-    // });
+    after(() => {
+        cy.deleteClassFromRoot(
+            selectors.root,
+            selectors.itemClassForm,
+            selectors.deleteClass,
+            selectors.deleteConfirm,
+            className,
+            selectors.deleteClassUrl,
+            true
+        );
+    });
 
     /**
      * Tests
@@ -137,13 +135,8 @@
             );
             cy.renameSelectedClass(selectors.itemClassForm, childClassName);
         });
-    });
-
-    describe.only('Child Item Class inherits parent properties correctly', () => {
 
         it('Edit class', function() {
-            cy.get('#https_2_bosa_0_docker_0_localhost_1_ontologies_1_tao_0_rdf_3_i619f59bb107e284cab43c7fb717177d > a').click();
-            cy.get('#https_2_bosa_0_docker_0_localhost_1_ontologies_1_tao_0_rdf_3_i619f5a0905f758898d8b893d0994c64 > a').click();
             cy.intercept('POST', `**/${ selectors.editClassUrl }`).as('editClass');
             cy.getSettled(selectors.editClass).click();
             cy.wait('@editClass');
@@ -152,19 +145,54 @@
         it('Inherits "Text - Short - Field" type property', function() {
             const property = propertiesInfo.text;
 
-            // TODO: move this to a command
-            // make list value optional
-            cy.getSettled(selectors.classOptions)
-              .contains('.property-heading-label', property.name)
-              .siblings('.property-heading-toolbar')
-              .contains(className)
-              .within(() => {
-                cy.get('.icon-edit').click();
-              });
-            cy.getSettled('.property-edit-container-open [data-testid="Label"]').should('have.value', property.name);
-            cy.getSettled('.property-edit-container-open [data-testid="Type"]').should('have.value', property.type);
-            cy.getSettled('.property-edit-container-open .icon-edit').click();
-            // cy.getSettled('.property-edit-container [data-testid="List values"]').should('have.value', selectors.booleanListValue);
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "Text - Long - Box" type property', function() {
+            const property = propertiesInfo.longText;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "Text - Long - HTML Editor" type property', function() {
+            const property = propertiesInfo.html;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "List - Single Choice - Radio Button" type property', function() {
+            const property = propertiesInfo.list;
+            property.listValue = selectors.booleanListValue;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "List - Single Choice - Drop Down" type property', function() {
+            const property = propertiesInfo.longList;
+            property.listValue = selectors.booleanListValue;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "List - Multiple Choice - Check box" type property', function() {
+            const property = propertiesInfo.multiList;
+            property.listValue = selectors.booleanListValue;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "List - Multiple Choice - Search Input" type property', function() {
+            const property = propertiesInfo.multiSearchList;
+            property.listValue = selectors.booleanListValue;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "List - Single Choice - Search Input" type property', function() {
+            const property = propertiesInfo.singleSearchList;
+            property.listValue = selectors.booleanListValue;
+
+            cy.validateClassProperty(options, property);
         });
     });
 
@@ -172,27 +200,77 @@
         it('create a new child item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
-            cy.get(`input[data-testid="${ newPropertyName }"]`).eq(0).check({ force: true });
             cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
         });
 
-        it('child item inherits parent property and sets value', function () {
+        it('edit item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
-            cy.assignValueToProperty(childItemName, selectors.itemForm, `[data-testid="${newPropertyName}"]`, selectors.treeRenderUrl, selectors.editItemUrl);
-        });
-    });
-
-    describe('Delete property', () => {
-        it('Remove property from main item class', function() {
-            cy.removePropertyFromClass(options);
-        });
-
-        it('Check removed property is not present in child item anymore', function () {
-            cy.selectNode(selectors.root, selectors.itemClassForm, className);
-            cy.intercept('POST', selectors.editItemUrl).as('editItem');
+            cy.intercept('POST', `**${selectors.editItemUrl}`).as('edit');
             cy.getSettled(`li [title ="${childItemName}"] a`).last().click();
-            cy.wait('@editItem');
-            cy.get(`[data-testid="${newPropertyName}"]`).should('not.exist');
+            cy.wait('@edit');
+        });
+
+        it('child item inherits parent property "List - Multiple Choice - Search Input" and sets value', function() {
+            const property = propertiesInfo.multiSearchList;
+            const value = ['True', 'False'];
+
+            cy.assignValueToSelect2Property(property, value);
+        });
+
+        it('child item inherits parent property "List - Single Choice - Search Input" and sets value', function() {
+            const property = propertiesInfo.singleSearchList;
+            const value = 'True';
+
+            cy.assignValueToSelect2Property(property, value);
+        });
+
+        it('child item inherits parent property "Text - Long - HTML Editor" and sets value', function () {
+            const property = propertiesInfo.html;
+            const value = `<p>Cypress writing inside ${property.name}</p>`;
+            cy.assignValueToCKEditor(property, value);
+        });
+
+        it('child item inherits parent property "List - Multiple Choice - Check Box" and sets value', function () {
+            const property = propertiesInfo.multiList;
+            const value = [selectors.booleanListTrueValue, selectors.booleanListFalseValue];
+
+            cy.assignValueToCheckProperty(property, value);
+        });
+
+        it('child item inherits parent property "List - Single Choice - Radio Button" and sets value', function () {
+            const property = propertiesInfo.list;
+            const value = selectors.booleanListTrueValue;
+
+            cy.assignValueToCheckProperty(property, value);
+        });
+
+        it('child item inherits parent property "List - Single Choice - Drop Down" and sets value', function () {
+            const property = propertiesInfo.longList;
+            const value = selectors.booleanListTrueValue;
+
+            cy.assignValueToSelectProperty(property, value);
+        });
+
+        it('child item inherits parent property "Text - Short - Field" and sets value', function () {
+            const property = propertiesInfo.text;
+            const value = `Cypress writing inside ${property.name}`;
+
+            cy.assignValueToTextProperty(property, value);
+        });
+
+        it('child item inherits parent property "Text - Long - Box" and sets value', function () {
+            const property = propertiesInfo.longText;
+            const value = `Cypress writing inside ${property.name}`;
+
+            cy.assignValueToTextProperty(property, value);
+        });
+
+        it('can save update of child item properties', function () {
+            cy.intercept('POST', `**${selectors.editItemUrl}`).as('edit');
+            cy.get('.form-toolbar button[data-testid="save"]').click();
+            cy.wait('@edit').then(xhr => {
+                expect(xhr.response.statusCode).to.eq(200);
+            });
         });
     });
 });
