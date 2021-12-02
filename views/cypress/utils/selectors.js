@@ -3,6 +3,8 @@ export default {
     addSubClassUrl: 'taoItems/Items/addSubClass',
 
     booleanListValue: 'http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_Boolean',
+    booleanListTrueValue: 'http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_True',
+    booleanListFalseValue: 'http_2_www_0_tao_0_lu_1_Ontologies_1_generis_0_rdf_3_False',
 
     classOptions: '[action="/taoItems/Items/editItemClass"]',
 
