@@ -205,9 +205,9 @@
 
         it('edit item', function () {
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
-            cy.intercept('POST', `**${selectors.editItemUrl}`).as('edit');
+            cy.intercept('POST', `**${selectors.editItemUrl}`).as('editItem');
             cy.getSettled(`li [title ="${childItemName}"] a`).last().click();
-            cy.wait('@edit');
+            cy.wait('@editItem');
         });
 
         it('child item inherits parent property "List - Multiple Choice - Search Input" and sets value', function() {
@@ -266,9 +266,9 @@
         });
 
         it('can save update of child item properties', function () {
-            cy.intercept('POST', `**${selectors.editItemUrl}`).as('edit');
+            cy.intercept('POST', `**${selectors.editItemUrl}`).as('editItem');
             cy.get('.form-toolbar button[data-testid="save"]').click();
-            cy.wait('@edit').then(xhr => {
+            cy.wait('@editItem').then(xhr => {
                 expect(xhr.response.statusCode).to.eq(200);
             });
         });
