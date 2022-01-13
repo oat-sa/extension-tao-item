@@ -8,6 +8,6 @@
     "url": "git+https://github.com/oat-sa/extension-tao-items.git"
   },
   "dependencies": {
-    "@oat-sa/tao-item-runner": "0.7.1"
+    "@oat-sa/tao-item-runner": "0.8.1"
   }
 }
