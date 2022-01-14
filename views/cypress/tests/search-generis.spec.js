@@ -28,6 +28,8 @@ const testItemsGroup = {
     [NAME_BIG]: 16
 };
 
+let isAdvancedSearchEnabled = false;
+
 /**
  * Create entries to search against for
  */
@@ -78,11 +80,25 @@ const clearData = () => {
 
 describe('Search: Generis search', () => {
     before(() => {
-        cy.loginAsAdmin();
+        cy.intercept('GET', '**/ClientConfig/**').as('getClientConfig');
+        cy.setup(
+            selectorsItem.treeRenderUrl,
+            selectorsItem.editClassLabelUrl,
+            urls.itemsManager,
+            selectorsItem.root
+        );
+        cy.wait('@getClientConfig').then(function (xhr) {
+            // If advanced search extension is installed
+            // And disable advanced search feature flag is not set
+            if (xhr.response.body.search('taoAdvancedSearch') !== -1
+            && xhr.response.body.search('FEATURE_ADVANCED_SEARCH_DISABLED') === -1) {
+                isAdvancedSearchEnabled = true;
+            }
 
-        cy.intercept('POST', urls.edit).as('editItem');
-        cy.visit(urls.itemsManager);
-        cy.wait('@editItem');
+            if (isAdvancedSearchEnabled) {
+                this.skip();
+            }
+        });
 
         clearData();
         createData();
