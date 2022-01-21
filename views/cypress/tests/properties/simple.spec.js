@@ -16,10 +16,10 @@
  * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
  */
 
- import urls from '../utils/urls';
- import propertiesInfo from '../utils/propertiesInfo';
- import selectors from '../utils/selectors';
- import { getRandomNumber } from '../../../../tao/views/cypress/utils/helpers';
+ import urls from '../../utils/urls';
+ import propertiesInfo from '../../utils/propertiesInfo';
+ import selectors from '../../utils/selectors';
+ import { getRandomNumber } from '../../../../../tao/views/cypress/utils/helpers';
 
  describe('Resource properties - Cycle through simple types', () => {
     const className = `Test E2E class ${getRandomNumber()}`;

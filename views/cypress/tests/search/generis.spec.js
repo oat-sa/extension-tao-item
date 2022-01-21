@@ -16,9 +16,9 @@
  * Copyright (c) 2022 (original work) Open Assessment Technologies SA ;
  */
 
-import urls from '../../../../tao/views/cypress/utils/urls';
-import selectorsTAO from '../../../../tao/views/cypress/utils/selectors';
-import selectorsItem from '../utils/selectors';
+import urls from '../../../../../tao/views/cypress/utils/urls';
+import selectorsTAO from '../../../../../tao/views/cypress/utils/selectors';
+import selectorsItem from '../../utils/selectors';
 
 const NAME_BIG = 'Test E2E class GenerisSearchBig';
 const NAME_SMALL = 'Test E2E class GenerisSearchSmall';
