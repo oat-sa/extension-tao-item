@@ -17,27 +17,18 @@
  */
 
 import urls from '../../utils/urls';
+import urlsTAO from '../../../../../tao/views/cypress/utils/urls';
 import propertiesInfo from '../../utils/propertiesInfo';
 import selectors from '../../utils/selectors';
+import selectorsList from '../../../../../tao/views/cypress/utils/selectors/list';
 import { getRandomNumber } from '../../../../../tao/views/cypress/utils/helpers';
 
-/**
- * Creating list without exit editing
- */
-const createList = () => {
-    cy.intercept('POST', urlBO.list.index).as('createList');
-    cy.getSettled(selectorsBO.createListButton)
-        .should('have.text', ' Create list')
-        .should('be.visible')
-        .click();
-
-    return cy.wait('@createList');
-};
+const LIST_NAME_PREFIX = 'Test E2E list';
 
 describe('Resource properties - Cycle through simple types', () => {
     const className = `Test E2E class ${getRandomNumber()}`;
-    const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
+    const listName = `${LIST_NAME_PREFIX}_${getRandomNumber()}`;
     const options = {
         nodeName: selectors.root,
         className: className,
@@ -46,7 +37,45 @@ describe('Resource properties - Cycle through simple types', () => {
         classOptions: selectors.classOptions,
         editUrl: selectors.editClassUrl,
         propertyEditSelector: selectors.propertyEdit,
-        propertyListValue: 'Magic list',
+        propertyListValue: listName,
+    };
+    const testData = [{
+            title: 'Single Choice - Radio Button',
+            props: propertiesInfo.list,
+        },{
+            title: 'Single Choice - Drop Down',
+            props: propertiesInfo.longList,
+        },{
+            title: 'Multiple Choice - Check box',
+            props: propertiesInfo.multiList,
+        },{
+            title: 'Multiple Choice - Check box',
+            props: propertiesInfo.multiSearchList,
+        },{
+            title: 'Single Choice - Search Input',
+            props: propertiesInfo.singleSearchList,
+        }];
+    let listURI;
+
+    /**
+     * Validate list elements
+     */
+    const validateList = () => {
+        cy.getSettled('.property-edit-container-open .form-elt-list li').contains('Element 1').should('have.length', 1);
+        cy.getSettled('.property-edit-container-open .form-elt-list li').contains('Element 2').should('have.length', 1);
+    };
+
+    /**
+     * Click edit on property (name) in manage schema
+     * @param {String} name - property name to edit
+     */
+    const editProperty = (name) => {
+        cy.getSettled(options.classOptions)
+            .contains('.property-heading-label', name)
+            .siblings('.property-heading-toolbar')
+            .within(() => {
+                cy.get('.icon-edit').click();
+            });
     };
 
     /**
@@ -54,12 +83,34 @@ describe('Resource properties - Cycle through simple types', () => {
      * After @treeRender click root class
      */
     before(() => {
-        // cy.log('COMMAND: addTree');
-        // cy.loginAsAdmin();
-        // cy.intercept('GET', '**/taoBackOffice/Lists/index').as('getLists')
-        // cy.visit('/tao/Main/index?structure=settings&ext=tao&section=taoBo_list');
-        // cy.wait('@getLists');
+        cy.loginAsAdmin();
 
+        // Create a list
+        cy.intercept('GET', '**/taoBackOffice/Lists/index').as('getLists')
+        cy.visit(urlsTAO.settings.list);
+        cy.wait('@getLists');
+
+        cy.createList()
+            .then((interception)=>{
+                listURI = interception.response.body.data.uri.split('#').pop();
+
+                // Add extra element to the list
+                cy.getSettled(`section[id$="${listURI}"]`)
+                    .find(selectorsList.addElementButton)
+                    .should('be.visible')
+                    .click();
+
+                cy.getSettled(`section[id$="${listURI}"]`)
+                    .find(selectorsList.elementsList)
+                    .find('li:last-child')
+                    .find(selectorsList.elementNameInput)
+                    .should('be.visible')
+                    .type(`Element 2`);
+
+                cy.saveList(listName);
+            });
+
+        // Go to items
         cy.setup(
             selectors.treeRenderUrl,
             selectors.editClassLabelUrl,
@@ -69,21 +120,29 @@ describe('Resource properties - Cycle through simple types', () => {
     });
 
     after(() => {
-        // cy.deleteClassFromRoot(
-        //     selectors.root,
-        //     selectors.itemClassForm,
-        //     selectors.deleteClass,
-        //     selectors.deleteConfirm,
-        //     className,
-        //     selectors.deleteClassUrl,
-        //     true
-        // );
+        // Delete created class
+        cy.deleteClassFromRoot(
+            selectors.root,
+            selectors.itemClassForm,
+            selectors.deleteClass,
+            selectors.deleteConfirm,
+            className,
+            selectors.deleteClassUrl,
+            true
+        );
+
+        // Delete created list
+        cy.intercept('GET', '**/taoBackOffice/Lists/index').as('getLists')
+        cy.visit(urlsTAO.settings.list);
+        cy.wait('@getLists');
+
+        cy.deleteList(listURI);
     });
 
-     /**
+    /**
       * Tests
       */
-     describe('Main Item Class creation and editing', () => {
+    describe('Main Item Class creation and editing', () => {
         before(() => {
             cy.addClassToRoot(
                 selectors.root,
@@ -95,40 +154,26 @@ describe('Resource properties - Cycle through simple types', () => {
             );
         });
 
-        // it('can edit and add new "List Custom - Single Choice - Radio Button" type property to the item class', function () {
-        //     options.propertyName = propertiesInfo.list.name;
-        //     options.propertyType = propertiesInfo.list.type;
+        describe('Can add custom list to parent class', () => {
+            testData.forEach((testcase, index) => {
+                it(`${index}: "List Custom - ${testcase.title}" type property`, function () {
+                    options.propertyName = testcase.props.name;
+                    options.propertyType = testcase.props.type;
 
-        //     cy.addPropertyToClass(options);
-        // });
+                    cy.addPropertyToClass(options);
+                });
+            });
+        });
 
-        // it('can edit and add new "List Custom - Single Choice - Drop Down" type property to the item class', function () {
-        //     options.propertyName = propertiesInfo.longList.name;
-        //     options.propertyType = propertiesInfo.longList.type;
-
-        //     cy.addPropertyToClass(options);
-        // });
-
-        // it('can edit and add new "List Custom - Multiple Choice - Check box" type property to the item class', function () {
-        //     options.propertyName = propertiesInfo.multiList.name;
-        //     options.propertyType = propertiesInfo.multiList.type;
-
-        //     cy.addPropertyToClass(options);
-        // });
-
-        // it('can edit and add new "List Custom - Multiple Choice - Check box" type property to the item class', function () {
-        //     options.propertyName = propertiesInfo.multiSearchList.name;
-        //     options.propertyType = propertiesInfo.multiSearchList.type;
-
-        //     cy.addPropertyToClass(options);
-        // });
-
-        // it('can edit and add new "List Custom - Single Choice - Search Input" type property to the item class', function () {
-        //     options.propertyName = propertiesInfo.singleSearchList.name;
-        //     options.propertyType = propertiesInfo.singleSearchList.type;
-
-        //     cy.addPropertyToClass(options);
-        // });
+        describe('Restore type when edit parent class', () => {
+            testData.forEach((testcase, index) => {
+                it(`${index}: "List Custom - ${testcase.title}" type property`, function () {
+                    editProperty(testcase.props.name);
+                    validateList();
+                    cy.getSettled('.property-edit-container-open .icon-edit').click();
+                });
+            });
+        });
 
         describe('Child Item Class', () => {
             before(() => {
@@ -147,41 +192,13 @@ describe('Resource properties - Cycle through simple types', () => {
                 cy.wait('@editClass');
             });
 
-            it('Inherits "List Custom - Single Choice - Radio Button" type property', function() {
-                const property = propertiesInfo.list;
-                property.listValue = selectors.customListValue;
-
-                cy.validateClassProperty(options, property);
+            testData.forEach((testcase, index) => {
+                it(`${index}: Inherits "${testcase.title}" type property`, function () {
+                    editProperty(testcase.props.name);
+                    validateList();
+                    cy.getSettled('.property-edit-container-open .icon-edit').click();
+                });
             });
-        });
-
-        describe('Child Item', () => {
-            before(() => {
-                cy.selectNode(selectors.root, selectors.itemClassForm, className);
-                cy.addNode(selectors.itemForm, selectors.addItem);
-                cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
-
-                // Edit item
-                cy.selectNode(selectors.root, selectors.itemClassForm, className);
-                cy.intercept('POST', `**${selectors.editItemUrl}`).as('editItem');
-                cy.getSettled(`li [title ="${childItemName}"] a`).last().click();
-                cy.wait('@editItem');
-            });
-
-            it('child item inherits parent property "List Custom - Single Choice - Radio Button" and sets value', function () {
-                const property = propertiesInfo.list;
-                const value = selectors.customListValue;
-
-                cy.assignValueToSelectProperty(property, value);
-            });
-
-            // it('can save update of child item properties', function () {
-            //     cy.intercept('POST', `**${selectors.editItemUrl}`).as('editItem');
-            //     cy.get('.form-toolbar button[data-testid="save"]').click();
-            //     cy.wait('@editItem').then(xhr => {
-            //         expect(xhr.response.statusCode).to.eq(200);
-            //     });
-            // });
         });
     });
 });

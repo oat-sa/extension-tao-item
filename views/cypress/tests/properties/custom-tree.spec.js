@@ -27,7 +27,8 @@ describe('Resource properties - Cycle through simple types', () => {
     const childItemName = 'Test E2E child item';
     const childClassName = 'Test E2E child class';
     const treePath = '../../tao/views/cypress/fixtures/math_grade_1_1642670091.rdf';
-    const treeName = 'MATH Grade 1';
+    const treeName = 'MATH Grade 1'; // Defined in the tree file
+    const treeLength = 40; // Defined in the tree file
     const options = {
         nodeName: selectors.root,
         className: className,
@@ -38,9 +39,6 @@ describe('Resource properties - Cycle through simple types', () => {
         propertyEditSelector: selectors.propertyEdit,
         propertyListValue: treeName,
     };
-    const treeSelector = 'li[title="Trees"]';
-    const treeURL = '**/Trees/getTreeData?*';
-
 
     /**
      * Log in and wait for render, create tree (if not exists)
@@ -50,13 +48,13 @@ describe('Resource properties - Cycle through simple types', () => {
         cy.loginAsAdmin();
 
         // Create a tree
-        cy.intercept('GET', treeURL).as('getTreeList')
+        cy.intercept('GET', '**/Trees/getTreeData?*').as('getTrees')
         cy.visit(urlsTAO.settings.tree);
-        cy.wait('@getTreeList');
-        cy.getSettled(treeSelector)
-            .then(($el) => {
-                // Avoid tree duplication
-                if($el.find(`li[data-uri]:contains("${treeName}")`).length === 0) {
+        cy.wait('@getTrees');
+        cy.getSettled('#tree-taoBo_tree')
+            .then(($treesResources) => {
+                // Avoid double importing of the same file
+                if($treesResources.find(`li[data-uri]:contains("${treeName}")`).length === 0) {
                     cy.importToRootTree(treePath);
                 } else {
                     cy.log(`Tree file ${treeName} already exists`);
@@ -82,7 +80,7 @@ describe('Resource properties - Cycle through simple types', () => {
             selectors.deleteClassUrl,
             true
         );
-        // TODO: Delete create tree (treeName) when feature be working
+        // TODO: Delete created tree (when feature will be available)
     });
 
     /**
@@ -100,11 +98,11 @@ describe('Resource properties - Cycle through simple types', () => {
             );
         });
 
-        it.only('can edit and add new "Tree - Multiple node choice" type property to the item class', function () {
-            options.propertyName = propertiesInfo.treeMultiple.name;
-            options.propertyType = propertiesInfo.treeMultiple.type;
+        it('can edit and add new "Tree - Multiple node choice" type property to the item class', function () {
+            options.propertyName = propertiesInfo.multipleNodeTree.name;
+            options.propertyType = propertiesInfo.multipleNodeTree.type;
 
-            cy.addPropertyToClass(options).its('response.statusCode').should('not.be', 500);
+            cy.addPropertyToClass(options).its('response.statusCode');
         });
 
         describe('Child Item Class', () => {
@@ -125,8 +123,8 @@ describe('Resource properties - Cycle through simple types', () => {
             });
 
             it('Inherits "Tree - Multiple node choice" type property', function() {
-                const property = propertiesInfo.treeMultiple;
-                property.listValue = selectors.TreeValue;
+                const property = propertiesInfo.multipleNodeTree;
+                property.label = treeName; // Validate by name
 
                 cy.validateClassProperty(options, property);
             });
@@ -145,9 +143,15 @@ describe('Resource properties - Cycle through simple types', () => {
                 cy.wait('@editItem');
             });
 
-            it('child item inherits parent property "Tree - Multiple node choice" and sets value', function () {
-                const property = propertiesInfo.treeMultiple;
+            it('"Tree - Multiple node choice" shown as a list', function () {
+                const property = propertiesInfo.multipleNodeTree;
+                cy.getSettled('label').contains(property.name).parent().find('li a').should('have.length', treeLength);
+            });
+
+            it('"Tree - Multiple node choice" property selected', function () {
+                const property = propertiesInfo.multipleNodeTree;
                 cy.getSettled('label').contains(property.name).parent().find('li:first-child a').click();
+                cy.getSettled('label').contains(property.name).parent().find('li a.clicked.checked').should('have.length', 1);
             });
 
             it('can save update of child item properties', function () {
