@@ -16,11 +16,11 @@
  * Copyright (c) 2022 (original work) Open Assessment Technologies SA ;
  */
 
- import urls from '../utils/urls';
- import propertiesInfo from '../utils/propertiesInfo';
- import selectors from '../utils/selectors';
- import selectorsTAO from '../../../../tao/views/cypress/utils/selectors';
- import { getRandomNumber } from '../../../../tao/views/cypress/utils/helpers';
+ import urls from '../../utils/urls';
+ import propertiesInfo from '../../utils/propertiesInfo';
+ import selectors from '../../utils/selectors';
+ import selectorsTAO from '../../../../../tao/views/cypress/utils/selectors';
+ import { getRandomNumber } from '../../../../../tao/views/cypress/utils/helpers';
 
  let isAdvancedSearchEnabled = false;
 
