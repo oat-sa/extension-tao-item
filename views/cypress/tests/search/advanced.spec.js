@@ -23,6 +23,57 @@
  import { getRandomNumber } from '../../../../../tao/views/cypress/utils/helpers';
 
  let isAdvancedSearchEnabled = false;
+ const NAME = 'Test E2E class AdvancedSearch';
+ const testItemsGroup = {
+     [NAME]: 5,
+ };
+ /**
+ * Create entries to search against for
+ */
+const createData = () => {
+    Object.keys(testItemsGroup).forEach((name) => {
+        cy.addClassToRoot(
+            selectors.root,
+            selectors.itemClassForm,
+            name,
+            selectors.editClassLabelUrl,
+            selectors.treeRenderUrl,
+            selectors.addSubClassUrl
+        );
+
+        for(let i = 1; i <= testItemsGroup[name]; i++) {
+            cy.addNode(
+                selectors.itemForm,
+                selectors.addItem
+            );
+        }
+    });
+}
+
+/**
+ * Remove entries that was created by test case
+ */
+ const clearData = () => {
+    cy.getSettled(`${selectors.root}`)
+        .then(($resourceTree) => {
+            Object.keys(testItemsGroup).forEach((name) => {
+                const copies = $resourceTree.find(`li[title="${name}"]`).length;
+
+                // Possible duplicates
+                for(let i = 0; i < copies; i++) {
+                    cy.deleteClassFromRoot(
+                        selectors.root,
+                        selectors.itemClassForm,
+                        selectors.deleteClass,
+                        selectors.deleteConfirm,
+                        name,
+                        selectors.deleteClassUrl,
+                        true
+                    );
+                }
+            });
+        });
+}
 
  describe('Search: Advanced search', () => {
     const randomNumber = getRandomNumber();
@@ -59,6 +110,9 @@
                 this.skip();
             }
         });
+        clearData();
+        createData();
+
         cy.addClassToRoot(
             selectors.root,
             selectors.itemClassForm,
@@ -121,5 +175,50 @@
 
         cy.getSettled(selectorsTAO.search.modal.closeButton)
         .click();
+    });
+
+    context('Search for items in advanced search', () => {
+        [{
+            search: NAME,
+            expected: 5,
+            total: 5
+        }].forEach((testcase, index) => {
+            it(`${index}: Search for "${testcase.search}", expecting: ${testcase.expected} on page of ${testcase.total} total`, () => {
+                // Search for 'testcase.search'
+                cy.searchFor({search: testcase.search})
+                    .then((interception) => {
+                        // Validate response
+                        assert.exists(interception.response.body, 'Response body');
+                        assert.isTrue(interception.response.body.success, 'Successful state');
+                        assert.equal(interception.response.body.records, testcase.expected, 'Records');
+                        assert.equal(interception.response.body.totalCount, testcase.total, 'Total');
+
+                        // response.body.data is missing when 0 results
+                        if(testcase.expected > 0) {
+                            assert.equal(interception.response.body.data.length, testcase.expected, 'Total of data entries');
+                        }
+                    });
+                cy.getSettled(selectorsTAO.search.modal.dialog)
+                    .should('be.visible');
+
+                // Validate search results
+                cy.getSettled(selectorsTAO.search.modal.textInput)
+                    .should('be.visible')
+                    .should('have.value', testcase.search);
+                cy.get(selectorsTAO.search.modal.entries)
+                    .should('be.visible')
+                    .should('have.length', testcase.expected);
+
+                // Validate initial search input
+                cy.getSettled(selectorsTAO.search.modal.closeButton)
+                    .click();
+                cy.getSettled(selectorsTAO.search.textInput)
+                    .should('be.visible')
+                    .should('have.value', testcase.search);
+                cy.getSettled(selectorsTAO.search.openResultsButton)
+                    .should('be.visible')
+                    .should('have.text', testcase.total);
+            });
+        });
     });
 });
