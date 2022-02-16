@@ -131,7 +131,7 @@ msgid "Last updated on %2s"
 msgstr "Sist oppdatert på %2s"
 
 msgid "Manage item class schema"
-msgstr "Administrer skjema for oppgavemappe"
+msgstr "Administrer egenskaper for oppgavemappe"
 
 #, tao-public
 msgid "Manage items"
@@ -179,7 +179,7 @@ msgstr "Portrett"
 
 #, tao-public
 msgid "Preview"
-msgstr "Forhåndsvisning"
+msgstr "Forhåndsvis"
 
 #, tao-public
 msgid "Properties"
