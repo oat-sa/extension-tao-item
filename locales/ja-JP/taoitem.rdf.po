@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: TAO 2021.11\n"
+"PO-Revision-Date: 2022-02-14T10:57:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -173,6 +173,136 @@ msgstr "アイテム作成者"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Role Class"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Navigator"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Navigator Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Editor"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Editor Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Creator"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Creator Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Schema Manager"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Schema Manager Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Viewer"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Viewer Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Manager"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Manager Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Previewer"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Previewer Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Properties Editor"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Properties Editor Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Creator"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Content Creator Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Resource Creator"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Resource Creator Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Importer"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Importer Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Deleter"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Deleter Role"
 msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
