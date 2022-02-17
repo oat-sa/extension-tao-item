@@ -81,7 +81,7 @@ define([
                 const name = prepareName($('a.clicked', actionContext.tree).text().trim());
                 if (relatedTests.length === 0) {
                     confirmDialog(
-                        `${__('Are you sure you want to delete the item')} <b>${name}</b>?`,
+                        __('Are you sure you want to delete the item %s?', `<b>${name}</b>`),
                         () => accept(actionContext, this.url, resolve, reject),
                         () => cancel(reject)
                     );
@@ -114,7 +114,7 @@ define([
                 const name = prepareName($('a.clicked', actionContext.tree).text().trim());
                 if (relatedTests.length === 0) {
                     confirmDeleteDialog(
-                        `${__('Are you sure you want to delete the class')} <b>${name}</b> ${__('and all of its content?')}`,
+                        __('Are you sure you want to delete the class %s and all of its content?', `<b>${name}</b>`),
                         () => accept(actionContext, this.url, resolve, reject),
                         () => cancel(reject)
                     );
