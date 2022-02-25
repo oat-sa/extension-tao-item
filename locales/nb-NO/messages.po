@@ -39,7 +39,7 @@ msgstr "Er du sikker på at du vil slette denne oppgaven?"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Forfatter"
+msgstr "Rediger"
 
 msgid "Class schema saved"
 msgstr "Mappeskjema lagret"
@@ -108,7 +108,7 @@ msgid "is currently in use."
 msgstr "er i bruk."
 
 msgid "Item Model"
-msgstr "Oppgavemodell"
+msgstr "Standard"
 
 msgid "Item not found"
 msgstr "Oppgave ikke funnet"
@@ -131,7 +131,7 @@ msgid "Last updated on %2s"
 msgstr "Sist oppdatert på %2s"
 
 msgid "Manage item class schema"
-msgstr "Administrer skjema for oppgavemappe"
+msgstr "Administrer egenskaper for oppgavemappe"
 
 #, tao-public
 msgid "Manage items"
@@ -179,7 +179,7 @@ msgstr "Portrett"
 
 #, tao-public
 msgid "Preview"
-msgstr "Forhåndsvisning"
+msgstr "Forhåndsvis"
 
 #, tao-public
 msgid "Properties"
