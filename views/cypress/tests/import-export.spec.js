@@ -68,7 +68,7 @@ describe('Import/export items', () => {
         });
 
         [{
-            format: null, // Default
+            format: null, // QTI/APIP Content Package
             filename: 'e2e_test_item.zip',
         },{
             format: 'QTI/APIP XML Item Document',
@@ -77,7 +77,7 @@ describe('Import/export items', () => {
             format: 'RDF',
             filename: 'e2e_test_item.rdf'
         }].forEach((testcase, index) => {
-            it(`${index}: "Import - ${testcase.filename}"`, function () {
+            it(`${index}: "Import - ${testcase.format || 'QTI/APIP Content Package'}"`, function () {
                 cy.selectNode(selectors.root, selectors.itemClassForm, className);
                 cy.importToSelectedClass(selectors.importItem, `${packagesPath}/${testcase.filename}`, selectors.importItemUrl, className, testcase.format);
                 cy.wait(50); // Safe delay for working with FS in Cypress
@@ -129,7 +129,7 @@ describe('Import/export items', () => {
         },{
             format: 'RDF'
         }].forEach((testcase, index) => {
-            it(`${index}: "Export - ${testcase.format}"`, function () {
+            it(`${index}: "Export - ${testcase.format || 'QTI Package 2.2'}"`, function () {
                 cy.clearDownloads();
                 cy.exportFromSelectedClass(selectors.exportItem, selectors.exportItemUrl, className, testcase.format);
                 cy.wait(50); // Safe delay for working with FS in Cypress
