@@ -23,6 +23,7 @@ import { getRandomNumber } from '../../../../tao/views/cypress/utils/helpers';
 
 describe('Import/export items', () => {
     const packagesPath = `${paths.baseItemsPath}/fixtures/packages`;
+    let className;
 
     before(() => {
         // Log in and wait for render
@@ -38,9 +39,7 @@ describe('Import/export items', () => {
     });
 
     describe('Import items', () => {
-        let className;
-
-        before(() => {
+        beforeEach(() => {
             className = `Test E2E class ${getRandomNumber()}`;
             cy.addClassToRoot(
                 selectors.root,
@@ -50,12 +49,12 @@ describe('Import/export items', () => {
                 selectors.treeRenderUrl,
                 selectors.addSubClassUrl
             );
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.clearDownloads();
         });
 
-        after(() => {
+        afterEach(() => {
             // Cleanup
-            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -78,15 +77,13 @@ describe('Import/export items', () => {
             filename: 'e2e_test_item.rdf'
         }].forEach((testcase, index) => {
             it(`${index}: "Import - ${testcase.format || 'QTI/APIP Content Package'}"`, function () {
-                cy.selectNode(selectors.root, selectors.itemClassForm, className);
                 cy.importToSelectedClass(selectors.importItem, `${packagesPath}/${testcase.filename}`, selectors.importItemUrl, className, testcase.format);
-                cy.wait(50); // Safe delay for working with FS in Cypress
             });
         });
     });
 
     describe('Export items', () => {
-        const className = `Test E2E class ${getRandomNumber()}`;
+        className = `Test E2E class ${getRandomNumber()}`;
 
         before(() => {
             // Add class
@@ -100,6 +97,10 @@ describe('Import/export items', () => {
             );
             // Import item for exporting target
             cy.importToSelectedClass(selectors.importItem, `${packagesPath}/e2e_item.zip`, selectors.importItemUrl, className);
+        });
+
+        beforeEach(() => {
+            cy.clearDownloads();
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
         });
 
@@ -130,19 +131,17 @@ describe('Import/export items', () => {
             format: 'RDF'
         }].forEach((testcase, index) => {
             it(`${index}: "Export - ${testcase.format || 'QTI Package 2.2'}"`, function () {
-                cy.clearDownloads();
                 cy.exportFromSelectedClass(selectors.exportItem, selectors.exportItemUrl, className, testcase.format);
-                cy.wait(50); // Safe delay for working with FS in Cypress
             });
         });
-
     });
 
     describe('Import and Export items', () => {
-        const className = `Test E2E class ${getRandomNumber()}`;
+        className = `Test E2E class ${getRandomNumber()}`;
 
         before(() => {
             // Add class
+            cy.clearDownloads();
             cy.addClassToRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -151,12 +150,10 @@ describe('Import/export items', () => {
                 selectors.treeRenderUrl,
                 selectors.addSubClassUrl
             );
-            cy.clearDownloads();
         });
 
         after(() => {
             // Cleanup
-            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.deleteClassFromRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -169,8 +166,8 @@ describe('Import/export items', () => {
         });
 
         it('can import/export item with shared stimulus', function () {
-            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.importToSelectedClass(selectors.importItem, `${packagesPath}/e2e_item_shared_stimulus.zip`, selectors.importItemUrl, className);
+            cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.exportFromSelectedClass(selectors.exportItem, selectors.exportItemUrl, className);
         });
     });
