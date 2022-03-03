@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:ns0="http://www.tao.lu/Ontologies/TAO.rdf#"
+         xmlns:ns1="http://www.tao.lu/Ontologies/TAOItem.rdf#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:ns2="https://adf.docker.localhost/ontologies/tao.rdf#">
+
+  <rdf:Description rdf:about="https://adf.docker.localhost/ontologies/tao.rdf#i6216b6e0c77d02224f8f58f6c0e57dd">
+    <ns0:UpdatedAt>1645655846.1246</ns0:UpdatedAt>
+    <ns1:ItemModel>http://www.tao.lu/Ontologies/TAOItem.rdf#QTI</ns1:ItemModel>
+    <rdf:type>https://adf.docker.localhost/ontologies/tao.rdf#i6216b6cb382d522987c53e829f90fd1</rdf:type>
+    <rdfs:label xml:lang="en-US">e2e_test_item</rdfs:label>
+    <ns2:i6216b6d5d9a1a23c9fc08766b6f20dc>e2e_test_item_value</ns2:i6216b6d5d9a1a23c9fc08766b6f20dc>
+  </rdf:Description>
+
+</rdf:RDF>
