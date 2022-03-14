@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
+ * Copyright (c) 2022 (original work) Open Assessment Technologies SA ;
  */
 
  import urls from '../../utils/urls';
@@ -65,7 +65,8 @@
      * Tests
      */
     describe('Main Item Class creation and editing', () => {
-        it('can create a new item class', function () {
+        before(() => {
+            // Create a new item class
             cy.addClassToRoot(
                 selectors.root,
                 selectors.itemClassForm,
@@ -123,10 +124,23 @@
             options.propertyType = propertiesInfo.singleSearchList.type;
             cy.addPropertyToClass(options);
         });
+
+        it('can edit and add new "Calendar" type property to the item class', function () {
+            options.propertyName = propertiesInfo.calendar.name;
+            options.propertyType = propertiesInfo.calendar.type;
+            cy.addPropertyToClass(options);
+        });
+
+        it('can edit and add new "Password" type property to the item class', function () {
+            options.propertyName = propertiesInfo.password.name;
+            options.propertyType = propertiesInfo.password.type;
+            cy.addPropertyToClass(options);
+        });
     });
 
     describe('Child Item Class', () => {
-        it('create a new child item class', function () {
+        before(() => {
+            // Create a new child item class
             cy.intercept('POST', `**/${ selectors.editClassLabelUrl }`).as('editClassLabel');
             cy.addClass(
                 selectors.itemClassForm,
@@ -134,9 +148,8 @@
                 selectors.addSubClassUrl
             );
             cy.renameSelectedClass(selectors.itemClassForm, childClassName);
-        });
 
-        it('Edit class', function() {
+            // Go to edit class
             cy.intercept('POST', `**/${ selectors.editClassUrl }`).as('editClass');
             cy.getSettled(selectors.editClass).click();
             cy.wait('@editClass');
@@ -194,16 +207,28 @@
 
             cy.validateClassProperty(options, property);
         });
+
+        it('Inherits "Calendar" type property', function() {
+            const property = propertiesInfo.calendar;
+
+            cy.validateClassProperty(options, property);
+        });
+
+        it('Inherits "Password" type property', function() {
+            const property = propertiesInfo.password;
+
+            cy.validateClassProperty(options, property);
+        });
     });
 
     describe('Child Item', () => {
-        it('create a new child item', function () {
+        before(() => {
+            // Create a new child item
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.addNode(selectors.itemForm, selectors.addItem);
             cy.renameSelectedNode(selectors.itemForm, selectors.editItemUrl, childItemName);
-        });
 
-        it('edit item', function () {
+            // Go to edit item
             cy.selectNode(selectors.root, selectors.itemClassForm, className);
             cy.intercept('POST', `**${selectors.editItemUrl}`).as('editItem');
             cy.getSettled(`li [title ="${childItemName}"] a`).last().click();
@@ -265,9 +290,24 @@
             cy.assignValueToTextProperty(property, value);
         });
 
+        it('child item inherits parent property "Calendar" and sets value', function () {
+            const property = propertiesInfo.calendar;
+            const value = `2022-02-02 02:22`;
+
+            cy.assignValueToCalendarProperty(property, value);
+        });
+
+        it('child item inherits parent property "Password" and sets value', function () {
+            const property = propertiesInfo.password;
+            const value = `Cypress writing inside ${property.name}`;
+
+            cy.assignValueToTextProperty(property, value);
+            cy.get(`[data-testid="${property.name}"]`).invoke('attr', 'type').should('eq', 'password');
+        });
+
         it('can save update of child item properties', function () {
             cy.intercept('POST', `**${selectors.editItemUrl}`).as('editItem');
-            cy.get('.form-toolbar button[data-testid="save"]').click();
+            cy.get('.form-toolbar button[data-testid="save"]').scrollIntoView().click();
             cy.wait('@editItem').then(xhr => {
                 expect(xhr.response.statusCode).to.eq(200);
             });
