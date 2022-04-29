@@ -24,15 +24,43 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Copier;
 
+use InvalidArgumentException;
 use core_kernel_classes_Class;
 use oat\tao\model\TaoOntology;
-use oat\tao\model\resources\Service\ClassCopier as TaoClassCopierAlias;
+use oat\tao\model\resources\Contract\ClassCopierInterface;
 
-class ClassCopier extends TaoClassCopierAlias
+class ClassCopier implements ClassCopierInterface
 {
-    public function supports(core_kernel_classes_Class $class, core_kernel_classes_Class $destinationClass): bool
+    /** @var ClassCopierInterface */
+    private $taoClassCopier;
+
+    public function __construct(ClassCopierInterface $taoClassCopier)
     {
-        return parent::supports($class, $destinationClass)
-            && $class->isSubClassOf($class->getClass(TaoOntology::CLASS_URI_ITEM));
+        $this->taoClassCopier = $taoClassCopier;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function copy(
+        core_kernel_classes_Class $class,
+        core_kernel_classes_Class $destinationClass
+    ): core_kernel_classes_Class {
+        $this->assertInItemsRootClass($class);
+
+        return $this->taoClassCopier->copy($class, $destinationClass);
+    }
+
+    private function assertInItemsRootClass(core_kernel_classes_Class $class): void
+    {
+        if (!$class->isSubClassOf($class->getClass(TaoOntology::CLASS_URI_ITEM))) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Selected class (%s) is not supported because it is not part of the items root class (%s).',
+                    $class->getUri(),
+                    TaoOntology::CLASS_URI_ITEM
+                )
+            );
+        }
     }
 }

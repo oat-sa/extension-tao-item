@@ -24,17 +24,17 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Copier;
 
+use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
-use oat\generis\model\data\Ontology;
 use taoItems_models_classes_ItemsService;
-use oat\tao\model\resources\Service\InstanceCopier;
-use oat\tao\model\resources\Service\ClassCopierManager;
+use oat\tao\model\resources\Service\ClassCopierProxy;
 use oat\tao\model\resources\Service\ClassPropertyCopier;
 use oat\tao\model\resources\Service\RootClassesListService;
 use oat\generis\model\fileReference\FileReferenceSerializer;
+use oat\tao\model\resources\Service\ClassCopier as TaoClassCopier;
+use oat\tao\model\resources\Service\InstanceCopier as TaoInstanceCopier;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use oat\tao\model\resources\Service\InstancePropertyCopier as TaoInstancePropertyCopierAlias;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -49,22 +49,31 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->factory(taoItems_models_classes_ItemsService::class . '::singleton');
 
         $services
-            ->set(InstancePropertyCopier::class, InstancePropertyCopier::class)
+            ->set(InstanceContentCopier::class, InstanceContentCopier::class)
             ->args(
                 [
-                    service(TaoInstancePropertyCopierAlias::class),
                     service(FileReferenceSerializer::SERVICE_ID),
                     service(taoItems_models_classes_ItemsService::class),
                     service(EventManager::SERVICE_ID),
-                    service(Ontology::SERVICE_ID),
                 ]
             );
 
         $services
-            ->set(InstanceCopier::class . '::ITEMS', InstanceCopier::class)
+            ->set(InstanceCopier::class, InstanceCopier::class)
             ->args(
                 [
-                    service(InstancePropertyCopier::class),
+                    service(TaoInstanceCopier::class),
+                    service(InstanceContentCopier::class),
+                ]
+            );
+
+        $services
+            ->set(TaoClassCopier::class . '::ITEMS', TaoClassCopier::class)
+            ->args(
+                [
+                    service(RootClassesListService::class),
+                    service(ClassPropertyCopier::class),
+                    service(InstanceCopier::class),
                 ]
             );
 
@@ -72,19 +81,17 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->set(ClassCopier::class, ClassCopier::class)
             ->args(
                 [
-                    service(RootClassesListService::class),
-                    service(ClassPropertyCopier::class),
-                    service(InstanceCopier::class . '::ITEMS'),
+                    service(TaoClassCopier::class . '::ITEMS'),
                 ]
             );
 
         $services
-            ->get(ClassCopierManager::class)
+            ->get(ClassCopierProxy::class)
             ->call(
-                'add',
+                'addClassCopier',
                 [
+                    TaoOntology::CLASS_URI_ITEM,
                     service(ClassCopier::class),
-                    ClassCopierManager::PRIORITY_HIGH,
                 ]
             );
     }

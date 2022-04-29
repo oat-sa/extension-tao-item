@@ -24,23 +24,18 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Copier;
 
-use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\filesystem\Directory;
-use oat\generis\model\data\Ontology;
 use taoItems_models_classes_ItemsService;
 use oat\taoItems\model\event\ItemContentClonedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
-use oat\tao\model\resources\Contract\InstancePropertyCopierInterface;
+use oat\tao\model\resources\Contract\InstanceContentCopierInterface;
 
-class InstancePropertyCopier implements InstancePropertyCopierInterface
+class InstanceContentCopier implements InstanceContentCopierInterface
 {
-    private const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+    public const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
     private const PROPERTY_ITEM_MODEL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
-
-    /** @var InstancePropertyCopierInterface */
-    private $taoInstancePropertyCopier;
 
     /** @var FileReferenceSerializer */
     private $fileReferenceSerializer;
@@ -51,36 +46,26 @@ class InstancePropertyCopier implements InstancePropertyCopierInterface
     /** @var EventManager */
     private $eventManager;
 
-    /** @var core_kernel_classes_Property */
-    private $itemModelProperty;
-
     public function __construct(
-        InstancePropertyCopierInterface $taoInstancePropertyCopier,
         FileReferenceSerializer $fileReferenceSerializer,
         taoItems_models_classes_ItemsService $itemsService,
-        EventManager $eventManager,
-        Ontology $ontology
+        EventManager $eventManager
     ) {
-        $this->taoInstancePropertyCopier = $taoInstancePropertyCopier;
         $this->fileReferenceSerializer = $fileReferenceSerializer;
         $this->itemsService = $itemsService;
         $this->eventManager = $eventManager;
-
-        $this->itemModelProperty = $ontology->getProperty(self::PROPERTY_ITEM_MODEL);
     }
 
     public function copy(
         core_kernel_classes_Resource $instance,
-        core_kernel_classes_Property $property,
         core_kernel_classes_Resource $destinationInstance
     ): void {
-        if ($property->getUri() !== self::PROPERTY_ITEM_CONTENT) {
-            $this->taoInstancePropertyCopier->copy($instance, $property, $destinationInstance);
+        $property = $instance->getProperty(self::PROPERTY_ITEM_CONTENT);
+        $itemModelProperty = $instance->getProperty(self::PROPERTY_ITEM_MODEL);
 
-            return;
-        }
-
-        $this->setItemModel($destinationInstance, $this->getItemModel($instance));
+        $model = $instance->getOnePropertyValue($itemModelProperty);
+        $model = $model instanceof core_kernel_classes_Resource ? $model : null;
+        $destinationInstance->editPropertyValues($itemModelProperty, $model);
 
         foreach ($instance->getUsedLanguages($property) as $lang) {
             $sourceItemDirectory = $this->itemsService->getItemDirectory($instance, $lang);
@@ -92,7 +77,7 @@ class InstancePropertyCopier implements InstancePropertyCopierInterface
             foreach ($propertyValues as $propertyValue) {
                 $id = $propertyValue instanceof core_kernel_classes_Resource
                     ? $propertyValue->getUri()
-                    : (string)$propertyValue;
+                    : (string) $propertyValue;
 
                 $sourceDirectory = $this->fileReferenceSerializer->unserializeDirectory($id);
                 $iterator = $sourceDirectory->getFlyIterator(
@@ -114,19 +99,5 @@ class InstancePropertyCopier implements InstancePropertyCopierInterface
         $this->eventManager->trigger(
             new ItemContentClonedEvent($instance->getUri(), $destinationInstance->getUri())
         );
-    }
-
-    private function setItemModel(core_kernel_classes_Resource $item, core_kernel_classes_Resource $model)
-    {
-        return $item->editPropertyValues($this->itemModelProperty, $model);
-    }
-
-    private function getItemModel(core_kernel_classes_Resource $item): ?core_kernel_classes_Resource
-    {
-        $itemModel = $item->getOnePropertyValue($this->itemModelProperty);
-
-        return $itemModel instanceof core_kernel_classes_Resource
-            ? $itemModel
-            : null;
     }
 }
