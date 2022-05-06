@@ -29,7 +29,7 @@ use core_kernel_classes_Class;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\resources\Contract\ClassCopierInterface;
 
-class ClassCopier implements ClassCopierInterface
+class ItemClassCopier implements ClassCopierInterface
 {
     /** @var ClassCopierInterface */
     private $taoClassCopier;
@@ -42,13 +42,10 @@ class ClassCopier implements ClassCopierInterface
     /**
      * @inheritDoc
      */
-    public function copy(
-        core_kernel_classes_Class $class,
-        core_kernel_classes_Class $destinationClass
-    ): core_kernel_classes_Class {
+    public function copy(core_kernel_classes_Class $class, core_kernel_classes_Class $destinationClass): void
+    {
         $this->assertInItemsRootClass($class);
-
-        return $this->taoClassCopier->copy($class, $destinationClass);
+        $this->taoClassCopier->copy($class, $destinationClass);
     }
 
     private function assertInItemsRootClass(core_kernel_classes_Class $class): void

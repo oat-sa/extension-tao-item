@@ -27,16 +27,14 @@ namespace oat\taoItems\model\Copier;
 use core_kernel_classes_Resource;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\filesystem\Directory;
+use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\taoItems\model\event\ItemContentClonedEvent;
 use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\tao\model\resources\Contract\InstanceContentCopierInterface;
 
-class InstanceContentCopier implements InstanceContentCopierInterface
+class ItemContentCopier implements InstanceContentCopierInterface
 {
-    public const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
-    private const PROPERTY_ITEM_MODEL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
-
     /** @var FileReferenceSerializer */
     private $fileReferenceSerializer;
 
@@ -60,19 +58,13 @@ class InstanceContentCopier implements InstanceContentCopierInterface
         core_kernel_classes_Resource $instance,
         core_kernel_classes_Resource $destinationInstance
     ): void {
-        $property = $instance->getProperty(self::PROPERTY_ITEM_CONTENT);
-        $itemModelProperty = $instance->getProperty(self::PROPERTY_ITEM_MODEL);
-
-        $model = $instance->getOnePropertyValue($itemModelProperty);
-        $model = $model instanceof core_kernel_classes_Resource ? $model : null;
-        $destinationInstance->editPropertyValues($itemModelProperty, $model);
+        $this->copyItemModel($instance, $destinationInstance);
+        $property = $instance->getProperty(TaoItemOntology::PROPERTY_ITEM_CONTENT);
 
         foreach ($instance->getUsedLanguages($property) as $lang) {
             $sourceItemDirectory = $this->itemsService->getItemDirectory($instance, $lang);
             $destinationItemDirectory = $this->itemsService->getItemDirectory($destinationInstance, $lang);
-            $propertyValues = $instance
-                ->getPropertyValuesCollection($property, ['lg' => $lang])
-                ->getIterator();
+            $propertyValues = $instance->getPropertyValuesCollection($property, ['lg' => $lang]);
 
             foreach ($propertyValues as $propertyValue) {
                 $id = $propertyValue instanceof core_kernel_classes_Resource
@@ -98,6 +90,19 @@ class InstanceContentCopier implements InstanceContentCopierInterface
 
         $this->eventManager->trigger(
             new ItemContentClonedEvent($instance->getUri(), $destinationInstance->getUri())
+        );
+    }
+
+    private function copyItemModel(
+        core_kernel_classes_Resource $instance,
+        core_kernel_classes_Resource $destinationInstance
+    ): void {
+        $itemModelProperty = $instance->getProperty(TaoItemOntology::PROPERTY_ITEM_MODEL);
+        $model = $instance->getOnePropertyValue($itemModelProperty);
+
+        $destinationInstance->editPropertyValues(
+            $itemModelProperty,
+            $model instanceof core_kernel_classes_Resource ? $model : null
         );
     }
 }
