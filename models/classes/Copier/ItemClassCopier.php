@@ -42,10 +42,13 @@ class ItemClassCopier implements ClassCopierInterface
     /**
      * @inheritDoc
      */
-    public function copy(core_kernel_classes_Class $class, core_kernel_classes_Class $destinationClass): void
-    {
+    public function copy(
+        core_kernel_classes_Class $class,
+        core_kernel_classes_Class $destinationClass
+    ): core_kernel_classes_Class {
         $this->assertInItemsRootClass($class);
-        $this->taoClassCopier->copy($class, $destinationClass);
+
+        return $this->taoClassCopier->copy($class, $destinationClass);
     }
 
     private function assertInItemsRootClass(core_kernel_classes_Class $class): void
