@@ -53,7 +53,10 @@ class ItemClassCopier implements ClassCopierInterface
 
     private function assertInItemsRootClass(core_kernel_classes_Class $class): void
     {
-        if (!$class->isSubClassOf($class->getClass(TaoOntology::CLASS_URI_ITEM))) {
+        if (
+            $class->getUri() !== TaoOntology::CLASS_URI_ITEM
+            && !$class->isSubClassOf($class->getClass(TaoOntology::CLASS_URI_ITEM))
+        ) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Selected class (%s) is not supported because it is not part of the items root class (%s).',
