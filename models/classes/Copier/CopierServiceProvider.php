@@ -75,6 +75,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
 
         $services
             ->set(ClassCopier::class . '::ITEMS', ClassCopier::class)
+            ->share(false)
             ->args(
                 [
                     service(RootClassesListService::class),
@@ -85,6 +86,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
 
         $services
             ->set(ItemClassCopier::class, ItemClassCopier::class)
+            ->share(false)
             ->args(
                 [
                     service(ClassCopier::class . '::ITEMS'),
