@@ -26,6 +26,7 @@ namespace oat\taoItems\model\Copier;
 
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
+use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\tao\model\resources\Service\ClassCopier;
 use oat\tao\model\resources\Service\InstanceCopier;
@@ -48,6 +49,15 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
         $services
             ->set(taoItems_models_classes_ItemsService::class, taoItems_models_classes_ItemsService::class)
             ->factory(taoItems_models_classes_ItemsService::class . '::singleton');
+
+        $services
+            ->get(InstanceMetadataCopier::class)
+            ->call(
+                'addPropertyUriToBlacklist',
+                [
+                    TaoItemOntology::PROPERTY_ITEM_CONTENT
+                ]
+            );
 
         $services
             ->set(ItemContentCopier::class, ItemContentCopier::class)
