@@ -21,6 +21,7 @@
  *
  */
 
+use oat\taoItems\model\TaoItemOntology;
 use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
 use oat\oatbox\filesystem\FileSystemService;
@@ -45,28 +46,31 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
 {
     /**
      * Key to use to store the default filesource to be used in for new items
-     *
-     * @var string
      */
-    const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
+    public const CONFIG_DEFAULT_FILESOURCE = 'defaultItemFileSource';
 
-    const PROPERTY_ITEM_MODEL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel';
+    /** @deprecated Use oat\taoItems\model\TaoItemOntology::PROPERTY_ITEM_MODEL instead */
+    public const PROPERTY_ITEM_MODEL = TaoItemOntology::PROPERTY_ITEM_MODEL;
 
-    const PROPERTY_ITEM_CONTENT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent';
+    /** @deprecated Use oat\taoItems\model\TaoItemOntology::PROPERTY_ITEM_CONTENT instead */
+    public const PROPERTY_ITEM_CONTENT = TaoItemOntology::PROPERTY_ITEM_CONTENT;
 
-    const PROPERTY_ITEM_MODEL_SERVICE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService';
+    /** @deprecated Use oat\taoItems\model\TaoItemOntology::PROPERTY_MODEL_SERVICE instead */
+    public const PROPERTY_ITEM_MODEL_SERVICE = TaoItemOntology::PROPERTY_MODEL_SERVICE;
 
-    const PROPERTY_ITEM_CONTENT_SRC = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName';
+    /** @deprecated Use oat\taoItems\model\TaoItemOntology::PROPERTY_ITEM_CONTENT_SOURCE_NAME instead */
+    public const PROPERTY_ITEM_CONTENT_SRC = TaoItemOntology::PROPERTY_ITEM_CONTENT_SOURCE_NAME;
 
-    const TAO_ITEM_MODEL_DATAFILE_PROPERTY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName';
+    /** @deprecated Use oat\taoItems\model\TaoItemOntology::PROPERTY_DATA_FILE_NAME instead */
+    public const TAO_ITEM_MODEL_DATAFILE_PROPERTY = TaoItemOntology::PROPERTY_DATA_FILE_NAME;
 
-    const INSTANCE_SERVICE_ITEM_RUNNER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
+    public const INSTANCE_SERVICE_ITEM_RUNNER = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner';
 
-    const INSTANCE_FORMAL_PARAM_ITEM_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath';
+    public const INSTANCE_FORMAL_PARAM_ITEM_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath';
 
-    const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
+    public const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
 
-    const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
+    public const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
 
     private const DIV_CLASS_EMPTY = '<div class="empty"';
 

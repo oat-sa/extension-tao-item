@@ -26,6 +26,7 @@ use oat\taoBackOffice\controller\Lists;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
+use oat\taoItems\model\Copier\CopierServiceProvider;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
@@ -230,5 +231,8 @@ return [
 
         #BASE URL (usually the domain root)
         'BASE_URL' => ROOT_URL . 'taoItems/',
+    ],
+    'containerServiceProviders' => [
+        CopierServiceProvider::class,
     ],
 ];
