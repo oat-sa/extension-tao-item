@@ -32,6 +32,7 @@ use oat\tao\model\resources\Service\ClassCopier;
 use oat\tao\model\resources\Service\InstanceCopier;
 use oat\tao\model\resources\Service\ClassCopierProxy;
 use oat\tao\model\resources\Service\ClassMetadataCopier;
+use oat\tao\model\resources\Service\ClassMetadataMapper;
 use oat\tao\model\resources\Service\InstanceMetadataCopier;
 use oat\tao\model\resources\Service\RootClassesListService;
 use oat\generis\model\fileReference\FileReferenceSerializer;
@@ -91,6 +92,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                     service(RootClassesListService::class),
                     service(ClassMetadataCopier::class),
                     service(InstanceCopier::class . '::ITEMS'),
+                    service(ClassMetadataMapper::class),
                 ]
             );
 
