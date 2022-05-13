@@ -55,7 +55,7 @@ class ItemClassCopier implements ClassCopierInterface
     {
         $rootClass = $class->getClass(TaoOntology::CLASS_URI_ITEM);
 
-        if (!$class->equals($rootClass) && !$class->isSubClassOf($class->getClass(TaoOntology::CLASS_URI_ITEM))) {
+        if (!$class->equals($rootClass) && !$class->isSubClassOf($rootClass)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Selected class (%s) is not supported because it is not part of the items root class (%s).',
