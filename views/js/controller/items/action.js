@@ -63,11 +63,13 @@ define([
             uri: actionContext.id
         };
         const config = _.merge(defaultConfig, module.config());
-
-        previewerFactory(config.provider, config.uri, config.state, {
+        const previewerConfig = _.omit({
             readOnly: false,
-            fullPage: true
-        });
+            fullPage: true,
+            pluginsOptions: config.pluginsOptions
+        }, _.isUndefined);
+
+        previewerFactory(config.provider, config.uri, config.state, previewerConfig);
     });
 
     binder.register('deleteItem', function (actionContext) {
