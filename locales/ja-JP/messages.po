@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2022.01\n"
-"PO-Revision-Date: 2022-02-17T14:38:22\n"
+"Project-Id-Version: TAO 2022.09\n"
+"PO-Revision-Date: 2022-08-12T16:45:51\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -29,10 +29,10 @@ msgid "Are you sure you want to delete the item %s?"
 msgstr "%sを削除してよろしいですか？"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "このクラスとその内容をすべて削除してよいのですか？"
 
 msgid "Are you sure you want to delete this item?"
-msgstr ""
+msgstr "このアイテムを削除してよろしいですか？"
 
 #, tao-public
 msgid "Authoring"
@@ -108,7 +108,7 @@ msgid "Item Model"
 msgstr "アイテムも出る"
 
 msgid "Item not found"
-msgstr ""
+msgstr "アイテムが見つかりません"
 
 msgid "Item saved"
 msgstr "アイテムが保存されました"
@@ -125,7 +125,7 @@ msgid "Landscape"
 msgstr "横に長く"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "最終更新日：%2s"
 
 msgid "Manage item class schema"
 msgstr "スキーマ管理"
@@ -204,13 +204,13 @@ msgid "test"
 msgstr ""
 
 msgid "The class"
-msgstr ""
+msgstr "クラス"
 
 msgid "The file you tried to upload is not valid"
 msgstr "アップロードしようとしたファイルは無効です。"
 
 msgid "The item"
-msgstr ""
+msgstr "アイテム"
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "アイテムとエクササイズの作成とデザインがアイテムモジュールにより可能になっています。"
