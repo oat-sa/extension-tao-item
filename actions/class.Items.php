@@ -18,14 +18,14 @@
  * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
  *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *               2012-2018 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ *               2012-2022 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 declare(strict_types=1);
 
 use oat\oatbox\event\EventManager;
 use oat\generis\model\OntologyRdfs;
+use oat\tao\model\controllerMap\RequiresRightTag as requiresRight;
 use oat\tao\model\lock\LockManager;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\accessControl\Context;
@@ -158,7 +158,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 ]
             );
 
-            $hasWriteAccess = $this->hasWriteAccess($itemUri) && $this->hasWriteAccessByContext($context);
+            $hasItemWriteAccess = $this->hasWriteAccess($itemUri);
+            $hasContextWriteAccess = $this->hasWriteAccessByContext($context);
+            $hasWriteAccess = $hasItemWriteAccess && $hasContextWriteAccess;
 
             $formContainer = new SignedFormInstance(
                 $itemClass,
