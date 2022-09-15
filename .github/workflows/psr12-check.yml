@@ -9,20 +9,25 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
+#    strategy:
+#      fail-fast: false
+#      matrix:
         # Should match the version suported by generis, otherwise an error is triggered:
         # oat-sa/generis[v14.0.0, ..., v14.4.0, v15.0.0, ..., v15.20.4] require php ^7.1 -> your php version (8.1.9) does not satisfy that require
-        operating-system: [ ubuntu-latest ]
-        php-version: [ '7.1' ]
-        include:
-          - php-version: '7.1'
-            coverage: true
+#        operating-system: [ ubuntu-latest ]
+#        php-version: [ '7.1' ]
+#        include:
+#          - php-version: '7.1'
+#            coverage: true
 
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.1
 
       - name: "Cache dependencies installed with composer"
         uses: actions/cache@v1
