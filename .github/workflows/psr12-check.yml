@@ -31,7 +31,7 @@ jobs:
             php${{ matrix.php-version }}-composer-
 
       - name: Install Composer dependencies
-        run: composer install --no-progress --dev
+        run: composer install --no-progress --dev --no-plugins
 
       - name: Run PHP Code Sniffer PSR-12 check
         run: vendor/bin/phpcs --standard=PSR12 -v actions config helpers includes migrations models/classes scripts test
