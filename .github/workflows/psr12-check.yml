@@ -12,10 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Should match the version suported by generis, otherwise an error is triggered:
+        # oat-sa/generis[v14.0.0, ..., v14.4.0, v15.0.0, ..., v15.20.4] require php ^7.1 -> your php version (8.1.9) does not satisfy that require
         operating-system: [ ubuntu-latest ]
-        php-version: [ '7.4', '8.0', '8.1' ]
+        php-version: [ '7.1' ]
         include:
-          - php-version: '7.4'
+          - php-version: '7.1'
             coverage: true
 
     steps:
