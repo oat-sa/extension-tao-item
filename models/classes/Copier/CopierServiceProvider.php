@@ -40,6 +40,7 @@ use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
 class CopierServiceProvider implements ContainerServiceProviderInterface
 {
@@ -82,6 +83,12 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 [
                     service(ItemContentCopier::class),
                 ]
+            )
+            ->call(
+                'withPermissionCopiers',
+                [
+                    tagged_iterator('tao.copier.permissions.instance.items'),
+                ]
             );
 
         $services
@@ -93,6 +100,12 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                     service(ClassMetadataCopier::class),
                     service(InstanceCopier::class . '::ITEMS'),
                     service(ClassMetadataMapper::class),
+                ]
+            )
+            ->call(
+                'withPermissionCopiers',
+                [
+                    tagged_iterator('tao.copier.permissions.class.items'),
                 ]
             );
 
