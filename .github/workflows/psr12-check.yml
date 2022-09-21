@@ -44,8 +44,9 @@ jobs:
         uses: jitterbit/get-changed-files@v1
       - run: |
           FILELIST=$(mktemp /tmp/psr12-check.XXXXXX)
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.all }}')
-          for FILE in "${added_modified_files[@]}"; do
+          # mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.all }}')
+          # for FILE in "${added_modified_files[@]}"; do
+          for FILE in ${{ steps.files.outputs.all }}; do
               echo "Changed file: " $FILE
               EXT="${FILE##*.}"
               echo "Extension: " $EXT
