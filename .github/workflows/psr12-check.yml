@@ -52,7 +52,8 @@ jobs:
               if [ "$EXT" == "php" ]; then
                 echo "${FILE}" >> "${FILELIST}"
                 echo "File added to the file list: " $FILE
-             else 
+              else 
+                echo "File NOT added to the file list: " $FILE
           	  fi
           done
           echo Running cat -n "$FILELIST"
