@@ -62,7 +62,7 @@ jobs:
           echo Running cat -n "$FILELIST"
           cat -n "$FILELIST"
           if [ -s "${FILELIST}" ]; then
-              phpcs --standard=PSR12 -v --file-list="${FILELIST}"
+              vendor/bin/phpcs --standard=PSR12 -v --file-list="${FILELIST}"
               RETVAL=$?
               echo "The following files were tested for PSR-12 errors:"
               echo 
