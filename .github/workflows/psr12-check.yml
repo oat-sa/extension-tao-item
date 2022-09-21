@@ -43,9 +43,8 @@ jobs:
       - id: files
         uses: jitterbit/get-changed-files@v1
       - run: |
-          for changed_file in ${{ steps.files.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
-      
-      - name: Run PHP Code Sniffer PSR-12 check
-        run: vendor/bin/phpcs --standard=PSR12 -v actions config helpers includes migrations models/classes scripts test
+          if [[ $file == *.php ]]
+            for changed_file in ${{ steps.files.outputs.all }}; do
+              vendor/bin/phpcs --standard=PSR12 -v ${changed_file}
+              echo "Do something with this ${changed_file}."
+            done
