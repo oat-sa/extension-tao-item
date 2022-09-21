@@ -48,28 +48,20 @@ jobs:
           FILELIST=$(mktemp /tmp/psr12-check.XXXXXX)
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for FILE in "${added_modified_files[@]}"; do
-          # for FILE in ${{ steps.files.outputs.all }}; do # Won't work with files with spaces
-              echo "Changed file: " $FILE
               EXT="${FILE##*.}"
-              echo "Extension: " $EXT
+              echo "Changed file: " $FILE ", extension: " $EXT
               if [ "$EXT" == "php" ]; then
                 echo "${FILE}" >> "${FILELIST}"
                 echo "File added to the file list: " $FILE
-              else 
-                echo "File NOT added to the file list: " $FILE
           	  fi
           done
-          echo Running cat -n "$FILELIST"
-          cat -n "$FILELIST"
           if [ -s "${FILELIST}" ]; then
               vendor/bin/phpcs --standard=PSR12 -v --file-list="${FILELIST}"
               RETVAL=$?
-              echo "The following files were tested for PSR-12 errors:"
-              echo 
+              echo "The following files were tested for PSR-12 errors:"; echo 
               cat -n "$FILELIST"
           else
-              echo "There are no changes in PHP files"
+              echo "There are no changes in PHP files (no PSR-12 test performed)"
           fi
-          cat -n "$FILELIST"
           rm "$FILELIST"
           exit $RETVAL
