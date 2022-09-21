@@ -42,8 +42,6 @@ jobs:
 
       - id: files
         uses: jitterbit/get-changed-files@v1
-        with:
-          format: 'php'
       - run: |
           FILELIST=$(mktemp /tmp/psr12-check.XXXXXX)
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
