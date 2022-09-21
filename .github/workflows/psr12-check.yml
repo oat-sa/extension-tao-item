@@ -47,9 +47,12 @@ jobs:
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.all }}')
           for FILE in "${added_modified_files[@]}"; do
               echo "Changed file: " $FILE
-              if [ "${FILE##*.}" == "php" ]; then
+              EXT="${FILE##*.}"
+              echo "Extension: " $EXT
+              if [ "$EXT" == "php" ]; then
                 echo "${FILE}" >> "${FILELIST}"
                 echo "File added to the file list: " $FILE
+             else 
           	  fi
           done
           echo Running cat -n "$FILELIST"
