@@ -21,7 +21,7 @@
  *               2012-2021 (update and modification) Open Assessment Technologies SA;
  *
  * @phpcs:disable PSR1.Classes.ClassDeclaration
- * @phpcs:disable Squiz.Classes.ValidClassName.NotPascalCase
+ * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
 declare(strict_types=1);
