@@ -49,11 +49,11 @@ jobs:
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for FILE in "${added_modified_files[@]}"; do
               if [ "${FILE##*.}" == "php" ]; then
-      	    	echo "${FILE}" >> "${FILELIST}"
-          	fi    
-          done
+              echo "${FILE}" >> "${FILELIST}"
+          	  fi
+            done
           if [ -s "${FILELIST}" ]; then
-      	    phpcs --standard=PSR12 -v --file-list="${FILELIST}"
+          phpcs --standard=PSR12 -v --file-list="${FILELIST}"
               RETVAL=$?
               echo "The following files were tested for PSR-12 errors:"
               echo 
