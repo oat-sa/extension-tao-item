@@ -42,7 +42,7 @@ jobs:
 
       - id: files
         uses: jitterbit/get-changed-files@v1
-        if: files == '*.php'
+        if: $files == "*.php"
       - run: |
             for changed_file in ${{ steps.files.outputs.all }}; do
               vendor/bin/phpcs --standard=PSR12 -v ${changed_file}
