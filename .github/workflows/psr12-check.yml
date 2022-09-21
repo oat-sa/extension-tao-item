@@ -42,9 +42,22 @@ jobs:
 
       - id: files
         uses: jitterbit/get-changed-files@v1
-        if: $files == "*.php"
+        with:
+          format: 'php'
       - run: |
-            for changed_file in ${{ steps.files.outputs.all }}; do
-              vendor/bin/phpcs --standard=PSR12 -v ${changed_file}
-              echo "Do something with this ${changed_file}."
-            done
+          FILELIST=$(mktemp /tmp/psr12-check.XXXXXX)
+          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for FILE in "${added_modified_files[@]}"; do
+              if [ "${FILE##*.}" == "php" ]; then
+      	    	echo "${FILE}" >> "${FILELIST}"
+          	fi    
+          done
+          if [ -s "${FILELIST}" ]; then
+      	    phpcs --standard=PSR12 -v --file-list="${FILELIST}"
+              RETVAL=$?
+              echo "The following files were tested for PSR-12 errors:"
+              echo 
+              cat -n "$FILELIST"
+          fi
+          rm "$FILELIST"
+          exit $RETVAL
