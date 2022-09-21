@@ -46,16 +46,21 @@ jobs:
           FILELIST=$(mktemp /tmp/psr12-check.XXXXXX)
           mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for FILE in "${added_modified_files[@]}"; do
+              echo "Changed file: " $FILE
               if [ "${FILE##*.}" == "php" ]; then
-              echo "${FILE}" >> "${FILELIST}"
+                echo "${FILE}" >> "${FILELIST}"
+                echo "File added to the file list: " $FILE
           	  fi
-            done
+          done
           if [ -s "${FILELIST}" ]; then
-          phpcs --standard=PSR12 -v --file-list="${FILELIST}"
+              phpcs --standard=PSR12 -v --file-list="${FILELIST}"
               RETVAL=$?
               echo "The following files were tested for PSR-12 errors:"
               echo 
               cat -n "$FILELIST"
+          else
+              echo "There are no changes in PHP files"
           fi
+          cat -n "$FILELIST"
           rm "$FILELIST"
           exit $RETVAL
