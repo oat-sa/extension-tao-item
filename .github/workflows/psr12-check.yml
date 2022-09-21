@@ -42,18 +42,10 @@ jobs:
 
       - id: files
         uses: jitterbit/get-changed-files@v1
-        with:
-          format: 'php'
       - run: |
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          KO=0
-          for added_modified_file in "${added_modified_files[@]}"; do
-            if [[ ! vendor/bin/phpcs --standard=PSR12 -v "${added_modified_file}" ]]; then
-                KO=1
-            fi
-          done
-          if [[ KO == "1" ]]; then
-            # :P
-            echo "Some file failed the PSR-12 check !!"
-            exit -1 
+          if [[ $files -eq *.php ]]
+            for changed_file in ${{ steps.files.outputs.all }}; do
+              vendor/bin/phpcs --standard=PSR12 -v ${changed_file}
+              echo "Do something with this ${changed_file}."
+            done
           fi
