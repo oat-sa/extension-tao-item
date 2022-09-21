@@ -9,17 +9,6 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-20.04
-#    strategy:
-#      fail-fast: false
-#      matrix:
-        # Should match the version suported by generis, otherwise an error is triggered:
-        # oat-sa/generis[v14.0.0, ..., v14.4.0, v15.0.0, ..., v15.20.4] require php ^7.1 -> your php version (8.1.9) does not satisfy that require
-#        operating-system: [ ubuntu-latest ]
-#        php-version: [ '7.1' ]
-#        include:
-#          - php-version: '7.1'
-#            coverage: true
-
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -53,7 +42,7 @@ jobs:
               if [ "$EXT" == "php" ]; then
                 echo "${FILE}" >> "${FILELIST}"
                 echo "File added to the file list: " $FILE
-          	  fi
+              fi
           done
           if [ -s "${FILELIST}" ]; then
               vendor/bin/phpcs --standard=PSR12 -v --file-list="${FILELIST}"
