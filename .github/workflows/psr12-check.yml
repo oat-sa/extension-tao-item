@@ -52,6 +52,8 @@ jobs:
                 echo "File added to the file list: " $FILE
           	  fi
           done
+          echo Running cat -n "$FILELIST"
+          cat -n "$FILELIST"
           if [ -s "${FILELIST}" ]; then
               phpcs --standard=PSR12 -v --file-list="${FILELIST}"
               RETVAL=$?
