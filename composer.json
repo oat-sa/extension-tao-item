@@ -77,5 +77,8 @@
             "oat\\taoItems\\test\\": "test",
             "oat\\taoItems\\scripts\\": "scripts"
         }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.7.*"
     }
 }
