@@ -45,7 +45,7 @@ jobs:
               fi
           done
           if [ -s "${FILELIST}" ]; then
-              vendor/bin/phpcs --standard=PSR12 --exclude=PSR12.Files.FileHeader -v --file-list="${FILELIST}"
+              vendor/bin/phpcs --standard=PSR12 --exclude=PSR1.Classes.ClassDeclaration.MissingNamespace -v --file-list="${FILELIST}"
               RETVAL=$?
               echo "The following files were tested for PSR-12 errors:"; echo 
               cat -n "$FILELIST"
