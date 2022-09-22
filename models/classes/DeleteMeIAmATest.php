@@ -18,8 +18,6 @@
  * Copyright (c) 2022 (original work) Open Assessment Technologies SA
  */
 
-namespace oat\taoItems\model;
-
 class DeleteMeIAmATest
 {
     public function test(): string
