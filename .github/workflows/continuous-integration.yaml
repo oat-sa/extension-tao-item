@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: CI
-        uses: oat-sa/tao-extension-ci-action@0a72906cc9bc362539d9717d1e386bf9072b5a49
+        uses: oat-sa/tao-extension-ci-action@ebf7090f77c705c03fd34bdf1e114733d92263c9
         with:
           php: ${{ matrix.php-version }}
           coverage: ${{ matrix.coverage }}
