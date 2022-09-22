@@ -21,7 +21,6 @@ jobs:
 
     steps:
       - name: CI
-        shell: bash
         uses: oat-sa/tao-extension-ci-action@971de918341791025ba5c861daf01154056d1980
         with:
           php: ${{ matrix.php-version }}
