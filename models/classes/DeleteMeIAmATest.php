@@ -26,4 +26,12 @@ class DeleteMeIAmATest
     {
         return 'test';
     }
+
+    public function test2(): string {
+        return 'test';
+    }
+
+    public function test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2_test2(): string {
+        return 'test';
+    }
 }
