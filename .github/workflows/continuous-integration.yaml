@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: CI
-        uses: oat-sa/tao-extension-ci-action@v1
+        uses: oat-sa/tao-extension-ci-action@b4a50b1096b8c3a2550f00192ef471f2b3c74582 # Force version for testing
         with:
           php: ${{ matrix.php-version }}
           coverage: ${{ matrix.coverage }}
