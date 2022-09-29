@@ -66,8 +66,8 @@
     },
     "require": {
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
-        "oat-sa/generis": ">=14.0.0",
-        "oat-sa/tao-core": ">=50.14.0",
+        "oat-sa/generis": ">=15.22",
+        "oat-sa/tao-core": ">=50.24.6",
         "oat-sa/extension-tao-backoffice": ">=6.0.0"
     },
     "autoload": {
@@ -77,10 +77,5 @@
             "oat\\taoItems\\test\\": "test",
             "oat\\taoItems\\scripts\\": "scripts"
         }
-    },
-    "require-dev": {
-        "oat-sa/extension-tao-mediamanager": "*",
-        "oat-sa/generis": "dev-php8-migration as v16.0.0",
-        "oat-sa/tao-core": "dev-php8-migration as v51.0.0"
     }
 }
