@@ -25,7 +25,7 @@
 module.exports = function (grunt) {
     'use strict';
 
-    var root = grunt.option('root');
+    const root = grunt.option('root');
 
     grunt.config.merge({
         bundle: {
