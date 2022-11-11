@@ -22,38 +22,46 @@
  *
  * @param {Object} grunt - the grunt instance (convention)
  */
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
 
-    var root = grunt.option('root');
+    const root = grunt.option('root');
 
     grunt.config.merge({
-        bundle : {
-            taoitems : {
-                options : {
-                    extension : 'taoItems',
-                    extensionPath : `${root}/taoItems/views/js`,
-                    outputDir : 'loader',
+        bundle: {
+            taoitems: {
+                options: {
+                    extension: 'taoItems',
+                    extensionPath: `${root}/taoItems/views/js`,
+                    outputDir: 'loader',
                     paths: require('./paths.json'),
-                    bundles : [{
-                        name : 'taoItems',
-                        default : true,
-                        babel : true,
-                        include : [
-                            'taoItems/assets/**/*',
-                            'taoItems/preview/**/*',
-                            'taoItems/previewer/**/*',
-                            'taoItems/runner/**/*',
-                            'taoItems/runtime/**/*'
-                        ]
-                    }, {
-                        name : 'taoItemsRunner',
-                        babel : true,
-                        include : [
-                            'taoItems/assets/**/*',
-                            'taoItems/runner/**/*'
-                        ]
-                    }]
+                    bundles: [
+                        {
+                            name: 'taoItems',
+                            default: true,
+                            babel: true,
+                            include: [
+                                'taoItems/assets/**/*',
+                                'taoItems/preview/**/*',
+                                'taoItems/previewer/**/*',
+                                'taoItems/runner/**/*',
+                                'taoItems/runtime/**/*'
+                            ]
+                        },
+                        {
+                            name: 'taoItemsRunner',
+                            babel: true,
+                            include: ['taoItems/assets/**/*', 'taoItems/runner/**/*']
+                        },
+                        {
+                            name: 'taoItemsRunner.es5',
+                            babel: true,
+                            targets: {
+                                ie: '11'
+                            },
+                            include: ['taoItems/assets/**/*', 'taoItems/runner/**/*']
+                        }
+                    ]
                 }
             }
         }
