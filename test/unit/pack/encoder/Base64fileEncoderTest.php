@@ -64,10 +64,10 @@ class Base64fileEncoderTest extends TestCase
         $mediaAssetHttpSource->method('getMediaIdentifier')->willReturn('value');
 
         return [
-            ['exist.css', 'data:text/css;base64,' . base64_encode('value')],
-            [$mediaAsset, 'data:text/css;base64,' . base64_encode('value')],
-            [$mediaAssetHttpSource, 'value'],
-            ['http://google.com/styles.css', 'http://google.com/styles.css']
+            'data value' => ['value', 'data:text/css;base64,' . base64_encode('value')],
+            'media asset' => [$mediaAsset, 'data:text/css;base64,' . base64_encode('value')],
+            'mediaAssetHttpSource' => [$mediaAssetHttpSource, 'value'],
+            'google' => ['http://google.com/styles.css', 'http://google.com/styles.css']
         ];
     }
 
@@ -78,7 +78,6 @@ class Base64fileEncoderTest extends TestCase
      */
     public function testEncode($data, $expected)
     {
-
         $directoryStorage = $this->getMockBuilder(\tao_models_classes_service_StorageDirectory::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -91,7 +90,7 @@ class Base64fileEncoderTest extends TestCase
         $file->method('read')->willReturn('value');
         $file->method('getMimeType')->willReturn('text/css');
 
-        $directoryStorage->method('getFile')->with('exist.css')->willReturn($file);
+        $directoryStorage->method('getFile')->with('value')->willReturn($file);
 
         $encoder = new Base64fileEncoder($directoryStorage);
         $this->assertEquals($expected, $encoder->encode($data));
