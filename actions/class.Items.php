@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable Generic.Files.LineLength
 /**
  * This program is free software; you can redistribute it and/or
@@ -80,7 +81,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         'Items',
                         'taoItems',
                         ['uri' => $uri, 'classUri' => $classUri]
-                    ));
+                    )
+                );
 
                 $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));
             }
