@@ -22,7 +22,6 @@ declare(strict_types=1);
 namespace oat\taoItems\test\unit\models\classes\media;
 
 use oat\tao\model\media\MediaAsset;
-use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoMediaManager\model\MediaSource;
