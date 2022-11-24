@@ -23,10 +23,10 @@ namespace oat\taoItems\test\unit\pack\encoder;
 use oat\generis\test\TestCase;
 use oat\oatbox\filesystem\File;
 use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\pack\encoders\Base64fileEncoder;
 use oat\taoItems\model\pack\ExceptionMissingAsset;
-use oat\taoMediaManager\model\MediaSource;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -41,7 +41,7 @@ class Base64fileEncoderTest extends TestCase
             ->getMock();
         $stream->method('getContents')->willReturn('value');
 
-        $mediaSource = $this->getMockBuilder(MediaSource::class)
+        $mediaSource = $this->getMockBuilder(MediaBrowser::class)
             ->disableOriginalConstructor()
             ->getMock();
         $mediaSource->method('getFileInfo')->willReturn(['mime' => 'text/css']);
