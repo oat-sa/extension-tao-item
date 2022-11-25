@@ -1,5 +1,6 @@
 <?php
 
+// phpcs:disable Generic.Files.LineLength
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,12 +22,14 @@
  *               2012-2018 (update and modification) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+// phpcs:enable
 
 declare(strict_types=1);
 
 use oat\oatbox\event\EventManager;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\lock\LockManager;
+use oat\tao\model\TaoOntology;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\accessControl\Context;
 use oat\generis\model\OntologyAwareTrait;
@@ -45,6 +48,7 @@ use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
  * @package taoItems
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
+// phpcs:ignore
 class taoItems_actions_Items extends tao_actions_SaSModule
 {
     use OntologyAwareTrait;
@@ -69,7 +73,17 @@ class taoItems_actions_Items extends tao_actions_SaSModule
             if (!empty($uri)) {
                 $item = $this->getResource(tao_helpers_Uri::decode($uri));
                 $this->setData('label', $item->getLabel());
-                $this->setData('authoringUrl', _url('authoring', 'Items', 'taoItems', ['uri' => $uri, 'classUri' => $classUri]));
+
+                $this->setData(
+                    'authoringUrl',
+                    _url(
+                        'authoring',
+                        'Items',
+                        'taoItems',
+                        ['uri' => $uri, 'classUri' => $classUri]
+                    )
+                );
+
                 $this->setData('previewUrl', $this->getClassService()->getPreviewUrl($item));
             }
         }
@@ -174,6 +188,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 ]
             );
             $myForm = $formContainer->getForm();
+
+            $myForm->setOptions([
+                'resourceType' => TaoOntology::ITEM_CLASS_URI
+            ]);
 
             if ($hasWriteAccess) {
                 if ($myForm->isSubmited() && $myForm->isValid()) {
@@ -332,13 +350,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     $itemModelImpl = $this->getClassService()->getItemModelImplementation($itemModel);
                     $authoringUrl = $itemModelImpl->getAuthoringUrl($item);
                     if (!empty($authoringUrl)) {
-                        LockManager::getImplementation()->setLock($item, $this->getSession()->getUser()->getIdentifier());
+                        LockManager::getImplementation()
+                            ->setLock($item, $this->getSession()->getUser()->getIdentifier());
 
                         return $this->forwardUrl($authoringUrl);
                     }
                 }
                 throw new common_exception_NoImplementation();
-                $this->setData('instanceUri', tao_helpers_Uri::encode($item->getUri(), false));
             } catch (Exception $e) {
                 if ($e instanceof InterruptedActionException) {
                     throw $e;
@@ -346,9 +364,14 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 $this->setData('error', true);
                 //build clear error or warning message:
                 if (!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource) {
-                    $errorMsg = __('No item authoring tool available for the selected type of item: %s' . $itemModel->getLabel());
+                    $errorMsg = __(
+                        'No item authoring tool available for the selected type of item: %s'
+                        . $itemModel->getLabel()
+                    );
                 } else {
-                    $errorMsg = __('No item type selected for the current item.') . " {$item->getLabel()} " . __('Please select first the item type!');
+                    $errorMsg = __('No item type selected for the current item.')
+                        . " {$item->getLabel()} "
+                        . __('Please select first the item type!');
                 }
                 $this->setData('errorMsg', $errorMsg);
             }
