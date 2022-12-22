@@ -235,4 +235,7 @@ return [
     'containerServiceProviders' => [
         CopierServiceProvider::class,
     ],
+    'includedRoles' => [
+        TaoItemsRoles::ITEM_AUTHOR => [TaoItemsRoles::ITEM_CONTENT_CREATOR]
+    ]
 ];
