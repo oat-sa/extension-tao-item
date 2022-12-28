@@ -239,6 +239,13 @@ return [
         CopierServiceProvider::class,
     ],
     'includedRoles' => [
-        TaoItemsRoles::ITEM_AUTHOR => [TaoItemsRoles::ITEM_CONTENT_CREATOR]
+        TaoItemsRoles::ITEM_AUTHOR => [
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            TaoItemsRoles::ITEM_RESOURCE_CREATOR,
+            TaoItemsRoles::ITEM_CLASS_SCHEMA_MANAGER,
+            TaoItemsRoles::ITEM_MANAGER,
+            TaoItemsRoles::ITEM_IMPORTER,
+            TaoItemsRoles::ITEM_DELETER,
+        ]
     ]
 ];
