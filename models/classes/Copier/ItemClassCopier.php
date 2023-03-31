@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2022 (original work) Open Assessment Technologies SA.
+ * Copyright (c) 2022-2023 (original work) Open Assessment Technologies SA.
  *
  * @author Andrei Shapiro <andrei.shapiro@taotesting.com>
  */
@@ -26,22 +26,25 @@ namespace oat\taoItems\model\Copier;
 
 use InvalidArgumentException;
 use core_kernel_classes_Class;
+use oat\generis\model\data\Ontology;
+use oat\tao\model\resources\Command\ResourceTransferCommand;
+use oat\tao\model\resources\Contract\ResourceTransferInterface;
+use oat\tao\model\resources\ResourceTransferResult;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\resources\Contract\ClassCopierInterface;
 
-class ItemClassCopier implements ClassCopierInterface
+class ItemClassCopier implements ClassCopierInterface, ResourceTransferInterface
 {
-    /** @var ClassCopierInterface */
+    /** @var ClassCopierInterface|ResourceTransferInterface */
     private $taoClassCopier;
+    private Ontology $ontology;
 
-    public function __construct(ClassCopierInterface $taoClassCopier)
+    public function __construct(ClassCopierInterface $taoClassCopier, Ontology $ontology)
     {
         $this->taoClassCopier = $taoClassCopier;
+        $this->ontology = $ontology;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function copy(
         core_kernel_classes_Class $class,
         core_kernel_classes_Class $destinationClass
@@ -49,6 +52,13 @@ class ItemClassCopier implements ClassCopierInterface
         $this->assertInItemsRootClass($class);
 
         return $this->taoClassCopier->copy($class, $destinationClass);
+    }
+
+    public function transfer(ResourceTransferCommand $command): ResourceTransferResult
+    {
+        $this->assertInItemsRootClass($this->ontology->getClass($command->getFrom()));
+
+        return $this->taoClassCopier->transfer($command);
     }
 
     private function assertInItemsRootClass(core_kernel_classes_Class $class): void

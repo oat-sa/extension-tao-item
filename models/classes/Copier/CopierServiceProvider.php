@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Copier;
 
+use oat\generis\model\data\Ontology;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
 use oat\taoItems\model\TaoItemOntology;
@@ -100,6 +101,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                     service(ClassMetadataCopier::class),
                     service(InstanceCopier::class . '::ITEMS'),
                     service(ClassMetadataMapper::class),
+                    service(Ontology::SERVICE_ID),
                 ]
             )
             ->call(
@@ -115,6 +117,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(ClassCopier::class . '::ITEMS'),
+                    service(Ontology::SERVICE_ID),
                 ]
             );
 
