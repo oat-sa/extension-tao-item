@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Copier;
 
 use oat\generis\model\data\Ontology;
+use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
 use oat\taoItems\model\TaoItemOntology;
@@ -129,6 +130,16 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 [
                     TaoOntology::CLASS_URI_ITEM,
                     service(ItemClassCopier::class),
+                ]
+            );
+
+        $services
+            ->get(InstanceCopierProxy::class)
+            ->call(
+                'addInstanceCopier',
+                [
+                    TaoOntology::CLASS_URI_ITEM,
+                    service(InstanceCopier::class . '::ITEMS'),
                 ]
             );
     }
