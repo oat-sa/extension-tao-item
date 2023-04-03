@@ -77,6 +77,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(InstanceMetadataCopier::class),
+                    service(Ontology::SERVICE_ID)
                 ]
             )
             ->call(
