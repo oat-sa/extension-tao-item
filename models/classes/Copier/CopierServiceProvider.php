@@ -90,7 +90,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->call(
                 'withPermissionCopiers',
                 [
-                    tagged_iterator('tao.copier.permissions.instance.items'),
+                    tagged_iterator('tao.copier.permissions'),
                 ]
             );
 
@@ -109,7 +109,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->call(
                 'withPermissionCopiers',
                 [
-                    tagged_iterator('tao.copier.permissions.class.items'),
+                    tagged_iterator('tao.copier.permissions'),
                 ]
             );
 
