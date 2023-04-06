@@ -39,19 +39,10 @@ class ItemClassCopier implements ClassCopierInterface, ResourceTransferInterface
     private $taoClassCopier;
     private Ontology $ontology;
 
-    public function __construct(ClassCopierInterface $taoClassCopier, Ontology $ontology)
+    public function __construct(ResourceTransferInterface $taoClassCopier, Ontology $ontology)
     {
         $this->taoClassCopier = $taoClassCopier;
         $this->ontology = $ontology;
-    }
-
-    public function copy(
-        core_kernel_classes_Class $class,
-        core_kernel_classes_Class $destinationClass
-    ): core_kernel_classes_Class {
-        $this->assertInItemsRootClass($class);
-
-        return $this->taoClassCopier->copy($class, $destinationClass);
     }
 
     public function transfer(ResourceTransferCommand $command): ResourceTransferResult
@@ -59,6 +50,22 @@ class ItemClassCopier implements ClassCopierInterface, ResourceTransferInterface
         $this->assertInItemsRootClass($this->ontology->getClass($command->getFrom()));
 
         return $this->taoClassCopier->transfer($command);
+    }
+
+    public function copy(
+        core_kernel_classes_Class $class,
+        core_kernel_classes_Class $destinationClass
+    ): core_kernel_classes_Class {
+        $result = $this->transfer(
+            new ResourceTransferCommand(
+                $class->getUri(),
+                $destinationClass->getUri(),
+                ResourceTransferCommand::ACL_KEEP_ORIGINAL,
+                ResourceTransferCommand::TRANSFER_MODE_COPY
+            )
+        );
+
+        return $this->ontology->getClass($result->getDestination());
     }
 
     private function assertInItemsRootClass(core_kernel_classes_Class $class): void
