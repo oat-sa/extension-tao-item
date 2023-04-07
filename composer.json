@@ -58,6 +58,20 @@
             ]
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/oat-sa/tao-core.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/oat-sa/extension-tao-item.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/oat-sa/extension-tao-backoffice.git"
+        }
+    ],
     "require": {
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
         "oat-sa/generis": ">=15.23",
