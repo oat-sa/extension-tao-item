@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Copier;
 
+use oat\generis\model\data\Ontology;
+use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
 use oat\taoItems\model\TaoItemOntology;
@@ -42,6 +44,9 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\tagged_iterator;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CopierServiceProvider implements ContainerServiceProviderInterface
 {
     public function __invoke(ContainerConfigurator $configurator): void
@@ -76,6 +81,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(InstanceMetadataCopier::class),
+                    service(Ontology::SERVICE_ID)
                 ]
             )
             ->call(
@@ -87,7 +93,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->call(
                 'withPermissionCopiers',
                 [
-                    tagged_iterator('tao.copier.permissions.instance.items'),
+                    tagged_iterator('tao.copier.permissions'),
                 ]
             );
 
@@ -100,12 +106,13 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                     service(ClassMetadataCopier::class),
                     service(InstanceCopier::class . '::ITEMS'),
                     service(ClassMetadataMapper::class),
+                    service(Ontology::SERVICE_ID),
                 ]
             )
             ->call(
                 'withPermissionCopiers',
                 [
-                    tagged_iterator('tao.copier.permissions.class.items'),
+                    tagged_iterator('tao.copier.permissions'),
                 ]
             );
 
@@ -115,6 +122,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(ClassCopier::class . '::ITEMS'),
+                    service(Ontology::SERVICE_ID),
                 ]
             );
 
@@ -125,6 +133,16 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 [
                     TaoOntology::CLASS_URI_ITEM,
                     service(ItemClassCopier::class),
+                ]
+            );
+
+        $services
+            ->get(InstanceCopierProxy::class)
+            ->call(
+                'addInstanceCopier',
+                [
+                    TaoOntology::CLASS_URI_ITEM,
+                    service(InstanceCopier::class . '::ITEMS'),
                 ]
             );
     }
