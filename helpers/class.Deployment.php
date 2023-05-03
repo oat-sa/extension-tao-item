@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,7 +31,6 @@
  */
 class taoItems_helpers_Deployment
 {
-
     private static $defaultMedia = ["jpg", "jpeg", "png", "gif", "mp3", 'mp4', 'webm', 'swf', 'wma', 'wav', 'css', 'js'];
 
     /**
@@ -66,7 +66,7 @@ class taoItems_helpers_Deployment
      */
     public static function retrieveExternalResources($xhtml, $destination)
     {
-        
+
         if (!file_exists($destination)) {
             if (!mkdir($destination)) {
                 common_Logger::e('Folder ' . $destination . ' could not be created');
@@ -87,7 +87,7 @@ class taoItems_helpers_Deployment
         $uniqueMediaList = array_unique($mediaList[0]);
 
         $report = new common_report_Report(common_report_Report::TYPE_SUCCESS, __('Retrieving external resources'));
-        
+
         foreach ($uniqueMediaList as $mediaUrl) {
             // This is a file that has to be stored in the item compilation folder itself...
             // I do not get why they are all copied. They are all there they were copied from the item module...
@@ -95,9 +95,9 @@ class taoItems_helpers_Deployment
             // So if the URL does not matches a place where the TAO server is, we curl the resource and store it.
             // FileManager files should be considered as remote resources to avoid 404 issues. Indeed, a backoffice
             // user might delete an image in the filemanager during a delivery campain. This is dangerous.
-            
+
             $decodedMediaUrl = str_replace('\/', '/', $mediaUrl);
-            
+
             $mediaPath = self::retrieveFile($decodedMediaUrl, $destination);
             if (!empty($mediaPath) && $mediaPath !== false) {
                 $xhtml = str_replace($mediaUrl, basename($mediaPath), $xhtml, $replaced); //replace only when copyFile is successful
@@ -146,19 +146,19 @@ class taoItems_helpers_Deployment
             if (USE_HTTP_AUTH) {
                 $addAuth = false;
                 $domains = ['localhost', '127.0.0.1', ROOT_URL];
-                
+
                 foreach ($domains as $domain) {
                     if (preg_match("/" . preg_quote($domain, '/') . "/", $url)) {
                         $addAuth = true;
                     }
                 }
-                
+
                 if ($addAuth) {
                     curl_setopt($curlHandler, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
                     curl_setopt($curlHandler, CURLOPT_USERPWD, USE_HTTP_USER . ":" . USE_HTTP_PASS);
                 }
             }
-            
+
             curl_exec($curlHandler);
             $httpCode = curl_getinfo($curlHandler, CURLINFO_HTTP_CODE);
             $success = $httpCode == 200;
@@ -170,7 +170,7 @@ class taoItems_helpers_Deployment
             common_Logger::d('Copying ' . $path);
             $success = helpers_File::copy($path, $destination . $fileName);
         }
-        
+
         if ($success == false) {
             common_Logger::w('Unable to retrieve ' . $url);
             return false;

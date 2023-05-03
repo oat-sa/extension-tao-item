@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,9 +32,9 @@
  */
 interface taoItems_models_classes_itemModel
 {
-    const CLASS_URI_MODELS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
-    const CLASS_URI_RUNTIME = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
-    const CLASS_URI_QTI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
+    public const CLASS_URI_MODELS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels';
+    public const CLASS_URI_RUNTIME = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime';
+    public const CLASS_URI_QTI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#QTI';
 
     /**
      * constructor called by itemService

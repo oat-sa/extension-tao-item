@@ -34,7 +34,6 @@ use tao_helpers_form_FormContainer as FormContainer;
  */
 class taoItems_actions_SaSItems extends taoItems_actions_Items
 {
-
     /**
      * overrided to prevent exception:
      * if no class is selected, the root class is returned

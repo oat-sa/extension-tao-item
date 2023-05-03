@@ -24,7 +24,6 @@
 
 namespace oat\taoItems\model;
 
-
 /**
  * Class ItemCompilerIndex
  * @package oat\taoItems\model

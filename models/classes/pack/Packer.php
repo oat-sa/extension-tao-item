@@ -21,12 +21,12 @@
 
 namespace oat\taoItems\model\pack;
 
-use \core_kernel_classes_Resource;
+use core_kernel_classes_Resource;
 use oat\oatbox\filesystem\Directory;
-use \taoItems_models_classes_ItemsService;
-use \common_exception_NoImplementation;
-use \common_Exception;
-use \Exception;
+use taoItems_models_classes_ItemsService;
+use common_exception_NoImplementation;
+use common_Exception;
+use Exception;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 

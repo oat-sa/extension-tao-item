@@ -44,7 +44,7 @@ $todefine = [
     'PROPERTY_ITEM_MODEL_SERVICE'       => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService',
 // not used
     'TAO_ITEM_SOURCENAME_PROPERTY'      => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName',
-  
+
     'TAO_ITEM_MODEL_STATUS_PROPERTY'        => 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus',
 //  not used
     'TAO_ITEM_MODEL_STATUS_STABLE'          => 'http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable',

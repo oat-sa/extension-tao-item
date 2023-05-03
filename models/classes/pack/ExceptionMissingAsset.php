@@ -25,5 +25,4 @@ use common_Exception;
 
 class ExceptionMissingAsset extends common_Exception
 {
-
 }

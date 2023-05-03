@@ -36,7 +36,6 @@ use Prophecy\Prophet;
  */
 class ItemPreviewerServiceTest extends TestCase
 {
-
     //data to stub the registry content
     private static $adapterData = [
         'taoItems/previewer/factory' => [

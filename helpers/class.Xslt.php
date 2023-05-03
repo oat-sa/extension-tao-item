@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,10 +31,10 @@
 class taoItems_helpers_Xslt
 {
     // namespace for the set parameters function
-    const PARAMS_NS = '';
+    public const PARAMS_NS = '';
     // xlst namespace short and full
-    const XSLT_NS = 'http://www.w3.org/1999/XSL/Transform';
-    const XSLT_SHORT_NS = 'xsl';
+    public const XSLT_NS = 'http://www.w3.org/1999/XSL/Transform';
+    public const XSLT_SHORT_NS = 'xsl';
 
     /**
      *  Transform the given xml with the given stylesheet adding params if necessary

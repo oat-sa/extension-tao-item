@@ -37,7 +37,6 @@ use taoItems_helpers_Xhtml as taoItems_helpers_Xhtml;
  */
 class XhtmlTestCase extends TestCase
 {
-
     public function testGetScriptElements()
     {
         $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'xhtml' . DIRECTORY_SEPARATOR . 'raw.html';
@@ -53,7 +52,7 @@ class XhtmlTestCase extends TestCase
             $this->assertTrue(false, "An error occured while parsing '${file}'.");
         }
     }
-    
+
     public function testHasScriptElements()
     {
         $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'xhtml' . DIRECTORY_SEPARATOR . 'raw.html';
@@ -69,7 +68,7 @@ class XhtmlTestCase extends TestCase
             $this->assertTrue(false, "An error occured while parsing '${file}'.");
         }
     }
-    
+
     public function testRemoveScriptElements()
     {
         $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'xhtml' . DIRECTORY_SEPARATOR . 'raw.html';
@@ -85,7 +84,7 @@ class XhtmlTestCase extends TestCase
             $this->assertTrue(false, "An error occured while parsing '${file}'.");
         }
     }
-    
+
     public function testAddScriptElement()
     {
         $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'xhtml' . DIRECTORY_SEPARATOR . 'raw.html';
@@ -97,7 +96,7 @@ class XhtmlTestCase extends TestCase
                 $addedElements = taoItems_helpers_Xhtml::getScriptElements($dom, '/^taomatching.js/iu');
                 $this->assertEquals(1, count($addedElements));
                 $added = $addedElements[0];
-                
+
                 // Was it really appended?
                 $xpath = new DOMXPath($dom);
                 $heads = $xpath->query('/html/head');
@@ -105,7 +104,7 @@ class XhtmlTestCase extends TestCase
                     $this->assertTrue($head->lastChild === $added);
                     break;
                 }
-                
+
                 // -- Prepend
                 taoItems_helpers_Xhtml::addScriptElement($dom, 'http://www.taotesting.com/scripts/wfapi.min.js', $append = false);
                 $addedElements = taoItems_helpers_Xhtml::getScriptElements($dom, '/wfapi\.min/');

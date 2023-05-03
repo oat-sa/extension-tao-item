@@ -33,8 +33,6 @@ use oat\oatbox\service\ConfigurableService;
  */
 class NoneItemReplacement extends ConfigurableService implements ItemAssetsReplacement
 {
-
-
     public function postProcessAssets($string)
     {
         return $string;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +39,7 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
     {
         return $this->getResource()->getUsedLanguages(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
     }
-    
+
     /**
      * deploys the item into the given absolute directory
      *
@@ -50,18 +51,18 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
     protected function deployItem(core_kernel_classes_Resource $item, $languageCode, $compiledDirectory)
     {
         $itemService = taoItems_models_classes_ItemsService::singleton();
-            
+
         // copy local files
         $sourceDir = $itemService->getItemDirectory($item, $languageCode);
         $success = taoItems_helpers_Deployment::copyResources($sourceDir->getPrefix(), $compiledDirectory, ['index.html']);
         if (!$success) {
             return $this->fail(__('Unable to copy resources for language %s', $languageCode));
         }
-        
+
         // render item
-        
+
         $xhtml = $itemService->render($item, $languageCode);
-            
+
         // retrieve external resources
         $subReport = taoItems_helpers_Deployment::retrieveExternalResources($xhtml, $compiledDirectory);
         if ($subReport->getType() == common_report_Report::TYPE_SUCCESS) {
@@ -76,7 +77,7 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
             return $subReport;
         }
     }
-    
+
     /**
      * Create the item's ServiceCall.
      *
@@ -95,10 +96,10 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
             new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_FORMAL_PARAM_ITEM_URI),
             $item
         ));
-        
+
         return $service;
     }
-    
+
     protected function getSubCompilerClass(core_kernel_classes_Resource $resource)
     {
         throw new common_Exception('Items cannot include other resources');

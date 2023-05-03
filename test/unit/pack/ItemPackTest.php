@@ -105,7 +105,7 @@ class ItemPackTest extends TestCase
                 MediaAsset::class,
                 [
                     'getMediaIdentifier' => 'fixture-id',
-                    'getMediaSource' => new class extends HttpSource {
+                    'getMediaSource' => new class () extends HttpSource {
                     }
                 ]
             ),
@@ -113,7 +113,7 @@ class ItemPackTest extends TestCase
                 MediaAsset::class,
                 [
                     'getMediaIdentifier' => self::ENCODED_IMAGE,
-                    'getMediaSource' => new class extends HttpSource {
+                    'getMediaSource' => new class () extends HttpSource {
                     }
                 ]
             )

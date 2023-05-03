@@ -26,7 +26,6 @@ use oat\oatbox\event\Event;
 
 class ItemDuplicatedEvent implements Event, JsonSerializable
 {
-
     /** @var  string */
     protected $itemUri;
 

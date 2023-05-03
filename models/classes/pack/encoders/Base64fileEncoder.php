@@ -43,7 +43,7 @@ class Base64fileEncoder implements Encoding
     private $directory;
 
     /** Applied data-uri format placeholder */
-    const DATA_PREFIX = 'data:%s;base64,%s';
+    public const DATA_PREFIX = 'data:%s;base64,%s';
 
     /**
      * Base64fileEncoder constructor.

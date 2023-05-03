@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +20,7 @@
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
  *
  */
- 
+
 /**
  * This helper class aims at providing utility methods to deal
  * with XHTML documents.
@@ -43,7 +44,7 @@ class taoItems_helpers_Xhtml
     {
         return count(self::getScriptElements($dom, $pattern)) > 0;
     }
-    
+
     /**
      * Retrieve <script> elements in the given DOMDocument where the src attribute value
      * matches a PCRE pattern.
@@ -59,27 +60,27 @@ class taoItems_helpers_Xhtml
         $xpath = new DOMXPath($dom);
         $elements = [];
         $scan = $xpath->query('/html/head/script');
-        
+
         for ($i = 0; $i < $scan->length; $i++) {
             $e = $scan->item($i);
-            
+
             if ($e->hasAttribute('src')) {
                 $src = $e->getAttribute('src');
                 $pathinfo = pathinfo($src);
-                
+
                 if (!empty($pathinfo['basename'])) {
                     $filename = $pathinfo['basename'];
-                    
+
                     if (preg_match($pattern, $filename) === 1) {
                         $elements[] = $e;
                     }
                 }
             }
         }
-        
+
         return $elements;
     }
-    
+
     /**
      * Remove <script> elements in a DOMDocument that have an src attribute value
      * that matches a given PCRE pattern.
@@ -93,17 +94,17 @@ class taoItems_helpers_Xhtml
     public static function removeScriptElements(DOMDocument $dom, $pattern)
     {
         $removed = 0;
-        
+
         foreach (self::getScriptElements($dom, $pattern) as $e) {
             if (!empty($e->parentNode)) {
                 $e->parentNode->removeChild($e);
                 $removed++;
             }
         }
-        
+
         return $removed;
     }
-    
+
     /**
      * Add a <script> element in the <head> element of a DOMDocument.
      *
@@ -116,21 +117,21 @@ class taoItems_helpers_Xhtml
     {
         $xpath = new DOMXPath($dom);
         $scan = $xpath->query('/html/head');
-        
+
         $newNode = $dom->createElement('script');
         $newNode->setAttribute('type', $type);
         $newNode->setAttribute('src', $src);
-        
+
         for ($i = 0; $i < $scan->length; $i++) {
             $head = $scan->item($i);
-            
+
             if ($append == true || $xpath->query('//script', $head)->length == 0) {
                 $head->appendChild($newNode);
             } else {
                 $refNode = $xpath->query('//script', $head)->item(0);
                 $head->insertBefore($newNode, $refNode);
             }
-            
+
             break;
         }
     }

@@ -45,10 +45,10 @@ class XmlItemContentTokenizerTest extends TestCase
               </p> with some other text...
             </myTag>
         ');
-        
+
         $tokenizer = new XmlItemContentTokenizer();
         $tokens = $tokenizer->getStrings($dom);
-        
+
         $this->assertEquals('A paragraph', $tokens[0]);
         $this->assertEquals('with some other text...', $tokens[1]);
     }

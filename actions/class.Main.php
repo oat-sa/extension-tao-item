@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -30,5 +31,4 @@
 
 class taoItems_actions_Main extends tao_actions_Main
 {
-
 }

@@ -35,10 +35,10 @@ use taoItems_models_classes_ItemsService;
  */
 class CategoryService extends ConfigurableService
 {
-    const SERVICE_ID = 'taoItems/Category';
+    public const SERVICE_ID = 'taoItems/Category';
 
-    const ITEM_CLASS_URI  = 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item';
-    const EXPOSE_PROP_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory';
+    public const ITEM_CLASS_URI  = 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item';
+    public const EXPOSE_PROP_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory';
 
     public static $supportedWidgetUris = [
         'http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox',

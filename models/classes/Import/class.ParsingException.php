@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,5 +29,4 @@
  */
 class taoItems_models_classes_Import_ParsingException extends taoItems_models_classes_Import_ImportException
 {
-
 }
