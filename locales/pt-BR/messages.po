@@ -96,7 +96,7 @@ msgstr "Editar item"
 
 #, tao-public
 msgid "Export"
-msgstr "Exportação"
+msgstr "Exportar"
 
 msgid "Expose the property value to create automated categories."
 msgstr "Exponha o valor da propriedade para criar categorias automatizadas."
@@ -109,7 +109,7 @@ msgstr "Ação proibida"
 
 #, tao-public
 msgid "Import"
-msgstr "Importação"
+msgstr "Importar"
 
 msgid "is currently in use."
 msgstr "está em uso no momento."
@@ -125,7 +125,7 @@ msgstr "Item salvo"
 
 #, tao-public
 msgid "Items"
-msgstr "itens"
+msgstr "Itens"
 
 #, tao-public
 msgid "Items library"
