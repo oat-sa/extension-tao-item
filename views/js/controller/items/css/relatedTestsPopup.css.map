@@ -1,9 +1,1 @@
-{
-	"version": 3,
-	"file": "relatedTestsPopup.css",
-	"sources": [
-		"../scss/relatedTestsPopup.scss"
-	],
-	"names": [],
-	"mappings": "AAAA,AAEE,uBAFqB,AACrB,MAAM,CACN,aAAa,AAAC,CACb,SAAS,CAAE,IAAI,CACf,QAAQ,CAAE,QAAQ,CAClB,GAAG,CAAE,GAAG,CACR,AANH,AAOE,uBAPqB,AACrB,MAAM,CAMN,YAAY,AAAC,CACZ,OAAO,CAAE,GAAG,CACZ"
-}
+{"version":3,"sourceRoot":"","sources":["../scss/relatedTestsPopup.scss"],"names":[],"mappings":"AAEE,4CACC,eACA,kBACA,QAED,2CACC","file":"relatedTestsPopup.css"}
