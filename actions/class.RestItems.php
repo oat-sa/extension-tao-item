@@ -17,7 +17,7 @@
  *
  */
 
-use \oat\tao\model\routing\AnnotationReader\security;
+use oat\tao\model\routing\AnnotationReader\security;
 
 /**
  *
@@ -25,7 +25,6 @@ use \oat\tao\model\routing\AnnotationReader\security;
  */
 class taoItems_actions_RestItems extends tao_actions_CommonRestModule
 {
-
     /**
      * taoItems_actions_RestItems constructor.
      * @security("hide")

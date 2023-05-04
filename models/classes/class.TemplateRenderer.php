@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *
+ * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  */
 
 /**
@@ -64,21 +66,21 @@ class taoItems_models_classes_TemplateRenderer
      */
     public function __construct($templatePath, $variables = [])
     {
-        
-        
+
+
         if (
             !file_exists($templatePath)
             || !is_readable($templatePath)
             || !preg_match("/\.tpl\.php$/", basename($templatePath))
         ) {
-                common_Logger::w('Template ', $templatePath . ' not found');
-                throw new InvalidArgumentException("Unable to load the template file from $templatePath");
+            common_Logger::w('Template ', $templatePath . ' not found');
+            throw new InvalidArgumentException("Unable to load the template file from $templatePath");
         }
-        
+
         if (!tao_helpers_File::securityCheck($templatePath)) {
             throw new Exception("Security warning: $templatePath is not safe.");
         }
-        
+
         $this->renderer = new Renderer($templatePath, $variables);
     }
 
@@ -93,10 +95,10 @@ class taoItems_models_classes_TemplateRenderer
      */
     public static function setContext($parameters, $prefix = '')
     {
-        
-        
+
+
         self::$context = [];
-        
+
         foreach ($parameters as $key => $value) {
             self::$context[$prefix . $key] = $value;
         }
@@ -112,7 +114,7 @@ class taoItems_models_classes_TemplateRenderer
      */
     public function setTemplate($templatePath)
     {
-        
+
         $this->renderer->setTemplate($templatePath);
     }
 
@@ -127,7 +129,7 @@ class taoItems_models_classes_TemplateRenderer
      */
     public function setData($key, $value)
     {
-        
+
         $this->renderer->setData($key, $value);
     }
 
@@ -142,10 +144,10 @@ class taoItems_models_classes_TemplateRenderer
     {
         $returnValue = (string) '';
 
-        
+
         $this->renderer->setMultipleData(self::$context);
         $returnValue = $this->renderer->render();
-        
+
 
         return (string) $returnValue;
     }

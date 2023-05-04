@@ -37,9 +37,8 @@ use taoItems_models_classes_ItemsService;
  */
 class LocalItemSource implements MediaManagement
 {
-
     private $item;
-    
+
     private $lang;
 
     protected $itemService;
@@ -66,8 +65,8 @@ class LocalItemSource implements MediaManagement
     public function getDirectories(DirectorySearchQuery $params): array
     {
         return $this->searchDirectories(
-            $params->getParentLink(), 
-            $params->getFilter(), 
+            $params->getParentLink(),
+            $params->getFilter(),
             $params->getDepth(),
             $params->getChildrenLimit()
         );

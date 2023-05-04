@@ -213,6 +213,8 @@ class ItemPack implements JsonSerializable
 
     /**
      * How to serialize the pack in JSON.
+     *
+     * phpcs:disable PSR1.Methods.CamelCapsMethodName
      */
     public function JsonSerialize()
     {
@@ -222,6 +224,7 @@ class ItemPack implements JsonSerializable
             'assets'    => $this->assets
         ];
     }
+    // phpcs:enable PSR1.Methods.CamelCapsMethodName
 
     /**
      * @return array

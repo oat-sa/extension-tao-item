@@ -28,7 +28,6 @@ use oat\taoItems\model\media\AssetTreeBuilder;
 
 final class Version202012161236262141_taoItems extends AbstractMigration
 {
-
     public function up(Schema $schema): void
     {
         $this->getServiceManager()->register(

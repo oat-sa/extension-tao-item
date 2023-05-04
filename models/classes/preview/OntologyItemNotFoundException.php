@@ -23,7 +23,6 @@ namespace oat\taoItems\model\preview;
 
 class OntologyItemNotFoundException extends \Exception implements \common_exception_UserReadableException
 {
-
     public function getUserMessage()
     {
         return __('Item not found');

@@ -34,17 +34,17 @@ class taoItems_models_classes_search_XmlItemContentTokenizer implements Tokenize
     public function getStrings($values)
     {
         $contentStrings = [];
-        
+
         if (is_array($values) === false) {
             $values = [$values];
         }
-        
+
         foreach ($values as $value) {
             if ($value instanceof DOMDocument) {
                 $xpath = new DOMXPath($value);
                 $textNodes = $xpath->query('//text()');
                 unset($xpath);
-                
+
                 foreach ($textNodes as $textNode) {
                     if (ctype_space($textNode->wholeText) === false) {
                         $contentStrings[] = trim($textNode->wholeText);
@@ -52,7 +52,7 @@ class taoItems_models_classes_search_XmlItemContentTokenizer implements Tokenize
                 }
             }
         }
-        
+
         return $contentStrings;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,4 +39,3 @@ class ItemsServiceTest extends TestCase
         self::assertIsString($path, 'Method must return string directory path.');
     }
 }
-

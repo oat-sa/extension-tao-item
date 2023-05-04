@@ -26,7 +26,6 @@ use oat\oatbox\event\Event;
 
 class ItemRemovedEvent implements Event, JsonSerializable
 {
-
     /** @var  string */
     protected $itemUri;
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *
+ * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg
+ *                         (under the project TAO & TAO2);
+ *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  */
 
 /**
@@ -30,10 +33,10 @@
 class taoItems_helpers_Xslt
 {
     // namespace for the set parameters function
-    const PARAMS_NS = '';
+    public const PARAMS_NS = '';
     // xlst namespace short and full
-    const XSLT_NS = 'http://www.w3.org/1999/XSL/Transform';
-    const XSLT_SHORT_NS = 'xsl';
+    public const XSLT_NS = 'http://www.w3.org/1999/XSL/Transform';
+    public const XSLT_SHORT_NS = 'xsl';
 
     /**
      *  Transform the given xml with the given stylesheet adding params if necessary
@@ -137,7 +140,10 @@ class taoItems_helpers_Xslt
         //registering namespace xsl
         $xpath->registerNamespace(self::XSLT_SHORT_NS, self::XSLT_NS);
         // get the params tag direct child of the stylesheet (don't touch other params as template for example)
-        $items = $xpath->query('/' . self::XSLT_SHORT_NS . ':stylesheet|' . self::XSLT_SHORT_NS . ':transform/' . self::XSLT_SHORT_NS . ':param');
+        $items = $xpath->query(
+            '/' . self::XSLT_SHORT_NS . ':stylesheet|' . self::XSLT_SHORT_NS . ':transform/'
+                . self::XSLT_SHORT_NS . ':param'
+        );
         // list existing to don't duplicate it
         $existing = [];
         foreach ($items as $param) {
@@ -151,7 +157,10 @@ class taoItems_helpers_Xslt
                 $node = $dom->createElementNS(self::XSLT_NS, self::XSLT_SHORT_NS . ":param");
                 $node->setAttribute('name', $name);
                 // log to say param added dynamically
-                common_Logger::w('Parameters "' . $name . '"added automatically by the ' . get_class() . ':addParams \'s function because it was missing in the xsl stylesheet');
+                common_Logger::w(
+                    'Parameters "' . $name . '"added automatically by the ' . get_class()
+                        . ':addParams \'s function because it was missing in the xsl stylesheet'
+                );
             }
         }
         return $dom;

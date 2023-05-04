@@ -15,9 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *
+ * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  */
 
 /**
@@ -45,9 +46,6 @@ use Psr\Http\Message\StreamInterface;
 
 abstract class taoItems_models_classes_ItemExporter
 {
-
-
-
     private $item;
     private $zip;
 
@@ -62,7 +60,7 @@ abstract class taoItems_models_classes_ItemExporter
         $this->setItem($item);
         $this->setZip($zip);
     }
-    
+
     /**
      * Obtains a reference on the TAO Item Service.
      *
@@ -72,7 +70,7 @@ abstract class taoItems_models_classes_ItemExporter
     {
         return taoItems_models_classes_ItemsService::singleton();
     }
-  
+
     /**
      * Obtains a reference on the currently exported instance of Item.
      *
@@ -82,12 +80,12 @@ abstract class taoItems_models_classes_ItemExporter
     {
         return $this->item;
     }
-    
+
     protected function setItem(core_kernel_classes_Resource $item)
     {
         $this->item = $item;
     }
-   
+
     /**
      * Obtains a reference on the Zip Archive where the files related to the exported items will be stored.
      *
@@ -97,12 +95,12 @@ abstract class taoItems_models_classes_ItemExporter
     {
         return $this->zip;
     }
- 
+
     public function setZip(ZipArchive $zip)
     {
         $this->zip = $zip;
     }
- 
+
     /**
      * Obtains a reference on the Item Model related to the currently exported item instance.
      *
@@ -111,7 +109,11 @@ abstract class taoItems_models_classes_ItemExporter
     protected function getItemModel()
     {
         try {
-            return $this->getItem()->getUniquePropertyValue(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
+            return $this
+                ->getItem()
+                ->getUniquePropertyValue(
+                    new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL)
+                );
         } catch (common_Exception $e) {
             return null;
         }
@@ -121,10 +123,12 @@ abstract class taoItems_models_classes_ItemExporter
     {
         return $this->getItemService()->getItemDirectory($this->getItem());
     }
- 
+
     /**
-     * Add files or folders (and their content) to the Zip Archive that will contain all the files to the current export session.
-     * For instance, if you want to copy the file 'taoItems/data/i123/item.xml' as 'myitem.xml' to your archive call addFile('path_to_item_location/item.xml', 'myitem.xml').
+     * Add files or folders (and their content) to the Zip Archive that will contain all the files to the current export
+     * session.
+     * For instance, if you want to copy the file 'taoItems/data/i123/item.xml' as 'myitem.xml' to your archive call
+     * addFile('path_to_item_location/item.xml', 'myitem.xml').
      * As a result, you will get a file entry in the final ZIP archive at '/i123/myitem.xml'.
      *
      * @param string | StreamInterface $src The path to the source file or folder to copy into the ZIP Archive.
@@ -136,6 +140,6 @@ abstract class taoItems_models_classes_ItemExporter
         $zip = $this->getZip();
         return tao_helpers_File::addFilesToZip($zip, $src, $dest);
     }
- 
+
     abstract public function export();
 }

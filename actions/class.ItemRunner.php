@@ -39,12 +39,12 @@ class taoItems_actions_ItemRunner extends tao_actions_ServiceModule
         $lang = $this->getSession()->getDataLanguage();
 
         if ($this->hasRequestParameter('serviceCallId')) {
-                    $serviceCallId = $this->getRequestParameter('serviceCallId');
-                    $variableData = $this->getServiceLocator()->get(StateStorage::SERVICE_ID)->get($userId, $serviceCallId);
-                    $this->setData('storageData', [
-                            'serial'    => $serviceCallId,
-                            'data'      => is_null($variableData) ? [] : $variableData
-                    ]);
+            $serviceCallId = $this->getRequestParameter('serviceCallId');
+            $variableData = $this->getServiceLocator()->get(StateStorage::SERVICE_ID)->get($userId, $serviceCallId);
+            $this->setData('storageData', [
+                    'serial'    => $serviceCallId,
+                    'data'      => is_null($variableData) ? [] : $variableData
+            ]);
         }
 
         $directory = $this->getDirectory($this->getRequestParameter('itemPath'));

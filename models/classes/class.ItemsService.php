@@ -15,10 +15,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  *               2012-2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT)
- *
  */
 
 use oat\taoItems\model\TaoItemOntology;
@@ -68,7 +69,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
 
     public const INSTANCE_FORMAL_PARAM_ITEM_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath';
 
+    // phpcs:disable Generic.Files.LineLength
     public const INSTANCE_FORMAL_PARAM_ITEM_DATA_PATH = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath';
+    // phpcs:enable Generic.Files.LineLength
 
     public const INSTANCE_FORMAL_PARAM_ITEM_URI = 'http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri';
 
@@ -262,7 +265,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         if (!is_null($item)) {
             $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
             if (!is_null($itemModel)) {
-                $returnValue = $itemModel->getOnePropertyValue($this->getProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME));
+                $returnValue = $itemModel->getOnePropertyValue(
+                    $this->getProperty(taoItems_models_classes_itemModel::CLASS_URI_RUNTIME)
+                );
             }
         }
 
@@ -289,7 +294,10 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             try {
                 $itemModel = $item->getOnePropertyValue($this->getItemModelProperty());
                 if ($itemModel instanceof core_kernel_classes_Resource) {
-                    $itemModelStatus = $itemModel->getUniquePropertyValue($this->getProperty(ItemModelStatus::CLASS_URI));
+                    $itemModelStatus = $itemModel->getUniquePropertyValue(
+                        $this->getProperty(ItemModelStatus::CLASS_URI)
+                    );
+
                     if (in_array($itemModelStatus->getUri(), $status)) {
                         $returnValue = true;
                     }
@@ -339,8 +347,11 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      * (non-PHPdoc)
      * @see tao_models_classes_GenerisService::cloneInstanceProperty()
      */
-    protected function cloneInstanceProperty(core_kernel_classes_Resource $source, core_kernel_classes_Resource $destination, core_kernel_classes_Property $property)
-    {
+    protected function cloneInstanceProperty(
+        core_kernel_classes_Resource $source,
+        core_kernel_classes_Resource $destination,
+        core_kernel_classes_Property $property
+    ) {
         if ($property->getUri() == self::PROPERTY_ITEM_CONTENT) {
             return $this->cloneItemContent($source, $destination, $property);
         } else {
@@ -370,9 +381,12 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         foreach ($source->getUsedLanguages($this->getItemContentProperty()) as $lang) {
             $sourceItemDirectory = $this->getItemDirectory($source, $lang);
             $destinationItemDirectory = $this->getItemDirectory($destination, $lang);
+            $propertyValuesCollection = $source->getPropertyValuesCollection($property, ['lg' => $lang]);
 
-            foreach ($source->getPropertyValuesCollection($property, ['lg' => $lang])->getIterator() as $propertyValue) {
-                $id = $propertyValue instanceof core_kernel_classes_Resource ? $propertyValue->getUri() : (string)$propertyValue;
+            foreach ($propertyValuesCollection->getIterator() as $propertyValue) {
+                $id = $propertyValue instanceof core_kernel_classes_Resource
+                    ? $propertyValue->getUri()
+                    : (string)$propertyValue;
                 $sourceDirectory = $serializer->unserializeDirectory($id);
                 $iterator = $sourceDirectory->getFlyIterator(Directory::ITERATOR_FILE | Directory::ITERATOR_RECURSIVE);
 
@@ -381,7 +395,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
                     $newFile->write($iteratorFile->readStream());
                 }
 
-                $destinationDirectory = $destinationItemDirectory->getDirectory($sourceItemDirectory->getRelPath($sourceDirectory));
+                $destinationDirectory = $destinationItemDirectory->getDirectory(
+                    $sourceItemDirectory->getRelPath($sourceDirectory)
+                );
                 $serializer->serialize($destinationDirectory);
             }
         }
@@ -512,7 +528,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
     {
         $serviceId = (string)$itemModel->getOnePropertyValue($this->getProperty(self::PROPERTY_ITEM_MODEL_SERVICE));
         if (empty($serviceId)) {
-            throw new common_exception_NoImplementation('No implementation found for item model ' . $itemModel->getUri());
+            throw new common_exception_NoImplementation(
+                'No implementation found for item model ' . $itemModel->getUri()
+            );
         }
         try {
             $itemModelService = $this->getServiceManager()->get($serviceId);
@@ -525,7 +543,9 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             $itemModelService = new $serviceId();
         }
         if (!$itemModelService instanceof taoItems_models_classes_itemModel) {
-            throw new common_exception_Error('Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $serviceId);
+            throw new common_exception_Error(
+                'Item model service ' . get_class($itemModelService) . ' not compatible for item model ' . $serviceId
+            );
         }
 
         return $itemModelService;

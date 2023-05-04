@@ -28,5 +28,4 @@ namespace oat\taoItems\model\event;
  */
 class ItemRdfUpdatedEvent extends ItemUpdatedEvent
 {
-    
 }

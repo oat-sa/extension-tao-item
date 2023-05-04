@@ -22,8 +22,8 @@
 
 namespace oat\taoItems\model\pack;
 
-use \core_kernel_classes_Resource;
-use \common_Exception;
+use core_kernel_classes_Resource;
+use common_Exception;
 use oat\oatbox\filesystem\Directory;
 
 /**
@@ -34,7 +34,6 @@ use oat\oatbox\filesystem\Directory;
  */
 abstract class ItemPacker
 {
-
     /**
      * Determines what type of assets should be packed as well as packer
      * @example array('css'=>'base64')

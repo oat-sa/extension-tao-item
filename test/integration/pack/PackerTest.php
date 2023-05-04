@@ -18,10 +18,11 @@
  * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoItems\test\integration\pack;
 
 use common_Exception;
-use \core_kernel_classes_Resource;
+use core_kernel_classes_Resource;
 use oat\generis\test\TestCase;
 use oat\oatbox\filesystem\Directory;
 use oat\taoItems\model\pack\ItemPacker;
