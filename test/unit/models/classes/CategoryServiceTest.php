@@ -79,13 +79,19 @@ class CategoryServiceTest extends TestCase
         //prop value is GenerisRdf::GENERIS_FALSE
         $propProphecy = $this->prophesize('\core_kernel_classes_Property');
         $propProphecy->getOnePropertyValue($exposeProperty)->willReturn($falseResource);
-        $this->assertFalse($categoryService->doesExposeCategory($propProphecy->reveal()), 'The property is not exposed');
+        $this->assertFalse(
+            $categoryService->doesExposeCategory($propProphecy->reveal()),
+            'The property is not exposed'
+        );
 
         //no prop value
         $propProphecy = $this->prophesize('\core_kernel_classes_Property');
         $propProphecy->getOnePropertyValue($exposeProperty)->willReturn(null);
 
-        $this->assertFalse($categoryService->doesExposeCategory($propProphecy->reveal()), 'The property is not exposed');
+        $this->assertFalse(
+            $categoryService->doesExposeCategory($propProphecy->reveal()),
+            'The property is not exposed'
+        );
     }
 
     /**
@@ -108,7 +114,9 @@ class CategoryServiceTest extends TestCase
         $notEligibleProp1->getUri()->willReturn('np1');
 
         $notEligibleProp2 = $this->prophesize('\core_kernel_classes_Property');
-        $notEligibleProp2->getWidget()->willReturn(new RdfResource('http://www.tao.lu/datatypes/WidgetDefinitions.rdf#HtmlBox'));
+        $notEligibleProp2
+            ->getWidget()
+            ->willReturn(new RdfResource('http://www.tao.lu/datatypes/WidgetDefinitions.rdf#HtmlBox'));
         $notEligibleProp2->getUri()->willReturn('np2');
 
         $excludedProp1 = $this->prophesize('\core_kernel_classes_Property');

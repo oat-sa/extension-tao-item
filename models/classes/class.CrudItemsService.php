@@ -74,7 +74,9 @@ class taoItems_models_classes_CrudItemsService extends tao_models_classes_CrudSe
             $propertiesValues[OntologyRdfs::RDFS_LABEL] = "";
         }
 
-        $type = isset($propertiesValues[OntologyRdf::RDF_TYPE]) ? $propertiesValues[OntologyRdf::RDF_TYPE] : $this->getRootClass();
+        $type = isset($propertiesValues[OntologyRdf::RDF_TYPE])
+            ? $propertiesValues[OntologyRdf::RDF_TYPE]
+            : $this->getRootClass();
         $label = $propertiesValues[OntologyRdfs::RDFS_LABEL];
         unset($propertiesValues[OntologyRdfs::RDFS_LABEL]);
         unset($propertiesValues[OntologyRdf::RDF_TYPE]);

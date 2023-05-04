@@ -37,7 +37,11 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
      */
     protected function getContentUsedLanguages()
     {
-        return $this->getResource()->getUsedLanguages(new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT));
+        return $this
+            ->getResource()
+            ->getUsedLanguages(
+                new core_kernel_classes_Property(taoItems_models_classes_ItemsService::PROPERTY_ITEM_CONTENT)
+            );
     }
 
     /**
@@ -54,7 +58,12 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
 
         // copy local files
         $sourceDir = $itemService->getItemDirectory($item, $languageCode);
-        $success = taoItems_helpers_Deployment::copyResources($sourceDir->getPrefix(), $compiledDirectory, ['index.html']);
+        $success = taoItems_helpers_Deployment::copyResources(
+            $sourceDir->getPrefix(),
+            $compiledDirectory,
+            ['index.html']
+        );
+
         if (!$success) {
             return $this->fail(__('Unable to copy resources for language %s', $languageCode));
         }
@@ -85,9 +94,13 @@ abstract class taoItems_models_classes_ItemCompiler extends tao_models_classes_C
      * @param tao_models_classes_service_StorageDirectory $destinationDirectory
      * @return tao_models_classes_service_ServiceCall
      */
-    protected function createService(core_kernel_classes_Resource $item, tao_models_classes_service_StorageDirectory $destinationDirectory)
-    {
-        $service = new tao_models_classes_service_ServiceCall(new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_SERVICE_ITEM_RUNNER));
+    protected function createService(
+        core_kernel_classes_Resource $item,
+        tao_models_classes_service_StorageDirectory $destinationDirectory
+    ) {
+        $service = new tao_models_classes_service_ServiceCall(
+            new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_SERVICE_ITEM_RUNNER)
+        );
         $service->addInParameter(new tao_models_classes_service_ConstantParameter(
             new core_kernel_classes_Resource(taoItems_models_classes_ItemsService::INSTANCE_FORMAL_PARAM_ITEM_PATH),
             $destinationDirectory->getId()

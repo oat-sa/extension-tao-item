@@ -15,9 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg
+ *                         (under the project TAO & TAO2);
+ *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  *               2012-2018 (update and modification) Open Assessment Technologies SA;
  */
 
@@ -92,14 +95,17 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         $formFactory = parent::getFormFactory($handlers, $exporter, $selectedResource, $formData);
         $instances = $this->getClassInstances();
         if (!count($instances)) {
-            $formFactory->setInfoBox(__('<b>Note</b>: For empty classes, the RDF format<br />is the only available format.'));
+            $formFactory->setInfoBox(
+                __('<b>Note</b>: For empty classes, the RDF format<br />is the only available format.')
+            );
         }
         return $formFactory;
     }
 
     /**
      * Function returns items to export.
-     * Items that has no content (<b>QTI items</b> without <i>qti.xml</i> file or empty <b>Open Web Items</b>) will be filtered
+     * Items that has no content (<b>QTI items</b> without <i>qti.xml</i> file or empty <b>Open Web Items</b>) will be
+     * filtered
      *
      * @return core_kernel_classes_Resource[] An array of items.
      */

@@ -15,10 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *
+ * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg
+ *                         (under the project TAO & TAO2);
+ *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  */
 
 /**
@@ -31,7 +33,20 @@
  */
 class taoItems_helpers_Deployment
 {
-    private static $defaultMedia = ["jpg", "jpeg", "png", "gif", "mp3", 'mp4', 'webm', 'swf', 'wma', 'wav', 'css', 'js'];
+    private static $defaultMedia = [
+        "jpg",
+        "jpeg",
+        "png",
+        "gif",
+        "mp3",
+        'mp4',
+        'webm',
+        'swf',
+        'wma',
+        'wav',
+        'css',
+        'js',
+    ];
 
     /**
      * Copy the resources from one directory to another
@@ -81,7 +96,8 @@ class taoItems_helpers_Deployment
         $authorizedMedia = self::$defaultMedia;
 
         $mediaList = [];
-        $expr = "/http[s]?:(\\\\)?\/(\\\\)?\/[^<'\"&?]+\.(" . implode('|', $authorizedMedia) . ")/mi";//take into account json encoded url
+        //take into account json encoded url
+        $expr = "/http[s]?:(\\\\)?\/(\\\\)?\/[^<'\"&?]+\.(" . implode('|', $authorizedMedia) . ")/mi";
         preg_match_all($expr, $xhtml, $mediaList, PREG_PATTERN_ORDER);
 
         $uniqueMediaList = array_unique($mediaList[0]);
@@ -100,9 +116,15 @@ class taoItems_helpers_Deployment
 
             $mediaPath = self::retrieveFile($decodedMediaUrl, $destination);
             if (!empty($mediaPath) && $mediaPath !== false) {
-                $xhtml = str_replace($mediaUrl, basename($mediaPath), $xhtml, $replaced); //replace only when copyFile is successful
+                //replace only when copyFile is successful
+                $xhtml = str_replace($mediaUrl, basename($mediaPath), $xhtml, $replaced);
             } else {
-                $report->add(new common_report_Report(common_report_Report::TYPE_ERROR, __('Failed retrieving %s', $decodedMediaUrl)));
+                $report->add(
+                    new common_report_Report(
+                        common_report_Report::TYPE_ERROR,
+                        __('Failed retrieving %s', $decodedMediaUrl)
+                    )
+                );
                 $report->setType(common_report_Report::TYPE_ERROR);
             }
         }
@@ -117,14 +139,16 @@ class taoItems_helpers_Deployment
      *
      * @param string $url The URL to be dereferenced.
      * @param string $destination The destination of the retrieved file, on the file system.
-     * @return boolean|string false If an error occurs during the retrieval/copy process, or the final destination name if it succeeds.
+     * @return boolean|string false If an error occurs during the retrieval/copy process, or the final destination name
+     *                        if it succeeds.
      */
     public static function retrieveFile($url, $destination)
     {
 
         $fileName = basename($url);
-        //check file name compatibility:
-        //e.g. if a file with a common name (e.g. car.jpg, house.png, sound.mp3) already exists in the destination folder
+        // check file name compatibility:
+        // e.g. if a file with a common name (e.g. car.jpg, house.png, sound.mp3) already exists in the destination
+        // folder
         while (file_exists($destination . $fileName)) {
             $lastDot = strrpos($fileName, '.');
             $fileName = substr($fileName, 0, $lastDot) . '_' . substr($fileName, $lastDot);

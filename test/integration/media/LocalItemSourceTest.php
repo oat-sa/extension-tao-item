@@ -92,7 +92,8 @@ class LocalItemSourceTest extends TaoPhpUnitTestRunner
 
     protected function getSampleFile()
     {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'asset' . DIRECTORY_SEPARATOR . 'sample.css';
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'samples' . DIRECTORY_SEPARATOR . 'asset'
+            . DIRECTORY_SEPARATOR . 'sample.css';
     }
 
     protected function getLocalItemSource()

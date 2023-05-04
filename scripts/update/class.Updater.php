@@ -48,7 +48,9 @@ class taoItems_scripts_update_Updater extends common_ext_ExtensionUpdater
 
 
         if ($this->isBetween('0.0.0', '2.8.0')) {
-            throw new common_exception_NotImplemented('Updates from versions prior to Tao 3.1 are not longer supported, please update to Tao 3.1 first');
+            throw new common_exception_NotImplemented(
+                'Updates from versions prior to Tao 3.1 are not longer supported, please update to Tao 3.1 first'
+            );
         }
 
         $this->skip('2.8.1', '2.22.3');
@@ -79,8 +81,26 @@ class taoItems_scripts_update_Updater extends common_ext_ExtensionUpdater
         $this->skip('5.6.0', '5.9.0');
 
         if ($this->isVersion('5.9.0')) {
-            AclProxy::applyRule(new AccessRule('grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestItems']));
-            AclProxy::applyRule(new AccessRule('grant', TaoRoles::REST_PUBLISHER, ['ext' => 'taoItems', 'mod' => 'RestFormItem']));
+            AclProxy::applyRule(
+                new AccessRule(
+                    'grant',
+                    TaoRoles::REST_PUBLISHER,
+                    [
+                        'ext' => 'taoItems',
+                        'mod' => 'RestItems',
+                    ]
+                )
+            );
+            AclProxy::applyRule(
+                new AccessRule(
+                    'grant',
+                    TaoRoles::REST_PUBLISHER,
+                    [
+                        'ext' => 'taoItems',
+                        'mod' => 'RestFormItem',
+                    ]
+                )
+            );
             $this->setVersion('5.10.0');
         }
 
