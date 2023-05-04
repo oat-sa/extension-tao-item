@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-3x\n"
+"PO-Revision-Date: 2023-04-21 15:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: pt\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-3x\n"
+"X-Crowdin-Project-ID: 582145\n"
+"X-Crowdin-Language: pt-BR\n"
+"X-Crowdin-File: /taoItems/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 1525\n"
+"Language-Team: Portuguese, Brazilian\n"
+
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr "<b>Nota</b>: Para classes vazias, o formato RDF<br />é o único formato disponível."
+
+msgid "Actual size"
+msgstr "Tamanho real"
+
+msgid "and"
+msgstr "e"
+
+msgid "and all of its content?"
+msgstr "e todo o seu conteúdo?"
+
+msgid "Are you sure you want to delete the class"
+msgstr "Tem certeza de que deseja excluir a aula"
+
+msgid "Are you sure you want to delete the item"
+msgstr "Tem certeza que deseja excluir o item"
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr "Tem certeza que deseja excluir esta classe e todo o seu conteúdo?"
+
+msgid "Are you sure you want to delete this item?"
+msgstr "Tem certeza de que deseja excluir este item?"
+
+#, tao-public
+msgid "Authoring"
+msgstr "Autoria"
+
+msgid "Class schema saved"
+msgstr "Esquema de classe salvo"
+
+msgid "Close"
+msgstr "FECHAR"
+
+msgid "Close console"
+msgstr "Fechar console"
+
+msgid "contains content that is currently in use."
+msgstr "contém conteúdo em uso no momento."
+
+#, tao-public
+msgid "Copy To"
+msgstr "Copiar Para"
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "Criar e projetar itens e exercícios."
+
+#, tao-public
+msgid "Delete"
+msgstr "excluir"
+
+msgid "Deleting this class will break the"
+msgstr "Excluir esta classe quebrará o campo"
+
+msgid "Deleting this item will break the"
+msgstr "Excluindo este item irá quebrar o"
+
+msgid "Desktop preview"
+msgstr "Visualização de desktop"
+
+msgid "Don’t show this again!"
+msgstr "Não mostrar isto novamente!"
+
+#, tao-public
+msgid "Duplicate"
+msgstr "Duplicate"
+
+msgid "Edit Item"
+msgstr "Editar Item"
+
+msgid "Edit item"
+msgstr "Editar item"
+
+#, tao-public
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Expose the property value to create automated categories."
+msgstr "Exponha o valor da propriedade para criar categorias automatizadas."
+
+msgid "Failed retrieving %s"
+msgstr "Falha ao recuperar %s"
+
+msgid "Forbidden action"
+msgstr "Ação proibida"
+
+#, tao-public
+msgid "Import"
+msgstr "Importar"
+
+msgid "is currently in use."
+msgstr "está em uso no momento."
+
+msgid "Item Model"
+msgstr "Modelo do Item"
+
+msgid "Item not found"
+msgstr "item não encontrado"
+
+msgid "Item saved"
+msgstr "Item salvo"
+
+#, tao-public
+msgid "Items"
+msgstr "Itens"
+
+#, tao-public
+msgid "Items library"
+msgstr "Biblioteca de itens"
+
+msgid "Landscape"
+msgstr "Paisagem"
+
+msgid "Last updated on %2s"
+msgstr "Última atualização em %2s"
+
+msgid "Manage item class schema"
+msgstr "Gerenciar esquema de classe de itens"
+
+#, tao-public
+msgid "Manage items"
+msgstr "Gerenciar itens"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr "Gerenciar esquema"
+
+msgid "Mobile preview"
+msgstr "Pré-visualização móvel"
+
+#, tao-public
+msgid "Move"
+msgstr "Mover-se"
+
+#, tao-public
+msgid "Move To"
+msgstr "Mover para"
+
+#, tao-public
+msgid "New class"
+msgstr "Nova classe"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "Nenhuma ferramenta de autoria de item disponível para o tipo selecionado de item: %s"
+
+msgid "No item type selected for the current item."
+msgstr "Nenhum tipo de item selecionado para o item atual."
+
+msgid "Not yet available"
+msgstr "Ainda não está disponível"
+
+msgid "other"
+msgstr "Outro"
+
+msgid "Please delete the subclasses before."
+msgstr "Por favor, exclua as subclasses antes."
+
+msgid "Please select first the item type!"
+msgstr "Por favor, selecione o primeiro tipo de item!"
+
+msgid "Portrait"
+msgstr "Retrato"
+
+#, tao-public
+msgid "Preview"
+msgstr "Pré-visualizar"
+
+#, tao-public
+msgid "Properties"
+msgstr "propriedades"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "Publicado \"%1$s\" no idioma \"%2$s"
+
+msgid "Remove this message"
+msgstr "Remover esta mensagem"
+
+msgid "Resource deleted"
+msgstr "Recurso excluído"
+
+msgid "Retrieving external resources"
+msgstr "Recuperando recursos externos"
+
+msgid "s"
+msgstr "s"
+
+msgid "Submit"
+msgstr "submeter"
+
+msgid "test"
+msgstr "teste"
+
+msgid "The class"
+msgstr "A aula"
+
+msgid "The file you tried to upload is not valid"
+msgstr "O arquivo que você tentou enviar não é válido"
+
+msgid "The item"
+msgstr "O item"
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "O módulo de Itens permite a criação e design de itens e exercícios."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr "A propriedade está exposta à adição da categoria. &#13Remove exposição?"
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "Esta pré-visualização pode ser dimensionada para caber na tela. A renderização final pode ser diferente."
+
+msgid "Unable to copy resources for language %s"
+msgstr "Não é possível copiar recursos para o idioma %s"
+
+msgid "Unable to create deployement directory"
+msgstr "Não foi possível criar o diretório de implantação"
+
+msgid "Unable to delete the selected resource"
+msgstr "Não é possível excluir o recurso selecionado"
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "Não foi possível renderizar o item de %s : %s %s"
+
+msgid "using it:"
+msgstr "usando:"
+
+msgid "Warning"
+msgstr "ATENÇÃO"
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr "você está tentando excluir é muito grande e contém muitas subclasses."
+
+msgid "You checked out this item %2s ago"
+msgstr "Você fez check-out deste item %2s atrás"
+
+msgid "Your path contains error"
+msgstr "Seu caminho contém erro"
+
