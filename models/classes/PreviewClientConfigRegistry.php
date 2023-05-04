@@ -30,8 +30,7 @@ use oat\tao\model\ClientLibConfigRegistry;
  */
 class PreviewClientConfigRegistry extends ClientLibConfigRegistry
 {
-
-    const AMD = 'taoItems/controller/preview/itemRunner';
+    public const AMD = 'taoItems/controller/preview/itemRunner';
 
     /**
      * Register an extra button for the preview in the client lib config registry

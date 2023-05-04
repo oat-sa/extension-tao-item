@@ -15,9 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
- *
+ * Copyright (c) 2008-2010 (original work) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  */
 
 namespace oat\taoItems\test\unit;
@@ -45,10 +46,10 @@ class XmlItemContentTokenizerTest extends TestCase
               </p> with some other text...
             </myTag>
         ');
-        
+
         $tokenizer = new XmlItemContentTokenizer();
         $tokens = $tokenizer->getStrings($dom);
-        
+
         $this->assertEquals('A paragraph', $tokens[0]);
         $this->assertEquals('with some other text...', $tokens[1]);
     }

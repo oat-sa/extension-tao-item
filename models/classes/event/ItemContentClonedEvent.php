@@ -26,7 +26,6 @@ use oat\oatbox\event\Event;
 
 class ItemContentClonedEvent implements Event, JsonSerializable
 {
-
     /** @var  string */
     protected $sourceItemUri;
 

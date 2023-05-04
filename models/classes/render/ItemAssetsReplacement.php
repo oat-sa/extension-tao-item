@@ -31,8 +31,7 @@ namespace oat\taoItems\model\render;
  */
 interface ItemAssetsReplacement
 {
-
-    const SERVICE_ID = 'taoItems/replacement';
+    public const SERVICE_ID = 'taoItems/replacement';
 
 
     /**

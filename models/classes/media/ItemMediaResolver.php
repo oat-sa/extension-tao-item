@@ -27,7 +27,6 @@ use oat\tao\model\media\MediaAsset;
 
 class ItemMediaResolver extends TaoMediaResolver
 {
-
     private $localMediaSource;
 
     public function __construct($item, $lang)

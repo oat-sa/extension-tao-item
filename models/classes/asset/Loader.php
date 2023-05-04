@@ -21,10 +21,10 @@
 
 namespace oat\taoItems\model\asset;
 
-use \core_kernel_classes_Resource;
-use \taoItems_models_classes_ItemsService;
-use \common_Exception;
-use \tao_helpers_File;
+use core_kernel_classes_Resource;
+use taoItems_models_classes_ItemsService;
+use common_Exception;
+use tao_helpers_File;
 use oat\taoItems\model\media\ItemMediaResolver;
 
 /**
@@ -36,7 +36,6 @@ use oat\taoItems\model\media\ItemMediaResolver;
  */
 class Loader
 {
-
     /**
      * The item to pack
      * @var core_kernel_classes_Resource

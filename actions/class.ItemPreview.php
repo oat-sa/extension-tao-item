@@ -15,9 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg (under the project TAO & TAO2);
- *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung (under the project TAO-TRANSFER);
- *               2009-2012 (update and modification) Public Research Centre Henri Tudor (under the project TAO-SUSTAIN & TAO-DEV);
+ * Copyright (c) 2002-2008 (original work) Public Research Centre Henri Tudor & University of Luxembourg
+ *                         (under the project TAO & TAO2);
+ *               2008-2010 (update and modification) Deutsche Institut für Internationale Pädagogische Forschung
+ *                         (under the project TAO-TRANSFER);
+ *               2009-2012 (update and modification) Public Research Centre Henri Tudor
+ *                         (under the project TAO-SUSTAIN & TAO-DEV);
  *               2013-2018(update and modification) Open Assessment Technologies SA;
  */
 
@@ -102,7 +105,9 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
 
     protected function getRenderedItem($item)
     {
-        $itemModel = $item->getOnePropertyValue($this->getProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL));
+        $itemModel = $item->getOnePropertyValue(
+            $this->getProperty(taoItems_models_classes_ItemsService::PROPERTY_ITEM_MODEL)
+        );
         $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($itemModel);
         if (is_null($impl)) {
             throw new common_Exception('preview not supported for this item type ' . $itemModel->getUri());

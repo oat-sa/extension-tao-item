@@ -36,7 +36,7 @@ class taoItems_models_classes_CrudItemsService extends tao_models_classes_CrudSe
     use EventManagerAwareTrait;
 
     protected $itemClass = null;
-   
+
     protected $itemsServices = null;
 
     public function __construct()
@@ -55,12 +55,12 @@ class taoItems_models_classes_CrudItemsService extends tao_models_classes_CrudSe
     {
         return $this->itemsServices;
     }
-    
+
     public function delete($resource)
     {
-         taoItems_models_classes_ItemsService::singleton()->deleteItem(new core_kernel_classes_Resource($resource));
+        taoItems_models_classes_ItemsService::singleton()->deleteItem(new core_kernel_classes_Resource($resource));
         //parent::delete($resource)
-         return true;
+        return true;
     }
 
 
@@ -69,12 +69,14 @@ class taoItems_models_classes_CrudItemsService extends tao_models_classes_CrudSe
      */
     public function createFromArray(array $propertiesValues)
     {
-    
+
         if (!isset($propertiesValues[OntologyRdfs::RDFS_LABEL])) {
             $propertiesValues[OntologyRdfs::RDFS_LABEL] = "";
         }
-        
-        $type = isset($propertiesValues[OntologyRdf::RDF_TYPE]) ? $propertiesValues[OntologyRdf::RDF_TYPE] : $this->getRootClass();
+
+        $type = isset($propertiesValues[OntologyRdf::RDF_TYPE])
+            ? $propertiesValues[OntologyRdf::RDF_TYPE]
+            : $this->getRootClass();
         $label = $propertiesValues[OntologyRdfs::RDFS_LABEL];
         unset($propertiesValues[OntologyRdfs::RDFS_LABEL]);
         unset($propertiesValues[OntologyRdf::RDF_TYPE]);

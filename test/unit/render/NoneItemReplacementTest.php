@@ -29,7 +29,6 @@ use oat\taoItems\model\render\NoneItemReplacement;
  */
 class NoneItemReplacementTest extends TestCase
 {
-
     /**
      * Test encoder
      */

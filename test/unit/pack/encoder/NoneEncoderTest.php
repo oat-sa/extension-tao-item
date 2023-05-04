@@ -18,6 +18,7 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoItems\test\unit\pack\encoder;
 
 use oat\generis\test\TestCase;
@@ -31,7 +32,6 @@ use oat\taoItems\model\pack\encoders\NoneEncoder;
  */
 class NoneEncoderTest extends TestCase
 {
-
     /**
      * Test encoder
      */

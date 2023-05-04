@@ -26,7 +26,6 @@ use oat\oatbox\event\Event;
 
 class ItemUpdatedEvent implements Event, JsonSerializable
 {
-
     /** @var  string */
     protected $itemUri;
 
@@ -53,7 +52,7 @@ class ItemUpdatedEvent implements Event, JsonSerializable
     {
         return get_class($this);
     }
-    
+
     /**
      * event data getter
      * @return array
@@ -62,7 +61,7 @@ class ItemUpdatedEvent implements Event, JsonSerializable
     {
         return $this->data;
     }
-    
+
     /**
      * event item URI getter
      * @return string
