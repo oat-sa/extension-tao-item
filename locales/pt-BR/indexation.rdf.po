@@ -1,0 +1,39 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-3x\n"
+"PO-Revision-Date: 2023-04-21 15:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: pt\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-3x\n"
+"X-Crowdin-Project-ID: 582145\n"
+"X-Crowdin-Language: pt-BR\n"
+"X-Crowdin-File: /taoItems/locales/en-US/indexation.rdf.po\n"
+"X-Crowdin-File-ID: 1527\n"
+"Language-Team: Portuguese, Brazilian\n"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Tokenizer"
+msgstr "Conteúdo do Item Tokenizer"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tokenizer using the item content"
+msgstr "Processador usando o conteúdo do item"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelIndex
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Model Index"
+msgstr "Índice Modelo de Item"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Index"
+msgstr "Índice de Item"
+
