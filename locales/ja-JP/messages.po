@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2022.09\n"
-"PO-Revision-Date: 2022-08-12T16:45:51\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-06-07 09:18\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ja-JP\n"
+"Language: ja\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: ja-JP\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 559\n"
+"Language-Team: Japanese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
@@ -22,11 +29,14 @@ msgstr "実際の大きさ"
 msgid "and"
 msgstr ""
 
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr "クラス%sとその全てのアイテムを削除しますか？"
+msgid "and all of its content?"
+msgstr ""
 
-msgid "Are you sure you want to delete the item %s?"
-msgstr "%sを削除してよろしいですか？"
+msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the item"
+msgstr ""
 
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "このクラスとその内容をすべて削除してよいのですか？"
@@ -78,10 +88,10 @@ msgstr "以後表示しない！"
 msgid "Duplicate"
 msgstr "複製"
 
-msgid "Edit item"
+msgid "Edit Item"
 msgstr "アイテム編集"
 
-msgid "Edit Item"
+msgid "Edit item"
 msgstr "アイテム編集"
 
 #, tao-public
@@ -125,7 +135,7 @@ msgid "Landscape"
 msgstr "横に長く"
 
 msgid "Last updated on %2s"
-msgstr "最終更新日：%2s"
+msgstr "最終更新日： %2s"
 
 msgid "Manage item class schema"
 msgstr "スキーマ管理"
@@ -136,7 +146,7 @@ msgstr "アイテム管理"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "スキーム管理"
 
 msgid "Mobile preview"
 msgstr "モバイルプレビュー"
@@ -147,7 +157,7 @@ msgstr "移動"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "移動"
 
 #, tao-public
 msgid "New class"
@@ -228,9 +238,6 @@ msgid "Unable to create deployement directory"
 msgstr "実行ディレクトリーを作成できません。"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
-
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
