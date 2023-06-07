@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-06-07 09:18\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: fr-FR\n"
+"Language: fr\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: fr-FR\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 559\n"
+"Language-Team: French\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
@@ -89,7 +96,7 @@ msgstr "Éditer l'élément"
 
 #, tao-public
 msgid "Export"
-msgstr "Exporter"
+msgstr ""
 
 msgid "Expose the property value to create automated categories."
 msgstr "Exposer la valeur de la propriété pour créer des catégories automatisées."
@@ -102,7 +109,7 @@ msgstr ""
 
 #, tao-public
 msgid "Import"
-msgstr "Importer"
+msgstr ""
 
 msgid "is currently in use."
 msgstr ""
@@ -154,7 +161,7 @@ msgstr "Déplacer vers"
 
 #, tao-public
 msgid "New class"
-msgstr "Créer classe"
+msgstr "Nouvelle classe"
 
 msgid "No item authoring tool available for the selected type of item: %s"
 msgstr "Pas d'outil de création d'item disponible pour le type d'item sélectionné : %s"
@@ -175,15 +182,15 @@ msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
 
 msgid "Portrait"
-msgstr "Portrait"
+msgstr ""
 
 #, tao-public
 msgid "Preview"
-msgstr "Aperçu "
+msgstr "Aperçu"
 
 #, tao-public
 msgid "Properties"
-msgstr "Propriétés"
+msgstr ""
 
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "Publié \"%1$s\" dans la langue \"%2$s"
