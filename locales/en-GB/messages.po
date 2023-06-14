@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-06-14 08:11\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: en_GB\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: en-GB\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: English, United Kingdom\n"
+
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr ""
+
+msgid "Actual size"
+msgstr ""
+
+msgid "and"
+msgstr ""
+
+msgid "and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the item"
+msgstr ""
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete this item?"
+msgstr ""
+
+#, tao-public
+msgid "Authoring"
+msgstr ""
+
+msgid "Class schema saved"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close console"
+msgstr ""
+
+msgid "contains content that is currently in use."
+msgstr ""
+
+#, tao-public
+msgid "Copy To"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr ""
+
+#, tao-public
+msgid "Delete"
+msgstr ""
+
+msgid "Deleting this class will break the"
+msgstr ""
+
+msgid "Deleting this item will break the"
+msgstr ""
+
+msgid "Desktop preview"
+msgstr ""
+
+msgid "Don’t show this again!"
+msgstr ""
+
+#, tao-public
+msgid "Duplicate"
+msgstr ""
+
+msgid "Edit Item"
+msgstr ""
+
+msgid "Edit item"
+msgstr ""
+
+#, tao-public
+msgid "Export"
+msgstr ""
+
+msgid "Expose the property value to create automated categories."
+msgstr ""
+
+msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Forbidden action"
+msgstr ""
+
+#, tao-public
+msgid "Import"
+msgstr ""
+
+msgid "is currently in use."
+msgstr ""
+
+msgid "Item Model"
+msgstr ""
+
+msgid "Item not found"
+msgstr ""
+
+msgid "Item saved"
+msgstr ""
+
+#, tao-public
+msgid "Items"
+msgstr ""
+
+#, tao-public
+msgid "Items library"
+msgstr ""
+
+msgid "Landscape"
+msgstr ""
+
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr ""
+
+#, tao-public
+msgid "Manage items"
+msgstr ""
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr ""
+
+#, tao-public
+msgid "Move"
+msgstr ""
+
+#, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
+msgid "New class"
+msgstr ""
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr ""
+
+msgid "No item type selected for the current item."
+msgstr ""
+
+msgid "Not yet available"
+msgstr ""
+
+msgid "other"
+msgstr ""
+
+msgid "Please delete the subclasses before."
+msgstr ""
+
+msgid "Please select first the item type!"
+msgstr ""
+
+msgid "Portrait"
+msgstr ""
+
+#, tao-public
+msgid "Preview"
+msgstr ""
+
+#, tao-public
+msgid "Properties"
+msgstr ""
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr ""
+
+msgid "Remove this message"
+msgstr ""
+
+msgid "Resource deleted"
+msgstr ""
+
+msgid "Retrieving external resources"
+msgstr ""
+
+msgid "s"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "test"
+msgstr ""
+
+msgid "The class"
+msgstr ""
+
+msgid "The file you tried to upload is not valid"
+msgstr ""
+
+msgid "The item"
+msgstr ""
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr ""
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr ""
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr ""
+
+msgid "Unable to copy resources for language %s"
+msgstr ""
+
+msgid "Unable to create deployement directory"
+msgstr ""
+
+msgid "Unable to delete the selected resource"
+msgstr ""
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "using it:"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr ""
+
+msgid "You checked out this item %2s ago"
+msgstr ""
+
+msgid "Your path contains error"
+msgstr ""
+
