@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-07 09:18\n"
+"PO-Revision-Date: 2023-06-14 08:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de\n"
@@ -17,14 +17,14 @@ msgstr ""
 "X-Crowdin-Project-ID: 590867\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 559\n"
+"X-Crowdin-File-ID: 805\n"
 "Language-Team: German\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
-msgstr "Tatsächliche Größe"
+msgstr ""
 
 msgid "and"
 msgstr ""
@@ -52,10 +52,10 @@ msgid "Class schema saved"
 msgstr ""
 
 msgid "Close"
-msgstr "Schließen"
+msgstr ""
 
 msgid "Close console"
-msgstr "Konsole schließen"
+msgstr ""
 
 msgid "contains content that is currently in use."
 msgstr ""
@@ -66,7 +66,7 @@ msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Elemente und Übungen erstellen und gestalten."
+msgstr ""
 
 #, tao-public
 msgid "Delete"
@@ -79,20 +79,20 @@ msgid "Deleting this item will break the"
 msgstr ""
 
 msgid "Desktop preview"
-msgstr "Desktop-Vorschau"
+msgstr ""
 
 msgid "Don’t show this again!"
-msgstr "Diese Meldung nicht wieder anzeigen!"
+msgstr ""
 
 #, tao-public
 msgid "Duplicate"
 msgstr "Duplizieren"
 
 msgid "Edit Item"
-msgstr "Element bearbeiten"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Element bearbeiten"
+msgstr ""
 
 #, tao-public
 msgid "Export"
@@ -102,7 +102,7 @@ msgid "Expose the property value to create automated categories."
 msgstr ""
 
 msgid "Failed retrieving %s"
-msgstr "Fehler bei Abruf von %s"
+msgstr ""
 
 msgid "Forbidden action"
 msgstr ""
@@ -115,13 +115,13 @@ msgid "is currently in use."
 msgstr ""
 
 msgid "Item Model"
-msgstr "Element-Modell"
+msgstr ""
 
 msgid "Item not found"
 msgstr ""
 
 msgid "Item saved"
-msgstr "Element gespeichert"
+msgstr ""
 
 #, tao-public
 msgid "Items"
@@ -129,10 +129,10 @@ msgstr "Elemente"
 
 #, tao-public
 msgid "Items library"
-msgstr "Element-Bibliothek"
+msgstr ""
 
 msgid "Landscape"
-msgstr "Querformat"
+msgstr ""
 
 msgid "Last updated on %2s"
 msgstr "Letztes Update vom %2s"
@@ -149,7 +149,7 @@ msgid "Manage Schema"
 msgstr ""
 
 msgid "Mobile preview"
-msgstr "Mobile Vorschau"
+msgstr ""
 
 #, tao-public
 msgid "Move"
@@ -164,13 +164,13 @@ msgid "New class"
 msgstr "Neue Klasse"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Kein Bearbeitungswerkzeug verfügbar für den ausgewählten Typ des Elements: %s"
+msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Kein Typ für das aktuelle Element ausgewählt"
+msgstr ""
 
 msgid "Not yet available"
-msgstr "Noch nicht verfügbar"
+msgstr ""
 
 msgid "other"
 msgstr ""
@@ -179,10 +179,10 @@ msgid "Please delete the subclasses before."
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Bitte zuerst den Element-Typ auswählen!"
+msgstr ""
 
 msgid "Portrait"
-msgstr "Hochformat"
+msgstr ""
 
 #, tao-public
 msgid "Preview"
@@ -193,22 +193,22 @@ msgid "Properties"
 msgstr ""
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr "\"%1$s\" in Sprache \"%2$s veröffentlicht"
+msgstr ""
 
 msgid "Remove this message"
-msgstr "Diese Nachricht entfernen"
+msgstr ""
 
 msgid "Resource deleted"
 msgstr ""
 
 msgid "Retrieving external resources"
-msgstr "Externe Quellen abrufen"
+msgstr ""
 
 msgid "s"
 msgstr ""
 
 msgid "Submit"
-msgstr "Absenden"
+msgstr ""
 
 msgid "test"
 msgstr ""
@@ -217,25 +217,25 @@ msgid "The class"
 msgstr ""
 
 msgid "The file you tried to upload is not valid"
-msgstr "Die hochgeladene Datei ist ungültig"
+msgstr ""
 
 msgid "The item"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Das Element-Modul ermöglicht das Erstellen und Entwickeln von Elementen und Übungen."
+msgstr ""
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "Diese Vorschau ist möglicherweise an ihren Bildschirm angepasst. Die endgültige Version kann davon abweichen."
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
-msgstr "Quellen für Sprache %s konnten nicht kopiert werden"
+msgstr ""
 
 msgid "Unable to create deployement directory"
-msgstr "Der Deployment-Ordner konnte nicht erstellt werden"
+msgstr ""
 
 msgid "Unable to delete the selected resource"
 msgstr ""
@@ -253,8 +253,8 @@ msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
 
 msgid "You checked out this item %2s ago"
-msgstr "Sie haben dieses Element vor %2s überprüft"
+msgstr ""
 
 msgid "Your path contains error"
-msgstr "Ihr Pfad ist fehlerhaft"
+msgstr ""
 
