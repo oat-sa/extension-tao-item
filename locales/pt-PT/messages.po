@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-07 09:18\n"
+"PO-Revision-Date: 2023-06-14 08:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Crowdin-Project-ID: 590867\n"
 "X-Crowdin-Language: pt-PT\n"
 "X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 559\n"
+"X-Crowdin-File-ID: 805\n"
 "Language-Team: Portuguese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
@@ -52,7 +52,7 @@ msgid "Class schema saved"
 msgstr ""
 
 msgid "Close"
-msgstr "Fechar"
+msgstr ""
 
 msgid "Close console"
 msgstr ""
@@ -66,7 +66,7 @@ msgstr ""
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Criar e desenvolver items e exercícios"
+msgstr ""
 
 #, tao-public
 msgid "Delete"
@@ -89,10 +89,10 @@ msgid "Duplicate"
 msgstr "Duplicar"
 
 msgid "Edit Item"
-msgstr "Editar Item"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Editar item"
+msgstr ""
 
 #, tao-public
 msgid "Export"
@@ -121,7 +121,7 @@ msgid "Item not found"
 msgstr ""
 
 msgid "Item saved"
-msgstr "Item guardado"
+msgstr ""
 
 #, tao-public
 msgid "Items"
@@ -129,7 +129,7 @@ msgstr ""
 
 #, tao-public
 msgid "Items library"
-msgstr "Biblioteca de items"
+msgstr ""
 
 msgid "Landscape"
 msgstr ""
@@ -167,10 +167,10 @@ msgid "No item authoring tool available for the selected type of item: %s"
 msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Nenhum tipo de item seleccionado para o item actual"
+msgstr ""
 
 msgid "Not yet available"
-msgstr "Ainda não se encontra disponível"
+msgstr ""
 
 msgid "other"
 msgstr ""
@@ -179,7 +179,7 @@ msgid "Please delete the subclasses before."
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Por favor seleccione 1º o tipo de item"
+msgstr ""
 
 msgid "Portrait"
 msgstr ""
@@ -223,7 +223,7 @@ msgid "The item"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "O modulo de items permite a criação de items e exercícios"
+msgstr ""
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
