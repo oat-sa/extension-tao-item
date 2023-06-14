@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-07 09:18\n"
+"PO-Revision-Date: 2023-06-14 08:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl\n"
@@ -17,14 +17,14 @@ msgstr ""
 "X-Crowdin-Project-ID: 590867\n"
 "X-Crowdin-Language: nl\n"
 "X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 559\n"
+"X-Crowdin-File-ID: 805\n"
 "Language-Team: Dutch\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
-msgstr "Ware grootte"
+msgstr ""
 
 msgid "and"
 msgstr ""
@@ -49,13 +49,13 @@ msgid "Authoring"
 msgstr "Construeren"
 
 msgid "Class schema saved"
-msgstr "Klasse-schema opgeslagen"
+msgstr ""
 
 msgid "Close"
-msgstr "Sluiten"
+msgstr ""
 
 msgid "Close console"
-msgstr "Sluit console"
+msgstr ""
 
 msgid "contains content that is currently in use."
 msgstr ""
@@ -66,7 +66,7 @@ msgstr "Kopiëren naar"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Creëer en ontwerp items en oefeningen."
+msgstr ""
 
 #, tao-public
 msgid "Delete"
@@ -79,30 +79,30 @@ msgid "Deleting this item will break the"
 msgstr ""
 
 msgid "Desktop preview"
-msgstr "Desktop voorbeeld"
+msgstr ""
 
 msgid "Don’t show this again!"
-msgstr "Dit niet meer tonen!"
+msgstr ""
 
 #, tao-public
 msgid "Duplicate"
 msgstr "Dupliceren"
 
 msgid "Edit Item"
-msgstr "Item bewerken"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Item bewerken"
+msgstr ""
 
 #, tao-public
 msgid "Export"
 msgstr ""
 
 msgid "Expose the property value to create automated categories."
-msgstr "Blootstellen van de waarde van het veld om geautomatiseerde categorieën te creëren."
+msgstr ""
 
 msgid "Failed retrieving %s"
-msgstr "Ophalen %s heeft gefaald"
+msgstr ""
 
 msgid "Forbidden action"
 msgstr ""
@@ -118,10 +118,10 @@ msgid "Item Model"
 msgstr ""
 
 msgid "Item not found"
-msgstr "Item niet gevonden"
+msgstr ""
 
 msgid "Item saved"
-msgstr "Item opgeslagen"
+msgstr ""
 
 #, tao-public
 msgid "Items"
@@ -129,16 +129,16 @@ msgstr ""
 
 #, tao-public
 msgid "Items library"
-msgstr "itembank"
+msgstr ""
 
 msgid "Landscape"
-msgstr "Liggend"
+msgstr ""
 
 msgid "Last updated on %2s"
 msgstr "Laatst bijgewerkt op %2s"
 
 msgid "Manage item class schema"
-msgstr "Beheer item klasse-schema"
+msgstr ""
 
 #, tao-public
 msgid "Manage items"
@@ -149,7 +149,7 @@ msgid "Manage Schema"
 msgstr "Schema beheren"
 
 msgid "Mobile preview"
-msgstr "Voorbeeld mobiel"
+msgstr ""
 
 #, tao-public
 msgid "Move"
@@ -164,13 +164,13 @@ msgid "New class"
 msgstr "Nieuwe klasse"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Er is geen item constructie tool aanwezig voor het geselecteerde itemtype: %s"
+msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Geen item type geselecteerd voor huidige item."
+msgstr ""
 
 msgid "Not yet available"
-msgstr "Nog niet beschikbaar"
+msgstr ""
 
 msgid "other"
 msgstr ""
@@ -179,10 +179,10 @@ msgid "Please delete the subclasses before."
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Selecteer a.u.b. eerste het item type!"
+msgstr ""
 
 msgid "Portrait"
-msgstr "Staand"
+msgstr ""
 
 #, tao-public
 msgid "Preview"
@@ -193,22 +193,22 @@ msgid "Properties"
 msgstr ""
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr "\"%1$s\" gepubliseerd in de volgende taal: \"%2$s"
+msgstr ""
 
 msgid "Remove this message"
-msgstr "Verwijder dit bericht"
+msgstr ""
 
 msgid "Resource deleted"
 msgstr ""
 
 msgid "Retrieving external resources"
-msgstr "Haal externe bronnen op"
+msgstr ""
 
 msgid "s"
 msgstr ""
 
 msgid "Submit"
-msgstr "Indienen"
+msgstr ""
 
 msgid "test"
 msgstr ""
@@ -217,31 +217,31 @@ msgid "The class"
 msgstr ""
 
 msgid "The file you tried to upload is not valid"
-msgstr "Het bestand dat u probeerde te uploaden is niet geldig"
+msgstr ""
 
 msgid "The item"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "De item module maakt het mogelijk om itemsen oefeningen aan te maken en te ontwerpen"
+msgstr ""
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr "Het veld is blootgesteld aan categorie toevoeging.&#13Verwijder exposition?"
+msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "Dit voorbeeld kan geschaald worden om op uw scherm te passen. Het eindresultaat kan afwijken."
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
-msgstr "Niet in staat om de bronnen voor de taal %s te kopiëren "
+msgstr ""
 
 msgid "Unable to create deployement directory"
-msgstr "Niet in staat om de uitlever map aan te maken"
+msgstr ""
 
 msgid "Unable to delete the selected resource"
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr "Kan het item niet weergeven van %s : %s %s"
+msgstr ""
 
 msgid "using it:"
 msgstr ""
@@ -253,8 +253,8 @@ msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
 
 msgid "You checked out this item %2s ago"
-msgstr "U heeft dit item %2s geleden uitgecheckt"
+msgstr ""
 
 msgid "Your path contains error"
-msgstr "Uw pad bevat een fout"
+msgstr ""
 
