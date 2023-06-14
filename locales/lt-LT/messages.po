@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-07 09:18\n"
+"PO-Revision-Date: 2023-06-14 08:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: lt\n"
@@ -17,14 +17,14 @@ msgstr ""
 "X-Crowdin-Project-ID: 590867\n"
 "X-Crowdin-Language: lt\n"
 "X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 559\n"
+"X-Crowdin-File-ID: 805\n"
 "Language-Team: Lithuanian\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
-msgstr "Tikrasis dydis"
+msgstr ""
 
 msgid "and"
 msgstr ""
@@ -49,13 +49,13 @@ msgid "Authoring"
 msgstr "Redagavimas"
 
 msgid "Class schema saved"
-msgstr "Klasės schema išsaugota"
+msgstr ""
 
 msgid "Close"
-msgstr "Uždaryti"
+msgstr ""
 
 msgid "Close console"
-msgstr "Uždaryti konsolę"
+msgstr ""
 
 msgid "contains content that is currently in use."
 msgstr ""
@@ -66,7 +66,7 @@ msgstr "Kopijuoti Į"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "Kurti ir redaguoti laukus ir uždavinius."
+msgstr ""
 
 #, tao-public
 msgid "Delete"
@@ -79,30 +79,30 @@ msgid "Deleting this item will break the"
 msgstr ""
 
 msgid "Desktop preview"
-msgstr "Darbalaukio peržiūra"
+msgstr ""
 
 msgid "Don’t show this again!"
-msgstr "Daugiau šito nerodyti!"
+msgstr ""
 
 #, tao-public
 msgid "Duplicate"
 msgstr "Kurti kopiją"
 
 msgid "Edit Item"
-msgstr "Redaguoti klausimą"
+msgstr ""
 
 msgid "Edit item"
-msgstr "Redaguoti klausimą"
+msgstr ""
 
 #, tao-public
 msgid "Export"
 msgstr ""
 
 msgid "Expose the property value to create automated categories."
-msgstr "Pateikti nuostatas automatinių kategorijų sukūrimui."
+msgstr ""
 
 msgid "Failed retrieving %s"
-msgstr "Nepavyko gauti %s"
+msgstr ""
 
 msgid "Forbidden action"
 msgstr ""
@@ -115,13 +115,13 @@ msgid "is currently in use."
 msgstr ""
 
 msgid "Item Model"
-msgstr "Klausimo modelis"
+msgstr ""
 
 msgid "Item not found"
-msgstr "Elementas nerastas"
+msgstr ""
 
 msgid "Item saved"
-msgstr "Klausimas išsaugotas"
+msgstr ""
 
 #, tao-public
 msgid "Items"
@@ -129,16 +129,16 @@ msgstr "Klausimai"
 
 #, tao-public
 msgid "Items library"
-msgstr "Klausimų biblioteka"
+msgstr ""
 
 msgid "Landscape"
-msgstr "Išdėstymas"
+msgstr ""
 
 msgid "Last updated on %2s"
 msgstr "Paskutinis atnaujinimas buvo %2s"
 
 msgid "Manage item class schema"
-msgstr "Tvarkyti elemento klasės schemą"
+msgstr ""
 
 #, tao-public
 msgid "Manage items"
@@ -149,7 +149,7 @@ msgid "Manage Schema"
 msgstr "Tvarkyti Schemą"
 
 msgid "Mobile preview"
-msgstr "Mobili peržiūra"
+msgstr ""
 
 #, tao-public
 msgid "Move"
@@ -164,13 +164,13 @@ msgid "New class"
 msgstr "Nauja klasė"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Nerastas kūrimo įrankis pasirinktam klausimų tipui: %s"
+msgstr ""
 
 msgid "No item type selected for the current item."
-msgstr "Nepasirinktas klausimo tipas šiam klausimui."
+msgstr ""
 
 msgid "Not yet available"
-msgstr "Vis dar negalimas"
+msgstr ""
 
 msgid "other"
 msgstr ""
@@ -179,10 +179,10 @@ msgid "Please delete the subclasses before."
 msgstr ""
 
 msgid "Please select first the item type!"
-msgstr "Prašome pirma pasirinkti klausimo tipą!"
+msgstr ""
 
 msgid "Portrait"
-msgstr "Portretas"
+msgstr ""
 
 #, tao-public
 msgid "Preview"
@@ -196,19 +196,19 @@ msgid "Published \"%1$s\" in language \"%2$s"
 msgstr ""
 
 msgid "Remove this message"
-msgstr "Pašalinti šį pranešimą"
+msgstr ""
 
 msgid "Resource deleted"
 msgstr ""
 
 msgid "Retrieving external resources"
-msgstr "Išorinių resursų gavimas"
+msgstr ""
 
 msgid "s"
 msgstr ""
 
 msgid "Submit"
-msgstr "Pateikti"
+msgstr ""
 
 msgid "test"
 msgstr ""
@@ -217,31 +217,31 @@ msgid "The class"
 msgstr ""
 
 msgid "The file you tried to upload is not valid"
-msgstr "Failas, kurį bandėte įkelti yra neteisingas"
+msgstr ""
 
 msgid "The item"
 msgstr ""
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "Elementų modulis leidžia kurti ir modeliuoti elementus bei užduotis."
+msgstr ""
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr "Šis parametras yra rodomas prie naujos kategorijos pridėjimo.&#13Nerodyti ?"
+msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "Šis rodinys gali būti didinamas arba mažinamas, pritaikant jūsų ekrano dydžiui."
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
-msgstr "Nepavyko kopijuoti resursus kalbai %s"
+msgstr ""
 
 msgid "Unable to create deployement directory"
-msgstr "Neįmanoma sukurti katalogo diegimui."
+msgstr ""
 
 msgid "Unable to delete the selected resource"
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr "Neįmanoma pateikti klausimo nuo %s : %s %s"
+msgstr ""
 
 msgid "using it:"
 msgstr ""
@@ -253,8 +253,8 @@ msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
 
 msgid "You checked out this item %2s ago"
-msgstr "Jūs išregistravote šį klausimą prieš %2s."
+msgstr ""
 
 msgid "Your path contains error"
-msgstr "Jūsų kelias yra su klaidomis."
+msgstr ""
 
