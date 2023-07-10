@@ -205,4 +205,28 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[Item Deleter Role]]></rdfs:comment>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#RestrictedItemAuthor">
+  	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Restricted Item Author]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Use this role to limit access to Item]]></rdfs:comment>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#PropertyManagerRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#BackOfficeRole"/>
+    <!-- Item Actions Roles-->
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#RestPublisher"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole"/>
+  </rdf:Description>
 </rdf:RDF>
