@@ -41,4 +41,5 @@ interface TaoItemsRoles
     public const ITEM_RESOURCE_CREATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole';
     public const ITEM_IMPORTER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole';
     public const ITEM_DELETER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole';
+    public const RESTRICTED_ITEM_AUTHOR = 'http://www.tao.lu/Ontologies/TAO.rdf#RestrictedItemAuthor';
 }
