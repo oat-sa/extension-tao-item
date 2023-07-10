@@ -210,6 +210,16 @@ return [
             TaoItemsRoles::ITEM_DELETER,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'moveInstance'],
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::RESTRICTED_ITEM_AUTHOR,
+            ['ext' => 'taoItems', 'mod' => 'Items']
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::RESTRICTED_ITEM_AUTHOR,
+            ['ext' => 'taoItems', 'mod' => 'ItemExport']
+        ],
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
