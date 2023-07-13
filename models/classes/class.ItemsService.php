@@ -140,7 +140,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
     public function delete(array $command): void
     {
         $resource = $command['resource']; // @todo
-        
+
         if (LockManager::getImplementation()->isLocked($resource)) {
             $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
             LockManager::getImplementation()->releaseLock($resource, $userId);
@@ -157,7 +157,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
                 )
             );
         }
-        
+
         $this->getEventManager()->trigger(
             new ItemRemovedEvent(
                 $resource->getUri(),
@@ -167,7 +167,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             )
         );
     }
-    
+
     /**
      * please call deleteResource() instead
      * @deprecated
