@@ -35,6 +35,9 @@ use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\ItemModelStatus;
 use oat\taoQtiItem\helpers\QtiFile;
+use oat\taoQtiItem\model\qti\Service as QtiItemService;
+use oat\taoQtiItem\model\qti\parser\ElementReferencesExtractor;
+use Psr\Container\ContainerInterface;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
@@ -132,6 +135,39 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         return $clazz->equals($this->getRootClass()) || $clazz->isSubClassOf($this->getRootClass());
     }
 
+    // @todo Recheck name
+    // @todo Create command class
+    public function delete(array $command): void
+    {
+        $resource = $command['resource']; // @todo
+        
+        if (LockManager::getImplementation()->isLocked($resource)) {
+            $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
+            LockManager::getImplementation()->releaseLock($resource, $userId);
+        }
+
+        $result = $this->deleteItemContent($resource) && parent::deleteResource($resource);
+
+        if (!$result) {
+            throw new Exception(
+                sprintf(
+                    'Error deleting item content for resource "%s" [%s]',
+                    $resource->getLabel(),
+                    $resource->getId()
+                )
+            );
+        }
+        
+        $this->getEventManager()->trigger(
+            new ItemRemovedEvent(
+                $resource->getUri(),
+                [
+                    ItemRemovedEvent::PAYLOAD_KEY_DELETE_ASSETS => (bool) $command['deleteAssets'],
+                ]
+            )
+        );
+    }
+    
     /**
      * please call deleteResource() instead
      * @deprecated
