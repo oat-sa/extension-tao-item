@@ -25,7 +25,8 @@ use JsonSerializable;
 
 class ItemRemovedEvent implements Event, JsonSerializable
 {
-    public const PAYLOAD_KEY_DELETE_ASSETS = 'deleteAssets';
+    public const PAYLOAD_KEY_DELETE_RELATED_ASSETS = 'deleteRelatedAssets';
+    public const PAYLOAD_KEY_ITEM_URI = 'itemUri';
 
     protected string $itemUri;
 
@@ -45,7 +46,7 @@ class ItemRemovedEvent implements Event, JsonSerializable
     public function jsonSerialize()
     {
         return array_merge(
-            ['itemUri' => $this->itemUri],
+            [self::PAYLOAD_KEY_ITEM_URI => $this->itemUri],
             $this->payload
         );
     }

@@ -158,7 +158,7 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             new ItemRemovedEvent(
                 $resource->getUri(),
                 [
-                    ItemRemovedEvent::PAYLOAD_KEY_DELETE_ASSETS => $command->mustDeleteRelatedAssets(),
+                    ItemRemovedEvent::PAYLOAD_KEY_DELETE_RELATED_ASSETS => $command->mustDeleteRelatedAssets(),
                 ]
             )
         );
