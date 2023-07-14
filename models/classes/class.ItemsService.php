@@ -19,7 +19,7 @@
  *                         (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor
  *                         (under the project TAO-SUSTAIN & TAO-DEV);
- *               2012-2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT)
+ *               2012-2023 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT)
  */
 
 use oat\taoItems\model\TaoItemOntology;
@@ -35,9 +35,6 @@ use oat\taoItems\model\event\ItemDuplicatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\ItemModelStatus;
 use oat\taoQtiItem\helpers\QtiFile;
-use oat\taoQtiItem\model\qti\Service as QtiItemService;
-use oat\taoQtiItem\model\qti\parser\ElementReferencesExtractor;
-use Psr\Container\ContainerInterface;
 
 /**
  * Service methods to manage the Items business models using the RDF API.
