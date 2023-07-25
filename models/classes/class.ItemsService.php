@@ -19,9 +19,10 @@
  *                         (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor
  *                         (under the project TAO-SUSTAIN & TAO-DEV);
- *               2012-2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT)
+ *               2012-2023 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT)
  */
 
+use oat\taoItems\model\Command\DeleteItemCommand;
 use oat\taoItems\model\TaoItemOntology;
 use oat\generis\model\fileReference\FileReferenceSerializer;
 use oat\oatbox\filesystem\Directory;
@@ -132,6 +133,37 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
         return $clazz->equals($this->getRootClass()) || $clazz->isSubClassOf($this->getRootClass());
     }
 
+    public function delete(DeleteItemCommand $command): void
+    {
+        $resource = $command->getResource();
+
+        if (LockManager::getImplementation()->isLocked($resource)) {
+            $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
+            LockManager::getImplementation()->releaseLock($resource, $userId);
+        }
+
+        $result = $this->deleteItemContent($resource) && parent::deleteResource($resource);
+
+        if (!$result) {
+            throw new Exception(
+                sprintf(
+                    'Error deleting item content for resource "%s" [%s]',
+                    $resource->getLabel(),
+                    $resource->getUri()
+                )
+            );
+        }
+
+        $this->getEventManager()->trigger(
+            new ItemRemovedEvent(
+                $resource->getUri(),
+                [
+                    ItemRemovedEvent::PAYLOAD_KEY_DELETE_RELATED_ASSETS => $command->mustDeleteRelatedAssets(),
+                ]
+            )
+        );
+    }
+
     /**
      * please call deleteResource() instead
      * @deprecated
@@ -146,21 +178,17 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
      * @param core_kernel_classes_Resource $resource
      * @throws common_exception_Unauthorized
      * @return boolean
+     * @deprecated use self::delete()
      */
     public function deleteResource(core_kernel_classes_Resource $resource)
     {
-        if (LockManager::getImplementation()->isLocked($resource)) {
-            $userId = common_session_SessionManager::getSession()->getUser()->getIdentifier();
-            LockManager::getImplementation()->releaseLock($resource, $userId);
+        try {
+            $this->delete(new DeleteItemCommand($resource));
+
+            return true;
+        } catch (Throwable $exception) {
+            return false;
         }
-
-        $result = $this->deleteItemContent($resource) && parent::deleteResource($resource);
-
-        if ($result) {
-            $this->getEventManager()->trigger(new ItemRemovedEvent($resource->getUri()));
-        }
-
-        return $result;
     }
 
     /**
