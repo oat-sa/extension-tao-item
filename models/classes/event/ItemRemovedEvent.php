@@ -15,49 +15,39 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA
- *
+ * Copyright (c) 2016-2023 (original work) Open Assessment Technologies SA.
  */
 
 namespace oat\taoItems\model\event;
 
-use JsonSerializable;
 use oat\oatbox\event\Event;
+use JsonSerializable;
 
 class ItemRemovedEvent implements Event, JsonSerializable
 {
-    /** @var  string */
-    protected $itemUri;
+    public const PAYLOAD_KEY_DELETE_RELATED_ASSETS = 'deleteRelatedAssets';
+    public const PAYLOAD_KEY_ITEM_URI = 'itemUri';
 
-    /**
-     * @param String $itemUri
-     */
-    public function __construct($itemUri)
+    protected string $itemUri;
+
+    private array $payload;
+
+    public function __construct(string $itemUri, array $payload = [])
     {
         $this->itemUri = $itemUri;
+        $this->payload = $payload;
     }
 
-
-    /**
-     * Return a unique name for this event
-     * @see \oat\oatbox\event\Event::getName()
-     */
     public function getName()
     {
         return get_class($this);
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
     public function jsonSerialize()
     {
-        return [
-            'itemUri' => $this->itemUri
-        ];
+        return array_merge(
+            [self::PAYLOAD_KEY_ITEM_URI => $this->itemUri],
+            $this->payload
+        );
     }
 }
