@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-14 08:31\n"
+"PO-Revision-Date: 2023-09-13 09:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -62,7 +62,7 @@ msgstr ""
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "コピー先"
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -247,7 +247,7 @@ msgid "using it:"
 msgstr ""
 
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
