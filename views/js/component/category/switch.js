@@ -22,11 +22,10 @@
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
 define([
-    'lodash',
     'i18n',
     'ui/component',
     'tpl!taoItems/component/category/switch'
-], function(_, __, component, switchTpl){
+], function(__, component, switchTpl){
     'use strict';
 
     /**
@@ -130,13 +129,13 @@ define([
                 });
 
         //defering initialization to be able to listen
-        _.defer(function(){
+        setTimeout(() => {
             categorySwitchComponent
                 .setTemplate(switchTpl)
                 .init({
-                    id : propertyId,
+                    id: propertyId,
                 });
-        });
+        }, 0);
 
         return categorySwitchComponent;
     };

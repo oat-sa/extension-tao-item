@@ -23,10 +23,9 @@
  */
 define([
     'jquery',
-    'lodash',
     'core/errorHandler',
     'core/promise'
-], function ($, _, errorHandler, Promise) {
+], function ($, errorHandler, Promise) {
 
     'use strict';
 
@@ -59,8 +58,8 @@ define([
     $(document).off('.preview').on('itemunload.preview', function () {
         $toolContainers.each(function () {
             var $toolContainer = $(this);
-            _.forEach(tools, function (tool, id) {
-                var $btn = $toolContainer.children('[data-control="' + id + '"]');
+            tools.forEach((tool, id) => {
+                var $btn = $toolContainer.children(`[data-control="${id}"]`);
                 if ($btn.length) {
                     tool.clear($btn);
                     $btn.remove();
