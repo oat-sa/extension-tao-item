@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-11-08 13:01\n"
+"PO-Revision-Date: 2023-11-09 14:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de\n"
@@ -96,7 +96,7 @@ msgstr "Element bearbeiten"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "Expose the property value to create automated categories."
 msgstr "Den Eigenschaftswert freigeben, um automatisierte Kategorien zu erstellen."
@@ -190,7 +190,7 @@ msgstr "Vorschau"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschaften"
 
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "\"%1$s\" in Sprache \"%2$s veröffentlicht"
