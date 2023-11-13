@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-11-10 14:40\n"
+"PO-Revision-Date: 2023-11-13 15:45\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de\n"
@@ -105,7 +105,7 @@ msgid "Failed retrieving %s"
 msgstr "Fehler bei Abruf von %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Verbotene Aktion"
 
 #, tao-public
 msgid "Import"
@@ -146,7 +146,7 @@ msgstr "Elemente verwalten"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Schema verwalten"
 
 msgid "Mobile preview"
 msgstr "Mobile Vorschau"
@@ -157,7 +157,7 @@ msgstr "Verschieben"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Bewegen nach"
 
 #, tao-public
 msgid "New class"
@@ -176,7 +176,7 @@ msgid "other"
 msgstr "andere"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Bitte löschen Sie vorher die Unterklassen."
 
 msgid "Please select first the item type!"
 msgstr "Bitte zuerst den Element-Typ auswählen!"
@@ -199,7 +199,7 @@ msgid "Remove this message"
 msgstr "Diese Nachricht entfernen"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Ressource gelöscht"
 
 msgid "Retrieving external resources"
 msgstr "Externe Quellen abrufen"
@@ -214,7 +214,7 @@ msgid "test"
 msgstr "Test"
 
 msgid "The class"
-msgstr ""
+msgstr "Die Klasse"
 
 msgid "The file you tried to upload is not valid"
 msgstr "Die hochgeladene Datei ist ungültig"
@@ -238,7 +238,7 @@ msgid "Unable to create deployement directory"
 msgstr "Der Deployment-Ordner konnte nicht erstellt werden"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "Die ausgewählte Ressource kann nicht gelöscht werden"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Das Element konnte nicht aus %s gerendert werden: %s %s"
@@ -247,7 +247,7 @@ msgid "using it:"
 msgstr "verwenden:"
 
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr "Das zu löschende Element ist zu groß und enthält zu viele Unterklassen."
