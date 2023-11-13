@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-10-12 11:18\n"
+"PO-Revision-Date: 2023-11-13 15:45\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar\n"
@@ -70,7 +70,7 @@ msgstr "إنشاء وتصميم العناصر والتمارين."
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 msgid "Deleting this class will break the"
 msgstr "سيؤدي حذف هذا القسم إلى تعطيل ملف"
@@ -125,7 +125,7 @@ msgstr "تم حفظ البند"
 
 #, tao-public
 msgid "Items"
-msgstr "بنود"
+msgstr "عناصر"
 
 #, tao-public
 msgid "Items library"
