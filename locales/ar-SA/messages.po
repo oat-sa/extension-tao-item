@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-11-15 16:05\n"
+"PO-Revision-Date: 2023-11-16 16:40\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar\n"
@@ -39,7 +39,7 @@ msgid "Are you sure you want to delete the item"
 msgstr "هل أنت متأكد أنك تريد حذف القسم"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد حذف هذا القسم وكل محتواه؟"
 
 msgid "Are you sure you want to delete this item?"
 msgstr "هل أنت متأكد أنك تريد حذف هذا البند?"
@@ -105,7 +105,7 @@ msgid "Failed retrieving %s"
 msgstr "فشل استرداد %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "إجراء محظور"
 
 #, tao-public
 msgid "Import"
@@ -176,7 +176,7 @@ msgid "other"
 msgstr "آخر"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "يرجى حذف الفئات الفرعية قبلًا."
 
 msgid "Please select first the item type!"
 msgstr "الرجاء تحديد نوع البند أولاً!"
@@ -199,7 +199,7 @@ msgid "Remove this message"
 msgstr "قم بإزالة هذه الرسالة"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "تم حذف المورد"
 
 msgid "Retrieving external resources"
 msgstr "استرجاع الموارد الخارجية"
@@ -214,7 +214,7 @@ msgid "test"
 msgstr "رائز"
 
 msgid "The class"
-msgstr ""
+msgstr "القسم"
 
 msgid "The file you tried to upload is not valid"
 msgstr "الملف الذي حاولت تحميله غير مضبوط"
@@ -238,7 +238,7 @@ msgid "Unable to create deployement directory"
 msgstr "تعذر إنشاء دليل النشر"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "غير قادر على حذف المورد المختار"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "تعذر تقديم البند من %s : %s %s"
@@ -250,7 +250,7 @@ msgid "Warning"
 msgstr "تحذير"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "أنت تحاول حذفه وهو كبير جدا ويحتوي على الكثير من الفئات الفرعية."
 
 msgid "You checked out this item %2s ago"
 msgstr "لقد سحبت هذا البند قبل %2s"
