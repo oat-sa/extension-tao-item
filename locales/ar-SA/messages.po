@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-11-16 16:40\n"
+"PO-Revision-Date: 2023-11-17 17:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar\n"
@@ -205,7 +205,7 @@ msgid "Retrieving external resources"
 msgstr "استرجاع الموارد الخارجية"
 
 msgid "s"
-msgstr ""
+msgstr "s"
 
 msgid "Submit"
 msgstr "إرسال"
