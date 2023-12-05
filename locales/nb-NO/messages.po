@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-14 08:31\n"
+"PO-Revision-Date: 2023-12-05 14:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nb_NO\n"
@@ -39,7 +39,7 @@ msgid "Are you sure you want to delete the item"
 msgstr "Er du sikker på at du vil slette oppgaven"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Er du sikker på at du vil slette denne mappen og innholdet i den?"
+msgstr "Er du sikker på at du vil slette denne mappen og alt innholdet i den?"
 
 msgid "Are you sure you want to delete this item?"
 msgstr "Er du sikker på at du vil slette denne oppgaven?"
@@ -105,7 +105,7 @@ msgid "Failed retrieving %s"
 msgstr "Kunne ikke hente %s"
 
 msgid "Forbidden action"
-msgstr "Ugyldig handling"
+msgstr "Forbudt handling"
 
 #, tao-public
 msgid "Import"
@@ -199,7 +199,7 @@ msgid "Remove this message"
 msgstr "Fjern denne meldingen"
 
 msgid "Resource deleted"
-msgstr "Ressurs slettet"
+msgstr "Ressurs ble slettet"
 
 msgid "Retrieving external resources"
 msgstr "Henter eksterne ressurser"
@@ -238,7 +238,7 @@ msgid "Unable to create deployement directory"
 msgstr "Kan ikke opprette distribusjonskatalog"
 
 msgid "Unable to delete the selected resource"
-msgstr "Kan ikke slette den valgte ressursen"
+msgstr "Kan ikke slette den valgte filen"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan ikke gjengi oppgaven fra %s: %s %s"
@@ -250,7 +250,7 @@ msgid "Warning"
 msgstr "Advarsel"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr "som du prøver å slette er for stor og inneholder for mange undermapper."
+msgstr "du prøver å slette er for stor og inneholder for mange undermapper."
 
 msgid "You checked out this item %2s ago"
 msgstr "Du sjekket ut denne oppgaven for %2s siden"
