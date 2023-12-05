@@ -1,24 +1,31 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-06-07 09:19\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: fr-FR\n"
+"Language: fr\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: fr-FR\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 563\n"
+"Language-Team: French\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -63,12 +70,12 @@ msgstr "Modèle d'item"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Runtime"
-msgstr "Runtime"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Runtime"
-msgstr "Runtime"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -98,7 +105,7 @@ msgstr "Statut du modèle"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Stable"
-msgstr "Stable"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"

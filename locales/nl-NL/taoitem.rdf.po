@@ -1,24 +1,31 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-06-07 09:19\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: nl-NL\n"
+"Language: nl\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: nl-NL\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 563\n"
+"Language-Team: Dutch\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -58,7 +65,7 @@ msgstr "Item Modellen"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Model"
-msgstr "Item Model"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -138,7 +145,7 @@ msgstr "dit item is nog in ontwikkeling. U kunt het proberen en uw feedback geve
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -219,4 +226,59 @@ msgstr "Op papier gebaseerd pakket doel"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
 msgstr "Papier gebaseerd pakket doel"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deliverable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "itemmodel service"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Authoring"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Data File Name"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Stable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deprecated"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Development"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Experimental"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Status"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Items Manager"
+msgstr ""
 

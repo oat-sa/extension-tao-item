@@ -1,79 +1,86 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-06-07 09:19\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: pt-PT\n"
+"Language: pt\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: pt-PT\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: pt-PT\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 563\n"
+"Language-Team: Portuguese\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content"
-msgstr "Item Content"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content"
-msgstr "Item Content"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Original Filename"
-msgstr "Original Filename"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Original Filename"
-msgstr "Original Filename"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Models"
-msgstr "Item Models"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Models"
-msgstr "Item Models"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model"
-msgstr "Item Model"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Model"
-msgstr "Item Model"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Runtime"
-msgstr "Runtime"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Runtime"
-msgstr "Runtime"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "itemmodel service"
-msgstr "itemmodel service"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -83,7 +90,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Data File Name"
-msgstr "Data File Name"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -93,12 +100,12 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Model Status"
-msgstr "Model Status"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Stable"
-msgstr "Stable"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -108,7 +115,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deprecated"
-msgstr "Deprecated"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -118,7 +125,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Development"
-msgstr "Development"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -128,7 +135,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -138,7 +145,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -148,7 +155,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Items Manager"
-msgstr "Items Manager"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -183,7 +190,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deliverable"
-msgstr "Deliverable"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -193,32 +200,32 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Delivery Target"
-msgstr "Delivery Target"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Delivery Target"
-msgstr "Delivery Target"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Online Delivery Target"
-msgstr "Online Delivery Target"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Online Delivery Target"
-msgstr "Online Delivery Target"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Paper-based Delivery Target"
-msgstr "Paper-based Delivery Target"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
-msgstr "Paper-based Delivery Target"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -233,12 +240,12 @@ msgstr "service of the item model"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Authoring"
-msgstr "Authoring"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Authoring"
-msgstr "Authoring"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
