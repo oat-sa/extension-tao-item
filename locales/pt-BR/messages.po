@@ -1,23 +1,23 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-3x\n"
-"PO-Revision-Date: 2023-04-21 15:46\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-12-05 14:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: pt-BR\n"
+"Language: pt\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: pt-BR\n"
+"targetLanguage: en-US\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-3x\n"
-"X-Crowdin-Project-ID: 582145\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
 "X-Crowdin-Language: pt-BR\n"
-"X-Crowdin-File: /taoItems/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 1525\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
 "Language-Team: Portuguese, Brazilian\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
@@ -86,7 +86,7 @@ msgstr "Não mostrar isto novamente!"
 
 #, tao-public
 msgid "Duplicate"
-msgstr "Duplicate"
+msgstr "Duplicar"
 
 msgid "Edit Item"
 msgstr "Editar Item"
@@ -153,7 +153,7 @@ msgstr "Pré-visualização móvel"
 
 #, tao-public
 msgid "Move"
-msgstr "Mover-se"
+msgstr "Mover"
 
 #, tao-public
 msgid "Move To"
@@ -161,7 +161,7 @@ msgstr "Mover para"
 
 #, tao-public
 msgid "New class"
-msgstr "Nova classe"
+msgstr "Nova pasta"
 
 msgid "No item authoring tool available for the selected type of item: %s"
 msgstr "Nenhuma ferramenta de autoria de item disponível para o tipo selecionado de item: %s"
@@ -205,7 +205,7 @@ msgid "Retrieving external resources"
 msgstr "Recuperando recursos externos"
 
 msgid "s"
-msgstr "s"
+msgstr ""
 
 msgid "Submit"
 msgstr "submeter"

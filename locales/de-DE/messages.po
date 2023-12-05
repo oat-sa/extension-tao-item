@@ -1,48 +1,55 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-11-26 19:06\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: de-DE\n"
+"Language: de\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: de-DE\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: de\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: German\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr ""
+msgstr "<b>Hinweis</b>: Für leere Klassen ist das RDF-Format die einzige verfügbare Formatierung."
 
 msgid "Actual size"
 msgstr "Tatsächliche Größe"
 
 msgid "and"
-msgstr ""
+msgstr "und"
 
 msgid "and all of its content?"
-msgstr ""
+msgstr "und seinen gesamten Inhalt?"
 
 msgid "Are you sure you want to delete the class"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie die Klasse löschen möchten?"
 
 msgid "Are you sure you want to delete the item"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie das Element löschen möchten?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diese Klasse und all ihren Inhalt löschen möchten?"
 
 msgid "Are you sure you want to delete this item?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie dieses Element löschen möchten?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Verfassen"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Klassenschema gespeichert"
 
 msgid "Close"
 msgstr "Schließen"
@@ -51,11 +58,11 @@ msgid "Close console"
 msgstr "Konsole schließen"
 
 msgid "contains content that is currently in use."
-msgstr ""
+msgstr "enthält Inhalte, die derzeit in Verwendung sind."
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Kopieren nach"
 
 #, tao-public
 msgid "Create and design items and exercises."
@@ -66,10 +73,10 @@ msgid "Delete"
 msgstr "Löschen"
 
 msgid "Deleting this class will break the"
-msgstr ""
+msgstr "Das Löschen dieser Klasse unterbricht "
 
 msgid "Deleting this item will break the"
-msgstr ""
+msgstr "Das Löschen dieses Elements unterbricht "
 
 msgid "Desktop preview"
 msgstr "Desktop-Vorschau"
@@ -89,29 +96,29 @@ msgstr "Element bearbeiten"
 
 #, tao-public
 msgid "Export"
-msgstr "Exportieren"
+msgstr "Export"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Den Eigenschaftswert freigeben, um automatisierte Kategorien zu erstellen."
 
 msgid "Failed retrieving %s"
 msgstr "Fehler bei Abruf von %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Verbotene Aktion"
 
 #, tao-public
 msgid "Import"
 msgstr "Importieren"
 
 msgid "is currently in use."
-msgstr ""
+msgstr "wird derzeit verwendet."
 
 msgid "Item Model"
 msgstr "Element-Modell"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Element nicht gefunden"
 
 msgid "Item saved"
 msgstr "Element gespeichert"
@@ -128,10 +135,10 @@ msgid "Landscape"
 msgstr "Querformat"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Letztes Update vom %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Verwalten des Klassenschemas für Elemente"
 
 #, tao-public
 msgid "Manage items"
@@ -139,7 +146,7 @@ msgstr "Elemente verwalten"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Schema verwalten"
 
 msgid "Mobile preview"
 msgstr "Mobile Vorschau"
@@ -150,7 +157,7 @@ msgstr "Verschieben"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Bewegen nach"
 
 #, tao-public
 msgid "New class"
@@ -166,10 +173,10 @@ msgid "Not yet available"
 msgstr "Noch nicht verfügbar"
 
 msgid "other"
-msgstr ""
+msgstr "andere"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Bitte löschen Sie vorher die Unterklassen."
 
 msgid "Please select first the item type!"
 msgstr "Bitte zuerst den Element-Typ auswählen!"
@@ -192,34 +199,34 @@ msgid "Remove this message"
 msgstr "Diese Nachricht entfernen"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Ressource gelöscht"
 
 msgid "Retrieving external resources"
 msgstr "Externe Quellen abrufen"
 
 msgid "s"
-msgstr ""
+msgstr "s"
 
 msgid "Submit"
 msgstr "Absenden"
 
 msgid "test"
-msgstr ""
+msgstr "Test"
 
 msgid "The class"
-msgstr ""
+msgstr "Die Klasse"
 
 msgid "The file you tried to upload is not valid"
 msgstr "Die hochgeladene Datei ist ungültig"
 
 msgid "The item"
-msgstr ""
+msgstr "Das Element"
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "Das Element-Modul ermöglicht das Erstellen und Entwickeln von Elementen und Übungen."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "Die Eigenschaft ist zur Kategorieerweiterung freigegeben.&#13Exposition entfernen?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Diese Vorschau ist möglicherweise an ihren Bildschirm angepasst. Die endgültige Version kann davon abweichen."
@@ -231,19 +238,19 @@ msgid "Unable to create deployement directory"
 msgstr "Der Deployment-Ordner konnte nicht erstellt werden"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "Die ausgewählte Ressource kann nicht gelöscht werden"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "Das Element konnte nicht aus %s gerendert werden: %s %s"
 
 msgid "using it:"
-msgstr ""
+msgstr "verwenden:"
 
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "Das zu löschende Element ist zu groß und enthält zu viele Unterklassen."
 
 msgid "You checked out this item %2s ago"
 msgstr "Sie haben dieses Element vor %2s überprüft"
