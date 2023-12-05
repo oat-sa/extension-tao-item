@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-09-13 09:11\n"
+"PO-Revision-Date: 2023-12-05 14:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -62,7 +62,7 @@ msgstr ""
 
 #, tao-public
 msgid "Copy To"
-msgstr "コピー先"
+msgstr "指定コピー"
 
 #, tao-public
 msgid "Create and design items and exercises."
