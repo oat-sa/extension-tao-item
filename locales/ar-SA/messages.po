@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-11-25 18:27\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ar\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ar\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: Arabic\n"
+
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr "<b> ملاحظة </b> : بالنسبة للأقسام الفارغة ، فإن تنسيق RDF <br /> هو التنسيق الوحيد المتاح."
+
+msgid "Actual size"
+msgstr "الحجم الحالي"
+
+msgid "and"
+msgstr "و"
+
+msgid "and all of its content?"
+msgstr "وكل محتوياته?"
+
+msgid "Are you sure you want to delete the class"
+msgstr "هل أنت متأكد أنك تريد حذف القسم"
+
+msgid "Are you sure you want to delete the item"
+msgstr "هل أنت متأكد أنك تريد حذف القسم"
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr "هل أنت متأكد من أنك تريد حذف هذا القسم وكل محتواه؟"
+
+msgid "Are you sure you want to delete this item?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا البند?"
+
+#, tao-public
+msgid "Authoring"
+msgstr "التحرير"
+
+msgid "Class schema saved"
+msgstr "تم حفظ مخطط القسم"
+
+msgid "Close"
+msgstr "إغلاق"
+
+msgid "Close console"
+msgstr "إغلاق وحدة التحكم"
+
+msgid "contains content that is currently in use."
+msgstr "يحتوي على محتوى قيد الاستخدام حاليًا."
+
+#, tao-public
+msgid "Copy To"
+msgstr "نسخ الى"
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "إنشاء وتصميم العناصر والتمارين."
+
+#, tao-public
+msgid "Delete"
+msgstr "حذف"
+
+msgid "Deleting this class will break the"
+msgstr "سيؤدي حذف هذا القسم إلى تعطيل ملف"
+
+msgid "Deleting this item will break the"
+msgstr "سيؤدي حذف هذا البند إلى تعطيل ملف"
+
+msgid "Desktop preview"
+msgstr "معاينة سطح المكتب"
+
+msgid "Don’t show this again!"
+msgstr "لا تظهر هذا مرة أخرى!"
+
+#, tao-public
+msgid "Duplicate"
+msgstr "انسخ"
+
+msgid "Edit Item"
+msgstr "نشر بند"
+
+msgid "Edit item"
+msgstr "نشر بند"
+
+#, tao-public
+msgid "Export"
+msgstr "تصدير"
+
+msgid "Expose the property value to create automated categories."
+msgstr "كشف قيمة الخاصية لإنشاء فئات آلية."
+
+msgid "Failed retrieving %s"
+msgstr "فشل استرداد %s"
+
+msgid "Forbidden action"
+msgstr "إجراء محظور"
+
+#, tao-public
+msgid "Import"
+msgstr "استورد"
+
+msgid "is currently in use."
+msgstr "قيد الاستخدام حاليًا."
+
+msgid "Item Model"
+msgstr "نموذج البند"
+
+msgid "Item not found"
+msgstr "البند غير موجود"
+
+msgid "Item saved"
+msgstr "تم حفظ البند"
+
+#, tao-public
+msgid "Items"
+msgstr "بنود"
+
+#, tao-public
+msgid "Items library"
+msgstr "خزانة البنود"
+
+msgid "Landscape"
+msgstr "المناظر الطبيعيه"
+
+msgid "Last updated on %2s"
+msgstr "آخر تحديث في %2s"
+
+msgid "Manage item class schema"
+msgstr "إدارة مخطط فئة البند"
+
+#, tao-public
+msgid "Manage items"
+msgstr "إدارة البنود"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr "إدارة الخطاطة"
+
+msgid "Mobile preview"
+msgstr "معاينة المحمول"
+
+#, tao-public
+msgid "Move"
+msgstr "حرك"
+
+#, tao-public
+msgid "Move To"
+msgstr "حرك نحو"
+
+#, tao-public
+msgid "New class"
+msgstr "صنف جديد"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "لا تتوفر أداة تأليف بند على نوع البند المحدد: %s"
+
+msgid "No item type selected for the current item."
+msgstr "لم يتم تحديد نوع البند للبند الحالي."
+
+msgid "Not yet available"
+msgstr "لم تتوفر بعد"
+
+msgid "other"
+msgstr "آخر"
+
+msgid "Please delete the subclasses before."
+msgstr "يرجى حذف الفئات الفرعية قبلًا."
+
+msgid "Please select first the item type!"
+msgstr "الرجاء تحديد نوع البند أولاً!"
+
+msgid "Portrait"
+msgstr "صورة"
+
+#, tao-public
+msgid "Preview"
+msgstr "معاينة"
+
+#, tao-public
+msgid "Properties"
+msgstr "خصائص"
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr "تم نشر \"%1$s\" باللغة \"%2$s\""
+
+msgid "Remove this message"
+msgstr "قم بإزالة هذه الرسالة"
+
+msgid "Resource deleted"
+msgstr "تم حذف المورد"
+
+msgid "Retrieving external resources"
+msgstr "استرجاع الموارد الخارجية"
+
+msgid "s"
+msgstr "s"
+
+msgid "Submit"
+msgstr "إرسال"
+
+msgid "test"
+msgstr "رائز"
+
+msgid "The class"
+msgstr "القسم"
+
+msgid "The file you tried to upload is not valid"
+msgstr "الملف الذي حاولت تحميله غير مضبوط"
+
+msgid "The item"
+msgstr "البند"
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "تتيح مجزوءة البنود إنشاء وتصميم البنود والتمارين."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr "الخاصية معرضة للمساءلة الفئوية & # 13 هل تريد إزالة التعرض?"
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr "قد يتم تحجيم هذه المعاينة لتناسب شاشتك. قد يختلف العرض النهائي."
+
+msgid "Unable to copy resources for language %s"
+msgstr "تعذر نسخ الموارد للغة %s"
+
+msgid "Unable to create deployement directory"
+msgstr "تعذر إنشاء دليل النشر"
+
+msgid "Unable to delete the selected resource"
+msgstr "غير قادر على حذف المورد المختار"
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "تعذر تقديم البند من %s : %s %s"
+
+msgid "using it:"
+msgstr "استخدامه:"
+
+msgid "Warning"
+msgstr "تحذير"
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr "أنت تحاول حذفه وهو كبير جدا ويحتوي على الكثير من الفئات الفرعية."
+
+msgid "You checked out this item %2s ago"
+msgstr "لقد سحبت هذا البند قبل %2s"
+
+msgid "Your path contains error"
+msgstr "مسارك يحتوي على خطأ"
+

@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2023-12-05 14:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: pt-PT\n"
+"Language: pt\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: pt-PT\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: pt-PT\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: Portuguese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
@@ -79,7 +86,7 @@ msgstr ""
 
 #, tao-public
 msgid "Duplicate"
-msgstr "Duplicar"
+msgstr "Duplicado"
 
 msgid "Edit Item"
 msgstr "Editar Item"
@@ -89,7 +96,7 @@ msgstr "Editar item"
 
 #, tao-public
 msgid "Export"
-msgstr "Exportar"
+msgstr ""
 
 msgid "Expose the property value to create automated categories."
 msgstr ""
@@ -102,7 +109,7 @@ msgstr ""
 
 #, tao-public
 msgid "Import"
-msgstr "Importar"
+msgstr ""
 
 msgid "is currently in use."
 msgstr ""
@@ -118,7 +125,7 @@ msgstr "Item guardado"
 
 #, tao-public
 msgid "Items"
-msgstr "Items"
+msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -135,7 +142,7 @@ msgstr ""
 
 #, tao-public
 msgid "Manage items"
-msgstr "Gerir items"
+msgstr ""
 
 #, tao-public
 msgid "Manage Schema"
@@ -146,7 +153,7 @@ msgstr ""
 
 #, tao-public
 msgid "Move"
-msgstr ""
+msgstr "Mover"
 
 #, tao-public
 msgid "Move To"
@@ -179,7 +186,7 @@ msgstr ""
 
 #, tao-public
 msgid "Preview"
-msgstr "Prever"
+msgstr ""
 
 #, tao-public
 msgid "Properties"
