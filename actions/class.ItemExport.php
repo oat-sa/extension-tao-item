@@ -24,6 +24,9 @@
  *               2012-2018 (update and modification) Open Assessment Technologies SA;
  */
 
+use oat\tao\model\taskQueue\TaskLogActionTrait;
+use oat\taoItems\model\share\ItemSharingService;
+
 /**
  * This controller provide the actions to export items
  *
@@ -34,6 +37,8 @@
  */
 class taoItems_actions_ItemExport extends tao_actions_Export
 {
+    use TaskLogActionTrait;
+
     /**
      * overwrite the parent index to add the requiresRight for Items only
      *
@@ -44,6 +49,21 @@ class taoItems_actions_ItemExport extends tao_actions_Export
     public function index()
     {
         parent::index();
+    }
+
+    public function shareToTaoStudio()
+    {
+        try {
+            $this->getItemSharingService()->createTask(
+                $this->getPsrRequest()->getParsedBody()
+            );
+            $this->setData('message', __('Resources has been exported'));
+        } catch (Exception $e) {
+            $this->setData('errorMessage', __('You do not have the required rights to edit this resource.'));
+        }
+
+        $this->setView('form.tpl', 'tao');
+        $this->setData('reload', true);
     }
 
     protected function getAvailableExportHandlers(): array
@@ -119,5 +139,10 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         });
 
         return $resources;
+    }
+
+    private function getItemSharingService(): ItemSharingService
+    {
+        return $this->getServiceManager()->getContainer()->get(ItemSharingService::class);
     }
 }
