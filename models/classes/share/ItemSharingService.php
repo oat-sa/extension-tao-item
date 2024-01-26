@@ -22,82 +22,80 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\share;
 
-use core_kernel_classes_Resource as Resource;
+use common_exception_Error;
+use Exception;
 use InvalidArgumentException;
 use League\Flysystem\FilesystemInterface;
-use oat\generis\model\data\Ontology;
-use oat\generis\model\OntologyAwareTrait;
-use oat\oatbox\extension\AbstractAction;
+use common_report_Report as Report;
 use oat\oatbox\filesystem\FileSystemService;
-use oat\tao\helpers\FileHelperService;
-use oat\tao\model\taskQueue\QueueDispatcher;
-use oat\tao\model\taskQueue\Task\AbstractTask;
-use oat\tao\model\taskQueue\Task\TaskInterface;
-use oat\taoItems\model\share\task\ItemSharingTask;
 use oat\taoQtiItem\model\Export\QtiPackage22ExportHandler;
-use oat\taoQtiItem\model\Export\QTIPackedItem22Exporter;
-use tao_helpers_File as FileHelper;
+use oat\taoQtiItem\model\qti\exception\ExportException;
 
 class ItemSharingService
 {
-    use OntologyAwareTrait;
+    const PARAM_EXPORT_DATA = 'export_data';
+    const LABEL = 'label';
+    const INSTANCES = 'instances';
+    const DESTINATION = 'destination';
+    const FILENAME = 'filename';
+    const RESOURCE_URI = 'uri';
+    const REMOTE_QTI_ITEM_FILESYSTEM_ID = 'remoteQTIItemFilesystem';
+    const SHARED_QTI_ITEMS_PATH = 'shared/qti-items/';
+    private $exportHandler;
+    private $fileSystem;
 
-    private $queueDispatcher;
-    private $ontology;
-    private $fileHelperService;
-    public function __construct(
-        QueueDispatcher $queueDispatcher,
-        Ontology $ontology,
-        FileHelperService $fileHelperService,
-    )
+    public function __construct(QtiPackage22ExportHandler $exportHandler, FileSystemService $fileSystem)
     {
-        $this->queueDispatcher = $queueDispatcher;
-        $this->ontology = $ontology;
-        $this->fileHelperService = $fileHelperService;
+        $this->exportHandler = $exportHandler;
+        $this->fileSystem = $fileSystem;
     }
 
-    public function createTask(array $parsedBody): void
+    /**
+     * @throws common_exception_Error
+     * @throws Exception
+     */
+    public function shareItems(array $params): Report
     {
-        $label = $this->getResource($parsedBody['id'])->getLabel();
-        $this->queueDispatcher->createTask(
-            new ItemSharingTask(),
-            [
-                ItemSharingTask::PARAM_EXPORT_DATA => [
-                    ItemSharingTask::LABEL => $label,
-                    ItemSharingTask::INSTANCES => $this->getContentToShare($parsedBody),
-                    ItemSharingTask::DESTINATION => $this->fileHelperService->createTempDir(),
-                    ItemSharingTask::FILENAME => FileHelper::getSafeFileName($parsedBody['id']),
-                    ItemSharingTask::RESOURCE_URI => $parsedBody['id']
-                ],
-            ],
-            sprintf('Sharing resource %s', $label)
+        $this->validateParams($params);
+        $report = $this->exportHandler->export(
+            $params[self::PARAM_EXPORT_DATA],
+            $params[self::PARAM_EXPORT_DATA][self::DESTINATION]
         );
-    }
 
-    private function getContentToShare(array $reqParsedBody): array
+        $this->savePackageExternally(
+            self::SHARED_QTI_ITEMS_PATH . $params[self::PARAM_EXPORT_DATA][self::FILENAME],
+            $report->getData()
+        );
+
+        return $report;
+    }
+    private function savePackageExternally(string $path, string $qtiPackage): void
     {
-        if (!isset($reqParsedBody['id'])) {
-            throw new InvalidArgumentException;
+        if (!$this->getFileSystem()->putStream($path, fopen($qtiPackage, 'r'))) {
+            throw new Exception('Could not save the package externally');
         }
-
-        return $this->getNestedItemsRecursive(
-            $this->ontology->getResource($reqParsedBody['id'])
-        );
     }
 
-    private function getNestedItemsRecursive(Resource $resource): array
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function validateParams($params): void
     {
-        if ($resource->isClass() === false) {
-            return [
-                $resource->getUri()
-            ];
+        if (
+            !isset($params[self::PARAM_EXPORT_DATA])
+            || !is_array($params[self::PARAM_EXPORT_DATA])
+            || !isset($params[self::PARAM_EXPORT_DATA][self::LABEL])
+            || !isset($params[self::PARAM_EXPORT_DATA][self::INSTANCES])
+            || !isset($params[self::PARAM_EXPORT_DATA][self::DESTINATION])
+            || !isset($params[self::PARAM_EXPORT_DATA][self::FILENAME])
+            || !isset($params[self::PARAM_EXPORT_DATA][self::RESOURCE_URI])
+        ) {
+            throw new InvalidArgumentException('Please provide correct export data');
         }
+    }
 
-        return array_column(
-            array_filter($resource->getNestedResources(), function ($item) {
-                return $item['isclass'] === 0;
-            }),
-            'id'
-        );
+    private function getFileSystem(): FilesystemInterface
+    {
+        return $this->fileSystem->getFileSystem(self::REMOTE_QTI_ITEM_FILESYSTEM_ID);
     }
 }

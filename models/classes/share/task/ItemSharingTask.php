@@ -23,73 +23,36 @@ declare(strict_types=1);
 namespace oat\taoItems\model\share\task;
 
 use Exception;
-use League\Flysystem\FilesystemInterface;
+use InvalidArgumentException;
 use oat\oatbox\extension\AbstractAction;
-use oat\oatbox\filesystem\FileSystemService;
-use oat\tao\model\taskQueue\TaskLogActionTrait;
-use oat\taoQtiItem\model\Export\QtiPackage22ExportHandler;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-
+use oat\oatbox\reporting\Report;
+use oat\taoItems\model\share\ItemSharingService;
 class ItemSharingTask extends AbstractAction
 {
-    use ContainerAwareTrait;
-
-    const PARAM_EXPORT_DATA = 'export_data';
-    const LABEL = 'label';
-    const INSTANCES = 'instances';
-    const DESTINATION = 'destination';
-    const FILENAME = 'filename';
-    const RESOURCE_URI = 'uri';
-    const REMOTE_QTI_ITEM_FILESYSTEM_ID = 'remoteQTIItemFilesystem';
-    const SHARED_QTI_ITEMS_PATH = 'shared/qti-items/';
-
     public function __invoke($params)
     {
+        $report = new Report(Report::TYPE_INFO, __('Resource(s) sharing started'));
+
         try {
-            $report = $this->getExporter()->export(
-                $params[self::PARAM_EXPORT_DATA],
-                $params[self::PARAM_EXPORT_DATA][self::DESTINATION]
+            $report->add(
+                $this->getServiceManager()
+                    ->getContainer()
+                    ->get(ItemSharingService::class)
+                    ->shareItems($params)
             );
-
-            $this->savePackageExternally(
-                self::SHARED_QTI_ITEMS_PATH . $params[self::PARAM_EXPORT_DATA][self::FILENAME],
-                $report->getData()
+            $report->setMessage(__('Resource(s) sharing finished'));
+        } catch (InvalidArgumentException $exception) {
+            $report->add(
+                $report::createError($exception->getMessage(), $exception)
             );
-
-            $report->setMessage(__('Resource(s) successfully shared.'));
-
+            $this->getLogger()->error($exception->getMessage());
         } catch (Exception $exception) {
-
+            $report->add(
+                $report::createError($exception->getMessage(), $exception)
+            );
+            $this->getLogger()->error($exception->getMessage());
         }
 
         return $report;
-    }
-
-    protected function getExporter(): QtiPackage22ExportHandler
-    {
-        return new QtiPackage22ExportHandler();
-    }
-
-    /**
-     * @return object|null
-     */
-    private function getFileSystem(): FilesystemInterface
-    {
-        return $this->getServiceManager()
-            ->getContainer()
-            ->get(FileSystemService::SERVICE_ID)
-            ->getFileSystem(self::REMOTE_QTI_ITEM_FILESYSTEM_ID);
-    }
-
-    private function savePackageExternally(string $path, string $qtiPackage): void
-    {
-        if (!$this->getFileSystem()->putStream($path, fopen($qtiPackage, 'r'))) {
-            throw new Exception('Could not save the package externally');
-        }
-    }
-
-    private function getExternalPath(): string
-    {
-        return sprintf(self::SHARED_QTI_ITEMS_PATH);
     }
 }

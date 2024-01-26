@@ -25,7 +25,7 @@
  */
 
 use oat\tao\model\taskQueue\TaskLogActionTrait;
-use oat\taoItems\model\share\ItemSharingService;
+use oat\taoItems\model\share\ItemSharingTaskCreator;
 
 /**
  * This controller provide the actions to export items
@@ -57,9 +57,9 @@ class taoItems_actions_ItemExport extends tao_actions_Export
             $this->getItemSharingService()->createTask(
                 $this->getPsrRequest()->getParsedBody()
             );
-            $this->setData('message', __('Resources has been exported'));
+            $this->setData('message', __('Items are being shared to Tao Studio'));
         } catch (Exception $e) {
-            $this->setData('errorMessage', __('You do not have the required rights to edit this resource.'));
+            $this->setData('errorMessage', __($e->getMessage()));
         }
 
         $this->setView('form.tpl', 'tao');
@@ -141,8 +141,8 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         return $resources;
     }
 
-    private function getItemSharingService(): ItemSharingService
+    private function getItemSharingService(): ItemSharingTaskCreator
     {
-        return $this->getServiceManager()->getContainer()->get(ItemSharingService::class);
+        return $this->getServiceManager()->getContainer()->get(ItemSharingTaskCreator::class);
     }
 }

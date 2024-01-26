@@ -28,7 +28,6 @@ use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\helpers\FileHelperService;
 use oat\tao\model\taskQueue\QueueDispatcher;
 use oat\taoQtiItem\model\Export\QtiPackage22ExportHandler;
-use oat\taoQtiItem\model\Export\QTIPackedItem22Exporter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -39,13 +38,27 @@ class ItemShareServiceProvider implements ContainerServiceProviderInterface
         $services = $configurator->services();
 
         $services
-            ->set(ItemSharingService::class, ItemSharingService::class)
+            ->set(QtiPackage22ExportHandler::class, QtiPackage22ExportHandler::class)
+            ->public();
+
+        $services
+            ->set(ItemSharingTaskCreator::class, ItemSharingTaskCreator::class)
             ->public()
             ->args(
                 [
                     service(QueueDispatcher::class),
                     service(Ontology::SERVICE_ID),
-                    service(FileHelperService::class),
+                    service(FileHelperService::class)
+                ]
+            );
+
+        $services
+            ->set(ItemSharingService::class, ItemSharingService::class)
+            ->public()
+            ->args(
+                [
+                    service(QtiPackage22ExportHandler::class),
+                    service(FileSystemService::SERVICE_ID)
                 ]
             );
     }
