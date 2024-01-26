@@ -63,7 +63,7 @@ class ItemSharingService
         );
 
         $this->savePackageExternally(
-            self::SHARED_QTI_ITEMS_PATH . $params[self::PARAM_EXPORT_DATA][self::FILENAME],
+            self::SHARED_QTI_ITEMS_PATH . $params[self::PARAM_EXPORT_DATA][self::FILENAME] . '.zip',
             $report->getData()
         );
 
