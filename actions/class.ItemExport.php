@@ -37,8 +37,6 @@ use oat\taoItems\model\share\ItemSharingTaskCreator;
  */
 class taoItems_actions_ItemExport extends tao_actions_Export
 {
-    use TaskLogActionTrait;
-
     /**
      * overwrite the parent index to add the requiresRight for Items only
      *
