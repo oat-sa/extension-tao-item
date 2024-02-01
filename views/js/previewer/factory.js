@@ -19,14 +19,12 @@
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
 define([
-    'lodash',
     'context',
     'module',
     'core/providerLoader',
     'core/providerRegistry',
     'taoItems/previewer/adapter/legacy'
 ], function (
-    _,
     context,
     module,
     providerLoaderFactory,
@@ -47,13 +45,13 @@ define([
      * @returns {Promise}
      */
     function previewerFactory(type, uri, state, config) {
-        config = _.defaults(config || {}, module.config());
+        config = Object.assign({}, module.config(), config || {});
         return providerLoaderFactory()
             .addList(config.previewers)
             .load(context.bundle)
             .then(function (providers) {
                 previewerFactory.registerProvider(legacyPreviewer.name, legacyPreviewer);
-                _.forEach(providers, function (provider) {
+                providers.forEach(provider => {
                     previewerFactory.registerProvider(provider.name, provider);
                 });
             })
@@ -66,7 +64,7 @@ define([
     }
 
     return providerRegistry(previewerFactory, function validateProvider(provider) {
-        if (!_.isFunction(provider.init)) {
+        if (typeof provider.init !== 'function') {
             throw new TypeError('The previewer provider MUST have a init() method');
         }
         return true;

@@ -22,12 +22,11 @@
  * @author Bertrand Chevrier <bertrand@taotesting.com>
  */
 define([
-    'lodash',
     'i18n',
     'util/url',
     'core/dataProvider/request',
     'core/promise'
-], function( _, __, url, request, Promise){
+], function(__, url, request, Promise){
     'use strict';
 
     /**
@@ -51,7 +50,7 @@ define([
      */
     return function categoryProviderFactory(config){
 
-        config = _.defaults(config || {}, defaultConfig);
+        config = Object.assign({}, defaultConfig, config || {});
 
         /**
          * @typedef {categoryProvider}
@@ -66,7 +65,7 @@ define([
             getExposedsByClass: function getExposedsByClass(id){
                 return new Promise(function(resolve, reject){
 
-                    if(_.isEmpty(id)){
+                    if(!id){
                         return reject(new TypeError('The class URI must be provided in the id parameter'));
                     }
 
@@ -83,10 +82,10 @@ define([
             setExposed : function setExposed(id, exposed){
                 return new Promise(function(resolve, reject){
 
-                    if(_.isEmpty(id)){
+                    if(!id) {
                         return reject(new TypeError('The property URI must be provided in the id parameter'));
                     }
-                    if(!_.isBoolean(exposed)){
+                    if (typeof exposed !== "boolean") {
                         return reject(new TypeError('The exposed value is required.'));
                     }
 
