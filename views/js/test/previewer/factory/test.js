@@ -19,12 +19,10 @@
  * @author Jean-Sébastien Conan <jean-sebastien@taotesting.com>
  */
 define([
-
     'jquery',
-    'lodash',
     'core/promise',
     'taoItems/previewer/factory'
-], function($, _, Promise, previewerFactory) {
+], function($, Promise, previewerFactory) {
     'use strict';
 
     QUnit.module('factory', {
