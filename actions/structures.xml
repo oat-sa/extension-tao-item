@@ -54,6 +54,9 @@
                     <action id="item-export" name="Export" url="/taoItems/ItemExport/index" context="resource" group="tree">
                         <icon id="icon-export"/>
                     </action>
+                    <action id="item-share" name="Share" url="/taoItems/ItemExport/shareToTaoStudio" context="resource" group="tree">
+                        <icon id="icon-export"/>
+                    </action>
                     <action id="item-duplicate" name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
                         <icon id="icon-copy"/>
                     </action>

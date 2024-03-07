@@ -26,6 +26,7 @@
 
 use oat\tao\model\user\TaoRoles;
 use oat\taoBackOffice\controller\Lists;
+use oat\taoItems\model\share\ItemShareServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
@@ -247,5 +248,6 @@ return [
     ],
     'containerServiceProviders' => [
         CopierServiceProvider::class,
+        ItemShareServiceProvider::class
     ],
 ];
