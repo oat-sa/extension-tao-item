@@ -18,6 +18,7 @@
  */
 
 use oat\tao\model\routing\AnnotationReader\security;
+use oat\taoItems\model\search\ItemClassListService;
 
 /**
  *
@@ -34,6 +35,17 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
         parent::__construct();
         //The service taht implements or inherits get/getAll/getRootClass ... for that particular type of resources
         $this->service = taoItems_models_classes_CrudItemsService::singleton();
+    }
+
+    public function getItemClasses()
+    {
+
+           $this->returnJson(
+            $this->getItemClassListService()->getList(
+                $this->getGetParameter('q'),
+                $this->getGetParameter('page')
+            )
+        );
     }
 
     /**
@@ -61,5 +73,10 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
         */
 
         ];
+    }
+
+    private function getItemClassListService(): ItemClassListService
+    {
+        return $this->getServiceManager()->getContainer()->get(ItemClassListService::class);
     }
 }

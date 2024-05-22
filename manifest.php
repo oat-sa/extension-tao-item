@@ -26,6 +26,8 @@
 
 use oat\tao\model\user\TaoRoles;
 use oat\taoBackOffice\controller\Lists;
+use oat\taoItems\model\search\ItemClassListService;
+use oat\taoItems\model\search\ItemClassListServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
@@ -202,6 +204,11 @@ return [
         ],
         [
             AccessRule::GRANT,
+            TaoItemsRoles::ITEM_IMPORTER,
+            ['ext' => 'taoItems', 'mod' => 'RestItem', 'act' => 'getItemClasses'],
+        ],
+        [
+            AccessRule::GRANT,
             TaoItemsRoles::ITEM_DELETER,
             ['ext' => 'taoItems', 'mod' => 'Items', 'act' => 'deleteItem'],
         ],
@@ -247,5 +254,6 @@ return [
     ],
     'containerServiceProviders' => [
         CopierServiceProvider::class,
+        ItemClassListServiceProvider::class
     ],
 ];
