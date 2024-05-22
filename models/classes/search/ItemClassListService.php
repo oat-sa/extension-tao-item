@@ -22,12 +22,10 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\search;
 
-use common_persistence_Manager;
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
-use oat\generis\persistence\PersistenceManager;
 use oat\tao\model\TaoOntology;
 
 class ItemClassListService
