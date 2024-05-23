@@ -30,7 +30,7 @@ use oat\tao\model\TaoOntology;
 
 class ItemClassListService
 {
-    const CLASS_LIST_LIMIT = 10;
+    private const CLASS_LIST_LIMIT = 10;
     private ComplexSearchService $complexSearchService;
     private Ontology $ontology;
     public function __construct(ComplexSearchService $complexSearchService, Ontology $ontology)
@@ -96,5 +96,4 @@ class ItemClassListService
             ]
         );
     }
-
 }
