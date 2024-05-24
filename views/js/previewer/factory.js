@@ -44,8 +44,8 @@ define([
      * @param {Object} [config.previewers] - Optionally load static adapters. By default take them from the module's config.
      * @returns {Promise}
      */
-    function previewerFactory(type, uri, state, config) {
-        config = Object.assign({}, module.config(), config || {});
+    function previewerFactory(type, uri, state, config = {}) {
+        Object.assign(config, module.config());
         return providerLoaderFactory()
             .addList(config.previewers)
             .load(context.bundle)
