@@ -161,7 +161,6 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
 
     public function getItemClasses()
     {
-
         $this->returnJson(
             $this->getItemClassListService()->getList(
                 $this->getGetParameter('q'),

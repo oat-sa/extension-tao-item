@@ -35,6 +35,7 @@ class taoItems_actions_RestItems extends tao_actions_CommonRestModule
         //The service taht implements or inherits get/getAll/getRootClass ... for that particular type of resources
         $this->service = taoItems_models_classes_CrudItemsService::singleton();
     }
+
     /**
      * Optionnaly a specific rest controller may declare
      * aliases for parameters used for the rest communication
