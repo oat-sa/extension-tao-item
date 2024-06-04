@@ -24,6 +24,7 @@
  */
 
 use oat\generis\model\OntologyRdfs;
+use oat\taoItems\model\search\ItemClassListService;
 use tao_helpers_form_FormContainer as FormContainer;
 
 /**
@@ -158,11 +159,26 @@ class taoItems_actions_SaSItems extends taoItems_actions_Items
         $this->setView('view.tpl');
     }
 
+    public function getItemClasses()
+    {
+        $this->returnJson(
+            $this->getItemClassListService()->getList(
+                $this->getGetParameter('q'),
+                $this->getGetParameter('page')
+            )
+        );
+    }
+
     /**
      * Load the standalone mode
      */
     protected function loadStandaloneMode()
     {
         tao_helpers_Context::load('STANDALONE_MODE');
+    }
+
+    private function getItemClassListService(): ItemClassListService
+    {
+        return $this->getServiceManager()->getContainer()->get(ItemClassListService::class);
     }
 }
