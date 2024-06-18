@@ -161,7 +161,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $formatter->withBody(['error' => $e->getMessage()]);
         } catch (common_Exception $e) {
             $this->logWarning($e->getMessage());
-            $formatter->withBody(['error' => _('Unable to upload file')]);
+            $formatter->withBody(['error' => __('Unable to upload file')]);
         }
 
         $this->setResponse($formatter->format($this->getPsrResponse()));
