@@ -1,0 +1,262 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 2024.06\n"
+"PO-Revision-Date: 2024-06-04T10:47:25\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: en-US\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
+msgstr ""
+
+msgid "Actual size"
+msgstr ""
+
+msgid "and"
+msgstr ""
+
+msgid "and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr "Are you sure you want to delete the folder %s and all of its content?"
+
+msgid "Are you sure you want to delete the item"
+msgstr "Are you sure you want to delete the question"
+
+msgid "Are you sure you want to delete the item %s?"
+msgstr "Are you sure you want to delete the question %s?"
+
+msgid "Are you sure you want to delete this class and all of its content?"
+msgstr ""
+
+msgid "Are you sure you want to delete this item?"
+msgstr "Are you sure you want to delete this question?"
+
+#, tao-public
+msgid "Authoring"
+msgstr ""
+
+msgid "Class schema saved"
+msgstr "Folder metadata schema saved"
+
+msgid "Close"
+msgstr ""
+
+msgid "Close console"
+msgstr ""
+
+msgid "contains content that is currently in use."
+msgstr ""
+
+#, tao-public
+msgid "Copy To"
+msgstr ""
+
+#, tao-public
+msgid "Create and design items and exercises."
+msgstr "Create and design questions and exercises."
+
+#, tao-public
+msgid "Delete"
+msgstr ""
+
+msgid "Deleting this class will break the"
+msgstr ""
+
+msgid "Deleting this item will break the"
+msgstr "Deleting this question will break the"
+
+msgid "Desktop preview"
+msgstr ""
+
+msgid "Don’t show this again!"
+msgstr ""
+
+#, tao-public
+msgid "Duplicate"
+msgstr ""
+
+msgid "Edit Item"
+msgstr "Edit Question"
+
+msgid "Edit item"
+msgstr "Edit question"
+
+#, tao-public
+msgid "Export"
+msgstr ""
+
+msgid "Expose the property value to create automated categories."
+msgstr ""
+
+msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Forbidden action"
+msgstr ""
+
+#, tao-public
+msgid "Import"
+msgstr ""
+
+msgid "is currently in use."
+msgstr ""
+
+msgid "Item Model"
+msgstr "Question Model"
+
+msgid "Item not found"
+msgstr "Question not found"
+
+msgid "Item saved"
+msgstr "Question saved"
+
+#, tao-public
+msgid "Items"
+msgstr "Questions"
+
+#, tao-public
+msgid "Items library"
+msgstr "Questions library"
+
+msgid "Landscape"
+msgstr ""
+
+msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Manage item class schema"
+msgstr "Manage question folder metadata schema"
+
+#, tao-public
+msgid "Manage items"
+msgstr "Manage questions"
+
+#, tao-public
+msgid "Manage Schema"
+msgstr ""
+
+msgid "Mobile preview"
+msgstr ""
+
+#, tao-public
+msgid "Move"
+msgstr ""
+
+#, tao-public
+msgid "Move To"
+msgstr ""
+
+#, tao-public
+msgid "New class"
+msgstr "New Folder"
+
+msgid "No item authoring tool available for the selected type of item: %s"
+msgstr "No question authoring tool available for the selected type of question: %s"
+
+msgid "No item type selected for the current item."
+msgstr "No question type selected for the current question."
+
+msgid "Not yet available"
+msgstr ""
+
+msgid "other"
+msgstr ""
+
+msgid "Please delete the subclasses before."
+msgstr ""
+
+msgid "Please select first the item type!"
+msgstr "Please select first the question type!"
+
+msgid "Portrait"
+msgstr ""
+
+#, tao-public
+msgid "Preview"
+msgstr ""
+
+#, tao-public
+msgid "Properties"
+msgstr ""
+
+msgid "Published \"%1$s\" in language \"%2$s"
+msgstr ""
+
+msgid "Remove this message"
+msgstr ""
+
+msgid "Resource deleted"
+msgstr ""
+
+msgid "Retrieving external resources"
+msgstr ""
+
+msgid "s"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "test"
+msgstr ""
+
+msgid "The class"
+msgstr ""
+
+msgid "The file you tried to upload is not valid"
+msgstr ""
+
+msgid "The item"
+msgstr "The question"
+
+msgid "The Items module enables the creation and design of items and exercises."
+msgstr "The Questions module enables the creation and design of questions and exercises."
+
+msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr ""
+
+msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr ""
+
+msgid "Unable to copy resources for language %s"
+msgstr ""
+
+msgid "Unable to create deployement directory"
+msgstr ""
+
+msgid "Unable to delete the selected resource"
+msgstr ""
+
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
+msgid "Unable to render the item from %s : %s %s"
+msgstr "Unable to render the question from %s : %s %s"
+
+msgid "using it:"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "you are trying to delete is too large and contains too many subclasses."
+msgstr ""
+
+msgid "You checked out this item %2s ago"
+msgstr "You checked out this question %2s ago"
+
+msgid "Your path contains error"
+msgstr ""
+
