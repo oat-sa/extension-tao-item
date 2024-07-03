@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014-2019 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2024 (original work) Open Assessment Technologies SA;
  */
 define([
     'jquery',
@@ -37,12 +37,20 @@ function($, __, module, actions, lock, section){
         start() {
             const config = module.config();
 
-            const previewAction = actions.getBy('item-preview');
-            const authoringAction = actions.getBy('item-authoring');
-
-            if(previewAction){
-                previewAction.state.disabled = !config.isPreviewEnabled;
+            const getPreviewId = idx => `item-preview${idx ? `-${idx}` : ''}`;
+            const previewActions = []
+            for (let i = 0; i < 10; i++) {
+                const action = actions.getBy(getPreviewId(i));
+                if (!action) {
+                    break;
+                }
+                previewActions.push(action);
             }
+            previewActions.forEach(previewAction => {
+                previewAction.state.disabled = !config.isPreviewEnabled;
+            })
+
+            const authoringAction = actions.getBy('item-authoring');
             if(authoringAction){
                 authoringAction.state.disabled = !config.isAuthoringEnabled;
             }
