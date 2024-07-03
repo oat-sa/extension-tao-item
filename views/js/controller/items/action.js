@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 - 2019 (original work) Open Assessment Techniologies SA
+ * Copyright (c) 2014 - 2024 (original work) Open Assessment Techniologies SA
  *
  */
 define([
@@ -68,8 +68,17 @@ define([
             fullPage: true,
             pluginsOptions: config.pluginsOptions
         }, _.isUndefined);
-
-        previewerFactory(config.provider, config.uri, config.state, previewerConfig);
+        const getProvider = id => {
+            if (!id || !config.providers) {
+                return config.provider
+            }
+            const previewerId = parseInt(`${id}`.split('-').pop(), 10) || 0;
+            if (!config.providers[previewerId]) {
+                return config.provider;
+            }
+            return config.providers[previewerId].id;
+        };
+        previewerFactory(getProvider(this.id) || 'qtiItem', config.uri, config.state, previewerConfig);
     });
 
     binder.register('deleteItem', function (actionContext) {
