@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 - 2019 (original work) Open Assessment Techniologies SA
+ * Copyright (c) 2014 - 2024 (original work) Open Assessment Technologies SA
  *
  */
 define([
@@ -34,7 +34,7 @@ define([
     'tpl!taoItems/controller/items/tpl/relatedTestsPopup',
     'tpl!taoItems/controller/items/tpl/relatedClassTestsPopup',
     'tpl!taoItems/controller/items/tpl/forbiddenClassAction',
-    'css!taoItems/controller/items/css/relatedTestsPopup.css',
+    'css!taoItems/controller/items/css/relatedTestsPopup.css'
 ], function (
     _,
     $,
@@ -63,13 +63,25 @@ define([
             uri: actionContext.id
         };
         const config = _.merge(defaultConfig, module.config());
-        const previewerConfig = _.omit({
-            readOnly: false,
-            fullPage: true,
-            pluginsOptions: config.pluginsOptions
-        }, _.isUndefined);
-
-        previewerFactory(config.provider, config.uri, config.state, previewerConfig);
+        const previewerConfig = _.omit(
+            {
+                readOnly: false,
+                fullPage: true,
+                pluginsOptions: config.pluginsOptions
+            },
+            _.isUndefined
+        );
+        const getProvider = id => {
+            if (!id || !config.providers) {
+                return config.provider;
+            }
+            const previewerId = parseInt(`${id}`.split('-').pop(), 10) || 0;
+            if (!config.providers[previewerId]) {
+                return config.provider;
+            }
+            return config.providers[previewerId].id;
+        };
+        previewerFactory(getProvider(this.id) || 'qtiItem', config.uri, config.state, previewerConfig);
     });
 
     binder.register('deleteItem', function (actionContext) {
@@ -77,8 +89,7 @@ define([
             checkRelations({
                 sourceId: actionContext.id,
                 type: 'item'
-            })
-            .then((responseRelated) => {
+            }).then(responseRelated => {
                 const relatedTests = responseRelated.data.relations;
                 const name = prepareName($('a.clicked', actionContext.tree).text().trim());
                 if (relatedTests.length === 0) {
@@ -94,8 +105,8 @@ define([
                             number: relatedTests.length,
                             numberOther: relatedTests.length - 3 > 0 ? relatedTests.length - 3 : 0,
                             tests: relatedTests.length <= 3 ? relatedTests : relatedTests.slice(0, 3),
-                            multiple:  relatedTests.length > 1,
-                            multipleOthers: relatedTests.length - 3 > 1,
+                            multiple: relatedTests.length > 1,
+                            multipleOthers: relatedTests.length - 3 > 1
                         }),
                         () => accept(actionContext, this.url, resolve, reject),
                         () => cancel(reject)
@@ -111,38 +122,38 @@ define([
                 classId: actionContext.id,
                 type: 'item'
             })
-            .then((responseRelated) => {
-                const relatedTests = responseRelated.data.relations;
-                const name = prepareName($('a.clicked', actionContext.tree).text().trim());
-                if (relatedTests.length === 0) {
-                    confirmDeleteDialog(
-                        __('Are you sure you want to delete the class %s and all of its content?', `<b>${name}</b>`),
-                        () => accept(actionContext, this.url, resolve, reject),
-                        () => cancel(reject)
-                    );
-                } else {
-                    confirmDeleteDialog(
-                        relatedClassTestsPopupTpl({
-                            name,
-                            number: relatedTests.length,
-                            numberOther: relatedTests.length - 3 > 0 ? relatedTests.length - 3 : 0,
-                            tests: relatedTests.length <= 3 ? relatedTests : relatedTests.slice(0, 3),
-                            multiple:  relatedTests.length > 1,
-                            multipleOthers: relatedTests.length - 3 > 1,
-                        }),
-                        () => accept(actionContext, this.url, resolve, reject),
-                        () => cancel(reject)
-                    );
-                }
-            })
-            .catch(errorObject => {
-                if (errorObject.response.code === 999) {
-                    alertDialog(
-                        forbiddenClassActionTpl(),
-                        () => cancel(reject)
-                    );
-                }
-            });
+                .then(responseRelated => {
+                    const relatedTests = responseRelated.data.relations;
+                    const name = prepareName($('a.clicked', actionContext.tree).text().trim());
+                    if (relatedTests.length === 0) {
+                        confirmDeleteDialog(
+                            __(
+                                'Are you sure you want to delete the class %s and all of its content?',
+                                `<b>${name}</b>`
+                            ),
+                            () => accept(actionContext, this.url, resolve, reject),
+                            () => cancel(reject)
+                        );
+                    } else {
+                        confirmDeleteDialog(
+                            relatedClassTestsPopupTpl({
+                                name,
+                                number: relatedTests.length,
+                                numberOther: relatedTests.length - 3 > 0 ? relatedTests.length - 3 : 0,
+                                tests: relatedTests.length <= 3 ? relatedTests : relatedTests.slice(0, 3),
+                                multiple: relatedTests.length > 1,
+                                multipleOthers: relatedTests.length - 3 > 1
+                            }),
+                            () => accept(actionContext, this.url, resolve, reject),
+                            () => cancel(reject)
+                        );
+                    }
+                })
+                .catch(errorObject => {
+                    if (errorObject.response.code === 999) {
+                        alertDialog(forbiddenClassActionTpl(), () => cancel(reject));
+                    }
+                });
         });
     });
 
@@ -183,14 +194,16 @@ define([
             } else {
                 if (response.success && !response.deleted) {
                     $(actionContext.tree).trigger('refresh.taotree');
-                    reject(response.msg
-                           || response.message
-                           || __('Unable to delete the selected resource because you do not have the required rights to delete part of its content.'));
+                    reject(
+                        response.msg ||
+                            response.message ||
+                            __(
+                                'Unable to delete the selected resource because you do not have the required rights to delete part of its content.'
+                            )
+                    );
                 }
 
-                reject(response.msg
-                       || response.message
-                       || __('Unable to delete the selected resource'));
+                reject(response.msg || response.message || __('Unable to delete the selected resource'));
             }
         });
     }
