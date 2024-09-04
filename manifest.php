@@ -227,6 +227,14 @@ return [
             TaoItemsRoles::RESTRICTED_ITEM_AUTHOR,
             ['ext' => 'taoItems', 'mod' => 'ItemExport']
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_TRANSLATOR,
+            [
+                'ext' => 'taoItems',
+                'mod' => 'Translation'
+            ]
+        ]
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
