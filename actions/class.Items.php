@@ -185,6 +185,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                             $this->getDependsOnPropertyValidator(),
                         ],
                     ],
+                    FormContainer::FORM_MODIFIERS => [
+                        'tao.form_modifier.edit_translation_instance',
+                        'tao_qti_item.form_modifier.edit_translation_instance',
+                    ],
                 ]
             );
             $myForm = $formContainer->getForm();
