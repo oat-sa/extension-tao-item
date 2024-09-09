@@ -8,11 +8,12 @@ use Doctrine\DBAL\Schema\Schema;
 use oat\oatbox\reporting\Report;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\accessControl\func\AclProxy;
+use oat\tao\model\menu\SectionVisibilityFilter;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\user\TaoItemsRoles;
 
-final class Version202409040743452140_taoItems extends AbstractMigration
+final class Version202409050743452141_taoItems extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,6 +27,22 @@ final class Version202409040743452140_taoItems extends AbstractMigration
         AclProxy::applyRule($this->getRule());
         
         $this->addReport(Report::createSuccess('Applied rules for role ' . TaoItemsRoles::ITEM_TRANSLATOR));
+
+        /** @var SectionVisibilityFilter $sectionVisibilityFilter */
+        $sectionVisibilityFilter = $this->getServiceManager()->get(SectionVisibilityFilter::SERVICE_ID);
+
+        $sectionVisibilityFilter->showSectionByFeatureFlag(
+            $sectionVisibilityFilter->createSectionPath(
+                [
+                    'manage_items',
+                    'item-translate'
+                ]
+            ),
+            'FEATURE_TRANSLATION_ENABLED'
+        );
+        $this->getServiceManager()->register(SectionVisibilityFilter::SERVICE_ID, $sectionVisibilityFilter);
+
+        $this->addReport(Report::createSuccess('Hide item section for feature flag FEATURE_TRANSLATION_ENABLED'));
     }
 
     public function down(Schema $schema): void
