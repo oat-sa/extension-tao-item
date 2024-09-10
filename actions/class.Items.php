@@ -186,8 +186,8 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         ],
                     ],
                     FormContainer::FORM_MODIFIERS => [
-                        'tao.form_modifier.edit_translation_instance',
-                        'tao_qti_item.form_modifier.edit_translation_instance',
+                        'tao.form_modifier.translation_instance',
+                        'tao_qti_item.form_modifier.translation_instance',
                     ],
                 ]
             );
