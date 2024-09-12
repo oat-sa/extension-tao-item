@@ -233,7 +233,7 @@ return [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_TRANSLATOR,
             [
-                'ext' => 'taoItems',
+                'ext' => 'tao',
                 'mod' => 'Translation'
             ]
         ]

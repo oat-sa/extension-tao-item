@@ -16,7 +16,7 @@ use oat\taoItems\model\event\ItemCreatedEvent;
 use oat\taoItems\model\Translation\Listener\ItemCreatedEventListener;
 use oat\taoItems\model\user\TaoItemsRoles;
 
-final class Version202409050743452141_taoItems extends AbstractMigration
+final class Version202409060743452141_taoItems extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -73,7 +73,7 @@ final class Version202409050743452141_taoItems extends AbstractMigration
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_TRANSLATOR,
             [
-                'ext' => 'taoItems',
+                'ext' => 'tao',
                 'mod' => 'Translation'
             ]
         );
