@@ -22,7 +22,10 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Translation\Listener;
 
+use core_kernel_classes_Property;
+use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
+use oat\oatbox\user\UserLanguageService;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\event\ItemCreatedEvent;
@@ -32,15 +35,18 @@ class ItemCreatedEventListener
 {
     private FeatureFlagCheckerInterface $featureFlagChecker;
     private Ontology $ontology;
+    private UserLanguageService $userLanguageService;
     private LoggerInterface $logger;
 
     public function __construct(
         FeatureFlagCheckerInterface $featureFlagChecker,
         Ontology $ontology,
+        UserLanguageService $userLanguageService,
         LoggerInterface $logger
     ) {
         $this->featureFlagChecker = $featureFlagChecker;
         $this->ontology = $ontology;
+        $this->userLanguageService = $userLanguageService;
         $this->logger = $logger;
     }
 
@@ -50,21 +56,61 @@ class ItemCreatedEventListener
             return;
         }
 
-        $translationTypeProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_TRANSLATION_TYPE);
         $item = $this->ontology->getResource($event->getItemUri());
 
-        if ($item->getOnePropertyValue($translationTypeProperty) !== null) {
-            $this->logger->info(
-                sprintf(
-                    'The property "%s" for the item "%s" has already been set.',
-                    $translationTypeProperty->getUri(),
-                    $item->getUri()
-                )
-            );
+        $this->setLanguage($item);
+        $this->setTranslationType($item);
+        $this->setTranslationStatus($item);
+    }
 
+    private function setLanguage(core_kernel_classes_Resource $item): void
+    {
+        $translationLanguageProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_LANGUAGE);
+
+        if ($this->isPropertySet($item, $translationLanguageProperty)) {
+            return;
+        }
+
+        $defaultLanguage = $this->userLanguageService->getDefaultLanguage();
+        $item->setPropertyValue($translationLanguageProperty, TaoOntology::LANGUAGE_PREFIX . $defaultLanguage);
+    }
+
+    private function setTranslationType(core_kernel_classes_Resource $item): void
+    {
+        $translationTypeProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_TRANSLATION_TYPE);
+
+        if ($this->isPropertySet($item, $translationTypeProperty)) {
             return;
         }
 
         $item->setPropertyValue($translationTypeProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL);
+    }
+
+    private function setTranslationStatus(core_kernel_classes_Resource $item): void
+    {
+        $translationStatusProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_TRANSLATION_STATUS);
+
+        if ($this->isPropertySet($item, $translationStatusProperty)) {
+            return;
+        }
+
+        $item->setPropertyValue($translationStatusProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_STATUS_NOT_READY);
+    }
+
+    private function isPropertySet(core_kernel_classes_Resource $item, core_kernel_classes_Property $property): bool
+    {
+        if ($item->getOnePropertyValue($property) === null) {
+            return false;
+        }
+
+        $this->logger->info(
+            sprintf(
+                'The property "%s" for the item "%s" has already been set.',
+                $property->getUri(),
+                $item->getUri()
+            )
+        );
+
+        return true;
     }
 }

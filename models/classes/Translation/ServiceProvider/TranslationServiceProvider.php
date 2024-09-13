@@ -25,6 +25,7 @@ namespace oat\taoItems\model\Translation\ServiceProvider;
 use oat\generis\model\data\Ontology;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\oatbox\log\LoggerService;
+use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\tao\model\featureFlag\FeatureFlagChecker;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\Translation\Form\Modifier\TranslationFormModifier as TaoTranslationFormModifier;
@@ -61,6 +62,7 @@ class TranslationServiceProvider implements ContainerServiceProviderInterface
             ->args([
                 service(FeatureFlagChecker::class),
                 service(Ontology::SERVICE_ID),
+                service(UserLanguageServiceInterface::SERVICE_ID),
                 service(LoggerService::SERVICE_ID),
             ]);
 
