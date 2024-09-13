@@ -99,7 +99,7 @@ class ItemCreatedEventListener
 
     private function isPropertySet(core_kernel_classes_Resource $item, core_kernel_classes_Property $property): bool
     {
-        if ($item->getOnePropertyValue($property) === null) {
+        if (empty((string) $item->getOnePropertyValue($property))) {
             return false;
         }
 
