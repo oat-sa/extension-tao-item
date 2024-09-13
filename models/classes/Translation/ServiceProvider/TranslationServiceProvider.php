@@ -32,8 +32,8 @@ use oat\tao\model\Translation\Service\TranslationCreationService;
 use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use oat\taoItems\model\Translation\Listener\ItemCreatedEventListener;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
 use taoItems_models_classes_ItemsService;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class TranslationServiceProvider implements ContainerServiceProviderInterface
