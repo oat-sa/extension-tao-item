@@ -126,6 +126,13 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[The Item Author and Manager Role]]></rdfs:comment>
   </rdf:Description>
 
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemTranslator">
+  	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#UserRole"/>
+  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor"/>
+  	<rdfs:label xml:lang="en-US"><![CDATA[Item Translator]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[The Item Translator]]></rdfs:comment>
+  </rdf:Description>
+
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole">
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#UserRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[Item Role]]></rdfs:label>
@@ -228,5 +235,21 @@
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole"/>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#RestPublisher"/>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#UniqueIdentifier">
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#Language">
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#TranslationType">
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#TranslationStatus">
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#TranslationProgress">
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
   </rdf:Description>
 </rdf:RDF>

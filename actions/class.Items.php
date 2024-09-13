@@ -38,6 +38,7 @@ use oat\oatbox\validator\ValidatorInterface;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\tao\model\controller\SignedFormInstance;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
+use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use tao_helpers_form_FormContainer as FormContainer;
 use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
 
@@ -184,6 +185,9 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         'data-depends-on-property' => [
                             $this->getDependsOnPropertyValidator(),
                         ],
+                    ],
+                    FormContainer::FORM_MODIFIERS => [
+                        TranslationFormModifierProxy::class,
                     ],
                 ]
             );

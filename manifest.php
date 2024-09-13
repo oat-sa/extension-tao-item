@@ -26,8 +26,8 @@
 
 use oat\tao\model\user\TaoRoles;
 use oat\taoBackOffice\controller\Lists;
-use oat\taoItems\model\search\ItemClassListService;
 use oat\taoItems\model\search\ItemClassListServiceProvider;
+use oat\taoItems\model\Translation\ServiceProvider\TranslationServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
@@ -37,6 +37,7 @@ use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
+use oat\taoItems\scripts\install\SetupEventListeners;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -67,6 +68,7 @@ return [
             RegisterItemPreviewerRegistryService::class,
             RegisterAssetTreeBuilder::class,
             SetRolesPermissions::class,
+            SetupEventListeners::class,
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
@@ -227,6 +229,14 @@ return [
             TaoItemsRoles::RESTRICTED_ITEM_AUTHOR,
             ['ext' => 'taoItems', 'mod' => 'ItemExport']
         ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_TRANSLATOR,
+            [
+                'ext' => 'tao',
+                'mod' => 'Translation'
+            ]
+        ]
     ],
     'optimizableClasses' => [
         'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
@@ -254,6 +264,7 @@ return [
     ],
     'containerServiceProviders' => [
         CopierServiceProvider::class,
-        ItemClassListServiceProvider::class
+        ItemClassListServiceProvider::class,
+        TranslationServiceProvider::class,
     ],
 ];
