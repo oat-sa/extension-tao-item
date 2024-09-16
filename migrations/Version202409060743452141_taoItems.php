@@ -41,11 +41,13 @@ final class Version202409060743452141_taoItems extends AbstractMigration
                     'item-translate'
                 ]
             ),
-            'FEATURE_TRANSLATION_ENABLED'
+            'FEATURE_FLAG_TRANSLATION_ENABLED'
         );
         $this->getServiceManager()->register(SectionVisibilityFilter::SERVICE_ID, $sectionVisibilityFilter);
 
-        $this->addReport(Report::createSuccess('Hide item section for feature flag FEATURE_TRANSLATION_ENABLED'));
+        $this->addReport(
+            Report::createSuccess('Hide item section for feature flag FEATURE_FLAG_TRANSLATION_ENABLED')
+        );
 
         /** @var EventManager $eventManager */
         $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);

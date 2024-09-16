@@ -73,7 +73,7 @@ class ItemCreatedEventListenerTest extends TestCase
         $this->featureFlagChecker
             ->expects($this->once())
             ->method('isEnabled')
-            ->with('FEATURE_TRANSLATION_ENABLED')
+            ->with('FEATURE_FLAG_TRANSLATION_ENABLED')
             ->willReturn(false);
 
         $this->ontology
@@ -97,7 +97,7 @@ class ItemCreatedEventListenerTest extends TestCase
         $this->featureFlagChecker
             ->expects($this->once())
             ->method('isEnabled')
-            ->with('FEATURE_TRANSLATION_ENABLED')
+            ->with('FEATURE_FLAG_TRANSLATION_ENABLED')
             ->willReturn(true);
 
         $this->ontology
@@ -140,7 +140,7 @@ class ItemCreatedEventListenerTest extends TestCase
         $this->featureFlagChecker
             ->expects($this->once())
             ->method('isEnabled')
-            ->with('FEATURE_TRANSLATION_ENABLED')
+            ->with('FEATURE_FLAG_TRANSLATION_ENABLED')
             ->willReturn(true);
 
         $this->ontology
