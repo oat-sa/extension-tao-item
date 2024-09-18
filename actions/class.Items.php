@@ -30,6 +30,7 @@ use oat\oatbox\event\EventManager;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\lock\LockManager;
 use oat\tao\model\TaoOntology;
+use oat\taoItems\model\Form\Modifier\FormModifierProxy;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\accessControl\Context;
 use oat\generis\model\OntologyAwareTrait;
@@ -187,6 +188,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         ],
                     ],
                     FormContainer::FORM_MODIFIERS => [
+                        FormModifierProxy::class,
                         TranslationFormModifierProxy::class,
                     ],
                 ]
