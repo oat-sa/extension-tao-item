@@ -55,6 +55,11 @@ final class Version202409060743452141_taoItems extends AbstractMigration
             ItemCreatedEvent::class,
             [ItemCreatedEventListener::class, 'populateTranslationProperties']
         );
+        $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
+
+        $this->addReport(
+            Report::createSuccess('Listen to ' . ItemCreatedEvent::class . ' at ' . ItemCreatedEventListener::class)
+        );
     }
 
     public function down(Schema $schema): void
@@ -67,6 +72,7 @@ final class Version202409060743452141_taoItems extends AbstractMigration
             ItemCreatedEvent::class,
             [ItemCreatedEventListener::class, 'populateTranslationProperties']
         );
+        $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
     }
 
     private function getRule(): AccessRule
