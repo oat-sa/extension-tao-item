@@ -21,6 +21,7 @@ define([
     'jquery',
     'i18n',
     'module',
+    'layout/actions',
     'layout/actions/binder',
     'layout/section',
     'form/translation',
@@ -43,6 +44,7 @@ define([
     $,
     __,
     module,
+    actionManager,
     binder,
     section,
     translationFormFactory,
@@ -70,8 +72,16 @@ define([
         const { rootClassUri, id: resourceUri } = actionContext;
         translationFormFactory($container, { rootClassUri, resourceUri })
             .on('edit', (translationUri, languageUri) => {
-                // TODO: replace this by the redirection to the editor
-                setTimeout(() => alert(`Editing translation for ${languageUri}: ${translationUri}`), 250);
+                const editContext = {
+                    id: translationUri,
+                    resourceUri: translationUri,
+                    originResourceUri: resourceUri,
+                    rootClassUri,
+                    languageUri
+                };
+                // TODO: finalize the redirection to the editor
+                console.log('editContext', editContext);
+                actionManager.exec('item-authoring', editContext);
             })
             .on('error', error => {
                 logger.error(error);
