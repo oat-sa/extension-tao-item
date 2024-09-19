@@ -25,6 +25,7 @@ namespace oat\taoItems\test\unit\models\classes\Translation\Listener;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
+use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\event\ItemCreatedEvent;
@@ -42,13 +43,22 @@ class ItemCreatedEventListenerTest extends TestCase
     private core_kernel_classes_Resource $item;
 
     /** @var core_kernel_classes_Property|MockObject */
-    private core_kernel_classes_Property $property;
+    private core_kernel_classes_Property $languageProperty;
+
+    /** @var core_kernel_classes_Property|MockObject */
+    private core_kernel_classes_Property $translationTypeProperty;
+
+    /** @var core_kernel_classes_Property|MockObject */
+    private core_kernel_classes_Property $translationStatusProperty;
 
     /** @var FeatureFlagCheckerInterface|MockObject */
     private FeatureFlagCheckerInterface $featureFlagChecker;
 
     /** @var Ontology|MockObject */
     private Ontology $ontology;
+
+    /** @var UserLanguageServiceInterface|MockObject */
+    private UserLanguageServiceInterface $userLanguageService;
 
     /** @var LoggerInterface|MockObject */
     private LoggerInterface $logger;
@@ -59,13 +69,21 @@ class ItemCreatedEventListenerTest extends TestCase
     {
         $this->itemCreatedEvent = $this->createMock(ItemCreatedEvent::class);
         $this->item = $this->createMock(core_kernel_classes_Resource::class);
-        $this->property = $this->createMock(core_kernel_classes_Property::class);
+        $this->languageProperty = $this->createMock(core_kernel_classes_Property::class);
+        $this->translationTypeProperty = $this->createMock(core_kernel_classes_Property::class);
+        $this->translationStatusProperty = $this->createMock(core_kernel_classes_Property::class);
 
         $this->featureFlagChecker = $this->createMock(FeatureFlagCheckerInterface::class);
         $this->ontology = $this->createMock(Ontology::class);
+        $this->userLanguageService = $this->createMock(UserLanguageServiceInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->sut = new ItemCreatedEventListener($this->featureFlagChecker, $this->ontology, $this->logger);
+        $this->sut = new ItemCreatedEventListener(
+            $this->featureFlagChecker,
+            $this->ontology,
+            $this->userLanguageService,
+            $this->logger
+        );
     }
 
     public function testPopulateTranslationPropertiesTranslationDisabled(): void
@@ -100,12 +118,6 @@ class ItemCreatedEventListenerTest extends TestCase
             ->with('FEATURE_FLAG_TRANSLATION_ENABLED')
             ->willReturn(true);
 
-        $this->ontology
-            ->expects($this->once())
-            ->method('getProperty')
-            ->with(TaoOntology::PROPERTY_TRANSLATION_TYPE)
-            ->willReturn($this->property);
-
         $this->itemCreatedEvent
             ->expects($this->once())
             ->method('getItemUri')
@@ -117,20 +129,47 @@ class ItemCreatedEventListenerTest extends TestCase
             ->with('itemUri')
             ->willReturn($this->item);
 
+        $this->ontology
+            ->expects($this->exactly(3))
+            ->method('getProperty')
+            ->withConsecutive(
+                [TaoOntology::PROPERTY_LANGUAGE],
+                [TaoOntology::PROPERTY_TRANSLATION_TYPE],
+                [TaoOntology::PROPERTY_TRANSLATION_STATUS],
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->languageProperty,
+                $this->translationTypeProperty,
+                $this->translationStatusProperty,
+            );
+
         $this->item
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('getOnePropertyValue')
-            ->with($this->property)
-            ->willReturn(null);
+            ->withConsecutive(
+                [$this->languageProperty],
+                [$this->translationTypeProperty],
+                [$this->translationStatusProperty],
+            )
+            ->willReturnOnConsecutiveCalls(null, null, null);
 
         $this->logger
             ->expects($this->never())
             ->method('info');
 
-        $this->item
+        $this->userLanguageService
             ->expects($this->once())
+            ->method('getDefaultLanguage')
+            ->willReturn('en-US');
+
+        $this->item
+            ->expects($this->exactly(3))
             ->method('setPropertyValue')
-            ->with($this->property, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL);
+            ->withConsecutive(
+                [$this->languageProperty, TaoOntology::LANGUAGE_PREFIX . 'en-US'],
+                [$this->translationTypeProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL],
+                [$this->translationStatusProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_STATUS_NOT_READY],
+            );
 
         $this->sut->populateTranslationProperties($this->itemCreatedEvent);
     }
@@ -143,12 +182,6 @@ class ItemCreatedEventListenerTest extends TestCase
             ->with('FEATURE_FLAG_TRANSLATION_ENABLED')
             ->willReturn(true);
 
-        $this->ontology
-            ->expects($this->once())
-            ->method('getProperty')
-            ->with(TaoOntology::PROPERTY_TRANSLATION_TYPE)
-            ->willReturn($this->property);
-
         $this->itemCreatedEvent
             ->expects($this->once())
             ->method('getItemUri')
@@ -160,15 +193,41 @@ class ItemCreatedEventListenerTest extends TestCase
             ->with('itemUri')
             ->willReturn($this->item);
 
+        $this->ontology
+            ->expects($this->exactly(3))
+            ->method('getProperty')
+            ->withConsecutive(
+                [TaoOntology::PROPERTY_LANGUAGE],
+                [TaoOntology::PROPERTY_TRANSLATION_TYPE],
+                [TaoOntology::PROPERTY_TRANSLATION_STATUS],
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->languageProperty,
+                $this->translationTypeProperty,
+                $this->translationStatusProperty,
+            );
+
         $this->item
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('getOnePropertyValue')
-            ->with($this->property)
-            ->willReturn('propertyValue');
+            ->withConsecutive(
+                [$this->languageProperty],
+                [$this->translationTypeProperty],
+                [$this->translationStatusProperty],
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->createMock(core_kernel_classes_Resource::class),
+                $this->createMock(core_kernel_classes_Resource::class),
+                $this->createMock(core_kernel_classes_Resource::class)
+            );
 
         $this->logger
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('info');
+
+        $this->userLanguageService
+            ->expects($this->never())
+            ->method('getDefaultLanguage');
 
         $this->item
             ->expects($this->never())

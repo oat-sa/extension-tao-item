@@ -25,7 +25,7 @@ namespace oat\taoItems\model\Translation\Listener;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
-use oat\oatbox\user\UserLanguageService;
+use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\event\ItemCreatedEvent;
@@ -35,13 +35,13 @@ class ItemCreatedEventListener
 {
     private FeatureFlagCheckerInterface $featureFlagChecker;
     private Ontology $ontology;
-    private UserLanguageService $userLanguageService;
+    private UserLanguageServiceInterface $userLanguageService;
     private LoggerInterface $logger;
 
     public function __construct(
         FeatureFlagCheckerInterface $featureFlagChecker,
         Ontology $ontology,
-        UserLanguageService $userLanguageService,
+        UserLanguageServiceInterface $userLanguageService,
         LoggerInterface $logger
     ) {
         $this->featureFlagChecker = $featureFlagChecker;
@@ -99,7 +99,7 @@ class ItemCreatedEventListener
 
     private function isPropertySet(core_kernel_classes_Resource $item, core_kernel_classes_Property $property): bool
     {
-        if (empty((string) $item->getOnePropertyValue($property))) {
+        if (empty($item->getOnePropertyValue($property))) {
             return false;
         }
 
