@@ -43,13 +43,13 @@ class ItemCreatedEventListenerTest extends TestCase
     private core_kernel_classes_Resource $item;
 
     /** @var core_kernel_classes_Property|MockObject */
-    private $languageProperty;
+    private core_kernel_classes_Property $languageProperty;
 
     /** @var core_kernel_classes_Property|MockObject */
     private core_kernel_classes_Property $translationTypeProperty;
 
     /** @var core_kernel_classes_Property|MockObject */
-    private $translationStatusProperty;
+    private core_kernel_classes_Property $translationStatusProperty;
 
     /** @var FeatureFlagCheckerInterface|MockObject */
     private FeatureFlagCheckerInterface $featureFlagChecker;
