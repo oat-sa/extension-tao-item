@@ -164,7 +164,7 @@ class ItemCreatedEventListenerTest extends TestCase
 
         $this->item
             ->expects($this->exactly(3))
-            ->method('editPropertyValue')
+            ->method('editPropertyValues')
             ->withConsecutive(
                 [$this->languageProperty, TaoOntology::LANGUAGE_PREFIX . 'en-US'],
                 [$this->translationTypeProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL],
@@ -231,7 +231,7 @@ class ItemCreatedEventListenerTest extends TestCase
 
         $this->item
             ->expects($this->never())
-            ->method('editPropertyValue');
+            ->method('editPropertyValues');
 
         $this->sut->populateTranslationProperties($this->itemCreatedEvent);
     }
