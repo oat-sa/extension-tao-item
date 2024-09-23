@@ -237,6 +237,9 @@
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole"/>
   </rdf:Description>
 
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#TranslationType">
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAO.rdf#UniqueIdentifier">
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#Item"/>
   </rdf:Description>

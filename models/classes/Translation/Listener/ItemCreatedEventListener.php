@@ -72,7 +72,7 @@ class ItemCreatedEventListener
         }
 
         $defaultLanguage = $this->userLanguageService->getDefaultLanguage();
-        $item->setPropertyValue($translationLanguageProperty, TaoOntology::LANGUAGE_PREFIX . $defaultLanguage);
+        $item->editPropertyValues($translationLanguageProperty, TaoOntology::LANGUAGE_PREFIX . $defaultLanguage);
     }
 
     private function setTranslationType(core_kernel_classes_Resource $item): void
@@ -83,7 +83,7 @@ class ItemCreatedEventListener
             return;
         }
 
-        $item->setPropertyValue($translationTypeProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL);
+        $item->editPropertyValues($translationTypeProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL);
     }
 
     private function setTranslationStatus(core_kernel_classes_Resource $item): void
@@ -94,7 +94,7 @@ class ItemCreatedEventListener
             return;
         }
 
-        $item->setPropertyValue($translationStatusProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_STATUS_NOT_READY);
+        $item->editPropertyValues($translationStatusProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_STATUS_NOT_READY);
     }
 
     private function isPropertySet(core_kernel_classes_Resource $item, core_kernel_classes_Property $property): bool
