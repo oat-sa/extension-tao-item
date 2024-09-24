@@ -21,8 +21,12 @@ define([
     'jquery',
     'i18n',
     'module',
+    'layout/actions',
     'layout/actions/binder',
+    'layout/section',
+    'form/translation',
     'taoItems/previewer/factory',
+    'core/logger',
     'core/request',
     'ui/feedback',
     'ui/dialog/confirm',
@@ -40,8 +44,12 @@ define([
     $,
     __,
     module,
+    actionManager,
     binder,
+    section,
+    translationFormFactory,
     previewerFactory,
+    loggerFactory,
     request,
     feedback,
     confirmDialog,
@@ -55,6 +63,31 @@ define([
     forbiddenClassActionTpl
 ) {
     'use strict';
+
+    const logger = loggerFactory('taoItems/actions');
+
+    binder.register('translateItem', function (actionContext) {
+        section.current().updateContentBlock('<div class="main-container flex-container-full"></div>');
+        const $container = $('.main-container', section.selected.panel);
+        const { rootClassUri, id: resourceUri } = actionContext;
+        translationFormFactory($container, { rootClassUri, resourceUri })
+            .on('edit', (translationUri, languageUri) => {
+                const editContext = {
+                    id: translationUri,
+                    resourceUri: translationUri,
+                    originResourceUri: resourceUri,
+                    rootClassUri,
+                    languageUri
+                };
+                // TODO: finalize the redirection to the editor
+                console.log('editContext', editContext);
+                actionManager.exec('item-authoring', editContext);
+            })
+            .on('error', error => {
+                logger.error(error);
+                feedback().error(__('An error occurred while processing your request.'));
+            });
+    });
 
     binder.register('itemPreview', function itemPreview(actionContext) {
         const defaultConfig = {

@@ -73,7 +73,7 @@
                         <icon id="icon-move-item"/>
                     </action>
                     <action id="item-translate" name="Translate" url="/tao/Translation/translate" context="instance" group="tree" binding="translateItem">
-                        <icon id="icon-spell-check"/>
+                        <icon id="icon-replace"/>
                     </action>
                 </actions>
             </section>
