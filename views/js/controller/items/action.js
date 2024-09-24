@@ -71,17 +71,14 @@ define([
         const $container = $('.main-container', section.selected.panel);
         const { rootClassUri, id: resourceUri } = actionContext;
         translationFormFactory($container, { rootClassUri, resourceUri })
-            .on('edit', (translationUri, languageUri) => {
-                const editContext = {
-                    id: translationUri,
-                    resourceUri: translationUri,
-                    originResourceUri: resourceUri,
+            .on('edit', (id, language) => {
+                actionManager.exec('item-authoring', {
+                    id,
+                    language,
                     rootClassUri,
-                    languageUri
-                };
-                // TODO: finalize the redirection to the editor
-                console.log('editContext', editContext);
-                actionManager.exec('item-authoring', editContext);
+                    mode: 'dual',
+                    actionParams: ['language', 'mode']
+                });
             })
             .on('error', error => {
                 logger.error(error);
