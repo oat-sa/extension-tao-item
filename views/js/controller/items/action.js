@@ -70,7 +70,7 @@ define([
         section.current().updateContentBlock('<div class="main-container flex-container-full"></div>');
         const $container = $('.main-container', section.selected.panel);
         const { rootClassUri, id: resourceUri } = actionContext;
-        translationFormFactory($container, { rootClassUri, resourceUri })
+        translationFormFactory($container, { rootClassUri, resourceUri, allowDeletion: true })
             .on('edit', (id, language) => {
                 return actionManager.exec('item-authoring', {
                     id,
@@ -80,6 +80,19 @@ define([
                     translation: true,
                     actionParams: ['originResourceUri', 'language', 'translation']
                 });
+            })
+            .on('delete', function onDelete(id, language) {
+                // TODO: fix the 500 error when deleting a translation
+                return actionManager
+                    .exec(
+                        'item-delete',
+                        Object.assign({}, actionContext, {
+                            id,
+                            language,
+                            uri: uri.encode(id)
+                        })
+                    )
+                    .then(() => this.updateList());
             })
             .on('error', error => {
                 logger.error(error);
