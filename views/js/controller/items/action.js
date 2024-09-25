@@ -72,12 +72,13 @@ define([
         const { rootClassUri, id: resourceUri } = actionContext;
         translationFormFactory($container, { rootClassUri, resourceUri })
             .on('edit', (id, language) => {
-                actionManager.exec('item-authoring', {
+                return actionManager.exec('item-authoring', {
                     id,
                     language,
                     rootClassUri,
-                    mode: 'dual',
-                    actionParams: ['language', 'mode']
+                    originResourceUri: resourceUri,
+                    translation: true,
+                    actionParams: ['originResourceUri', 'language', 'translation']
                 });
             })
             .on('error', error => {
