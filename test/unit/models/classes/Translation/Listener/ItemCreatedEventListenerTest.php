@@ -29,7 +29,7 @@ use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\event\ItemCreatedEvent;
-use oat\taoItems\model\Translation\Listener\ItemCreatedEventListener;
+use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -63,7 +63,7 @@ class ItemCreatedEventListenerTest extends TestCase
     /** @var LoggerInterface|MockObject */
     private LoggerInterface $logger;
 
-    private ItemCreatedEventListener $sut;
+    private TranslationItemEventListener $sut;
 
     protected function setUp(): void
     {
@@ -78,7 +78,7 @@ class ItemCreatedEventListenerTest extends TestCase
         $this->userLanguageService = $this->createMock(UserLanguageServiceInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->sut = new ItemCreatedEventListener(
+        $this->sut = new TranslationItemEventListener(
             $this->featureFlagChecker,
             $this->ontology,
             $this->userLanguageService,
