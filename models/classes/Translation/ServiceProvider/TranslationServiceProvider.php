@@ -25,13 +25,13 @@ namespace oat\taoItems\model\Translation\ServiceProvider;
 use oat\generis\model\data\Ontology;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\oatbox\log\LoggerService;
-use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\tao\model\featureFlag\FeatureFlagChecker;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\Translation\Form\Modifier\TranslationFormModifier as TaoTranslationFormModifier;
+use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
 use oat\tao\model\Translation\Service\TranslationCreationService;
 use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
-use oat\taoItems\model\Translation\Listener\ItemCreatedEventListener;
+use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use taoItems_models_classes_ItemsService;
 
@@ -57,12 +57,12 @@ class TranslationServiceProvider implements ContainerServiceProviderInterface
             );
 
         $services
-            ->set(ItemCreatedEventListener::class, ItemCreatedEventListener::class)
+            ->set(TranslationItemEventListener::class, TranslationItemEventListener::class)
             ->public()
             ->args([
                 service(FeatureFlagChecker::class),
                 service(Ontology::SERVICE_ID),
-                service(UserLanguageServiceInterface::SERVICE_ID),
+                service(ResourceLanguageRetriever::class),
                 service(LoggerService::SERVICE_ID),
             ]);
 

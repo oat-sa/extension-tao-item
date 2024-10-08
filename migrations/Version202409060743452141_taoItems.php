@@ -13,7 +13,8 @@ use oat\tao\model\menu\SectionVisibilityFilter;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\event\ItemCreatedEvent;
-use oat\taoItems\model\Translation\Listener\ItemCreatedEventListener;
+use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use oat\taoItems\model\user\TaoItemsRoles;
 
 final class Version202409060743452141_taoItems extends AbstractMigration
@@ -53,12 +54,16 @@ final class Version202409060743452141_taoItems extends AbstractMigration
         $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
         $eventManager->attach(
             ItemCreatedEvent::class,
-            [ItemCreatedEventListener::class, 'populateTranslationProperties']
+            [TranslationItemEventListener::class, 'populateTranslationProperties']
+        );
+        $eventManager->attach(
+            ItemUpdatedEvent::class,
+            [TranslationItemEventListener::class, 'populateTranslationProperties']
         );
         $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
 
         $this->addReport(
-            Report::createSuccess('Listen to ' . ItemCreatedEvent::class . ' at ' . ItemCreatedEventListener::class)
+            Report::createSuccess('Listen to ' . ItemCreatedEvent::class . ' at ' . TranslationItemEventListener::class)
         );
     }
 
@@ -70,7 +75,11 @@ final class Version202409060743452141_taoItems extends AbstractMigration
         $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
         $eventManager->detach(
             ItemCreatedEvent::class,
-            [ItemCreatedEventListener::class, 'populateTranslationProperties']
+            [TranslationItemEventListener::class, 'populateTranslationProperties']
+        );
+        $eventManager->detach(
+            ItemUpdatedEvent::class,
+            [TranslationItemEventListener::class, 'populateTranslationProperties']
         );
         $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
     }

@@ -24,36 +24,46 @@ namespace oat\taoItems\model\Translation\Listener;
 
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
+use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
-use oat\oatbox\user\UserLanguageServiceInterface;
+use oat\oatbox\event\Event;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
+use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
 use oat\taoItems\model\event\ItemCreatedEvent;
+use oat\taoItems\model\event\ItemUpdatedEvent;
 use Psr\Log\LoggerInterface;
 
-class ItemCreatedEventListener
+class TranslationItemEventListener
 {
     private FeatureFlagCheckerInterface $featureFlagChecker;
     private Ontology $ontology;
-    private UserLanguageServiceInterface $userLanguageService;
+    private ResourceLanguageRetriever $resourceLanguageRetriever;
     private LoggerInterface $logger;
 
     public function __construct(
         FeatureFlagCheckerInterface $featureFlagChecker,
         Ontology $ontology,
-        UserLanguageServiceInterface $userLanguageService,
+        ResourceLanguageRetriever $resourceLanguageRetriever,
         LoggerInterface $logger
     ) {
         $this->featureFlagChecker = $featureFlagChecker;
         $this->ontology = $ontology;
-        $this->userLanguageService = $userLanguageService;
+        $this->resourceLanguageRetriever = $resourceLanguageRetriever;
         $this->logger = $logger;
     }
 
-    public function populateTranslationProperties(ItemCreatedEvent $event): void
+    public function populateTranslationProperties(Event $event): void
     {
         if (!$this->featureFlagChecker->isEnabled('FEATURE_FLAG_TRANSLATION_ENABLED')) {
             return;
+        }
+
+        if (!$event instanceof ItemCreatedEvent && !$event instanceof ItemUpdatedEvent) {
+            throw new InvalidArgumentException(
+                'Event %s is not supported to populate translation properties',
+                get_class($event)
+            );
         }
 
         $item = $this->ontology->getResource($event->getItemUri());
@@ -65,36 +75,38 @@ class ItemCreatedEventListener
 
     private function setLanguage(core_kernel_classes_Resource $item): void
     {
-        $translationLanguageProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_LANGUAGE);
-
-        if ($this->isPropertySet($item, $translationLanguageProperty)) {
-            return;
-        }
-
-        $defaultLanguage = $this->userLanguageService->getDefaultLanguage();
-        $item->editPropertyValues($translationLanguageProperty, TaoOntology::LANGUAGE_PREFIX . $defaultLanguage);
+        $this->setProperty(
+            $item,
+            TaoOntology::PROPERTY_LANGUAGE,
+            TaoOntology::LANGUAGE_PREFIX . $this->resourceLanguageRetriever->retrieve($item)
+        );
     }
 
     private function setTranslationType(core_kernel_classes_Resource $item): void
     {
-        $translationTypeProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_TRANSLATION_TYPE);
-
-        if ($this->isPropertySet($item, $translationTypeProperty)) {
-            return;
-        }
-
-        $item->editPropertyValues($translationTypeProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL);
+        $this->setProperty(
+            $item,
+            TaoOntology::PROPERTY_TRANSLATION_TYPE,
+            TaoOntology::PROPERTY_VALUE_TRANSLATION_TYPE_ORIGINAL
+        );
     }
 
     private function setTranslationStatus(core_kernel_classes_Resource $item): void
     {
-        $translationStatusProperty = $this->ontology->getProperty(TaoOntology::PROPERTY_TRANSLATION_STATUS);
+        $this->setProperty(
+            $item,
+            TaoOntology::PROPERTY_TRANSLATION_STATUS,
+            TaoOntology::PROPERTY_VALUE_TRANSLATION_STATUS_NOT_READY
+        );
+    }
 
-        if ($this->isPropertySet($item, $translationStatusProperty)) {
-            return;
+    private function setProperty(core_kernel_classes_Resource $item, string $propertyUri, string $value): void
+    {
+        $property = $this->ontology->getProperty($propertyUri);
+
+        if (!$this->isPropertySet($item, $property)) {
+            $item->editPropertyValues($property, $value);
         }
-
-        $item->editPropertyValues($translationStatusProperty, TaoOntology::PROPERTY_VALUE_TRANSLATION_STATUS_NOT_READY);
     }
 
     private function isPropertySet(core_kernel_classes_Resource $item, core_kernel_classes_Property $property): bool
