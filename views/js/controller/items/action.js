@@ -25,6 +25,7 @@ define([
     'layout/actions/binder',
     'layout/section',
     'form/translation',
+    'services/translation',
     'taoItems/previewer/factory',
     'core/logger',
     'core/request',
@@ -48,6 +49,7 @@ define([
     binder,
     section,
     translationFormFactory,
+    translationService,
     previewerFactory,
     loggerFactory,
     request,
@@ -82,17 +84,10 @@ define([
                 });
             })
             .on('delete', function onDelete(id, language) {
-                // TODO: fix the 500 error when deleting a translation
-                return actionManager
-                    .exec(
-                        'item-delete',
-                        Object.assign({}, actionContext, {
-                            id,
-                            language,
-                            uri: uri.encode(id)
-                        })
-                    )
-                    .then(() => this.updateList());
+                return translationService.deleteTranslation(resourceUri, language).then(() => {
+                    feedback().success(__('Translation deleted'));
+                    return this.refresh();
+                });
             })
             .on('error', error => {
                 logger.error(error);
