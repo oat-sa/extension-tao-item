@@ -359,15 +359,13 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         LockManager::getImplementation()
                             ->setLock($item, $this->getSession()->getUser()->getIdentifier());
 
-                        // TODO: better implement the following parameters
-                        // --- start
+                        // Add support for the translation and the side-by-side authoring tool
                         if ($this->getRequestParameter('translation') !== null) {
-                            $authoringUrl .= '&translation=' . $this->getRequestParameter('translation');
+                            $authoringUrl = sprintf('%s&translation=%s', $authoringUrl, $this->getRequestParameter('translation'));
                         }
                         if ($this->getRequestParameter('originResourceUri') !== null) {
-                            $authoringUrl .= '&originResourceUri=' . $this->getRequestParameter('originResourceUri');
+                            $authoringUrl = sprintf('%s&originResourceUri=%s', $authoringUrl, $this->getRequestParameter('originResourceUri'));
                         }
-                        // --- end
 
                         return $this->forwardUrl($authoringUrl);
                     }
