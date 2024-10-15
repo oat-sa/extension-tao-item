@@ -25,6 +25,7 @@ namespace oat\taoItems\model\user;
 interface TaoItemsRoles
 {
     public const ITEM_AUTHOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor';
+    public const ITEM_TRANSLATOR = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemTranslator';
     public const ITEM_AUTHOR_ABSTRACT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor';
     public const ITEM_MANAGER = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole';
 
