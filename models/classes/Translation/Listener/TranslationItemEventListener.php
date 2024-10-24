@@ -61,8 +61,7 @@ class TranslationItemEventListener
 
         if (!$event instanceof ItemCreatedEvent && !$event instanceof ItemUpdatedEvent) {
             throw new InvalidArgumentException(
-                'Event %s is not supported to populate translation properties',
-                get_class($event)
+                sprintf('Event %s is not supported to populate translation properties', get_class($event))
             );
         }
 
