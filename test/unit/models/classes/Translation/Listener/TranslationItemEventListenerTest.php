@@ -34,7 +34,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class ItemCreatedEventListenerTest extends TestCase
+class TranslationItemEventListenerTest extends TestCase
 {
     /** @var ItemCreatedEvent|MockObject */
     private ItemCreatedEvent $itemCreatedEvent;
