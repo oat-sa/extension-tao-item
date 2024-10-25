@@ -30,6 +30,7 @@ use oat\tao\model\TaoOntology;
 use oat\tao\model\Translation\Form\Modifier\TranslationFormModifier as TaoTranslationFormModifier;
 use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
 use oat\tao\model\Translation\Service\TranslationCreationService;
+use oat\tao\model\Translation\Service\TranslationDeletionService;
 use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -64,6 +65,7 @@ class TranslationServiceProvider implements ContainerServiceProviderInterface
                 service(Ontology::SERVICE_ID),
                 service(ResourceLanguageRetriever::class),
                 service(LoggerService::SERVICE_ID),
+                service(TranslationDeletionService::class),
             ]);
 
         $services

@@ -13,11 +13,12 @@ use oat\tao\model\menu\SectionVisibilityFilter;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\event\ItemCreatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use oat\taoItems\model\user\TaoItemsRoles;
 
-final class Version202409060743452141_taoItems extends AbstractMigration
+final class Version202409060743452142_taoItems extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -60,6 +61,10 @@ final class Version202409060743452141_taoItems extends AbstractMigration
             ItemUpdatedEvent::class,
             [TranslationItemEventListener::class, 'populateTranslationProperties']
         );
+        $eventManager->attach(
+            ItemRemovedEvent::class,
+            [TranslationItemEventListener::class, 'deleteTranslations']
+        );
         $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
 
         $this->addReport(
@@ -80,6 +85,10 @@ final class Version202409060743452141_taoItems extends AbstractMigration
         $eventManager->detach(
             ItemUpdatedEvent::class,
             [TranslationItemEventListener::class, 'populateTranslationProperties']
+        );
+        $eventManager->detach(
+            ItemRemovedEvent::class,
+            [TranslationItemEventListener::class, 'deleteTranslations']
         );
         $this->getServiceManager()->register(EventManager::SERVICE_ID, $eventManager);
     }
