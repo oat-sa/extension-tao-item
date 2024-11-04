@@ -95,6 +95,12 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 [
                     tagged_iterator('tao.copier.permissions'),
                 ]
+            )
+            ->call(
+                'withEventManager',
+                [
+                    service(EventManager::class),
+                ]
             );
 
         $services
