@@ -67,4 +67,9 @@ class ItemDuplicatedEvent implements Event, JsonSerializable
             'cloneUri' => $this->cloneUri
         ];
     }
+
+    public function getCloneUri(): string
+    {
+        return $this->cloneUri;
+    }
 }

@@ -30,6 +30,7 @@ use oat\oatbox\event\EventManager;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\lock\LockManager;
 use oat\tao\model\TaoOntology;
+use oat\taoItems\model\Form\Modifier\FormModifierProxy;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\accessControl\Context;
 use oat\generis\model\OntologyAwareTrait;
@@ -38,6 +39,7 @@ use oat\oatbox\validator\ValidatorInterface;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\tao\model\controller\SignedFormInstance;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
+use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use tao_helpers_form_FormContainer as FormContainer;
 use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
 
@@ -184,6 +186,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         'data-depends-on-property' => [
                             $this->getDependsOnPropertyValidator(),
                         ],
+                    ],
+                    FormContainer::FORM_MODIFIERS => [
+                        FormModifierProxy::class,
+                        TranslationFormModifierProxy::class,
                     ],
                 ]
             );
@@ -353,6 +359,22 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         LockManager::getImplementation()
                             ->setLock($item, $this->getSession()->getUser()->getIdentifier());
 
+                        // Add support for the translation and the side-by-side authoring tool
+                        if ($this->getRequestParameter('translation') !== null) {
+                            $authoringUrl = sprintf(
+                                '%s&translation=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('translation')
+                            );
+                        }
+                        if ($this->getRequestParameter('originResourceUri') !== null) {
+                            $authoringUrl = sprintf(
+                                '%s&originResourceUri=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('originResourceUri')
+                            );
+                        }
+
                         return $this->forwardUrl($authoringUrl);
                     }
                 }
@@ -366,7 +388,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 if (!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource) {
                     $errorMsg = __(
                         'No item authoring tool available for the selected type of item: %s'
-                        . $itemModel->getLabel()
+                            . $itemModel->getLabel()
                     );
                 } else {
                     $errorMsg = __('No item type selected for the current item.')
