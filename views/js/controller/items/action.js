@@ -21,8 +21,13 @@ define([
     'jquery',
     'i18n',
     'module',
+    'layout/actions',
     'layout/actions/binder',
+    'layout/section',
+    'form/translation',
+    'services/translation',
     'taoItems/previewer/factory',
+    'core/logger',
     'core/request',
     'ui/feedback',
     'ui/dialog/confirm',
@@ -40,8 +45,13 @@ define([
     $,
     __,
     module,
+    actionManager,
     binder,
+    section,
+    translationFormFactory,
+    translationService,
     previewerFactory,
+    loggerFactory,
     request,
     feedback,
     confirmDialog,
@@ -55,6 +65,35 @@ define([
     forbiddenClassActionTpl
 ) {
     'use strict';
+
+    const logger = loggerFactory('taoItems/actions');
+
+    binder.register('translateItem', function (actionContext) {
+        section.current().updateContentBlock('<div class="main-container flex-container-full"></div>');
+        const $container = $('.main-container', section.selected.panel);
+        const { rootClassUri, id: resourceUri } = actionContext;
+        translationFormFactory($container, { rootClassUri, resourceUri, allowDeletion: true })
+            .on('edit', (id, language) => {
+                return actionManager.exec('item-authoring', {
+                    id,
+                    language,
+                    rootClassUri,
+                    originResourceUri: resourceUri,
+                    translation: true,
+                    actionParams: ['originResourceUri', 'language', 'translation']
+                });
+            })
+            .on('delete', function onDelete(id, language) {
+                return translationService.deleteTranslation(resourceUri, language).then(() => {
+                    feedback().success(__('Translation deleted'));
+                    return this.refresh();
+                });
+            })
+            .on('error', error => {
+                logger.error(error);
+                feedback().error(__('An error occurred while processing your request.'));
+            });
+    });
 
     binder.register('itemPreview', function itemPreview(actionContext) {
         const defaultConfig = {
