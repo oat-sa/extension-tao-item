@@ -361,10 +361,18 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
                         // Add support for the translation and the side-by-side authoring tool
                         if ($this->getRequestParameter('translation') !== null) {
-                            $authoringUrl = sprintf('%s&translation=%s', $authoringUrl, $this->getRequestParameter('translation'));
+                            $authoringUrl = sprintf(
+                                '%s&translation=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('translation')
+                            );
                         }
                         if ($this->getRequestParameter('originResourceUri') !== null) {
-                            $authoringUrl = sprintf('%s&originResourceUri=%s', $authoringUrl, $this->getRequestParameter('originResourceUri'));
+                            $authoringUrl = sprintf(
+                                '%s&originResourceUri=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('originResourceUri')
+                            );
                         }
 
                         return $this->forwardUrl($authoringUrl);
