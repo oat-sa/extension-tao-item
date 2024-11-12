@@ -359,6 +359,22 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                         LockManager::getImplementation()
                             ->setLock($item, $this->getSession()->getUser()->getIdentifier());
 
+                        // Add support for the translation and the side-by-side authoring tool
+                        if ($this->getRequestParameter('translation') !== null) {
+                            $authoringUrl = sprintf(
+                                '%s&translation=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('translation')
+                            );
+                        }
+                        if ($this->getRequestParameter('originResourceUri') !== null) {
+                            $authoringUrl = sprintf(
+                                '%s&originResourceUri=%s',
+                                $authoringUrl,
+                                $this->getRequestParameter('originResourceUri')
+                            );
+                        }
+
                         return $this->forwardUrl($authoringUrl);
                     }
                 }
@@ -372,7 +388,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                 if (!empty($itemModel) && $itemModel instanceof core_kernel_classes_Resource) {
                     $errorMsg = __(
                         'No item authoring tool available for the selected type of item: %s'
-                        . $itemModel->getLabel()
+                            . $itemModel->getLabel()
                     );
                 } else {
                     $errorMsg = __('No item type selected for the current item.')

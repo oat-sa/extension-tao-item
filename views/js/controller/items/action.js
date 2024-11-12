@@ -25,6 +25,7 @@ define([
     'layout/actions/binder',
     'layout/section',
     'form/translation',
+    'services/translation',
     'taoItems/previewer/factory',
     'core/logger',
     'core/request',
@@ -48,6 +49,7 @@ define([
     binder,
     section,
     translationFormFactory,
+    translationService,
     previewerFactory,
     loggerFactory,
     request,
@@ -70,18 +72,22 @@ define([
         section.current().updateContentBlock('<div class="main-container flex-container-full"></div>');
         const $container = $('.main-container', section.selected.panel);
         const { rootClassUri, id: resourceUri } = actionContext;
-        translationFormFactory($container, { rootClassUri, resourceUri })
-            .on('edit', (translationUri, languageUri) => {
-                const editContext = {
-                    id: translationUri,
-                    resourceUri: translationUri,
-                    originResourceUri: resourceUri,
+        translationFormFactory($container, { rootClassUri, resourceUri, allowDeletion: true })
+            .on('edit', (id, language) => {
+                return actionManager.exec('item-authoring', {
+                    id,
+                    language,
                     rootClassUri,
-                    languageUri
-                };
-                // TODO: finalize the redirection to the editor
-                console.log('editContext', editContext);
-                actionManager.exec('item-authoring', editContext);
+                    originResourceUri: resourceUri,
+                    translation: true,
+                    actionParams: ['originResourceUri', 'language', 'translation']
+                });
+            })
+            .on('delete', function onDelete(id, language) {
+                return translationService.deleteTranslation(resourceUri, language).then(() => {
+                    feedback().success(__('Translation deleted'));
+                    return this.refresh();
+                });
             })
             .on('error', error => {
                 logger.error(error);

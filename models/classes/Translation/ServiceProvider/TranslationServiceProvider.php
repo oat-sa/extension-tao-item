@@ -26,14 +26,15 @@ use oat\generis\model\data\Ontology;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\oatbox\log\LoggerService;
 use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\model\resources\Service\InstanceCopier;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\Translation\Form\Modifier\TranslationFormModifier as TaoTranslationFormModifier;
 use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
 use oat\tao\model\Translation\Service\TranslationCreationService;
+use oat\tao\model\Translation\Service\TranslationDeletionService;
 use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use taoItems_models_classes_ItemsService;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -64,15 +65,16 @@ class TranslationServiceProvider implements ContainerServiceProviderInterface
                 service(Ontology::SERVICE_ID),
                 service(ResourceLanguageRetriever::class),
                 service(LoggerService::SERVICE_ID),
+                service(TranslationDeletionService::class),
             ]);
 
         $services
             ->get(TranslationCreationService::class)
             ->call(
-                'setOntologyClassService',
+                'setResourceTransfer',
                 [
                     TaoOntology::CLASS_URI_ITEM,
-                    service(taoItems_models_classes_ItemsService::class)
+                    service(InstanceCopier::class . '::ITEMS')
                 ]
             );
     }

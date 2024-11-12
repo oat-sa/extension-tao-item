@@ -25,16 +25,18 @@ namespace oat\taoItems\test\unit\models\classes\Translation\Listener;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
-use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
+use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
+use oat\tao\model\Translation\Service\TranslationDeletionService;
 use oat\taoItems\model\event\ItemCreatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class ItemCreatedEventListenerTest extends TestCase
+class TranslationItemEventListenerTest extends TestCase
 {
     /** @var ItemCreatedEvent|MockObject */
     private ItemCreatedEvent $itemCreatedEvent;
@@ -57,11 +59,14 @@ class ItemCreatedEventListenerTest extends TestCase
     /** @var Ontology|MockObject */
     private Ontology $ontology;
 
-    /** @var UserLanguageServiceInterface|MockObject */
-    private UserLanguageServiceInterface $userLanguageService;
+    /** @var ResourceLanguageRetriever|MockObject */
+    private ResourceLanguageRetriever $resourceLanguageRetriever;
 
     /** @var LoggerInterface|MockObject */
     private LoggerInterface $logger;
+
+    /** @var TranslationDeletionService||MockObject */
+    private TranslationDeletionService $translationDeletionService;
 
     private TranslationItemEventListener $sut;
 
@@ -75,14 +80,16 @@ class ItemCreatedEventListenerTest extends TestCase
 
         $this->featureFlagChecker = $this->createMock(FeatureFlagCheckerInterface::class);
         $this->ontology = $this->createMock(Ontology::class);
-        $this->userLanguageService = $this->createMock(UserLanguageServiceInterface::class);
+        $this->resourceLanguageRetriever = $this->createMock(ResourceLanguageRetriever::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->translationDeletionService = $this->createMock(TranslationDeletionService::class);
 
         $this->sut = new TranslationItemEventListener(
             $this->featureFlagChecker,
             $this->ontology,
-            $this->userLanguageService,
-            $this->logger
+            $this->resourceLanguageRetriever,
+            $this->logger,
+            $this->translationDeletionService
         );
     }
 
@@ -157,9 +164,9 @@ class ItemCreatedEventListenerTest extends TestCase
             ->expects($this->never())
             ->method('info');
 
-        $this->userLanguageService
+        $this->resourceLanguageRetriever
             ->expects($this->once())
-            ->method('getDefaultLanguage')
+            ->method('retrieve')
             ->willReturn('en-US');
 
         $this->item
@@ -225,14 +232,32 @@ class ItemCreatedEventListenerTest extends TestCase
             ->expects($this->exactly(3))
             ->method('info');
 
-        $this->userLanguageService
-            ->expects($this->never())
-            ->method('getDefaultLanguage');
+        $this->resourceLanguageRetriever
+            ->expects($this->once())
+            ->method('retrieve')
+            ->with($this->item)
+            ->willReturn('en-US');
 
         $this->item
             ->expects($this->never())
             ->method('editPropertyValues');
 
         $this->sut->populateTranslationProperties($this->itemCreatedEvent);
+    }
+
+    private function testDeleteTranslations(): void
+    {
+        $this->featureFlagChecker
+            ->expects($this->once())
+            ->method('isEnabled')
+            ->with('FEATURE_FLAG_TRANSLATION_ENABLED')
+            ->willReturn(true);
+
+        $this->translationDeletionService
+            ->expects($this->once())
+            ->method('deleteByOriginResourceUri')
+            ->with('originResourceUri');
+
+        $this->sut->deleteTranslations(new ItemRemovedEvent('originResourceUri'));
     }
 }

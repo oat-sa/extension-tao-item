@@ -30,7 +30,9 @@ use oat\oatbox\event\Event;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
+use oat\tao\model\Translation\Service\TranslationDeletionService;
 use oat\taoItems\model\event\ItemCreatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use Psr\Log\LoggerInterface;
 
@@ -40,17 +42,20 @@ class TranslationItemEventListener
     private Ontology $ontology;
     private ResourceLanguageRetriever $resourceLanguageRetriever;
     private LoggerInterface $logger;
+    private TranslationDeletionService $translationDeletionService;
 
     public function __construct(
         FeatureFlagCheckerInterface $featureFlagChecker,
         Ontology $ontology,
         ResourceLanguageRetriever $resourceLanguageRetriever,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        TranslationDeletionService $translationDeletionService
     ) {
         $this->featureFlagChecker = $featureFlagChecker;
         $this->ontology = $ontology;
         $this->resourceLanguageRetriever = $resourceLanguageRetriever;
         $this->logger = $logger;
+        $this->translationDeletionService = $translationDeletionService;
     }
 
     public function populateTranslationProperties(Event $event): void
@@ -61,8 +66,7 @@ class TranslationItemEventListener
 
         if (!$event instanceof ItemCreatedEvent && !$event instanceof ItemUpdatedEvent) {
             throw new InvalidArgumentException(
-                'Event %s is not supported to populate translation properties',
-                get_class($event)
+                sprintf('Event %s is not supported to populate translation properties', get_class($event))
             );
         }
 
@@ -71,6 +75,14 @@ class TranslationItemEventListener
         $this->setLanguage($item);
         $this->setTranslationType($item);
         $this->setTranslationStatus($item);
+    }
+
+    public function deleteTranslations(ItemRemovedEvent $event): void
+    {
+        if ($this->featureFlagChecker->isEnabled('FEATURE_FLAG_TRANSLATION_ENABLED')) {
+            $this->translationDeletionService
+                ->deleteByOriginResourceUri($event->jsonSerialize()[ItemRemovedEvent::PAYLOAD_KEY_ITEM_URI]);
+        }
     }
 
     private function setLanguage(core_kernel_classes_Resource $item): void

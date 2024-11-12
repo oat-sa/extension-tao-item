@@ -24,6 +24,7 @@ namespace oat\taoItems\scripts\install;
 
 use oat\oatbox\extension\InstallAction;
 use oat\taoItems\model\event\ItemCreatedEvent;
+use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\taoItems\model\Translation\Listener\TranslationItemEventListener;
 
@@ -41,6 +42,10 @@ class SetupEventListeners extends InstallAction
         $this->registerEvent(
             ItemUpdatedEvent::class,
             [TranslationItemEventListener::class, 'populateTranslationProperties']
+        );
+        $this->registerEvent(
+            ItemRemovedEvent::class,
+            [TranslationItemEventListener::class, 'deleteTranslations']
         );
     }
 }
