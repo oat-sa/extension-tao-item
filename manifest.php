@@ -39,6 +39,7 @@ use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
 use oat\taoItems\scripts\install\SetupEventListeners;
+use oat\taoItems\scripts\install\SetupSectionVisibilityFilters;
 
 /*
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -70,6 +71,7 @@ return [
             RegisterAssetTreeBuilder::class,
             SetRolesPermissions::class,
             SetupEventListeners::class,
+            SetupSectionVisibilityFilters::class
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
