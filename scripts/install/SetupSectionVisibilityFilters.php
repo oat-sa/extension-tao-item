@@ -27,9 +27,6 @@ use oat\tao\model\menu\SectionVisibilityFilter;
 
 class SetupSectionVisibilityFilters extends InstallAction
 {
-    /**
-     * @param $params
-     */
     public function __invoke($params)
     {
         /** @var SectionVisibilityFilter $sectionVisibilityFilter */
