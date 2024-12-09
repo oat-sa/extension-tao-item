@@ -24,49 +24,49 @@
                     <action id="item-class-schema" name="Manage Schema" url="/taoItems/Items/editItemClass" group="content" context="class">
                         <icon id="icon-property-add"/>
                     </action>
-                    <action id="item-properties" name="Properties"  url="/taoItems/Items/editItem"      group="content" context="instance">
+                    <action id="item-properties" name="Properties"  url="/taoItems/Items/editItem"      group="content" context="instance"  weight="10">
                         <icon id="icon-edit"/>
                     </action>
-                    <action id="item-preview" name="Preview" url="/taoItems/ItemPreview/index" context="instance" group="content" binding="itemPreview">
+                    <action id="item-preview" name="Preview" url="/taoItems/ItemPreview/index" context="instance" group="content" binding="itemPreview" weight="8">
                         <icon id="icon-preview"/>
                     </action>
-                    <action id="item-authoring" name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor">
+                    <action id="item-authoring" name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor" weight="9">
                         <icon id="icon-edit"/>
                     </action>
-                    <action id="item-class-new" name="New class" url="/taoItems/Items/addSubClass" context="resource" group="tree" binding="subClass">
+                    <action id="item-class-new" name="New class" url="/taoItems/Items/addSubClass" context="resource" group="tree" binding="subClass" weight="10">
                         <icon id="icon-folder-open"/>
                     </action>
-                    <action id="item-delete" name="Delete" url="/taoItems/Items/deleteItem" context="instance" group="tree" binding="deleteItem" >
+                    <action id="item-delete" name="Delete" url="/taoItems/Items/deleteItem" context="instance" group="tree" binding="deleteItem" weight="-1">
                         <icon id="icon-bin"/>
                     </action>
-                    <action id="item-class-delete" name="Delete" url="/taoItems/Items/deleteClass" context="class" group="tree" binding="deleteItemClass" >
+                    <action id="item-class-delete" name="Delete" url="/taoItems/Items/deleteClass" context="class" group="tree" binding="deleteItemClass" weight="-1">
                         <icon id="icon-bin"/>
                     </action>
-                    <action id="item-delete-all" name="Delete" url="/taoItems/Items/deleteAll" context="resource" multiple="true" group="tree" binding="removeNodes">
+                    <action id="item-delete-all" name="Delete" url="/taoItems/Items/deleteAll" context="resource" multiple="true" group="tree" binding="removeNodes" weight="-2">
                         <icon id="icon-bin"/>
                     </action>
                     <action id="item-move" name="Move" url="/taoItems/Items/moveInstance" context="instance" group="none" binding="moveNode">
                         <icon id="icon-move-item"/>
                     </action>
-                    <action id="item-import" name="Import" url="/taoItems/ItemImport/index" context="resource" group="tree" binding="loadClass">
+                    <action id="item-import" name="Import" url="/taoItems/ItemImport/index" context="resource" group="tree" binding="loadClass" weight="5">
                         <icon id="icon-import"/>
                     </action>
-                    <action id="item-export" name="Export" url="/taoItems/ItemExport/index" context="resource" group="tree">
+                    <action id="item-export" name="Export" url="/taoItems/ItemExport/index" context="resource" group="tree" weight="4">
                         <icon id="icon-export"/>
                     </action>
-                    <action id="item-duplicate" name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode">
+                    <action id="item-duplicate" name="Duplicate" url="/taoItems/Items/cloneInstance" context="instance" group="tree" binding="duplicateNode" weight="8">
                         <icon id="icon-copy"/>
                     </action>
-                    <action id="item-copy-to" name="Copy To" url="/taoItems/Items/copyInstance" context="instance" group="tree" binding="copyTo">
+                    <action id="item-copy-to" name="Copy To" url="/taoItems/Items/copyInstance" context="instance" group="tree" binding="copyTo" weight="7">
                         <icon id="icon-copy"/>
                     </action>
-                    <action id="class-copy-to" name="Copy To" url="/taoItems/Items/copyClass" context="class" group="tree" binding="copyClassTo">
+                    <action id="class-copy-to" name="Copy To" url="/taoItems/Items/copyClass" context="class" group="tree" binding="copyClassTo" weight="7">
                         <icon id="icon-copy"/>
                     </action>
-                    <action id="item-move-to" name="Move To" url="/taoItems/Items/moveResource" context="instance" group="tree" binding="moveTo">
+                    <action id="item-move-to" name="Move To" url="/taoItems/Items/moveResource" context="instance" group="tree" binding="moveTo" weight="6">
                         <icon id="icon-move-item"/>
                     </action>
-                    <action id="class-move-to" name="Move To" url="/taoItems/Items/moveClass" context="class" group="tree" binding="moveTo">
+                    <action id="class-move-to" name="Move To" url="/taoItems/Items/moveClass" context="class" group="tree" binding="moveTo" weight="6">
                         <icon id="icon-move-item"/>
                     </action>
                     <action id="item-move-all" name="Move To" url="/taoItems/Items/moveAll" context="resource" multiple="true" group="tree" binding="moveTo">
