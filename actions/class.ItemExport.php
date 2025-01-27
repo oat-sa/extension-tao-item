@@ -21,8 +21,13 @@
  *                         (under the project TAO-TRANSFER);
  *               2009-2012 (update and modification) Public Research Centre Henri Tudor
  *                         (under the project TAO-SUSTAIN & TAO-DEV);
- *               2012-2018 (update and modification) Open Assessment Technologies SA;
+ *               2012-2025 (update and modification) Open Assessment Technologies SA;
  */
+
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\taoQtiItem\model\Export\Qti3Package\Handler;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * This controller provide the actions to export items
@@ -34,6 +39,8 @@
  */
 class taoItems_actions_ItemExport extends tao_actions_Export
 {
+    private const FEATURE_FLAG_QTI3_EXPORT = 'FEATURE_FLAG_QTI3_EXPORT';
+
     /**
      * overwrite the parent index to add the requiresRight for Items only
      *
@@ -56,7 +63,9 @@ class taoItems_actions_ItemExport extends tao_actions_Export
             $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
             if (in_array('tao_models_classes_export_ExportProvider', class_implements($impl), true)) {
                 foreach ($impl->getExportHandlers() as $handler) {
-                    array_unshift($returnValue, $handler);
+                    if($this->isHandlerEnabled($handler)) {
+                        array_unshift($returnValue, $handler);
+                    }
                 }
             }
         }
@@ -119,5 +128,21 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         });
 
         return $resources;
+    }
+
+    /**
+     * TODO: This was created only to temporary handle QTI3 Export feature. Will be removed.
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function isHandlerEnabled(tao_models_classes_export_ExportHandler $handler): bool
+    {
+        if ($handler instanceof Handler
+            && !$this->getPsrContainer()->get(FeatureFlagChecker::class)->isEnabled(self::FEATURE_FLAG_QTI3_EXPORT)
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }
