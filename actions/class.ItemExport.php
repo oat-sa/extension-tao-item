@@ -63,7 +63,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export
             $impl = taoItems_models_classes_ItemsService::singleton()->getItemModelImplementation($model);
             if (in_array('tao_models_classes_export_ExportProvider', class_implements($impl), true)) {
                 foreach ($impl->getExportHandlers() as $handler) {
-                    if($this->isHandlerEnabled($handler)) {
+                    if ($this->isHandlerEnabled($handler)) {
                         array_unshift($returnValue, $handler);
                     }
                 }
@@ -137,7 +137,8 @@ class taoItems_actions_ItemExport extends tao_actions_Export
      */
     private function isHandlerEnabled(tao_models_classes_export_ExportHandler $handler): bool
     {
-        if ($handler instanceof Handler
+        if (
+            $handler instanceof Handler
             && !$this->getPsrContainer()->get(FeatureFlagChecker::class)->isEnabled(self::FEATURE_FLAG_QTI3_EXPORT)
         ) {
             return false;
