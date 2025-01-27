@@ -25,9 +25,10 @@
  */
 
 use oat\tao\model\featureFlag\FeatureFlagChecker;
-use oat\taoQtiItem\model\Export\Qti3Package\Handler;
+use oat\taoQtiItem\model\Export\Qti3Package\Handler as Qti3Handler;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use tao_models_classes_export_ExportHandler as ExportHandlerInterface;
 
 /**
  * This controller provide the actions to export items
@@ -74,7 +75,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export
         if (!count($instances)) {
             $returnValue = array_filter(
                 $returnValue,
-                static function (tao_models_classes_export_ExportHandler $handler) {
+                static function (ExportHandlerInterface $handler) {
                     return $handler instanceof tao_models_classes_export_RdfExporter;
                 }
             );
@@ -97,7 +98,7 @@ class taoItems_actions_ItemExport extends tao_actions_Export
 
     protected function getFormFactory(
         array $handlers,
-        tao_models_classes_export_ExportHandler $exporter,
+        ExportHandlerInterface $exporter,
         core_kernel_classes_Resource $selectedResource,
         array $formData
     ): tao_actions_form_Export {
@@ -135,10 +136,10 @@ class taoItems_actions_ItemExport extends tao_actions_Export
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    private function isHandlerEnabled(tao_models_classes_export_ExportHandler $handler): bool
+    private function isHandlerEnabled(ExportHandlerInterface $handler): bool
     {
         if (
-            $handler instanceof Handler
+            $handler instanceof Qti3Handler
             && !$this->getPsrContainer()->get(FeatureFlagChecker::class)->isEnabled(self::FEATURE_FLAG_QTI3_EXPORT)
         ) {
             return false;
