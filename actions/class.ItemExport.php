@@ -138,8 +138,8 @@ class taoItems_actions_ItemExport extends tao_actions_Export
     private function isHandlerEnabled(ExportHandlerInterface $handler): bool
     {
         if (
-            $handler instanceof oat\taoQtiItem\model\Export\Qti3Package\Handler
-            && !$this->getPsrContainer()->get(FeatureFlagChecker::class)->isEnabled(self::FEATURE_FLAG_QTI3_EXPORT)
+            !$this->getPsrContainer()->get(FeatureFlagChecker::class)->isEnabled(self::FEATURE_FLAG_QTI3_EXPORT)
+            && $handler instanceof oat\taoQtiItem\model\Export\Qti3Package\Handler
         ) {
             return false;
         }
