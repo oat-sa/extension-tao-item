@@ -28,6 +28,7 @@ use oat\tao\model\search\SearchProxy;
 
 class ItemUsageService
 {
+    private const TEST_INDEX = 'tests';
     private SearchProxy $searchProxy;
 
     public function __construct(SearchProxy $searchProxy)
@@ -41,11 +42,13 @@ class ItemUsageService
      */
     public function isItemUsed(array $itemUris): bool
     {
-        return $this->searchProxy->searchBoolQuery('item_uris', $itemUris, 1)->getTotalCount() > 0;
+        return $this->searchProxy
+                ->searchBoolQuery('item_uris', $itemUris, self::TEST_INDEX, 1)
+                ->getTotalCount() > 0;
     }
 
     public function getItemTests(array $itemUris): ResultSet
     {
-        return $this->searchProxy->searchBoolQuery('item_uris', $itemUris);
+        return $this->searchProxy->searchBoolQuery('item_uris', $itemUris,self::TEST_INDEX);
     }
 }
