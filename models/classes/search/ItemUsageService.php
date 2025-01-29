@@ -41,11 +41,11 @@ class ItemUsageService
      */
     public function isItemUsed(array $itemUris): bool
     {
-        return $this->searchProxy->searchCustomQuery('item_uris', $itemUris, 1)->getTotalCount() > 0;
+        return $this->searchProxy->searchBoolQuery('item_uris', $itemUris, 1)->getTotalCount() > 0;
     }
 
     public function getItemTests(array $itemUris): ResultSet
     {
-        return $this->searchProxy->searchCustomQuery('item_uris', $itemUris);
+        return $this->searchProxy->searchBoolQuery('item_uris', $itemUris);
     }
 }
