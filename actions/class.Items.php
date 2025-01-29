@@ -39,6 +39,7 @@ use oat\oatbox\validator\ValidatorInterface;
 use oat\taoItems\model\event\ItemUpdatedEvent;
 use oat\tao\model\controller\SignedFormInstance;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
+use oat\taoItems\model\search\ItemUsageService;
 use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
 use tao_helpers_form_FormContainer as FormContainer;
 use oat\tao\model\Lists\Business\Validation\DependsOnPropertyValidator;
@@ -292,6 +293,15 @@ class taoItems_actions_Items extends tao_actions_SaSModule
      */
     public function deleteItem()
     {
+        $itemId = $this->getRequestParameter('id');
+
+        if ($this->getItemUsageService()->isItemUsed([$itemId])) {
+            throw new common_exception_Error(
+                __('Item is used in a tests: ') .
+                $this->getItemUsageTestLabels($itemId) .
+                __(' Item Cannot be deleted')
+            );
+        }
         return parent::deleteResource();
     }
 
@@ -408,5 +418,28 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     private function getResourceWatcher(): ResourceWatcher
     {
         return $this->getPsrContainer()->get(ResourceWatcher::SERVICE_ID);
+    }
+
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    private function getItemUsageService(): ItemUsageService
+    {
+        return $this->getPsrContainer()->get(ItemUsageService::class);
+    }
+
+    private function getItemUsageTestLabels(string $itemId): string
+    {
+        $result = $this->getItemUsageService()->getItemTests([$itemId]);
+        $testLabels = '';
+        foreach ($result as $test) {
+            $testLabel = $test['label'];
+            $testLabels .= reset($testLabel) ?? '';
+            $testLabels .= ', ';
+        }
+        $testLabels .= '.';
+
+        return $testLabels;
     }
 }

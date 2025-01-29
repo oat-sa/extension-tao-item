@@ -142,6 +142,8 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
             LockManager::getImplementation()->releaseLock($resource, $userId);
         }
 
+        $this->getItemUsageService()->isItemUsed($resource->getUri());
+
         $result = $this->deleteItemContent($resource) && parent::deleteResource($resource);
 
         if (!$result) {
@@ -697,5 +699,10 @@ class taoItems_models_classes_ItemsService extends OntologyClassService
     protected function getFileReferenceSerializer()
     {
         return $this->getServiceLocator()->get(FileReferenceSerializer::SERVICE_ID);
+    }
+
+    private function getItemUsageService(): ItemUsageService
+    {
+        return $this->getServiceManager()->getContainer()->get(ItemUsageService::class);
     }
 }

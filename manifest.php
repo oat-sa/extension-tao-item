@@ -28,6 +28,7 @@ use oat\tao\model\user\TaoRoles;
 use oat\taoBackOffice\controller\Lists;
 use oat\taoItems\model\Form\ServiceProvider\FormServiceProvider;
 use oat\taoItems\model\search\ItemClassListServiceProvider;
+use oat\taoItems\model\search\SearchServiceProvider;
 use oat\taoItems\model\Translation\ServiceProvider\TranslationServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
@@ -270,5 +271,6 @@ return [
         ItemClassListServiceProvider::class,
         TranslationServiceProvider::class,
         FormServiceProvider::class,
+        SearchServiceProvider::class
     ],
 ];
