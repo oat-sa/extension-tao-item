@@ -105,13 +105,18 @@ class ItemClassListService
 
     private function skipNotAccessible(array &$results): int
     {
-        $noAccessCount = 0;
+        if (!count($this->permissionManager->getSupportedRights())) {
+            // if DAC is not enabled
+            return 0;
+        }
+
         $uris = array_map(function (core_kernel_classes_Resource $a): string {
             return $a->getUri();
         }, $results);
 
         $permissions = $this->permissionManager->getPermissions($this->sessionService->getCurrentUser(), $uris);
 
+        $noAccessCount = 0;
         foreach ($results as $key => &$row) {
             $uri = $row->getUri();
             if (isset($permissions[$uri]) && !in_array(PermissionInterface::RIGHT_WRITE, $permissions[$uri])) {
