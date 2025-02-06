@@ -25,7 +25,6 @@ namespace oat\taoItems\model\search;
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
 use oat\generis\model\data\permission\PermissionInterface;
-use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\TaoOntology;
@@ -33,14 +32,12 @@ use oat\tao\model\TaoOntology;
 class ItemClassListService
 {
     private const CLASS_LIST_LIMIT = 10;
-    private ComplexSearchService $complexSearchService;
     private Ontology $ontology;
     private PermissionInterface $permissionManager;
     private SessionService $sessionService;
 
-    public function __construct(ComplexSearchService $complexSearchService, Ontology $ontology, PermissionInterface $permissionManager, $sessionService)
+    public function __construct(Ontology $ontology, PermissionInterface $permissionManager, $sessionService)
     {
-        $this->complexSearchService = $complexSearchService;
         $this->ontology = $ontology;
         $this->permissionManager = $permissionManager;
         $this->sessionService = $sessionService;

@@ -25,7 +25,6 @@ namespace oat\taoItems\model\search;
 use oat\generis\model\data\Ontology;
 use oat\generis\model\data\permission\PermissionInterface;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
-use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\oatbox\session\SessionService;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -38,7 +37,6 @@ class ItemClassListServiceProvider implements ContainerServiceProviderInterface
         $services = $configurator->services();
         $services->set(ItemClassListService::class, ItemClassListService::class)
             ->args([
-                service(ComplexSearchService::SERVICE_ID),
                 service(Ontology::SERVICE_ID),
                 service(PermissionInterface::SERVICE_ID),
                 service(SessionService::SERVICE_ID),
