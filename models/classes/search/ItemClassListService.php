@@ -31,7 +31,7 @@ use oat\tao\model\TaoOntology;
 
 class ItemClassListService
 {
-    private const CLASS_LIST_LIMIT = 10;
+    private const CLASS_LIST_LIMIT = 25;
     private Ontology $ontology;
     private PermissionInterface $permissionManager;
     private SessionService $sessionService;
@@ -62,9 +62,9 @@ class ItemClassListService
             $this->getDynamicQueryParameters($page, $basicQueryParameters)
         );
 
-        $skipped = $this->skipNotAccessible($searchResult);
+        $this->skipNotAccessible($searchResult);
 
-        $result['total'] = ($root->countInstances($query, $basicQueryParameters) - $skipped) ?? 0;
+        $result['total'] = $root->countInstances($query, $basicQueryParameters) ?? 0;
         $result['items'] = [];
 
         foreach ($searchResult as $row) {
@@ -103,11 +103,11 @@ class ItemClassListService
         );
     }
 
-    private function skipNotAccessible(array &$results): int
+    private function skipNotAccessible(array &$results): void
     {
         if (!count($this->permissionManager->getSupportedRights())) {
             // if DAC is not enabled
-            return 0;
+            return;
         }
 
         $uris = array_map(function (core_kernel_classes_Resource $a): string {
@@ -124,7 +124,5 @@ class ItemClassListService
                 $noAccessCount++;
             }
         }
-
-        return $noAccessCount;
     }
 }
