@@ -116,12 +116,10 @@ class ItemClassListService
 
         $permissions = $this->permissionManager->getPermissions($this->sessionService->getCurrentUser(), $uris);
 
-        $noAccessCount = 0;
         foreach ($results as $key => &$row) {
             $uri = $row->getUri();
             if (isset($permissions[$uri]) && !in_array(PermissionInterface::RIGHT_WRITE, $permissions[$uri])) {
                 unset($results[$key]);
-                $noAccessCount++;
             }
         }
     }
