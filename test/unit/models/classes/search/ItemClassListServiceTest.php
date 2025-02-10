@@ -24,6 +24,8 @@ class ItemClassListServiceTest extends TestCase
         $this->ontologyMock = $this->createMock(Ontology::class);
         $this->permissionManagerMock = $this->createMock(PermissionInterface::class);
         $this->sessionServiceMock = $this->createMock(SessionService::class);
+        $this->rootClassMock = $this->createMock(core_kernel_classes_Class::class);
+        $this->ontologyMock->method('getClass')->willReturn($this->rootClassMock);
 
         $this->sut = new ItemClassListService(
             $this->ontologyMock,
@@ -37,16 +39,14 @@ class ItemClassListServiceTest extends TestCase
         $query = 'test';
         $page = '1';
 
-        $mockRootClass = $this->createMock(core_kernel_classes_Class::class);
-        $mockRootClass->method('getUri')->willReturn('test-uri');
-        $mockRootClass->method('getLabel')->willReturn('Test Label');
-        $mockRootClass->method('getParentClassesIds')->willReturn([]);
-
-        $this->ontologyMock->method('getClass')->willReturn($mockRootClass);
         $this->permissionManagerMock->method('getSupportedRights')->willReturn([]);
 
-        $mockRootClass->method('searchInstances')->willReturn([$mockRootClass]);
-        $mockRootClass->method('countInstances')->willReturn(1);
+        $mockFoundClass = $this->createMock(core_kernel_classes_Class::class);
+        $mockFoundClass->method('getUri')->willReturn('test-uri');
+        $mockFoundClass->method('getLabel')->willReturn('Test Label');
+        $mockFoundClass->method('getParentClassesIds')->willReturn([]);
+        $this->rootClassMock->method('searchInstances')->willReturn([$mockFoundClass]);
+        $this->rootClassMock->method('countInstances')->willReturn(1);
 
         $result = $this->sut->getList($query, $page);
 
@@ -56,6 +56,7 @@ class ItemClassListServiceTest extends TestCase
         $this->assertEquals(1, $result['total']);
         $this->assertCount(1, $result['items']);
         $this->assertEquals('test-uri', $result['items'][0]['id']);
+        $this->assertEquals('Test Label', $result['items'][0]['text']);
     }
 
     public function testGetListFiltersOutInaccessibleItems()
@@ -63,15 +64,6 @@ class ItemClassListServiceTest extends TestCase
         $query = 'test';
         $page = '1';
 
-        $accessibleClass = $this->createMock(core_kernel_classes_Class::class);
-        $accessibleClass->method('getUri')->willReturn('accessible-uri');
-        $accessibleClass->method('getLabel')->willReturn('Accessible Label');
-
-        $inaccessibleClass = $this->createMock(core_kernel_classes_Class::class);
-        $inaccessibleClass->method('getUri')->willReturn('inaccessible-uri');
-        $inaccessibleClass->method('getLabel')->willReturn('Inaccessible Label');
-
-        $this->ontologyMock->method('getClass')->willReturn($accessibleClass);
         $this->sessionServiceMock->method('getCurrentUser')->willReturn(
             $this->createMock(User::class)
         );
@@ -84,8 +76,16 @@ class ItemClassListServiceTest extends TestCase
             'inaccessible-uri' => [PermissionInterface::RIGHT_READ]
         ]);
 
-        $accessibleClass->method('searchInstances')->willReturn([$accessibleClass, $inaccessibleClass]);
-        $accessibleClass->method('countInstances')->willReturn(2);
+        $accessibleClass = $this->createMock(core_kernel_classes_Class::class);
+        $accessibleClass->method('getUri')->willReturn('accessible-uri');
+        $accessibleClass->method('getLabel')->willReturn('Accessible Label');
+
+        $inaccessibleClass = $this->createMock(core_kernel_classes_Class::class);
+        $inaccessibleClass->method('getUri')->willReturn('inaccessible-uri');
+        $inaccessibleClass->method('getLabel')->willReturn('Inaccessible Label');
+
+        $this->rootClassMock->method('searchInstances')->willReturn([$accessibleClass, $inaccessibleClass]);
+        $this->rootClassMock->method('countInstances')->willReturn(2);
 
         $result = $this->sut->getList($query, $page);
 
