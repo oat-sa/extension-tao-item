@@ -158,7 +158,7 @@ define([
         return new Promise((resolve, reject) => {
             checkRelations({
                 classId: actionContext.id,
-                type: 'item'
+                type: 'test'
             })
                 .then(responseRelated => {
                     const relatedTests = responseRelated.data.relations;
@@ -173,7 +173,7 @@ define([
                             () => cancel(reject)
                         );
                     } else {
-                        confirmDeleteDialog(
+                        alertDialog(
                             relatedClassTestsPopupTpl({
                                 name,
                                 number: relatedTests.length,
