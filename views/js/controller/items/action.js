@@ -158,7 +158,7 @@ define([
         return new Promise((resolve, reject) => {
             checkRelations({
                 classId: actionContext.id,
-                type: 'test'
+                type: 'itemClass'
             })
                 .then(responseRelated => {
                     const relatedTests = responseRelated.data.relations;
