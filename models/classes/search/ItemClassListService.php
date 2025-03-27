@@ -24,19 +24,23 @@ namespace oat\taoItems\model\search;
 
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
-use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
+use oat\generis\model\data\permission\PermissionInterface;
 use oat\generis\model\OntologyRdfs;
+use oat\oatbox\session\SessionService;
 use oat\tao\model\TaoOntology;
 
 class ItemClassListService
 {
-    private const CLASS_LIST_LIMIT = 10;
-    private ComplexSearchService $complexSearchService;
+    private const CLASS_LIST_LIMIT = 25;
     private Ontology $ontology;
-    public function __construct(ComplexSearchService $complexSearchService, Ontology $ontology)
+    private PermissionInterface $permissionManager;
+    private SessionService $sessionService;
+
+    public function __construct(Ontology $ontology, PermissionInterface $permissionManager, $sessionService)
     {
-        $this->complexSearchService = $complexSearchService;
         $this->ontology = $ontology;
+        $this->permissionManager = $permissionManager;
+        $this->sessionService = $sessionService;
     }
 
     public function getList(string $query, string $page): array
@@ -57,6 +61,8 @@ class ItemClassListService
             $query,
             $this->getDynamicQueryParameters($page, $basicQueryParameters)
         );
+
+        $this->skipNotAccessible($searchResult);
 
         $result['total'] = $root->countInstances($query, $basicQueryParameters) ?? 0;
         $result['items'] = [];
@@ -86,7 +92,7 @@ class ItemClassListService
         return $displayText;
     }
 
-    private function getDynamicQueryParameters(int $page, array $basicQueryParameters)
+    private function getDynamicQueryParameters(int $page, array $basicQueryParameters): array
     {
         return array_merge(
             $basicQueryParameters,
@@ -95,5 +101,26 @@ class ItemClassListService
                 'offset' => ($page - 1) * self::CLASS_LIST_LIMIT
             ]
         );
+    }
+
+    private function skipNotAccessible(array &$results): void
+    {
+        if (!count($this->permissionManager->getSupportedRights())) {
+            // if DAC is not enabled
+            return;
+        }
+
+        $uris = array_map(function (core_kernel_classes_Resource $a): string {
+            return $a->getUri();
+        }, $results);
+
+        $permissions = $this->permissionManager->getPermissions($this->sessionService->getCurrentUser(), $uris);
+
+        foreach ($results as $key => &$row) {
+            $uri = $row->getUri();
+            if (isset($permissions[$uri]) && !in_array(PermissionInterface::RIGHT_WRITE, $permissions[$uri])) {
+                unset($results[$key]);
+            }
+        }
     }
 }

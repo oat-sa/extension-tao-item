@@ -27,6 +27,7 @@ use core_kernel_classes_Resource;
 use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\event\Event;
+use oat\oatbox\service\ServiceManager;
 use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\Translation\Service\ResourceLanguageRetriever;
@@ -34,6 +35,7 @@ use oat\tao\model\Translation\Service\TranslationDeletionService;
 use oat\taoItems\model\event\ItemCreatedEvent;
 use oat\taoItems\model\event\ItemRemovedEvent;
 use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\taoQtiItem\model\Translation\Service\QtiLanguageSetter;
 use Psr\Log\LoggerInterface;
 
 class TranslationItemEventListener
