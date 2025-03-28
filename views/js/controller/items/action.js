@@ -173,7 +173,7 @@ define([
                             () => cancel(reject)
                         );
                     } else {
-                        alertDialog(
+                        confirmDeleteDialog(
                             relatedClassTestsPopupTpl({
                                 name,
                                 number: relatedTests.length,
@@ -182,6 +182,7 @@ define([
                                 multiple: relatedTests.length > 1,
                                 multipleOthers: relatedTests.length - 3 > 1
                             }),
+                            () => accept(actionContext, this.url, resolve, reject),
                             () => cancel(reject)
                         );
                     }
