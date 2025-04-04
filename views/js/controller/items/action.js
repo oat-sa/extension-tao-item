@@ -127,7 +127,7 @@ define([
         return new Promise((resolve, reject) => {
             checkRelations({
                 sourceId: actionContext.id,
-                type: 'item'
+                type: 'test' // Item relation is always a test
             }).then(responseRelated => {
                 const relatedTests = responseRelated.data.relations;
                 const name = prepareName($('a.clicked', actionContext.tree).text().trim());
@@ -138,7 +138,7 @@ define([
                         () => cancel(reject)
                     );
                 } else {
-                    confirmDeleteDialog(
+                    alertDialog(
                         relatedTestsPopupTpl({
                             name,
                             number: relatedTests.length,
@@ -147,7 +147,6 @@ define([
                             multiple: relatedTests.length > 1,
                             multipleOthers: relatedTests.length - 3 > 1
                         }),
-                        () => accept(actionContext, this.url, resolve, reject),
                         () => cancel(reject)
                     );
                 }
@@ -159,7 +158,7 @@ define([
         return new Promise((resolve, reject) => {
             checkRelations({
                 classId: actionContext.id,
-                type: 'item'
+                type: 'itemClass'
             })
                 .then(responseRelated => {
                     const relatedTests = responseRelated.data.relations;

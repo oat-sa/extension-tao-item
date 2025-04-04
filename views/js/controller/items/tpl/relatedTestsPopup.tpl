@@ -7,5 +7,3 @@
 {{#if numberOther}}
 <span class="gray-others">{{__ 'and'}} {{numberOther}} {{__ 'other'}}{{#if multipleOthers}}{{__ 's'}}{{/if}}.</span><br><br>
 {{/if}}
-
-<b>{{__ 'Are you sure you want to delete this item?'}}</b>
