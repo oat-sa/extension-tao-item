@@ -38,6 +38,9 @@ msgstr "Sind Sie sicher, dass Sie die Klasse löschen möchten?"
 msgid "Are you sure you want to delete the item"
 msgstr "Sind Sie sicher, dass Sie das Element löschen möchten?"
 
+msgid "Are you sure you want to delete the item %s?"
+msgstr ""
+
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "Sind Sie sicher, dass Sie diese Klasse und all ihren Inhalt löschen möchten?"
 
