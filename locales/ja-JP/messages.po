@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-12-05 14:39\n"
+"PO-Revision-Date: 2025-05-13 08:16\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -21,22 +21,22 @@ msgstr ""
 "Language-Team: Japanese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr ""
+msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。"
 
 msgid "Actual size"
 msgstr "実際の大きさ"
 
 msgid "and"
-msgstr ""
+msgstr "と"
 
 msgid "and all of its content?"
-msgstr ""
+msgstr "全ての内容はどうでしょうか?"
 
 msgid "Are you sure you want to delete the class"
-msgstr ""
+msgstr "このクラスを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete the item"
-msgstr ""
+msgstr "アイテムを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete the item %s?"
 msgstr ""
@@ -52,7 +52,7 @@ msgid "Authoring"
 msgstr "オーサリング"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "クラススキーマを保存しました"
 
 msgid "Close"
 msgstr "閉じる"
@@ -61,7 +61,7 @@ msgid "Close console"
 msgstr "コンソールを閉じる"
 
 msgid "contains content that is currently in use."
-msgstr ""
+msgstr "には、現在使用中のコンテンツが含まれています。"
 
 #, tao-public
 msgid "Copy To"
@@ -76,10 +76,10 @@ msgid "Delete"
 msgstr "削除"
 
 msgid "Deleting this class will break the"
-msgstr ""
+msgstr "このクラスを削除すると、"
 
 msgid "Deleting this item will break the"
-msgstr ""
+msgstr "このアイテムを削除すると、"
 
 msgid "Desktop preview"
 msgstr "デスクトッププレビュー"
@@ -102,20 +102,20 @@ msgid "Export"
 msgstr "エクスポート"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "自動化されたカテゴリを作成するには、プロパティ値を公開します。"
 
 msgid "Failed retrieving %s"
 msgstr "検索失敗 %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "禁止アクション"
 
 #, tao-public
 msgid "Import"
 msgstr "インポート"
 
 msgid "is currently in use."
-msgstr ""
+msgstr "現在使用中です。"
 
 msgid "Item Model"
 msgstr "アイテムも出る"
@@ -176,10 +176,10 @@ msgid "Not yet available"
 msgstr "現在利用できません"
 
 msgid "other"
-msgstr ""
+msgstr "その他"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "前にサブクラスを削除してください。"
 
 msgid "Please select first the item type!"
 msgstr "最初のアイテムタイプを選択してください！"
@@ -202,19 +202,19 @@ msgid "Remove this message"
 msgstr "このメッセージを除く"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "リソースが削除されました"
 
 msgid "Retrieving external resources"
 msgstr "外部リソース検索中"
 
 msgid "s"
-msgstr ""
+msgstr "s"
 
 msgid "Submit"
 msgstr "送信"
 
 msgid "test"
-msgstr ""
+msgstr "テスト"
 
 msgid "The class"
 msgstr "クラス"
@@ -229,7 +229,7 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr "アイテムとエクササイズの作成とデザインがアイテムモジュールにより可能になっています。"
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove exposition ?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
@@ -241,19 +241,19 @@ msgid "Unable to create deployement directory"
 msgstr "実行ディレクトリーを作成できません。"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "選択したリソースを削除できません"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "%s からアイテムをレンダリングできません: %s %s"
 
 msgid "using it:"
-msgstr ""
+msgstr "それを使って"
 
 msgid "Warning"
 msgstr "警告"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "削除しようとしているのは大きすぎてサブクラスが多すぎます"
 
 msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
