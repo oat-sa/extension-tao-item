@@ -38,6 +38,9 @@ msgstr "Tem certeza de que deseja excluir a aula"
 msgid "Are you sure you want to delete the item"
 msgstr "Tem certeza que deseja excluir o item"
 
+msgid "Are you sure you want to delete the item %s?"
+msgstr ""
+
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "Tem certeza que deseja excluir esta classe e todo o seu conteúdo?"
 

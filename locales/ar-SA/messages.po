@@ -38,6 +38,9 @@ msgstr "هل أنت متأكد أنك تريد حذف القسم"
 msgid "Are you sure you want to delete the item"
 msgstr "هل أنت متأكد أنك تريد حذف القسم"
 
+msgid "Are you sure you want to delete the item %s?"
+msgstr ""
+
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "هل أنت متأكد من أنك تريد حذف هذا القسم وكل محتواه؟"
 

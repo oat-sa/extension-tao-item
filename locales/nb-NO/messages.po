@@ -38,6 +38,9 @@ msgstr "Er du sikker på at du vil slette mappen"
 msgid "Are you sure you want to delete the item"
 msgstr "Er du sikker på at du vil slette oppgaven"
 
+msgid "Are you sure you want to delete the item %s?"
+msgstr ""
+
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "Er du sikker på at du vil slette denne mappen og alt innholdet i den?"
 
