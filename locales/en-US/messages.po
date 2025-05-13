@@ -31,9 +31,6 @@ msgstr ""
 msgid "Are you sure you want to delete the item"
 msgstr ""
 
-msgid "Are you sure you want to delete the item %s?"
-msgstr ""
-
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr ""
 
