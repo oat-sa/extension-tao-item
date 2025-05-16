@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-13 08:16\n"
+"PO-Revision-Date: 2025-05-16 14:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -39,7 +39,7 @@ msgid "Are you sure you want to delete the item"
 msgstr "アイテムを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "本当に %s を削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "このクラスとその内容をすべて削除してよいのですか？"
