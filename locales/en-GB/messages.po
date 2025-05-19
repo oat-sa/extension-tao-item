@@ -29,6 +29,9 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+msgid "Are you sure you want to delete the item %s?"
+msgstr ""
+
 msgid "and all of its content?"
 msgstr ""
 
