@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-13 08:16\n"
+"PO-Revision-Date: 2025-12-04 11:23\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: hu\n"
@@ -21,243 +21,243 @@ msgstr ""
 "Language-Team: Hungarian\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr ""
+msgstr "<b>Megjegyzés</b>: Üres osztályok esetén az RDF formátum<br />az egyetlen elérhető formátum."
 
 msgid "Actual size"
-msgstr ""
+msgstr "Valós méret"
 
 msgid "and"
-msgstr ""
+msgstr "és"
 
 msgid "and all of its content?"
-msgstr ""
+msgstr "és annak minden tartalma?"
 
 msgid "Are you sure you want to delete the class"
-msgstr ""
+msgstr "Biztosan törölni szeretnéd az osztályt?"
 
 msgid "Are you sure you want to delete the item"
-msgstr ""
+msgstr "Biztosan törölni szeretné az elemet?"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "Biztosan törölni szeretnéd az elemet %s?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "Biztosan törölni szeretné ezt a kurzust és az összes tartalmát?"
 
 msgid "Are you sure you want to delete this item?"
-msgstr ""
+msgstr "Biztosan törölni szeretné ezt az elemet?"
 
 #, tao-public
 msgid "Authoring"
-msgstr ""
+msgstr "Szerzői munka"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Osztályséma mentve"
 
 msgid "Close"
-msgstr ""
+msgstr "Közeli"
 
 msgid "Close console"
-msgstr ""
+msgstr "Konzol bezárása"
 
 msgid "contains content that is currently in use."
-msgstr ""
+msgstr "jelenleg használatban lévő tartalmat tartalmaz."
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Másolás ide"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Elemek és gyakorlatok létrehozása és tervezése."
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Töröl"
 
 msgid "Deleting this class will break the"
-msgstr ""
+msgstr "A kurzus törlése tönkreteszi a"
 
 msgid "Deleting this item will break the"
-msgstr ""
+msgstr "Az elem törlése megszakítja a"
 
 msgid "Desktop preview"
-msgstr ""
+msgstr "Asztali előnézet"
 
 msgid "Don’t show this again!"
-msgstr ""
+msgstr "Ezt ne mutasd meg újra!"
 
 #, tao-public
 msgid "Duplicate"
-msgstr ""
+msgstr "Másolat"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Elem szerkesztése"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Elem szerkesztése"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Automatizált kategóriák létrehozásához jelenítse meg a tulajdonság értékét."
 
 msgid "Failed retrieving %s"
-msgstr ""
+msgstr "Sikertelen lekérése %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Tiltott cselekvés"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importálás"
 
 msgid "is currently in use."
-msgstr ""
+msgstr "jelenleg használatban van."
 
 msgid "Item Model"
-msgstr ""
+msgstr "Elem modell"
 
 msgid "Item not found"
-msgstr ""
+msgstr "A tétel nem található"
 
 msgid "Item saved"
-msgstr ""
+msgstr "Elem mentve"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Tételek"
 
 #, tao-public
 msgid "Items library"
-msgstr ""
+msgstr "Elemek könyvtára"
 
 msgid "Landscape"
-msgstr ""
+msgstr "Táj"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Utolsó frissítés: %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Elemosztály-séma kezelése"
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Elemek kezelése"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Séma kezelése"
 
 msgid "Mobile preview"
-msgstr ""
+msgstr "Mobil előnézet"
 
 #, tao-public
 msgid "Move"
-msgstr ""
+msgstr "Mozog"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Áthelyezés ide"
 
 #, tao-public
 msgid "New class"
-msgstr ""
+msgstr "Új osztály"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr ""
+msgstr "Nincs elérhető elemszerkesztő eszköz a kiválasztott elemtípushoz: %s"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Nincs elemtípus kiválasztva az aktuális elemhez."
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Még nem elérhető"
 
 msgid "other"
-msgstr ""
+msgstr "más"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Kérlek, előtte töröld az alosztályokat."
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Kérjük, először válassza ki a termék típusát!"
 
 msgid "Portrait"
-msgstr ""
+msgstr "Portré"
 
 #, tao-public
 msgid "Preview"
-msgstr ""
+msgstr "Előnézet"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Tulajdonságok"
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr ""
+msgstr "Közzétéve: „%1$s”, nyelv: „%2$s”"
 
 msgid "Remove this message"
-msgstr ""
+msgstr "Üzenet eltávolítása"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Erőforrás törölve"
 
 msgid "Retrieving external resources"
-msgstr ""
+msgstr "Külső erőforrások lekérése"
 
 msgid "s"
-msgstr ""
+msgstr "sz"
 
 msgid "Submit"
-msgstr ""
+msgstr "Küldés"
 
 msgid "test"
-msgstr ""
+msgstr "teszt"
 
 msgid "The class"
-msgstr ""
+msgstr "Az osztály"
 
 msgid "The file you tried to upload is not valid"
-msgstr ""
+msgstr "A feltölteni kívánt fájl érvénytelen"
 
 msgid "The item"
-msgstr ""
+msgstr "A tétel"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "A Tételek modul lehetővé teszi tételek és gyakorlatok létrehozását és tervezését."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "Az ingatlan kategória-hozzáadásnak van kitéve. Törölje a kitettséget?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr ""
+msgstr "Ez az előnézet méretezhető a képernyő méretéhez. A végső megjelenítés eltérhet."
 
 msgid "Unable to copy resources for language %s"
-msgstr ""
+msgstr "Nem sikerült másolni a következő nyelvhez tartozó erőforrásokat: %s"
 
 msgid "Unable to create deployement directory"
-msgstr ""
+msgstr "Nem sikerült létrehozni a telepítési könyvtárat"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "A kiválasztott erőforrás törlése sikertelen"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "Nem sikerült megjeleníteni az elemet innen: %s : %s %s"
 
 msgid "using it:"
-msgstr ""
+msgstr "használatával:"
 
 msgid "Warning"
-msgstr ""
+msgstr "Figyelmeztetés"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "A törölni próbált fájl túl nagy és túl sok alosztályt tartalmaz."
 
 msgid "You checked out this item %2s ago"
-msgstr ""
+msgstr "Ezt a terméket %2s ezelőtt vetted ki"
 
 msgid "Your path contains error"
-msgstr ""
+msgstr "Az elérési út hibát tartalmaz"
 
