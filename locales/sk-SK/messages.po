@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-13 08:16\n"
+"PO-Revision-Date: 2025-12-04 11:23\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk\n"
@@ -21,243 +21,243 @@ msgstr ""
 "Language-Team: Slovak\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr ""
+msgstr "<b>Poznámka</b>: Pre prázdne triedy je dostupný iba formát RDF<br />."
 
 msgid "Actual size"
-msgstr ""
+msgstr "Skutočná veľkosť"
 
 msgid "and"
-msgstr ""
+msgstr "a"
 
 msgid "and all of its content?"
-msgstr ""
+msgstr "a všetok jeho obsah?"
 
 msgid "Are you sure you want to delete the class"
-msgstr ""
+msgstr "Naozaj chcete odstrániť triedu?"
 
 msgid "Are you sure you want to delete the item"
-msgstr ""
+msgstr "Naozaj chcete odstrániť túto položku?"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "Naozaj chcete odstrániť položku %s?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "Naozaj chcete odstrániť túto triedu a všetok jej obsah?"
 
 msgid "Are you sure you want to delete this item?"
-msgstr ""
+msgstr "Naozaj chcete túto položku odstrániť?"
 
 #, tao-public
 msgid "Authoring"
-msgstr ""
+msgstr "Autorstvo"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Schéma triedy bola uložená"
 
 msgid "Close"
-msgstr ""
+msgstr "Zatvoriť"
 
 msgid "Close console"
-msgstr ""
+msgstr "Zatvoriť konzolu"
 
 msgid "contains content that is currently in use."
-msgstr ""
+msgstr "obsahuje obsah, ktorý sa aktuálne používa."
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Kopírovať do"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Vytvárajte a navrhovajte položky a cvičenia."
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Odstrániť"
 
 msgid "Deleting this class will break the"
-msgstr ""
+msgstr "Odstránením tejto triedy sa preruší"
 
 msgid "Deleting this item will break the"
-msgstr ""
+msgstr "Odstránením tejto položky sa preruší"
 
 msgid "Desktop preview"
-msgstr ""
+msgstr "Ukážka na počítači"
 
 msgid "Don’t show this again!"
-msgstr ""
+msgstr "Toto už viac neukazujte!"
 
 #, tao-public
 msgid "Duplicate"
-msgstr ""
+msgstr "Duplikát"
 
 msgid "Edit Item"
-msgstr ""
+msgstr "Upraviť položku"
 
 msgid "Edit item"
-msgstr ""
+msgstr "Upraviť položku"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Zverejnite hodnotu vlastnosti na vytvorenie automatizovaných kategórií."
 
 msgid "Failed retrieving %s"
-msgstr ""
+msgstr "Nepodarilo sa načítať %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Zakázaná akcia"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importovať"
 
 msgid "is currently in use."
-msgstr ""
+msgstr "sa momentálne používa."
 
 msgid "Item Model"
-msgstr ""
+msgstr "Model položky"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Položka sa nenašla"
 
 msgid "Item saved"
-msgstr ""
+msgstr "Položka uložená"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Položky"
 
 #, tao-public
 msgid "Items library"
-msgstr ""
+msgstr "Knižnica položiek"
 
 msgid "Landscape"
-msgstr ""
+msgstr "Krajina"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Naposledy aktualizované %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Spravovať schému triedy položiek"
 
 #, tao-public
 msgid "Manage items"
-msgstr ""
+msgstr "Spravovať položky"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Spravovať schému"
 
 msgid "Mobile preview"
-msgstr ""
+msgstr "Mobilná ukážka"
 
 #, tao-public
 msgid "Move"
-msgstr ""
+msgstr "Presunúť"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Presunúť do"
 
 #, tao-public
 msgid "New class"
-msgstr ""
+msgstr "Nová trieda"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr ""
+msgstr "Pre vybraný typ položky nie je k dispozícii žiadny nástroj na tvorbu položiek: %s"
 
 msgid "No item type selected for the current item."
-msgstr ""
+msgstr "Pre aktuálnu položku nebol vybraný žiadny typ položky."
 
 msgid "Not yet available"
-msgstr ""
+msgstr "Zatiaľ nie je k dispozícii"
 
 msgid "other"
-msgstr ""
+msgstr "iné"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Predtým, prosím, vymažte podtriedy."
 
 msgid "Please select first the item type!"
-msgstr ""
+msgstr "Najprv si prosím vyberte typ položky!"
 
 msgid "Portrait"
-msgstr ""
+msgstr "Portrét"
 
 #, tao-public
 msgid "Preview"
-msgstr ""
+msgstr "Náhľad"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Nehnuteľnosti"
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr ""
+msgstr "Publikované „%1$s“ v jazyku „%2$s“"
 
 msgid "Remove this message"
-msgstr ""
+msgstr "Odstrániť túto správu"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Zdroj bol odstránený"
 
 msgid "Retrieving external resources"
-msgstr ""
+msgstr "Získavanie externých zdrojov"
 
 msgid "s"
-msgstr ""
+msgstr "s"
 
 msgid "Submit"
-msgstr ""
+msgstr "Odoslať"
 
 msgid "test"
-msgstr ""
+msgstr "test"
 
 msgid "The class"
-msgstr ""
+msgstr "Trieda"
 
 msgid "The file you tried to upload is not valid"
-msgstr ""
+msgstr "Súbor, ktorý ste sa pokúsili nahrať, nie je platný"
 
 msgid "The item"
-msgstr ""
+msgstr "Položka"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr ""
+msgstr "Modul Položky umožňuje vytváranie a navrhovanie položiek a cvičení."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "Nehnuteľnosť je vystavená pridaniu kategórie. Odstrániť expozíciu?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr ""
+msgstr "Tento náhľad sa môže prispôsobiť veľkosti Vašej obrazovky. Konečné vykreslenie sa môže líšiť."
 
 msgid "Unable to copy resources for language %s"
-msgstr ""
+msgstr "Nepodarilo sa kopírovať zdroje pre jazyk %s"
 
 msgid "Unable to create deployement directory"
-msgstr ""
+msgstr "Nepodarilo sa vytvoriť adresár nasadenia"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "Vybraný zdroj sa nepodarilo odstrániť"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "Položku sa nepodarilo vykresliť z %s : %s %s"
 
 msgid "using it:"
-msgstr ""
+msgstr "pomocou neho:"
 
 msgid "Warning"
-msgstr ""
+msgstr "POZOR"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "ktorý sa pokúšate odstrániť, je príliš veľký a obsahuje príliš veľa podtried."
 
 msgid "You checked out this item %2s ago"
-msgstr ""
+msgstr "Túto položku ste si pozreli pred %2s"
 
 msgid "Your path contains error"
-msgstr ""
+msgstr "Vaša cesta obsahuje chybu"
 
