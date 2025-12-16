@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2021.10\n"
-"PO-Revision-Date: 2021-10-14T09:21:54\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-LE\n"
@@ -19,10 +19,16 @@ msgstr ""
 msgid "Actual size"
 msgstr "実際の大きさ"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr ""
 
 msgid "and all of its content?"
+msgstr ""
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr ""
 
 msgid "Are you sure you want to delete the class"
@@ -103,6 +109,9 @@ msgstr "検索失敗 %s"
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "インポート"
@@ -168,6 +177,9 @@ msgstr "該当アイテムのタイプが選ばれていません。"
 msgid "Not yet available"
 msgstr "現在利用できません"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr ""
 
@@ -203,6 +215,9 @@ msgstr "外部リソース検索中"
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "送信"
 
@@ -227,6 +242,13 @@ msgstr ""
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr "言語 %s のリソースをコピーできません。"
 
@@ -237,6 +259,9 @@ msgid "Unable to delete the selected resource"
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "Unable to upload file"
 msgstr ""
 
 msgid "using it:"
@@ -250,6 +275,9 @@ msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "パスにエラーがあります。"

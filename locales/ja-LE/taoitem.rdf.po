@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2021.10\n"
-"PO-Revision-Date: 2021-10-14T09:21:54\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-LE\n"
@@ -175,6 +175,14 @@ msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
 msgstr ""
 
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Translator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Translator"
+msgstr ""
+
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Role"
@@ -303,6 +311,10 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Deleter Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
 msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
