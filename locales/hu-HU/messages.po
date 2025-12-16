@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T10:48:13\n"
+"PO-Revision-Date: 2025-12-16T14:44:42\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: hu-HU\n"
@@ -33,6 +33,9 @@ msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "Biztosan törölni szeretnéd az osztályt?"
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Biztosan törölni szeretné az elemet?"
@@ -257,6 +260,9 @@ msgstr "Nem sikerült létrehozni a telepítési könyvtárat"
 
 msgid "Unable to delete the selected resource"
 msgstr "A kiválasztott erőforrás törlése sikertelen"
+
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Nem sikerült megjeleníteni az elemet innen: %s : %s %s"
