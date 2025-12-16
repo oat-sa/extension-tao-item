@@ -1,24 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-16 14:37\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ja\n"
+"Language: ja-JP\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: ja-JP\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: Japanese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。"
@@ -26,11 +19,17 @@ msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用�
 msgid "Actual size"
 msgstr "実際の大きさ"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr "と"
 
 msgid "and all of its content?"
 msgstr "全ての内容はどうでしょうか?"
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "このクラスを削除してもよろしいですか？"
@@ -110,6 +109,9 @@ msgstr "検索失敗 %s"
 msgid "Forbidden action"
 msgstr "禁止アクション"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "インポート"
@@ -175,6 +177,9 @@ msgstr "該当アイテムのタイプが選ばれていません。"
 msgid "Not yet available"
 msgstr "現在利用できません"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "その他"
 
@@ -210,6 +215,9 @@ msgstr "外部リソース検索中"
 msgid "s"
 msgstr "s"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "送信"
 
@@ -234,6 +242,13 @@ msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove e
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr "言語 %s のリソースをコピーできません。"
 
@@ -246,6 +261,9 @@ msgstr "選択したリソースを削除できません"
 msgid "Unable to render the item from %s : %s %s"
 msgstr "%s からアイテムをレンダリングできません: %s %s"
 
+msgid "Unable to upload file"
+msgstr ""
+
 msgid "using it:"
 msgstr "それを使って"
 
@@ -257,6 +275,9 @@ msgstr "削除しようとしているのは大きすぎてサブクラスが多
 
 msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "パスにエラーがあります。"

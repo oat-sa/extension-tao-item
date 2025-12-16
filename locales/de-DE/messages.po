@@ -1,24 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-11-26 19:06\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:12\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: de\n"
+"Language: de-DE\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: de-DE\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: de\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: German\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Hinweis</b>: Für leere Klassen ist das RDF-Format die einzige verfügbare Formatierung."
@@ -26,11 +19,17 @@ msgstr "<b>Hinweis</b>: Für leere Klassen ist das RDF-Format die einzige verfü
 msgid "Actual size"
 msgstr "Tatsächliche Größe"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr "und"
 
 msgid "and all of its content?"
 msgstr "und seinen gesamten Inhalt?"
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "Sind Sie sicher, dass Sie die Klasse löschen möchten?"
@@ -110,6 +109,9 @@ msgstr "Fehler bei Abruf von %s"
 msgid "Forbidden action"
 msgstr "Verbotene Aktion"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importieren"
@@ -175,6 +177,9 @@ msgstr "Kein Typ für das aktuelle Element ausgewählt"
 msgid "Not yet available"
 msgstr "Noch nicht verfügbar"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "andere"
 
@@ -210,6 +215,9 @@ msgstr "Externe Quellen abrufen"
 msgid "s"
 msgstr "s"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Absenden"
 
@@ -234,6 +242,13 @@ msgstr "Die Eigenschaft ist zur Kategorieerweiterung freigegeben.&#13Exposition 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Diese Vorschau ist möglicherweise an ihren Bildschirm angepasst. Die endgültige Version kann davon abweichen."
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr "Quellen für Sprache %s konnten nicht kopiert werden"
 
@@ -246,6 +261,9 @@ msgstr "Die ausgewählte Ressource kann nicht gelöscht werden"
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Das Element konnte nicht aus %s gerendert werden: %s %s"
 
+msgid "Unable to upload file"
+msgstr ""
+
 msgid "using it:"
 msgstr "verwenden:"
 
@@ -257,6 +275,9 @@ msgstr "Das zu löschende Element ist zu groß und enthält zu viele Unterklasse
 
 msgid "You checked out this item %2s ago"
 msgstr "Sie haben dieses Element vor %2s überprüft"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Ihr Pfad ist fehlerhaft"

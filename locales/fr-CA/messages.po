@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-CA\n"
@@ -19,10 +19,16 @@ msgstr ""
 msgid "Actual size"
 msgstr "Taille réelle"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr ""
 
 msgid "and all of its content?"
+msgstr ""
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr ""
 
 msgid "Are you sure you want to delete the class"
@@ -103,6 +109,9 @@ msgstr ""
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importer"
@@ -168,6 +177,9 @@ msgstr "Pas de modèle d'item sélectionné pour cet item."
 msgid "Not yet available"
 msgstr "Pas encore disponible"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr ""
 
@@ -203,6 +215,9 @@ msgstr ""
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr ""
 
@@ -227,6 +242,13 @@ msgstr ""
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr ""
 
@@ -239,6 +261,9 @@ msgstr ""
 msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
+msgid "Unable to upload file"
+msgstr ""
+
 msgid "using it:"
 msgstr ""
 
@@ -249,6 +274,9 @@ msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
 
 msgid "You checked out this item %2s ago"
+msgstr ""
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
 msgstr ""
 
 msgid "Your path contains error"

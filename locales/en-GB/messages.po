@@ -1,24 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-14 08:11\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:12\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: en_GB\n"
+"Language: en-GB\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: en-GB\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: en-GB\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: English, United Kingdom\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
@@ -26,10 +19,16 @@ msgstr ""
 msgid "Actual size"
 msgstr ""
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr ""
 
 msgid "and all of its content?"
+msgstr ""
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr ""
 
 msgid "Are you sure you want to delete the class"
@@ -110,6 +109,9 @@ msgstr ""
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr ""
@@ -175,6 +177,9 @@ msgstr ""
 msgid "Not yet available"
 msgstr ""
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr ""
 
@@ -210,6 +215,9 @@ msgstr ""
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr ""
 
@@ -234,6 +242,13 @@ msgstr ""
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr ""
 
@@ -246,6 +261,9 @@ msgstr ""
 msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
+msgid "Unable to upload file"
+msgstr ""
+
 msgid "using it:"
 msgstr ""
 
@@ -256,6 +274,9 @@ msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
 
 msgid "You checked out this item %2s ago"
+msgstr ""
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
 msgstr ""
 
 msgid "Your path contains error"
