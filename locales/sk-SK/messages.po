@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:43:27\n"
+"PO-Revision-Date: 2025-12-16T10:48:14\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk-SK\n"
@@ -28,11 +28,11 @@ msgstr "a"
 msgid "and all of its content?"
 msgstr "a všetok jeho obsah?"
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
+
 msgid "Are you sure you want to delete the class"
 msgstr "Naozaj chcete odstrániť triedu?"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Naozaj chcete odstrániť túto položku?"
@@ -61,9 +61,6 @@ msgstr "Zatvoriť konzolu"
 
 msgid "contains content that is currently in use."
 msgstr "obsahuje obsah, ktorý sa aktuálne používa."
-
-msgid "contains items currently in use and they cannot be deleted."
-msgstr ""
 
 #, tao-public
 msgid "Copy To"
@@ -112,6 +109,9 @@ msgstr "Nepodarilo sa načítať %s"
 msgid "Forbidden action"
 msgstr "Zakázaná akcia"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importovať"
@@ -131,9 +131,6 @@ msgstr "Položka uložená"
 #, tao-public
 msgid "Items"
 msgstr "Položky"
-
-msgid "items in use:"
-msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -180,6 +177,9 @@ msgstr "Pre aktuálnu položku nebol vybraný žiadny typ položky."
 msgid "Not yet available"
 msgstr "Zatiaľ nie je k dispozícii"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "iné"
 
@@ -215,6 +215,9 @@ msgstr "Získavanie externých zdrojov"
 msgid "s"
 msgstr "s"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Odoslať"
 
@@ -236,9 +239,6 @@ msgstr "Modul Položky umožňuje vytváranie a navrhovanie položiek a cvičen�
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Nehnuteľnosť je vystavená pridaniu kategórie. Odstrániť expozíciu?"
 
-msgid "There is"
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Tento náhľad sa môže prispôsobiť veľkosti Vašej obrazovky. Konečné vykreslenie sa môže líšiť."
 
@@ -258,9 +258,6 @@ msgstr "Nepodarilo sa vytvoriť adresár nasadenia"
 msgid "Unable to delete the selected resource"
 msgstr "Vybraný zdroj sa nepodarilo odstrániť"
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Položku sa nepodarilo vykresliť z %s : %s %s"
 
@@ -278,6 +275,9 @@ msgstr "ktorý sa pokúšate odstrániť, je príliš veľký a obsahuje príli�
 
 msgid "You checked out this item %2s ago"
 msgstr "Túto položku ste si pozreli pred %2s"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Vaša cesta obsahuje chybu"

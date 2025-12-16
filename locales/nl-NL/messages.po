@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:43:27\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -28,11 +28,11 @@ msgstr ""
 msgid "and all of its content?"
 msgstr ""
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
+
 msgid "Are you sure you want to delete the class"
 msgstr "Weet je zeker dat je de folder wilt verwijderen"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Weet je zeker dat je het item wilt verwijderen"
@@ -60,9 +60,6 @@ msgid "Close console"
 msgstr "Sluit console"
 
 msgid "contains content that is currently in use."
-msgstr ""
-
-msgid "contains items currently in use and they cannot be deleted."
 msgstr ""
 
 #, tao-public
@@ -112,6 +109,9 @@ msgstr "Ophalen %s heeft gefaald"
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr ""
@@ -130,9 +130,6 @@ msgstr "Item opgeslagen"
 
 #, tao-public
 msgid "Items"
-msgstr ""
-
-msgid "items in use:"
 msgstr ""
 
 #, tao-public
@@ -180,6 +177,9 @@ msgstr "Geen item type geselecteerd voor huidige item."
 msgid "Not yet available"
 msgstr "Nog niet beschikbaar"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr ""
 
@@ -215,6 +215,9 @@ msgstr "Haal externe bronnen op"
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Indienen"
 
@@ -236,9 +239,6 @@ msgstr "De item module maakt het mogelijk om itemsen oefeningen aan te maken en 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Het veld is blootgesteld aan categorie toevoeging.&#13Verwijder exposition?"
 
-msgid "There is"
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Dit voorbeeld kan geschaald worden om op uw scherm te passen. Het eindresultaat kan afwijken."
 
@@ -258,9 +258,6 @@ msgstr "Niet in staat om de uitlever map aan te maken"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan het item niet weergeven van %s : %s %s"
 
@@ -278,6 +275,9 @@ msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr "U heeft dit item %2s geleden uitgecheckt"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Uw pad bevat een fout"

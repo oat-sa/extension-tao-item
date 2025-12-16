@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:43:26\n"
+"PO-Revision-Date: 2025-12-16T10:48:12\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de-DE\n"
@@ -28,11 +28,11 @@ msgstr "und"
 msgid "and all of its content?"
 msgstr "und seinen gesamten Inhalt?"
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
+
 msgid "Are you sure you want to delete the class"
 msgstr "Sind Sie sicher, dass Sie die Klasse löschen möchten?"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Sind Sie sicher, dass Sie das Element löschen möchten?"
@@ -61,9 +61,6 @@ msgstr "Konsole schließen"
 
 msgid "contains content that is currently in use."
 msgstr "enthält Inhalte, die derzeit in Verwendung sind."
-
-msgid "contains items currently in use and they cannot be deleted."
-msgstr ""
 
 #, tao-public
 msgid "Copy To"
@@ -112,6 +109,9 @@ msgstr "Fehler bei Abruf von %s"
 msgid "Forbidden action"
 msgstr "Verbotene Aktion"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importieren"
@@ -131,9 +131,6 @@ msgstr "Element gespeichert"
 #, tao-public
 msgid "Items"
 msgstr "Elemente"
-
-msgid "items in use:"
-msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -180,6 +177,9 @@ msgstr "Kein Typ für das aktuelle Element ausgewählt"
 msgid "Not yet available"
 msgstr "Noch nicht verfügbar"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "andere"
 
@@ -215,6 +215,9 @@ msgstr "Externe Quellen abrufen"
 msgid "s"
 msgstr "s"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Absenden"
 
@@ -236,9 +239,6 @@ msgstr "Das Element-Modul ermöglicht das Erstellen und Entwickeln von Elementen
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Die Eigenschaft ist zur Kategorieerweiterung freigegeben.&#13Exposition entfernen?"
 
-msgid "There is"
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Diese Vorschau ist möglicherweise an ihren Bildschirm angepasst. Die endgültige Version kann davon abweichen."
 
@@ -258,9 +258,6 @@ msgstr "Der Deployment-Ordner konnte nicht erstellt werden"
 msgid "Unable to delete the selected resource"
 msgstr "Die ausgewählte Ressource kann nicht gelöscht werden"
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Das Element konnte nicht aus %s gerendert werden: %s %s"
 
@@ -278,6 +275,9 @@ msgstr "Das zu löschende Element ist zu groß und enthält zu viele Unterklasse
 
 msgid "You checked out this item %2s ago"
 msgstr "Sie haben dieses Element vor %2s überprüft"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Ihr Pfad ist fehlerhaft"

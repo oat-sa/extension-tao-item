@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:43:26\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -28,11 +28,11 @@ msgstr "et"
 msgid "and all of its content?"
 msgstr "et tout son contenu?"
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
+
 msgid "Are you sure you want to delete the class"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette classe"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette question"
@@ -61,9 +61,6 @@ msgstr "Fermer la console"
 
 msgid "contains content that is currently in use."
 msgstr "contient des éléments en cours d’utilisation."
-
-msgid "contains items currently in use and they cannot be deleted."
-msgstr ""
 
 #, tao-public
 msgid "Copy To"
@@ -112,6 +109,9 @@ msgstr "N'a pas réussi à récupérer %s"
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr ""
@@ -131,9 +131,6 @@ msgstr "Item enregistré"
 #, tao-public
 msgid "Items"
 msgstr "Articles"
-
-msgid "items in use:"
-msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -180,6 +177,9 @@ msgstr "Pas de modèle d'item sélectionné pour cet item."
 msgid "Not yet available"
 msgstr "Pas encore disponible"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "autre"
 
@@ -215,6 +215,9 @@ msgstr "Récupération de ressources externes"
 msgid "s"
 msgstr "s"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Envoyer"
 
@@ -236,9 +239,6 @@ msgstr "Le module Items permet la création et le design d'items et d'exercices.
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "La propriété est exposée à l'addition de catégorie. Supprimer l'exposition ?"
 
-msgid "There is"
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Cet aperçu peut être redimensionné pour s'adapter à votre écran. Le rendu final peut différer."
 
@@ -258,9 +258,6 @@ msgstr "Impossible de créer le repertoire pour le deploiement"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Impossible de rendre l'item depuis %s : %s %s"
 
@@ -278,6 +275,9 @@ msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr "Vous avez quitté cet item il y a %2s."
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Votre chemin contient au moins une erreur."

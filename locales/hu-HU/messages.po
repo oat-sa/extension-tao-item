@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:43:26\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: hu-HU\n"
@@ -28,11 +28,11 @@ msgstr "és"
 msgid "and all of its content?"
 msgstr "és annak minden tartalma?"
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
+
 msgid "Are you sure you want to delete the class"
 msgstr "Biztosan törölni szeretnéd az osztályt?"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Biztosan törölni szeretné az elemet?"
@@ -61,9 +61,6 @@ msgstr "Konzol bezárása"
 
 msgid "contains content that is currently in use."
 msgstr "jelenleg használatban lévő tartalmat tartalmaz."
-
-msgid "contains items currently in use and they cannot be deleted."
-msgstr ""
 
 #, tao-public
 msgid "Copy To"
@@ -112,6 +109,9 @@ msgstr "Sikertelen lekérése %s"
 msgid "Forbidden action"
 msgstr "Tiltott cselekvés"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importálás"
@@ -131,9 +131,6 @@ msgstr "Elem mentve"
 #, tao-public
 msgid "Items"
 msgstr "Tételek"
-
-msgid "items in use:"
-msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -180,6 +177,9 @@ msgstr "Nincs elemtípus kiválasztva az aktuális elemhez."
 msgid "Not yet available"
 msgstr "Még nem elérhető"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "más"
 
@@ -215,6 +215,9 @@ msgstr "Külső erőforrások lekérése"
 msgid "s"
 msgstr "sz"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Küldés"
 
@@ -236,9 +239,6 @@ msgstr "A Tételek modul lehetővé teszi tételek és gyakorlatok létrehozás�
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Az ingatlan kategória-hozzáadásnak van kitéve. Törölje a kitettséget?"
 
-msgid "There is"
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Ez az előnézet méretezhető a képernyő méretéhez. A végső megjelenítés eltérhet."
 
@@ -258,9 +258,6 @@ msgstr "Nem sikerült létrehozni a telepítési könyvtárat"
 msgid "Unable to delete the selected resource"
 msgstr "A kiválasztott erőforrás törlése sikertelen"
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Nem sikerült megjeleníteni az elemet innen: %s : %s %s"
 
@@ -278,6 +275,9 @@ msgstr "A törölni próbált fájl túl nagy és túl sok alosztályt tartalmaz
 
 msgid "You checked out this item %2s ago"
 msgstr "Ezt a terméket %2s ezelőtt vetted ki"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Az elérési út hibát tartalmaz"
