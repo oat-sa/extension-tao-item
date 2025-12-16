@@ -1,30 +1,26 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-16 14:37\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T13:51:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ja\n"
+"Language: ja-JP\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: ja-JP\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: ja\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: Japanese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。"
 
 msgid "Actual size"
 msgstr "実際の大きさ"
+
+msgid "An error occurred while processing your request."
+msgstr ""
 
 msgid "and"
 msgstr "と"
@@ -34,6 +30,9 @@ msgstr "全ての内容はどうでしょうか?"
 
 msgid "Are you sure you want to delete the class"
 msgstr "このクラスを削除してもよろしいですか？"
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "アイテムを削除してもよろしいですか？"
@@ -62,6 +61,9 @@ msgstr "コンソールを閉じる"
 
 msgid "contains content that is currently in use."
 msgstr "には、現在使用中のコンテンツが含まれています。"
+
+msgid "contains items currently in use and they cannot be deleted."
+msgstr ""
 
 #, tao-public
 msgid "Copy To"
@@ -129,6 +131,9 @@ msgstr "アイテムが保存されました"
 #, tao-public
 msgid "Items"
 msgstr "アイテム"
+
+msgid "items in use:"
+msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -231,8 +236,18 @@ msgstr "アイテムとエクササイズの作成とデザインがアイテム
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove exposition ?"
 
+msgid "There is"
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
+
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
 msgstr "言語 %s のリソースをコピーできません。"
@@ -243,8 +258,14 @@ msgstr "実行ディレクトリーを作成できません。"
 msgid "Unable to delete the selected resource"
 msgstr "選択したリソースを削除できません"
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "%s からアイテムをレンダリングできません: %s %s"
+
+msgid "Unable to upload file"
+msgstr ""
 
 msgid "using it:"
 msgstr "それを使って"

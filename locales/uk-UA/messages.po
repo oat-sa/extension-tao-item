@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T13:51:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: uk-UA\n"
@@ -19,6 +19,9 @@ msgstr ""
 msgid "Actual size"
 msgstr ""
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr ""
 
@@ -26,6 +29,9 @@ msgid "and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the item"
@@ -54,6 +60,9 @@ msgid "Close console"
 msgstr ""
 
 msgid "contains content that is currently in use."
+msgstr ""
+
+msgid "contains items currently in use and they cannot be deleted."
 msgstr ""
 
 #, tao-public
@@ -121,6 +130,9 @@ msgstr ""
 
 #, tao-public
 msgid "Items"
+msgstr ""
+
+msgid "items in use:"
 msgstr ""
 
 #, tao-public
@@ -224,7 +236,17 @@ msgstr ""
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
+msgid "There is"
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
+msgstr ""
+
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
 msgstr ""
 
 msgid "Unable to copy resources for language %s"
@@ -236,7 +258,13 @@ msgstr ""
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "Unable to upload file"
 msgstr ""
 
 msgid "using it:"

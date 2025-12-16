@@ -1,30 +1,26 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-14 08:31\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T13:51:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: it\n"
+"Language: it-IT\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: it-IT\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: it\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: Italian\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
 msgstr "Dimensione reale"
+
+msgid "An error occurred while processing your request."
+msgstr ""
 
 msgid "and"
 msgstr ""
@@ -33,6 +29,9 @@ msgid "and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the item"
@@ -61,6 +60,9 @@ msgid "Close console"
 msgstr "Chiudi la console"
 
 msgid "contains content that is currently in use."
+msgstr ""
+
+msgid "contains items currently in use and they cannot be deleted."
 msgstr ""
 
 #, tao-public
@@ -128,6 +130,9 @@ msgstr "Item salvato"
 
 #, tao-public
 msgid "Items"
+msgstr ""
+
+msgid "items in use:"
 msgstr ""
 
 #, tao-public
@@ -231,8 +236,18 @@ msgstr "Il modulo item consente la creazione e la progettazione di item ed eserc
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
+msgid "There is"
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Questa anteprima può essere rappresentata in scala sul monitor. La resa finale può differire"
+
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
 msgstr "Non in grado di copiare le risorse per la lingua %s"
@@ -243,7 +258,13 @@ msgstr "Impossibile creare la directory di dislocazione"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "Unable to upload file"
 msgstr ""
 
 msgid "using it:"

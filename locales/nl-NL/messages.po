@@ -1,30 +1,26 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-12-05 14:39\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T13:51:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: nl\n"
+"Language: nl-NL\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: nl-NL\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: nl\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: Dutch\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
 msgstr "Ware grootte"
+
+msgid "An error occurred while processing your request."
+msgstr ""
 
 msgid "and"
 msgstr ""
@@ -34,6 +30,9 @@ msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "Weet je zeker dat je de folder wilt verwijderen"
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Weet je zeker dat je het item wilt verwijderen"
@@ -61,6 +60,9 @@ msgid "Close console"
 msgstr "Sluit console"
 
 msgid "contains content that is currently in use."
+msgstr ""
+
+msgid "contains items currently in use and they cannot be deleted."
 msgstr ""
 
 #, tao-public
@@ -128,6 +130,9 @@ msgstr "Item opgeslagen"
 
 #, tao-public
 msgid "Items"
+msgstr ""
+
+msgid "items in use:"
 msgstr ""
 
 #, tao-public
@@ -231,8 +236,18 @@ msgstr "De item module maakt het mogelijk om itemsen oefeningen aan te maken en 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Het veld is blootgesteld aan categorie toevoeging.&#13Verwijder exposition?"
 
+msgid "There is"
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Dit voorbeeld kan geschaald worden om op uw scherm te passen. Het eindresultaat kan afwijken."
+
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
 msgstr "Niet in staat om de bronnen voor de taal %s te kopiëren "
@@ -243,8 +258,14 @@ msgstr "Niet in staat om de uitlever map aan te maken"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan het item niet weergeven van %s : %s %s"
+
+msgid "Unable to upload file"
+msgstr ""
 
 msgid "using it:"
 msgstr ""

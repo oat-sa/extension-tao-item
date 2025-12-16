@@ -1,30 +1,26 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-27 07:40\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T13:51:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: fr\n"
+"Language: fr-FR\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: fr-FR\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: fr\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: French\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Note</b>: pour les classes vides, seul le format RDF est disponible."
 
 msgid "Actual size"
 msgstr "Taille réelle"
+
+msgid "An error occurred while processing your request."
+msgstr ""
 
 msgid "and"
 msgstr "et"
@@ -34,6 +30,9 @@ msgstr "et tout son contenu?"
 
 msgid "Are you sure you want to delete the class"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette classe"
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette question"
@@ -62,6 +61,9 @@ msgstr "Fermer la console"
 
 msgid "contains content that is currently in use."
 msgstr "contient des éléments en cours d’utilisation."
+
+msgid "contains items currently in use and they cannot be deleted."
+msgstr ""
 
 #, tao-public
 msgid "Copy To"
@@ -129,6 +131,9 @@ msgstr "Item enregistré"
 #, tao-public
 msgid "Items"
 msgstr "Articles"
+
+msgid "items in use:"
+msgstr ""
 
 #, tao-public
 msgid "Items library"
@@ -231,8 +236,18 @@ msgstr "Le module Items permet la création et le design d'items et d'exercices.
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "La propriété est exposée à l'addition de catégorie. Supprimer l'exposition ?"
 
+msgid "There is"
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Cet aperçu peut être redimensionné pour s'adapter à votre écran. Le rendu final peut différer."
+
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
 
 msgid "Unable to copy resources for language %s"
 msgstr "Impossible de copier les ressources pour la langue %s"
@@ -243,8 +258,14 @@ msgstr "Impossible de créer le repertoire pour le deploiement"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Impossible de rendre l'item depuis %s : %s %s"
+
+msgid "Unable to upload file"
+msgstr ""
 
 msgid "using it:"
 msgstr "qui l’utilise:"
