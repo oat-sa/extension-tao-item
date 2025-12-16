@@ -165,10 +165,7 @@ define([
                     const name = prepareName($('a.clicked', actionContext.tree).text().trim());
                     if (relatedTests.length === 0) {
                         confirmDeleteDialog(
-                            __(
-                                'Are you sure you want to delete the class %s and all of its content?',
-                                `<b>${name}</b>`
-                            ),
+                            __('Are you sure you want to delete the class %s and all of its content?', `<b>${name}</b>`),
                             () => accept(actionContext, this.url, resolve, reject),
                             () => cancel(reject)
                         );
@@ -235,9 +232,7 @@ define([
                     reject(
                         response.msg ||
                             response.message ||
-                            __(
-                                'Unable to delete the selected resource because you do not have the required rights to delete part of its content.'
-                            )
+                            __('Unable to delete the selected resource because you do not have the required rights to delete part of its content.')
                     );
                 }
 
