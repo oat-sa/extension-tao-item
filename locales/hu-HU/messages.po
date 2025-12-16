@@ -1,24 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-12-04 11:23\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: hu\n"
+"Language: hu-HU\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: hu-HU\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: hu\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: Hungarian\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Megjegyzés</b>: Üres osztályok esetén az RDF formátum<br />az egyetlen elérhető formátum."
@@ -26,11 +19,17 @@ msgstr "<b>Megjegyzés</b>: Üres osztályok esetén az RDF formátum<br />az eg
 msgid "Actual size"
 msgstr "Valós méret"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr "és"
 
 msgid "and all of its content?"
 msgstr "és annak minden tartalma?"
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "Biztosan törölni szeretnéd az osztályt?"
@@ -110,6 +109,9 @@ msgstr "Sikertelen lekérése %s"
 msgid "Forbidden action"
 msgstr "Tiltott cselekvés"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importálás"
@@ -175,6 +177,9 @@ msgstr "Nincs elemtípus kiválasztva az aktuális elemhez."
 msgid "Not yet available"
 msgstr "Még nem elérhető"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "más"
 
@@ -210,6 +215,9 @@ msgstr "Külső erőforrások lekérése"
 msgid "s"
 msgstr "sz"
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Küldés"
 
@@ -234,6 +242,13 @@ msgstr "Az ingatlan kategória-hozzáadásnak van kitéve. Törölje a kitettsé
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Ez az előnézet méretezhető a képernyő méretéhez. A végső megjelenítés eltérhet."
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr "Nem sikerült másolni a következő nyelvhez tartozó erőforrásokat: %s"
 
@@ -246,6 +261,9 @@ msgstr "A kiválasztott erőforrás törlése sikertelen"
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Nem sikerült megjeleníteni az elemet innen: %s : %s %s"
 
+msgid "Unable to upload file"
+msgstr ""
+
 msgid "using it:"
 msgstr "használatával:"
 
@@ -257,6 +275,9 @@ msgstr "A törölni próbált fájl túl nagy és túl sok alosztályt tartalmaz
 
 msgid "You checked out this item %2s ago"
 msgstr "Ezt a terméket %2s ezelőtt vetted ki"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Az elérési út hibát tartalmaz"

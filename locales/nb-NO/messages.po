@@ -1,24 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-12-05 14:39\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T10:48:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: nb_NO\n"
+"Language: nb-NO\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: nb-NO\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: tao-open-source\n"
-"X-Crowdin-Project-ID: 590867\n"
-"X-Crowdin-Language: nb\n"
-"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
-"X-Crowdin-File-ID: 805\n"
-"Language-Team: Norwegian Bokmal\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Merk</b>: For tomme klasser er RDF-formatet<br />det eneste tilgjengelige formatet."
@@ -26,11 +19,17 @@ msgstr "<b>Merk</b>: For tomme klasser er RDF-formatet<br />det eneste tilgjenge
 msgid "Actual size"
 msgstr "Faktisk størrelse"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr "og"
 
 msgid "and all of its content?"
 msgstr "og alt innholdet?"
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "Er du sikker på at du vil slette mappen"
@@ -110,6 +109,9 @@ msgstr "Kunne ikke hente %s"
 msgid "Forbidden action"
 msgstr "Forbudt handling"
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "Importer"
@@ -175,6 +177,9 @@ msgstr "Ingen oppgavetype valgt for gjeldende oppgave."
 msgid "Not yet available"
 msgstr "Ikke tilgjengelig enda"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr "annen"
 
@@ -210,6 +215,9 @@ msgstr "Henter eksterne ressurser"
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "Lever"
 
@@ -234,6 +242,13 @@ msgstr "Egenskapen er utsatt for kategoritillegg. &#13Fjerning av visning?"
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Denne forhåndsvisningen kan skaleres for og tilpasses skjermen din. Den endelige gjengivelsen kan se annerledes ut."
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr "Kan ikke kopiere ressurser for språk %s"
 
@@ -246,6 +261,9 @@ msgstr "Kan ikke slette den valgte filen"
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan ikke gjengi oppgaven fra %s: %s %s"
 
+msgid "Unable to upload file"
+msgstr ""
+
 msgid "using it:"
 msgstr "bruker det:"
 
@@ -257,6 +275,9 @@ msgstr "du prøver å slette er for stor og inneholder for mange undermapper."
 
 msgid "You checked out this item %2s ago"
 msgstr "Du sjekket ut denne oppgaven for %2s siden"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr ""
 
 msgid "Your path contains error"
 msgstr "Banen din inneholder feil"
