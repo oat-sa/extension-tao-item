@@ -60,8 +60,8 @@
     },
     "require": {
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
-        "oat-sa/generis": ">=15.39.0",
-        "oat-sa/tao-core": ">=54.36.0",
+        "oat-sa/generis": ">=16.2.2",
+        "oat-sa/tao-core": ">=54.49.5",
         "oat-sa/extension-tao-backoffice": ">=6.0.0"
     },
     "autoload": {
