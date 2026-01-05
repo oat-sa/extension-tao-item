@@ -1,0 +1,260 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ro-RO\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: ro-RO\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Content"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Original Filename"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Original Filename"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Models"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Models"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Model"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Model"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Runtime"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Runtime"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "itemmodel service"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "service of the item model"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Data File Name"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "the filename used to store the item content for this model"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Model Status"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Stable"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "This item  model can be used in production"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Deprecated"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "This item model is not supported anymore, we advise to migrate your items"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Development"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "this item model has not been tested in a production environment, we advise to be carefull with it"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Experimental"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "this item model is still in conception, but you can try it, give your feedback and it will be improved."
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Status"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The status of an item model"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Items Manager"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Items Manager Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Restricted Item Author"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item authoring only Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Author"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Author and Manager Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Translator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Translator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Role Class"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Navigator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Navigator Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Editor"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Editor Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Creator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Creator Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Schema Manager"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Schema Manager Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Viewer"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Viewer Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Manager"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Manager Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Previewer"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Previewer Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Properties Editor"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Properties Editor Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Creator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Content Creator Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Resource Creator"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Resource Creator Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Importer"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Importer Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Deleter"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Deleter Role"
+msgstr ""
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
+msgstr ""
+
