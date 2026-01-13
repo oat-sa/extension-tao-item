@@ -24,9 +24,10 @@ use core_kernel_classes_Class as RdfClass;
 use core_kernel_classes_Property as RdfProperty;
 use core_kernel_classes_Resource as RdfResource;
 use oat\generis\model\GenerisRdf;
-use oat\generis\test\TestCase;
+use PHPUnit\Framework\TestCase;
 use oat\taoItems\model\CategoryService;
 use Prophecy\Argument;
+use taoItems_models_classes_ItemsService;
 
 /**
  * CategoryService test
@@ -72,24 +73,24 @@ class CategoryServiceTest extends TestCase
         $falseResource   = new RdfResource(GenerisRdf::GENERIS_FALSE);
 
         //prop value is GENERIS TRUE
-        $propProphecy = $this->prophesize('\core_kernel_classes_Property');
-        $propProphecy->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
-        $this->assertTrue($categoryService->doesExposeCategory($propProphecy->reveal()), 'The property is exposed');
+        $prop1 = $this->createMock(RdfProperty::class);
+        $prop1->method('getOnePropertyValue')->with($exposeProperty)->willReturn($trueResource);
+        $this->assertTrue($categoryService->doesExposeCategory($prop1), 'The property is exposed');
 
         //prop value is GenerisRdf::GENERIS_FALSE
-        $propProphecy = $this->prophesize('\core_kernel_classes_Property');
-        $propProphecy->getOnePropertyValue($exposeProperty)->willReturn($falseResource);
+        $prop2 = $this->createMock(RdfProperty::class);
+        $prop2->method('getOnePropertyValue')->with($exposeProperty)->willReturn($falseResource);
         $this->assertFalse(
-            $categoryService->doesExposeCategory($propProphecy->reveal()),
+            $categoryService->doesExposeCategory($prop2),
             'The property is not exposed'
         );
 
         //no prop value
-        $propProphecy = $this->prophesize('\core_kernel_classes_Property');
-        $propProphecy->getOnePropertyValue($exposeProperty)->willReturn(null);
+        $prop3 = $this->createMock(RdfProperty::class);
+        $prop3->method('getOnePropertyValue')->with($exposeProperty)->willReturn(null);
 
         $this->assertFalse(
-            $categoryService->doesExposeCategory($propProphecy->reveal()),
+            $categoryService->doesExposeCategory($prop3),
             'The property is not exposed'
         );
     }
@@ -101,38 +102,45 @@ class CategoryServiceTest extends TestCase
     {
         $fooClass = new RdfClass('foo');
 
-        $eligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
-        $eligibleProp1->getUri()->willReturn('p1');
+        $eligibleProp1 = $this->createMock(RdfProperty::class);
+        $eligibleProp1
+            ->method('getWidget')
+            ->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
+        $eligibleProp1->method('getUri')->willReturn('p1');
 
-        $eligibleProp2 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
-        $eligibleProp2->getUri()->willReturn('p2');
+        $eligibleProp2 = $this->createMock(RdfProperty::class);
+        $eligibleProp2
+            ->method('getWidget')
+            ->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
+        $eligibleProp2->method('getUri')->willReturn('p2');
 
-        $notEligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $notEligibleProp1->getWidget()->willReturn(null);
-        $notEligibleProp1->getUri()->willReturn('np1');
+        $notEligibleProp1 = $this->createMock(RdfProperty::class);
+        $notEligibleProp1->method('getWidget')->willReturn(null);
+        $notEligibleProp1->method('getUri')->willReturn('np1');
 
-        $notEligibleProp2 = $this->prophesize('\core_kernel_classes_Property');
+        $notEligibleProp2 = $this->createMock(RdfProperty::class);
         $notEligibleProp2
-            ->getWidget()
+            ->method('getWidget')
             ->willReturn(new RdfResource('http://www.tao.lu/datatypes/WidgetDefinitions.rdf#HtmlBox'));
-        $notEligibleProp2->getUri()->willReturn('np2');
+        $notEligibleProp2->method('getUri')->willReturn('np2');
 
-        $excludedProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $excludedProp1->getUri()->willReturn(CategoryService::$excludedPropUris[0]);
+        $excludedProp1 = $this->createMock(RdfProperty::class);
+        $excludedProp1->method('getUri')->willReturn(CategoryService::$excludedPropUris[0]);
 
-        $itemService = $this->prophesize('\taoItems_models_classes_ItemsService');
-        $itemService->getClazzProperties($fooClass, Argument::any())->willReturn([
-            $eligibleProp1->reveal(),
-            $eligibleProp2->reveal(),
-            $notEligibleProp1->reveal(),
-            $notEligibleProp2->reveal(),
-            $excludedProp1->reveal()
-        ]);
+        $itemService = $this->createMock(taoItems_models_classes_ItemsService::class);
+        $itemService
+            ->method('getClazzProperties')
+            ->with($fooClass, $this->anything())
+            ->willReturn([
+                $eligibleProp1,
+                $eligibleProp2,
+                $notEligibleProp1,
+                $notEligibleProp2,
+                $excludedProp1
+            ]);
 
         $categoryService = new CategoryService();
-        $categoryService->setItemService($itemService->reveal());
+        $categoryService->setItemService($itemService);
 
         $result = $categoryService->getElligibleProperties($fooClass);
 
@@ -151,57 +159,59 @@ class CategoryServiceTest extends TestCase
         $trueResource   = new RdfResource(GenerisRdf::GENERIS_TRUE);
         $falseResource  = new RdfResource(GenerisRdf::GENERIS_FALSE);
 
-        $eligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp1->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
-        $eligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
-        $eligibleProp1->getUri()->willReturn('p1');
+        $eligibleProp1 = $this->createMock(RdfProperty::class);
+        $eligibleProp1->method('getOnePropertyValue')->with($exposeProperty)->willReturn($trueResource);
+        $eligibleProp1->method('getWidget')->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
+        $eligibleProp1->method('getUri')->willReturn('p1');
 
-        $eligibleProp2 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp2->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
-        $eligibleProp2->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
-        $eligibleProp2->getUri()->willReturn('p2');
+        $eligibleProp2 = $this->createMock(RdfProperty::class);
+        $eligibleProp2->method('getOnePropertyValue')->with($exposeProperty)->willReturn($trueResource);
+        $eligibleProp2->method('getWidget')->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
+        $eligibleProp2->method('getUri')->willReturn('p2');
 
-        $eligibleProp3 = $this->prophesize('\core_kernel_classes_Property');
-        $eligibleProp3->getOnePropertyValue($exposeProperty)->willReturn($trueResource);
-        $eligibleProp3->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[3]));
-        $eligibleProp3->getUri()->willReturn('p3');
+        $eligibleProp3 = $this->createMock(RdfProperty::class);
+        $eligibleProp3->method('getOnePropertyValue')->with($exposeProperty)->willReturn($trueResource);
+        $eligibleProp3->method('getWidget')->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[3]));
+        $eligibleProp3->method('getUri')->willReturn('p3');
 
-        $notEligibleProp1 = $this->prophesize('\core_kernel_classes_Property');
-        $notEligibleProp1->getOnePropertyValue($exposeProperty)->willReturn($falseResource);
-        $notEligibleProp1->getWidget()->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
-        $notEligibleProp1->getUri()->willReturn('np1');
+        $notEligibleProp1 = $this->createMock(RdfProperty::class);
+        $notEligibleProp1->method('getOnePropertyValue')->with($exposeProperty)->willReturn($falseResource);
+        $notEligibleProp1->method('getWidget')->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[2]));
+        $notEligibleProp1->method('getUri')->willReturn('np1');
 
-        $p2Value = $this->prophesize('\core_kernel_classes_Resource');
-        $p2Value->getLabel()->willReturn('Yeah Moo');
+        $p2Value = $this->createMock(RdfResource::class);
+        $p2Value->method('getLabel')->willReturn('Yeah Moo');
 
-        $item = $this->prophesize('\core_kernel_classes_Resource');
+        $item = $this->createMock(RdfResource::class);
         $item
-            ->getPropertiesValues(['p1', 'p2', 'p3'])
+            ->method('getPropertiesValues')
+            ->with(['p1', 'p2', 'p3'])
             ->willReturn(
                 [
                     'p1' => ['Foo', 'Yo _Bar '],
-                    'p2' => [$p2Value->reveal()],
+                    'p2' => [$p2Value],
                     'p3' => [''],
                 ]
             );
-        $item->getTypes()->willReturn([$fooClass]);
+        $item->method('getTypes')->willReturn([$fooClass]);
 
-        $itemService = $this->prophesize('\taoItems_models_classes_ItemsService');
+        $itemService = $this->createMock('\taoItems_models_classes_ItemsService');
         $itemService
-            ->getClazzProperties($fooClass, Argument::any())
+            ->method('getClazzProperties')
+            ->with($fooClass, $this->anything())
             ->willReturn(
                 [
-                    'p1'  => $eligibleProp1->reveal(),
-                    'p2'  => $eligibleProp2->reveal(),
-                    'p3'  => $eligibleProp3->reveal(),
-                    'np1' => $notEligibleProp1->reveal(),
+                    'p1'  => $eligibleProp1,
+                    'p2'  => $eligibleProp2,
+                    'p3'  => $eligibleProp3,
+                    'np1' => $notEligibleProp1,
                 ]
             );
 
         $categoryService = new CategoryService();
-        $categoryService->setItemService($itemService->reveal());
+        $categoryService->setItemService($itemService);
 
-        $categories = $categoryService->getItemCategories($item->reveal());
+        $categories = $categoryService->getItemCategories($item);
 
         $this->assertCount(3, $categories, "We have 3 categories");
         $this->assertEquals('foo', $categories[0], "The category matches");

@@ -43,7 +43,7 @@ class ItemRemovedEvent implements Event, JsonSerializable
         return get_class($this);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(
             [self::PAYLOAD_KEY_ITEM_URI => $this->itemUri],

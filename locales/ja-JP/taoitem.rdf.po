@@ -298,6 +298,10 @@ msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Use this role to limit access to Item"
 msgstr "この役割を使用してアイテムへのアクセスを制限します。"
 
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
+msgstr ""
+
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author Role"

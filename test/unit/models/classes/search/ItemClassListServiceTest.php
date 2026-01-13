@@ -10,25 +10,26 @@ use oat\taoItems\model\search\ItemClassListService;
 use oat\generis\model\data\Ontology;
 use oat\generis\model\data\permission\PermissionInterface;
 use oat\oatbox\session\SessionService;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ItemClassListServiceTest extends TestCase
 {
     private ItemClassListService $sut;
-    private Ontology $ontologyMock;
-    private PermissionInterface $permissionManagerMock;
-    private SessionService $sessionServiceMock;
+    private PermissionInterface|MockObject $permissionManagerMock;
+    private SessionService|MockObject $sessionServiceMock;
+    private MockObject|core_kernel_classes_Class $rootClassMock;
 
     protected function setUp(): void
     {
-        $this->ontologyMock = $this->createMock(Ontology::class);
+        $ontologyMock = $this->createMock(Ontology::class);
         $this->permissionManagerMock = $this->createMock(PermissionInterface::class);
         $this->sessionServiceMock = $this->createMock(SessionService::class);
         $this->rootClassMock = $this->createMock(core_kernel_classes_Class::class);
-        $this->ontologyMock->method('getClass')->willReturn($this->rootClassMock);
+        $ontologyMock->method('getClass')->willReturn($this->rootClassMock);
 
         $this->sut = new ItemClassListService(
-            $this->ontologyMock,
+            $ontologyMock,
             $this->permissionManagerMock,
             $this->sessionServiceMock
         );

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint143\n"
-"PO-Revision-Date: 2020-12-18T09:14:34\n"
+"Project-Id-Version: TAO 2026.01\n"
+"PO-Revision-Date: 2025-12-16T14:44:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -19,13 +19,22 @@ msgstr ""
 msgid "Actual size"
 msgstr "實際尺寸"
 
+msgid "An error occurred while processing your request."
+msgstr ""
+
 msgid "and"
 msgstr ""
 
 msgid "and all of its content?"
 msgstr ""
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr ""
+
 msgid "Are you sure you want to delete the class"
+msgstr ""
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the item"
@@ -103,6 +112,9 @@ msgstr ""
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "匯入"
@@ -168,6 +180,9 @@ msgstr "當前選定的題目沒有項目類型。"
 msgid "Not yet available"
 msgstr "還不可使用"
 
+msgid "Only items not used in any test will be deleted."
+msgstr ""
+
 msgid "other"
 msgstr ""
 
@@ -203,6 +218,9 @@ msgstr "檢索外部資源"
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr ""
+
 msgid "Submit"
 msgstr "提交"
 
@@ -227,6 +245,13 @@ msgstr ""
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "該預覽可縮放到適合您的屏幕。最終的表現可能不同。"
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr ""
+
 msgid "Unable to copy resources for language %s"
 msgstr ""
 
@@ -236,7 +261,13 @@ msgstr "無法建立部署目錄"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "Unable to upload file"
 msgstr ""
 
 msgid "using it:"
@@ -249,6 +280,9 @@ msgid "you are trying to delete is too large and contains too many subclasses."
 msgstr ""
 
 msgid "You checked out this item %2s ago"
+msgstr ""
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
 msgstr ""
 
 msgid "Your path contains error"

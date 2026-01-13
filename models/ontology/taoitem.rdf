@@ -128,7 +128,7 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemTranslator">
   	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#UserRole"/>
-  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor"/>
+  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#RestrictedItemAuthor"/>
   	<rdfs:label xml:lang="en-US"><![CDATA[Item Translator]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[The Item Translator]]></rdfs:comment>
   </rdf:Description>

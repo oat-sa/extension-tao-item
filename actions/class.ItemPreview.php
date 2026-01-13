@@ -29,8 +29,7 @@ use oat\generis\model\OntologyAwareTrait;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
-
-use function GuzzleHttp\Psr7\stream_for;
+use GuzzleHttp\Psr7\Utils;
 
 /**
  * Preview API
@@ -123,7 +122,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
      */
     private function renderItem($item)
     {
-        $this->response = $this->response->withBody(stream_for($this->getRenderedItem($item)));
+        $this->response = $this->response->withBody(Utils::streamFor($this->getRenderedItem($item)));
     }
 
     /**
