@@ -1,64 +1,71 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:42\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: hu-HU\n"
+"Language: hu\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: hu-HU\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: hu\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 1235\n"
+"Language-Team: Hungarian\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr "Item"
+msgstr "Tétel"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr "Item"
+msgstr "Tétel"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content"
-msgstr "Item Content"
+msgstr "Elem tartalma"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content"
-msgstr "Item Content"
+msgstr "Elem tartalma"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Original Filename"
-msgstr "Original Filename"
+msgstr "Eredeti fájlnév"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Original Filename"
-msgstr "Original Filename"
+msgstr "Eredeti fájlnév"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Models"
-msgstr "Item Models"
+msgstr "Elemmodellek"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Models"
-msgstr "Item Models"
+msgstr "Elemmodellek"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model"
-msgstr "Item Model"
+msgstr "Elem modell"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Model"
-msgstr "Item Model"
+msgstr "Elem modell"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -73,107 +80,223 @@ msgstr "Runtime"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "itemmodel service"
-msgstr "itemmodel service"
+msgstr "service of the item model"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "service of the item model"
-msgstr ""
+msgstr "a termékmodell szolgáltatása"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Data File Name"
-msgstr "Data File Name"
+msgstr "the filename used to store the item content for this model"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "the filename used to store the item content for this model"
-msgstr ""
+msgstr "a modell elemtartalmának tárolására használt fájlnév"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Model Status"
-msgstr "Model Status"
+msgstr "Modell állapota"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Stable"
-msgstr "Stable"
+msgstr "This item  model can be used in production"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item  model can be used in production"
-msgstr ""
+msgstr "Ez a tételmodell használható a gyártásban"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deprecated"
-msgstr "Deprecated"
+msgstr "This item model is not supported anymore, we advise to migrate your items"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item model is not supported anymore, we advise to migrate your items"
-msgstr ""
+msgstr "Ez a tételmodell már nem támogatott, javasoljuk a tételek migrálását."
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Development"
-msgstr "Development"
+msgstr "this item model has not been tested in a production environment, we advise to be carefull with it"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "this item model has not been tested in a production environment, we advise to be carefull with it"
-msgstr ""
+msgstr "Ezt a modellt nem tesztelték éles környezetben, ezért óvatosan kell bánni vele."
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Experimental"
-msgstr "Experimental"
+msgstr "this item model is still in conception, but you can try it, give your feedback and it will be improved."
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "this item model is still in conception, but you can try it, give your feedback and it will be improved."
-msgstr ""
+msgstr "Ez a tárgymodell még fejlesztés alatt áll, de kipróbálhatod, megoszthatod a véleményed, és folyamatosan fejleszteni fogjuk."
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Status"
-msgstr "Status"
+msgstr "The status of an item model"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The status of an item model"
-msgstr ""
+msgstr "Egy tételmodell állapota"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Items Manager"
-msgstr "Items Manager"
+msgstr "The Items Manager Role"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Items Manager Role"
-msgstr ""
+msgstr "A tételkezelő szerepkör"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Restricted Item Author"
-msgstr ""
+msgstr "Korlátozott elem szerzője"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item authoring only Role"
-msgstr ""
+msgstr "Csak elemszerkesztői szerepkör"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Author"
-msgstr ""
+msgstr "Elem szerzője"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
-msgstr ""
+msgstr "Az elem szerzője és kezelője szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Translator"
+msgstr "Elemfordító"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Translator"
+msgstr "A tételfordító"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Role"
+msgstr "Elem szerepe"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Role Class"
+msgstr "Elem szerepkör osztálya"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Navigator"
+msgstr "Elemosztály-navigátor"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Navigator Role"
+msgstr "Elemosztály Navigátor szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Editor"
+msgstr "Elemosztály-szerkesztő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Editor Role"
+msgstr "Elemosztály-szerkesztő szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Creator"
+msgstr "Elemosztály-készítő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Creator Role"
+msgstr "Elemosztály létrehozói szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Schema Manager"
+msgstr "Elemosztály sémakezelő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Schema Manager Role"
+msgstr "Elemosztály sémakezelő szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Viewer"
+msgstr "Elemmegjelenítő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Viewer Role"
+msgstr "Elemmegtekintő szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Manager"
+msgstr "Elemkezelő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Manager Role"
+msgstr "Elemkezelő szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Previewer"
+msgstr "Elem előnézete"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Previewer Role"
+msgstr "Elem-előnézeti szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Properties Editor"
+msgstr "Elemtulajdonság-szerkesztő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Properties Editor Role"
+msgstr "Elemtulajdonságok szerkesztőjének szerepköre"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Creator"
+msgstr "Elemtartalom-készítő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Content Creator Role"
+msgstr "Elemtartalom-készítő szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Resource Creator"
+msgstr "Tárgyerőforrás-készítő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Resource Creator Role"
+msgstr "Elem erőforrás-készítő szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Importer"
+msgstr "Elemimportőr"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Importer Role"
+msgstr "Tételimportőr szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Deleter"
+msgstr "Elem Törlő"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Deleter Role"
+msgstr "Elemtörlési szerepkör"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
+msgstr "Ezzel a szerepkörrel korlátozhatja a hozzáférést az Elemhez"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Translator"
@@ -294,47 +417,47 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author Role"
-msgstr ""
+msgstr "Az elem szerzőjének szerepe"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deliverable"
-msgstr "Deliverable"
+msgstr "Items of model are deliverable"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Items of model are deliverable"
-msgstr ""
+msgstr "A modell elemei szállíthatók"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Delivery Target"
-msgstr "Delivery Target"
+msgstr "Szállítási cél"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Delivery Target"
-msgstr "Delivery Target"
+msgstr "Szállítási cél"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Online Delivery Target"
-msgstr "Online Delivery Target"
+msgstr "Online kézbesítési célpont"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Online Delivery Target"
-msgstr "Online Delivery Target"
+msgstr "Online kézbesítési célpont"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Paper-based Delivery Target"
-msgstr "Paper-based Delivery Target"
+msgstr "Papíralapú kézbesítési cél"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
-msgstr "Paper-based Delivery Target"
+msgstr "Papíralapú kézbesítési cél"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -349,12 +472,12 @@ msgstr "service of the item model"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Authoring"
-msgstr "Authoring"
+msgstr "Szerzői munka"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Authoring"
-msgstr "Authoring"
+msgstr "Szerzői munka"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"

@@ -1,14 +1,21 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:42\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: es-ES\n"
+"Language: es\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: es-ES\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 1235\n"
+"Language-Team: Spanish\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -158,12 +165,12 @@ msgstr "El Rol de Gestión de Articulos"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Restricted Item Author"
-msgstr ""
+msgstr "Autor del artículo restringido"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item authoring only Role"
-msgstr ""
+msgstr "Rol sólo para la creación de objetos"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -173,7 +180,123 @@ msgstr "Autor de Elemento"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
-msgstr ""
+msgstr "El autor y el rol de administrador"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Translator"
+msgstr "Traductor de objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Translator"
+msgstr "El Traductor de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Role"
+msgstr "Rol de objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Role Class"
+msgstr "Clase de rol de objeto"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Navigator"
+msgstr "Navegador de clases"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Navigator Role"
+msgstr "Rol de Navegador de Clase de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Editor"
+msgstr "Editor de clases"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Editor Role"
+msgstr "Rol del editor de clases"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Creator"
+msgstr "Creador de clases"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Creator Role"
+msgstr "Rol de Creador de Clase de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Class Schema Manager"
+msgstr "Gestor de Esquema de Clase de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Class Schema Manager Role"
+msgstr "Rol del Administrador de Esquema de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Viewer"
+msgstr "Visor de artículos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Viewer Role"
+msgstr "Rol del visor de objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Manager"
+msgstr "Gestor de artículos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Manager Role"
+msgstr "Rol Administrador de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Previewer"
+msgstr "Vista previa del artículo"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Previewer Role"
+msgstr "Rol de vista previa"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Properties Editor"
+msgstr "Editor de propiedades del artículo"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Properties Editor Role"
+msgstr "Rol del editor de propiedades del artículo"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Creator"
+msgstr "Creador de contenido del artículo"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Content Creator Role"
+msgstr "Rol de Creador de Contenido de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Resource Creator"
+msgstr "Creador de recursos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Resource Creator Role"
+msgstr "Rol de Recurso de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Importer"
+msgstr "Importador de artículos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Importer Role"
+msgstr "Rol de Importador de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Deleter"
+msgstr "Delémetro del artículo"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Item Deleter Role"
+msgstr "Rol Deleter de Objetos"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
+msgstr "Utilice este rol para limitar el acceso al artículo"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Translator"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:43\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -14,19 +14,22 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr ""
+msgstr "<b>Opmerking</b>: Voor lege klassen is het RDF-formaat<br />het enige beschikbare formaat."
 
 msgid "Actual size"
 msgstr "Ware grootte"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Er is een fout opgetreden tijdens het verwerken van uw verzoek."
 
 msgid "and"
-msgstr ""
+msgstr "en"
 
 msgid "and all of its content?"
-msgstr ""
+msgstr "en alle inhoud ervan?"
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr "worden momenteel gebruikt in een of meerdere tests, dus ze kunnen niet worden verwijderd:"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr ""
@@ -35,16 +38,16 @@ msgid "Are you sure you want to delete the class"
 msgstr "Weet je zeker dat je de folder wilt verwijderen"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Weet u zeker dat u de klas %s en alle inhoud ervan wilt verwijderen?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Weet je zeker dat je het item wilt verwijderen"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "Weet u zeker dat u het item %s wilt verwijderen?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "Weet u zeker dat u deze groepsruimte en alle inhoud wilt verwijderen?"
 
 msgid "Are you sure you want to delete this item?"
 msgstr "Weet je zeker dat je dit item wilt verwijderen?"
@@ -63,7 +66,7 @@ msgid "Close console"
 msgstr "Sluit console"
 
 msgid "contains content that is currently in use."
-msgstr ""
+msgstr "bevat inhoud die momenteel in gebruik is."
 
 #, tao-public
 msgid "Copy To"
@@ -78,10 +81,10 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 msgid "Deleting this class will break the"
-msgstr ""
+msgstr "Het verwijderen van deze klas zal de"
 
 msgid "Deleting this item will break the"
-msgstr ""
+msgstr "Dit item verwijderen breekt de"
 
 msgid "Desktop preview"
 msgstr "Desktop voorbeeld"
@@ -101,7 +104,7 @@ msgstr "Item bewerken"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Exporteren"
 
 msgid "Expose the property value to create automated categories."
 msgstr "Blootstellen van de waarde van het veld om geautomatiseerde categorieën te creëren."
@@ -110,20 +113,23 @@ msgid "Failed retrieving %s"
 msgstr "Ophalen %s heeft gefaald"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Verboden actie"
+
+msgid "If you continue:"
+msgstr "Als je doorgaat:"
 
 msgid "If you continue:"
 msgstr ""
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importeren"
 
 msgid "is currently in use."
-msgstr ""
+msgstr "is momenteel in gebruik."
 
 msgid "Item Model"
-msgstr ""
+msgstr "Artikel model"
 
 msgid "Item not found"
 msgstr "Item niet gevonden"
@@ -133,7 +139,7 @@ msgstr "Item opgeslagen"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Artikelen"
 
 #, tao-public
 msgid "Items library"
@@ -181,13 +187,13 @@ msgid "Not yet available"
 msgstr "Nog niet beschikbaar"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Alleen items die in geen enkele test worden gebruikt worden verwijderd."
 
 msgid "other"
-msgstr ""
+msgstr "Anders"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Verwijder de subklassen eerder."
 
 msgid "Please select first the item type!"
 msgstr "Selecteer a.u.b. eerste het item type!"
@@ -201,7 +207,7 @@ msgstr "Voorbeeld"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschappen"
 
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "\"%1$s\" gepubliseerd in de volgende taal: \"%2$s"
@@ -210,13 +216,16 @@ msgid "Remove this message"
 msgstr "Verwijder dit bericht"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Bron verwijderd"
 
 msgid "Retrieving external resources"
 msgstr "Haal externe bronnen op"
 
 msgid "s"
-msgstr ""
+msgstr "s"
+
+msgid "Some items in the folder "
+msgstr "Sommige items in de map "
 
 msgid "Some items in the folder "
 msgstr ""
@@ -225,16 +234,16 @@ msgid "Submit"
 msgstr "Indienen"
 
 msgid "test"
-msgstr ""
+msgstr "test"
 
 msgid "The class"
-msgstr ""
+msgstr "De klas"
 
 msgid "The file you tried to upload is not valid"
 msgstr "Het bestand dat u probeerde te uploaden is niet geldig"
 
 msgid "The item"
-msgstr ""
+msgstr "Het item"
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "De item module maakt het mogelijk om itemsen oefeningen aan te maken en te ontwerpen"
@@ -247,10 +256,10 @@ msgstr "Dit voorbeeld kan geschaald worden om op uw scherm te passen. Het eindre
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Vertalen"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Vertaling verwijderd"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Niet in staat om de bronnen voor de taal %s te kopiëren "
@@ -259,7 +268,10 @@ msgid "Unable to create deployement directory"
 msgstr "Niet in staat om de uitlever map aan te maken"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "Niet in staat om de geselecteerde resource te verwijderen"
+
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr "Niet in staat om de geselecteerde resource te verwijderen omdat u niet de vereiste rechten heeft om een deel van de inhoud te verwijderen."
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
@@ -268,22 +280,22 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan het item niet weergeven van %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Kan het bestand niet uploaden"
 
 msgid "using it:"
-msgstr ""
+msgstr "gebruikt:"
 
 msgid "Warning"
-msgstr ""
+msgstr "Waarschuwing"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "je probeert te verwijderen is te groot en bevat te veel subklassen."
 
 msgid "You checked out this item %2s ago"
 msgstr "U heeft dit item %2s geleden uitgecheckt"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Je ziet een bericht dat zegt dat sommige items niet konden worden verwijderd. Dit wordt verwacht."
 
 msgid "Your path contains error"
 msgstr "Uw pad bevat een fout"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:42\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: es-ES\n"
@@ -14,47 +14,53 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr ""
+msgstr "<b>Nota</b>: Para clases vacías, el formato RDF<br />es el único formato disponible."
 
 msgid "Actual size"
 msgstr "Tamaño actual"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Se ha producido un error al procesar su solicitud."
 
 msgid "and"
-msgstr ""
+msgstr "y"
 
 msgid "and all of its content?"
-msgstr ""
+msgstr "y todo su contenido?"
+
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr "se utilizan actualmente en una o más pruebas, por lo que no se pueden eliminar:"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr ""
 
 msgid "Are you sure you want to delete the class"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar la clase"
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr "¿Estás seguro de que quieres eliminar la clase %s y todo su contenido?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the item"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar el elemento"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar el elemento %s?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar esta clase y todo su contenido?"
 
 msgid "Are you sure you want to delete this item?"
-msgstr ""
+msgstr "¿Está seguro que desea eliminar este elemento?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Autoría"
 
 msgid "Class schema saved"
-msgstr ""
+msgstr "Esquema de clase guardado"
 
 msgid "Close"
 msgstr "Cerrar"
@@ -63,25 +69,25 @@ msgid "Close console"
 msgstr "Cerrar consola"
 
 msgid "contains content that is currently in use."
-msgstr ""
+msgstr "contiene contenido que está actualmente en uso."
 
 #, tao-public
 msgid "Copy To"
-msgstr ""
+msgstr "Copiar a"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr ""
+msgstr "Crea y diseña objetos y ejercicios."
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 msgid "Deleting this class will break the"
-msgstr ""
+msgstr "Eliminar esta clase romperá el"
 
 msgid "Deleting this item will break the"
-msgstr ""
+msgstr "Eliminar este elemento romperá el"
 
 msgid "Desktop preview"
 msgstr "Vista previa del escritorio"
@@ -101,16 +107,19 @@ msgstr "Editar elemento"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 msgid "Expose the property value to create automated categories."
-msgstr ""
+msgstr "Exponer el valor de la propiedad para crear categorías automatizadas."
 
 msgid "Failed retrieving %s"
 msgstr "Error recuperando %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Acción prohibida"
+
+msgid "If you continue:"
+msgstr "Si continúa:"
 
 msgid "If you continue:"
 msgstr ""
@@ -120,20 +129,20 @@ msgid "Import"
 msgstr "Importar"
 
 msgid "is currently in use."
-msgstr ""
+msgstr "está actualmente en uso."
 
 msgid "Item Model"
 msgstr "Modelo de elemento"
 
 msgid "Item not found"
-msgstr ""
+msgstr "Objeto no encontrado"
 
 msgid "Item saved"
 msgstr "Elemento fguardado"
 
 #, tao-public
 msgid "Items"
-msgstr ""
+msgstr "Elementos"
 
 #, tao-public
 msgid "Items library"
@@ -143,10 +152,10 @@ msgid "Landscape"
 msgstr "Horizontal"
 
 msgid "Last updated on %2s"
-msgstr ""
+msgstr "Última actualización de %2s"
 
 msgid "Manage item class schema"
-msgstr ""
+msgstr "Administrar esquema de clase de artículo"
 
 #, tao-public
 msgid "Manage items"
@@ -154,7 +163,7 @@ msgstr "Gestionar elementos"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr ""
+msgstr "Administrar esquema"
 
 msgid "Mobile preview"
 msgstr "Vista previa para móviles"
@@ -165,7 +174,7 @@ msgstr "Mover"
 
 #, tao-public
 msgid "Move To"
-msgstr ""
+msgstr "Mover a"
 
 #, tao-public
 msgid "New class"
@@ -181,13 +190,13 @@ msgid "Not yet available"
 msgstr "No disponible aún"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Sólo se eliminarán los elementos no utilizados en cualquier prueba."
 
 msgid "other"
-msgstr ""
+msgstr "otro"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Por favor, elimine las subclases antes."
 
 msgid "Please select first the item type!"
 msgstr "Por favor seleccione primero el tipo de elemento!"
@@ -201,7 +210,7 @@ msgstr "Vista previa"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Propiedades"
 
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "Publicado \"%1$s\" en idioma \"%2$s"
@@ -210,13 +219,16 @@ msgid "Remove this message"
 msgstr "Remover este mensaje"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Recurso eliminado"
 
 msgid "Retrieving external resources"
 msgstr "Recuperando recursos externos"
 
 msgid "s"
-msgstr ""
+msgstr "s"
+
+msgid "Some items in the folder "
+msgstr "Algunos elementos en la carpeta "
 
 msgid "Some items in the folder "
 msgstr ""
@@ -225,32 +237,32 @@ msgid "Submit"
 msgstr "Enviar"
 
 msgid "test"
-msgstr ""
+msgstr "prueba"
 
 msgid "The class"
-msgstr ""
+msgstr "La clase"
 
 msgid "The file you tried to upload is not valid"
-msgstr ""
+msgstr "El archivo que intentaste subir no es válido"
 
 msgid "The item"
-msgstr ""
+msgstr "El ítem"
 
 msgid "The Items module enables the creation and design of items and exercises."
 msgstr "El módulo de Elementos permite la creación y diseño de elementos y ejercicios."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr ""
+msgstr "La propiedad está expuesta a la adición de categoría.&#13¿Eliminar exposición?"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Esta vista previa puede ser escalada para adaptarse a su pantalla. El renderizado final puede diferir."
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Traducción"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Traducción eliminada"
 
 msgid "Unable to copy resources for language %s"
 msgstr "No se puede copiar recurso para idioma %s"
@@ -259,31 +271,37 @@ msgid "Unable to create deployement directory"
 msgstr "No se puede crear directorio desarrollo"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "No se puede eliminar el recurso seleccionado"
+
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr "No se puede eliminar el recurso seleccionado porque no tiene los permisos necesarios para eliminar parte de su contenido."
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr ""
+msgstr "No se puede renderizar el elemento de %s : %s %s"
+
+msgid "Unable to upload file"
+msgstr "No es posible subir el archivo"
 
 msgid "Unable to upload file"
 msgstr ""
 
 msgid "using it:"
-msgstr ""
+msgstr "usándolo:"
 
 msgid "Warning"
-msgstr ""
+msgstr "Advertencia"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "estás intentando eliminar es demasiado grande y contiene demasiadas subclases."
 
 msgid "You checked out this item %2s ago"
 msgstr "Marcó este elemento hace %2s"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Verás un mensaje diciendo que algunos elementos no se han podido eliminar. Se espera."
 
 msgid "Your path contains error"
 msgstr "Su ruta contiene errores"
