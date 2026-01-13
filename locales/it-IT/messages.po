@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-06-14 08:31\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it\n"
@@ -26,14 +26,23 @@ msgstr ""
 msgid "Actual size"
 msgstr "Dimensione reale"
 
+msgid "An error occurred while processing your request."
+msgstr "Si è verificato un errore durante l'elaborazione della richiesta."
+
 msgid "and"
 msgstr ""
 
 msgid "and all of its content?"
 msgstr ""
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr "sono attualmente utilizzati in uno o più test, quindi non possono essere eliminati:"
+
 msgid "Are you sure you want to delete the class"
 msgstr ""
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr "Sei sicuro di voler eliminare la classe %s e tutti i suoi contenuti?"
 
 msgid "Are you sure you want to delete the item"
 msgstr ""
@@ -110,6 +119,9 @@ msgstr "Impossibile recuperare"
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr "Se continua:"
+
 #, tao-public
 msgid "Import"
 msgstr "Importa"
@@ -175,6 +187,9 @@ msgstr "Nessun tipo di item selezionato per il corrente item"
 msgid "Not yet available"
 msgstr "Non ancora disponibile"
 
+msgid "Only items not used in any test will be deleted."
+msgstr "Verranno eliminati solo gli elementi non utilizzati in nessun test."
+
 msgid "other"
 msgstr ""
 
@@ -210,6 +225,9 @@ msgstr "Recupero risorse esterne"
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr "Alcuni elementi nella cartella "
+
 msgid "Submit"
 msgstr "Invia"
 
@@ -234,6 +252,13 @@ msgstr ""
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Questa anteprima può essere rappresentata in scala sul monitor. La resa finale può differire"
 
+#, tao-public
+msgid "Translate"
+msgstr "Traduci"
+
+msgid "Translation deleted"
+msgstr "Traduzione eliminata"
+
 msgid "Unable to copy resources for language %s"
 msgstr "Non in grado di copiare le risorse per la lingua %s"
 
@@ -243,8 +268,14 @@ msgstr "Impossibile creare la directory di dislocazione"
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr ""
+
+msgid "Unable to upload file"
+msgstr "Impossibile caricare il file"
 
 msgid "using it:"
 msgstr ""
@@ -257,6 +288,9 @@ msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr "Hai estratto questo item %2s"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr "Vedrai un messaggio che dice che alcuni elementi non possono essere eliminati. Questo è previsto."
 
 msgid "Your path contains error"
 msgstr "Il tuo percorso contiene errore"
