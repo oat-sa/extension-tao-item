@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2025-05-13 08:16\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: gl\n"
@@ -26,14 +26,23 @@ msgstr ""
 msgid "Actual size"
 msgstr ""
 
+msgid "An error occurred while processing your request."
+msgstr "Produciuse un erro ao procesar a túa solicitude."
+
 msgid "and"
 msgstr ""
 
 msgid "and all of its content?"
 msgstr ""
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr "úsanse actualmente nunha ou máis probas, polo que non se poden eliminar:"
+
 msgid "Are you sure you want to delete the class"
 msgstr ""
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr "Tes a certeza de que queres eliminar a clase %s e todo o seu contido?"
 
 msgid "Are you sure you want to delete the item"
 msgstr ""
@@ -110,6 +119,9 @@ msgstr ""
 msgid "Forbidden action"
 msgstr ""
 
+msgid "If you continue:"
+msgstr "Se continúas:"
+
 #, tao-public
 msgid "Import"
 msgstr ""
@@ -175,6 +187,9 @@ msgstr ""
 msgid "Not yet available"
 msgstr ""
 
+msgid "Only items not used in any test will be deleted."
+msgstr "Só se eliminarán os elementos que non se empregaron en ningunha proba."
+
 msgid "other"
 msgstr ""
 
@@ -210,6 +225,9 @@ msgstr ""
 msgid "s"
 msgstr ""
 
+msgid "Some items in the folder "
+msgstr "Algúns elementos da carpeta "
+
 msgid "Submit"
 msgstr ""
 
@@ -234,6 +252,13 @@ msgstr ""
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
+#, tao-public
+msgid "Translate"
+msgstr ""
+
+msgid "Translation deleted"
+msgstr "Tradución eliminada"
+
 msgid "Unable to copy resources for language %s"
 msgstr ""
 
@@ -243,7 +268,13 @@ msgstr ""
 msgid "Unable to delete the selected resource"
 msgstr ""
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
+msgstr ""
+
+msgid "Unable to upload file"
 msgstr ""
 
 msgid "using it:"
@@ -257,6 +288,9 @@ msgstr ""
 
 msgid "You checked out this item %2s ago"
 msgstr ""
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr "Verás unha mensaxe que indica que non se puideron eliminar algúns elementos. Isto é o esperado."
 
 msgid "Your path contains error"
 msgstr ""
