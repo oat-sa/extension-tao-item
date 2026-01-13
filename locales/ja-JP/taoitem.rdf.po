@@ -1,14 +1,21 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2022.09\n"
-"PO-Revision-Date: 2022-08-12T16:45:51\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ja-JP\n"
+"Language: ja\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: ja-JP\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 1235\n"
+"Language-Team: Japanese\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -158,12 +165,12 @@ msgstr "アイテム管理者ロール"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Restricted Item Author"
-msgstr ""
+msgstr "制限されたアイテム著者"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item authoring only Role"
-msgstr ""
+msgstr "項目のオーサリングのみのロール"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -173,137 +180,123 @@ msgstr "アイテム作成者"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
-msgstr ""
+msgstr "アイテム作成者と管理者のロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Translator"
+msgstr "アイテム翻訳"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Translator"
+msgstr "アイテムの翻訳"
+
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Role"
-msgstr ""
+msgstr "項目ロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Role Class"
-msgstr ""
+msgstr "項目ロールクラス"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Navigator"
-msgstr ""
+msgstr "アイテムクラスナビゲータ"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Navigator Role"
-msgstr ""
+msgstr "項目クラスナビゲータロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Editor"
-msgstr ""
+msgstr "アイテムクラスエディター"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Editor Role"
-msgstr ""
+msgstr "アイテムクラスエディターロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Creator"
-msgstr ""
+msgstr "アイテムクラスの作成"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Creator Role"
-msgstr ""
+msgstr "アイテムクラス作成者ロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Schema Manager"
-msgstr ""
+msgstr "アイテムクラススキーママネージャー"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Schema Manager Role"
-msgstr ""
+msgstr "アイテムクラススキーママネージャロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Viewer"
-msgstr ""
+msgstr "アイテムビューアー"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Viewer Role"
-msgstr ""
+msgstr "アイテムビューアロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Manager"
-msgstr ""
+msgstr "アイテムマネージャー"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Manager Role"
-msgstr ""
+msgstr "アイテム管理者ロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Previewer"
-msgstr ""
+msgstr "アイテムプレビュー"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Previewer Role"
-msgstr ""
+msgstr "アイテムプレビューアロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Properties Editor"
-msgstr ""
+msgstr "アイテムプロパティエディター"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Properties Editor Role"
-msgstr ""
+msgstr "アイテムプロパティエディタのロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Creator"
-msgstr ""
+msgstr "アイテムコンテンツ作成者"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content Creator Role"
-msgstr ""
+msgstr "アイテムコンテンツ作成者のロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Resource Creator"
-msgstr ""
+msgstr "アイテムリソースの作成者"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Resource Creator Role"
-msgstr ""
+msgstr "アイテムリソース作成者のロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Importer"
-msgstr ""
+msgstr "アイテムのインポート"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Importer Role"
-msgstr ""
+msgstr "アイテムのインポートロール"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Deleter"
-msgstr ""
+msgstr "アイテムのデリター"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Deleter Role"
-msgstr ""
+msgstr "アイテムデレーターロール"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
+msgstr "この役割を使用してアイテムへのアクセスを制限します。"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -349,4 +342,59 @@ msgstr "紙ベースデリバーターゲット"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
 msgstr "紙ベースデリバーターゲット"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deliverable"
+msgstr "Deliverable"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "itemmodel service"
+msgstr "itemmodel service"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring"
+msgstr "オーサリング"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Authoring"
+msgstr "オーサリング"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Data File Name"
+msgstr "データファイル名"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Stable"
+msgstr "安定版"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deprecated"
+msgstr "非推奨です"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Development"
+msgstr "開発"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Experimental"
+msgstr "実験"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Status"
+msgstr "ステータス"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Items Manager"
+msgstr "アイテム管理"
 
