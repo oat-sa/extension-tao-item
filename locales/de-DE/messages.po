@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2023-11-26 19:06\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de\n"
@@ -26,20 +26,29 @@ msgstr "<b>Hinweis</b>: Für leere Klassen ist das RDF-Format die einzige verfü
 msgid "Actual size"
 msgstr "Tatsächliche Größe"
 
+msgid "An error occurred while processing your request."
+msgstr "Bei der Bearbeitung Ihrer Anfrage ist ein Fehler aufgetreten."
+
 msgid "and"
 msgstr "und"
 
 msgid "and all of its content?"
 msgstr "und seinen gesamten Inhalt?"
 
+msgid "are currently used in one or more tests, so they cannot be deleted:"
+msgstr "werden derzeit in einem oder mehreren Tests verwendet, so dass sie nicht gelöscht werden können:"
+
 msgid "Are you sure you want to delete the class"
 msgstr "Sind Sie sicher, dass Sie die Klasse löschen möchten?"
+
+msgid "Are you sure you want to delete the class %s and all of its content?"
+msgstr "Sind Sie sicher, dass Sie die Klasse %s und den gesamten Inhalt löschen möchten?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Sind Sie sicher, dass Sie das Element löschen möchten?"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie das Element %s löschen möchten?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "Sind Sie sicher, dass Sie diese Klasse und all ihren Inhalt löschen möchten?"
@@ -110,6 +119,9 @@ msgstr "Fehler bei Abruf von %s"
 msgid "Forbidden action"
 msgstr "Verbotene Aktion"
 
+msgid "If you continue:"
+msgstr "Wenn Sie fortfahren:"
+
 #, tao-public
 msgid "Import"
 msgstr "Importieren"
@@ -175,6 +187,9 @@ msgstr "Kein Typ für das aktuelle Element ausgewählt"
 msgid "Not yet available"
 msgstr "Noch nicht verfügbar"
 
+msgid "Only items not used in any test will be deleted."
+msgstr "Nur Elemente, die in keinem Test verwendet werden, werden gelöscht."
+
 msgid "other"
 msgstr "andere"
 
@@ -210,6 +225,9 @@ msgstr "Externe Quellen abrufen"
 msgid "s"
 msgstr "s"
 
+msgid "Some items in the folder "
+msgstr "Einige Elemente im Ordner "
+
 msgid "Submit"
 msgstr "Absenden"
 
@@ -234,6 +252,13 @@ msgstr "Die Eigenschaft ist zur Kategorieerweiterung freigegeben.&#13Exposition 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Diese Vorschau ist möglicherweise an ihren Bildschirm angepasst. Die endgültige Version kann davon abweichen."
 
+#, tao-public
+msgid "Translate"
+msgstr "Übersetzen"
+
+msgid "Translation deleted"
+msgstr "Übersetzung gelöscht"
+
 msgid "Unable to copy resources for language %s"
 msgstr "Quellen für Sprache %s konnten nicht kopiert werden"
 
@@ -243,8 +268,14 @@ msgstr "Der Deployment-Ordner konnte nicht erstellt werden"
 msgid "Unable to delete the selected resource"
 msgstr "Die ausgewählte Ressource kann nicht gelöscht werden"
 
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr "Die ausgewählte Ressource konnte nicht gelöscht werden, da Sie nicht über die erforderlichen Rechte zum Löschen eines Teils ihres Inhalts verfügen."
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Das Element konnte nicht aus %s gerendert werden: %s %s"
+
+msgid "Unable to upload file"
+msgstr "Die Datei konnte nicht hochgeladen werden"
 
 msgid "using it:"
 msgstr "verwenden:"
@@ -257,6 +288,9 @@ msgstr "Das zu löschende Element ist zu groß und enthält zu viele Unterklasse
 
 msgid "You checked out this item %2s ago"
 msgstr "Sie haben dieses Element vor %2s überprüft"
+
+msgid "You will see a message saying that some items could not be deleted. This is expected."
+msgstr "Du wirst eine Nachricht sehen, die besagt, dass einige Elemente nicht gelöscht werden konnten. Dies wird erwartet."
 
 msgid "Your path contains error"
 msgstr "Ihr Pfad ist fehlerhaft"
