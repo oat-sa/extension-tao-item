@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:42\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "Dimensione reale"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Si è verificato un errore durante l'elaborazione della richiesta."
 
 msgid "and"
 msgstr ""
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr ""
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "sono attualmente utilizzati in uno o più test, quindi non possono essere eliminati:"
 
 msgid "Are you sure you want to delete the class"
 msgstr ""
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare la classe %s e tutti i suoi contenuti?"
 
 msgid "Are you sure you want to delete the item"
 msgstr ""
@@ -113,7 +113,7 @@ msgid "Forbidden action"
 msgstr ""
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Se continua:"
 
 #, tao-public
 msgid "Import"
@@ -181,7 +181,7 @@ msgid "Not yet available"
 msgstr "Non ancora disponibile"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Verranno eliminati solo gli elementi non utilizzati in nessun test."
 
 msgid "other"
 msgstr ""
@@ -219,7 +219,7 @@ msgid "s"
 msgstr ""
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Alcuni elementi nella cartella "
 
 msgid "Submit"
 msgstr "Invia"
@@ -247,10 +247,10 @@ msgstr "Questa anteprima può essere rappresentata in scala sul monitor. La resa
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Traduci"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Traduzione eliminata"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Non in grado di copiare le risorse per la lingua %s"
@@ -268,7 +268,7 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Impossibile caricare il file"
 
 msgid "using it:"
 msgstr ""
@@ -283,7 +283,7 @@ msgid "You checked out this item %2s ago"
 msgstr "Hai estratto questo item %2s"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Vedrai un messaggio che dice che alcuni elementi non possono essere eliminati. Questo è previsto."
 
 msgid "Your path contains error"
 msgstr "Il tuo percorso contiene errore"

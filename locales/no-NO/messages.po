@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:43\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: no-NO\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr ""
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Det oppstod en feil under behandling av forespørselen."
 
 msgid "and"
 msgstr ""
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr ""
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "brukes i én eller flere prøvinger, så de kan ikke slettes:"
 
 msgid "Are you sure you want to delete the class"
 msgstr ""
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Er du sikker på at du vil slette klassen %s og alt innholdet?"
 
 msgid "Are you sure you want to delete the item"
 msgstr ""
@@ -113,7 +113,7 @@ msgid "Forbidden action"
 msgstr ""
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Hvis du fortsetter:"
 
 #, tao-public
 msgid "Import"
@@ -181,7 +181,7 @@ msgid "Not yet available"
 msgstr ""
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Bare elementer som ikke brukes i en test vil bli slettet."
 
 msgid "other"
 msgstr ""
@@ -219,7 +219,7 @@ msgid "s"
 msgstr ""
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Noen elementer i mappen "
 
 msgid "Submit"
 msgstr ""
@@ -250,7 +250,7 @@ msgid "Translate"
 msgstr ""
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Oversettelse slettet"
 
 msgid "Unable to copy resources for language %s"
 msgstr ""
@@ -283,7 +283,7 @@ msgid "You checked out this item %2s ago"
 msgstr ""
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Du vil se en melding som sier at noen varer ikke kan slettes. Dette er forventet."
 
 msgid "Your path contains error"
 msgstr ""

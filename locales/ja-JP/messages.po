@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2025-12-16T14:44:43\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "実際の大きさ"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "リクエストの処理中にエラーが発生しました。"
 
 msgid "and"
 msgstr "と"
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr "全ての内容はどうでしょうか?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "は、現在1つ以上のテストで使用されているため、削除できません："
 
 msgid "Are you sure you want to delete the class"
 msgstr "このクラスを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "クラス %s とそのすべての内容を削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete the item"
 msgstr "アイテムを削除してもよろしいですか？"
@@ -113,7 +113,7 @@ msgid "Forbidden action"
 msgstr "禁止アクション"
 
 msgid "If you continue:"
-msgstr ""
+msgstr "続行する場合:"
 
 #, tao-public
 msgid "Import"
@@ -181,7 +181,7 @@ msgid "Not yet available"
 msgstr "現在利用できません"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "テストで使用されていないアイテムだけが削除されます。"
 
 msgid "other"
 msgstr "その他"
@@ -219,7 +219,7 @@ msgid "s"
 msgstr "s"
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "フォルダ内のいくつかのアイテム "
 
 msgid "Submit"
 msgstr "送信"
@@ -247,10 +247,10 @@ msgstr "プレビューはスクリーンに合わせてサイズが変更され
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "翻訳"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "翻訳が削除されました"
 
 msgid "Unable to copy resources for language %s"
 msgstr "言語 %s のリソースをコピーできません。"
@@ -262,13 +262,13 @@ msgid "Unable to delete the selected resource"
 msgstr "選択したリソースを削除できません"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
+msgstr "コンテンツの一部を削除するために必要な権限がないため、選択したリソースを削除できません。"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "%s からアイテムをレンダリングできません: %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "ファイルをアップロードできません"
 
 msgid "using it:"
 msgstr "それを使って"
@@ -283,7 +283,7 @@ msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "いくつかのアイテムを削除できなかったことを示すメッセージが表示されます。これは期待通りです。"
 
 msgid "Your path contains error"
 msgstr "パスにエラーがあります。"
