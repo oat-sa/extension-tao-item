@@ -1,0 +1,39 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:38\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ro\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100>0 && n%100<20)) ? 1 : 2);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ro\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/indexation.rdf.po\n"
+"X-Crowdin-File-ID: 1231\n"
+"Language-Team: Romanian\n"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Tokenizer"
+msgstr "Tokenizer conținut articol"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tokenizer using the item content"
+msgstr "Tokenizer folosind conţinutul elementului"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelIndex
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Model Index"
+msgstr "Indicele modelului de articol"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Item Content Index"
+msgstr "Indice conținut articol"
+
