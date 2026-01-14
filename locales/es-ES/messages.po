@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-13 09:37\n"
+"PO-Revision-Date: 2026-01-14 09:33\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: es-ES\n"
+"Language: es\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: es-ES\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: Spanish\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Nota</b>: Para clases vacías, el formato RDF<br />es el único formato disponible."
@@ -31,17 +38,11 @@ msgstr "y todo su contenido?"
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "se utilizan actualmente en una o más pruebas, por lo que no se pueden eliminar:"
 
-msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
-
 msgid "Are you sure you want to delete the class"
 msgstr "¿Está seguro que desea eliminar la clase"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "¿Estás seguro de que quieres eliminar la clase %s y todo su contenido?"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "¿Está seguro que desea eliminar el elemento"
@@ -120,9 +121,6 @@ msgstr "Acción prohibida"
 
 msgid "If you continue:"
 msgstr "Si continúa:"
-
-msgid "If you continue:"
-msgstr ""
 
 #, tao-public
 msgid "Import"
@@ -230,9 +228,6 @@ msgstr "s"
 msgid "Some items in the folder "
 msgstr "Algunos elementos en la carpeta "
 
-msgid "Some items in the folder "
-msgstr ""
-
 msgid "Submit"
 msgstr "Enviar"
 
@@ -276,17 +271,11 @@ msgstr "No se puede eliminar el recurso seleccionado"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "No se puede eliminar el recurso seleccionado porque no tiene los permisos necesarios para eliminar parte de su contenido."
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "No se puede renderizar el elemento de %s : %s %s"
 
 msgid "Unable to upload file"
 msgstr "No es posible subir el archivo"
-
-msgid "Unable to upload file"
-msgstr ""
 
 msgid "using it:"
 msgstr "usándolo:"
