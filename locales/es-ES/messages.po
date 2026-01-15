@@ -92,6 +92,9 @@ msgstr "Eliminar este elemento romperá el"
 msgid "Desktop preview"
 msgstr "Vista previa del escritorio"
 
+msgid "Do you want to continue?"
+msgstr ""
+
 msgid "Don’t show this again!"
 msgstr "No volver a mostrar esto!"
 
@@ -143,6 +146,9 @@ msgstr "Elemento fguardado"
 #, tao-public
 msgid "Items"
 msgstr "Elementos"
+
+msgid "Items in use can’t be deleted"
+msgstr ""
 
 #, tao-public
 msgid "Items library"
