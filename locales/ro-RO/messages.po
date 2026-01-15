@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-14 09:33\n"
+"PO-Revision-Date: 2026-01-15 11:07\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ro\n"
@@ -93,6 +93,9 @@ msgstr "Ștergerea acestui articol va strica"
 msgid "Desktop preview"
 msgstr "Previzualizare desktop"
 
+msgid "Do you want to continue?"
+msgstr "Vrei să continui?"
+
 msgid "Don’t show this again!"
 msgstr "Nu mai arăta asta!"
 
@@ -141,6 +144,9 @@ msgstr "Element salvat"
 #, tao-public
 msgid "Items"
 msgstr "Articole"
+
+msgid "Items in use can’t be deleted"
+msgstr "Elementele în uz nu pot fi șterse"
 
 #, tao-public
 msgid "Items library"
