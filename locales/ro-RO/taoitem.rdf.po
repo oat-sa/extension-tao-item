@@ -1,260 +1,400 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ro-RO\n"
+"Language: ro\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: ro-RO\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100>0 && n%100<20)) ? 1 : 2);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ro\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 1235\n"
+"Language-Team: Romanian\n"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr ""
+msgstr "Obiect"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr ""
+msgstr "Obiect"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content"
-msgstr ""
+msgstr "Conținut element"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content"
-msgstr ""
+msgstr "Conținut element"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Original Filename"
-msgstr ""
+msgstr "Nume fișier original"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Original Filename"
-msgstr ""
+msgstr "Nume fișier original"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Models"
-msgstr ""
+msgstr "Modele element"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModels
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Models"
-msgstr ""
+msgstr "Modele element"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model"
-msgstr ""
+msgstr "Model articol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModel
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Model"
-msgstr ""
+msgstr "Model articol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Runtime"
-msgstr ""
+msgstr "Durata"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Runtime"
-msgstr ""
+msgstr "Durata"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "itemmodel service"
-msgstr ""
+msgstr "serviciu model de articol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "service of the item model"
-msgstr ""
+msgstr "serviciul modelului de articol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Data File Name"
-msgstr ""
+msgstr "Nume Fişier Date"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "the filename used to store the item content for this model"
-msgstr ""
+msgstr "numele fișierului folosit pentru a stoca conținutul articolului pentru acest model"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Model Status"
-msgstr ""
+msgstr "Status model"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Stable"
-msgstr ""
+msgstr "Stabil"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item  model can be used in production"
-msgstr ""
+msgstr "Acest model de articol poate fi folosit în producție"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deprecated"
-msgstr ""
+msgstr "Dezaprobată"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item model is not supported anymore, we advise to migrate your items"
-msgstr ""
+msgstr "Acest model de articol nu mai este suportat, recomandăm să migreze articolele dvs."
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Development"
-msgstr ""
+msgstr "Dezvoltare"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "this item model has not been tested in a production environment, we advise to be carefull with it"
-msgstr ""
+msgstr "acest model de produs nu a fost testat într-un mediu de producţie şi recomandăm să fie atent la el"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Experimental"
-msgstr ""
+msgstr "Experimental"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "this item model is still in conception, but you can try it, give your feedback and it will be improved."
-msgstr ""
+msgstr "acest model de articol este încă în concepție, dar îl puteți încerca, oferiți feedback-ul dvs. și va fi îmbunătățit."
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The status of an item model"
-msgstr ""
+msgstr "Starea unui model de articol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Items Manager"
-msgstr ""
+msgstr "Manager articole"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Items Manager Role"
-msgstr ""
+msgstr "Rolul managerului de articole"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Restricted Item Author"
-msgstr ""
+msgstr "Autor Element Restricţionat"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item authoring only Role"
-msgstr ""
+msgstr "Element cu doar Rol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Author"
-msgstr ""
+msgstr "Autor articol"
 
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
-msgstr ""
+msgstr "Rolul autorului şi managerului de elemente"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Translator"
-msgstr ""
+msgstr "Traducător de articole"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Translator"
-msgstr ""
+msgstr "Traducător de articole"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Role"
-msgstr ""
+msgstr "Rolul articolului"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Role Class"
-msgstr ""
+msgstr "Clasa rol articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Navigator"
-msgstr ""
+msgstr "Navigator la Clasa Obiectului"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Navigator Role"
-msgstr ""
+msgstr "Rolul Navigator la Clasa Obiectului"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Editor"
-msgstr ""
+msgstr "Editor de Clase Element"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Editor Role"
-msgstr ""
+msgstr "Editor de Clase Element Rol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Creator"
-msgstr ""
+msgstr "Creator de Clase Articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Creator Role"
-msgstr ""
+msgstr "Rolul creatorului de clase de articole"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Schema Manager"
-msgstr ""
+msgstr "Schema Schema Articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Schema Manager Role"
-msgstr ""
+msgstr "Rolul Managerului de Clase Elemente"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Viewer"
-msgstr ""
+msgstr "Vizualizator de articole"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Viewer Role"
-msgstr ""
+msgstr "Rol vizualizator articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Manager"
-msgstr ""
+msgstr "Manager articole"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Manager Role"
-msgstr ""
+msgstr "Rolul managerului de elemente"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Previewer"
-msgstr ""
+msgstr "Previzualizare element"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Previewer Role"
-msgstr ""
+msgstr "Rolul Previzualizatorului Articolului"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Properties Editor"
-msgstr ""
+msgstr "Editor de proprietăți"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Properties Editor Role"
-msgstr ""
+msgstr "Rolul Editorului de Proprietăți"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Creator"
-msgstr ""
+msgstr "Creator de conținut articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content Creator Role"
-msgstr ""
+msgstr "Rolul creatorului de conținut"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Resource Creator"
-msgstr ""
+msgstr "Creator de Resurse Articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Resource Creator Role"
-msgstr ""
+msgstr "Rolul creatorului de resurse al produsului"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Importer"
-msgstr ""
+msgstr "Importator de elemente"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Importer Role"
-msgstr ""
+msgstr "Rolul importatorului"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Deleter"
-msgstr ""
+msgstr "Ștergere articol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Deleter Role"
-msgstr ""
+msgstr "Element de ștergere rol"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Use this role to limit access to Item"
-msgstr ""
+msgstr "Utilizați acest rol pentru a limita accesul la Articol"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Author Role"
+msgstr "Rolul autorului articolului"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Deliverable"
+msgstr "Livrat"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Items of model are deliverable"
+msgstr "Elementele modelului sunt livrabile"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Delivery Target"
+msgstr "Țintă livrare"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Delivery Target"
+msgstr "Țintă livrare"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Online Delivery Target"
+msgstr "Obiectiv livrare online"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Online Delivery Target"
+msgstr "Obiectiv livrare online"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Paper-based Delivery Target"
+msgstr "Obiectiv livrare pe hârtie"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Paper-based Delivery Target"
+msgstr "Obiectiv livrare pe hârtie"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deliverable"
+msgstr "Livrat"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "itemmodel service"
+msgstr "serviciu model de articol"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring"
+msgstr "Autorizare"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Authoring"
+msgstr "Autorizare"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Data File Name"
+msgstr "Nume Fişier Date"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Stable"
+msgstr "Stabil"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deprecated"
+msgstr "Dezaprobată"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Development"
+msgstr "Dezvoltare"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Experimental"
+msgstr "Experimental"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Status"
+msgstr "Status"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Items Manager"
+msgstr "Manager articole"
 

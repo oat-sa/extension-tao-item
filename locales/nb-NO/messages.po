@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:38\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nb-NO\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "Faktisk størrelse"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Det oppstod en feil under behandling av forespørselen."
 
 msgid "and"
 msgstr "og"
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr "og alt innholdet?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "brukes i én eller flere prøvinger, så de kan ikke slettes:"
 
 msgid "Are you sure you want to delete the class"
 msgstr "Er du sikker på at du vil slette mappen"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Er du sikker på at du vil slette klassen %s og alt innholdet?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Er du sikker på at du vil slette oppgaven"
@@ -116,7 +116,7 @@ msgid "Forbidden action"
 msgstr "Forbudt handling"
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Hvis du fortsetter:"
 
 #, tao-public
 msgid "Import"
@@ -187,7 +187,7 @@ msgid "Not yet available"
 msgstr "Ikke tilgjengelig enda"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Bare elementer som ikke brukes i en test vil bli slettet."
 
 msgid "other"
 msgstr "annen"
@@ -225,7 +225,7 @@ msgid "s"
 msgstr ""
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Noen elementer i mappen "
 
 msgid "Submit"
 msgstr "Lever"
@@ -253,10 +253,10 @@ msgstr "Denne forhåndsvisningen kan skaleres for og tilpasses skjermen din. Den
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Oversett"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Oversettelse slettet"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Kan ikke kopiere ressurser for språk %s"
@@ -274,7 +274,7 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan ikke gjengi oppgaven fra %s: %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Kan ikke laste opp fil"
 
 msgid "using it:"
 msgstr "bruker det:"
@@ -289,7 +289,7 @@ msgid "You checked out this item %2s ago"
 msgstr "Du sjekket ut denne oppgaven for %2s siden"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Du vil se en melding som sier at noen varer ikke kan slettes. Dette er forventet."
 
 msgid "Your path contains error"
 msgstr "Banen din inneholder feil"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: lt-LT\n"
@@ -253,7 +253,7 @@ msgstr "Šis rodinys gali būti didinamas arba mažinamas, pritaikant jūsų ekr
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Išversti"
 
 msgid "Translation deleted"
 msgstr ""
@@ -274,7 +274,7 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr "Neįmanoma pateikti klausimo nuo %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Nepavyko įkelti failo"
 
 msgid "using it:"
 msgstr ""

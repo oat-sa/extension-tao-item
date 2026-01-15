@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:29\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar-SA\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "الحجم الحالي"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "حدث خطأ أثناء معالجة طلبك."
 
 msgid "and"
 msgstr "و"
@@ -29,19 +29,19 @@ msgid "and all of its content?"
 msgstr "وكل محتوياته?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "تستخدم حاليا في اختبار واحد أو أكثر، لذلك لا يمكن حذفها:"
 
 msgid "Are you sure you want to delete the class"
 msgstr "هل أنت متأكد أنك تريد حذف القسم"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد حذف الصف %s وكل محتوياته؟"
 
 msgid "Are you sure you want to delete the item"
 msgstr "هل أنت متأكد أنك تريد حذف القسم"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "هل أنت متحقِّق من أنك تريد حذف العنصر %s؟"
 
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "هل أنت متأكد من أنك تريد حذف هذا القسم وكل محتواه؟"
@@ -116,7 +116,7 @@ msgid "Forbidden action"
 msgstr "إجراء محظور"
 
 msgid "If you continue:"
-msgstr ""
+msgstr "إذا استمرت:"
 
 #, tao-public
 msgid "Import"
@@ -187,7 +187,7 @@ msgid "Not yet available"
 msgstr "لم تتوفر بعد"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "سيتم حذف العناصر غير المستخدمة في أي اختبار فقط."
 
 msgid "other"
 msgstr "آخر"
@@ -225,7 +225,7 @@ msgid "s"
 msgstr "s"
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "بعض العناصر في المجلد "
 
 msgid "Submit"
 msgstr "إرسال"
@@ -253,10 +253,10 @@ msgstr "قد يتم تحجيم هذه المعاينة لتناسب شاشتك. 
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "ترجم"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "تم حذف الترجمة"
 
 msgid "Unable to copy resources for language %s"
 msgstr "تعذر نسخ الموارد للغة %s"
@@ -268,13 +268,13 @@ msgid "Unable to delete the selected resource"
 msgstr "غير قادر على حذف المورد المختار"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
+msgstr "غير قادر على حذف المورد المحدد لأنه ليس لديك الحقوق المطلوبة لحذف جزء من محتوياته."
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "تعذر تقديم البند من %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "لا اتمكن من تحميل الملف"
 
 msgid "using it:"
 msgstr "استخدامه:"
@@ -289,7 +289,7 @@ msgid "You checked out this item %2s ago"
 msgstr "لقد سحبت هذا البند قبل %2s"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "سوف ترى رسالة تقول أنه لا يمكن حذف بعض العناصر. هذا متوقع."
 
 msgid "Your path contains error"
 msgstr "مسارك يحتوي على خطأ"

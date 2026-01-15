@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk-SK\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "Skutočná veľkosť"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Pri spracovaní vašej žiadosti sa vyskytla chyba."
 
 msgid "and"
 msgstr "a"
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr "a všetok jeho obsah?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "sa momentálne používajú v jednom alebo viacerých testoch, takže ich nemožno odstrániť:"
 
 msgid "Are you sure you want to delete the class"
 msgstr "Naozaj chcete odstrániť triedu?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Naozaj chcete odstrániť triedu %s a všetok jej obsah?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Naozaj chcete odstrániť túto položku?"
@@ -116,7 +116,7 @@ msgid "Forbidden action"
 msgstr "Zakázaná akcia"
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Ak budete pokračovať:"
 
 #, tao-public
 msgid "Import"
@@ -187,7 +187,7 @@ msgid "Not yet available"
 msgstr "Zatiaľ nie je k dispozícii"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Vymazané budú iba položky, ktoré neboli použité v žiadnom teste."
 
 msgid "other"
 msgstr "iné"
@@ -225,7 +225,7 @@ msgid "s"
 msgstr "s"
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Niektoré položky v priečinku "
 
 msgid "Submit"
 msgstr "Odoslať"
@@ -253,10 +253,10 @@ msgstr "Tento náhľad sa môže prispôsobiť veľkosti Vašej obrazovky. Kone�
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Preložiť"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Preklad bol odstránený"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Nepodarilo sa kopírovať zdroje pre jazyk %s"
@@ -268,13 +268,13 @@ msgid "Unable to delete the selected resource"
 msgstr "Vybraný zdroj sa nepodarilo odstrániť"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
+msgstr "Vybraný zdroj sa nedá odstrániť, pretože nemáte potrebné práva na odstránenie časti jeho obsahu."
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Položku sa nepodarilo vykresliť z %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Nepodarilo sa nahrať súbor"
 
 msgid "using it:"
 msgstr "pomocou neho:"
@@ -289,7 +289,7 @@ msgid "You checked out this item %2s ago"
 msgstr "Túto položku ste si pozreli pred %2s"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Zobrazí sa správa, že niektoré položky sa nepodarilo odstrániť. Toto sa očakáva."
 
 msgid "Your path contains error"
 msgstr "Vaša cesta obsahuje chybu"

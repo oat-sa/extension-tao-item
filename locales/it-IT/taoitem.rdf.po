@@ -1,39 +1,46 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: it-IT\n"
+"Language: it\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: it-IT\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: it\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 1235\n"
+"Language-Team: Italian\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item"
-msgstr "Item"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content"
-msgstr "Item Content"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContent
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content"
-msgstr "Item Content"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Original Filename"
-msgstr "Original Filename"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentSourceName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -177,119 +184,119 @@ msgstr ""
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Translator"
-msgstr ""
+msgstr "Traduttore Di Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Translator"
-msgstr ""
+msgstr "Il Traduttore Di Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Role"
-msgstr ""
+msgstr "Ruolo Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Role Class"
-msgstr ""
+msgstr "Classe Ruolo Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Navigator"
-msgstr ""
+msgstr "Navigatore Classe Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Navigator Role"
-msgstr ""
+msgstr "Ruolo Navigatore Classe Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Editor"
-msgstr ""
+msgstr "Editor Classe Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Editor Role"
-msgstr ""
+msgstr "Ruolo Editor Classe Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Creator"
-msgstr ""
+msgstr "Creatore Classe Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Creator Role"
-msgstr ""
+msgstr "Ruolo Del Creatore Classe Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Schema Manager"
-msgstr ""
+msgstr "Gestione Schema Classe Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Schema Manager Role"
-msgstr ""
+msgstr "Ruolo Gestione Schema Classe Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Viewer"
-msgstr ""
+msgstr "Visualizzatore Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Viewer Role"
-msgstr ""
+msgstr "Ruolo Visualizzatore Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Manager"
-msgstr ""
+msgstr "Gestore Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Manager Role"
-msgstr ""
+msgstr "Ruolo Del Gestore Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Previewer"
-msgstr ""
+msgstr "Anteprima Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Previewer Role"
-msgstr ""
+msgstr "Ruolo Di Anteprima Oggetti"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Properties Editor"
-msgstr ""
+msgstr "Editor Proprietà Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Properties Editor Role"
-msgstr ""
+msgstr "Ruolo Editor Proprietà Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Creator"
-msgstr ""
+msgstr "Creatore Contenuto Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content Creator Role"
-msgstr ""
+msgstr "Ruolo Creatore Contenuto Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Resource Creator"
-msgstr ""
+msgstr "Creatore Risorsa Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Resource Creator Role"
-msgstr ""
+msgstr "Ruolo Creatore Risorse Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Importer"
-msgstr ""
+msgstr "Importatore Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Importer Role"
-msgstr ""
+msgstr "Ruolo Importatore Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Deleter"
-msgstr ""
+msgstr "Eliminazione Elemento"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Deleter Role"
-msgstr ""
+msgstr "Ruolo Deleter Oggetto"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Use this role to limit access to Item"
-msgstr ""
+msgstr "Usa questo ruolo per limitare l'accesso all'elemento"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"

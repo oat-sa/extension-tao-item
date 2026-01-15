@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-BR\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "Tamanho real"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Ocorreu um erro ao processar sua solicitação."
 
 msgid "and"
 msgstr "e"
@@ -29,19 +29,19 @@ msgid "and all of its content?"
 msgstr "e todo o seu conteúdo?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "atualmente são usados em um ou mais testes, portanto eles não podem ser excluídos:"
 
 msgid "Are you sure you want to delete the class"
 msgstr "Tem certeza de que deseja excluir a aula"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir a classe %s e todo o seu conteúdo?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Tem certeza que deseja excluir o item"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
+msgstr "Tem certeza que deseja excluir o item %s?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
 msgstr "Tem certeza que deseja excluir esta classe e todo o seu conteúdo?"
@@ -116,7 +116,7 @@ msgid "Forbidden action"
 msgstr "Ação proibida"
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Se você continuar:"
 
 #, tao-public
 msgid "Import"
@@ -187,7 +187,7 @@ msgid "Not yet available"
 msgstr "Ainda não está disponível"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Apenas os itens não usados em nenhum teste serão excluídos."
 
 msgid "other"
 msgstr "Outro"
@@ -222,7 +222,10 @@ msgid "Retrieving external resources"
 msgstr "Recuperando recursos externos"
 
 msgid "s"
-msgstr ""
+msgstr "s"
+
+msgid "Some items in the folder "
+msgstr "Alguns itens da pasta "
 
 msgid "Some items in the folder "
 msgstr ""
@@ -253,10 +256,10 @@ msgstr "Esta pré-visualização pode ser dimensionada para caber na tela. A ren
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Traduzir"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Tradução deletada"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Não é possível copiar recursos para o idioma %s"
@@ -268,13 +271,13 @@ msgid "Unable to delete the selected resource"
 msgstr "Não é possível excluir o recurso selecionado"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
+msgstr "Não foi possível excluir o recurso selecionado porque você não tem os direitos necessários para excluir parte de seu conteúdo."
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Não foi possível renderizar o item de %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Não foi possível enviar o arquivo"
 
 msgid "using it:"
 msgstr "usando:"
@@ -289,7 +292,7 @@ msgid "You checked out this item %2s ago"
 msgstr "Você fez check-out deste item %2s atrás"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Você verá uma mensagem dizendo que alguns itens não puderam ser excluídos. Isso é esperado."
 
 msgid "Your path contains error"
 msgstr "Seu caminho contém erro"

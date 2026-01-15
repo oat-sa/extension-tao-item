@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: hu-HU\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "Valós méret"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Hiba történt a kérés feldolgozása során."
 
 msgid "and"
 msgstr "és"
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr "és annak minden tartalma?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "jelenleg egy vagy több tesztben használatban vannak, így nem törölhetők:"
 
 msgid "Are you sure you want to delete the class"
 msgstr "Biztosan törölni szeretnéd az osztályt?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Biztosan törölni szeretnéd a(z) %s osztályt és annak teljes tartalmát?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Biztosan törölni szeretné az elemet?"
@@ -116,7 +116,7 @@ msgid "Forbidden action"
 msgstr "Tiltott cselekvés"
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Ha folytatod:"
 
 #, tao-public
 msgid "Import"
@@ -187,7 +187,7 @@ msgid "Not yet available"
 msgstr "Még nem elérhető"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Csak azok az elemek törlődnek, amelyeket nem használtunk fel egyetlen tesztben sem."
 
 msgid "other"
 msgstr "más"
@@ -225,7 +225,7 @@ msgid "s"
 msgstr "sz"
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Néhány elem a mappában "
 
 msgid "Submit"
 msgstr "Küldés"
@@ -253,10 +253,10 @@ msgstr "Ez az előnézet méretezhető a képernyő méretéhez. A végső megje
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Fordítás"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Fordítás törölve"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Nem sikerült másolni a következő nyelvhez tartozó erőforrásokat: %s"
@@ -268,13 +268,13 @@ msgid "Unable to delete the selected resource"
 msgstr "A kiválasztott erőforrás törlése sikertelen"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
+msgstr "A kiválasztott erőforrás nem törölhető, mert nem rendelkezik a szükséges jogosultságokkal a tartalmának egy részének törléséhez."
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Nem sikerült megjeleníteni az elemet innen: %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Nem sikerült feltölteni a fájlt"
 
 msgid "using it:"
 msgstr "használatával:"
@@ -289,7 +289,7 @@ msgid "You checked out this item %2s ago"
 msgstr "Ezt a terméket %2s ezelőtt vetted ki"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Egy üzenet jelenik meg, amely szerint bizonyos elemeket nem lehetett törölni. Ez várható is."
 
 msgid "Your path contains error"
 msgstr "Az elérési út hibát tartalmaz"

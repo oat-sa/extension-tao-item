@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:29\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr "Taille réelle"
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Une erreur s'est produite lors du traitement de votre demande."
 
 msgid "and"
 msgstr "et"
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr "et tout son contenu?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "sont actuellement utilisés dans un ou plusieurs tests, donc ils ne peuvent pas être supprimés :"
 
 msgid "Are you sure you want to delete the class"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette classe"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer la classe %s et tout son contenu ?"
 
 msgid "Are you sure you want to delete the item"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette question"
@@ -44,7 +44,7 @@ msgid "Are you sure you want to delete the item %s?"
 msgstr "Êtes-vous sûr de vouloir supprimer la question %s?"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer cette classe et tout son contenu ?"
 
 msgid "Are you sure you want to delete this item?"
 msgstr "Êtes-vous sûr(e) de vouloir supprimer cette question ?"
@@ -104,7 +104,7 @@ msgstr "Éditer l'élément"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Exportation"
 
 msgid "Expose the property value to create automated categories."
 msgstr "Exposer la valeur de la propriété pour créer des catégories automatisées."
@@ -113,14 +113,17 @@ msgid "Failed retrieving %s"
 msgstr "N'a pas réussi à récupérer %s"
 
 msgid "Forbidden action"
-msgstr ""
+msgstr "Action interdite"
+
+msgid "If you continue:"
+msgstr "Si vous continuez:"
 
 msgid "If you continue:"
 msgstr ""
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importation"
 
 msgid "is currently in use."
 msgstr "est en cours d’utilisation."
@@ -187,13 +190,13 @@ msgid "Not yet available"
 msgstr "Pas encore disponible"
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Seuls les éléments non utilisés dans aucun test seront supprimés."
 
 msgid "other"
 msgstr "autre"
 
 msgid "Please delete the subclasses before."
-msgstr ""
+msgstr "Veuillez supprimer les sous-classes avant."
 
 msgid "Please select first the item type!"
 msgstr "Veuillez sélectionner d'abord un type d'item !"
@@ -207,7 +210,7 @@ msgstr "Aperçu"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Propriétés"
 
 msgid "Published \"%1$s\" in language \"%2$s"
 msgstr "Publié \"%1$s\" dans la langue \"%2$s"
@@ -216,7 +219,7 @@ msgid "Remove this message"
 msgstr "Supprimer ce message"
 
 msgid "Resource deleted"
-msgstr ""
+msgstr "Ressource supprimée"
 
 msgid "Retrieving external resources"
 msgstr "Récupération de ressources externes"
@@ -225,7 +228,7 @@ msgid "s"
 msgstr "s"
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Certains éléments du dossier "
 
 msgid "Submit"
 msgstr "Envoyer"
@@ -234,7 +237,7 @@ msgid "test"
 msgstr "test"
 
 msgid "The class"
-msgstr ""
+msgstr "La classe"
 
 msgid "The file you tried to upload is not valid"
 msgstr "Le fichier que vous avez essayé de charger n'est pas valide."
@@ -253,10 +256,10 @@ msgstr "Cet aperçu peut être redimensionné pour s'adapter à votre écran. Le
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Traduire"
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Traduction supprimée"
 
 msgid "Unable to copy resources for language %s"
 msgstr "Impossible de copier les ressources pour la langue %s"
@@ -265,7 +268,10 @@ msgid "Unable to create deployement directory"
 msgstr "Impossible de créer le repertoire pour le deploiement"
 
 msgid "Unable to delete the selected resource"
-msgstr ""
+msgstr "Impossible de supprimer la ressource sélectionnée"
+
+msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr "Impossible de supprimer la ressource sélectionnée car vous n'avez pas les droits requis pour supprimer une partie de son contenu."
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
@@ -274,22 +280,22 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr "Impossible de rendre l'item depuis %s : %s %s"
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Autoriser le téléchargement du fichier"
 
 msgid "using it:"
 msgstr "qui l’utilise:"
 
 msgid "Warning"
-msgstr ""
+msgstr "Avertissement"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr ""
+msgstr "vous essayez de supprimer est trop grand et contient trop de sous-classes."
 
 msgid "You checked out this item %2s ago"
 msgstr "Vous avez quitté cet item il y a %2s."
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Vous verrez un message disant que certains éléments n'ont pas pu être supprimés. Ceci est attendu."
 
 msgid "Your path contains error"
 msgstr "Votre chemin contient au moins une erreur."

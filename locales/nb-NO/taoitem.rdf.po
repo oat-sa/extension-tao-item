@@ -1,14 +1,21 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:30\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:39\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: nb-NO\n"
+"Language: nb_NO\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: nb-NO\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: nb\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/taoitem.rdf.po\n"
+"X-Crowdin-File-ID: 1235\n"
+"Language-Team: Norwegian Bokmal\n"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#Item
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -177,140 +184,218 @@ msgstr ""
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Translator"
-msgstr ""
+msgstr "Elementet oversetter"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Translator"
-msgstr ""
+msgstr "Elementet oversetter"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Role"
-msgstr ""
+msgstr "Artikkel rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Role Class"
-msgstr ""
+msgstr "Produkt rolleklasse"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Navigator"
-msgstr ""
+msgstr "Elementet Klasse Navigator"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Navigator Role"
-msgstr ""
+msgstr "Elementet Klasse Navigator Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Editor"
-msgstr ""
+msgstr "Produkt klasse editor"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Editor Role"
-msgstr ""
+msgstr "Produkt Klasse Editor Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Creator"
-msgstr ""
+msgstr "Produkt klasse skaperen"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Creator Role"
-msgstr ""
+msgstr "Elementet klasse skaperen rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Class Schema Manager"
-msgstr ""
+msgstr "Element Klasse skjemabehandling"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassSchemaManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Class Schema Manager Role"
-msgstr ""
+msgstr "Produkt Klasse Skjema Manager Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Viewer"
-msgstr ""
+msgstr "Element viser"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemViewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Viewer Role"
-msgstr ""
+msgstr "Elementet Bruker Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Manager"
-msgstr ""
+msgstr "Element Behandler"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemReplicatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Manager Role"
-msgstr ""
+msgstr "Element Manager Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Previewer"
-msgstr ""
+msgstr "Produkt forhåndsvisning"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPreviewerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Previewer Role"
-msgstr ""
+msgstr "Element Forhåndsviser Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Properties Editor"
-msgstr ""
+msgstr "Redigeringsprogram for elementegenskaper"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemPropertiesEditorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Properties Editor Role"
-msgstr ""
+msgstr "Redigeringsprogram for elementegenskaper rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Creator"
-msgstr ""
+msgstr "Elementet innhold skaper"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content Creator Role"
-msgstr ""
+msgstr "Artikkelinnhold skaperen rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Resource Creator"
-msgstr ""
+msgstr "Ressurs skaperen av gjenstand"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemResourceCreatorRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Resource Creator Role"
-msgstr ""
+msgstr "Ressurs skaperen Elementet Rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Importer"
-msgstr ""
+msgstr "Gjenstand Importer"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemImporterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Importer Role"
-msgstr ""
+msgstr "Element Importer rolle"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Deleter"
-msgstr ""
+msgstr "Element Deleter"
 
-# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemDeleterRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Deleter Role"
+msgstr "Element Deleter Rolle"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Use this role to limit access to Item"
+msgstr "Bruk denne rollen for å begrense tilgangen til elementet"
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The Item Author Role"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Deliverable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Items of model are deliverable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Delivery Target"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Delivery Target"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Online Delivery Target"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Online Delivery Target"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Paper-based Delivery Target"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Paper-based Delivery Target"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deliverable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "itemmodel service"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Authoring"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Data File Name"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Stable"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deprecated"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDevelopment
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Development"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#StatusExperimental
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Experimental"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelStatus
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Status"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Items Manager"
 msgstr ""
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"

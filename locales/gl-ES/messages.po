@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:29\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-01-13 09:37\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: gl-ES\n"
@@ -20,7 +20,7 @@ msgid "Actual size"
 msgstr ""
 
 msgid "An error occurred while processing your request."
-msgstr ""
+msgstr "Produciuse un erro ao procesar a túa solicitude."
 
 msgid "and"
 msgstr ""
@@ -29,13 +29,13 @@ msgid "and all of its content?"
 msgstr ""
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
+msgstr "úsanse actualmente nunha ou máis probas, polo que non se poden eliminar:"
 
 msgid "Are you sure you want to delete the class"
 msgstr ""
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
+msgstr "Tes a certeza de que queres eliminar a clase %s e todo o seu contido?"
 
 msgid "Are you sure you want to delete the item"
 msgstr ""
@@ -116,7 +116,7 @@ msgid "Forbidden action"
 msgstr ""
 
 msgid "If you continue:"
-msgstr ""
+msgstr "Se continúas:"
 
 #, tao-public
 msgid "Import"
@@ -187,7 +187,7 @@ msgid "Not yet available"
 msgstr ""
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
+msgstr "Só se eliminarán os elementos que non se empregaron en ningunha proba."
 
 msgid "other"
 msgstr ""
@@ -225,7 +225,7 @@ msgid "s"
 msgstr ""
 
 msgid "Some items in the folder "
-msgstr ""
+msgstr "Algúns elementos da carpeta "
 
 msgid "Submit"
 msgstr ""
@@ -256,7 +256,7 @@ msgid "Translate"
 msgstr ""
 
 msgid "Translation deleted"
-msgstr ""
+msgstr "Tradución eliminada"
 
 msgid "Unable to copy resources for language %s"
 msgstr ""
@@ -289,7 +289,7 @@ msgid "You checked out this item %2s ago"
 msgstr ""
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
+msgstr "Verás unha mensaxe que indica que non se puideron eliminar algúns elementos. Isto é o esperado."
 
 msgid "Your path contains error"
 msgstr ""
