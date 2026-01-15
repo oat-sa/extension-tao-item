@@ -86,6 +86,9 @@ msgstr "Das Löschen dieses Elements unterbricht "
 msgid "Desktop preview"
 msgstr "Desktop-Vorschau"
 
+msgid "Do you want to continue?"
+msgstr ""
+
 msgid "Don’t show this again!"
 msgstr "Diese Meldung nicht wieder anzeigen!"
 
@@ -134,6 +137,9 @@ msgstr "Element gespeichert"
 #, tao-public
 msgid "Items"
 msgstr "Elemente"
+
+msgid "Items in use can’t be deleted"
+msgstr ""
 
 #, tao-public
 msgid "Items library"
