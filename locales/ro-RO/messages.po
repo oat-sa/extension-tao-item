@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-13 09:37\n"
+"PO-Revision-Date: 2026-01-15 11:07\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ro-RO\n"
+"Language: ro\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: ro-RO\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100>0 && n%100<20)) ? 1 : 2);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ro\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: Romanian\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Nota</b>: Pentru clase goale, formatul RDF<br />este singurul format disponibil."
@@ -22,9 +29,6 @@ msgstr "Dimensiune reală"
 msgid "An error occurred while processing your request."
 msgstr "A apărut o eroare la procesarea cererii tale."
 
-msgid "An error occurred while processing your request."
-msgstr ""
-
 msgid "and"
 msgstr "şi"
 
@@ -34,17 +38,11 @@ msgstr "și tot conținutul său?"
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "sunt utilizate în prezent la unul sau mai multe teste, astfel încât nu pot fi eliminate:"
 
-msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
-
 msgid "Are you sure you want to delete the class"
 msgstr "Sunteţi sigur că doriţi să ştergeţi clasa"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Sunteţi sigur că doriţi să ştergeţi clasa %s şi tot conţinutul acesteia?"
-
-msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr ""
 
 msgid "Are you sure you want to delete the item"
 msgstr "Sunteţi sigur că doriţi să ştergeţi elementul"
@@ -96,7 +94,7 @@ msgid "Desktop preview"
 msgstr "Previzualizare desktop"
 
 msgid "Do you want to continue?"
-msgstr ""
+msgstr "Vrei să continui?"
 
 msgid "Don’t show this again!"
 msgstr "Nu mai arăta asta!"
@@ -127,9 +125,6 @@ msgstr "Acțiune interzisă"
 msgid "If you continue:"
 msgstr "Dacă continuaţi:"
 
-msgid "If you continue:"
-msgstr ""
-
 #, tao-public
 msgid "Import"
 msgstr "Importă"
@@ -151,7 +146,7 @@ msgid "Items"
 msgstr "Articole"
 
 msgid "Items in use can’t be deleted"
-msgstr ""
+msgstr "Elementele în uz nu pot fi șterse"
 
 #, tao-public
 msgid "Items library"
@@ -201,9 +196,6 @@ msgstr "Nu este încă disponibil"
 msgid "Only items not used in any test will be deleted."
 msgstr "Vor fi șterse numai elementele care nu au fost utilizate în cadrul unui test."
 
-msgid "Only items not used in any test will be deleted."
-msgstr ""
-
 msgid "other"
 msgstr "altul"
 
@@ -242,9 +234,6 @@ msgstr "S"
 msgid "Some items in the folder "
 msgstr "Unele elemente din dosar "
 
-msgid "Some items in the folder "
-msgstr ""
-
 msgid "Submit"
 msgstr "Trimiteți"
 
@@ -276,13 +265,6 @@ msgstr "Tradu"
 msgid "Translation deleted"
 msgstr "Traducere ștearsă"
 
-#, tao-public
-msgid "Translate"
-msgstr ""
-
-msgid "Translation deleted"
-msgstr ""
-
 msgid "Unable to copy resources for language %s"
 msgstr "Imposibil de copiat resursele pentru limba %s"
 
@@ -295,17 +277,11 @@ msgstr "Imposibil de șters resursa selectată"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "Imposibil de șters resursa selectată, deoarece nu aveți drepturile necesare pentru a șterge o parte din conținutul său."
 
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
-
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Imposibil de redat elementul din %s : %s %s"
 
 msgid "Unable to upload file"
 msgstr "Imposibil de încărcat fișierul"
-
-msgid "Unable to upload file"
-msgstr ""
 
 msgid "using it:"
 msgstr "utilizând:"
@@ -321,9 +297,6 @@ msgstr "Ai verificat acest articol %2s în urmă"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
 msgstr "Veți vedea un mesaj care spune că unele elemente nu au putut fi șterse. Acest lucru este așteptat."
-
-msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr ""
 
 msgid "Your path contains error"
 msgstr "Calea ta conține eroare"

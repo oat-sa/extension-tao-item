@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-13 09:37\n"
+"PO-Revision-Date: 2026-01-15 11:07\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: fr-FR\n"
+"Language: fr\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: fr-FR\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: fr\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: French\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Note</b>: pour les classes vides, seul le format RDF est disponible."
@@ -87,7 +94,7 @@ msgid "Desktop preview"
 msgstr "Aperçu du bureau"
 
 msgid "Do you want to continue?"
-msgstr ""
+msgstr "Voulez-vous continuer ?"
 
 msgid "Don’t show this again!"
 msgstr "Ne plus afficher ceci !"
@@ -118,9 +125,6 @@ msgstr "Action interdite"
 msgid "If you continue:"
 msgstr "Si vous continuez:"
 
-msgid "If you continue:"
-msgstr ""
-
 #, tao-public
 msgid "Import"
 msgstr "Importation"
@@ -142,7 +146,7 @@ msgid "Items"
 msgstr "Articles"
 
 msgid "Items in use can’t be deleted"
-msgstr ""
+msgstr "Les éléments en cours d'utilisation ne peuvent pas être supprimés"
 
 #, tao-public
 msgid "Items library"
@@ -272,9 +276,6 @@ msgstr "Impossible de supprimer la ressource sélectionnée"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "Impossible de supprimer la ressource sélectionnée car vous n'avez pas les droits requis pour supprimer une partie de son contenu."
-
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Impossible de rendre l'item depuis %s : %s %s"

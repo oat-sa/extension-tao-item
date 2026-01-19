@@ -1,17 +1,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-13 09:37\n"
+"PO-Revision-Date: 2026-01-15 11:07\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: nl-NL\n"
+"Language: nl\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: nl-NL\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 805\n"
+"Language-Team: Dutch\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Opmerking</b>: Voor lege klassen is het RDF-formaat<br />het enige beschikbare formaat."
@@ -30,9 +37,6 @@ msgstr "en alle inhoud ervan?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "worden momenteel gebruikt in een of meerdere tests, dus ze kunnen niet worden verwijderd:"
-
-msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
 
 msgid "Are you sure you want to delete the class"
 msgstr "Weet je zeker dat je de folder wilt verwijderen"
@@ -90,7 +94,7 @@ msgid "Desktop preview"
 msgstr "Desktop voorbeeld"
 
 msgid "Do you want to continue?"
-msgstr ""
+msgstr "Wilt u doorgaan?"
 
 msgid "Don’t show this again!"
 msgstr "Dit niet meer tonen!"
@@ -121,9 +125,6 @@ msgstr "Verboden actie"
 msgid "If you continue:"
 msgstr "Als je doorgaat:"
 
-msgid "If you continue:"
-msgstr ""
-
 #, tao-public
 msgid "Import"
 msgstr "Importeren"
@@ -145,7 +146,7 @@ msgid "Items"
 msgstr "Artikelen"
 
 msgid "Items in use can’t be deleted"
-msgstr ""
+msgstr "Items in gebruik kunnen niet worden verwijderd"
 
 #, tao-public
 msgid "Items library"
@@ -233,9 +234,6 @@ msgstr "s"
 msgid "Some items in the folder "
 msgstr "Sommige items in de map "
 
-msgid "Some items in the folder "
-msgstr ""
-
 msgid "Submit"
 msgstr "Indienen"
 
@@ -278,9 +276,6 @@ msgstr "Niet in staat om de geselecteerde resource te verwijderen"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "Niet in staat om de geselecteerde resource te verwijderen omdat u niet de vereiste rechten heeft om een deel van de inhoud te verwijderen."
-
-msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan het item niet weergeven van %s : %s %s"
