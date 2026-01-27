@@ -13,50 +13,49 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Path"
-msgstr "Item Path"
+msgstr "Cesta k položke"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Path"
-msgstr "Item Path"
+msgstr "Cesta k položke"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Private Data Path"
-msgstr "Item Private Data Path"
+msgstr "Cesta k súkromným údajom položky"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemDataPath
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Private Data Path"
-msgstr "Item Private Data Path"
+msgstr "Cesta k súkromným údajom položky"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Resultserver"
-msgstr "Resultserver"
+msgstr "Server výsledkov"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamResultserver
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Resultserver"
-msgstr "Resultserver"
+msgstr "Server výsledkov"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Uri"
-msgstr "Item Uri"
+msgstr "URI položky"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamItemUri
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Uri"
-msgstr "Item Uri"
+msgstr "URI položky"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Runner"
-msgstr "Item Runner"
+msgstr "Bežec s predmetmi"
 
 # http://www.tao.lu/Ontologies/TAODelivery.rdf#ServiceItemRunner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Embed a run an item into a Delivery. This service initialize the TAO Apis and contexts"
-msgstr ""
-
+msgstr "Vložte položku spustenia do doručenia. Táto služba inicializuje rozhranie TAO API a kontexty."

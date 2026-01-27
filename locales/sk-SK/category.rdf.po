@@ -13,10 +13,10 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Expose to category auto-add"
-msgstr ""
+msgstr "Zobraziť automatické pridávanie kategórií"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Property expose the property to category auto-add"
-msgstr ""
+msgstr "Nehnuteľnosť vystavuje nehnuteľnosť automatickému pridávaniu do kategórie"
 

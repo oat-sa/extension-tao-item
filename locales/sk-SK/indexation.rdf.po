@@ -13,20 +13,20 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Tokenizer"
-msgstr ""
+msgstr "Tokenizátor obsahu položky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentTokenizer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Tokenizer using the item content"
-msgstr ""
+msgstr "Tokenizátor využívajúci obsah položky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemModelIndex
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Model Index"
-msgstr ""
+msgstr "Index modelu položky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemContentIndex
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Index"
-msgstr ""
+msgstr "Index obsahu položky"
 
