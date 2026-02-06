@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:07\n"
+"PO-Revision-Date: 2026-02-05 16:17\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -88,7 +88,7 @@ msgid "Deleting this class will break the"
 msgstr "このクラスを削除すると、"
 
 msgid "Deleting this item will break the"
-msgstr "このアイテムを削除すると、"
+msgstr "このアイテムを削除すると、以下のテストが破損します。"
 
 msgid "Desktop preview"
 msgstr "デスクトッププレビュー"
@@ -130,7 +130,7 @@ msgid "Import"
 msgstr "インポート"
 
 msgid "is currently in use."
-msgstr "現在使用中です。"
+msgstr "は、現在使用中です。"
 
 msgid "Item Model"
 msgstr "アイテムも出る"
@@ -284,7 +284,7 @@ msgid "Unable to upload file"
 msgstr "ファイルをアップロードできません"
 
 msgid "using it:"
-msgstr "それを使って"
+msgstr "で使用中です。"
 
 msgid "Warning"
 msgstr "警告"
