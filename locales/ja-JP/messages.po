@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-02-05 16:17\n"
+"PO-Revision-Date: 2026-03-05 09:40\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -36,7 +36,7 @@ msgid "and all of its content?"
 msgstr "全ての内容はどうでしょうか?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr "は、現在1つ以上のテストで使用されているため、削除できません："
+msgstr "フォルダー内のアイテムは、現在、以下のテストで使用されているため削除できません："
 
 msgid "Are you sure you want to delete the class"
 msgstr "このクラスを削除してもよろしいですか？"
@@ -123,7 +123,7 @@ msgid "Forbidden action"
 msgstr "禁止アクション"
 
 msgid "If you continue:"
-msgstr "続行する場合:"
+msgstr "削除を続行する場合:"
 
 #, tao-public
 msgid "Import"
@@ -197,7 +197,7 @@ msgid "Only items not used in any test will be deleted."
 msgstr "テストで使用されていないアイテムだけが削除されます。"
 
 msgid "other"
-msgstr "その他"
+msgstr "(その他)"
 
 msgid "Please delete the subclasses before."
 msgstr "前にサブクラスを削除してください。"
@@ -229,10 +229,10 @@ msgid "Retrieving external resources"
 msgstr "外部リソース検索中"
 
 msgid "s"
-msgstr "s"
+msgstr " "
 
 msgid "Some items in the folder "
-msgstr "フォルダ内のいくつかのアイテム "
+msgstr "【注意】"
 
 msgid "Submit"
 msgstr "送信"
@@ -296,7 +296,7 @@ msgid "You checked out this item %2s ago"
 msgstr "%2s 前にアイテムはチェックアウトされています。"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr "いくつかのアイテムを削除できなかったことを示すメッセージが表示されます。これは期待通りです。"
+msgstr "いくつかのアイテムを削除できなかったことを示すメッセージが表示されます。"
 
 msgid "Your path contains error"
 msgstr "パスにエラーがあります。"
