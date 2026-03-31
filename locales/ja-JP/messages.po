@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-03-05 09:40\n"
+"PO-Revision-Date: 2026-03-31 13:05\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -36,7 +36,7 @@ msgid "and all of its content?"
 msgstr "全ての内容はどうでしょうか?"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr "フォルダー内のアイテムは、現在、以下のテストで使用されているため削除できません："
+msgstr "フォルダー内のこれらのアイテムは、現在、テストで使用されているため削除できません："
 
 msgid "Are you sure you want to delete the class"
 msgstr "このクラスを削除してもよろしいですか？"
