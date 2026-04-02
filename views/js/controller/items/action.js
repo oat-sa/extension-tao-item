@@ -123,6 +123,20 @@ define([
         previewerFactory(getProvider(this.id) || 'qtiItem', config.uri, config.state, previewerConfig);
     });
 
+    // temporary code for development convenience
+    binder.register('itemExtPreview', function itemPreview(actionContext) {
+        const defaultConfig = {
+            provider: 'qtiItem',
+            state: {},
+            uri: actionContext.id
+        };
+        const config = _.merge(defaultConfig, module.config());
+        const previewerConfig = {
+            external: true
+        };
+        previewerFactory('qtiItemNUI', config.uri, config.state, previewerConfig);
+    });
+
     binder.register('deleteItem', function (actionContext) {
         return new Promise((resolve, reject) => {
             checkRelations({

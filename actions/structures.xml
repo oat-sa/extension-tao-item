@@ -27,7 +27,10 @@
                     <action id="item-properties" name="Properties"  url="/taoItems/Items/editItem"      group="content" context="instance"  weight="10">
                         <icon id="icon-edit"/>
                     </action>
-                    <action id="item-preview" name="Preview" url="/taoItems/ItemPreview/index" context="instance" group="content" binding="itemPreview" weight="8">
+                    <action id="item-preview" name="Preview" url="/taoItems/ItemPreview/index" context="instance" group="content" binding="itemPreview" weight="0">
+                        <icon id="icon-preview"/>
+                    </action>
+                    <action id="item-ext-preview" name="Ext.Preview" url="/taoItems/ItemPreview/index" context="instance" group="content" binding="itemExtPreview" weight="0">
                         <icon id="icon-preview"/>
                     </action>
                     <action id="item-authoring" name="Authoring" url="/taoItems/Items/authoring" group="content" context="instance" binding="launchEditor" weight="9">
