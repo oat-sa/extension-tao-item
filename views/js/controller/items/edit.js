@@ -15,13 +15,14 @@
  *
  * Copyright (c) 2014-2024 (original work) Open Assessment Technologies SA;
  */
-define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section'], function (
+define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section', 'util/url'], function (
     $,
     __,
     module,
     actions,
     lock,
-    section
+    section,
+    urlUtil
 ) {
     'use strict';
 
@@ -66,6 +67,16 @@ define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section
                     actions.exec('item-properties');
                 }
             });
+
+            // Auto-trigger action if specified in URL (e.g., from test creator's Edit button)
+            const parsedUrl = urlUtil.parse(window.location.href);
+            const autoAction = parsedUrl.query.autoAction;
+            if (autoAction && config.isAuthoringEnabled) {
+                // Small delay to ensure the UI is fully loaded
+                setTimeout(function () {
+                    actions.exec(autoAction);
+                }, 100);
+            }
         }
     };
 
