@@ -71,7 +71,7 @@ define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section
             // Auto-trigger action if specified in URL (e.g., from test creator's Edit button)
             const parsedUrl = urlUtil.parse(window.location.href);
             const autoAction = parsedUrl.query.autoAction;
-            if (autoAction && config.isAuthoringEnabled) {
+            if (autoAction && config.isAuthoringEnabled && actions.getBy(autoAction)) {
                 actions.exec(autoAction);
             }
         }
