@@ -72,10 +72,7 @@ define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section
             const parsedUrl = urlUtil.parse(window.location.href);
             const autoAction = parsedUrl.query.autoAction;
             if (autoAction && config.isAuthoringEnabled) {
-                // Small delay to ensure the UI is fully loaded
-                setTimeout(function () {
-                    actions.exec(autoAction);
-                }, 100);
+                actions.exec(autoAction);
             }
         }
     };
