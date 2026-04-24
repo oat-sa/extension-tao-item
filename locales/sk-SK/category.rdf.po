@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-13 09:38\n"
+"PO-Revision-Date: 2026-04-24 19:14\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk\n"
@@ -25,5 +25,5 @@ msgstr "Zobraziť automatické pridávanie kategórií"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ExposeCategory
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Property expose the property to category auto-add"
-msgstr "Nehnuteľnosť vystavuje nehnuteľnosť automatickému pridávaniu do kategórie"
+msgstr "Vlastnosť nastaviť automatické pridávanie do kategórie"
 
