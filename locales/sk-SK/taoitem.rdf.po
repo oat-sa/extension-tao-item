@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:08\n"
+"PO-Revision-Date: 2026-04-24 19:14\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk\n"
@@ -70,12 +70,12 @@ msgstr "Model položky"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Runtime"
-msgstr "Doba behu"
+msgstr "Doba spustenia"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemRuntime
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Runtime"
-msgstr "Doba behu"
+msgstr "Doba spustenia"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -85,7 +85,7 @@ msgstr "služba modelu položky"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "service of the item model"
-msgstr "servis modelu položky"
+msgstr "služba modelu položky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -110,7 +110,7 @@ msgstr "Stabilný"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusStable
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "This item  model can be used in production"
-msgstr "Tento model položky je možné použiť vo výrobe"
+msgstr "Tento model položky je možné použiť v produkcii"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#StatusDeprecated
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -160,7 +160,7 @@ msgstr "Správca položiek"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemsManagerRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Items Manager Role"
-msgstr "Rola manažéra položiek"
+msgstr "Rola správcu položiek"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -170,7 +170,7 @@ msgstr "Autor obmedzenej položky"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item authoring only Role"
-msgstr "Iba rola na tvorbu položiek"
+msgstr "Rola len pre tvorbu položiek"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -180,7 +180,7 @@ msgstr "Autor položky"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author and Manager Role"
-msgstr "Rola autora a manažéra položky"
+msgstr "Rola autora a správcu položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Translator"
@@ -192,7 +192,7 @@ msgstr "Prekladač položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Role"
-msgstr "Úloha položky"
+msgstr "Rola položky"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Role Class"
@@ -252,7 +252,7 @@ msgstr "Náhľad položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Previewer Role"
-msgstr "Rola používateľa ukážky položiek"
+msgstr "Rola Prehliadača položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Properties Editor"
@@ -264,11 +264,11 @@ msgstr "Rola editora vlastností položky"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Content Creator"
-msgstr "Tvorca obsahu položky"
+msgstr "Tvorca obsahu položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Content Creator Role"
-msgstr "Rola tvorcu obsahu položky"
+msgstr "Rola tvorcu obsahu položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Resource Creator"
@@ -280,11 +280,11 @@ msgstr "Rola tvorcu zdrojov položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Importer"
-msgstr "Dovozca položiek"
+msgstr "Importér položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Item Importer Role"
-msgstr "Rola dovozcu položiek"
+msgstr "Rola Importéra položiek"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Item Deleter"
@@ -301,52 +301,52 @@ msgstr "Použite túto rolu na obmedzenie prístupu k položke"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The Item Author Role"
-msgstr "Rola autora položky"
+msgstr "Rola autora položiek"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Deliverable"
-msgstr "Dodatok"
+msgstr "Výstup"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Items of model are deliverable"
-msgstr "Položky modelu sú dodateľné"
+msgstr "Tieto položky modelu sú k dispozícii"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Delivery Target"
-msgstr "Cieľ doručenia"
+msgstr "Cieľ Dodávky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DeliveryTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Delivery Target"
-msgstr "Cieľ doručenia"
+msgstr "Cieľ Dodávky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Online Delivery Target"
-msgstr "Cieľ online doručenia"
+msgstr "Cieľ online dodávky"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#OnlineTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Online Delivery Target"
-msgstr "Cieľ online doručenia"
+msgstr "Cieľ online dodávok"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Paper-based Delivery Target"
-msgstr "Cieľ doručovania v papierovej forme"
+msgstr "Cieľ dodávky v papierovej forme"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#PaperbasedTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Paper-based Delivery Target"
-msgstr "Cieľ doručovania v papierovej forme"
+msgstr "Cieľ dodávky v papierovej forme"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelTarget
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Deliverable"
-msgstr "Dodatok"
+msgstr "Výstup"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ModelService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -356,12 +356,12 @@ msgstr "služba modelu položky"
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Authoring"
-msgstr "Autorstvo"
+msgstr "Tvorba"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthoring
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Authoring"
-msgstr "Autorstvo"
+msgstr "Tvorba"
 
 # http://www.tao.lu/Ontologies/TAOItem.rdf#DataFileName
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
