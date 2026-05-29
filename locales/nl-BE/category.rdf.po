@@ -26,4 +26,3 @@ msgstr ""
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Property expose the property to category auto-add"
 msgstr ""
-
