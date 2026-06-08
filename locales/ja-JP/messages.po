@@ -1,5 +1,5 @@
 msgid ""
-msgstr ""
+msgstr " {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 "Project-Id-Version: tao-open-source\n"
 "PO-Revision-Date: 2026-03-31 13:05\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
@@ -21,283 +21,283 @@ msgstr ""
 "Language-Team: Japanese\n"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
-msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。"
+msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Actual size"
-msgstr "実際の大きさ"
+msgstr "実際の大きさ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "An error occurred while processing your request."
-msgstr "リクエストの処理中にエラーが発生しました。"
+msgstr "リクエストの処理中にエラーが発生しました。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "and"
-msgstr "と"
+msgstr "と {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "and all of its content?"
-msgstr "全ての内容はどうでしょうか?"
+msgstr "全ての内容はどうでしょうか? {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr "フォルダー内のこれらのアイテムは、現在、テストで使用されているため削除できません："
+msgstr "フォルダー内のこれらのアイテムは、現在、テストで使用されているため削除できません： {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Are you sure you want to delete the class"
-msgstr "このクラスを削除してもよろしいですか？"
+msgstr "このクラスを削除してもよろしいですか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
-msgstr "クラス %s とそのすべての内容を削除してもよろしいですか？"
+msgstr "クラス %s とそのすべての内容を削除してもよろしいですか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Are you sure you want to delete the item"
-msgstr "アイテムを削除してもよろしいですか？"
+msgstr "アイテムを削除してもよろしいですか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Are you sure you want to delete the item %s?"
-msgstr "本当に %s を削除してもよろしいですか？"
+msgstr "本当に %s を削除してもよろしいですか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "このクラスとその内容をすべて削除してよいのですか？"
+msgstr "このクラスとその内容をすべて削除してよいのですか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Are you sure you want to delete this item?"
-msgstr "このアイテムを削除してよろしいですか？"
+msgstr "このアイテムを削除してよろしいですか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Authoring"
-msgstr "オーサリング"
+msgstr "オーサリング {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Class schema saved"
-msgstr "クラススキーマを保存しました"
+msgstr "クラススキーマを保存しました {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Close"
-msgstr "閉じる"
+msgstr "閉じる {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Close console"
-msgstr "コンソールを閉じる"
+msgstr "コンソールを閉じる {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "contains content that is currently in use."
-msgstr "には、現在使用中のコンテンツが含まれています。"
+msgstr "には、現在使用中のコンテンツが含まれています。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Copy To"
-msgstr "指定コピー"
+msgstr "指定コピー {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Create and design items and exercises."
-msgstr "アイテムとエクササイズの作成とデザイン"
+msgstr "アイテムとエクササイズの作成とデザイン {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Delete"
-msgstr "削除"
+msgstr "削除 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Deleting this class will break the"
-msgstr "このクラスを削除すると、"
+msgstr "このクラスを削除すると、 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Deleting this item will break the"
-msgstr "このアイテムを削除すると、以下のテストが破損します。"
+msgstr "このアイテムを削除すると、以下のテストが破損します。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Desktop preview"
-msgstr "デスクトッププレビュー"
+msgstr "デスクトッププレビュー {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Do you want to continue?"
-msgstr "続行しますか？"
+msgstr "続行しますか？ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Don’t show this again!"
-msgstr "以後表示しない！"
+msgstr "以後表示しない！ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Duplicate"
-msgstr "複製"
+msgstr "複製 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Edit Item"
-msgstr "アイテム編集"
+msgstr "アイテム編集 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Edit item"
-msgstr "アイテム編集"
+msgstr "アイテム編集 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Export"
-msgstr "エクスポート"
+msgstr "エクスポート {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Expose the property value to create automated categories."
-msgstr "自動化されたカテゴリを作成するには、プロパティ値を公開します。"
+msgstr "自動化されたカテゴリを作成するには、プロパティ値を公開します。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Failed retrieving %s"
-msgstr "検索失敗 %s"
+msgstr "検索失敗 %s {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Forbidden action"
-msgstr "禁止アクション"
+msgstr "禁止アクション {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "If you continue:"
-msgstr "削除を続行する場合:"
+msgstr "削除を続行する場合: {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Import"
-msgstr "インポート"
+msgstr "インポート {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "is currently in use."
-msgstr "は、現在使用中です。"
+msgstr "は、現在使用中です。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Item Model"
-msgstr "アイテムも出る"
+msgstr "アイテムも出る {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Item not found"
-msgstr "アイテムが見つかりません"
+msgstr "アイテムが見つかりません {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Item saved"
-msgstr "アイテムが保存されました"
+msgstr "アイテムが保存されました {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Items"
-msgstr "アイテム"
+msgstr "アイテム {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Items in use can’t be deleted"
-msgstr "使用中のアイテムは削除できません"
+msgstr "使用中のアイテムは削除できません {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Items library"
-msgstr "アイテムライブラリ"
+msgstr "アイテムライブラリ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Landscape"
-msgstr "横に長く"
+msgstr "横に長く {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Last updated on %2s"
-msgstr "最終更新日： %2s"
+msgstr "最終更新日： %2s {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Manage item class schema"
-msgstr "スキーマ管理"
+msgstr "スキーマ管理 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Manage items"
-msgstr "アイテム管理"
+msgstr "アイテム管理 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Manage Schema"
-msgstr "スキーム管理"
+msgstr "スキーム管理 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Mobile preview"
-msgstr "モバイルプレビュー"
+msgstr "モバイルプレビュー {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Move"
-msgstr "移動"
+msgstr "移動 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Move To"
-msgstr "移動"
+msgstr "移動 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "New class"
-msgstr "新規クラス"
+msgstr "新規クラス {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "選択されたタイプのアイテムを編集するツールがありません：%s"
+msgstr "選択されたタイプのアイテムを編集するツールがありません：%s {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "No item type selected for the current item."
-msgstr "該当アイテムのタイプが選ばれていません。"
+msgstr "該当アイテムのタイプが選ばれていません。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Not yet available"
-msgstr "現在利用できません"
+msgstr "現在利用できません {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Only items not used in any test will be deleted."
-msgstr "テストで使用されていないアイテムだけが削除されます。"
+msgstr "テストで使用されていないアイテムだけが削除されます。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "other"
-msgstr "(その他)"
+msgstr "(その他) {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Please delete the subclasses before."
-msgstr "前にサブクラスを削除してください。"
+msgstr "前にサブクラスを削除してください。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Please select first the item type!"
-msgstr "最初のアイテムタイプを選択してください！"
+msgstr "最初のアイテムタイプを選択してください！ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Portrait"
-msgstr "縦長"
+msgstr "縦長 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Preview"
-msgstr "プレビュー"
+msgstr "プレビュー {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Properties"
-msgstr "プロパティ"
+msgstr "プロパティ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Published \"%1$s\" in language \"%2$s"
-msgstr "言語 \"%2$sで\"%1$s\" が公開されました。"
+msgstr "言語 \ {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Remove this message"
-msgstr "このメッセージを除く"
+msgstr "このメッセージを除く {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Resource deleted"
-msgstr "リソースが削除されました"
+msgstr "リソースが削除されました {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Retrieving external resources"
-msgstr "外部リソース検索中"
+msgstr "外部リソース検索中 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "s"
-msgstr " "
+msgstr "  {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Some items in the folder "
-msgstr "【注意】"
+msgstr "【注意】 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Submit"
-msgstr "送信"
+msgstr "送信 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "test"
-msgstr "テスト"
+msgstr "テスト {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "The class"
-msgstr "クラス"
+msgstr "クラス {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "The file you tried to upload is not valid"
-msgstr "アップロードしようとしたファイルは無効です。"
+msgstr "アップロードしようとしたファイルは無効です。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "The item"
-msgstr "アイテム"
+msgstr "アイテム {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "The Items module enables the creation and design of items and exercises."
-msgstr "アイテムとエクササイズの作成とデザインがアイテムモジュールにより可能になっています。"
+msgstr "アイテムとエクササイズの作成とデザインがアイテムモジュールにより可能になっています。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
-msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove exposition ?"
+msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove exposition ? {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
-msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
+msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 #, tao-public
 msgid "Translate"
-msgstr "翻訳"
+msgstr "翻訳 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Translation deleted"
-msgstr "翻訳が削除されました"
+msgstr "翻訳が削除されました {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Unable to copy resources for language %s"
-msgstr "言語 %s のリソースをコピーできません。"
+msgstr "言語 %s のリソースをコピーできません。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Unable to create deployement directory"
-msgstr "実行ディレクトリーを作成できません。"
+msgstr "実行ディレクトリーを作成できません。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Unable to delete the selected resource"
-msgstr "選択したリソースを削除できません"
+msgstr "選択したリソースを削除できません {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
-msgstr "コンテンツの一部を削除するために必要な権限がないため、選択したリソースを削除できません。"
+msgstr "コンテンツの一部を削除するために必要な権限がないため、選択したリソースを削除できません。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Unable to render the item from %s : %s %s"
-msgstr "%s からアイテムをレンダリングできません: %s %s"
+msgstr "%s からアイテムをレンダリングできません: %s %s {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Unable to upload file"
-msgstr "ファイルをアップロードできません"
+msgstr "ファイルをアップロードできません {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "using it:"
-msgstr "で使用中です。"
+msgstr "で使用中です。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Warning"
-msgstr "警告"
+msgstr "警告 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "you are trying to delete is too large and contains too many subclasses."
-msgstr "削除しようとしているのは大きすぎてサブクラスが多すぎます"
+msgstr "削除しようとしているのは大きすぎてサブクラスが多すぎます {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "You checked out this item %2s ago"
-msgstr "%2s 前にアイテムはチェックアウトされています。"
+msgstr "%2s 前にアイテムはチェックアウトされています。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "You will see a message saying that some items could not be deleted. This is expected."
-msgstr "いくつかのアイテムを削除できなかったことを示すメッセージが表示されます。"
+msgstr "いくつかのアイテムを削除できなかったことを示すメッセージが表示されます。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
 msgid "Your path contains error"
-msgstr "パスにエラーがあります。"
+msgstr "パスにエラーがあります。 {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby} {ruby}{rb}6{/rb}{rt}7{/rt}{/ruby}"
 
