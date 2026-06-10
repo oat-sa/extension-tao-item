@@ -16,7 +16,7 @@ final class Version202606101250452141_taoItems extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Gate Usage and Item Statistics actions behind FEATURE_FLAG_MANAGE_ITEMS';
+        return 'Hide Usage and Item Statistics actions when FEATURE_FLAG_HIDE_MANAGE_ITEMS is enabled';
     }
 
     public function up(Schema $schema): void
@@ -27,7 +27,7 @@ final class Version202606101250452141_taoItems extends AbstractMigration
 
         $this->addReport(
             Report::createSuccess(
-                'Usage and Item Statistics actions are now controlled by FEATURE_FLAG_MANAGE_ITEMS'
+                'Usage and Item Statistics actions are hidden when FEATURE_FLAG_HIDE_MANAGE_ITEMS is enabled'
             )
         );
     }
