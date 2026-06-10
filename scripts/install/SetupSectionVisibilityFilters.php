@@ -27,19 +27,36 @@ use oat\tao\model\menu\SectionVisibilityFilter;
 
 class SetupSectionVisibilityFilters extends InstallAction
 {
-    public function __invoke($params)
+    private const FEATURE_FLAG_TRANSLATION = 'FEATURE_FLAG_TRANSLATION_ENABLED';
+    private const FEATURE_FLAG_MANAGE_ITEMS = 'FEATURE_FLAG_MANAGE_ITEMS';
+
+    public function __invoke($params): void
     {
         /** @var SectionVisibilityFilter $sectionVisibilityFilter */
         $sectionVisibilityFilter = $this->getServiceManager()->get(SectionVisibilityFilter::SERVICE_ID);
+
         $sectionVisibilityFilter->showSectionByFeatureFlag(
             $sectionVisibilityFilter->createSectionPath(
                 [
                     'manage_items',
-                    'item-translate'
+                    'item-translate',
                 ]
             ),
-            'FEATURE_FLAG_TRANSLATION_ENABLED'
+            self::FEATURE_FLAG_TRANSLATION
         );
+
+        foreach (['item-usage', 'item-statistics'] as $actionId) {
+            $sectionVisibilityFilter->showSectionByFeatureFlag(
+                $sectionVisibilityFilter->createSectionPath(
+                    [
+                        'manage_items',
+                        $actionId,
+                    ]
+                ),
+                self::FEATURE_FLAG_MANAGE_ITEMS
+            );
+        }
+
         $this->getServiceManager()->register(SectionVisibilityFilter::SERVICE_ID, $sectionVisibilityFilter);
     }
 }
