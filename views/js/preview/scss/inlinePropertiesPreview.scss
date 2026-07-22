@@ -73,3 +73,20 @@ body.solar-design {
         }
     }
 }
+
+@media (max-width: 900px) {
+    .item-properties-column {
+        flex: 1 1 100%;
+        max-width: none;
+        min-width: 0;
+        margin-right: 0;
+
+        &--form,
+        &--preview,
+        &--full {
+            flex: 1 1 100%;
+            max-width: none;
+            min-width: 0;
+        }
+    }
+}

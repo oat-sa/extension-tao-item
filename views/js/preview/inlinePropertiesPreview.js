@@ -79,7 +79,7 @@ define([
      */
     function showError(message) {
         if ($container && $container.length) {
-            $container.html(`<p class="item-properties-preview-error">${message}</p>`);
+            $container.empty().append($('<p>', { class: 'item-properties-preview-error', text: message }));
         }
     }
 

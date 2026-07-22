@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     sass.taoitems.files[root + 'js/preview/css/inlinePropertiesPreview.css'] = root + 'js/preview/scss/inlinePropertiesPreview.scss';
 
     watch.taoitemssass = {
-        files : [root + 'scss/**/*.scss'],
+        files : [root + 'scss/**/*.scss', root + 'js/preview/scss/**/*.scss'],
         tasks : ['sass:taoitems', 'notify:taoitemssass'],
         options : {
             debounceDelay : 1000
