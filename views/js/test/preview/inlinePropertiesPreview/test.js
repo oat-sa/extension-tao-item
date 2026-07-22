@@ -275,6 +275,7 @@ define(['context', 'jquery'], function (context) {
                         0,
                         'Loading state is removed after ready'
                     );
+                    preview.cleanup();
                     done();
                 });
             })
