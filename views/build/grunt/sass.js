@@ -10,6 +10,7 @@ module.exports = function(grunt) {
     sass.taoitems.files = { };
     sass.taoitems.files[root + 'css/preview.css'] = root + 'scss/preview.scss';
     sass.taoitems.files[root + 'js/controller/items/css/relatedTestsPopup.css'] = root + 'js/controller/items/scss/relatedTestsPopup.scss';
+    sass.taoitems.files[root + 'js/preview/css/inlinePropertiesPreview.css'] = root + 'js/preview/scss/inlinePropertiesPreview.scss';
 
     watch.taoitemssass = {
         files : [root + 'scss/**/*.scss'],

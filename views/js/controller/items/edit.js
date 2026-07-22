@@ -15,15 +15,16 @@
  *
  * Copyright (c) 2014-2024 (original work) Open Assessment Technologies SA;
  */
-define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section', 'util/url'], function (
-    $,
-    __,
-    module,
-    actions,
-    lock,
-    section,
-    urlUtil
-) {
+define([
+    'jquery',
+    'i18n',
+    'module',
+    'layout/actions',
+    'ui/lock',
+    'layout/section',
+    'util/url',
+    'taoItems/preview/inlinePropertiesPreview'
+], function ($, __, module, actions, lock, section, urlUtil, inlinePropertiesPreview) {
     'use strict';
 
     /**
@@ -73,6 +74,10 @@ define(['jquery', 'i18n', 'module', 'layout/actions', 'ui/lock', 'layout/section
             const autoAction = parsedUrl.query.autoAction;
             if (autoAction && config.isAuthoringEnabled && actions.getBy(autoAction)) {
                 actions.exec(autoAction);
+            }
+
+            if (config.isPreviewEnabled && config.itemUri) {
+                inlinePropertiesPreview.init(config);
             }
         }
     };
