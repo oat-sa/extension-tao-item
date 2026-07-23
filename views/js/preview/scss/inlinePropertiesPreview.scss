@@ -59,6 +59,16 @@
     &-error {
         padding: 1rem;
     }
+
+    &-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        z-index: 1;
+    }
 }
 
 .section-container .content-block .item-properties-preview-column .data-container-wrapper {

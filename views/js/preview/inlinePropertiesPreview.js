@@ -25,12 +25,14 @@ define([
 ], function (context, $, __, request, urlUtil) {
     'use strict';
 
-    const readyTimeoutMs = 15000;
+    const readyTimeoutMs = 30000;
+    const loadingDelayMs = 1500;
 
     let externalPreviewerOrigin;
     let iframe;
     let messageHandler;
     let readyTimeout;
+    let loadingDelayTimeout;
     let tokens;
     let $container;
 
@@ -84,8 +86,32 @@ define([
     }
 
     function showLoading() {
+        if ($container && $container.length && !$container.find('.item-properties-preview-loading').length) {
+            $container.append($('<p>', { class: 'item-properties-preview-loading', text: __('Loading preview...') }));
+        }
+    }
+
+    function clearLoadingDelay() {
+        if (loadingDelayTimeout) {
+            clearTimeout(loadingDelayTimeout);
+            loadingDelayTimeout = null;
+        }
+    }
+
+    function scheduleLoading() {
+        clearLoadingDelay();
+        loadingDelayTimeout = setTimeout(() => {
+            loadingDelayTimeout = null;
+            if (iframe && iframe.classList.contains('visually-hidden')) {
+                showLoading();
+            }
+        }, loadingDelayMs);
+    }
+
+    function hideLoading() {
+        clearLoadingDelay();
         if ($container && $container.length) {
-            $container.html(`<p class="item-properties-preview-loading">${__('Loading preview...')}</p>`);
+            $container.find('.item-properties-preview-loading').remove();
         }
     }
 
@@ -105,6 +131,7 @@ define([
 
     function handleTimeout() {
         readyTimeout = null;
+        hideLoading();
 
         if (messageHandler) {
             window.removeEventListener('message', messageHandler);
@@ -132,12 +159,10 @@ define([
                 break;
 
             case 'ready':
+                hideLoading();
                 if (readyTimeout) {
                     clearTimeout(readyTimeout);
                     readyTimeout = null;
-                }
-                if ($container && $container.length) {
-                    $container.find('.item-properties-preview-loading').remove();
                 }
                 if (iframe) {
                     iframe.classList.remove('visually-hidden');
@@ -145,6 +170,7 @@ define([
                 break;
 
             case 'error': {
+                hideLoading();
                 if (messageHandler) {
                     window.removeEventListener('message', messageHandler);
                     messageHandler = null;
@@ -193,6 +219,8 @@ define([
             readyTimeout = null;
         }
 
+        hideLoading();
+
         if (messageHandler) {
             window.removeEventListener('message', messageHandler);
             messageHandler = null;
@@ -236,7 +264,6 @@ define([
         }
 
         showPanel();
-        showLoading();
 
         getTokens()
             .then(authTokens => {
@@ -249,6 +276,7 @@ define([
                 iframe.setAttribute('allowfullscreen', 'true');
 
                 $container.empty().append(iframe);
+                scheduleLoading();
 
                 messageHandler = onMessage;
                 window.addEventListener('message', messageHandler);

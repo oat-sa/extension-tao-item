@@ -21,7 +21,8 @@ define(['context', 'jquery'], function (context) {
     const moduleId = 'taoItems/preview/inlinePropertiesPreview';
     const requestModuleId = 'core/request';
     const urlModuleId = 'util/url';
-    const readyTimeoutMs = 15000;
+    const readyTimeoutMs = 20000;
+    const loadingDelayMs = 2000;
     const itemUri = 'item://test-item';
 
     const config = {
@@ -30,13 +31,12 @@ define(['context', 'jquery'], function (context) {
     };
 
     function setupDom() {
-        const tag = 'd' + 'iv';
-        $('#qunit-fixture').html(
-            '<' + tag + ' id="item-properties-form-column" class="item-properties-column item-properties-column--form"></' + tag + '>' +
-            '<' + tag + ' id="item-properties-preview-column" class="item-properties-column item-properties-column--preview">' +
-            '<' + tag + ' id="item-properties-preview" class="item-properties-preview"></' + tag + '>' +
-            '</' + tag + '>'
-        );
+        $('#qunit-fixture').html(`
+            <div id="item-properties-form-column" class="item-properties-column item-properties-column--form"></div>
+            <div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview">
+                <div id="item-properties-preview" class="item-properties-preview"></div>
+            </div>
+        `);
     }
 
     function enableExternalPreviewer() {
@@ -94,6 +94,23 @@ define(['context', 'jquery'], function (context) {
 
         window.setTimeout = function (handler, delay) {
             if (delay === readyTimeoutMs) {
+                return originalSetTimeout(handler, 5);
+            }
+            return originalSetTimeout(handler, delay);
+        };
+
+        return Promise.resolve()
+            .then(run)
+            .finally(() => {
+                window.setTimeout = originalSetTimeout;
+            });
+    }
+
+    function patchLoadingDelay(run) {
+        const originalSetTimeout = window.setTimeout;
+
+        window.setTimeout = function (handler, delay) {
+            if (delay === loadingDelayMs) {
                 return originalSetTimeout(handler, 5);
             }
             return originalSetTimeout(handler, delay);
@@ -249,6 +266,11 @@ define(['context', 'jquery'], function (context) {
                     assert.equal(requestCalls.length, 1, 'Token request is called once');
                     assert.ok(iframe, 'Iframe is mounted in the preview panel');
                     assert.ok(iframe.classList.contains('visually-hidden'), 'Iframe is hidden until ready');
+                    assert.equal(
+                        $('#item-properties-preview .item-properties-preview-loading').length,
+                        0,
+                        'Loading is not shown immediately after iframe mount'
+                    );
 
                     const iframeUrl = new URL(iframe.src);
                     assert.equal(iframeUrl.pathname, '/construct-item-preview/', 'Iframe uses item preview endpoint');
@@ -283,6 +305,47 @@ define(['context', 'jquery'], function (context) {
                 assert.ok(false, err && err.message ? err.message : String(err));
                 done();
             });
+    });
+
+    QUnit.test('shows loading text after delay while awaiting ready', function (assert) {
+        const done = assert.async();
+
+        patchLoadingDelay(() =>
+            loadModule().then(({ preview }) => {
+                preview.init(config);
+
+                return flushAsync()
+                    .then(() => {
+                        assert.equal(
+                            $('#item-properties-preview .item-properties-preview-loading').length,
+                            0,
+                            'Loading is not shown before the delay elapses'
+                        );
+                    })
+                    .then(() => new Promise(resolve => setTimeout(resolve, 20)))
+                    .then(() => {
+                        assert.equal(
+                            $('#item-properties-preview .item-properties-preview-loading').length,
+                            1,
+                            'Loading is shown after the delay while iframe awaits ready'
+                        );
+
+                        const iframe = document.querySelector('.item-properties-preview-iframe');
+                        dispatchMessage(iframe, { event: 'ready', parameters: {} });
+
+                        assert.equal(
+                            $('#item-properties-preview .item-properties-preview-loading').length,
+                            0,
+                            'Loading is removed after ready'
+                        );
+                        preview.cleanup();
+                        done();
+                    });
+            })
+        ).catch(err => {
+            assert.ok(false, err && err.message ? err.message : String(err));
+            done();
+        });
     });
 
     QUnit.test('shows iframe error message as text and removes listener', function (assert) {
