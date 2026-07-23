@@ -21,8 +21,9 @@ define(['context', 'jquery'], function (context) {
     const moduleId = 'taoItems/preview/inlinePropertiesPreview';
     const requestModuleId = 'core/request';
     const urlModuleId = 'util/url';
-    const readyTimeoutMs = 20000;
-    const loadingDelayMs = 2000;
+    // Keep in sync with taoItems/preview/inlinePropertiesPreview.js
+    const readyTimeoutMs = 30000;
+    const loadingDelayMs = 1500;
     const itemUri = 'item://test-item';
 
     const config = {
@@ -89,11 +90,12 @@ define(['context', 'jquery'], function (context) {
         return new Promise(resolve => setTimeout(resolve, 0));
     }
 
-    function patchReadyTimeout(run) {
+    function patchTimers(fastDelays, run) {
         const originalSetTimeout = window.setTimeout;
+        const delays = Array.isArray(fastDelays) ? fastDelays : [fastDelays];
 
         window.setTimeout = function (handler, delay) {
-            if (delay === readyTimeoutMs) {
+            if (delays.includes(delay)) {
                 return originalSetTimeout(handler, 5);
             }
             return originalSetTimeout(handler, delay);
@@ -106,21 +108,12 @@ define(['context', 'jquery'], function (context) {
             });
     }
 
+    function patchReadyTimeout(run) {
+        return patchTimers(readyTimeoutMs, run);
+    }
+
     function patchLoadingDelay(run) {
-        const originalSetTimeout = window.setTimeout;
-
-        window.setTimeout = function (handler, delay) {
-            if (delay === loadingDelayMs) {
-                return originalSetTimeout(handler, 5);
-            }
-            return originalSetTimeout(handler, delay);
-        };
-
-        return Promise.resolve()
-            .then(run)
-            .finally(() => {
-                window.setTimeout = originalSetTimeout;
-            });
+        return patchTimers(loadingDelayMs, run);
     }
 
     function dispatchMessage(iframe, data) {
