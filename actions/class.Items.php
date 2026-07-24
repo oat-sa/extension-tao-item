@@ -244,6 +244,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
 
             $this->setData('formTitle', __('Edit Item'));
             $this->setData('myForm', $myForm->render());
+            $this->setData('itemUri', $item->getUri());
 
             $this->setView('Items/editItem.tpl');
         }
