@@ -30,6 +30,7 @@ use oat\oatbox\event\EventManager;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\lock\LockManager;
 use oat\tao\model\TaoOntology;
+use oat\taoEventLog\model\eventLog\LoggerService;
 use oat\taoItems\model\Form\Modifier\FormModifierProxy;
 use oat\taoItems\model\ItemModelStatus;
 use oat\tao\model\accessControl\Context;
@@ -37,6 +38,7 @@ use oat\generis\model\OntologyAwareTrait;
 use oat\tao\model\resources\ResourceWatcher;
 use oat\oatbox\validator\ValidatorInterface;
 use oat\taoItems\model\event\ItemUpdatedEvent;
+use oat\taoItems\model\event\ItemContentViewEvent;
 use oat\tao\model\controller\SignedFormInstance;
 use oat\taoItems\model\event\ItemRdfUpdatedEvent;
 use oat\taoItems\model\Translation\Form\Modifier\TranslationFormModifierProxy;
@@ -358,6 +360,7 @@ class taoItems_actions_Items extends tao_actions_SaSModule
                     if (!empty($authoringUrl)) {
                         LockManager::getImplementation()
                             ->setLock($item, $this->getSession()->getUser()->getIdentifier());
+                        $this->getLoggerService()->log(new ItemContentViewEvent($item->getUri()));
 
                         // Add support for the translation and the side-by-side authoring tool
                         if ($this->getRequestParameter('translation') !== null) {
@@ -408,5 +411,10 @@ class taoItems_actions_Items extends tao_actions_SaSModule
     private function getResourceWatcher(): ResourceWatcher
     {
         return $this->getPsrContainer()->get(ResourceWatcher::SERVICE_ID);
+    }
+
+    private function getLoggerService(): LoggerService
+    {
+        return $this->getPsrContainer()->get(LoggerService::SERVICE_ID);
     }
 }

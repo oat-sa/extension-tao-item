@@ -26,6 +26,8 @@
 
 use oat\tao\helpers\Base64;
 use oat\generis\model\OntologyAwareTrait;
+use oat\taoEventLog\model\eventLog\LoggerService;
+use oat\taoItems\model\event\ItemContentViewEvent;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
@@ -122,6 +124,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
      */
     private function renderItem($item)
     {
+        $this->getLoggerService()->log(new ItemContentViewEvent($item->getUri()));
         $this->response = $this->response->withBody(Utils::streamFor($this->getRenderedItem($item)));
     }
 
@@ -161,4 +164,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
             'module' => 'taoItems/runtime/ConsoleResultServer'
         ];
     }
+
+    private function getLoggerService(): LoggerService
+    {
+        return $this->getPsrContainer()->get(LoggerService::SERVICE_ID);
+    }
+
 }
