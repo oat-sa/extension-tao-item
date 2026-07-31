@@ -22,13 +22,17 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\event;
 
+use core_kernel_classes_Resource;
 use JsonSerializable;
 use oat\oatbox\event\Event;
 
 class ItemPrintAttemptEvent implements Event, JsonSerializable
 {
-    public function __construct(private readonly string $itemUri)
+    private readonly string $itemUri;
+
+    public function __construct(core_kernel_classes_Resource $resource)
     {
+        $this->itemUri = $resource->getUri();
     }
 
     public function getName(): string

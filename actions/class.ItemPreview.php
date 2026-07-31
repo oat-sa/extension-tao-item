@@ -24,9 +24,9 @@
  *               2013-2018(update and modification) Open Assessment Technologies SA;
  */
 
+use oat\oatbox\event\EventManager;
 use oat\tao\helpers\Base64;
 use oat\generis\model\OntologyAwareTrait;
-use oat\taoEventLog\model\eventLog\LoggerService;
 use oat\taoItems\model\event\ItemContentViewEvent;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
@@ -125,7 +125,7 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
     private function renderItem($item)
     {
         $renderedItem = $this->getRenderedItem($item);
-        $this->getLoggerService()->log(new ItemContentViewEvent($item->getUri()));
+        $this->getEventManager()->trigger(new ItemContentViewEvent($item));
         $this->response = $this->response->withBody(Utils::streamFor($renderedItem));
     }
 
@@ -166,8 +166,8 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         ];
     }
 
-    private function getLoggerService(): LoggerService
+    private function getEventManager(): EventManager
     {
-        return $this->getPsrContainer()->get(LoggerService::SERVICE_ID);
+        return $this->getPsrContainer()->get(EventManager::SERVICE_ID);
     }
 }

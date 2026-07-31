@@ -15,29 +15,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2026 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2026 (original work) Open Assessment Technologies SA.
  */
 
 declare(strict_types=1);
 
-namespace oat\taoItems\test\unit\model\event;
+namespace oat\taoItems\model\FrontendAction;
 
-use core_kernel_classes_Resource;
-use oat\taoItems\model\event\ItemContentViewEvent;
-use PHPUnit\Framework\TestCase;
+use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
+use oat\tao\model\FrontendAction\Service\FrontendActionEventLogger;
+use oat\taoItems\model\event\ItemPrintAttemptEvent;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-class ItemContentViewEventTest extends TestCase
+class FrontendActionServiceProvider implements ContainerServiceProviderInterface
 {
-    public function testGetters(): void
+    public function __invoke(ContainerConfigurator $configurator): void
     {
-        $resource = $this->createMock(core_kernel_classes_Resource::class);
-        $resource
-            ->method('getUri')
-            ->willReturn('itemUri');
+        $services = $configurator->services();
 
-        $event = new ItemContentViewEvent($resource);
-
-        $this->assertSame(ItemContentViewEvent::class, $event->getName());
-        $this->assertSame(['itemUri' => 'itemUri'], $event->jsonSerialize());
+        $services
+            ->get(FrontendActionEventLogger::class)
+            ->call('addActionEvent', ['itemPrintAttempt', ItemPrintAttemptEvent::class]);
     }
 }

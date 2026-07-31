@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoItems\test\unit\model\event;
 
+use core_kernel_classes_Resource;
 use oat\taoItems\model\event\ItemPrintAttemptEvent;
 use PHPUnit\Framework\TestCase;
 
@@ -29,14 +30,14 @@ class ItemPrintAttemptEventTest extends TestCase
 {
     public function testGetters(): void
     {
-        $event = new ItemPrintAttemptEvent('itemUri');
+        $resource = $this->createMock(core_kernel_classes_Resource::class);
+        $resource
+            ->method('getUri')
+            ->willReturn('itemUri');
+
+        $event = new ItemPrintAttemptEvent($resource);
 
         $this->assertSame(ItemPrintAttemptEvent::class, $event->getName());
-        $this->assertSame(
-            [
-                'itemUri' => 'itemUri',
-            ],
-            $event->jsonSerialize()
-        );
+        $this->assertSame(['itemUri' => 'itemUri'], $event->jsonSerialize());
     }
 }
