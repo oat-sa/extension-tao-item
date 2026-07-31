@@ -24,8 +24,10 @@
  *               2013-2018(update and modification) Open Assessment Technologies SA;
  */
 
+use oat\oatbox\event\EventManager;
 use oat\tao\helpers\Base64;
 use oat\generis\model\OntologyAwareTrait;
+use oat\taoItems\model\event\ItemContentViewEvent;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\tao\model\media\sourceStrategy\HttpSource;
 use oat\taoItems\model\preview\OntologyItemNotFoundException;
@@ -122,7 +124,9 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
      */
     private function renderItem($item)
     {
-        $this->response = $this->response->withBody(Utils::streamFor($this->getRenderedItem($item)));
+        $renderedItem = $this->getRenderedItem($item);
+        $this->getEventManager()->trigger(new ItemContentViewEvent($item));
+        $this->response = $this->response->withBody(Utils::streamFor($renderedItem));
     }
 
     /**
@@ -160,5 +164,10 @@ class taoItems_actions_ItemPreview extends tao_actions_CommonModule
         return [
             'module' => 'taoItems/runtime/ConsoleResultServer'
         ];
+    }
+
+    private function getEventManager(): EventManager
+    {
+        return $this->getPsrContainer()->get(EventManager::SERVICE_ID);
     }
 }
