@@ -32,6 +32,7 @@ use oat\taoItems\model\Translation\ServiceProvider\TranslationServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\FrontendAction\FrontendActionServiceProvider;
+use oat\taoItems\model\Comment\ServiceProvider\ItemCommentServiceProvider;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\model\Copier\CopierServiceProvider;
 use oat\taoItems\scripts\install\CreateItemDirectory;
@@ -39,6 +40,7 @@ use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
+use oat\taoItems\scripts\install\RegisterItemCommentServices;
 use oat\taoItems\scripts\install\SetupEventListeners;
 use oat\taoItems\scripts\install\SetupSectionVisibilityFilters;
 
@@ -63,6 +65,7 @@ return [
             __DIR__ . '/models/ontology/taoItemRunner.rdf',
             __DIR__ . '/models/ontology/indexation.rdf',
             __DIR__ . '/models/ontology/category.rdf',
+            __DIR__ . '/models/ontology/itemComment.rdf',
         ],
         'php' => [
             CreateItemDirectory::class,
@@ -72,7 +75,8 @@ return [
             RegisterAssetTreeBuilder::class,
             SetRolesPermissions::class,
             SetupEventListeners::class,
-            SetupSectionVisibilityFilters::class
+            SetupSectionVisibilityFilters::class,
+            RegisterItemCommentServices::class,
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
@@ -87,6 +91,11 @@ return [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
             'taoItems_actions_ItemContent',
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
+            'taoItems_actions_RestItemComments',
         ],
         [
             AccessRule::GRANT,
@@ -272,5 +281,6 @@ return [
         TranslationServiceProvider::class,
         FormServiceProvider::class,
         FrontendActionServiceProvider::class,
+        ItemCommentServiceProvider::class,
     ],
 ];
