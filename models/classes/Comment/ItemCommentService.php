@@ -97,7 +97,8 @@ class ItemCommentService
     }
 
     /**
-     * Prefer LTI UserDataSessionContext (userId / userLogin) when present on TaoLtiSession.
+     * Prefer LTI UserDataSessionContext when present on TaoLtiSession:
+     * authorId from userId; authorLabel from userName, falling back to userLogin.
      *
      * @return array{0: string, 1: string}
      */
@@ -111,7 +112,10 @@ class ItemCommentService
             if ($context->getUserId()) {
                 $authorId = (string) $context->getUserId();
             }
-            if ($context->getUserLogin()) {
+
+            if ($context->getUserName() !== null) {
+                $authorLabel = (string) $context->getUserName();
+            } elseif ($context->getUserLogin() !== null) {
                 $authorLabel = (string) $context->getUserLogin();
             }
         }

@@ -83,30 +83,16 @@ class ItemCommentServiceTest extends TestCase
         $this->sut->count('  ');
     }
 
-    public function testCreateUsesLtiUserDataSessionContextForAuthor(): void
+    public function testCreateUsesLtiUserNameAsAuthorLabel(): void
     {
-        $user = $this->createMock(common_user_User::class);
-        $user->method('getIdentifier')->willReturn('https://example.test/ontologies/tao.rdf#superUser');
-
-        $session = $this->createMock(common_session_Session::class);
-        $session->method('getUser')->willReturn($user);
-        $session->method('getUserLabel')->willReturn('user');
-        $session->method('getContexts')
-            ->with(UserDataSessionContext::class)
-            ->willReturn([
-                new UserDataSessionContext('admin', 'admin'),
-            ]);
-
-        $this->sessionService
-            ->method('getCurrentSession')
-            ->willReturn($session);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $this->persistence
             ->expects($this->once())
             ->method('create')
             ->with($this->callback(static function (ItemComment $comment): bool {
                 return $comment->getAuthorId() === 'admin'
-                    && $comment->getAuthorLabel() === 'admin'
+                    && $comment->getAuthorLabel() === 'Alice Admin'
                     && $comment->getBody() === 'LTI comment'
                     && $comment->getItemUri() === 'http://example.test/item#1';
             }))
@@ -117,6 +103,43 @@ class ItemCommentServiceTest extends TestCase
         $created = $this->sut->create('http://example.test/item#1', 'LTI comment');
 
         $this->assertSame('admin', $created->getAuthorId());
-        $this->assertSame('admin', $created->getAuthorLabel());
+        $this->assertSame('Alice Admin', $created->getAuthorLabel());
+    }
+
+    public function testCreateFallsBackToUserLoginWhenUserNameIsNull(): void
+    {
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin'));
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->with($this->callback(static function (ItemComment $comment): bool {
+                return $comment->getAuthorId() === 'admin'
+                    && $comment->getAuthorLabel() === 'adminLogin';
+            }))
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $created = $this->sut->create('http://example.test/item#1', 'LTI comment');
+
+        $this->assertSame('adminLogin', $created->getAuthorLabel());
+    }
+
+    private function configureLtiSession(UserDataSessionContext $context): void
+    {
+        $user = $this->createMock(common_user_User::class);
+        $user->method('getIdentifier')->willReturn('https://example.test/ontologies/tao.rdf#superUser');
+
+        $session = $this->createMock(common_session_Session::class);
+        $session->method('getUser')->willReturn($user);
+        $session->method('getUserLabel')->willReturn('user');
+        $session->method('getContexts')
+            ->with(UserDataSessionContext::class)
+            ->willReturn([$context]);
+
+        $this->sessionService
+            ->method('getCurrentSession')
+            ->willReturn($session);
     }
 }
