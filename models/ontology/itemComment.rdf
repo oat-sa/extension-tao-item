@@ -55,4 +55,20 @@
         <rdfs:label xml:lang="en-US"><![CDATA[Status]]></rdfs:label>
     </rdf:Description>
 
+    <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentEdited">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label xml:lang="en-US"><![CDATA[Edited]]></rdfs:label>
+        <rdfs:comment xml:lang="en-US"><![CDATA[Whether the comment body was edited after creation (1/0)]]></rdfs:comment>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentResolved">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label xml:lang="en-US"><![CDATA[Resolved]]></rdfs:label>
+        <rdfs:comment xml:lang="en-US"><![CDATA[Whether the comment was marked resolved (1/0)]]></rdfs:comment>
+    </rdf:Description>
+
 </rdf:RDF>

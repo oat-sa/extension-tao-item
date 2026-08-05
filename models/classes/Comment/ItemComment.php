@@ -33,6 +33,8 @@ final class ItemComment
     private string $body;
     private string $createdAt;
     private string $status;
+    private bool $edited;
+    private bool $resolved;
 
     public function __construct(
         string $id,
@@ -41,7 +43,9 @@ final class ItemComment
         string $authorLabel,
         string $body,
         string $createdAt,
-        string $status = self::STATUS_ACTIVE
+        string $status = self::STATUS_ACTIVE,
+        bool $edited = false,
+        bool $resolved = false
     ) {
         $this->id = $id;
         $this->itemUri = $itemUri;
@@ -50,6 +54,8 @@ final class ItemComment
         $this->body = $body;
         $this->createdAt = $createdAt;
         $this->status = $status;
+        $this->edited = $edited;
+        $this->resolved = $resolved;
     }
 
     public function getId(): string
@@ -87,6 +93,16 @@ final class ItemComment
         return $this->status;
     }
 
+    public function isEdited(): bool
+    {
+        return $this->edited;
+    }
+
+    public function isResolved(): bool
+    {
+        return $this->resolved;
+    }
+
     public function toArray(): array
     {
         return [
@@ -97,6 +113,8 @@ final class ItemComment
             'body' => $this->body,
             'createdAt' => $this->createdAt,
             'status' => $this->status,
+            'edited' => $this->edited,
+            'resolved' => $this->resolved,
         ];
     }
 }

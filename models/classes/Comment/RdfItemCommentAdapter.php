@@ -43,6 +43,8 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             ItemCommentOntology::PROPERTY_BODY => $comment->getBody(),
             ItemCommentOntology::PROPERTY_CREATED_AT => $comment->getCreatedAt(),
             ItemCommentOntology::PROPERTY_STATUS => $comment->getStatus(),
+            ItemCommentOntology::PROPERTY_EDITED => $this->boolToLiteral($comment->isEdited()),
+            ItemCommentOntology::PROPERTY_RESOLVED => $this->boolToLiteral($comment->isResolved()),
         ]);
 
         return new ItemComment(
@@ -52,7 +54,9 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             $comment->getAuthorLabel(),
             $comment->getBody(),
             $comment->getCreatedAt(),
-            $comment->getStatus()
+            $comment->getStatus(),
+            $comment->isEdited(),
+            $comment->isResolved()
         );
     }
 
@@ -109,7 +113,34 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             ),
             (string) $resource->getOnePropertyValue(
                 $this->ontology->getProperty(ItemCommentOntology::PROPERTY_STATUS)
-            ) ?: ItemComment::STATUS_ACTIVE
+            ) ?: ItemComment::STATUS_ACTIVE,
+            $this->literalToBool(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_EDITED)
+                )
+            ),
+            $this->literalToBool(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOLVED)
+                )
+            )
         );
+    }
+
+    private function boolToLiteral(bool $value): string
+    {
+        return $value ? '1' : '0';
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function literalToBool($value): bool
+    {
+        if ($value === null || $value === '') {
+            return false;
+        }
+
+        return in_array(strtolower(trim((string) $value)), ['1', 'true', 'yes'], true);
     }
 }

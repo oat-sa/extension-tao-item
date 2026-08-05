@@ -75,6 +75,8 @@ class ItemCommentServiceTest extends TestCase
         $this->assertSame(1, $result['count']);
         $this->assertSame('c1', $result['comments'][0]['id']);
         $this->assertSame('Hello', $result['comments'][0]['body']);
+        $this->assertFalse($result['comments'][0]['edited']);
+        $this->assertFalse($result['comments'][0]['resolved']);
     }
 
     public function testCountRequiresItemUri(): void
@@ -104,6 +106,8 @@ class ItemCommentServiceTest extends TestCase
 
         $this->assertSame('admin', $created->getAuthorId());
         $this->assertSame('Alice Admin', $created->getAuthorLabel());
+        $this->assertFalse($created->isEdited());
+        $this->assertFalse($created->isResolved());
     }
 
     public function testCreateFallsBackToUserLoginWhenUserNameIsNull(): void

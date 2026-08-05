@@ -31,4 +31,6 @@ final class ItemCommentOntology
     public const PROPERTY_BODY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentBody';
     public const PROPERTY_CREATED_AT = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentCreatedAt';
     public const PROPERTY_STATUS = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentStatus';
+    public const PROPERTY_EDITED = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentEdited';
+    public const PROPERTY_RESOLVED = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentResolved';
 }
