@@ -26,7 +26,6 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
      * @property {string} authorLabel
      * @property {string} body
      * @property {string} createdAt
-     * @property {string} status
      * @property {boolean} edited
      * @property {boolean} resolved
      */
@@ -66,19 +65,6 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
                 url: urlUtil.route('index', 'RestItemComments', 'taoItems'),
                 method: 'POST',
                 data: { itemUri, body },
-                noToken: true
-            }).then(response => response.data);
-        },
-
-        /**
-         * Returns the visible comment count for an item.
-         * @param {string} itemUri
-         * @returns {Promise<{count: number}>}
-         */
-        count(itemUri) {
-            return request({
-                url: urlUtil.route('count', 'RestItemComments', 'taoItems', { itemUri }),
-                method: 'GET',
                 noToken: true
             }).then(response => response.data);
         }

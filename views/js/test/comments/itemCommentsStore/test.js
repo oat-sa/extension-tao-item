@@ -57,7 +57,6 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 authorLabel: 'Ada',
                 body: 'First',
                 createdAt: '2026-07-27T09:12:00Z',
-                status: 'active',
                 edited: false,
                 resolved: false
             }
@@ -97,7 +96,6 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             authorLabel: 'Grace',
             body: 'New note',
             createdAt: '2026-07-27T10:00:00Z',
-            status: 'active',
             edited: false,
             resolved: false
         };
@@ -179,7 +177,6 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                                 authorLabel: 'Ada',
                                 body: 'A',
                                 createdAt: '2026-07-27T09:12:00Z',
-                                status: 'active',
                                 edited: false,
                                 resolved: false
                             }
