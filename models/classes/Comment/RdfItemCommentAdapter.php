@@ -42,7 +42,6 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             ItemCommentOntology::PROPERTY_AUTHOR_LABEL => $comment->getAuthorLabel(),
             ItemCommentOntology::PROPERTY_BODY => $comment->getBody(),
             ItemCommentOntology::PROPERTY_CREATED_AT => $comment->getCreatedAt(),
-            ItemCommentOntology::PROPERTY_STATUS => $comment->getStatus(),
             ItemCommentOntology::PROPERTY_EDITED => $this->boolToLiteral($comment->isEdited()),
             ItemCommentOntology::PROPERTY_RESOLVED => $this->boolToLiteral($comment->isResolved()),
         ]);
@@ -54,7 +53,6 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             $comment->getAuthorLabel(),
             $comment->getBody(),
             $comment->getCreatedAt(),
-            $comment->getStatus(),
             $comment->isEdited(),
             $comment->isResolved()
         );
@@ -106,9 +104,6 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             (string) $resource->getOnePropertyValue(
                 $this->ontology->getProperty(ItemCommentOntology::PROPERTY_CREATED_AT)
             ),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_STATUS)
-            ) ?: ItemComment::STATUS_ACTIVE,
             $this->literalToBool(
                 $resource->getOnePropertyValue(
                     $this->ontology->getProperty(ItemCommentOntology::PROPERTY_EDITED)

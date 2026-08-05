@@ -24,15 +24,12 @@ namespace oat\taoItems\model\Comment;
 
 final class ItemComment
 {
-    public const STATUS_ACTIVE = 'active';
-
     private string $id;
     private string $itemUri;
     private string $authorId;
     private string $authorLabel;
     private string $body;
     private string $createdAt;
-    private string $status;
     private bool $edited;
     private bool $resolved;
 
@@ -43,7 +40,6 @@ final class ItemComment
         string $authorLabel,
         string $body,
         string $createdAt,
-        string $status = self::STATUS_ACTIVE,
         bool $edited = false,
         bool $resolved = false
     ) {
@@ -53,7 +49,6 @@ final class ItemComment
         $this->authorLabel = $authorLabel;
         $this->body = $body;
         $this->createdAt = $createdAt;
-        $this->status = $status;
         $this->edited = $edited;
         $this->resolved = $resolved;
     }
@@ -88,11 +83,6 @@ final class ItemComment
         return $this->createdAt;
     }
 
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
     public function isEdited(): bool
     {
         return $this->edited;
@@ -112,7 +102,6 @@ final class ItemComment
             'authorLabel' => $this->authorLabel,
             'body' => $this->body,
             'createdAt' => $this->createdAt,
-            'status' => $this->status,
             'edited' => $this->edited,
             'resolved' => $this->resolved,
         ];

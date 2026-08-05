@@ -23,68 +23,66 @@ declare(strict_types=1);
 namespace oat\taoItems\migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use oat\oatbox\reporting\Report;
-use oat\tao\model\accessControl\func\AccessRule;
-use oat\tao\model\accessControl\func\AclProxy;
+use oat\tao\scripts\tools\accessControl\SetRolesAccess;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
-use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\user\TaoItemsRoles;
 
 /**
- * Item Comments (NYSED-13): sync ontology and grant RestItemComments ACL.
+ * Item Comments (NYSED-13): grant RestItemComments ACL.
  *
  * phpcs:disable Squiz.Classes.ValidClassName
  */
 final class Version202608051012062141_taoItems extends AbstractMigration
 {
+    private const GLOBAL_MANAGER_ROLE = 'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole';
+
+    private const REST_ITEM_COMMENTS_MASK = [
+        'ext' => 'taoItems',
+        'mod' => 'RestItemComments',
+    ];
+
+    private const CONFIG = [
+        SetRolesAccess::CONFIG_RULES => [
+            TaoItemsRoles::ITEM_AUTHOR_ABSTRACT => [
+                self::REST_ITEM_COMMENTS_MASK,
+            ],
+            TaoItemsRoles::ITEM_MANAGER => [
+                self::REST_ITEM_COMMENTS_MASK,
+            ],
+            TaoItemsRoles::ITEM_CONTENT_CREATOR => [
+                self::REST_ITEM_COMMENTS_MASK,
+            ],
+            TaoItemsRoles::ITEM_AUTHOR => [
+                self::REST_ITEM_COMMENTS_MASK,
+            ],
+            TaoItemsRoles::ITEM_VIEWER => [
+                self::REST_ITEM_COMMENTS_MASK,
+            ],
+            self::GLOBAL_MANAGER_ROLE => [
+                self::REST_ITEM_COMMENTS_MASK,
+            ],
+        ],
+    ];
+
     public function getDescription(): string
     {
-        return 'Sync Item Comment ontology and grant RestItemComments ACL (NYSED-13)';
+        return 'Grant RestItemComments ACL for authoring roles (NYSED-13)';
     }
 
     public function up(Schema $schema): void
     {
-        OntologyUpdater::syncModels();
-
-        foreach ($this->getRules() as $rule) {
-            AclProxy::applyRule($rule);
-        }
-
-        $this->addReport(
-            Report::createSuccess('Item Comment ontology synced and RestItemComments ACL applied')
-        );
+        $this->runAction(new SetRolesAccess(), [
+            '--' . SetRolesAccess::OPTION_CONFIG,
+            self::CONFIG,
+        ]);
     }
 
     public function down(Schema $schema): void
     {
-        foreach ($this->getRules() as $rule) {
-            AclProxy::revokeRule($rule);
-        }
-
-        $this->addReport(Report::createSuccess('Revoked RestItemComments ACL rules'));
-    }
-
-    /**
-     * @return AccessRule[]
-     */
-    private function getRules(): array
-    {
-        $mask = [
-            'ext' => 'taoItems',
-            'mod' => 'RestItemComments',
-        ];
-
-        return [
-            new AccessRule(AccessRule::GRANT, TaoItemsRoles::ITEM_AUTHOR_ABSTRACT, $mask),
-            new AccessRule(AccessRule::GRANT, TaoItemsRoles::ITEM_MANAGER, $mask),
-            new AccessRule(AccessRule::GRANT, TaoItemsRoles::ITEM_CONTENT_CREATOR, $mask),
-            new AccessRule(AccessRule::GRANT, TaoItemsRoles::ITEM_AUTHOR, $mask),
-            new AccessRule(AccessRule::GRANT, TaoItemsRoles::ITEM_VIEWER, $mask),
-            new AccessRule(
-                AccessRule::GRANT,
-                'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole',
-                $mask
-            ),
-        ];
+        $this->runAction(new SetRolesAccess(), [
+            '--' . SetRolesAccess::OPTION_REVOKE,
+            '--' . SetRolesAccess::OPTION_CONFIG,
+            self::CONFIG,
+        ]);
     }
 }

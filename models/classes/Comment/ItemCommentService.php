@@ -82,8 +82,7 @@ class ItemCommentService
             $authorId,
             $authorLabel,
             $body,
-            (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format(DATE_ATOM),
-            ItemComment::STATUS_ACTIVE
+            (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format(DATE_ATOM)
         );
 
         return $this->persistence->create($comment);
