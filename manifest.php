@@ -32,7 +32,6 @@ use oat\taoItems\model\Translation\ServiceProvider\TranslationServiceProvider;
 use oat\taoItems\model\user\TaoItemsRoles;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\FrontendAction\FrontendActionServiceProvider;
-use oat\taoItems\model\Comment\ServiceProvider\ItemCommentServiceProvider;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\model\Copier\CopierServiceProvider;
 use oat\taoItems\scripts\install\CreateItemDirectory;
@@ -304,6 +303,5 @@ return [
         TranslationServiceProvider::class,
         FormServiceProvider::class,
         FrontendActionServiceProvider::class,
-        ItemCommentServiceProvider::class,
     ],
 ];
