@@ -29,7 +29,6 @@ use oat\taoItems\model\Comment\ItemCommentService;
  * Routes:
  * - GET  /taoItems/RestItemComments/index?itemUri=
  * - POST /taoItems/RestItemComments/index  (itemUri, body)
- * - GET  /taoItems/RestItemComments/count?itemUri=
  */
 class taoItems_actions_RestItemComments extends tao_actions_CommonModule
 {
@@ -63,29 +62,6 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
         } catch (Throwable $exception) {
             $this->logError($exception->getMessage());
             $this->setErrorJsonResponse('Unable to process item comments request', 500, [], 500);
-        }
-    }
-
-    public function count(): void
-    {
-        try {
-            if (!$this->isGetRequest()) {
-                $this->setErrorJsonResponse('Method not allowed', 405, [], 405);
-
-                return;
-            }
-
-            $itemUri = (string) ($this->getPsrRequest()->getQueryParams()['itemUri'] ?? '');
-            $this->setSuccessJsonResponse([
-                'count' => $this->getItemCommentService()->count($itemUri),
-            ]);
-        } catch (common_exception_Unauthorized $exception) {
-            $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
-        } catch (InvalidArgumentException $exception) {
-            $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
-        } catch (Throwable $exception) {
-            $this->logError($exception->getMessage());
-            $this->setErrorJsonResponse('Unable to process item comments count', 500, [], 500);
         }
     }
 

@@ -30,6 +30,4 @@ interface ItemCommentPersistenceInterface
      * @return ItemComment[]
      */
     public function findByItemUri(string $itemUri): array;
-
-    public function countByItemUri(string $itemUri): int;
 }

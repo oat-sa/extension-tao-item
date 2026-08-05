@@ -79,12 +79,6 @@ class ItemCommentServiceTest extends TestCase
         $this->assertFalse($result['comments'][0]['resolved']);
     }
 
-    public function testCountRequiresItemUri(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->sut->count('  ');
-    }
-
     public function testCreateUsesLtiUserNameAsAuthorLabel(): void
     {
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));

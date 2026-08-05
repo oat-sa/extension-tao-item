@@ -87,11 +87,6 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
         return $comments;
     }
 
-    public function countByItemUri(string $itemUri): int
-    {
-        return count($this->findByItemUri($itemUri));
-    }
-
     private function mapResource(core_kernel_classes_Resource $resource): ItemComment
     {
         return new ItemComment(

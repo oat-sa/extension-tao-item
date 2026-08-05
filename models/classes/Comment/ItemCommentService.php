@@ -64,13 +64,6 @@ class ItemCommentService
         ];
     }
 
-    public function count(string $itemUri): int
-    {
-        $itemUri = $this->assertItemUri($itemUri);
-
-        return $this->persistence->countByItemUri($itemUri);
-    }
-
     public function create(string $itemUri, string $body): ItemComment
     {
         $itemUri = $this->assertItemUri($itemUri);
