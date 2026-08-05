@@ -98,8 +98,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             body: 'New note',
             createdAt: '2026-07-27T10:00:00Z',
             status: 'active',
-                edited: false,
-                resolved: false
+            edited: false,
+            resolved: false
         };
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
@@ -180,8 +180,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                                 body: 'A',
                                 createdAt: '2026-07-27T09:12:00Z',
                                 status: 'active',
-                edited: false,
-                resolved: false
+                                edited: false,
+                                resolved: false
                             }
                         ],
                         count: 1
