@@ -23,11 +23,13 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Comment;
 
 use common_exception_Unauthorized;
+use common_session_Session;
 use common_session_SessionManager;
 use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\session\Context\UserDataSessionContext;
 use Ramsey\Uuid\Uuid;
 
 class ItemCommentService extends ConfigurableService
@@ -71,17 +73,46 @@ class ItemCommentService extends ConfigurableService
             throw new common_exception_Unauthorized('Authenticated session required to create item comments');
         }
 
+        [$authorId, $authorLabel] = $this->resolveAuthorFromSession($session);
+
         $comment = new ItemComment(
             Uuid::uuid4()->toString(),
             $itemUri,
-            (string) $session->getUser()->getIdentifier(),
-            (string) $session->getUserLabel(),
+            $authorId,
+            $authorLabel,
             $body,
             (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format(DATE_ATOM),
             ItemComment::STATUS_ACTIVE
         );
 
         return $this->getPersistence()->create($comment);
+    }
+
+    /**
+     * Prefer LTI UserDataSessionContext (userId / userLogin) when present on TaoLtiSession.
+     *
+     * @return array{0: string, 1: string}
+     */
+    private function resolveAuthorFromSession(common_session_Session $session): array
+    {
+        $authorId = (string) $session->getUser()->getIdentifier();
+        $authorLabel = (string) $session->getUserLabel();
+
+        /** @var UserDataSessionContext $context */
+        foreach ($session->getContexts(UserDataSessionContext::class) as $context) {
+            if ($context->getUserId()) {
+                $authorId = (string) $context->getUserId();
+            }
+            if ($context->getUserLogin()) {
+                $authorLabel = (string) $context->getUserLogin();
+            }
+        }
+
+        if ($authorId === '') {
+            throw new common_exception_Unauthorized('Unable to resolve comment author from session');
+        }
+
+        return [$authorId, $authorLabel];
     }
 
     private function getPersistence(): ItemCommentPersistenceInterface

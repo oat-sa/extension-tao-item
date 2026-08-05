@@ -22,7 +22,11 @@ declare(strict_types=1);
 
 namespace oat\taoItems\test\unit\model\Comment;
 
+use common_session_Session;
+use common_session_SessionManager;
+use common_user_User;
 use oat\generis\test\ServiceManagerMockTrait;
+use oat\tao\model\session\Context\UserDataSessionContext;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentPersistenceProxy;
@@ -79,5 +83,40 @@ class ItemCommentServiceTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->sut->count('  ');
+    }
+
+    public function testCreateUsesLtiUserDataSessionContextForAuthor(): void
+    {
+        $user = $this->createMock(common_user_User::class);
+        $user->method('getIdentifier')->willReturn('https://example.test/ontologies/tao.rdf#superUser');
+
+        $session = $this->createMock(common_session_Session::class);
+        $session->method('getUser')->willReturn($user);
+        $session->method('getUserLabel')->willReturn('user');
+        $session->method('getContexts')
+            ->with(UserDataSessionContext::class)
+            ->willReturn([
+                new UserDataSessionContext('admin', 'admin'),
+            ]);
+
+        common_session_SessionManager::startSession($session);
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->with($this->callback(static function (ItemComment $comment): bool {
+                return $comment->getAuthorId() === 'admin'
+                    && $comment->getAuthorLabel() === 'admin'
+                    && $comment->getBody() === 'LTI comment'
+                    && $comment->getItemUri() === 'http://example.test/item#1';
+            }))
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $created = $this->sut->create('http://example.test/item#1', 'LTI comment');
+
+        $this->assertSame('admin', $created->getAuthorId());
+        $this->assertSame('admin', $created->getAuthorLabel());
     }
 }
