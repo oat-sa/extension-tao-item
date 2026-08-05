@@ -57,7 +57,9 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 authorLabel: 'Ada',
                 body: 'First',
                 createdAt: '2026-07-27T09:12:00Z',
-                status: 'active'
+                status: 'active',
+                edited: false,
+                resolved: false
             }
         ];
         const store = itemCommentsStoreFactory({
@@ -95,7 +97,9 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             authorLabel: 'Grace',
             body: 'New note',
             createdAt: '2026-07-27T10:00:00Z',
-            status: 'active'
+            status: 'active',
+                edited: false,
+                resolved: false
         };
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
@@ -175,7 +179,9 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                                 authorLabel: 'Ada',
                                 body: 'A',
                                 createdAt: '2026-07-27T09:12:00Z',
-                                status: 'active'
+                                status: 'active',
+                edited: false,
+                resolved: false
                             }
                         ],
                         count: 1

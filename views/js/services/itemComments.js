@@ -27,6 +27,8 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
      * @property {string} body
      * @property {string} createdAt
      * @property {string} status
+     * @property {boolean} edited
+     * @property {boolean} resolved
      */
 
     /**
