@@ -28,8 +28,6 @@ use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
 use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\featureFlag\FeatureFlagChecker;
-use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use Ramsey\Uuid\Uuid;
 
 class ItemCommentService extends ConfigurableService
@@ -41,7 +39,6 @@ class ItemCommentService extends ConfigurableService
      */
     public function list(string $itemUri): array
     {
-        $this->assertFeatureEnabled();
         $itemUri = $this->assertItemUri($itemUri);
 
         $comments = $this->getPersistence()->findByItemUri($itemUri);
@@ -59,7 +56,6 @@ class ItemCommentService extends ConfigurableService
 
     public function count(string $itemUri): int
     {
-        $this->assertFeatureEnabled();
         $itemUri = $this->assertItemUri($itemUri);
 
         return $this->getPersistence()->countByItemUri($itemUri);
@@ -67,7 +63,6 @@ class ItemCommentService extends ConfigurableService
 
     public function create(string $itemUri, string $body): ItemComment
     {
-        $this->assertFeatureEnabled();
         $itemUri = $this->assertItemUri($itemUri);
         $body = $this->assertBody($body);
 
@@ -92,22 +87,6 @@ class ItemCommentService extends ConfigurableService
     private function getPersistence(): ItemCommentPersistenceInterface
     {
         return $this->getServiceLocator()->get(ItemCommentPersistenceProxy::SERVICE_ID);
-    }
-
-    private function getFeatureFlagChecker(): FeatureFlagCheckerInterface
-    {
-        return $this->getServiceLocator()->get(FeatureFlagChecker::class);
-    }
-
-    private function assertFeatureEnabled(): void
-    {
-        if (
-            !$this->getFeatureFlagChecker()->isEnabled(
-                FeatureFlagCheckerInterface::FEATURE_FLAG_ITEM_COMMENTS_ENABLED
-            )
-        ) {
-            throw new common_exception_Unauthorized('Item comments feature is disabled');
-        }
     }
 
     private function assertItemUri(string $itemUri): string
