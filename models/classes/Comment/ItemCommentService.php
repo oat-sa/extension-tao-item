@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -24,17 +24,25 @@ namespace oat\taoItems\model\Comment;
 
 use common_exception_Unauthorized;
 use common_session_Session;
-use common_session_SessionManager;
 use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
-use oat\oatbox\service\ConfigurableService;
+use oat\oatbox\session\SessionService;
 use oat\tao\model\session\Context\UserDataSessionContext;
 use Ramsey\Uuid\Uuid;
 
-class ItemCommentService extends ConfigurableService
+class ItemCommentService
 {
-    public const SERVICE_ID = 'taoItems/ItemCommentService';
+    private ItemCommentPersistenceInterface $persistence;
+    private SessionService $sessionService;
+
+    public function __construct(
+        ItemCommentPersistenceInterface $persistence,
+        SessionService $sessionService
+    ) {
+        $this->persistence = $persistence;
+        $this->sessionService = $sessionService;
+    }
 
     /**
      * @return array{comments: array<int, array<string, string>>, count: int}
@@ -43,7 +51,7 @@ class ItemCommentService extends ConfigurableService
     {
         $itemUri = $this->assertItemUri($itemUri);
 
-        $comments = $this->getPersistence()->findByItemUri($itemUri);
+        $comments = $this->persistence->findByItemUri($itemUri);
 
         return [
             'comments' => array_map(
@@ -60,7 +68,7 @@ class ItemCommentService extends ConfigurableService
     {
         $itemUri = $this->assertItemUri($itemUri);
 
-        return $this->getPersistence()->countByItemUri($itemUri);
+        return $this->persistence->countByItemUri($itemUri);
     }
 
     public function create(string $itemUri, string $body): ItemComment
@@ -68,7 +76,7 @@ class ItemCommentService extends ConfigurableService
         $itemUri = $this->assertItemUri($itemUri);
         $body = $this->assertBody($body);
 
-        $session = common_session_SessionManager::getSession();
+        $session = $this->sessionService->getCurrentSession();
         if ($session === null || $session->getUser() === null) {
             throw new common_exception_Unauthorized('Authenticated session required to create item comments');
         }
@@ -85,7 +93,7 @@ class ItemCommentService extends ConfigurableService
             ItemComment::STATUS_ACTIVE
         );
 
-        return $this->getPersistence()->create($comment);
+        return $this->persistence->create($comment);
     }
 
     /**
@@ -113,11 +121,6 @@ class ItemCommentService extends ConfigurableService
         }
 
         return [$authorId, $authorLabel];
-    }
-
-    private function getPersistence(): ItemCommentPersistenceInterface
-    {
-        return $this->getServiceLocator()->get(ItemCommentPersistenceProxy::SERVICE_ID);
     }
 
     private function assertItemUri(string $itemUri): string

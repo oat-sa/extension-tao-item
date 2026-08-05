@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -23,35 +23,33 @@ declare(strict_types=1);
 namespace oat\taoItems\test\unit\model\Comment;
 
 use common_session_Session;
-use common_session_SessionManager;
 use common_user_User;
-use oat\generis\test\ServiceManagerMockTrait;
+use oat\oatbox\session\SessionService;
 use oat\tao\model\session\Context\UserDataSessionContext;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
-use oat\taoItems\model\Comment\ItemCommentPersistenceProxy;
 use oat\taoItems\model\Comment\ItemCommentService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ItemCommentServiceTest extends TestCase
 {
-    use ServiceManagerMockTrait;
-
     /** @var ItemCommentPersistenceInterface|MockObject */
     private $persistence;
+
+    /** @var SessionService|MockObject */
+    private $sessionService;
 
     private ItemCommentService $sut;
 
     protected function setUp(): void
     {
         $this->persistence = $this->createMock(ItemCommentPersistenceInterface::class);
+        $this->sessionService = $this->createMock(SessionService::class);
 
-        $this->sut = new ItemCommentService();
-        $this->sut->setServiceLocator(
-            $this->getServiceManagerMock([
-                ItemCommentPersistenceProxy::SERVICE_ID => $this->persistence,
-            ])
+        $this->sut = new ItemCommentService(
+            $this->persistence,
+            $this->sessionService
         );
     }
 
@@ -99,7 +97,9 @@ class ItemCommentServiceTest extends TestCase
                 new UserDataSessionContext('admin', 'admin'),
             ]);
 
-        common_session_SessionManager::startSession($session);
+        $this->sessionService
+            ->method('getCurrentSession')
+            ->willReturn($session);
 
         $this->persistence
             ->expects($this->once())

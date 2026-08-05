@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -22,11 +22,15 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\Comment\ServiceProvider;
 
+use oat\generis\model\data\Ontology;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
-use oat\taoItems\model\Comment\ItemCommentPersistenceProxy;
+use oat\oatbox\session\SessionService;
+use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class ItemCommentServiceProvider implements ContainerServiceProviderInterface
 {
@@ -36,14 +40,24 @@ class ItemCommentServiceProvider implements ContainerServiceProviderInterface
 
         $services
             ->set(RdfItemCommentAdapter::class, RdfItemCommentAdapter::class)
-            ->public();
+            ->public()
+            ->args([
+                service(Ontology::SERVICE_ID),
+            ]);
 
         $services
-            ->set(ItemCommentPersistenceProxy::class, ItemCommentPersistenceProxy::class)
-            ->public();
+            ->set(ItemCommentPersistenceInterface::class, RdfItemCommentAdapter::class)
+            ->public()
+            ->args([
+                service(Ontology::SERVICE_ID),
+            ]);
 
         $services
             ->set(ItemCommentService::class, ItemCommentService::class)
-            ->public();
+            ->public()
+            ->args([
+                service(ItemCommentPersistenceInterface::class),
+                service(SessionService::SERVICE_ID),
+            ]);
     }
 }

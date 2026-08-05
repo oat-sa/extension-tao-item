@@ -40,7 +40,6 @@ use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
 use oat\taoItems\scripts\install\RegisterAssetTreeBuilder;
 use oat\taoItems\scripts\install\RegisterItemPreviewerRegistryService;
-use oat\taoItems\scripts\install\RegisterItemCommentServices;
 use oat\taoItems\scripts\install\SetupEventListeners;
 use oat\taoItems\scripts\install\SetupSectionVisibilityFilters;
 
@@ -76,7 +75,6 @@ return [
             SetRolesPermissions::class,
             SetupEventListeners::class,
             SetupSectionVisibilityFilters::class,
-            RegisterItemCommentServices::class,
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,

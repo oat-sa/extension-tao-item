@@ -25,31 +25,41 @@ namespace oat\taoItems\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use oat\oatbox\reporting\Report;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
-use oat\tao\scripts\update\OntologyUpdater;
 
 /**
+ * Removes legacy ServiceManager *.conf.php wiring for Item Comments (DI replaces it).
+ *
  * phpcs:disable Squiz.Classes.ValidClassName
  */
-final class Version202608031745002141_taoItems extends AbstractMigration
+final class Version202608041830002141_taoItems extends AbstractMigration
 {
+    private const LEGACY_SERVICE_IDS = [
+        'taoItems/ItemCommentPersistence',
+        'taoItems/ItemCommentService',
+        'taoItems/RdfItemCommentAdapter',
+    ];
+
     public function getDescription(): string
     {
-        return 'Sync Item Comments RDF ontology (NYSED-19)';
+        return 'Unregister legacy Item Comment ConfigurableService configs (NYSED-19 DI)';
     }
 
     public function up(Schema $schema): void
     {
-        OntologyUpdater::syncModels();
+        $serviceManager = $this->getServiceManager();
+        foreach (self::LEGACY_SERVICE_IDS as $serviceId) {
+            if ($serviceManager->has($serviceId)) {
+                $serviceManager->unregister($serviceId);
+            }
+        }
 
         $this->addReport(
-            Report::createSuccess(
-                'Item Comment ontology synced; services are wired via ItemCommentServiceProvider'
-            )
+            Report::createSuccess('Legacy Item Comment ServiceManager configs unregistered')
         );
     }
 
     public function down(Schema $schema): void
     {
-        // Intentionally left empty: ontology remains for forward compatibility.
+        // Intentionally left empty: DI is the only supported wiring.
     }
 }

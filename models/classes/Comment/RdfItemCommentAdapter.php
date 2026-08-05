@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -23,18 +23,20 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Comment;
 
 use core_kernel_classes_Resource;
-use oat\generis\model\OntologyAwareTrait;
-use oat\oatbox\service\ConfigurableService;
+use oat\generis\model\data\Ontology;
 
-class RdfItemCommentAdapter extends ConfigurableService implements ItemCommentPersistenceInterface
+class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
 {
-    use OntologyAwareTrait;
+    private Ontology $ontology;
 
-    public const SERVICE_ID = 'taoItems/RdfItemCommentAdapter';
+    public function __construct(Ontology $ontology)
+    {
+        $this->ontology = $ontology;
+    }
 
     public function create(ItemComment $comment): ItemComment
     {
-        $resource = $this->getClass(ItemCommentOntology::CLASS_URI)->createInstanceWithProperties([
+        $resource = $this->ontology->getClass(ItemCommentOntology::CLASS_URI)->createInstanceWithProperties([
             ItemCommentOntology::PROPERTY_ITEM_URI => $comment->getItemUri(),
             ItemCommentOntology::PROPERTY_AUTHOR_ID => $comment->getAuthorId(),
             ItemCommentOntology::PROPERTY_AUTHOR_LABEL => $comment->getAuthorLabel(),
@@ -56,7 +58,7 @@ class RdfItemCommentAdapter extends ConfigurableService implements ItemCommentPe
 
     public function findByItemUri(string $itemUri): array
     {
-        $resources = $this->getClass(ItemCommentOntology::CLASS_URI)->searchInstances(
+        $resources = $this->ontology->getClass(ItemCommentOntology::CLASS_URI)->searchInstances(
             [
                 ItemCommentOntology::PROPERTY_ITEM_URI => $itemUri,
             ],
@@ -90,13 +92,24 @@ class RdfItemCommentAdapter extends ConfigurableService implements ItemCommentPe
     {
         return new ItemComment(
             $resource->getUri(),
-            (string) $resource->getOnePropertyValue($this->getProperty(ItemCommentOntology::PROPERTY_ITEM_URI)),
-            (string) $resource->getOnePropertyValue($this->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_ID)),
-            (string) $resource->getOnePropertyValue($this->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_LABEL)),
-            (string) $resource->getOnePropertyValue($this->getProperty(ItemCommentOntology::PROPERTY_BODY)),
-            (string) $resource->getOnePropertyValue($this->getProperty(ItemCommentOntology::PROPERTY_CREATED_AT)),
-            (string) $resource->getOnePropertyValue($this->getProperty(ItemCommentOntology::PROPERTY_STATUS))
-                ?: ItemComment::STATUS_ACTIVE
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_ITEM_URI)
+            ),
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_ID)
+            ),
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_LABEL)
+            ),
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_BODY)
+            ),
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_CREATED_AT)
+            ),
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_STATUS)
+            ) ?: ItemComment::STATUS_ACTIVE
         );
     }
 }
