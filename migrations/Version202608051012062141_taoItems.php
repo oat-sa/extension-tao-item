@@ -20,7 +20,7 @@ final class Version202608051012062141_taoItems extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Grant ACL for RestItemComments actions (NYSED-19)';
+        return 'Grant ACL for RestItemComments module to authoring roles (NYSED-13)';
     }
 
     public function up(Schema $schema): void
