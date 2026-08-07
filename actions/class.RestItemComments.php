@@ -38,7 +38,14 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
     {
         try {
             if ($this->isGetRequest()) {
-                $itemUri = (string) ($this->getPsrRequest()->getQueryParams()['itemUri'] ?? '');
+                $itemUri = $this->requireStringParam(
+                    $this->getPsrRequest()->getQueryParams()['itemUri'] ?? null,
+                    'itemUri'
+                );
+                if ($itemUri === null) {
+                    return;
+                }
+
                 $this->setSuccessJsonResponse($this->getItemCommentService()->list($itemUri));
 
                 return;
@@ -46,8 +53,16 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
 
             if ($this->isPostRequest()) {
                 $payload = $this->getRequestPayload();
-                $itemUri = (string) ($payload['itemUri'] ?? '');
-                $body = (string) ($payload['body'] ?? '');
+                $itemUri = $this->requireStringParam($payload['itemUri'] ?? null, 'itemUri');
+                if ($itemUri === null) {
+                    return;
+                }
+
+                $body = $this->requireStringParam($payload['body'] ?? null, 'body');
+                if ($body === null) {
+                    return;
+                }
+
                 $comment = $this->getItemCommentService()->create($itemUri, $body);
                 $this->setSuccessJsonResponse($comment->toArray(), 201);
 
@@ -63,6 +78,24 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
             $this->logError($exception->getMessage());
             $this->setErrorJsonResponse('Unable to process item comments request', 500, [], 500);
         }
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function requireStringParam($value, string $name): ?string
+    {
+        if ($value === null) {
+            return '';
+        }
+
+        if (!is_string($value)) {
+            $this->setErrorJsonResponse(sprintf('%s must be a string', $name), 400, [], 400);
+
+            return null;
+        }
+
+        return $value;
     }
 
     private function getRequestPayload(): array

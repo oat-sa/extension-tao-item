@@ -111,11 +111,6 @@ return [
         ],
         [
             AccessRule::GRANT,
-            TaoItemsRoles::ITEM_VIEWER,
-            ['ext' => 'taoItems', 'mod' => 'RestItemComments'],
-        ],
-        [
-            AccessRule::GRANT,
             'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole',
             ['ext' => 'taoItems', 'mod' => 'RestItemComments'],
         ],

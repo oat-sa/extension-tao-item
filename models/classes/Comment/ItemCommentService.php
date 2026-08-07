@@ -27,7 +27,9 @@ use common_session_Session;
 use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
+use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
+use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
 use Ramsey\Uuid\Uuid;
 
@@ -35,13 +37,19 @@ class ItemCommentService
 {
     private ItemCommentPersistenceInterface $persistence;
     private SessionService $sessionService;
+    private Ontology $ontology;
+    private PermissionCheckerInterface $permissionChecker;
 
     public function __construct(
         ItemCommentPersistenceInterface $persistence,
-        SessionService $sessionService
+        SessionService $sessionService,
+        Ontology $ontology,
+        PermissionCheckerInterface $permissionChecker
     ) {
         $this->persistence = $persistence;
         $this->sessionService = $sessionService;
+        $this->ontology = $ontology;
+        $this->permissionChecker = $permissionChecker;
     }
 
     /**
@@ -49,7 +57,7 @@ class ItemCommentService
      */
     public function list(string $itemUri): array
     {
-        $itemUri = $this->assertItemUri($itemUri);
+        $itemUri = $this->assertAuthorizedItemUri($itemUri, false);
 
         $comments = $this->persistence->findByItemUri($itemUri);
 
@@ -66,7 +74,7 @@ class ItemCommentService
 
     public function create(string $itemUri, string $body): ItemComment
     {
-        $itemUri = $this->assertItemUri($itemUri);
+        $itemUri = $this->assertAuthorizedItemUri($itemUri, true);
         $body = $this->assertBody($body);
 
         $session = $this->sessionService->getCurrentSession();
@@ -105,9 +113,10 @@ class ItemCommentService
                 $authorId = (string) $context->getUserId();
             }
 
-            if ($context->getUserName() !== null) {
-                $authorLabel = (string) $context->getUserName();
-            } elseif ($context->getUserLogin() !== null) {
+            $userName = $context->getUserName();
+            if ($userName !== null && $userName !== '') {
+                $authorLabel = $userName;
+            } elseif ($context->getUserLogin() !== null && $context->getUserLogin() !== '') {
                 $authorLabel = (string) $context->getUserLogin();
             }
         }
@@ -117,6 +126,26 @@ class ItemCommentService
         }
 
         return [$authorId, $authorLabel];
+    }
+
+    private function assertAuthorizedItemUri(string $itemUri, bool $requireWriteAccess): string
+    {
+        $itemUri = $this->assertItemUri($itemUri);
+
+        $item = $this->ontology->getResource($itemUri);
+        if (!$item->exists()) {
+            throw new InvalidArgumentException('Item not found');
+        }
+
+        $hasAccess = $requireWriteAccess
+            ? $this->permissionChecker->hasWriteAccess($itemUri)
+            : $this->permissionChecker->hasReadAccess($itemUri);
+
+        if (!$hasAccess) {
+            throw new common_exception_Unauthorized('Not authorized to access comments for this item');
+        }
+
+        return $itemUri;
     }
 
     private function assertItemUri(string $itemUri): string

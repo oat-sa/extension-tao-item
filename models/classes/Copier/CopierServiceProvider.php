@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Copier;
 
 use oat\generis\model\data\Ontology;
+use oat\tao\model\accessControl\PermissionChecker;
 use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
@@ -176,6 +177,8 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->args([
                 service(ItemCommentPersistenceInterface::class),
                 service(SessionService::SERVICE_ID),
+                service(Ontology::SERVICE_ID),
+                service(PermissionChecker::class),
             ]);
     }
 }

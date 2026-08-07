@@ -23,9 +23,12 @@ declare(strict_types=1);
 namespace oat\taoItems\migrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use oat\oatbox\reporting\Report;
 use oat\tao\scripts\tools\accessControl\SetRolesAccess;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
+use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoItems\model\user\TaoItemsRoles;
+use Throwable;
 
 /**
  * Item Comments (NYSED-13): grant RestItemComments ACL.
@@ -55,9 +58,6 @@ final class Version202608051012062141_taoItems extends AbstractMigration
             TaoItemsRoles::ITEM_AUTHOR => [
                 self::REST_ITEM_COMMENTS_MASK,
             ],
-            TaoItemsRoles::ITEM_VIEWER => [
-                self::REST_ITEM_COMMENTS_MASK,
-            ],
             self::GLOBAL_MANAGER_ROLE => [
                 self::REST_ITEM_COMMENTS_MASK,
             ],
@@ -71,18 +71,50 @@ final class Version202608051012062141_taoItems extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->runAction(new SetRolesAccess(), [
-            '--' . SetRolesAccess::OPTION_CONFIG,
-            self::CONFIG,
-        ]);
+        try {
+            OntologyUpdater::syncModels();
+
+            $this->runAction(new SetRolesAccess(), [
+                '--' . SetRolesAccess::OPTION_CONFIG,
+                self::CONFIG,
+            ]);
+
+            $this->addReport(
+                Report::createSuccess('Granted RestItemComments ACL for authoring roles (NYSED-13)')
+            );
+        } catch (Throwable $exception) {
+            $this->addReport(
+                Report::createError(
+                    'Failed to grant RestItemComments ACL for authoring roles (NYSED-13): '
+                    . $exception->getMessage()
+                )
+            );
+
+            throw $exception;
+        }
     }
 
     public function down(Schema $schema): void
     {
-        $this->runAction(new SetRolesAccess(), [
-            '--' . SetRolesAccess::OPTION_REVOKE,
-            '--' . SetRolesAccess::OPTION_CONFIG,
-            self::CONFIG,
-        ]);
+        try {
+            $this->runAction(new SetRolesAccess(), [
+                '--' . SetRolesAccess::OPTION_REVOKE,
+                '--' . SetRolesAccess::OPTION_CONFIG,
+                self::CONFIG,
+            ]);
+
+            $this->addReport(
+                Report::createSuccess('Revoked RestItemComments ACL for authoring roles (NYSED-13)')
+            );
+        } catch (Throwable $exception) {
+            $this->addReport(
+                Report::createError(
+                    'Failed to revoke RestItemComments ACL for authoring roles (NYSED-13): '
+                    . $exception->getMessage()
+                )
+            );
+
+            throw $exception;
+        }
     }
 }
