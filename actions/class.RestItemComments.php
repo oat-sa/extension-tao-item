@@ -86,7 +86,9 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
     private function requireStringParam($value, string $name): ?string
     {
         if ($value === null) {
-            return '';
+            $this->setErrorJsonResponse(sprintf('%s is required', $name), 400, [], 400);
+
+            return null;
         }
 
         if (!is_string($value)) {
