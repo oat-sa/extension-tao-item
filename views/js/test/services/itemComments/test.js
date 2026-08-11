@@ -74,9 +74,9 @@ define([], function () {
         assert.expect(3);
         loadService({})
             .then(function (ctx) {
-                assert.equal(ctx.itemComments.RESOURCE_TYPE.ITEM, 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item', 'ITEM const');
-                assert.equal(ctx.itemComments.RESOURCE_TYPE.TEST, 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test', 'TEST const');
-                assert.equal(ctx.itemComments.RESOURCE_TYPE.ASSET, 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media', 'ASSET const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.ITEM, 'item', 'ITEM const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.TEST, 'test', 'TEST const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.ASSET, 'asset', 'ASSET const');
                 ready();
             })
             .catch(function (err) {
@@ -93,7 +93,7 @@ define([], function () {
                 {
                     id: 'c1',
                     resourceUri: resourceUri,
-                    resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+                    resourceType: 'item',
                     authorId: 'u1',
                     authorLabel: 'Ada',
                     body: 'Hello',
@@ -118,7 +118,7 @@ define([], function () {
                             'index',
                             'RestResourceComments',
                             'taoItems',
-                            { resourceUri: resourceUri, resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item' }
+                            { resourceUri: resourceUri, resourceType: 'item' }
                         ],
                         'route args for list'
                     );
@@ -165,7 +165,7 @@ define([], function () {
         const created = {
             id: 'c2',
             resourceUri: resourceUri,
-            resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+            resourceType: 'item',
             authorId: 'u2',
             authorLabel: 'Grace',
             body: body,
@@ -191,7 +191,7 @@ define([], function () {
                         assert.equal(ctx.requestCalls[0].method, 'POST', 'POST method');
                         assert.deepEqual(
                             ctx.requestCalls[0].data,
-                            { resourceUri: resourceUri, resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item', body: body },
+                            { resourceUri: resourceUri, resourceType: 'item', body: body },
                             'POST payload'
                         );
                         assert.equal(ctx.requestCalls[0].noToken, true, 'noToken set');
