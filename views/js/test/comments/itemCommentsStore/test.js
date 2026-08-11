@@ -53,7 +53,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             {
                 id: 'c1',
                 resourceUri: 'item://1',
-                resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+                resourceType: 'item',
                 authorId: 'u1',
                 authorLabel: 'Ada',
                 body: 'First',
@@ -69,7 +69,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                     assert.equal(resourceUri, 'item://1', 'list receives resourceUri');
                     assert.equal(
                         resourceType,
-                        'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+                        'item',
                         'list defaults to ITEM resourceType'
                     );
                     return Promise.resolve({ comments, count: 1 });
@@ -96,7 +96,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
 
     QUnit.test('load / submit honour configured resourceType', function (assert) {
         const ready = assert.async();
-        const testType = 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test';
+        const testType = 'test';
         const store = itemCommentsStoreFactory({
             resourceUri: 'test://1',
             resourceType: testType,
@@ -283,7 +283,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                             {
                                 id: 'c1',
                                 resourceUri: 'item://1',
-                                resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+                                resourceType: 'item',
                                 authorId: 'u1',
                                 authorLabel: 'Ada',
                                 body: 'A',
