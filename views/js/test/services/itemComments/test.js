@@ -74,9 +74,9 @@ define([], function () {
         assert.expect(3);
         loadService({})
             .then(function (ctx) {
-                assert.equal(ctx.itemComments.RESOURCE_TYPE.ITEM, 'item', 'ITEM const');
-                assert.equal(ctx.itemComments.RESOURCE_TYPE.TEST, 'test', 'TEST const');
-                assert.equal(ctx.itemComments.RESOURCE_TYPE.ASSET, 'asset', 'ASSET const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.ITEM, 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item', 'ITEM const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.TEST, 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test', 'TEST const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.ASSET, 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media', 'ASSET const');
                 ready();
             })
             .catch(function (err) {
@@ -118,7 +118,7 @@ define([], function () {
                             'index',
                             'RestItemComments',
                             'taoItems',
-                            { resourceUri: resourceUri, resourceType: 'item' }
+                            { resourceUri: resourceUri, resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item' }
                         ],
                         'route args for list'
                     );
@@ -191,7 +191,7 @@ define([], function () {
                         assert.equal(ctx.requestCalls[0].method, 'POST', 'POST method');
                         assert.deepEqual(
                             ctx.requestCalls[0].data,
-                            { resourceUri: resourceUri, resourceType: 'item', body: body },
+                            { resourceUri: resourceUri, resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item', body: body },
                             'POST payload'
                         );
                         assert.equal(ctx.requestCalls[0].noToken, true, 'noToken set');

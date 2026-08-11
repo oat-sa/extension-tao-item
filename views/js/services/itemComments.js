@@ -19,13 +19,13 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
     'use strict';
 
     /**
-     * Wire values for RestItemComments resourceType (mirrors ResourceCommentType).
+     * Wire values for RestItemComments resourceType (RDF class URIs; mirrors ResourceCommentType).
      * @readonly
      */
     const RESOURCE_TYPE = Object.freeze({
-        ITEM: 'item',
-        TEST: 'test',
-        ASSET: 'asset'
+        ITEM: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+        TEST: 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test',
+        ASSET: 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media'
     });
 
     /**

@@ -107,7 +107,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 },
                 create(resourceUri, resourceType, body) {
                     assert.equal(resourceUri, 'item://1', 'create receives resourceUri');
-                    assert.equal(resourceType, 'item', 'create receives resourceType ITEM');
+                    assert.equal(resourceType, 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item', 'create receives resourceType ITEM');
                     assert.equal(body, 'New note', 'create receives trimmed body');
                     return Promise.resolve(created);
                 }
