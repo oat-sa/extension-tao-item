@@ -26,21 +26,22 @@ use InvalidArgumentException;
 use oat\tao\model\TaoOntology;
 
 /**
- * Supported authoring comment target types (RDF class URIs).
+ * Supported authoring comment target types (short wire values).
  *
- * Wire / persisted resourceType values are these class URIs — the same pattern
- * as resourceType elsewhere in TAO (e.g. Items action responses).
+ * Wire / persisted resourceType values are short strings (item|test|asset).
+ * RDF class URIs are resolved via {@see self::classUri()} for instance checks.
  */
 final class ResourceCommentType
 {
-    public const ITEM = TaoOntology::CLASS_URI_ITEM;
-    public const TEST = TaoOntology::CLASS_URI_TEST;
+    public const ITEM = 'item';
+    public const TEST = 'test';
+    public const ASSET = 'asset';
 
     /**
      * Same value as \oat\taoMediaManager\model\TaoMediaOntology::CLASS_URI_MEDIA_ROOT.
      * Literal kept here so taoItems does not hard-depend on taoMediaManager.
      */
-    public const ASSET = 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media';
+    private const CLASS_URI_ASSET = 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media';
 
     /**
      * @return list<string>
@@ -67,5 +68,26 @@ final class ResourceCommentType
         }
 
         return $resourceType;
+    }
+
+    /**
+     * RDF class URI used for ontology instance checks for a valid wire type.
+     */
+    public static function classUri(string $resourceType): string
+    {
+        $resourceType = self::assertValid($resourceType);
+
+        switch ($resourceType) {
+            case self::ITEM:
+                return TaoOntology::CLASS_URI_ITEM;
+            case self::TEST:
+                return TaoOntology::CLASS_URI_TEST;
+            case self::ASSET:
+                return self::CLASS_URI_ASSET;
+            default:
+                throw new InvalidArgumentException(
+                    sprintf('No class URI mapping for resourceType "%s"', $resourceType)
+                );
+        }
     }
 }
