@@ -37,7 +37,8 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
     public function create(ItemComment $comment): ItemComment
     {
         $resource = $this->ontology->getClass(ItemCommentOntology::CLASS_URI)->createInstanceWithProperties([
-            ItemCommentOntology::PROPERTY_ITEM_URI => $comment->getItemUri(),
+            ItemCommentOntology::PROPERTY_RESOURCE_URI => $comment->getResourceUri(),
+            ItemCommentOntology::PROPERTY_RESOURCE_TYPE => $comment->getResourceType(),
             ItemCommentOntology::PROPERTY_AUTHOR_ID => $comment->getAuthorId(),
             ItemCommentOntology::PROPERTY_AUTHOR_LABEL => $comment->getAuthorLabel(),
             ItemCommentOntology::PROPERTY_BODY => $comment->getBody(),
@@ -48,7 +49,8 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
 
         return new ItemComment(
             $resource->getUri(),
-            $comment->getItemUri(),
+            $comment->getResourceUri(),
+            $comment->getResourceType(),
             $comment->getAuthorId(),
             $comment->getAuthorLabel(),
             $comment->getBody(),
@@ -58,11 +60,14 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
         );
     }
 
-    public function findByItemUri(string $itemUri): array
+    public function findByResource(string $resourceUri, string $resourceType): array
     {
+        $resourceType = ResourceCommentType::assertValid($resourceType);
+
         $resources = $this->ontology->getClass(ItemCommentOntology::CLASS_URI)->searchInstances(
             [
-                ItemCommentOntology::PROPERTY_ITEM_URI => $itemUri,
+                ItemCommentOntology::PROPERTY_RESOURCE_URI => $resourceUri,
+                ItemCommentOntology::PROPERTY_RESOURCE_TYPE => $resourceType,
             ],
             [
                 'recursive' => false,
@@ -90,7 +95,10 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
         return new ItemComment(
             $resource->getUri(),
             (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_ITEM_URI)
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOURCE_URI)
+            ),
+            (string) $resource->getOnePropertyValue(
+                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOURCE_TYPE)
             ),
             (string) $resource->getOnePropertyValue(
                 $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_ID)

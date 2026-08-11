@@ -25,7 +25,8 @@ namespace oat\taoItems\model\Comment;
 final class ItemCommentOntology
 {
     public const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment';
-    public const PROPERTY_ITEM_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentItemUri';
+    public const PROPERTY_RESOURCE_URI = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentResourceUri';
+    public const PROPERTY_RESOURCE_TYPE = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentResourceType';
     public const PROPERTY_AUTHOR_ID = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentAuthorId';
     public const PROPERTY_AUTHOR_LABEL = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentAuthorLabel';
     public const PROPERTY_BODY = 'http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentBody';

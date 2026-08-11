@@ -53,13 +53,13 @@ class ItemCommentService
     }
 
     /**
-     * @return array{comments: array<int, array<string, string>>, count: int}
+     * @return array{comments: array<int, array<string, mixed>>, count: int}
      */
-    public function list(string $itemUri): array
+    public function list(string $resourceUri, string $resourceType): array
     {
-        $itemUri = $this->assertAuthorizedItemUri($itemUri, false);
+        [$resourceUri, $resourceType] = $this->assertAuthorizedResource($resourceUri, $resourceType, false);
 
-        $comments = $this->persistence->findByItemUri($itemUri);
+        $comments = $this->persistence->findByResource($resourceUri, $resourceType);
 
         return [
             'comments' => array_map(
@@ -72,9 +72,9 @@ class ItemCommentService
         ];
     }
 
-    public function create(string $itemUri, string $body): ItemComment
+    public function create(string $resourceUri, string $resourceType, string $body): ItemComment
     {
-        $itemUri = $this->assertAuthorizedItemUri($itemUri, true);
+        [$resourceUri, $resourceType] = $this->assertAuthorizedResource($resourceUri, $resourceType, true);
         $body = $this->assertBody($body);
 
         $session = $this->sessionService->getCurrentSession();
@@ -86,7 +86,8 @@ class ItemCommentService
 
         $comment = new ItemComment(
             Uuid::uuid4()->toString(),
-            $itemUri,
+            $resourceUri,
+            $resourceType,
             $authorId,
             $authorLabel,
             $body,
@@ -128,34 +129,48 @@ class ItemCommentService
         return [$authorId, $authorLabel];
     }
 
-    private function assertAuthorizedItemUri(string $itemUri, bool $requireWriteAccess): string
-    {
-        $itemUri = $this->assertItemUri($itemUri);
+    /**
+     * @return array{0: string, 1: string}
+     */
+    private function assertAuthorizedResource(
+        string $resourceUri,
+        string $resourceType,
+        bool $requireWriteAccess
+    ): array {
+        $resourceUri = $this->assertResourceUri($resourceUri);
+        $resourceType = ResourceCommentType::assertValid($resourceType);
 
-        $item = $this->ontology->getResource($itemUri);
-        if (!$item->exists()) {
-            throw new InvalidArgumentException('Item not found');
+        $resource = $this->ontology->getResource($resourceUri);
+        if (!$resource->exists()) {
+            throw new InvalidArgumentException('Resource not found');
+        }
+
+        $expectedClass = $this->ontology->getClass(ResourceCommentType::ontologyClassUri($resourceType));
+        if (!$resource->isInstanceOf($expectedClass)) {
+            throw new InvalidArgumentException(
+                sprintf('Resource type does not match resourceType "%s"', $resourceType)
+            );
         }
 
         $hasAccess = $requireWriteAccess
-            ? $this->permissionChecker->hasWriteAccess($itemUri)
-            : $this->permissionChecker->hasReadAccess($itemUri);
+            ? $this->permissionChecker->hasWriteAccess($resourceUri)
+            : $this->permissionChecker->hasReadAccess($resourceUri);
 
         if (!$hasAccess) {
-            throw new common_exception_Unauthorized('Not authorized to access comments for this item');
+            throw new common_exception_Unauthorized('Not authorized to access comments for this resource');
         }
 
-        return $itemUri;
+        return [$resourceUri, $resourceType];
     }
 
-    private function assertItemUri(string $itemUri): string
+    private function assertResourceUri(string $resourceUri): string
     {
-        $itemUri = trim($itemUri);
-        if ($itemUri === '') {
-            throw new InvalidArgumentException('itemUri is required');
+        $resourceUri = trim($resourceUri);
+        if ($resourceUri === '') {
+            throw new InvalidArgumentException('resourceUri is required');
         }
 
-        return $itemUri;
+        return $resourceUri;
     }
 
     private function assertBody(string $body): string

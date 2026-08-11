@@ -24,11 +24,11 @@ use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\taoItems\model\Comment\ItemCommentService;
 
 /**
- * Item comments REST API (FR1 M1).
+ * Authoring comments REST API (FR1) — Item, Test, or Asset via resourceType.
  *
  * Routes:
- * - GET  /taoItems/RestItemComments/index?itemUri=
- * - POST /taoItems/RestItemComments/index  (itemUri, body)
+ * - GET  /taoItems/RestItemComments/index?resourceUri=&resourceType=
+ * - POST /taoItems/RestItemComments/index  (resourceUri, resourceType, body)
  */
 class taoItems_actions_RestItemComments extends tao_actions_CommonModule
 {
@@ -38,23 +38,33 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
     {
         try {
             if ($this->isGetRequest()) {
-                $itemUri = $this->requireStringParam(
-                    $this->getPsrRequest()->getQueryParams()['itemUri'] ?? null,
-                    'itemUri'
-                );
-                if ($itemUri === null) {
+                $query = $this->getPsrRequest()->getQueryParams();
+                $resourceUri = $this->requireStringParam($query['resourceUri'] ?? null, 'resourceUri');
+                if ($resourceUri === null) {
                     return;
                 }
 
-                $this->setSuccessJsonResponse($this->getItemCommentService()->list($itemUri));
+                $resourceType = $this->requireStringParam($query['resourceType'] ?? null, 'resourceType');
+                if ($resourceType === null) {
+                    return;
+                }
+
+                $this->setSuccessJsonResponse(
+                    $this->getItemCommentService()->list($resourceUri, $resourceType)
+                );
 
                 return;
             }
 
             if ($this->isPostRequest()) {
                 $payload = $this->getRequestPayload();
-                $itemUri = $this->requireStringParam($payload['itemUri'] ?? null, 'itemUri');
-                if ($itemUri === null) {
+                $resourceUri = $this->requireStringParam($payload['resourceUri'] ?? null, 'resourceUri');
+                if ($resourceUri === null) {
+                    return;
+                }
+
+                $resourceType = $this->requireStringParam($payload['resourceType'] ?? null, 'resourceType');
+                if ($resourceType === null) {
                     return;
                 }
 
@@ -63,7 +73,7 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
                     return;
                 }
 
-                $comment = $this->getItemCommentService()->create($itemUri, $body);
+                $comment = $this->getItemCommentService()->create($resourceUri, $resourceType, $body);
                 $this->setSuccessJsonResponse($comment->toArray(), 201);
 
                 return;

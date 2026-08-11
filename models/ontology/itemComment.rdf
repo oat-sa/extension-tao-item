@@ -9,15 +9,23 @@
 
     <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment">
         <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
-        <rdfs:label xml:lang="en-US"><![CDATA[Item Comment]]></rdfs:label>
-        <rdfs:comment xml:lang="en-US"><![CDATA[Whole-item collaboration comment (not part of ItemContent/QTI)]]></rdfs:comment>
+        <rdfs:label xml:lang="en-US"><![CDATA[Authoring Comment]]></rdfs:label>
+        <rdfs:comment xml:lang="en-US"><![CDATA[Collaboration comment attached to an Item, Test, or Asset (not part of content/QTI)]]></rdfs:comment>
     </rdf:Description>
 
-    <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentItemUri">
+    <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentResourceUri">
         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
         <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment"/>
         <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-        <rdfs:label xml:lang="en-US"><![CDATA[Item URI]]></rdfs:label>
+        <rdfs:label xml:lang="en-US"><![CDATA[Resource URI]]></rdfs:label>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentResourceType">
+        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+        <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+        <rdfs:label xml:lang="en-US"><![CDATA[Resource type]]></rdfs:label>
+        <rdfs:comment xml:lang="en-US"><![CDATA[One of: item, test, asset]]></rdfs:comment>
     </rdf:Description>
 
     <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentAuthorId">

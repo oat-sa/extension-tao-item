@@ -25,21 +25,24 @@ namespace oat\taoItems\test\unit\model\Comment;
 use common_exception_Unauthorized;
 use common_session_Session;
 use common_user_User;
+use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
+use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
+use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ItemCommentServiceTest extends TestCase
 {
-    private const ITEM_URI = 'http://example.test/item#1';
+    private const RESOURCE_URI = 'http://example.test/item#1';
 
     /** @var ItemCommentPersistenceInterface|MockObject */
     private $persistence;
@@ -72,11 +75,12 @@ class ItemCommentServiceTest extends TestCase
 
     public function testListReturnsComments(): void
     {
-        $this->configureAuthorizedItem(false);
+        $this->configureAuthorizedResource(false);
 
         $comment = new ItemComment(
             'c1',
-            self::ITEM_URI,
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
             'user-1',
             'Alice',
             'Hello',
@@ -85,28 +89,38 @@ class ItemCommentServiceTest extends TestCase
 
         $this->persistence
             ->expects($this->once())
-            ->method('findByItemUri')
-            ->with(self::ITEM_URI)
+            ->method('findByResource')
+            ->with(self::RESOURCE_URI, ResourceCommentType::ITEM)
             ->willReturn([$comment]);
 
-        $result = $this->sut->list(self::ITEM_URI);
+        $result = $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
 
         $this->assertSame(1, $result['count']);
         $this->assertSame('c1', $result['comments'][0]['id']);
+        $this->assertSame(self::RESOURCE_URI, $result['comments'][0]['resourceUri']);
+        $this->assertSame(ResourceCommentType::ITEM, $result['comments'][0]['resourceType']);
         $this->assertSame('Hello', $result['comments'][0]['body']);
         $this->assertFalse($result['comments'][0]['edited']);
         $this->assertFalse($result['comments'][0]['resolved']);
     }
 
-    public function testListRejectsEmptyItemUri(): void
+    public function testListRejectsEmptyResourceUri(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('itemUri is required');
+        $this->expectExceptionMessage('resourceUri is required');
 
-        $this->sut->list('   ');
+        $this->sut->list('   ', ResourceCommentType::ITEM);
     }
 
-    public function testListRejectsUnknownItem(): void
+    public function testListRejectsInvalidResourceType(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('resourceType must be one of');
+
+        $this->sut->list(self::RESOURCE_URI, 'delivery');
+    }
+
+    public function testListRejectsUnknownResource(): void
     {
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('exists')->willReturn(false);
@@ -114,36 +128,61 @@ class ItemCommentServiceTest extends TestCase
         $this->ontology
             ->expects($this->once())
             ->method('getResource')
-            ->with(self::ITEM_URI)
+            ->with(self::RESOURCE_URI)
             ->willReturn($resource);
 
-        $this->persistence->expects($this->never())->method('findByItemUri');
+        $this->persistence->expects($this->never())->method('findByResource');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Item not found');
+        $this->expectExceptionMessage('Resource not found');
 
-        $this->sut->list(self::ITEM_URI);
+        $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
     }
 
-    public function testListRejectsUnauthorizedItem(): void
+    public function testListRejectsResourceTypeMismatch(): void
     {
-        $this->configureItemExists();
+        $resource = $this->createMock(core_kernel_classes_Resource::class);
+        $resource->method('exists')->willReturn(true);
+        $resource->method('isInstanceOf')->willReturn(false);
+
+        $expectedClass = $this->createMock(core_kernel_classes_Class::class);
+
+        $this->ontology
+            ->method('getResource')
+            ->with(self::RESOURCE_URI)
+            ->willReturn($resource);
+        $this->ontology
+            ->method('getClass')
+            ->with(TaoOntology::CLASS_URI_ITEM)
+            ->willReturn($expectedClass);
+
+        $this->persistence->expects($this->never())->method('findByResource');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Resource type does not match resourceType "item"');
+
+        $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
+    }
+
+    public function testListRejectsUnauthorizedResource(): void
+    {
+        $this->configureResourceExistsMatchingType();
         $this->permissionChecker
             ->expects($this->once())
             ->method('hasReadAccess')
-            ->with(self::ITEM_URI)
+            ->with(self::RESOURCE_URI)
             ->willReturn(false);
 
-        $this->persistence->expects($this->never())->method('findByItemUri');
+        $this->persistence->expects($this->never())->method('findByResource');
 
         $this->expectException(common_exception_Unauthorized::class);
 
-        $this->sut->list(self::ITEM_URI);
+        $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
     }
 
     public function testCreateUsesLtiUserNameAsAuthorLabel(): void
     {
-        $this->configureAuthorizedItem(true);
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $this->persistence
@@ -153,13 +192,14 @@ class ItemCommentServiceTest extends TestCase
                 return $comment->getAuthorId() === 'admin'
                     && $comment->getAuthorLabel() === 'Alice Admin'
                     && $comment->getBody() === 'LTI comment'
-                    && $comment->getItemUri() === self::ITEM_URI;
+                    && $comment->getResourceUri() === self::RESOURCE_URI
+                    && $comment->getResourceType() === ResourceCommentType::ITEM;
             }))
             ->willReturnCallback(static function (ItemComment $comment): ItemComment {
                 return $comment;
             });
 
-        $created = $this->sut->create(self::ITEM_URI, 'LTI comment');
+        $created = $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'LTI comment');
 
         $this->assertSame('admin', $created->getAuthorId());
         $this->assertSame('Alice Admin', $created->getAuthorLabel());
@@ -169,7 +209,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testCreateFallsBackToUserLoginWhenUserNameIsNull(): void
     {
-        $this->configureAuthorizedItem(true);
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin'));
 
         $this->persistence
@@ -183,14 +223,14 @@ class ItemCommentServiceTest extends TestCase
                 return $comment;
             });
 
-        $created = $this->sut->create(self::ITEM_URI, 'LTI comment');
+        $created = $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'LTI comment');
 
         $this->assertSame('adminLogin', $created->getAuthorLabel());
     }
 
     public function testCreateFallsBackToUserLoginWhenUserNameIsEmpty(): void
     {
-        $this->configureAuthorizedItem(true);
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', ''));
 
         $this->persistence
@@ -204,24 +244,24 @@ class ItemCommentServiceTest extends TestCase
                 return $comment;
             });
 
-        $created = $this->sut->create(self::ITEM_URI, 'LTI comment');
+        $created = $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'LTI comment');
 
         $this->assertSame('adminLogin', $created->getAuthorLabel());
     }
 
     public function testCreateRejectsEmptyBody(): void
     {
-        $this->configureAuthorizedItem(true);
+        $this->configureAuthorizedResource(true);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Comment body must not be empty');
 
-        $this->sut->create(self::ITEM_URI, '   ');
+        $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, '   ');
     }
 
     public function testCreateFailsWithoutAuthenticatedUser(): void
     {
-        $this->configureAuthorizedItem(true);
+        $this->configureAuthorizedResource(true);
 
         $this->sessionService
             ->method('getCurrentSession')
@@ -232,35 +272,42 @@ class ItemCommentServiceTest extends TestCase
         $this->expectException(common_exception_Unauthorized::class);
         $this->expectExceptionMessage('Authenticated session required to create item comments');
 
-        $this->sut->create(self::ITEM_URI, 'hello');
+        $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello');
     }
 
-    private function configureAuthorizedItem(bool $requireWriteAccess): void
+    private function configureAuthorizedResource(bool $requireWriteAccess): void
     {
-        $this->configureItemExists();
+        $this->configureResourceExistsMatchingType();
 
         if ($requireWriteAccess) {
             $this->permissionChecker
                 ->method('hasWriteAccess')
-                ->with(self::ITEM_URI)
+                ->with(self::RESOURCE_URI)
                 ->willReturn(true);
         } else {
             $this->permissionChecker
                 ->method('hasReadAccess')
-                ->with(self::ITEM_URI)
+                ->with(self::RESOURCE_URI)
                 ->willReturn(true);
         }
     }
 
-    private function configureItemExists(): void
+    private function configureResourceExistsMatchingType(): void
     {
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('exists')->willReturn(true);
+        $resource->method('isInstanceOf')->willReturn(true);
+
+        $expectedClass = $this->createMock(core_kernel_classes_Class::class);
 
         $this->ontology
             ->method('getResource')
-            ->with(self::ITEM_URI)
+            ->with(self::RESOURCE_URI)
             ->willReturn($resource);
+        $this->ontology
+            ->method('getClass')
+            ->with(TaoOntology::CLASS_URI_ITEM)
+            ->willReturn($expectedClass);
     }
 
     private function configureLtiSession(UserDataSessionContext $context): void

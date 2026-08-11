@@ -25,7 +25,8 @@ namespace oat\taoItems\model\Comment;
 final class ItemComment
 {
     private string $id;
-    private string $itemUri;
+    private string $resourceUri;
+    private string $resourceType;
     private string $authorId;
     private string $authorLabel;
     private string $body;
@@ -35,7 +36,8 @@ final class ItemComment
 
     public function __construct(
         string $id,
-        string $itemUri,
+        string $resourceUri,
+        string $resourceType,
         string $authorId,
         string $authorLabel,
         string $body,
@@ -44,7 +46,8 @@ final class ItemComment
         bool $resolved = false
     ) {
         $this->id = $id;
-        $this->itemUri = $itemUri;
+        $this->resourceUri = $resourceUri;
+        $this->resourceType = ResourceCommentType::assertValid($resourceType);
         $this->authorId = $authorId;
         $this->authorLabel = $authorLabel;
         $this->body = $body;
@@ -58,9 +61,14 @@ final class ItemComment
         return $this->id;
     }
 
-    public function getItemUri(): string
+    public function getResourceUri(): string
     {
-        return $this->itemUri;
+        return $this->resourceUri;
+    }
+
+    public function getResourceType(): string
+    {
+        return $this->resourceType;
     }
 
     public function getAuthorId(): string
@@ -97,7 +105,8 @@ final class ItemComment
     {
         return [
             'id' => $this->id,
-            'itemUri' => $this->itemUri,
+            'resourceUri' => $this->resourceUri,
+            'resourceType' => $this->resourceType,
             'authorId' => $this->authorId,
             'authorLabel' => $this->authorLabel,
             'body' => $this->body,

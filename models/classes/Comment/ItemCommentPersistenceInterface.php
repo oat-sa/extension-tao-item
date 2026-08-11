@@ -29,5 +29,5 @@ interface ItemCommentPersistenceInterface
     /**
      * @return ItemComment[]
      */
-    public function findByItemUri(string $itemUri): array;
+    public function findByResource(string $resourceUri, string $resourceType): array;
 }
