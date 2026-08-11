@@ -94,23 +94,38 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
     {
         return new ItemComment(
             $resource->getUri(),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOURCE_URI)
+            $this->propertyValueToString(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOURCE_URI)
+                )
             ),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOURCE_TYPE)
+            $this->propertyValueToString(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOURCE_TYPE)
+                )
             ),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_ID)
+            $this->propertyValueToString(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_ID)
+                )
             ),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_LABEL)
+            $this->propertyValueToString(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_AUTHOR_LABEL)
+                ),
+                false
             ),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_BODY)
+            $this->propertyValueToString(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_BODY)
+                ),
+                false
             ),
-            (string) $resource->getOnePropertyValue(
-                $this->ontology->getProperty(ItemCommentOntology::PROPERTY_CREATED_AT)
+            $this->propertyValueToString(
+                $resource->getOnePropertyValue(
+                    $this->ontology->getProperty(ItemCommentOntology::PROPERTY_CREATED_AT)
+                ),
+                false
             ),
             $this->literalToBool(
                 $resource->getOnePropertyValue(
@@ -131,12 +146,34 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
     }
 
     /**
+     * Generis Resource::__toString() is "uri\\nlabel"; for URI properties prefer getUri().
+     *
+     * @param mixed $value
+     */
+    private function propertyValueToString($value, bool $preferResourceUri = true): string
+    {
+        if ($value === null) {
+            return '';
+        }
+
+        if ($preferResourceUri && $value instanceof core_kernel_classes_Resource) {
+            return $value->getUri();
+        }
+
+        return trim((string) $value);
+    }
+
+    /**
      * @param mixed $value
      */
     private function literalToBool($value): bool
     {
         if ($value === null || $value === '') {
             return false;
+        }
+
+        if ($value instanceof core_kernel_classes_Resource) {
+            $value = $value->getUri();
         }
 
         return in_array(strtolower(trim((string) $value)), ['1', 'true', 'yes'], true);
