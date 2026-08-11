@@ -145,7 +145,7 @@ class ItemCommentService
             throw new InvalidArgumentException('Resource not found');
         }
 
-        $expectedClass = $this->ontology->getClass(ResourceCommentType::ontologyClassUri($resourceType));
+        $expectedClass = $this->ontology->getClass($resourceType);
         if (!$resource->isInstanceOf($expectedClass)) {
             throw new InvalidArgumentException(
                 sprintf('Resource type does not match resourceType "%s"', $resourceType)

@@ -159,7 +159,9 @@ class ItemCommentServiceTest extends TestCase
         $this->persistence->expects($this->never())->method('findByResource');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Resource type does not match resourceType "item"');
+        $this->expectExceptionMessage(
+            sprintf('Resource type does not match resourceType "%s"', ResourceCommentType::ITEM)
+        );
 
         $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
     }

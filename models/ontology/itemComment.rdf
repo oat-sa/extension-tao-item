@@ -25,7 +25,7 @@
         <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemComment"/>
         <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
         <rdfs:label xml:lang="en-US"><![CDATA[Resource type]]></rdfs:label>
-        <rdfs:comment xml:lang="en-US"><![CDATA[One of: item, test, asset]]></rdfs:comment>
+        <rdfs:comment xml:lang="en-US"><![CDATA[RDF class URI of the target: Item, Test, or Media]]></rdfs:comment>
     </rdf:Description>
 
     <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemCommentAuthorId">
