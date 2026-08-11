@@ -44,7 +44,7 @@ define([], function () {
                 route() {
                     const args = Array.prototype.slice.call(arguments);
                     routeCalls.push(args);
-                    return '/taoItems/RestItemComments/index';
+                    return '/taoItems/RestResourceComments/index';
                 }
             };
         });
@@ -116,7 +116,7 @@ define([], function () {
                         ctx.routeCalls[0],
                         [
                             'index',
-                            'RestItemComments',
+                            'RestResourceComments',
                             'taoItems',
                             { resourceUri: resourceUri, resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item' }
                         ],
@@ -185,7 +185,7 @@ define([], function () {
                         assert.deepEqual(data, created, 'returns response.data');
                         assert.deepEqual(
                             ctx.routeCalls[0],
-                            ['index', 'RestItemComments', 'taoItems'],
+                            ['index', 'RestResourceComments', 'taoItems'],
                             'route args for create'
                         );
                         assert.equal(ctx.requestCalls[0].method, 'POST', 'POST method');

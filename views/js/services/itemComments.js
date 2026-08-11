@@ -19,7 +19,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
     'use strict';
 
     /**
-     * Wire values for RestItemComments resourceType (RDF class URIs; mirrors ResourceCommentType).
+     * Wire values for RestResourceComments resourceType (RDF class URIs; mirrors ResourceCommentType).
      * @readonly
      */
     const RESOURCE_TYPE = Object.freeze({
@@ -62,7 +62,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
          */
         list(resourceUri, resourceType) {
             return request({
-                url: urlUtil.route('index', 'RestItemComments', 'taoItems', {
+                url: urlUtil.route('index', 'RestResourceComments', 'taoItems', {
                     resourceUri: resourceUri,
                     resourceType: resourceType
                 }),
@@ -80,7 +80,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
          */
         create(resourceUri, resourceType, body) {
             return request({
-                url: urlUtil.route('index', 'RestItemComments', 'taoItems'),
+                url: urlUtil.route('index', 'RestResourceComments', 'taoItems'),
                 method: 'POST',
                 data: { resourceUri: resourceUri, resourceType: resourceType, body: body },
                 noToken: true
