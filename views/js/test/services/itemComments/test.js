@@ -93,7 +93,7 @@ define([], function () {
                 {
                     id: 'c1',
                     resourceUri: resourceUri,
-                    resourceType: 'item',
+                    resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
                     authorId: 'u1',
                     authorLabel: 'Ada',
                     body: 'Hello',
@@ -165,7 +165,7 @@ define([], function () {
         const created = {
             id: 'c2',
             resourceUri: resourceUri,
-            resourceType: 'item',
+            resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
             authorId: 'u2',
             authorLabel: 'Grace',
             body: body,
