@@ -31,7 +31,7 @@ use oat\taoItems\model\user\TaoItemsRoles;
 use Throwable;
 
 /**
- * Item Comments (NYSED-13): grant RestItemComments ACL.
+ * Authoring comments (NYSED-13): grant RestResourceComments ACL.
  *
  * phpcs:disable Squiz.Classes.ValidClassName
  */
@@ -39,34 +39,34 @@ final class Version202608051012062141_taoItems extends AbstractMigration
 {
     private const GLOBAL_MANAGER_ROLE = 'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole';
 
-    private const REST_ITEM_COMMENTS_MASK = [
+    private const REST_RESOURCE_COMMENTS_MASK = [
         'ext' => 'taoItems',
-        'mod' => 'RestItemComments',
+        'mod' => 'RestResourceComments',
     ];
 
     private const CONFIG = [
         SetRolesAccess::CONFIG_RULES => [
             TaoItemsRoles::ITEM_AUTHOR_ABSTRACT => [
-                self::REST_ITEM_COMMENTS_MASK,
+                self::REST_RESOURCE_COMMENTS_MASK,
             ],
             TaoItemsRoles::ITEM_MANAGER => [
-                self::REST_ITEM_COMMENTS_MASK,
+                self::REST_RESOURCE_COMMENTS_MASK,
             ],
             TaoItemsRoles::ITEM_CONTENT_CREATOR => [
-                self::REST_ITEM_COMMENTS_MASK,
+                self::REST_RESOURCE_COMMENTS_MASK,
             ],
             TaoItemsRoles::ITEM_AUTHOR => [
-                self::REST_ITEM_COMMENTS_MASK,
+                self::REST_RESOURCE_COMMENTS_MASK,
             ],
             self::GLOBAL_MANAGER_ROLE => [
-                self::REST_ITEM_COMMENTS_MASK,
+                self::REST_RESOURCE_COMMENTS_MASK,
             ],
         ],
     ];
 
     public function getDescription(): string
     {
-        return 'Grant RestItemComments ACL for authoring roles (NYSED-13)';
+        return 'Grant RestResourceComments ACL for authoring roles (NYSED-13)';
     }
 
     public function up(Schema $schema): void
@@ -80,12 +80,12 @@ final class Version202608051012062141_taoItems extends AbstractMigration
             ]);
 
             $this->addReport(
-                Report::createSuccess('Granted RestItemComments ACL for authoring roles (NYSED-13)')
+                Report::createSuccess('Granted RestResourceComments ACL for authoring roles (NYSED-13)')
             );
         } catch (Throwable $exception) {
             $this->addReport(
                 Report::createError(
-                    'Failed to grant RestItemComments ACL for authoring roles (NYSED-13): '
+                    'Failed to grant RestResourceComments ACL for authoring roles (NYSED-13): '
                     . $exception->getMessage()
                 )
             );
@@ -104,12 +104,12 @@ final class Version202608051012062141_taoItems extends AbstractMigration
             ]);
 
             $this->addReport(
-                Report::createSuccess('Revoked RestItemComments ACL for authoring roles (NYSED-13)')
+                Report::createSuccess('Revoked RestResourceComments ACL for authoring roles (NYSED-13)')
             );
         } catch (Throwable $exception) {
             $this->addReport(
                 Report::createError(
-                    'Failed to revoke RestItemComments ACL for authoring roles (NYSED-13): '
+                    'Failed to revoke RestResourceComments ACL for authoring roles (NYSED-13): '
                     . $exception->getMessage()
                 )
             );

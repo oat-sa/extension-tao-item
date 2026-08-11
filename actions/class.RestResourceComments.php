@@ -27,10 +27,10 @@ use oat\taoItems\model\Comment\ItemCommentService;
  * Authoring comments REST API (FR1) — Item, Test, or Asset via resourceType.
  *
  * Routes:
- * - GET  /taoItems/RestItemComments/index?resourceUri=&resourceType=
- * - POST /taoItems/RestItemComments/index  (resourceUri, resourceType, body)
+ * - GET  /taoItems/RestResourceComments/index?resourceUri=&resourceType=
+ * - POST /taoItems/RestResourceComments/index  (resourceUri, resourceType, body)
  */
-class taoItems_actions_RestItemComments extends tao_actions_CommonModule
+class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 {
     use HttpJsonResponseTrait;
 
@@ -86,7 +86,7 @@ class taoItems_actions_RestItemComments extends tao_actions_CommonModule
             $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
         } catch (Throwable $exception) {
             $this->logError($exception->getMessage());
-            $this->setErrorJsonResponse('Unable to process item comments request', 500, [], 500);
+            $this->setErrorJsonResponse('Unable to process resource comments request', 500, [], 500);
         }
     }
 
