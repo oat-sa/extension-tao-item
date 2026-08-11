@@ -52,7 +52,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
         const comments = [
             {
                 id: 'c1',
-                itemUri: 'item://1',
+                resourceUri: 'item://1',
+                resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
                 authorId: 'u1',
                 authorLabel: 'Ada',
                 body: 'First',
@@ -64,7 +65,13 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
             api: {
-                list() {
+                list(resourceUri, resourceType) {
+                    assert.equal(resourceUri, 'item://1', 'list receives resourceUri');
+                    assert.equal(
+                        resourceType,
+                        'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
+                        'list defaults to ITEM resourceType'
+                    );
                     return Promise.resolve({ comments, count: 1 });
                 },
                 create() {
@@ -73,7 +80,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             }
         });
 
-        assert.expect(3);
+        assert.expect(5);
         store.load().then(function () {
             assert.deepEqual(store.getComments(), comments, 'comments loaded');
             assert.equal(store.getCount(), 1, 'count loaded');
@@ -85,6 +92,55 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             assert.ok(false, err.message);
             ready();
         });
+    });
+
+    QUnit.test('load / submit honour configured resourceType', function (assert) {
+        const ready = assert.async();
+        const testType = 'http://www.tao.lu/Ontologies/TAOTest.rdf#Test';
+        const store = itemCommentsStoreFactory({
+            resourceUri: 'test://1',
+            resourceType: testType,
+            api: {
+                list(resourceUri, resourceType) {
+                    assert.equal(resourceUri, 'test://1', 'list uri');
+                    assert.equal(resourceType, testType, 'list type');
+                    return Promise.resolve({ comments: [], count: 0 });
+                },
+                create(resourceUri, resourceType, body) {
+                    assert.equal(resourceUri, 'test://1', 'create uri');
+                    assert.equal(resourceType, testType, 'create type');
+                    assert.equal(body, 'Note', 'create body');
+                    return Promise.resolve({
+                        id: 'c1',
+                        resourceUri: resourceUri,
+                        resourceType: resourceType,
+                        authorId: 'u1',
+                        authorLabel: 'Ada',
+                        body: body,
+                        createdAt: '2026-07-27T10:00:00Z',
+                        edited: false,
+                        resolved: false
+                    });
+                }
+            }
+        });
+
+        assert.expect(7);
+        assert.equal(store.getResourceUri(), 'test://1', 'resourceUri getter');
+        assert.equal(store.getResourceType(), testType, 'resourceType getter');
+        store
+            .load()
+            .then(function () {
+                store.setDraft('Note');
+                return store.submit();
+            })
+            .then(function () {
+                ready();
+            })
+            .catch(function (err) {
+                assert.ok(false, err.message);
+                ready();
+            });
     });
 
     QUnit.test('submit appends comment and clears draft', function (assert) {
@@ -226,7 +282,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                         comments: [
                             {
                                 id: 'c1',
-                                itemUri: 'item://1',
+                                resourceUri: 'item://1',
+                                resourceType: 'http://www.tao.lu/Ontologies/TAOItem.rdf#Item',
                                 authorId: 'u1',
                                 authorLabel: 'Ada',
                                 body: 'A',
@@ -245,7 +302,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
         });
         const ready = assert.async();
 
-        assert.expect(3);
+        assert.expect(5);
         store
             .load()
             .then(function () {
@@ -254,6 +311,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 assert.equal(store.getDraft(), '', 'draft cleared on URI change');
                 assert.equal(store.getCount(), 0, 'count reset');
                 assert.deepEqual(store.getComments(), [], 'comments reset');
+                assert.equal(store.getItemUri(), 'item://2', 'itemUri alias');
+                assert.equal(store.getResourceUri(), 'item://2', 'resourceUri updated');
                 ready();
             })
             .catch(function (err) {
