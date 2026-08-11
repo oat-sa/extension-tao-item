@@ -124,7 +124,7 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 this.trigger('loading');
 
                 return api
-                    .list(itemUri)
+                    .list(itemUri, itemCommentsApi.RESOURCE_TYPE.ITEM)
                     .then(data => {
                         comments = (data && data.comments) || [];
                         count = typeof (data && data.count) === 'number' ? data.count : comments.length;
@@ -159,7 +159,7 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 this.trigger('submitting');
 
                 return api
-                    .create(itemUri, body)
+                    .create(itemUri, itemCommentsApi.RESOURCE_TYPE.ITEM, body)
                     .then(comment => {
                         comments = comments.concat([comment]);
                         count += 1;

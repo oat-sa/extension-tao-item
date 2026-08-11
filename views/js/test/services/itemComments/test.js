@@ -69,14 +69,31 @@ define([], function () {
         }
     });
 
+    QUnit.test('exposes RESOURCE_TYPE constants', function (assert) {
+        const ready = assert.async();
+        assert.expect(3);
+        loadService({})
+            .then(function (ctx) {
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.ITEM, 'item', 'ITEM const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.TEST, 'test', 'TEST const');
+                assert.equal(ctx.itemComments.RESOURCE_TYPE.ASSET, 'asset', 'ASSET const');
+                ready();
+            })
+            .catch(function (err) {
+                assert.ok(false, err && err.message);
+                ready();
+            });
+    });
+
     QUnit.test('list builds GET route and returns response.data', function (assert) {
         const ready = assert.async();
-        const itemUri = 'item://1';
+        const resourceUri = 'item://1';
         const payload = {
             comments: [
                 {
                     id: 'c1',
-                    itemUri: itemUri,
+                    resourceUri: resourceUri,
+                    resourceType: 'item',
                     authorId: 'u1',
                     authorLabel: 'Ada',
                     body: 'Hello',
@@ -93,11 +110,16 @@ define([], function () {
             requestResponse: { success: true, data: payload }
         })
             .then(function (ctx) {
-                return ctx.itemComments.list(itemUri).then(function (data) {
+                return ctx.itemComments.list(resourceUri, ctx.itemComments.RESOURCE_TYPE.ITEM).then(function (data) {
                     assert.deepEqual(data, payload, 'returns response.data');
                     assert.deepEqual(
                         ctx.routeCalls[0],
-                        ['index', 'RestItemComments', 'taoItems', { itemUri: itemUri }],
+                        [
+                            'index',
+                            'RestItemComments',
+                            'taoItems',
+                            { resourceUri: resourceUri, resourceType: 'item' }
+                        ],
                         'route args for list'
                     );
                     assert.equal(ctx.requestCalls.length, 1, 'one request');
@@ -119,7 +141,7 @@ define([], function () {
         assert.expect(1);
         loadService({ requestReject: failure })
             .then(function (ctx) {
-                return ctx.itemComments.list('item://1').then(
+                return ctx.itemComments.list('item://1', ctx.itemComments.RESOURCE_TYPE.ITEM).then(
                     function () {
                         assert.ok(false, 'expected rejection');
                         ready();
@@ -138,11 +160,12 @@ define([], function () {
 
     QUnit.test('create builds POST payload and returns response.data', function (assert) {
         const ready = assert.async();
-        const itemUri = 'item://1';
+        const resourceUri = 'item://1';
         const body = 'New note';
         const created = {
             id: 'c2',
-            itemUri: itemUri,
+            resourceUri: resourceUri,
+            resourceType: 'item',
             authorId: 'u2',
             authorLabel: 'Grace',
             body: body,
@@ -156,23 +179,25 @@ define([], function () {
             requestResponse: { success: true, data: created }
         })
             .then(function (ctx) {
-                return ctx.itemComments.create(itemUri, body).then(function (data) {
-                    assert.deepEqual(data, created, 'returns response.data');
-                    assert.deepEqual(
-                        ctx.routeCalls[0],
-                        ['index', 'RestItemComments', 'taoItems'],
-                        'route args for create'
-                    );
-                    assert.equal(ctx.requestCalls[0].method, 'POST', 'POST method');
-                    assert.deepEqual(
-                        ctx.requestCalls[0].data,
-                        { itemUri: itemUri, body: body },
-                        'POST payload'
-                    );
-                    assert.equal(ctx.requestCalls[0].noToken, true, 'noToken set');
-                    assert.equal(typeof ctx.requestCalls[0].url, 'string', 'url present');
-                    ready();
-                });
+                return ctx.itemComments
+                    .create(resourceUri, ctx.itemComments.RESOURCE_TYPE.ITEM, body)
+                    .then(function (data) {
+                        assert.deepEqual(data, created, 'returns response.data');
+                        assert.deepEqual(
+                            ctx.routeCalls[0],
+                            ['index', 'RestItemComments', 'taoItems'],
+                            'route args for create'
+                        );
+                        assert.equal(ctx.requestCalls[0].method, 'POST', 'POST method');
+                        assert.deepEqual(
+                            ctx.requestCalls[0].data,
+                            { resourceUri: resourceUri, resourceType: 'item', body: body },
+                            'POST payload'
+                        );
+                        assert.equal(ctx.requestCalls[0].noToken, true, 'noToken set');
+                        assert.equal(typeof ctx.requestCalls[0].url, 'string', 'url present');
+                        ready();
+                    });
             })
             .catch(function (err) {
                 assert.ok(false, err && err.message);
@@ -187,7 +212,7 @@ define([], function () {
         assert.expect(1);
         loadService({ requestReject: failure })
             .then(function (ctx) {
-                return ctx.itemComments.create('item://1', 'x').then(
+                return ctx.itemComments.create('item://1', ctx.itemComments.RESOURCE_TYPE.ITEM, 'x').then(
                     function () {
                         assert.ok(false, 'expected rejection');
                         ready();

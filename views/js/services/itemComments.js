@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -19,9 +19,20 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
     'use strict';
 
     /**
+     * Wire values for RestItemComments resourceType (mirrors ResourceCommentType).
+     * @readonly
+     */
+    const RESOURCE_TYPE = Object.freeze({
+        ITEM: 'item',
+        TEST: 'test',
+        ASSET: 'asset'
+    });
+
+    /**
      * @typedef {object} ItemComment
      * @property {string} id
-     * @property {string} itemUri
+     * @property {string} resourceUri
+     * @property {string} resourceType
      * @property {string} authorId
      * @property {string} authorLabel
      * @property {string} body
@@ -37,34 +48,41 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
      */
 
     /**
-     * HTTP client for Item Comments REST API (FR1 M1).
+     * HTTP client for authoring comments REST API (FR1).
      * @returns {object}
      */
     return {
+        RESOURCE_TYPE: RESOURCE_TYPE,
+
         /**
-         * Lists comments for an item (oldest → newest).
-         * @param {string} itemUri
+         * Lists comments for a resource (oldest → newest).
+         * @param {string} resourceUri
+         * @param {string} resourceType one of RESOURCE_TYPE.*
          * @returns {Promise<ItemCommentList>}
          */
-        list(itemUri) {
+        list(resourceUri, resourceType) {
             return request({
-                url: urlUtil.route('index', 'RestItemComments', 'taoItems', { itemUri }),
+                url: urlUtil.route('index', 'RestItemComments', 'taoItems', {
+                    resourceUri: resourceUri,
+                    resourceType: resourceType
+                }),
                 method: 'GET',
                 noToken: true
             }).then(response => response.data);
         },
 
         /**
-         * Creates a comment for an item.
-         * @param {string} itemUri
+         * Creates a comment for a resource.
+         * @param {string} resourceUri
+         * @param {string} resourceType one of RESOURCE_TYPE.*
          * @param {string} body
          * @returns {Promise<ItemComment>}
          */
-        create(itemUri, body) {
+        create(resourceUri, resourceType, body) {
             return request({
                 url: urlUtil.route('index', 'RestItemComments', 'taoItems'),
                 method: 'POST',
-                data: { itemUri, body },
+                data: { resourceUri: resourceUri, resourceType: resourceType, body: body },
                 noToken: true
             }).then(response => response.data);
         }

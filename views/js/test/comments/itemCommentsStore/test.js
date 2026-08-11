@@ -105,15 +105,16 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 list() {
                     return Promise.resolve({ comments: [], count: 0 });
                 },
-                create(itemUri, body) {
-                    assert.equal(itemUri, 'item://1', 'create receives itemUri');
+                create(resourceUri, resourceType, body) {
+                    assert.equal(resourceUri, 'item://1', 'create receives resourceUri');
+                    assert.equal(resourceType, 'item', 'create receives resourceType ITEM');
                     assert.equal(body, 'New note', 'create receives trimmed body');
                     return Promise.resolve(created);
                 }
             }
         });
 
-        assert.expect(6);
+        assert.expect(7);
         store
             .load()
             .then(function () {
