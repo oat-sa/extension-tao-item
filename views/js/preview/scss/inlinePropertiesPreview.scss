@@ -14,6 +14,7 @@
     &--preview {
         flex: 1 1 360px;
         min-width: 280px;
+        margin-right: 0;
     }
 
     &--full {
@@ -71,8 +72,8 @@
     }
 }
 
-.section-container .content-block .item-properties-preview-column .data-container-wrapper {
-    padding-right: 0;
+.section-container .content-block .item-properties-column--preview > .data-container-wrapper {
+    padding: 0;
 }
 
 body.solar-design {

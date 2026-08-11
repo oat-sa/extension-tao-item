@@ -159,8 +159,12 @@ define(['context', 'jquery'], function (context) {
 
                 assert.ok($('#item-properties-preview-column').is(':hidden'), 'Preview column is hidden');
                 assert.ok(
+                    $('#item-properties-form-column').hasClass('item-properties-column--form'),
+                    'Form column keeps its fixed width'
+                );
+                assert.notOk(
                     $('#item-properties-form-column').hasClass('item-properties-column--full'),
-                    'Form column expands to full width'
+                    'Form column does not expand to full width'
                 );
                 done();
             })
