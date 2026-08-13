@@ -32,6 +32,15 @@ msgstr "Pri spracovaní vašej žiadosti sa vyskytla chyba."
 msgid "and"
 msgstr "a"
 
+msgid "and %d other."
+msgstr "a %d iná."
+
+msgid "and %d others."
+msgstr "a %d iné."
+
+msgid "and %s others."
+msgstr "a %s iných."
+
 msgid "and all of its content?"
 msgstr "a všetok jeho obsah?"
 
