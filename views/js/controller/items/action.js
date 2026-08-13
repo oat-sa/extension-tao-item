@@ -177,7 +177,7 @@ define([
                                 numberOther: relatedTests.length - 3 > 0 ? relatedTests.length - 3 : 0,
                                 tests: relatedTests.length <= 3 ? relatedTests : relatedTests.slice(0, 3),
                                 multiple: relatedTests.length > 1,
-                                multipleOthers: relatedTests.length - 3 > 1
+                                otherTestsMessage: getOtherTestsMessage(relatedTests.length - 3)
                             }),
                             () => accept(actionContext, this.url, resolve, reject),
                             () => cancel(reject)
@@ -199,6 +199,16 @@ define([
             method: 'GET',
             noToken: true
         });
+    }
+
+    function getOtherTestsMessage(numberOther) {
+        if (numberOther === 1) {
+            return __('and %d other.', numberOther);
+        }
+        if (numberOther < 5) {
+            return __('and %d others.', numberOther);
+        }
+        return __('and %s others.', numberOther);
     }
 
     function accept(actionContext, url, resolve, reject) {

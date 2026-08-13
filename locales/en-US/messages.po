@@ -25,6 +25,15 @@ msgstr ""
 msgid "and"
 msgstr ""
 
+msgid "and %d other."
+msgstr ""
+
+msgid "and %d others."
+msgstr ""
+
+msgid "and %s others."
+msgstr ""
+
 msgid "and all of its content?"
 msgstr ""
 
