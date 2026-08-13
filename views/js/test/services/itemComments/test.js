@@ -158,6 +158,30 @@ define([], function () {
             });
     });
 
+    QUnit.test('list rejects invalid arguments and does not call request', function (assert) {
+        const ready = assert.async();
+
+        assert.expect(2);
+        loadService({})
+            .then(function (ctx) {
+                return ctx.itemComments.list('', 'wrong-type').then(
+                    function () {
+                        assert.ok(false, 'expected rejection');
+                        ready();
+                    },
+                    function () {
+                        assert.equal(ctx.requestCalls.length, 0, 'request not called for invalid args');
+                        assert.equal(ctx.routeCalls.length, 0, 'route not called for invalid args');
+                        ready();
+                    }
+                );
+            })
+            .catch(function (err) {
+                assert.ok(false, err && err.message);
+                ready();
+            });
+    });
+
     QUnit.test('create builds POST payload and returns response.data', function (assert) {
         const ready = assert.async();
         const resourceUri = 'item://1';
@@ -219,6 +243,30 @@ define([], function () {
                     },
                     function (err) {
                         assert.strictEqual(err, failure, 'rejects with request error');
+                        ready();
+                    }
+                );
+            })
+            .catch(function (err) {
+                assert.ok(false, err && err.message);
+                ready();
+            });
+    });
+
+    QUnit.test('create rejects invalid arguments and does not call request', function (assert) {
+        const ready = assert.async();
+
+        assert.expect(2);
+        loadService({})
+            .then(function (ctx) {
+                return ctx.itemComments.create('item://1', ctx.itemComments.RESOURCE_TYPE.ITEM, '   ').then(
+                    function () {
+                        assert.ok(false, 'expected rejection');
+                        ready();
+                    },
+                    function () {
+                        assert.equal(ctx.requestCalls.length, 0, 'request not called for invalid args');
+                        assert.equal(ctx.routeCalls.length, 0, 'route not called for invalid args');
                         ready();
                     }
                 );

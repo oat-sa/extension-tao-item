@@ -51,6 +51,9 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
      * HTTP client for authoring comments REST API (FR1).
      * @returns {object}
      */
+    const hasText = value => typeof value === 'string' && value.trim().length > 0;
+    const isValidResourceType = type => Object.keys(RESOURCE_TYPE).some(key => RESOURCE_TYPE[key] === type);
+
     return {
         RESOURCE_TYPE: RESOURCE_TYPE,
 
@@ -61,6 +64,13 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
          * @returns {Promise<ItemCommentList>}
          */
         list(resourceUri, resourceType) {
+            if (!hasText(resourceUri)) {
+                return Promise.reject(new Error('resourceUri must be a non-empty string'));
+            }
+            if (!isValidResourceType(resourceType)) {
+                return Promise.reject(new Error('resourceType must be one of RESOURCE_TYPE values'));
+            }
+
             return request({
                 url: urlUtil.route('index', 'RestResourceComments', 'taoItems', {
                     resourceUri: resourceUri,
@@ -79,6 +89,16 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
          * @returns {Promise<ItemComment>}
          */
         create(resourceUri, resourceType, body) {
+            if (!hasText(resourceUri)) {
+                return Promise.reject(new Error('resourceUri must be a non-empty string'));
+            }
+            if (!isValidResourceType(resourceType)) {
+                return Promise.reject(new Error('resourceType must be one of RESOURCE_TYPE values'));
+            }
+            if (!hasText(body)) {
+                return Promise.reject(new Error('body must be a non-empty string'));
+            }
+
             return request({
                 url: urlUtil.route('index', 'RestResourceComments', 'taoItems'),
                 method: 'POST',
