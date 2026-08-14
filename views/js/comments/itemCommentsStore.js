@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -173,6 +173,134 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                         submitting = false;
                         submitError = error;
                         this.trigger('submitFailed', error);
+                        throw error;
+                    });
+            },
+
+            /**
+             * Update an existing own comment.
+             * @param {string} commentId
+             * @param {string} body
+             * @returns {Promise<object>}
+             */
+            update(commentId, body) {
+                const nextBody = typeof body === 'string' ? body.trim() : '';
+                if (!commentId) {
+                    return Promise.reject(new Error('comment id is required'));
+                }
+                if (!nextBody) {
+                    return Promise.reject(new Error('Comment body must not be empty'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .update(commentId, nextBody)
+                    .then(comment => {
+                        comments = comments.map(existing =>
+                            existing.id === comment.id
+                                ? Object.assign({}, existing, comment, {
+                                      editable:
+                                          typeof comment.editable === 'boolean'
+                                              ? comment.editable
+                                              : existing.editable
+                                  })
+                                : existing
+                        );
+                        submitting = false;
+                        this.trigger('updated', comment);
+                        this.trigger('loaded', comments.slice(), count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('updateFailed', error);
+                        throw error;
+                    });
+            },
+
+            /**
+             * Resolve or reopen a comment.
+             * @param {string} commentId
+             * @param {boolean} resolved
+             * @returns {Promise<object>}
+             */
+            resolve(commentId, resolved) {
+                if (!commentId) {
+                    return Promise.reject(new Error('comment id is required'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .resolve(commentId, !!resolved)
+                    .then(comment => {
+                        comments = comments.map(existing =>
+                            existing.id === comment.id
+                                ? Object.assign({}, existing, comment, {
+                                      editable:
+                                          typeof comment.editable === 'boolean'
+                                              ? comment.editable
+                                              : existing.editable
+                                  })
+                                : existing
+                        );
+                        submitting = false;
+                        this.trigger('resolved', comment);
+                        this.trigger('loaded', comments.slice(), count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('resolveFailed', error);
+                        throw error;
+                    });
+            },
+
+            /**
+             * Delete an own comment.
+             * @param {string} commentId
+             * @returns {Promise<object>}
+             */
+            delete(commentId) {
+                if (!commentId) {
+                    return Promise.reject(new Error('comment id is required'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .delete(commentId)
+                    .then(() => {
+                        comments = comments.filter(existing => existing.id !== commentId);
+                        count = comments.length;
+                        submitting = false;
+                        this.trigger('deleted', commentId);
+                        this.trigger('countchange', count);
+                        this.trigger('loaded', comments.slice(), count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('deleteFailed', error);
                         throw error;
                     });
             },

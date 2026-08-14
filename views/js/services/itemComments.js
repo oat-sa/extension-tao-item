@@ -39,6 +39,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
      * @property {string} createdAt
      * @property {boolean} edited
      * @property {boolean} resolved
+     * @property {boolean} [editable]
      */
 
     /**
@@ -103,6 +104,50 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
                 url: urlUtil.route('index', 'RestResourceComments', 'taoItems'),
                 method: 'POST',
                 data: { resourceUri: resourceUri, resourceType: resourceType, body: body },
+                noToken: true
+            }).then(response => response.data);
+        },
+
+        /**
+         * Updates an own comment body.
+         * @param {string} id
+         * @param {string} body
+         * @returns {Promise<ItemComment>}
+         */
+        update(id, body) {
+            return request({
+                url: urlUtil.route('update', 'RestResourceComments', 'taoItems'),
+                method: 'POST',
+                data: { id, body },
+                noToken: true
+            }).then(response => response.data);
+        },
+
+        /**
+         * Resolve or reopen a comment.
+         * @param {string} id
+         * @param {boolean} resolved
+         * @returns {Promise<ItemComment>}
+         */
+        resolve(id, resolved) {
+            return request({
+                url: urlUtil.route('resolve', 'RestResourceComments', 'taoItems'),
+                method: 'POST',
+                data: { id, resolved: !!resolved },
+                noToken: true
+            }).then(response => response.data);
+        },
+
+        /**
+         * Deletes an own comment.
+         * @param {string} id
+         * @returns {Promise<{id: string}>}
+         */
+        delete(id) {
+            return request({
+                url: urlUtil.route('delete', 'RestResourceComments', 'taoItems'),
+                method: 'POST',
+                data: { id },
                 noToken: true
             }).then(response => response.data);
         }

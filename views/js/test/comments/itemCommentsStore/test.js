@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -160,6 +160,59 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 assert.equal(store.getDraft(), 'keep me', 'draft retained');
                 assert.equal(store.getCount(), 0, 'count unchanged');
                 assert.equal(store.getComments().length, 0, 'no comment appended');
+                ready();
+            });
+    });
+
+    QUnit.test('update replaces comment body and marks edited', function (assert) {
+        const ready = assert.async();
+        const existing = {
+            id: 'c1',
+            itemUri: 'item://1',
+            authorId: 'u1',
+            authorLabel: 'Ada',
+            body: 'Old',
+            createdAt: '2026-07-27T09:12:00Z',
+            edited: false,
+            resolved: false,
+            editable: true
+        };
+        const store = itemCommentsStoreFactory({
+            itemUri: 'item://1',
+            api: {
+                list() {
+                    return Promise.resolve({ comments: [existing], count: 1 });
+                },
+                create() {
+                    return Promise.reject(new Error('unused'));
+                },
+                update(id, body) {
+                    assert.equal(id, 'c1', 'update id');
+                    assert.equal(body, 'New body', 'update body');
+                    return Promise.resolve(
+                        Object.assign({}, existing, {
+                            body: body,
+                            edited: true
+                        })
+                    );
+                }
+            }
+        });
+
+        assert.expect(4);
+        store
+            .load()
+            .then(function () {
+                return store.update('c1', '  New body  ');
+            })
+            .then(function () {
+                const comments = store.getComments();
+                assert.equal(comments[0].body, 'New body', 'body replaced');
+                assert.equal(comments[0].edited, true, 'edited flag set');
+                ready();
+            })
+            .catch(function (err) {
+                assert.ok(false, err.message);
                 ready();
             });
     });
