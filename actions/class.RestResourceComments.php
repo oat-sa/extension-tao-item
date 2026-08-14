@@ -29,6 +29,9 @@ use oat\taoItems\model\Comment\ItemCommentService;
  * Routes:
  * - GET  /taoItems/RestResourceComments/index?resourceUri=&resourceType=
  * - POST /taoItems/RestResourceComments/index  (resourceUri, resourceType, body)
+ * - POST /taoItems/RestResourceComments/update (id, body) — author can edit own comment
+ * - POST /taoItems/RestResourceComments/resolve (id, resolved) — any authenticated authoring user
+ * - POST /taoItems/RestResourceComments/delete (id) — author can delete own comment
  */
 class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 {
@@ -74,7 +77,7 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
                 }
 
                 $comment = $this->getItemCommentService()->create($resourceUri, $resourceType, $body);
-                $this->setSuccessJsonResponse($comment->toArray(), 201);
+                $this->setSuccessJsonResponse($comment->toArray(true), 201);
 
                 return;
             }
@@ -87,6 +90,99 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
         } catch (Throwable $exception) {
             $this->logError($exception->getMessage());
             $this->setErrorJsonResponse('Unable to process resource comments request', 500, [], 500);
+        }
+    }
+
+    public function update(): void
+    {
+        try {
+            if (!$this->isPostRequest() && !$this->isPutRequest()) {
+                $this->setErrorJsonResponse('Method not allowed', 405, [], 405);
+
+                return;
+            }
+
+            $payload = $this->getRequestPayload();
+            $commentId = $this->requireStringParam($payload['id'] ?? null, 'id');
+            if ($commentId === null) {
+                return;
+            }
+
+            $body = $this->requireStringParam($payload['body'] ?? null, 'body');
+            if ($body === null) {
+                return;
+            }
+
+            $comment = $this->getItemCommentService()->update($commentId, $body);
+            $this->setSuccessJsonResponse($comment->toArray(true));
+        } catch (common_exception_Unauthorized $exception) {
+            $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
+        } catch (InvalidArgumentException $exception) {
+            $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
+        } catch (Throwable $exception) {
+            $this->logError($exception->getMessage());
+            $this->setErrorJsonResponse('Unable to update item comment', 500, [], 500);
+        }
+    }
+
+    public function resolve(): void
+    {
+        try {
+            if (!$this->isPostRequest() && !$this->isPutRequest()) {
+                $this->setErrorJsonResponse('Method not allowed', 405, [], 405);
+
+                return;
+            }
+
+            $payload = $this->getRequestPayload();
+            $commentId = $this->requireStringParam($payload['id'] ?? null, 'id');
+            if ($commentId === null) {
+                return;
+            }
+
+            if (!array_key_exists('resolved', $payload)) {
+                throw new InvalidArgumentException('resolved is required');
+            }
+
+            $comment = $this->getItemCommentService()->resolve(
+                $commentId,
+                $this->toBool($payload['resolved'])
+            );
+            $this->setSuccessJsonResponse($comment->toArray());
+        } catch (common_exception_Unauthorized $exception) {
+            $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
+        } catch (InvalidArgumentException $exception) {
+            $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
+        } catch (Throwable $exception) {
+            $this->logError($exception->getMessage());
+            $this->setErrorJsonResponse('Unable to resolve item comment', 500, [], 500);
+        }
+    }
+
+    public function delete(): void
+    {
+        try {
+            if (!$this->isPostRequest() && !$this->isDeleteRequest()) {
+                $this->setErrorJsonResponse('Method not allowed', 405, [], 405);
+
+                return;
+            }
+
+            $payload = $this->getRequestPayload();
+            $commentId = $this->requireStringParam($payload['id'] ?? null, 'id');
+            if ($commentId === null) {
+                return;
+            }
+
+            $this->getItemCommentService()->delete($commentId);
+            $this->setSuccessJsonResponse(['id' => $commentId]);
+        } catch (common_exception_Unauthorized $exception) {
+            $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
+        } catch (InvalidArgumentException $exception) {
+            $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
+        } catch (Throwable $exception) {
+            $this->logError($exception->getMessage());
+            $this->setErrorJsonResponse('Unable to delete item comment', 500, [], 500);
         }
     }
 
@@ -127,6 +223,22 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
         return is_array($decoded) ? $decoded : [];
     }
 
+    /**
+     * @param mixed $value
+     */
+    private function toBool($value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return (bool) $value;
+        }
+
+        return in_array(strtolower(trim((string) $value)), ['1', 'true', 'yes'], true);
+    }
+
     private function isGetRequest(): bool
     {
         return strtoupper($this->getPsrRequest()->getMethod()) === 'GET';
@@ -135,6 +247,16 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
     private function isPostRequest(): bool
     {
         return strtoupper($this->getPsrRequest()->getMethod()) === 'POST';
+    }
+
+    private function isPutRequest(): bool
+    {
+        return strtoupper($this->getPsrRequest()->getMethod()) === 'PUT';
+    }
+
+    private function isDeleteRequest(): bool
+    {
+        return strtoupper($this->getPsrRequest()->getMethod()) === 'DELETE';
     }
 
     private function getItemCommentService(): ItemCommentService

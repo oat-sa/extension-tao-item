@@ -60,11 +60,14 @@ class ItemCommentService
         [$resourceUri, $resourceType] = $this->assertAuthorizedResource($resourceUri, $resourceType, false);
 
         $comments = $this->persistence->findByResource($resourceUri, $resourceType);
+        $currentAuthorId = $this->tryResolveAuthorId();
 
         return [
             'comments' => array_map(
-                static function (ItemComment $comment): array {
-                    return $comment->toArray();
+                static function (ItemComment $comment) use ($currentAuthorId): array {
+                    return $comment->toArray(
+                        $currentAuthorId !== null && $comment->getAuthorId() === $currentAuthorId
+                    );
                 },
                 $comments
             ),
@@ -97,6 +100,84 @@ class ItemCommentService
         return $this->persistence->create($comment);
     }
 
+    public function update(string $commentId, string $body): ItemComment
+    {
+        $commentId = trim($commentId);
+        if ($commentId === '') {
+            throw new InvalidArgumentException('Comment id is required');
+        }
+
+        $body = $this->assertBody($body);
+
+        $session = $this->sessionService->getCurrentSession();
+        if ($session === null || $session->getUser() === null) {
+            throw new common_exception_Unauthorized('Authenticated session required to update item comments');
+        }
+
+        [$authorId] = $this->resolveAuthorFromSession($session);
+
+        $existing = $this->persistence->findById($commentId);
+        if ($existing === null) {
+            throw new InvalidArgumentException('Comment not found');
+        }
+
+        if ($existing->getAuthorId() !== $authorId) {
+            throw new common_exception_Unauthorized('Only the comment author can edit this comment');
+        }
+
+        return $this->persistence->update($existing->withEditedBody($body));
+    }
+
+    public function resolve(string $commentId, bool $resolved): ItemComment
+    {
+        $commentId = trim($commentId);
+        if ($commentId === '') {
+            throw new InvalidArgumentException('Comment id is required');
+        }
+
+        $session = $this->sessionService->getCurrentSession();
+        if ($session === null || $session->getUser() === null) {
+            throw new common_exception_Unauthorized('Authenticated session required to resolve item comments');
+        }
+
+        $existing = $this->persistence->findById($commentId);
+        if ($existing === null) {
+            throw new InvalidArgumentException('Comment not found');
+        }
+
+        if ($existing->isResolved() === $resolved) {
+            return $existing;
+        }
+
+        return $this->persistence->update($existing->withResolved($resolved));
+    }
+
+    public function delete(string $commentId): void
+    {
+        $commentId = trim($commentId);
+        if ($commentId === '') {
+            throw new InvalidArgumentException('Comment id is required');
+        }
+
+        $session = $this->sessionService->getCurrentSession();
+        if ($session === null || $session->getUser() === null) {
+            throw new common_exception_Unauthorized('Authenticated session required to delete item comments');
+        }
+
+        [$authorId] = $this->resolveAuthorFromSession($session);
+
+        $existing = $this->persistence->findById($commentId);
+        if ($existing === null) {
+            throw new InvalidArgumentException('Comment not found');
+        }
+
+        if ($existing->getAuthorId() !== $authorId) {
+            throw new common_exception_Unauthorized('Only the comment author can delete this comment');
+        }
+
+        $this->persistence->delete($commentId);
+    }
+
     /**
      * Prefer LTI UserDataSessionContext when present on TaoLtiSession:
      * authorId from userId; authorLabel from userName, falling back to userLogin.
@@ -127,6 +208,22 @@ class ItemCommentService
         }
 
         return [$authorId, $authorLabel];
+    }
+
+    private function tryResolveAuthorId(): ?string
+    {
+        $session = $this->sessionService->getCurrentSession();
+        if ($session === null || $session->getUser() === null) {
+            return null;
+        }
+
+        try {
+            [$authorId] = $this->resolveAuthorFromSession($session);
+
+            return $authorId;
+        } catch (common_exception_Unauthorized $exception) {
+            return null;
+        }
     }
 
     /**

@@ -26,6 +26,12 @@ interface ItemCommentPersistenceInterface
 {
     public function create(ItemComment $comment): ItemComment;
 
+    public function update(ItemComment $comment): ItemComment;
+
+    public function delete(string $commentId): void;
+
+    public function findById(string $commentId): ?ItemComment;
+
     /**
      * @return ItemComment[]
      */

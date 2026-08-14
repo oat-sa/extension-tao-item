@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Comment;
 
 use core_kernel_classes_Resource;
+use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
 
 class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
@@ -58,6 +59,72 @@ class RdfItemCommentAdapter implements ItemCommentPersistenceInterface
             $comment->isEdited(),
             $comment->isResolved()
         );
+    }
+
+    public function update(ItemComment $comment): ItemComment
+    {
+        $resource = $this->ontology->getResource($comment->getId());
+        if (!$resource->exists()) {
+            throw new InvalidArgumentException('Comment not found');
+        }
+
+        $resource->editPropertyValues(
+            $this->ontology->getProperty(ItemCommentOntology::PROPERTY_BODY),
+            $comment->getBody()
+        );
+        $resource->editPropertyValues(
+            $this->ontology->getProperty(ItemCommentOntology::PROPERTY_EDITED),
+            $this->boolToLiteral($comment->isEdited())
+        );
+        $resource->editPropertyValues(
+            $this->ontology->getProperty(ItemCommentOntology::PROPERTY_RESOLVED),
+            $this->boolToLiteral($comment->isResolved())
+        );
+
+        return $comment;
+    }
+
+    public function delete(string $commentId): void
+    {
+        $commentId = trim($commentId);
+        if ($commentId === '') {
+            throw new InvalidArgumentException('Comment id is required');
+        }
+
+        $resource = $this->ontology->getResource($commentId);
+        if (!$resource->exists()) {
+            throw new InvalidArgumentException('Comment not found');
+        }
+
+        $resource->delete();
+    }
+
+    public function findById(string $commentId): ?ItemComment
+    {
+        $commentId = trim($commentId);
+        if ($commentId === '') {
+            return null;
+        }
+
+        $resource = $this->ontology->getResource($commentId);
+        if (!$resource->exists()) {
+            return null;
+        }
+
+        $types = $resource->getTypes();
+        $isItemComment = false;
+        foreach ($types as $type) {
+            if ($type->getUri() === ItemCommentOntology::CLASS_URI) {
+                $isItemComment = true;
+                break;
+            }
+        }
+
+        if (!$isItemComment) {
+            return null;
+        }
+
+        return $this->mapResource($resource);
     }
 
     public function findByResource(string $resourceUri, string $resourceType): array

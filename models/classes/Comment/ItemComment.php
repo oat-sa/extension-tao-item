@@ -101,7 +101,37 @@ final class ItemComment
         return $this->resolved;
     }
 
-    public function toArray(): array
+    public function withEditedBody(string $body): self
+    {
+        return new self(
+            $this->id,
+            $this->resourceUri,
+            $this->resourceType,
+            $this->authorId,
+            $this->authorLabel,
+            $body,
+            $this->createdAt,
+            true,
+            $this->resolved
+        );
+    }
+
+    public function withResolved(bool $resolved): self
+    {
+        return new self(
+            $this->id,
+            $this->resourceUri,
+            $this->resourceType,
+            $this->authorId,
+            $this->authorLabel,
+            $this->body,
+            $this->createdAt,
+            $this->edited,
+            $resolved
+        );
+    }
+
+    public function toArray(bool $editable = false): array
     {
         return [
             'id' => $this->id,
@@ -113,6 +143,7 @@ final class ItemComment
             'createdAt' => $this->createdAt,
             'edited' => $this->edited,
             'resolved' => $this->resolved,
+            'editable' => $editable,
         ];
     }
 }
