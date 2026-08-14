@@ -121,6 +121,8 @@ class ItemCommentService
             throw new InvalidArgumentException('Comment not found');
         }
 
+        $this->assertAuthorizedResource($existing->getResourceUri(), $existing->getResourceType(), true);
+
         if ($existing->getAuthorId() !== $authorId) {
             throw new common_exception_Unauthorized('Only the comment author can edit this comment');
         }
@@ -144,6 +146,8 @@ class ItemCommentService
         if ($existing === null) {
             throw new InvalidArgumentException('Comment not found');
         }
+
+        $this->assertAuthorizedResource($existing->getResourceUri(), $existing->getResourceType(), true);
 
         if ($existing->isResolved() === $resolved) {
             return $existing;
@@ -170,6 +174,8 @@ class ItemCommentService
         if ($existing === null) {
             throw new InvalidArgumentException('Comment not found');
         }
+
+        $this->assertAuthorizedResource($existing->getResourceUri(), $existing->getResourceType(), true);
 
         if ($existing->getAuthorId() !== $authorId) {
             throw new common_exception_Unauthorized('Only the comment author can delete this comment');
