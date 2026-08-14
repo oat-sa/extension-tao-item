@@ -279,6 +279,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testUpdateEditsOwnComment(): void
     {
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $existing = new ItemComment(
@@ -318,6 +319,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testUpdateRejectsNonAuthor(): void
     {
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $existing = new ItemComment(
@@ -380,6 +382,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testResolveMarksCommentResolved(): void
     {
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $existing = new ItemComment(
@@ -415,6 +418,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testResolveIsIdempotentWhenAlreadyResolved(): void
     {
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $existing = new ItemComment(
@@ -444,6 +448,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testDeleteRemovesOwnComment(): void
     {
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $existing = new ItemComment(
@@ -472,6 +477,7 @@ class ItemCommentServiceTest extends TestCase
 
     public function testDeleteRejectsNonAuthor(): void
     {
+        $this->configureAuthorizedResource(true);
         $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
 
         $existing = new ItemComment(
