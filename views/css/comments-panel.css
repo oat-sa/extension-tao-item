@@ -213,9 +213,15 @@
   font-size: 14px;
   line-height: 1;
 }
-.item-comment-more-item:hover, .item-comment-more-item:focus {
+.item-comment-more-item:hover {
   background: #d9e8f4;
-  outline: none;
+}
+
+.item-comment-more-item:focus,
+.item-comment-more-item:focus-visible {
+  background: #d9e8f4;
+  outline: 2px solid #0b5cab;
+  outline-offset: 2px;
 }
 
 .item-comment-edit-form {
