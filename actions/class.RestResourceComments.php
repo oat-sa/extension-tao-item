@@ -144,10 +144,14 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
                 throw new InvalidArgumentException('resolved is required');
             }
 
-            $comment = $this->getItemCommentService()->resolve(
-                $commentId,
-                $this->toBool($payload['resolved'])
-            );
+            $resolved = $this->parseBoolStrict($payload['resolved']);
+            if ($resolved === null) {
+                $this->setErrorJsonResponse('resolved must be a boolean (true, false, 1, 0)', 400, [], 400);
+
+                return;
+            }
+
+            $comment = $this->getItemCommentService()->resolve($commentId, $resolved);
             $this->setSuccessJsonResponse($comment->toArray());
         } catch (common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
@@ -226,17 +230,29 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
     /**
      * @param mixed $value
      */
-    private function toBool($value): bool
+    private function parseBoolStrict(mixed $value): ?bool
     {
         if (is_bool($value)) {
             return $value;
         }
 
-        if (is_int($value) || is_float($value)) {
+        if (is_int($value) && ($value === 0 || $value === 1)) {
             return (bool) $value;
         }
 
-        return in_array(strtolower(trim((string) $value)), ['1', 'true', 'yes'], true);
+        if (is_string($value)) {
+            $normalizedValue = strtolower(trim($value));
+
+            if (in_array($normalizedValue, ['1', 'true'], true)) {
+                return true;
+            }
+
+            if (in_array($normalizedValue, ['0', 'false'], true)) {
+                return false;
+            }
+        }
+
+        return null;
     }
 
     private function isGetRequest(): bool
