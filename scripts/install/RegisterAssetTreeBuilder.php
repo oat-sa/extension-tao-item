@@ -23,6 +23,7 @@ namespace oat\taoItems\scripts\install;
 use oat\oatbox\extension\InstallAction;
 use oat\tao\model\ClientLibRegistry;
 use oat\tao\model\asset\AssetService;
+use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetTreeBuilder;
 
 class RegisterAssetTreeBuilder extends InstallAction
@@ -36,6 +37,11 @@ class RegisterAssetTreeBuilder extends InstallAction
                     AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 15,
                 ]
             )
+        );
+
+        $this->getServiceManager()->register(
+            AssetSearchBuilder::SERVICE_ID,
+            new AssetSearchBuilder()
         );
     }
 }

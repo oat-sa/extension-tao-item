@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014-2021 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2026 (original work) Open Assessment Technologies SA;
  *
  */
 
@@ -32,6 +32,7 @@ use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
+use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
@@ -51,6 +52,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     use OntologyAwareTrait;
 
     /**
+     * Browse a media folder, or search within its subtree when `query` is present.
+     *
+     * Browse response (no query): existing tree payload with `children`.
+     * Search response (query set): `{ items, total, page, pageSize }`.
+     *
      * @throws MissingParameterException|TaoMediaException
      */
     public function files(): void
@@ -71,6 +77,19 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $depth,
             $childrenOffset
         );
+
+        $queryText = trim((string)($params['query'] ?? ''));
+        if ($queryText !== '') {
+            $searchQuery
+                ->setQuery($queryText)
+                ->setSortBy((string)($params['sortBy'] ?? DirectorySearchQuery::SORT_LABEL))
+                ->setSortDir((string)($params['sortDir'] ?? 'asc'))
+                ->setPage((int)($params['page'] ?? DirectorySearchQuery::DEFAULT_PAGE))
+                ->setPageSize((int)($params['pageSize'] ?? DirectorySearchQuery::DEFAULT_PAGE_SIZE));
+
+            $this->setSuccessJsonResponse($this->getAssetSearchBuilder()->search($searchQuery));
+            return;
+        }
 
         $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
     }
@@ -294,6 +313,19 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private function getAssetTreeBuilder(): AssetTreeBuilderInterface
     {
         return $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
+    }
+
+    private function getAssetSearchBuilder(): AssetSearchBuilder
+    {
+        $locator = $this->getServiceLocator();
+        if ($locator->has(AssetSearchBuilder::SERVICE_ID)) {
+            return $locator->get(AssetSearchBuilder::SERVICE_ID);
+        }
+
+        $builder = new AssetSearchBuilder();
+        $builder->setServiceLocator($locator);
+
+        return $builder;
     }
 
     /**
