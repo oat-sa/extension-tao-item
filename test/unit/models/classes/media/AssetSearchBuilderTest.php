@@ -146,6 +146,31 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('color-b.mp4', $result['items'][0]['name']);
     }
 
+    public function testSearchMatchesNonAsciiAssetNames(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'colorbars.mp4',
+                    'uri' => 'asset://colorbars',
+                    'mime' => 'video/mp4',
+                ],
+                [
+                    'name' => 'цвет-bars.mp4',
+                    'uri' => 'asset://cyrillic',
+                    'mime' => 'video/mp4',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->search($this->createSearchQuery('цвет', 1, 10));
+
+        $this->assertSame(1, $result['total']);
+        $this->assertSame('цвет-bars.mp4', $result['items'][0]['name']);
+    }
+
     private function createSearchQuery(string $query, int $page, int $pageSize): DirectorySearchQuery
     {
         $mediaAsset = $this->createMock(MediaAsset::class);

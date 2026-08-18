@@ -182,12 +182,12 @@ class AssetSearchBuilder extends ConfigurableService
      */
     private function tokenize(string $value): array
     {
-        $normalized = strtolower(trim($value));
+        $normalized = mb_strtolower(trim($value), 'UTF-8');
         if ($normalized === '') {
             return [];
         }
 
-        $parts = preg_split('/[^a-z0-9]+/u', $normalized) ?: [];
+        $parts = preg_split('/[^\p{L}\p{N}]+/u', $normalized) ?: [];
         return array_values(array_filter($parts, static function (string $part): bool {
             return $part !== '';
         }));
