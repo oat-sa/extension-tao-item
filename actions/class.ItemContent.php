@@ -28,11 +28,11 @@ use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetSearchBuilder;
+use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
@@ -73,7 +73,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $filters = $this->buildFilters($params);
 
-        $searchQuery = new DirectorySearchQuery(
+        $searchQuery = new AssetSearchQuery(
             $this->resolveAsset($uri, $path, $lang),
             $uri,
             $lang,

@@ -20,12 +20,12 @@
 
 declare(strict_types=1);
 
-namespace oat\taoItems\test\unit\models\classes\media;
+namespace oat\taoItems\model\media;
 
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 
-final class CompatDirectorySearchQuery extends DirectorySearchQuery
+final class AssetSearchQuery extends DirectorySearchQuery
 {
     public const SORT_LABEL = 'label';
     public const SORT_LOCATION = 'location';

@@ -26,6 +26,7 @@ use oat\generis\test\TestCase;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
 use oat\taoItems\model\media\AssetSearchBuilder;
+use oat\taoItems\model\media\AssetSearchQuery;
 
 class AssetSearchBuilderTest extends TestCase
 {
@@ -170,17 +171,102 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('цвет-bars.mp4', $result['items'][0]['name']);
     }
 
-    private function createSearchQuery(string $query, int $page, int $pageSize): CompatDirectorySearchQuery
+    public function testSearchTraversesAssetsNestedDeeperThanThirtyTwoLevels(): void
+    {
+        $this->mediaSource
+            ->expects($this->once())
+            ->method('getDirectories')
+            ->willReturnCallback(function (AssetSearchQuery $query): array {
+                $this->assertGreaterThan(32, $query->getDepth());
+
+                return $this->createDeepTree(40);
+            });
+
+        $result = $this->subject->search($this->createSearchQuery('deep-asset', 1, 10));
+
+        $this->assertSame(1, $result['total']);
+        $this->assertSame('deep-asset.png', $result['items'][0]['name']);
+        $this->assertStringContainsString('Level 40', $result['items'][0]['location']);
+    }
+
+    public function testSearchUsesStableTieBreakersForNonLabelSorts(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'beta.png',
+                    'label' => 'Beta',
+                    'uri' => 'asset://2',
+                    'mime' => 'image/png',
+                    'location' => 'Shared',
+                    'updatedAt' => '2026-08-01T10:00:00Z',
+                ],
+                [
+                    'name' => 'alpha.png',
+                    'label' => 'Alpha',
+                    'uri' => 'asset://1',
+                    'mime' => 'image/png',
+                    'location' => 'Shared',
+                    'updatedAt' => '2026-08-01T10:00:00Z',
+                ],
+                [
+                    'name' => 'alpha-copy.png',
+                    'label' => 'Alpha',
+                    'uri' => 'asset://3',
+                    'mime' => 'image/png',
+                    'location' => 'Shared',
+                    'updatedAt' => '2026-08-01T10:00:00Z',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->search(
+            $this->createSearchQuery('', 1, 10)
+                ->setSortBy(AssetSearchQuery::SORT_LOCATION)
+        );
+
+        $this->assertSame(
+            ['asset://1', 'asset://3', 'asset://2'],
+            array_column($result['items'], 'uri')
+        );
+    }
+
+    private function createSearchQuery(string $query, int $page, int $pageSize): AssetSearchQuery
     {
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($this->mediaSource);
         $mediaAsset->method('getMediaIdentifier')->willReturn('/');
 
-        return (new CompatDirectorySearchQuery($mediaAsset, 'item-uri', 'en-US'))
+        return (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
             ->setQuery($query)
             ->setPage($page)
             ->setPageSize($pageSize)
-            ->setSortBy(CompatDirectorySearchQuery::SORT_LABEL)
+            ->setSortBy(AssetSearchQuery::SORT_LABEL)
             ->setSortDir('asc');
+    }
+
+    private function createDeepTree(int $depth): array
+    {
+        $node = [
+            'name' => 'deep-asset.png',
+            'uri' => 'asset://deep',
+            'mime' => 'image/png',
+        ];
+
+        for ($level = $depth; $level >= 1; $level--) {
+            $node = [
+                'path' => '/level-' . $level,
+                'label' => 'Level ' . $level,
+                'children' => [$node],
+            ];
+        }
+
+        return [
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [$node],
+        ];
     }
 }

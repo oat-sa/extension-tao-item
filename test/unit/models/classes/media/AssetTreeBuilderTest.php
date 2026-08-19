@@ -24,6 +24,7 @@ namespace oat\taoItems\test\unit\models\classes\media;
 
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
+use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use tao_helpers_Uri;
 use oat\generis\test\TestCase;
@@ -57,8 +58,8 @@ class AssetTreeBuilderTest extends TestCase
         $mediaAsset->method('getMediaSource')
             ->willReturn($mediaSource);
 
-        $search = (new CompatDirectorySearchQuery($mediaAsset, '', ''))
-            ->setSortBy(CompatDirectorySearchQuery::SORT_LABEL)
+        $search = (new AssetSearchQuery($mediaAsset, '', ''))
+            ->setSortBy(AssetSearchQuery::SORT_LABEL)
             ->setSortDir('asc');
 
         $mediaSource->method('getDirectories')

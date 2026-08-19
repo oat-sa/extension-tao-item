@@ -24,8 +24,6 @@ namespace oat\taoItems\model\media;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
-use oat\tao\model\media\mediaSource\DirectorySearchQuery;
-
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
@@ -36,11 +34,11 @@ class AssetSearchBuilder extends ConfigurableService
 {
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
-    private const MAX_SEARCH_DEPTH = 32;
+    private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
-    public function search(DirectorySearchQuery $search): array
+    public function search(AssetSearchQuery $search): array
     {
         $asset = $search->getAsset();
         $mediaSource = $asset->getMediaSource();
@@ -50,7 +48,7 @@ class AssetSearchBuilder extends ConfigurableService
         }
 
         $search
-            ->setDepth(self::MAX_SEARCH_DEPTH)
+            ->setDepth(self::FULL_SUBTREE_DEPTH)
             ->setChildrenLimit(0);
 
         $tree = $mediaSource->getDirectories($search);
@@ -205,6 +203,16 @@ class AssetSearchBuilder extends ConfigurableService
             $leftValue = $this->sortValue($left, $sortBy);
             $rightValue = $this->sortValue($right, $sortBy);
             $result = $leftValue <=> $rightValue;
+
+            if ($result === 0 && $sortBy !== AssetSearchQuery::SORT_LABEL) {
+                $result = $this->sortValue($left, AssetSearchQuery::SORT_LABEL)
+                    <=> $this->sortValue($right, AssetSearchQuery::SORT_LABEL);
+            }
+
+            if ($result === 0) {
+                $result = (string)($left['uri'] ?? '') <=> (string)($right['uri'] ?? '');
+            }
+
             return $sortDir === 'desc' ? -$result : $result;
         });
 
