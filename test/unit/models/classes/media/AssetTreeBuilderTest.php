@@ -57,6 +57,12 @@ class AssetTreeBuilderTest extends TestCase
 
         $search->method('getAsset')
             ->willReturn($mediaAsset);
+        $search->method('getSortBy')
+            ->willReturn(DirectorySearchQuery::SORT_LABEL);
+        $search->method('getSortDir')
+            ->willReturn('asc');
+        $search->method('getChildrenOffset')
+            ->willReturn(0);
 
         $mediaAsset->method('getMediaSource')
             ->willReturn($mediaSource);
@@ -73,6 +79,8 @@ class AssetTreeBuilderTest extends TestCase
                     'url' => 'something'
                 ]
             ],
+            'total' => 0,
+            'childrenLimit' => 15,
         ];
 
         $this->assertEquals(

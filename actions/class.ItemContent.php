@@ -78,12 +78,14 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $childrenOffset
         );
 
+        $searchQuery
+            ->setSortBy((string)($params['sortBy'] ?? DirectorySearchQuery::SORT_LABEL))
+            ->setSortDir((string)($params['sortDir'] ?? 'asc'));
+
         $queryText = trim((string)($params['query'] ?? ''));
         if ($queryText !== '') {
             $searchQuery
                 ->setQuery($queryText)
-                ->setSortBy((string)($params['sortBy'] ?? DirectorySearchQuery::SORT_LABEL))
-                ->setSortDir((string)($params['sortDir'] ?? 'asc'))
                 ->setPage((int)($params['page'] ?? DirectorySearchQuery::DEFAULT_PAGE))
                 ->setPageSize((int)($params['pageSize'] ?? DirectorySearchQuery::DEFAULT_PAGE_SIZE));
 
