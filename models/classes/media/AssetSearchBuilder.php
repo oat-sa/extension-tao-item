@@ -24,6 +24,8 @@ namespace oat\taoItems\model\media;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
+use oat\tao\model\AdvancedSearch\AdvancedSearchChecker;
+use oat\taoAdvancedSearch\model\SearchEngine\Exception\AssetSearchUnavailableException;
 
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
@@ -40,6 +42,21 @@ class AssetSearchBuilder extends ConfigurableService
     private const SORT_UPDATED_AT = 'updatedAt';
 
     public function search(AssetSearchQuery $search): array
+    {
+        if ($this->shouldUseIndexedSearch()) {
+            try {
+                return $this->getIndexedSearchGateway()->search($search);
+            } catch (AssetSearchUnavailableException $exception) {
+                $this->logWarning(
+                    'Asset indexed search unavailable, falling back to filesystem: ' . $exception->getMessage()
+                );
+            }
+        }
+
+        return $this->searchFilesystem($search);
+    }
+
+    public function searchFilesystem(AssetSearchQuery $search): array
     {
         $asset = $search->getAsset();
         $mediaSource = $asset->getMediaSource();
@@ -256,5 +273,30 @@ class AssetSearchBuilder extends ConfigurableService
         }
 
         return mb_strtolower((string)($item['label'] ?? $item['name'] ?? ''), 'UTF-8');
+    }
+
+    private function shouldUseIndexedSearch(): bool
+    {
+        $locator = $this->getServiceLocator();
+        if ($locator === null || !$locator->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
+            return false;
+        }
+
+        if (!$locator->has(AdvancedSearchChecker::class)) {
+            return false;
+        }
+
+        /** @var AdvancedSearchChecker $checker */
+        $checker = $locator->get(AdvancedSearchChecker::class);
+        if (!$checker->isEnabled() || !$checker->ping()) {
+            return false;
+        }
+
+        return $this->getIndexedSearchGateway()->isAvailable();
+    }
+
+    private function getIndexedSearchGateway(): AssetIndexedSearchGatewayInterface
+    {
+        return $this->getServiceLocator()->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
     }
 }
