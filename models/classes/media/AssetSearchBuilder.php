@@ -43,6 +43,8 @@ class AssetSearchBuilder extends ConfigurableService
 
     public function search(AssetSearchQuery $search): array
     {
+        $hasMetadataCriteria = $search->getMetadataCriteria() !== [];
+
         if ($this->shouldUseIndexedSearch()) {
             try {
                 return $this->getIndexedSearchGateway()->search($search);
@@ -50,7 +52,12 @@ class AssetSearchBuilder extends ConfigurableService
                 $this->logWarning(
                     'Asset indexed search unavailable, falling back to filesystem: ' . $exception->getMessage()
                 );
+                if ($hasMetadataCriteria) {
+                    return $this->emptySearchResult($search);
+                }
             }
+        } elseif ($hasMetadataCriteria) {
+            return $this->emptySearchResult($search);
         }
 
         return $this->searchFilesystem($search);
@@ -223,15 +230,13 @@ class AssetSearchBuilder extends ConfigurableService
             if ($nullsLast) {
                 $leftMissing = $this->isMissingSortValue($left, $sortBy);
                 $rightMissing = $this->isMissingSortValue($right, $sortBy);
-                if ($leftMissing || $rightMissing) {
-                    if ($leftMissing && $rightMissing) {
-                        $result = 0;
-                    } else {
-                        return $leftMissing ? 1 : -1;
-                    }
-                } else {
-                    $result = $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
+                if ($leftMissing !== $rightMissing) {
+                    return $leftMissing ? 1 : -1;
                 }
+
+                $result = $leftMissing
+                    ? 0
+                    : $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
             } else {
                 $result = $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
             }
@@ -298,5 +303,18 @@ class AssetSearchBuilder extends ConfigurableService
     private function getIndexedSearchGateway(): AssetIndexedSearchGatewayInterface
     {
         return $this->getServiceLocator()->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
+    }
+
+    /**
+     * @return array{items: array<int, array>, total: int, page: int, pageSize: int}
+     */
+    private function emptySearchResult(AssetSearchQuery $search): array
+    {
+        return [
+            'items' => [],
+            'total' => 0,
+            'page' => $search->getPage(),
+            'pageSize' => $search->getPageSize(),
+        ];
     }
 }

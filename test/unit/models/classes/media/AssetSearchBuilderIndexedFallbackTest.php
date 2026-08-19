@@ -101,6 +101,34 @@ class AssetSearchBuilderIndexedFallbackTest extends TestCase
         $this->assertSame('local.png', $result['items'][0]['name']);
     }
 
+    public function testSearchReturnsEmptyResultWhenIndexedSearchFailsWithMetadataCriteria(): void
+    {
+        $checker = $this->createMock(AdvancedSearchChecker::class);
+        $checker->method('isEnabled')->willReturn(true);
+        $checker->method('ping')->willReturn(true);
+
+        $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $gateway->method('isAvailable')->willReturn(true);
+        $gateway->method('search')->willThrowException(new AssetSearchUnavailableException('ES down'));
+
+        $this->serviceLocator->method('has')->willReturnMap([
+            [AssetIndexedSearchGatewayInterface::SERVICE_ID, true],
+            [AdvancedSearchChecker::class, true],
+        ]);
+        $this->serviceLocator->method('get')->willReturnMap([
+            [AdvancedSearchChecker::class, $checker],
+            [AssetIndexedSearchGatewayInterface::SERVICE_ID, $gateway],
+        ]);
+
+        $query = $this->createQuery('local');
+        $query->setMetadataCriteria(['http://example.com/property' => 'science']);
+
+        $result = $this->subject->search($query);
+
+        $this->assertSame(0, $result['total']);
+        $this->assertSame([], $result['items']);
+    }
+
     private function createQuery(string $queryText): AssetSearchQuery
     {
         $mediaAsset = $this->createMock(MediaAsset::class);

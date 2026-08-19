@@ -453,6 +453,87 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('asset://undated', $result['items'][1]['uri']);
     }
 
+    public function testSearchSortsNullLocationLastWhenDescending(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'with-location.png',
+                    'label' => 'With location',
+                    'uri' => 'asset://with-location',
+                    'mime' => 'image/png',
+                    'location' => 'Folder/B',
+                ],
+                [
+                    'name' => 'no-location.png',
+                    'label' => 'No location',
+                    'uri' => 'asset://no-location',
+                    'mime' => 'image/png',
+                    'location' => '',
+                ],
+                [
+                    'name' => 'other-location.png',
+                    'label' => 'Other location',
+                    'uri' => 'asset://other-location',
+                    'mime' => 'image/png',
+                    'location' => 'Folder/A',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->search(
+            $this->createSearchQuery('', 1, 10)
+                ->setSortBy(AssetSearchQuery::SORT_LOCATION)
+                ->setSortDir('desc')
+        );
+
+        $this->assertSame('asset://with-location', $result['items'][0]['uri']);
+        $this->assertSame('asset://other-location', $result['items'][1]['uri']);
+        $this->assertSame('asset://no-location', $result['items'][2]['uri']);
+    }
+
+    public function testSearchSortsNullUpdatedAtLastWhenDescending(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'latest.png',
+                    'label' => 'Latest',
+                    'uri' => 'asset://latest',
+                    'mime' => 'image/png',
+                    'updatedAt' => '2026-08-03T10:00:00Z',
+                ],
+                [
+                    'name' => 'undated.png',
+                    'label' => 'Undated',
+                    'uri' => 'asset://undated',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'name' => 'older.png',
+                    'label' => 'Older',
+                    'uri' => 'asset://older',
+                    'mime' => 'image/png',
+                    'updatedAt' => '2026-08-01T10:00:00Z',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->search(
+            $this->createSearchQuery('', 1, 10)
+                ->setSortBy(AssetSearchQuery::SORT_UPDATED_AT)
+                ->setSortDir('desc')
+        );
+
+        $this->assertSame('asset://latest', $result['items'][0]['uri']);
+        $this->assertSame('asset://older', $result['items'][1]['uri']);
+        $this->assertSame('asset://undated', $result['items'][2]['uri']);
+    }
+
     public function testSearchPassesMimeFiltersToMediaSource(): void
     {
         $this->mediaSource

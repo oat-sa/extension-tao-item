@@ -39,6 +39,7 @@ class ItemContentRequiredParamsTest extends TestCase
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => ''], 'uri'));
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => null], 'uri'));
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => '   '], 'uri'));
+        $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => ['bad']], 'uri'));
     }
 
     public function testBuildMetadataCriteriaParsesPropertyValuePairs(): void
@@ -46,7 +47,7 @@ class ItemContentRequiredParamsTest extends TestCase
         $propertyUri = 'http://www.tao.lu/Ontologies/TAO.rdf#Keywords';
         $criteria = $this->invokeBuildMetadataCriteria([
             'metadata' => [
-                $propertyUri => 'science',
+                '  ' . $propertyUri . '  ' => 'science',
                 'http://example.com/empty' => '   ',
                 123 => 'ignored',
             ],

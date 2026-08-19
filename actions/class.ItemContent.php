@@ -302,7 +302,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             return true;
         }
 
-        return is_string($value) && trim($value) === '';
+        if (!is_string($value)) {
+            return true;
+        }
+
+        return trim($value) === '';
     }
 
     private function buildFilters(array $params): array
@@ -343,6 +347,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         foreach ($params['metadata'] as $propertyUri => $value) {
             if (!is_string($propertyUri) || !is_string($value)) {
+                continue;
+            }
+
+            $propertyUri = trim($propertyUri);
+            if ($propertyUri === '') {
                 continue;
             }
 
