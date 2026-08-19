@@ -37,6 +37,8 @@ class AssetSearchBuilder extends ConfigurableService
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
     private const MAX_SEARCH_DEPTH = 32;
+    private const SORT_LOCATION = 'location';
+    private const SORT_UPDATED_AT = 'updatedAt';
 
     public function search(DirectorySearchQuery $search): array
     {
@@ -211,10 +213,10 @@ class AssetSearchBuilder extends ConfigurableService
 
     private function sortValue(array $item, string $sortBy): string
     {
-        if ($sortBy === DirectorySearchQuery::SORT_LOCATION) {
+        if ($sortBy === self::SORT_LOCATION) {
             return strtolower((string)($item['location'] ?? ''));
         }
-        if ($sortBy === DirectorySearchQuery::SORT_UPDATED_AT) {
+        if ($sortBy === self::SORT_UPDATED_AT) {
             return (string)($item['updatedAt'] ?? $item['updated_at'] ?? '');
         }
 

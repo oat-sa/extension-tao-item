@@ -34,6 +34,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     public const OPTION_PAGINATION_LIMIT = 'pagination_limit';
     public const DEFAULT_PAGINATION_OFFSET = 0;
     private const DEFAULT_PAGINATION_LIMIT = 15;
+    private const SORT_LABEL = 'label';
+    private const SORT_LOCATION = 'location';
+    private const SORT_UPDATED_AT = 'updatedAt';
 
     public function build(DirectorySearchQuery $search): array
     {
@@ -100,14 +103,14 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      */
     private function sortFiles(array $files, ?string $sortBy, ?string $sortDir): array
     {
-        $field = $sortBy ?: DirectorySearchQuery::SORT_LABEL;
+        $field = $sortBy ?: self::SORT_LABEL;
         $direction = $sortDir === 'desc' ? 'desc' : 'asc';
 
         usort($files, function (array $left, array $right) use ($field, $direction): int {
             $result = $this->sortValue($left, $field) <=> $this->sortValue($right, $field);
-            if ($result === 0 && $field !== DirectorySearchQuery::SORT_LABEL) {
-                $result = $this->sortValue($left, DirectorySearchQuery::SORT_LABEL)
-                    <=> $this->sortValue($right, DirectorySearchQuery::SORT_LABEL);
+            if ($result === 0 && $field !== self::SORT_LABEL) {
+                $result = $this->sortValue($left, self::SORT_LABEL)
+                    <=> $this->sortValue($right, self::SORT_LABEL);
             }
 
             return $direction === 'desc' ? -$result : $result;
@@ -118,10 +121,10 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
     private function sortValue(array $item, string $sortBy): string
     {
-        if ($sortBy === DirectorySearchQuery::SORT_LOCATION) {
+        if ($sortBy === self::SORT_LOCATION) {
             return strtolower((string)($item['location'] ?? $item['path'] ?? ''));
         }
-        if ($sortBy === DirectorySearchQuery::SORT_UPDATED_AT) {
+        if ($sortBy === self::SORT_UPDATED_AT) {
             return (string)($item['updatedAt'] ?? $item['updated_at'] ?? '');
         }
 

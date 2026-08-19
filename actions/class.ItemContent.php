@@ -51,6 +51,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     use HttpJsonResponseTrait;
     use OntologyAwareTrait;
 
+    private const DEFAULT_SORT_BY = 'label';
+    private const DEFAULT_PAGE = 1;
+    private const DEFAULT_PAGE_SIZE = 10;
+
     /**
      * Browse a media folder, or search within its subtree when `query` is present.
      *
@@ -79,15 +83,15 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         );
 
         $searchQuery
-            ->setSortBy((string)($params['sortBy'] ?? DirectorySearchQuery::SORT_LABEL))
+            ->setSortBy((string)($params['sortBy'] ?? self::DEFAULT_SORT_BY))
             ->setSortDir((string)($params['sortDir'] ?? 'asc'));
 
         $queryText = trim((string)($params['query'] ?? ''));
         if ($queryText !== '') {
             $searchQuery
                 ->setQuery($queryText)
-                ->setPage((int)($params['page'] ?? DirectorySearchQuery::DEFAULT_PAGE))
-                ->setPageSize((int)($params['pageSize'] ?? DirectorySearchQuery::DEFAULT_PAGE_SIZE));
+                ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
+                ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
 
             $this->setSuccessJsonResponse($this->getAssetSearchBuilder()->search($searchQuery));
             return;

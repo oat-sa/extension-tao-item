@@ -25,7 +25,6 @@ namespace oat\taoItems\test\unit\models\classes\media;
 use oat\generis\test\TestCase;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\taoItems\model\media\AssetSearchBuilder;
 
 class AssetSearchBuilderTest extends TestCase
@@ -171,17 +170,17 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('цвет-bars.mp4', $result['items'][0]['name']);
     }
 
-    private function createSearchQuery(string $query, int $page, int $pageSize): DirectorySearchQuery
+    private function createSearchQuery(string $query, int $page, int $pageSize): CompatDirectorySearchQuery
     {
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($this->mediaSource);
         $mediaAsset->method('getMediaIdentifier')->willReturn('/');
 
-        return (new DirectorySearchQuery($mediaAsset, 'item-uri', 'en-US'))
+        return (new CompatDirectorySearchQuery($mediaAsset, 'item-uri', 'en-US'))
             ->setQuery($query)
             ->setPage($page)
             ->setPageSize($pageSize)
-            ->setSortBy(DirectorySearchQuery::SORT_LABEL)
+            ->setSortBy(CompatDirectorySearchQuery::SORT_LABEL)
             ->setSortDir('asc');
     }
 }
