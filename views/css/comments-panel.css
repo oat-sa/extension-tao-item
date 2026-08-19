@@ -177,8 +177,9 @@
 .item-comment-more-menu {
   position: absolute;
   right: 0;
-  bottom: calc(100% + 2px);
-  z-index: 20;
+  top: calc(100% + 2px);
+  bottom: auto;
+  z-index: 60;
   min-width: 120px;
   margin: 0;
   padding: 4px 0;
@@ -187,6 +188,16 @@
   border: 1px solid #c8ccd0;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.item-comment-more-menu.item-comment-more-menu--up {
+  top: auto;
+  bottom: calc(100% + 2px);
+}
+
+.item-comment-more-menu.item-comment-more-menu--down {
+  top: calc(100% + 2px);
+  bottom: auto;
 }
 
 .item-comment-more-item {
