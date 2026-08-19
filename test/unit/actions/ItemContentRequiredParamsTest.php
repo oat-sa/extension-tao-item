@@ -41,6 +41,20 @@ class ItemContentRequiredParamsTest extends TestCase
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => '   '], 'uri'));
     }
 
+    public function testBuildMetadataCriteriaParsesPropertyValuePairs(): void
+    {
+        $propertyUri = 'http://www.tao.lu/Ontologies/TAO.rdf#Keywords';
+        $criteria = $this->invokeBuildMetadataCriteria([
+            'metadata' => [
+                $propertyUri => 'science',
+                'http://example.com/empty' => '   ',
+                123 => 'ignored',
+            ],
+        ]);
+
+        $this->assertSame([$propertyUri => 'science'], $criteria);
+    }
+
     private function invokeIsMissingOrBlankQueryParam(array $params, string $key): bool
     {
         $controller = new \taoItems_actions_ItemContent();
@@ -48,5 +62,17 @@ class ItemContentRequiredParamsTest extends TestCase
         $method->setAccessible(true);
 
         return (bool)$method->invoke($controller, $params, $key);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function invokeBuildMetadataCriteria(array $params): array
+    {
+        $controller = new \taoItems_actions_ItemContent();
+        $method = new ReflectionMethod($controller, 'buildMetadataCriteria');
+        $method->setAccessible(true);
+
+        return $method->invoke($controller, $params);
     }
 }

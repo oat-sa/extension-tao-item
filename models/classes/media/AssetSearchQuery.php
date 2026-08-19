@@ -50,6 +50,9 @@ final class AssetSearchQuery extends DirectorySearchQuery
     /** @var int */
     private $pageSize = self::DEFAULT_PAGE_SIZE;
 
+    /** @var array<string, string> */
+    private $metadataCriteria = [];
+
     /** @var int */
     private $depth;
 
@@ -163,5 +166,23 @@ final class AssetSearchQuery extends DirectorySearchQuery
     public function getPageSize(): int
     {
         return $this->pageSize;
+    }
+
+    /**
+     * @param array<string, string> $metadataCriteria
+     */
+    public function setMetadataCriteria(array $metadataCriteria): self
+    {
+        $this->metadataCriteria = $metadataCriteria;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMetadataCriteria(): array
+    {
+        return $this->metadataCriteria;
     }
 }

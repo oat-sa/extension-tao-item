@@ -90,6 +90,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         if ($queryText !== '') {
             $searchQuery
                 ->setQuery($queryText)
+                ->setMetadataCriteria($this->buildMetadataCriteria($params))
                 ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
                 ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
 
@@ -328,6 +329,32 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             }
         }
         return $filters;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function buildMetadataCriteria(array $params): array
+    {
+        $criteria = [];
+        if (!isset($params['metadata']) || !is_array($params['metadata'])) {
+            return $criteria;
+        }
+
+        foreach ($params['metadata'] as $propertyUri => $value) {
+            if (!is_string($propertyUri) || !is_string($value)) {
+                continue;
+            }
+
+            $normalized = trim($value);
+            if ($normalized === '') {
+                continue;
+            }
+
+            $criteria[$propertyUri] = $normalized;
+        }
+
+        return $criteria;
     }
 
     private function getAssetTreeBuilder(): AssetTreeBuilderInterface
