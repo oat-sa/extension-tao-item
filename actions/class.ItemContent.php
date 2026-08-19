@@ -56,10 +56,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private const DEFAULT_PAGE_SIZE = 10;
 
     /**
-     * Browse a media folder, or search within its subtree when `query` is present.
+     * Browse a media folder, or search within its subtree when `query` is non-empty.
      *
-     * Browse response (no query): existing tree payload with `children`.
-     * Search response (query set): `{ items, total, page, pageSize }`.
+     * Browse response (empty query): existing tree payload with `children`.
+     * Search response (non-empty query): `{ items, total, page, pageSize }`.
      *
      * @throws MissingParameterException|TaoMediaException
      */

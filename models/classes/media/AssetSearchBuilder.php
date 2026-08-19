@@ -93,10 +93,9 @@ class AssetSearchBuilder extends ConfigurableService
             if ($this->isDirectoryNode($child)) {
                 $childLabel = (string)($child['label'] ?? $child['path'] ?? '');
                 $childLocation = trim($currentLocation . '/' . $childLabel, '/');
-                $items = array_merge(
-                    $items,
-                    $this->flattenAssets($child, $scopePath, $scopeLabel, $childLocation)
-                );
+                foreach ($this->flattenAssets($child, $scopePath, $scopeLabel, $childLocation) as $nestedItem) {
+                    $items[] = $nestedItem;
+                }
                 continue;
             }
 

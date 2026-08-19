@@ -64,8 +64,9 @@ final class AssetSearchQuery extends DirectorySearchQuery
         int $childrenOffset = 0,
         int $childrenLimit = 0
     ) {
-        parent::__construct($asset, $itemUri, $itemLang, $filter, $depth, $childrenOffset, $childrenLimit);
-        $this->depth = $depth;
+        $normalizedDepth = $depth > 0 ? $depth : 1;
+        parent::__construct($asset, $itemUri, $itemLang, $filter, $normalizedDepth, $childrenOffset, $childrenLimit);
+        $this->depth = $normalizedDepth;
         $this->childrenLimit = $childrenLimit;
     }
 
