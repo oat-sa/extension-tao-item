@@ -136,9 +136,32 @@ define([
                 if ($keep && $more.is($keep)) {
                     return;
                 }
-                $more.find('.item-comment-more-menu').prop('hidden', true);
+                $more.find('.item-comment-more-menu')
+                    .prop('hidden', true)
+                    .removeClass('item-comment-more-menu--up item-comment-more-menu--down');
                 $more.find('.item-comment-more-toggle').attr('aria-expanded', 'false');
             });
+        }
+
+        function positionMoreMenu($more, $menu) {
+            const listElement = $list.get(0);
+            const moreElement = $more.get(0);
+            const menuElement = $menu.get(0);
+
+            if (!listElement || !moreElement || !menuElement) {
+                return;
+            }
+
+            const listRect = listElement.getBoundingClientRect();
+            const moreRect = moreElement.getBoundingClientRect();
+            const menuHeight = menuElement.offsetHeight;
+            const spaceBelow = listRect.bottom - moreRect.bottom;
+            const spaceAbove = moreRect.top - listRect.top;
+            const openUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
+
+            $menu
+                .removeClass('item-comment-more-menu--up item-comment-more-menu--down')
+                .addClass(openUp ? 'item-comment-more-menu--up' : 'item-comment-more-menu--down');
         }
 
         function closeEditForms($keep) {
@@ -220,6 +243,9 @@ define([
             const willOpen = $menu.prop('hidden');
             closeMoreMenus(willOpen ? $more : null);
             $menu.prop('hidden', !willOpen);
+            if (willOpen) {
+                positionMoreMenu($more, $menu);
+            }
             $toggle.attr('aria-expanded', willOpen ? 'true' : 'false');
         });
 
