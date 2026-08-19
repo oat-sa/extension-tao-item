@@ -282,12 +282,26 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getPsrRequest()->getQueryParams();
         foreach ($requiredKeys as $key) {
-            if (!array_key_exists($key, $params) || empty($params[$key])) {
+            if ($this->isMissingOrBlankQueryParam($params, $key)) {
                 throw new MissingParameterException($key, __METHOD__);
             }
         }
 
         return $params;
+    }
+
+    private function isMissingOrBlankQueryParam(array $params, string $key): bool
+    {
+        if (!array_key_exists($key, $params)) {
+            return true;
+        }
+
+        $value = $params[$key];
+        if ($value === null || $value === '') {
+            return true;
+        }
+
+        return is_string($value) && trim($value) === '';
     }
 
     private function buildFilters(array $params): array
