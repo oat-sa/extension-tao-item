@@ -71,7 +71,7 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     public function setDepth(int $depth): self
     {
-        $this->depth = $depth;
+        $this->depth = $depth > 0 ? $depth : 1;
 
         return $this;
     }

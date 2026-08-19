@@ -24,6 +24,7 @@ namespace oat\taoItems\model\media;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
+
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
