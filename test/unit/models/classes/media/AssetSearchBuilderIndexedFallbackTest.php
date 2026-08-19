@@ -84,7 +84,7 @@ class AssetSearchBuilderIndexedFallbackTest extends TestCase
 
         $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
         $gateway->method('isAvailable')->willReturn(true);
-        $gateway->method('search')->willThrowException(new AssetSearchUnavailableException('ES down'));
+        $gateway->expects($this->once())->method('search')->willThrowException(new AssetSearchUnavailableException('ES down'));
 
         $this->serviceLocator->method('has')->willReturnMap([
             [AssetIndexedSearchGatewayInterface::SERVICE_ID, true],
@@ -109,7 +109,7 @@ class AssetSearchBuilderIndexedFallbackTest extends TestCase
 
         $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
         $gateway->method('isAvailable')->willReturn(true);
-        $gateway->method('search')->willThrowException(new AssetSearchUnavailableException('ES down'));
+        $gateway->expects($this->once())->method('search')->willThrowException(new AssetSearchUnavailableException('ES down'));
 
         $this->serviceLocator->method('has')->willReturnMap([
             [AssetIndexedSearchGatewayInterface::SERVICE_ID, true],
