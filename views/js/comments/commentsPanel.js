@@ -25,10 +25,11 @@ define([
     'lodash',
     'i18n',
     'core/eventifier',
+    'taoItems/comments/commentRichTextEditor',
     'tpl!taoItems/comments/tpl/panel',
     'tpl!taoItems/comments/tpl/comment',
     'css!taoItemsCss/comments-panel'
-], function ($, _, __, eventifier, panelTpl, commentTpl) {
+], function ($, _, __, eventifier, richTextEditor, panelTpl, commentTpl) {
     'use strict';
 
     let instanceSeq = 0;
@@ -79,8 +80,21 @@ define([
         const $empty = $panel.find('.item-comments-empty');
         const $error = $panel.find('.item-comments-error');
         const $form = $panel.find('.item-comments-entry');
-        const $input = $panel.find('.item-comments-input');
+        const $draftEditorHost = $panel.find('[data-role="draft-editor"]');
+        const $draftToolbar = $panel.find('[data-role="draft-toolbar"]');
         const $submit = $panel.find('.item-comments-submit');
+
+        const editEditors = {};
+
+        const draftEditor = richTextEditor.create({
+            host: $draftEditorHost,
+            toolbar: $draftToolbar,
+            placeholder: labels.placeholder || __('Add a comment'),
+            initialValue: store.getDraft(),
+            onChange(value) {
+                store.setDraft(value);
+            }
+        });
 
         $host.empty().append($panel);
 
@@ -103,6 +117,11 @@ define([
         }
 
         function renderComments() {
+            Object.keys(editEditors).forEach(commentId => {
+                editEditors[commentId].destroy();
+                delete editEditors[commentId];
+            });
+
             const comments = store.getComments();
             $list.empty();
 
@@ -111,23 +130,52 @@ define([
             } else {
                 $empty.prop('hidden', true);
                 comments.forEach(comment => {
-                    $list.append(
+                    const $commentNode = $(
                         commentTpl({
                             id: comment.id,
                             authorLabel: comment.authorLabel,
                             createdAt: comment.createdAt,
                             displayTime: formatDisplayTime(comment.createdAt),
-                            body: comment.body,
                             edited: !!comment.edited,
                             editable: !!comment.editable,
                             resolved: !!comment.resolved
                         })
                     );
+
+                    $commentNode
+                        .find('[data-role="body"]')
+                        .html(richTextEditor.sanitizeHtml(comment.body));
+
+                    $list.append($commentNode);
                 });
             }
 
-            $input.val(store.getDraft());
+            if (draftEditor.getData() !== store.getDraft()) {
+                draftEditor.setData(store.getDraft());
+            }
             $submit.prop('disabled', !store.hasDirtyDraft() || store.isSubmitting());
+        }
+
+        function findComment(commentId) {
+            return store.getComments().find(comment => comment.id === commentId) || null;
+        }
+
+        function ensureEditEditor($article, commentId) {
+            if (editEditors[commentId]) {
+                return editEditors[commentId];
+            }
+
+            const $editorHost = $article.find('[data-role="edit-editor"]');
+            const $toolbar = $article.find('[data-role="edit-toolbar"]');
+            const comment = findComment(commentId);
+
+            editEditors[commentId] = richTextEditor.create({
+                host: $editorHost,
+                toolbar: $toolbar,
+                initialValue: comment ? comment.body : ''
+            });
+
+            return editEditors[commentId];
         }
 
         function closeMoreMenus($keep) {
@@ -192,7 +240,7 @@ define([
                 }
             )
             .on(`draftchange${ns}`, draft => {
-                $submit.prop('disabled', !/\S/.test(draft || ''));
+                $submit.prop('disabled', !store.hasDirtyDraft());
             })
             .on(`submitFailed${ns}`, () => {
                 showError(labels.submitFailed || __('The comment was not saved.'));
@@ -212,14 +260,11 @@ define([
             .on(`submitted${ns}`, () => {
                 clearError();
                 scrollToNewest();
+                draftEditor.setData('');
             })
             .on([`updated${ns}`, `resolved${ns}`, `deleted${ns}`].join(' '), () => {
                 clearError();
             });
-
-        $input.on(`input${ns}`, () => {
-            store.setDraft($input.val());
-        });
 
         $form.on(`submit${ns}`, e => {
             e.preventDefault();
@@ -228,9 +273,6 @@ define([
             }
             store
                 .submit()
-                .then(() => {
-                    $input.val('');
-                })
                 .catch(_.noop);
         });
 
@@ -259,7 +301,8 @@ define([
             $article.find('[data-role="body"]').prop('hidden', true);
             $article.find('[data-role="actions"]').prop('hidden', true);
             $editForm.prop('hidden', false);
-            $editForm.find('.item-comment-edit-input').trigger('focus');
+            const editor = ensureEditEditor($article, String($article.data('comment-id') || ''));
+            editor.focus();
         });
 
         $list.on(`click${ns}`, '.item-comment-cancel', e => {
@@ -270,9 +313,10 @@ define([
         $list.on(`click${ns}`, '.item-comment-save', e => {
             e.preventDefault();
             const $button = $(e.currentTarget);
-            const commentId = $button.data('comment-id');
+            const commentId = String($button.data('comment-id') || '');
             const $article = $button.closest('.item-comment');
-            const body = $article.find('.item-comment-edit-input').val();
+            const editor = ensureEditEditor($article, commentId);
+            const body = editor.getData();
             $button.prop('disabled', true);
             store
                 .update(commentId, body)
@@ -338,9 +382,13 @@ define([
             destroy() {
                 $(document).off(ns);
                 $form.off(ns);
-                $input.off(ns);
                 $list.off(ns);
                 store.off(ns);
+                draftEditor.destroy();
+                Object.keys(editEditors).forEach(commentId => {
+                    editEditors[commentId].destroy();
+                    delete editEditors[commentId];
+                });
                 $panel.remove();
                 return this;
             }

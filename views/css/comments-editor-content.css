@@ -1,0 +1,19 @@
+.item-comments-editor-body {
+    margin: 0;
+    padding: 0;
+    min-height: 78px;
+    line-height: 20px;
+    box-sizing: border-box;
+}
+
+.item-comments-editor-body p {
+    margin: 0;
+    padding: 0;
+    line-height: 20px;
+}
+
+.item-comments-editor-body ul,
+.item-comments-editor-body ol {
+    margin: 0 0 0 18px;
+    padding: 0;
+}

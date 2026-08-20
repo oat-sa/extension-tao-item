@@ -278,8 +278,8 @@ class ItemCommentService
 
     private function assertBody(string $body): string
     {
-        $body = trim($body);
-        if ($body === '') {
+        $body = CommentRichTextSanitizer::sanitize($body);
+        if (!CommentRichTextSanitizer::hasMeaningfulText($body)) {
             throw new InvalidArgumentException('Comment body must not be empty');
         }
 
