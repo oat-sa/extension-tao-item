@@ -4,7 +4,7 @@
 {{#each tests}}<li>{{this.label}}</li>{{/each}}
 </ul>
 {{#if numberOther}}
-<span class="gray-others">{{__ 'and'}} {{numberOther}} {{__ 'other'}}{{#if multipleOthers}}{{__ 's'}}{{/if}}.</span><br><br>
+<span class="gray-others">{{__ 'and'}} {{__p "%d other." "%d others." numberOther}}</span><br><br>
 {{/if}}
 {{__ 'If you continue:'}}<br>
 <ul>

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.01\n"
-"PO-Revision-Date: 2026-01-05T10:53:29\n"
+"Project-Id-Version: TAO 2026.06\n"
+"PO-Revision-Date: 2026-08-21T19:05:54\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -10,8 +10,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
+
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
@@ -109,7 +119,13 @@ msgstr ""
 msgid "Expose the property value to create automated categories."
 msgstr ""
 
+msgid "External previewer load timeout"
+msgstr ""
+
 msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Failed to get tokens for external previewer"
 msgstr ""
 
 msgid "Forbidden action"
@@ -131,6 +147,9 @@ msgstr ""
 msgid "Item not found"
 msgstr ""
 
+msgid "Item preview"
+msgstr ""
+
 msgid "Item saved"
 msgstr ""
 
@@ -149,6 +168,9 @@ msgid "Landscape"
 msgstr ""
 
 msgid "Last updated on %2s"
+msgstr ""
+
+msgid "Loading preview..."
 msgstr ""
 
 msgid "Manage item class schema"
@@ -268,6 +290,9 @@ msgid "Unable to delete the selected resource"
 msgstr ""
 
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
+msgstr ""
+
+msgid "Unable to load item preview"
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
