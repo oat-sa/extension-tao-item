@@ -1,0 +1,198 @@
+/**
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
+ */
+define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function (
+    _,
+    eventifier,
+    itemCommentsApi
+) {
+    'use strict';
+
+    /**
+     * In-memory Item Comments session store (FR1 M1).
+     *
+     * @param {object} config
+     * @param {string} config.itemUri
+     * @param {object} [config.api]
+     * @returns {object}
+     */
+    function itemCommentsStoreFactory(config) {
+        const api = (config && config.api) || itemCommentsApi;
+        let itemUri = (config && config.itemUri) || '';
+        let comments = [];
+        let count = 0;
+        let draft = '';
+        let loaded = false;
+        let loading = false;
+        let submitting = false;
+        let loadError = null;
+        let submitError = null;
+
+        const store = {
+            getItemUri() {
+                return itemUri;
+            },
+
+            setItemUri(nextItemUri) {
+                if (nextItemUri === itemUri) {
+                    return this;
+                }
+                itemUri = nextItemUri || '';
+                comments = [];
+                count = 0;
+                draft = '';
+                loaded = false;
+                loading = false;
+                submitting = false;
+                loadError = null;
+                submitError = null;
+                this.trigger('reset');
+                return this;
+            },
+
+            getComments() {
+                return comments.slice();
+            },
+
+            getCount() {
+                return count;
+            },
+
+            setDraft(text) {
+                draft = typeof text === 'string' ? text : '';
+                submitError = null;
+                this.trigger('draftchange', draft);
+                return this;
+            },
+
+            getDraft() {
+                return draft;
+            },
+
+            hasDirtyDraft() {
+                return /\S/.test(draft);
+            },
+
+            clearDraft() {
+                return this.setDraft('');
+            },
+
+            isLoading() {
+                return loading;
+            },
+
+            isSubmitting() {
+                return submitting;
+            },
+
+            getLoadError() {
+                return loadError;
+            },
+
+            getSubmitError() {
+                return submitError;
+            },
+
+            load(options) {
+                const force = !!(options && options.force);
+                if (!itemUri) {
+                    return Promise.reject(new Error('itemUri is required'));
+                }
+                if (loaded && !force) {
+                    return Promise.resolve(this);
+                }
+                if (loading) {
+                    return Promise.resolve(this);
+                }
+
+                loading = true;
+                loadError = null;
+                this.trigger('loading');
+
+                return api
+                    .list(itemUri, itemCommentsApi.RESOURCE_TYPE.ITEM)
+                    .then(data => {
+                        comments = (data && data.comments) || [];
+                        count = typeof (data && data.count) === 'number' ? data.count : comments.length;
+                        loaded = true;
+                        loading = false;
+                        this.trigger('loaded', comments.slice(), count);
+                        this.trigger('countchange', count);
+                        return this;
+                    })
+                    .catch(error => {
+                        loading = false;
+                        loadError = error;
+                        this.trigger('error', error);
+                        throw error;
+                    });
+            },
+
+            submit() {
+                if (!itemUri) {
+                    return Promise.reject(new Error('itemUri is required'));
+                }
+                const body = draft.trim();
+                if (!body) {
+                    return Promise.reject(new Error('Comment body must not be empty'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .create(itemUri, itemCommentsApi.RESOURCE_TYPE.ITEM, body)
+                    .then(comment => {
+                        comments = comments.concat([comment]);
+                        count += 1;
+                        submitting = false;
+                        this.clearDraft();
+                        this.trigger('submitted', comment);
+                        this.trigger('countchange', count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('submitFailed', error);
+                        throw error;
+                    });
+            },
+
+            reset() {
+                comments = [];
+                count = 0;
+                draft = '';
+                loaded = false;
+                loading = false;
+                submitting = false;
+                loadError = null;
+                submitError = null;
+                this.trigger('reset');
+                return this;
+            }
+        };
+
+        return eventifier(store);
+    }
+
+    return itemCommentsStoreFactory;
+});
