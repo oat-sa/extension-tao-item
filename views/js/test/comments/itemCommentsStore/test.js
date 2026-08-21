@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -52,7 +52,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
         const comments = [
             {
                 id: 'c1',
-                itemUri: 'item://1',
+                resourceUri: 'item://1',
+                resourceType: 'item',
                 authorId: 'u1',
                 authorLabel: 'Ada',
                 body: 'First',
@@ -64,7 +65,13 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
             api: {
-                list() {
+                list(resourceUri, resourceType) {
+                    assert.equal(resourceUri, 'item://1', 'list receives resourceUri');
+                    assert.equal(
+                        resourceType,
+                        'item',
+                        'list defaults to ITEM resourceType'
+                    );
                     return Promise.resolve({ comments, count: 1 });
                 },
                 create() {
@@ -73,7 +80,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             }
         });
 
-        assert.expect(3);
+        assert.expect(5);
         store.load().then(function () {
             assert.deepEqual(store.getComments(), comments, 'comments loaded');
             assert.equal(store.getCount(), 1, 'count loaded');
@@ -85,6 +92,55 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             assert.ok(false, err.message);
             ready();
         });
+    });
+
+    QUnit.test('load / submit honour configured resourceType', function (assert) {
+        const ready = assert.async();
+        const testType = 'test';
+        const store = itemCommentsStoreFactory({
+            resourceUri: 'test://1',
+            resourceType: testType,
+            api: {
+                list(resourceUri, resourceType) {
+                    assert.equal(resourceUri, 'test://1', 'list uri');
+                    assert.equal(resourceType, testType, 'list type');
+                    return Promise.resolve({ comments: [], count: 0 });
+                },
+                create(resourceUri, resourceType, body) {
+                    assert.equal(resourceUri, 'test://1', 'create uri');
+                    assert.equal(resourceType, testType, 'create type');
+                    assert.equal(body, 'Note', 'create body');
+                    return Promise.resolve({
+                        id: 'c1',
+                        resourceUri: resourceUri,
+                        resourceType: resourceType,
+                        authorId: 'u1',
+                        authorLabel: 'Ada',
+                        body: body,
+                        createdAt: '2026-07-27T10:00:00Z',
+                        edited: false,
+                        resolved: false
+                    });
+                }
+            }
+        });
+
+        assert.expect(7);
+        assert.equal(store.getResourceUri(), 'test://1', 'resourceUri getter');
+        assert.equal(store.getResourceType(), testType, 'resourceType getter');
+        store
+            .load()
+            .then(function () {
+                store.setDraft('Note');
+                return store.submit();
+            })
+            .then(function () {
+                ready();
+            })
+            .catch(function (err) {
+                assert.ok(false, err.message);
+                ready();
+            });
     });
 
     QUnit.test('submit appends comment and clears draft', function (assert) {
@@ -164,6 +220,59 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             });
     });
 
+    QUnit.test('update replaces comment body and marks edited', function (assert) {
+        const ready = assert.async();
+        const existing = {
+            id: 'c1',
+            itemUri: 'item://1',
+            authorId: 'u1',
+            authorLabel: 'Ada',
+            body: 'Old',
+            createdAt: '2026-07-27T09:12:00Z',
+            edited: false,
+            resolved: false,
+            editable: true
+        };
+        const store = itemCommentsStoreFactory({
+            itemUri: 'item://1',
+            api: {
+                list() {
+                    return Promise.resolve({ comments: [existing], count: 1 });
+                },
+                create() {
+                    return Promise.reject(new Error('unused'));
+                },
+                update(id, body) {
+                    assert.equal(id, 'c1', 'update id');
+                    assert.equal(body, 'New body', 'update body');
+                    return Promise.resolve(
+                        Object.assign({}, existing, {
+                            body: body,
+                            edited: true
+                        })
+                    );
+                }
+            }
+        });
+
+        assert.expect(4);
+        store
+            .load()
+            .then(function () {
+                return store.update('c1', '  New body  ');
+            })
+            .then(function () {
+                const comments = store.getComments();
+                assert.equal(comments[0].body, 'New body', 'body replaced');
+                assert.equal(comments[0].edited, true, 'edited flag set');
+                ready();
+            })
+            .catch(function (err) {
+                assert.ok(false, err.message);
+                ready();
+            });
+    });
+
     QUnit.test('setItemUri clears draft and cache', function (assert) {
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
@@ -173,7 +282,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                         comments: [
                             {
                                 id: 'c1',
-                                itemUri: 'item://1',
+                                resourceUri: 'item://1',
+                                resourceType: 'item',
                                 authorId: 'u1',
                                 authorLabel: 'Ada',
                                 body: 'A',
@@ -192,7 +302,7 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
         });
         const ready = assert.async();
 
-        assert.expect(3);
+        assert.expect(5);
         store
             .load()
             .then(function () {
@@ -201,6 +311,8 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
                 assert.equal(store.getDraft(), '', 'draft cleared on URI change');
                 assert.equal(store.getCount(), 0, 'count reset');
                 assert.deepEqual(store.getComments(), [], 'comments reset');
+                assert.equal(store.getItemUri(), 'item://2', 'itemUri alias');
+                assert.equal(store.getResourceUri(), 'item://2', 'resourceUri updated');
                 ready();
             })
             .catch(function (err) {
