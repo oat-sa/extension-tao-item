@@ -63,6 +63,7 @@ return [
             __DIR__ . '/models/ontology/taoItemRunner.rdf',
             __DIR__ . '/models/ontology/indexation.rdf',
             __DIR__ . '/models/ontology/category.rdf',
+            __DIR__ . '/models/ontology/itemComment.rdf',
         ],
         'php' => [
             CreateItemDirectory::class,
@@ -72,7 +73,7 @@ return [
             RegisterAssetTreeBuilder::class,
             SetRolesPermissions::class,
             SetupEventListeners::class,
-            SetupSectionVisibilityFilters::class
+            SetupSectionVisibilityFilters::class,
         ],
     ],
     'update' => taoItems_scripts_update_Updater::class,
@@ -87,6 +88,31 @@ return [
             AccessRule::GRANT,
             TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
             'taoItems_actions_ItemContent',
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
+            ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_MANAGER,
+            ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_AUTHOR,
+            ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
+        ],
+        [
+            AccessRule::GRANT,
+            'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole',
+            ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
         ],
         [
             AccessRule::GRANT,
