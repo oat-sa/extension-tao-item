@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -23,16 +23,21 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
     'use strict';
 
     /**
-     * In-memory Item Comments session store (FR1 M1).
+     * In-memory authoring comments session store (FR1).
+     * Works for Item, Test, or Asset via resourceType.
      *
      * @param {object} config
-     * @param {string} config.itemUri
+     * @param {string} [config.resourceUri]
+     * @param {string} [config.itemUri] alias of resourceUri
+     * @param {string} [config.resourceType] one of RESOURCE_TYPE.* (default ITEM)
      * @param {object} [config.api]
      * @returns {object}
      */
     function itemCommentsStoreFactory(config) {
         const api = (config && config.api) || itemCommentsApi;
-        let itemUri = (config && config.itemUri) || '';
+        let resourceUri = (config && (config.resourceUri || config.itemUri)) || '';
+        let resourceType =
+            (config && config.resourceType) || itemCommentsApi.RESOURCE_TYPE.ITEM;
         let comments = [];
         let count = 0;
         let draft = '';
@@ -43,15 +48,53 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
         let submitError = null;
 
         const store = {
-            getItemUri() {
-                return itemUri;
+            getResourceUri() {
+                return resourceUri;
             },
 
-            setItemUri(nextItemUri) {
-                if (nextItemUri === itemUri) {
+            /**
+             * @deprecated Prefer getResourceUri()
+             * @returns {string}
+             */
+            getItemUri() {
+                return this.getResourceUri();
+            },
+
+            setResourceUri(nextResourceUri) {
+                if (nextResourceUri === resourceUri) {
                     return this;
                 }
-                itemUri = nextItemUri || '';
+                resourceUri = nextResourceUri || '';
+                comments = [];
+                count = 0;
+                draft = '';
+                loaded = false;
+                loading = false;
+                submitting = false;
+                loadError = null;
+                submitError = null;
+                this.trigger('reset');
+                return this;
+            },
+
+            /**
+             * @deprecated Prefer setResourceUri()
+             * @param {string} nextItemUri
+             * @returns {object}
+             */
+            setItemUri(nextItemUri) {
+                return this.setResourceUri(nextItemUri);
+            },
+
+            getResourceType() {
+                return resourceType;
+            },
+
+            setResourceType(nextResourceType) {
+                if (!nextResourceType || nextResourceType === resourceType) {
+                    return this;
+                }
+                resourceType = nextResourceType;
                 comments = [];
                 count = 0;
                 draft = '';
@@ -109,8 +152,8 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
 
             load(options) {
                 const force = !!(options && options.force);
-                if (!itemUri) {
-                    return Promise.reject(new Error('itemUri is required'));
+                if (!resourceUri) {
+                    return Promise.reject(new Error('resourceUri is required'));
                 }
                 if (loaded && !force) {
                     return Promise.resolve(this);
@@ -124,7 +167,7 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 this.trigger('loading');
 
                 return api
-                    .list(itemUri, itemCommentsApi.RESOURCE_TYPE.ITEM)
+                    .list(resourceUri, resourceType)
                     .then(data => {
                         comments = (data && data.comments) || [];
                         count = typeof (data && data.count) === 'number' ? data.count : comments.length;
@@ -143,8 +186,8 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
             },
 
             submit() {
-                if (!itemUri) {
-                    return Promise.reject(new Error('itemUri is required'));
+                if (!resourceUri) {
+                    return Promise.reject(new Error('resourceUri is required'));
                 }
                 const body = draft.trim();
                 if (!body) {
@@ -159,7 +202,7 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 this.trigger('submitting');
 
                 return api
-                    .create(itemUri, itemCommentsApi.RESOURCE_TYPE.ITEM, body)
+                    .create(resourceUri, resourceType, body)
                     .then(comment => {
                         comments = comments.concat([comment]);
                         count += 1;
@@ -173,6 +216,134 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                         submitting = false;
                         submitError = error;
                         this.trigger('submitFailed', error);
+                        throw error;
+                    });
+            },
+
+            /**
+             * Update an existing own comment.
+             * @param {string} commentId
+             * @param {string} body
+             * @returns {Promise<object>}
+             */
+            update(commentId, body) {
+                const nextBody = typeof body === 'string' ? body.trim() : '';
+                if (!commentId) {
+                    return Promise.reject(new Error('comment id is required'));
+                }
+                if (!nextBody) {
+                    return Promise.reject(new Error('Comment body must not be empty'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .update(commentId, nextBody)
+                    .then(comment => {
+                        comments = comments.map(existing =>
+                            existing.id === comment.id
+                                ? Object.assign({}, existing, comment, {
+                                      editable:
+                                          typeof comment.editable === 'boolean'
+                                              ? comment.editable
+                                              : existing.editable
+                                  })
+                                : existing
+                        );
+                        submitting = false;
+                        this.trigger('updated', comment);
+                        this.trigger('loaded', comments.slice(), count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('updateFailed', error);
+                        throw error;
+                    });
+            },
+
+            /**
+             * Resolve or reopen a comment.
+             * @param {string} commentId
+             * @param {boolean} resolved
+             * @returns {Promise<object>}
+             */
+            resolve(commentId, resolved) {
+                if (!commentId) {
+                    return Promise.reject(new Error('comment id is required'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .resolve(commentId, !!resolved)
+                    .then(comment => {
+                        comments = comments.map(existing =>
+                            existing.id === comment.id
+                                ? Object.assign({}, existing, comment, {
+                                      editable:
+                                          typeof comment.editable === 'boolean'
+                                              ? comment.editable
+                                              : existing.editable
+                                  })
+                                : existing
+                        );
+                        submitting = false;
+                        this.trigger('resolved', comment);
+                        this.trigger('loaded', comments.slice(), count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('resolveFailed', error);
+                        throw error;
+                    });
+            },
+
+            /**
+             * Delete an own comment.
+             * @param {string} commentId
+             * @returns {Promise<object>}
+             */
+            delete(commentId) {
+                if (!commentId) {
+                    return Promise.reject(new Error('comment id is required'));
+                }
+                if (submitting) {
+                    return Promise.resolve(this);
+                }
+
+                submitting = true;
+                submitError = null;
+                this.trigger('submitting');
+
+                return api
+                    .delete(commentId)
+                    .then(() => {
+                        comments = comments.filter(existing => existing.id !== commentId);
+                        count = comments.length;
+                        submitting = false;
+                        this.trigger('deleted', commentId);
+                        this.trigger('countchange', count);
+                        this.trigger('loaded', comments.slice(), count);
+                        return this;
+                    })
+                    .catch(error => {
+                        submitting = false;
+                        submitError = error;
+                        this.trigger('deleteFailed', error);
                         throw error;
                     });
             },
