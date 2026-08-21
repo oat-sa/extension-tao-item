@@ -56,9 +56,6 @@
                 "--prefix",
                 "views"
             ]
-        },
-        "branch-alias": {
-            "dev-feat/NYSED-14/edit-own-comments": "13.3.x-dev"
         }
     },
     "require": {
