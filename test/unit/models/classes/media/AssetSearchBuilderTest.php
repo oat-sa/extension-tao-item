@@ -312,9 +312,15 @@ class AssetSearchBuilderTest extends TestCase
         $result = $this->subject->search($this->createSearchQuery('eclair', 1, 10));
 
         $this->assertSame(2, $result['total']);
-        $labels = array_column($result['items'], 'label');
-        $this->assertContains('Éclair', $labels);
-        $this->assertContains('éclair', $labels);
+        // After Unicode case-folding labels tie; URI tie-breaker is ascending.
+        $this->assertSame(
+            ['éclair', 'Éclair'],
+            array_column($result['items'], 'label')
+        );
+        $this->assertSame(
+            ['asset://eclair-lower', 'asset://eclair-upper'],
+            array_column($result['items'], 'uri')
+        );
     }
 
     public function testSearchReturnsEmptyForNonMatchingQuery(): void
