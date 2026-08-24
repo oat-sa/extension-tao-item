@@ -181,7 +181,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
 
-        assert.expect(4);
+        assert.expect(5);
 
         const $empty = $host.find('.item-comments-empty');
         assert.equal($empty.prop('hidden'), false, 'empty state is visible');
@@ -194,6 +194,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         assert.equal($host.find('.item-comments-body').length, 1, 'list area wrapped for centering');
 
         panel.destroy();
+        assert.equal($host.find('.item-comments-panel').length, 0, 'panel removed on destroy');
     });
 
     QUnit.module('overlay lifecycle', {
