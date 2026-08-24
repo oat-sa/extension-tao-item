@@ -15,4 +15,5 @@
             {{__ 'Post comment'}}
         </button>
     </form>
+    <div class="item-comments-menu-layer" aria-hidden="true"></div>
 </div>
