@@ -98,6 +98,7 @@
 
 .item-comments-rich-toolbar {
     display: flex;
+    flex-wrap: nowrap;
     align-items: stretch;
     width: 100%;
     max-width: 100%;
@@ -111,12 +112,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 28px;
     flex: 1 1 0;
+    min-width: 0;
+    width: auto;
     height: 30px;
     margin: 0;
     padding: 0;
     border: 0;
+    border-radius: 0;
     border-right: 1px solid #c8ccd0;
     background: #f3f5f7;
     color: #222;
@@ -124,6 +127,7 @@
     font: inherit;
     line-height: 1;
     box-sizing: border-box;
+    box-shadow: none;
 
     &:last-child {
         border-right: 0;
