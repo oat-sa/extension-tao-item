@@ -211,6 +211,34 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         panel.destroy();
     });
 
+    QUnit.test('Escape restores focus to toggle when a menu item was focused', function (assert) {
+        const store = createStore([sampleComments[0]]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const $more = $host.find('.item-comment-more');
+        const $toggle = $more.find('.item-comment-more-toggle');
+        const $layer = $host.find('.item-comments-menu-layer');
+
+        assert.expect(4);
+
+        $toggle.trigger('click');
+        const $edit = $layer.find('.item-comment-edit');
+        $edit.trigger('focus');
+        assert.strictEqual(document.activeElement, $edit.get(0), 'menu item receives focus');
+
+        $(document).trigger($.Event('keydown', { key: 'Escape' }));
+
+        assert.strictEqual(
+            document.activeElement,
+            $toggle.get(0),
+            'Escape returns focus to more-actions toggle'
+        );
+        assert.equal($layer.children('.item-comment-more-menu').length, 0, 'overlay cleared on Escape');
+        assert.equal($more.find('.item-comment-more-menu').length, 1, 'menu restored to host on Escape');
+
+        panel.destroy();
+    });
+
     QUnit.test('bottom-row placement opens upward when space below is insufficient', function (assert) {
         const store = createStore(sampleComments);
         const $host = $('#qunit-fixture .comments-host');
