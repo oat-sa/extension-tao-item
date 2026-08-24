@@ -144,12 +144,22 @@ define([
                     return;
                 }
                 if ($home && $home.length) {
+                    const menuElement = $menu.get(0);
+                    const shouldRestoreFocus =
+                        menuElement &&
+                        (menuElement === document.activeElement ||
+                            $.contains(menuElement, document.activeElement));
+
                     $menu
                         .prop('hidden', true)
                         .css({ top: '', left: '', right: '', bottom: '' })
                         .removeData('menuHome')
                         .appendTo($home);
-                    $home.find('.item-comment-more-toggle').attr('aria-expanded', 'false');
+                    const $toggle = $home.find('.item-comment-more-toggle');
+                    $toggle.attr('aria-expanded', 'false');
+                    if (shouldRestoreFocus) {
+                        $toggle.trigger('focus');
+                    }
                 } else {
                     $menu.remove();
                 }
