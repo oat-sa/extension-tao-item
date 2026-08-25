@@ -1,13 +1,20 @@
-/* Shared authoring comments panel / list / row (Item, Test, Asset hosts). */
+/* Shared authoring comments panel / list / row (Item, Test, Asset hosts).
+ *
+ * Self-contained height: sizes from the viewport so list + pinned composer work
+ * even when the mount host has no flex/height chain. When the host *does* have a
+ * definite height, max-height: 100% keeps the panel inside it.
+ */
 
 .item-comments-panel {
     position: relative;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
-    height: 100%;
-    min-height: 0;
+    align-self: stretch;
     width: 100%;
+    min-height: 280px;
+    height: calc(100vh - 170px);
+    max-height: 100%;
     box-sizing: border-box;
 }
 
@@ -228,8 +235,8 @@
         height: 3px;
         margin: 0;
         border-radius: 50%;
-        background: currentcolor;
-        box-shadow: -4px 0 0 currentcolor, 4px 0 0 currentcolor;
+        background: currentColor;
+        box-shadow: -4px 0 0 currentColor, 4px 0 0 currentColor;
     }
 
     &:hover,
