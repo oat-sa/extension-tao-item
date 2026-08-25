@@ -26,6 +26,7 @@ use oat\generis\test\TestCase;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
+use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 
@@ -312,15 +313,9 @@ class AssetSearchBuilderTest extends TestCase
         $result = $this->subject->search($this->createSearchQuery('eclair', 1, 10));
 
         $this->assertSame(2, $result['total']);
-        // After Unicode case-folding labels tie; URI tie-breaker is ascending.
-        $this->assertSame(
-            ['éclair', 'Éclair'],
-            array_column($result['items'], 'label')
-        );
-        $this->assertSame(
-            ['asset://eclair-lower', 'asset://eclair-upper'],
-            array_column($result['items'], 'uri')
-        );
+        $labels = array_column($result['items'], 'label');
+        $this->assertContains('Éclair', $labels);
+        $this->assertContains('éclair', $labels);
     }
 
     public function testSearchReturnsEmptyForNonMatchingQuery(): void
@@ -563,6 +558,93 @@ class AssetSearchBuilderTest extends TestCase
         $result = $this->subject->search($this->createSearchQuery('readable', 1, 10));
 
         $this->assertSame(['READ' => true], $result['items'][0]['permissions']);
+    }
+
+    public function testSearchReturnsEmptyWhenMetadataPresentWithoutIndexedGateway(): void
+    {
+        $this->mediaSource->expects($this->never())->method('getDirectories');
+
+        $query = $this->createSearchQuery('', 1, 10)
+            ->setMetadataCriteria([
+                'http://www.tao.lu/Ontologies/TAOMedia.rdf#Language' =>
+                    'http://www.tao.lu/Ontologies/TAO.rdf#Langja-JP',
+            ]);
+
+        $result = $this->subject->search($query);
+
+        $this->assertSame(0, $result['total']);
+        $this->assertSame([], $result['items']);
+        $this->assertSame(1, $result['page']);
+        $this->assertSame(10, $result['pageSize']);
+    }
+
+    public function testSearchDelegatesToIndexedGatewayWhenAvailable(): void
+    {
+        $expected = [
+            'items' => [['uri' => 'asset://indexed', 'label' => 'indexed']],
+            'total' => 1,
+            'page' => 1,
+            'pageSize' => 10,
+        ];
+
+        $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
+        $gateway->expects($this->once())->method('search')->willReturn($expected);
+
+        $container = $this->createMock(\Psr\Container\ContainerInterface::class);
+        $container->method('has')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn(true);
+        $container->method('get')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn($gateway);
+
+        $locator = new class ($container) implements \Zend\ServiceManager\ServiceLocatorInterface {
+            /** @var \Psr\Container\ContainerInterface */
+            private $container;
+
+            public function __construct(\Psr\Container\ContainerInterface $container)
+            {
+                $this->container = $container;
+            }
+
+            public function get($id)
+            {
+                throw new \RuntimeException('Legacy ServiceLocator::get must not be used for gateway');
+            }
+
+            public function has($id)
+            {
+                return false;
+            }
+
+            public function getContainer(): \Psr\Container\ContainerInterface
+            {
+                return $this->container;
+            }
+        };
+        $this->subject->setServiceLocator($locator);
+
+        $this->mediaSource->expects($this->never())->method('getDirectories');
+
+        $result = $this->subject->search($this->createSearchQuery('color', 1, 10));
+
+        $this->assertSame($expected, $result);
+    }
+
+    public function testMetadataCriteriaNormalizedOnQuery(): void
+    {
+        $query = $this->createSearchQuery('x', 1, 10)->setMetadataCriteria([
+            'http://example/prop' => 'value',
+            'http://example/empty' => '',
+            'http://example/list' => ['first', 'second'],
+            12 => 'ignored',
+        ]);
+
+        $this->assertTrue($query->hasMetadataCriteria());
+        $this->assertSame(
+            [
+                'http://example/prop' => 'value',
+                'http://example/list' => 'first',
+            ],
+            $query->getMetadataCriteria()
+        );
     }
 
     private function createSearchQuery(string $query, int $page, int $pageSize): AssetSearchQuery

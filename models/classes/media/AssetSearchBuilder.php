@@ -28,8 +28,9 @@ use oat\tao\model\accessControl\AccessControlEnablerInterface;
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
- * When a text query is present, results are collected from the requested folder
- * subtree, filtered with trailing-token prefix matching, then sorted and paginated.
+ * Prefers the indexed search gateway when available. Otherwise falls back to
+ * filesystem subtree traversal with trailing-token prefix matching on text
+ * query only (metadata filters require the indexed path).
  */
 class AssetSearchBuilder extends ConfigurableService
 {
@@ -41,6 +42,21 @@ class AssetSearchBuilder extends ConfigurableService
 
     public function search(AssetSearchQuery $search): array
     {
+        $gateway = $this->getIndexedSearchGateway();
+        if ($gateway !== null && $gateway->isAvailable()) {
+            return $gateway->search($search);
+        }
+
+        // Metadata filters are only supported via the indexed gateway.
+        if ($search->hasMetadataCriteria()) {
+            return [
+                'items' => [],
+                'total' => 0,
+                'page' => $search->getPage(),
+                'pageSize' => $search->getPageSize(),
+            ];
+        }
+
         $asset = $search->getAsset();
         $mediaSource = $asset->getMediaSource();
 
@@ -72,6 +88,30 @@ class AssetSearchBuilder extends ConfigurableService
             'page' => $page,
             'pageSize' => $pageSize,
         ];
+    }
+
+    private function getIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
+    {
+        try {
+            $locator = $this->getServiceLocator();
+            if ($locator === null) {
+                return null;
+            }
+
+            // Gateway is registered in Symfony DI (SearchEngineProvider), not legacy config.
+            $container = method_exists($locator, 'getContainer')
+                ? $locator->getContainer()
+                : null;
+            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
+                return null;
+            }
+
+            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
+
+            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
+        } catch (\Throwable $exception) {
+            return null;
+        }
     }
 
     /**
