@@ -70,6 +70,18 @@ class CommentRichTextSanitizerTest extends TestCase
                 '<div><strong>Safe</strong></div>',
                 '<strong>Safe</strong>',
             ],
+            'converts adjacent paragraphs to single breaks' => [
+                '<p><strong>Bold</strong></p><p><em>Italic</em></p><p><u>Underline</u></p>',
+                '<strong>Bold</strong><br><em>Italic</em><br><u>Underline</u>',
+            ],
+            'collapses br plus source newlines' => [
+                "<strong>Bold</strong><br />\n<em>Italic</em><br />\n<u>Underline</u>",
+                '<strong>Bold</strong><br><em>Italic</em><br><u>Underline</u>',
+            ],
+            'preserves duplicate breaks' => [
+                'A<br><br><br>B',
+                'A<br><br><br>B',
+            ],
         ];
     }
 

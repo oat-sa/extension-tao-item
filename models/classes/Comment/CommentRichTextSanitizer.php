@@ -65,6 +65,7 @@ final class CommentRichTextSanitizer
         }
 
         $value = self::removeBlockedElements($value);
+        $value = self::normalizeBlocksToBreaks($value);
         $value = strip_tags($value, '<' . implode('><', self::ALLOWED_TAGS) . '>');
 
         if ($value === '') {
@@ -112,6 +113,21 @@ final class CommentRichTextSanitizer
             '',
             $value
         );
+    }
+
+    /**
+     * Map paragraph/div boundaries to <br> and drop literal source newlines.
+     * Consecutive <br> (intentional blank lines) are preserved.
+     */
+    private static function normalizeBlocksToBreaks(string $value): string
+    {
+        $value = (string) preg_replace('#<\s*br\s*/?\s*>#i', '<br>', $value);
+        $value = (string) preg_replace('#</\s*p\s*>\s*<\s*p(?:\s[^>]*)?>#i', '<br>', $value);
+        $value = (string) preg_replace('#</?\s*p(?:\s[^>]*)?>#i', '', $value);
+        $value = (string) preg_replace('#</\s*div\s*>\s*<\s*div(?:\s[^>]*)?>#i', '<br>', $value);
+        $value = (string) preg_replace('#</?\s*div(?:\s[^>]*)?>#i', '', $value);
+
+        return (string) preg_replace('#[\r\n\t]+#', '', $value);
     }
 
     private static function sanitizeTree(DOMElement $root): void

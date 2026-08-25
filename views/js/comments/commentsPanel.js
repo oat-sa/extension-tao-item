@@ -160,22 +160,33 @@ define([
             return store.getComments().find(comment => comment.id === commentId) || null;
         }
 
-        function ensureEditEditor($article, commentId) {
-            if (editEditors[commentId]) {
-                return editEditors[commentId];
-            }
-
+        /**
+         * Create (or recreate) the edit CKEditor for a comment row.
+         * Call only when opening Edit — not on Save (that would wipe in-progress edits).
+         */
+        function openEditEditor($article, commentId) {
+            const comment = findComment(commentId);
+            const body = comment ? comment.body : '';
             const $editorHost = $article.find('[data-role="edit-editor"]');
             const $toolbar = $article.find('[data-role="edit-toolbar"]');
-            const comment = findComment(commentId);
 
+            if (editEditors[commentId]) {
+                editEditors[commentId].destroy();
+                delete editEditors[commentId];
+            }
+
+            $editorHost.empty();
             editEditors[commentId] = richTextEditor.create({
                 host: $editorHost,
                 toolbar: $toolbar,
-                initialValue: comment ? comment.body : ''
+                initialValue: body
             });
 
             return editEditors[commentId];
+        }
+
+        function getEditEditor(commentId) {
+            return editEditors[commentId] || null;
         }
 
         function closeMoreMenus($keep) {
@@ -295,13 +306,14 @@ define([
             e.preventDefault();
             const $button = $(e.currentTarget);
             const $article = $button.closest('.item-comment');
+            const commentId = String($article.data('comment-id') || '');
             const $editForm = $article.find('[data-role="edit-form"]');
             closeMoreMenus();
             closeEditForms($editForm);
             $article.find('[data-role="body"]').prop('hidden', true);
             $article.find('[data-role="actions"]').prop('hidden', true);
             $editForm.prop('hidden', false);
-            const editor = ensureEditEditor($article, String($article.data('comment-id') || ''));
+            const editor = openEditEditor($article, commentId);
             editor.focus();
         });
 
@@ -314,8 +326,11 @@ define([
             e.preventDefault();
             const $button = $(e.currentTarget);
             const commentId = String($button.data('comment-id') || '');
-            const $article = $button.closest('.item-comment');
-            const editor = ensureEditEditor($article, commentId);
+            const editor = getEditEditor(commentId);
+            if (!editor) {
+                showError(labels.updateFailed || __('The comment was not updated.'));
+                return;
+            }
             const body = editor.getData();
             $button.prop('disabled', true);
             store

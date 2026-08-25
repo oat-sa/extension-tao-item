@@ -27,10 +27,65 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
         ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i
     };
 
+    /**
+     * Normalize block markup to <br> and drop literal source newlines.
+     * Consecutive <br> (intentional blank lines) are preserved.
+     */
+    function normalizeLineBreaks(html) {
+        return String(html)
+            .replace(/<\s*br\s*\/?\s*>/gi, '<br>')
+            .replace(/<\/\s*p\s*>\s*<\s*p(?:\s[^>]*)?>/gi, '<br>')
+            .replace(/<\/?\s*p(?:\s[^>]*)?>/gi, '')
+            .replace(/<\/\s*div\s*>\s*<\s*div(?:\s[^>]*)?>/gi, '<br>')
+            .replace(/<\/?\s*div(?:\s[^>]*)?>/gi, '')
+            .replace(/[\r\n\t]+/g, '');
+    }
+
+    /**
+     * Map style-based spans (browser/CKEditor defaults) to semantic tags before sanitize.
+     * Otherwise DOMPurify drops span[style] and formatting is lost on getData/setData.
+     */
+    function semanticizeInlineStyles(html) {
+        const container = document.createElement('div');
+        container.innerHTML = typeof html === 'string' ? html : '';
+
+        Array.prototype.slice.call(container.querySelectorAll('span[style]')).forEach(function (span) {
+            const style = String(span.getAttribute('style') || '').toLowerCase();
+            let tagName = null;
+
+            if (/font-weight\s*:\s*(bold|[5-9]00)/.test(style)) {
+                tagName = 'strong';
+            } else if (/font-style\s*:\s*italic/.test(style)) {
+                tagName = 'em';
+            } else if (/text-decoration[^;]*underline/.test(style)) {
+                tagName = 'u';
+            }
+
+            if (!tagName) {
+                while (span.firstChild) {
+                    span.parentNode.insertBefore(span.firstChild, span);
+                }
+                span.parentNode.removeChild(span);
+                return;
+            }
+
+            const semantic = document.createElement(tagName);
+            while (span.firstChild) {
+                semantic.appendChild(span.firstChild);
+            }
+            span.parentNode.replaceChild(semantic, span);
+        });
+
+        return container.innerHTML;
+    }
+
     function sanitizeHtml(value) {
         const html = typeof value === 'string' ? value : '';
 
-        return DOMPurify.sanitize(html, SANITIZE_OPTIONS).trim();
+        return DOMPurify.sanitize(
+            normalizeLineBreaks(semanticizeInlineStyles(html)),
+            SANITIZE_OPTIONS
+        ).trim();
     }
 
     function hasMeaningfulText(value) {
@@ -50,6 +105,9 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
 
         const editorId = config.editorId || `comment-rich-editor-${Date.now()}-${++editorSeq}`;
         const placeholder = config.placeholder || '';
+        // Keep raw initial HTML for setData after instanceReady — do not seed via textarea
+        // attribute (CKEditor may read attr vs .value inconsistently with markup).
+        const initialHtml = sanitizeHtml(config.initialValue || '');
 
         $host.empty().append(
             $('<textarea/>', {
@@ -72,8 +130,21 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             height: 78,
             contentsCss: [editorContentsCss],
             bodyClass: 'item-comments-editor-body',
-            allowedContent: 'strong b em i u ul ol li a[!href] br',
-            disallowedContent: '*[on*]; script; style; img; svg; iframe; object; embed; table; span{*}; *[style]'
+            // Keep semantic tags — do not let basicstyles rewrite underline to span[style]
+            // (span[style] would be dropped by sanitize and formatting lost on edit/save).
+            coreStyles_bold: { element: 'strong', overrides: 'b' },
+            coreStyles_italic: { element: 'em', overrides: 'i' },
+            coreStyles_underline: { element: 'u', overrides: 'span' },
+            allowedContent: {
+                'strong b em i u br': true,
+                ul: true,
+                ol: true,
+                li: true,
+                a: {
+                    attributes: '!href'
+                }
+            },
+            disallowedContent: '*[on*]; script; style; img; svg; iframe; object; embed; table'
             })
             : null;
 
@@ -85,9 +156,16 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             return sanitizeHtml(editor.getData());
         }
 
-        function setData(value) {
-            editor.setData(sanitizeHtml(value || ''));
-            onChange(getData());
+        function setData(value, callback) {
+            const html = sanitizeHtml(value || '');
+            const done = _.isFunction(callback) ? callback : _.noop;
+
+            editor.setData(html, {
+                callback: function () {
+                    onChange(getData());
+                    done();
+                }
+            });
         }
 
         const toolbarCommandMap = {
@@ -212,10 +290,10 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
                 return;
             }
 
+            // Prefer CK semantic commands only for basic styles — document.execCommand
+            // often emits span[style] which sanitizeHtml would strip.
             editor.focus();
-            if (!runCkCommand(commandName)) {
-                runNativeCommand(nativeCommandMap[commandName]);
-            }
+            runCkCommand(commandName);
             onChange(getData());
             syncToolbarState();
         }
@@ -235,11 +313,16 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
         }, 50);
 
         editor.on('instanceReady', function () {
-            if (typeof config.initialValue === 'string' && config.initialValue !== '') {
-                setData(config.initialValue);
+            // Apply initial HTML via setData after ACF/coreStyles are active.
+            if (initialHtml !== '') {
+                setData(initialHtml, function () {
+                    notifyChange();
+                    syncToolbarState();
+                });
+            } else {
+                notifyChange();
+                syncToolbarState();
             }
-
-            notifyChange();
 
             editor.on('change', notifyChange);
             editor.on('key', function () {
@@ -247,8 +330,6 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             });
             editor.on('selectionChange', syncToolbarState);
             editor.on('focus', syncToolbarState);
-
-            syncToolbarState();
         });
 
         editor.on('paste', function () {
@@ -267,7 +348,13 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             },
 
             focus() {
-                editor.focus();
+                if (editor.status === 'ready' || editor.status === 'loaded') {
+                    editor.focus();
+                } else {
+                    editor.on('instanceReady', function () {
+                        editor.focus();
+                    });
+                }
             },
 
             destroy() {
