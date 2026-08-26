@@ -117,10 +117,16 @@ define([
 
     function hidePanel() {
         $('#item-properties-preview-column').hide();
+        $('#item-properties-form-column')
+            .removeClass('item-properties-column--form')
+            .addClass('item-properties-column--full');
     }
 
     function showPanel() {
         $('#item-properties-preview-column').show();
+        $('#item-properties-form-column')
+            .removeClass('item-properties-column--full')
+            .addClass('item-properties-column--form');
     }
 
     function handleTimeout() {

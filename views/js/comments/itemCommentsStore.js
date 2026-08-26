@@ -22,6 +22,25 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
 ) {
     'use strict';
 
+    function normalizeBody(value) {
+        return typeof value === 'string' ? value.trim() : '';
+    }
+
+    function hasMeaningfulContent(value) {
+        if (!value) {
+            return false;
+        }
+
+        const plainText = String(value)
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/&nbsp;/gi, ' ')
+            .replace(/&#160;/gi, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        return plainText.length > 0;
+    }
+
     /**
      * In-memory authoring comments session store (FR1).
      * Works for Item, Test, or Asset via resourceType.
@@ -127,7 +146,7 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
             },
 
             hasDirtyDraft() {
-                return /\S/.test(draft);
+                return hasMeaningfulContent(draft);
             },
 
             clearDraft() {
@@ -189,8 +208,8 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 if (!resourceUri) {
                     return Promise.reject(new Error('resourceUri is required'));
                 }
-                const body = draft.trim();
-                if (!body) {
+                const body = normalizeBody(draft);
+                if (!hasMeaningfulContent(body)) {
                     return Promise.reject(new Error('Comment body must not be empty'));
                 }
                 if (submitting) {
@@ -227,11 +246,11 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
              * @returns {Promise<object>}
              */
             update(commentId, body) {
-                const nextBody = typeof body === 'string' ? body.trim() : '';
+                const nextBody = normalizeBody(body);
                 if (!commentId) {
                     return Promise.reject(new Error('comment id is required'));
                 }
-                if (!nextBody) {
+                if (!hasMeaningfulContent(nextBody)) {
                     return Promise.reject(new Error('Comment body must not be empty'));
                 }
                 if (submitting) {
