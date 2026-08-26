@@ -41,9 +41,15 @@
     }
 
     .item-comment-body {
-        white-space: pre-wrap;
+        white-space: normal;
         overflow-wrap: break-word;
         color: #333;
+
+        ul,
+        ol {
+            margin: 0 0 0 9px;
+            padding: 0;
+        }
     }
 
     &.is-resolved .item-comment-body {
@@ -198,7 +204,8 @@
     }
 }
 
-.item-comments-rich-input {
+.item-comments-rich-input,
+.item-comment-edit-input {
     min-height: 96px;
     padding: 8px 10px;
     box-sizing: border-box;
@@ -234,7 +241,7 @@
 
     .cke .cke_editable ul,
     .cke .cke_editable ol {
-        margin: 0 0 0 18px;
+        margin: 0 0 0 9px;
         padding: 0;
     }
 }

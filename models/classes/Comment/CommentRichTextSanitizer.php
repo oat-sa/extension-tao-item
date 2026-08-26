@@ -90,6 +90,16 @@ final class CommentRichTextSanitizer
         return trim(self::innerHtml($root));
     }
 
+    /**
+     * Whether the value has non-empty plain text after stripping HTML.
+     *
+     * Used by create/update to reject markup-only bodies (e.g. <br>, empty tags).
+     * NBSP (U+00A0 / UTF-8 \xc2\xa0) is normalized to a regular space because trim()
+     * does not treat it as whitespace.
+     *
+     * @param string $value Sanitized or raw HTML comment body
+     * @return bool
+     */
     public static function hasMeaningfulText(string $value): bool
     {
         $text = html_entity_decode(strip_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8');
