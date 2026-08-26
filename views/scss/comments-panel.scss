@@ -45,6 +45,11 @@
         overflow-wrap: break-word;
         color: #333;
 
+        // Beat TAO global `* { text-decoration: none !important }` so <u> stays visible.
+        u {
+            text-decoration: underline !important;
+        }
+
         ul,
         ol {
             margin: 0 0 0 9px;

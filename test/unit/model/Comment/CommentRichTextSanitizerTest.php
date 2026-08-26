@@ -82,6 +82,10 @@ class CommentRichTextSanitizerTest extends TestCase
                 'A<br><br><br>B',
                 'A<br><br><br>B',
             ],
+            'drops style spans (FE must send semantic tags)' => [
+                '<span style="text-decoration: underline">Underline</span>',
+                'Underline',
+            ],
         ];
     }
 
