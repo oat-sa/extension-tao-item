@@ -33,6 +33,7 @@ use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
+use oat\taoItems\model\media\AssetSearchUnavailableException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\CurrentAssetResolver;
@@ -101,7 +102,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
                 ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
 
-            $response = $this->getAssetSearchBuilder()->search($searchQuery);
+            try {
+                $response = $this->getAssetSearchBuilder()->search($searchQuery);
+            } catch (AssetSearchUnavailableException $exception) {
+                $this->logWarning('Asset search unavailable: ' . $exception->getMessage());
+                $this->setErrorJsonResponse(
+                    __('Asset search is temporarily unavailable. Please try again.'),
+                    0,
+                    [],
+                    503
+                );
+                return;
+            }
         } else {
             $response = $this->getAssetTreeBuilder()->build($searchQuery);
         }

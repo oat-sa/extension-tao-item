@@ -29,6 +29,7 @@ use oat\tao\model\media\MediaBrowser;
 use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
+use oat\taoItems\model\media\AssetSearchUnavailableException;
 
 abstract class AccessControlMediaSource implements MediaBrowser, AccessControlEnablerInterface
 {
@@ -626,6 +627,50 @@ class AssetSearchBuilderTest extends TestCase
         $result = $this->subject->search($this->createSearchQuery('color', 1, 10));
 
         $this->assertSame($expected, $result);
+    }
+
+    public function testSearchPropagatesIndexedGatewayUnavailableException(): void
+    {
+        $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
+        $gateway->expects($this->once())->method('search')->willThrowException(
+            new AssetSearchUnavailableException('es down')
+        );
+
+        $container = $this->createMock(\Psr\Container\ContainerInterface::class);
+        $container->method('has')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn(true);
+        $container->method('get')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn($gateway);
+
+        $locator = new class ($container) implements \Zend\ServiceManager\ServiceLocatorInterface {
+            /** @var \Psr\Container\ContainerInterface */
+            private $container;
+
+            public function __construct(\Psr\Container\ContainerInterface $container)
+            {
+                $this->container = $container;
+            }
+
+            public function get($id)
+            {
+                throw new \RuntimeException('Legacy ServiceLocator::get must not be used for gateway');
+            }
+
+            public function has($id)
+            {
+                return false;
+            }
+
+            public function getContainer(): \Psr\Container\ContainerInterface
+            {
+                return $this->container;
+            }
+        };
+        $this->subject->setServiceLocator($locator);
+
+        $this->expectException(AssetSearchUnavailableException::class);
+        $this->expectExceptionMessage('es down');
+
+        $this->subject->search($this->createSearchQuery('color', 1, 10));
     }
 
     public function testMetadataCriteriaNormalizedOnQuery(): void

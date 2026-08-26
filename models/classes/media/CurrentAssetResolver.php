@@ -146,7 +146,9 @@ final class CurrentAssetResolver
 
     private function decodeMediaIdentifier(string $identifier): string
     {
-        $withoutScheme = str_replace(MediaSource::SCHEME_NAME, '', $identifier);
+        $withoutScheme = str_starts_with($identifier, MediaSource::SCHEME_NAME)
+            ? substr($identifier, strlen(MediaSource::SCHEME_NAME))
+            : $identifier;
 
         return tao_helpers_Uri::decode($withoutScheme);
     }
