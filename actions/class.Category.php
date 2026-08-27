@@ -61,6 +61,30 @@ class taoItems_actions_Category extends tao_actions_CommonModule
 
     /**
      * Request
+     *  taoItems/Category/getInvalidExposedCategories?id=${itemUri}
+     * Response
+     *  { success : bool, data : {
+     *      propertyUri : { label, values: [invalidValue] }
+     *  } }
+     *
+     * @return void
+     */
+    public function getInvalidExposedCategories()
+    {
+        $id = $this->getRequestParameter('id');
+
+        if (is_null($id) || empty($id)) {
+            return $this->returnBadParameter('The item URI is required');
+        }
+
+        $item = $this->getResource($id);
+        $service = $this->getServiceLocator()->get(CategoryService::SERVICE_ID);
+
+        return $this->returnSuccess($service->getInvalidCategoryValues($item));
+    }
+
+    /**
+     * Request
      *  taoItems/Category/setExposed?id=${propUri}&expose=(true|false)
      * Response
      *  { success : bool, data : bool}

@@ -1,0 +1,6 @@
+{
+  "http://example.test/tao.rdf#objective": {
+    "label": "Objective",
+    "values": ["1a"]
+  }
+}

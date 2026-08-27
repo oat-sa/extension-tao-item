@@ -42,13 +42,13 @@ class CategoryServiceTest extends TestCase
     public function categoryNames()
     {
         return [
-            [" < Hello   My w!%'orld!! ", 'hello-my-world'],
-            ['12hello', 'hello'],
+            [' Hello   My World ', 'hello-my-world'],
             [' hello', 'hello'],
-            ['!1h12ello ', 'h12ello'],
-            ["<span class='hello'>&nbsp;''hello</span> ", 'span-classhellonbsphellospan'],
-            ['averylongnamethatexceedtheexpectedthritytowcharacters', 'averylongnamethatexceedtheexpect'],
-            ['ÆØÅ', 'æøå'],
+            ['_private', '_private'],
+            ['12hello', null],
+            ['!hello', null],
+            ['ÆØÅ', null],
+            ['averylongnamethatexceedtheexpectedthritytowcharacters', 'averylongnamethatexceedtheexpectedthritytowcharacters'],
         ];
     }
 
@@ -188,7 +188,7 @@ class CategoryServiceTest extends TestCase
             ->with(['p1', 'p2', 'p3'])
             ->willReturn(
                 [
-                    'p1' => ['Foo', 'Yo _Bar '],
+                    'p1' => ['Foo', 'Yo _Bar ', '1a'],
                     'p2' => [$p2Value],
                     'p3' => [''],
                 ]
@@ -215,7 +215,53 @@ class CategoryServiceTest extends TestCase
 
         $this->assertCount(3, $categories, "We have 3 categories");
         $this->assertEquals('foo', $categories[0], "The category matches");
-        $this->assertEquals('yo-bar', $categories[1], "The category matches");
+        $this->assertEquals('yo-_bar', $categories[1], "The category matches");
         $this->assertEquals('yeah-moo', $categories[2], "The category matches");
+    }
+
+    /**
+     * Test invalid automatic-category values.
+     *
+     * @return void
+     */
+    public function testGetInvalidCategoryValues()
+    {
+        $fooClass = new RdfClass('foo');
+        $exposeProperty = new RdfProperty(CategoryService::EXPOSE_PROP_URI);
+        $trueResource = new RdfResource(GenerisRdf::GENERIS_TRUE);
+
+        $eligibleProp = $this->createMock(RdfProperty::class);
+        $eligibleProp->method('getOnePropertyValue')
+            ->with($exposeProperty)
+            ->willReturn($trueResource);
+        $eligibleProp->method('getWidget')
+            ->willReturn(new RdfResource(CategoryService::$supportedWidgetUris[0]));
+        $eligibleProp->method('getUri')->willReturn('p1');
+        $eligibleProp->method('getLabel')->willReturn('Objective');
+
+        $item = $this->createMock(RdfResource::class);
+        $item->method('getPropertiesValues')
+            ->with(['p1'])
+            ->willReturn(['p1' => ['1a', 'valid-category', '']]);
+        $item->method('getTypes')->willReturn([$fooClass]);
+
+        $itemService = $this->createMock(taoItems_models_classes_ItemsService::class);
+        $itemService
+            ->method('getClazzProperties')
+            ->with($fooClass, $this->anything())
+            ->willReturn(['p1' => $eligibleProp]);
+
+        $categoryService = new CategoryService();
+        $categoryService->setItemService($itemService);
+
+        $this->assertSame(
+            [
+                'p1' => [
+                    'label' => 'Objective',
+                    'values' => ['1a'],
+                ],
+            ],
+            $categoryService->getInvalidCategoryValues($item)
+        );
     }
 }
