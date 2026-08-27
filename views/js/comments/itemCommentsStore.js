@@ -245,22 +245,25 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 return api
                     .update(commentId, nextBody)
                     .then(comment => {
-                        comments = comments.map(existing =>
-                            existing.id === comment.id
-                                ? Object.assign({}, existing, comment, {
-                                      editable:
-                                          typeof comment.editable === 'boolean'
-                                              ? comment.editable
-                                              : existing.editable,
-                                      deletable:
-                                          typeof comment.deletable === 'boolean'
-                                              ? comment.deletable
-                                              : typeof existing.deletable === 'boolean'
-                                                ? existing.deletable
-                                                : !!existing.editable
-                                  })
-                                : existing
-                        );
+                        comments = comments.map(existing => {
+                            if (existing.id !== comment.id) {
+                                return existing;
+                            }
+
+                            const next = Object.assign({}, existing, comment);
+                            const isOwner = !!(
+                                typeof next.deletable === 'boolean'
+                                    ? next.deletable
+                                    : typeof existing.deletable === 'boolean'
+                                      ? existing.deletable
+                                      : existing.editable || comment.editable
+                            );
+
+                            next.deletable = isOwner;
+                            next.editable = isOwner && !next.resolved;
+
+                            return next;
+                        });
                         submitting = false;
                         this.trigger('updated', comment);
                         this.trigger('loaded', comments.slice(), count);
