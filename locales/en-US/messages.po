@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.06\n"
-"PO-Revision-Date: 2026-08-21T19:05:54\n"
+"Project-Id-Version: TAO 2026.09\n"
+"PO-Revision-Date: 2026-08-26T17:03:25\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -35,28 +35,13 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-msgid "and all of its content?"
-msgstr ""
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
-
-msgid "Are you sure you want to delete the class"
 msgstr ""
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
-msgid "Are you sure you want to delete the item"
-msgstr ""
-
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
-
-msgid "Are you sure you want to delete this item?"
 msgstr ""
 
 #, tao-public
@@ -72,9 +57,6 @@ msgstr ""
 msgid "Close console"
 msgstr ""
 
-msgid "contains content that is currently in use."
-msgstr ""
-
 #, tao-public
 msgid "Copy To"
 msgstr ""
@@ -85,9 +67,6 @@ msgstr ""
 
 #, tao-public
 msgid "Delete"
-msgstr ""
-
-msgid "Deleting this class will break the"
 msgstr ""
 
 msgid "Deleting this item will break the"
@@ -199,9 +178,6 @@ msgstr ""
 msgid "New class"
 msgstr ""
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr ""
-
 msgid "No item type selected for the current item."
 msgstr ""
 
@@ -209,9 +185,6 @@ msgid "Not yet available"
 msgstr ""
 
 msgid "Only items not used in any test will be deleted."
-msgstr ""
-
-msgid "other"
 msgstr ""
 
 msgid "Please delete the subclasses before."
@@ -243,16 +216,10 @@ msgstr ""
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "s"
-msgstr ""
-
 msgid "Some items in the folder "
 msgstr ""
 
 msgid "Submit"
-msgstr ""
-
-msgid "test"
 msgstr ""
 
 msgid "The class"

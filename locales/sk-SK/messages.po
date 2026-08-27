@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.06\n"
-"PO-Revision-Date: 2026-08-21T19:05:55\n"
+"Project-Id-Version: TAO 2026.09\n"
+"PO-Revision-Date: 2026-08-26T17:03:25\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk-SK\n"
@@ -38,29 +38,14 @@ msgstr "Pri spracovaní vašej žiadosti sa vyskytla chyba."
 msgid "and"
 msgstr "a"
 
-msgid "and all of its content?"
-msgstr "a všetok jeho obsah?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "sa momentálne používajú v jednom alebo viacerých testoch, takže ich nemožno odstrániť:"
-
-msgid "Are you sure you want to delete the class"
-msgstr "Naozaj chcete odstrániť priečinok?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Naozaj chcete odstrániť priečinok %s a všetok jeho obsah?"
 
-msgid "Are you sure you want to delete the item"
-msgstr "Naozaj chcete odstrániť túto položku?"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr "Naozaj chcete odstrániť položku %s?"
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Naozaj chcete odstrániť tento priečinok a všetok jeho obsah?"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "Naozaj chcete túto položku odstrániť?"
 
 #, tao-public
 msgid "Authoring"
@@ -75,9 +60,6 @@ msgstr "Zatvoriť"
 msgid "Close console"
 msgstr "Zatvoriť konzolu"
 
-msgid "contains content that is currently in use."
-msgstr "obsahuje obsah, ktorý sa aktuálne používa."
-
 #, tao-public
 msgid "Copy To"
 msgstr "Kopírovať do"
@@ -89,9 +71,6 @@ msgstr "Vytvárajte a navrhujte položky a cvičenia."
 #, tao-public
 msgid "Delete"
 msgstr "Odstrániť"
-
-msgid "Deleting this class will break the"
-msgstr "Odstránením tohto priečinka sa preruší"
 
 msgid "Deleting this item will break the"
 msgstr "Odstránením tejto položky sa preruší"
@@ -202,20 +181,14 @@ msgstr "Presunúť do"
 msgid "New class"
 msgstr "Nový priečinok"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Pre vybraný typ položky nie je k dispozícii žiadny nástroj na tvorbu položiek: %s"
-
 msgid "No item type selected for the current item."
-msgstr "Pre aktuálnu položku nebol vybraný žiadny typ položky."
+msgstr ""
 
 msgid "Not yet available"
 msgstr "Zatiaľ nie je k dispozícii"
 
 msgid "Only items not used in any test will be deleted."
 msgstr "Vymazané budú iba položky, ktoré neboli použité v žiadnom teste."
-
-msgid "other"
-msgstr "iné"
 
 msgid "Please delete the subclasses before."
 msgstr "Najprv prosím vymažte podpriečinky."
@@ -246,17 +219,11 @@ msgstr "Zdroj bol odstránený"
 msgid "Retrieving external resources"
 msgstr "Získavanie externých zdrojov"
 
-msgid "s"
-msgstr "s"
-
 msgid "Some items in the folder "
 msgstr "Niektoré položky v priečinku "
 
 msgid "Submit"
 msgstr "Odoslať"
-
-msgid "test"
-msgstr "test"
 
 msgid "The class"
 msgstr "Priečinok"
