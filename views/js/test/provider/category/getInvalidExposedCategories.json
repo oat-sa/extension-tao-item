@@ -1,6 +1,9 @@
 {
-  "http://example.test/tao.rdf#objective": {
-    "label": "Objective",
-    "values": ["1a"]
+  "success": true,
+  "data": {
+    "http://example.test/tao.rdf#objective": {
+      "label": "Objective",
+      "values": ["1a"]
+    }
   }
 }
