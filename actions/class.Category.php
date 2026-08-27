@@ -76,7 +76,7 @@ class taoItems_actions_Category extends tao_actions_CommonModule
             return;
         }
 
-        $item = $this->getResource($id);
+        $item = $this->getResource(trim($id));
         $service = $this->getServiceLocator()->get(CategoryService::SERVICE_ID);
 
         $this->returnSuccess($service->getInvalidCategoryValues($item));

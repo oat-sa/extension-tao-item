@@ -39,6 +39,20 @@ class CategoryTest extends TestCase
         $this->assertSame($expected, $method->invoke($sut, $itemUri));
     }
 
+    public function testGetInvalidExposedCategoriesNormalizesItemUri(): void
+    {
+        $reflection = new ReflectionClass(CategoryActionLookupSpy::class);
+        $sut = $reflection->newInstanceWithoutConstructor();
+        $sut->itemUri = ' http://example.test/tao.rdf#item ';
+
+        try {
+            $sut->getInvalidExposedCategories();
+            $this->fail('The resource lookup should stop the action.');
+        } catch (CategoryLookupException $exception) {
+            $this->assertSame('http://example.test/tao.rdf#item', $exception->getMessage());
+        }
+    }
+
     public function itemUriProvider(): array
     {
         return [
@@ -50,4 +64,23 @@ class CategoryTest extends TestCase
             'null' => [null, false],
         ];
     }
+}
+
+class CategoryActionLookupSpy extends \taoItems_actions_Category
+{
+    public mixed $itemUri;
+
+    public function getRequestParameter($name)
+    {
+        return $this->itemUri;
+    }
+
+    public function getResource($uri)
+    {
+        throw new CategoryLookupException($uri);
+    }
+}
+
+class CategoryLookupException extends \RuntimeException
+{
 }
