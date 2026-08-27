@@ -71,7 +71,7 @@ class taoItems_actions_Category extends tao_actions_CommonModule
     {
         $id = $this->getRequestParameter('id');
 
-        if (is_null($id) || empty($id)) {
+        if (!$this->isValidItemUri($id)) {
             $this->returnBadParameter('The item URI is required');
             return;
         }
@@ -80,6 +80,18 @@ class taoItems_actions_Category extends tao_actions_CommonModule
         $service = $this->getServiceLocator()->get(CategoryService::SERVICE_ID);
 
         $this->returnSuccess($service->getInvalidCategoryValues($item));
+    }
+
+    /**
+     * Validate an item URI received from the request.
+     *
+     * @param mixed $id
+     *
+     * @return bool
+     */
+    private function isValidItemUri(mixed $id): bool
+    {
+        return is_string($id) && trim($id) !== '';
     }
 
     /**
