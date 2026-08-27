@@ -229,7 +229,7 @@ class CategoryServiceTest extends TestCase
      *
      * @return void
      */
-    public function testGetInvalidCategoryValues()
+    public function testGetInvalidCategoryValues(): void
     {
         $fooClass = new RdfClass('foo');
         $exposeProperty = new RdfProperty(CategoryService::EXPOSE_PROP_URI);

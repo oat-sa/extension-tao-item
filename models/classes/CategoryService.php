@@ -122,7 +122,7 @@ class CategoryService extends ConfigurableService
      * @return array<string, array{label: string, values: string[]}>
      *     invalid values indexed by property URI
      */
-    public function getInvalidCategoryValues(RdfResource $item)
+    public function getInvalidCategoryValues(RdfResource $item): array
     {
         $invalidValues = [];
 
@@ -175,7 +175,7 @@ class CategoryService extends ConfigurableService
      *
      * @return string|null
      */
-    public static function sanitizeCategoryName($value)
+    public static function sanitizeCategoryName(string $value): ?string
     {
         $output = preg_replace('/\s+/', '-', trim($value));
         $output = mb_strtolower($output);
@@ -195,10 +195,9 @@ class CategoryService extends ConfigurableService
      *
      * @return bool
      */
-    public static function isValidCategoryName($value)
+    public static function isValidCategoryName(string $value): bool
     {
-        return is_string($value)
-            && strlen($value) <= 60
+        return strlen($value) <= 60
             && preg_match(
                 '/^[a-zA-Z_][a-zA-Z0-9_-]*$/',
                 $value

@@ -72,13 +72,14 @@ class taoItems_actions_Category extends tao_actions_CommonModule
         $id = $this->getRequestParameter('id');
 
         if (is_null($id) || empty($id)) {
-            return $this->returnBadParameter('The item URI is required');
+            $this->returnBadParameter('The item URI is required');
+            return;
         }
 
         $item = $this->getResource($id);
         $service = $this->getServiceLocator()->get(CategoryService::SERVICE_ID);
 
-        return $this->returnSuccess($service->getInvalidCategoryValues($item));
+        $this->returnSuccess($service->getInvalidCategoryValues($item));
     }
 
     /**

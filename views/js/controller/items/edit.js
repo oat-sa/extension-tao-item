@@ -75,7 +75,7 @@ define([
             }).appendTo($property);
         });
 
-        if (hasInvalidValues && !$form.find('.invalid-automatic-category-message').length) {
+        if (hasInvalidValues && !$form.prev('.invalid-automatic-category-message').length) {
             $('<p>', {
                 class: 'invalid-automatic-category-message feedback-warning',
                 text: __('One or more values cannot be used as automatic test categories.')
