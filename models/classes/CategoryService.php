@@ -145,7 +145,8 @@ class CategoryService extends ConfigurableService
                         ? $value->getLabel()
                         : (string) $value;
 
-                    if (trim($rawValue) !== ''
+                    if (
+                        trim($rawValue) !== ''
                         && self::sanitizeCategoryName($rawValue) === null
                     ) {
                         if (!isset($invalidValues[$propertyUri])) {

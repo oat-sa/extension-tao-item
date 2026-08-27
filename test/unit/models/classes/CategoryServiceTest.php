@@ -48,7 +48,10 @@ class CategoryServiceTest extends TestCase
             ['12hello', null],
             ['!hello', null],
             ['ÆØÅ', null],
-            ['averylongnamethatexceedtheexpectedthritytowcharacters', 'averylongnamethatexceedtheexpectedthritytowcharacters'],
+            [
+                'averylongnamethatexceedtheexpectedthritytowcharacters',
+                'averylongnamethatexceedtheexpectedthritytowcharacters',
+            ],
         ];
     }
 
