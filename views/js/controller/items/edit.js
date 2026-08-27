@@ -20,13 +20,14 @@ define([
     'i18n',
     'module',
     'layout/actions',
+    'ui/feedback',
     'ui/lock',
     'layout/section',
     'util/url',
     'uri',
     'taoItems/provider/category',
     'taoItems/preview/inlinePropertiesPreview'
-], function ($, __, module, actions, lock, section, urlUtil, uriUtil, categoryProviderFactory, inlinePropertiesPreview) {
+], function ($, __, module, actions, feedback, lock, section, urlUtil, uriUtil, categoryProviderFactory, inlinePropertiesPreview) {
     'use strict';
 
     var categoryProvider = categoryProviderFactory();
@@ -82,6 +83,10 @@ define([
         }
     }
 
+    function handleInvalidAutomaticCategoriesError() {
+        feedback().error(__('Unable to validate automatic test categories.'));
+    }
+
     /**
      * The item properties controller
      */
@@ -134,7 +139,8 @@ define([
             if (config.itemUri) {
                 categoryProvider
                     .getInvalidExposedCategories(config.itemUri)
-                    .then(displayInvalidAutomaticCategoryValues);
+                    .then(displayInvalidAutomaticCategoryValues)
+                    .catch(handleInvalidAutomaticCategoriesError);
             }
 
             if (config.isPreviewEnabled && config.itemUri) {

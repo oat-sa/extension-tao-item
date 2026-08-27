@@ -52,6 +52,8 @@ class CategoryServiceTest extends TestCase
                 'averylongnamethatexceedtheexpectedthritytowcharacters',
                 'averylongnamethatexceedtheexpectedthritytowcharacters',
             ],
+            [str_repeat('a', 60), str_repeat('a', 60)],
+            [str_repeat('a', 61), null],
         ];
     }
 

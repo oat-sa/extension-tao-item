@@ -198,6 +198,7 @@ class CategoryService extends ConfigurableService
     public static function isValidCategoryName($value)
     {
         return is_string($value)
+            && strlen($value) <= 60
             && preg_match(
                 '/^[a-zA-Z_][a-zA-Z0-9_-]*$/',
                 $value

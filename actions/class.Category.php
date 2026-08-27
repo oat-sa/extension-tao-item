@@ -66,8 +66,6 @@ class taoItems_actions_Category extends tao_actions_CommonModule
      *  { success : bool, data : {
      *      propertyUri : { label, values: [invalidValue] }
      *  } }
-     *
-     * @return void
      */
     public function getInvalidExposedCategories()
     {
