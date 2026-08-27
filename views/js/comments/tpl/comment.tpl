@@ -6,14 +6,20 @@
         <span class="item-comment-edited">({{__ 'edited'}})</span>
         {{/if}}
     </div>
-    <div class="item-comment-body" data-role="body">{{body}}</div>
+    <div class="item-comment-body" data-role="body"></div>
     <div class="item-comment-edit-form" data-role="edit-form" hidden>
         <label class="item-comments-label" for="item-comment-edit-{{id}}">{{__ 'Edit comment'}}</label>
-        <textarea
-            id="item-comment-edit-{{id}}"
-            class="item-comment-edit-input"
-            rows="3"
-        >{{body}}</textarea>
+        <div class="item-comments-rich-editor" data-role="edit-editor-wrapper">
+            <div class="item-comments-rich-toolbar" data-role="edit-toolbar" aria-label="{{__ 'Comment formatting'}}">
+                <button type="button" class="item-comments-rich-tool" data-command="bold" title="{{__ 'Bold'}}" aria-label="{{__ 'Bold'}}"><span class="item-comments-toolbar-icon item-comments-toolbar-icon--bold" aria-hidden="true"></span></button>
+                <button type="button" class="item-comments-rich-tool" data-command="italic" title="{{__ 'Italic'}}" aria-label="{{__ 'Italic'}}"><span class="item-comments-toolbar-icon item-comments-toolbar-icon--italic" aria-hidden="true"></span></button>
+                <button type="button" class="item-comments-rich-tool" data-command="underline" title="{{__ 'Underline'}}" aria-label="{{__ 'Underline'}}"><span class="item-comments-toolbar-icon item-comments-toolbar-icon--underline" aria-hidden="true"></span></button>
+                <button type="button" class="item-comments-rich-tool" data-command="bulletedlist" title="{{__ 'Bulleted list'}}" aria-label="{{__ 'Bulleted list'}}"><span class="item-comments-toolbar-icon item-comments-toolbar-icon--ul" aria-hidden="true"></span></button>
+                <button type="button" class="item-comments-rich-tool" data-command="numberedlist" title="{{__ 'Numbered list'}}" aria-label="{{__ 'Numbered list'}}"><span class="item-comments-toolbar-icon item-comments-toolbar-icon--ol" aria-hidden="true"></span></button>
+                <button type="button" class="item-comments-rich-tool" data-command="link" title="{{__ 'Link'}}" aria-label="{{__ 'Link'}}"><span class="item-comments-toolbar-icon item-comments-toolbar-icon--link" aria-hidden="true"></span></button>
+            </div>
+            <div id="item-comment-edit-{{id}}" class="item-comment-edit-input" data-role="edit-editor" data-comment-id="{{id}}"></div>
+        </div>
         <div class="item-comment-edit-actions">
             <button type="button" class="btn-info small item-comment-save" data-comment-id="{{id}}">
                 {{__ 'Save'}}

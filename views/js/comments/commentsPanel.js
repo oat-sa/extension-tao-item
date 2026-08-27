@@ -25,10 +25,11 @@ define([
     'lodash',
     'i18n',
     'core/eventifier',
+    'taoItems/comments/commentRichTextEditor',
     'tpl!taoItems/comments/tpl/panel',
     'tpl!taoItems/comments/tpl/comment',
     'css!taoItemsCss/comments-panel'
-], function ($, _, __, eventifier, panelTpl, commentTpl) {
+], function ($, _, __, eventifier, richTextEditor, panelTpl, commentTpl) {
     'use strict';
 
     let instanceSeq = 0;
@@ -79,9 +80,21 @@ define([
         const $empty = $panel.find('.item-comments-empty');
         const $error = $panel.find('.item-comments-error');
         const $form = $panel.find('.item-comments-entry');
-        const $input = $panel.find('.item-comments-input');
+        const $draftEditorHost = $panel.find('[data-role="draft-editor"]');
+        const $draftToolbar = $panel.find('[data-role="draft-toolbar"]');
         const $submit = $panel.find('.item-comments-submit');
-        const $menuLayer = $panel.find('.item-comments-menu-layer');
+
+        const editEditors = {};
+
+        const draftEditor = richTextEditor.create({
+            host: $draftEditorHost,
+            toolbar: $draftToolbar,
+            placeholder: labels.placeholder || __('Add a comment'),
+            initialValue: store.getDraft(),
+            onChange(value) {
+                store.setDraft(value);
+            }
+        });
 
         $host.empty().append($panel);
 
@@ -104,7 +117,11 @@ define([
         }
 
         function renderComments() {
-            closeMoreMenus();
+            Object.keys(editEditors).forEach(commentId => {
+                editEditors[commentId].destroy();
+                delete editEditors[commentId];
+            });
+
             const comments = store.getComments();
             $list.empty();
 
@@ -113,119 +130,97 @@ define([
             } else {
                 $empty.prop('hidden', true);
                 comments.forEach(comment => {
-                    $list.append(
+                    const $commentNode = $(
                         commentTpl({
                             id: comment.id,
                             authorLabel: comment.authorLabel,
                             createdAt: comment.createdAt,
                             displayTime: formatDisplayTime(comment.createdAt),
-                            body: comment.body,
                             edited: !!comment.edited,
                             editable: !!comment.editable,
                             resolved: !!comment.resolved
                         })
                     );
+
+                    $commentNode
+                        .find('[data-role="body"]')
+                        .html(richTextEditor.sanitizeHtml(comment.body));
+
+                    $list.append($commentNode);
                 });
             }
 
-            $input.val(store.getDraft());
+            if (draftEditor.getData() !== store.getDraft()) {
+                draftEditor.setData(store.getDraft());
+            }
             $submit.prop('disabled', !store.hasDirtyDraft() || store.isSubmitting());
         }
 
-        /**
-         * Return floating menus to their row hosts and hide them.
-         * @param {jQuery} [$keep] optional .item-comment-more to leave open
-         */
-        function closeMoreMenus($keep) {
-            $menuLayer.find('.item-comment-more-menu').each(function () {
-                const $menu = $(this);
-                const $home = $menu.data('menuHome');
-                if ($keep && $home && $home.length && $home.is($keep)) {
-                    return;
-                }
-                if ($home && $home.length) {
-                    const menuElement = $menu.get(0);
-                    const shouldRestoreFocus =
-                        menuElement &&
-                        (menuElement === document.activeElement ||
-                            $.contains(menuElement, document.activeElement));
+        function findComment(commentId) {
+            return store.getComments().find(comment => comment.id === commentId) || null;
+        }
 
-                    $menu
-                        .prop('hidden', true)
-                        .css({ top: '', left: '', right: '', bottom: '' })
-                        .removeData('menuHome')
-                        .appendTo($home);
-                    const $toggle = $home.find('.item-comment-more-toggle');
-                    $toggle.attr('aria-expanded', 'false');
-                    if (shouldRestoreFocus) {
-                        $toggle.trigger('focus');
-                    }
-                } else {
-                    $menu.remove();
-                }
+        /**
+         * Create (or recreate) the edit CKEditor for a comment row.
+         * Call only when opening Edit — not on Save (that would wipe in-progress edits).
+         */
+        function openEditEditor($article, commentId) {
+            const comment = findComment(commentId);
+            const body = comment ? comment.body : '';
+            const $editorHost = $article.find('[data-role="edit-editor"]');
+            const $toolbar = $article.find('[data-role="edit-toolbar"]');
+
+            if (editEditors[commentId]) {
+                editEditors[commentId].destroy();
+                delete editEditors[commentId];
+            }
+
+            $editorHost.empty();
+            editEditors[commentId] = richTextEditor.create({
+                host: $editorHost,
+                toolbar: $toolbar,
+                initialValue: body
             });
 
+            return editEditors[commentId];
+        }
+
+        function getEditEditor(commentId) {
+            return editEditors[commentId] || null;
+        }
+
+        function closeMoreMenus($keep) {
             $list.find('.item-comment-more').each(function () {
                 const $more = $(this);
                 if ($keep && $more.is($keep)) {
                     return;
                 }
-                $more
-                    .find('.item-comment-more-menu')
+                $more.find('.item-comment-more-menu')
                     .prop('hidden', true)
-                    .css({ top: '', left: '', right: '', bottom: '' });
+                    .removeClass('item-comment-more-menu--up item-comment-more-menu--down');
                 $more.find('.item-comment-more-toggle').attr('aria-expanded', 'false');
             });
-
-            if (!$menuLayer.children('.item-comment-more-menu').length) {
-                $menuLayer.attr('aria-hidden', 'true');
-            }
         }
 
-        /**
-         * Place menu in the panel overlay so it can overlay list/entry frames.
-         * Prefers below the trigger; opens above when needed; clamps into panel.
-         * @param {jQuery} $more
-         * @param {jQuery} $menu
-         */
         function positionMoreMenu($more, $menu) {
-            const panelElement = $panel.get(0);
-            const toggleElement = $more.find('.item-comment-more-toggle').get(0);
+            const listElement = $list.get(0);
+            const moreElement = $more.get(0);
             const menuElement = $menu.get(0);
 
-            if (!panelElement || !toggleElement || !menuElement) {
+            if (!listElement || !moreElement || !menuElement) {
                 return;
             }
 
-            $menu.data('menuHome', $more);
-            $menuLayer.append($menu).attr('aria-hidden', 'false');
-            $menu.prop('hidden', false);
-
-            const panelRect = panelElement.getBoundingClientRect();
-            const toggleRect = toggleElement.getBoundingClientRect();
+            const listRect = listElement.getBoundingClientRect();
+            const moreRect = moreElement.getBoundingClientRect();
             const menuHeight = menuElement.offsetHeight;
-            const menuWidth = menuElement.offsetWidth;
-            const gap = 2;
-            const spaceBelow = panelRect.bottom - toggleRect.bottom - gap;
-            const spaceAbove = toggleRect.top - panelRect.top - gap;
-            const openUp = spaceBelow < menuHeight && spaceAbove >= spaceBelow;
+            const spaceBelow = listRect.bottom - moreRect.bottom;
+            const spaceAbove = moreRect.top - listRect.top;
+            const openUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
 
-            let top = openUp
-                ? toggleRect.top - panelRect.top - menuHeight - gap
-                : toggleRect.bottom - panelRect.top + gap;
-            let left = toggleRect.right - panelRect.left - menuWidth;
-
-            const maxTop = Math.max(0, panelElement.clientHeight - menuHeight);
-            const maxLeft = Math.max(0, panelElement.clientWidth - menuWidth);
-            top = Math.max(0, Math.min(top, maxTop));
-            left = Math.max(0, Math.min(left, maxLeft));
-
-            $menu.css({
-                top: `${top}px`,
-                left: `${left}px`,
-                right: 'auto',
-                bottom: 'auto'
-            });
+            $menu
+                .removeClass('item-comment-more-menu--up item-comment-more-menu--down')
+                .addClass(openUp ? 'item-comment-more-menu--up' : 'item-comment-more-menu--down');
         }
 
         function closeEditForms($keep) {
@@ -256,7 +251,7 @@ define([
                 }
             )
             .on(`draftchange${ns}`, draft => {
-                $submit.prop('disabled', !/\S/.test(draft || ''));
+                $submit.prop('disabled', !store.hasDirtyDraft());
             })
             .on(`submitFailed${ns}`, () => {
                 showError(labels.submitFailed || __('The comment was not saved.'));
@@ -276,14 +271,11 @@ define([
             .on(`submitted${ns}`, () => {
                 clearError();
                 scrollToNewest();
+                draftEditor.setData('');
             })
             .on([`updated${ns}`, `resolved${ns}`, `deleted${ns}`].join(' '), () => {
                 clearError();
             });
-
-        $input.on(`input${ns}`, () => {
-            store.setDraft($input.val());
-        });
 
         $form.on(`submit${ns}`, e => {
             e.preventDefault();
@@ -292,9 +284,6 @@ define([
             }
             store
                 .submit()
-                .then(() => {
-                    $input.val('');
-                })
                 .catch(_.noop);
         });
 
@@ -303,48 +292,29 @@ define([
             e.stopPropagation();
             const $toggle = $(e.currentTarget);
             const $more = $toggle.closest('.item-comment-more');
-            let $menu = $more.find('.item-comment-more-menu');
-            if (!$menu.length) {
-                $menu = $menuLayer.children('.item-comment-more-menu').filter(function () {
-                    const $home = $(this).data('menuHome');
-                    return $home && $home.is($more);
-                });
+            const $menu = $more.find('.item-comment-more-menu');
+            const willOpen = $menu.prop('hidden');
+            closeMoreMenus(willOpen ? $more : null);
+            $menu.prop('hidden', !willOpen);
+            if (willOpen) {
+                positionMoreMenu($more, $menu);
             }
-            const isOpen = $menu.length && !$menu.prop('hidden') && $menu.parent().is($menuLayer);
-            if (isOpen) {
-                closeMoreMenus();
-                return;
-            }
-            closeMoreMenus($more);
-            if (!$menu.length) {
-                return;
-            }
-            positionMoreMenu($more, $menu);
-            $toggle.attr('aria-expanded', 'true');
+            $toggle.attr('aria-expanded', willOpen ? 'true' : 'false');
         });
 
-        $list.on(`scroll${ns}`, () => {
-            closeMoreMenus();
-        });
-
-        $panel.on(`click${ns}`, '.item-comment-edit', e => {
+        $list.on(`click${ns}`, '.item-comment-edit', e => {
             e.preventDefault();
-            e.stopPropagation();
             const $button = $(e.currentTarget);
-            const commentId = $button.data('comment-id');
-            const $article = $list.find('.item-comment').filter(function () {
-                return String($(this).data('comment-id')) === String(commentId);
-            });
-            if (!$article.length) {
-                return;
-            }
+            const $article = $button.closest('.item-comment');
+            const commentId = String($article.data('comment-id') || '');
             const $editForm = $article.find('[data-role="edit-form"]');
             closeMoreMenus();
             closeEditForms($editForm);
             $article.find('[data-role="body"]').prop('hidden', true);
             $article.find('[data-role="actions"]').prop('hidden', true);
             $editForm.prop('hidden', false);
-            $editForm.find('.item-comment-edit-input').trigger('focus');
+            const editor = openEditEditor($article, commentId);
+            editor.focus();
         });
 
         $list.on(`click${ns}`, '.item-comment-cancel', e => {
@@ -355,9 +325,13 @@ define([
         $list.on(`click${ns}`, '.item-comment-save', e => {
             e.preventDefault();
             const $button = $(e.currentTarget);
-            const commentId = $button.data('comment-id');
-            const $article = $button.closest('.item-comment');
-            const body = $article.find('.item-comment-edit-input').val();
+            const commentId = String($button.data('comment-id') || '');
+            const editor = getEditEditor(commentId);
+            if (!editor) {
+                showError(labels.updateFailed || __('The comment was not updated.'));
+                return;
+            }
+            const body = editor.getData();
             $button.prop('disabled', true);
             store
                 .update(commentId, body)
@@ -385,9 +359,8 @@ define([
                 });
         });
 
-        $panel.on(`click${ns}`, '.item-comment-delete', e => {
+        $list.on(`click${ns}`, '.item-comment-delete', e => {
             e.preventDefault();
-            e.stopPropagation();
             closeMoreMenus();
             const commentId = $(e.currentTarget).data('comment-id');
             store.delete(commentId).catch(_.noop);
@@ -422,13 +395,15 @@ define([
             },
 
             destroy() {
-                closeMoreMenus();
                 $(document).off(ns);
                 $form.off(ns);
-                $input.off(ns);
                 $list.off(ns);
-                $panel.off(ns);
                 store.off(ns);
+                draftEditor.destroy();
+                Object.keys(editEditors).forEach(commentId => {
+                    editEditors[commentId].destroy();
+                    delete editEditors[commentId];
+                });
                 $panel.remove();
                 return this;
             }
