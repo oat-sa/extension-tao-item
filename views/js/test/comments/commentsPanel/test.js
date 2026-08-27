@@ -30,6 +30,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
             body: 'Hello',
             edited: false,
             editable: true,
+            deletable: true,
             resolved: false
         },
         {
@@ -39,6 +40,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
             body: 'Second',
             edited: false,
             editable: true,
+            deletable: true,
             resolved: false
         }
     ];

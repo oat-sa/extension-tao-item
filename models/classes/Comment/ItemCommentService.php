@@ -64,11 +64,7 @@ class ItemCommentService
 
         return [
             'comments' => array_map(
-                static function (ItemComment $comment) use ($currentAuthorId): array {
-                    return $comment->toArray(
-                        $currentAuthorId !== null && $comment->getAuthorId() === $currentAuthorId
-                    );
-                },
+                fn (ItemComment $comment): array => $this->serializeComment($comment, $currentAuthorId),
                 $comments
             ),
             'count' => count($comments),
@@ -125,6 +121,10 @@ class ItemCommentService
 
         if ($existing->getAuthorId() !== $authorId) {
             throw new common_exception_Unauthorized('Only the comment author can edit this comment');
+        }
+
+        if ($existing->isResolved()) {
+            throw new common_exception_Unauthorized('Resolved comments cannot be edited until reopened');
         }
 
         return $this->persistence->update($existing->withEditedBody($body));
@@ -230,6 +230,26 @@ class ItemCommentService
         } catch (common_exception_Unauthorized $exception) {
             return null;
         }
+    }
+
+    /**
+     * Serialize comment for API consumers.
+     * Own active comments are editable; own comments remain deletable when resolved.
+     *
+     * @return array<string, mixed>
+     */
+    public function serializeComment(ItemComment $comment, ?string $currentAuthorId = null): array
+    {
+        if ($currentAuthorId === null) {
+            $currentAuthorId = $this->tryResolveAuthorId();
+        }
+
+        $isOwner = $currentAuthorId !== null && $comment->getAuthorId() === $currentAuthorId;
+
+        return $comment->toArray(
+            $isOwner && !$comment->isResolved(),
+            $isOwner
+        );
     }
 
     /**

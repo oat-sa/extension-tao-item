@@ -33,7 +33,7 @@
             {{__ 'Resolve'}}
         </a>
         {{/if}}
-        {{#if editable}}
+        {{#if deletable}}
         <div class="item-comment-more">
             <button
                 type="button"
@@ -47,12 +47,14 @@
                 <span class="item-comment-more-dots" aria-hidden="true"></span>
             </button>
             <ul class="item-comment-more-menu" role="menu" hidden>
+                {{#if editable}}
                 <li role="none">
                     <button type="button" class="item-comment-more-item item-comment-edit" role="menuitem" data-comment-id="{{id}}">
                         <span class="icon-edit" aria-hidden="true"></span>
                         {{__ 'Edit'}}
                     </button>
                 </li>
+                {{/if}}
                 <li role="none">
                     <button type="button" class="item-comment-more-item item-comment-delete" role="menuitem" data-comment-id="{{id}}">
                         <span class="icon-bin" aria-hidden="true"></span>

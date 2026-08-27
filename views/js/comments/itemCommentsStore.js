@@ -251,7 +251,13 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                                       editable:
                                           typeof comment.editable === 'boolean'
                                               ? comment.editable
-                                              : existing.editable
+                                              : existing.editable,
+                                      deletable:
+                                          typeof comment.deletable === 'boolean'
+                                              ? comment.deletable
+                                              : typeof existing.deletable === 'boolean'
+                                                ? existing.deletable
+                                                : !!existing.editable
                                   })
                                 : existing
                         );
@@ -289,16 +295,31 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                 return api
                     .resolve(commentId, !!resolved)
                     .then(comment => {
-                        comments = comments.map(existing =>
-                            existing.id === comment.id
-                                ? Object.assign({}, existing, comment, {
-                                      editable:
-                                          typeof comment.editable === 'boolean'
-                                              ? comment.editable
-                                              : existing.editable
-                                  })
-                                : existing
-                        );
+                        comments = comments.map(existing => {
+                            if (existing.id !== comment.id) {
+                                return existing;
+                            }
+
+                            const next = Object.assign({}, existing, comment, {
+                                editable:
+                                    typeof comment.editable === 'boolean'
+                                        ? comment.editable
+                                        : existing.editable,
+                                deletable:
+                                    typeof comment.deletable === 'boolean'
+                                        ? comment.deletable
+                                        : typeof existing.deletable === 'boolean'
+                                          ? existing.deletable
+                                          : !!existing.editable
+                            });
+
+                            // Resolved comments are never editable until reopened.
+                            if (next.resolved) {
+                                next.editable = false;
+                            }
+
+                            return next;
+                        });
                         submitting = false;
                         this.trigger('resolved', comment);
                         this.trigger('loaded', comments.slice(), count);

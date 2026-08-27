@@ -131,7 +131,7 @@ final class ItemComment
         );
     }
 
-    public function toArray(bool $editable = false): array
+    public function toArray(bool $editable = false, bool $deletable = false): array
     {
         return [
             'id' => $this->id,
@@ -144,6 +144,7 @@ final class ItemComment
             'edited' => $this->edited,
             'resolved' => $this->resolved,
             'editable' => $editable,
+            'deletable' => $deletable,
         ];
     }
 }

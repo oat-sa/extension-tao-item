@@ -122,6 +122,7 @@ define([
                             body: comment.body,
                             edited: !!comment.edited,
                             editable: !!comment.editable,
+                            deletable: !!comment.deletable,
                             resolved: !!comment.resolved
                         })
                     );
