@@ -133,6 +133,7 @@ define(['context', 'jquery'], function (context) {
             this.originalFeatureFlags = context.featureFlags;
             this.originalLocale = context.locale;
             setupDom();
+            context.featureFlags = Object.assign({}, context.featureFlags);
             enableExternalPreviewer();
         },
         afterEach() {
