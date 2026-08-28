@@ -26,8 +26,8 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 
 /**
- * Comment-body XSS sanitizer — thin HTMLPurifier wrapper (same stack as
- * {@see \tao_helpers_Display::sanitizeXssHtml} / Htmlarea), with a stricter allow-list.
+ * Comment HTML sanitizer via HTMLPurifier (same stack as Display::sanitizeXssHtml / Htmlarea).
+ * Allow-list is stricter and must stay aligned with commentRichTextEditor.js (FE).
  */
 final class CommentRichTextSanitizer
 {

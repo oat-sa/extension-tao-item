@@ -46,11 +46,13 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
      * Otherwise DOMPurify drops span[style] and formatting is lost on getData/setData.
      */
     function semanticizeInlineStyles(html) {
-        const container = document.createElement('div');
-        container.innerHTML = typeof html === 'string' ? html : '';
+        const $container = $('<div/>').html(typeof html === 'string' ? html : '');
+        const $spans = $container.find('span[style]');
 
-        Array.prototype.slice.call(container.querySelectorAll('span[style]')).forEach(function (span) {
-            const style = String(span.getAttribute('style') || '').toLowerCase();
+        // Innermost first so nested spans convert cleanly.
+        for (let i = $spans.length - 1; i >= 0; i -= 1) {
+            const $span = $spans.eq(i);
+            const style = String($span.attr('style') || '').toLowerCase();
             let tagName = null;
 
             if (/font-weight\s*:\s*(bold|[5-9]00)/.test(style)) {
@@ -62,21 +64,14 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             }
 
             if (!tagName) {
-                while (span.firstChild) {
-                    span.parentNode.insertBefore(span.firstChild, span);
-                }
-                span.parentNode.removeChild(span);
-                return;
+                $span.replaceWith($span.contents());
+                continue;
             }
 
-            const semantic = document.createElement(tagName);
-            while (span.firstChild) {
-                semantic.appendChild(span.firstChild);
-            }
-            span.parentNode.replaceChild(semantic, span);
-        });
+            $span.replaceWith($('<' + tagName + '/>').append($span.contents()));
+        }
 
-        return container.innerHTML;
+        return $container.html();
     }
 
     function sanitizeHtml(value) {
@@ -119,9 +114,10 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
         );
 
         const textareaElement = $host.find('[data-role="rich-textarea"]').get(0);
+        // Custom setup (not ckConfigurator/htmlEditor): external toolbar, ENTER_BR, semantic tags, tight allow-list.
         const editor = textareaElement
             ? CKEDITOR.replace(textareaElement, {
-            toolbar: [],
+            toolbar: [], // driven by .item-comments-rich-toolbar via execCommand
             extraPlugins: 'basicstyles,list,indent,link',
             removePlugins: 'elementspath,magicline,maximize,resize,floatingspace',
             autoParagraph: false,
@@ -130,8 +126,7 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             height: 78,
             contentsCss: [editorContentsCss],
             bodyClass: 'item-comments-editor-body',
-            // Keep semantic tags — do not let basicstyles rewrite underline to span[style]
-            // (span[style] would be dropped by sanitize and formatting lost on edit/save).
+            // Semantic tags (ckConfigurator underline → span.txt-underline would fail sanitize).
             coreStyles_bold: { element: 'strong', overrides: 'b' },
             coreStyles_italic: { element: 'em', overrides: 'i' },
             coreStyles_underline: { element: 'u', overrides: 'span' },
