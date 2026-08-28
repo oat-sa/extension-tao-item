@@ -247,6 +247,7 @@ define([
         function positionMoreMenu($more, $menu) {
             const listElement = $panel.get(0);
             const moreElement = $more.get(0);
+            const toggleElement = $more.find('.item-comment-more-toggle').get(0);
             const menuElement = $menu.get(0);
 
             if (!listElement || !moreElement || !menuElement) {
@@ -254,7 +255,12 @@ define([
             }
 
             const listRect = listElement.getBoundingClientRect();
-            const moreRect = moreElement.getBoundingClientRect();
+            const moreRectCandidate = moreElement.getBoundingClientRect();
+            const toggleRectCandidate = toggleElement ? toggleElement.getBoundingClientRect() : null;
+            const moreRect =
+                moreRectCandidate.width || moreRectCandidate.height
+                    ? moreRectCandidate
+                    : (toggleRectCandidate || moreRectCandidate);
             const menuHeight = menuElement.offsetHeight;
             const menuWidth = menuElement.offsetWidth;
             const listHeight = listElement.clientHeight || (listRect.bottom - listRect.top);
