@@ -70,21 +70,21 @@ class CommentRichTextSanitizerTest extends TestCase
                 '<div><strong>Safe</strong></div>',
                 '<strong>Safe</strong>',
             ],
-            'converts adjacent paragraphs to single breaks' => [
+            'unwraps paragraphs without inserting breaks' => [
                 '<p><strong>Bold</strong></p><p><em>Italic</em></p><p><u>Underline</u></p>',
-                '<strong>Bold</strong><br><em>Italic</em><br><u>Underline</u>',
+                '<strong>Bold</strong><em>Italic</em><u>Underline</u>',
             ],
-            'collapses br plus source newlines' => [
+            'keeps br tags' => [
                 "<strong>Bold</strong><br />\n<em>Italic</em><br />\n<u>Underline</u>",
-                '<strong>Bold</strong><br><em>Italic</em><br><u>Underline</u>',
+                "<strong>Bold</strong><br />\n<em>Italic</em><br />\n<u>Underline</u>",
             ],
             'preserves duplicate breaks' => [
                 'A<br><br><br>B',
-                'A<br><br><br>B',
+                'A<br /><br /><br />B',
             ],
-            'converts plain-text newlines to spaces' => [
+            'keeps plain-text newlines' => [
                 "Hello\nWorld",
-                'Hello World',
+                "Hello\nWorld",
             ],
             'drops style spans (FE must send semantic tags)' => [
                 '<span style="text-decoration: underline">Underline</span>',
