@@ -83,10 +83,12 @@ define([
         const $draftEditorHost = $panel.find('[data-role="draft-editor"]');
         const $draftToolbar = $panel.find('[data-role="draft-toolbar"]');
         const $submit = $panel.find('.item-comments-submit');
+        const $menuLayer = $('<div class="item-comments-menu-layer" aria-hidden="true"></div>');
 
         const editEditors = {};
 
         $host.empty().append($panel);
+        $panel.prepend($menuLayer);
 
         const draftEditor = richTextEditor.create({
             host: $draftEditorHost,
@@ -117,6 +119,7 @@ define([
         }
 
         function renderComments() {
+            closeMoreMenus();
             Object.keys(editEditors).forEach(commentId => {
                 editEditors[commentId].destroy();
                 delete editEditors[commentId];
@@ -189,7 +192,46 @@ define([
             return editEditors[commentId] || null;
         }
 
+        function findMenuForMore($more) {
+            const $inlineMenu = $more.find('.item-comment-more-menu').first();
+            if ($inlineMenu.length) {
+                return $inlineMenu;
+            }
+
+            return $menuLayer
+                .children('.item-comment-more-menu')
+                .filter(function () {
+                    const $home = $(this).data('menuHome');
+                    return $home && $home.length && $home.is($more);
+                })
+                .first();
+        }
+
+        function closeLayerMenus($keep) {
+            $menuLayer.children('.item-comment-more-menu').each(function () {
+                const $menu = $(this);
+                const $home = $menu.data('menuHome');
+                if ($keep && $home && $home.length && $home.is($keep)) {
+                    return;
+                }
+
+                $menu
+                    .prop('hidden', true)
+                    .removeClass('item-comment-more-menu--up item-comment-more-menu--down')
+                    .css({ top: '', left: '', right: '', bottom: '' });
+
+                if ($home && $home.length) {
+                    $home.find('.item-comment-more-toggle').attr('aria-expanded', 'false');
+                    $home.append($menu);
+                }
+            });
+
+            $menuLayer.attr('aria-hidden', $menuLayer.children('.item-comment-more-menu').length ? 'false' : 'true');
+        }
+
         function closeMoreMenus($keep) {
+            closeLayerMenus($keep);
+
             $list.find('.item-comment-more').each(function () {
                 const $more = $(this);
                 if ($keep && $more.is($keep)) {
@@ -203,7 +245,7 @@ define([
         }
 
         function positionMoreMenu($more, $menu) {
-            const listElement = $list.get(0);
+            const listElement = $panel.get(0);
             const moreElement = $more.get(0);
             const menuElement = $menu.get(0);
 
@@ -214,13 +256,30 @@ define([
             const listRect = listElement.getBoundingClientRect();
             const moreRect = moreElement.getBoundingClientRect();
             const menuHeight = menuElement.offsetHeight;
+            const menuWidth = menuElement.offsetWidth;
+            const listHeight = listElement.clientHeight || (listRect.bottom - listRect.top);
+            const listWidth = listElement.clientWidth || (listRect.right - listRect.left);
             const spaceBelow = listRect.bottom - moreRect.bottom;
             const spaceAbove = moreRect.top - listRect.top;
             const openUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
+            const preferredTop = openUp
+                ? moreRect.top - listRect.top - menuHeight - 2
+                : moreRect.bottom - listRect.top + 2;
+            const preferredLeft = moreRect.right - listRect.left - menuWidth;
+            const maxTop = Math.max(0, listHeight - menuHeight);
+            const maxLeft = Math.max(0, listWidth - menuWidth);
+            const top = Math.min(Math.max(0, preferredTop), maxTop);
+            const left = Math.min(Math.max(0, preferredLeft), maxLeft);
 
             $menu
                 .removeClass('item-comment-more-menu--up item-comment-more-menu--down')
-                .addClass(openUp ? 'item-comment-more-menu--up' : 'item-comment-more-menu--down');
+                .addClass(openUp ? 'item-comment-more-menu--up' : 'item-comment-more-menu--down')
+                .css({
+                    top: `${top}px`,
+                    left: `${left}px`,
+                    right: 'auto',
+                    bottom: 'auto'
+                });
         }
 
         function closeEditForms($keep) {
@@ -292,21 +351,40 @@ define([
             e.stopPropagation();
             const $toggle = $(e.currentTarget);
             const $more = $toggle.closest('.item-comment-more');
-            const $menu = $more.find('.item-comment-more-menu');
-            const willOpen = $menu.prop('hidden');
+            const $menu = findMenuForMore($more);
+
+            if (!$menu.length) {
+                $toggle.attr('aria-expanded', 'false');
+                closeMoreMenus();
+                return;
+            }
+
+            const isOpen = !$menu.prop('hidden') && $menu.parent().is($menuLayer);
+            const willOpen = !isOpen;
+
             closeMoreMenus(willOpen ? $more : null);
-            $menu.prop('hidden', !willOpen);
+
             if (willOpen) {
+                $menu.data('menuHome', $more);
+                $menuLayer.append($menu);
+                $menu.prop('hidden', false);
                 positionMoreMenu($more, $menu);
+                $menuLayer.attr('aria-hidden', 'false');
             }
             $toggle.attr('aria-expanded', willOpen ? 'true' : 'false');
         });
 
-        $list.on(`click${ns}`, '.item-comment-edit', e => {
+        $panel.on(`click${ns}`, '.item-comment-edit', e => {
             e.preventDefault();
             const $button = $(e.currentTarget);
-            const $article = $button.closest('.item-comment');
-            const commentId = String($article.data('comment-id') || '');
+            const commentId = String($button.data('comment-id') || '');
+            const $article = $list.find(`.item-comment[data-comment-id="${commentId}"]`).first();
+
+            if (!$article.length || !commentId) {
+                closeMoreMenus();
+                return;
+            }
+
             const $editForm = $article.find('[data-role="edit-form"]');
             closeMoreMenus();
             closeEditForms($editForm);
@@ -359,11 +437,15 @@ define([
                 });
         });
 
-        $list.on(`click${ns}`, '.item-comment-delete', e => {
+        $panel.on(`click${ns}`, '.item-comment-delete', e => {
             e.preventDefault();
             closeMoreMenus();
             const commentId = $(e.currentTarget).data('comment-id');
             store.delete(commentId).catch(_.noop);
+        });
+
+        $list.on(`scroll${ns}`, () => {
+            closeMoreMenus();
         });
 
         $(document).on(`click${ns}`, () => {
@@ -372,8 +454,13 @@ define([
 
         $(document).on(`keydown${ns}`, e => {
             if (e.key === 'Escape') {
+                const $focusedMenuItem = $(document.activeElement).closest('.item-comment-more-menu');
+                const $focusedMenuHome = $focusedMenuItem.length ? $focusedMenuItem.data('menuHome') : null;
                 closeMoreMenus();
                 closeEditForms();
+                if ($focusedMenuHome && $focusedMenuHome.length) {
+                    $focusedMenuHome.find('.item-comment-more-toggle').trigger('focus');
+                }
             }
         });
 
@@ -395,9 +482,11 @@ define([
             },
 
             destroy() {
+                closeMoreMenus();
                 $(document).off(ns);
                 $form.off(ns);
                 $list.off(ns);
+                $panel.off(ns);
                 store.off(ns);
                 draftEditor.destroy();
                 Object.keys(editEditors).forEach(commentId => {
