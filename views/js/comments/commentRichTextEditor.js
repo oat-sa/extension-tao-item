@@ -24,7 +24,7 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
     const SANITIZE_OPTIONS = {
         ALLOWED_TAGS: ['strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'br'],
         ALLOWED_ATTR: ['href'],
-        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i
+        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
     };
 
     /**
