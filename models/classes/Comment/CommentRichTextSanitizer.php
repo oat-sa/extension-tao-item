@@ -126,7 +126,9 @@ final class CommentRichTextSanitizer
     }
 
     /**
-     * Map paragraph/div boundaries to <br> and drop literal source newlines.
+     * Map paragraph/div boundaries to <br>.
+     * Remaining CR/LF/tabs become a single space so plain text like "Hello\nWorld"
+     * keeps word separation; spaces next to <br> are trimmed.
      * Consecutive <br> (intentional blank lines) are preserved.
      */
     private static function normalizeBlocksToBreaks(string $value): string
@@ -136,8 +138,10 @@ final class CommentRichTextSanitizer
         $value = (string) preg_replace('#</?\s*p(?:\s[^>]*)?>#i', '', $value);
         $value = (string) preg_replace('#</\s*div\s*>\s*<\s*div(?:\s[^>]*)?>#i', '<br>', $value);
         $value = (string) preg_replace('#</?\s*div(?:\s[^>]*)?>#i', '', $value);
+        $value = (string) preg_replace('#[\r\n\t]+#', ' ', $value);
+        $value = (string) preg_replace('#(<br>)\s+#', '$1', $value);
 
-        return (string) preg_replace('#[\r\n\t]+#', '', $value);
+        return (string) preg_replace('#\s+(<br>)#', '$1', $value);
     }
 
     private static function sanitizeTree(DOMElement $root): void
