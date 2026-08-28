@@ -86,6 +86,8 @@ define([
 
         const editEditors = {};
 
+        $host.empty().append($panel);
+
         const draftEditor = richTextEditor.create({
             host: $draftEditorHost,
             toolbar: $draftToolbar,
@@ -95,8 +97,6 @@ define([
                 store.setDraft(value);
             }
         });
-
-        $host.empty().append($panel);
 
         /**
          * @param {string} message
