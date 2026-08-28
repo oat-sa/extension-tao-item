@@ -246,6 +246,7 @@ define([
 
         function positionMoreMenu($more, $menu) {
             const listElement = $panel.get(0);
+            const listViewportElement = $list.get(0);
             const moreElement = $more.get(0);
             const toggleElement = $more.find('.item-comment-more-toggle').get(0);
             const menuElement = $menu.get(0);
@@ -255,23 +256,35 @@ define([
             }
 
             const listRect = listElement.getBoundingClientRect();
+            const listViewportRect = listViewportElement ? listViewportElement.getBoundingClientRect() : listRect;
             const moreRectCandidate = moreElement.getBoundingClientRect();
             const toggleRectCandidate = toggleElement ? toggleElement.getBoundingClientRect() : null;
-            const moreRect =
-                moreRectCandidate.width || moreRectCandidate.height
-                    ? moreRectCandidate
-                    : (toggleRectCandidate || moreRectCandidate);
+
+            function hasRectPosition(rect) {
+                return !!rect && (
+                    rect.top !== 0 ||
+                    rect.bottom !== 0 ||
+                    rect.left !== 0 ||
+                    rect.right !== 0
+                );
+            }
+
+            const placementRect = hasRectPosition(moreRectCandidate)
+                ? moreRectCandidate
+                : (hasRectPosition(toggleRectCandidate) ? toggleRectCandidate : moreRectCandidate);
+            const anchorRect = hasRectPosition(toggleRectCandidate) ? toggleRectCandidate : placementRect;
             const menuHeight = menuElement.offsetHeight;
             const menuWidth = menuElement.offsetWidth;
             const listHeight = listElement.clientHeight || (listRect.bottom - listRect.top);
             const listWidth = listElement.clientWidth || (listRect.right - listRect.left);
-            const spaceBelow = listRect.bottom - moreRect.bottom;
-            const spaceAbove = moreRect.top - listRect.top;
+            const referenceRect = hasRectPosition(listViewportRect) ? listViewportRect : listRect;
+            const spaceBelow = referenceRect.bottom - placementRect.bottom;
+            const spaceAbove = placementRect.top - referenceRect.top;
             const openUp = spaceBelow < menuHeight && spaceAbove > spaceBelow;
             const preferredTop = openUp
-                ? moreRect.top - listRect.top - menuHeight - 2
-                : moreRect.bottom - listRect.top + 2;
-            const preferredLeft = moreRect.right - listRect.left - menuWidth;
+                ? anchorRect.top - listRect.top - menuHeight - 2
+                : anchorRect.bottom - listRect.top + 2;
+            const preferredLeft = anchorRect.right - listRect.left - menuWidth;
             const maxTop = Math.max(0, listHeight - menuHeight);
             const maxLeft = Math.max(0, listWidth - menuWidth);
             const top = Math.min(Math.max(0, preferredTop), maxTop);
