@@ -32,7 +32,9 @@ class CommentRichTextSanitizerTest extends TestCase
      */
     public function testSanitize(string $inputBody, string $expectedBody): void
     {
-        $this->assertSame($expectedBody, CommentRichTextSanitizer::sanitize($inputBody));
+        $sut = new CommentRichTextSanitizer();
+
+        $this->assertSame($expectedBody, $sut->sanitize($inputBody));
     }
 
     /**
@@ -40,7 +42,9 @@ class CommentRichTextSanitizerTest extends TestCase
      */
     public function testHasMeaningfulText(string $inputBody, bool $expected): void
     {
-        $this->assertSame($expected, CommentRichTextSanitizer::hasMeaningfulText($inputBody));
+        $sut = new CommentRichTextSanitizer();
+
+        $this->assertSame($expected, $sut->hasMeaningfulText($inputBody));
     }
 
     public function sanitizeProvider(): array

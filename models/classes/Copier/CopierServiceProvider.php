@@ -32,6 +32,7 @@ use oat\oatbox\event\EventManager;
 use oat\oatbox\session\SessionService;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
+use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
@@ -172,6 +173,10 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ]);
 
         $services
+            ->set(CommentRichTextSanitizer::class, CommentRichTextSanitizer::class)
+            ->public();
+
+        $services
             ->set(ItemCommentService::class, ItemCommentService::class)
             ->public()
             ->args([
@@ -179,6 +184,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 service(SessionService::SERVICE_ID),
                 service(Ontology::SERVICE_ID),
                 service(PermissionChecker::class),
+                service(CommentRichTextSanitizer::class),
             ]);
     }
 }

@@ -32,6 +32,7 @@ use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
+use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
@@ -69,7 +70,8 @@ class ItemCommentServiceTest extends TestCase
             $this->persistence,
             $this->sessionService,
             $this->ontology,
-            $this->permissionChecker
+            $this->permissionChecker,
+            new CommentRichTextSanitizer()
         );
     }
 

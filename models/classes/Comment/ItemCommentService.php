@@ -39,17 +39,20 @@ class ItemCommentService
     private SessionService $sessionService;
     private Ontology $ontology;
     private PermissionCheckerInterface $permissionChecker;
+    private CommentRichTextSanitizer $commentRichTextSanitizer;
 
     public function __construct(
         ItemCommentPersistenceInterface $persistence,
         SessionService $sessionService,
         Ontology $ontology,
-        PermissionCheckerInterface $permissionChecker
+        PermissionCheckerInterface $permissionChecker,
+        CommentRichTextSanitizer $commentRichTextSanitizer
     ) {
         $this->persistence = $persistence;
         $this->sessionService = $sessionService;
         $this->ontology = $ontology;
         $this->permissionChecker = $permissionChecker;
+        $this->commentRichTextSanitizer = $commentRichTextSanitizer;
     }
 
     /**
@@ -278,8 +281,8 @@ class ItemCommentService
 
     private function assertBody(string $body): string
     {
-        $body = CommentRichTextSanitizer::sanitize($body);
-        if (!CommentRichTextSanitizer::hasMeaningfulText($body)) {
+        $body = $this->commentRichTextSanitizer->sanitize($body);
+        if (!$this->commentRichTextSanitizer->hasMeaningfulText($body)) {
             throw new InvalidArgumentException('Comment body must not be empty');
         }
 
