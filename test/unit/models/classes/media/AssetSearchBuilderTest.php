@@ -254,10 +254,41 @@ class AssetSearchBuilderTest extends TestCase
             ],
         ]);
 
-        $result = $this->subject->search($this->createSearchQuery('---', 1, 10));
+        foreach (['---', '!!!', '...', '- - -'] as $delimiterOnlyQuery) {
+            $result = $this->subject->search($this->createSearchQuery($delimiterOnlyQuery, 1, 10));
 
-        $this->assertSame(0, $result['total']);
-        $this->assertSame([], $result['items']);
+            $this->assertSame(0, $result['total'], 'Expected empty total for query: ' . $delimiterOnlyQuery);
+            $this->assertSame([], $result['items'], 'Expected empty items for query: ' . $delimiterOnlyQuery);
+            $this->assertSame(1, $result['page']);
+            $this->assertSame(10, $result['pageSize']);
+        }
+    }
+
+    public function testSearchWithoutTextQueryReturnsAllFlattenedAssets(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'root.png',
+                    'uri' => 'asset://root',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'name' => 'other.mp4',
+                    'uri' => 'asset://other',
+                    'mime' => 'video/mp4',
+                ],
+            ],
+        ]);
+
+        foreach (['', '   ', "\t\n"] as $emptyQuery) {
+            $result = $this->subject->search($this->createSearchQuery($emptyQuery, 1, 10));
+
+            $this->assertSame(2, $result['total'], 'Expected no text filter for query: ' . var_export($emptyQuery, true));
+            $this->assertCount(2, $result['items']);
+        }
     }
 
     public function testSearchRequiresAllQueryTokensToMatch(): void
@@ -297,9 +328,21 @@ class AssetSearchBuilderTest extends TestCase
             'label' => 'Assets',
             'children' => [
                 [
-                    'name' => 'eclair.png',
+                    'name' => 'zeta.png',
+                    'label' => 'Zeta',
+                    'uri' => 'asset://zeta',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'name' => 'eclair-upper.png',
                     'label' => 'Éclair',
                     'uri' => 'asset://eclair-upper',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'name' => 'alpha.png',
+                    'label' => 'Alpha',
+                    'uri' => 'asset://alpha',
                     'mime' => 'image/png',
                 ],
                 [
@@ -311,12 +354,42 @@ class AssetSearchBuilderTest extends TestCase
             ],
         ]);
 
-        $result = $this->subject->search($this->createSearchQuery('eclair', 1, 10));
+        $result = $this->subject->search($this->createSearchQuery('', 1, 10));
 
-        $this->assertSame(2, $result['total']);
-        $labels = array_column($result['items'], 'label');
-        $this->assertContains('Éclair', $labels);
-        $this->assertContains('éclair', $labels);
+        $this->assertSame(4, $result['total']);
+        // mb_strtolower folds É/é to the same key; equal keys then tie-break on uri.
+        // Byte-order string compare places ASCII labels before accented ones.
+        $this->assertSame(
+            ['asset://alpha', 'asset://zeta', 'asset://eclair-lower', 'asset://eclair-upper'],
+            array_column($result['items'], 'uri')
+        );
+    }
+
+    public function testSearchMatchesUnicodeQueryCaseInsensitively(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'eclair.png',
+                    'label' => 'Éclair',
+                    'uri' => 'asset://eclair',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'name' => 'other.png',
+                    'label' => 'Other',
+                    'uri' => 'asset://other',
+                    'mime' => 'image/png',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->search($this->createSearchQuery('ÉCLAIR', 1, 10));
+
+        $this->assertSame(1, $result['total']);
+        $this->assertSame('asset://eclair', $result['items'][0]['uri']);
     }
 
     public function testSearchReturnsEmptyForNonMatchingQuery(): void
@@ -514,6 +587,57 @@ class AssetSearchBuilderTest extends TestCase
 
         $this->assertSame(1, $result['total']);
         $this->assertSame('Allowed/Subfolder', $result['items'][0]['location']);
+    }
+
+    public function testSearchParentScopeIncludesNestedFileAssets(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => 'taomedia://mediamanager/Parent',
+            'label' => 'Parent',
+            'children' => [
+                [
+                    'name' => 'root-level.png',
+                    'uri' => 'asset://root-level',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'path' => 'taomedia://mediamanager/Parent/Child',
+                    'label' => 'Child',
+                    'children' => [
+                        [
+                            'name' => 'nested.png',
+                            'uri' => 'asset://nested',
+                            'mime' => 'image/png',
+                        ],
+                        [
+                            'path' => 'taomedia://mediamanager/Parent/Child/Grandchild',
+                            'label' => 'Grandchild',
+                            'children' => [
+                                [
+                                    'name' => 'deep-nested.png',
+                                    'uri' => 'asset://deep-nested',
+                                    'mime' => 'image/png',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $allInScope = $this->subject->search($this->createSearchQuery('', 1, 10));
+        $this->assertSame(3, $allInScope['total']);
+        $this->assertSame(
+            ['asset://deep-nested', 'asset://nested', 'asset://root-level'],
+            array_column($allInScope['items'], 'uri')
+        );
+        $this->assertSame('Parent/Child', $allInScope['items'][1]['location']);
+        $this->assertSame('Parent/Child/Grandchild', $allInScope['items'][0]['location']);
+
+        $nestedMatch = $this->subject->search($this->createSearchQuery('deep', 1, 10));
+        $this->assertSame(1, $nestedMatch['total']);
+        $this->assertSame('asset://deep-nested', $nestedMatch['items'][0]['uri']);
+        $this->assertSame('Parent/Child/Grandchild', $nestedMatch['items'][0]['location']);
     }
 
     public function testSearchReturnsEmptyWhenAccessControlFiltersAllAssets(): void
