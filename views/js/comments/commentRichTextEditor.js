@@ -53,22 +53,32 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
         for (let i = $spans.length - 1; i >= 0; i -= 1) {
             const $span = $spans.eq(i);
             const style = String($span.attr('style') || '').toLowerCase();
-            let tagName = null;
+            const tagNames = [];
 
             if (/font-weight\s*:\s*(bold|[5-9]00)/.test(style)) {
-                tagName = 'strong';
-            } else if (/font-style\s*:\s*italic/.test(style)) {
-                tagName = 'em';
-            } else if (/text-decoration[^;]*underline/.test(style)) {
-                tagName = 'u';
+                tagNames.push('strong');
             }
 
-            if (!tagName) {
+            if (/font-style\s*:\s*italic/.test(style)) {
+                tagNames.push('em');
+            }
+
+            if (/text-decoration[^;]*underline/.test(style)) {
+                tagNames.push('u');
+            }
+
+            if (!tagNames.length) {
                 $span.replaceWith($span.contents());
                 continue;
             }
 
-            $span.replaceWith($('<' + tagName + '/>').append($span.contents()));
+            let $wrapped = $span.contents();
+
+            for (let wrapperIndex = tagNames.length - 1; wrapperIndex >= 0; wrapperIndex -= 1) {
+                $wrapped = $('<' + tagNames[wrapperIndex] + '/>').append($wrapped);
+            }
+
+            $span.replaceWith($wrapped);
         }
 
         return $container.html();
