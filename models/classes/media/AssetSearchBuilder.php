@@ -28,8 +28,9 @@ use oat\tao\model\accessControl\AccessControlEnablerInterface;
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
- * When a text query is present, results are collected from the requested folder
- * subtree, filtered with trailing-token prefix matching, then sorted and paginated.
+ * Prefers the indexed search gateway when available. Otherwise falls back to
+ * filesystem subtree traversal with trailing-token prefix matching on text
+ * query only (metadata filters require the indexed path).
  */
 class AssetSearchBuilder extends ConfigurableService
 {
@@ -41,6 +42,21 @@ class AssetSearchBuilder extends ConfigurableService
 
     public function search(AssetSearchQuery $search): array
     {
+        $gateway = $this->getIndexedSearchGateway();
+        if ($gateway !== null && $gateway->isAvailable()) {
+            return $gateway->search($search);
+        }
+
+        // Metadata filters are only supported via the indexed gateway.
+        if ($search->hasMetadataCriteria()) {
+            return [
+                'items' => [],
+                'total' => 0,
+                'page' => $search->getPage(),
+                'pageSize' => $search->getPageSize(),
+            ];
+        }
+
         $asset = $search->getAsset();
         $mediaSource = $asset->getMediaSource();
 
@@ -72,6 +88,30 @@ class AssetSearchBuilder extends ConfigurableService
             'page' => $page,
             'pageSize' => $pageSize,
         ];
+    }
+
+    private function getIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
+    {
+        try {
+            $locator = $this->getServiceLocator();
+            if ($locator === null) {
+                return null;
+            }
+
+            // Gateway is registered in Symfony DI (SearchEngineProvider), not legacy config.
+            $container = method_exists($locator, 'getContainer')
+                ? $locator->getContainer()
+                : null;
+            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
+                return null;
+            }
+
+            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
+
+            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
+        } catch (\Throwable $exception) {
+            return null;
+        }
     }
 
     /**
@@ -141,9 +181,10 @@ class AssetSearchBuilder extends ConfigurableService
      */
     private function filterByQuery(array $items, string $query): array
     {
+        $trimmedQuery = trim($query);
         $queryTokens = $this->tokenize($query);
         if ($queryTokens === []) {
-            return $items;
+            return $trimmedQuery !== '' ? [] : $items;
         }
 
         return array_values(array_filter($items, function (array $item) use ($queryTokens): bool {
@@ -199,10 +240,24 @@ class AssetSearchBuilder extends ConfigurableService
      */
     private function sortItems(array $items, string $sortBy, string $sortDir): array
     {
-        usort($items, function (array $left, array $right) use ($sortBy, $sortDir): int {
-            $leftValue = $this->sortValue($left, $sortBy);
-            $rightValue = $this->sortValue($right, $sortBy);
-            $result = $leftValue <=> $rightValue;
+        $nullsLast = in_array($sortBy, [self::SORT_LOCATION, self::SORT_UPDATED_AT], true);
+
+        usort($items, function (array $left, array $right) use ($sortBy, $sortDir, $nullsLast): int {
+            if ($nullsLast) {
+                $leftMissing = $this->isMissingSortValue($left, $sortBy);
+                $rightMissing = $this->isMissingSortValue($right, $sortBy);
+                if ($leftMissing || $rightMissing) {
+                    if ($leftMissing && $rightMissing) {
+                        $result = 0;
+                    } else {
+                        return $leftMissing ? 1 : -1;
+                    }
+                } else {
+                    $result = $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
+                }
+            } else {
+                $result = $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
+            }
 
             if ($result === 0 && $sortBy !== AssetSearchQuery::SORT_LABEL) {
                 $result = $this->sortValue($left, AssetSearchQuery::SORT_LABEL)
@@ -219,15 +274,27 @@ class AssetSearchBuilder extends ConfigurableService
         return $items;
     }
 
+    private function isMissingSortValue(array $item, string $sortBy): bool
+    {
+        if ($sortBy === self::SORT_LOCATION) {
+            return trim((string)($item['location'] ?? '')) === '';
+        }
+        if ($sortBy === self::SORT_UPDATED_AT) {
+            return !isset($item['updatedAt']) && !isset($item['updated_at']);
+        }
+
+        return false;
+    }
+
     private function sortValue(array $item, string $sortBy): string
     {
         if ($sortBy === self::SORT_LOCATION) {
-            return strtolower((string)($item['location'] ?? ''));
+            return mb_strtolower((string)($item['location'] ?? ''), 'UTF-8');
         }
         if ($sortBy === self::SORT_UPDATED_AT) {
             return (string)($item['updatedAt'] ?? $item['updated_at'] ?? '');
         }
 
-        return strtolower((string)($item['label'] ?? $item['name'] ?? ''));
+        return mb_strtolower((string)($item['label'] ?? $item['name'] ?? ''), 'UTF-8');
     }
 }

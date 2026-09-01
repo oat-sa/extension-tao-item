@@ -28,6 +28,11 @@ use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoItems\model\media\AssetSearchBuilder;
 
 /**
+ * Registers AssetSearchBuilder for Resource Manager scoped asset search.
+ *
+ * @license GPL-2.0-only
+ * @copyright 2026 Open Assessment Technologies SA
+ *
  * phpcs:disable Squiz.Classes.ValidClassName
  */
 final class Version202608141600002141_taoItems extends AbstractMigration

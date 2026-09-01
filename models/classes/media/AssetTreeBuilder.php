@@ -38,53 +38,55 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
+    /**
+     * Full subtree so browse lists files under the selected folder and descendants.
+     * Media sources treat childrenLimit 0 as unlimited; cap the in-memory sort window.
+     */
+    private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
+    private const MAX_BROWSE_LOAD = 500;
+
     public function build(DirectorySearchQuery $search): array
     {
-        $asset = $search->getAsset();
         $pageSize = $this->getPaginationLimit();
         $offset = $search->getChildrenOffset();
 
-        // Load the full folder so files can be sorted before pagination.
-        $search->setChildrenLimit(0);
-
-        $mediaSource = $asset->getMediaSource();
+        $mediaSource = $search->getAsset()->getMediaSource();
 
         if ($mediaSource instanceof AccessControlEnablerInterface) {
             $mediaSource->enableAccessControl();
         }
 
-        $data = $mediaSource->getDirectories($search);
+        $fetchQuery = $this->createFetchQuery($search);
+        $data = $mediaSource->getDirectories($fetchQuery);
         $children = $data['children'] ?? [];
 
-        foreach ($children as &$child) {
-            if (isset($child['parent'])) {
-                $child['url'] = tao_helpers_Uri::url(
-                    'files',
-                    'ItemContent',
-                    'taoItems',
-                    [
-                        'uri' => $search->getItemUri(),
-                        'lang' => $search->getItemLang(),
-                        '1' => $child['parent']
-                    ]
-                );
-
-                unset($child['parent']);
-            }
-        }
-        unset($child);
-
+        $scopeLabel = (string)($data['label'] ?? $data['path'] ?? '');
         $directories = [];
         $files = [];
+
         foreach ($children as $child) {
+            if (!is_array($child)) {
+                continue;
+            }
+
             if ($this->isFileChild($child)) {
-                $files[] = $child;
-            } else {
-                $directories[] = $child;
+                if (count($files) < self::MAX_BROWSE_LOAD) {
+                    $files[] = $this->normalizeFile($child, $scopeLabel);
+                }
+                continue;
+            }
+
+            // Directories and other non-file nodes stay as stubs for tree expand.
+            $directories[] = $this->toDirectoryStub($child, $search);
+            if (count($files) < self::MAX_BROWSE_LOAD) {
+                $this->collectFiles(
+                    $child['children'] ?? [],
+                    $this->childLocation($scopeLabel, $child),
+                    $files
+                );
             }
         }
-
-        $files = $this->sortFiles($files, $search->getSortBy(), $search->getSortDir());
+        $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
         $data['total'] = count($files);
         $data['childrenLimit'] = $pageSize;
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
@@ -92,8 +94,161 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return $data;
     }
 
+    private function createFetchQuery(DirectorySearchQuery $search): AssetSearchQuery
+    {
+        // Rebuild with offset 0 so media sources do not paginate before we sort+slice.
+        // DirectorySearchQuery has no setChildrenOffset; AssetSearchQuery carries the bound.
+        return (new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            self::FULL_SUBTREE_DEPTH,
+            0,
+            self::MAX_BROWSE_LOAD
+        ))
+            ->setSortBy($this->resolveSortBy($search))
+            ->setSortDir($this->resolveSortDir($search));
+    }
+
+    private function resolveSortBy(DirectorySearchQuery $search): string
+    {
+        if ($search instanceof AssetSearchQuery) {
+            return $search->getSortBy();
+        }
+
+        // Legacy DirectorySearchQuery (published tao-core) may not expose sort accessors yet.
+        if (method_exists($search, 'getSortBy')) {
+            return (string)$search->getSortBy();
+        }
+
+        return self::SORT_LABEL;
+    }
+
+    private function resolveSortDir(DirectorySearchQuery $search): string
+    {
+        if ($search instanceof AssetSearchQuery) {
+            return $search->getSortDir();
+        }
+
+        if (method_exists($search, 'getSortDir')) {
+            return (string)$search->getSortDir();
+        }
+
+        return 'asc';
+    }
+
+    /**
+     * @param array<int, mixed> $nodes
+     * @param array<int, array> $files
+     */
+    private function collectFiles(array $nodes, string $location, array &$files): void
+    {
+        foreach ($nodes as $child) {
+            if (count($files) >= self::MAX_BROWSE_LOAD) {
+                return;
+            }
+            if (!is_array($child)) {
+                continue;
+            }
+
+            if ($this->isDirectoryChild($child)) {
+                $this->collectFiles(
+                    $child['children'] ?? [],
+                    $this->childLocation($location, $child),
+                    $files
+                );
+                continue;
+            }
+
+            if ($this->isFileChild($child)) {
+                $files[] = $this->normalizeFile($child, $location);
+            }
+        }
+    }
+
+    private function childLocation(string $parentLocation, array $directory): string
+    {
+        $label = trim((string)($directory['label'] ?? ''));
+        if ($label === '') {
+            $path = trim((string)($directory['path'] ?? ''), '/');
+            if ($path !== '' && str_contains($path, '/')) {
+                $path = substr($path, (int)strrpos($path, '/') + 1);
+            }
+            $label = $path;
+        }
+
+        if ($parentLocation === '') {
+            return $label;
+        }
+        if ($label === '') {
+            return $parentLocation;
+        }
+
+        return trim($parentLocation . '/' . $label, '/');
+    }
+
+    /**
+     * Keep a one-level directory stub for tree expand; nested files are flattened above.
+     *
+     * @param array<string, mixed> $directory
+     * @return array<string, mixed>
+     */
+    private function toDirectoryStub(array $directory, DirectorySearchQuery $search): array
+    {
+        $parent = (string)($directory['parent'] ?? $directory['path'] ?? '');
+        unset($directory['children'], $directory['parent'], $directory['total']);
+
+        if ($parent !== '') {
+            $directory['url'] = tao_helpers_Uri::url(
+                'files',
+                'ItemContent',
+                'taoItems',
+                [
+                    'uri' => $search->getItemUri(),
+                    'lang' => $search->getItemLang(),
+                    '1' => $parent,
+                ]
+            );
+            if (!isset($directory['path'])) {
+                $directory['path'] = $parent;
+            }
+        }
+
+        return $directory;
+    }
+
+    /**
+     * @param array<string, mixed> $file
+     * @return array<string, mixed>
+     */
+    private function normalizeFile(array $file, string $location): array
+    {
+        if (!isset($file['location']) || $file['location'] === '') {
+            $file['location'] = $location;
+        }
+        if (!isset($file['updatedAt']) && isset($file['updated_at'])) {
+            $file['updatedAt'] = $file['updated_at'];
+        }
+
+        return $file;
+    }
+
+    private function isDirectoryChild(array $child): bool
+    {
+        if (array_key_exists('children', $child) || isset($child['parent'])) {
+            return true;
+        }
+
+        return isset($child['path']) && !isset($child['mime']) && !isset($child['uri']);
+    }
+
     private function isFileChild(array $child): bool
     {
+        if ($this->isDirectoryChild($child)) {
+            return false;
+        }
+
         return isset($child['uri']) || isset($child['mime']) || isset($child['name']);
     }
 
@@ -112,6 +267,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 $result = $this->sortValue($left, self::SORT_LABEL)
                     <=> $this->sortValue($right, self::SORT_LABEL);
             }
+            if ($result === 0) {
+                $result = (string)($left['uri'] ?? '') <=> (string)($right['uri'] ?? '');
+            }
 
             return $direction === 'desc' ? -$result : $result;
         });
@@ -122,13 +280,13 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     private function sortValue(array $item, string $sortBy): string
     {
         if ($sortBy === self::SORT_LOCATION) {
-            return strtolower((string)($item['location'] ?? $item['path'] ?? ''));
+            return mb_strtolower((string)($item['location'] ?? $item['path'] ?? ''), 'UTF-8');
         }
         if ($sortBy === self::SORT_UPDATED_AT) {
             return (string)($item['updatedAt'] ?? $item['updated_at'] ?? '');
         }
 
-        return strtolower((string)($item['label'] ?? $item['name'] ?? ''));
+        return mb_strtolower((string)($item['label'] ?? $item['name'] ?? ''), 'UTF-8');
     }
 
     private function getPaginationLimit(): int

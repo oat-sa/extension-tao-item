@@ -33,6 +33,7 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     public const DEFAULT_PAGE = 1;
     public const DEFAULT_PAGE_SIZE = 10;
+    public const MAX_PAGE_SIZE = 100;
 
     /** @var string */
     private $query = '';
@@ -48,6 +49,13 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     /** @var int */
     private $pageSize = self::DEFAULT_PAGE_SIZE;
+
+    /**
+     * Metadata filters: property URI => exact value (text or enum).
+     *
+     * @var array<string, string>
+     */
+    private $metadataCriteria = [];
 
     /** @var int */
     private $depth;
@@ -111,6 +119,47 @@ final class AssetSearchQuery extends DirectorySearchQuery
         return $this->query !== '';
     }
 
+    /**
+     * @param array<string, mixed> $criteria
+     */
+    public function setMetadataCriteria(array $criteria): self
+    {
+        $normalized = [];
+        foreach ($criteria as $propertyUri => $value) {
+            if (!is_string($propertyUri) || $propertyUri === '') {
+                continue;
+            }
+            if (is_array($value)) {
+                foreach ($value as $entry) {
+                    if (is_string($entry) && $entry !== '') {
+                        $normalized[$propertyUri] = $entry;
+                        break;
+                    }
+                }
+                continue;
+            }
+            if (is_string($value) && $value !== '') {
+                $normalized[$propertyUri] = $value;
+            }
+        }
+        $this->metadataCriteria = $normalized;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getMetadataCriteria(): array
+    {
+        return $this->metadataCriteria;
+    }
+
+    public function hasMetadataCriteria(): bool
+    {
+        return $this->metadataCriteria !== [];
+    }
+
     public function setSortBy(string $sortBy): self
     {
         $allowed = [self::SORT_LABEL, self::SORT_LOCATION, self::SORT_UPDATED_AT];
@@ -150,7 +199,11 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     public function setPageSize(int $pageSize): self
     {
-        $this->pageSize = $pageSize > 0 ? $pageSize : self::DEFAULT_PAGE_SIZE;
+        if ($pageSize <= 0) {
+            $this->pageSize = self::DEFAULT_PAGE_SIZE;
+        } else {
+            $this->pageSize = min($pageSize, self::MAX_PAGE_SIZE);
+        }
 
         return $this;
     }

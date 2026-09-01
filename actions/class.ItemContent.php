@@ -33,8 +33,10 @@ use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
+use oat\taoItems\model\media\AssetSearchUnavailableException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
+use oat\taoItems\model\media\CurrentAssetResolver;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\taoItems\model\media\LocalItemSource;
 use Psr\Http\Message\StreamInterface;
@@ -56,10 +58,15 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private const DEFAULT_PAGE_SIZE = 10;
 
     /**
-     * Browse a media folder, or search within its subtree when `query` is non-empty.
+     * Browse a media folder, or search within its subtree when `query` and/or
+     * `metadata` filters are present.
      *
-     * Browse response (empty query): existing tree payload with `children`.
-     * Search response (non-empty query): `{ items, total, page, pageSize }`.
+     * Browse response (no query, no metadata): existing tree payload with `children`.
+     * Search response: `{ items, total, page, pageSize }`.
+     *
+     * Metadata filters: `metadata[{propertyUri}]={value}` (AND across properties).
+     * Optional `currentAsset` resolves replacement context to `parentPath` +
+     * selectable `currentAsset` row (or null when inaccessible / MIME-incompatible).
      *
      * @throws MissingParameterException|TaoMediaException
      */
@@ -87,17 +94,96 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             ->setSortDir((string)($params['sortDir'] ?? 'asc'));
 
         $queryText = trim((string)($params['query'] ?? ''));
-        if ($queryText !== '') {
+        $metadataCriteria = $this->normalizeMetadataCriteria($params['metadata'] ?? null);
+        if ($queryText !== '' || $metadataCriteria !== []) {
             $searchQuery
                 ->setQuery($queryText)
+                ->setMetadataCriteria($metadataCriteria)
                 ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
                 ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
 
-            $this->setSuccessJsonResponse($this->getAssetSearchBuilder()->search($searchQuery));
-            return;
+            try {
+                $response = $this->getAssetSearchBuilder()->search($searchQuery);
+            } catch (AssetSearchUnavailableException $exception) {
+                $this->logWarning('Asset search unavailable: ' . $exception->getMessage());
+                $this->setErrorJsonResponse(
+                    __('Asset search is temporarily unavailable. Please try again.'),
+                    0,
+                    [],
+                    503
+                );
+                return;
+            }
+        } else {
+            $response = $this->getAssetTreeBuilder()->build($searchQuery);
         }
 
-        $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
+        $this->setSuccessJsonResponse(
+            $this->attachCurrentAssetContext($response, $uri, $lang, $params, $filters)
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $response
+     * @param array<string, mixed> $params
+     * @param array<int, string> $filters
+     * @return array<string, mixed>
+     */
+    private function attachCurrentAssetContext(
+        array $response,
+        string $itemUri,
+        string $itemLang,
+        array $params,
+        array $filters
+    ): array {
+        $currentAssetUrl = trim((string)($params['currentAsset'] ?? ''));
+        if ($currentAssetUrl === '') {
+            return $response;
+        }
+
+        $resolved = $this->getCurrentAssetResolver()->resolve(
+            $itemUri,
+            $itemLang,
+            $currentAssetUrl,
+            $filters
+        );
+
+        $response['parentPath'] = $resolved['parentPath'];
+        $response['currentAsset'] = $resolved['currentAsset'];
+
+        return $response;
+    }
+
+    /**
+     * @param mixed $raw
+     * @return array<string, string>
+     */
+    private function normalizeMetadataCriteria($raw): array
+    {
+        if (!is_array($raw)) {
+            return [];
+        }
+
+        $normalized = [];
+        foreach ($raw as $propertyUri => $value) {
+            if (!is_string($propertyUri) || $propertyUri === '') {
+                continue;
+            }
+            if (is_array($value)) {
+                foreach ($value as $entry) {
+                    if (is_string($entry) && $entry !== '') {
+                        $normalized[$propertyUri] = $entry;
+                        break;
+                    }
+                }
+                continue;
+            }
+            if (is_string($value) && $value !== '') {
+                $normalized[$propertyUri] = $value;
+            }
+        }
+
+        return $normalized;
     }
 
     /**
@@ -282,12 +368,31 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getPsrRequest()->getQueryParams();
         foreach ($requiredKeys as $key) {
-            if (!array_key_exists($key, $params) || empty($params[$key])) {
+            if ($this->isMissingOrBlankQueryParam($params, $key)) {
                 throw new MissingParameterException($key, __METHOD__);
             }
         }
 
         return $params;
+    }
+
+    private function isMissingOrBlankQueryParam(array $params, string $key): bool
+    {
+        if (!array_key_exists($key, $params)) {
+            return true;
+        }
+
+        $value = $params[$key];
+        if ($value === null || $value === '') {
+            return true;
+        }
+
+        // Reject arrays/objects; keep scalars (e.g. path "0" / 0) as present.
+        if (!is_scalar($value)) {
+            return true;
+        }
+
+        return is_string($value) && trim($value) === '';
     }
 
     private function buildFilters(array $params): array
@@ -349,5 +454,10 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private function getPermissionChecker(): PermissionCheckerInterface
     {
         return $this->getServiceLocator()->get(PermissionChecker::class);
+    }
+
+    private function getCurrentAssetResolver(): CurrentAssetResolver
+    {
+        return new CurrentAssetResolver($this->getPermissionChecker());
     }
 }
