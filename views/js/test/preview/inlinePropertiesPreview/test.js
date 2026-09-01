@@ -44,6 +44,7 @@ define(['context', 'jquery'], function (context) {
         context.previewerExternalFeUrl = window.location.origin;
         context.featureFlags = context.featureFlags || {};
         context.featureFlags.FEATURE_FLAG_TAO_ADVANCE_EXTERNAL_ITEM_PREVIEWER = true;
+        context.featureFlags.FEATURE_FLAG_TAO_CG_ONLY = false;
         context.locale = 'en-US';
     }
 
@@ -132,6 +133,7 @@ define(['context', 'jquery'], function (context) {
             this.originalFeatureFlags = context.featureFlags;
             this.originalLocale = context.locale;
             setupDom();
+            context.featureFlags = Object.assign({}, context.featureFlags);
             enableExternalPreviewer();
         },
         afterEach() {
@@ -167,6 +169,59 @@ define(['context', 'jquery'], function (context) {
                     'Form column does not expand to full width'
                 );
                 done();
+            })
+            .catch(err => {
+                assert.ok(false, err && err.message ? err.message : String(err));
+                done();
+            });
+    });
+
+    QUnit.test('hides preview panel when FEATURE_FLAG_TAO_CG_ONLY is enabled', function (assert) {
+        const done = assert.async();
+
+        context.featureFlags.FEATURE_FLAG_TAO_CG_ONLY = true;
+
+        loadModule()
+            .then(({ preview, requestCalls }) => {
+                preview.init(config);
+
+                assert.ok($('#item-properties-preview-column').is(':hidden'), 'Preview column is hidden');
+                assert.equal(requestCalls.length, 0, 'Token request is not made when CG-only is enabled');
+                assert.equal(
+                    document.querySelector('.item-properties-preview-iframe'),
+                    null,
+                    'Iframe is not mounted when CG-only is enabled'
+                );
+                done();
+            })
+            .catch(err => {
+                assert.ok(false, err && err.message ? err.message : String(err));
+                done();
+            });
+    });
+
+    QUnit.test('keeps external previewer available when FEATURE_FLAG_TAO_CG_ONLY is disabled', function (assert) {
+        const done = assert.async();
+
+        context.featureFlags.FEATURE_FLAG_TAO_CG_ONLY = false;
+
+        loadModule()
+            .then(({ preview, requestCalls }) => {
+                preview.init(config);
+
+                return flushAsync().then(() => {
+                    assert.notOk(
+                        $('#item-properties-preview-column').is(':hidden'),
+                        'Preview column remains visible'
+                    );
+                    assert.equal(requestCalls.length, 1, 'Token request is still made');
+                    assert.ok(
+                        document.querySelector('.item-properties-preview-iframe'),
+                        'Iframe is still mounted'
+                    );
+                    preview.cleanup();
+                    done();
+                });
             })
             .catch(err => {
                 assert.ok(false, err && err.message ? err.message : String(err));

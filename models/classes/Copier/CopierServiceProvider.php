@@ -25,9 +25,14 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Copier;
 
 use oat\generis\model\data\Ontology;
+use oat\tao\model\accessControl\PermissionChecker;
 use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
+use oat\oatbox\session\SessionService;
+use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
+use oat\taoItems\model\Comment\ItemCommentService;
+use oat\taoItems\model\Comment\RdfItemCommentAdapter;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\tao\model\resources\Service\ClassCopier;
@@ -151,5 +156,29 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                     service(InstanceCopier::class . '::ITEMS'),
                 ]
             );
+
+        $services
+            ->set(RdfItemCommentAdapter::class, RdfItemCommentAdapter::class)
+            ->public()
+            ->args([
+                service(Ontology::SERVICE_ID),
+            ]);
+
+        $services
+            ->set(ItemCommentPersistenceInterface::class, RdfItemCommentAdapter::class)
+            ->public()
+            ->args([
+                service(Ontology::SERVICE_ID),
+            ]);
+
+        $services
+            ->set(ItemCommentService::class, ItemCommentService::class)
+            ->public()
+            ->args([
+                service(ItemCommentPersistenceInterface::class),
+                service(SessionService::SERVICE_ID),
+                service(Ontology::SERVICE_ID),
+                service(PermissionChecker::class),
+            ]);
     }
 }
