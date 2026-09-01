@@ -34,12 +34,18 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     public const OPTION_PAGINATION_LIMIT = 'pagination_limit';
     public const DEFAULT_PAGINATION_OFFSET = 0;
     private const DEFAULT_PAGINATION_LIMIT = 15;
+    private const SORT_LABEL = 'label';
+    private const SORT_LOCATION = 'location';
+    private const SORT_UPDATED_AT = 'updatedAt';
 
     public function build(DirectorySearchQuery $search): array
     {
         $asset = $search->getAsset();
+        $pageSize = $this->getPaginationLimit();
+        $offset = $search->getChildrenOffset();
 
-        $search->setChildrenLimit($this->getPaginationLimit());
+        // Load the full folder so files can be sorted before pagination.
+        $search->setChildrenLimit(0);
 
         $mediaSource = $asset->getMediaSource();
 
@@ -48,8 +54,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         }
 
         $data = $mediaSource->getDirectories($search);
+        $children = $data['children'] ?? [];
 
-        foreach ($data['children'] as &$child) {
+        foreach ($children as &$child) {
             if (isset($child['parent'])) {
                 $child['url'] = tao_helpers_Uri::url(
                     'files',
@@ -65,8 +72,63 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 unset($child['parent']);
             }
         }
+        unset($child);
+
+        $directories = [];
+        $files = [];
+        foreach ($children as $child) {
+            if ($this->isFileChild($child)) {
+                $files[] = $child;
+            } else {
+                $directories[] = $child;
+            }
+        }
+
+        $files = $this->sortFiles($files, $search->getSortBy(), $search->getSortDir());
+        $data['total'] = count($files);
+        $data['childrenLimit'] = $pageSize;
+        $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
 
         return $data;
+    }
+
+    private function isFileChild(array $child): bool
+    {
+        return isset($child['uri']) || isset($child['mime']) || isset($child['name']);
+    }
+
+    /**
+     * @param array<int, array> $files
+     * @return array<int, array>
+     */
+    private function sortFiles(array $files, ?string $sortBy, ?string $sortDir): array
+    {
+        $field = $sortBy ?: self::SORT_LABEL;
+        $direction = $sortDir === 'desc' ? 'desc' : 'asc';
+
+        usort($files, function (array $left, array $right) use ($field, $direction): int {
+            $result = $this->sortValue($left, $field) <=> $this->sortValue($right, $field);
+            if ($result === 0 && $field !== self::SORT_LABEL) {
+                $result = $this->sortValue($left, self::SORT_LABEL)
+                    <=> $this->sortValue($right, self::SORT_LABEL);
+            }
+
+            return $direction === 'desc' ? -$result : $result;
+        });
+
+        return $files;
+    }
+
+    private function sortValue(array $item, string $sortBy): string
+    {
+        if ($sortBy === self::SORT_LOCATION) {
+            return strtolower((string)($item['location'] ?? $item['path'] ?? ''));
+        }
+        if ($sortBy === self::SORT_UPDATED_AT) {
+            return (string)($item['updatedAt'] ?? $item['updated_at'] ?? '');
+        }
+
+        return strtolower((string)($item['label'] ?? $item['name'] ?? ''));
     }
 
     private function getPaginationLimit(): int

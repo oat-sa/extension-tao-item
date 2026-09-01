@@ -15,33 +15,41 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
  *
- * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
 
-namespace oat\taoItems\scripts\install;
+declare(strict_types=1);
 
-use oat\oatbox\extension\InstallAction;
-use oat\tao\model\ClientLibRegistry;
-use oat\tao\model\asset\AssetService;
+namespace oat\taoItems\migrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use oat\oatbox\reporting\Report;
+use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoItems\model\media\AssetSearchBuilder;
-use oat\taoItems\model\media\AssetTreeBuilder;
 
-class RegisterAssetTreeBuilder extends InstallAction
+/**
+ * phpcs:disable Squiz.Classes.ValidClassName
+ */
+final class Version202608141600002141_taoItems extends AbstractMigration
 {
-    public function __invoke($params)
+    public function getDescription(): string
     {
-        $this->getServiceManager()->register(
-            AssetTreeBuilder::SERVICE_ID,
-            new AssetTreeBuilder(
-                [
-                    AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 15,
-                ]
-            )
-        );
+        return 'Register AssetSearchBuilder for Resource Manager scoped asset search';
+    }
 
+    public function up(Schema $schema): void
+    {
         $this->getServiceManager()->register(
             AssetSearchBuilder::SERVICE_ID,
             new AssetSearchBuilder()
         );
+
+        $this->addReport(Report::createSuccess('AssetSearchBuilder registered'));
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->getServiceManager()->unregister(AssetSearchBuilder::SERVICE_ID);
+        $this->addReport(Report::createSuccess('AssetSearchBuilder unregistered'));
     }
 }

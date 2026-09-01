@@ -13,9 +13,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
  *
- * Copyright (c) 2014-2021 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2026 (original work) Open Assessment Technologies SA;
  *
  */
 
@@ -28,10 +28,11 @@ use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
+use oat\taoItems\model\media\AssetSearchBuilder;
+use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\ItemMediaResolver;
@@ -50,7 +51,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     use HttpJsonResponseTrait;
     use OntologyAwareTrait;
 
+    private const DEFAULT_SORT_BY = 'label';
+    private const DEFAULT_PAGE = 1;
+    private const DEFAULT_PAGE_SIZE = 10;
+
     /**
+     * Browse a media folder, or search within its subtree when `query` is non-empty.
+     *
+     * Browse response (empty query): existing tree payload with `children`.
+     * Search response (non-empty query): `{ items, total, page, pageSize }`.
+     *
      * @throws MissingParameterException|TaoMediaException
      */
     public function files(): void
@@ -63,7 +73,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $filters = $this->buildFilters($params);
 
-        $searchQuery = new DirectorySearchQuery(
+        $searchQuery = new AssetSearchQuery(
             $this->resolveAsset($uri, $path, $lang),
             $uri,
             $lang,
@@ -71,6 +81,21 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $depth,
             $childrenOffset
         );
+
+        $searchQuery
+            ->setSortBy((string)($params['sortBy'] ?? self::DEFAULT_SORT_BY))
+            ->setSortDir((string)($params['sortDir'] ?? 'asc'));
+
+        $queryText = trim((string)($params['query'] ?? ''));
+        if ($queryText !== '') {
+            $searchQuery
+                ->setQuery($queryText)
+                ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
+                ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
+
+            $this->setSuccessJsonResponse($this->getAssetSearchBuilder()->search($searchQuery));
+            return;
+        }
 
         $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
     }
@@ -294,6 +319,19 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private function getAssetTreeBuilder(): AssetTreeBuilderInterface
     {
         return $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
+    }
+
+    private function getAssetSearchBuilder(): AssetSearchBuilder
+    {
+        $locator = $this->getServiceLocator();
+        if ($locator->has(AssetSearchBuilder::SERVICE_ID)) {
+            return $locator->get(AssetSearchBuilder::SERVICE_ID);
+        }
+
+        $builder = new AssetSearchBuilder();
+        $builder->setServiceLocator($locator);
+
+        return $builder;
     }
 
     /**

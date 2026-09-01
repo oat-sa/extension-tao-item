@@ -24,7 +24,7 @@ namespace oat\taoItems\test\unit\models\classes\media;
 
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\mediaSource\DirectorySearchQuery;
+use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use tao_helpers_Uri;
 use oat\generis\test\TestCase;
@@ -51,15 +51,16 @@ class AssetTreeBuilderTest extends TestCase
                 ]
             ],
         ];
-        $search = $this->createMock(DirectorySearchQuery::class);
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaSource = $this->createMock(MediaBrowser::class);
 
-        $search->method('getAsset')
-            ->willReturn($mediaAsset);
-
+        $mediaAsset->method('getMediaIdentifier')->willReturn('');
         $mediaAsset->method('getMediaSource')
             ->willReturn($mediaSource);
+
+        $search = (new AssetSearchQuery($mediaAsset, '', ''))
+            ->setSortBy(AssetSearchQuery::SORT_LABEL)
+            ->setSortDir('asc');
 
         $mediaSource->method('getDirectories')
             ->willReturn($data);
@@ -73,6 +74,8 @@ class AssetTreeBuilderTest extends TestCase
                     'url' => 'something'
                 ]
             ],
+            'total' => 0,
+            'childrenLimit' => 15,
         ];
 
         $this->assertEquals(
