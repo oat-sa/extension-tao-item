@@ -24,14 +24,13 @@ namespace oat\taoItems\model\media;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
-use oat\tao\model\AdvancedSearch\AdvancedSearchChecker;
-use oat\taoAdvancedSearch\model\SearchEngine\Exception\AssetSearchUnavailableException;
 
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
- * When a text query is present, results are collected from the requested folder
- * subtree, filtered with trailing-token prefix matching, then sorted and paginated.
+ * Prefers the indexed search gateway when available. Otherwise falls back to
+ * filesystem subtree traversal with trailing-token prefix matching on text
+ * query only (metadata filters require the indexed path).
  */
 class AssetSearchBuilder extends ConfigurableService
 {
@@ -43,28 +42,21 @@ class AssetSearchBuilder extends ConfigurableService
 
     public function search(AssetSearchQuery $search): array
     {
-        $hasMetadataCriteria = $search->getMetadataCriteria() !== [];
-
-        if ($this->shouldUseIndexedSearch()) {
-            try {
-                return $this->getIndexedSearchGateway()->search($search);
-            } catch (AssetSearchUnavailableException $exception) {
-                $this->logWarning(
-                    'Asset indexed search unavailable, falling back to filesystem: ' . $exception->getMessage()
-                );
-                if ($hasMetadataCriteria) {
-                    return $this->emptySearchResult($search);
-                }
-            }
-        } elseif ($hasMetadataCriteria) {
-            return $this->emptySearchResult($search);
+        $gateway = $this->getIndexedSearchGateway();
+        if ($gateway !== null && $gateway->isAvailable()) {
+            return $gateway->search($search);
         }
 
-        return $this->searchFilesystem($search);
-    }
+        // Metadata filters are only supported via the indexed gateway.
+        if ($search->hasMetadataCriteria()) {
+            return [
+                'items' => [],
+                'total' => 0,
+                'page' => $search->getPage(),
+                'pageSize' => $search->getPageSize(),
+            ];
+        }
 
-    public function searchFilesystem(AssetSearchQuery $search): array
-    {
         $asset = $search->getAsset();
         $mediaSource = $asset->getMediaSource();
 
@@ -96,6 +88,30 @@ class AssetSearchBuilder extends ConfigurableService
             'page' => $page,
             'pageSize' => $pageSize,
         ];
+    }
+
+    private function getIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
+    {
+        try {
+            $locator = $this->getServiceLocator();
+            if ($locator === null) {
+                return null;
+            }
+
+            // Gateway is registered in Symfony DI (SearchEngineProvider), not legacy config.
+            $container = method_exists($locator, 'getContainer')
+                ? $locator->getContainer()
+                : null;
+            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
+                return null;
+            }
+
+            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
+
+            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
+        } catch (\Throwable $exception) {
+            return null;
+        }
     }
 
     /**
@@ -230,13 +246,15 @@ class AssetSearchBuilder extends ConfigurableService
             if ($nullsLast) {
                 $leftMissing = $this->isMissingSortValue($left, $sortBy);
                 $rightMissing = $this->isMissingSortValue($right, $sortBy);
-                if ($leftMissing !== $rightMissing) {
-                    return $leftMissing ? 1 : -1;
+                if ($leftMissing || $rightMissing) {
+                    if ($leftMissing && $rightMissing) {
+                        $result = 0;
+                    } else {
+                        return $leftMissing ? 1 : -1;
+                    }
+                } else {
+                    $result = $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
                 }
-
-                $result = $leftMissing
-                    ? 0
-                    : $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
             } else {
                 $result = $this->sortValue($left, $sortBy) <=> $this->sortValue($right, $sortBy);
             }
@@ -278,43 +296,5 @@ class AssetSearchBuilder extends ConfigurableService
         }
 
         return mb_strtolower((string)($item['label'] ?? $item['name'] ?? ''), 'UTF-8');
-    }
-
-    private function shouldUseIndexedSearch(): bool
-    {
-        $locator = $this->getServiceLocator();
-        if ($locator === null || !$locator->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
-            return false;
-        }
-
-        if (!$locator->has(AdvancedSearchChecker::class)) {
-            return false;
-        }
-
-        /** @var AdvancedSearchChecker $checker */
-        $checker = $locator->get(AdvancedSearchChecker::class);
-        if (!$checker->isEnabled() || !$checker->ping()) {
-            return false;
-        }
-
-        return $this->getIndexedSearchGateway()->isAvailable();
-    }
-
-    private function getIndexedSearchGateway(): AssetIndexedSearchGatewayInterface
-    {
-        return $this->getServiceLocator()->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
-    }
-
-    /**
-     * @return array{items: array<int, array>, total: int, page: int, pageSize: int}
-     */
-    private function emptySearchResult(AssetSearchQuery $search): array
-    {
-        return [
-            'items' => [],
-            'total' => 0,
-            'page' => $search->getPage(),
-            'pageSize' => $search->getPageSize(),
-        ];
     }
 }

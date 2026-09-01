@@ -22,17 +22,11 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\media;
 
+use RuntimeException;
+
 /**
- * Optional indexed (Elasticsearch) backend for Resource Manager asset search.
+ * Recoverable failure while searching assets for the Resource Manager.
  */
-interface AssetIndexedSearchGatewayInterface
+class AssetSearchUnavailableException extends RuntimeException
 {
-    public const SERVICE_ID = 'taoItems/AssetIndexedSearchGateway';
-
-    public function isAvailable(): bool;
-
-    /**
-     * @return array{items: array<int, array>, total: int, page: int, pageSize: int}
-     */
-    public function search(AssetSearchQuery $query): array;
 }
