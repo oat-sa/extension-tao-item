@@ -44,7 +44,8 @@ define([
             context &&
             context.previewerExternalFeUrl &&
             context.featureFlags &&
-            context.featureFlags.FEATURE_FLAG_TAO_ADVANCE_EXTERNAL_ITEM_PREVIEWER
+            context.featureFlags.FEATURE_FLAG_TAO_ADVANCE_EXTERNAL_ITEM_PREVIEWER &&
+            !context.featureFlags.FEATURE_FLAG_TAO_CG_ONLY
         );
     }
 
