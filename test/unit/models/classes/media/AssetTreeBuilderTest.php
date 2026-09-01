@@ -334,6 +334,7 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->subject->setOptions([AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 1]);
 
+        // Plain DirectorySearchQuery has no sort accessors on older tao-core; defaults apply.
         $plainQuery = new DirectorySearchQuery(
             $this->mediaAsset,
             'item-uri',
@@ -343,7 +344,6 @@ class AssetTreeBuilderTest extends TestCase
             2,
             1
         );
-        $plainQuery->setSortBy(AssetSearchQuery::SORT_LABEL)->setSortDir('asc');
 
         $result = $this->subject->build($plainQuery);
 

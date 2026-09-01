@@ -86,7 +86,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 );
             }
         }
-        $files = $this->sortFiles($files, $search->getSortBy(), $search->getSortDir());
+        $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
         $data['total'] = count($files);
         $data['childrenLimit'] = $pageSize;
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
@@ -107,8 +107,35 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             0,
             self::MAX_BROWSE_LOAD
         ))
-            ->setSortBy($search->getSortBy())
-            ->setSortDir($search->getSortDir());
+            ->setSortBy($this->resolveSortBy($search))
+            ->setSortDir($this->resolveSortDir($search));
+    }
+
+    private function resolveSortBy(DirectorySearchQuery $search): string
+    {
+        if ($search instanceof AssetSearchQuery) {
+            return $search->getSortBy();
+        }
+
+        // Legacy DirectorySearchQuery (published tao-core) may not expose sort accessors yet.
+        if (method_exists($search, 'getSortBy')) {
+            return (string)$search->getSortBy();
+        }
+
+        return self::SORT_LABEL;
+    }
+
+    private function resolveSortDir(DirectorySearchQuery $search): string
+    {
+        if ($search instanceof AssetSearchQuery) {
+            return $search->getSortDir();
+        }
+
+        if (method_exists($search, 'getSortDir')) {
+            return (string)$search->getSortDir();
+        }
+
+        return 'asc';
     }
 
     /**
