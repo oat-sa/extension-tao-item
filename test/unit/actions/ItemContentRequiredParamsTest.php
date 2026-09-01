@@ -39,6 +39,23 @@ class ItemContentRequiredParamsTest extends TestCase
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => ''], 'uri'));
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => null], 'uri'));
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => '   '], 'uri'));
+        $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => ['bad']], 'uri'));
+    }
+
+    public function testNormalizeMetadataCriteriaParsesPropertyValuePairs(): void
+    {
+        $propertyUri = 'http://www.tao.lu/Ontologies/TAO.rdf#Keywords';
+        $criteria = $this->invokeNormalizeMetadataCriteria([
+            $propertyUri => 'science',
+            'http://example.com/empty' => '',
+            123 => 'ignored',
+            'http://example.com/arr' => ['Diagram', 'other'],
+        ]);
+
+        $this->assertSame([
+            $propertyUri => 'science',
+            'http://example.com/arr' => 'Diagram',
+        ], $criteria);
     }
 
     private function invokeIsMissingOrBlankQueryParam(array $params, string $key): bool
@@ -48,5 +65,18 @@ class ItemContentRequiredParamsTest extends TestCase
         $method->setAccessible(true);
 
         return (bool)$method->invoke($controller, $params, $key);
+    }
+
+    /**
+     * @param mixed $raw
+     * @return array<string, string>
+     */
+    private function invokeNormalizeMetadataCriteria($raw): array
+    {
+        $controller = new \taoItems_actions_ItemContent();
+        $method = new ReflectionMethod($controller, 'normalizeMetadataCriteria');
+        $method->setAccessible(true);
+
+        return $method->invoke($controller, $raw);
     }
 }

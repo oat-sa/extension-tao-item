@@ -387,6 +387,11 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             return true;
         }
 
+        // Reject arrays/objects; keep scalars (e.g. path "0" / 0) as present.
+        if (!is_scalar($value)) {
+            return true;
+        }
+
         return is_string($value) && trim($value) === '';
     }
 
