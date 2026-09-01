@@ -377,7 +377,98 @@ class ItemCommentServiceTest extends TestCase
         $result = $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
 
         $this->assertTrue($result['comments'][0]['editable']);
+        $this->assertTrue($result['comments'][0]['deletable']);
         $this->assertFalse($result['comments'][1]['editable']);
+        $this->assertFalse($result['comments'][1]['deletable']);
+    }
+
+    public function testListMarksResolvedOwnCommentNotEditableButDeletable(): void
+    {
+        $this->configureAuthorizedResource(false);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $resolvedOwn = new ItemComment(
+            'c1',
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            'admin',
+            'Alice Admin',
+            'Mine',
+            '2026-08-03T10:00:00+00:00',
+            false,
+            true
+        );
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('findByResource')
+            ->willReturn([$resolvedOwn]);
+
+        $result = $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
+
+        $this->assertFalse($result['comments'][0]['editable']);
+        $this->assertTrue($result['comments'][0]['deletable']);
+        $this->assertTrue($result['comments'][0]['resolved']);
+    }
+
+    public function testListMarksResolvedOtherCommentNotEditableNorDeletable(): void
+    {
+        $this->configureAuthorizedResource(false);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $resolvedOther = new ItemComment(
+            'c1',
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            'someone-else',
+            'Bob',
+            'Theirs',
+            '2026-08-03T10:00:00+00:00',
+            false,
+            true
+        );
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('findByResource')
+            ->willReturn([$resolvedOther]);
+
+        $result = $this->sut->list(self::RESOURCE_URI, ResourceCommentType::ITEM);
+
+        $this->assertFalse($result['comments'][0]['editable']);
+        $this->assertFalse($result['comments'][0]['deletable']);
+        $this->assertTrue($result['comments'][0]['resolved']);
+    }
+
+    public function testUpdateRejectsResolvedComment(): void
+    {
+        $this->configureAuthorizedResource(true);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $existing = new ItemComment(
+            'c1',
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            'admin',
+            'Alice Admin',
+            'Old body',
+            '2026-08-03T10:00:00+00:00',
+            false,
+            true
+        );
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('findById')
+            ->with('c1')
+            ->willReturn($existing);
+
+        $this->persistence->expects($this->never())->method('update');
+
+        $this->expectException(common_exception_Unauthorized::class);
+        $this->expectExceptionMessage('Resolved comments cannot be edited until reopened');
+
+        $this->sut->update('c1', 'New body');
     }
 
     public function testResolveMarksCommentResolved(): void
@@ -488,6 +579,67 @@ class ItemCommentServiceTest extends TestCase
             'Bob',
             'Body',
             '2026-08-03T10:00:00+00:00'
+        );
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('findById')
+            ->with('c1')
+            ->willReturn($existing);
+
+        $this->persistence->expects($this->never())->method('delete');
+
+        $this->expectException(common_exception_Unauthorized::class);
+
+        $this->sut->delete('c1');
+    }
+
+    public function testDeleteRemovesOwnResolvedComment(): void
+    {
+        $this->configureAuthorizedResource(true);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $existing = new ItemComment(
+            'c1',
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            'admin',
+            'Alice Admin',
+            'Body',
+            '2026-08-03T10:00:00+00:00',
+            false,
+            true
+        );
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('findById')
+            ->with('c1')
+            ->willReturn($existing);
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('delete')
+            ->with('c1');
+
+        $this->sut->delete('c1');
+    }
+
+    public function testDeleteRejectsNonAuthorResolvedComment(): void
+    {
+        $this->configureAuthorizedResource(true);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $existing = new ItemComment(
+            'c1',
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            'someone-else',
+            'Bob',
+            'Body',
+            '2026-08-03T10:00:00+00:00',
+            false,
+            true
         );
 
         $this->persistence
