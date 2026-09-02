@@ -1,6 +1,11 @@
 <div class="item-comments-panel">
-    <div class="item-comments-list" role="log" aria-live="polite"></div>
-    <div class="item-comments-empty" hidden>{{__ 'No comments have been added.'}}</div>
+    <div class="item-comments-body">
+        <div class="item-comments-list" role="log" aria-live="polite"></div>
+        <div class="item-comments-empty" hidden>
+            <p class="item-comments-empty-title">{{__ 'No comments yet'}}</p>
+            <p class="item-comments-empty-subtitle">{{__ 'Be the first to add a comment'}}</p>
+        </div>
+    </div>
     <div class="item-comments-error" hidden></div>
     <form class="item-comments-entry" autocomplete="off">
         <label id="item-comments-input-label" class="item-comments-label" for="item-comments-input">{{__ 'Add a comment'}}</label>

@@ -133,6 +133,14 @@ define([
             } else {
                 $empty.prop('hidden', true);
                 comments.forEach(comment => {
+                    const resolved = !!comment.resolved;
+                    // Ownership: prefer deletable; fall back to editable for older payloads.
+                    const deletable = !!(
+                        typeof comment.deletable === 'boolean' ? comment.deletable : comment.editable
+                    );
+                    // Own active comments are editable; resolved comments never are.
+                    const editable = deletable && !resolved;
+
                     const $commentNode = $(
                         commentTpl({
                             id: comment.id,
@@ -140,8 +148,9 @@ define([
                             createdAt: comment.createdAt,
                             displayTime: formatDisplayTime(comment.createdAt),
                             edited: !!comment.edited,
-                            editable: !!comment.editable,
-                            resolved: !!comment.resolved
+                            editable: editable,
+                            deletable: deletable,
+                            resolved: resolved
                         })
                     );
 

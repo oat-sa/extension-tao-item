@@ -1,19 +1,47 @@
-/* Shared authoring comments panel / list / row (Item, Test, Asset hosts). */
+/* Shared authoring comments panel / list / row (Item, Test, Asset hosts).
+ *
+ * Self-contained height: sizes from the viewport so list + pinned composer work
+ * even when the mount host has no flex/height chain. When the host *does* have a
+ * definite height, max-height: 100% keeps the panel inside it.
+ */
 
 .item-comments-panel {
+    position: relative;
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    align-self: stretch;
+    width: 100%;
     min-height: 280px;
-    max-height: calc(100vh - 220px);
+    height: calc(100vh - 170px);
+    max-height: 100%;
+    box-sizing: border-box;
+}
+
+/* Floating host so action menus can overlay list / entry without overflow clipping. */
+.item-comments-menu-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 80;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.item-comments-body {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
     width: 100%;
     box-sizing: border-box;
+    background: #fff;
 }
 
 .item-comments-list {
     flex: 1 1 auto;
     overflow-y: auto;
-    min-height: 120px;
-    margin-bottom: 8px;
+    min-height: 0;
     width: 100%;
     box-sizing: border-box;
 }
@@ -62,22 +90,54 @@
     }
 }
 
-.item-comments-empty,
-.item-comments-error {
+.item-comments-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    margin: 0;
+    text-align: center;
+    pointer-events: none;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.item-comments-empty-title {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #333;
+}
+
+.item-comments-empty-subtitle {
+    margin: 0;
     font-size: 13px;
-    margin: 8px 10px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #666;
 }
 
 .item-comments-error {
+    flex: 0 0 auto;
+    font-size: 13px;
+    margin: 0 10px 8px;
     color: #a94442;
 }
 
 .item-comments-entry {
     flex: 0 0 auto;
+    margin-top: auto;
     border-top: 1px solid #e5e5e5;
     padding: 8px 10px 10px;
     width: 100%;
     box-sizing: border-box;
+    background: #f3f3f3;
 }
 
 .item-comments-reminder {
@@ -342,17 +402,19 @@
     background: transparent;
     color: #666;
     cursor: pointer;
-    line-height: 18px;
+    font: inherit;
+    line-height: 1;
     vertical-align: middle;
 
+    /* Three CSS dots share the same 18px flex center as Resolve text. */
     .item-comment-more-dots {
         display: block;
-        font-family: 'Source Sans Pro', sans-serif;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 18px;
-        height: 18px;
-        letter-spacing: 0.5px;
+        width: 3px;
+        height: 3px;
+        margin: 0;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: -4px 0 0 currentColor, 4px 0 0 currentColor;
     }
 
     &:hover,

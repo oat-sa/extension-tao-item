@@ -1,6 +1,6 @@
 <article class="item-comment{{#if resolved}} is-resolved{{/if}}" data-comment-id="{{id}}">
     <div class="item-comment-meta">
-        <span class="item-comment-author">{{authorLabel}},</span>
+        <span class="item-comment-author">{{authorLabel}}</span>
         <time class="item-comment-time" datetime="{{createdAt}}">{{displayTime}}</time>
         {{#if edited}}
         <span class="item-comment-edited">({{__ 'edited'}})</span>
@@ -39,7 +39,7 @@
             {{__ 'Resolve'}}
         </a>
         {{/if}}
-        {{#if editable}}
+        {{#if deletable}}
         <div class="item-comment-more">
             <button
                 type="button"
@@ -50,15 +50,17 @@
                 title="{{__ 'More actions'}}"
                 aria-label="{{__ 'More actions'}}"
             >
-                <span class="item-comment-more-dots" aria-hidden="true">...</span>
+                <span class="item-comment-more-dots" aria-hidden="true"></span>
             </button>
             <ul class="item-comment-more-menu" role="menu" hidden>
+                {{#if editable}}
                 <li role="none">
                     <button type="button" class="item-comment-more-item item-comment-edit" role="menuitem" data-comment-id="{{id}}">
                         <span class="icon-edit" aria-hidden="true"></span>
                         {{__ 'Edit'}}
                     </button>
                 </li>
+                {{/if}}
                 <li role="none">
                     <button type="button" class="item-comment-more-item item-comment-delete" role="menuitem" data-comment-id="{{id}}">
                         <span class="icon-bin" aria-hidden="true"></span>

@@ -77,7 +77,10 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
                 }
 
                 $comment = $this->getItemCommentService()->create($resourceUri, $resourceType, $body);
-                $this->setSuccessJsonResponse($comment->toArray(true), 201);
+                $this->setSuccessJsonResponse(
+                    $this->getItemCommentService()->serializeComment($comment),
+                    201
+                );
 
                 return;
             }
@@ -113,8 +116,9 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
                 return;
             }
 
-            $comment = $this->getItemCommentService()->update($commentId, $body);
-            $this->setSuccessJsonResponse($comment->toArray(true));
+            $service = $this->getItemCommentService();
+            $comment = $service->update($commentId, $body);
+            $this->setSuccessJsonResponse($service->serializeComment($comment));
         } catch (common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
         } catch (InvalidArgumentException $exception) {
@@ -151,8 +155,9 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
                 return;
             }
 
-            $comment = $this->getItemCommentService()->resolve($commentId, $resolved);
-            $this->setSuccessJsonResponse($comment->toArray());
+            $service = $this->getItemCommentService();
+            $comment = $service->resolve($commentId, $resolved);
+            $this->setSuccessJsonResponse($service->serializeComment($comment));
         } catch (common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
         } catch (InvalidArgumentException $exception) {

@@ -31,6 +31,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
             body: 'Hello',
             edited: false,
             editable: true,
+            deletable: true,
             resolved: false
         },
         {
@@ -40,6 +41,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
             body: 'Second',
             edited: false,
             editable: true,
+            deletable: true,
             resolved: false
         }
     ];
@@ -156,7 +158,14 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         });
     }
 
-    QUnit.module('API');
+    QUnit.module('API', {
+        beforeEach() {
+            $('#qunit-fixture').empty().append('<div class="comments-host"></div>');
+        },
+        afterEach() {
+            $('#qunit-fixture').empty();
+        }
+    });
 
     QUnit.test('factory requires renderTo and store', function (assert) {
         assert.expect(2);
@@ -168,6 +177,27 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
             'missing config throws'
         );
         assert.equal(typeof commentsPanelFactory, 'function', 'module exposes a factory');
+    });
+
+    QUnit.test('empty state shows centered placeholder copy', function (assert) {
+        const store = createStore([]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+
+        assert.expect(5);
+
+        const $empty = $host.find('.item-comments-empty');
+        assert.equal($empty.prop('hidden'), false, 'empty state is visible');
+        assert.equal($empty.find('.item-comments-empty-title').text(), 'No comments yet', 'title copy');
+        assert.equal(
+            $empty.find('.item-comments-empty-subtitle').text(),
+            'Be the first to add a comment',
+            'subtitle copy'
+        );
+        assert.equal($host.find('.item-comments-body').length, 1, 'list area wrapped for centering');
+
+        panel.destroy();
+        assert.equal($host.find('.item-comments-panel').length, 0, 'panel removed on destroy');
     });
 
     QUnit.module('overlay lifecycle', {
