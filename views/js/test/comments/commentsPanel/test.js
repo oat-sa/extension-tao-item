@@ -275,16 +275,22 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
         const $panel = $host.find('.item-comments-panel');
+        const $list = $host.find('.item-comments-list');
         const $more = $host.find('.item-comment').last().find('.item-comment-more');
         const $toggle = $more.find('.item-comment-more-toggle');
         const panelElement = $panel.get(0);
+        const listElement = $list.get(0);
+        const moreElement = $more.get(0);
         const toggleElement = $toggle.get(0);
 
-        assert.expect(3);
+        assert.expect(4);
 
+        // positionMoreMenu uses panel for absolute coords and list viewport for openUp.
         stubBoundingRect(panelElement, { top: 0, bottom: 400, left: 0, right: 280 });
         stubMetric(panelElement, 'clientHeight', 400);
         stubMetric(panelElement, 'clientWidth', 280);
+        stubBoundingRect(listElement, { top: 0, bottom: 400, left: 0, right: 280 });
+        stubBoundingRect(moreElement, { top: 360, bottom: 378, left: 240, right: 270 });
         stubBoundingRect(toggleElement, { top: 360, bottom: 378, left: 252, right: 270 });
 
         $toggle.trigger('click');
@@ -301,9 +307,11 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         const top = parseFloat($menu.css('top'));
         const left = parseFloat($menu.css('left'));
 
-        // openUp: top = 360 - 0 - 56 - 2 = 302
+        // spaceBelow = 400 - 378 = 22 < 56, spaceAbove = 360 → openUp
+        // preferredTop = 360 - 0 - 56 - 2 = 302
         assert.equal(top, 302, 'menu opens above bottom-row toggle');
         assert.equal(left, 174, 'menu right-aligns to toggle (270 - 96)');
+        assert.ok($menu.hasClass('item-comment-more-menu--up'), 'up direction class applied');
         assert.equal($menu.prop('hidden'), false, 'menu remains visible');
 
         panel.destroy();
@@ -314,8 +322,12 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
         const $panel = $host.find('.item-comments-panel');
+        const $list = $host.find('.item-comments-list');
+        const $more = $host.find('.item-comment-more');
         const $toggle = $host.find('.item-comment-more-toggle');
         const panelElement = $panel.get(0);
+        const listElement = $list.get(0);
+        const moreElement = $more.get(0);
         const toggleElement = $toggle.get(0);
 
         assert.expect(3);
@@ -323,6 +335,8 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         stubBoundingRect(panelElement, { top: 0, bottom: 100, left: 0, right: 120 });
         stubMetric(panelElement, 'clientHeight', 100);
         stubMetric(panelElement, 'clientWidth', 120);
+        stubBoundingRect(listElement, { top: 0, bottom: 100, left: 0, right: 120 });
+        stubBoundingRect(moreElement, { top: 40, bottom: 58, left: 80, right: 110 });
         stubBoundingRect(toggleElement, { top: 40, bottom: 58, left: 92, right: 110 });
 
         $toggle.trigger('click');
