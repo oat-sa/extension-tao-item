@@ -26,4 +26,15 @@ define(['taoItems/comments/commentRichTextEditor'], function (commentRichTextEdi
 
         assert.equal(output, '<strong><em>Hello</em></strong>', 'keeps both bold and italic wrappers');
     });
+
+    QUnit.test('strips dangerous markup before semanticize .html()', function (assert) {
+        const input =
+            '<img src=x onerror=alert(1)><span style="font-weight:bold">Hi</span><script>alert(1)</script>';
+        const output = commentRichTextEditor.sanitizeHtml(input);
+
+        assert.equal(output, '<strong>Hi</strong>', 'keeps only semantic safe content');
+        assert.strictEqual(output.indexOf('script'), -1, 'script markup removed');
+        assert.strictEqual(output.indexOf('img'), -1, 'img markup removed');
+        assert.strictEqual(output.indexOf('onerror'), -1, 'event handler removed');
+    });
 });

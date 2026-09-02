@@ -21,10 +21,19 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
     let editorSeq = 0;
     const editorContentsCss = require.toUrl('taoItemsCss/comments-editor-content.css');
 
+    const ALLOWED_URI_REGEXP = /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i;
+
     const SANITIZE_OPTIONS = {
         ALLOWED_TAGS: ['strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'br'],
         ALLOWED_ATTR: ['href'],
-        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+        ALLOWED_URI_REGEXP: ALLOWED_URI_REGEXP
+    };
+
+    // Keep span[style]/p/div long enough to semanticize/normalize, but strip XSS first.
+    const PRE_SEMANTICIZE_OPTIONS = {
+        ALLOWED_TAGS: ['strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'br', 'span', 'p', 'div'],
+        ALLOWED_ATTR: ['href', 'style'],
+        ALLOWED_URI_REGEXP: ALLOWED_URI_REGEXP
     };
 
     /**
@@ -42,8 +51,8 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
     }
 
     /**
-     * Map style-based spans (browser/CKEditor defaults) to semantic tags before sanitize.
-     * Otherwise DOMPurify drops span[style] and formatting is lost on getData/setData.
+     * Map style-based spans (browser/CKEditor defaults) to semantic tags.
+     * Caller must pass XSS-safe HTML (see sanitizeHtml pre-pass) before any .html().
      */
     function semanticizeInlineStyles(html) {
         const $container = $('<div/>').html(typeof html === 'string' ? html : '');
@@ -86,9 +95,11 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
 
     function sanitizeHtml(value) {
         const html = typeof value === 'string' ? value : '';
+        // Purify before jQuery .html() in semanticizeInlineStyles (XSS-safe fragment only).
+        const xssSafeHtml = DOMPurify.sanitize(html, PRE_SEMANTICIZE_OPTIONS);
 
         return DOMPurify.sanitize(
-            normalizeLineBreaks(semanticizeInlineStyles(html)),
+            normalizeLineBreaks(semanticizeInlineStyles(xssSafeHtml)),
             SANITIZE_OPTIONS
         ).trim();
     }
@@ -337,10 +348,13 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             editor.on('focus', syncToolbarState);
         });
 
-        editor.on('paste', function () {
-            setTimeout(function () {
-                setData(getData());
-            }, 0);
+        // Sanitize clipboard HTML before CKEditor inserts it (avoid unsanitized paste window).
+        editor.on('paste', function (evt) {
+            if (!evt || !evt.data || typeof evt.data.dataValue !== 'string') {
+                return;
+            }
+
+            evt.data.dataValue = sanitizeHtml(evt.data.dataValue);
         });
 
         return {
