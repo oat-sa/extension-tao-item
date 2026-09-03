@@ -80,8 +80,10 @@
 
         ul,
         ol {
-            margin: 0 0 0 9px;
+            margin: 0;
             padding: 0;
+            /* Override TAO global `ul, ol { padding-inline-start: 40px }` */
+            padding-inline-start: 1.25em;
         }
     }
 
@@ -306,8 +308,9 @@
 
     .cke .cke_editable ul,
     .cke .cke_editable ol {
-        margin: 0 0 0 9px;
+        margin: 0;
         padding: 0;
+        padding-inline-start: 1.25em;
     }
 }
 

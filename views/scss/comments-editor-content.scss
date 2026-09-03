@@ -1,0 +1,39 @@
+/* CKEditor iframe contentsCss for item/test/asset comment composers.
+ * Loaded into the editable document — parent .comments-panel rules do not apply here.
+ * Keep list indent compact: TAO global / browser default is ~40px (too wide in the panel).
+ */
+
+body.item-comments-editor-body {
+    margin: 0;
+    padding: 0;
+    color: #222;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+body.item-comments-editor-body p {
+    margin: 0;
+    padding: 0;
+}
+
+body.item-comments-editor-body ul,
+body.item-comments-editor-body ol {
+    margin: 0;
+    padding: 0;
+    /* Enough room for the marker; far below the 40px UA / TAO global default. */
+    padding-inline-start: 1.25em;
+}
+
+body.item-comments-editor-body li {
+    margin: 0;
+}
+
+body.item-comments-editor-body u {
+    text-decoration: underline;
+}
+
+body.item-comments-editor-body a {
+    color: #3e7da7;
+}
