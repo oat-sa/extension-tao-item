@@ -193,9 +193,6 @@ msgstr "Nessun tipo di item selezionato per il corrente item"
 msgid "Not yet available"
 msgstr "Non ancora disponibile"
 
-msgid "One or more values cannot be used as automatic test categories."
-msgstr ""
-
 msgid "Only items not used in any test will be deleted."
 msgstr "Verranno eliminati solo gli elementi non utilizzati in nessun test."
 
@@ -258,9 +255,6 @@ msgstr "Il modulo item consente la creazione e la progettazione di item ed eserc
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
-msgid "The value \"%s\" cannot be used as an automatic test category."
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Questa anteprima può essere rappresentata in scala sul monitor. La resa finale può differire"
 
@@ -288,9 +282,6 @@ msgstr ""
 
 msgid "Unable to upload file"
 msgstr "Impossibile caricare il file"
-
-msgid "Unable to validate automatic test categories."
-msgstr ""
 
 msgid "using it:"
 msgstr ""

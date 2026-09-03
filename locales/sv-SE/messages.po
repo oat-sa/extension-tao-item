@@ -186,9 +186,6 @@ msgstr ""
 msgid "Not yet available"
 msgstr "Inte tillgänglig än"
 
-msgid "One or more values cannot be used as automatic test categories."
-msgstr ""
-
 msgid "Only items not used in any test will be deleted."
 msgstr ""
 
@@ -251,9 +248,6 @@ msgstr "Frågemodulen låter dig skapa och designa frågor och övningar"
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
-msgid "The value \"%s\" cannot be used as an automatic test category."
-msgstr ""
-
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
@@ -280,9 +274,6 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "Unable to upload file"
-msgstr ""
-
-msgid "Unable to validate automatic test categories."
 msgstr ""
 
 msgid "using it:"
