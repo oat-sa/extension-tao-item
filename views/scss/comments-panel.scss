@@ -431,6 +431,9 @@
     top: calc(100% + 2px);
     bottom: auto;
     z-index: 60;
+    // Layer uses pointer-events: none so the list stays scrollable underneath;
+    // re-enable hits on the floating menu itself (Edit / Delete).
+    pointer-events: auto;
     min-width: 120px;
     margin: 0;
     padding: 4px 0;
