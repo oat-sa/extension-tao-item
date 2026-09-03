@@ -186,6 +186,9 @@ msgstr "當前選定的題目沒有項目類型。"
 msgid "Not yet available"
 msgstr "還不可使用"
 
+msgid "One or more values cannot be used as automatic test categories."
+msgstr ""
+
 msgid "Only items not used in any test will be deleted."
 msgstr ""
 
@@ -248,6 +251,9 @@ msgstr "該題目模塊使題目和練習能夠建立和設計。"
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "該預覽可縮放到適合您的屏幕。最終的表現可能不同。"
 
@@ -274,6 +280,9 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "Unable to upload file"
+msgstr ""
+
+msgid "Unable to validate automatic test categories."
 msgstr ""
 
 msgid "using it:"

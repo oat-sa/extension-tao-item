@@ -193,6 +193,9 @@ msgstr ""
 msgid "Not yet available"
 msgstr ""
 
+msgid "One or more values cannot be used as automatic test categories."
+msgstr ""
+
 msgid "Only items not used in any test will be deleted."
 msgstr "Só se eliminarán os elementos que non se empregaron en ningunha proba."
 
@@ -255,6 +258,9 @@ msgstr ""
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr ""
+
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr ""
 
@@ -281,6 +287,9 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "Unable to upload file"
+msgstr ""
+
+msgid "Unable to validate automatic test categories."
 msgstr ""
 
 msgid "using it:"
