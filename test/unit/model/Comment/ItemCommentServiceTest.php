@@ -32,6 +32,7 @@ use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
+use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
@@ -69,7 +70,8 @@ class ItemCommentServiceTest extends TestCase
             $this->persistence,
             $this->sessionService,
             $this->ontology,
-            $this->permissionChecker
+            $this->permissionChecker,
+            new CommentRichTextSanitizer()
         );
     }
 
@@ -261,6 +263,44 @@ class ItemCommentServiceTest extends TestCase
         $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, '   ');
     }
 
+    public function testCreateSanitizesXssPayload(): void
+    {
+        $this->configureAuthorizedResource(true);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->with($this->callback(static function (ItemComment $comment): bool {
+                return $comment->getBody() === '<strong>Hello</strong>';
+            }))
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $created = $this->sut->create(
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            '<script>alert(1)</script><strong>Hello</strong>'
+        );
+
+        $this->assertSame('<strong>Hello</strong>', $created->getBody());
+    }
+
+    public function testCreateRejectsBodyThatBecomesEmptyAfterSanitization(): void
+    {
+        $this->configureAuthorizedResource(true);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Comment body must not be empty');
+
+        $this->sut->create(
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            '<script>alert(1)</script>'
+        );
+    }
+
     public function testCreateFailsWithoutAuthenticatedUser(): void
     {
         $this->configureAuthorizedResource(true);
@@ -343,6 +383,53 @@ class ItemCommentServiceTest extends TestCase
         $this->expectException(common_exception_Unauthorized::class);
 
         $this->sut->update('c1', 'New body');
+    }
+
+    public function testUpdateSanitizesXssPayload(): void
+    {
+        $this->configureAuthorizedResource(true);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $existing = new ItemComment(
+            'c1',
+            self::RESOURCE_URI,
+            ResourceCommentType::ITEM,
+            'admin',
+            'Alice Admin',
+            'Old body',
+            '2026-08-03T10:00:00+00:00'
+        );
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('findById')
+            ->with('c1')
+            ->willReturn($existing);
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('update')
+            ->with($this->callback(static function (ItemComment $comment): bool {
+                return $comment->getBody() === '<b>Hello</b>';
+            }))
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $updated = $this->sut->update('c1', '<img src=x onerror=alert(1)><b>Hello</b>');
+
+        $this->assertSame('<b>Hello</b>', $updated->getBody());
+    }
+
+    public function testUpdateRejectsBodyThatBecomesEmptyAfterSanitization(): void
+    {
+        $this->persistence->expects($this->never())->method('findById');
+        $this->persistence->expects($this->never())->method('update');
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Comment body must not be empty');
+
+        $this->sut->update('c1', '<script>alert(1)</script>');
     }
 
     public function testListMarksOwnCommentsEditable(): void

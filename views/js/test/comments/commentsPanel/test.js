@@ -15,10 +15,11 @@
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
-define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], function (
+define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckeditor'], function (
     $,
     eventifier,
-    commentsPanelFactory
+    commentsPanelFactory,
+    CKEDITOR
 ) {
     'use strict';
 
@@ -274,16 +275,22 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
         const $panel = $host.find('.item-comments-panel');
+        const $list = $host.find('.item-comments-list');
         const $more = $host.find('.item-comment').last().find('.item-comment-more');
         const $toggle = $more.find('.item-comment-more-toggle');
         const panelElement = $panel.get(0);
+        const listElement = $list.get(0);
+        const moreElement = $more.get(0);
         const toggleElement = $toggle.get(0);
 
-        assert.expect(3);
+        assert.expect(4);
 
+        // positionMoreMenu uses panel for absolute coords and list viewport for openUp.
         stubBoundingRect(panelElement, { top: 0, bottom: 400, left: 0, right: 280 });
         stubMetric(panelElement, 'clientHeight', 400);
         stubMetric(panelElement, 'clientWidth', 280);
+        stubBoundingRect(listElement, { top: 0, bottom: 400, left: 0, right: 280 });
+        stubBoundingRect(moreElement, { top: 360, bottom: 378, left: 240, right: 270 });
         stubBoundingRect(toggleElement, { top: 360, bottom: 378, left: 252, right: 270 });
 
         $toggle.trigger('click');
@@ -300,9 +307,11 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         const top = parseFloat($menu.css('top'));
         const left = parseFloat($menu.css('left'));
 
-        // openUp: top = 360 - 0 - 56 - 2 = 302
+        // spaceBelow = 400 - 378 = 22 < 56, spaceAbove = 360 → openUp
+        // preferredTop = 360 - 0 - 56 - 2 = 302
         assert.equal(top, 302, 'menu opens above bottom-row toggle');
         assert.equal(left, 174, 'menu right-aligns to toggle (270 - 96)');
+        assert.ok($menu.hasClass('item-comment-more-menu--up'), 'up direction class applied');
         assert.equal($menu.prop('hidden'), false, 'menu remains visible');
 
         panel.destroy();
@@ -313,8 +322,12 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
         const $panel = $host.find('.item-comments-panel');
+        const $list = $host.find('.item-comments-list');
+        const $more = $host.find('.item-comment-more');
         const $toggle = $host.find('.item-comment-more-toggle');
         const panelElement = $panel.get(0);
+        const listElement = $list.get(0);
+        const moreElement = $more.get(0);
         const toggleElement = $toggle.get(0);
 
         assert.expect(3);
@@ -322,6 +335,8 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
         stubBoundingRect(panelElement, { top: 0, bottom: 100, left: 0, right: 120 });
         stubMetric(panelElement, 'clientHeight', 100);
         stubMetric(panelElement, 'clientWidth', 120);
+        stubBoundingRect(listElement, { top: 0, bottom: 100, left: 0, right: 120 });
+        stubBoundingRect(moreElement, { top: 40, bottom: 58, left: 80, right: 110 });
         stubBoundingRect(toggleElement, { top: 40, bottom: 58, left: 92, right: 110 });
 
         $toggle.trigger('click');
@@ -546,5 +561,183 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel'], functio
             panel.destroy();
             ready();
         }, 0);
+    });
+
+    QUnit.module('directional more-menu placement', {
+        beforeEach() {
+            $('#qunit-fixture').empty().append('<div class="comments-host"></div>');
+        },
+        afterEach() {
+            $('#qunit-fixture').empty();
+        }
+    });
+
+    QUnit.test('opens menu downward when space below is sufficient', function (assert) {
+        const store = createStore([sampleComments[0]]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const $list = $host.find('.item-comments-list');
+        const $more = $host.find('.item-comment-more');
+        const $toggle = $more.find('.item-comment-more-toggle');
+        const $menu = $more.find('.item-comment-more-menu');
+
+        assert.expect(5);
+
+        stubBoundingRect($list.get(0), { top: 0, bottom: 400, left: 0, right: 280 });
+        stubBoundingRect($more.get(0), { top: 40, bottom: 58, left: 240, right: 270 });
+        stubMetric($menu.get(0), 'offsetHeight', 56);
+
+        assert.ok($menu.prop('hidden'), 'menu starts hidden (inactive placement)');
+        assert.notOk(
+            $menu.hasClass('item-comment-more-menu--down') || $menu.hasClass('item-comment-more-menu--up'),
+            'no direction class before open'
+        );
+
+        $toggle.trigger('click');
+
+        assert.strictEqual($menu.prop('hidden'), false, 'menu is visible after open');
+        assert.ok($menu.hasClass('item-comment-more-menu--down'), 'down class applied when space below fits');
+        assert.notOk($menu.hasClass('item-comment-more-menu--up'), 'up class not applied when opening down');
+
+        panel.destroy();
+    });
+
+    QUnit.test('opens menu upward when space below is insufficient', function (assert) {
+        const store = createStore([sampleComments[0]]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const $list = $host.find('.item-comments-list');
+        const $more = $host.find('.item-comment-more');
+        const $toggle = $more.find('.item-comment-more-toggle');
+        const $menu = $more.find('.item-comment-more-menu');
+
+        assert.expect(4);
+
+        stubBoundingRect($list.get(0), { top: 0, bottom: 400, left: 0, right: 280 });
+        stubBoundingRect($more.get(0), { top: 360, bottom: 378, left: 240, right: 270 });
+        stubMetric($menu.get(0), 'offsetHeight', 56);
+
+        $toggle.trigger('click');
+
+        assert.strictEqual($menu.prop('hidden'), false, 'menu is visible after open');
+        assert.ok($menu.hasClass('item-comment-more-menu--up'), 'up class applied when space below is short');
+        assert.notOk($menu.hasClass('item-comment-more-menu--down'), 'down class not applied when opening up');
+
+        $toggle.trigger('click');
+        assert.notOk(
+            $menu.hasClass('item-comment-more-menu--up') || $menu.hasClass('item-comment-more-menu--down'),
+            'direction classes cleared when menu closes'
+        );
+
+        panel.destroy();
+    });
+
+    QUnit.module('formatting toolbar state', {
+        beforeEach() {
+            const self = this;
+            const listeners = {};
+
+            $('#qunit-fixture').empty().append('<div class="comments-host"></div>');
+
+            this.originalReplace = CKEDITOR.replace;
+            // Fallbacks keep the suite runnable if the CKEDITOR globals are incomplete in test env.
+            this.tristateOn = CKEDITOR.TRISTATE_ON != null ? CKEDITOR.TRISTATE_ON : 1;
+            this.tristateOff = CKEDITOR.TRISTATE_OFF != null ? CKEDITOR.TRISTATE_OFF : 2;
+            this.commandStates = {
+                bold: this.tristateOff,
+                italic: this.tristateOff,
+                underline: this.tristateOff,
+                bulletedlist: this.tristateOff,
+                numberedlist: this.tristateOff
+            };
+
+            this.fakeEditor = {
+                status: 'ready',
+                document: null,
+                getData() {
+                    return '';
+                },
+                setData(html, options) {
+                    if (options && typeof options.callback === 'function') {
+                        options.callback();
+                    }
+                },
+                getCommand(name) {
+                    return {
+                        state:
+                            self.commandStates[name] != null
+                                ? self.commandStates[name]
+                                : self.tristateOff
+                    };
+                },
+                on(eventName, callback) {
+                    listeners[eventName] = listeners[eventName] || [];
+                    listeners[eventName].push(callback);
+                },
+                fire(eventName) {
+                    (listeners[eventName] || []).forEach(function (callback) {
+                        callback.call(self.fakeEditor);
+                    });
+                },
+                focus() {},
+                execCommand() {},
+                destroy() {
+                    this.status = 'destroyed';
+                }
+            };
+
+            CKEDITOR.replace = function () {
+                return self.fakeEditor;
+            };
+        },
+        afterEach() {
+            CKEDITOR.replace = this.originalReplace;
+            $('#qunit-fixture').empty();
+        }
+    });
+
+    QUnit.test('renders formatting tools inactive by default and active when command is on', function (assert) {
+        const ready = assert.async();
+        const store = createStore([]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const $toolbar = $host.find('[data-role="draft-toolbar"]');
+        const $bold = $toolbar.find('.item-comments-rich-tool[data-command="bold"]');
+        const $italic = $toolbar.find('.item-comments-rich-tool[data-command="italic"]');
+
+        assert.expect(6);
+
+        this.fakeEditor.fire('instanceReady');
+
+        window.setTimeout(
+            function () {
+                assert.notOk(
+                    $bold.hasClass('item-comments-rich-tool--active'),
+                    'bold starts without active class'
+                );
+                assert.notOk(
+                    $italic.hasClass('item-comments-rich-tool--active'),
+                    'italic starts without active class'
+                );
+                assert.strictEqual($bold.attr('aria-pressed'), 'false', 'bold aria-pressed is false when inactive');
+
+                this.commandStates.bold = this.tristateOn;
+                this.fakeEditor.fire('selectionChange');
+
+                assert.ok(
+                    $bold.hasClass('item-comments-rich-tool--active'),
+                    'bold gets active class when command is on'
+                );
+                assert.strictEqual($bold.attr('aria-pressed'), 'true', 'bold aria-pressed is true when active');
+                assert.notOk(
+                    $italic.hasClass('item-comments-rich-tool--active'),
+                    'italic stays inactive when only bold is on'
+                );
+
+                panel.destroy();
+                ready();
+            }.bind(this),
+            0
+        );
     });
 });
