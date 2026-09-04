@@ -37,8 +37,19 @@ final class CommentRichTextSanitizer
     {
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Cache.DefinitionImpl', null);
-        $config->set('HTML.Allowed', 'strong,b,em,i,u,ul,ol,li,br,a[href]');
+        $config->set('HTML.DefinitionID', 'tao-items-comment-richtext-mentions-v1');
+        $config->set('HTML.DefinitionRev', 1);
+        $config->set(
+            'HTML.Allowed',
+            'strong,b,em,i,u,ul,ol,li,br,a[href],span[class|data-user-id|data-user-login|contenteditable]'
+        );
         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true]);
+
+        if ($def = $config->maybeGetRawHTMLDefinition()) {
+            $def->addAttribute('span', 'data-user-id', 'Text');
+            $def->addAttribute('span', 'data-user-login', 'Text');
+            $def->addAttribute('span', 'contenteditable', 'Enum#false,true');
+        }
 
         $this->htmlPurifier = new HTMLPurifier($config);
     }
@@ -49,7 +60,47 @@ final class CommentRichTextSanitizer
             return '';
         }
 
-        return $this->htmlPurifier->purify($value);
+        return $this->unwrapNonMentionSpans($this->htmlPurifier->purify($value));
+    }
+
+    /**
+     * Span is allowed only for recognised mentions. Unwrap any other span leftovers
+     * (e.g. style spans with attributes stripped by HTMLPurifier).
+     */
+    private function unwrapNonMentionSpans(string $html): string
+    {
+        if ($html === '' || stripos($html, '<span') === false) {
+            return $html;
+        }
+
+        $previous = null;
+        $current = $html;
+
+        // Repeat until stable: nested spans may require multiple passes.
+        while ($previous !== $current) {
+            $previous = $current;
+            $current = preg_replace_callback(
+                '/<span\b([^>]*)>(.*?)<\/span>/is',
+                static function (array $matches): string {
+                    $attrs = $matches[1];
+                    $inner = $matches[2];
+                    if (
+                        preg_match('/\bclass\s*=\s*(["\'])([^"\']*\bcomment-mention\b[^"\']*)\1/i', $attrs)
+                        || preg_match('/\bclass\s*=\s*comment-mention\b/i', $attrs)
+                    ) {
+                        return '<span' . $attrs . '>' . $inner . '</span>';
+                    }
+
+                    return $inner;
+                },
+                $current
+            );
+            if (!is_string($current)) {
+                return $previous;
+            }
+        }
+
+        return $current;
     }
 
     /**

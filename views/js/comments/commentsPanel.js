@@ -26,10 +26,11 @@ define([
     'i18n',
     'core/eventifier',
     'taoItems/comments/commentRichTextEditor',
+    'taoItems/services/itemComments',
     'tpl!taoItems/comments/tpl/panel',
     'tpl!taoItems/comments/tpl/comment',
     'css!taoItemsCss/comments-panel'
-], function ($, _, __, eventifier, richTextEditor, panelTpl, commentTpl) {
+], function ($, _, __, eventifier, richTextEditor, itemCommentsApi, panelTpl, commentTpl) {
     'use strict';
 
     let instanceSeq = 0;
@@ -90,13 +91,38 @@ define([
         $host.empty().append($panel);
         $panel.prepend($menuLayer);
 
+        function searchMentionUsers(query, limit) {
+            return itemCommentsApi.searchMentionUsers(
+                store.getResourceUri(),
+                store.getResourceType ? store.getResourceType() : itemCommentsApi.RESOURCE_TYPE.ITEM,
+                query,
+                { limit: limit || 40, offset: 0 }
+            );
+        }
+
         const draftEditor = richTextEditor.create({
             host: $draftEditorHost,
             toolbar: $draftToolbar,
             placeholder: labels.placeholder || __('Add a comment'),
             initialValue: store.getDraft(),
+            searchUsers: searchMentionUsers,
+            mentionInfoMessage: labels.mentionInfo || __('Only users with access to this item can be mentioned.'),
             onChange(value) {
                 store.setDraft(value);
+            }
+        });
+
+        $panel.on('click' + ns, '[data-role="mention-guidance"]', function (event) {
+            event.preventDefault();
+            draftEditor.startMention();
+        });
+
+        $panel.on('click' + ns, '[data-role="mention-guidance-edit"]', function (event) {
+            event.preventDefault();
+            const commentId = String($(event.currentTarget).data('comment-id') || '');
+            const editor = getEditEditor(commentId);
+            if (editor && typeof editor.startMention === 'function') {
+                editor.startMention();
             }
         });
 
@@ -191,7 +217,10 @@ define([
             editEditors[commentId] = richTextEditor.create({
                 host: $editorHost,
                 toolbar: $toolbar,
-                initialValue: body
+                initialValue: body,
+                searchUsers: searchMentionUsers,
+                mentionInfoMessage:
+                    labels.mentionInfo || __('Only users with access to this item can be mentioned.')
             });
 
             return editEditors[commentId];

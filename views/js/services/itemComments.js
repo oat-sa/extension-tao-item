@@ -150,6 +150,40 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
                 data: { id },
                 noToken: true
             }).then(response => response.data);
+        },
+
+        /**
+         * Search users eligible for @mention (filtered by login, ACL-scoped).
+         * @param {string} resourceUri
+         * @param {string} resourceType
+         * @param {string} [query]
+         * @param {object} [options]
+         * @param {number} [options.limit=20]
+         * @param {number} [options.offset=0]
+         * @returns {Promise<{users: Array<{id: string, login: string, displayName: string}>, limit: number, offset: number, total: number}>}
+         */
+        searchMentionUsers(resourceUri, resourceType, query, options) {
+            if (!hasText(resourceUri)) {
+                return Promise.reject(new Error('resourceUri must be a non-empty string'));
+            }
+            if (!isValidResourceType(resourceType)) {
+                return Promise.reject(new Error('resourceType must be one of RESOURCE_TYPE values'));
+            }
+
+            const opts = options || {};
+            const params = {
+                resourceUri: resourceUri,
+                resourceType: resourceType,
+                q: typeof query === 'string' ? query : '',
+                limit: typeof opts.limit === 'number' ? opts.limit : 20,
+                offset: typeof opts.offset === 'number' ? opts.offset : 0
+            };
+
+            return request({
+                url: urlUtil.route('searchUsers', 'RestResourceComments', 'taoItems', params),
+                method: 'GET',
+                noToken: true
+            }).then(response => response.data);
         }
     };
 });

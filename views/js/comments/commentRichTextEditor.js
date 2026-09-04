@@ -15,7 +15,14 @@
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
-define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], function (require, $, _, CKEDITOR, DOMPurify) {
+define([
+    'require',
+    'jquery',
+    'lodash',
+    'ckeditor',
+    'lib/dompurify/purify',
+    'taoItems/comments/commentMentionPicker'
+], function (require, $, _, CKEDITOR, DOMPurify, commentMentionPicker) {
     'use strict';
 
     let editorSeq = 0;
@@ -24,15 +31,15 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
     const ALLOWED_URI_REGEXP = /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i;
 
     const SANITIZE_OPTIONS = {
-        ALLOWED_TAGS: ['strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'br'],
-        ALLOWED_ATTR: ['href'],
+        ALLOWED_TAGS: ['strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'br', 'span'],
+        ALLOWED_ATTR: ['href', 'class', 'data-user-id', 'data-user-login', 'contenteditable'],
         ALLOWED_URI_REGEXP: ALLOWED_URI_REGEXP
     };
 
     // Keep span[style]/p/div long enough to semanticize/normalize, but strip XSS first.
     const PRE_SEMANTICIZE_OPTIONS = {
         ALLOWED_TAGS: ['strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'a', 'br', 'span', 'p', 'div'],
-        ALLOWED_ATTR: ['href', 'style'],
+        ALLOWED_ATTR: ['href', 'style', 'class', 'data-user-id', 'data-user-login', 'contenteditable'],
         ALLOWED_URI_REGEXP: ALLOWED_URI_REGEXP
     };
 
@@ -61,6 +68,9 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
         // Innermost first so nested spans convert cleanly.
         for (let i = $spans.length - 1; i >= 0; i -= 1) {
             const $span = $spans.eq(i);
+            if ($span.hasClass('comment-mention')) {
+                continue;
+            }
             const style = String($span.attr('style') || '').toLowerCase();
             const tagNames = [];
 
@@ -91,6 +101,147 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
         }
 
         return $container.html();
+    }
+
+    function escapeHtml(value) {
+        return $('<div/>').text(String(value)).html();
+    }
+
+    function buildMentionHtml(user) {
+        const login = String(user.login || '');
+        return (
+            '<span class="comment-mention"' +
+            ' data-user-id="' +
+            escapeHtml(user.id) +
+            '"' +
+            ' data-user-login="' +
+            escapeHtml(login) +
+            '"' +
+            ' contenteditable="false">@' +
+            escapeHtml(login) +
+            '</span>&nbsp;'
+        );
+    }
+
+    /**
+     * Read text before caret and detect an active @mention query.
+     * @returns {{query: string, from: number, to: number}|null}
+     */
+    function detectMentionQuery(editor) {
+        const selection = editor.getSelection();
+        if (!selection) {
+            return null;
+        }
+
+        const ranges = selection.getRanges();
+        if (!ranges || !ranges.length) {
+            return null;
+        }
+
+        const range = ranges[0];
+        if (!range.collapsed) {
+            return null;
+        }
+
+        const walkerRange = range.clone();
+        walkerRange.collapse(true);
+        walkerRange.setStartAt(editor.editable(), CKEDITOR.POSITION_AFTER_START);
+
+        const prefix = walkerRange.cloneContents().$.textContent || '';
+        const match = /(?:^|[\s\u00a0])@([^\s@]*)$/.exec(prefix);
+        if (!match) {
+            return null;
+        }
+
+        return {
+            query: match[1] || '',
+            matchLength: match[0].length - (match[0].charAt(0) === '@' ? 0 : 1)
+        };
+    }
+
+    function replaceMentionQuery(editor, mentionMeta, user) {
+        const selection = editor.getSelection();
+        if (!selection) {
+            return;
+        }
+
+        const ranges = selection.getRanges();
+        if (!ranges || !ranges.length) {
+            return;
+        }
+
+        const range = ranges[0].clone();
+        const deleteCount = 1 + String(mentionMeta.query || '').length; // '@' + query
+        for (let i = 0; i < deleteCount; i += 1) {
+            range.setStart(range.startContainer, Math.max(0, range.startOffset - 1));
+        }
+
+        editor.insertHtml(buildMentionHtml(user), 'unfiltered_html', range);
+    }
+
+    /**
+     * Client rect for the current caret in viewport coordinates (iframe-aware).
+     * Used to place the mention picker next to @.
+     * @returns {{top:number,right:number,bottom:number,left:number,width:number,height:number}|null}
+     */
+    function getCaretClientRect(editor) {
+        try {
+            const selection = editor.getSelection();
+            if (!selection) {
+                return null;
+            }
+
+            let rect = null;
+            const nativeSel = selection.getNative();
+            if (nativeSel && nativeSel.rangeCount) {
+                const nativeRange = nativeSel.getRangeAt(0);
+                rect = nativeRange.getBoundingClientRect();
+                if (
+                    (!rect || (rect.width === 0 && rect.height === 0)) &&
+                    nativeRange.getClientRects
+                ) {
+                    const rects = nativeRange.getClientRects();
+                    if (rects.length) {
+                        rect = rects[0];
+                    }
+                }
+            }
+
+            const editable = editor.editable && editor.editable();
+            if ((!rect || !(rect.width || rect.height || rect.top || rect.left)) && editable && editable.$) {
+                rect = editable.$.getBoundingClientRect();
+            }
+
+            if (!rect) {
+                return null;
+            }
+
+            // CKEditor classic uses an iframe — native rects are iframe-local.
+            let offsetTop = 0;
+            let offsetLeft = 0;
+            if (editable) {
+                const editableWindow = editable.getWindow && editable.getWindow();
+                const win = editableWindow && editableWindow.$;
+                if (win && win !== window && win.frameElement) {
+                    const frameRect = win.frameElement.getBoundingClientRect();
+                    offsetTop = frameRect.top;
+                    offsetLeft = frameRect.left;
+                }
+            }
+
+            return {
+                top: rect.top + offsetTop,
+                right: rect.right + offsetLeft,
+                bottom: rect.bottom + offsetTop,
+                left: rect.left + offsetLeft,
+                width: rect.width,
+                height: rect.height
+            };
+        } catch (ignore) {
+            // CKEditor selection can throw while the editable is being destroyed.
+        }
+
+        return null;
     }
 
     function sanitizeHtml(value) {
@@ -158,6 +309,10 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
                 li: true,
                 a: {
                     attributes: '!href'
+                },
+                span: {
+                    classes: 'comment-mention',
+                    attributes: 'data-user-id,data-user-login,contenteditable'
                 }
             },
             disallowedContent: '*[on*]; script; style; img; svg; iframe; object; embed; table'
@@ -357,6 +512,51 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
             evt.data.dataValue = sanitizeHtml(evt.data.dataValue);
         });
 
+        let mentionPicker = null;
+        let activeMention = null;
+
+        if (_.isFunction(config.searchUsers)) {
+            mentionPicker = commentMentionPicker.create({
+                getAnchorRect() {
+                    return getCaretClientRect(editor);
+                },
+                searchUsers: config.searchUsers,
+                infoMessage: config.mentionInfoMessage,
+                onSelect(user) {
+                    if (!activeMention) {
+                        return;
+                    }
+                    replaceMentionQuery(editor, activeMention, user);
+                    activeMention = null;
+                    notifyChange();
+                }
+            });
+
+            const syncMentionState = _.throttle(function () {
+                const mention = detectMentionQuery(editor);
+                activeMention = mention;
+                if (!mention) {
+                    if (mentionPicker.isOpen()) {
+                        mentionPicker.close();
+                    }
+                    return;
+                }
+                mentionPicker.updateQuery(mention.query);
+            }, 80);
+
+            editor.on('key', function (evt) {
+                const domEvent = evt && evt.data && evt.data.domEvent;
+                if (domEvent && mentionPicker.handleKeyDown(domEvent.$ || domEvent)) {
+                    evt.cancel();
+                    return;
+                }
+                setTimeout(syncMentionState, 0);
+            });
+
+            editor.on('change', syncMentionState);
+            editor.on('selectionChange', syncMentionState);
+        }
+
         return {
             getData() {
                 return getData();
@@ -376,8 +576,25 @@ define(['require', 'jquery', 'lodash', 'ckeditor', 'lib/dompurify/purify'], func
                 }
             },
 
+            /**
+             * Insert `@` at caret and open mention picker (guidance click).
+             */
+            startMention() {
+                editor.focus();
+                editor.insertText('@');
+                activeMention = { query: '', matchLength: 1 };
+                if (mentionPicker) {
+                    mentionPicker.updateQuery('');
+                }
+                notifyChange();
+            },
+
             destroy() {
                 $toolbar.off('.commentRichTextEditor');
+                if (mentionPicker) {
+                    mentionPicker.destroy();
+                    mentionPicker = null;
+                }
                 if (editor && editor.status !== 'destroyed') {
                     editor.destroy();
                 }
