@@ -37,3 +37,5 @@ body.item-comments-editor-body u {
 body.item-comments-editor-body a {
     color: #3e7da7;
 }
+
+body.item-comments-editor-body .comment-mention{display:inline;padding:0 2px;border-radius:2px;background:#e8f1f8;color:#1f4f73;font-weight:600;white-space:nowrap}

@@ -30,10 +30,15 @@ use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\session\SessionService;
+use oat\taoItems\model\Comment\CommentMentionParser;
+use oat\taoItems\model\Comment\CommentMentionUserSearchService;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
+use oat\taoItems\model\Comment\MentionEligibleUsersProviderInterface;
+use oat\taoItems\model\Comment\OpenMentionEligibleUsersProvider;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
+use tao_models_classes_UserService;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\tao\model\resources\Service\ClassCopier;
@@ -177,6 +182,10 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->public();
 
         $services
+            ->set(CommentMentionParser::class, CommentMentionParser::class)
+            ->public();
+
+        $services
             ->set(ItemCommentService::class, ItemCommentService::class)
             ->public()
             ->args([
@@ -185,6 +194,24 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 service(Ontology::SERVICE_ID),
                 service(PermissionChecker::class),
                 service(CommentRichTextSanitizer::class),
+            ]);
+
+        $services
+            ->set(OpenMentionEligibleUsersProvider::class, OpenMentionEligibleUsersProvider::class)
+            ->public();
+
+        $services
+            ->alias(MentionEligibleUsersProviderInterface::class, OpenMentionEligibleUsersProvider::class)
+            ->public();
+
+        $services
+            ->set(CommentMentionUserSearchService::class, CommentMentionUserSearchService::class)
+            ->public()
+            ->args([
+                service(Ontology::SERVICE_ID),
+                service(PermissionChecker::class),
+                service(tao_models_classes_UserService::SERVICE_ID),
+                service(MentionEligibleUsersProviderInterface::class),
             ]);
     }
 }

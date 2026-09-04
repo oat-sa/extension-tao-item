@@ -20,6 +20,9 @@
             </div>
             <div id="item-comment-edit-{{id}}" class="item-comment-edit-input" data-role="edit-editor" data-comment-id="{{id}}" role="textbox" aria-multiline="true" aria-labelledby="item-comment-edit-label-{{id}}"></div>
         </div>
+        <button type="button" class="item-comments-mention-guidance" data-role="mention-guidance-edit" data-comment-id="{{id}}">
+            {{__ 'Use @ to mention a TAO user.'}}
+        </button>
         <div class="item-comment-edit-actions">
             <button type="button" class="btn-info small item-comment-save" data-comment-id="{{id}}">
                 {{__ 'Save'}}
