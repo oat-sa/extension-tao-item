@@ -32,6 +32,8 @@ use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
+use oat\taoItems\model\Comment\CommentMentionNotificationService;
+use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\ItemComment;
@@ -57,6 +59,9 @@ class ItemCommentServiceTest extends TestCase
     /** @var PermissionCheckerInterface|MockObject */
     private $permissionChecker;
 
+    /** @var CommentMentionNotificationService|MockObject */
+    private $mentionNotificationService;
+
     private ItemCommentService $sut;
 
     protected function setUp(): void
@@ -65,13 +70,16 @@ class ItemCommentServiceTest extends TestCase
         $this->sessionService = $this->createMock(SessionService::class);
         $this->ontology = $this->createMock(Ontology::class);
         $this->permissionChecker = $this->createMock(PermissionCheckerInterface::class);
+        $this->mentionNotificationService = $this->createMock(CommentMentionNotificationService::class);
 
         $this->sut = new ItemCommentService(
             $this->persistence,
             $this->sessionService,
             $this->ontology,
             $this->permissionChecker,
-            new CommentRichTextSanitizer()
+            new CommentRichTextSanitizer(),
+            new CommentMentionParser(),
+            $this->mentionNotificationService
         );
     }
 
@@ -209,6 +217,33 @@ class ItemCommentServiceTest extends TestCase
         $this->assertSame('Alice Admin', $created->getAuthorLabel());
         $this->assertFalse($created->isEdited());
         $this->assertFalse($created->isResolved());
+    }
+
+    public function testCreateTriggersMentionNotification(): void
+    {
+        $this->configureAuthorizedResource(true);
+        $this->configureLtiSession(new UserDataSessionContext('admin', 'adminLogin', 'Alice Admin'));
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $this->mentionNotificationService
+            ->expects($this->once())
+            ->method('notifyForComment')
+            ->with(
+                $this->callback(static function (ItemComment $comment): bool {
+                    return $comment->getBody() === 'hello @alice'
+                        && $comment->getResourceType() === ResourceCommentType::ITEM;
+                }),
+                'Alice Admin',
+                []
+            );
+
+        $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello @alice');
     }
 
     public function testCreateFallsBackToUserLoginWhenUserNameIsNull(): void
