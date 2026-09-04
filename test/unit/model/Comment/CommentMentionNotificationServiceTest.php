@@ -34,7 +34,6 @@ use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\ItemComment;
-use oat\taoItems\model\Comment\ResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -127,7 +126,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             new CommentMentionParser(),
             $this->ontology,
             $this->emailService,
-            $this->createDeepLinkGenerator()
+            $this->createDeepLinkBuilder()
         );
     }
 
@@ -140,7 +139,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             new CommentMentionParser(),
             $this->ontology,
             $this->emailService,
-            $this->createDeepLinkGenerator(),
+            $this->createDeepLinkBuilder(),
             $recipient
         ) extends CommentMentionNotificationService {
             /** @var array{login: string, email: string, name: ?string}|null|false */
@@ -150,10 +149,10 @@ class CommentMentionNotificationServiceTest extends TestCase
                 CommentMentionParser $parser,
                 Ontology $ontology,
                 TaskOrchestratorEmailService $emailService,
-                ResourceCommentDeepLinkGenerator $deepLinkGenerator,
+                CommentMentionDeepLinkBuilder $deepLinkBuilder,
                 $fixedRecipient
             ) {
-                parent::__construct($parser, $ontology, $emailService, $deepLinkGenerator);
+                parent::__construct($parser, $ontology, $emailService, $deepLinkBuilder);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -177,7 +176,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         );
     }
 
-    private function createDeepLinkGenerator(): ResourceCommentDeepLinkGenerator
+    private function createDeepLinkBuilder(): CommentMentionDeepLinkBuilder
     {
         $tree = new Tree(['rootNode' => TaoOntology::CLASS_URI_ITEM, 'name' => 'Items']);
         $section = new Section(
@@ -209,11 +208,6 @@ class CommentMentionNotificationServiceTest extends TestCase
             [$section]
         );
 
-        $generator = new ResourceCommentDeepLinkGenerator(
-            new CommentMentionDeepLinkBuilder('https://example.test', [$perspective])
-        );
-        $generator->register(ResourceCommentType::ITEM, TaoOntology::CLASS_URI_ITEM);
-
-        return $generator;
+        return new CommentMentionDeepLinkBuilder('https://example.test', [$perspective]);
     }
 }

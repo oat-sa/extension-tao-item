@@ -189,24 +189,13 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->public();
 
         $services
-            ->set(ResourceCommentDeepLinkGenerator::class, ResourceCommentDeepLinkGenerator::class)
-            ->public()
-            ->args([
-                service(CommentMentionDeepLinkBuilder::class),
-            ])
-            ->call('register', [
-                ResourceCommentType::ITEM,
-                TaoOntology::CLASS_URI_ITEM,
-            ]);
-
-        $services
             ->set(CommentMentionNotificationService::class, CommentMentionNotificationService::class)
             ->public()
             ->args([
                 service(CommentMentionParser::class),
                 service(Ontology::SERVICE_ID),
                 service(TaskOrchestratorEmailService::class),
-                service(ResourceCommentDeepLinkGenerator::class),
+                service(CommentMentionDeepLinkBuilder::class),
             ]);
 
         $services
