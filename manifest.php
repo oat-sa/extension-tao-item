@@ -96,8 +96,18 @@ return [
         ],
         [
             AccessRule::GRANT,
+            TaoItemsRoles::ITEM_AUTHOR_ABSTRACT,
+            ['ext' => 'tao', 'mod' => 'RestUser', 'act' => 'searchUsers'],
+        ],
+        [
+            AccessRule::GRANT,
             TaoItemsRoles::ITEM_MANAGER,
             ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
+        ],
+        [
+            AccessRule::GRANT,
+            TaoItemsRoles::ITEM_MANAGER,
+            ['ext' => 'tao', 'mod' => 'RestUser', 'act' => 'searchUsers'],
         ],
         [
             AccessRule::GRANT,
@@ -106,13 +116,28 @@ return [
         ],
         [
             AccessRule::GRANT,
+            TaoItemsRoles::ITEM_CONTENT_CREATOR,
+            ['ext' => 'tao', 'mod' => 'RestUser', 'act' => 'searchUsers'],
+        ],
+        [
+            AccessRule::GRANT,
             TaoItemsRoles::ITEM_AUTHOR,
             ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
         ],
         [
             AccessRule::GRANT,
+            TaoItemsRoles::ITEM_AUTHOR,
+            ['ext' => 'tao', 'mod' => 'RestUser', 'act' => 'searchUsers'],
+        ],
+        [
+            AccessRule::GRANT,
             'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole',
             ['ext' => 'taoItems', 'mod' => 'RestResourceComments'],
+        ],
+        [
+            AccessRule::GRANT,
+            'http://www.tao.lu/Ontologies/TAO.rdf#GlobalManagerRole',
+            ['ext' => 'tao', 'mod' => 'RestUser', 'act' => 'searchUsers'],
         ],
         [
             AccessRule::GRANT,
