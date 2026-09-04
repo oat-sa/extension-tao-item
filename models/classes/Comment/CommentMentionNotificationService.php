@@ -26,8 +26,7 @@ use common_Logger;
 use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
 use oat\tao\helpers\UserHelper;
-use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\CommentMentionEmailPayload;
+use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use Throwable;
 
@@ -40,18 +39,18 @@ class CommentMentionNotificationService
     private CommentMentionParser $parser;
     private Ontology $ontology;
     private TaskOrchestratorEmailService $emailService;
-    private CommentMentionDeepLinkBuilder $deepLinkBuilder;
+    private ResourceCommentDeepLinkGenerator $deepLinkGenerator;
 
     public function __construct(
         CommentMentionParser $parser,
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
-        CommentMentionDeepLinkBuilder $deepLinkBuilder
+        ResourceCommentDeepLinkGenerator $deepLinkGenerator
     ) {
         $this->parser = $parser;
         $this->ontology = $ontology;
         $this->emailService = $emailService;
-        $this->deepLinkBuilder = $deepLinkBuilder;
+        $this->deepLinkGenerator = $deepLinkGenerator;
     }
 
     /**
@@ -83,7 +82,7 @@ class CommentMentionNotificationService
         }
 
         $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
-        $resourceUrl = $this->deepLinkBuilder->build(
+        $resourceUrl = $this->deepLinkGenerator->build(
             $comment->getResourceType(),
             $comment->getResourceUri()
         );
@@ -103,7 +102,7 @@ class CommentMentionNotificationService
                 $this->emailService->sendCommentMention(
                     $recipient['login'],
                     $recipient['email'],
-                    new CommentMentionEmailPayload(
+                    new CommentMentionEmailTemplatePayload(
                         $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user',
                         $recipient['login'],
                         $comment->getResourceType(),

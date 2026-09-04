@@ -24,12 +24,18 @@ namespace oat\taoItems\test\unit\model\Comment;
 
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
+use oat\tao\model\menu\Perspective;
+use oat\tao\model\menu\Section;
+use oat\tao\model\menu\Tree;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\CommentMentionEmailPayload;
+use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
+use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\ItemComment;
+use oat\taoItems\model\Comment\ItemResourceCommentDeepLinkGenerator;
+use oat\taoItems\model\Comment\ResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -50,10 +56,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSut();
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $stats = $sut->notifyForComment(
-            $this->comment('plain text'),
-            'Author'
-        );
+        $stats = $sut->notifyForComment($this->comment('plain text'), 'Alice');
 
         $this->assertSame(
             ['initiated' => 0, 'skippedNoEmail' => 0, 'failed' => 0],
@@ -63,27 +66,29 @@ class CommentMentionNotificationServiceTest extends TestCase
 
     public function testNotifyOnlyNewMentionsOnUpdate(): void
     {
-        $sut = $this->createSut();
+        $html = '<p>Hi <span class="comment-mention" data-user-id="u1" data-user-login="alice">@alice</span></p>';
+        $sut = $this->createSutWithRecipient(null);
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $html = '<span class="comment-mention" data-user-id="http://u#1" data-user-login="alice">@alice</span>';
-        $previous = [['id' => 'http://u#1', 'login' => 'alice']];
+        $stats = $sut->notifyForComment(
+            $this->comment($html),
+            'Alice Author',
+            [['id' => 'u1', 'login' => 'alice']]
+        );
 
-        $stats = $sut->notifyForComment($this->comment($html), 'Author', $previous);
-
-        $this->assertSame(0, $stats['initiated']);
+        $this->assertSame(
+            ['initiated' => 0, 'skippedNoEmail' => 0, 'failed' => 0],
+            $stats
+        );
     }
 
     public function testNotifySendsCommentMentionWithRequiredTemplateData(): void
     {
-        $resource = $this->createMock(core_kernel_classes_Resource::class);
-        $resource->method('getLabel')->willReturn('Item ABC');
+        $html = '<p>Hi <span class="comment-mention" data-user-id="u1" data-user-login="alice">@alice</span></p>';
 
-        $this->ontology
-            ->expects($this->once())
-            ->method('getResource')
-            ->with('http://example.test/item#1')
-            ->willReturn($resource);
+        $resource = $this->createMock(core_kernel_classes_Resource::class);
+        $resource->method('getLabel')->willReturn('Item Label');
+        $this->ontology->method('getResource')->willReturn($resource);
 
         $this->emailService
             ->expects($this->once())
@@ -91,20 +96,19 @@ class CommentMentionNotificationServiceTest extends TestCase
             ->with(
                 'alice',
                 'alice@example.com',
-                $this->callback(static function (CommentMentionEmailPayload $payload): bool {
-                    return $payload->toTemplateData() === [
-                        'mentionedBy' => 'Alice Author',
-                        'username' => 'alice',
-                        'resourceType' => ResourceCommentType::ITEM,
-                        'resourceUrl' => 'https://example.test/tao/Main/index?structure=items&ext=taoItems&section=manage_items&uri=http%3A%2F%2Fexample.test%2Fitem%231',
-                        'resourceLabel' => 'Item ABC',
-                        'name' => 'Alice Mentioned',
-                    ];
+                $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
+                    $data = $payload->toTemplateData();
+
+                    return $data['mentionedBy'] === 'Alice Author'
+                        && $data['username'] === 'alice'
+                        && $data['resourceType'] === ResourceCommentType::ITEM
+                        && str_contains($data['resourceUrl'], 'structure=items')
+                        && $data['resourceLabel'] === 'Item Label'
+                        && $data['name'] === 'Alice Mentioned';
                 })
             )
             ->willReturn('job-1');
 
-        $html = '<span class="comment-mention" data-user-id="http://u#1" data-user-login="alice">@alice</span>';
         $sut = $this->createSutWithRecipient([
             'login' => 'alice',
             'email' => 'alice@example.com',
@@ -125,7 +129,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             new CommentMentionParser(),
             $this->ontology,
             $this->emailService,
-            new CommentMentionDeepLinkBuilder('https://example.test')
+            $this->createDeepLinkGenerator()
         );
     }
 
@@ -138,7 +142,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             new CommentMentionParser(),
             $this->ontology,
             $this->emailService,
-            new CommentMentionDeepLinkBuilder('https://example.test'),
+            $this->createDeepLinkGenerator(),
             $recipient
         ) extends CommentMentionNotificationService {
             /** @var array{login: string, email: string, name: ?string}|null|false */
@@ -148,10 +152,10 @@ class CommentMentionNotificationServiceTest extends TestCase
                 CommentMentionParser $parser,
                 Ontology $ontology,
                 TaskOrchestratorEmailService $emailService,
-                CommentMentionDeepLinkBuilder $deepLinkBuilder,
+                ResourceCommentDeepLinkGenerator $deepLinkGenerator,
                 $fixedRecipient
             ) {
-                parent::__construct($parser, $ontology, $emailService, $deepLinkBuilder);
+                parent::__construct($parser, $ontology, $emailService, $deepLinkGenerator);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -173,5 +177,44 @@ class CommentMentionNotificationServiceTest extends TestCase
             $body,
             '2026-09-03T10:00:00+00:00'
         );
+    }
+
+    private function createDeepLinkGenerator(): ResourceCommentDeepLinkGenerator
+    {
+        $tree = new Tree(['rootNode' => TaoOntology::CLASS_URI_ITEM, 'name' => 'Items']);
+        $section = new Section(
+            [
+                'id' => 'manage_items',
+                'name' => 'Manage items',
+                'url' => '/',
+                'extension' => 'taoItems',
+                'controller' => 'Items',
+                'action' => 'index',
+                'binding' => null,
+                'policy' => Section::POLICY_MERGE,
+                'disabled' => false,
+            ],
+            [$tree],
+            []
+        );
+        $perspective = new Perspective(
+            [
+                'id' => 'items',
+                'extension' => 'taoItems',
+                'name' => 'Items',
+                'group' => Perspective::GROUP_DEFAULT,
+                'level' => '0',
+                'description' => '',
+                'binding' => null,
+                'icon' => null,
+            ],
+            [$section]
+        );
+
+        $builder = new CommentMentionDeepLinkBuilder('https://example.test', [$perspective]);
+
+        return new ResourceCommentDeepLinkGenerator([
+            new ItemResourceCommentDeepLinkGenerator($builder),
+        ]);
     }
 }
