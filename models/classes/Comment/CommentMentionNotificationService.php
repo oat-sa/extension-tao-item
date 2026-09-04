@@ -32,23 +32,22 @@ use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use Throwable;
 
 /**
- * Sends comment-mention emails (via Task Orchestrator) after a successful save.
- * Skips recipients without a usable email. Failures never roll back the comment.
+ * NotificationAdapter: sends comment-mention emails via Task Orchestrator.
+ *
+ * Callers supply already-parsed mentions (mention parsing belongs to the mentions
+ * feature). Skips recipients without a usable email. Failures never roll back the comment.
  */
 class CommentMentionNotificationService
 {
-    private CommentMentionParser $parser;
     private Ontology $ontology;
     private TaskOrchestratorEmailService $emailService;
     private CommentMentionDeepLinkBuilder $deepLinkBuilder;
 
     public function __construct(
-        CommentMentionParser $parser,
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
         CommentMentionDeepLinkBuilder $deepLinkBuilder
     ) {
-        $this->parser = $parser;
         $this->ontology = $ontology;
         $this->emailService = $emailService;
         $this->deepLinkBuilder = $deepLinkBuilder;
@@ -56,30 +55,36 @@ class CommentMentionNotificationService
 
     /**
      * Notify all mentions in a newly created comment.
+     *
+     * @param list<array{id: string, login: string}> $mentions
      */
-    public function notifyForComment(ItemComment $comment, string $mentionedByLabel): void
+    public function notifyForComment(ItemComment $comment, string $mentionedByLabel, array $mentions): void
     {
-        $this->notifyMentions(
-            $comment,
-            $mentionedByLabel,
-            $this->parser->parse($comment->getBody())
-        );
+        $this->notifyMentions($comment, $mentionedByLabel, $mentions);
     }
 
     /**
      * Notify only mentions added during a comment edit.
      *
+     * @param list<array{id: string, login: string}> $currentMentions Mentions in the updated body
      * @param list<array{id: string, login: string}> $previousMentions Mentions from the body before update
      */
     public function notifyForCommentUpdate(
         ItemComment $comment,
         string $mentionedByLabel,
+        array $currentMentions,
         array $previousMentions
     ): void {
-        $previousIds = array_fill_keys($this->parser->ids($previousMentions), true);
+        $previousIds = [];
+        foreach ($previousMentions as $mention) {
+            if (isset($mention['id']) && is_string($mention['id']) && $mention['id'] !== '') {
+                $previousIds[$mention['id']] = true;
+            }
+        }
+
         $newMentions = array_values(array_filter(
-            $this->parser->parse($comment->getBody()),
-            static fn (array $mention): bool => !isset($previousIds[$mention['id']])
+            $currentMentions,
+            static fn (array $mention): bool => isset($mention['id']) && !isset($previousIds[$mention['id']])
         ));
 
         $this->notifyMentions($comment, $mentionedByLabel, $newMentions);
@@ -127,7 +132,7 @@ class CommentMentionNotificationService
                 common_Logger::w(
                     sprintf(
                         'Comment mention email failed for user %s on comment %s: %s',
-                        $mention['id'],
+                        $mention['id'] ?? '',
                         $comment->getId(),
                         $exception->getMessage()
                     )
@@ -156,7 +161,7 @@ class CommentMentionNotificationService
             return null;
         }
 
-        $login = $mention['login'] !== ''
+        $login = ($mention['login'] ?? '') !== ''
             ? $mention['login']
             : (string) UserHelper::getUserLogin($user);
 

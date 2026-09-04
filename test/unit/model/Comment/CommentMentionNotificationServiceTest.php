@@ -32,7 +32,6 @@ use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
-use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -54,26 +53,24 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSut();
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $sut->notifyForComment($this->comment('plain text'), 'Alice');
+        $sut->notifyForComment($this->comment('plain text'), 'Alice', []);
     }
 
     public function testNotifyOnlyNewMentionsOnUpdate(): void
     {
-        $html = '<p>Hi <span class="comment-mention" data-user-id="u1" data-user-login="alice">@alice</span></p>';
         $sut = $this->createSutWithRecipient(null);
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
         $sut->notifyForCommentUpdate(
-            $this->comment($html),
+            $this->comment('<p>Hi @alice</p>'),
             'Alice Author',
+            [['id' => 'u1', 'login' => 'alice']],
             [['id' => 'u1', 'login' => 'alice']]
         );
     }
 
     public function testNotifySendsCommentMentionWithRequiredTemplateData(): void
     {
-        $html = '<p>Hi <span class="comment-mention" data-user-id="u1" data-user-login="alice">@alice</span></p>';
-
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('getLabel')->willReturn('Item Label');
         $this->ontology->method('getResource')->willReturn($resource);
@@ -103,13 +100,15 @@ class CommentMentionNotificationServiceTest extends TestCase
             'name' => 'Alice Mentioned',
         ]);
 
-        $sut->notifyForComment($this->comment($html), 'Alice Author');
+        $sut->notifyForComment(
+            $this->comment('<p>Hi @alice</p>'),
+            'Alice Author',
+            [['id' => 'u1', 'login' => 'alice']]
+        );
     }
 
     public function testNotifySkipsRecipientWithoutEmail(): void
     {
-        $html = '<p>Hi <span class="comment-mention" data-user-id="u1" data-user-login="alice">@alice</span></p>';
-
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('getLabel')->willReturn('Item Label');
         $this->ontology->method('getResource')->willReturn($resource);
@@ -117,13 +116,16 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSutWithRecipient(null);
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $sut->notifyForComment($this->comment($html), 'Alice Author');
+        $sut->notifyForComment(
+            $this->comment('<p>Hi @alice</p>'),
+            'Alice Author',
+            [['id' => 'u1', 'login' => 'alice']]
+        );
     }
 
     private function createSut(): CommentMentionNotificationService
     {
         return new CommentMentionNotificationService(
-            new CommentMentionParser(),
             $this->ontology,
             $this->emailService,
             $this->createDeepLinkBuilder()
@@ -136,7 +138,6 @@ class CommentMentionNotificationServiceTest extends TestCase
     private function createSutWithRecipient($recipient): CommentMentionNotificationService
     {
         return new class (
-            new CommentMentionParser(),
             $this->ontology,
             $this->emailService,
             $this->createDeepLinkBuilder(),
@@ -146,13 +147,12 @@ class CommentMentionNotificationServiceTest extends TestCase
             private $fixedRecipient;
 
             public function __construct(
-                CommentMentionParser $parser,
                 Ontology $ontology,
                 TaskOrchestratorEmailService $emailService,
                 CommentMentionDeepLinkBuilder $deepLinkBuilder,
                 $fixedRecipient
             ) {
-                parent::__construct($parser, $ontology, $emailService, $deepLinkBuilder);
+                parent::__construct($ontology, $emailService, $deepLinkBuilder);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
