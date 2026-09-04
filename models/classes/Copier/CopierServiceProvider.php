@@ -30,19 +30,15 @@ use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\session\SessionService;
-use oat\taoItems\model\Comment\AssetResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\CommentMentionUserSearchService;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
-use oat\taoItems\model\Comment\ItemResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\Comment\OpenMentionEligibleUsersProvider;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
-use oat\taoItems\model\Comment\ResourceCommentDeepLinkGenerator;
-use oat\taoItems\model\Comment\TestResourceCommentDeepLinkGenerator;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use tao_models_classes_UserService;
@@ -193,35 +189,14 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->public();
 
         $services
-            ->set(ItemResourceCommentDeepLinkGenerator::class, ItemResourceCommentDeepLinkGenerator::class)
-            ->public()
-            ->args([
-                service(CommentMentionDeepLinkBuilder::class),
-            ]);
-
-        $services
-            ->set(TestResourceCommentDeepLinkGenerator::class, TestResourceCommentDeepLinkGenerator::class)
-            ->public()
-            ->args([
-                service(CommentMentionDeepLinkBuilder::class),
-            ]);
-
-        $services
-            ->set(AssetResourceCommentDeepLinkGenerator::class, AssetResourceCommentDeepLinkGenerator::class)
-            ->public()
-            ->args([
-                service(CommentMentionDeepLinkBuilder::class),
-            ]);
-
-        $services
             ->set(ResourceCommentDeepLinkGenerator::class, ResourceCommentDeepLinkGenerator::class)
             ->public()
             ->args([
-                [
-                    service(ItemResourceCommentDeepLinkGenerator::class),
-                    service(TestResourceCommentDeepLinkGenerator::class),
-                    service(AssetResourceCommentDeepLinkGenerator::class),
-                ],
+                service(CommentMentionDeepLinkBuilder::class),
+            ])
+            ->call('register', [
+                ResourceCommentType::ITEM,
+                TaoOntology::CLASS_URI_ITEM,
             ]);
 
         $services

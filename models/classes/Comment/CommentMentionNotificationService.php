@@ -26,6 +26,7 @@ use common_Logger;
 use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
 use oat\tao\helpers\UserHelper;
+use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use Throwable;
@@ -39,28 +40,26 @@ class CommentMentionNotificationService
     private CommentMentionParser $parser;
     private Ontology $ontology;
     private TaskOrchestratorEmailService $emailService;
-    private ResourceCommentDeepLinkGenerator $deepLinkGenerator;
+    private CommentMentionDeepLinkBuilder $deepLinkBuilder;
 
     public function __construct(
         CommentMentionParser $parser,
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
-        ResourceCommentDeepLinkGenerator $deepLinkGenerator
+        CommentMentionDeepLinkBuilder $deepLinkBuilder
     ) {
         $this->parser = $parser;
         $this->ontology = $ontology;
         $this->emailService = $emailService;
-        $this->deepLinkGenerator = $deepLinkGenerator;
+        $this->deepLinkBuilder = $deepLinkBuilder;
     }
 
     /**
      * Notify all mentions in a newly created comment.
-     *
-     * @return array{initiated: int, skippedNoEmail: int, failed: int}
      */
-    public function notifyForComment(ItemComment $comment, string $mentionedByLabel): array
+    public function notifyForComment(ItemComment $comment, string $mentionedByLabel): void
     {
-        return $this->notifyMentions(
+        $this->notifyMentions(
             $comment,
             $mentionedByLabel,
             $this->parser->parse($comment->getBody())
@@ -71,57 +70,44 @@ class CommentMentionNotificationService
      * Notify only mentions added during a comment edit.
      *
      * @param list<array{id: string, login: string}> $previousMentions Mentions from the body before update
-     * @return array{initiated: int, skippedNoEmail: int, failed: int}
      */
     public function notifyForCommentUpdate(
         ItemComment $comment,
         string $mentionedByLabel,
         array $previousMentions
-    ): array {
+    ): void {
         $previousIds = array_fill_keys($this->parser->ids($previousMentions), true);
         $newMentions = array_values(array_filter(
             $this->parser->parse($comment->getBody()),
             static fn (array $mention): bool => !isset($previousIds[$mention['id']])
         ));
 
-        return $this->notifyMentions($comment, $mentionedByLabel, $newMentions);
+        $this->notifyMentions($comment, $mentionedByLabel, $newMentions);
     }
 
     /**
      * @param list<array{id: string, login: string}> $mentions
-     * @return array{initiated: int, skippedNoEmail: int, failed: int}
      */
     private function notifyMentions(
         ItemComment $comment,
         string $mentionedByLabel,
         array $mentions
-    ): array {
-        $stats = [
-            'initiated' => 0,
-            'skippedNoEmail' => 0,
-            'failed' => 0,
-        ];
-
+    ): void {
         if ($mentions === []) {
-            return $stats;
+            return;
         }
 
         $mentionedByLabel = $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user';
         $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
-        $resourceUrl = $this->deepLinkGenerator->build(
-            $comment->getResourceType(),
+        $resourceUrl = $this->deepLinkBuilder->build(
+            ResourceCommentType::classUri($comment->getResourceType()),
             $comment->getResourceUri()
         );
 
         foreach ($mentions as $mention) {
             try {
                 $recipient = $this->resolveMentionRecipient($mention);
-                if ($recipient === null) {
-                    $stats['skippedNoEmail']++;
-                    continue;
-                }
-                if ($recipient === false) {
-                    $stats['failed']++;
+                if ($recipient === null || $recipient === false) {
                     continue;
                 }
 
@@ -137,9 +123,7 @@ class CommentMentionNotificationService
                         $recipient['name']
                     )
                 );
-                $stats['initiated']++;
             } catch (Throwable $exception) {
-                $stats['failed']++;
                 common_Logger::w(
                     sprintf(
                         'Comment mention email failed for user %s on comment %s: %s',
@@ -150,8 +134,6 @@ class CommentMentionNotificationService
                 );
             }
         }
-
-        return $stats;
     }
 
     /**

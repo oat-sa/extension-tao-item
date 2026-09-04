@@ -23,37 +23,56 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Comment;
 
 use InvalidArgumentException;
+use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 
 /**
- * Dispatches deep-link generation to the generator registered for a resourceType.
+ * Registry of commentable resourceType → ontology root class URI for Backoffice deep links.
+ *
+ * Owning extensions register their types from their ServiceProviders, e.g.:
+ * - taoItems → item
+ * - taoTests → test
+ * - taoMediaManager → asset
  */
 final class ResourceCommentDeepLinkGenerator
 {
-    /** @var array<string, ResourceCommentDeepLinkGeneratorInterface> */
-    private array $generatorsByType = [];
+    private CommentMentionDeepLinkBuilder $deepLinkBuilder;
 
-    /**
-     * @param iterable<ResourceCommentDeepLinkGeneratorInterface> $generators
-     */
-    public function __construct(iterable $generators)
+    /** @var array<string, string> resourceType => rootClassUri */
+    private array $rootClassUrisByType = [];
+
+    public function __construct(CommentMentionDeepLinkBuilder $deepLinkBuilder)
     {
-        foreach ($generators as $generator) {
-            $type = ResourceCommentType::assertValid($generator->resourceType());
-            $this->generatorsByType[$type] = $generator;
+        $this->deepLinkBuilder = $deepLinkBuilder;
+    }
+
+    public function register(string $resourceType, string $rootClassUri): void
+    {
+        $resourceType = ResourceCommentType::assertValid($resourceType);
+        $rootClassUri = trim($rootClassUri);
+        if ($rootClassUri === '') {
+            throw new InvalidArgumentException(sprintf(
+                'Root class URI is required to register comment deep link for "%s".',
+                $resourceType
+            ));
         }
+
+        $this->rootClassUrisByType[$resourceType] = $rootClassUri;
     }
 
     public function build(string $resourceType, string $resourceUri): string
     {
         $resourceType = ResourceCommentType::assertValid($resourceType);
 
-        if (!isset($this->generatorsByType[$resourceType])) {
+        if (!isset($this->rootClassUrisByType[$resourceType])) {
             throw new InvalidArgumentException(sprintf(
-                'No comment deep-link generator registered for resourceType "%s".',
+                'No comment deep-link root class registered for resourceType "%s".',
                 $resourceType
             ));
         }
 
-        return $this->generatorsByType[$resourceType]->build($resourceUri);
+        return $this->deepLinkBuilder->build(
+            $this->rootClassUrisByType[$resourceType],
+            $resourceUri
+        );
     }
 }

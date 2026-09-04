@@ -240,8 +240,7 @@ class ItemCommentServiceTest extends TestCase
                         && $comment->getResourceType() === ResourceCommentType::ITEM;
                 }),
                 'Alice Admin'
-            )
-            ->willReturn(['initiated' => 1, 'skippedNoEmail' => 0, 'failed' => 0]);
+            );
 
         $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello @alice');
     }

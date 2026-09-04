@@ -28,11 +28,8 @@ use oat\tao\model\menu\Section;
 use oat\tao\model\menu\Tree;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaoOntology;
-use oat\taoItems\model\Comment\AssetResourceCommentDeepLinkGenerator;
-use oat\taoItems\model\Comment\ItemResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\ResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\ResourceCommentType;
-use oat\taoItems\model\Comment\TestResourceCommentDeepLinkGenerator;
 use PHPUnit\Framework\TestCase;
 
 class ResourceCommentDeepLinkGeneratorTest extends TestCase
@@ -58,14 +55,13 @@ class ResourceCommentDeepLinkGeneratorTest extends TestCase
             ]
         );
 
-        $this->sut = new ResourceCommentDeepLinkGenerator([
-            new ItemResourceCommentDeepLinkGenerator($builder),
-            new TestResourceCommentDeepLinkGenerator($builder),
-            new AssetResourceCommentDeepLinkGenerator($builder),
-        ]);
+        $this->sut = new ResourceCommentDeepLinkGenerator($builder);
+        $this->sut->register(ResourceCommentType::ITEM, TaoOntology::CLASS_URI_ITEM);
+        $this->sut->register(ResourceCommentType::TEST, TaoOntology::CLASS_URI_TEST);
+        $this->sut->register(ResourceCommentType::ASSET, self::CLASS_URI_ASSET);
     }
 
-    public function testEachResourceTypeHasDedicatedGenerator(): void
+    public function testRegisteredTypesBuildDeepLinks(): void
     {
         $uri = 'https://backoffice.ngs.test/ontologies/tao.rdf#i1';
 
@@ -74,28 +70,24 @@ class ResourceCommentDeepLinkGeneratorTest extends TestCase
         $assetUrl = $this->sut->build(ResourceCommentType::ASSET, $uri);
 
         $this->assertStringContainsString('structure=items', $itemUrl);
-        $this->assertStringContainsString('ext=taoItems', $itemUrl);
         $this->assertStringContainsString('section=manage_items', $itemUrl);
 
         $this->assertStringContainsString('structure=tests', $testUrl);
-        $this->assertStringContainsString('ext=taoTests', $testUrl);
         $this->assertStringContainsString('section=manage_tests', $testUrl);
 
         $this->assertStringContainsString('structure=taoMediaManager', $assetUrl);
-        $this->assertStringContainsString('ext=taoMediaManager', $assetUrl);
         $this->assertStringContainsString('section=media_manager', $assetUrl);
     }
 
     public function testRejectsUnregisteredResourceType(): void
     {
-        $sut = new ResourceCommentDeepLinkGenerator([
-            new ItemResourceCommentDeepLinkGenerator(
-                new CommentMentionDeepLinkBuilder(self::BASE_URL, [])
-            ),
-        ]);
+        $sut = new ResourceCommentDeepLinkGenerator(
+            new CommentMentionDeepLinkBuilder(self::BASE_URL, [])
+        );
+        $sut->register(ResourceCommentType::ITEM, TaoOntology::CLASS_URI_ITEM);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('No comment deep-link generator registered');
+        $this->expectExceptionMessage('No comment deep-link root class registered');
 
         $sut->build(ResourceCommentType::TEST, 'https://example/rdf#i1');
     }

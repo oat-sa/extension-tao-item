@@ -34,7 +34,6 @@ use oat\tao\model\TaoOntology;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\ItemComment;
-use oat\taoItems\model\Comment\ItemResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\ResourceCommentDeepLinkGenerator;
 use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -56,12 +55,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSut();
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $stats = $sut->notifyForComment($this->comment('plain text'), 'Alice');
-
-        $this->assertSame(
-            ['initiated' => 0, 'skippedNoEmail' => 0, 'failed' => 0],
-            $stats
-        );
+        $sut->notifyForComment($this->comment('plain text'), 'Alice');
     }
 
     public function testNotifyOnlyNewMentionsOnUpdate(): void
@@ -70,15 +64,10 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSutWithRecipient(null);
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $stats = $sut->notifyForCommentUpdate(
+        $sut->notifyForCommentUpdate(
             $this->comment($html),
             'Alice Author',
             [['id' => 'u1', 'login' => 'alice']]
-        );
-
-        $this->assertSame(
-            ['initiated' => 0, 'skippedNoEmail' => 0, 'failed' => 0],
-            $stats
         );
     }
 
@@ -115,12 +104,21 @@ class CommentMentionNotificationServiceTest extends TestCase
             'name' => 'Alice Mentioned',
         ]);
 
-        $stats = $sut->notifyForComment($this->comment($html), 'Alice Author');
+        $sut->notifyForComment($this->comment($html), 'Alice Author');
+    }
 
-        $this->assertSame(
-            ['initiated' => 1, 'skippedNoEmail' => 0, 'failed' => 0],
-            $stats
-        );
+    public function testNotifySkipsRecipientWithoutEmail(): void
+    {
+        $html = '<p>Hi <span class="comment-mention" data-user-id="u1" data-user-login="alice">@alice</span></p>';
+
+        $resource = $this->createMock(core_kernel_classes_Resource::class);
+        $resource->method('getLabel')->willReturn('Item Label');
+        $this->ontology->method('getResource')->willReturn($resource);
+
+        $sut = $this->createSutWithRecipient(null);
+        $this->emailService->expects($this->never())->method('sendCommentMention');
+
+        $sut->notifyForComment($this->comment($html), 'Alice Author');
     }
 
     private function createSut(): CommentMentionNotificationService
@@ -211,10 +209,11 @@ class CommentMentionNotificationServiceTest extends TestCase
             [$section]
         );
 
-        $builder = new CommentMentionDeepLinkBuilder('https://example.test', [$perspective]);
+        $generator = new ResourceCommentDeepLinkGenerator(
+            new CommentMentionDeepLinkBuilder('https://example.test', [$perspective])
+        );
+        $generator->register(ResourceCommentType::ITEM, TaoOntology::CLASS_URI_ITEM);
 
-        return new ResourceCommentDeepLinkGenerator([
-            new ItemResourceCommentDeepLinkGenerator($builder),
-        ]);
+        return $generator;
     }
 }
