@@ -32,16 +32,12 @@ use oat\oatbox\event\EventManager;
 use oat\oatbox\session\SessionService;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
-use oat\taoItems\model\Comment\CommentMentionUserSearchService;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
-use oat\taoItems\model\Comment\MentionEligibleUsersProviderInterface;
-use oat\taoItems\model\Comment\OpenMentionEligibleUsersProvider;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
-use tao_models_classes_UserService;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\tao\model\resources\Service\ClassCopier;
@@ -208,24 +204,6 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 service(CommentRichTextSanitizer::class),
                 service(CommentMentionParser::class),
                 service(CommentMentionNotificationService::class),
-            ]);
-
-        $services
-            ->set(OpenMentionEligibleUsersProvider::class, OpenMentionEligibleUsersProvider::class)
-            ->public();
-
-        $services
-            ->alias(MentionEligibleUsersProviderInterface::class, OpenMentionEligibleUsersProvider::class)
-            ->public();
-
-        $services
-            ->set(CommentMentionUserSearchService::class, CommentMentionUserSearchService::class)
-            ->public()
-            ->args([
-                service(Ontology::SERVICE_ID),
-                service(PermissionChecker::class),
-                service(tao_models_classes_UserService::SERVICE_ID),
-                service(MentionEligibleUsersProviderInterface::class),
             ]);
     }
 }
