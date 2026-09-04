@@ -54,23 +54,48 @@ class CommentMentionNotificationService
     }
 
     /**
-     * @param list<array{id: string, login: string}>|null $previousMentions Mentions from previous body (update only)
+     * Notify all mentions in a newly created comment.
+     *
      * @return array{initiated: int, skippedNoEmail: int, failed: int}
      */
-    public function notifyForComment(
+    public function notifyForComment(ItemComment $comment, string $mentionedByLabel): array
+    {
+        return $this->notifyMentions(
+            $comment,
+            $mentionedByLabel,
+            $this->parser->parse($comment->getBody())
+        );
+    }
+
+    /**
+     * Notify only mentions added during a comment edit.
+     *
+     * @param list<array{id: string, login: string}> $previousMentions Mentions from the body before update
+     * @return array{initiated: int, skippedNoEmail: int, failed: int}
+     */
+    public function notifyForCommentUpdate(
         ItemComment $comment,
         string $mentionedByLabel,
-        ?array $previousMentions = null
+        array $previousMentions
     ): array {
-        $mentions = $this->parser->parse($comment->getBody());
-        if ($previousMentions !== null) {
-            $previousIds = array_fill_keys($this->parser->ids($previousMentions), true);
-            $mentions = array_values(array_filter(
-                $mentions,
-                static fn (array $mention): bool => !isset($previousIds[$mention['id']])
-            ));
-        }
+        $previousIds = array_fill_keys($this->parser->ids($previousMentions), true);
+        $newMentions = array_values(array_filter(
+            $this->parser->parse($comment->getBody()),
+            static fn (array $mention): bool => !isset($previousIds[$mention['id']])
+        ));
 
+        return $this->notifyMentions($comment, $mentionedByLabel, $newMentions);
+    }
+
+    /**
+     * @param list<array{id: string, login: string}> $mentions
+     * @return array{initiated: int, skippedNoEmail: int, failed: int}
+     */
+    private function notifyMentions(
+        ItemComment $comment,
+        string $mentionedByLabel,
+        array $mentions
+    ): array {
         $stats = [
             'initiated' => 0,
             'skippedNoEmail' => 0,
@@ -81,6 +106,7 @@ class CommentMentionNotificationService
             return $stats;
         }
 
+        $mentionedByLabel = $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user';
         $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
         $resourceUrl = $this->deepLinkGenerator->build(
             $comment->getResourceType(),
@@ -103,7 +129,7 @@ class CommentMentionNotificationService
                     $recipient['login'],
                     $recipient['email'],
                     new CommentMentionEmailTemplatePayload(
-                        $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user',
+                        $mentionedByLabel,
                         $recipient['login'],
                         $comment->getResourceType(),
                         $resourceUrl,

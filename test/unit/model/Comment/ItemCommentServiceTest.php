@@ -239,8 +239,7 @@ class ItemCommentServiceTest extends TestCase
                     return $comment->getBody() === 'hello @alice'
                         && $comment->getResourceType() === ResourceCommentType::ITEM;
                 }),
-                'Alice Admin',
-                null
+                'Alice Admin'
             )
             ->willReturn(['initiated' => 1, 'skippedNoEmail' => 0, 'failed' => 0]);
 

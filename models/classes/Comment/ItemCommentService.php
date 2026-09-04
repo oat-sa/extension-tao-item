@@ -141,7 +141,7 @@ class ItemCommentService
 
         $previousMentions = $this->commentMentionParser->parse($existing->getBody());
         $saved = $this->persistence->update($existing->withEditedBody($body));
-        $this->commentMentionNotificationService->notifyForComment(
+        $this->commentMentionNotificationService->notifyForCommentUpdate(
             $saved,
             $authorLabel,
             $previousMentions

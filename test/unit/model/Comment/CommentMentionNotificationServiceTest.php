@@ -70,7 +70,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSutWithRecipient(null);
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $stats = $sut->notifyForComment(
+        $stats = $sut->notifyForCommentUpdate(
             $this->comment($html),
             'Alice Author',
             [['id' => 'u1', 'login' => 'alice']]
