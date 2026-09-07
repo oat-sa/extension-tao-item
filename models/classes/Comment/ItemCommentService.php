@@ -29,6 +29,7 @@ use DateTimeZone;
 use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
+use oat\tao\helpers\UserHelper;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
 use Ramsey\Uuid\Uuid;
@@ -90,7 +91,7 @@ class ItemCommentService
             throw new common_exception_Unauthorized('Authenticated session required to create item comments');
         }
 
-        [$authorId, $authorLabel] = $this->resolveAuthorFromSession($session);
+        [$authorId, $authorLabel, $authorLogin] = $this->resolveAuthorFromSession($session);
 
         $comment = new ItemComment(
             Uuid::uuid4()->toString(),
@@ -106,7 +107,8 @@ class ItemCommentService
         $this->commentMentionNotificationService->notifyForComment(
             $saved,
             $authorLabel,
-            $this->commentMentionParser->parse($saved->getBody())
+            $this->commentMentionParser->parse($saved->getBody()),
+            $authorLogin
         );
 
         return $saved;
@@ -126,7 +128,7 @@ class ItemCommentService
             throw new common_exception_Unauthorized('Authenticated session required to update item comments');
         }
 
-        [$authorId, $authorLabel] = $this->resolveAuthorFromSession($session);
+        [$authorId, $authorLabel, $authorLogin] = $this->resolveAuthorFromSession($session);
 
         $existing = $this->persistence->findById($commentId);
         if ($existing === null) {
@@ -149,7 +151,8 @@ class ItemCommentService
             $saved,
             $authorLabel,
             $this->commentMentionParser->parse($saved->getBody()),
-            $previousMentions
+            $previousMentions,
+            $authorLogin
         );
 
         return $saved;
@@ -211,14 +214,16 @@ class ItemCommentService
 
     /**
      * Prefer LTI UserDataSessionContext when present on TaoLtiSession:
-     * authorId from userId; authorLabel from userName, falling back to userLogin.
+     * authorId from userId; authorLabel from userName, falling back to userLogin;
+     * authorLogin from context userLogin, else session user login property.
      *
-     * @return array{0: string, 1: string}
+     * @return array{0: string, 1: string, 2: string} authorId, authorLabel, authorLogin
      */
     private function resolveAuthorFromSession(common_session_Session $session): array
     {
         $authorId = (string) $session->getUser()->getIdentifier();
         $authorLabel = (string) $session->getUserLabel();
+        $authorLogin = trim((string) UserHelper::getUserLogin($session->getUser()));
 
         /** @var UserDataSessionContext $context */
         foreach ($session->getContexts(UserDataSessionContext::class) as $context) {
@@ -232,13 +237,17 @@ class ItemCommentService
             } elseif ($context->getUserLogin() !== null && $context->getUserLogin() !== '') {
                 $authorLabel = (string) $context->getUserLogin();
             }
+
+            if ($context->getUserLogin() !== null && $context->getUserLogin() !== '') {
+                $authorLogin = (string) $context->getUserLogin();
+            }
         }
 
         if ($authorId === '') {
             throw new common_exception_Unauthorized('Unable to resolve comment author from session');
         }
 
-        return [$authorId, $authorLabel];
+        return [$authorId, $authorLabel, $authorLogin];
     }
 
     private function tryResolveAuthorId(): ?string

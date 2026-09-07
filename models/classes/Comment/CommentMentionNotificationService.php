@@ -57,10 +57,15 @@ class CommentMentionNotificationService
      * Notify all mentions in a newly created comment.
      *
      * @param list<array{id: string, login: string}> $mentions
+     * @param string $actorLogin Comment author login — TO job actor (user.login)
      */
-    public function notifyForComment(ItemComment $comment, string $mentionedByLabel, array $mentions): void
-    {
-        $this->notifyMentions($comment, $mentionedByLabel, $mentions);
+    public function notifyForComment(
+        ItemComment $comment,
+        string $mentionedByLabel,
+        array $mentions,
+        string $actorLogin
+    ): void {
+        $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $mentions);
     }
 
     /**
@@ -68,12 +73,14 @@ class CommentMentionNotificationService
      *
      * @param list<array{id: string, login: string}> $currentMentions Mentions in the updated body
      * @param list<array{id: string, login: string}> $previousMentions Mentions from the body before update
+     * @param string $actorLogin Comment author login — TO job actor (user.login)
      */
     public function notifyForCommentUpdate(
         ItemComment $comment,
         string $mentionedByLabel,
         array $currentMentions,
-        array $previousMentions
+        array $previousMentions,
+        string $actorLogin
     ): void {
         $previousIds = [];
         foreach ($previousMentions as $mention) {
@@ -87,7 +94,7 @@ class CommentMentionNotificationService
             static fn (array $mention): bool => isset($mention['id']) && !isset($previousIds[$mention['id']])
         ));
 
-        $this->notifyMentions($comment, $mentionedByLabel, $newMentions);
+        $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $newMentions);
     }
 
     /**
@@ -96,9 +103,22 @@ class CommentMentionNotificationService
     private function notifyMentions(
         ItemComment $comment,
         string $mentionedByLabel,
+        string $actorLogin,
         array $mentions
     ): void {
         if ($mentions === []) {
+            return;
+        }
+
+        $actorLogin = trim($actorLogin);
+        if ($actorLogin === '') {
+            common_Logger::w(
+                sprintf(
+                    'Comment mention email skipped for comment %s: empty actor login',
+                    $comment->getId()
+                )
+            );
+
             return;
         }
 
@@ -126,7 +146,8 @@ class CommentMentionNotificationService
                         $resourceUrl,
                         $resourceLabel,
                         $recipient['name']
-                    )
+                    ),
+                    $actorLogin
                 );
             } catch (Throwable $exception) {
                 common_Logger::w(
