@@ -114,12 +114,15 @@ class LocalItemSource implements MediaManagement
     {
         if (file_exists($sourceFile)) {
             $link = $this->getItemDirectory()->getRelPath($file);
+            $mtime = @filemtime($sourceFile);
+
             return [
                 'name'     => $file->getBasename(),
                 'uri'      => $link,
                 'mime'     => tao_helpers_File::getMimeType($sourceFile),
                 'filePath' => $link,
                 'size'     => filesize($sourceFile),
+                'updatedAt' => $this->formatUnixUpdatedAt($mtime !== false ? (int)$mtime : null),
             ];
         } else {
             return $this->getInfoFromFile($file);
@@ -135,7 +138,36 @@ class LocalItemSource implements MediaManagement
             'mime'     => $file->getMimeType(),
             'filePath' => $link,
             'size'     => $file->getSize(),
+            'updatedAt' => $this->formatFileUpdatedAt($file),
         ];
+    }
+
+    /**
+     * @param File $file
+     * @return string|null ISO-8601 UTC
+     */
+    private function formatFileUpdatedAt(File $file): ?string
+    {
+        try {
+            $timestamp = $file->getFileSystem()->lastModified($file->getPrefix());
+        } catch (\Throwable $e) {
+            return null;
+        }
+
+        return $this->formatUnixUpdatedAt((int)$timestamp);
+    }
+
+    /**
+     * @param int|null $timestamp
+     * @return string|null
+     */
+    private function formatUnixUpdatedAt(?int $timestamp): ?string
+    {
+        if ($timestamp === null || $timestamp <= 0) {
+            return null;
+        }
+
+        return gmdate('Y-m-d\TH:i:s\Z', $timestamp);
     }
 
     /**
