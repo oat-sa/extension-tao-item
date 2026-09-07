@@ -240,7 +240,8 @@ class ItemCommentServiceTest extends TestCase
                         && $comment->getResourceType() === ResourceCommentType::ITEM;
                 }),
                 'Alice Admin',
-                []
+                [],
+                'adminLogin'
             );
 
         $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello @alice');

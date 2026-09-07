@@ -53,7 +53,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = $this->createSut();
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
-        $sut->notifyForComment($this->comment('plain text'), 'Alice', []);
+        $sut->notifyForComment($this->comment('plain text'), 'Alice', [], 'alice.author');
     }
 
     public function testNotifyOnlyNewMentionsOnUpdate(): void
@@ -65,7 +65,8 @@ class CommentMentionNotificationServiceTest extends TestCase
             $this->comment('<p>Hi @alice</p>'),
             'Alice Author',
             [['id' => 'u1', 'login' => 'alice']],
-            [['id' => 'u1', 'login' => 'alice']]
+            [['id' => 'u1', 'login' => 'alice']],
+            'alice.author'
         );
     }
 
@@ -90,7 +91,8 @@ class CommentMentionNotificationServiceTest extends TestCase
                         && str_contains($data['resourceUrl'], 'structure=items')
                         && $data['resourceLabel'] === 'Item Label'
                         && $data['name'] === 'Alice Mentioned';
-                })
+                }),
+                'alice.author'
             )
             ->willReturn('job-1');
 
@@ -103,7 +105,8 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
             'Alice Author',
-            [['id' => 'u1', 'login' => 'alice']]
+            [['id' => 'u1', 'login' => 'alice']],
+            'alice.author'
         );
     }
 
@@ -119,7 +122,8 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
             'Alice Author',
-            [['id' => 'u1', 'login' => 'alice']]
+            [['id' => 'u1', 'login' => 'alice']],
+            'alice.author'
         );
     }
 
