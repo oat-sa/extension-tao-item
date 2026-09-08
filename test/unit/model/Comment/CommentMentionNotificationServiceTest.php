@@ -38,16 +38,11 @@ use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-if (!class_exists(TaskOrchestratorEmailService::class)) {
-    class_alias(\stdClass::class, TaskOrchestratorEmailService::class);
-}
-
 class CommentMentionNotificationServiceTest extends TestCase
 {
     private Ontology|MockObject $ontology;
     private TaskOrchestratorEmailService|MockObject $emailService;
     private MentionEligibleUsersProviderInterface|MockObject $eligibleUsersProvider;
-
     protected function setUp(): void
     {
         $this->ontology = $this->createMock(Ontology::class);
@@ -318,16 +313,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
     private function createEmailServiceMock(): MockObject
     {
-        if (
-            method_exists(TaskOrchestratorEmailService::class, 'isConfigured')
-            && method_exists(TaskOrchestratorEmailService::class, 'sendCommentMention')
-        ) {
-            return $this->createMock(TaskOrchestratorEmailService::class);
-        }
-
-        return $this->getMockBuilder(TaskOrchestratorEmailService::class)
-            ->addMethods(['isConfigured', 'sendCommentMention'])
-            ->getMock();
+        return $this->createMock(TaskOrchestratorEmailService::class);
     }
 
     private function createDeepLinkBuilder(): CommentMentionDeepLinkBuilder
