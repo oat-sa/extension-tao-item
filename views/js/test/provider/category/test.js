@@ -26,6 +26,9 @@ define(['taoItems/provider/category', 'core/promise'], function(categoryProvider
         getExposedsByClass: {
             url: '/taoItems/views/js/test/provider/category/getExposedsByClass.json'
         },
+        getInvalidExposedCategories: {
+            url: '/taoItems/views/js/test/provider/category/getInvalidExposedCategories.json'
+        },
         setExposed: {
             url: '/taoItems/views/js/test/provider/category/setExposed.json'
         }
@@ -44,10 +47,11 @@ define(['taoItems/provider/category', 'core/promise'], function(categoryProvider
     QUnit.test('methods', function(assert) {
         var provider = categoryProvider();
 
-        assert.expect(3);
+        assert.expect(4);
 
         assert.equal(typeof provider, 'object', 'The categoryProvider factory produces an object');
         assert.equal(typeof provider.getExposedsByClass, 'function', 'The provider exposes the getExposedsByClass method');
+        assert.equal(typeof provider.getInvalidExposedCategories, 'function', 'The provider exposes the getInvalidExposedCategories method');
         assert.equal(typeof provider.setExposed, 'function', 'The provider exposes the setExposed method');
     });
 
@@ -89,6 +93,44 @@ define(['taoItems/provider/category', 'core/promise'], function(categoryProvider
         }).catch(function(err) {
             assert.ok(err instanceof TypeError, 'The method rejects');
             assert.equal(err.message, 'The class URI must be provided in the id parameter', 'The method rejects with the correct message');
+            ready();
+        });
+    });
+
+    QUnit.module('getInvalidExposedCategories');
+
+    QUnit.test('success', function(assert) {
+        var ready = assert.async();
+        var provider = categoryProvider(testConfig);
+
+        assert.expect(2);
+
+        provider.getInvalidExposedCategories('itemUri').then(function(results) {
+            assert.deepEqual(
+                results['http://example.test/tao.rdf#objective'],
+                { label: 'Objective', values: ['1a'] },
+                'The invalid property details are returned'
+            );
+            assert.ok(true, 'The method resolves');
+            ready();
+        }).catch(function(err) {
+            assert.ok(false, 'The method should not reject : ' + err.message);
+            ready();
+        });
+    });
+
+    QUnit.test('no uri', function(assert) {
+        var ready = assert.async();
+        var provider = categoryProvider(testConfig);
+
+        assert.expect(2);
+
+        provider.getInvalidExposedCategories().then(function() {
+            assert.ok(false, 'The method must not resolve');
+            ready();
+        }).catch(function(err) {
+            assert.ok(err instanceof TypeError, 'The method rejects');
+            assert.equal(err.message, 'The item URI is required.', 'The method rejects with the correct message');
             ready();
         });
     });
