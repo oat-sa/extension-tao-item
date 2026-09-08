@@ -82,6 +82,19 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut->notifyForComment($this->comment('plain text'), 'Alice', [], 'alice.author');
     }
 
+    public function testNotifySkipsWhenActorLoginIsWhitespace(): void
+    {
+        $sut = $this->createSut();
+        $this->emailService->expects($this->never())->method('sendCommentMention');
+
+        $sut->notifyForComment(
+            $this->comment('<p>Hi @alice</p>'),
+            'Alice Author',
+            [['id' => 'u1', 'login' => 'alice']],
+            '   '
+        );
+    }
+
     public function testNotifyOnlyNewMentionsOnUpdate(): void
     {
         $sut = $this->createSutWithRecipient(null);
