@@ -75,8 +75,6 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 );
             }
         }
-        // FE renders browse rows as-is; enforce picker MIME filters server-side.
-        $files = $this->filterByMime($files, $search->getFilter());
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
         $data['total'] = count($files);
         $data['childrenLimit'] = $pageSize;
@@ -223,37 +221,6 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         }
 
         return $file;
-    }
-
-    /**
-     * @param array<int, array> $files
-     * @param array<int, mixed> $allowedMimes
-     * @return array<int, array>
-     */
-    private function filterByMime(array $files, array $allowedMimes): array
-    {
-        $normalized = [];
-        foreach ($allowedMimes as $mime) {
-            if (!is_string($mime)) {
-                continue;
-            }
-            $mime = trim($mime);
-            if ($mime !== '') {
-                $normalized[] = $mime;
-            }
-        }
-        if ($normalized === []) {
-            return $files;
-        }
-
-        return array_values(array_filter(
-            $files,
-            static function (array $file) use ($normalized): bool {
-                $mime = trim((string)($file['mime'] ?? ''));
-
-                return $mime !== '' && in_array($mime, $normalized, true);
-            }
-        ));
     }
 
     private function isDirectoryChild(array $child): bool

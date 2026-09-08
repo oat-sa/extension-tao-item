@@ -62,8 +62,6 @@ class AssetSearchBuilder extends ConfigurableService
         $scopeLabel = (string)($tree['label'] ?? $scopePath);
 
         $items = $this->flattenAssets($tree, $scopePath, $scopeLabel);
-        // FE renders search rows as-is; enforce picker MIME filters server-side.
-        $items = $this->filterByMime($items, $search->getFilter());
         $items = $this->filterByQuery($items, $search->getQuery());
         $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
 
@@ -164,37 +162,6 @@ class AssetSearchBuilder extends ConfigurableService
         }
 
         return $normalized;
-    }
-
-    /**
-     * @param array<int, array> $items
-     * @param array<int, mixed> $allowedMimes
-     * @return array<int, array>
-     */
-    private function filterByMime(array $items, array $allowedMimes): array
-    {
-        $normalized = [];
-        foreach ($allowedMimes as $mime) {
-            if (!is_string($mime)) {
-                continue;
-            }
-            $mime = trim($mime);
-            if ($mime !== '') {
-                $normalized[] = $mime;
-            }
-        }
-        if ($normalized === []) {
-            return $items;
-        }
-
-        return array_values(array_filter(
-            $items,
-            static function (array $item) use ($normalized): bool {
-                $mime = trim((string)($item['mime'] ?? ''));
-
-                return $mime !== '' && in_array($mime, $normalized, true);
-            }
-        ));
     }
 
     /**

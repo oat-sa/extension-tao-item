@@ -648,51 +648,6 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('test.png', $result['items'][0]['name']);
     }
 
-    public function testSearchPostFiltersAssetsByMimeWhenSourceReturnsExtraTypes(): void
-    {
-        $this->mediaSource->method('getDirectories')->willReturn([
-            'path' => '/',
-            'label' => 'Assets',
-            'children' => [
-                [
-                    'name' => 'photo.png',
-                    'uri' => 'asset://photo',
-                    'mime' => 'image/png',
-                ],
-                [
-                    'name' => 'clip.mp4',
-                    'uri' => 'asset://clip',
-                    'mime' => 'video/mp4',
-                ],
-                [
-                    'path' => '/nested',
-                    'label' => 'nested',
-                    'children' => [
-                        [
-                            'name' => 'track.mp3',
-                            'uri' => 'asset://track',
-                            'mime' => 'audio/mpeg',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        $mediaAsset = $this->createMock(MediaAsset::class);
-        $mediaAsset->method('getMediaSource')->willReturn($this->mediaSource);
-        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
-
-        $result = $this->subject->search(
-            (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US', ['video/mp4', 'audio/mpeg']))
-                ->setQuery('')
-                ->setPage(1)
-                ->setPageSize(10)
-        );
-
-        $this->assertSame(2, $result['total']);
-        $this->assertSame(['clip.mp4', 'track.mp3'], array_column($result['items'], 'name'));
-    }
-
     public function testSearchOnlyIncludesAssetsReturnedByScopedTree(): void
     {
         $this->mediaSource->method('getDirectories')->willReturn([
