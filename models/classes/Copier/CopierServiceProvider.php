@@ -30,9 +30,15 @@ use oat\tao\model\resources\Service\InstanceCopierProxy;
 use oat\tao\model\TaoOntology;
 use oat\oatbox\event\EventManager;
 use oat\oatbox\session\SessionService;
+use oat\taoItems\model\Comment\CommentMentionNotificationService;
+use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
+use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
+use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
+use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
+use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\tao\model\resources\Service\ClassCopier;
@@ -172,6 +178,24 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ]);
 
         $services
+            ->set(CommentRichTextSanitizer::class, CommentRichTextSanitizer::class)
+            ->public();
+
+        $services
+            ->set(CommentMentionParser::class, CommentMentionParser::class)
+            ->public();
+
+        $services
+            ->set(CommentMentionNotificationService::class, CommentMentionNotificationService::class)
+            ->public()
+            ->args([
+                service(Ontology::SERVICE_ID),
+                service(TaskOrchestratorEmailService::class),
+                service(CommentMentionDeepLinkBuilder::class),
+                service(MentionEligibleUsersProviderInterface::class),
+            ]);
+
+        $services
             ->set(ItemCommentService::class, ItemCommentService::class)
             ->public()
             ->args([
@@ -179,6 +203,9 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 service(SessionService::SERVICE_ID),
                 service(Ontology::SERVICE_ID),
                 service(PermissionChecker::class),
+                service(CommentRichTextSanitizer::class),
+                service(CommentMentionParser::class),
+                service(CommentMentionNotificationService::class),
             ]);
     }
 }
