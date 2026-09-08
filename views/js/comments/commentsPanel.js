@@ -64,6 +64,7 @@ define([
      * @param {object} config
      * @param {HTMLElement|jQuery} config.renderTo
      * @param {object} config.store authoring comments store instance
+     * @param {boolean} [config.mentionsEnabled=false] when true, wire @mention picker + guidance
      * @param {object} [config.labels] optional message overrides
      * @returns {object}
      */
@@ -74,9 +75,10 @@ define([
 
         const store = config.store;
         const labels = config.labels || {};
+        const mentionsEnabled = config.mentionsEnabled === true;
         const ns = `.commentsPanel${++instanceSeq}`;
         const $host = $(config.renderTo);
-        const $panel = $(panelTpl());
+        const $panel = $(panelTpl({ mentionsEnabled: mentionsEnabled }));
         const $list = $panel.find('.item-comments-list');
         const $empty = $panel.find('.item-comments-empty');
         const $error = $panel.find('.item-comments-error');
@@ -105,26 +107,32 @@ define([
             toolbar: $draftToolbar,
             placeholder: labels.placeholder || __('Add a comment'),
             initialValue: store.getDraft(),
-            searchUsers: searchMentionUsers,
-            mentionInfoMessage: labels.mentionInfo || __('Only users with access to this item can be mentioned.'),
+            searchUsers: mentionsEnabled ? searchMentionUsers : undefined,
+            mentionInfoMessage: mentionsEnabled
+                ? labels.mentionInfo || __('Only users with access to this item can be mentioned.')
+                : undefined,
             onChange(value) {
                 store.setDraft(value);
             }
         });
 
-        $panel.on('click' + ns, '[data-role="mention-guidance"]', function (event) {
-            event.preventDefault();
-            draftEditor.startMention();
-        });
+        if (mentionsEnabled) {
+            $panel.on('click' + ns, '[data-role="mention-guidance"]', function (event) {
+                event.preventDefault();
+                draftEditor.startMention();
+            });
 
-        $panel.on('click' + ns, '[data-role="mention-guidance-edit"]', function (event) {
-            event.preventDefault();
-            const commentId = String($(event.currentTarget).data('comment-id') || '');
-            const editor = getEditEditor(commentId);
-            if (editor && typeof editor.startMention === 'function') {
-                editor.startMention();
-            }
-        });
+            $panel.on('click' + ns, '[data-role="mention-guidance-edit"]', function (event) {
+                event.preventDefault();
+                const commentId = String($(event.currentTarget).data('comment-id') || '');
+                const editor = getEditEditor(commentId);
+                if (editor && typeof editor.startMention === 'function') {
+                    editor.startMention();
+                }
+            });
+        } else {
+            $panel.find('[data-role="mention-guidance"]').prop('hidden', true);
+        }
 
         /**
          * @param {string} message
@@ -176,7 +184,8 @@ define([
                             edited: !!comment.edited,
                             editable: editable,
                             deletable: deletable,
-                            resolved: resolved
+                            resolved: resolved,
+                            mentionsEnabled: mentionsEnabled
                         })
                     );
 
@@ -218,9 +227,10 @@ define([
                 host: $editorHost,
                 toolbar: $toolbar,
                 initialValue: body,
-                searchUsers: searchMentionUsers,
-                mentionInfoMessage:
-                    labels.mentionInfo || __('Only users with access to this item can be mentioned.')
+                searchUsers: mentionsEnabled ? searchMentionUsers : undefined,
+                mentionInfoMessage: mentionsEnabled
+                    ? labels.mentionInfo || __('Only users with access to this item can be mentioned.')
+                    : undefined
             });
 
             return editEditors[commentId];

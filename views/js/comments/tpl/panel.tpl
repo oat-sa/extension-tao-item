@@ -20,9 +20,11 @@
             </div>
             <div id="item-comments-input" class="item-comments-rich-input" data-role="draft-editor" role="textbox" aria-multiline="true" aria-labelledby="item-comments-input-label"></div>
         </div>
+        {{#if mentionsEnabled}}
         <button type="button" class="item-comments-mention-guidance" data-role="mention-guidance">
             {{__ 'Use @ to mention a TAO user.'}}
         </button>
+        {{/if}}
         <button type="submit" class="btn-info small item-comments-submit" disabled>
             {{__ 'Post comment'}}
         </button>

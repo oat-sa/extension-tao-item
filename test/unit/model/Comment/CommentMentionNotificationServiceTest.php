@@ -46,6 +46,27 @@ class CommentMentionNotificationServiceTest extends TestCase
     {
         $this->ontology = $this->createMock(Ontology::class);
         $this->emailService = $this->createMock(TaskOrchestratorEmailService::class);
+        $this->emailService->method('isConfigured')->willReturn(true);
+    }
+
+    public function testNotifySkipsWhenEmailNotConfigured(): void
+    {
+        $emailService = $this->createMock(TaskOrchestratorEmailService::class);
+        $emailService->method('isConfigured')->willReturn(false);
+        $emailService->expects($this->never())->method('sendCommentMention');
+
+        $sut = new CommentMentionNotificationService(
+            $this->ontology,
+            $emailService,
+            $this->createDeepLinkBuilder()
+        );
+
+        $sut->notifyForComment(
+            $this->comment('<p>Hi @alice</p>'),
+            'Alice Author',
+            [['id' => 'u1', 'login' => 'alice']],
+            'alice.author'
+        );
     }
 
     public function testNotifySkipsWhenNoMentions(): void

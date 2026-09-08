@@ -110,6 +110,17 @@ class CommentMentionNotificationService
             return;
         }
 
+        if (!$this->emailService->isConfigured()) {
+            common_Logger::w(
+                sprintf(
+                    'Comment mention email skipped for comment %s: Task Orchestrator email is not configured',
+                    $comment->getId()
+                )
+            );
+
+            return;
+        }
+
         $actorLogin = trim($actorLogin);
         if ($actorLogin === '') {
             common_Logger::w(
