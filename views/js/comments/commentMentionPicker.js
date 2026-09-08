@@ -131,9 +131,13 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             });
         }
 
-        const runSearch = _.debounce(function (query) {
-            const seq = ++requestSeq;
-            currentQuery = query;
+        // Increment requestSeq when a query is scheduled (before debounce), so an
+        // in-flight response for a previous query cannot render or be selected.
+        const runSearch = _.debounce(function (query, seq) {
+            if (seq !== requestSeq || !open) {
+                return;
+            }
+
             announce(__('Loading users'));
 
             searchUsers(query, FETCH_LIMIT)
@@ -155,6 +159,22 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
                     positionNearCaret();
                 });
         }, SEARCH_DEBOUNCE_MS);
+
+        function invalidateDisplayedResults() {
+            users = [];
+            activeIndex = -1;
+            $list.empty();
+            $empty.prop('hidden', true).text('');
+        }
+
+        function scheduleSearch(query) {
+            const seq = ++requestSeq;
+            currentQuery = query;
+            // Drop stale options immediately so Enter/Tab cannot insert a user
+            // matched to a previous query while the new search is debounced.
+            invalidateDisplayedResults();
+            runSearch(query, seq);
+        }
 
         function renderList(isError) {
             $list.empty();
@@ -236,22 +256,23 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             $root.prop('hidden', false);
             $info.prop('hidden', false);
             positionNearCaret();
-            runSearch(query || '');
+            scheduleSearch(query || '');
         }
 
         function close() {
             open = false;
             currentQuery = null;
-            users = [];
-            activeIndex = -1;
+            requestSeq += 1;
+            if (typeof runSearch.cancel === 'function') {
+                runSearch.cancel();
+            }
+            invalidateDisplayedResults();
             if (announceTimer) {
                 window.clearTimeout(announceTimer);
                 announceTimer = null;
             }
             $status.text('');
             $root.prop('hidden', true);
-            $list.empty();
-            $empty.prop('hidden', true).text('');
         }
 
         $list.on('mousedown', '.item-comments-mention-picker__item', function (event) {
@@ -295,7 +316,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
                 if (query === currentQuery) {
                     return;
                 }
-                runSearch(query || '');
+                scheduleSearch(query || '');
             },
 
             open: openPicker,
@@ -336,6 +357,10 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             },
 
             destroy() {
+                requestSeq += 1;
+                if (typeof runSearch.cancel === 'function') {
+                    runSearch.cancel();
+                }
                 if (announceTimer) {
                     window.clearTimeout(announceTimer);
                     announceTimer = null;
