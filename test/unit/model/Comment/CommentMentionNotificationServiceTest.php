@@ -213,7 +213,10 @@ class CommentMentionNotificationServiceTest extends TestCase
         };
 
         $sut->notifyForComment(
-            $this->comment('<span class="comment-mention" data-user-id="u1" data-user-login="forged-login">@forged</span>'),
+            $this->comment(
+                '<span class="comment-mention" data-user-id="u1" '
+                . 'data-user-login="forged-login">@forged</span>'
+            ),
             'Alice Author',
             [['id' => 'u1', 'login' => 'forged-login']],
             'alice.author'

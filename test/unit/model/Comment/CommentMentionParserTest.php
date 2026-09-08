@@ -30,7 +30,8 @@ class CommentMentionParserTest extends TestCase
     public function testParseExtractsUniqueMentions(): void
     {
         $html = 'Hello '
-            . '<span class="comment-mention" data-user-id="http://u#1" data-user-login="alice" contenteditable="false">@alice</span> '
+            . '<span class="comment-mention" data-user-id="http://u#1" '
+            . 'data-user-login="alice" contenteditable="false">@alice</span> '
             . 'and '
             . '<span class="comment-mention" data-user-id="http://u#2" data-user-login="bob">@bob</span> '
             . 'again '

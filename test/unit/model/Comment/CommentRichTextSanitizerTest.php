@@ -91,8 +91,10 @@ class CommentRichTextSanitizerTest extends TestCase
                 "Hello\nWorld",
             ],
             'keeps recognised mention span' => [
-                '<span class="comment-mention" data-user-id="http://example.test/user#1" data-user-login="alice" contenteditable="false">@alice</span>',
-                '<span class="comment-mention" data-user-id="http://example.test/user#1" data-user-login="alice" contenteditable="false">@alice</span>',
+                '<span class="comment-mention" data-user-id="http://example.test/user#1" '
+                . 'data-user-login="alice" contenteditable="false">@alice</span>',
+                '<span class="comment-mention" data-user-id="http://example.test/user#1" '
+                . 'data-user-login="alice" contenteditable="false">@alice</span>',
             ],
             'drops style spans (FE must send semantic tags)' => [
                 '<span style="text-decoration: underline">Underline</span>',
