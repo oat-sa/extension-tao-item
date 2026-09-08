@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:ignoreFile -- Legacy TAO action class naming is required for route resolution.
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,12 +22,8 @@
 
 declare(strict_types=1);
 
-namespace oat\taoItems\actions;
-
-use InvalidArgumentException;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\taoItems\model\Comment\ItemCommentService;
-use Throwable;
 
 /**
  * Authoring comments REST API (FR1) — Item, Test, or Asset via resourceType.
@@ -40,7 +38,7 @@ use Throwable;
  * Mention user search lives in the user domain:
  * - GET /tao/RestUser/searchUsers?resourceUri=&resourceType=&q=&limit=&offset=
  */
-class RestResourceComments extends \tao_actions_CommonModule
+class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 {
     use HttpJsonResponseTrait;
 
@@ -292,6 +290,3 @@ class RestResourceComments extends \tao_actions_CommonModule
         return $this->getPsrContainer()->get(ItemCommentService::class);
     }
 }
-
-// phpcs:ignore PSR1.Files.SideEffects.FoundWithSymbols -- keep legacy TAO controller class name for route resolution.
-\class_alias(RestResourceComments::class, 'taoItems_actions_RestResourceComments');
