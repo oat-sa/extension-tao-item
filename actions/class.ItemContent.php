@@ -1,22 +1,10 @@
 <?php
 
 /**
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; under version 2
- * of the License (non-upgradable).
+ * SPDX-FileCopyrightText: 2014-2026 Open Assessment Technologies S.A.
+ * Copyright (C) 2026 (original work) Open Assessment Technologies S.A.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
- *
- * Copyright (c) 2014-2026 (original work) Open Assessment Technologies SA;
- *
+ * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-TAO-Commercial-License
  */
 
 use oat\generis\model\OntologyAwareTrait;
@@ -398,26 +386,47 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private function buildFilters(array $params): array
     {
         $filters = [];
-        if (isset($params['filters'])) {
-            $filterParameter = $params['filters'];
-            if (is_array($filterParameter)) {
-                foreach ($filterParameter as $filter) {
-                    if (preg_match('/\/\*/', $filter['mime'])) {
-                        $this->logWarning(
-                            'Stars mime type are not yet supported, filter "' . $filter['mime'] . '" will fail'
-                        );
-                    }
-                    $filters[] = $filter['mime'];
+        if (!isset($params['filters'])) {
+            return $filters;
+        }
+
+        $filterParameter = $params['filters'];
+        if (is_array($filterParameter)) {
+            foreach ($filterParameter as $filter) {
+                if (!is_array($filter) || !isset($filter['mime'])) {
+                    continue;
                 }
-            } else {
-                if (preg_match('/\/\*/', $filterParameter)) {
+                $mime = trim((string)$filter['mime']);
+                if ($mime === '') {
+                    continue;
+                }
+                if (preg_match('/\/\*/', $mime)) {
                     $this->logWarning(
-                        'Stars mime type are not yet supported, filter "' . $filterParameter . '" will fail'
+                        'Stars mime type are not yet supported, filter "' . $mime . '" will fail'
                     );
                 }
-                $filters = array_map('trim', explode(',', $filterParameter));
+                $filters[] = $mime;
             }
+
+            return $filters;
         }
+
+        if (!is_string($filterParameter)) {
+            return $filters;
+        }
+
+        foreach (array_map('trim', explode(',', $filterParameter)) as $mime) {
+            if ($mime === '') {
+                continue;
+            }
+            if (preg_match('/\/\*/', $mime)) {
+                $this->logWarning(
+                    'Stars mime type are not yet supported, filter "' . $mime . '" will fail'
+                );
+            }
+            $filters[] = $mime;
+        }
+
         return $filters;
     }
 

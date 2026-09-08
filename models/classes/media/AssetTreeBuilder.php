@@ -1,21 +1,10 @@
 <?php
 
 /**
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; under version 2
- * of the License (non-upgradable).
+ * SPDX-FileCopyrightText: 2020-2026 Open Assessment Technologies S.A.
+ * Copyright (C) 2026 (original work) Open Assessment Technologies S.A.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
- * Copyright (c) 2020-2021 (original work) Open Assessment Technologies SA;
+ * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-TAO-Commercial-License
  */
 
 declare(strict_types=1);
@@ -86,6 +75,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 );
             }
         }
+        // FE renders browse rows as-is; enforce picker MIME filters server-side.
+        $files = $this->filterByMime($files, $search->getFilter());
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
         $data['total'] = count($files);
         $data['childrenLimit'] = $pageSize;
@@ -232,6 +223,37 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         }
 
         return $file;
+    }
+
+    /**
+     * @param array<int, array> $files
+     * @param array<int, mixed> $allowedMimes
+     * @return array<int, array>
+     */
+    private function filterByMime(array $files, array $allowedMimes): array
+    {
+        $normalized = [];
+        foreach ($allowedMimes as $mime) {
+            if (!is_string($mime)) {
+                continue;
+            }
+            $mime = trim($mime);
+            if ($mime !== '') {
+                $normalized[] = $mime;
+            }
+        }
+        if ($normalized === []) {
+            return $files;
+        }
+
+        return array_values(array_filter(
+            $files,
+            static function (array $file) use ($normalized): bool {
+                $mime = trim((string)($file['mime'] ?? ''));
+
+                return $mime !== '' && in_array($mime, $normalized, true);
+            }
+        ));
     }
 
     private function isDirectoryChild(array $child): bool

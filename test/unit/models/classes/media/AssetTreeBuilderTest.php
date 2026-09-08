@@ -393,6 +393,65 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame('Root/nested', $files[0]['location']);
     }
 
+    public function testBuildPostFiltersNestedFilesByMime(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'path' => '/media',
+                    'label' => 'media',
+                    'children' => [
+                        [
+                            'uri' => 'asset://photo',
+                            'name' => 'photo.png',
+                            'mime' => 'image/png',
+                        ],
+                        [
+                            'uri' => 'asset://clip',
+                            'name' => 'clip.mp4',
+                            'mime' => 'video/mp4',
+                        ],
+                        [
+                            'uri' => 'asset://track',
+                            'name' => 'track.mp3',
+                            'mime' => 'audio/mpeg',
+                        ],
+                    ],
+                ],
+                [
+                    'uri' => 'asset://root-image',
+                    'name' => 'root.png',
+                    'mime' => 'image/png',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->build(
+            new AssetSearchQuery(
+                $this->mediaAsset,
+                'item-uri',
+                'en-US',
+                ['video/mp4', 'audio/mpeg']
+            )
+        );
+
+        $files = array_values(array_filter(
+            $result['children'],
+            static function (array $child): bool {
+                return isset($child['uri']);
+            }
+        ));
+
+        $this->assertSame(2, $result['total']);
+        $this->assertCount(2, $files);
+        $this->assertSame(
+            ['clip.mp4', 'track.mp3'],
+            array_column($files, 'name')
+        );
+    }
+
     public function testBuildSortsUnicodeLabelsCaseInsensitively(): void
     {
         $this->mediaSource->method('getDirectories')->willReturn([

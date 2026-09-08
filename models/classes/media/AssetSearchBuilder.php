@@ -1,21 +1,10 @@
 <?php
 
 /**
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; under version 2
- * of the License (non-upgradable).
+ * SPDX-FileCopyrightText: 2026-2026 Open Assessment Technologies S.A.
+ * Copyright (C) 2026 (original work) Open Assessment Technologies S.A.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
- *
- * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
+ * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-TAO-Commercial-License
  */
 
 declare(strict_types=1);
@@ -73,6 +62,8 @@ class AssetSearchBuilder extends ConfigurableService
         $scopeLabel = (string)($tree['label'] ?? $scopePath);
 
         $items = $this->flattenAssets($tree, $scopePath, $scopeLabel);
+        // FE renders search rows as-is; enforce picker MIME filters server-side.
+        $items = $this->filterByMime($items, $search->getFilter());
         $items = $this->filterByQuery($items, $search->getQuery());
         $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
 
@@ -173,6 +164,37 @@ class AssetSearchBuilder extends ConfigurableService
         }
 
         return $normalized;
+    }
+
+    /**
+     * @param array<int, array> $items
+     * @param array<int, mixed> $allowedMimes
+     * @return array<int, array>
+     */
+    private function filterByMime(array $items, array $allowedMimes): array
+    {
+        $normalized = [];
+        foreach ($allowedMimes as $mime) {
+            if (!is_string($mime)) {
+                continue;
+            }
+            $mime = trim($mime);
+            if ($mime !== '') {
+                $normalized[] = $mime;
+            }
+        }
+        if ($normalized === []) {
+            return $items;
+        }
+
+        return array_values(array_filter(
+            $items,
+            static function (array $item) use ($normalized): bool {
+                $mime = trim((string)($item['mime'] ?? ''));
+
+                return $mime !== '' && in_array($mime, $normalized, true);
+            }
+        ));
     }
 
     /**
