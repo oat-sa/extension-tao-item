@@ -28,6 +28,13 @@ use HTMLPurifier_Config;
 /**
  * Comment HTML sanitizer via HTMLPurifier (same stack as Display::sanitizeXssHtml / Htmlarea).
  * Allow-list is stricter and must stay aligned with commentRichTextEditor.js (FE).
+ *
+ * NYSED-37: mention chips are stored as
+ *   <span class="comment-mention" data-user-id="…" data-user-login="…" contenteditable="false">@login</span>
+ * so span + those attributes must survive purify(). HTML.DefinitionID/Rev are required when extending
+ * the HTML definition with custom data-* / contenteditable attributes. After purify, non-mention
+ * spans (e.g. leftover style wrappers with attributes stripped) are unwrapped so only recognised
+ * mention chips remain as span elements.
  */
 final class CommentRichTextSanitizer
 {
@@ -37,8 +44,21 @@ final class CommentRichTextSanitizer
     {
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Cache.DefinitionImpl', null);
-        $config->set('HTML.Allowed', 'strong,b,em,i,u,ul,ol,li,br,a[href]');
+        // Bump DefinitionID/Rev when changing Allowed or custom attributes below.
+        $config->set('HTML.DefinitionID', 'tao-items-comment-richtext-mentions-v1');
+        $config->set('HTML.DefinitionRev', 1);
+        $config->set(
+            'HTML.Allowed',
+            'strong,b,em,i,u,ul,ol,li,br,a[href],span[class|data-user-id|data-user-login|contenteditable]'
+        );
         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true, 'mailto' => true]);
+
+        // Register mention chip attributes; without this HTMLPurifier strips unknown data-*.
+        if ($def = $config->maybeGetRawHTMLDefinition()) {
+            $def->addAttribute('span', 'data-user-id', 'Text');
+            $def->addAttribute('span', 'data-user-login', 'Text');
+            $def->addAttribute('span', 'contenteditable', 'Enum#false,true');
+        }
 
         $this->htmlPurifier = new HTMLPurifier($config);
     }
@@ -49,7 +69,50 @@ final class CommentRichTextSanitizer
             return '';
         }
 
-        return $this->htmlPurifier->purify($value);
+        return $this->unwrapNonMentionSpans($this->htmlPurifier->purify($value));
+    }
+
+    /**
+     * Keep only mention chips as <span>; unwrap every other span to its inner HTML.
+     *
+     * Purifier may leave bare <span>…</span> after stripping disallowed style attributes from the
+     * rich-text editor. Mentions are identified by class="comment-mention" (must match FE).
+     * Nested spans need multiple passes until the string stabilises.
+     */
+    private function unwrapNonMentionSpans(string $html): string
+    {
+        if ($html === '' || stripos($html, '<span') === false) {
+            return $html;
+        }
+
+        $previous = null;
+        $current = $html;
+
+        // Repeat until stable: nested spans may require multiple passes.
+        while ($previous !== $current) {
+            $previous = $current;
+            $current = preg_replace_callback(
+                '/<span\b([^>]*)>(.*?)<\/span>/is',
+                static function (array $matches): string {
+                    $attrs = $matches[1];
+                    $inner = $matches[2];
+                    if (
+                        preg_match('/\bclass\s*=\s*(["\'])([^"\']*\bcomment-mention\b[^"\']*)\1/i', $attrs)
+                        || preg_match('/\bclass\s*=\s*comment-mention\b/i', $attrs)
+                    ) {
+                        return '<span' . $attrs . '>' . $inner . '</span>';
+                    }
+
+                    return $inner;
+                },
+                $current
+            );
+            if (!is_string($current)) {
+                return $previous;
+            }
+        }
+
+        return $current;
     }
 
     /**
