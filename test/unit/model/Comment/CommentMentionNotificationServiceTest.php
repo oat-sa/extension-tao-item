@@ -38,6 +38,10 @@ use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+if (!class_exists(TaskOrchestratorEmailService::class)) {
+    class_alias(\stdClass::class, TaskOrchestratorEmailService::class);
+}
+
 class CommentMentionNotificationServiceTest extends TestCase
 {
     private Ontology|MockObject $ontology;
@@ -47,7 +51,7 @@ class CommentMentionNotificationServiceTest extends TestCase
     protected function setUp(): void
     {
         $this->ontology = $this->createMock(Ontology::class);
-        $this->emailService = $this->createMock(TaskOrchestratorEmailService::class);
+        $this->emailService = $this->createEmailServiceMock();
         $this->emailService->method('isConfigured')->willReturn(true);
         $this->eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
         $this->eligibleUsersProvider->method('getEligibleUserUris')->willReturn(null);
@@ -55,7 +59,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
     public function testNotifySkipsWhenEmailNotConfigured(): void
     {
-        $emailService = $this->createMock(TaskOrchestratorEmailService::class);
+        $emailService = $this->createEmailServiceMock();
         $emailService->method('isConfigured')->willReturn(false);
         $emailService->expects($this->never())->method('sendCommentMention');
 
@@ -310,6 +314,20 @@ class CommentMentionNotificationServiceTest extends TestCase
             $body,
             '2026-09-03T10:00:00+00:00'
         );
+    }
+
+    private function createEmailServiceMock(): MockObject
+    {
+        if (
+            method_exists(TaskOrchestratorEmailService::class, 'isConfigured')
+            && method_exists(TaskOrchestratorEmailService::class, 'sendCommentMention')
+        ) {
+            return $this->createMock(TaskOrchestratorEmailService::class);
+        }
+
+        return $this->getMockBuilder(TaskOrchestratorEmailService::class)
+            ->addMethods(['isConfigured', 'sendCommentMention'])
+            ->getMock();
     }
 
     private function createDeepLinkBuilder(): CommentMentionDeepLinkBuilder
