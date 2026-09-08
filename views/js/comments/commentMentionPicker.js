@@ -25,6 +25,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
     const PICKER_WIDTH_PX = 280;
     const VIEWPORT_GAP_PX = 8;
     const CARET_GAP_PX = 4;
+    let pickerInstanceSeq = 0;
 
     /**
      * Floating @mention picker positioned next to the caret (GitHub-style).
@@ -37,6 +38,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
      * @returns {object}
      */
     function createMentionPicker(config) {
+        const eventNamespace = '.commentMentionPicker' + (++pickerInstanceSeq);
         const getAnchorRect = config.getAnchorRect;
         const searchUsers = config.searchUsers;
         const onSelect = config.onSelect;
@@ -285,7 +287,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             }
         });
 
-        $(document).on('mousedown.commentMentionPicker', function (event) {
+        $(document).on('mousedown' + eventNamespace, function (event) {
             if (!open) {
                 return;
             }
@@ -295,7 +297,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             close();
         });
 
-        $(window).on('resize.commentMentionPicker', function () {
+        $(window).on('resize' + eventNamespace, function () {
             positionNearCaret();
         });
 
@@ -365,8 +367,8 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
                     window.clearTimeout(announceTimer);
                     announceTimer = null;
                 }
-                $(document).off('.commentMentionPicker');
-                $(window).off('.commentMentionPicker');
+                $(document).off(eventNamespace);
+                $(window).off(eventNamespace);
                 document.removeEventListener('scroll', positionNearCaret, true);
                 $list.off();
                 $root.remove();
