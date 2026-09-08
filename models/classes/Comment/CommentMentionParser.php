@@ -36,12 +36,14 @@ final class CommentMentionParser
             return [];
         }
 
-        if (!preg_match_all(
-            '/<span\b[^>]*\bclass\s*=\s*(["\'])[^"\']*\bcomment-mention\b[^"\']*\1[^>]*>/i',
-            $html,
-            $spanMatches,
-            PREG_OFFSET_CAPTURE
-        )) {
+        if (
+            !preg_match_all(
+                '/<span\b[^>]*\bclass\s*=\s*(["\'])[^"\']*\bcomment-mention\b[^"\']*\1[^>]*>/i',
+                $html,
+                $spanMatches,
+                PREG_OFFSET_CAPTURE
+            )
+        ) {
             return [];
         }
 
