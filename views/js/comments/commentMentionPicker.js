@@ -44,12 +44,14 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             config.infoMessage || __('Only users with access to this item can be mentioned.');
 
         const $root = $(
-            '<div class="item-comments-mention-picker" role="listbox" hidden>' +
+            '<div class="item-comments-mention-picker" hidden>' +
+                '<div class="item-comments-mention-picker__status" role="status" aria-live="polite" aria-atomic="true"></div>' +
                 '<div class="item-comments-mention-picker__info"></div>' +
                 '<div class="item-comments-mention-picker__empty" hidden></div>' +
-                '<ul class="item-comments-mention-picker__list"></ul>' +
+                '<ul class="item-comments-mention-picker__list" role="listbox"></ul>' +
                 '</div>'
         );
+        const $status = $root.find('.item-comments-mention-picker__status');
         const $info = $root.find('.item-comments-mention-picker__info').text(infoMessage);
         const $empty = $root.find('.item-comments-mention-picker__empty');
         const $list = $root.find('.item-comments-mention-picker__list');
@@ -63,6 +65,34 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
         let users = [];
         let currentQuery = null;
         let requestSeq = 0;
+        let announceTimer = null;
+
+        function announce(message) {
+            // Clear then set on the next tick so identical messages are re-announced.
+            $status.text('');
+            if (announceTimer) {
+                window.clearTimeout(announceTimer);
+            }
+            announceTimer = window.setTimeout(function () {
+                announceTimer = null;
+                $status.text(message || '');
+            }, 0);
+        }
+
+        function formatUserLabel(user) {
+            const displayName = ((user && user.displayName) || '').trim();
+            const login = (user && user.login) || '';
+            return displayName ? displayName + ' (@' + login + ')' : '@' + login;
+        }
+
+        function announceActiveOption() {
+            if (activeIndex < 0 || !users[activeIndex]) {
+                return;
+            }
+            announce(
+                __('%s, %d of %d', formatUserLabel(users[activeIndex]), activeIndex + 1, users.length)
+            );
+        }
 
         function positionNearCaret() {
             if (!open) {
@@ -104,6 +134,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
         const runSearch = _.debounce(function (query) {
             const seq = ++requestSeq;
             currentQuery = query;
+            announce(__('Loading users'));
 
             searchUsers(query, FETCH_LIMIT)
                 .then(function (result) {
@@ -130,14 +161,12 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             activeIndex = users.length ? 0 : -1;
 
             if (!users.length) {
-                $empty
-                    .text(
-                        isError
-                            ? __('Unable to load users')
-                            : __('No matching users')
-                    )
-                    .prop('hidden', false);
+                const emptyMessage = isError
+                    ? __('Unable to load users')
+                    : __('No matching users');
+                $empty.text(emptyMessage).prop('hidden', false);
                 $list.prop('hidden', true);
+                announce(emptyMessage);
                 return;
             }
 
@@ -145,10 +174,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             $list.prop('hidden', false);
 
             users.forEach(function (user, index) {
-                const displayName = (user.displayName || '').trim();
-                const label = displayName
-                    ? displayName + ' (@' + user.login + ')'
-                    : '@' + user.login;
+                const label = formatUserLabel(user);
                 const $item = $(
                     '<li class="item-comments-mention-picker__item" role="option"></li>'
                 )
@@ -163,6 +189,16 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
 
                 $list.append($item);
             });
+
+            const countMessage =
+                users.length === 1
+                    ? __('1 user found')
+                    : __('%d users found', users.length);
+            announce(
+                countMessage +
+                    '. ' +
+                    __('%s, %d of %d', formatUserLabel(users[activeIndex]), activeIndex + 1, users.length)
+            );
         }
 
         function setActive(index) {
@@ -183,6 +219,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
                     this.scrollIntoView({ block: 'nearest' });
                 }
             });
+            announceActiveOption();
         }
 
         function selectActive() {
@@ -207,6 +244,11 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             currentQuery = null;
             users = [];
             activeIndex = -1;
+            if (announceTimer) {
+                window.clearTimeout(announceTimer);
+                announceTimer = null;
+            }
+            $status.text('');
             $root.prop('hidden', true);
             $list.empty();
             $empty.prop('hidden', true).text('');
@@ -294,6 +336,10 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
             },
 
             destroy() {
+                if (announceTimer) {
+                    window.clearTimeout(announceTimer);
+                    announceTimer = null;
+                }
                 $(document).off('.commentMentionPicker');
                 $(window).off('.commentMentionPicker');
                 document.removeEventListener('scroll', positionNearCaret, true);
