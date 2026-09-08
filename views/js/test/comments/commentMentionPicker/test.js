@@ -271,7 +271,7 @@ define(['jquery', 'taoItems/comments/commentMentionPicker'], function ($, mentio
 
                 assert.equal(
                     $('.item-comments-mention-picker').length,
-                    beforeCount,
+                    beforeCount - 1,
                     'destroy removes root element immediately'
                 );
 
