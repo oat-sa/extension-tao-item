@@ -179,7 +179,7 @@ class CommentMentionNotificationServiceTest extends TestCase
                 'name' => 'Forged',
             ]
         ) extends CommentMentionNotificationService {
-            /** @var array{login: string, email: string, name: ?string}|null|false */
+            /** @var array{login: string, email: string, name: ?string}|null */
             private $fixedRecipient;
 
             public function __construct(
@@ -193,7 +193,7 @@ class CommentMentionNotificationServiceTest extends TestCase
                 $this->fixedRecipient = $fixedRecipient;
             }
 
-            protected function resolveMentionRecipient(array $mention)
+            protected function resolveMentionRecipient(array $mention): ?array
             {
                 return $this->fixedRecipient;
             }
@@ -251,7 +251,7 @@ class CommentMentionNotificationServiceTest extends TestCase
     }
 
     /**
-     * @param array{login: string, email: string, name: ?string}|null|false $recipient
+     * @param array{login: string, email: string, name: ?string}|null $recipient
      */
     private function createSutWithRecipient($recipient): CommentMentionNotificationService
     {
@@ -262,7 +262,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             $this->eligibleUsersProvider,
             $recipient
         ) extends CommentMentionNotificationService {
-            /** @var array{login: string, email: string, name: ?string}|null|false */
+            /** @var array{login: string, email: string, name: ?string}|null */
             private $fixedRecipient;
 
             public function __construct(
@@ -276,7 +276,7 @@ class CommentMentionNotificationServiceTest extends TestCase
                 $this->fixedRecipient = $fixedRecipient;
             }
 
-            protected function resolveMentionRecipient(array $mention)
+            protected function resolveMentionRecipient(array $mention): ?array
             {
                 return $this->fixedRecipient;
             }

@@ -160,7 +160,7 @@ class CommentMentionNotificationService
                 }
 
                 $recipient = $this->resolveMentionRecipient($mention);
-                if ($recipient === null || $recipient === false) {
+                if ($recipient === null) {
                     continue;
                 }
 
@@ -212,13 +212,13 @@ class CommentMentionNotificationService
      * Login/email/name come from the ontology user resource — never from HTML attributes.
      *
      * @param array{id: string, login: string} $mention
-     * @return array{login: string, email: string, name: ?string}|null|false null = no email, false = unresolvable
+     * @return array{login: string, email: string, name: ?string}|null null = unresolved or no usable email
      */
-    protected function resolveMentionRecipient(array $mention)
+    protected function resolveMentionRecipient(array $mention): ?array
     {
         $userResource = $this->ontology->getResource($mention['id']);
         if ($userResource === null || !$userResource->exists()) {
-            return false;
+            return null;
         }
 
         $user = new core_kernel_users_GenerisUser($userResource);
@@ -229,7 +229,7 @@ class CommentMentionNotificationService
 
         $login = trim((string) UserHelper::getUserLogin($user));
         if ($login === '') {
-            return false;
+            return null;
         }
 
         $name = UserHelper::getUserName($user, true);
