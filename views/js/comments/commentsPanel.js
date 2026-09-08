@@ -96,7 +96,7 @@ define([
                 store.getResourceUri(),
                 store.getResourceType ? store.getResourceType() : itemCommentsApi.RESOURCE_TYPE.ITEM,
                 query,
-                { limit: limit || 40, offset: 0 }
+                { limit: limit || 40 }
             );
         }
 

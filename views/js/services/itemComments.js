@@ -154,13 +154,13 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
 
         /**
          * Search users eligible for @mention (filtered by login, ACL-scoped).
+         * Top-N autocomplete only ({users, limit}); not a paginated catalog.
          * @param {string} resourceUri
          * @param {string} resourceType
          * @param {string} [query]
          * @param {object} [options]
          * @param {number} [options.limit=20]
-         * @param {number} [options.offset=0]
-         * @returns {Promise<{users: Array<{id: string, login: string, displayName: string}>, limit: number, offset: number, total: number}>}
+         * @returns {Promise<{users: Array<{id: string, login: string, displayName: string}>, limit: number}>}
          */
         searchMentionUsers(resourceUri, resourceType, query, options) {
             if (!hasText(resourceUri)) {
@@ -175,8 +175,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
                 resourceUri: resourceUri,
                 resourceType: resourceType,
                 q: typeof query === 'string' ? query : '',
-                limit: typeof opts.limit === 'number' ? opts.limit : 20,
-                offset: typeof opts.offset === 'number' ? opts.offset : 0
+                limit: typeof opts.limit === 'number' ? opts.limit : 20
             };
 
             return request({

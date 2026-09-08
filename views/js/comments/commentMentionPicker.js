@@ -31,7 +31,7 @@ define(['jquery', 'lodash', 'i18n'], function ($, _, __) {
      *
      * @param {object} config
      * @param {function(): ({top:number,right:number,bottom:number,left:number,width:number,height:number}|null)} config.getAnchorRect
-     * @param {function(string, number): Promise<{users: Array<{id:string,login:string,displayName:string}>, total:number}>} config.searchUsers
+     * @param {function(string, number): Promise<{users: Array<{id:string,login:string,displayName:string}>, limit:number}>} config.searchUsers
      * @param {function({id:string,login:string,displayName:string}): void} config.onSelect
      * @param {string} [config.infoMessage]
      * @returns {object}
