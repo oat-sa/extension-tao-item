@@ -75,13 +75,8 @@ class CommentMentionNotificationService
         array $mentions,
         string $actorLogin
     ): void {
-        $this->notifyMentions(
-            $comment,
-            $mentionedByLabel,
-            $actorLogin,
-            $mentions,
-            CommentMentionUsedEvent::ACTION_CREATED
-        );
+        $this->emitMentionUsedEvents($comment, $actorLogin, $mentions, CommentMentionUsedEvent::ACTION_CREATED);
+        $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $mentions);
     }
 
     /**
@@ -110,21 +105,23 @@ class CommentMentionNotificationService
             static fn (array $mention): bool => isset($mention['id']) && !isset($previousIds[$mention['id']])
         ));
 
-        $this->notifyMentions(
+        $this->emitMentionUsedEvents(
             $comment,
-            $mentionedByLabel,
             $actorLogin,
             $newMentions,
             CommentMentionUsedEvent::ACTION_UPDATED
         );
+        $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $newMentions);
     }
 
     /**
+     * Emit CommentMentionUsedEvent for each eligible mention.
+     * Independent of email configuration and delivery.
+     *
      * @param list<array{id: string, login: string}> $mentions
      */
-    private function notifyMentions(
+    private function emitMentionUsedEvents(
         ItemComment $comment,
-        string $mentionedByLabel,
         string $actorLogin,
         array $mentions,
         string $action
@@ -136,35 +133,71 @@ class CommentMentionNotificationService
         $actorLogin = trim($actorLogin);
         $mentionedBy = $actorLogin !== '' ? $actorLogin : $comment->getAuthorId();
 
-        $emailConfigured = $this->emailService->isConfigured();
-        if (!$emailConfigured) {
+        foreach ($mentions as $mention) {
+            $userUri = isset($mention['id']) && is_string($mention['id']) ? $mention['id'] : '';
+            if (!$this->isEligibleMention($comment->getResourceUri(), $userUri)) {
+                continue;
+            }
+
+            $mentionedUserLogin = isset($mention['login']) && is_string($mention['login'])
+                && trim($mention['login']) !== ''
+                ? trim($mention['login'])
+                : null;
+
+            $this->eventManager->trigger(new CommentMentionUsedEvent(
+                $comment->getId(),
+                $comment->getResourceUri(),
+                $comment->getResourceType(),
+                $mentionedBy,
+                $userUri,
+                $mentionedUserLogin,
+                $action
+            ));
+        }
+    }
+
+    /**
+     * @param list<array{id: string, login: string}> $mentions
+     */
+    private function notifyMentions(
+        ItemComment $comment,
+        string $mentionedByLabel,
+        string $actorLogin,
+        array $mentions
+    ): void {
+        if ($mentions === []) {
+            return;
+        }
+
+        if (!$this->emailService->isConfigured()) {
             common_Logger::w(
                 sprintf(
                     'Comment mention email skipped for comment %s: Task Orchestrator email is not configured',
                     $comment->getId()
                 )
             );
-        } elseif ($actorLogin === '') {
+
+            return;
+        }
+
+        $actorLogin = trim($actorLogin);
+        if ($actorLogin === '') {
             common_Logger::w(
                 sprintf(
                     'Comment mention email skipped for comment %s: empty actor login',
                     $comment->getId()
                 )
             );
+
+            return;
         }
 
-        $canSendEmail = $emailConfigured && $actorLogin !== '';
         $mentionedByLabel = $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user';
-        $resourceLabel = null;
-        $resourceUrl = null;
-
-        if ($canSendEmail) {
-            $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
-            $resourceUrl = $this->deepLinkBuilder->build(
-                ResourceCommentType::classUri($comment->getResourceType()),
-                $comment->getResourceUri()
-            );
-        }
+        $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
+        $resourceUrl = $this->deepLinkBuilder->build(
+            ResourceCommentType::classUri($comment->getResourceType()),
+            $comment->getResourceUri()
+        );
 
         foreach ($mentions as $mention) {
             try {
@@ -178,25 +211,6 @@ class CommentMentionNotificationService
                         )
                     );
 
-                    continue;
-                }
-
-                $mentionedUserLogin = isset($mention['login']) && is_string($mention['login'])
-                    && trim($mention['login']) !== ''
-                    ? trim($mention['login'])
-                    : null;
-
-                $this->eventManager->trigger(new CommentMentionUsedEvent(
-                    $comment->getId(),
-                    $comment->getResourceUri(),
-                    $comment->getResourceType(),
-                    $mentionedBy,
-                    $userUri,
-                    $mentionedUserLogin,
-                    $action
-                ));
-
-                if (!$canSendEmail) {
                     continue;
                 }
 

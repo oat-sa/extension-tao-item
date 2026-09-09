@@ -261,7 +261,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
         $eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
         $eligibleUsersProvider
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getEligibleUserUris')
             ->with('http://example.test/item#1')
             ->willReturn(['http://example.test/user#allowed']);
