@@ -25,11 +25,13 @@ namespace oat\taoItems\model\Comment;
 use common_Logger;
 use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
+use oat\oatbox\event\EventManager;
 use oat\tao\helpers\UserHelper;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
+use oat\taoItems\model\event\CommentMentionUsedEvent;
 use Throwable;
 
 /**
@@ -37,6 +39,7 @@ use Throwable;
  *
  * Callers supply already-parsed mentions (mention parsing belongs to the mentions
  * feature). Skips recipients without a usable email. Failures never roll back the comment.
+ * Also emits CommentMentionUsedEvent for eligible mentions, independently of email delivery.
  */
 class CommentMentionNotificationService
 {
@@ -44,17 +47,20 @@ class CommentMentionNotificationService
     private TaskOrchestratorEmailService $emailService;
     private CommentMentionDeepLinkBuilder $deepLinkBuilder;
     private MentionEligibleUsersProviderInterface $eligibleUsersProvider;
+    private EventManager $eventManager;
 
     public function __construct(
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
         CommentMentionDeepLinkBuilder $deepLinkBuilder,
-        MentionEligibleUsersProviderInterface $eligibleUsersProvider
+        MentionEligibleUsersProviderInterface $eligibleUsersProvider,
+        EventManager $eventManager
     ) {
         $this->ontology = $ontology;
         $this->emailService = $emailService;
         $this->deepLinkBuilder = $deepLinkBuilder;
         $this->eligibleUsersProvider = $eligibleUsersProvider;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -69,6 +75,7 @@ class CommentMentionNotificationService
         array $mentions,
         string $actorLogin
     ): void {
+        $this->emitMentionUsedEvents($comment, $actorLogin, $mentions, CommentMentionUsedEvent::ACTION_CREATED);
         $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $mentions);
     }
 
@@ -98,7 +105,55 @@ class CommentMentionNotificationService
             static fn (array $mention): bool => isset($mention['id']) && !isset($previousIds[$mention['id']])
         ));
 
+        $this->emitMentionUsedEvents(
+            $comment,
+            $actorLogin,
+            $newMentions,
+            CommentMentionUsedEvent::ACTION_UPDATED
+        );
         $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $newMentions);
+    }
+
+    /**
+     * Emit CommentMentionUsedEvent for each eligible mention.
+     * Independent of email configuration and delivery.
+     *
+     * @param list<array{id: string, login: string}> $mentions
+     */
+    private function emitMentionUsedEvents(
+        ItemComment $comment,
+        string $actorLogin,
+        array $mentions,
+        string $action
+    ): void {
+        if ($mentions === []) {
+            return;
+        }
+
+        $actorLogin = trim($actorLogin);
+        $mentionedBy = $actorLogin !== '' ? $actorLogin : $comment->getAuthorId();
+
+        foreach ($mentions as $mention) {
+            $userUri = isset($mention['id']) && is_string($mention['id']) ? $mention['id'] : '';
+            if (!$this->isEligibleMention($comment->getResourceUri(), $userUri)) {
+                continue;
+            }
+
+            $mentionedUserLogin = isset($mention['login']) && is_string($mention['login'])
+                && trim($mention['login']) !== ''
+                ? trim($mention['login'])
+                : null;
+
+            $this->eventManager->trigger(new CommentMentionUsedEvent(
+                $comment->getId(),
+                $comment->getResourceUri(),
+                $comment->getResourceType(),
+                $mentionedBy,
+                $userUri,
+                $mentionedUserLogin,
+                $action
+            ));
+        }
     }
 
     /**
