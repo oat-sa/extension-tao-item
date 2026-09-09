@@ -25,11 +25,13 @@ namespace oat\taoItems\model\Comment;
 use common_Logger;
 use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
+use oat\oatbox\event\EventManager;
 use oat\tao\helpers\UserHelper;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
+use oat\taoItems\model\event\CommentMentionUsedEvent;
 use Throwable;
 
 /**
@@ -37,6 +39,7 @@ use Throwable;
  *
  * Callers supply already-parsed mentions (mention parsing belongs to the mentions
  * feature). Skips recipients without a usable email. Failures never roll back the comment.
+ * Also emits CommentMentionUsedEvent for eligible mentions, independently of email delivery.
  */
 class CommentMentionNotificationService
 {
@@ -44,17 +47,20 @@ class CommentMentionNotificationService
     private TaskOrchestratorEmailService $emailService;
     private CommentMentionDeepLinkBuilder $deepLinkBuilder;
     private MentionEligibleUsersProviderInterface $eligibleUsersProvider;
+    private EventManager $eventManager;
 
     public function __construct(
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
         CommentMentionDeepLinkBuilder $deepLinkBuilder,
-        MentionEligibleUsersProviderInterface $eligibleUsersProvider
+        MentionEligibleUsersProviderInterface $eligibleUsersProvider,
+        EventManager $eventManager
     ) {
         $this->ontology = $ontology;
         $this->emailService = $emailService;
         $this->deepLinkBuilder = $deepLinkBuilder;
         $this->eligibleUsersProvider = $eligibleUsersProvider;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -69,7 +75,13 @@ class CommentMentionNotificationService
         array $mentions,
         string $actorLogin
     ): void {
-        $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $mentions);
+        $this->notifyMentions(
+            $comment,
+            $mentionedByLabel,
+            $actorLogin,
+            $mentions,
+            CommentMentionUsedEvent::ACTION_CREATED
+        );
     }
 
     /**
@@ -98,7 +110,13 @@ class CommentMentionNotificationService
             static fn (array $mention): bool => isset($mention['id']) && !isset($previousIds[$mention['id']])
         ));
 
-        $this->notifyMentions($comment, $mentionedByLabel, $actorLogin, $newMentions);
+        $this->notifyMentions(
+            $comment,
+            $mentionedByLabel,
+            $actorLogin,
+            $newMentions,
+            CommentMentionUsedEvent::ACTION_UPDATED
+        );
     }
 
     /**
@@ -108,41 +126,45 @@ class CommentMentionNotificationService
         ItemComment $comment,
         string $mentionedByLabel,
         string $actorLogin,
-        array $mentions
+        array $mentions,
+        string $action
     ): void {
         if ($mentions === []) {
             return;
         }
 
-        if (!$this->emailService->isConfigured()) {
+        $actorLogin = trim($actorLogin);
+        $mentionedBy = $actorLogin !== '' ? $actorLogin : $comment->getAuthorId();
+
+        $emailConfigured = $this->emailService->isConfigured();
+        if (!$emailConfigured) {
             common_Logger::w(
                 sprintf(
                     'Comment mention email skipped for comment %s: Task Orchestrator email is not configured',
                     $comment->getId()
                 )
             );
-
-            return;
-        }
-
-        $actorLogin = trim($actorLogin);
-        if ($actorLogin === '') {
+        } elseif ($actorLogin === '') {
             common_Logger::w(
                 sprintf(
                     'Comment mention email skipped for comment %s: empty actor login',
                     $comment->getId()
                 )
             );
-
-            return;
         }
 
+        $canSendEmail = $emailConfigured && $actorLogin !== '';
         $mentionedByLabel = $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user';
-        $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
-        $resourceUrl = $this->deepLinkBuilder->build(
-            ResourceCommentType::classUri($comment->getResourceType()),
-            $comment->getResourceUri()
-        );
+        $resourceLabel = null;
+        $resourceUrl = null;
+
+        if ($canSendEmail) {
+            $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
+            $resourceUrl = $this->deepLinkBuilder->build(
+                ResourceCommentType::classUri($comment->getResourceType()),
+                $comment->getResourceUri()
+            );
+        }
 
         foreach ($mentions as $mention) {
             try {
@@ -156,6 +178,25 @@ class CommentMentionNotificationService
                         )
                     );
 
+                    continue;
+                }
+
+                $mentionedUserLogin = isset($mention['login']) && is_string($mention['login'])
+                    && trim($mention['login']) !== ''
+                    ? trim($mention['login'])
+                    : null;
+
+                $this->eventManager->trigger(new CommentMentionUsedEvent(
+                    $comment->getId(),
+                    $comment->getResourceUri(),
+                    $comment->getResourceType(),
+                    $mentionedBy,
+                    $userUri,
+                    $mentionedUserLogin,
+                    $action
+                ));
+
+                if (!$canSendEmail) {
                     continue;
                 }
 
