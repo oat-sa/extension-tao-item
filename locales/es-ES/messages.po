@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:07\n"
+"Project-Id-Version: TAO 2026.09\n"
+"PO-Revision-Date: 2026-09-03T12:49:10\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: es\n"
+"Language: es-ES\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: en-US\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"targetLanguage: es-ES\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -19,6 +19,16 @@ msgstr ""
 "X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/messages.po\n"
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: Spanish\n"
+
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] "%d otro."
+msgstr[1] "%d otros."
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] "%d prueba"
+msgstr[1] "%d pruebas"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Nota</b>: Para clases vacías, el formato RDF<br />es el único formato disponible."
@@ -116,8 +126,14 @@ msgstr "Exportar"
 msgid "Expose the property value to create automated categories."
 msgstr "Exponer el valor de la propiedad para crear categorías automatizadas."
 
+msgid "External previewer load timeout"
+msgstr ""
+
 msgid "Failed retrieving %s"
 msgstr "Error recuperando %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr ""
 
 msgid "Forbidden action"
 msgstr "Acción prohibida"
@@ -138,6 +154,9 @@ msgstr "Modelo de elemento"
 msgid "Item not found"
 msgstr "Objeto no encontrado"
 
+msgid "Item preview"
+msgstr ""
+
 msgid "Item saved"
 msgstr "Elemento fguardado"
 
@@ -157,6 +176,9 @@ msgstr "Horizontal"
 
 msgid "Last updated on %2s"
 msgstr "Última actualización de %2s"
+
+msgid "Loading preview..."
+msgstr ""
 
 msgid "Manage item class schema"
 msgstr "Administrar esquema de clase de artículo"
@@ -277,6 +299,9 @@ msgstr "No se puede eliminar el recurso seleccionado"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "No se puede eliminar el recurso seleccionado porque no tiene los permisos necesarios para eliminar parte de su contenido."
 
+msgid "Unable to load item preview"
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "No se puede renderizar el elemento de %s : %s %s"
 
@@ -300,4 +325,3 @@ msgstr "Verás un mensaje diciendo que algunos elementos no se han podido elimin
 
 msgid "Your path contains error"
 msgstr "Su ruta contiene errores"
-

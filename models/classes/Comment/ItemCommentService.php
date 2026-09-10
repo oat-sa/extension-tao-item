@@ -29,6 +29,7 @@ use DateTimeZone;
 use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
+use oat\tao\helpers\UserHelper;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
 use Ramsey\Uuid\Uuid;
@@ -39,17 +40,26 @@ class ItemCommentService
     private SessionService $sessionService;
     private Ontology $ontology;
     private PermissionCheckerInterface $permissionChecker;
+    private CommentRichTextSanitizer $commentRichTextSanitizer;
+    private CommentMentionParser $commentMentionParser;
+    private CommentMentionNotificationService $commentMentionNotificationService;
 
     public function __construct(
         ItemCommentPersistenceInterface $persistence,
         SessionService $sessionService,
         Ontology $ontology,
-        PermissionCheckerInterface $permissionChecker
+        PermissionCheckerInterface $permissionChecker,
+        CommentRichTextSanitizer $commentRichTextSanitizer,
+        CommentMentionParser $commentMentionParser,
+        CommentMentionNotificationService $commentMentionNotificationService
     ) {
         $this->persistence = $persistence;
         $this->sessionService = $sessionService;
         $this->ontology = $ontology;
         $this->permissionChecker = $permissionChecker;
+        $this->commentRichTextSanitizer = $commentRichTextSanitizer;
+        $this->commentMentionParser = $commentMentionParser;
+        $this->commentMentionNotificationService = $commentMentionNotificationService;
     }
 
     /**
@@ -81,7 +91,7 @@ class ItemCommentService
             throw new common_exception_Unauthorized('Authenticated session required to create item comments');
         }
 
-        [$authorId, $authorLabel] = $this->resolveAuthorFromSession($session);
+        [$authorId, $authorLabel, $authorLogin] = $this->resolveAuthorFromSession($session);
 
         $comment = new ItemComment(
             Uuid::uuid4()->toString(),
@@ -93,7 +103,15 @@ class ItemCommentService
             (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format(DATE_ATOM)
         );
 
-        return $this->persistence->create($comment);
+        $saved = $this->persistence->create($comment);
+        $this->commentMentionNotificationService->notifyForComment(
+            $saved,
+            $authorLabel,
+            $this->commentMentionParser->parse($saved->getBody()),
+            $authorLogin
+        );
+
+        return $saved;
     }
 
     public function update(string $commentId, string $body): ItemComment
@@ -110,7 +128,7 @@ class ItemCommentService
             throw new common_exception_Unauthorized('Authenticated session required to update item comments');
         }
 
-        [$authorId] = $this->resolveAuthorFromSession($session);
+        [$authorId, $authorLabel, $authorLogin] = $this->resolveAuthorFromSession($session);
 
         $existing = $this->persistence->findById($commentId);
         if ($existing === null) {
@@ -127,7 +145,17 @@ class ItemCommentService
             throw new common_exception_Unauthorized('Resolved comments cannot be edited until reopened');
         }
 
-        return $this->persistence->update($existing->withEditedBody($body));
+        $previousMentions = $this->commentMentionParser->parse($existing->getBody());
+        $saved = $this->persistence->update($existing->withEditedBody($body));
+        $this->commentMentionNotificationService->notifyForCommentUpdate(
+            $saved,
+            $authorLabel,
+            $this->commentMentionParser->parse($saved->getBody()),
+            $previousMentions,
+            $authorLogin
+        );
+
+        return $saved;
     }
 
     public function resolve(string $commentId, bool $resolved): ItemComment
@@ -186,14 +214,16 @@ class ItemCommentService
 
     /**
      * Prefer LTI UserDataSessionContext when present on TaoLtiSession:
-     * authorId from userId; authorLabel from userName, falling back to userLogin.
+     * authorId from userId; authorLabel from userName, falling back to userLogin;
+     * authorLogin from context userLogin, else session user login property.
      *
-     * @return array{0: string, 1: string}
+     * @return array{0: string, 1: string, 2: string} authorId, authorLabel, authorLogin
      */
     private function resolveAuthorFromSession(common_session_Session $session): array
     {
         $authorId = (string) $session->getUser()->getIdentifier();
         $authorLabel = (string) $session->getUserLabel();
+        $authorLogin = trim((string) UserHelper::getUserLogin($session->getUser()));
 
         /** @var UserDataSessionContext $context */
         foreach ($session->getContexts(UserDataSessionContext::class) as $context) {
@@ -207,13 +237,17 @@ class ItemCommentService
             } elseif ($context->getUserLogin() !== null && $context->getUserLogin() !== '') {
                 $authorLabel = (string) $context->getUserLogin();
             }
+
+            if ($context->getUserLogin() !== null && $context->getUserLogin() !== '') {
+                $authorLogin = (string) $context->getUserLogin();
+            }
         }
 
         if ($authorId === '') {
             throw new common_exception_Unauthorized('Unable to resolve comment author from session');
         }
 
-        return [$authorId, $authorLabel];
+        return [$authorId, $authorLabel, $authorLogin];
     }
 
     private function tryResolveAuthorId(): ?string
@@ -298,8 +332,8 @@ class ItemCommentService
 
     private function assertBody(string $body): string
     {
-        $body = trim($body);
-        if ($body === '') {
+        $body = $this->commentRichTextSanitizer->sanitize($body);
+        if (!$this->commentRichTextSanitizer->hasMeaningfulText($body)) {
             throw new InvalidArgumentException('Comment body must not be empty');
         }
 
