@@ -336,6 +336,62 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             });
     });
 
+    QUnit.test('resolveFailed event includes attempted resolved state', function (assert) {
+        const ready = assert.async();
+        const store = itemCommentsStoreFactory({
+            itemUri: 'item://1',
+            api: {
+                list() {
+                    return Promise.resolve({
+                        comments: [
+                            {
+                                id: 'c1',
+                                resourceUri: 'item://1',
+                                resourceType: 'item',
+                                authorId: 'u1',
+                                authorLabel: 'Ada',
+                                body: 'Body',
+                                createdAt: '2026-07-27T09:12:00Z',
+                                edited: false,
+                                resolved: false,
+                                editable: true,
+                                deletable: true
+                            }
+                        ],
+                        count: 1
+                    });
+                },
+                create() {
+                    return Promise.reject(new Error('unused'));
+                },
+                resolve() {
+                    return Promise.reject(new Error('offline'));
+                }
+            }
+        });
+
+        let attemptedResolvedState = null;
+        store.on('resolveFailed', function (error, resolved) {
+            attemptedResolvedState = resolved;
+        });
+
+        assert.expect(2);
+        store
+            .load()
+            .then(function () {
+                return store.resolve('c1', false);
+            })
+            .then(function () {
+                assert.ok(false, 'expected resolve to fail');
+                ready();
+            })
+            .catch(function () {
+                assert.strictEqual(attemptedResolvedState, false, 'reopen failure reports resolved=false');
+                assert.ok(true, 'promise rejected');
+                ready();
+            });
+    });
+
     QUnit.test('setItemUri clears draft and cache', function (assert) {
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
