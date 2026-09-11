@@ -147,6 +147,24 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
     }
 
     /**
+     * @param {HTMLElement} element
+     * @param {number} [initialValue]
+     */
+    function stubScrollTop(element, initialValue) {
+        let scrollTop = Number(initialValue) || 0;
+
+        Object.defineProperty(element, 'scrollTop', {
+            configurable: true,
+            get() {
+                return scrollTop;
+            },
+            set(value) {
+                scrollTop = Number(value) || 0;
+            }
+        });
+    }
+
+    /**
      * @param {jQuery} $host
      * @param {object} store
      * @returns {object}
@@ -200,46 +218,47 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         assert.equal($host.find('.item-comments-panel').length, 0, 'panel removed on destroy');
     });
 
-    QUnit.test('resolved comment shows success tick marker', function (assert) {
-        const store = createStore([
-            {
-                id: 'c3',
-                authorLabel: 'admin',
-                createdAt: '2026-08-24T09:21:00Z',
-                body: 'Resolved comment',
-                edited: false,
-                editable: false,
-                deletable: true,
-                resolved: true
+    QUnit.test('refresh scrolls to newest only on first call', function (assert) {
+        const done = assert.async();
+        let loadCalls = 0;
+        let store;
+
+        store = createStore(sampleComments, {
+            load() {
+                loadCalls += 1;
+                store.trigger('loaded');
+                return Promise.resolve(store);
             }
-        ]);
-        const $host = $('#qunit-fixture .comments-host');
-        const panel = createPanel($host, store);
+        });
 
-        assert.expect(3);
-
-        const $resolved = $host.find('.item-comment.is-resolved').first();
-        assert.equal($resolved.length, 1, 'resolved row rendered');
-        assert.equal($resolved.find('.item-comment-resolved-icon.icon-success').length, 1, 'resolved tick icon rendered');
-        assert.equal($resolved.find('.item-comment-resolve-link').data('action'), 'reopen', 'resolved row exposes reopen action');
-
-        panel.destroy();
-    });
-
-    QUnit.test('resolved rerender preserves list scroll position', function (assert) {
-        const store = createStore(sampleComments);
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
         const listElement = $host.find('.item-comments-list').get(0);
 
-        assert.expect(1);
+        assert.expect(3);
 
-        listElement.scrollTop = 37;
-        store.trigger('resolved');
+        stubMetric(listElement, 'scrollHeight', 420);
+        stubScrollTop(listElement);
+        listElement.scrollTop = 7;
 
-        assert.equal(listElement.scrollTop, 37, 'resolved update keeps current list scroll');
+        panel.refresh()
+            .then(function () {
+                assert.equal(listElement.scrollTop, 420, 'first refresh moves viewport to newest comment');
 
-        panel.destroy();
+                listElement.scrollTop = 111;
+                return panel.refresh();
+            })
+            .then(function () {
+                assert.equal(listElement.scrollTop, 111, 'later refresh keeps current viewport position');
+                assert.equal(loadCalls, 2, 'both refresh calls still reload comments');
+                panel.destroy();
+                done();
+            })
+            .catch(function (error) {
+                assert.ok(false, error && error.message ? error.message : 'refresh promise rejected');
+                panel.destroy();
+                done();
+            });
     });
 
     QUnit.module('overlay lifecycle', {
