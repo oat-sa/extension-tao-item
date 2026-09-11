@@ -540,16 +540,18 @@ define([
 
             refresh() {
                 renderComments();
-                const loadPromise = store.load().catch(_.noop);
+                const loadPromise = store.load();
 
                 if (!isFirstRefresh) {
-                    return loadPromise;
+                    return loadPromise.catch(_.noop);
                 }
 
-                isFirstRefresh = false;
-                return loadPromise.then(() => {
-                    scrollToNewest();
-                });
+                return loadPromise
+                    .then(() => {
+                        isFirstRefresh = false;
+                        scrollToNewest();
+                    })
+                    .catch(_.noop);
             },
 
             scrollToNewest() {

@@ -261,6 +261,54 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
             });
     });
 
+    QUnit.test('failed first refresh preserves first successful scroll-to-newest', function (assert) {
+        const done = assert.async();
+        let loadCalls = 0;
+        let store;
+
+        store = createStore(sampleComments, {
+            load() {
+                loadCalls += 1;
+
+                if (loadCalls === 1) {
+                    return Promise.reject(new Error('load failed'));
+                }
+
+                store.trigger('loaded');
+                return Promise.resolve(store);
+            }
+        });
+
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const listElement = $host.find('.item-comments-list').get(0);
+
+        assert.expect(3);
+
+        stubMetric(listElement, 'scrollHeight', 420);
+        stubScrollTop(listElement);
+        listElement.scrollTop = 9;
+
+        panel.refresh()
+            .then(function () {
+                assert.equal(listElement.scrollTop, 9, 'failed first refresh does not change viewport position');
+
+                listElement.scrollTop = 17;
+                return panel.refresh();
+            })
+            .then(function () {
+                assert.equal(listElement.scrollTop, 420, 'next successful refresh scrolls to newest comment');
+                assert.equal(loadCalls, 2, 'both refresh calls still reload comments');
+                panel.destroy();
+                done();
+            })
+            .catch(function (error) {
+                assert.ok(false, error && error.message ? error.message : 'refresh promise rejected');
+                panel.destroy();
+                done();
+            });
+    });
+
     QUnit.module('overlay lifecycle', {
         beforeEach() {
             $('#qunit-fixture').empty().append('<div class="comments-host"></div>');
