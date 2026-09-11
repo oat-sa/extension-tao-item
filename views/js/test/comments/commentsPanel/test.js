@@ -147,6 +147,24 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
     }
 
     /**
+     * @param {HTMLElement} element
+     * @param {number} [initialValue]
+     */
+    function stubScrollTop(element, initialValue) {
+        let scrollTop = Number(initialValue) || 0;
+
+        Object.defineProperty(element, 'scrollTop', {
+            configurable: true,
+            get() {
+                return scrollTop;
+            },
+            set(value) {
+                scrollTop = Number(value) || 0;
+            }
+        });
+    }
+
+    /**
      * @param {jQuery} $host
      * @param {object} store
      * @returns {object}
@@ -220,6 +238,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         assert.expect(3);
 
         stubMetric(listElement, 'scrollHeight', 420);
+        stubScrollTop(listElement);
         listElement.scrollTop = 7;
 
         panel.refresh()
