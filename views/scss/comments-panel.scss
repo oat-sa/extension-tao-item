@@ -66,6 +66,11 @@
     .item-comment-author {
         font-weight: 600;
         color: #333;
+        flex: 1 1 auto;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .item-comment-body {
@@ -337,12 +342,19 @@
 
 .item-comment-meta {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 4px 8px;
+    min-width: 0;
+}
+
+.item-comment-time {
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
 
 .item-comment-edited {
+    flex: 0 0 auto;
     font-size: 11px;
     color: #888;
     font-style: italic;
