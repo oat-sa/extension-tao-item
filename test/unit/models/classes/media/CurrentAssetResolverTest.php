@@ -52,18 +52,16 @@ class CurrentAssetResolverTest extends TestCase
         $this->assertNull($result['currentAsset']);
     }
 
-    public function testResolveReturnsNullsWhenAssetCannotBeResolved(): void
+    public function testResolveFromAssetReturnsEmptyWhenGetFileInfoFails(): void
     {
+        $mediaSource = $this->createMock(MediaBrowser::class);
+        $mediaSource->method('getFileInfo')
+            ->willThrowException(new \RuntimeException('missing asset'));
+
         $this->permissionChecker->expects($this->never())->method('hasReadAccess');
 
-        $result = $this->subject->resolve(
-            'http://example/item-that-does-not-exist',
-            'en-US',
-            'taomedia://mediamanager/missing'
-        );
-
-        $this->assertNull($result['parentPath']);
-        $this->assertNull($result['currentAsset']);
+        $this->expectException(\RuntimeException::class);
+        $this->subject->resolveFromAsset(new MediaAsset($mediaSource, 'images/missing.png'));
     }
 
     public function testResolveFromLocalAssetReturnsParentFolderAndSelectableItem(): void

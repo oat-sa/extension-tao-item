@@ -371,17 +371,24 @@ class LocalItemSource implements MediaManagement
         $total = 0;
         foreach ($iterator as $content) {
             if ($content instanceof Directory) {
-                $children[] = $this->searchDirectories(
+                $nested = $this->searchDirectories(
                     $itemDirectory->getRelPath($content),
                     $acceptableMime,
                     $depth - 1,
                     $childrenLimit,
                     $fileSlotsRemaining
                 );
+                $children[] = $nested;
+                $total += (int)($nested['total'] ?? 0);
                 continue;
             }
 
             if ($fileSlotsRemaining !== null && $fileSlotsRemaining <= 0) {
+                // Count matching files beyond the payload cap without attaching file info.
+                $mime = $content->getMimeType();
+                if (empty($acceptableMime) || in_array($mime, $acceptableMime, true)) {
+                    $total++;
+                }
                 continue;
             }
 

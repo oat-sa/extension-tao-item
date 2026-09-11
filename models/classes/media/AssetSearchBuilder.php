@@ -26,6 +26,7 @@ class AssetSearchBuilder extends ConfigurableService
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
+    private const MAX_SEARCH_LOAD = 500;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -53,11 +54,18 @@ class AssetSearchBuilder extends ConfigurableService
             $mediaSource->enableAccessControl();
         }
 
-        $search
-            ->setDepth(self::FULL_SUBTREE_DEPTH)
-            ->setChildrenLimit(0);
+        // Bound traversal; do not mutate the caller's query object.
+        $fetchQuery = new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            self::FULL_SUBTREE_DEPTH,
+            0,
+            self::MAX_SEARCH_LOAD
+        );
 
-        $tree = $mediaSource->getDirectories($search);
+        $tree = $mediaSource->getDirectories($fetchQuery);
         $scopePath = (string)($tree['path'] ?? $search->getParentLink());
         $scopeLabel = (string)($tree['label'] ?? $scopePath);
 

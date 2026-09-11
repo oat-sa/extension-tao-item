@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoItems\test\unit\models\classes\media;
 
+use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
@@ -52,23 +53,59 @@ class AssetTreeBuilderTest extends TestCase
 
     public function testBuildWithAccessControlEnabled(): void
     {
-        $data = [
-            'children' => [
-                [
-                    'parent' => 'parent',
-                ],
-                [
-                    'url' => 'something'
-                ]
-            ],
-        ];
+        $accessControlledSource = new class implements MediaBrowser, AccessControlEnablerInterface {
+            public $enabled = 0;
 
-        $search = (new AssetSearchQuery($this->mediaAsset, '', ''))
+            public function enableAccessControl(): AccessControlEnablerInterface
+            {
+                $this->enabled++;
+
+                return $this;
+            }
+
+            public function getDirectories(DirectorySearchQuery $params): array
+            {
+                return [
+                    'children' => [
+                        ['parent' => 'parent'],
+                        ['url' => 'something'],
+                    ],
+                ];
+            }
+
+            public function getDirectory($parentLink = '/', $acceptableMime = [], $depth = 1)
+            {
+                return [];
+            }
+
+            public function getFileInfo($link)
+            {
+                return [];
+            }
+
+            public function download($link)
+            {
+                return '';
+            }
+
+            public function getFileStream($link)
+            {
+                throw new \RuntimeException('not implemented');
+            }
+
+            public function getBaseName($link)
+            {
+                return '';
+            }
+        };
+
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+        $mediaAsset->method('getMediaSource')->willReturn($accessControlledSource);
+
+        $search = (new AssetSearchQuery($mediaAsset, '', ''))
             ->setSortBy(AssetSearchQuery::SORT_LABEL)
             ->setSortDir('asc');
-
-        $this->mediaSource->method('getDirectories')
-            ->willReturn($data);
 
         $expectedData = [
             'children' => [
@@ -88,6 +125,29 @@ class AssetTreeBuilderTest extends TestCase
             $expectedData,
             $this->subject->build($search)
         );
+        $this->assertSame(1, $accessControlledSource->enabled);
+    }
+
+    public function testBuildPrefersSourceReportedTotalOverPayloadCount(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Root',
+            'total' => 900,
+            'children' => [
+                [
+                    'uri' => 'u-1',
+                    'name' => 'a.png',
+                    'mime' => 'image/png',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->build(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
+        );
+
+        $this->assertSame(900, $result['total']);
     }
 
     public function testBuildDoesNotRequestUnboundedChildrenLimit(): void

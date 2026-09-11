@@ -47,6 +47,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
         $fetchQuery = $this->createFetchQuery($search);
         $data = $mediaSource->getDirectories($fetchQuery);
+        $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
         $children = $data['children'] ?? [];
 
         $scopeLabel = (string)($data['label'] ?? $data['path'] ?? '');
@@ -77,7 +78,10 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             );
         }
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
-        $data['total'] = $totalFiles;
+        // Prefer source recursive total when present (e.g. LocalItemSource beyond payload cap).
+        $data['total'] = $sourceReportedTotal !== null
+            ? max($sourceReportedTotal, $totalFiles)
+            : $totalFiles;
         $data['childrenLimit'] = $pageSize;
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
 
