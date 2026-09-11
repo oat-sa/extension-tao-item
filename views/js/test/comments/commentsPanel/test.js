@@ -200,6 +200,22 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         assert.equal($host.find('.item-comments-panel').length, 0, 'panel removed on destroy');
     });
 
+    QUnit.test('reopen failure shows reopen-specific error message', function (assert) {
+        const store = createStore(sampleComments);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+
+        assert.expect(2);
+
+        store.trigger('resolveFailed', new Error('offline'), false);
+
+        const $error = $host.find('.item-comments-error');
+        assert.equal($error.prop('hidden'), false, 'error area is visible');
+        assert.equal($error.text().trim(), 'The comment was not reopened.', 'reopen fallback copy is used');
+
+        panel.destroy();
+    });
+
     QUnit.module('overlay lifecycle', {
         beforeEach() {
             $('#qunit-fixture').empty().append('<div class="comments-host"></div>');
