@@ -345,7 +345,7 @@ define(['lodash', 'core/eventifier', 'taoItems/services/itemComments'], function
                     .catch(error => {
                         submitting = false;
                         submitError = error;
-                        this.trigger('resolveFailed', error);
+                        this.trigger('resolveFailed', error, !!resolved);
                         throw error;
                     });
             },

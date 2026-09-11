@@ -385,8 +385,16 @@ define([
             .on(`updateFailed${ns}`, () => {
                 showError(labels.updateFailed || __('The comment was not updated.'));
             })
-            .on(`resolveFailed${ns}`, () => {
-                showError(labels.resolveFailed || __('The comment was not resolved.'));
+            .on(`resolveFailed${ns}`, (error, resolved) => {
+                const isResolveAction = resolved !== false;
+                const fallback = isResolveAction
+                    ? __('The comment was not resolved.')
+                    : __('The comment was not reopened.');
+                const labelOverride = isResolveAction
+                    ? labels.resolveFailed
+                    : labels.reopenFailed || labels.resolveFailed;
+
+                showError(labelOverride || fallback);
             })
             .on(`deleteFailed${ns}`, () => {
                 showError(labels.deleteFailed || __('The comment was not deleted.'));
