@@ -342,7 +342,24 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             itemUri: 'item://1',
             api: {
                 list() {
-                    return Promise.resolve({ comments: [commentA], count: 1 });
+                    return Promise.resolve({
+                        comments: [
+                            {
+                                id: 'c1',
+                                resourceUri: 'item://1',
+                                resourceType: 'item',
+                                authorId: 'u1',
+                                authorLabel: 'Ada',
+                                body: 'Body',
+                                createdAt: '2026-07-27T09:12:00Z',
+                                edited: false,
+                                resolved: false,
+                                editable: true,
+                                deletable: true
+                            }
+                        ],
+                        count: 1
+                    });
                 },
                 create() {
                     return Promise.reject(new Error('unused'));
