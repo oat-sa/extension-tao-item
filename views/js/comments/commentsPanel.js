@@ -373,7 +373,6 @@ define([
         store
             .on(
                 [
-                    `loaded${ns}`,
                     `countchange${ns}`,
                     `submitted${ns}`,
                     `updated${ns}`,
@@ -383,6 +382,9 @@ define([
                     renderComments();
                 }
             )
+            .on(`loaded${ns}`, () => {
+                renderComments({ preserveScrollTop: true });
+            })
             .on(`resolved${ns}`, () => {
                 renderComments({ preserveScrollTop: true });
             })
