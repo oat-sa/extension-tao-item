@@ -89,6 +89,7 @@ define([
         const $menuLayer = $('<div class="item-comments-menu-layer" aria-hidden="true"></div>');
 
         const editEditors = {};
+        let isFirstRefresh = true;
 
         $host.empty().append($panel);
         $panel.prepend($menuLayer);
@@ -547,8 +548,16 @@ define([
 
             refresh() {
                 renderComments();
-                scrollToNewest();
-                return store.load().catch(_.noop);
+                const loadPromise = store.load().catch(_.noop);
+
+                if (!isFirstRefresh) {
+                    return loadPromise;
+                }
+
+                isFirstRefresh = false;
+                return loadPromise.then(() => {
+                    scrollToNewest();
+                });
             },
 
             scrollToNewest() {

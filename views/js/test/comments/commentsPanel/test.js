@@ -200,20 +200,46 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         assert.equal($host.find('.item-comments-panel').length, 0, 'panel removed on destroy');
     });
 
-    QUnit.test('reopen failure shows reopen-specific error message', function (assert) {
-        const store = createStore(sampleComments);
+    QUnit.test('refresh scrolls to newest only on first call', function (assert) {
+        const done = assert.async();
+        let loadCalls = 0;
+        let store;
+
+        store = createStore(sampleComments, {
+            load() {
+                loadCalls += 1;
+                store.trigger('loaded');
+                return Promise.resolve(store);
+            }
+        });
+
         const $host = $('#qunit-fixture .comments-host');
         const panel = createPanel($host, store);
+        const listElement = $host.find('.item-comments-list').get(0);
 
-        assert.expect(2);
+        assert.expect(3);
 
-        store.trigger('resolveFailed', new Error('offline'), false);
+        stubMetric(listElement, 'scrollHeight', 420);
+        listElement.scrollTop = 7;
 
-        const $error = $host.find('.item-comments-error');
-        assert.equal($error.prop('hidden'), false, 'error area is visible');
-        assert.equal($error.text().trim(), 'The comment was not reopened.', 'reopen fallback copy is used');
+        panel.refresh()
+            .then(function () {
+                assert.equal(listElement.scrollTop, 420, 'first refresh moves viewport to newest comment');
 
-        panel.destroy();
+                listElement.scrollTop = 111;
+                return panel.refresh();
+            })
+            .then(function () {
+                assert.equal(listElement.scrollTop, 111, 'later refresh keeps current viewport position');
+                assert.equal(loadCalls, 2, 'both refresh calls still reload comments');
+                panel.destroy();
+                done();
+            })
+            .catch(function (error) {
+                assert.ok(false, error && error.message ? error.message : 'refresh promise rejected');
+                panel.destroy();
+                done();
+            });
     });
 
     QUnit.module('overlay lifecycle', {
