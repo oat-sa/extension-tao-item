@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:ignoreFile -- Legacy TAO action class naming is required for route resolution.
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,6 +34,9 @@ use oat\taoItems\model\Comment\ItemCommentService;
  * - POST /taoItems/RestResourceComments/update (id, body) — author can edit own comment
  * - POST /taoItems/RestResourceComments/resolve (id, resolved) — any authenticated authoring user
  * - POST /taoItems/RestResourceComments/delete (id) — author can delete own comment
+ *
+ * Mention user search lives in the user domain:
+ * - GET /tao/RestUser/searchUsers?resourceUri=&resourceType=&q=&limit=&offset=
  */
 class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 {
@@ -86,7 +91,7 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
             }
 
             $this->setErrorJsonResponse('Method not allowed', 405, [], 405);
-        } catch (common_exception_Unauthorized $exception) {
+        } catch (\common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
         } catch (InvalidArgumentException $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
@@ -119,7 +124,7 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
             $service = $this->getItemCommentService();
             $comment = $service->update($commentId, $body);
             $this->setSuccessJsonResponse($service->serializeComment($comment));
-        } catch (common_exception_Unauthorized $exception) {
+        } catch (\common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
         } catch (InvalidArgumentException $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
@@ -158,7 +163,7 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
             $service = $this->getItemCommentService();
             $comment = $service->resolve($commentId, $resolved);
             $this->setSuccessJsonResponse($service->serializeComment($comment));
-        } catch (common_exception_Unauthorized $exception) {
+        } catch (\common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
         } catch (InvalidArgumentException $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
@@ -185,7 +190,7 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 
             $this->getItemCommentService()->delete($commentId);
             $this->setSuccessJsonResponse(['id' => $commentId]);
-        } catch (common_exception_Unauthorized $exception) {
+        } catch (\common_exception_Unauthorized $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
         } catch (InvalidArgumentException $exception) {
             $this->setErrorJsonResponse($exception->getMessage(), 412, [], 412);
