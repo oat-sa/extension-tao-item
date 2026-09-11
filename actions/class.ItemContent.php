@@ -28,6 +28,7 @@ use oat\taoItems\model\media\CurrentAssetResolver;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\taoItems\model\media\LocalItemSource;
 use Psr\Http\Message\StreamInterface;
+use common_exception_BadRequest as BadRequestException;
 use common_exception_MissingParameter as MissingParameterException;
 use tao_models_classes_FileNotFoundException as FileNotFoundException;
 
@@ -63,6 +64,21 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         ['uri' => $uri, 'lang' => $lang, 'path' => $path] = $params;
 
+        $this->assertOptionalScalarQueryParams(
+            $params,
+            'depth',
+            'childrenOffset',
+            'sortBy',
+            'sortDir',
+            'query',
+            'page',
+            'pageSize',
+            'currentAsset'
+        );
+        if (array_key_exists('metadata', $params) && $params['metadata'] !== null && !is_array($params['metadata'])) {
+            throw new BadRequestException('Invalid query parameter "metadata"');
+        }
+
         $depth = (int)($params['depth'] ?? 1);
         $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
 
@@ -79,14 +95,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $searchQuery
             ->setSortBy((string)($params['sortBy'] ?? self::DEFAULT_SORT_BY))
-            ->setSortDir((string)($params['sortDir'] ?? 'asc'));
+            ->setSortDir((string)($params['sortDir'] ?? 'asc'))
+            ->setMetadataCriteria(is_array($params['metadata'] ?? null) ? $params['metadata'] : []);
 
         $queryText = trim((string)($params['query'] ?? ''));
-        $metadataCriteria = $this->normalizeMetadataCriteria($params['metadata'] ?? null);
-        if ($queryText !== '' || $metadataCriteria !== []) {
+        if ($queryText !== '' || $searchQuery->hasMetadataCriteria()) {
             $searchQuery
                 ->setQuery($queryText)
-                ->setMetadataCriteria($metadataCriteria)
                 ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
                 ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
 
@@ -140,38 +155,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $response['currentAsset'] = $resolved['currentAsset'];
 
         return $response;
-    }
-
-    /**
-     * @param mixed $raw
-     * @return array<string, string>
-     */
-    private function normalizeMetadataCriteria($raw): array
-    {
-        if (!is_array($raw)) {
-            return [];
-        }
-
-        $normalized = [];
-        foreach ($raw as $propertyUri => $value) {
-            if (!is_string($propertyUri) || $propertyUri === '') {
-                continue;
-            }
-            if (is_array($value)) {
-                foreach ($value as $entry) {
-                    if (is_string($entry) && $entry !== '') {
-                        $normalized[$propertyUri] = $entry;
-                        break;
-                    }
-                }
-                continue;
-            }
-            if (is_string($value) && $value !== '') {
-                $normalized[$propertyUri] = $value;
-            }
-        }
-
-        return $normalized;
     }
 
     /**
@@ -381,6 +364,21 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         }
 
         return is_string($value) && trim($value) === '';
+    }
+
+    /**
+     * @throws BadRequestException
+     */
+    private function assertOptionalScalarQueryParams(array $params, string ...$keys): void
+    {
+        foreach ($keys as $key) {
+            if (!array_key_exists($key, $params)) {
+                continue;
+            }
+            if ($params[$key] !== null && !is_scalar($params[$key])) {
+                throw new BadRequestException(sprintf('Invalid query parameter "%s"', $key));
+            }
+        }
     }
 
     private function buildFilters(array $params): array

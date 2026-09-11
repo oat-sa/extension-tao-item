@@ -52,6 +52,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         $scopeLabel = (string)($data['label'] ?? $data['path'] ?? '');
         $directories = [];
         $files = [];
+        $totalFiles = 0;
 
         foreach ($children as $child) {
             if (!is_array($child)) {
@@ -59,6 +60,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             }
 
             if ($this->isFileChild($child)) {
+                $totalFiles++;
                 if (count($files) < self::MAX_BROWSE_LOAD) {
                     $files[] = $this->normalizeFile($child, $scopeLabel);
                 }
@@ -67,16 +69,15 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
             // Directories and other non-file nodes stay as stubs for tree expand.
             $directories[] = $this->toDirectoryStub($child, $search);
-            if (count($files) < self::MAX_BROWSE_LOAD) {
-                $this->collectFiles(
-                    $child['children'] ?? [],
-                    $this->childLocation($scopeLabel, $child),
-                    $files
-                );
-            }
+            $this->collectFiles(
+                $child['children'] ?? [],
+                $this->childLocation($scopeLabel, $child),
+                $files,
+                $totalFiles
+            );
         }
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
-        $data['total'] = count($files);
+        $data['total'] = $totalFiles;
         $data['childrenLimit'] = $pageSize;
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
 
@@ -131,12 +132,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * @param array<int, mixed> $nodes
      * @param array<int, array> $files
      */
-    private function collectFiles(array $nodes, string $location, array &$files): void
+    private function collectFiles(array $nodes, string $location, array &$files, int &$totalFiles): void
     {
         foreach ($nodes as $child) {
-            if (count($files) >= self::MAX_BROWSE_LOAD) {
-                return;
-            }
             if (!is_array($child)) {
                 continue;
             }
@@ -145,13 +143,17 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 $this->collectFiles(
                     $child['children'] ?? [],
                     $this->childLocation($location, $child),
-                    $files
+                    $files,
+                    $totalFiles
                 );
                 continue;
             }
 
             if ($this->isFileChild($child)) {
-                $files[] = $this->normalizeFile($child, $location);
+                $totalFiles++;
+                if (count($files) < self::MAX_BROWSE_LOAD) {
+                    $files[] = $this->normalizeFile($child, $location);
+                }
             }
         }
     }
@@ -213,9 +215,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      */
     private function normalizeFile(array $file, string $location): array
     {
-        if (!isset($file['location']) || $file['location'] === '') {
-            $file['location'] = $location;
-        }
+        // Keep explicit empty location as missing (nulls-last), same as AssetSearchBuilder.
+        $file['location'] = (string)($file['location'] ?? $location);
         if (!isset($file['updatedAt']) && isset($file['updated_at'])) {
             $file['updatedAt'] = $file['updated_at'];
         }
@@ -249,9 +250,26 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     {
         $field = $sortBy ?: self::SORT_LABEL;
         $direction = $sortDir === 'desc' ? 'desc' : 'asc';
+        $nullsLast = in_array($field, [self::SORT_LOCATION, self::SORT_UPDATED_AT], true);
 
-        usort($files, function (array $left, array $right) use ($field, $direction): int {
-            $result = $this->sortValue($left, $field) <=> $this->sortValue($right, $field);
+        usort($files, function (array $left, array $right) use ($field, $direction, $nullsLast): int {
+            if ($nullsLast) {
+                $leftMissing = $this->isMissingSortValue($left, $field);
+                $rightMissing = $this->isMissingSortValue($right, $field);
+                if ($leftMissing || $rightMissing) {
+                    if ($leftMissing && $rightMissing) {
+                        $result = 0;
+                    } else {
+                        // Missing values stay last for both asc and desc.
+                        return $leftMissing ? 1 : -1;
+                    }
+                } else {
+                    $result = $this->sortValue($left, $field) <=> $this->sortValue($right, $field);
+                }
+            } else {
+                $result = $this->sortValue($left, $field) <=> $this->sortValue($right, $field);
+            }
+
             if ($result === 0 && $field !== self::SORT_LABEL) {
                 $result = $this->sortValue($left, self::SORT_LABEL)
                     <=> $this->sortValue($right, self::SORT_LABEL);
@@ -264,6 +282,18 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         });
 
         return $files;
+    }
+
+    private function isMissingSortValue(array $item, string $sortBy): bool
+    {
+        if ($sortBy === self::SORT_LOCATION) {
+            return trim((string)($item['location'] ?? $item['path'] ?? '')) === '';
+        }
+        if ($sortBy === self::SORT_UPDATED_AT) {
+            return !isset($item['updatedAt']) && !isset($item['updated_at']);
+        }
+
+        return false;
     }
 
     private function sortValue(array $item, string $sortBy): string

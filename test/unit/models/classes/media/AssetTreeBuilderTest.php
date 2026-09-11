@@ -441,4 +441,117 @@ class AssetTreeBuilderTest extends TestCase
         // Equal case-folded keys fall back to uri for a stable order.
         $this->assertSame(['Banana', 'éclair', 'Éclair'], $labels);
     }
+
+    public function testBuildReportsTotalBeyondBrowseLoadCap(): void
+    {
+        $children = [];
+        for ($i = 1; $i <= 505; $i++) {
+            $children[] = [
+                'uri' => 'u-' . $i,
+                'name' => sprintf('file-%03d.png', $i),
+                'mime' => 'image/png',
+            ];
+        }
+
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Root',
+            'children' => $children,
+        ]);
+
+        $result = $this->subject->build(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
+        );
+
+        $this->assertSame(505, $result['total']);
+        $files = array_values(array_filter(
+            $result['children'],
+            static function (array $child): bool {
+                return isset($child['uri']);
+            }
+        ));
+        $this->assertLessThanOrEqual(15, count($files));
+    }
+
+    /**
+     * @dataProvider provideNullsLastBrowseSort
+     */
+    public function testBuildSortsMissingLocationAndUpdatedAtLast(
+        string $sortBy,
+        string $sortDir,
+        array $expectedNames
+    ): void {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Root',
+            'children' => [
+                [
+                    'uri' => 'u-missing',
+                    'name' => 'missing.png',
+                    'mime' => 'image/png',
+                    'location' => '',
+                ],
+                [
+                    'uri' => 'u-a',
+                    'name' => 'a.png',
+                    'mime' => 'image/png',
+                    'location' => 'Folder/A',
+                    'updatedAt' => '2024-01-01',
+                ],
+                [
+                    'uri' => 'u-b',
+                    'name' => 'b.png',
+                    'mime' => 'image/png',
+                    'location' => 'Folder/B',
+                    'updatedAt' => '2024-01-02',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->build(
+            (new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'))
+                ->setSortBy($sortBy)
+                ->setSortDir($sortDir)
+        );
+
+        $names = array_map(
+            static function (array $child): string {
+                return (string)($child['name'] ?? '');
+            },
+            array_values(array_filter(
+                $result['children'],
+                static function (array $child): bool {
+                    return isset($child['uri']);
+                }
+            ))
+        );
+
+        $this->assertSame($expectedNames, $names);
+    }
+
+    public function provideNullsLastBrowseSort(): array
+    {
+        return [
+            'location asc' => [
+                AssetSearchQuery::SORT_LOCATION,
+                'asc',
+                ['a.png', 'b.png', 'missing.png'],
+            ],
+            'location desc' => [
+                AssetSearchQuery::SORT_LOCATION,
+                'desc',
+                ['b.png', 'a.png', 'missing.png'],
+            ],
+            'updatedAt asc' => [
+                AssetSearchQuery::SORT_UPDATED_AT,
+                'asc',
+                ['a.png', 'b.png', 'missing.png'],
+            ],
+            'updatedAt desc' => [
+                AssetSearchQuery::SORT_UPDATED_AT,
+                'desc',
+                ['b.png', 'a.png', 'missing.png'],
+            ],
+        ];
+    }
 }

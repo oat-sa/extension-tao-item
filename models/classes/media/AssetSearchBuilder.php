@@ -99,6 +99,10 @@ class AssetSearchBuilder extends ConfigurableService
 
             return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
         } catch (\Throwable $exception) {
+            $this->logWarning(
+                sprintf('Indexed asset search gateway unavailable: %s', $exception->getMessage())
+            );
+
             return null;
         }
     }
@@ -120,8 +124,19 @@ class AssetSearchBuilder extends ConfigurableService
             }
 
             if ($this->isDirectoryNode($child)) {
-                $childLabel = (string)($child['label'] ?? $child['path'] ?? '');
-                $childLocation = trim($currentLocation . '/' . $childLabel, '/');
+                $childLabel = trim((string)($child['label'] ?? ''));
+                if ($childLabel === '') {
+                    $path = trim((string)($child['path'] ?? ''), '/');
+                    if ($path !== '' && str_contains($path, '/')) {
+                        $path = substr($path, (int)strrpos($path, '/') + 1);
+                    }
+                    $childLabel = $path;
+                }
+                $childLocation = $currentLocation === ''
+                    ? $childLabel
+                    : ($childLabel === ''
+                        ? $currentLocation
+                        : trim($currentLocation . '/' . $childLabel, '/'));
                 foreach ($this->flattenAssets($child, $scopePath, $scopeLabel, $childLocation) as $nestedItem) {
                     $items[] = $nestedItem;
                 }

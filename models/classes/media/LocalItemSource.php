@@ -64,11 +64,15 @@ class LocalItemSource implements MediaManagement
      */
     public function getDirectories(DirectorySearchQuery $params): array
     {
+        $childrenLimit = $params->getChildrenLimit();
+        $fileSlotsRemaining = $childrenLimit > 0 ? $childrenLimit : null;
+
         return $this->searchDirectories(
             $params->getParentLink(),
             $params->getFilter(),
             $params->getDepth(),
-            $params->getChildrenLimit()
+            $childrenLimit,
+            $fileSlotsRemaining
         );
     }
 
@@ -81,7 +85,9 @@ class LocalItemSource implements MediaManagement
      */
     public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
     {
-        return $this->searchDirectories($parentLink, $acceptableMime, $depth, 0);
+        $fileSlotsRemaining = null;
+
+        return $this->searchDirectories($parentLink, $acceptableMime, $depth, 0, $fileSlotsRemaining);
     }
 
     /**
@@ -311,6 +317,8 @@ class LocalItemSource implements MediaManagement
     }
 
     /**
+     * @param array<int, string> $acceptableMime
+     * @param int|null $fileSlotsRemaining null = unlimited; 0 = no more files (dirs still listed)
      * @throws \common_Exception
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
@@ -319,7 +327,8 @@ class LocalItemSource implements MediaManagement
         string $parentLink,
         array $acceptableMime,
         int $depth,
-        int $childrenLimit
+        int $childrenLimit,
+        ?int &$fileSlotsRemaining
     ): array {
         if (!tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));
@@ -366,8 +375,13 @@ class LocalItemSource implements MediaManagement
                     $itemDirectory->getRelPath($content),
                     $acceptableMime,
                     $depth - 1,
-                    $childrenLimit
+                    $childrenLimit,
+                    $fileSlotsRemaining
                 );
+                continue;
+            }
+
+            if ($fileSlotsRemaining !== null && $fileSlotsRemaining <= 0) {
                 continue;
             }
 
@@ -375,6 +389,9 @@ class LocalItemSource implements MediaManagement
             if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
                 $children[] = $fileInfo;
                 $total++;
+                if ($fileSlotsRemaining !== null) {
+                    $fileSlotsRemaining--;
+                }
             }
         }
 

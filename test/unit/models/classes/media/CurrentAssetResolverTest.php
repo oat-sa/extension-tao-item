@@ -111,7 +111,7 @@ class CurrentAssetResolverTest extends TestCase
         $this->assertNull($result['currentAsset']);
     }
 
-    public function testResolveFromLocalAssetKeepsParentWhenAccessDenied(): void
+    public function testResolveFromLocalAssetReturnsEmptyWhenAccessDenied(): void
     {
         $mediaSource = $this->createMock(MediaBrowser::class);
         $mediaSource->method('getFileInfo')->willReturn([
@@ -125,7 +125,7 @@ class CurrentAssetResolverTest extends TestCase
         $asset = new MediaAsset($mediaSource, 'images/secret.png');
         $result = $this->subject->resolveFromAsset($asset, ['image/png']);
 
-        $this->assertSame('images', $result['parentPath']);
+        $this->assertNull($result['parentPath']);
         $this->assertNull($result['currentAsset']);
     }
 

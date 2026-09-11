@@ -83,9 +83,14 @@ final class CurrentAssetResolver
         }
 
         $fileInfo = $mediaSource->getFileInfo($asset->getMediaIdentifier());
-        $parentPath = $this->resolveParentPath($asset, $mediaSource, $fileInfo);
         $resourceUri = $this->resolvePermissionUri($asset, $mediaSource, $fileInfo);
-        $selectable = $this->isSelectable($fileInfo, $resourceUri, $mimeFilters);
+
+        if ($resourceUri !== '' && !$this->permissionChecker->hasReadAccess($resourceUri)) {
+            return $this->emptyResult();
+        }
+
+        $parentPath = $this->resolveParentPath($asset, $mediaSource, $fileInfo);
+        $selectable = $this->isSelectable($fileInfo, $mimeFilters);
 
         return [
             'parentPath' => $parentPath,
@@ -157,12 +162,8 @@ final class CurrentAssetResolver
      * @param array<string, mixed> $fileInfo
      * @param array<int, string> $mimeFilters
      */
-    private function isSelectable(array $fileInfo, string $resourceUri, array $mimeFilters): bool
+    private function isSelectable(array $fileInfo, array $mimeFilters): bool
     {
-        if ($resourceUri !== '' && !$this->permissionChecker->hasReadAccess($resourceUri)) {
-            return false;
-        }
-
         $mime = trim((string)($fileInfo['mime'] ?? ''));
         $normalizedFilters = array_values(array_filter($mimeFilters, static function ($value): bool {
             return is_string($value) && $value !== '';

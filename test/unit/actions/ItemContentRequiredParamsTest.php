@@ -22,7 +22,11 @@ declare(strict_types=1);
 
 namespace oat\taoItems\test\unit\actions;
 
+use common_exception_BadRequest as BadRequestException;
 use oat\generis\test\TestCase;
+use oat\tao\model\media\MediaAsset;
+use oat\tao\model\media\MediaBrowser;
+use oat\taoItems\model\media\AssetSearchQuery;
 use ReflectionMethod;
 
 class ItemContentRequiredParamsTest extends TestCase
@@ -42,20 +46,40 @@ class ItemContentRequiredParamsTest extends TestCase
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => ['bad']], 'uri'));
     }
 
-    public function testNormalizeMetadataCriteriaParsesPropertyValuePairs(): void
+    public function testAssetSearchQueryNormalizesMetadataCriteria(): void
     {
         $propertyUri = 'http://www.tao.lu/Ontologies/TAO.rdf#Keywords';
-        $criteria = $this->invokeNormalizeMetadataCriteria([
+        $mediaSource = $this->createMock(MediaBrowser::class);
+        $query = new AssetSearchQuery(new MediaAsset($mediaSource, '/'), 'item', 'en-US');
+        $query->setMetadataCriteria([
             $propertyUri => 'science',
             'http://example.com/empty' => '',
             123 => 'ignored',
             'http://example.com/arr' => ['Diagram', 'other'],
         ]);
 
+        $this->assertTrue($query->hasMetadataCriteria());
         $this->assertSame([
             $propertyUri => 'science',
             'http://example.com/arr' => 'Diagram',
-        ], $criteria);
+        ], $query->getMetadataCriteria());
+    }
+
+    public function testAssertOptionalScalarQueryParamsRejectsArrays(): void
+    {
+        $this->expectException(BadRequestException::class);
+        $this->invokeAssertOptionalScalarQueryParams(['sortBy' => ['label']], 'sortBy');
+    }
+
+    public function testAssertOptionalScalarQueryParamsAllowsScalars(): void
+    {
+        $this->invokeAssertOptionalScalarQueryParams(
+            ['sortBy' => 'label', 'page' => 1, 'query' => 'cat'],
+            'sortBy',
+            'page',
+            'query'
+        );
+        $this->addToAssertionCount(1);
     }
 
     private function invokeIsMissingOrBlankQueryParam(array $params, string $key): bool
@@ -67,16 +91,11 @@ class ItemContentRequiredParamsTest extends TestCase
         return (bool)$method->invoke($controller, $params, $key);
     }
 
-    /**
-     * @param mixed $raw
-     * @return array<string, string>
-     */
-    private function invokeNormalizeMetadataCriteria($raw): array
+    private function invokeAssertOptionalScalarQueryParams(array $params, string ...$keys): void
     {
         $controller = new \taoItems_actions_ItemContent();
-        $method = new ReflectionMethod($controller, 'normalizeMetadataCriteria');
+        $method = new ReflectionMethod($controller, 'assertOptionalScalarQueryParams');
         $method->setAccessible(true);
-
-        return $method->invoke($controller, $raw);
+        $method->invoke($controller, $params, ...$keys);
     }
 }
