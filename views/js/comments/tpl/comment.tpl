@@ -5,6 +5,9 @@
         {{#if edited}}
         <span class="item-comment-edited">({{__ 'edited'}})</span>
         {{/if}}
+        {{#if resolved}}
+        <span class="item-comment-resolved-icon icon-success" aria-hidden="true"></span>
+        {{/if}}
     </div>
     <div class="item-comment-body" data-role="body"></div>
     <div class="item-comment-edit-form" data-role="edit-form" hidden>
