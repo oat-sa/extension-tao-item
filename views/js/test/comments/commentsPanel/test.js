@@ -234,6 +234,32 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         panel.destroy();
     });
 
+    QUnit.test('resolved comment shows success tick marker', function (assert) {
+        const store = createStore([
+            {
+                id: 'c3',
+                authorLabel: 'admin',
+                createdAt: '2026-08-24T09:21:00Z',
+                body: 'Resolved comment',
+                edited: false,
+                editable: false,
+                deletable: true,
+                resolved: true
+            }
+        ]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+
+        assert.expect(3);
+
+        const $resolved = $host.find('.item-comment.is-resolved').first();
+        assert.equal($resolved.length, 1, 'resolved row rendered');
+        assert.equal($resolved.find('.item-comment-resolved-icon.icon-success').length, 1, 'resolved tick icon rendered');
+        assert.equal($resolved.find('.item-comment-resolve-link').data('action'), 'reopen', 'resolved row exposes reopen action');
+
+        panel.destroy();
+    });
+
     QUnit.test('refresh scrolls to newest only on first call', function (assert) {
         const done = assert.async();
         let loadCalls = 0;
@@ -323,6 +349,23 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
                 panel.destroy();
                 done();
             });
+    });
+
+    QUnit.test('resolved rerender preserves list scroll position', function (assert) {
+        const store = createStore(sampleComments);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const listElement = $host.find('.item-comments-list').get(0);
+
+        assert.expect(1);
+
+        stubScrollTop(listElement);
+        listElement.scrollTop = 37;
+        store.trigger('resolved');
+
+        assert.equal(listElement.scrollTop, 37, 'resolved update keeps current list scroll');
+
+        panel.destroy();
     });
 
     QUnit.module('overlay lifecycle', {

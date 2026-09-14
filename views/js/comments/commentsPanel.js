@@ -153,7 +153,11 @@ define([
             }
         }
 
-        function renderComments() {
+        function renderComments(options) {
+            const renderOptions = options || {};
+            const list = $list.get(0);
+            const previousScrollTop = renderOptions.preserveScrollTop && list ? list.scrollTop : null;
+
             closeMoreMenus();
             Object.keys(editEditors).forEach(commentId => {
                 editEditors[commentId].destroy();
@@ -202,6 +206,10 @@ define([
                 draftEditor.setData(store.getDraft());
             }
             $submit.prop('disabled', !store.hasDirtyDraft() || store.isSubmitting());
+
+            if (previousScrollTop !== null && list) {
+                list.scrollTop = previousScrollTop;
+            }
         }
 
         function findComment(commentId) {
@@ -366,17 +374,21 @@ define([
         store
             .on(
                 [
-                    `loaded${ns}`,
                     `countchange${ns}`,
                     `submitted${ns}`,
                     `updated${ns}`,
-                    `resolved${ns}`,
                     `deleted${ns}`
                 ].join(' '),
                 () => {
                     renderComments();
                 }
             )
+            .on(`loaded${ns}`, () => {
+                renderComments({ preserveScrollTop: true });
+            })
+            .on(`resolved${ns}`, () => {
+                renderComments({ preserveScrollTop: true });
+            })
             .on(`draftchange${ns}`, draft => {
                 $submit.prop('disabled', !store.hasDirtyDraft());
             })
