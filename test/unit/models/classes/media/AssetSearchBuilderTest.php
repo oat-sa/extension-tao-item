@@ -648,7 +648,7 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('test.png', $result['items'][0]['name']);
     }
 
-    public function testSearchFallbackRequestsUnlimitedChildrenLoad(): void
+    public function testSearchFallbackRequestsBoundedChildrenLoad(): void
     {
         $captured = null;
         $this->mediaSource
@@ -665,12 +665,34 @@ class AssetSearchBuilderTest extends TestCase
                 'children' => [],
             ]);
 
-        $this->subject->search($this->createSearchQuery('any', 1, 10));
+        $result = $this->subject->search($this->createSearchQuery('any', 1, 10));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(500, $captured->getChildrenLimit());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
         $this->assertSame(0, $captured->getChildrenOffset());
+        $this->assertFalse($result['truncated']);
+    }
+
+    public function testSearchFallbackMarksTruncatedWhenSourceTotalExceedsLoaded(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'total' => 900,
+            'children' => [
+                [
+                    'name' => 'match.png',
+                    'uri' => 'asset://match',
+                    'mime' => 'image/png',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->search($this->createSearchQuery('match', 1, 10));
+
+        $this->assertTrue($result['truncated']);
+        $this->assertSame(1, $result['total']);
     }
 
     public function testSearchOnlyIncludesAssetsReturnedByScopedTree(): void

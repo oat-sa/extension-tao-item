@@ -26,8 +26,8 @@ class AssetSearchBuilder extends ConfigurableService
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
-    /** Media sources treat childrenLimit 0 as unlimited (full match set for fallback). */
-    private const UNLIMITED_SEARCH_LOAD = 0;
+    /** Bound enrichment for filesystem fallback; prefer indexed search for large scopes. */
+    private const MAX_SEARCH_LOAD = 500;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -52,8 +52,7 @@ class AssetSearchBuilder extends ConfigurableService
             $mediaSource->enableAccessControl();
         }
 
-        // Full subtree with unlimited file payload so filter/total stay accurate.
-        // Indexed gateway is preferred for large scopes; do not mutate the caller's query.
+        // Bounded payload; do not mutate the caller's query. Indexed path preferred for large scopes.
         $fetchQuery = new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -61,14 +60,17 @@ class AssetSearchBuilder extends ConfigurableService
             $search->getFilter(),
             self::FULL_SUBTREE_DEPTH,
             0,
-            self::UNLIMITED_SEARCH_LOAD
+            self::MAX_SEARCH_LOAD
         );
 
         $tree = $mediaSource->getDirectories($fetchQuery);
         $scopePath = (string)($tree['path'] ?? $search->getParentLink());
         $scopeLabel = (string)($tree['label'] ?? $scopePath);
+        $sourceTotal = array_key_exists('total', $tree) ? (int)$tree['total'] : null;
 
         $items = $this->flattenAssets($tree, $scopePath, $scopeLabel);
+        $truncated = $sourceTotal !== null && $sourceTotal > count($items);
+
         $items = $this->filterByQuery($items, $search->getQuery());
         $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
 
@@ -83,6 +85,7 @@ class AssetSearchBuilder extends ConfigurableService
             'total' => $total,
             'page' => $page,
             'pageSize' => $pageSize,
+            'truncated' => $truncated,
         ];
     }
 
@@ -207,7 +210,6 @@ class AssetSearchBuilder extends ConfigurableService
                         $item['name'] ?? '',
                         $item['location'] ?? '',
                         $item['alt'] ?? '',
-                        $item['uri'] ?? '',
                     ])
                 )
             );

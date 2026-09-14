@@ -66,7 +66,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
         $this->assertOptionalScalarQueryParams(
             $params,
-            'depth',
             'childrenOffset',
             'sortBy',
             'sortDir',
@@ -79,7 +78,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new BadRequestException('Invalid query parameter "metadata"');
         }
 
-        $depth = (int)($params['depth'] ?? 1);
+        // Depth is owned by AssetTreeBuilder / AssetSearchBuilder (full subtree); ignore client depth.
         $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
 
         $filters = $this->buildFilters($params);
@@ -89,7 +88,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             $uri,
             $lang,
             $filters,
-            $depth,
+            1,
             $childrenOffset
         );
 

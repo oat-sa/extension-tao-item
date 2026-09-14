@@ -29,16 +29,17 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
     /**
      * Full subtree so browse lists files under the selected folder and descendants.
-     * Media sources treat childrenLimit 0 as unlimited — required so sort+pagination
-     * can reach every page when total exceeds any in-memory window.
+     * Enrichment is bounded; sources may still report a higher total (truncated=true).
+     * Load window grows with the requested page so offsets past the base cap stay reachable.
      */
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
-    private const UNLIMITED_BROWSE_LOAD = 0;
+    private const MAX_BROWSE_LOAD = 500;
 
     public function build(DirectorySearchQuery $search): array
     {
         $pageSize = $this->getPaginationLimit();
         $offset = $search->getChildrenOffset();
+        $loadLimit = max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
 
         $mediaSource = $search->getAsset()->getMediaSource();
 
@@ -46,7 +47,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             $mediaSource->enableAccessControl();
         }
 
-        $fetchQuery = $this->createFetchQuery($search);
+        $fetchQuery = $this->createFetchQuery($search, $loadLimit);
         $data = $mediaSource->getDirectories($fetchQuery);
         $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
         $children = $data['children'] ?? [];
@@ -63,7 +64,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                $files[] = $this->normalizeFile($child, $scopeLabel);
+                if (count($files) < $loadLimit) {
+                    $files[] = $this->normalizeFile($child, $scopeLabel);
+                }
                 continue;
             }
 
@@ -73,24 +76,26 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 $child['children'] ?? [],
                 $this->childLocation($scopeLabel, $child),
                 $files,
-                $totalFiles
+                $totalFiles,
+                $loadLimit
             );
         }
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
-        // Prefer source recursive total when present.
+        $loadedCount = count($files);
+        // Prefer source recursive total when present (counts beyond the enrichment window).
         $data['total'] = $sourceReportedTotal !== null
             ? max($sourceReportedTotal, $totalFiles)
             : $totalFiles;
+        $data['truncated'] = $data['total'] > $loadedCount;
         $data['childrenLimit'] = $pageSize;
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
 
         return $data;
     }
 
-    private function createFetchQuery(DirectorySearchQuery $search): AssetSearchQuery
+    private function createFetchQuery(DirectorySearchQuery $search, int $loadLimit): AssetSearchQuery
     {
         // Rebuild with offset 0 so media sources do not paginate before we sort+slice.
-        // Unlimited childrenLimit so pages past any former in-memory cap stay reachable.
         return (new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -98,7 +103,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             $search->getFilter(),
             self::FULL_SUBTREE_DEPTH,
             0,
-            self::UNLIMITED_BROWSE_LOAD
+            $loadLimit
         ))
             ->setSortBy($this->resolveSortBy($search))
             ->setSortDir($this->resolveSortDir($search));
@@ -135,8 +140,13 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * @param array<int, mixed> $nodes
      * @param array<int, array> $files
      */
-    private function collectFiles(array $nodes, string $location, array &$files, int &$totalFiles): void
-    {
+    private function collectFiles(
+        array $nodes,
+        string $location,
+        array &$files,
+        int &$totalFiles,
+        int $loadLimit
+    ): void {
         foreach ($nodes as $child) {
             if (!is_array($child)) {
                 continue;
@@ -147,14 +157,17 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                     $child['children'] ?? [],
                     $this->childLocation($location, $child),
                     $files,
-                    $totalFiles
+                    $totalFiles,
+                    $loadLimit
                 );
                 continue;
             }
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                $files[] = $this->normalizeFile($child, $location);
+                if (count($files) < $loadLimit) {
+                    $files[] = $this->normalizeFile($child, $location);
+                }
             }
         }
     }

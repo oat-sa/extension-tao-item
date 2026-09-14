@@ -132,6 +132,24 @@ class CurrentAssetResolverTest extends TestCase
         $this->assertNull($result['currentAsset']);
     }
 
+    public function testResolveFromLocalAssetReturnsEmptyWhenItemUriMissing(): void
+    {
+        $mediaSource = $this->createMock(LocalItemSource::class);
+        $mediaSource->method('getFileInfo')->willReturn([
+            'name' => 'secret.png',
+            'uri' => 'images/secret.png',
+            'mime' => 'image/png',
+        ]);
+
+        $this->permissionChecker->expects($this->never())->method('hasReadAccess');
+
+        $asset = new MediaAsset($mediaSource, 'images/secret.png');
+        $result = $this->subject->resolveFromAsset($asset, ['image/png']);
+
+        $this->assertNull($result['parentPath']);
+        $this->assertNull($result['currentAsset']);
+    }
+
     public function testResolveFromLocalRootFileUsesRootParentPath(): void
     {
         $mediaSource = $this->createMock(MediaBrowser::class);

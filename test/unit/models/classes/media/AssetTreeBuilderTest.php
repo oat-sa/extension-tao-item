@@ -119,6 +119,7 @@ class AssetTreeBuilderTest extends TestCase
             ],
             'total' => 0,
             'childrenLimit' => 15,
+            'truncated' => false,
         ];
 
         $this->assertEquals(
@@ -150,7 +151,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(900, $result['total']);
     }
 
-    public function testBuildRequestsUnlimitedChildrenLoadForCorrectPagination(): void
+    public function testBuildRequestsBoundedChildrenLoadCoveringRequestedPage(): void
     {
         $captured = null;
         $this->mediaSource->expects($this->once())
@@ -164,7 +165,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(500, $captured->getChildrenLimit());
         $this->assertSame(0, $captured->getChildrenOffset());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
@@ -409,7 +410,7 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
         $this->assertSame(0, $captured->getChildrenOffset());
-        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(500, $captured->getChildrenLimit());
         $this->assertSame(3, $result['total']);
         $files = array_values(array_filter(
             $result['children'],
@@ -502,7 +503,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(['Banana', 'éclair', 'Éclair'], $labels);
     }
 
-    public function testBuildPaginatesBeyondFormerBrowseLoadCap(): void
+    public function testBuildPaginatesWithinLoadWindowAndMarksTruncation(): void
     {
         $children = [];
         for ($i = 1; $i <= 505; $i++) {
@@ -516,13 +517,15 @@ class AssetTreeBuilderTest extends TestCase
         $this->mediaSource->method('getDirectories')->willReturn([
             'path' => '/',
             'label' => 'Root',
+            'total' => 900,
             'children' => $children,
         ]);
 
         $firstPage = $this->subject->build(
             new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
         );
-        $this->assertSame(505, $firstPage['total']);
+        $this->assertSame(900, $firstPage['total']);
+        $this->assertTrue($firstPage['truncated']);
         $firstFiles = array_values(array_filter(
             $firstPage['children'],
             static function (array $child): bool {
@@ -532,6 +535,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertCount(15, $firstFiles);
         $this->assertSame('file-001.png', $firstFiles[0]['name']);
 
+        // offset+pageSize (495+15=510) raises the enrichment window past 505 loaded children.
         $latePage = $this->subject->build(
             new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US', [], 1, 495)
         );
@@ -544,6 +548,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertCount(10, $lateFiles);
         $this->assertSame('file-496.png', $lateFiles[0]['name']);
         $this->assertSame('file-505.png', $lateFiles[9]['name']);
+        $this->assertTrue($latePage['truncated']);
     }
 
     /**

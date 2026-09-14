@@ -78,8 +78,7 @@ final class CurrentAssetResolver
         MediaAsset $asset,
         array $mimeFilters = [],
         string $itemUri = ''
-    ): array
-    {
+    ): array {
         $mediaSource = $asset->getMediaSource();
 
         if ($mediaSource instanceof AccessControlEnablerInterface) {
@@ -89,7 +88,7 @@ final class CurrentAssetResolver
         $fileInfo = $mediaSource->getFileInfo($asset->getMediaIdentifier());
         $resourceUri = $this->resolvePermissionUri($asset, $mediaSource, $fileInfo, $itemUri);
 
-        if ($resourceUri !== '' && !$this->permissionChecker->hasReadAccess($resourceUri)) {
+        if ($resourceUri === '' || !$this->permissionChecker->hasReadAccess($resourceUri)) {
             return $this->emptyResult();
         }
 
