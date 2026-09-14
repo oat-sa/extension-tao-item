@@ -170,6 +170,34 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
 
+    public function testBuildClampsHugeChildrenOffsetWithoutTypeError(): void
+    {
+        $captured = null;
+        $this->mediaSource->expects($this->once())
+            ->method('getDirectories')
+            ->with($this->callback(function (DirectorySearchQuery $query) use (&$captured): bool {
+                $captured = $query;
+                return true;
+            }))
+            ->willReturn([
+                'path' => '/',
+                'label' => 'Root',
+                'total' => 0,
+                'children' => [],
+            ]);
+
+        $result = $this->subject->build(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US', [], 1, PHP_INT_MAX)
+        );
+
+        $this->assertInstanceOf(AssetSearchQuery::class, $captured);
+        $this->assertIsInt($captured->getChildrenLimit());
+        // Offset clamped to MAX_CHILDREN_OFFSET (10000); load window = offset + pageSize (15).
+        $this->assertSame(10015, $captured->getChildrenLimit());
+        $this->assertSame([], $result['children']);
+        $this->assertFalse($result['truncated']);
+    }
+
     public function testBuildIncludesNestedFilesAndKeepsDirectoryStubs(): void
     {
         $this->mediaSource->method('getDirectories')->willReturn([

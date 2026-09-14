@@ -34,12 +34,14 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      */
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
     private const MAX_BROWSE_LOAD = 500;
+    /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
+    private const MAX_CHILDREN_OFFSET = 10000;
 
     public function build(DirectorySearchQuery $search): array
     {
         $pageSize = $this->getPaginationLimit();
-        $offset = $search->getChildrenOffset();
-        $loadLimit = max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
+        $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
+        $loadLimit = $this->resolveLoadLimit($offset, $pageSize);
 
         $mediaSource = $search->getAsset()->getMediaSource();
 
@@ -91,6 +93,19 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
 
         return $data;
+    }
+
+    private function resolveLoadLimit(int $offset, int $pageSize): int
+    {
+        if ($pageSize <= 0) {
+            return self::MAX_BROWSE_LOAD;
+        }
+        // Guard against float promotion when offset + pageSize exceeds PHP_INT_MAX.
+        if ($offset > PHP_INT_MAX - $pageSize) {
+            return self::MAX_BROWSE_LOAD;
+        }
+
+        return max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
     }
 
     private function createFetchQuery(DirectorySearchQuery $search, int $loadLimit): AssetSearchQuery
