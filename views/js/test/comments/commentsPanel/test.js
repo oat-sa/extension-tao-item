@@ -79,9 +79,9 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
             isSubmitting() {
                 return false;
             },
-            load() {
+            load(options) {
                 if (typeof apiSpies.load === 'function') {
-                    return apiSpies.load();
+                    return apiSpies.load(options);
                 }
                 this.trigger('loaded');
                 return Promise.resolve(this);
@@ -147,6 +147,24 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
     }
 
     /**
+     * @param {HTMLElement} element
+     * @param {number} [initialValue]
+     */
+    function stubScrollTop(element, initialValue) {
+        let scrollTop = Number(initialValue) || 0;
+
+        Object.defineProperty(element, 'scrollTop', {
+            configurable: true,
+            get() {
+                return scrollTop;
+            },
+            set(value) {
+                scrollTop = Number(value) || 0;
+            }
+        });
+    }
+
+    /**
      * @param {jQuery} $host
      * @param {object} store
      * @returns {object}
@@ -198,6 +216,158 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
 
         panel.destroy();
         assert.equal($host.find('.item-comments-panel').length, 0, 'panel removed on destroy');
+    });
+
+    QUnit.test('reopen failure shows reopen-specific error message', function (assert) {
+        const store = createStore(sampleComments);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+
+        assert.expect(2);
+
+        store.trigger('resolveFailed', new Error('offline'), false);
+
+        const $error = $host.find('.item-comments-error');
+        assert.equal($error.prop('hidden'), false, 'error area is visible');
+        assert.equal($error.text().trim(), 'The comment was not reopened.', 'reopen fallback copy is used');
+
+        panel.destroy();
+    });
+
+    QUnit.test('resolved comment shows success tick marker', function (assert) {
+        const store = createStore([
+            {
+                id: 'c3',
+                authorLabel: 'admin',
+                createdAt: '2026-08-24T09:21:00Z',
+                body: 'Resolved comment',
+                edited: false,
+                editable: false,
+                deletable: true,
+                resolved: true
+            }
+        ]);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+
+        assert.expect(3);
+
+        const $resolved = $host.find('.item-comment.is-resolved').first();
+        assert.equal($resolved.length, 1, 'resolved row rendered');
+        assert.equal($resolved.find('.item-comment-resolved-icon.icon-success').length, 1, 'resolved tick icon rendered');
+        assert.equal($resolved.find('.item-comment-resolve-link').data('action'), 'reopen', 'resolved row exposes reopen action');
+
+        panel.destroy();
+    });
+
+    QUnit.test('refresh scrolls to newest only on first call', function (assert) {
+        const done = assert.async();
+        let loadCalls = 0;
+        let store;
+
+        store = createStore(sampleComments, {
+            load(options) {
+                assert.deepEqual(options, { force: true }, 'refresh forces reload');
+                loadCalls += 1;
+                store.trigger('loaded');
+                return Promise.resolve(store);
+            }
+        });
+
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const listElement = $host.find('.item-comments-list').get(0);
+
+        assert.expect(5);
+
+        stubMetric(listElement, 'scrollHeight', 420);
+        stubScrollTop(listElement);
+        listElement.scrollTop = 7;
+
+        panel.refresh()
+            .then(function () {
+                assert.equal(listElement.scrollTop, 420, 'first refresh moves viewport to newest comment');
+
+                listElement.scrollTop = 111;
+                return panel.refresh();
+            })
+            .then(function () {
+                assert.equal(listElement.scrollTop, 111, 'later refresh keeps current viewport position');
+                assert.equal(loadCalls, 2, 'both refresh calls still reload comments');
+                panel.destroy();
+                done();
+            })
+            .catch(function (error) {
+                assert.ok(false, error && error.message ? error.message : 'refresh promise rejected');
+                panel.destroy();
+                done();
+            });
+    });
+
+    QUnit.test('failed first refresh preserves first successful scroll-to-newest', function (assert) {
+        const done = assert.async();
+        let loadCalls = 0;
+        let store;
+
+        store = createStore(sampleComments, {
+            load(options) {
+                assert.deepEqual(options, { force: true }, 'refresh forces reload');
+                loadCalls += 1;
+
+                if (loadCalls === 1) {
+                    return Promise.reject(new Error('load failed'));
+                }
+
+                store.trigger('loaded');
+                return Promise.resolve(store);
+            }
+        });
+
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const listElement = $host.find('.item-comments-list').get(0);
+
+        assert.expect(5);
+
+        stubMetric(listElement, 'scrollHeight', 420);
+        stubScrollTop(listElement);
+        listElement.scrollTop = 9;
+
+        panel.refresh()
+            .then(function () {
+                assert.equal(listElement.scrollTop, 9, 'failed first refresh does not change viewport position');
+
+                listElement.scrollTop = 17;
+                return panel.refresh();
+            })
+            .then(function () {
+                assert.equal(listElement.scrollTop, 420, 'next successful refresh scrolls to newest comment');
+                assert.equal(loadCalls, 2, 'both refresh calls still reload comments');
+                panel.destroy();
+                done();
+            })
+            .catch(function (error) {
+                assert.ok(false, error && error.message ? error.message : 'refresh promise rejected');
+                panel.destroy();
+                done();
+            });
+    });
+
+    QUnit.test('resolved rerender preserves list scroll position', function (assert) {
+        const store = createStore(sampleComments);
+        const $host = $('#qunit-fixture .comments-host');
+        const panel = createPanel($host, store);
+        const listElement = $host.find('.item-comments-list').get(0);
+
+        assert.expect(1);
+
+        stubScrollTop(listElement);
+        listElement.scrollTop = 37;
+        store.trigger('resolved');
+
+        assert.equal(listElement.scrollTop, 37, 'resolved update keeps current list scroll');
+
+        panel.destroy();
     });
 
     QUnit.module('overlay lifecycle', {

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.09\n"
-"PO-Revision-Date: 2026-08-26T17:03:25\n"
+"Project-Id-Version: TAO 2026.10\n"
+"PO-Revision-Date: 2026-09-14T13:52:31\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -23,10 +23,22 @@ msgid_plural "%d tests"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "%d users found"
+msgstr ""
+
+msgid "%s, %d of %d"
+msgstr ""
+
+msgid "1 user found"
+msgstr ""
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
+msgstr ""
+
+msgid "Add a comment"
 msgstr ""
 
 msgid "An error occurred while processing your request."
@@ -48,6 +60,18 @@ msgstr ""
 msgid "Authoring"
 msgstr ""
 
+msgid "Be the first to add a comment"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Bulleted list"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
 msgid "Class schema saved"
 msgstr ""
 
@@ -55,6 +79,9 @@ msgid "Close"
 msgstr ""
 
 msgid "Close console"
+msgstr ""
+
+msgid "Comment formatting"
 msgstr ""
 
 #, tao-public
@@ -85,10 +112,19 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
+msgid "Edit"
+msgstr ""
+
+msgid "Edit comment"
+msgstr ""
+
 msgid "Edit Item"
 msgstr ""
 
 msgid "Edit item"
+msgstr ""
+
+msgid "edited"
 msgstr ""
 
 #, tao-public
@@ -120,6 +156,9 @@ msgstr ""
 msgid "is currently in use."
 msgstr ""
 
+msgid "Italic"
+msgstr ""
+
 msgid "Item Model"
 msgstr ""
 
@@ -149,7 +188,13 @@ msgstr ""
 msgid "Last updated on %2s"
 msgstr ""
 
+msgid "Link"
+msgstr ""
+
 msgid "Loading preview..."
+msgstr ""
+
+msgid "Loading users"
 msgstr ""
 
 msgid "Manage item class schema"
@@ -166,6 +211,9 @@ msgstr ""
 msgid "Mobile preview"
 msgstr ""
 
+msgid "More actions"
+msgstr ""
+
 #, tao-public
 msgid "Move"
 msgstr ""
@@ -178,16 +226,28 @@ msgstr ""
 msgid "New class"
 msgstr ""
 
+msgid "No comments yet"
+msgstr ""
+
 msgid "No item type selected for the current item."
 msgstr ""
 
+msgid "No matching users"
+msgstr ""
+
 msgid "Not yet available"
+msgstr ""
+
+msgid "Numbered list"
 msgstr ""
 
 msgid "One or more values cannot be used as automatic test categories."
 msgstr ""
 
 msgid "Only items not used in any test will be deleted."
+msgstr ""
+
+msgid "Only users with access to this item can be mentioned."
 msgstr ""
 
 msgid "Please delete the subclasses before."
@@ -197,6 +257,9 @@ msgid "Please select first the item type!"
 msgstr ""
 
 msgid "Portrait"
+msgstr ""
+
+msgid "Post comment"
 msgstr ""
 
 #, tao-public
@@ -213,10 +276,19 @@ msgstr ""
 msgid "Remove this message"
 msgstr ""
 
+msgid "Reopen"
+msgstr ""
+
+msgid "Resolve"
+msgstr ""
+
 msgid "Resource deleted"
 msgstr ""
 
 msgid "Retrieving external resources"
+msgstr ""
+
+msgid "Save"
 msgstr ""
 
 msgid "Some items in the folder "
@@ -226,6 +298,21 @@ msgid "Submit"
 msgstr ""
 
 msgid "The class"
+msgstr ""
+
+msgid "The comment was not deleted."
+msgstr ""
+
+msgid "The comment was not reopened."
+msgstr ""
+
+msgid "The comment was not resolved."
+msgstr ""
+
+msgid "The comment was not saved."
+msgstr ""
+
+msgid "The comment was not updated."
 msgstr ""
 
 msgid "The file you tried to upload is not valid"
@@ -265,7 +352,13 @@ msgstr ""
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
 
+msgid "Unable to load comments."
+msgstr ""
+
 msgid "Unable to load item preview"
+msgstr ""
+
+msgid "Unable to load users"
 msgstr ""
 
 msgid "Unable to render the item from %s : %s %s"
@@ -275,6 +368,12 @@ msgid "Unable to upload file"
 msgstr ""
 
 msgid "Unable to validate automatic test categories."
+msgstr ""
+
+msgid "Underline"
+msgstr ""
+
+msgid "Use @ to mention a TAO user."
 msgstr ""
 
 msgid "using it:"

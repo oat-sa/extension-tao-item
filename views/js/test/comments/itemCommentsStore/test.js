@@ -336,6 +336,75 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             });
     });
 
+    QUnit.test('resolveFailed event includes attempted resolved state', function (assert) {
+        const ready = assert.async();
+        const store = itemCommentsStoreFactory({
+            itemUri: 'item://1',
+            api: {
+                list() {
+                    return Promise.resolve({
+                        comments: [
+                            {
+                                id: 'c1',
+                                resourceUri: 'item://1',
+                                resourceType: 'item',
+                                authorId: 'u1',
+                                authorLabel: 'Ada',
+                                body: 'Body',
+                                createdAt: '2026-07-27T09:12:00Z',
+                                edited: false,
+                                resolved: false,
+                                editable: true,
+                                deletable: true
+                            }
+                        ],
+                        count: 1
+                    });
+                },
+                create() {
+                    return Promise.reject(new Error('unused'));
+                },
+                resolve() {
+                    return Promise.reject(new Error('offline'));
+                }
+            }
+        });
+
+        const attemptedResolvedStates = [];
+        let failedCalls = 0;
+        store.on('resolveFailed', function (error, resolved) {
+            attemptedResolvedStates.push(resolved);
+        });
+
+        assert.expect(3);
+        store
+            .load()
+            .then(function () {
+                return store.resolve('c1', false).catch(function () {
+                    failedCalls += 1;
+                });
+            })
+            .then(function () {
+                return store.resolve('c1', true).catch(function () {
+                    failedCalls += 1;
+                });
+            })
+            .then(function () {
+                assert.deepEqual(
+                    attemptedResolvedStates,
+                    [false, true],
+                    'failure reports both reopen(false) and resolve(true) attempts'
+                );
+                assert.strictEqual(failedCalls, 2, 'both resolve calls rejected');
+                assert.strictEqual(attemptedResolvedStates[1], true, 'resolve failure reports resolved=true');
+                ready();
+            })
+            .catch(function (err) {
+                assert.ok(false, err.message);
+                ready();
+            });
+    });
+
     QUnit.test('setItemUri clears draft and cache', function (assert) {
         const store = itemCommentsStoreFactory({
             itemUri: 'item://1',
