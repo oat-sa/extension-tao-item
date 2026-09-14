@@ -370,24 +370,37 @@ define(['taoItems/comments/itemCommentsStore'], function (itemCommentsStoreFacto
             }
         });
 
-        let attemptedResolvedState = null;
+        const attemptedResolvedStates = [];
+        let failedCalls = 0;
         store.on('resolveFailed', function (error, resolved) {
-            attemptedResolvedState = resolved;
+            attemptedResolvedStates.push(resolved);
         });
 
-        assert.expect(2);
+        assert.expect(3);
         store
             .load()
             .then(function () {
-                return store.resolve('c1', false);
+                return store.resolve('c1', false).catch(function () {
+                    failedCalls += 1;
+                });
             })
             .then(function () {
-                assert.ok(false, 'expected resolve to fail');
+                return store.resolve('c1', true).catch(function () {
+                    failedCalls += 1;
+                });
+            })
+            .then(function () {
+                assert.deepEqual(
+                    attemptedResolvedStates,
+                    [false, true],
+                    'failure reports both reopen(false) and resolve(true) attempts'
+                );
+                assert.strictEqual(failedCalls, 2, 'both resolve calls rejected');
+                assert.strictEqual(attemptedResolvedStates[1], true, 'resolve failure reports resolved=true');
                 ready();
             })
-            .catch(function () {
-                assert.strictEqual(attemptedResolvedState, false, 'reopen failure reports resolved=false');
-                assert.ok(true, 'promise rejected');
+            .catch(function (err) {
+                assert.ok(false, err.message);
                 ready();
             });
     });
