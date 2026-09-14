@@ -64,7 +64,7 @@ final class CurrentAssetResolver
             $item = new core_kernel_classes_Resource($itemUri);
             $asset = (new ItemMediaResolver($item, $itemLang))->resolve($currentAssetUrl);
 
-            return $this->resolveFromAsset($asset, $mimeFilters);
+            return $this->resolveFromAsset($asset, $mimeFilters, $itemUri);
         } catch (Throwable $exception) {
             return $this->emptyResult();
         }
@@ -74,7 +74,11 @@ final class CurrentAssetResolver
      * @param array<int, string> $mimeFilters
      * @return array{parentPath: ?string, currentAsset: ?array<string, mixed>}
      */
-    public function resolveFromAsset(MediaAsset $asset, array $mimeFilters = []): array
+    public function resolveFromAsset(
+        MediaAsset $asset,
+        array $mimeFilters = [],
+        string $itemUri = ''
+    ): array
     {
         $mediaSource = $asset->getMediaSource();
 
@@ -83,7 +87,7 @@ final class CurrentAssetResolver
         }
 
         $fileInfo = $mediaSource->getFileInfo($asset->getMediaIdentifier());
-        $resourceUri = $this->resolvePermissionUri($asset, $mediaSource, $fileInfo);
+        $resourceUri = $this->resolvePermissionUri($asset, $mediaSource, $fileInfo, $itemUri);
 
         if ($resourceUri !== '' && !$this->permissionChecker->hasReadAccess($resourceUri)) {
             return $this->emptyResult();
@@ -140,10 +144,19 @@ final class CurrentAssetResolver
     /**
      * @param array<string, mixed> $fileInfo
      */
-    private function resolvePermissionUri(MediaAsset $asset, MediaBrowser $mediaSource, array $fileInfo): string
-    {
+    private function resolvePermissionUri(
+        MediaAsset $asset,
+        MediaBrowser $mediaSource,
+        array $fileInfo,
+        string $itemUri = ''
+    ): string {
         if ($mediaSource instanceof MediaSource) {
             return $this->decodeMediaIdentifier($asset->getMediaIdentifier());
+        }
+
+        // Local item gallery: ACL is on the item resource, not the relative file path.
+        if ($mediaSource instanceof LocalItemSource) {
+            return $itemUri;
         }
 
         return (string)($fileInfo['uri'] ?? $asset->getMediaIdentifier());

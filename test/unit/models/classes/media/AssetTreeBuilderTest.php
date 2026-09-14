@@ -150,7 +150,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(900, $result['total']);
     }
 
-    public function testBuildDoesNotRequestUnboundedChildrenLimit(): void
+    public function testBuildRequestsUnlimitedChildrenLoadForCorrectPagination(): void
     {
         $captured = null;
         $this->mediaSource->expects($this->once())
@@ -164,7 +164,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertGreaterThan(0, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(0, $captured->getChildrenOffset());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
@@ -409,7 +409,7 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
         $this->assertSame(0, $captured->getChildrenOffset());
-        $this->assertGreaterThan(0, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(3, $result['total']);
         $files = array_values(array_filter(
             $result['children'],
@@ -502,7 +502,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(['Banana', 'éclair', 'Éclair'], $labels);
     }
 
-    public function testBuildReportsTotalBeyondBrowseLoadCap(): void
+    public function testBuildPaginatesBeyondFormerBrowseLoadCap(): void
     {
         $children = [];
         for ($i = 1; $i <= 505; $i++) {
@@ -519,18 +519,31 @@ class AssetTreeBuilderTest extends TestCase
             'children' => $children,
         ]);
 
-        $result = $this->subject->build(
+        $firstPage = $this->subject->build(
             new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
         );
-
-        $this->assertSame(505, $result['total']);
-        $files = array_values(array_filter(
-            $result['children'],
+        $this->assertSame(505, $firstPage['total']);
+        $firstFiles = array_values(array_filter(
+            $firstPage['children'],
             static function (array $child): bool {
                 return isset($child['uri']);
             }
         ));
-        $this->assertLessThanOrEqual(15, count($files));
+        $this->assertCount(15, $firstFiles);
+        $this->assertSame('file-001.png', $firstFiles[0]['name']);
+
+        $latePage = $this->subject->build(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US', [], 1, 495)
+        );
+        $lateFiles = array_values(array_filter(
+            $latePage['children'],
+            static function (array $child): bool {
+                return isset($child['uri']);
+            }
+        ));
+        $this->assertCount(10, $lateFiles);
+        $this->assertSame('file-496.png', $lateFiles[0]['name']);
+        $this->assertSame('file-505.png', $lateFiles[9]['name']);
     }
 
     /**

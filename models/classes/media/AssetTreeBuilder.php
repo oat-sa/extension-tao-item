@@ -29,10 +29,11 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
     /**
      * Full subtree so browse lists files under the selected folder and descendants.
-     * Media sources treat childrenLimit 0 as unlimited; cap the in-memory sort window.
+     * Media sources treat childrenLimit 0 as unlimited — required so sort+pagination
+     * can reach every page when total exceeds any in-memory window.
      */
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
-    private const MAX_BROWSE_LOAD = 500;
+    private const UNLIMITED_BROWSE_LOAD = 0;
 
     public function build(DirectorySearchQuery $search): array
     {
@@ -62,9 +63,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                if (count($files) < self::MAX_BROWSE_LOAD) {
-                    $files[] = $this->normalizeFile($child, $scopeLabel);
-                }
+                $files[] = $this->normalizeFile($child, $scopeLabel);
                 continue;
             }
 
@@ -78,7 +77,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             );
         }
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
-        // Prefer source recursive total when present (e.g. LocalItemSource beyond payload cap).
+        // Prefer source recursive total when present.
         $data['total'] = $sourceReportedTotal !== null
             ? max($sourceReportedTotal, $totalFiles)
             : $totalFiles;
@@ -91,7 +90,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     private function createFetchQuery(DirectorySearchQuery $search): AssetSearchQuery
     {
         // Rebuild with offset 0 so media sources do not paginate before we sort+slice.
-        // DirectorySearchQuery has no setChildrenOffset; AssetSearchQuery carries the bound.
+        // Unlimited childrenLimit so pages past any former in-memory cap stay reachable.
         return (new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -99,7 +98,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             $search->getFilter(),
             self::FULL_SUBTREE_DEPTH,
             0,
-            self::MAX_BROWSE_LOAD
+            self::UNLIMITED_BROWSE_LOAD
         ))
             ->setSortBy($this->resolveSortBy($search))
             ->setSortDir($this->resolveSortDir($search));
@@ -155,9 +154,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                if (count($files) < self::MAX_BROWSE_LOAD) {
-                    $files[] = $this->normalizeFile($child, $location);
-                }
+                $files[] = $this->normalizeFile($child, $location);
             }
         }
     }

@@ -648,6 +648,31 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('test.png', $result['items'][0]['name']);
     }
 
+    public function testSearchFallbackRequestsUnlimitedChildrenLoad(): void
+    {
+        $captured = null;
+        $this->mediaSource
+            ->expects($this->once())
+            ->method('getDirectories')
+            ->with($this->callback(function (AssetSearchQuery $query) use (&$captured): bool {
+                $captured = $query;
+
+                return true;
+            }))
+            ->willReturn([
+                'path' => '/',
+                'label' => 'Assets',
+                'children' => [],
+            ]);
+
+        $this->subject->search($this->createSearchQuery('any', 1, 10));
+
+        $this->assertInstanceOf(AssetSearchQuery::class, $captured);
+        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(PHP_INT_MAX, $captured->getDepth());
+        $this->assertSame(0, $captured->getChildrenOffset());
+    }
+
     public function testSearchOnlyIncludesAssetsReturnedByScopedTree(): void
     {
         $this->mediaSource->method('getDirectories')->willReturn([
@@ -770,7 +795,7 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame(['READ' => true], $result['items'][0]['permissions']);
     }
 
-    public function testSearchReturnsEmptyWhenMetadataPresentWithoutIndexedGateway(): void
+    public function testSearchThrowsWhenMetadataPresentWithoutIndexedGateway(): void
     {
         $this->mediaSource->expects($this->never())->method('getDirectories');
 
@@ -780,12 +805,10 @@ class AssetSearchBuilderTest extends TestCase
                     'http://www.tao.lu/Ontologies/TAO.rdf#Langja-JP',
             ]);
 
-        $result = $this->subject->search($query);
+        $this->expectException(AssetSearchUnavailableException::class);
+        $this->expectExceptionMessage('indexed search gateway');
 
-        $this->assertSame(0, $result['total']);
-        $this->assertSame([], $result['items']);
-        $this->assertSame(1, $result['page']);
-        $this->assertSame(10, $result['pageSize']);
+        $this->subject->search($query);
     }
 
     public function testSearchDelegatesToIndexedGatewayWhenAvailable(): void

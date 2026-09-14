@@ -26,7 +26,8 @@ class AssetSearchBuilder extends ConfigurableService
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
-    private const MAX_SEARCH_LOAD = 500;
+    /** Media sources treat childrenLimit 0 as unlimited (full match set for fallback). */
+    private const UNLIMITED_SEARCH_LOAD = 0;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -37,14 +38,11 @@ class AssetSearchBuilder extends ConfigurableService
             return $gateway->search($search);
         }
 
-        // Metadata filters are only supported via the indexed gateway.
+        // Metadata filters require the indexed gateway; surface 503 via controller.
         if ($search->hasMetadataCriteria()) {
-            return [
-                'items' => [],
-                'total' => 0,
-                'page' => $search->getPage(),
-                'pageSize' => $search->getPageSize(),
-            ];
+            throw new AssetSearchUnavailableException(
+                'Metadata asset search requires an available indexed search gateway'
+            );
         }
 
         $asset = $search->getAsset();
@@ -54,7 +52,8 @@ class AssetSearchBuilder extends ConfigurableService
             $mediaSource->enableAccessControl();
         }
 
-        // Bound traversal; do not mutate the caller's query object.
+        // Full subtree with unlimited file payload so filter/total stay accurate.
+        // Indexed gateway is preferred for large scopes; do not mutate the caller's query.
         $fetchQuery = new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -62,7 +61,7 @@ class AssetSearchBuilder extends ConfigurableService
             $search->getFilter(),
             self::FULL_SUBTREE_DEPTH,
             0,
-            self::MAX_SEARCH_LOAD
+            self::UNLIMITED_SEARCH_LOAD
         );
 
         $tree = $mediaSource->getDirectories($fetchQuery);

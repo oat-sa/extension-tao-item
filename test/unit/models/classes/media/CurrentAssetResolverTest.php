@@ -27,6 +27,7 @@ use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
 use oat\taoItems\model\media\CurrentAssetResolver;
+use oat\taoItems\model\media\LocalItemSource;
 
 class CurrentAssetResolverTest extends TestCase
 {
@@ -111,17 +112,21 @@ class CurrentAssetResolverTest extends TestCase
 
     public function testResolveFromLocalAssetReturnsEmptyWhenAccessDenied(): void
     {
-        $mediaSource = $this->createMock(MediaBrowser::class);
+        $mediaSource = $this->createMock(LocalItemSource::class);
         $mediaSource->method('getFileInfo')->willReturn([
             'name' => 'secret.png',
             'uri' => 'images/secret.png',
             'mime' => 'image/png',
         ]);
 
-        $this->permissionChecker->method('hasReadAccess')->willReturn(false);
+        $this->permissionChecker
+            ->expects($this->once())
+            ->method('hasReadAccess')
+            ->with('http://example/item')
+            ->willReturn(false);
 
         $asset = new MediaAsset($mediaSource, 'images/secret.png');
-        $result = $this->subject->resolveFromAsset($asset, ['image/png']);
+        $result = $this->subject->resolveFromAsset($asset, ['image/png'], 'http://example/item');
 
         $this->assertNull($result['parentPath']);
         $this->assertNull($result['currentAsset']);
