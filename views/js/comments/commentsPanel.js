@@ -560,7 +560,7 @@ define([
 
             refresh() {
                 renderComments();
-                const loadPromise = store.load();
+                const loadPromise = store.load({ force: true });
 
                 if (!isFirstRefresh) {
                     return loadPromise.catch(_.noop);

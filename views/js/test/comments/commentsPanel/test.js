@@ -79,9 +79,9 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
             isSubmitting() {
                 return false;
             },
-            load() {
+            load(options) {
                 if (typeof apiSpies.load === 'function') {
-                    return apiSpies.load();
+                    return apiSpies.load(options);
                 }
                 this.trigger('loaded');
                 return Promise.resolve(this);
@@ -266,7 +266,8 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         let store;
 
         store = createStore(sampleComments, {
-            load() {
+            load(options) {
+                assert.deepEqual(options, { force: true }, 'refresh forces reload');
                 loadCalls += 1;
                 store.trigger('loaded');
                 return Promise.resolve(store);
@@ -277,7 +278,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         const panel = createPanel($host, store);
         const listElement = $host.find('.item-comments-list').get(0);
 
-        assert.expect(3);
+        assert.expect(5);
 
         stubMetric(listElement, 'scrollHeight', 420);
         stubScrollTop(listElement);
@@ -309,7 +310,8 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         let store;
 
         store = createStore(sampleComments, {
-            load() {
+            load(options) {
+                assert.deepEqual(options, { force: true }, 'refresh forces reload');
                 loadCalls += 1;
 
                 if (loadCalls === 1) {
@@ -325,7 +327,7 @@ define(['jquery', 'core/eventifier', 'taoItems/comments/commentsPanel', 'ckedito
         const panel = createPanel($host, store);
         const listElement = $host.find('.item-comments-list').get(0);
 
-        assert.expect(3);
+        assert.expect(5);
 
         stubMetric(listElement, 'scrollHeight', 420);
         stubScrollTop(listElement);
