@@ -99,13 +99,13 @@ class CategoryService extends ConfigurableService
             foreach ($propertiesValues as $propertyValues) {
                 foreach ($propertyValues as $value) {
                     if ($value instanceof RdfResource) {
-                        $sanitizedIdentifier = self::sanitizeCategoryName($value->getLabel());
+                        $normalizedIdentifier = self::sanitizeCategoryName($value->getLabel());
                     } else {
-                        $sanitizedIdentifier = self::sanitizeCategoryName((string)$value);
+                        $normalizedIdentifier = self::sanitizeCategoryName((string)$value);
                     }
 
-                    if ($sanitizedIdentifier) {
-                        $categories[] = $sanitizedIdentifier;
+                    if ($normalizedIdentifier !== null) {
+                        $categories[] = $normalizedIdentifier;
                     }
                 }
             }
@@ -115,20 +115,93 @@ class CategoryService extends ConfigurableService
     }
 
     /**
-     * Sanitize the name of the category :
-     * Remove special chars, allowing unicode ones, replace spaces by dashes
-     * and trim the beginning if it's not a letter.
+     * Get exposed property values that cannot be used as automatic categories.
+     *
+     * @param RdfResource $item the item
+     *
+     * @return array<string, array{label: string, values: string[]}>
+     *     invalid values indexed by property URI
+     */
+    public function getInvalidCategoryValues(RdfResource $item): array
+    {
+        $invalidValues = [];
+
+        foreach ($item->getTypes() as $class) {
+            $eligibleProperties = array_filter(
+                $this->getElligibleProperties($class),
+                [$this, 'doesExposeCategory']
+            );
+            $propertiesValues = $item->getPropertiesValues(
+                array_keys($eligibleProperties)
+            );
+            $propertyLabels = [];
+            foreach ($eligibleProperties as $property) {
+                $propertyLabels[$property->getUri()] = $property->getLabel();
+            }
+
+            foreach ($propertiesValues as $propertyUri => $propertyValues) {
+                foreach ($propertyValues as $value) {
+                    $rawValue = $value instanceof RdfResource
+                        ? $value->getLabel()
+                        : (string) $value;
+
+                    if (
+                        trim($rawValue) !== ''
+                        && self::sanitizeCategoryName($rawValue) === null
+                    ) {
+                        if (!isset($invalidValues[$propertyUri])) {
+                            $invalidValues[$propertyUri] = [
+                                'label' => $propertyLabels[$propertyUri]
+                                    ?? $propertyUri,
+                                'values' => [],
+                            ];
+                        }
+                        $invalidValues[$propertyUri]['values'][] = $rawValue;
+                    }
+                }
+            }
+        }
+
+        return $invalidValues;
+    }
+
+    /**
+     * Normalize an exposed property value for automatic category generation.
+     *
+     * Only safe normalization is applied. Invalid identifiers are rejected instead
+     * of being altered into a different category.
      *
      * @param string $value the input value
      *
-     * @return string the sanitized value
+     * @return string|null
      */
-    public static function sanitizeCategoryName($value)
+    public static function sanitizeCategoryName(string $value): ?string
     {
         $output = preg_replace('/\s+/', '-', trim($value));
-        $output = preg_replace('/[^\p{L}0-9\-]/u', '', mb_strtolower($output));
-        $output = preg_replace('/^[0-9\-_]+/', '', $output);
-        return mb_substr($output, 0, 32);
+        $output = mb_strtolower($output);
+
+        if (!self::isValidCategoryName($output)) {
+            return null;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Check whether a category identifier follows the same contract as manual
+     * category entry in test authoring.
+     *
+     * @param string $value the normalized value
+     *
+     * @return bool
+     */
+    public static function isValidCategoryName(string $value): bool
+    {
+        return strlen($value) <= 60
+            && preg_match(
+                '/^[a-zA-Z_][a-zA-Z0-9_-]*$/',
+                $value
+            ) === 1;
     }
 
     /**
