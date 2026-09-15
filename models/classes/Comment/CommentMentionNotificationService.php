@@ -25,11 +25,13 @@ namespace oat\taoItems\model\Comment;
 use common_Logger;
 use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
+use oat\oatbox\event\EventManager;
 use oat\tao\helpers\UserHelper;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
+use oat\taoItems\model\event\CommentMentionNotificationRequestedEvent;
 use Throwable;
 
 /**
@@ -44,17 +46,20 @@ class CommentMentionNotificationService
     private TaskOrchestratorEmailService $emailService;
     private CommentMentionDeepLinkBuilder $deepLinkBuilder;
     private MentionEligibleUsersProviderInterface $eligibleUsersProvider;
+    private EventManager $eventManager;
 
     public function __construct(
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
         CommentMentionDeepLinkBuilder $deepLinkBuilder,
-        MentionEligibleUsersProviderInterface $eligibleUsersProvider
+        MentionEligibleUsersProviderInterface $eligibleUsersProvider,
+        EventManager $eventManager
     ) {
         $this->ontology = $ontology;
         $this->emailService = $emailService;
         $this->deepLinkBuilder = $deepLinkBuilder;
         $this->eligibleUsersProvider = $eligibleUsersProvider;
+        $this->eventManager = $eventManager;
     }
 
     /**
@@ -164,18 +169,22 @@ class CommentMentionNotificationService
                     continue;
                 }
 
-                $this->emailService->sendCommentMention(
-                    $recipient['login'],
-                    $recipient['email'],
-                    new CommentMentionEmailTemplatePayload(
-                        $mentionedByLabel,
+                $this->eventManager->trigger(
+                    new CommentMentionNotificationRequestedEvent(
+                        $comment->getId(),
+                        $userUri,
                         $recipient['login'],
-                        $comment->getResourceType(),
-                        $resourceUrl,
-                        $resourceLabel,
-                        $recipient['name']
-                    ),
-                    $actorLogin
+                        $recipient['email'],
+                        new CommentMentionEmailTemplatePayload(
+                            $mentionedByLabel,
+                            $recipient['login'],
+                            $comment->getResourceType(),
+                            $resourceUrl,
+                            $resourceLabel,
+                            $recipient['name']
+                        ),
+                        $actorLogin
+                    )
                 );
             } catch (Throwable $exception) {
                 common_Logger::w(
