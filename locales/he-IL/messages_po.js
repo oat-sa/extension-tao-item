@@ -1,1 +1,1 @@
-{"Password":"\u05e1\u05d9\u05e1\u05de\u05d4"}
+{"translations":{"Password":"\u05e1\u05d9\u05e1\u05de\u05d4"},"pluralForms":"nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3;"}
