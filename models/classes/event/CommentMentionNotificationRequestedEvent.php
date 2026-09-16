@@ -52,7 +52,7 @@ class CommentMentionNotificationRequestedEvent implements Event
 
     public function getName(): string
     {
-        return __CLASS__;
+        return get_class($this);
     }
 
     public function getCommentId(): string
