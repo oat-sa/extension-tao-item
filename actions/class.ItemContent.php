@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014-2021 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2014-2026 (original work) Open Assessment Technologies SA;
  *
  */
 
@@ -28,15 +28,20 @@ use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
-use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
+use oat\taoItems\model\media\AssetFilesService;
+use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
+use oat\taoItems\model\media\AssetSearchBuilder;
+use oat\taoItems\model\media\AssetSearchUnavailableException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
+use oat\taoItems\model\media\CurrentAssetResolver;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\taoItems\model\media\LocalItemSource;
 use Psr\Http\Message\StreamInterface;
+use common_exception_BadRequest as BadRequestException;
 use common_exception_MissingParameter as MissingParameterException;
 use tao_models_classes_FileNotFoundException as FileNotFoundException;
 
@@ -51,6 +56,16 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     use OntologyAwareTrait;
 
     /**
+     * Browse a media folder, or search within its subtree when `query` and/or
+     * `metadata` filters are present.
+     *
+     * Browse response (no query, no metadata): existing tree payload with `children`.
+     * Search response: `{ items, total, page, pageSize }`.
+     *
+     * Metadata filters: `metadata[{propertyUri}]={value}` (AND across properties).
+     * Optional `currentAsset` resolves replacement context to `parentPath` +
+     * selectable `currentAsset` row (or null when inaccessible / MIME-incompatible).
+     *
      * @throws MissingParameterException|TaoMediaException
      */
     public function files(): void
@@ -58,21 +73,42 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         $params = $this->getRequiredQueryParams('uri', 'lang', 'path');
         ['uri' => $uri, 'lang' => $lang, 'path' => $path] = $params;
 
-        $depth = (int)($params['depth'] ?? 1);
-        $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
+        $this->assertOptionalScalarQueryParams(
+            $params,
+            'childrenOffset',
+            'sortBy',
+            'sortDir',
+            'query',
+            'page',
+            'pageSize',
+            'currentAsset'
+        );
+        if (array_key_exists('metadata', $params) && $params['metadata'] !== null && !is_array($params['metadata'])) {
+            throw new BadRequestException('Invalid query parameter "metadata"');
+        }
 
         $filters = $this->buildFilters($params);
 
-        $searchQuery = new DirectorySearchQuery(
-            $this->resolveAsset($uri, $path, $lang),
-            $uri,
-            $lang,
-            $filters,
-            $depth,
-            $childrenOffset
-        );
+        try {
+            $response = $this->getAssetFilesService()->listFiles(
+                $this->resolveAsset($uri, $path, $lang),
+                $uri,
+                $lang,
+                $params,
+                $filters
+            );
+        } catch (AssetSearchUnavailableException $exception) {
+            $this->logWarning('Asset search unavailable: ' . $exception->getMessage());
+            $this->setErrorJsonResponse(
+                __('Asset search is temporarily unavailable. Please try again.'),
+                0,
+                [],
+                503
+            );
+            return;
+        }
 
-        $this->setSuccessJsonResponse($this->getAssetTreeBuilder()->build($searchQuery));
+        $this->setSuccessJsonResponse($response);
     }
 
     /**
@@ -257,7 +293,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getPsrRequest()->getQueryParams();
         foreach ($requiredKeys as $key) {
-            if (!array_key_exists($key, $params) || empty($params[$key])) {
+            if ($this->isMissingOrBlankQueryParam($params, $key)) {
                 throw new MissingParameterException($key, __METHOD__);
             }
         }
@@ -265,35 +301,127 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         return $params;
     }
 
+    private function isMissingOrBlankQueryParam(array $params, string $key): bool
+    {
+        if (!array_key_exists($key, $params)) {
+            return true;
+        }
+
+        $value = $params[$key];
+        if ($value === null || $value === '') {
+            return true;
+        }
+
+        // Reject arrays/objects; keep scalars (e.g. path "0" / 0) as present.
+        if (!is_scalar($value)) {
+            return true;
+        }
+
+        return is_string($value) && trim($value) === '';
+    }
+
+    /**
+     * @throws BadRequestException
+     */
+    private function assertOptionalScalarQueryParams(array $params, string ...$keys): void
+    {
+        foreach ($keys as $key) {
+            if (!array_key_exists($key, $params)) {
+                continue;
+            }
+            if ($params[$key] !== null && !is_scalar($params[$key])) {
+                throw new BadRequestException(sprintf('Invalid query parameter "%s"', $key));
+            }
+        }
+    }
+
     private function buildFilters(array $params): array
     {
         $filters = [];
-        if (isset($params['filters'])) {
-            $filterParameter = $params['filters'];
-            if (is_array($filterParameter)) {
-                foreach ($filterParameter as $filter) {
-                    if (preg_match('/\/\*/', $filter['mime'])) {
-                        $this->logWarning(
-                            'Stars mime type are not yet supported, filter "' . $filter['mime'] . '" will fail'
-                        );
-                    }
-                    $filters[] = $filter['mime'];
+        if (!isset($params['filters'])) {
+            return $filters;
+        }
+
+        $filterParameter = $params['filters'];
+        if (is_array($filterParameter)) {
+            foreach ($filterParameter as $filter) {
+                if (!is_array($filter) || !isset($filter['mime'])) {
+                    continue;
                 }
-            } else {
-                if (preg_match('/\/\*/', $filterParameter)) {
+                $mime = trim((string)$filter['mime']);
+                if ($mime === '') {
+                    continue;
+                }
+                if (preg_match('/\/\*/', $mime)) {
                     $this->logWarning(
-                        'Stars mime type are not yet supported, filter "' . $filterParameter . '" will fail'
+                        'Stars mime type are not yet supported, filter "' . $mime . '" will fail'
                     );
                 }
-                $filters = array_map('trim', explode(',', $filterParameter));
+                $filters[] = $mime;
             }
+
+            return $filters;
         }
+
+        if (!is_string($filterParameter)) {
+            return $filters;
+        }
+
+        foreach (array_map('trim', explode(',', $filterParameter)) as $mime) {
+            if ($mime === '') {
+                continue;
+            }
+            if (preg_match('/\/\*/', $mime)) {
+                $this->logWarning(
+                    'Stars mime type are not yet supported, filter "' . $mime . '" will fail'
+                );
+            }
+            $filters[] = $mime;
+        }
+
         return $filters;
     }
 
     private function getAssetTreeBuilder(): AssetTreeBuilderInterface
     {
         return $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
+    }
+
+    private function getAssetSearchBuilder(): AssetSearchBuilder
+    {
+        return new AssetSearchBuilder($this->resolveIndexedSearchGateway());
+    }
+
+    private function getAssetFilesService(): AssetFilesService
+    {
+        return new AssetFilesService(
+            $this->getAssetSearchBuilder(),
+            $this->getAssetTreeBuilder(),
+            new CurrentAssetResolver($this->getPermissionChecker())
+        );
+    }
+
+    private function resolveIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
+    {
+        try {
+            $locator = $this->getServiceLocator();
+            $container = method_exists($locator, 'getContainer')
+                ? $locator->getContainer()
+                : null;
+            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
+                return null;
+            }
+
+            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
+
+            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
+        } catch (\Throwable $exception) {
+            $this->logWarning(
+                sprintf('Indexed asset search gateway unavailable: %s', $exception->getMessage())
+            );
+
+            return null;
+        }
     }
 
     /**

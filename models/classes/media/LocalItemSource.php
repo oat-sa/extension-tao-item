@@ -64,11 +64,15 @@ class LocalItemSource implements MediaManagement
      */
     public function getDirectories(DirectorySearchQuery $params): array
     {
+        $childrenLimit = $params->getChildrenLimit();
+        $fileSlotsRemaining = $childrenLimit > 0 ? $childrenLimit : null;
+
         return $this->searchDirectories(
             $params->getParentLink(),
             $params->getFilter(),
             $params->getDepth(),
-            $params->getChildrenLimit()
+            $childrenLimit,
+            $fileSlotsRemaining
         );
     }
 
@@ -81,7 +85,9 @@ class LocalItemSource implements MediaManagement
      */
     public function getDirectory($parentLink = '', $acceptableMime = [], $depth = 1)
     {
-        return $this->searchDirectories($parentLink, $acceptableMime, $depth, 0);
+        $fileSlotsRemaining = null;
+
+        return $this->searchDirectories($parentLink, $acceptableMime, $depth, 0, $fileSlotsRemaining);
     }
 
     /**
@@ -114,12 +120,15 @@ class LocalItemSource implements MediaManagement
     {
         if (file_exists($sourceFile)) {
             $link = $this->getItemDirectory()->getRelPath($file);
+            $mtime = @filemtime($sourceFile);
+
             return [
                 'name'     => $file->getBasename(),
                 'uri'      => $link,
                 'mime'     => tao_helpers_File::getMimeType($sourceFile),
                 'filePath' => $link,
                 'size'     => filesize($sourceFile),
+                'updatedAt' => $this->formatUnixUpdatedAt($mtime !== false ? (int)$mtime : null),
             ];
         } else {
             return $this->getInfoFromFile($file);
@@ -135,7 +144,36 @@ class LocalItemSource implements MediaManagement
             'mime'     => $file->getMimeType(),
             'filePath' => $link,
             'size'     => $file->getSize(),
+            'updatedAt' => $this->formatFileUpdatedAt($file),
         ];
+    }
+
+    /**
+     * @param File $file
+     * @return string|null ISO-8601 UTC
+     */
+    private function formatFileUpdatedAt(File $file): ?string
+    {
+        try {
+            $timestamp = $file->getFileSystem()->lastModified($file->getPrefix());
+        } catch (\Throwable $e) {
+            return null;
+        }
+
+        return $this->formatUnixUpdatedAt((int)$timestamp);
+    }
+
+    /**
+     * @param int|null $timestamp
+     * @return string|null
+     */
+    private function formatUnixUpdatedAt(?int $timestamp): ?string
+    {
+        if ($timestamp === null || $timestamp <= 0) {
+            return null;
+        }
+
+        return gmdate('Y-m-d\TH:i:s\Z', $timestamp);
     }
 
     /**
@@ -279,6 +317,8 @@ class LocalItemSource implements MediaManagement
     }
 
     /**
+     * @param array<int, string> $acceptableMime
+     * @param int|null $fileSlotsRemaining null = unlimited; 0 = no more files (dirs still listed)
      * @throws \common_Exception
      * @throws \tao_models_classes_FileNotFoundException
      * @throws common_exception_Error
@@ -287,7 +327,8 @@ class LocalItemSource implements MediaManagement
         string $parentLink,
         array $acceptableMime,
         int $depth,
-        int $childrenLimit
+        int $childrenLimit,
+        ?int &$fileSlotsRemaining
     ): array {
         if (!tao_helpers_File::securityCheck($parentLink)) {
             throw new common_exception_Error(__('Your path contains error'));
@@ -330,12 +371,24 @@ class LocalItemSource implements MediaManagement
         $total = 0;
         foreach ($iterator as $content) {
             if ($content instanceof Directory) {
-                $children[] = $this->searchDirectories(
+                $nested = $this->searchDirectories(
                     $itemDirectory->getRelPath($content),
                     $acceptableMime,
                     $depth - 1,
-                    $childrenLimit
+                    $childrenLimit,
+                    $fileSlotsRemaining
                 );
+                $children[] = $nested;
+                $total += (int)($nested['total'] ?? 0);
+                continue;
+            }
+
+            if ($fileSlotsRemaining !== null && $fileSlotsRemaining <= 0) {
+                // Count matching files beyond the payload cap without attaching file info.
+                $mime = $content->getMimeType();
+                if (empty($acceptableMime) || in_array($mime, $acceptableMime, true)) {
+                    $total++;
+                }
                 continue;
             }
 
@@ -343,6 +396,9 @@ class LocalItemSource implements MediaManagement
             if (empty($acceptableMime) || in_array($fileInfo['mime'], $acceptableMime)) {
                 $children[] = $fileInfo;
                 $total++;
+                if ($fileSlotsRemaining !== null) {
+                    $fileSlotsRemaining--;
+                }
             }
         }
 

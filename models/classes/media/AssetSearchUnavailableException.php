@@ -15,25 +15,18 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
  *
- * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
 
-namespace oat\taoItems\scripts\install;
+declare(strict_types=1);
 
-use oat\oatbox\extension\InstallAction;
-use oat\taoItems\model\media\AssetTreeBuilder;
+namespace oat\taoItems\model\media;
 
-class RegisterAssetTreeBuilder extends InstallAction
+use RuntimeException;
+
+/**
+ * Recoverable failure while searching assets for the Resource Manager.
+ */
+class AssetSearchUnavailableException extends RuntimeException
 {
-    public function __invoke($params)
-    {
-        $this->getServiceManager()->register(
-            AssetTreeBuilder::SERVICE_ID,
-            new AssetTreeBuilder(
-                [
-                    AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 15,
-                ]
-            )
-        );
-    }
 }
