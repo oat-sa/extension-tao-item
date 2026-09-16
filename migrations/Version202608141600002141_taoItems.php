@@ -28,7 +28,10 @@ use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoItems\model\media\AssetSearchBuilder;
 
 /**
- * Registers AssetSearchBuilder for Resource Manager scoped asset search.
+ * Clears legacy oatbox registration of AssetSearchBuilder.
+ *
+ * AssetSearchBuilder is constructed in ItemContent with an optional indexed
+ * gateway from Symfony DI; ServiceManager::register() requires ConfigurableService.
  *
  * @license GPL-2.0-only
  * @copyright 2026 Open Assessment Technologies SA
@@ -39,22 +42,23 @@ final class Version202608141600002141_taoItems extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Register AssetSearchBuilder for Resource Manager scoped asset search';
+        return 'Unregister legacy oatbox AssetSearchBuilder (constructed via ItemContent DI)';
     }
 
     public function up(Schema $schema): void
     {
-        $this->getServiceManager()->register(
-            AssetSearchBuilder::SERVICE_ID,
-            new AssetSearchBuilder()
-        );
+        $serviceManager = $this->getServiceManager();
+        if ($serviceManager->has(AssetSearchBuilder::SERVICE_ID)) {
+            $serviceManager->unregister(AssetSearchBuilder::SERVICE_ID);
+        }
 
-        $this->addReport(Report::createSuccess('AssetSearchBuilder registered'));
+        $this->addReport(Report::createSuccess('Legacy AssetSearchBuilder oatbox registration cleared'));
     }
 
     public function down(Schema $schema): void
     {
-        $this->getServiceManager()->unregister(AssetSearchBuilder::SERVICE_ID);
-        $this->addReport(Report::createSuccess('AssetSearchBuilder unregistered'));
+        $this->addReport(Report::createInfo(
+            'AssetSearchBuilder is not restored to oatbox; ItemContent constructs it with Symfony gateway DI'
+        ));
     }
 }

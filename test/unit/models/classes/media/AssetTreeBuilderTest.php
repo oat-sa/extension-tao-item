@@ -110,7 +110,7 @@ class AssetTreeBuilderTest extends TestCase
         $expectedData = [
             'children' => [
                 [
-                    'url' => tao_helpers_Uri::getRootUrl() . 'taoItems/ItemContent/files?uri=&lang=&1=parent',
+                    'url' => tao_helpers_Uri::getRootUrl() . 'taoItems/ItemContent/files?uri=&lang=&path=parent',
                     'path' => 'parent',
                 ],
                 [

@@ -846,36 +846,7 @@ class AssetSearchBuilderTest extends TestCase
         $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
         $gateway->expects($this->once())->method('search')->willReturn($expected);
 
-        $container = $this->createMock(\Psr\Container\ContainerInterface::class);
-        $container->method('has')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn(true);
-        $container->method('get')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn($gateway);
-
-        $locator = new class ($container) implements \Zend\ServiceManager\ServiceLocatorInterface {
-            /** @var \Psr\Container\ContainerInterface */
-            private $container;
-
-            public function __construct(\Psr\Container\ContainerInterface $container)
-            {
-                $this->container = $container;
-            }
-
-            public function get($id)
-            {
-                throw new \RuntimeException('Legacy ServiceLocator::get must not be used for gateway');
-            }
-
-            public function has($id)
-            {
-                return false;
-            }
-
-            public function getContainer(): \Psr\Container\ContainerInterface
-            {
-                return $this->container;
-            }
-        };
-        $this->subject->setServiceLocator($locator);
-
+        $this->subject = new AssetSearchBuilder($gateway);
         $this->mediaSource->expects($this->never())->method('getDirectories');
 
         $result = $this->subject->search($this->createSearchQuery('color', 1, 10));
@@ -891,40 +862,55 @@ class AssetSearchBuilderTest extends TestCase
             new AssetSearchUnavailableException('es down')
         );
 
-        $container = $this->createMock(\Psr\Container\ContainerInterface::class);
-        $container->method('has')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn(true);
-        $container->method('get')->with(AssetIndexedSearchGatewayInterface::SERVICE_ID)->willReturn($gateway);
-
-        $locator = new class ($container) implements \Zend\ServiceManager\ServiceLocatorInterface {
-            /** @var \Psr\Container\ContainerInterface */
-            private $container;
-
-            public function __construct(\Psr\Container\ContainerInterface $container)
-            {
-                $this->container = $container;
-            }
-
-            public function get($id)
-            {
-                throw new \RuntimeException('Legacy ServiceLocator::get must not be used for gateway');
-            }
-
-            public function has($id)
-            {
-                return false;
-            }
-
-            public function getContainer(): \Psr\Container\ContainerInterface
-            {
-                return $this->container;
-            }
-        };
-        $this->subject->setServiceLocator($locator);
+        $this->subject = new AssetSearchBuilder($gateway);
 
         $this->expectException(AssetSearchUnavailableException::class);
         $this->expectExceptionMessage('es down');
 
         $this->subject->search($this->createSearchQuery('color', 1, 10));
+    }
+
+    public function testSearchWrapsIndexedGatewayRuntimeFailures(): void
+    {
+        $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
+        $gateway->expects($this->once())->method('search')->willThrowException(
+            new \RuntimeException('connection reset')
+        );
+
+        $this->subject = new AssetSearchBuilder($gateway);
+
+        $this->expectException(AssetSearchUnavailableException::class);
+        $this->expectExceptionMessage('connection reset');
+
+        $this->subject->search($this->createSearchQuery('color', 1, 10));
+    }
+
+    public function testSearchFallsBackWhenIsAvailableThrows(): void
+    {
+        $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $gateway->expects($this->once())->method('isAvailable')->willThrowException(
+            new \RuntimeException('ping failed')
+        );
+        $gateway->expects($this->never())->method('search');
+
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Assets',
+            'children' => [
+                [
+                    'name' => 'colorbars.mp4',
+                    'uri' => 'asset://colorbars',
+                    'mime' => 'video/mp4',
+                ],
+            ],
+        ]);
+
+        $this->subject = new AssetSearchBuilder($gateway);
+        $result = $this->subject->search($this->createSearchQuery('color', 1, 10));
+
+        $this->assertSame(1, $result['total']);
+        $this->assertSame('colorbars.mp4', $result['items'][0]['name']);
     }
 
     public function testMetadataCriteriaNormalizedOnQuery(): void

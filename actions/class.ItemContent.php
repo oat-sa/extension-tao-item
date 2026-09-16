@@ -1,10 +1,22 @@
 <?php
 
 /**
- * SPDX-FileCopyrightText: 2014-2026 Open Assessment Technologies S.A.
- * Copyright (C) 2026 (original work) Open Assessment Technologies S.A.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
  *
- * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-TAO-Commercial-License
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2014-2026 (original work) Open Assessment Technologies SA;
+ *
  */
 
 use oat\generis\model\OntologyAwareTrait;
@@ -19,8 +31,9 @@ use oat\tao\model\media\MediaBrowser;
 use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
+use oat\taoItems\model\media\AssetFilesService;
+use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
 use oat\taoItems\model\media\AssetSearchBuilder;
-use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
@@ -41,10 +54,6 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 {
     use HttpJsonResponseTrait;
     use OntologyAwareTrait;
-
-    private const DEFAULT_SORT_BY = 'label';
-    private const DEFAULT_PAGE = 1;
-    private const DEFAULT_PAGE_SIZE = 10;
 
     /**
      * Browse a media folder, or search within its subtree when `query` and/or
@@ -78,82 +87,28 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             throw new BadRequestException('Invalid query parameter "metadata"');
         }
 
-        // Depth is owned by AssetTreeBuilder / AssetSearchBuilder (full subtree); ignore client depth.
-        $childrenOffset = (int)($params['childrenOffset'] ?? AssetTreeBuilder::DEFAULT_PAGINATION_OFFSET);
-
         $filters = $this->buildFilters($params);
 
-        $searchQuery = new AssetSearchQuery(
-            $this->resolveAsset($uri, $path, $lang),
-            $uri,
-            $lang,
-            $filters,
-            1,
-            $childrenOffset
-        );
-
-        $searchQuery
-            ->setSortBy((string)($params['sortBy'] ?? self::DEFAULT_SORT_BY))
-            ->setSortDir((string)($params['sortDir'] ?? 'asc'))
-            ->setMetadataCriteria(is_array($params['metadata'] ?? null) ? $params['metadata'] : []);
-
-        $queryText = trim((string)($params['query'] ?? ''));
-        if ($queryText !== '' || $searchQuery->hasMetadataCriteria()) {
-            $searchQuery
-                ->setQuery($queryText)
-                ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
-                ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
-
-            try {
-                $response = $this->getAssetSearchBuilder()->search($searchQuery);
-            } catch (AssetSearchUnavailableException $exception) {
-                $this->logWarning('Asset search unavailable: ' . $exception->getMessage());
-                $this->setErrorJsonResponse(
-                    __('Asset search is temporarily unavailable. Please try again.'),
-                    0,
-                    [],
-                    503
-                );
-                return;
-            }
-        } else {
-            $response = $this->getAssetTreeBuilder()->build($searchQuery);
+        try {
+            $response = $this->getAssetFilesService()->listFiles(
+                $this->resolveAsset($uri, $path, $lang),
+                $uri,
+                $lang,
+                $params,
+                $filters
+            );
+        } catch (AssetSearchUnavailableException $exception) {
+            $this->logWarning('Asset search unavailable: ' . $exception->getMessage());
+            $this->setErrorJsonResponse(
+                __('Asset search is temporarily unavailable. Please try again.'),
+                0,
+                [],
+                503
+            );
+            return;
         }
 
-        $this->setSuccessJsonResponse(
-            $this->attachCurrentAssetContext($response, $uri, $lang, $params, $filters)
-        );
-    }
-
-    /**
-     * @param array<string, mixed> $response
-     * @param array<string, mixed> $params
-     * @param array<int, string> $filters
-     * @return array<string, mixed>
-     */
-    private function attachCurrentAssetContext(
-        array $response,
-        string $itemUri,
-        string $itemLang,
-        array $params,
-        array $filters
-    ): array {
-        $currentAssetUrl = trim((string)($params['currentAsset'] ?? ''));
-        if ($currentAssetUrl === '') {
-            return $response;
-        }
-
-        $resolved = $this->getCurrentAssetResolver()->resolve(
-            $itemUri,
-            $itemLang,
-            $currentAssetUrl,
-            $filters
-        );
-
-        $response['parentPath'] = $resolved['parentPath'];
-        $response['currentAsset'] = $resolved['currentAsset'];
-
-        return $response;
+        $this->setSuccessJsonResponse($response);
     }
 
     /**
@@ -434,15 +389,39 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getAssetSearchBuilder(): AssetSearchBuilder
     {
-        $locator = $this->getServiceLocator();
-        if ($locator->has(AssetSearchBuilder::SERVICE_ID)) {
-            return $locator->get(AssetSearchBuilder::SERVICE_ID);
+        return new AssetSearchBuilder($this->resolveIndexedSearchGateway());
+    }
+
+    private function getAssetFilesService(): AssetFilesService
+    {
+        return new AssetFilesService(
+            $this->getAssetSearchBuilder(),
+            $this->getAssetTreeBuilder(),
+            new CurrentAssetResolver($this->getPermissionChecker())
+        );
+    }
+
+    private function resolveIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
+    {
+        try {
+            $locator = $this->getServiceLocator();
+            $container = method_exists($locator, 'getContainer')
+                ? $locator->getContainer()
+                : null;
+            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
+                return null;
+            }
+
+            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
+
+            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
+        } catch (\Throwable $exception) {
+            $this->logWarning(
+                sprintf('Indexed asset search gateway unavailable: %s', $exception->getMessage())
+            );
+
+            return null;
         }
-
-        $builder = new AssetSearchBuilder();
-        $builder->setServiceLocator($locator);
-
-        return $builder;
     }
 
     /**
@@ -460,10 +439,5 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     private function getPermissionChecker(): PermissionCheckerInterface
     {
         return $this->getServiceLocator()->get(PermissionChecker::class);
-    }
-
-    private function getCurrentAssetResolver(): CurrentAssetResolver
-    {
-        return new CurrentAssetResolver($this->getPermissionChecker());
     }
 }

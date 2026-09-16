@@ -1,17 +1,27 @@
 <?php
 
 /**
- * SPDX-FileCopyrightText: 2026-2026 Open Assessment Technologies S.A.
- * Copyright (C) 2026 (original work) Open Assessment Technologies S.A.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
  *
- * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-TAO-Commercial-License
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
+ *
+ * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
 
 namespace oat\taoItems\model\media;
 
-use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 
 /**
@@ -21,7 +31,7 @@ use oat\tao\model\accessControl\AccessControlEnablerInterface;
  * filesystem subtree traversal with trailing-token prefix matching on text
  * query only (metadata filters require the indexed path).
  */
-class AssetSearchBuilder extends ConfigurableService
+class AssetSearchBuilder
 {
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
@@ -31,11 +41,44 @@ class AssetSearchBuilder extends ConfigurableService
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
+    /** @var AssetIndexedSearchGatewayInterface|null */
+    private $indexedSearchGateway;
+
+    public function __construct(?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null)
+    {
+        $this->indexedSearchGateway = $indexedSearchGateway;
+    }
+
+    public function withIndexedSearchGateway(?AssetIndexedSearchGatewayInterface $indexedSearchGateway): self
+    {
+        $this->indexedSearchGateway = $indexedSearchGateway;
+
+        return $this;
+    }
+
     public function search(AssetSearchQuery $search): array
     {
-        $gateway = $this->getIndexedSearchGateway();
-        if ($gateway !== null && $gateway->isAvailable()) {
-            return $gateway->search($search);
+        $gateway = $this->indexedSearchGateway;
+        if ($gateway !== null) {
+            try {
+                $available = $gateway->isAvailable();
+            } catch (\Throwable $exception) {
+                $available = false;
+            }
+
+            if ($available) {
+                try {
+                    return $gateway->search($search);
+                } catch (AssetSearchUnavailableException $exception) {
+                    throw $exception;
+                } catch (\Throwable $exception) {
+                    throw new AssetSearchUnavailableException(
+                        'Indexed asset search gateway failed: ' . $exception->getMessage(),
+                        0,
+                        $exception
+                    );
+                }
+            }
         }
 
         // Metadata filters require the indexed gateway; surface 503 via controller.
@@ -87,34 +130,6 @@ class AssetSearchBuilder extends ConfigurableService
             'pageSize' => $pageSize,
             'truncated' => $truncated,
         ];
-    }
-
-    private function getIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
-    {
-        try {
-            $locator = $this->getServiceLocator();
-            if ($locator === null) {
-                return null;
-            }
-
-            // Gateway is registered in Symfony DI (SearchEngineProvider), not legacy config.
-            $container = method_exists($locator, 'getContainer')
-                ? $locator->getContainer()
-                : null;
-            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
-                return null;
-            }
-
-            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
-
-            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
-        } catch (\Throwable $exception) {
-            $this->logWarning(
-                sprintf('Indexed asset search gateway unavailable: %s', $exception->getMessage())
-            );
-
-            return null;
-        }
     }
 
     /**
