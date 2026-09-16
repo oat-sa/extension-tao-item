@@ -26,10 +26,10 @@ use common_Logger;
 use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
 use oat\tao\helpers\UserHelper;
-use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
-use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
+use oat\taoDeliverConnect\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
+use oat\taoDeliverConnect\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
+use oat\taoDeliverConnect\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use Throwable;
 
 /**
