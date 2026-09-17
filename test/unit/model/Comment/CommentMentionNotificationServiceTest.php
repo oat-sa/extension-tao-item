@@ -29,7 +29,6 @@ use oat\tao\model\menu\Perspective;
 use oat\tao\model\menu\Section;
 use oat\tao\model\menu\Tree;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\TaoOntology;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
@@ -42,40 +41,15 @@ use PHPUnit\Framework\TestCase;
 class CommentMentionNotificationServiceTest extends TestCase
 {
     private Ontology|MockObject $ontology;
-    private TaskOrchestratorEmailService|MockObject $emailService;
     private MentionEligibleUsersProviderInterface|MockObject $eligibleUsersProvider;
     private EventManager|MockObject $eventManager;
 
     protected function setUp(): void
     {
         $this->ontology = $this->createMock(Ontology::class);
-        $this->emailService = $this->createEmailServiceMock();
-        $this->emailService->method('isConfigured')->willReturn(true);
         $this->eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
         $this->eligibleUsersProvider->method('getEligibleUserUris')->willReturn(null);
         $this->eventManager = $this->createMock(EventManager::class);
-    }
-
-    public function testNotifySkipsWhenEmailNotConfigured(): void
-    {
-        $emailService = $this->createEmailServiceMock();
-        $emailService->method('isConfigured')->willReturn(false);
-        $emailService->expects($this->never())->method('sendCommentMention');
-
-        $sut = new CommentMentionNotificationService(
-            $this->ontology,
-            $emailService,
-            $this->createDeepLinkBuilder(),
-            $this->eligibleUsersProvider,
-            $this->eventManager
-        );
-
-        $sut->notifyForComment(
-            $this->comment('<p>Hi @alice</p>'),
-            'Alice Author',
-            [['id' => 'u1', 'login' => 'alice']],
-            'alice.author'
-        );
     }
 
     public function testNotifySkipsWhenNoMentions(): void
@@ -199,7 +173,6 @@ class CommentMentionNotificationServiceTest extends TestCase
 
         $sut = new class (
             $this->ontology,
-            $this->emailService,
             $this->createDeepLinkBuilder(),
             $eligibleUsersProvider,
             $this->eventManager,
@@ -214,13 +187,12 @@ class CommentMentionNotificationServiceTest extends TestCase
 
             public function __construct(
                 Ontology $ontology,
-                TaskOrchestratorEmailService $emailService,
                 CommentMentionDeepLinkBuilder $deepLinkBuilder,
                 MentionEligibleUsersProviderInterface $eligibleUsersProvider,
                 EventManager $eventManager,
                 $fixedRecipient
             ) {
-                parent::__construct($ontology, $emailService, $deepLinkBuilder, $eligibleUsersProvider, $eventManager);
+                parent::__construct($ontology, $deepLinkBuilder, $eligibleUsersProvider, $eventManager);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -289,7 +261,6 @@ class CommentMentionNotificationServiceTest extends TestCase
     {
         return new CommentMentionNotificationService(
             $this->ontology,
-            $this->emailService,
             $this->createDeepLinkBuilder(),
             $this->eligibleUsersProvider,
             $this->eventManager
@@ -303,7 +274,6 @@ class CommentMentionNotificationServiceTest extends TestCase
     {
         return new class (
             $this->ontology,
-            $this->emailService,
             $this->createDeepLinkBuilder(),
             $this->eligibleUsersProvider,
             $this->eventManager,
@@ -314,13 +284,12 @@ class CommentMentionNotificationServiceTest extends TestCase
 
             public function __construct(
                 Ontology $ontology,
-                TaskOrchestratorEmailService $emailService,
                 CommentMentionDeepLinkBuilder $deepLinkBuilder,
                 MentionEligibleUsersProviderInterface $eligibleUsersProvider,
                 EventManager $eventManager,
                 $fixedRecipient
             ) {
-                parent::__construct($ontology, $emailService, $deepLinkBuilder, $eligibleUsersProvider, $eventManager);
+                parent::__construct($ontology, $deepLinkBuilder, $eligibleUsersProvider, $eventManager);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -342,11 +311,6 @@ class CommentMentionNotificationServiceTest extends TestCase
             $body,
             '2026-09-03T10:00:00+00:00'
         );
-    }
-
-    private function createEmailServiceMock(): MockObject
-    {
-        return $this->createMock(TaskOrchestratorEmailService::class);
     }
 
     private function createDeepLinkBuilder(): CommentMentionDeepLinkBuilder

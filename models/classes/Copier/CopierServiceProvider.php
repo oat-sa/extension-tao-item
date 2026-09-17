@@ -37,7 +37,6 @@ use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
@@ -190,7 +189,6 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args([
                 service(Ontology::SERVICE_ID),
-                service(TaskOrchestratorEmailService::class),
                 service(CommentMentionDeepLinkBuilder::class),
                 service(MentionEligibleUsersProviderInterface::class),
                 service(EventManager::SERVICE_ID),

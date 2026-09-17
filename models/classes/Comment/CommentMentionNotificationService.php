@@ -29,7 +29,6 @@ use oat\oatbox\event\EventManager;
 use oat\tao\helpers\UserHelper;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
-use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\event\CommentMentionNotificationRequestedEvent;
 use Throwable;
@@ -43,20 +42,17 @@ use Throwable;
 class CommentMentionNotificationService
 {
     private Ontology $ontology;
-    private TaskOrchestratorEmailService $emailService;
     private CommentMentionDeepLinkBuilder $deepLinkBuilder;
     private MentionEligibleUsersProviderInterface $eligibleUsersProvider;
     private EventManager $eventManager;
 
     public function __construct(
         Ontology $ontology,
-        TaskOrchestratorEmailService $emailService,
         CommentMentionDeepLinkBuilder $deepLinkBuilder,
         MentionEligibleUsersProviderInterface $eligibleUsersProvider,
         EventManager $eventManager
     ) {
         $this->ontology = $ontology;
-        $this->emailService = $emailService;
         $this->deepLinkBuilder = $deepLinkBuilder;
         $this->eligibleUsersProvider = $eligibleUsersProvider;
         $this->eventManager = $eventManager;
@@ -116,17 +112,6 @@ class CommentMentionNotificationService
         array $mentions
     ): void {
         if ($mentions === []) {
-            return;
-        }
-
-        if (!$this->emailService->isConfigured()) {
-            common_Logger::w(
-                sprintf(
-                    'Comment mention email skipped for comment %s: Task Orchestrator email is not configured',
-                    $comment->getId()
-                )
-            );
-
             return;
         }
 
