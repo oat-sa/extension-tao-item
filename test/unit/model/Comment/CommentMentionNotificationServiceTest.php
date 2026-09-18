@@ -289,5 +289,4 @@ class CommentMentionNotificationServiceTest extends TestCase
             '2026-09-03T10:00:00+00:00'
         );
     }
-
 }
