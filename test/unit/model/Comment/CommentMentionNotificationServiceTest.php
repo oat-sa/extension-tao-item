@@ -25,12 +25,6 @@ namespace oat\taoItems\test\unit\model\Comment;
 use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\event\EventManager;
-use oat\tao\model\menu\Perspective;
-use oat\tao\model\menu\Section;
-use oat\tao\model\menu\Tree;
-use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaoOntology;
-use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ResourceCommentType;
@@ -41,14 +35,11 @@ use PHPUnit\Framework\TestCase;
 class CommentMentionNotificationServiceTest extends TestCase
 {
     private Ontology|MockObject $ontology;
-    private MentionEligibleUsersProviderInterface|MockObject $eligibleUsersProvider;
     private EventManager|MockObject $eventManager;
 
     protected function setUp(): void
     {
         $this->ontology = $this->createMock(Ontology::class);
-        $this->eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
-        $this->eligibleUsersProvider->method('getEligibleUserUris')->willReturn(null);
         $this->eventManager = $this->createMock(EventManager::class);
     }
 
@@ -87,7 +78,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         );
     }
 
-    public function testNotifySendsCommentMentionWithRequiredTemplateData(): void
+    public function testNotifySendsCommentMentionWithRequiredPayloadData(): void
     {
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('getLabel')->willReturn('Item Label');
@@ -113,14 +104,13 @@ class CommentMentionNotificationServiceTest extends TestCase
                     }
 
                     $payload = $event->getPayload();
-                    $data = $payload->toTemplateData();
 
-                    return $data['mentionedBy'] === 'Alice Author'
-                        && $data['username'] === 'alice'
-                        && $data['resourceType'] === ResourceCommentType::ITEM
-                        && str_contains($data['resourceUrl'], 'structure=items')
-                        && $data['resourceLabel'] === 'Item Label'
-                        && $data['name'] === 'Alice Mentioned';
+                    return $payload['mentionedBy'] === 'Alice Author'
+                        && $payload['username'] === 'alice'
+                        && $payload['resourceType'] === ResourceCommentType::ITEM
+                        && $payload['resourceUri'] === 'http://example.test/item#1'
+                        && $payload['resourceLabel'] === 'Item Label'
+                        && $payload['name'] === 'Alice Mentioned';
                 })
             )
             ->willReturn(null);
@@ -156,25 +146,20 @@ class CommentMentionNotificationServiceTest extends TestCase
         );
     }
 
-    public function testNotifySkipsIneligibleSubmittedMention(): void
+    public function testNotifyDoesNotApplyEligibilityFiltering(): void
     {
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('getLabel')->willReturn('Item Label');
         $this->ontology->method('getResource')->willReturn($resource);
 
-        $eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
-        $eligibleUsersProvider
+        $this->eventManager
             ->expects($this->once())
-            ->method('getEligibleUserUris')
-            ->with('http://example.test/item#1')
-            ->willReturn(['http://example.test/user#allowed']);
-
-        $this->eventManager->expects($this->never())->method('trigger');
+            ->method('trigger')
+            ->with($this->isInstanceOf(CommentMentionNotificationRequestedEvent::class))
+            ->willReturn(null);
 
         $sut = new class (
             $this->ontology,
-            $this->createDeepLinkBuilder(),
-            $eligibleUsersProvider,
             $this->eventManager,
             [
                 'login' => 'forged-login',
@@ -187,12 +172,10 @@ class CommentMentionNotificationServiceTest extends TestCase
 
             public function __construct(
                 Ontology $ontology,
-                CommentMentionDeepLinkBuilder $deepLinkBuilder,
-                MentionEligibleUsersProviderInterface $eligibleUsersProvider,
                 EventManager $eventManager,
                 $fixedRecipient
             ) {
-                parent::__construct($ontology, $deepLinkBuilder, $eligibleUsersProvider, $eventManager);
+                parent::__construct($ontology, $eventManager);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -238,7 +221,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
                     $payload = $event->getPayload();
 
-                    return $payload->toTemplateData()['username'] === 'rdf-login';
+                    return $payload['username'] === 'rdf-login';
                 })
             )
             ->willReturn(null);
@@ -261,8 +244,6 @@ class CommentMentionNotificationServiceTest extends TestCase
     {
         return new CommentMentionNotificationService(
             $this->ontology,
-            $this->createDeepLinkBuilder(),
-            $this->eligibleUsersProvider,
             $this->eventManager
         );
     }
@@ -274,8 +255,6 @@ class CommentMentionNotificationServiceTest extends TestCase
     {
         return new class (
             $this->ontology,
-            $this->createDeepLinkBuilder(),
-            $this->eligibleUsersProvider,
             $this->eventManager,
             $recipient
         ) extends CommentMentionNotificationService {
@@ -284,12 +263,10 @@ class CommentMentionNotificationServiceTest extends TestCase
 
             public function __construct(
                 Ontology $ontology,
-                CommentMentionDeepLinkBuilder $deepLinkBuilder,
-                MentionEligibleUsersProviderInterface $eligibleUsersProvider,
                 EventManager $eventManager,
                 $fixedRecipient
             ) {
-                parent::__construct($ontology, $deepLinkBuilder, $eligibleUsersProvider, $eventManager);
+                parent::__construct($ontology, $eventManager);
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -313,38 +290,4 @@ class CommentMentionNotificationServiceTest extends TestCase
         );
     }
 
-    private function createDeepLinkBuilder(): CommentMentionDeepLinkBuilder
-    {
-        $tree = new Tree(['rootNode' => TaoOntology::CLASS_URI_ITEM, 'name' => 'Items']);
-        $section = new Section(
-            [
-                'id' => 'manage_items',
-                'name' => 'Manage items',
-                'url' => '/',
-                'extension' => 'taoItems',
-                'controller' => 'Items',
-                'action' => 'index',
-                'binding' => null,
-                'policy' => Section::POLICY_MERGE,
-                'disabled' => false,
-            ],
-            [$tree],
-            []
-        );
-        $perspective = new Perspective(
-            [
-                'id' => 'items',
-                'extension' => 'taoItems',
-                'name' => 'Items',
-                'group' => Perspective::GROUP_DEFAULT,
-                'level' => '0',
-                'description' => '',
-                'binding' => null,
-                'icon' => null,
-            ],
-            [$section]
-        );
-
-        return new CommentMentionDeepLinkBuilder('https://example.test', [$perspective]);
-    }
 }

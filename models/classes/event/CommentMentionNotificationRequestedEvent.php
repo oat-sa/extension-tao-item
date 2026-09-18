@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace oat\taoItems\model\event;
 
 use oat\oatbox\event\Event;
-use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 
 class CommentMentionNotificationRequestedEvent implements Event
 {
@@ -32,14 +31,24 @@ class CommentMentionNotificationRequestedEvent implements Event
     private string $recipientLogin;
     private string $recipientEmail;
     private string $actorLogin;
-    private CommentMentionEmailTemplatePayload $payload;
+    /**
+     * @var array{
+     *     mentionedBy: string,
+     *     username: string,
+     *     resourceType: string,
+     *     resourceUri: string,
+     *     resourceLabel: string,
+     *     name: ?string
+     * }
+     */
+    private array $payload;
 
     public function __construct(
         string $commentId,
         string $recipientUserUri,
         string $recipientLogin,
         string $recipientEmail,
-        CommentMentionEmailTemplatePayload $payload,
+        array $payload,
         string $actorLogin
     ) {
         $this->commentId = $commentId;
@@ -80,7 +89,17 @@ class CommentMentionNotificationRequestedEvent implements Event
         return $this->actorLogin;
     }
 
-    public function getPayload(): CommentMentionEmailTemplatePayload
+    /**
+     * @return array{
+     *     mentionedBy: string,
+     *     username: string,
+     *     resourceType: string,
+     *     resourceUri: string,
+     *     resourceLabel: string,
+     *     name: ?string
+     * }
+     */
+    public function getPayload(): array
     {
         return $this->payload;
     }

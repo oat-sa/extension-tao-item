@@ -27,9 +27,6 @@ use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\event\EventManager;
 use oat\tao\helpers\UserHelper;
-use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
-use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\event\CommentMentionNotificationRequestedEvent;
 use Throwable;
 
@@ -42,19 +39,13 @@ use Throwable;
 class CommentMentionNotificationService
 {
     private Ontology $ontology;
-    private CommentMentionDeepLinkBuilder $deepLinkBuilder;
-    private MentionEligibleUsersProviderInterface $eligibleUsersProvider;
     private EventManager $eventManager;
 
     public function __construct(
         Ontology $ontology,
-        CommentMentionDeepLinkBuilder $deepLinkBuilder,
-        MentionEligibleUsersProviderInterface $eligibleUsersProvider,
         EventManager $eventManager
     ) {
         $this->ontology = $ontology;
-        $this->deepLinkBuilder = $deepLinkBuilder;
-        $this->eligibleUsersProvider = $eligibleUsersProvider;
         $this->eventManager = $eventManager;
     }
 
@@ -129,26 +120,10 @@ class CommentMentionNotificationService
 
         $mentionedByLabel = $mentionedByLabel !== '' ? $mentionedByLabel : 'TAO user';
         $resourceLabel = $this->resolveResourceLabel($comment->getResourceUri());
-        $resourceUrl = $this->deepLinkBuilder->build(
-            ResourceCommentType::classUri($comment->getResourceType()),
-            $comment->getResourceUri()
-        );
 
         foreach ($mentions as $mention) {
             try {
                 $userUri = isset($mention['id']) && is_string($mention['id']) ? $mention['id'] : '';
-                if (!$this->isEligibleMention($comment->getResourceUri(), $userUri)) {
-                    common_Logger::w(
-                        sprintf(
-                            'Comment mention email skipped for ineligible user %s on comment %s',
-                            $userUri,
-                            $comment->getId()
-                        )
-                    );
-
-                    continue;
-                }
-
                 $recipient = $this->resolveMentionRecipient($mention);
                 if ($recipient === null) {
                     continue;
@@ -160,14 +135,14 @@ class CommentMentionNotificationService
                         $userUri,
                         $recipient['login'],
                         $recipient['email'],
-                        new CommentMentionEmailTemplatePayload(
-                            $mentionedByLabel,
-                            $recipient['login'],
-                            $comment->getResourceType(),
-                            $resourceUrl,
-                            $resourceLabel,
-                            $recipient['name']
-                        ),
+                        [
+                            'mentionedBy' => $mentionedByLabel,
+                            'username' => $recipient['login'],
+                            'resourceType' => $comment->getResourceType(),
+                            'resourceUri' => $comment->getResourceUri(),
+                            'resourceLabel' => $resourceLabel,
+                            'name' => $recipient['name'],
+                        ],
                         $actorLogin
                     )
                 );
@@ -182,23 +157,6 @@ class CommentMentionNotificationService
                 );
             }
         }
-    }
-
-    /**
-     * Resource-scoped eligibility (null provider result = unrestricted).
-     */
-    private function isEligibleMention(string $resourceUri, string $userUri): bool
-    {
-        if ($userUri === '') {
-            return false;
-        }
-
-        $eligibleUris = $this->eligibleUsersProvider->getEligibleUserUris($resourceUri);
-        if ($eligibleUris === null) {
-            return true;
-        }
-
-        return in_array($userUri, $eligibleUris, true);
     }
 
     /**
