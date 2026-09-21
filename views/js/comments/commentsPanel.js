@@ -23,6 +23,7 @@
 define([
     'jquery',
     'lodash',
+    'module',
     'i18n',
     'core/eventifier',
     'taoItems/comments/commentRichTextEditor',
@@ -30,7 +31,7 @@ define([
     'tpl!taoItems/comments/tpl/panel',
     'tpl!taoItems/comments/tpl/comment',
     'css!taoItemsCss/comments-panel'
-], function ($, _, __, eventifier, richTextEditor, itemCommentsApi, panelTpl, commentTpl) {
+], function ($, _, module, __, eventifier, richTextEditor, itemCommentsApi, panelTpl, commentTpl) {
     'use strict';
 
     let instanceSeq = 0;
@@ -75,7 +76,9 @@ define([
 
         const store = config.store;
         const labels = config.labels || {};
-        const mentionsEnabled = config.mentionsEnabled === true;
+        const moduleConfig = module && typeof module.config === 'function' ? module.config() : {};
+        const mentionsEnabled = config.mentionsEnabled === true
+            || (typeof config.mentionsEnabled === 'undefined' && moduleConfig.mentionsEnabled === true);
         const ns = `.commentsPanel${++instanceSeq}`;
         const $host = $(config.renderTo);
         const $panel = $(panelTpl({ mentionsEnabled: mentionsEnabled }));
