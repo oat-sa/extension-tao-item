@@ -24,13 +24,14 @@ namespace oat\taoItems\model\event;
 
 use oat\oatbox\event\Event;
 
-class CommentMentionNotificationRequestedEvent implements Event
+class CommentMentionEvent implements Event
 {
     private string $commentId;
     private string $recipientUserUri;
     private string $recipientLogin;
     private string $recipientEmail;
     private string $actorLogin;
+
     /**
      * @var array{
      *     mentionedBy: string,
@@ -38,6 +39,7 @@ class CommentMentionNotificationRequestedEvent implements Event
      *     resourceType: string,
      *     resourceUri: string,
      *     resourceLabel: string,
+     *     commentBody?: string,
      *     name: ?string
      * }
      */
@@ -96,6 +98,7 @@ class CommentMentionNotificationRequestedEvent implements Event
      *     resourceType: string,
      *     resourceUri: string,
      *     resourceLabel: string,
+     *     commentBody?: string,
      *     name: ?string
      * }
      */

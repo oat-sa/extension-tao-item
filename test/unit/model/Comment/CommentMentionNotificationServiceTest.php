@@ -28,7 +28,7 @@ use oat\oatbox\event\EventManager;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ResourceCommentType;
-use oat\taoItems\model\event\CommentMentionNotificationRequestedEvent;
+use oat\taoItems\model\event\CommentMentionEvent;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -89,7 +89,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             ->method('trigger')
             ->with(
                 $this->callback(static function ($event): bool {
-                    if (!$event instanceof CommentMentionNotificationRequestedEvent) {
+                    if (!$event instanceof CommentMentionEvent) {
                         return false;
                     }
 
@@ -110,6 +110,7 @@ class CommentMentionNotificationServiceTest extends TestCase
                         && $payload['resourceType'] === ResourceCommentType::ITEM
                         && $payload['resourceUri'] === 'http://example.test/item#1'
                         && $payload['resourceLabel'] === 'Item Label'
+                        && $payload['commentBody'] === '<p>Hi @alice</p>'
                         && $payload['name'] === 'Alice Mentioned';
                 })
             )
@@ -155,7 +156,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         $this->eventManager
             ->expects($this->once())
             ->method('trigger')
-            ->with($this->isInstanceOf(CommentMentionNotificationRequestedEvent::class))
+            ->with($this->isInstanceOf(CommentMentionEvent::class))
             ->willReturn(null);
 
         $sut = new class (
@@ -207,7 +208,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             ->method('trigger')
             ->with(
                 $this->callback(static function ($event): bool {
-                    if (!$event instanceof CommentMentionNotificationRequestedEvent) {
+                    if (!$event instanceof CommentMentionEvent) {
                         return false;
                     }
 

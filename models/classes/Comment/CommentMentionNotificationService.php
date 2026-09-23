@@ -27,7 +27,7 @@ use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\event\EventManager;
 use oat\tao\helpers\UserHelper;
-use oat\taoItems\model\event\CommentMentionNotificationRequestedEvent;
+use oat\taoItems\model\event\CommentMentionEvent;
 use Throwable;
 
 /**
@@ -130,7 +130,7 @@ class CommentMentionNotificationService
                 }
 
                 $this->eventManager->trigger(
-                    new CommentMentionNotificationRequestedEvent(
+                    new CommentMentionEvent(
                         $comment->getId(),
                         $userUri,
                         $recipient['login'],
@@ -141,6 +141,7 @@ class CommentMentionNotificationService
                             'resourceType' => $comment->getResourceType(),
                             'resourceUri' => $comment->getResourceUri(),
                             'resourceLabel' => $resourceLabel,
+                            'commentBody' => $comment->getBody(),
                             'name' => $recipient['name'],
                         ],
                         $actorLogin
