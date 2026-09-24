@@ -134,7 +134,7 @@
     flex: 0 0 auto;
     font-size: 13px;
     margin: 0 10px 8px;
-    color: #a94442;
+    color: var(--color-alert, #db0000);
 }
 
 .item-comments-entry {
