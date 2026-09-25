@@ -27,6 +27,7 @@ use common_session_Session;
 use common_user_User;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
+use core_kernel_users_GenerisUser;
 use InvalidArgumentException;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
@@ -36,6 +37,7 @@ use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\tao\model\TaoOntology;
+use oat\taoLti\models\classes\user\Lti1p3User;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
@@ -245,6 +247,90 @@ class ItemCommentServiceTest extends TestCase
             );
 
         $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello @alice');
+    }
+
+    public function testCreateResolvesAuthorLoginForGenerisUserWithoutLtiContext(): void
+    {
+        $this->configureAuthorizedResource(true);
+
+        $user = $this->createMock(core_kernel_users_GenerisUser::class);
+        $user->method('getIdentifier')->willReturn('http://example.test/users#generisUser');
+        $user->method('getPropertyValues')
+            ->willReturnCallback(static function (string $property): array {
+                if ($property === 'http://www.tao.lu/Ontologies/generis.rdf#login') {
+                    return ['generisLogin'];
+                }
+
+                return [];
+            });
+
+        $session = $this->createMock(common_session_Session::class);
+        $session->method('getUser')->willReturn($user);
+        $session->method('getUserLabel')->willReturn('Generis User');
+        $session->method('getContexts')
+            ->with(UserDataSessionContext::class)
+            ->willReturn([]);
+
+        $this->sessionService
+            ->method('getCurrentSession')
+            ->willReturn($session);
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $this->mentionNotificationService
+            ->expects($this->once())
+            ->method('notifyForComment')
+            ->with(
+                $this->isInstanceOf(ItemComment::class),
+                'Generis User',
+                [],
+                'generisLogin'
+            );
+
+        $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello');
+    }
+
+    public function testCreateResolvesAuthorLoginForLti1p3UserWithoutLtiContext(): void
+    {
+        $this->configureAuthorizedResource(true);
+
+        $user = $this->createMock(Lti1p3User::class);
+        $user->method('getIdentifier')->willReturn('lti1p3-user-id');
+
+        $session = $this->createMock(common_session_Session::class);
+        $session->method('getUser')->willReturn($user);
+        $session->method('getUserLabel')->willReturn('LTI User');
+        $session->method('getContexts')
+            ->with(UserDataSessionContext::class)
+            ->willReturn([]);
+
+        $this->sessionService
+            ->method('getCurrentSession')
+            ->willReturn($session);
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $this->mentionNotificationService
+            ->expects($this->once())
+            ->method('notifyForComment')
+            ->with(
+                $this->isInstanceOf(ItemComment::class),
+                'LTI User',
+                [],
+                'lti1p3-user-id'
+            );
+
+        $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello');
     }
 
     public function testCreateFallsBackToUserLoginWhenUserNameIsNull(): void
