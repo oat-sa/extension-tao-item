@@ -20,7 +20,6 @@ use oat\tao\model\TaoOntology;
 use oat\taoMediaManager\model\fileManagement\FileManagement;
 use oat\taoMediaManager\model\fileManagement\FileSourceUnserializer;
 use oat\taoMediaManager\model\fileManagement\FlySystemManagement;
-use oat\taoMediaManager\model\MediaSource;
 use oat\taoMediaManager\model\TaoMediaOntology;
 use tao_helpers_Uri;
 
@@ -30,6 +29,9 @@ use tao_helpers_Uri;
 final class ResourceUpdatedAtResolver
 {
     private const FALLBACK_ISO = '1970-01-01T00:00:00Z';
+
+    /** @see \oat\taoMediaManager\model\MediaSource::SCHEME_NAME */
+    private const MEDIA_BROWSER_SCHEME = 'taomedia://mediamanager/';
 
     /**
      * @param array<string, mixed> $asset
@@ -92,8 +94,8 @@ final class ResourceUpdatedAtResolver
             return '';
         }
 
-        if (strpos($uri, MediaSource::SCHEME_NAME) === 0) {
-            $encoded = substr($uri, strlen(MediaSource::SCHEME_NAME));
+        if (strpos($uri, self::MEDIA_BROWSER_SCHEME) === 0) {
+            $encoded = substr($uri, strlen(self::MEDIA_BROWSER_SCHEME));
 
             return \tao_helpers_Uri::decode($encoded);
         }

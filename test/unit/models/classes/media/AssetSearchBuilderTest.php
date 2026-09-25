@@ -500,7 +500,7 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('asset://no-location', $result['items'][1]['uri']);
     }
 
-    public function testSearchSortsNullUpdatedAtLast(): void
+    public function testSearchSortsFallbackUpdatedAtAsOldestWhenAscending(): void
     {
         $this->mediaSource->method('getDirectories')->willReturn([
             'path' => '/',
@@ -528,8 +528,9 @@ class AssetSearchBuilderTest extends TestCase
                 ->setSortDir('asc')
         );
 
-        $this->assertSame('asset://dated', $result['items'][0]['uri']);
-        $this->assertSame('asset://undated', $result['items'][1]['uri']);
+        $this->assertSame('1970-01-01T00:00:00Z', $result['items'][0]['updatedAt']);
+        $this->assertSame('asset://undated', $result['items'][0]['uri']);
+        $this->assertSame('asset://dated', $result['items'][1]['uri']);
     }
 
     public function testSearchSortsNullLocationLastWhenDescending(): void
