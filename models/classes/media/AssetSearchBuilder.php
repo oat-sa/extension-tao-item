@@ -44,6 +44,9 @@ class AssetSearchBuilder
     /** @var AssetIndexedSearchGatewayInterface|null */
     private $indexedSearchGateway;
 
+    /** @var ResourceUpdatedAtResolver|null */
+    private $updatedAtResolver;
+
     public function __construct(?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null)
     {
         $this->indexedSearchGateway = $indexedSearchGateway;
@@ -132,6 +135,15 @@ class AssetSearchBuilder
         ];
     }
 
+    private function getUpdatedAtResolver(): ResourceUpdatedAtResolver
+    {
+        if ($this->updatedAtResolver === null) {
+            $this->updatedAtResolver = new ResourceUpdatedAtResolver();
+        }
+
+        return $this->updatedAtResolver;
+    }
+
     /**
      * @param array $node
      * @return array<int, array>
@@ -197,9 +209,8 @@ class AssetSearchBuilder
         $normalized['label'] = $label !== '' ? $label : $name;
         $normalized['name'] = $name !== '' ? $name : $label;
         $normalized['location'] = (string)($asset['location'] ?? $location);
-        if (!isset($normalized['updatedAt']) && isset($asset['updated_at'])) {
-            $normalized['updatedAt'] = $asset['updated_at'];
-        }
+        $normalized['updatedAt'] = $this->getUpdatedAtResolver()->resolveForAsset($normalized);
+        unset($normalized['updated_at']);
 
         return $normalized;
     }

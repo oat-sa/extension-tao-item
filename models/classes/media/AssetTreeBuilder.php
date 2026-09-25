@@ -257,9 +257,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     {
         // Keep explicit empty location as missing (nulls-last), same as AssetSearchBuilder.
         $file['location'] = (string)($file['location'] ?? $location);
-        if (!isset($file['updatedAt']) && isset($file['updated_at'])) {
-            $file['updatedAt'] = $file['updated_at'];
-        }
+        $file['updatedAt'] = (new ResourceUpdatedAtResolver())->resolveForAsset($file);
+        unset($file['updated_at']);
 
         return $file;
     }

@@ -170,7 +170,7 @@ class LocalItemSource implements MediaManagement
     private function formatUnixUpdatedAt(?int $timestamp): ?string
     {
         if ($timestamp === null || $timestamp <= 0) {
-            return null;
+            return gmdate('Y-m-d\TH:i:s\Z', 0);
         }
 
         return gmdate('Y-m-d\TH:i:s\Z', $timestamp);
