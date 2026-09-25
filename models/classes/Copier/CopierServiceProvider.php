@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2022 (original work) Open Assessment Technologies SA.
  *
@@ -36,9 +36,6 @@ use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\taoItems\model\Comment\RdfItemCommentAdapter;
-use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
-use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use oat\taoItems\model\TaoItemOntology;
 use taoItems_models_classes_ItemsService;
 use oat\tao\model\resources\Service\ClassCopier;
@@ -190,9 +187,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args([
                 service(Ontology::SERVICE_ID),
-                service(TaskOrchestratorEmailService::class),
-                service(CommentMentionDeepLinkBuilder::class),
-                service(MentionEligibleUsersProviderInterface::class),
+                service(EventManager::SERVICE_ID),
             ]);
 
         $services
