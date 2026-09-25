@@ -33,7 +33,6 @@ use oat\oatbox\session\SessionService;
 use oat\tao\helpers\UserHelper;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
-use oat\taoLti\models\classes\user\Lti1p3User;
 use Ramsey\Uuid\Uuid;
 
 class ItemCommentService
@@ -264,7 +263,7 @@ class ItemCommentService
             return trim((string) UserHelper::getUserLogin($user));
         }
 
-        if ($user instanceof Lti1p3User) {
+        if (is_object($user) && method_exists($user, 'getIdentifier')) {
             return trim((string) $user->getIdentifier());
         }
 
