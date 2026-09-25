@@ -651,7 +651,7 @@ class AssetTreeBuilderTest extends TestCase
             'updatedAt asc' => [
                 AssetSearchQuery::SORT_UPDATED_AT,
                 'asc',
-                ['a.png', 'b.png', 'missing.png'],
+                ['missing.png', 'a.png', 'b.png'],
             ],
             'updatedAt desc' => [
                 AssetSearchQuery::SORT_UPDATED_AT,

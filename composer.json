@@ -49,8 +49,12 @@
         "computer-based-assessment"
     ],
     "type": "tao-extension",
+    "version": "13.99.99",
     "extra": {
         "tao-extension-name": "taoItems",
+        "branch-alias": {
+            "dev-feat/AUT-4666-asset-search-api": "13.99.x-dev"
+        },
         "npm-bridge": {
             "arguments": [
                 "--prefix",
