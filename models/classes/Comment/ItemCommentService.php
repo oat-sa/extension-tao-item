@@ -263,11 +263,7 @@ class ItemCommentService
             return trim((string) UserHelper::getUserLogin($user));
         }
 
-        if (is_object($user) && method_exists($user, 'getIdentifier')) {
-            return trim((string) $user->getIdentifier());
-        }
-
-        return '';
+        return trim((string) $user->getIdentifier());
     }
 
     private function tryResolveAuthorId(): ?string
