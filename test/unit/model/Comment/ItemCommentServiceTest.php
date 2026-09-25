@@ -37,7 +37,6 @@ use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\tao\model\TaoOntology;
-use oat\taoLti\models\classes\user\Lti1p3User;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
@@ -295,11 +294,11 @@ class ItemCommentServiceTest extends TestCase
         $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello');
     }
 
-    public function testCreateResolvesAuthorLoginForLti1p3UserWithoutLtiContext(): void
+    public function testCreateResolvesAuthorLoginFromIdentifierWithoutLtiContext(): void
     {
         $this->configureAuthorizedResource(true);
 
-        $user = $this->createMock(Lti1p3User::class);
+        $user = $this->createMock(common_user_User::class);
         $user->method('getIdentifier')->willReturn('lti1p3-user-id');
 
         $session = $this->createMock(common_session_Session::class);
