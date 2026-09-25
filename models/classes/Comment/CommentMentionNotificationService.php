@@ -223,15 +223,7 @@ class CommentMentionNotificationService
 
         $user = new core_kernel_users_GenerisUser($userResource);
         $email = trim((string) UserHelper::getUserMail($user));
-        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return null;
-        }
-
         $login = trim((string) UserHelper::getUserLogin($user));
-        if ($login === '') {
-            return null;
-        }
-
         $name = UserHelper::getUserName($user, true);
         $name = is_string($name) && trim($name) !== '' ? trim($name) : null;
 
