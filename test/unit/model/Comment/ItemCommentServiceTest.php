@@ -294,6 +294,52 @@ class ItemCommentServiceTest extends TestCase
         $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello');
     }
 
+    public function testCreateResolvesAuthorLoginFromIdentifierWhenGenerisLoginIsWhitespaceOnly(): void
+    {
+        $this->configureAuthorizedResource(true);
+
+        $user = $this->createMock(core_kernel_users_GenerisUser::class);
+        $user->method('getIdentifier')->willReturn('http://example.test/users#generisUser');
+        $user->method('getPropertyValues')
+            ->willReturnCallback(static function (string $property): array {
+                if ($property === 'http://www.tao.lu/Ontologies/generis.rdf#login') {
+                    return ['   '];
+                }
+
+                return [];
+            });
+
+        $session = $this->createMock(common_session_Session::class);
+        $session->method('getUser')->willReturn($user);
+        $session->method('getUserLabel')->willReturn('Generis User');
+        $session->method('getContexts')
+            ->with(UserDataSessionContext::class)
+            ->willReturn([]);
+
+        $this->sessionService
+            ->method('getCurrentSession')
+            ->willReturn($session);
+
+        $this->persistence
+            ->expects($this->once())
+            ->method('create')
+            ->willReturnCallback(static function (ItemComment $comment): ItemComment {
+                return $comment;
+            });
+
+        $this->mentionNotificationService
+            ->expects($this->once())
+            ->method('notifyForComment')
+            ->with(
+                $this->isInstanceOf(ItemComment::class),
+                'Generis User',
+                [],
+                'http://example.test/users#generisUser'
+            );
+
+        $this->sut->create(self::RESOURCE_URI, ResourceCommentType::ITEM, 'hello');
+    }
+
     public function testCreateResolvesAuthorLoginFromIdentifierWithoutLtiContext(): void
     {
         $this->configureAuthorizedResource(true);
