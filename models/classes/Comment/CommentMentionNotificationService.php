@@ -29,7 +29,6 @@ use oat\tao\helpers\UserHelper;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
-use oat\tao\model\user\MentionEligibleUsersProviderInterface;
 use Throwable;
 
 /**
@@ -43,18 +42,15 @@ class CommentMentionNotificationService
     private Ontology $ontology;
     private TaskOrchestratorEmailService $emailService;
     private CommentMentionDeepLinkBuilder $deepLinkBuilder;
-    private MentionEligibleUsersProviderInterface $eligibleUsersProvider;
 
     public function __construct(
         Ontology $ontology,
         TaskOrchestratorEmailService $emailService,
-        CommentMentionDeepLinkBuilder $deepLinkBuilder,
-        MentionEligibleUsersProviderInterface $eligibleUsersProvider
+        CommentMentionDeepLinkBuilder $deepLinkBuilder
     ) {
         $this->ontology = $ontology;
         $this->emailService = $emailService;
         $this->deepLinkBuilder = $deepLinkBuilder;
-        $this->eligibleUsersProvider = $eligibleUsersProvider;
     }
 
     /**
@@ -146,19 +142,6 @@ class CommentMentionNotificationService
 
         foreach ($mentions as $mention) {
             try {
-                $userUri = isset($mention['id']) && is_string($mention['id']) ? $mention['id'] : '';
-                if (!$this->isEligibleMention($comment->getResourceUri(), $userUri)) {
-                    common_Logger::w(
-                        sprintf(
-                            'Comment mention email skipped for ineligible user %s on comment %s',
-                            $userUri,
-                            $comment->getId()
-                        )
-                    );
-
-                    continue;
-                }
-
                 $recipient = $this->resolveMentionRecipient($mention);
                 if ($recipient === null) {
                     continue;
@@ -188,23 +171,6 @@ class CommentMentionNotificationService
                 );
             }
         }
-    }
-
-    /**
-     * Resource-scoped eligibility (null provider result = unrestricted).
-     */
-    private function isEligibleMention(string $resourceUri, string $userUri): bool
-    {
-        if ($userUri === '') {
-            return false;
-        }
-
-        $eligibleUris = $this->eligibleUsersProvider->getEligibleUserUris($resourceUri);
-        if ($eligibleUris === null) {
-            return true;
-        }
-
-        return in_array($userUri, $eligibleUris, true);
     }
 
     /**
