@@ -110,24 +110,31 @@ class CommentMentionNotificationServiceTest extends TestCase
         $resource->method('getLabel')->willReturn('Item Label');
         $this->ontology->method('getResource')->willReturn($resource);
 
+        $calls = 0;
         $this->emailService
-            ->expects($this->once())
             ->method('sendCommentMention')
-            ->with(
-                'alice',
-                $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
+            ->willReturnCallback(function (...$args) use (&$calls): string {
+                $calls++;
+
+                $this->assertSame('alice', $args[0]);
+
+                /** @var CommentMentionEmailTemplatePayload $payload */
+                $payload = $args[count($args) - 2];
+                $this->assertInstanceOf(CommentMentionEmailTemplatePayload::class, $payload);
+
+                $this->assertSame('alice.author', $args[count($args) - 1]);
+
                     $data = $payload->toTemplateData();
 
-                    return $data['mentionedBy'] === 'Alice Author'
-                        && $data['username'] === 'alice'
-                        && $data['resourceType'] === ResourceCommentType::ITEM
-                        && str_contains($data['resourceUrl'], 'structure=items')
-                        && $data['resourceLabel'] === 'Item Label'
-                        && $data['name'] === 'alice';
-                }),
-                'alice.author'
-            )
-            ->willReturn('job-1');
+                $this->assertSame('Alice Author', $data['mentionedBy']);
+                $this->assertSame('alice', $data['username']);
+                $this->assertSame(ResourceCommentType::ITEM, $data['resourceType']);
+                $this->assertStringContainsString('structure=items', $data['resourceUrl']);
+                $this->assertSame('Item Label', $data['resourceLabel']);
+                $this->assertSame('alice', $data['name']);
+
+                return 'job-1';
+            });
 
         $sut = $this->createSut();
 
@@ -137,6 +144,8 @@ class CommentMentionNotificationServiceTest extends TestCase
             [['id' => 'u1', 'login' => 'alice']],
             'alice.author'
         );
+
+        $this->assertSame(1, $calls);
     }
 
     public function testNotifySendsMentionWithoutRecipientResolution(): void
@@ -146,14 +155,18 @@ class CommentMentionNotificationServiceTest extends TestCase
         $this->ontology->method('getResource')->willReturn($resource);
 
         $sut = $this->createSut();
+        $calls = 0;
         $this->emailService
-            ->expects($this->once())
             ->method('sendCommentMention')
-            ->with(
-                'alice',
-                $this->isInstanceOf(CommentMentionEmailTemplatePayload::class),
-                'alice.author'
-            );
+            ->willReturnCallback(function (...$args) use (&$calls): string {
+                $calls++;
+
+                $this->assertSame('alice', $args[0]);
+                $this->assertInstanceOf(CommentMentionEmailTemplatePayload::class, $args[count($args) - 2]);
+                $this->assertSame('alice.author', $args[count($args) - 1]);
+
+                return 'job-1';
+            });
 
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
@@ -161,6 +174,8 @@ class CommentMentionNotificationServiceTest extends TestCase
             [['id' => 'u1', 'login' => 'alice']],
             'alice.author'
         );
+
+        $this->assertSame(1, $calls);
     }
 
     public function testNotifyUsesMentionLoginFromHtmlPayload(): void
@@ -169,17 +184,22 @@ class CommentMentionNotificationServiceTest extends TestCase
         $resource->method('getLabel')->willReturn('Item Label');
         $this->ontology->method('getResource')->willReturn($resource);
 
+        $calls = 0;
         $this->emailService
-            ->expects($this->once())
             ->method('sendCommentMention')
-            ->with(
-                'forged-from-html',
-                $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
-                    return $payload->toTemplateData()['username'] === 'forged-from-html';
-                }),
-                'alice.author'
-            )
-            ->willReturn('job-1');
+            ->willReturnCallback(function (...$args) use (&$calls): string {
+                $calls++;
+
+                $this->assertSame('forged-from-html', $args[0]);
+
+                /** @var CommentMentionEmailTemplatePayload $payload */
+                $payload = $args[count($args) - 2];
+                $this->assertInstanceOf(CommentMentionEmailTemplatePayload::class, $payload);
+                $this->assertSame('forged-from-html', $payload->toTemplateData()['username']);
+                $this->assertSame('alice.author', $args[count($args) - 1]);
+
+                return 'job-1';
+            });
 
         $sut = $this->createSut();
 
@@ -189,6 +209,8 @@ class CommentMentionNotificationServiceTest extends TestCase
             [['id' => 'u1', 'login' => 'forged-from-html']],
             'alice.author'
         );
+
+        $this->assertSame(1, $calls);
     }
 
     private function createSut(): CommentMentionNotificationService
