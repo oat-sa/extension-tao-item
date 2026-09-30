@@ -67,6 +67,8 @@ class CommentMentionNotificationServiceTest extends TestCase
             [['id' => 'u1', 'login' => 'alice']],
             'alice.author'
         );
+
+        $this->addToAssertionCount(1);
     }
 
     public function testNotifySkipsWhenNoMentions(): void
@@ -136,7 +138,11 @@ class CommentMentionNotificationServiceTest extends TestCase
                 return 'job-1';
             });
 
-        $sut = $this->createSut();
+        $sut = $this->createSutWithResolvedRecipient([
+            'login' => 'alice',
+            'email' => 'alice@example.com',
+            'name' => 'alice',
+        ]);
 
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
@@ -155,18 +161,14 @@ class CommentMentionNotificationServiceTest extends TestCase
         $this->ontology->method('getResource')->willReturn($resource);
 
         $sut = $this->createSut();
-        $calls = 0;
         $this->emailService
+            ->expects($this->once())
             ->method('sendCommentMention')
-            ->willReturnCallback(function (...$args) use (&$calls): string {
-                $calls++;
-
-                $this->assertSame('alice', $args[0]);
-                $this->assertInstanceOf(CommentMentionEmailTemplatePayload::class, $args[count($args) - 2]);
-                $this->assertSame('alice.author', $args[count($args) - 1]);
-
-                return 'job-1';
-            });
+            ->with(
+                'alice',
+                $this->isInstanceOf(CommentMentionEmailTemplatePayload::class),
+                'alice.author'
+            );
 
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
@@ -174,8 +176,6 @@ class CommentMentionNotificationServiceTest extends TestCase
             [['id' => 'u1', 'login' => 'alice']],
             'alice.author'
         );
-
-        $this->assertSame(1, $calls);
     }
 
     public function testNotifyUsesMentionLoginFromHtmlPayload(): void
@@ -201,7 +201,11 @@ class CommentMentionNotificationServiceTest extends TestCase
                 return 'job-1';
             });
 
-        $sut = $this->createSut();
+        $sut = $this->createSutWithResolvedRecipient([
+            'login' => 'forged-from-html',
+            'email' => 'forged-from-html@example.com',
+            'name' => 'forged-from-html',
+        ]);
 
         $sut->notifyForComment(
             $this->comment('<span data-user-id="u1" data-user-login="forged-from-html">@x</span>'),
@@ -220,6 +224,37 @@ class CommentMentionNotificationServiceTest extends TestCase
             $this->emailService,
             $this->createDeepLinkBuilder()
         );
+    }
+
+    /**
+     * @param array{login: string, email: string, name: string} $recipient
+     */
+    private function createSutWithResolvedRecipient(array $recipient): CommentMentionNotificationService
+    {
+        return new class (
+            $this->ontology,
+            $this->emailService,
+            $this->createDeepLinkBuilder(),
+            $recipient
+        ) extends CommentMentionNotificationService {
+            /** @var array{login: string, email: string, name: string} */
+            private array $recipient;
+
+            public function __construct(
+                Ontology $ontology,
+                TaskOrchestratorEmailService $emailService,
+                CommentMentionDeepLinkBuilder $deepLinkBuilder,
+                array $recipient
+            ) {
+                parent::__construct($ontology, $emailService, $deepLinkBuilder);
+                $this->recipient = $recipient;
+            }
+
+            protected function resolveMentionRecipient(array $mention): ?array
+            {
+                return $this->recipient;
+            }
+        };
     }
 
     private function comment(string $body): ItemComment
