@@ -40,13 +40,12 @@
 .item-properties-preview {
     flex: 1 1 auto;
     min-height: 400px;
-    height: 100%;
+    height: calc(100vh - 232px);
     position: relative;
-    border: 1px #ddd solid;
-    border-radius: 2px;
 
     &-header {
         margin-bottom: 0;
+        padding-inline-start: 1.5rem;
     }
 
     &-iframe {
@@ -70,6 +69,10 @@
         margin: 0;
         z-index: 1;
     }
+}
+
+.item-properties-column--preview {
+    margin-bottom: 0;
 }
 
 .section-container .content-block .item-properties-column--preview > .data-container-wrapper {
@@ -99,5 +102,9 @@ body.solar-design {
             max-width: none;
             min-width: 0;
         }
+    }
+
+    .item-properties-preview {
+        height: auto;
     }
 }
