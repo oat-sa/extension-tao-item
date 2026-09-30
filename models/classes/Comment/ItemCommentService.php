@@ -27,6 +27,7 @@ use common_session_Session;
 use DateTimeImmutable;
 use DateTimeZone;
 use InvalidArgumentException;
+use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
 use oat\tao\helpers\UserHelper;
@@ -223,7 +224,7 @@ class ItemCommentService
     {
         $authorId = (string) $session->getUser()->getIdentifier();
         $authorLabel = (string) $session->getUserLabel();
-        $authorLogin = trim((string) UserHelper::getUserLogin($session->getUser()));
+        $authorLogin = $this->resolveAuthorLogin($session);
 
         /** @var UserDataSessionContext $context */
         foreach ($session->getContexts(UserDataSessionContext::class) as $context) {
@@ -247,7 +248,22 @@ class ItemCommentService
             throw new common_exception_Unauthorized('Unable to resolve comment author from session');
         }
 
+        if ($authorLogin === '') {
+            $authorLogin = $authorId;
+        }
+
         return [$authorId, $authorLabel, $authorLogin];
+    }
+
+    private function resolveAuthorLogin(common_session_Session $session): string
+    {
+        $user = $session->getUser();
+
+        if ($user instanceof core_kernel_users_GenerisUser) {
+            return trim((string) UserHelper::getUserLogin($user));
+        }
+
+        return trim((string) $user->getIdentifier());
     }
 
     private function tryResolveAuthorId(): ?string
