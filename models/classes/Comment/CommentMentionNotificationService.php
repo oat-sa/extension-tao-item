@@ -23,9 +23,7 @@ declare(strict_types=1);
 namespace oat\taoItems\model\Comment;
 
 use common_Logger;
-use core_kernel_users_GenerisUser;
 use oat\generis\model\data\Ontology;
-use oat\tao\helpers\UserHelper;
 use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
 use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
 use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
@@ -33,9 +31,6 @@ use Throwable;
 
 /**
  * NotificationAdapter: sends comment-mention emails via Task Orchestrator.
- *
- * Callers supply already-parsed mentions (mention parsing belongs to the mentions
- * feature). Skips recipients without a usable email. Failures never roll back the comment.
  */
 class CommentMentionNotificationService
 {
@@ -142,21 +137,15 @@ class CommentMentionNotificationService
 
         foreach ($mentions as $mention) {
             try {
-                $recipient = $this->resolveMentionRecipient($mention);
-                if ($recipient === null) {
-                    continue;
-                }
-
                 $this->emailService->sendCommentMention(
-                    $recipient['login'],
-                    $recipient['email'],
+                    $mention['login'],
                     new CommentMentionEmailTemplatePayload(
                         $mentionedByLabel,
-                        $recipient['login'],
+                        $mention['login'],
                         $comment->getResourceType(),
                         $resourceUrl,
                         $resourceLabel,
-                        $recipient['name']
+                        $mention['login']
                     ),
                     $actorLogin
                 );
@@ -171,33 +160,6 @@ class CommentMentionNotificationService
                 );
             }
         }
-    }
-
-    /**
-     * Resolve mentioned RDF user for delivery.
-     * Login/email/name come from the ontology user resource — never from HTML attributes.
-     *
-     * @param array{id: string, login: string} $mention
-     * @return array{login: string, email: string, name: ?string}|null null = unresolved or no usable email
-     */
-    protected function resolveMentionRecipient(array $mention): ?array
-    {
-        $userResource = $this->ontology->getResource($mention['id']);
-        if ($userResource === null || !$userResource->exists()) {
-            return null;
-        }
-
-        $user = new core_kernel_users_GenerisUser($userResource);
-        $email = trim((string) UserHelper::getUserMail($user));
-        $login = trim((string) UserHelper::getUserLogin($user));
-        $name = UserHelper::getUserName($user, true);
-        $name = is_string($name) && trim($name) !== '' ? trim($name) : null;
-
-        return [
-            'login' => $login,
-            'email' => $email,
-            'name' => $name,
-        ];
     }
 
     private function resolveResourceLabel(string $resourceUri): string

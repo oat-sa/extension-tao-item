@@ -49,6 +49,7 @@ final class CommentMentionParser
 
         $mentionsById = [];
 
+        //todo: revisit this in order to eliminate data-user-id
         foreach ($spanMatches[0] as $spanMatch) {
             $tag = $spanMatch[0];
             $id = $this->attribute($tag, 'data-user-id');
