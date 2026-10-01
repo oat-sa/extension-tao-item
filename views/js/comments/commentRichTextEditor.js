@@ -609,6 +609,7 @@ define([
     return {
         create: create,
         sanitizeHtml: sanitizeHtml,
-        hasMeaningfulText: hasMeaningfulText
+        hasMeaningfulText: hasMeaningfulText,
+        buildMentionHtml: buildMentionHtml
     };
 });
