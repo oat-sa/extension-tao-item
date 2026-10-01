@@ -40,13 +40,13 @@ define(['context', 'jquery'], function (context) {
             for (let index = 0; index < rules.length; index++) {
                 const rule = rules[index];
 
-                if (rule.type === 4) {
+                if (rule.type === window.CSSRule.MEDIA_RULE) {
                     const nestedRule = findRule(rule.cssRules, rule.media.mediaText);
                     if (nestedRule) {
                         return nestedRule;
                     }
                 } else if (
-                    rule.type === 1 &&
+                    rule.type === window.CSSRule.STYLE_RULE &&
                     normalize(currentMediaText) === normalize(mediaText) &&
                     rule.selectorText.split(',').map(normalize).includes(normalize(selector))
                 ) {
