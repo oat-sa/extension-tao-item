@@ -25,6 +25,7 @@ namespace oat\taoItems\model\media;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
+use oat\taoMediaManager\model\MediaSource;
 use tao_helpers_Uri;
 
 class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface
@@ -39,11 +40,10 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     private const SORT_UPDATED_AT = 'updatedAt';
 
     /**
-     * Full subtree so browse lists files under the selected folder and descendants.
-     * Enrichment is bounded; sources may still report a higher total (truncated=true).
-     * Load window grows with the requested page so offsets past the base cap stay reachable.
+     * Descendants of the active folder (media source scopes the root class). Flat table
+     * lists nested files via collectFiles(); file load is capped by MAX_BROWSE_LOAD.
      */
-    private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
+    private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
     private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     private const MAX_CHILDREN_OFFSET = 10000;
@@ -65,7 +65,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
         $children = $data['children'] ?? [];
 
-        $scopeLabel = (string)($data['label'] ?? $data['path'] ?? '');
+        $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
         $directories = [];
         $files = [];
         $totalFiles = 0;
@@ -127,7 +127,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             $search->getItemUri(),
             $search->getItemLang(),
             $search->getFilter(),
-            self::FULL_SUBTREE_DEPTH,
+            self::BROWSE_SUBTREE_DEPTH,
             0,
             $loadLimit
         ))
@@ -227,10 +227,22 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      */
     private function toDirectoryStub(array $directory, DirectorySearchQuery $search): array
     {
-        $parent = (string)($directory['parent'] ?? $directory['path'] ?? '');
+        $lazyLink = isset($directory['parent']) ? (string)$directory['parent'] : '';
         unset($directory['children'], $directory['parent'], $directory['total']);
 
-        if ($parent !== '') {
+        if (!isset($directory['path']) || $directory['path'] === '') {
+            if ($lazyLink !== '') {
+                $directory['path'] = str_starts_with($lazyLink, MediaSource::SCHEME_NAME)
+                    ? $lazyLink
+                    : MediaSource::SCHEME_NAME . tao_helpers_Uri::encode($lazyLink);
+            }
+        }
+
+        $browsePath = (string)($directory['path'] ?? '');
+        if ($browsePath !== '') {
+            $itemContentPath = str_starts_with($browsePath, MediaSource::SCHEME_NAME)
+                ? substr($browsePath, strlen(MediaSource::SCHEME_NAME))
+                : $browsePath;
             $directory['url'] = tao_helpers_Uri::url(
                 'files',
                 'ItemContent',
@@ -238,12 +250,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
                 [
                     'uri' => $search->getItemUri(),
                     'lang' => $search->getItemLang(),
-                    'path' => $parent,
+                    'path' => $itemContentPath,
                 ]
             );
-            if (!isset($directory['path'])) {
-                $directory['path'] = $parent;
-            }
         }
 
         return $directory;

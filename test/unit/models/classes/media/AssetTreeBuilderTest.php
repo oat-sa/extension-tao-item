@@ -111,7 +111,7 @@ class AssetTreeBuilderTest extends TestCase
             'children' => [
                 [
                     'url' => tao_helpers_Uri::getRootUrl() . 'taoItems/ItemContent/files?uri=&lang=&path=parent',
-                    'path' => 'parent',
+                    'path' => 'taomedia://mediamanager/parent',
                 ],
                 [
                     'url' => 'something'
@@ -198,6 +198,38 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertFalse($result['truncated']);
     }
 
+    public function testBuildNormalizesLazyDirectoryStubPathToTaomediaScheme(): void
+    {
+        $classUri = 'https://test-tao.example/ontologies/tao.rdf#ClassFolder';
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => 'taomedia://mediamanager/root',
+            'label' => 'Root',
+            'children' => [
+                [
+                    'parent' => $classUri,
+                    'label' => 'Folder',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->build(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
+        );
+
+        $directories = array_values(array_filter(
+            $result['children'],
+            static function (array $child): bool {
+                return isset($child['path']) && !isset($child['uri']);
+            }
+        ));
+
+        $this->assertCount(1, $directories);
+        $this->assertSame(
+            'taomedia://mediamanager/' . tao_helpers_Uri::encode($classUri),
+            $directories[0]['path']
+        );
+    }
+
     public function testBuildIncludesNestedFilesAndKeepsDirectoryStubs(): void
     {
         $this->mediaSource->method('getDirectories')->willReturn([
@@ -261,6 +293,50 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame('Root/images/nested', $files[0]['location']);
         $this->assertSame('root.png', $files[1]['name']);
         $this->assertSame('Root', $files[1]['location']);
+    }
+
+    public function testBuildUsesLocationPathForAbsoluteLocationsWhenScopedToSubfolder(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => 'taomedia://mediamanager/ImagesClass',
+            'label' => 'images',
+            'locationPath' => 'Assets/images',
+            'children' => [
+                [
+                    'path' => '/images/nested',
+                    'label' => 'nested',
+                    'children' => [
+                        [
+                            'uri' => 'taomedia://local/nested.png',
+                            'name' => 'nested.png',
+                            'mime' => 'image/png',
+                        ],
+                    ],
+                ],
+                [
+                    'uri' => 'taomedia://local/in-images.png',
+                    'name' => 'in-images.png',
+                    'mime' => 'image/png',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
+
+        $files = array_values(array_filter(
+            $result['children'],
+            static function (array $child): bool {
+                return isset($child['uri']);
+            }
+        ));
+
+        $this->assertCount(2, $files);
+        $locationsByName = [];
+        foreach ($files as $file) {
+            $locationsByName[$file['name']] = $file['location'];
+        }
+        $this->assertSame('Assets/images/nested', $locationsByName['nested.png']);
+        $this->assertSame('Assets/images', $locationsByName['in-images.png']);
     }
 
     /**

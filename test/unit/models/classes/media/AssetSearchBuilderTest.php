@@ -24,9 +24,12 @@ namespace oat\taoItems\test\unit\models\classes\media;
 
 use oat\generis\test\TestCase;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
+use oat\tao\model\accessControl\ActionAccessControl;
+use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
 use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
+use oat\taoItems\model\media\AssetListingReadAccessChecker;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
@@ -773,29 +776,54 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('Parent/Child/Grandchild', $nestedMatch['items'][0]['location']);
     }
 
-    public function testSearchReturnsEmptyWhenAccessControlFiltersAllAssets(): void
+    public function testSearchExcludesAssetsDeniedByListingReadAccessChecker(): void
     {
         $accessControlledSource = $this->createMock(AccessControlMediaSource::class);
         $accessControlledSource->expects($this->once())->method('enableAccessControl');
         $accessControlledSource->method('getDirectories')->willReturn([
             'path' => '/',
             'label' => 'Assets',
-            'children' => [],
+            'children' => [
+                [
+                    'name' => 'secret.png',
+                    'uri' => 'http://example.com/media/secret',
+                    'mime' => 'image/png',
+                ],
+                [
+                    'name' => 'public.png',
+                    'uri' => 'http://example.com/media/public',
+                    'mime' => 'image/png',
+                ],
+            ],
         ]);
+
+        $permissionChecker = $this->createMock(PermissionCheckerInterface::class);
+        $permissionChecker->method('hasReadAccess')->willReturnCallback(
+            static function (string $uri): bool {
+                return $uri === 'http://example.com/media/public';
+            }
+        );
+        $actionAccessControl = $this->createMock(ActionAccessControl::class);
+        $actionAccessControl->method('contextHasReadAccess')->willReturn(true);
+
+        $subject = new AssetSearchBuilder(
+            null,
+            new AssetListingReadAccessChecker($permissionChecker, $actionAccessControl)
+        );
 
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($accessControlledSource);
         $mediaAsset->method('getMediaIdentifier')->willReturn('/');
 
-        $result = $this->subject->search(
+        $result = $subject->search(
             (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
-                ->setQuery('anything')
+                ->setQuery('')
                 ->setPage(1)
                 ->setPageSize(10)
         );
 
-        $this->assertSame(0, $result['total']);
-        $this->assertSame([], $result['items']);
+        $this->assertSame(1, $result['total']);
+        $this->assertSame('http://example.com/media/public', $result['items'][0]['uri']);
     }
 
     public function testSearchPreservesPermissionsFromMediaSourcePayload(): void

@@ -25,7 +25,11 @@ namespace oat\taoItems\model\media;
 use oat\tao\model\media\MediaAsset;
 
 /**
- * Orchestrates Resource Manager browse vs scoped search and current-asset context.
+ * Entry point for item Resource Manager file listing (browse and scoped search).
+ *
+ * When the request has a non-empty text query and/or metadata filters, delegates to
+ * {@see AssetSearchBuilder}; otherwise returns the paginated directory tree via
+ * {@see AssetTreeBuilder}. Optionally attaches current-asset context for pre-selection.
  */
 final class AssetFilesService
 {

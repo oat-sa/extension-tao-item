@@ -46,6 +46,14 @@ class ItemContentRequiredParamsTest extends TestCase
         $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['uri' => ['bad']], 'uri'));
     }
 
+    public function testMissingOrBlankQueryParamAllowsStructuredFiltersForUpload(): void
+    {
+        $structured = [['mime' => 'image/png', 'extension' => 'png']];
+        $this->assertFalse($this->invokeIsMissingOrBlankQueryParam(['filters' => $structured], 'filters', true));
+        $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['filters' => []], 'filters', true));
+        $this->assertTrue($this->invokeIsMissingOrBlankQueryParam(['filters' => $structured], 'filters'));
+    }
+
     public function testAssetSearchQueryNormalizesMetadataCriteria(): void
     {
         $propertyUri = 'http://www.tao.lu/Ontologies/TAO.rdf#Keywords';
@@ -82,13 +90,16 @@ class ItemContentRequiredParamsTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    private function invokeIsMissingOrBlankQueryParam(array $params, string $key): bool
-    {
+    private function invokeIsMissingOrBlankQueryParam(
+        array $params,
+        string $key,
+        bool $allowStructuredFilters = false
+    ): bool {
         $controller = new \taoItems_actions_ItemContent();
         $method = new ReflectionMethod($controller, 'isMissingOrBlankQueryParam');
         $method->setAccessible(true);
 
-        return (bool)$method->invoke($controller, $params, $key);
+        return (bool)$method->invoke($controller, $params, $key, $allowStructuredFilters);
     }
 
     private function invokeAssertOptionalScalarQueryParams(array $params, string ...$keys): void

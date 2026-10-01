@@ -1,10 +1,21 @@
 <?php
 
 /**
- * SPDX-FileCopyrightText: 2026-2026 Open Assessment Technologies S.A.
- * Copyright (C) 2026 (original work) Open Assessment Technologies S.A.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; under version 2
+ * of the License (non-upgradable).
  *
- * SPDX-License-Identifier: AGPL-3.0-only OR LicenseRef-TAO-Commercial-License
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -113,11 +124,11 @@ final class ResourceUpdatedAtResolver
     private function readOntologyUpdatedAtRaw(string $resourceUri)
     {
         try {
-            $resource = new Resource($resourceUri);
+            $resource = new core_kernel_classes_Resource($resourceUri);
             $raw = $resource->getOnePropertyValue(
-                new Property(TaoOntology::PROPERTY_UPDATED_AT)
+                new core_kernel_classes_Property(TaoOntology::PROPERTY_UPDATED_AT)
             );
-            if ($raw instanceof Literal) {
+            if ($raw instanceof core_kernel_classes_Literal) {
                 return $raw->literal;
             }
 
@@ -133,15 +144,17 @@ final class ResourceUpdatedAtResolver
     private function readMediaFileTimestamp(string $resourceUri): ?int
     {
         try {
-            $resource = new Resource($resourceUri);
+            $resource = new core_kernel_classes_Resource($resourceUri);
             $fileLinkRaw = $resource->getOnePropertyValue(
-                new Property(TaoMediaOntology::PROPERTY_LINK)
+                new core_kernel_classes_Property(TaoMediaOntology::PROPERTY_LINK)
             );
             if ($fileLinkRaw === null || $fileLinkRaw === '') {
                 return null;
             }
 
-            $fileLink = $fileLinkRaw instanceof Resource ? $fileLinkRaw->getUri() : (string)$fileLinkRaw;
+            $fileLink = $fileLinkRaw instanceof core_kernel_classes_Resource
+                ? $fileLinkRaw->getUri()
+                : (string)$fileLinkRaw;
             $fileLink = $this->getFileSourceUnserializer()->unserialize($fileLink);
             if ($fileLink === '') {
                 return null;

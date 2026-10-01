@@ -21,6 +21,7 @@
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
+use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\model\accessControl\Context;
 use oat\tao\model\accessControl\data\PermissionException;
 use oat\tao\model\accessControl\PermissionChecker;
@@ -33,6 +34,7 @@ use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetFilesService;
 use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
+use oat\taoItems\model\media\AssetListingReadAccessChecker;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
 use oat\taoItems\model\media\AssetTreeBuilder;
@@ -293,7 +295,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $params = $this->getPsrRequest()->getQueryParams();
         foreach ($requiredKeys as $key) {
-            if ($this->isMissingOrBlankQueryParam($params, $key)) {
+            if ($this->isMissingOrBlankQueryParam($params, $key, $key === 'filters')) {
                 throw new MissingParameterException($key, __METHOD__);
             }
         }
@@ -301,7 +303,7 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         return $params;
     }
 
-    private function isMissingOrBlankQueryParam(array $params, string $key): bool
+    private function isMissingOrBlankQueryParam(array $params, string $key, bool $allowStructuredFilters = false): bool
     {
         if (!array_key_exists($key, $params)) {
             return true;
@@ -312,8 +314,12 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             return true;
         }
 
-        // Reject arrays/objects; keep scalars (e.g. path "0" / 0) as present.
         if (!is_scalar($value)) {
+            // upload() accepts structured MIME filter arrays; other params stay scalar-only.
+            if ($allowStructuredFilters && is_array($value)) {
+                return $value === [];
+            }
+
             return true;
         }
 
@@ -389,7 +395,13 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
 
     private function getAssetSearchBuilder(): AssetSearchBuilder
     {
-        return new AssetSearchBuilder($this->resolveIndexedSearchGateway());
+        return new AssetSearchBuilder(
+            $this->resolveIndexedSearchGateway(),
+            new AssetListingReadAccessChecker(
+                $this->getPermissionChecker(),
+                $this->getServiceLocator()->get(ActionAccessControl::SERVICE_ID)
+            )
+        );
     }
 
     private function getAssetFilesService(): AssetFilesService

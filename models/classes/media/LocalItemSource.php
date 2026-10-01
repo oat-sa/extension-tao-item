@@ -348,6 +348,7 @@ class LocalItemSource implements MediaManagement
         $data = [
             'path' => $parentLink,
             'label' => $label,
+            'locationPath' => $this->buildLocationPathForDirectory($parentLink, $label),
             'childrenLimit' => $childrenLimit,
             'total' => 0,
         ];
@@ -406,5 +407,17 @@ class LocalItemSource implements MediaManagement
         $data['total'] = $total;
 
         return $data;
+    }
+
+    private function buildLocationPathForDirectory(string $parentLink, string $label): string
+    {
+        $rootLabel = trim($this->getItem()->getLabel());
+        if ($parentLink === '' || $parentLink === '/') {
+            return $rootLabel;
+        }
+
+        $relative = trim(str_replace('\\', '/', $parentLink), '/');
+
+        return $rootLabel !== '' ? trim($rootLabel . '/' . $relative, '/') : $relative;
     }
 }

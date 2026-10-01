@@ -47,9 +47,15 @@ class AssetSearchBuilder
     /** @var ResourceUpdatedAtResolver|null */
     private $updatedAtResolver;
 
-    public function __construct(?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null)
-    {
+    /** @var AssetListingReadAccessChecker|null */
+    private $listingReadAccessChecker;
+
+    public function __construct(
+        ?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null,
+        ?AssetListingReadAccessChecker $listingReadAccessChecker = null
+    ) {
         $this->indexedSearchGateway = $indexedSearchGateway;
+        $this->listingReadAccessChecker = $listingReadAccessChecker;
     }
 
     public function withIndexedSearchGateway(?AssetIndexedSearchGatewayInterface $indexedSearchGateway): self
@@ -111,10 +117,11 @@ class AssetSearchBuilder
 
         $tree = $mediaSource->getDirectories($fetchQuery);
         $scopePath = (string)($tree['path'] ?? $search->getParentLink());
-        $scopeLabel = (string)($tree['label'] ?? $scopePath);
+        $scopeLabel = (string)($tree['locationPath'] ?? $tree['label'] ?? $scopePath);
         $sourceTotal = array_key_exists('total', $tree) ? (int)$tree['total'] : null;
 
         $items = $this->flattenAssets($tree, $scopePath, $scopeLabel);
+        $items = $this->filterReadableAssets($items, $search);
         $truncated = $sourceTotal !== null && $sourceTotal > count($items);
 
         $items = $this->filterByQuery($items, $search->getQuery());
@@ -142,6 +149,29 @@ class AssetSearchBuilder
         }
 
         return $this->updatedAtResolver;
+    }
+
+    /**
+     * @param array<int, array> $items
+     * @return array<int, array>
+     */
+    private function filterReadableAssets(array $items, AssetSearchQuery $search): array
+    {
+        if ($this->listingReadAccessChecker === null) {
+            return $items;
+        }
+
+        $mediaSource = $search->getAsset()->getMediaSource();
+        $itemUri = $search->getItemUri();
+
+        return array_values(
+            array_filter(
+                $items,
+                function (array $item) use ($mediaSource, $itemUri): bool {
+                    return $this->listingReadAccessChecker->canReadListedAsset($mediaSource, $item, $itemUri);
+                }
+            )
+        );
     }
 
     /**
