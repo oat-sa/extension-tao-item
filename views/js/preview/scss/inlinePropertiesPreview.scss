@@ -92,6 +92,15 @@ body.solar-design {
     }
 }
 
+// Below the 400px preview floor plus 232px page chrome, use the available viewport height.
+@media (min-width: 901px) and (max-height: 631px) {
+    .item-properties-column > .data-container-wrapper,
+    .item-properties-preview,
+    .item-properties-preview-iframe {
+        min-height: 0;
+    }
+}
+
 @media (max-width: 900px) {
     .item-properties-column {
         flex: 1 1 100%;
