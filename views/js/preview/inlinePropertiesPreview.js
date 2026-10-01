@@ -117,11 +117,11 @@ define([
     }
 
     function hidePanel() {
-        $('#item-properties-preview-column').hide();
+        $('#item-properties-preview-column').addClass('item-properties-column--preview-hidden');
     }
 
     function showPanel() {
-        $('#item-properties-preview-column').show();
+        $('#item-properties-preview-column').removeClass('item-properties-column--preview-hidden');
     }
 
     function handleTimeout() {
@@ -236,6 +236,7 @@ define([
      */
     function init(config) {
         cleanup();
+        hidePanel();
 
         if (!config || !config.isPreviewEnabled || !config.itemUri) {
             return;

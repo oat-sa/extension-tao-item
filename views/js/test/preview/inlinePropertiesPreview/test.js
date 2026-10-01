@@ -34,7 +34,7 @@ define(['context', 'jquery'], function (context) {
     function setupDom() {
         $('#qunit-fixture').html(`
             <div id="item-properties-form-column" class="item-properties-column item-properties-column--form"></div>
-            <div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview">
+            <div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview item-properties-column--preview-hidden">
                 <div id="item-properties-preview" class="item-properties-preview"></div>
             </div>
         `);
