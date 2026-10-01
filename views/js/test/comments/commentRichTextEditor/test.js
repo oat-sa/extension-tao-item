@@ -37,4 +37,41 @@ define(['taoItems/comments/commentRichTextEditor'], function (commentRichTextEdi
         assert.strictEqual(output.indexOf('img'), -1, 'img markup removed');
         assert.strictEqual(output.indexOf('onerror'), -1, 'event handler removed');
     });
+
+    QUnit.module('commentRichTextEditor buildMentionHtml');
+
+    QUnit.test('uses non-empty displayName in visible label', function (assert) {
+        const html = commentRichTextEditor.buildMentionHtml({
+            id: 'user-1',
+            login: 'jdoe',
+            displayName: 'Jane Doe'
+        });
+
+        assert.ok(html.indexOf('@Jane Doe') !== -1, 'visible label uses displayName');
+        assert.ok(html.indexOf('data-user-login="jdoe"') !== -1, 'login stored in data attribute');
+    });
+
+    QUnit.test('falls back to login when displayName is whitespace only', function (assert) {
+        const html = commentRichTextEditor.buildMentionHtml({
+            id: 'user-2',
+            login: 'jdoe',
+            displayName: '   '
+        });
+
+        assert.ok(html.indexOf('@jdoe') !== -1, 'visible label falls back to login');
+        assert.strictEqual(html.indexOf('@   '), -1, 'whitespace displayName not shown');
+    });
+
+    QUnit.test('escapes HTML in visible label and attributes', function (assert) {
+        const html = commentRichTextEditor.buildMentionHtml({
+            id: 'u<script>',
+            login: 'a<b>',
+            displayName: 'Evil <img>'
+        });
+
+        assert.ok(html.indexOf('@Evil &lt;img&gt;') !== -1, 'displayName HTML escaped in label');
+        assert.ok(html.indexOf('data-user-id="u&lt;script&gt;"') !== -1, 'id escaped in attribute');
+        assert.ok(html.indexOf('data-user-login="a&lt;b&gt;"') !== -1, 'login escaped in attribute');
+        assert.strictEqual(html.indexOf('<img'), -1, 'raw img tag not present');
+    });
 });
