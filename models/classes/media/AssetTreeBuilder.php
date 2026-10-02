@@ -25,7 +25,6 @@ namespace oat\taoItems\model\media;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
-use oat\taoMediaManager\model\MediaSource;
 use tao_helpers_Uri;
 
 class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface
@@ -47,6 +46,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     private const MAX_CHILDREN_OFFSET = 10000;
+
+    /** @see \oat\taoMediaManager\model\MediaSource::SCHEME_NAME */
+    private const MEDIA_BROWSER_SCHEME = 'taomedia://mediamanager/';
 
     public function build(DirectorySearchQuery $search): array
     {
@@ -232,16 +234,16 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
         if (!isset($directory['path']) || $directory['path'] === '') {
             if ($lazyLink !== '') {
-                $directory['path'] = str_starts_with($lazyLink, MediaSource::SCHEME_NAME)
+                $directory['path'] = str_starts_with($lazyLink, self::MEDIA_BROWSER_SCHEME)
                     ? $lazyLink
-                    : MediaSource::SCHEME_NAME . tao_helpers_Uri::encode($lazyLink);
+                    : self::MEDIA_BROWSER_SCHEME . tao_helpers_Uri::encode($lazyLink);
             }
         }
 
         $browsePath = (string)($directory['path'] ?? '');
         if ($browsePath !== '') {
-            $itemContentPath = str_starts_with($browsePath, MediaSource::SCHEME_NAME)
-                ? substr($browsePath, strlen(MediaSource::SCHEME_NAME))
+            $itemContentPath = str_starts_with($browsePath, self::MEDIA_BROWSER_SCHEME)
+                ? substr($browsePath, strlen(self::MEDIA_BROWSER_SCHEME))
                 : $browsePath;
             $directory['url'] = tao_helpers_Uri::url(
                 'files',
