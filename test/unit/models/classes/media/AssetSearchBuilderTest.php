@@ -652,7 +652,7 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame('test.png', $result['items'][0]['name']);
     }
 
-    public function testSearchFallbackRequestsBoundedChildrenLoad(): void
+    public function testSearchFallbackRequestsFullSubtreeLoadOnFirstPage(): void
     {
         $captured = null;
         $this->mediaSource
@@ -672,7 +672,7 @@ class AssetSearchBuilderTest extends TestCase
         $result = $this->subject->search($this->createSearchQuery('any', 1, 10));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(500, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
         $this->assertSame(0, $captured->getChildrenOffset());
         $this->assertFalse($result['truncated']);

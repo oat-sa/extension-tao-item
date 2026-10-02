@@ -36,8 +36,11 @@ class AssetSearchBuilder
     public const SERVICE_ID = 'taoItems/AssetSearchBuilder';
 
     private const FULL_SUBTREE_DEPTH = PHP_INT_MAX;
-    /** Bound enrichment for filesystem fallback; prefer indexed search for large scopes. */
-    private const MAX_SEARCH_LOAD = 500;
+    /**
+     * No children cap on filesystem fallback (0 = unlimited in MediaSource::searchDirectories).
+     * Full subtree load keeps page-1 totals and later pages consistent when paginating in memory.
+     */
+    private const FALLBACK_CHILDREN_LIMIT = 0;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -104,7 +107,7 @@ class AssetSearchBuilder
             $mediaSource->enableAccessControl();
         }
 
-        // Bounded payload; do not mutate the caller's query. Indexed path preferred for large scopes.
+        // Do not mutate the caller's query. Indexed path preferred for very large scopes.
         $fetchQuery = new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -112,7 +115,7 @@ class AssetSearchBuilder
             $search->getFilter(),
             self::FULL_SUBTREE_DEPTH,
             0,
-            self::MAX_SEARCH_LOAD
+            self::FALLBACK_CHILDREN_LIMIT
         );
 
         $tree = $mediaSource->getDirectories($fetchQuery);
