@@ -193,6 +193,7 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 service(TaskOrchestratorEmailService::class),
                 service(CommentMentionDeepLinkBuilder::class),
                 service(MentionEligibleUsersProviderInterface::class),
+                service(EventManager::SERVICE_ID),
             ]);
 
         $services
