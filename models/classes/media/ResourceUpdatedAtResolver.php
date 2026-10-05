@@ -40,7 +40,7 @@ use tao_helpers_Uri;
  * @license GPL-2.0-only
  * @copyright 2026 Open Assessment Technologies SA
  */
-final class ResourceUpdatedAtResolver
+final class ResourceUpdatedAtResolver implements AssetUpdatedAtResolverInterface
 {
     private const FALLBACK_ISO = '1970-01-01T00:00:00Z';
 

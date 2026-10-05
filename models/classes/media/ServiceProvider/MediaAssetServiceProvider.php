@@ -35,6 +35,7 @@ use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\CurrentAssetResolver;
 use oat\taoItems\model\media\NoOpAssetIndexedSearchGateway;
+use oat\taoItems\model\media\AssetUpdatedAtResolverInterface;
 use oat\taoItems\model\media\ResourceUpdatedAtResolver;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -74,12 +75,14 @@ class MediaAssetServiceProvider implements ContainerServiceProviderInterface
                 service(FileSystemService::SERVICE_ID),
             ]);
 
+        $services->alias(AssetUpdatedAtResolverInterface::class, ResourceUpdatedAtResolver::class);
+
         $services
             ->set(AssetSearchBuilder::class, AssetSearchBuilder::class)
             ->args([
                 service(AssetIndexedSearchGatewayInterface::class),
                 service(AssetListingReadAccessChecker::class),
-                service(ResourceUpdatedAtResolver::class),
+                service(AssetUpdatedAtResolverInterface::class),
             ]);
 
         $services

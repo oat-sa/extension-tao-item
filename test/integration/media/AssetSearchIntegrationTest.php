@@ -26,12 +26,10 @@ use oat\generis\test\TestCase;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\MediaBrowser;
-use oat\oatbox\filesystem\FileSystemService;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
-use oat\taoItems\model\media\ResourceUpdatedAtResolver;
-use oat\taoMediaManager\model\fileManagement\FileManagement;
-use oat\taoMediaManager\model\fileManagement\FileSourceUnserializer;
+use oat\taoItems\model\media\AssetUpdatedAtNormalizer;
+use oat\taoItems\model\media\AssetUpdatedAtResolverInterface;
 
 abstract class AccessControlMediaSource implements MediaBrowser, AccessControlEnablerInterface
 {
@@ -46,15 +44,14 @@ class AssetSearchIntegrationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->subject = new AssetSearchBuilder(
-            null,
-            null,
-            new ResourceUpdatedAtResolver(
-                $this->createMock(FileManagement::class),
-                $this->createMock(FileSourceUnserializer::class),
-                $this->createMock(FileSystemService::class)
-            )
-        );
+        $updatedAtResolver = $this->createMock(AssetUpdatedAtResolverInterface::class);
+        $updatedAtResolver->method('resolveForAsset')->willReturnCallback(static function (array $asset): string {
+            return AssetUpdatedAtNormalizer::normalize(
+                $asset['updatedAt'] ?? $asset['updated_at'] ?? null
+            ) ?? '1970-01-01T00:00:00Z';
+        });
+
+        $this->subject = new AssetSearchBuilder(null, null, $updatedAtResolver);
     }
 
     public function testSearchFindsAssetInScopedSubfolder(): void

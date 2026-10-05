@@ -33,10 +33,8 @@ use oat\taoItems\model\media\AssetListingReadAccessChecker;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
-use oat\taoItems\model\media\ResourceUpdatedAtResolver;
-use oat\oatbox\filesystem\FileSystemService;
-use oat\taoMediaManager\model\fileManagement\FileManagement;
-use oat\taoMediaManager\model\fileManagement\FileSourceUnserializer;
+use oat\taoItems\model\media\AssetUpdatedAtNormalizer;
+use oat\taoItems\model\media\AssetUpdatedAtResolverInterface;
 
 abstract class AccessControlMediaSource implements MediaBrowser, AccessControlEnablerInterface
 {
@@ -1003,12 +1001,15 @@ class AssetSearchBuilderTest extends TestCase
         ];
     }
 
-    private function createUpdatedAtResolverStub(): ResourceUpdatedAtResolver
+    private function createUpdatedAtResolverStub(): AssetUpdatedAtResolverInterface
     {
-        return new ResourceUpdatedAtResolver(
-            $this->createMock(FileManagement::class),
-            $this->createMock(FileSourceUnserializer::class),
-            $this->createMock(FileSystemService::class)
-        );
+        $resolver = $this->createMock(AssetUpdatedAtResolverInterface::class);
+        $resolver->method('resolveForAsset')->willReturnCallback(static function (array $asset): string {
+            return AssetUpdatedAtNormalizer::normalize(
+                $asset['updatedAt'] ?? $asset['updated_at'] ?? null
+            ) ?? '1970-01-01T00:00:00Z';
+        });
+
+        return $resolver;
     }
 }

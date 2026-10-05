@@ -46,14 +46,14 @@ class AssetSearchBuilder
 
     private ?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null;
 
-    private ?ResourceUpdatedAtResolver $updatedAtResolver = null;
+    private ?AssetUpdatedAtResolverInterface $updatedAtResolver = null;
 
     private ?AssetListingReadAccessChecker $listingReadAccessChecker = null;
 
     public function __construct(
         ?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null,
         ?AssetListingReadAccessChecker $listingReadAccessChecker = null,
-        ?ResourceUpdatedAtResolver $updatedAtResolver = null
+        ?AssetUpdatedAtResolverInterface $updatedAtResolver = null
     ) {
         $this->indexedSearchGateway = $indexedSearchGateway;
         $this->listingReadAccessChecker = $listingReadAccessChecker;
@@ -137,10 +137,10 @@ class AssetSearchBuilder
         ];
     }
 
-    private function getUpdatedAtResolver(): ResourceUpdatedAtResolver
+    private function getUpdatedAtResolver(): AssetUpdatedAtResolverInterface
     {
         if ($this->updatedAtResolver === null) {
-            throw new \RuntimeException('ResourceUpdatedAtResolver is not configured');
+            throw new \RuntimeException('AssetUpdatedAtResolverInterface is not configured');
         }
 
         return $this->updatedAtResolver;
