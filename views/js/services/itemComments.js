@@ -179,7 +179,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
             };
 
             return request({
-                url: urlUtil.route('searchUsers', 'RestUser', 'tao', params),
+                url: urlUtil.route('searchMentionUsers', 'RestResourceComments', 'taoItems', params),
                 method: 'GET',
                 noToken: true
             }).then(response => response.data);
