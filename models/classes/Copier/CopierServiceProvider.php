@@ -32,8 +32,6 @@ use oat\oatbox\event\EventManager;
 use oat\oatbox\session\SessionService;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\CommentMentionParser;
-use oat\taoItems\model\Comment\CommentMentionUserSearchServiceInterface;
-use oat\taoItems\model\Comment\EmptyCommentMentionUserSearchService;
 use oat\taoItems\model\Comment\ItemCommentPersistenceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
@@ -207,13 +205,5 @@ class CopierServiceProvider implements ContainerServiceProviderInterface
                 service(CommentMentionParser::class),
                 service(CommentMentionNotificationService::class),
             ]);
-
-        $services
-            ->set(EmptyCommentMentionUserSearchService::class, EmptyCommentMentionUserSearchService::class)
-            ->public();
-
-        $services
-            ->alias(CommentMentionUserSearchServiceInterface::class, EmptyCommentMentionUserSearchService::class)
-            ->public();
     }
 }
