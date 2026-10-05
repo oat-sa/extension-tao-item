@@ -31,10 +31,37 @@ define(['context', 'jquery'], function (context) {
         itemUri
     };
 
+    function findPreviewStyleRule(selector, mediaText) {
+        const styleSheets = Array.prototype.slice.call(document.styleSheets);
+        const styleSheet = styleSheets.find(sheet => sheet.href && sheet.href.includes('inlinePropertiesPreview.css'));
+        const normalize = value => value && value.replace(/\s+/g, '');
+
+        function findRule(rules, currentMediaText) {
+            for (let index = 0; index < rules.length; index++) {
+                const rule = rules[index];
+
+                if (rule.type === window.CSSRule.MEDIA_RULE) {
+                    const nestedRule = findRule(rule.cssRules, rule.media.mediaText);
+                    if (nestedRule) {
+                        return nestedRule;
+                    }
+                } else if (
+                    rule.type === window.CSSRule.STYLE_RULE &&
+                    normalize(currentMediaText) === normalize(mediaText) &&
+                    rule.selectorText.split(',').map(normalize).includes(normalize(selector))
+                ) {
+                    return rule;
+                }
+            }
+        }
+
+        return styleSheet && findRule(styleSheet.cssRules, null);
+    }
+
     function setupDom() {
         $('#qunit-fixture').html(`
             <div id="item-properties-form-column" class="item-properties-column item-properties-column--form"></div>
-            <div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview">
+            <div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview item-properties-column--preview-hidden">
                 <div id="item-properties-preview" class="item-properties-preview"></div>
             </div>
         `);
@@ -148,6 +175,47 @@ define(['context', 'jquery'], function (context) {
             context.locale = this.originalLocale;
             $('#qunit-fixture').empty();
         }
+    });
+
+    QUnit.test('defines desktop and responsive preview sizing', function (assert) {
+        const done = assert.async();
+
+        loadModule()
+            .then(() => {
+                const desktopRule = findPreviewStyleRule('.item-properties-preview', null);
+                const narrowRule = findPreviewStyleRule('.item-properties-preview', '(max-width: 900px)');
+                const shortDesktopMedia = '(min-width: 901px) and (max-height: 631px)';
+                const shortDesktopSelectors = [
+                    '.item-properties-column>.data-container-wrapper',
+                    '.item-properties-preview',
+                    '.item-properties-preview-iframe'
+                ];
+
+                assert.ok(desktopRule, 'Desktop preview rule exists');
+                assert.ok(
+                    desktopRule.style.height.includes('100vh') && /-\s*232px/.test(desktopRule.style.height),
+                    'Desktop preview uses viewport height minus the page chrome'
+                );
+                assert.equal(desktopRule.style.minHeight, '400px', 'Desktop preview keeps the 400px minimum');
+
+                assert.ok(narrowRule, '900px preview rule exists');
+                assert.equal(narrowRule.style.height, 'auto', '900px preview removes the viewport height');
+
+                shortDesktopSelectors.forEach(selector => {
+                    const rule = findPreviewStyleRule(selector, shortDesktopMedia);
+                    assert.ok(rule, `${selector} short desktop rule exists`);
+                    assert.strictEqual(
+                        parseFloat(rule.style.minHeight),
+                        0,
+                        `${selector} removes the minimum height on short desktops`
+                    );
+                });
+                done();
+            })
+            .catch(err => {
+                assert.ok(false, err && err.message ? err.message : String(err));
+                done();
+            });
     });
 
     QUnit.test('hides preview panel when external previewer is unavailable', function (assert) {
