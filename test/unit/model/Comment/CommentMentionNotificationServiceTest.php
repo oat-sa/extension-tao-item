@@ -38,10 +38,6 @@ use oat\taoItems\model\Comment\ResourceCommentType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-if (!class_exists(TaskOrchestratorEmailService::class)) {
-    class_alias(\stdClass::class, TaskOrchestratorEmailService::class);
-}
-
 class CommentMentionNotificationServiceTest extends TestCase
 {
     private Ontology|MockObject $ontology;
@@ -63,12 +59,7 @@ class CommentMentionNotificationServiceTest extends TestCase
         $emailService->method('isConfigured')->willReturn(false);
         $emailService->expects($this->never())->method('sendCommentMention');
 
-        $sut = new CommentMentionNotificationService(
-            $this->ontology,
-            $emailService,
-            $this->createDeepLinkBuilder(),
-            $this->eligibleUsersProvider
-        );
+        $sut = $this->createNotificationService($emailService);
 
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
@@ -122,22 +113,23 @@ class CommentMentionNotificationServiceTest extends TestCase
         $this->emailService
             ->expects($this->once())
             ->method('sendCommentMention')
-            ->with(
-                'alice',
-                'alice@example.com',
-                $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
-                    $data = $payload->toTemplateData();
+            ->willReturnCallback(static function (...$args): string {
+                self::assertSame('alice', $args[0]);
+                self::assertSame('alice@example.com', $args[1]);
+                self::assertInstanceOf(CommentMentionEmailTemplatePayload::class, $args[2]);
+                self::assertSame('alice.author', $args[3]);
+                $payload = $args[2];
 
-                    return $data['mentionedBy'] === 'Alice Author'
-                        && $data['username'] === 'alice'
-                        && $data['resourceType'] === ResourceCommentType::ITEM
-                        && str_contains($data['resourceUrl'], 'structure=items')
-                        && $data['resourceLabel'] === 'Item Label'
-                        && $data['name'] === 'Alice Mentioned';
-                }),
-                'alice.author'
-            )
-            ->willReturn('job-1');
+                $data = $payload->toTemplateData();
+                self::assertSame('Alice Author', $data['mentionedBy']);
+                self::assertSame('alice', $data['username']);
+                self::assertSame(ResourceCommentType::ITEM, $data['resourceType']);
+                self::assertStringContainsString('structure=items', $data['resourceUrl']);
+                self::assertSame('Item Label', $data['resourceLabel']);
+                self::assertSame('Alice Mentioned', $data['name']);
+
+                return 'job-1';
+            });
 
         $sut = $this->createSutWithRecipient([
             'login' => 'alice',
@@ -236,15 +228,15 @@ class CommentMentionNotificationServiceTest extends TestCase
         $this->emailService
             ->expects($this->once())
             ->method('sendCommentMention')
-            ->with(
-                'rdf-login',
-                'alice@example.com',
-                $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
-                    return $payload->toTemplateData()['username'] === 'rdf-login';
-                }),
-                'alice.author'
-            )
-            ->willReturn('job-1');
+            ->willReturnCallback(static function (...$args): string {
+                self::assertSame('rdf-login', $args[0]);
+                self::assertSame('alice@example.com', $args[1]);
+                self::assertInstanceOf(CommentMentionEmailTemplatePayload::class, $args[2]);
+                self::assertSame('rdf-login', $args[2]->toTemplateData()['username']);
+                self::assertSame('alice.author', $args[3]);
+
+                return 'job-1';
+            });
 
         $sut = $this->createSutWithRecipient([
             'login' => 'rdf-login',
@@ -262,12 +254,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
     private function createSut(): CommentMentionNotificationService
     {
-        return new CommentMentionNotificationService(
-            $this->ontology,
-            $this->emailService,
-            $this->createDeepLinkBuilder(),
-            $this->eligibleUsersProvider
-        );
+        return $this->createNotificationService($this->emailService);
     }
 
     /**
@@ -275,24 +262,12 @@ class CommentMentionNotificationServiceTest extends TestCase
      */
     private function createSutWithRecipient($recipient): CommentMentionNotificationService
     {
-        return new class (
-            $this->ontology,
-            $this->emailService,
-            $this->createDeepLinkBuilder(),
-            $this->eligibleUsersProvider,
-            $recipient
-        ) extends CommentMentionNotificationService {
+        $sut = new class (...$this->notificationServiceArgs($this->emailService)) extends CommentMentionNotificationService {
             /** @var array{login: string, email: string, name: ?string}|null */
             private $fixedRecipient;
 
-            public function __construct(
-                Ontology $ontology,
-                TaskOrchestratorEmailService $emailService,
-                CommentMentionDeepLinkBuilder $deepLinkBuilder,
-                MentionEligibleUsersProviderInterface $eligibleUsersProvider,
-                $fixedRecipient
-            ) {
-                parent::__construct($ontology, $emailService, $deepLinkBuilder, $eligibleUsersProvider);
+            public function setFixedRecipient($fixedRecipient): void
+            {
                 $this->fixedRecipient = $fixedRecipient;
             }
 
@@ -301,6 +276,30 @@ class CommentMentionNotificationServiceTest extends TestCase
                 return $this->fixedRecipient;
             }
         };
+
+        $sut->setFixedRecipient($recipient);
+
+        return $sut;
+    }
+
+    private function createNotificationService(TaskOrchestratorEmailService $emailService): CommentMentionNotificationService
+    {
+        return new CommentMentionNotificationService(...$this->notificationServiceArgs($emailService));
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    private function notificationServiceArgs(TaskOrchestratorEmailService $emailService): array
+    {
+        $args = [
+            $this->ontology,
+            $emailService,
+            $this->createDeepLinkBuilder(),
+            $this->eligibleUsersProvider,
+        ];
+
+        return $args;
     }
 
     private function comment(string $body): ItemComment
@@ -318,16 +317,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
     private function createEmailServiceMock(): MockObject
     {
-        if (
-            method_exists(TaskOrchestratorEmailService::class, 'isConfigured')
-            && method_exists(TaskOrchestratorEmailService::class, 'sendCommentMention')
-        ) {
-            return $this->createMock(TaskOrchestratorEmailService::class);
-        }
-
-        return $this->getMockBuilder(TaskOrchestratorEmailService::class)
-            ->addMethods(['isConfigured', 'sendCommentMention'])
-            ->getMock();
+        return $this->createMock(TaskOrchestratorEmailService::class);
     }
 
     private function createDeepLinkBuilder(): CommentMentionDeepLinkBuilder
