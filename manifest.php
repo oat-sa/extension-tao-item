@@ -34,6 +34,7 @@ use oat\tao\model\accessControl\func\AccessRule;
 use oat\taoItems\model\FrontendAction\FrontendActionServiceProvider;
 use oat\taoItems\scripts\install\RegisterNpmPaths;
 use oat\taoItems\model\Copier\CopierServiceProvider;
+use oat\taoItems\model\media\ServiceProvider\MediaAssetServiceProvider;
 use oat\taoItems\scripts\install\CreateItemDirectory;
 use oat\taoItems\scripts\install\SetRolesPermissions;
 use oat\taoItems\scripts\install\RegisterCategoryService;
@@ -298,5 +299,6 @@ return [
         TranslationServiceProvider::class,
         FormServiceProvider::class,
         FrontendActionServiceProvider::class,
+        MediaAssetServiceProvider::class,
     ],
 ];

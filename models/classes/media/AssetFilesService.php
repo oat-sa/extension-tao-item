@@ -86,18 +86,28 @@ final class AssetFilesService
             ->setMetadataCriteria(is_array($params['metadata'] ?? null) ? $params['metadata'] : []);
 
         $queryText = trim((string)($params['query'] ?? ''));
-        if ($queryText !== '' || $searchQuery->hasMetadataCriteria()) {
-            $searchQuery
-                ->setQuery($queryText)
-                ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
-                ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
-
-            $response = $this->searchBuilder->search($searchQuery);
-        } else {
-            $response = $this->treeBuilder->build($searchQuery);
+        if ($queryText === '' && !$searchQuery->hasMetadataCriteria()) {
+            return $this->attachCurrentAssetContext(
+                $this->treeBuilder->build($searchQuery),
+                $itemUri,
+                $itemLang,
+                $params,
+                $filters
+            );
         }
 
-        return $this->attachCurrentAssetContext($response, $itemUri, $itemLang, $params, $filters);
+        $searchQuery
+            ->setQuery($queryText)
+            ->setPage((int)($params['page'] ?? self::DEFAULT_PAGE))
+            ->setPageSize((int)($params['pageSize'] ?? self::DEFAULT_PAGE_SIZE));
+
+        return $this->attachCurrentAssetContext(
+            $this->searchBuilder->search($searchQuery),
+            $itemUri,
+            $itemLang,
+            $params,
+            $filters
+        );
     }
 
     /**

@@ -23,14 +23,19 @@ declare(strict_types=1);
 namespace oat\taoItems\model\media;
 
 /**
- * Optional indexed (Elasticsearch) backend for Resource Manager asset search.
+ * Default indexed search backend when no Elasticsearch gateway extension is wired.
  */
-interface AssetIndexedSearchGatewayInterface
+final class NoOpAssetIndexedSearchGateway implements AssetIndexedSearchGatewayInterface
 {
-    public function isAvailable(): bool;
+    public function isAvailable(): bool
+    {
+        return false;
+    }
 
-    /**
-     * @return array{items: array<int, array>, total: int, page: int, pageSize: int}
-     */
-    public function search(AssetSearchQuery $query): array;
+    public function search(AssetSearchQuery $query): array
+    {
+        throw new AssetSearchUnavailableException(
+            'Indexed asset search gateway is not configured'
+        );
+    }
 }

@@ -33,6 +33,10 @@ use oat\taoItems\model\media\AssetListingReadAccessChecker;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
+use oat\taoItems\model\media\ResourceUpdatedAtResolver;
+use oat\oatbox\filesystem\FileSystemService;
+use oat\taoMediaManager\model\fileManagement\FileManagement;
+use oat\taoMediaManager\model\fileManagement\FileSourceUnserializer;
 
 abstract class AccessControlMediaSource implements MediaBrowser, AccessControlEnablerInterface
 {
@@ -48,7 +52,7 @@ class AssetSearchBuilderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->subject = new AssetSearchBuilder();
+        $this->subject = new AssetSearchBuilder(null, null, $this->createUpdatedAtResolverStub());
         $this->mediaSource = $this->createMock(MediaBrowser::class);
     }
 
@@ -808,7 +812,8 @@ class AssetSearchBuilderTest extends TestCase
 
         $subject = new AssetSearchBuilder(
             null,
-            new AssetListingReadAccessChecker($permissionChecker, $actionAccessControl)
+            new AssetListingReadAccessChecker($permissionChecker, $actionAccessControl),
+            $this->createUpdatedAtResolverStub()
         );
 
         $mediaAsset = $this->createMock(MediaAsset::class);
@@ -875,7 +880,7 @@ class AssetSearchBuilderTest extends TestCase
         $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
         $gateway->expects($this->once())->method('search')->willReturn($expected);
 
-        $this->subject = new AssetSearchBuilder($gateway);
+        $this->subject = new AssetSearchBuilder($gateway, null, $this->createUpdatedAtResolverStub());
         $this->mediaSource->expects($this->never())->method('getDirectories');
 
         $result = $this->subject->search($this->createSearchQuery('color', 1, 10));
@@ -891,7 +896,7 @@ class AssetSearchBuilderTest extends TestCase
             new AssetSearchUnavailableException('es down')
         );
 
-        $this->subject = new AssetSearchBuilder($gateway);
+        $this->subject = new AssetSearchBuilder($gateway, null, $this->createUpdatedAtResolverStub());
 
         $this->expectException(AssetSearchUnavailableException::class);
         $this->expectExceptionMessage('es down');
@@ -907,7 +912,7 @@ class AssetSearchBuilderTest extends TestCase
             new \RuntimeException('connection reset')
         );
 
-        $this->subject = new AssetSearchBuilder($gateway);
+        $this->subject = new AssetSearchBuilder($gateway, null, $this->createUpdatedAtResolverStub());
 
         $this->expectException(AssetSearchUnavailableException::class);
         $this->expectExceptionMessage('connection reset');
@@ -935,7 +940,7 @@ class AssetSearchBuilderTest extends TestCase
             ],
         ]);
 
-        $this->subject = new AssetSearchBuilder($gateway);
+        $this->subject = new AssetSearchBuilder($gateway, null, $this->createUpdatedAtResolverStub());
         $result = $this->subject->search($this->createSearchQuery('color', 1, 10));
 
         $this->assertSame(1, $result['total']);
@@ -996,5 +1001,14 @@ class AssetSearchBuilderTest extends TestCase
             'label' => 'Assets',
             'children' => [$node],
         ];
+    }
+
+    private function createUpdatedAtResolverStub(): ResourceUpdatedAtResolver
+    {
+        return new ResourceUpdatedAtResolver(
+            $this->createMock(FileManagement::class),
+            $this->createMock(FileSourceUnserializer::class),
+            $this->createMock(FileSystemService::class)
+        );
     }
 }

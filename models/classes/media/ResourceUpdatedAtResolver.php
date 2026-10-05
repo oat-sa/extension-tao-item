@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA.
  *
  * Copyright (c) 2026 (original work) Open Assessment Technologies SA;
  */
@@ -25,8 +25,8 @@ namespace oat\taoItems\model\media;
 use core_kernel_classes_Literal;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
+use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\filesystem\FilesystemException;
-use oat\oatbox\service\ServiceManager;
 use oat\tao\model\TaoOntology;
 use oat\taoMediaManager\model\fileManagement\FileManagement;
 use oat\taoMediaManager\model\fileManagement\FileSourceUnserializer;
@@ -36,6 +36,9 @@ use tao_helpers_Uri;
 
 /**
  * Resolves a non-empty ISO-8601 updatedAt for Resource Manager assets.
+ *
+ * @license GPL-2.0-only
+ * @copyright 2026 Open Assessment Technologies SA
  */
 final class ResourceUpdatedAtResolver
 {
@@ -43,6 +46,25 @@ final class ResourceUpdatedAtResolver
 
     /** @see \oat\taoMediaManager\model\MediaSource::SCHEME_NAME */
     private const MEDIA_BROWSER_SCHEME = 'taomedia://mediamanager/';
+
+    /** @var FileManagement */
+    private $fileManagement;
+
+    /** @var FileSourceUnserializer */
+    private $fileSourceUnserializer;
+
+    /** @var FileSystemService */
+    private $fileSystemService;
+
+    public function __construct(
+        FileManagement $fileManagement,
+        FileSourceUnserializer $fileSourceUnserializer,
+        FileSystemService $fileSystemService
+    ) {
+        $this->fileManagement = $fileManagement;
+        $this->fileSourceUnserializer = $fileSourceUnserializer;
+        $this->fileSystemService = $fileSystemService;
+    }
 
     /**
      * @param array<string, mixed> $asset
@@ -108,7 +130,7 @@ final class ResourceUpdatedAtResolver
         if (strpos($uri, self::MEDIA_BROWSER_SCHEME) === 0) {
             $encoded = substr($uri, strlen(self::MEDIA_BROWSER_SCHEME));
 
-            return \tao_helpers_Uri::decode($encoded);
+            return tao_helpers_Uri::decode($encoded);
         }
 
         if (preg_match('#^https?://#i', $uri) === 1) {
@@ -123,8 +145,12 @@ final class ResourceUpdatedAtResolver
      */
     private function readOntologyUpdatedAtRaw(string $resourceUri)
     {
+        $resource = $this->loadExistingResource($resourceUri);
+        if ($resource === null) {
+            return null;
+        }
+
         try {
-            $resource = new core_kernel_classes_Resource($resourceUri);
             $raw = $resource->getOnePropertyValue(
                 new core_kernel_classes_Property(TaoOntology::PROPERTY_UPDATED_AT)
             );
@@ -143,33 +169,25 @@ final class ResourceUpdatedAtResolver
      */
     private function readMediaFileTimestamp(string $resourceUri): ?int
     {
+        $resource = $this->loadExistingResource($resourceUri);
+        if ($resource === null) {
+            return null;
+        }
+
         try {
-            $resource = new core_kernel_classes_Resource($resourceUri);
             $fileLinkRaw = $resource->getOnePropertyValue(
                 new core_kernel_classes_Property(TaoMediaOntology::PROPERTY_LINK)
             );
-            if ($fileLinkRaw === null || $fileLinkRaw === '') {
+            $fileLink = $this->resolveFileLinkFromPropertyValue($fileLinkRaw);
+            if ($fileLink === null) {
                 return null;
             }
 
-            $fileLink = $fileLinkRaw instanceof core_kernel_classes_Resource
-                ? $fileLinkRaw->getUri()
-                : (string)$fileLinkRaw;
-            $fileLink = $this->getFileSourceUnserializer()->unserialize($fileLink);
-            if ($fileLink === '') {
+            if (!$this->fileManagement instanceof FlySystemManagement) {
                 return null;
             }
 
-            $fileManagement = $this->getFileManagement();
-            if (!$fileManagement instanceof FlySystemManagement) {
-                return null;
-            }
-
-            $filesystem = ServiceManager::getServiceManager()
-                ->get(\oat\oatbox\filesystem\FileSystemService::SERVICE_ID)
-                ->getFileSystem($fileManagement->getOption(FlySystemManagement::OPTION_FS));
-
-            return $filesystem->lastModified($fileLink);
+            return $this->readLastModifiedOnFilesystem($fileLink, $this->fileManagement);
         } catch (FilesystemException $exception) {
             return null;
         } catch (\Throwable $exception) {
@@ -177,13 +195,49 @@ final class ResourceUpdatedAtResolver
         }
     }
 
-    private function getFileManagement(): FileManagement
+    private function loadExistingResource(string $resourceUri): ?core_kernel_classes_Resource
     {
-        return ServiceManager::getServiceManager()->get(FileManagement::SERVICE_ID);
+        try {
+            $resource = new core_kernel_classes_Resource($resourceUri);
+            if (!$resource->exists()) {
+                return null;
+            }
+
+            return $resource;
+        } catch (\Throwable $exception) {
+            return null;
+        }
     }
 
-    private function getFileSourceUnserializer(): FileSourceUnserializer
+    /**
+     * @param mixed $fileLinkRaw
+     */
+    private function resolveFileLinkFromPropertyValue($fileLinkRaw): ?string
     {
-        return ServiceManager::getServiceManager()->get(FileSourceUnserializer::class);
+        if ($fileLinkRaw === null || $fileLinkRaw === '') {
+            return null;
+        }
+
+        if ($fileLinkRaw instanceof core_kernel_classes_Resource) {
+            $serialized = $fileLinkRaw->getUri();
+        } elseif ($fileLinkRaw instanceof core_kernel_classes_Literal) {
+            $serialized = (string)$fileLinkRaw->literal;
+        } else {
+            $serialized = (string)$fileLinkRaw;
+        }
+
+        $fileLink = $this->fileSourceUnserializer->unserialize($serialized);
+
+        return $fileLink !== '' ? $fileLink : null;
+    }
+
+    private function readLastModifiedOnFilesystem(
+        string $fileLink,
+        FlySystemManagement $fileManagement
+    ): ?int {
+        $filesystem = $this->fileSystemService
+            ->getFileSystem($fileManagement->getOption(FlySystemManagement::OPTION_FS));
+
+        return $filesystem->lastModified($fileLink);
     }
 }

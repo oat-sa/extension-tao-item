@@ -21,7 +21,6 @@
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\tao\helpers\FileUploadException;
-use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\model\accessControl\Context;
 use oat\tao\model\accessControl\data\PermissionException;
 use oat\tao\model\accessControl\PermissionChecker;
@@ -33,13 +32,7 @@ use oat\tao\model\media\ProcessedFileStreamAware;
 use oat\tao\model\media\TaoMediaException;
 use oat\tao\model\resources\ResourceAccessDeniedException;
 use oat\taoItems\model\media\AssetFilesService;
-use oat\taoItems\model\media\AssetIndexedSearchGatewayInterface;
-use oat\taoItems\model\media\AssetListingReadAccessChecker;
-use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
-use oat\taoItems\model\media\AssetTreeBuilder;
-use oat\taoItems\model\media\AssetTreeBuilderInterface;
-use oat\taoItems\model\media\CurrentAssetResolver;
 use oat\taoItems\model\media\ItemMediaResolver;
 use oat\taoItems\model\media\LocalItemSource;
 use Psr\Http\Message\StreamInterface;
@@ -388,52 +381,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
         return $filters;
     }
 
-    private function getAssetTreeBuilder(): AssetTreeBuilderInterface
-    {
-        return $this->getServiceLocator()->get(AssetTreeBuilder::SERVICE_ID);
-    }
-
-    private function getAssetSearchBuilder(): AssetSearchBuilder
-    {
-        return new AssetSearchBuilder(
-            $this->resolveIndexedSearchGateway(),
-            new AssetListingReadAccessChecker(
-                $this->getPermissionChecker(),
-                $this->getServiceLocator()->get(ActionAccessControl::SERVICE_ID)
-            )
-        );
-    }
-
     private function getAssetFilesService(): AssetFilesService
     {
-        return new AssetFilesService(
-            $this->getAssetSearchBuilder(),
-            $this->getAssetTreeBuilder(),
-            new CurrentAssetResolver($this->getPermissionChecker())
-        );
-    }
-
-    private function resolveIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
-    {
-        try {
-            $locator = $this->getServiceLocator();
-            $container = method_exists($locator, 'getContainer')
-                ? $locator->getContainer()
-                : null;
-            if ($container === null || !$container->has(AssetIndexedSearchGatewayInterface::SERVICE_ID)) {
-                return null;
-            }
-
-            $gateway = $container->get(AssetIndexedSearchGatewayInterface::SERVICE_ID);
-
-            return $gateway instanceof AssetIndexedSearchGatewayInterface ? $gateway : null;
-        } catch (\Throwable $exception) {
-            $this->logWarning(
-                sprintf('Indexed asset search gateway unavailable: %s', $exception->getMessage())
-            );
-
-            return null;
-        }
+        return $this->getPsrContainer()->get(AssetFilesService::class);
     }
 
     /**

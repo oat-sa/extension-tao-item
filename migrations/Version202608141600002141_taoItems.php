@@ -57,8 +57,11 @@ final class Version202608141600002141_taoItems extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addReport(Report::createInfo(
-            'AssetSearchBuilder is not restored to oatbox; ItemContent constructs it with Symfony gateway DI'
-        ));
+        $serviceManager = $this->getServiceManager();
+        if (!$serviceManager->has(AssetSearchBuilder::SERVICE_ID)) {
+            $serviceManager->register(AssetSearchBuilder::SERVICE_ID, new AssetSearchBuilder());
+        }
+
+        $this->addReport(Report::createSuccess('Legacy AssetSearchBuilder oatbox registration restored'));
     }
 }

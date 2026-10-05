@@ -120,7 +120,11 @@ class LocalItemSource implements MediaManagement
     {
         if (file_exists($sourceFile)) {
             $link = $this->getItemDirectory()->getRelPath($file);
-            $mtime = @filemtime($sourceFile);
+            $updatedAt = $this->formatFileUpdatedAt($file);
+            if ($updatedAt === null) {
+                $mtime = @filemtime($sourceFile);
+                $updatedAt = $this->formatUnixUpdatedAt($mtime !== false ? (int)$mtime : null);
+            }
 
             return [
                 'name'     => $file->getBasename(),
@@ -128,7 +132,7 @@ class LocalItemSource implements MediaManagement
                 'mime'     => tao_helpers_File::getMimeType($sourceFile),
                 'filePath' => $link,
                 'size'     => filesize($sourceFile),
-                'updatedAt' => $this->formatUnixUpdatedAt($mtime !== false ? (int)$mtime : null),
+                'updatedAt' => $updatedAt,
             ];
         } else {
             return $this->getInfoFromFile($file);

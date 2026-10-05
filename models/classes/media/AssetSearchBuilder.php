@@ -44,43 +44,34 @@ class AssetSearchBuilder
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
-    /** @var AssetIndexedSearchGatewayInterface|null */
-    private $indexedSearchGateway;
+    private ?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null;
 
-    /** @var ResourceUpdatedAtResolver|null */
-    private $updatedAtResolver;
+    private ?ResourceUpdatedAtResolver $updatedAtResolver = null;
 
-    /** @var AssetListingReadAccessChecker|null */
-    private $listingReadAccessChecker;
+    private ?AssetListingReadAccessChecker $listingReadAccessChecker = null;
 
     public function __construct(
         ?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null,
-        ?AssetListingReadAccessChecker $listingReadAccessChecker = null
+        ?AssetListingReadAccessChecker $listingReadAccessChecker = null,
+        ?ResourceUpdatedAtResolver $updatedAtResolver = null
     ) {
         $this->indexedSearchGateway = $indexedSearchGateway;
         $this->listingReadAccessChecker = $listingReadAccessChecker;
-    }
-
-    public function withIndexedSearchGateway(?AssetIndexedSearchGatewayInterface $indexedSearchGateway): self
-    {
-        $this->indexedSearchGateway = $indexedSearchGateway;
-
-        return $this;
+        $this->updatedAtResolver = $updatedAtResolver;
     }
 
     public function search(AssetSearchQuery $search): array
     {
-        $gateway = $this->indexedSearchGateway;
-        if ($gateway !== null) {
+        if ($this->indexedSearchGateway !== null) {
             try {
-                $available = $gateway->isAvailable();
+                $available = $this->indexedSearchGateway->isAvailable();
             } catch (\Throwable $exception) {
                 $available = false;
             }
 
             if ($available) {
                 try {
-                    return $gateway->search($search);
+                    return $this->indexedSearchGateway->search($search);
                 } catch (AssetSearchUnavailableException $exception) {
                     throw $exception;
                 } catch (\Throwable $exception) {
@@ -124,8 +115,9 @@ class AssetSearchBuilder
         $sourceTotal = array_key_exists('total', $tree) ? (int)$tree['total'] : null;
 
         $items = $this->flattenAssets($tree, $scopePath, $scopeLabel);
+        $flattenedCount = count($items);
         $items = $this->filterReadableAssets($items, $search);
-        $truncated = $sourceTotal !== null && $sourceTotal > count($items);
+        $truncated = $sourceTotal !== null && $sourceTotal > $flattenedCount;
 
         $items = $this->filterByQuery($items, $search->getQuery());
         $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
@@ -148,7 +140,7 @@ class AssetSearchBuilder
     private function getUpdatedAtResolver(): ResourceUpdatedAtResolver
     {
         if ($this->updatedAtResolver === null) {
-            $this->updatedAtResolver = new ResourceUpdatedAtResolver();
+            throw new \RuntimeException('ResourceUpdatedAtResolver is not configured');
         }
 
         return $this->updatedAtResolver;

@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoItems\model\media;
 
 use oat\oatbox\service\ConfigurableService;
+use oat\oatbox\service\ServiceManager;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use tao_helpers_Uri;
@@ -49,6 +50,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
     /** @see \oat\taoMediaManager\model\MediaSource::SCHEME_NAME */
     private const MEDIA_BROWSER_SCHEME = 'taomedia://mediamanager/';
+
+    /** @var ResourceUpdatedAtResolver|null */
+    private $updatedAtResolver;
 
     public function build(DirectorySearchQuery $search): array
     {
@@ -268,10 +272,45 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     {
         // Keep explicit empty location as missing (nulls-last), same as AssetSearchBuilder.
         $file['location'] = (string)($file['location'] ?? $location);
-        $file['updatedAt'] = (new ResourceUpdatedAtResolver())->resolveForAsset($file);
+        $file['updatedAt'] = $this->resolveNormalizedUpdatedAt($file);
         unset($file['updated_at']);
 
         return $file;
+    }
+
+    /**
+     * @param array<string, mixed> $file
+     */
+    private function resolveNormalizedUpdatedAt(array $file): string
+    {
+        $fromFields = AssetUpdatedAtNormalizer::normalize(
+            $file['updatedAt'] ?? $file['updated_at'] ?? null
+        );
+        if ($fromFields !== null) {
+            return $fromFields;
+        }
+
+        try {
+            return $this->getUpdatedAtResolver()->resolveForAsset($file);
+        } catch (\Throwable $exception) {
+            return '1970-01-01T00:00:00Z';
+        }
+    }
+
+    private function getUpdatedAtResolver(): ResourceUpdatedAtResolver
+    {
+        if ($this->updatedAtResolver !== null) {
+            return $this->updatedAtResolver;
+        }
+
+        $container = ServiceManager::getServiceManager()->getContainer();
+        if (!$container->has(ResourceUpdatedAtResolver::class)) {
+            throw new \RuntimeException('ResourceUpdatedAtResolver is not configured');
+        }
+
+        $this->updatedAtResolver = $container->get(ResourceUpdatedAtResolver::class);
+
+        return $this->updatedAtResolver;
     }
 
     private function isDirectoryChild(array $child): bool
