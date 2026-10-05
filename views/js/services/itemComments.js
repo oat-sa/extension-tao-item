@@ -77,8 +77,8 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
                     resourceUri: resourceUri,
                     resourceType: resourceType
                 }),
-                method: 'GET',
-                noToken: true
+            method: 'GET',
+            noToken: true
             }).then(response => response.data);
         },
 
@@ -179,7 +179,7 @@ define(['core/request', 'util/url'], function (request, urlUtil) {
             };
 
             return request({
-                url: urlUtil.route('searchMentionUsers', 'RestResourceComments', 'taoItems', params),
+                url: urlUtil.route('searchMentionUsers', 'CommentMentionUsers', 'taoDeliverConnect', params),
                 method: 'GET',
                 noToken: true
             }).then(response => response.data);

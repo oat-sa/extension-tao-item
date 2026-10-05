@@ -23,7 +23,6 @@
 declare(strict_types=1);
 
 use oat\tao\model\http\HttpJsonResponseTrait;
-use oat\taoItems\model\Comment\CommentMentionUserSearchServiceInterface;
 use oat\taoItems\model\Comment\ItemCommentService;
 
 /**
@@ -35,54 +34,10 @@ use oat\taoItems\model\Comment\ItemCommentService;
  * - POST /taoItems/RestResourceComments/update (id, body) — author can edit own comment
  * - POST /taoItems/RestResourceComments/resolve (id, resolved) — any authenticated authoring user
  * - POST /taoItems/RestResourceComments/delete (id) — author can delete own comment
- *
- * Mention user autocomplete:
- * - GET /taoItems/RestResourceComments/searchMentionUsers?resourceUri=&resourceType=&q=&limit=
  */
 class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 {
     use HttpJsonResponseTrait;
-
-    public function searchMentionUsers(): void
-    {
-        try {
-            if (!$this->isGetRequest()) {
-                $this->setErrorJsonResponse('Method not allowed', 405, [], 405);
-
-                return;
-            }
-
-            $query = $this->getPsrRequest()->getQueryParams();
-            $resourceUri = $this->requireStringParam($query['resourceUri'] ?? null, 'resourceUri');
-            if ($resourceUri === null) {
-                return;
-            }
-
-            $resourceType = $this->requireStringParam($query['resourceType'] ?? null, 'resourceType');
-            if ($resourceType === null) {
-                return;
-            }
-
-            $search = isset($query['q']) && is_string($query['q']) ? $query['q'] : '';
-            $limit = isset($query['limit']) ? (int) $query['limit'] : 20;
-
-            $this->setSuccessJsonResponse(
-                $this->getCommentMentionUserSearchService()->search(
-                    $resourceUri,
-                    $resourceType,
-                    $search,
-                    $limit
-                )
-            );
-        } catch (\common_exception_Unauthorized $exception) {
-            $this->setErrorJsonResponse($exception->getMessage(), 403, [], 403);
-        } catch (InvalidArgumentException $exception) {
-            $this->setErrorJsonResponse($exception->getMessage(), 400, [], 400);
-        } catch (Throwable $exception) {
-            $this->logError($exception->getMessage());
-            $this->setErrorJsonResponse('Unable to search mention users', 500, [], 500);
-        }
-    }
 
     public function index(): void
     {
@@ -332,8 +287,4 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
         return $this->getPsrContainer()->get(ItemCommentService::class);
     }
 
-    private function getCommentMentionUserSearchService(): CommentMentionUserSearchServiceInterface
-    {
-        return $this->getPsrContainer()->get(CommentMentionUserSearchServiceInterface::class);
-    }
 }
