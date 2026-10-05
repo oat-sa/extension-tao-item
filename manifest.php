@@ -116,6 +116,11 @@ return [
         ],
         [
             AccessRule::GRANT,
+            TaoRoles::BACK_OFFICE,
+            ['ext' => 'taoItems', 'mod' => 'RestResourceComments', 'act' => 'searchMentionUsers'],
+        ],
+        [
+            AccessRule::GRANT,
             TaoRoles::DELIVERY,
             ['ext' => 'taoItems', 'mod' => 'ItemRunner'],
         ],
