@@ -21,7 +21,7 @@ use oat\tao\helpers\Template;
         </div>
     </div>
 </div>
-<div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview">
+<div id="item-properties-preview-column" class="item-properties-column item-properties-column--preview item-properties-column--preview-hidden">
     <header id="item-properties-preview-header" class="section-header item-properties-preview-header">
         <h2><?=__('Preview')?></h2>
     </header>
