@@ -161,7 +161,6 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
         $pageSize = $this->getPaginationLimit();
         $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
-        $page = $pageSize > 0 ? (int) floor($offset / $pageSize) + 1 : AssetSearchQuery::DEFAULT_PAGE;
 
         $indexQuery = (new AssetSearchQuery(
             $search->getAsset(),
@@ -174,8 +173,13 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         ))
             ->setSortBy($this->resolveSortBy($search))
             ->setSortDir($this->resolveSortDir($search))
-            ->setPage($page)
             ->setPageSize($pageSize);
+
+        $effectivePageSize = $indexQuery->getPageSize();
+        $page = $effectivePageSize > 0
+            ? (int) floor($offset / $effectivePageSize) + 1
+            : AssetSearchQuery::DEFAULT_PAGE;
+        $indexQuery->setPage($page);
 
         try {
             $searchResult = $gateway->search($indexQuery);
@@ -199,7 +203,11 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             ->setSortBy($this->resolveSortBy($search))
             ->setSortDir($this->resolveSortDir($search));
 
-        $data = $mediaSource->getDirectories($directoryQuery);
+        try {
+            $data = $mediaSource->getDirectories($directoryQuery);
+        } catch (\Throwable $exception) {
+            return null;
+        }
         $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
         $directories = [];
         foreach ($data['children'] ?? [] as $child) {
@@ -220,7 +228,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         $total = (int)($searchResult['total'] ?? count($files));
         $data['total'] = $total;
         $data['truncated'] = !empty($searchResult['totalIsApproximate']) || $total > count($files);
-        $data['childrenLimit'] = $pageSize;
+        $data['childrenLimit'] = $effectivePageSize;
         $data['children'] = array_merge($directories, $files);
 
         return $data;
@@ -244,7 +252,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         }
 
         $gateway = $container->get(AssetIndexedSearchGatewayInterface::class);
-        if (!$gateway instanceof AssetIndexedSearchGatewayInterface
+        if (
+            !$gateway instanceof AssetIndexedSearchGatewayInterface
             || $gateway instanceof NoOpAssetIndexedSearchGateway
         ) {
             $this->indexedSearchGateway = false;
