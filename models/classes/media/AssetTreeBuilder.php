@@ -26,6 +26,7 @@ use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\service\ServiceManager;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
+use oat\taoMediaManager\model\MediaSource;
 use tao_helpers_Uri;
 
 class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface
@@ -44,6 +45,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * lists nested files via collectFiles(); file load is capped by MAX_BROWSE_LOAD.
      */
     private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
+    /** Matches resource manager fileBrowser browse depth (folder tree only). */
+    private const BROWSE_DIRECTORY_DEPTH = 2;
     private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     private const MAX_CHILDREN_OFFSET = 10000;
@@ -54,8 +57,16 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     /** @var ResourceUpdatedAtResolver|null */
     private $updatedAtResolver;
 
+    /** @var AssetIndexedSearchGatewayInterface|false|null */
+    private $indexedSearchGateway;
+
     public function build(DirectorySearchQuery $search): array
     {
+        $indexedBrowse = $this->tryBuildViaIndexedSearch($search);
+        if ($indexedBrowse !== null) {
+            return $indexedBrowse;
+        }
+
         $pageSize = $this->getPaginationLimit();
         $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
         $loadLimit = $this->resolveLoadLimit($offset, $pageSize);
@@ -123,6 +134,136 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         }
 
         return max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function tryBuildViaIndexedSearch(DirectorySearchQuery $search): ?array
+    {
+        $mediaSource = $search->getAsset()->getMediaSource();
+        if ($mediaSource instanceof LocalItemSource) {
+            return null;
+        }
+
+        $gateway = $this->getIndexedSearchGateway();
+        if ($gateway === null) {
+            return null;
+        }
+
+        try {
+            if (!$gateway->isAvailable()) {
+                return null;
+            }
+        } catch (\Throwable $exception) {
+            return null;
+        }
+
+        $pageSize = $this->getPaginationLimit();
+        $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
+
+        $indexQuery = (new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            1,
+            0,
+            0
+        ))
+            ->setSortBy($this->resolveSortBy($search))
+            ->setSortDir($this->resolveSortDir($search))
+            ->setPageSize($pageSize);
+
+        $effectivePageSize = $indexQuery->getPageSize();
+        $page = $effectivePageSize > 0
+            ? (int) floor($offset / $effectivePageSize) + 1
+            : AssetSearchQuery::DEFAULT_PAGE;
+        $indexQuery->setPage($page);
+
+        try {
+            $searchResult = $gateway->search($indexQuery);
+        } catch (\Throwable $exception) {
+            return null;
+        }
+
+        if ($mediaSource instanceof AccessControlEnablerInterface) {
+            $mediaSource->enableAccessControl();
+        }
+
+        $directoryQuery = (new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            self::BROWSE_DIRECTORY_DEPTH,
+            0,
+            MediaSource::CHILDREN_LIMIT_DIRECTORIES_ONLY
+        ))
+            ->setSortBy($this->resolveSortBy($search))
+            ->setSortDir($this->resolveSortDir($search));
+
+        try {
+            $data = $mediaSource->getDirectories($directoryQuery);
+        } catch (\Throwable $exception) {
+            return null;
+        }
+        $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
+        $directories = [];
+        foreach ($data['children'] ?? [] as $child) {
+            if (!is_array($child) || !$this->isDirectoryChild($child)) {
+                continue;
+            }
+            $directories[] = $this->toDirectoryStub($child, $search);
+        }
+
+        $files = [];
+        foreach ($searchResult['items'] ?? [] as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            $files[] = $this->normalizeFile($item, $scopeLabel);
+        }
+
+        $total = (int)($searchResult['total'] ?? count($files));
+        $data['total'] = $total;
+        $data['truncated'] = !empty($searchResult['totalIsApproximate']) || $total > count($files);
+        $data['childrenLimit'] = $effectivePageSize;
+        $data['children'] = array_merge($directories, $files);
+
+        return $data;
+    }
+
+    private function getIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
+    {
+        if ($this->indexedSearchGateway instanceof AssetIndexedSearchGatewayInterface) {
+            return $this->indexedSearchGateway;
+        }
+
+        if ($this->indexedSearchGateway === false) {
+            return null;
+        }
+
+        $container = ServiceManager::getServiceManager()->getContainer();
+        if (!$container->has(AssetIndexedSearchGatewayInterface::class)) {
+            $this->indexedSearchGateway = false;
+
+            return null;
+        }
+
+        $gateway = $container->get(AssetIndexedSearchGatewayInterface::class);
+        if (
+            !$gateway instanceof AssetIndexedSearchGatewayInterface
+            || $gateway instanceof NoOpAssetIndexedSearchGateway
+        ) {
+            $this->indexedSearchGateway = false;
+
+            return null;
+        }
+
+        $this->indexedSearchGateway = $gateway;
+
+        return $gateway;
     }
 
     private function createFetchQuery(DirectorySearchQuery $search, int $loadLimit): AssetSearchQuery
