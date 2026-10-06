@@ -26,7 +26,6 @@ use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\service\ServiceManager;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
-use oat\taoMediaManager\model\MediaSource;
 use tao_helpers_Uri;
 
 class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface
@@ -45,11 +44,9 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * lists nested files via collectFiles(); file load is capped by MAX_BROWSE_LOAD.
      */
     private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
-    /** One level per browse request; deeper tree levels load on folder click. */
-    private const BROWSE_LAZY_FOLDER_DEPTH = 1;
     private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
-    private const MAX_CHILDREN_OFFSET = 10000;
+    protected const MAX_CHILDREN_OFFSET = 10000;
 
     /** @see \oat\taoMediaManager\model\MediaSource::SCHEME_NAME */
     private const MEDIA_BROWSER_SCHEME = 'taomedia://mediamanager/';
@@ -57,16 +54,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
     /** @var ResourceUpdatedAtResolver|null */
     private $updatedAtResolver;
 
-    /** @var AssetIndexedSearchGatewayInterface|false|null */
-    private $indexedSearchGateway;
-
     public function build(DirectorySearchQuery $search): array
     {
-        $indexedBrowse = $this->tryBuildViaIndexedSearch($search);
-        if ($indexedBrowse !== null) {
-            return $indexedBrowse;
-        }
-
         $pageSize = $this->getPaginationLimit();
         $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
         $loadLimit = $this->resolveLoadLimit($offset, $pageSize);
@@ -75,10 +64,6 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
         if ($mediaSource instanceof AccessControlEnablerInterface) {
             $mediaSource->enableAccessControl();
-        }
-
-        if ($this->usesLazyFolderBrowse($mediaSource)) {
-            return $this->buildLazyFolderBrowse($search, $pageSize, $offset);
         }
 
         $fetchQuery = $this->createFetchQuery($search, $loadLimit);
@@ -127,64 +112,6 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return $data;
     }
 
-    private function usesLazyFolderBrowse(object $mediaSource): bool
-    {
-        if ($mediaSource instanceof LocalItemSource) {
-            return false;
-        }
-
-        return $mediaSource instanceof MediaSource;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function buildLazyFolderBrowse(DirectorySearchQuery $search, int $pageSize, int $offset): array
-    {
-        $mediaSource = $search->getAsset()->getMediaSource();
-        $fetchQuery = (new AssetSearchQuery(
-            $search->getAsset(),
-            $search->getItemUri(),
-            $search->getItemLang(),
-            $search->getFilter(),
-            self::BROWSE_LAZY_FOLDER_DEPTH,
-            $offset,
-            $pageSize
-        ))
-            ->setSortBy($this->resolveSortBy($search))
-            ->setSortDir($this->resolveSortDir($search));
-
-        $data = $mediaSource->getDirectories($fetchQuery);
-        $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
-        $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
-
-        $directories = [];
-        $files = [];
-        foreach ($data['children'] ?? [] as $child) {
-            if (!is_array($child)) {
-                continue;
-            }
-            if ($this->isFileChild($child)) {
-                $files[] = $this->normalizeFile($child, $scopeLabel);
-                continue;
-            }
-            if ($this->isDirectoryChild($child)) {
-                $directories[] = $this->toDirectoryStub($child, $search);
-            }
-        }
-
-        $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
-        $fileCount = count($files);
-        $total = $sourceReportedTotal !== null ? $sourceReportedTotal : $fileCount;
-
-        $data['total'] = $total;
-        $data['truncated'] = $total > $offset + $fileCount;
-        $data['childrenLimit'] = $pageSize;
-        $data['children'] = array_merge($directories, $files);
-
-        return $data;
-    }
-
     private function resolveLoadLimit(int $offset, int $pageSize): int
     {
         if ($pageSize <= 0) {
@@ -196,136 +123,6 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         }
 
         return max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
-    }
-
-    /**
-     * @return array<string, mixed>|null
-     */
-    private function tryBuildViaIndexedSearch(DirectorySearchQuery $search): ?array
-    {
-        $mediaSource = $search->getAsset()->getMediaSource();
-        if ($mediaSource instanceof LocalItemSource) {
-            return null;
-        }
-
-        $gateway = $this->getIndexedSearchGateway();
-        if ($gateway === null) {
-            return null;
-        }
-
-        try {
-            if (!$gateway->isAvailable()) {
-                return null;
-            }
-        } catch (\Throwable $exception) {
-            return null;
-        }
-
-        $pageSize = $this->getPaginationLimit();
-        $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
-
-        $indexQuery = (new AssetSearchQuery(
-            $search->getAsset(),
-            $search->getItemUri(),
-            $search->getItemLang(),
-            $search->getFilter(),
-            1,
-            0,
-            0
-        ))
-            ->setSortBy($this->resolveSortBy($search))
-            ->setSortDir($this->resolveSortDir($search))
-            ->setPageSize($pageSize);
-
-        $effectivePageSize = $indexQuery->getPageSize();
-        $page = $effectivePageSize > 0
-            ? (int) floor($offset / $effectivePageSize) + 1
-            : AssetSearchQuery::DEFAULT_PAGE;
-        $indexQuery->setPage($page);
-
-        try {
-            $searchResult = $gateway->search($indexQuery);
-        } catch (\Throwable $exception) {
-            return null;
-        }
-
-        if ($mediaSource instanceof AccessControlEnablerInterface) {
-            $mediaSource->enableAccessControl();
-        }
-
-        $directoryQuery = (new AssetSearchQuery(
-            $search->getAsset(),
-            $search->getItemUri(),
-            $search->getItemLang(),
-            $search->getFilter(),
-            self::BROWSE_LAZY_FOLDER_DEPTH,
-            0,
-            MediaSource::CHILDREN_LIMIT_DIRECTORIES_ONLY
-        ))
-            ->setSortBy($this->resolveSortBy($search))
-            ->setSortDir($this->resolveSortDir($search));
-
-        try {
-            $data = $mediaSource->getDirectories($directoryQuery);
-        } catch (\Throwable $exception) {
-            return null;
-        }
-        $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
-        $directories = [];
-        foreach ($data['children'] ?? [] as $child) {
-            if (!is_array($child) || !$this->isDirectoryChild($child)) {
-                continue;
-            }
-            $directories[] = $this->toDirectoryStub($child, $search);
-        }
-
-        $files = [];
-        foreach ($searchResult['items'] ?? [] as $item) {
-            if (!is_array($item)) {
-                continue;
-            }
-            $files[] = $this->normalizeFile($item, $scopeLabel);
-        }
-
-        $total = (int)($searchResult['total'] ?? count($files));
-        $data['total'] = $total;
-        $data['truncated'] = !empty($searchResult['totalIsApproximate']) || $total > count($files);
-        $data['childrenLimit'] = $effectivePageSize;
-        $data['children'] = array_merge($directories, $files);
-
-        return $data;
-    }
-
-    private function getIndexedSearchGateway(): ?AssetIndexedSearchGatewayInterface
-    {
-        if ($this->indexedSearchGateway instanceof AssetIndexedSearchGatewayInterface) {
-            return $this->indexedSearchGateway;
-        }
-
-        if ($this->indexedSearchGateway === false) {
-            return null;
-        }
-
-        $container = ServiceManager::getServiceManager()->getContainer();
-        if (!$container->has(AssetIndexedSearchGatewayInterface::class)) {
-            $this->indexedSearchGateway = false;
-
-            return null;
-        }
-
-        $gateway = $container->get(AssetIndexedSearchGatewayInterface::class);
-        if (
-            !$gateway instanceof AssetIndexedSearchGatewayInterface
-            || $gateway instanceof NoOpAssetIndexedSearchGateway
-        ) {
-            $this->indexedSearchGateway = false;
-
-            return null;
-        }
-
-        $this->indexedSearchGateway = $gateway;
-
-        return $gateway;
     }
 
     private function createFetchQuery(DirectorySearchQuery $search, int $loadLimit): AssetSearchQuery
@@ -344,7 +141,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             ->setSortDir($this->resolveSortDir($search));
     }
 
-    private function resolveSortBy(DirectorySearchQuery $search): string
+    protected function resolveSortBy(DirectorySearchQuery $search): string
     {
         if ($search instanceof AssetSearchQuery) {
             return $search->getSortBy();
@@ -358,7 +155,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return self::SORT_LABEL;
     }
 
-    private function resolveSortDir(DirectorySearchQuery $search): string
+    protected function resolveSortDir(DirectorySearchQuery $search): string
     {
         if ($search instanceof AssetSearchQuery) {
             return $search->getSortDir();
@@ -434,7 +231,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * @param array<string, mixed> $directory
      * @return array<string, mixed>
      */
-    private function toDirectoryStub(array $directory, DirectorySearchQuery $search): array
+    protected function toDirectoryStub(array $directory, DirectorySearchQuery $search): array
     {
         $lazyLink = isset($directory['parent']) ? (string)$directory['parent'] : '';
         unset($directory['children'], $directory['parent'], $directory['total']);
@@ -471,7 +268,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * @param array<string, mixed> $file
      * @return array<string, mixed>
      */
-    private function normalizeFile(array $file, string $location): array
+    protected function normalizeFile(array $file, string $location): array
     {
         // Keep explicit empty location as missing (nulls-last), same as AssetSearchBuilder.
         $file['location'] = (string)($file['location'] ?? $location);
@@ -516,7 +313,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return $this->updatedAtResolver;
     }
 
-    private function isDirectoryChild(array $child): bool
+    protected function isDirectoryChild(array $child): bool
     {
         if (array_key_exists('children', $child) || isset($child['parent'])) {
             return true;
@@ -525,7 +322,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return isset($child['path']) && !isset($child['mime']) && !isset($child['uri']);
     }
 
-    private function isFileChild(array $child): bool
+    protected function isFileChild(array $child): bool
     {
         if ($this->isDirectoryChild($child)) {
             return false;
@@ -538,7 +335,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * @param array<int, array> $files
      * @return array<int, array>
      */
-    private function sortFiles(array $files, ?string $sortBy, ?string $sortDir): array
+    protected function sortFiles(array $files, ?string $sortBy, ?string $sortDir): array
     {
         $field = $sortBy ?: self::SORT_LABEL;
         $direction = $sortDir === 'desc' ? 'desc' : 'asc';
@@ -600,7 +397,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return mb_strtolower((string)($item['label'] ?? $item['name'] ?? ''), 'UTF-8');
     }
 
-    private function getPaginationLimit(): int
+    protected function getPaginationLimit(): int
     {
         return (int)$this->getOption(self::OPTION_PAGINATION_LIMIT, self::DEFAULT_PAGINATION_LIMIT);
     }
