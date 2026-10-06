@@ -200,6 +200,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             ->setSortDir($this->resolveSortDir($search));
 
         $data = $mediaSource->getDirectories($directoryQuery);
+        $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
         $directories = [];
         foreach ($data['children'] ?? [] as $child) {
             if (!is_array($child) || !$this->isDirectoryChild($child)) {
@@ -213,7 +214,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             if (!is_array($item)) {
                 continue;
             }
-            $files[] = $this->normalizeFile($item, (string)($data['locationPath'] ?? $data['label'] ?? ''));
+            $files[] = $this->normalizeFile($item, $scopeLabel);
         }
 
         $total = (int)($searchResult['total'] ?? count($files));
