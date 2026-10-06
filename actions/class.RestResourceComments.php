@@ -34,9 +34,6 @@ use oat\taoItems\model\Comment\ItemCommentService;
  * - POST /taoItems/RestResourceComments/update (id, body) — author can edit own comment
  * - POST /taoItems/RestResourceComments/resolve (id, resolved) — any authenticated authoring user
  * - POST /taoItems/RestResourceComments/delete (id) — author can delete own comment
- *
- * Mention user search lives in the user domain:
- * - GET /tao/RestUser/searchUsers?resourceUri=&resourceType=&q=&limit=&offset=
  */
 class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
 {
@@ -289,4 +286,5 @@ class taoItems_actions_RestResourceComments extends tao_actions_CommonModule
     {
         return $this->getPsrContainer()->get(ItemCommentService::class);
     }
+
 }
