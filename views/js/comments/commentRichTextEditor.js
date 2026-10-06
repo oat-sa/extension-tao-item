@@ -109,6 +109,9 @@ define([
 
     function buildMentionHtml(user) {
         const login = String(user.login || '');
+        const displayName = String(user.displayName || '').trim();
+        const mentionText = displayName || login;
+
         return (
             '<span class="comment-mention"' +
             ' data-user-id="' +
@@ -118,7 +121,7 @@ define([
             escapeHtml(login) +
             '"' +
             ' contenteditable="false">@' +
-            escapeHtml(login) +
+            escapeHtml(mentionText) +
             '</span>&nbsp;'
         );
     }
@@ -606,6 +609,7 @@ define([
     return {
         create: create,
         sanitizeHtml: sanitizeHtml,
-        hasMeaningfulText: hasMeaningfulText
+        hasMeaningfulText: hasMeaningfulText,
+        buildMentionHtml: buildMentionHtml
     };
 });
