@@ -28,6 +28,7 @@ use oat\tao\model\media\MediaAsset;
 use oat\taoItems\model\media\AssetFilesService;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
+use oat\taoItems\model\media\AssetTreeBuilder;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\CurrentAssetResolver;
 
@@ -77,7 +78,12 @@ class AssetFilesServiceTest extends TestCase
         $searchBuilder->expects($this->never())->method('search');
 
         $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
-        $treeBuilder->expects($this->once())->method('build')->willReturn($browseResult);
+        $treeBuilder->expects($this->once())
+            ->method('build')
+            ->with($this->callback(static function (AssetSearchQuery $query): bool {
+                return $query->getDepth() === AssetTreeBuilder::DEFAULT_BROWSE_DEPTH;
+            }))
+            ->willReturn($browseResult);
 
         $service = new AssetFilesService(
             $searchBuilder,
@@ -87,6 +93,28 @@ class AssetFilesServiceTest extends TestCase
         $result = $service->listFiles($asset, 'item-uri', 'en-US', [], []);
 
         $this->assertSame($browseResult, $result);
+    }
+
+    public function testListFilesForwardsExplicitBrowseDepth(): void
+    {
+        $asset = $this->createMock(MediaAsset::class);
+        $browseResult = ['path' => '/', 'children' => [], 'total' => 0];
+
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
+        $treeBuilder->expects($this->once())
+            ->method('build')
+            ->with($this->callback(static function (AssetSearchQuery $query): bool {
+                return $query->getDepth() === 3;
+            }))
+            ->willReturn($browseResult);
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+        $service->listFiles($asset, 'item-uri', 'en-US', ['depth' => '3'], []);
     }
 
     public function testListFilesUsesSearchWhenMetadataPresent(): void

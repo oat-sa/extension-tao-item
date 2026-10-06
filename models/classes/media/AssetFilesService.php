@@ -76,7 +76,7 @@ final class AssetFilesService
             $itemUri,
             $itemLang,
             $filters,
-            1,
+            $this->resolveBrowseDepth($params),
             $childrenOffset
         );
 
@@ -139,5 +139,17 @@ final class AssetFilesService
         $response['currentAsset'] = $resolved['currentAsset'];
 
         return $response;
+    }
+
+    /**
+     * @param array<string, mixed> $params
+     */
+    private function resolveBrowseDepth(array $params): int
+    {
+        if (!array_key_exists('depth', $params) || $params['depth'] === '' || $params['depth'] === null) {
+            return AssetTreeBuilder::DEFAULT_BROWSE_DEPTH;
+        }
+
+        return AssetTreeBuilder::normalizeBrowseDepth((int)$params['depth']);
     }
 }

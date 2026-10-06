@@ -43,7 +43,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * Descendants of the active folder (media source scopes the root class). Flat table
      * lists nested files via collectFiles(); file load is capped by MAX_BROWSE_LOAD.
      */
-    private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
+    public const DEFAULT_BROWSE_DEPTH = 2;
+    public const MAX_BROWSE_DEPTH = 10;
     private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     private const MAX_CHILDREN_OFFSET = 10000;
@@ -112,6 +113,15 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return $data;
     }
 
+    public static function normalizeBrowseDepth(int $depth): int
+    {
+        if ($depth < 1) {
+            return self::DEFAULT_BROWSE_DEPTH;
+        }
+
+        return min($depth, self::MAX_BROWSE_DEPTH);
+    }
+
     private function resolveLoadLimit(int $offset, int $pageSize): int
     {
         if ($pageSize <= 0) {
@@ -133,7 +143,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             $search->getItemUri(),
             $search->getItemLang(),
             $search->getFilter(),
-            self::BROWSE_SUBTREE_DEPTH,
+            self::normalizeBrowseDepth($search->getDepth()),
             0,
             $loadLimit
         ))

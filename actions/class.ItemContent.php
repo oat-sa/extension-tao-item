@@ -76,7 +76,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             'query',
             'page',
             'pageSize',
-            'currentAsset'
+            'currentAsset',
+            'depth'
         );
         if (array_key_exists('metadata', $params) && $params['metadata'] !== null && !is_array($params['metadata'])) {
             throw new BadRequestException('Invalid query parameter "metadata"');

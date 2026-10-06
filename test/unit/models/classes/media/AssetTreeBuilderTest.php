@@ -162,12 +162,19 @@ class AssetTreeBuilderTest extends TestCase
             }))
             ->willReturn(['path' => '/', 'label' => 'Root', 'children' => []]);
 
-        $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
+        $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US', [], 2));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
         $this->assertSame(500, $captured->getChildrenLimit());
         $this->assertSame(0, $captured->getChildrenOffset());
-        $this->assertSame(PHP_INT_MAX, $captured->getDepth());
+        $this->assertSame(2, $captured->getDepth());
+    }
+
+    public function testNormalizeBrowseDepthDefaultsAndCaps(): void
+    {
+        $this->assertSame(AssetTreeBuilder::DEFAULT_BROWSE_DEPTH, AssetTreeBuilder::normalizeBrowseDepth(0));
+        $this->assertSame(3, AssetTreeBuilder::normalizeBrowseDepth(3));
+        $this->assertSame(AssetTreeBuilder::MAX_BROWSE_DEPTH, AssetTreeBuilder::normalizeBrowseDepth(99));
     }
 
     public function testBuildClampsHugeChildrenOffsetWithoutTypeError(): void
