@@ -45,8 +45,8 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
      * lists nested files via collectFiles(); file load is capped by MAX_BROWSE_LOAD.
      */
     private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
-    /** Matches resource manager fileBrowser browse depth (folder tree only). */
-    private const BROWSE_DIRECTORY_DEPTH = 2;
+    /** One level per browse request; deeper tree levels load on folder click. */
+    private const BROWSE_LAZY_FOLDER_DEPTH = 1;
     private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     private const MAX_CHILDREN_OFFSET = 10000;
@@ -75,6 +75,10 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
         if ($mediaSource instanceof AccessControlEnablerInterface) {
             $mediaSource->enableAccessControl();
+        }
+
+        if ($this->usesLazyFolderBrowse($mediaSource)) {
+            return $this->buildLazyFolderBrowse($search, $pageSize, $offset);
         }
 
         $fetchQuery = $this->createFetchQuery($search, $loadLimit);
@@ -119,6 +123,64 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         $data['truncated'] = $data['total'] > $loadedCount;
         $data['childrenLimit'] = $pageSize;
         $data['children'] = array_merge($directories, array_slice($files, $offset, $pageSize));
+
+        return $data;
+    }
+
+    private function usesLazyFolderBrowse(object $mediaSource): bool
+    {
+        if ($mediaSource instanceof LocalItemSource) {
+            return false;
+        }
+
+        return $mediaSource instanceof MediaSource;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildLazyFolderBrowse(DirectorySearchQuery $search, int $pageSize, int $offset): array
+    {
+        $mediaSource = $search->getAsset()->getMediaSource();
+        $fetchQuery = (new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            self::BROWSE_LAZY_FOLDER_DEPTH,
+            $offset,
+            $pageSize
+        ))
+            ->setSortBy($this->resolveSortBy($search))
+            ->setSortDir($this->resolveSortDir($search));
+
+        $data = $mediaSource->getDirectories($fetchQuery);
+        $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
+        $scopeLabel = (string)($data['locationPath'] ?? $data['label'] ?? $data['path'] ?? '');
+
+        $directories = [];
+        $files = [];
+        foreach ($data['children'] ?? [] as $child) {
+            if (!is_array($child)) {
+                continue;
+            }
+            if ($this->isFileChild($child)) {
+                $files[] = $this->normalizeFile($child, $scopeLabel);
+                continue;
+            }
+            if ($this->isDirectoryChild($child)) {
+                $directories[] = $this->toDirectoryStub($child, $search);
+            }
+        }
+
+        $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
+        $fileCount = count($files);
+        $total = $sourceReportedTotal !== null ? $sourceReportedTotal : $fileCount;
+
+        $data['total'] = $total;
+        $data['truncated'] = $total > $offset + $fileCount;
+        $data['childrenLimit'] = $pageSize;
+        $data['children'] = array_merge($directories, $files);
 
         return $data;
     }
@@ -196,7 +258,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
             $search->getItemUri(),
             $search->getItemLang(),
             $search->getFilter(),
-            self::BROWSE_DIRECTORY_DEPTH,
+            self::BROWSE_LAZY_FOLDER_DEPTH,
             0,
             MediaSource::CHILDREN_LIMIT_DIRECTORIES_ONLY
         ))
