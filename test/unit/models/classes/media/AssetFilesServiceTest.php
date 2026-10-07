@@ -25,11 +25,13 @@ namespace oat\taoItems\test\unit\models\classes\media;
 use oat\generis\test\TestCase;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\media\MediaAsset;
+use oat\taoItems\model\media\AssetBrowseListBuilderInterface;
 use oat\taoItems\model\media\AssetFilesService;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\CurrentAssetResolver;
+use InvalidArgumentException;
 
 class AssetFilesServiceTest extends TestCase
 {
@@ -119,5 +121,99 @@ class AssetFilesServiceTest extends TestCase
         );
 
         $this->assertSame($searchResult, $result);
+    }
+
+    public function testListFilesUsesBuildTreeWhenPartIsTree(): void
+    {
+        $asset = $this->createMock(MediaAsset::class);
+        $treeResult = ['path' => '/media', 'children' => []];
+
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $searchBuilder->expects($this->never())->method('search');
+
+        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
+        $treeBuilder->expects($this->once())->method('buildTree')->willReturn($treeResult);
+        $treeBuilder->expects($this->never())->method('build');
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $result = $service->listFiles($asset, 'item-uri', 'en-US', ['part' => 'tree', 'depth' => 1], []);
+
+        $this->assertSame($treeResult, $result);
+    }
+
+    public function testListFilesUsesBuildAssetListWhenPartIsList(): void
+    {
+        $asset = $this->createMock(MediaAsset::class);
+        $listResult = ['items' => [], 'total' => 0, 'page' => 2, 'pageSize' => 15];
+
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $searchBuilder->expects($this->never())->method('search');
+
+        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
+        $treeBuilder = new class ($listResult) implements AssetTreeBuilderInterface, AssetBrowseListBuilderInterface {
+            /** @var array<string, mixed> */
+            private $listResult;
+
+            /** @param array<string, mixed> $listResult */
+            public function __construct(array $listResult)
+            {
+                $this->listResult = $listResult;
+            }
+
+            public function build(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildTree(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildAssetList(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return $this->listResult;
+            }
+        };
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $result = $service->listFiles(
+            $asset,
+            'item-uri',
+            'en-US',
+            ['part' => 'list', 'page' => 2, 'pageSize' => 15],
+            []
+        );
+
+        $this->assertSame($listResult, $result);
+    }
+
+    public function testListFilesRejectsInvalidPart(): void
+    {
+        $service = new AssetFilesService(
+            $this->createMock(AssetSearchBuilder::class),
+            $this->createMock(AssetTreeBuilderInterface::class),
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $service->listFiles(
+            $this->createMock(MediaAsset::class),
+            'item-uri',
+            'en-US',
+            ['part' => 'nope'],
+            []
+        );
     }
 }

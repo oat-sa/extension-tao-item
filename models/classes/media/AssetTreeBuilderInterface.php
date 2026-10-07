@@ -51,4 +51,11 @@ interface AssetTreeBuilderInterface
      *   ]
      */
     public function build(DirectorySearchQuery $search): array;
+
+    /**
+     * Folder stubs for the left tree ({@code part=tree}): directory children only, no file rows.
+     *
+     * @return array<string, mixed>
+     */
+    public function buildTree(DirectorySearchQuery $search): array;
 }

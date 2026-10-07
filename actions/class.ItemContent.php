@@ -54,7 +54,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
      * Browse a media folder, or search within its subtree when `query` and/or
      * `metadata` filters are present.
      *
-     * Browse response (no query, no metadata): existing tree payload with `children`.
+     * Browse without `part`: legacy combined tree + file rows in `children`.
+     * Browse `part=tree`: folder stubs only. Browse `part=list`: `{ items, total, page, pageSize }`.
      * Search response: `{ items, total, page, pageSize }`.
      *
      * Metadata filters: `metadata[{propertyUri}]={value}` (AND across properties).
@@ -76,7 +77,9 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
             'query',
             'page',
             'pageSize',
-            'currentAsset'
+            'currentAsset',
+            'part',
+            'depth'
         );
         if (array_key_exists('metadata', $params) && $params['metadata'] !== null && !is_array($params['metadata'])) {
             throw new BadRequestException('Invalid query parameter "metadata"');
@@ -92,6 +95,8 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 $params,
                 $filters
             );
+        } catch (\InvalidArgumentException $exception) {
+            throw new BadRequestException($exception->getMessage());
         } catch (AssetSearchUnavailableException $exception) {
             $this->logWarning('Asset search unavailable: ' . $exception->getMessage());
             $this->setErrorJsonResponse(

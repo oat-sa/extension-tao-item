@@ -112,6 +112,49 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return $data;
     }
 
+    public function buildTree(DirectorySearchQuery $search): array
+    {
+        $mediaSource = $search->getAsset()->getMediaSource();
+
+        if ($mediaSource instanceof AccessControlEnablerInterface) {
+            $mediaSource->enableAccessControl();
+        }
+
+        $fetchQuery = (new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            1,
+            0,
+            AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY
+        ))
+            ->setSortBy($this->resolveSortBy($search))
+            ->setSortDir($this->resolveSortDir($search));
+
+        $data = $mediaSource->getDirectories($fetchQuery);
+
+        return $this->stripFileChildrenFromBrowseNode($data, $search);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    protected function stripFileChildrenFromBrowseNode(array $data, DirectorySearchQuery $search): array
+    {
+        $directories = [];
+        foreach ($data['children'] ?? [] as $child) {
+            if (is_array($child) && $this->isDirectoryChild($child)) {
+                $directories[] = $this->toDirectoryStub($child, $search);
+            }
+        }
+        $data['children'] = $directories;
+        unset($data['total'], $data['truncated'], $data['childrenLimit']);
+
+        return $data;
+    }
+
     private function resolveLoadLimit(int $offset, int $pageSize): int
     {
         if ($pageSize <= 0) {

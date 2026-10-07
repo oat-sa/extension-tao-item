@@ -65,6 +65,18 @@ class LocalItemSource implements MediaManagement
     public function getDirectories(DirectorySearchQuery $params): array
     {
         $childrenLimit = $params->getChildrenLimit();
+        if ($childrenLimit === AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY) {
+            $fileSlotsRemaining = 0;
+
+            return $this->searchDirectories(
+                $params->getParentLink(),
+                $params->getFilter(),
+                1,
+                $childrenLimit,
+                $fileSlotsRemaining
+            );
+        }
+
         $fileSlotsRemaining = $childrenLimit > 0 ? $childrenLimit : null;
 
         return $this->searchDirectories(

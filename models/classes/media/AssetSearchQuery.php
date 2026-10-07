@@ -32,8 +32,13 @@ final class AssetSearchQuery extends DirectorySearchQuery
     public const SORT_UPDATED_AT = 'updatedAt';
 
     public const DEFAULT_PAGE = 1;
-    public const DEFAULT_PAGE_SIZE = 10;
+    public const DEFAULT_PAGE_SIZE = 11;
     public const MAX_PAGE_SIZE = 100;
+
+    /**
+     * Folder stubs only (no file instances) for lazy tree browse ({@see AssetFilesService::PART_TREE}).
+     */
+    public const CHILDREN_DIRECTORIES_ONLY = -1;
 
     private string $query = '';
 
@@ -79,6 +84,7 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     public function setDepth(int $depth): self
     {
+        parent::setDepth($depth);
         $this->depth = $depth > 0 ? $depth : 1;
 
         return $this;
@@ -91,6 +97,7 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     public function setChildrenLimit(int $childrenLimit): self
     {
+        parent::setChildrenLimit($childrenLimit);
         $this->childrenLimit = $childrenLimit;
 
         return $this;
