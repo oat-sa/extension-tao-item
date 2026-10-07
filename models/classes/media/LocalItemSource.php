@@ -401,6 +401,10 @@ class LocalItemSource implements MediaManagement
             }
 
             if ($fileSlotsRemaining !== null && $fileSlotsRemaining <= 0) {
+                if ($childrenLimit === AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY) {
+                    continue;
+                }
+
                 // Count matching files beyond the payload cap without attaching file info.
                 $mime = $content->getMimeType();
                 if (empty($acceptableMime) || in_array($mime, $acceptableMime, true)) {

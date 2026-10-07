@@ -198,6 +198,25 @@ class AssetFilesServiceTest extends TestCase
         $this->assertSame($listResult, $result);
     }
 
+    public function testListFilesRejectsInvalidPartEvenWhenQueryPresent(): void
+    {
+        $service = new AssetFilesService(
+            $this->createMock(AssetSearchBuilder::class),
+            $this->createMock(AssetTreeBuilderInterface::class),
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $service->listFiles(
+            $this->createMock(MediaAsset::class),
+            'item-uri',
+            'en-US',
+            ['part' => 'nope', 'query' => 'clip'],
+            []
+        );
+    }
+
     public function testListFilesRejectsInvalidPart(): void
     {
         $service = new AssetFilesService(

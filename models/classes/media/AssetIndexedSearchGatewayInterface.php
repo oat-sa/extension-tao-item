@@ -30,7 +30,13 @@ interface AssetIndexedSearchGatewayInterface
     public function isAvailable(): bool;
 
     /**
-     * @return array{items: array<int, array>, total: int, page: int, pageSize: int}
+     * @return array{
+     *     items: array<int, array>,
+     *     total: int,
+     *     page: int,
+     *     pageSize: int,
+     *     totalIsApproximate?: bool
+     * }
      */
     public function search(AssetSearchQuery $query): array;
 }

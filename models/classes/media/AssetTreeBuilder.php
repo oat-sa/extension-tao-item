@@ -28,7 +28,7 @@ use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use tao_helpers_Uri;
 
-class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface
+class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface, AssetBrowseListBuilderInterface
 {
     public const SERVICE_ID = 'taoItems/AssetTreeBuilder';
 
@@ -56,7 +56,7 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
 
     public function build(DirectorySearchQuery $search): array
     {
-        $pageSize = $this->getPaginationLimit();
+        $pageSize = $this->resolveBrowsePageSize($search);
         $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
         $loadLimit = $this->resolveLoadLimit($offset, $pageSize);
 
@@ -112,6 +112,44 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         return $data;
     }
 
+    public function buildAssetList(DirectorySearchQuery $search): array
+    {
+        if (!$search instanceof AssetSearchQuery) {
+            $pageSize = max(1, $this->getPaginationLimit());
+
+            return [
+                'items' => [],
+                'total' => 0,
+                'page' => 1,
+                'pageSize' => $pageSize,
+                'totalIsApproximate' => false,
+            ];
+        }
+
+        $page = max(1, $search->getPage());
+        $pageSize = max(1, min($search->getPageSize(), AssetSearchQuery::MAX_PAGE_SIZE));
+        $search
+            ->setChildrenOffset(max(0, ($page - 1) * $pageSize))
+            ->setChildrenLimit($pageSize);
+
+        $data = $this->build($search);
+
+        $items = [];
+        foreach ($data['children'] ?? [] as $child) {
+            if (is_array($child) && isset($child['uri'])) {
+                $items[] = $child;
+            }
+        }
+
+        return [
+            'items' => array_values(array_slice($items, 0, $pageSize)),
+            'total' => (int)($data['total'] ?? count($items)),
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'totalIsApproximate' => false,
+        ];
+    }
+
     public function buildTree(DirectorySearchQuery $search): array
     {
         $mediaSource = $search->getAsset()->getMediaSource();
@@ -153,6 +191,19 @@ class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderIn
         unset($data['total'], $data['truncated'], $data['childrenLimit']);
 
         return $data;
+    }
+
+    private function resolveBrowsePageSize(DirectorySearchQuery $search): int
+    {
+        $childrenLimit = $search->getChildrenLimit();
+        if (
+            $childrenLimit > 0
+            && $childrenLimit !== AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY
+        ) {
+            return min($childrenLimit, AssetSearchQuery::MAX_PAGE_SIZE);
+        }
+
+        return $this->getPaginationLimit();
     }
 
     private function resolveLoadLimit(int $offset, int $pageSize): int

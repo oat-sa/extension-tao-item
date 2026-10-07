@@ -73,6 +73,7 @@ final class AssetFilesService
         array $filters
     ): array {
         $searchQuery = $this->createSearchQuery($asset, $itemUri, $itemLang, $params, $filters);
+        $part = $this->normalizeBrowsePart($params['part'] ?? null);
 
         $queryText = trim((string)($params['query'] ?? ''));
         if ($queryText !== '' || $searchQuery->hasMetadataCriteria()) {
@@ -89,8 +90,6 @@ final class AssetFilesService
                 $filters
             );
         }
-
-        $part = $this->normalizeBrowsePart($params['part'] ?? null);
 
         if ($part === self::PART_TREE) {
             $searchQuery
