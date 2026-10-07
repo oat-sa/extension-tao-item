@@ -32,8 +32,13 @@ final class AssetSearchQuery extends DirectorySearchQuery
     public const SORT_UPDATED_AT = 'updatedAt';
 
     public const DEFAULT_PAGE = 1;
-    public const DEFAULT_PAGE_SIZE = 10;
+    public const DEFAULT_PAGE_SIZE = 11;
     public const MAX_PAGE_SIZE = 100;
+
+    /**
+     * Folder stubs only (no file instances) for lazy tree browse ({@see AssetFilesService::PART_TREE}).
+     */
+    public const CHILDREN_DIRECTORIES_ONLY = -1;
 
     private string $query = '';
 
@@ -62,6 +67,9 @@ final class AssetSearchQuery extends DirectorySearchQuery
     /** @var int */
     private $childrenLimit;
 
+    /** @var int */
+    private $childrenOffset;
+
     public function __construct(
         MediaAsset $asset,
         string $itemUri,
@@ -75,10 +83,12 @@ final class AssetSearchQuery extends DirectorySearchQuery
         parent::__construct($asset, $itemUri, $itemLang, $filter, $normalizedDepth, $childrenOffset, $childrenLimit);
         $this->depth = $normalizedDepth;
         $this->childrenLimit = $childrenLimit;
+        $this->childrenOffset = max(0, $childrenOffset);
     }
 
     public function setDepth(int $depth): self
     {
+        parent::setDepth($depth);
         $this->depth = $depth > 0 ? $depth : 1;
 
         return $this;
@@ -91,6 +101,7 @@ final class AssetSearchQuery extends DirectorySearchQuery
 
     public function setChildrenLimit(int $childrenLimit): self
     {
+        parent::setChildrenLimit($childrenLimit);
         $this->childrenLimit = $childrenLimit;
 
         return $this;
@@ -99,6 +110,21 @@ final class AssetSearchQuery extends DirectorySearchQuery
     public function getChildrenLimit(): int
     {
         return $this->childrenLimit;
+    }
+
+    public function setChildrenOffset(int $childrenOffset): self
+    {
+        $this->childrenOffset = max(0, $childrenOffset);
+        if (method_exists(DirectorySearchQuery::class, 'setChildrenOffset')) {
+            parent::setChildrenOffset($this->childrenOffset);
+        }
+
+        return $this;
+    }
+
+    public function getChildrenOffset(): int
+    {
+        return $this->childrenOffset;
     }
 
     public function setQuery(string $query): self

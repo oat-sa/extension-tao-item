@@ -22,21 +22,15 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\media;
 
-/**
- * Optional indexed (Elasticsearch) backend for Resource Manager asset search.
- */
-interface AssetIndexedSearchGatewayInterface
-{
-    public function isAvailable(): bool;
+use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 
+/**
+ * Paginated asset rows for Resource Manager browse ({@code part=list}).
+ */
+interface AssetBrowseListBuilderInterface
+{
     /**
-     * @return array{
-     *     items: array<int, array>,
-     *     total: int,
-     *     page: int,
-     *     pageSize: int,
-     *     totalIsApproximate?: bool
-     * }
+     * @return array{items: array<int, array>, total: int, page: int, pageSize: int, totalIsApproximate?: bool}
      */
-    public function search(AssetSearchQuery $query): array;
+    public function buildAssetList(DirectorySearchQuery $search): array;
 }
