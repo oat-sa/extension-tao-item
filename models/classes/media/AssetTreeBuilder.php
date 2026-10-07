@@ -28,7 +28,10 @@ use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
 use tao_helpers_Uri;
 
-class AssetTreeBuilder extends ConfigurableService implements AssetTreeBuilderInterface, AssetBrowseListBuilderInterface
+class AssetTreeBuilder extends ConfigurableService implements
+    AssetTreeBuilderInterface,
+    AssetTreeBrowseBuilderInterface,
+    AssetBrowseListBuilderInterface
 {
     public const SERVICE_ID = 'taoItems/AssetTreeBuilder';
 

@@ -96,8 +96,12 @@ final class AssetFilesService
                 ->setDepth(1)
                 ->setChildrenLimit(AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY);
 
+            $treeResponse = $this->treeBuilder instanceof AssetTreeBrowseBuilderInterface
+                ? $this->treeBuilder->buildTree($searchQuery)
+                : $this->treeBuilder->build($searchQuery);
+
             return $this->attachCurrentAssetContext(
-                $this->treeBuilder->buildTree($searchQuery),
+                $treeResponse,
                 $itemUri,
                 $itemLang,
                 $params,

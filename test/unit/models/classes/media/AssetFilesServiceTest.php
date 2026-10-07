@@ -26,6 +26,7 @@ use oat\generis\test\TestCase;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\media\MediaAsset;
 use oat\taoItems\model\media\AssetBrowseListBuilderInterface;
+use oat\taoItems\model\media\AssetTreeBrowseBuilderInterface;
 use oat\taoItems\model\media\AssetFilesService;
 use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
@@ -131,9 +132,26 @@ class AssetFilesServiceTest extends TestCase
         $searchBuilder = $this->createMock(AssetSearchBuilder::class);
         $searchBuilder->expects($this->never())->method('search');
 
-        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
-        $treeBuilder->expects($this->once())->method('buildTree')->willReturn($treeResult);
-        $treeBuilder->expects($this->never())->method('build');
+        $treeBuilder = new class($treeResult) implements AssetTreeBuilderInterface, AssetTreeBrowseBuilderInterface {
+            /** @var array<string, mixed> */
+            private $treeResult;
+
+            /** @param array<string, mixed> $treeResult */
+            public function __construct(array $treeResult)
+            {
+                $this->treeResult = $treeResult;
+            }
+
+            public function build(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildTree(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return $this->treeResult;
+            }
+        };
 
         $service = new AssetFilesService(
             $searchBuilder,
@@ -155,7 +173,10 @@ class AssetFilesServiceTest extends TestCase
         $searchBuilder->expects($this->never())->method('search');
 
         $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
-        $treeBuilder = new class ($listResult) implements AssetTreeBuilderInterface, AssetBrowseListBuilderInterface {
+        $treeBuilder = new class ($listResult) implements
+            AssetTreeBuilderInterface,
+            AssetTreeBrowseBuilderInterface,
+            AssetBrowseListBuilderInterface {
             /** @var array<string, mixed> */
             private $listResult;
 
