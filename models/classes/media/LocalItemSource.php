@@ -65,6 +65,18 @@ class LocalItemSource implements MediaManagement
     public function getDirectories(DirectorySearchQuery $params): array
     {
         $childrenLimit = $params->getChildrenLimit();
+        if ($childrenLimit === AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY) {
+            $fileSlotsRemaining = 0;
+
+            return $this->searchDirectories(
+                $params->getParentLink(),
+                $params->getFilter(),
+                1,
+                $childrenLimit,
+                $fileSlotsRemaining
+            );
+        }
+
         $fileSlotsRemaining = $childrenLimit > 0 ? $childrenLimit : null;
 
         return $this->searchDirectories(
@@ -389,6 +401,10 @@ class LocalItemSource implements MediaManagement
             }
 
             if ($fileSlotsRemaining !== null && $fileSlotsRemaining <= 0) {
+                if ($childrenLimit === AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY) {
+                    continue;
+                }
+
                 // Count matching files beyond the payload cap without attaching file info.
                 $mime = $content->getMimeType();
                 if (empty($acceptableMime) || in_array($mime, $acceptableMime, true)) {
