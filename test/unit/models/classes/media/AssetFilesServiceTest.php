@@ -167,6 +167,39 @@ class AssetFilesServiceTest extends TestCase
         $this->assertSame($treeResult, $result);
     }
 
+    public function testListFilesLegacyTreeFallbackStripsFilesFromBuildResponse(): void
+    {
+        $asset = $this->createMock(MediaAsset::class);
+        $combinedBrowse = [
+            'path' => '/media',
+            'total' => 2,
+            'truncated' => true,
+            'childrenLimit' => 15,
+            'children' => [
+                ['path' => '/images', 'label' => 'images'],
+                ['uri' => 'asset://file.png', 'name' => 'file.png', 'mime' => 'image/png'],
+            ],
+        ];
+
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
+        $treeBuilder->expects($this->once())->method('build')->willReturn($combinedBrowse);
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $result = $service->listFiles($asset, 'item-uri', 'en-US', ['part' => 'tree'], []);
+
+        $this->assertCount(1, $result['children']);
+        $this->assertSame('images', $result['children'][0]['label']);
+        $this->assertArrayNotHasKey('total', $result);
+        $this->assertArrayNotHasKey('truncated', $result);
+        $this->assertArrayNotHasKey('childrenLimit', $result);
+    }
+
     public function testListFilesUsesBuildAssetListWhenPartIsList(): void
     {
         $asset = $this->createMock(MediaAsset::class);

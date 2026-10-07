@@ -151,7 +151,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(900, $result['total']);
     }
 
-    public function testBuildRequestsBoundedChildrenLoadCoveringRequestedPage(): void
+    public function testBuildRequestsFullSubtreeBeforeSortAndSlice(): void
     {
         $captured = null;
         $this->mediaSource->expects($this->once())
@@ -165,7 +165,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(500, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(0, $captured->getChildrenOffset());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
@@ -191,9 +191,7 @@ class AssetTreeBuilderTest extends TestCase
         );
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertIsInt($captured->getChildrenLimit());
-        // Offset clamped to MAX_CHILDREN_OFFSET (10000); load window = offset + pageSize (15).
-        $this->assertSame(10015, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame([], $result['children']);
         $this->assertFalse($result['truncated']);
     }
@@ -514,7 +512,7 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
         $this->assertSame(0, $captured->getChildrenOffset());
-        $this->assertSame(500, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(3, $result['total']);
         $files = array_values(array_filter(
             $result['children'],
@@ -605,6 +603,55 @@ class AssetTreeBuilderTest extends TestCase
 
         // Equal case-folded keys fall back to uri for a stable order.
         $this->assertSame(['Banana', 'éclair', 'Éclair'], $labels);
+    }
+
+    public function testBuildSortsFullSubtreeBeforePagination(): void
+    {
+        $this->subject->setOptions([AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 5]);
+
+        $folderChildren = [];
+        for ($i = 1; $i <= 501; $i++) {
+            $folderChildren[] = [
+                'uri' => 'u-z-' . $i,
+                'name' => sprintf('zzz-%03d.png', $i),
+                'label' => sprintf('zzz-%03d.png', $i),
+                'mime' => 'image/png',
+            ];
+        }
+
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => '/',
+            'label' => 'Root',
+            'children' => [
+                [
+                    'parent' => 'folder-uri',
+                    'label' => 'Heavy',
+                    'children' => $folderChildren,
+                ],
+                [
+                    'uri' => 'u-aaa',
+                    'name' => 'aaa-first.png',
+                    'label' => 'aaa-first.png',
+                    'mime' => 'image/png',
+                ],
+            ],
+        ]);
+
+        $result = $this->subject->build(
+            (new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'))
+                ->setSortBy(AssetSearchQuery::SORT_LABEL)
+                ->setSortDir('asc')
+        );
+
+        $files = array_values(array_filter(
+            $result['children'],
+            static function (array $child): bool {
+                return isset($child['uri']);
+            }
+        ));
+
+        $this->assertCount(5, $files);
+        $this->assertSame('aaa-first.png', $files[0]['name']);
     }
 
     public function testBuildPaginatesWithinLoadWindowAndMarksTruncation(): void
@@ -709,6 +756,43 @@ class AssetTreeBuilderTest extends TestCase
         );
 
         $this->assertSame($expectedNames, $names);
+    }
+
+    public function testBuildAssetListClampsPageBeyondOffsetCap(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'label' => 'Assets',
+            'children' => [],
+            'total' => 0,
+        ]);
+
+        $query = (new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'))
+            ->setPage(5000)
+            ->setPageSize(11);
+
+        $result = $this->subject->buildAssetList($query);
+
+        $this->assertSame(910, $result['page']);
+    }
+
+    public function testBuildAssetListAcceptsPlainDirectorySearchQuery(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'label' => 'Assets',
+            'children' => [
+                ['uri' => 'asset://a.png', 'name' => 'a.png', 'mime' => 'image/png'],
+            ],
+            'total' => 1,
+        ]);
+
+        $query = new DirectorySearchQuery($this->mediaAsset, 'item-uri', 'en-US', [], 1, 0, 0);
+        $query->setPage(1)->setPageSize(10);
+
+        $result = $this->subject->buildAssetList($query);
+
+        $this->assertSame(1, $result['total']);
+        $this->assertCount(1, $result['items']);
+        $this->assertSame('a.png', $result['items'][0]['name']);
     }
 
     public function provideNullsLastBrowseSort(): array

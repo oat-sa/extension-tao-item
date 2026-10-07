@@ -96,9 +96,13 @@ final class AssetFilesService
                 ->setDepth(1)
                 ->setChildrenLimit(AssetSearchQuery::CHILDREN_DIRECTORIES_ONLY);
 
-            $treeResponse = $this->treeBuilder instanceof AssetTreeBrowseBuilderInterface
-                ? $this->treeBuilder->buildTree($searchQuery)
-                : $this->treeBuilder->build($searchQuery);
+            if ($this->treeBuilder instanceof AssetTreeBrowseBuilderInterface) {
+                $treeResponse = $this->treeBuilder->buildTree($searchQuery);
+            } else {
+                $treeResponse = $this->normalizeLegacyTreeBrowseResponse(
+                    $this->treeBuilder->build($searchQuery)
+                );
+            }
 
             return $this->attachCurrentAssetContext(
                 $treeResponse,
@@ -219,6 +223,41 @@ final class AssetFilesService
         }
 
         return $part;
+    }
+
+    /**
+     * Legacy {@see AssetTreeBuilderInterface::build()} responses include files and pagination;
+     * {@code part=tree} expects directory stubs only (same shape as {@see AssetTreeBrowseBuilderInterface}).
+     *
+     * @param array<string, mixed> $response
+     * @return array<string, mixed>
+     */
+    private function normalizeLegacyTreeBrowseResponse(array $response): array
+    {
+        $directories = [];
+        foreach ($response['children'] ?? [] as $child) {
+            if (!is_array($child) || !$this->isTreeDirectoryNode($child)) {
+                continue;
+            }
+            unset($child['children'], $child['parent'], $child['total']);
+            $directories[] = $child;
+        }
+        $response['children'] = $directories;
+        unset($response['total'], $response['truncated'], $response['childrenLimit']);
+
+        return $response;
+    }
+
+    /**
+     * @param array<string, mixed> $child
+     */
+    private function isTreeDirectoryNode(array $child): bool
+    {
+        if (array_key_exists('children', $child) || isset($child['parent'])) {
+            return true;
+        }
+
+        return isset($child['path']) && !isset($child['mime']) && !isset($child['uri']);
     }
 
     /**

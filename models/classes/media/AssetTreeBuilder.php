@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 31 Milk St # 960789 Boston, MA 02196 USA
  *
  * Copyright (c) 2020-2026 (original work) Open Assessment Technologies SA;
  */
@@ -44,10 +44,9 @@ class AssetTreeBuilder extends ConfigurableService implements
 
     /**
      * Descendants of the active folder (media source scopes the root class). Flat table
-     * lists nested files via collectFiles(); file load is capped by MAX_BROWSE_LOAD.
+     * lists nested files via collectFiles(); media fetch uses unlimited childrenLimit, then sort+slice.
      */
     private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
-    private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     protected const MAX_CHILDREN_OFFSET = 10000;
 
@@ -60,8 +59,7 @@ class AssetTreeBuilder extends ConfigurableService implements
     public function build(DirectorySearchQuery $search): array
     {
         $pageSize = $this->resolveBrowsePageSize($search);
-        $offset = max(0, min($search->getChildrenOffset(), self::MAX_CHILDREN_OFFSET));
-        $loadLimit = $this->resolveLoadLimit($offset, $pageSize);
+        $offset = $this->clampBrowseOffset($search->getChildrenOffset(), $pageSize);
 
         $mediaSource = $search->getAsset()->getMediaSource();
 
@@ -69,7 +67,7 @@ class AssetTreeBuilder extends ConfigurableService implements
             $mediaSource->enableAccessControl();
         }
 
-        $fetchQuery = $this->createFetchQuery($search, $loadLimit);
+        $fetchQuery = $this->createFetchQuery($search);
         $data = $mediaSource->getDirectories($fetchQuery);
         $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
         $children = $data['children'] ?? [];
@@ -86,9 +84,7 @@ class AssetTreeBuilder extends ConfigurableService implements
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                if (count($files) < $loadLimit) {
-                    $files[] = $this->normalizeFile($child, $scopeLabel);
-                }
+                $files[] = $this->normalizeFile($child, $scopeLabel);
                 continue;
             }
 
@@ -98,8 +94,7 @@ class AssetTreeBuilder extends ConfigurableService implements
                 $child['children'] ?? [],
                 $this->childLocation($scopeLabel, $child),
                 $files,
-                $totalFiles,
-                $loadLimit
+                $totalFiles
             );
         }
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
@@ -117,22 +112,12 @@ class AssetTreeBuilder extends ConfigurableService implements
 
     public function buildAssetList(DirectorySearchQuery $search): array
     {
-        if (!$search instanceof AssetSearchQuery) {
-            $pageSize = max(1, $this->getPaginationLimit());
+        $search = $this->toAssetSearchQuery($search);
 
-            return [
-                'items' => [],
-                'total' => 0,
-                'page' => 1,
-                'pageSize' => $pageSize,
-                'totalIsApproximate' => false,
-            ];
-        }
-
-        $page = max(1, $search->getPage());
         $pageSize = max(1, min($search->getPageSize(), AssetSearchQuery::MAX_PAGE_SIZE));
+        $page = min(max(1, $search->getPage()), $this->maxBrowsePage($pageSize));
         $search
-            ->setChildrenOffset(max(0, ($page - 1) * $pageSize))
+            ->setChildrenOffset(($page - 1) * $pageSize)
             ->setChildrenLimit($pageSize);
 
         $data = $this->build($search);
@@ -196,6 +181,48 @@ class AssetTreeBuilder extends ConfigurableService implements
         return $data;
     }
 
+    private function maxBrowsePage(int $pageSize): int
+    {
+        $pageSize = max(1, $pageSize);
+
+        return max(1, intdiv(self::MAX_CHILDREN_OFFSET, $pageSize) + 1);
+    }
+
+    private function clampBrowseOffset(int $requestedOffset, int $pageSize): int
+    {
+        $pageSize = max(1, $pageSize);
+        $maxOffset = ($this->maxBrowsePage($pageSize) - 1) * $pageSize;
+
+        return max(0, min($requestedOffset, $maxOffset));
+    }
+
+    private function toAssetSearchQuery(DirectorySearchQuery $search): AssetSearchQuery
+    {
+        if ($search instanceof AssetSearchQuery) {
+            return $search;
+        }
+
+        $converted = new AssetSearchQuery(
+            $search->getAsset(),
+            $search->getItemUri(),
+            $search->getItemLang(),
+            $search->getFilter(),
+            $search->getDepth(),
+            $search->getChildrenOffset(),
+            $search->getChildrenLimit()
+        );
+
+        if ($search->hasQuery()) {
+            $converted->setQuery($search->getQuery());
+        }
+
+        return $converted
+            ->setSortBy($search->getSortBy())
+            ->setSortDir($search->getSortDir())
+            ->setPage($search->getPage())
+            ->setPageSize($search->getPageSize());
+    }
+
     private function resolveBrowsePageSize(DirectorySearchQuery $search): int
     {
         $childrenLimit = $search->getChildrenLimit();
@@ -209,22 +236,9 @@ class AssetTreeBuilder extends ConfigurableService implements
         return $this->getPaginationLimit();
     }
 
-    private function resolveLoadLimit(int $offset, int $pageSize): int
+    private function createFetchQuery(DirectorySearchQuery $search): AssetSearchQuery
     {
-        if ($pageSize <= 0) {
-            return self::MAX_BROWSE_LOAD;
-        }
-        // Guard against float promotion when offset + pageSize exceeds PHP_INT_MAX.
-        if ($offset > PHP_INT_MAX - $pageSize) {
-            return self::MAX_BROWSE_LOAD;
-        }
-
-        return max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
-    }
-
-    private function createFetchQuery(DirectorySearchQuery $search, int $loadLimit): AssetSearchQuery
-    {
-        // Rebuild with offset 0 so media sources do not paginate before we sort+slice.
+        // Rebuild with offset 0 and unlimited children so sort+slice sees the full subtree payload.
         return (new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -232,7 +246,7 @@ class AssetTreeBuilder extends ConfigurableService implements
             $search->getFilter(),
             self::BROWSE_SUBTREE_DEPTH,
             0,
-            $loadLimit
+            0
         ))
             ->setSortBy($this->resolveSortBy($search))
             ->setSortDir($this->resolveSortDir($search));
@@ -273,8 +287,7 @@ class AssetTreeBuilder extends ConfigurableService implements
         array $nodes,
         string $location,
         array &$files,
-        int &$totalFiles,
-        int $loadLimit
+        int &$totalFiles
     ): void {
         foreach ($nodes as $child) {
             if (!is_array($child)) {
@@ -286,17 +299,14 @@ class AssetTreeBuilder extends ConfigurableService implements
                     $child['children'] ?? [],
                     $this->childLocation($location, $child),
                     $files,
-                    $totalFiles,
-                    $loadLimit
+                    $totalFiles
                 );
                 continue;
             }
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                if (count($files) < $loadLimit) {
-                    $files[] = $this->normalizeFile($child, $location);
-                }
+                $files[] = $this->normalizeFile($child, $location);
             }
         }
     }
