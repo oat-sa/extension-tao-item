@@ -44,9 +44,10 @@ class AssetTreeBuilder extends ConfigurableService implements
 
     /**
      * Descendants of the active folder (media source scopes the root class). Flat table
-     * lists nested files via collectFiles(); media fetch uses unlimited childrenLimit, then sort+slice.
+     * lists nested files via collectFiles(); fetch/enrichment capped before sort+slice.
      */
     private const BROWSE_SUBTREE_DEPTH = PHP_INT_MAX;
+    private const MAX_BROWSE_LOAD = 500;
     /** Finite ceiling for childrenOffset so offset+pageSize stays an int (no float overflow). */
     protected const MAX_CHILDREN_OFFSET = 10000;
 
@@ -60,6 +61,7 @@ class AssetTreeBuilder extends ConfigurableService implements
     {
         $pageSize = $this->resolveBrowsePageSize($search);
         $offset = $this->clampBrowseOffset($search->getChildrenOffset(), $pageSize);
+        $loadLimit = $this->resolveLoadLimit($offset, $pageSize);
 
         $mediaSource = $search->getAsset()->getMediaSource();
 
@@ -67,7 +69,7 @@ class AssetTreeBuilder extends ConfigurableService implements
             $mediaSource->enableAccessControl();
         }
 
-        $fetchQuery = $this->createFetchQuery($search);
+        $fetchQuery = $this->createFetchQuery($search, $loadLimit);
         $data = $mediaSource->getDirectories($fetchQuery);
         $sourceReportedTotal = array_key_exists('total', $data) ? (int)$data['total'] : null;
         $children = $data['children'] ?? [];
@@ -84,7 +86,9 @@ class AssetTreeBuilder extends ConfigurableService implements
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                $files[] = $this->normalizeFile($child, $scopeLabel);
+                if (count($files) < $loadLimit) {
+                    $files[] = $this->normalizeFile($child, $scopeLabel);
+                }
                 continue;
             }
 
@@ -94,7 +98,8 @@ class AssetTreeBuilder extends ConfigurableService implements
                 $child['children'] ?? [],
                 $this->childLocation($scopeLabel, $child),
                 $files,
-                $totalFiles
+                $totalFiles,
+                $loadLimit
             );
         }
         $files = $this->sortFiles($files, $this->resolveSortBy($search), $this->resolveSortDir($search));
@@ -236,9 +241,21 @@ class AssetTreeBuilder extends ConfigurableService implements
         return $this->getPaginationLimit();
     }
 
-    private function createFetchQuery(DirectorySearchQuery $search): AssetSearchQuery
+    private function resolveLoadLimit(int $offset, int $pageSize): int
     {
-        // Rebuild with offset 0 and unlimited children so sort+slice sees the full subtree payload.
+        if ($pageSize <= 0) {
+            return self::MAX_BROWSE_LOAD;
+        }
+        if ($offset > PHP_INT_MAX - $pageSize) {
+            return self::MAX_BROWSE_LOAD;
+        }
+
+        return max(self::MAX_BROWSE_LOAD, $offset + $pageSize);
+    }
+
+    private function createFetchQuery(DirectorySearchQuery $search, int $loadLimit): AssetSearchQuery
+    {
+        // Rebuild with offset 0 so media sources do not paginate before we sort+slice.
         return (new AssetSearchQuery(
             $search->getAsset(),
             $search->getItemUri(),
@@ -246,7 +263,7 @@ class AssetTreeBuilder extends ConfigurableService implements
             $search->getFilter(),
             self::BROWSE_SUBTREE_DEPTH,
             0,
-            0
+            $loadLimit
         ))
             ->setSortBy($this->resolveSortBy($search))
             ->setSortDir($this->resolveSortDir($search));
@@ -287,7 +304,8 @@ class AssetTreeBuilder extends ConfigurableService implements
         array $nodes,
         string $location,
         array &$files,
-        int &$totalFiles
+        int &$totalFiles,
+        int $loadLimit
     ): void {
         foreach ($nodes as $child) {
             if (!is_array($child)) {
@@ -299,14 +317,17 @@ class AssetTreeBuilder extends ConfigurableService implements
                     $child['children'] ?? [],
                     $this->childLocation($location, $child),
                     $files,
-                    $totalFiles
+                    $totalFiles,
+                    $loadLimit
                 );
                 continue;
             }
 
             if ($this->isFileChild($child)) {
                 $totalFiles++;
-                $files[] = $this->normalizeFile($child, $location);
+                if (count($files) < $loadLimit) {
+                    $files[] = $this->normalizeFile($child, $location);
+                }
             }
         }
     }

@@ -151,7 +151,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(900, $result['total']);
     }
 
-    public function testBuildRequestsFullSubtreeBeforeSortAndSlice(): void
+    public function testBuildRequestsBoundedChildrenLoadCoveringRequestedPage(): void
     {
         $captured = null;
         $this->mediaSource->expects($this->once())
@@ -165,7 +165,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(500, $captured->getChildrenLimit());
         $this->assertSame(0, $captured->getChildrenOffset());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
@@ -191,7 +191,7 @@ class AssetTreeBuilderTest extends TestCase
         );
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(10005, $captured->getChildrenLimit());
         $this->assertSame([], $result['children']);
         $this->assertFalse($result['truncated']);
     }
@@ -512,7 +512,7 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
         $this->assertSame(0, $captured->getChildrenOffset());
-        $this->assertSame(0, $captured->getChildrenLimit());
+        $this->assertSame(500, $captured->getChildrenLimit());
         $this->assertSame(3, $result['total']);
         $files = array_values(array_filter(
             $result['children'],
@@ -610,7 +610,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->subject->setOptions([AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 5]);
 
         $folderChildren = [];
-        for ($i = 1; $i <= 501; $i++) {
+        for ($i = 1; $i <= 499; $i++) {
             $folderChildren[] = [
                 'uri' => 'u-z-' . $i,
                 'name' => sprintf('zzz-%03d.png', $i),
