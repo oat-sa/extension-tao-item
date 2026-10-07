@@ -132,7 +132,10 @@ class AssetFilesServiceTest extends TestCase
         $searchBuilder = $this->createMock(AssetSearchBuilder::class);
         $searchBuilder->expects($this->never())->method('search');
 
-        $treeBuilder = new class($treeResult) implements AssetTreeBuilderInterface, AssetTreeBrowseBuilderInterface {
+        $treeBuilder = new class ($treeResult) implements
+            AssetTreeBuilderInterface,
+            AssetTreeBrowseBuilderInterface
+        {
             /** @var array<string, mixed> */
             private $treeResult;
 
@@ -172,11 +175,11 @@ class AssetFilesServiceTest extends TestCase
         $searchBuilder = $this->createMock(AssetSearchBuilder::class);
         $searchBuilder->expects($this->never())->method('search');
 
-        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
         $treeBuilder = new class ($listResult) implements
             AssetTreeBuilderInterface,
             AssetTreeBrowseBuilderInterface,
-            AssetBrowseListBuilderInterface {
+            AssetBrowseListBuilderInterface
+        {
             /** @var array<string, mixed> */
             private $listResult;
 
