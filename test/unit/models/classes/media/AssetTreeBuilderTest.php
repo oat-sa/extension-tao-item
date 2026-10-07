@@ -151,7 +151,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(900, $result['total']);
     }
 
-    public function testBuildRequestsBoundedChildrenLoadCoveringRequestedPage(): void
+    public function testBuildRequestsFullSubtreeBeforeSortAndSlice(): void
     {
         $captured = null;
         $this->mediaSource->expects($this->once())
@@ -165,7 +165,7 @@ class AssetTreeBuilderTest extends TestCase
         $this->subject->build(new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US'));
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(500, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(0, $captured->getChildrenOffset());
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
@@ -191,7 +191,7 @@ class AssetTreeBuilderTest extends TestCase
         );
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
-        $this->assertSame(10005, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame([], $result['children']);
         $this->assertFalse($result['truncated']);
     }
@@ -512,7 +512,7 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->assertInstanceOf(AssetSearchQuery::class, $captured);
         $this->assertSame(0, $captured->getChildrenOffset());
-        $this->assertSame(500, $captured->getChildrenLimit());
+        $this->assertSame(0, $captured->getChildrenLimit());
         $this->assertSame(3, $result['total']);
         $files = array_values(array_filter(
             $result['children'],
@@ -605,12 +605,12 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(['Banana', 'éclair', 'Éclair'], $labels);
     }
 
-    public function testBuildSortsFullSubtreeBeforePagination(): void
+    public function testBuildSortsFullSubtreeBeforePaginationAtMaxBrowseLoadBoundary(): void
     {
         $this->subject->setOptions([AssetTreeBuilder::OPTION_PAGINATION_LIMIT => 5]);
 
         $folderChildren = [];
-        for ($i = 1; $i <= 499; $i++) {
+        for ($i = 1; $i <= 500; $i++) {
             $folderChildren[] = [
                 'uri' => 'u-z-' . $i,
                 'name' => sprintf('zzz-%03d.png', $i),
@@ -652,6 +652,19 @@ class AssetTreeBuilderTest extends TestCase
 
         $this->assertCount(5, $files);
         $this->assertSame('aaa-first.png', $files[0]['name']);
+
+        $pageTwo = $this->subject->build(
+            (new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US', [], 1, 5))
+                ->setSortBy(AssetSearchQuery::SORT_LABEL)
+                ->setSortDir('asc')
+        );
+        $pageTwoFiles = array_values(array_filter(
+            $pageTwo['children'],
+            static function (array $child): bool {
+                return isset($child['uri']);
+            }
+        ));
+        $this->assertSame('zzz-005.png', $pageTwoFiles[0]['name']);
     }
 
     public function testBuildPaginatesWithinLoadWindowAndMarksTruncation(): void
