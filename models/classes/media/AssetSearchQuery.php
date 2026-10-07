@@ -67,6 +67,9 @@ final class AssetSearchQuery extends DirectorySearchQuery
     /** @var int */
     private $childrenLimit;
 
+    /** @var int */
+    private $childrenOffset;
+
     public function __construct(
         MediaAsset $asset,
         string $itemUri,
@@ -80,6 +83,7 @@ final class AssetSearchQuery extends DirectorySearchQuery
         parent::__construct($asset, $itemUri, $itemLang, $filter, $normalizedDepth, $childrenOffset, $childrenLimit);
         $this->depth = $normalizedDepth;
         $this->childrenLimit = $childrenLimit;
+        $this->childrenOffset = max(0, $childrenOffset);
     }
 
     public function setDepth(int $depth): self
@@ -106,6 +110,21 @@ final class AssetSearchQuery extends DirectorySearchQuery
     public function getChildrenLimit(): int
     {
         return $this->childrenLimit;
+    }
+
+    public function setChildrenOffset(int $childrenOffset): self
+    {
+        $this->childrenOffset = max(0, $childrenOffset);
+        if (method_exists(DirectorySearchQuery::class, 'setChildrenOffset')) {
+            parent::setChildrenOffset($this->childrenOffset);
+        }
+
+        return $this;
+    }
+
+    public function getChildrenOffset(): int
+    {
+        return $this->childrenOffset;
     }
 
     public function setQuery(string $query): self
