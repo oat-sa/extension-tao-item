@@ -23,6 +23,8 @@ declare(strict_types=1);
 namespace oat\taoItems\test\unit\models\classes\media;
 
 use oat\generis\test\TestCase;
+use oat\tao\model\media\mediaSource\DirectorySearchQuery;
+use PHPUnit\Framework\Assert;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
 use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
@@ -37,10 +39,86 @@ use oat\taoItems\model\media\AssetUpdatedAtNormalizer;
 use oat\taoItems\model\media\AssetUpdatedAtResolverInterface;
 use oat\tao\model\search\ResultSet;
 use oat\tao\model\search\Search;
-use oat\taoMediaManager\model\MediaSource;
+use oat\taoItems\model\media\SharedMediaSearchSourceInterface;
+use oat\tao\model\media\MediaManagement;
 
 abstract class AccessControlMediaSource implements MediaBrowser, AccessControlEnablerInterface
 {
+}
+
+/**
+ * Test double for shared-media Generis fallback (no taoMediaManager types in taoItems tests).
+ */
+class SharedMediaSearchSourceDouble implements SharedMediaSearchSourceInterface, MediaManagement
+{
+    /** @var callable|null */
+    public $resolveScopeClassUriHandler;
+
+    /** @var array{rows: array<int, array{id: string, label: string}>, total: int} */
+    public $searchScopedMediaInstancesResult = ['rows' => [], 'total' => 0];
+
+    /** @var array<string, mixed> */
+    public $getFileInfoResult = [];
+
+    public function resolveScopeClassUri(string $parentLink): string
+    {
+        if ($this->resolveScopeClassUriHandler !== null) {
+            return ($this->resolveScopeClassUriHandler)($parentLink);
+        }
+
+        return 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media';
+    }
+
+    public function searchScopedMediaInstances(
+        string $scopeClassUri,
+        array $mimeFilters,
+        int $offset,
+        int $limit,
+        string $sortBy,
+        string $sortDir
+    ): array {
+        return $this->searchScopedMediaInstancesResult;
+    }
+
+    public function getDirectories(DirectorySearchQuery $params): array
+    {
+        return [];
+    }
+
+    public function getDirectory($parentLink = '/', $acceptableMime = [], $depth = 1)
+    {
+        return [];
+    }
+
+    public function getFileInfo($link): array
+    {
+        return $this->getFileInfoResult;
+    }
+
+    public function download($link)
+    {
+        return '';
+    }
+
+    public function getFileStream($link)
+    {
+        throw new \RuntimeException('not implemented in test double');
+    }
+
+    public function getBaseName($link)
+    {
+        return '';
+    }
+
+    public function add($source, $fileName, $parent)
+    {
+        return [];
+    }
+
+    public function delete($link)
+    {
+        return true;
+    }
 }
 
 class AssetSearchBuilderTest extends TestCase
@@ -75,7 +153,7 @@ class AssetSearchBuilderTest extends TestCase
 
     public function testTextSearchWithoutGenerisWhenIndexedUnavailableThrows(): void
     {
-        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource = new SharedMediaSearchSourceDouble();
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
         $mediaAsset->method('getMediaIdentifier')->willReturn('/');
@@ -95,14 +173,8 @@ class AssetSearchBuilderTest extends TestCase
 
     public function testSharedMediaBrowseListingUsesScopedInstanceQueryWhenTextQueryEmpty(): void
     {
-        $class = $this->createMock(\core_kernel_classes_Class::class);
-        $class->method('searchInstances')->willReturn([]);
-        $class->method('countInstances')->willReturn(42);
-
-        $mediaSource = $this->createMock(MediaSource::class);
-        $mediaSource->method('resolveScopeClassUri')->willReturn('http://www.tao.lu/Ontologies/TAOMedia.rdf#Media');
-        $mediaSource->method('getClass')->willReturn($class);
-        $mediaSource->expects($this->never())->method('getDirectories');
+        $mediaSource = new SharedMediaSearchSourceDouble();
+        $mediaSource->searchScopedMediaInstancesResult = ['rows' => [], 'total' => 42];
 
         $generisSearch = $this->createMock(Search::class);
         $generisSearch->expects($this->never())->method('query');
@@ -134,17 +206,12 @@ class AssetSearchBuilderTest extends TestCase
     {
         $parentLink = 'taomedia://mediamanager/http%3A%2F%2Fexample.test%23Folder';
 
-        $class = $this->createMock(\core_kernel_classes_Class::class);
-        $class->method('searchInstances')->willReturn([]);
-        $class->method('countInstances')->willReturn(0);
+        $mediaSource = new SharedMediaSearchSourceDouble();
+        $mediaSource->resolveScopeClassUriHandler = static function (string $link) use ($parentLink): string {
+            Assert::assertSame($parentLink, $link);
 
-        $mediaSource = $this->createMock(MediaSource::class);
-        $mediaSource
-            ->expects($this->once())
-            ->method('resolveScopeClassUri')
-            ->with($parentLink)
-            ->willReturn('http://example.test#Folder');
-        $mediaSource->method('getClass')->willReturn($class);
+            return 'http://example.test#Folder';
+        };
 
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
@@ -174,19 +241,21 @@ class AssetSearchBuilderTest extends TestCase
                 1
             ));
 
-        $mediaSource = $this->createMock(MediaSource::class);
-        $mediaSource
-            ->expects($this->once())
-            ->method('resolveScopeClassUri')
-            ->with('taomedia://mediamanager/http%3A%2F%2Fwww.tao.lu%2FOntologies%2FTAOMedia.rdf%23Media')
-            ->willReturn('http://www.tao.lu/Ontologies/TAOMedia.rdf#Media');
-        $mediaSource->expects($this->never())->method('getDirectories');
-        $mediaSource->method('getFileInfo')->willReturn([
+        $mediaSource = new SharedMediaSearchSourceDouble();
+        $mediaSource->resolveScopeClassUriHandler = static function (string $link): string {
+            Assert::assertSame(
+                'taomedia://mediamanager/http%3A%2F%2Fwww.tao.lu%2FOntologies%2FTAOMedia.rdf%23Media',
+                $link
+            );
+
+            return 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media';
+        };
+        $mediaSource->getFileInfoResult = [
             'name' => 'colorbars.mp4',
             'label' => 'colorbars.mp4',
             'uri' => 'taomedia://mediamanager/instance-1',
             'mime' => 'video/mp4',
-        ]);
+        ];
 
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
@@ -1037,9 +1106,7 @@ class AssetSearchBuilderTest extends TestCase
         $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
         $gateway->expects($this->once())->method('search')->willReturn($expected);
 
-        $mediaSource = $this->createMock(MediaSource::class);
-        $mediaSource->expects($this->never())->method('getDirectories');
-        $mediaSource->expects($this->never())->method('getClass');
+        $mediaSource = new SharedMediaSearchSourceDouble();
 
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($mediaSource);

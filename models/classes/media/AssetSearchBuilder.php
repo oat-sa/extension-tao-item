@@ -22,19 +22,17 @@ declare(strict_types=1);
 
 namespace oat\taoItems\model\media;
 
-use oat\generis\model\OntologyRdfs;
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
+use oat\tao\model\media\MediaManagement;
 use oat\tao\model\search\ResultSet;
 use oat\tao\model\search\Search;
-use oat\taoMediaManager\model\MediaSource;
-use oat\taoMediaManager\model\TaoMediaOntology;
 use tao_models_classes_FileNotFoundException;
 
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
  * Prefers the indexed search gateway when available. Without Elasticsearch, shared
- * media ({@see MediaSource}) uses paginated Generis label search like the Assets backoffice.
+ * shared media ({@see SharedMediaSearchSourceInterface}) uses paginated Generis label search like the Assets backoffice.
  * Other sources fall back to filesystem subtree traversal with trailing-token prefix matching.
  */
 class AssetSearchBuilder
@@ -121,7 +119,7 @@ class AssetSearchBuilder
             $mediaSource->enableAccessControl();
         }
 
-        if ($mediaSource instanceof MediaSource) {
+        if ($mediaSource instanceof SharedMediaSearchSourceInterface) {
             return $this->searchSharedMediaViaGeneris($search, $mediaSource);
         }
 
@@ -167,7 +165,7 @@ class AssetSearchBuilder
     /**
      * @return array<string, mixed>
      */
-    private function searchSharedMediaViaGeneris(AssetSearchQuery $search, MediaSource $mediaSource): array
+    private function searchSharedMediaViaGeneris(AssetSearchQuery $search, SharedMediaSearchSourceInterface $mediaSource): array
     {
         $page = $search->getPage();
         $pageSize = $search->getPageSize();
@@ -177,13 +175,15 @@ class AssetSearchBuilder
 
         /** @var ResultSet $resultSet */
         if ($queryString === '') {
-            $resultSet = $this->querySharedMediaInstancesInScope(
-                $mediaSource,
+            $scoped = $mediaSource->searchScopedMediaInstances(
                 $scopeClassUri,
-                $search,
+                $search->getFilter(),
                 $offset,
-                $pageSize
+                $pageSize,
+                $search->getSortBy(),
+                $search->getSortDir()
             );
+            $resultSet = new ResultSet($scoped['rows'], $scoped['total']);
         } elseif ($this->generisMediaSearch !== null) {
             $resultSet = $this->generisMediaSearch->query(
                 $queryString,
@@ -200,6 +200,9 @@ class AssetSearchBuilder
         $items = [];
         foreach ($resultSet as $row) {
             if (!is_array($row) || empty($row['id'])) {
+                continue;
+            }
+            if (!$mediaSource instanceof MediaManagement) {
                 continue;
             }
             try {
@@ -224,54 +227,6 @@ class AssetSearchBuilder
             'truncated' => false,
             'includesSubfolders' => true,
         ];
-    }
-
-    /**
-     * Browse-style listing (empty text query): all instances under scope, like indexed {@code match_all}.
-     */
-    private function querySharedMediaInstancesInScope(
-        MediaSource $mediaSource,
-        string $scopeClassUri,
-        AssetSearchQuery $search,
-        int $offset,
-        int $pageSize
-    ): ResultSet {
-        $class = $mediaSource->getClass($scopeClassUri);
-        $filter = $this->buildScopedInstanceFilter($search->getFilter());
-        $countOptions = ['recursive' => true];
-        $searchOptions = [
-            'recursive' => true,
-            'offset' => $offset,
-            'limit' => $pageSize,
-        ];
-
-        if ($search->getSortBy() === AssetSearchQuery::SORT_LABEL) {
-            $searchOptions['order'] = OntologyRdfs::RDFS_LABEL;
-            $searchOptions['orderdir'] = strtolower($search->getSortDir()) === 'desc' ? 'DESC' : 'ASC';
-        }
-
-        $rows = [];
-        foreach ($class->searchInstances($filter, $searchOptions) as $instance) {
-            $rows[] = [
-                'id' => $instance->getUri(),
-                'label' => $instance->getLabel(),
-            ];
-        }
-
-        return new ResultSet($rows, (int)$class->countInstances($filter, $countOptions));
-    }
-
-    /**
-     * @param string[] $mimeFilters
-     * @return array<string, mixed>
-     */
-    private function buildScopedInstanceFilter(array $mimeFilters): array
-    {
-        if ($mimeFilters === []) {
-            return [];
-        }
-
-        return [TaoMediaOntology::PROPERTY_MIME_TYPE => $mimeFilters];
     }
 
     /**

@@ -32,7 +32,7 @@ use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\CurrentAssetResolver;
-use oat\taoMediaManager\model\MediaSource;
+use oat\taoItems\model\media\SharedMediaSearchSourceInterface;
 use InvalidArgumentException;
 
 class AssetFilesServiceTest extends TestCase
@@ -203,7 +203,7 @@ class AssetFilesServiceTest extends TestCase
 
     public function testListPartUsesTreeBuilderWhenElasticsearchBrowseIsAvailable(): void
     {
-        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource = $this->createMock(SharedMediaSearchSourceInterface::class);
         $asset = $this->createMock(MediaAsset::class);
         $asset->method('getMediaSource')->willReturn($mediaSource);
 
@@ -261,7 +261,7 @@ class AssetFilesServiceTest extends TestCase
 
     public function testListPartUsesSearchBuilderWhenElasticsearchBrowseIsUnavailable(): void
     {
-        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource = $this->createMock(SharedMediaSearchSourceInterface::class);
         $asset = $this->createMock(MediaAsset::class);
         $asset->method('getMediaSource')->willReturn($mediaSource);
 

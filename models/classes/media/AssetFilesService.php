@@ -24,7 +24,6 @@ namespace oat\taoItems\model\media;
 
 use oat\tao\model\media\MediaAsset;
 use oat\tao\model\media\mediaSource\DirectorySearchQuery;
-use oat\taoMediaManager\model\MediaSource;
 
 /**
  * Entry point for item Resource Manager file listing (browse and scoped search).
@@ -174,7 +173,10 @@ final class AssetFilesService
     private function buildBrowseAssetList(AssetSearchQuery $searchQuery): array
     {
         $mediaSource = $searchQuery->getAsset()->getMediaSource();
-        if ($mediaSource instanceof MediaSource && !$this->searchBuilder->isIndexedGatewayAvailable()) {
+        if (
+            $mediaSource instanceof SharedMediaSearchSourceInterface
+            && !$this->searchBuilder->isIndexedGatewayAvailable()
+        ) {
             $searchQuery->setQuery('');
 
             return $this->searchBuilder->search($searchQuery);
