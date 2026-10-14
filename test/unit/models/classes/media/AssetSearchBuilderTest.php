@@ -35,6 +35,9 @@ use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetSearchUnavailableException;
 use oat\taoItems\model\media\AssetUpdatedAtNormalizer;
 use oat\taoItems\model\media\AssetUpdatedAtResolverInterface;
+use oat\tao\model\search\ResultSet;
+use oat\tao\model\search\Search;
+use oat\taoMediaManager\model\MediaSource;
 
 abstract class AccessControlMediaSource implements MediaBrowser, AccessControlEnablerInterface
 {
@@ -52,6 +55,53 @@ class AssetSearchBuilderTest extends TestCase
     {
         $this->subject = new AssetSearchBuilder(null, null, $this->createUpdatedAtResolverStub());
         $this->mediaSource = $this->createMock(MediaBrowser::class);
+    }
+
+    public function testSharedMediaFallbackUsesGenerisLabelSearch(): void
+    {
+        $generisSearch = $this->createMock(Search::class);
+        $generisSearch
+            ->expects($this->once())
+            ->method('query')
+            ->with('color', 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media', 0, 10)
+            ->willReturn(new ResultSet(
+                [
+                    ['id' => 'http://example/media/instance-1', 'label' => 'colorbars.mp4'],
+                ],
+                1
+            ));
+
+        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource->method('resolveScopeClassUri')->willReturn('http://www.tao.lu/Ontologies/TAOMedia.rdf#Media');
+        $mediaSource->expects($this->never())->method('getDirectories');
+        $mediaSource->method('getFileInfo')->willReturn([
+            'name' => 'colorbars.mp4',
+            'label' => 'colorbars.mp4',
+            'uri' => 'taomedia://mediamanager/instance-1',
+            'mime' => 'video/mp4',
+        ]);
+
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+
+        $this->subject = new AssetSearchBuilder(
+            null,
+            null,
+            $this->createUpdatedAtResolverStub(),
+            $generisSearch
+        );
+
+        $query = (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
+            ->setQuery('color')
+            ->setPage(1)
+            ->setPageSize(10);
+
+        $result = $this->subject->search($query);
+
+        $this->assertSame(1, $result['total']);
+        $this->assertTrue($result['includesSubfolders']);
+        $this->assertSame('colorbars.mp4', $result['items'][0]['name']);
     }
 
     public function testSearchFiltersSortsAndPaginatesResults(): void
