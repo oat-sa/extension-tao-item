@@ -172,6 +172,16 @@ final class AssetFilesService
      */
     private function buildBrowseAssetList(AssetSearchQuery $searchQuery): array
     {
+        $mediaSource = $searchQuery->getAsset()->getMediaSource();
+        if (
+            $mediaSource instanceof SharedMediaSearchSourceInterface
+            && !$this->searchBuilder->isIndexedGatewayAvailable()
+        ) {
+            $searchQuery->setQuery('');
+
+            return $this->searchBuilder->search($searchQuery);
+        }
+
         if ($this->treeBuilder instanceof AssetBrowseListBuilderInterface) {
             return $this->treeBuilder->buildAssetList($searchQuery);
         }

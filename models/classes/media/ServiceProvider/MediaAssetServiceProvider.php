@@ -26,6 +26,7 @@ use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\accessControl\ActionAccessControl;
 use oat\tao\model\accessControl\PermissionChecker;
+use oat\tao\model\search\strategy\GenerisSearch;
 use oat\taoMediaManager\model\fileManagement\FileManagement;
 use oat\taoMediaManager\model\fileManagement\FileSourceUnserializer;
 use oat\taoItems\model\media\AssetFilesService;
@@ -78,11 +79,16 @@ class MediaAssetServiceProvider implements ContainerServiceProviderInterface
         $services->alias(AssetUpdatedAtResolverInterface::class, ResourceUpdatedAtResolver::class);
 
         $services
+            ->set(GenerisSearch::class, GenerisSearch::class)
+            ->public();
+
+        $services
             ->set(AssetSearchBuilder::class, AssetSearchBuilder::class)
             ->args([
                 service(AssetIndexedSearchGatewayInterface::class),
                 service(AssetListingReadAccessChecker::class),
                 service(AssetUpdatedAtResolverInterface::class),
+                service(GenerisSearch::class),
             ]);
 
         $services
