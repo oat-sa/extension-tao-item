@@ -46,10 +46,11 @@ class AssetSearchBuilder
      */
     private const FALLBACK_CHILDREN_LIMIT = 0;
     /**
-     * ponytail: Generis fallback loads every label/scoped row, then MIME/ACL/sort, then paginates in memory.
-     * Upgrade path: push filters into SQL or indexed gateway when libraries outgrow batch scans.
+     * Batch size for Generis text search and for browse over-fetch when ACL drops rows from a DB page.
+     * Upgrade path: indexed gateway or ACL-aware SQL paging when libraries outgrow batch scans.
      */
     private const SHARED_MEDIA_GENERIS_BATCH_SIZE = 200;
+    private const SHARED_MEDIA_BROWSE_OVERFETCH_MAX_ITERATIONS = 20;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -179,7 +180,11 @@ class AssetSearchBuilder
         $scopeClassUri = $mediaSource->resolveScopeClassUri($search->getParentLink());
         $queryString = trim($search->getQuery());
 
-        $rows = $this->collectSharedMediaGenerisRows($search, $mediaSource, $scopeClassUri, $queryString);
+        if ($queryString === '' && !$this->sharedMediaGenerisRequiresFullScan($search)) {
+            return $this->searchSharedMediaBrowseViaGenerisPaged($search, $mediaSource, $scopeClassUri);
+        }
+
+        $rows = $this->collectSharedMediaGenerisRows($scopeClassUri, $queryString);
         $items = $this->hydrateSharedMediaRows($rows, $search, $mediaSource);
         $items = $this->filterReadableAssets($items, $search);
         $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
@@ -199,12 +204,91 @@ class AssetSearchBuilder
         ];
     }
 
+    private function sharedMediaGenerisRequiresFullScan(AssetSearchQuery $search): bool
+    {
+        return in_array($search->getSortBy(), [self::SORT_LOCATION, self::SORT_UPDATED_AT], true);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function searchSharedMediaBrowseViaGenerisPaged(
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource,
+        string $scopeClassUri
+    ): array {
+        $page = max(1, $search->getPage());
+        $pageSize = max(1, $search->getPageSize());
+        $dbOffset = ($page - 1) * $pageSize;
+        $listOffset = $dbOffset;
+
+        $items = [];
+        $scopedTotal = 0;
+
+        for ($iteration = 0; $iteration < self::SHARED_MEDIA_BROWSE_OVERFETCH_MAX_ITERATIONS; $iteration++) {
+            if (count($items) >= $pageSize) {
+                break;
+            }
+
+            $need = $pageSize - count($items);
+            $fetchLimit = min(max($need, 1), self::SHARED_MEDIA_GENERIS_BATCH_SIZE);
+
+            $scoped = $mediaSource->searchScopedMediaInstances(
+                $scopeClassUri,
+                $search->getFilter(),
+                $dbOffset,
+                $fetchLimit,
+                $search->getSortBy(),
+                $search->getSortDir()
+            );
+            if ($dbOffset === $listOffset && array_key_exists('total', $scoped)) {
+                $scopedTotal = (int)$scoped['total'];
+            }
+            $batch = [];
+            foreach ($scoped['rows'] ?? [] as $row) {
+                if (is_array($row)) {
+                    $batch[] = $row;
+                }
+            }
+            if ($batch === []) {
+                break;
+            }
+
+            $pageItems = $this->filterReadableAssets(
+                $this->hydrateSharedMediaRows($batch, $search, $mediaSource),
+                $search
+            );
+            foreach ($pageItems as $item) {
+                $items[] = $item;
+                if (count($items) >= $pageSize) {
+                    break;
+                }
+            }
+
+            $dbOffset += count($batch);
+            if (count($batch) < $fetchLimit) {
+                break;
+            }
+        }
+
+        $maxPage = max(1, (int)ceil($scopedTotal / $pageSize) ?: 1);
+        $page = min($page, $maxPage);
+
+        return [
+            'items' => array_values($items),
+            'total' => $scopedTotal,
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'truncated' => false,
+            'includesSubfolders' => true,
+            'totalIsApproximate' => $this->listingReadAccessChecker !== null,
+        ];
+    }
+
     /**
      * @return array<int, array{id?: string, label?: string}>
      */
     private function collectSharedMediaGenerisRows(
-        AssetSearchQuery $search,
-        SharedMediaSearchSourceInterface $mediaSource,
         string $scopeClassUri,
         string $queryString
     ): array {
@@ -213,31 +297,7 @@ class AssetSearchBuilder
         $batchSize = self::SHARED_MEDIA_GENERIS_BATCH_SIZE;
 
         if ($queryString === '') {
-            while (true) {
-                $scoped = $mediaSource->searchScopedMediaInstances(
-                    $scopeClassUri,
-                    $search->getFilter(),
-                    $offset,
-                    $batchSize,
-                    $search->getSortBy(),
-                    $search->getSortDir()
-                );
-                $batch = $scoped['rows'] ?? [];
-                if ($batch === []) {
-                    break;
-                }
-                foreach ($batch as $row) {
-                    if (is_array($row)) {
-                        $rows[] = $row;
-                    }
-                }
-                if (count($batch) < $batchSize) {
-                    break;
-                }
-                $offset += count($batch);
-            }
-
-            return $rows;
+            throw new \LogicException('Empty shared-media browse must use paged Generis listing');
         }
 
         if ($this->generisMediaSearch === null) {

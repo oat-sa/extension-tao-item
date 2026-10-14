@@ -57,6 +57,9 @@ class SharedMediaSearchSourceDouble implements SharedMediaSearchSourceInterface,
     /** @var array{rows: array<int, array{id: string, label: string}>, total: int} */
     public $searchScopedMediaInstancesResult = ['rows' => [], 'total' => 0];
 
+    /** @var array<int, array{offset: int, limit: int}> */
+    public $searchScopedMediaInstancesCalls = [];
+
     /** @var array<string, mixed> */
     public $getFileInfoResult = [];
 
@@ -80,6 +83,8 @@ class SharedMediaSearchSourceDouble implements SharedMediaSearchSourceInterface,
         string $sortBy,
         string $sortDir
     ): array {
+        $this->searchScopedMediaInstancesCalls[] = ['offset' => $offset, 'limit' => $limit];
+
         return $this->searchScopedMediaInstancesResult;
     }
 
@@ -204,9 +209,12 @@ class AssetSearchBuilderTest extends TestCase
                 ->setPageSize(15)
         );
 
-        $this->assertSame(0, $result['total']);
+        $this->assertSame(42, $result['total']);
         $this->assertSame([], $result['items']);
         $this->assertTrue($result['includesSubfolders']);
+        $this->assertCount(1, $mediaSource->searchScopedMediaInstancesCalls);
+        $this->assertSame(0, $mediaSource->searchScopedMediaInstancesCalls[0]['offset']);
+        $this->assertSame(15, $mediaSource->searchScopedMediaInstancesCalls[0]['limit']);
     }
 
     public function testSharedMediaBrowseListingPassesParentLinkToScopeResolver(): void

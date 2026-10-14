@@ -38,7 +38,8 @@ interface SharedMediaSearchSourceInterface
      * Recursive scoped instance query (browse-style empty text search).
      *
      * @param string[] $mimeFilters
-     * @return array{rows: array<int, array{id: string, label: string}>, total: int}
+     * @return array{rows: array<int, array{id: string, label: string}>, total?: int}
+     *                                       Total is provided when {@code $offset} is 0 (full class count).
      */
     public function searchScopedMediaInstances(
         string $scopeClassUri,
