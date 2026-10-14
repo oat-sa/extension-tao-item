@@ -23,13 +23,17 @@ declare(strict_types=1);
 namespace oat\taoItems\model\media;
 
 use oat\tao\model\accessControl\AccessControlEnablerInterface;
+use oat\tao\model\media\MediaManagement;
+use oat\tao\model\search\ResultSet;
+use oat\tao\model\search\Search;
+use tao_models_classes_FileNotFoundException;
 
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
- * Prefers the indexed search gateway when available. Otherwise falls back to
- * filesystem subtree traversal with trailing-token prefix matching on text
- * query only (metadata filters require the indexed path).
+ * Prefers the indexed search gateway when available. Without Elasticsearch, shared media
+ * ({@see SharedMediaSearchSourceInterface}) uses paginated Generis label search like the Assets backoffice.
+ * Other sources fall back to filesystem subtree traversal with trailing-token prefix matching.
  */
 class AssetSearchBuilder
 {
@@ -41,6 +45,11 @@ class AssetSearchBuilder
      * Full subtree load keeps page-1 totals and later pages consistent when paginating in memory.
      */
     private const FALLBACK_CHILDREN_LIMIT = 0;
+    /**
+     * ponytail: Generis fallback loads every label/scoped row, then MIME/ACL/sort, then paginates in memory.
+     * Upgrade path: push filters into SQL or indexed gateway when libraries outgrow batch scans.
+     */
+    private const SHARED_MEDIA_GENERIS_BATCH_SIZE = 200;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -50,14 +59,31 @@ class AssetSearchBuilder
 
     private ?AssetListingReadAccessChecker $listingReadAccessChecker = null;
 
+    private ?Search $generisMediaSearch = null;
+
     public function __construct(
         ?AssetIndexedSearchGatewayInterface $indexedSearchGateway = null,
         ?AssetListingReadAccessChecker $listingReadAccessChecker = null,
-        ?AssetUpdatedAtResolverInterface $updatedAtResolver = null
+        ?AssetUpdatedAtResolverInterface $updatedAtResolver = null,
+        ?Search $generisMediaSearch = null
     ) {
         $this->indexedSearchGateway = $indexedSearchGateway;
         $this->listingReadAccessChecker = $listingReadAccessChecker;
         $this->updatedAtResolver = $updatedAtResolver;
+        $this->generisMediaSearch = $generisMediaSearch;
+    }
+
+    public function isIndexedGatewayAvailable(): bool
+    {
+        if ($this->indexedSearchGateway === null) {
+            return false;
+        }
+
+        try {
+            return $this->indexedSearchGateway->isAvailable();
+        } catch (\Throwable $exception) {
+            return false;
+        }
     }
 
     public function search(AssetSearchQuery $search): array
@@ -98,6 +124,10 @@ class AssetSearchBuilder
             $mediaSource->enableAccessControl();
         }
 
+        if ($mediaSource instanceof SharedMediaSearchSourceInterface) {
+            return $this->searchSharedMediaViaGeneris($search, $mediaSource);
+        }
+
         // Do not mutate the caller's query. Indexed path preferred for very large scopes.
         $fetchQuery = new AssetSearchQuery(
             $search->getAsset(),
@@ -135,6 +165,161 @@ class AssetSearchBuilder
             'pageSize' => $pageSize,
             'truncated' => $truncated,
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function searchSharedMediaViaGeneris(
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource
+    ): array {
+        $page = $search->getPage();
+        $pageSize = $search->getPageSize();
+        $scopeClassUri = $mediaSource->resolveScopeClassUri($search->getParentLink());
+        $queryString = trim($search->getQuery());
+
+        $rows = $this->collectSharedMediaGenerisRows($search, $mediaSource, $scopeClassUri, $queryString);
+        $items = $this->hydrateSharedMediaRows($rows, $search, $mediaSource);
+        $items = $this->filterReadableAssets($items, $search);
+        $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
+
+        $total = count($items);
+        $maxPage = max(1, (int)ceil($total / $pageSize) ?: 1);
+        $page = min($page, $maxPage);
+        $offset = ($page - 1) * $pageSize;
+
+        return [
+            'items' => array_values(array_slice($items, $offset, $pageSize)),
+            'total' => $total,
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'truncated' => false,
+            'includesSubfolders' => true,
+        ];
+    }
+
+    /**
+     * @return array<int, array{id?: string, label?: string}>
+     */
+    private function collectSharedMediaGenerisRows(
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource,
+        string $scopeClassUri,
+        string $queryString
+    ): array {
+        $rows = [];
+        $offset = 0;
+        $batchSize = self::SHARED_MEDIA_GENERIS_BATCH_SIZE;
+
+        if ($queryString === '') {
+            while (true) {
+                $scoped = $mediaSource->searchScopedMediaInstances(
+                    $scopeClassUri,
+                    $search->getFilter(),
+                    $offset,
+                    $batchSize,
+                    $search->getSortBy(),
+                    $search->getSortDir()
+                );
+                $batch = $scoped['rows'] ?? [];
+                if ($batch === []) {
+                    break;
+                }
+                foreach ($batch as $row) {
+                    if (is_array($row)) {
+                        $rows[] = $row;
+                    }
+                }
+                if (count($batch) < $batchSize) {
+                    break;
+                }
+                $offset += count($batch);
+            }
+
+            return $rows;
+        }
+
+        if ($this->generisMediaSearch === null) {
+            throw new AssetSearchUnavailableException(
+                'Text asset search requires GenerisSearch when the indexed gateway is unavailable'
+            );
+        }
+
+        while (true) {
+            $resultSet = $this->generisMediaSearch->query(
+                $queryString,
+                $scopeClassUri,
+                $offset,
+                $batchSize
+            );
+            $batch = [];
+            foreach ($resultSet as $row) {
+                if (is_array($row) && !empty($row['id'])) {
+                    $batch[] = $row;
+                }
+            }
+            if ($batch === []) {
+                break;
+            }
+            foreach ($batch as $row) {
+                $rows[] = $row;
+            }
+            $generisTotal = (int)$resultSet->getTotalCount();
+            if ($generisTotal <= $offset + count($batch)) {
+                break;
+            }
+            $offset += count($batch);
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @param array<int, array{id?: string, label?: string}> $rows
+     * @return array<int, array<string, mixed>>
+     */
+    private function hydrateSharedMediaRows(
+        array $rows,
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource
+    ): array {
+        if (!$mediaSource instanceof MediaManagement) {
+            return [];
+        }
+
+        $items = [];
+        foreach ($rows as $row) {
+            if (empty($row['id'])) {
+                continue;
+            }
+            try {
+                $fileInfo = $mediaSource->getFileInfo((string)$row['id']);
+            } catch (tao_models_classes_FileNotFoundException $exception) {
+                continue;
+            }
+            if (!$this->matchesMimeFilter($fileInfo, $search->getFilter())) {
+                continue;
+            }
+            $items[] = $this->normalizeAsset($fileInfo, (string)($fileInfo['location'] ?? ''));
+        }
+
+        return $items;
+    }
+
+    /**
+     * @param array<string, mixed> $fileInfo
+     * @param string[] $filters
+     */
+    private function matchesMimeFilter(array $fileInfo, array $filters): bool
+    {
+        if ($filters === []) {
+            return true;
+        }
+
+        $mime = (string)($fileInfo['mime'] ?? '');
+
+        return $mime !== '' && in_array($mime, $filters, true);
     }
 
     private function getUpdatedAtResolver(): AssetUpdatedAtResolverInterface
