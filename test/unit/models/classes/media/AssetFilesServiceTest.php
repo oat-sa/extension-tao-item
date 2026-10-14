@@ -32,6 +32,7 @@ use oat\taoItems\model\media\AssetSearchBuilder;
 use oat\taoItems\model\media\AssetSearchQuery;
 use oat\taoItems\model\media\AssetTreeBuilderInterface;
 use oat\taoItems\model\media\CurrentAssetResolver;
+use oat\taoMediaManager\model\MediaSource;
 use InvalidArgumentException;
 
 class AssetFilesServiceTest extends TestCase
@@ -198,6 +199,157 @@ class AssetFilesServiceTest extends TestCase
         $this->assertArrayNotHasKey('total', $result);
         $this->assertArrayNotHasKey('truncated', $result);
         $this->assertArrayNotHasKey('childrenLimit', $result);
+    }
+
+    public function testListPartUsesTreeBuilderWhenElasticsearchBrowseIsAvailable(): void
+    {
+        $mediaSource = $this->createMock(MediaSource::class);
+        $asset = $this->createMock(MediaAsset::class);
+        $asset->method('getMediaSource')->willReturn($mediaSource);
+
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $searchBuilder->method('isIndexedGatewayAvailable')->willReturn(true);
+        $searchBuilder->expects($this->never())->method('search');
+
+        $listResult = ['items' => [['name' => 'indexed.png']], 'total' => 1, 'page' => 1, 'pageSize' => 11];
+        $treeBuilder = new class ($listResult) implements
+            AssetTreeBuilderInterface,
+            AssetTreeBrowseBuilderInterface,
+            AssetBrowseListBuilderInterface
+        {
+            /** @var array<string, mixed> */
+            private $listResult;
+
+            /** @param array<string, mixed> $listResult */
+            public function __construct(array $listResult)
+            {
+                $this->listResult = $listResult;
+            }
+
+            public function build(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildTree(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildAssetList(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return $this->listResult;
+            }
+        };
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $result = $service->listFiles(
+            $asset,
+            'item-uri',
+            'en-US',
+            ['part' => 'list', 'page' => 1, 'pageSize' => 11],
+            []
+        );
+
+        $this->assertSame($listResult, $result);
+    }
+
+    public function testListPartUsesSearchBuilderWhenElasticsearchBrowseIsUnavailable(): void
+    {
+        $mediaSource = $this->createMock(MediaSource::class);
+        $asset = $this->createMock(MediaAsset::class);
+        $asset->method('getMediaSource')->willReturn($mediaSource);
+
+        $searchResult = ['items' => [['name' => 'generis.png']], 'total' => 1, 'page' => 1, 'pageSize' => 11];
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $searchBuilder->method('isIndexedGatewayAvailable')->willReturn(false);
+        $searchBuilder->expects($this->once())
+            ->method('search')
+            ->with($this->callback(static function (AssetSearchQuery $query): bool {
+                return $query->getQuery() === '';
+            }))
+            ->willReturn($searchResult);
+
+        $treeBuilder = $this->createMock(AssetTreeBuilderInterface::class);
+        $treeBuilder->expects($this->never())->method('build');
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $result = $service->listFiles(
+            $asset,
+            'item-uri',
+            'en-US',
+            ['part' => 'list', 'page' => 1, 'pageSize' => 11],
+            []
+        );
+
+        $this->assertSame($searchResult, $result);
+    }
+
+    public function testListPartUsesTreeBuilderForNonSharedMediaEvenWhenIndexedUnavailable(): void
+    {
+        $asset = $this->createMock(MediaAsset::class);
+        $asset->method('getMediaSource')->willReturn($this->createMock(\oat\tao\model\media\MediaBrowser::class));
+
+        $listResult = ['items' => [], 'total' => 0, 'page' => 1, 'pageSize' => 11];
+        $searchBuilder = $this->createMock(AssetSearchBuilder::class);
+        $searchBuilder->method('isIndexedGatewayAvailable')->willReturn(false);
+        $searchBuilder->expects($this->never())->method('search');
+
+        $treeBuilder = new class ($listResult) implements
+            AssetTreeBuilderInterface,
+            AssetTreeBrowseBuilderInterface,
+            AssetBrowseListBuilderInterface
+        {
+            /** @var array<string, mixed> */
+            private $listResult;
+
+            /** @param array<string, mixed> $listResult */
+            public function __construct(array $listResult)
+            {
+                $this->listResult = $listResult;
+            }
+
+            public function build(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildTree(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return [];
+            }
+
+            public function buildAssetList(\oat\tao\model\media\mediaSource\DirectorySearchQuery $search): array
+            {
+                return $this->listResult;
+            }
+        };
+
+        $service = new AssetFilesService(
+            $searchBuilder,
+            $treeBuilder,
+            new CurrentAssetResolver($this->createMock(PermissionCheckerInterface::class))
+        );
+
+        $result = $service->listFiles(
+            $asset,
+            'item-uri',
+            'en-US',
+            ['part' => 'list'],
+            []
+        );
+
+        $this->assertSame($listResult, $result);
     }
 
     public function testListFilesUsesBuildAssetListWhenPartIsList(): void

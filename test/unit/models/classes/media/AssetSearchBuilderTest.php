@@ -57,6 +57,109 @@ class AssetSearchBuilderTest extends TestCase
         $this->mediaSource = $this->createMock(MediaBrowser::class);
     }
 
+    public function testIsIndexedGatewayAvailableReflectsGatewayPing(): void
+    {
+        $availableGateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $availableGateway->method('isAvailable')->willReturn(true);
+        $subject = new AssetSearchBuilder($availableGateway, null, $this->createUpdatedAtResolverStub());
+        $this->assertTrue($subject->isIndexedGatewayAvailable());
+
+        $unavailableGateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $unavailableGateway->method('isAvailable')->willReturn(false);
+        $subject = new AssetSearchBuilder($unavailableGateway, null, $this->createUpdatedAtResolverStub());
+        $this->assertFalse($subject->isIndexedGatewayAvailable());
+
+        $subject = new AssetSearchBuilder(null, null, $this->createUpdatedAtResolverStub());
+        $this->assertFalse($subject->isIndexedGatewayAvailable());
+    }
+
+    public function testTextSearchWithoutGenerisWhenIndexedUnavailableThrows(): void
+    {
+        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+
+        $this->subject = new AssetSearchBuilder(null, null, $this->createUpdatedAtResolverStub(), null);
+
+        $this->expectException(AssetSearchUnavailableException::class);
+        $this->expectExceptionMessage('GenerisSearch');
+
+        $this->subject->search(
+            (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
+                ->setQuery('clip')
+                ->setPage(1)
+                ->setPageSize(10)
+        );
+    }
+
+    public function testSharedMediaBrowseListingUsesScopedInstanceQueryWhenTextQueryEmpty(): void
+    {
+        $class = $this->createMock(\core_kernel_classes_Class::class);
+        $class->method('searchInstances')->willReturn([]);
+        $class->method('countInstances')->willReturn(42);
+
+        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource->method('resolveScopeClassUri')->willReturn('http://www.tao.lu/Ontologies/TAOMedia.rdf#Media');
+        $mediaSource->method('getClass')->willReturn($class);
+        $mediaSource->expects($this->never())->method('getDirectories');
+
+        $generisSearch = $this->createMock(Search::class);
+        $generisSearch->expects($this->never())->method('query');
+
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+
+        $this->subject = new AssetSearchBuilder(
+            null,
+            null,
+            $this->createUpdatedAtResolverStub(),
+            $generisSearch
+        );
+
+        $result = $this->subject->search(
+            (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
+                ->setQuery('')
+                ->setPage(1)
+                ->setPageSize(15)
+        );
+
+        $this->assertSame(42, $result['total']);
+        $this->assertSame([], $result['items']);
+        $this->assertTrue($result['includesSubfolders']);
+    }
+
+    public function testSharedMediaBrowseListingPassesParentLinkToScopeResolver(): void
+    {
+        $parentLink = 'taomedia://mediamanager/http%3A%2F%2Fexample.test%23Folder';
+
+        $class = $this->createMock(\core_kernel_classes_Class::class);
+        $class->method('searchInstances')->willReturn([]);
+        $class->method('countInstances')->willReturn(0);
+
+        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource
+            ->expects($this->once())
+            ->method('resolveScopeClassUri')
+            ->with($parentLink)
+            ->willReturn('http://example.test#Folder');
+        $mediaSource->method('getClass')->willReturn($class);
+
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn($parentLink);
+
+        $this->subject = new AssetSearchBuilder(null, null, $this->createUpdatedAtResolverStub());
+
+        $this->subject->search(
+            (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
+                ->setQuery('')
+                ->setPage(1)
+                ->setPageSize(11)
+        );
+    }
+
     public function testSharedMediaFallbackUsesGenerisLabelSearch(): void
     {
         $generisSearch = $this->createMock(Search::class);
@@ -72,7 +175,11 @@ class AssetSearchBuilderTest extends TestCase
             ));
 
         $mediaSource = $this->createMock(MediaSource::class);
-        $mediaSource->method('resolveScopeClassUri')->willReturn('http://www.tao.lu/Ontologies/TAOMedia.rdf#Media');
+        $mediaSource
+            ->expects($this->once())
+            ->method('resolveScopeClassUri')
+            ->with('taomedia://mediamanager/http%3A%2F%2Fwww.tao.lu%2FOntologies%2FTAOMedia.rdf%23Media')
+            ->willReturn('http://www.tao.lu/Ontologies/TAOMedia.rdf#Media');
         $mediaSource->expects($this->never())->method('getDirectories');
         $mediaSource->method('getFileInfo')->willReturn([
             'name' => 'colorbars.mp4',
@@ -83,7 +190,9 @@ class AssetSearchBuilderTest extends TestCase
 
         $mediaAsset = $this->createMock(MediaAsset::class);
         $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
-        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+        $mediaAsset->method('getMediaIdentifier')->willReturn(
+            'taomedia://mediamanager/http%3A%2F%2Fwww.tao.lu%2FOntologies%2FTAOMedia.rdf%23Media'
+        );
 
         $this->subject = new AssetSearchBuilder(
             null,
@@ -913,6 +1022,47 @@ class AssetSearchBuilderTest extends TestCase
         $this->expectExceptionMessage('indexed search gateway');
 
         $this->subject->search($query);
+    }
+
+    public function testBrowseListingDelegatesToIndexedGatewayWhenAvailable(): void
+    {
+        $expected = [
+            'items' => [['uri' => 'asset://indexed', 'label' => 'indexed']],
+            'total' => 50,
+            'page' => 1,
+            'pageSize' => 15,
+        ];
+
+        $gateway = $this->createMock(AssetIndexedSearchGatewayInterface::class);
+        $gateway->expects($this->once())->method('isAvailable')->willReturn(true);
+        $gateway->expects($this->once())->method('search')->willReturn($expected);
+
+        $mediaSource = $this->createMock(MediaSource::class);
+        $mediaSource->expects($this->never())->method('getDirectories');
+        $mediaSource->expects($this->never())->method('getClass');
+
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+
+        $generisSearch = $this->createMock(Search::class);
+        $generisSearch->expects($this->never())->method('query');
+
+        $this->subject = new AssetSearchBuilder(
+            $gateway,
+            null,
+            $this->createUpdatedAtResolverStub(),
+            $generisSearch
+        );
+
+        $result = $this->subject->search(
+            (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US'))
+                ->setQuery('')
+                ->setPage(1)
+                ->setPageSize(15)
+        );
+
+        $this->assertSame($expected, $result);
     }
 
     public function testSearchDelegatesToIndexedGatewayWhenAvailable(): void
