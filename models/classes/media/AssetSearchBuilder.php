@@ -45,6 +45,11 @@ class AssetSearchBuilder
      * Full subtree load keeps page-1 totals and later pages consistent when paginating in memory.
      */
     private const FALLBACK_CHILDREN_LIMIT = 0;
+    /**
+     * ponytail: Generis fallback loads every label/scoped row, then MIME/ACL/sort, then paginates in memory.
+     * Upgrade path: push filters into SQL or indexed gateway when libraries outgrow batch scans.
+     */
+    private const SHARED_MEDIA_GENERIS_BATCH_SIZE = 200;
     private const SORT_LOCATION = 'location';
     private const SORT_UPDATED_AT = 'updatedAt';
 
@@ -171,40 +176,121 @@ class AssetSearchBuilder
     ): array {
         $page = $search->getPage();
         $pageSize = $search->getPageSize();
-        $offset = max(0, ($page - 1) * $pageSize);
         $scopeClassUri = $mediaSource->resolveScopeClassUri($search->getParentLink());
         $queryString = trim($search->getQuery());
 
-        /** @var ResultSet $resultSet */
+        $rows = $this->collectSharedMediaGenerisRows($search, $mediaSource, $scopeClassUri, $queryString);
+        $items = $this->hydrateSharedMediaRows($rows, $search, $mediaSource);
+        $items = $this->filterReadableAssets($items, $search);
+        $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
+
+        $total = count($items);
+        $maxPage = max(1, (int)ceil($total / $pageSize) ?: 1);
+        $page = min($page, $maxPage);
+        $offset = ($page - 1) * $pageSize;
+
+        return [
+            'items' => array_values(array_slice($items, $offset, $pageSize)),
+            'total' => $total,
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'truncated' => false,
+            'includesSubfolders' => true,
+        ];
+    }
+
+    /**
+     * @return array<int, array{id?: string, label?: string}>
+     */
+    private function collectSharedMediaGenerisRows(
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource,
+        string $scopeClassUri,
+        string $queryString
+    ): array {
+        $rows = [];
+        $offset = 0;
+        $batchSize = self::SHARED_MEDIA_GENERIS_BATCH_SIZE;
+
         if ($queryString === '') {
-            $scoped = $mediaSource->searchScopedMediaInstances(
-                $scopeClassUri,
-                $search->getFilter(),
-                $offset,
-                $pageSize,
-                $search->getSortBy(),
-                $search->getSortDir()
-            );
-            $resultSet = new ResultSet($scoped['rows'], $scoped['total']);
-        } elseif ($this->generisMediaSearch !== null) {
-            $resultSet = $this->generisMediaSearch->query(
-                $queryString,
-                $scopeClassUri,
-                $offset,
-                $pageSize
-            );
-        } else {
+            while (true) {
+                $scoped = $mediaSource->searchScopedMediaInstances(
+                    $scopeClassUri,
+                    $search->getFilter(),
+                    $offset,
+                    $batchSize,
+                    $search->getSortBy(),
+                    $search->getSortDir()
+                );
+                $batch = $scoped['rows'] ?? [];
+                if ($batch === []) {
+                    break;
+                }
+                foreach ($batch as $row) {
+                    if (is_array($row)) {
+                        $rows[] = $row;
+                    }
+                }
+                if (count($batch) < $batchSize) {
+                    break;
+                }
+                $offset += count($batch);
+            }
+
+            return $rows;
+        }
+
+        if ($this->generisMediaSearch === null) {
             throw new AssetSearchUnavailableException(
                 'Text asset search requires GenerisSearch when the indexed gateway is unavailable'
             );
         }
 
-        $items = [];
-        foreach ($resultSet as $row) {
-            if (!is_array($row) || empty($row['id'])) {
-                continue;
+        while (true) {
+            $resultSet = $this->generisMediaSearch->query(
+                $queryString,
+                $scopeClassUri,
+                $offset,
+                $batchSize
+            );
+            $batch = [];
+            foreach ($resultSet as $row) {
+                if (is_array($row) && !empty($row['id'])) {
+                    $batch[] = $row;
+                }
             }
-            if (!$mediaSource instanceof MediaManagement) {
+            if ($batch === []) {
+                break;
+            }
+            foreach ($batch as $row) {
+                $rows[] = $row;
+            }
+            $generisTotal = (int)$resultSet->getTotalCount();
+            if ($generisTotal <= $offset + count($batch)) {
+                break;
+            }
+            $offset += count($batch);
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @param array<int, array{id?: string, label?: string}> $rows
+     * @return array<int, array<string, mixed>>
+     */
+    private function hydrateSharedMediaRows(
+        array $rows,
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource
+    ): array {
+        if (!$mediaSource instanceof MediaManagement) {
+            return [];
+        }
+
+        $items = [];
+        foreach ($rows as $row) {
+            if (empty($row['id'])) {
                 continue;
             }
             try {
@@ -218,17 +304,7 @@ class AssetSearchBuilder
             $items[] = $this->normalizeAsset($fileInfo, (string)($fileInfo['location'] ?? ''));
         }
 
-        $items = $this->filterReadableAssets($items, $search);
-        $items = $this->sortItems($items, $search->getSortBy(), $search->getSortDir());
-
-        return [
-            'items' => array_values($items),
-            'total' => (int)$resultSet->getTotalCount(),
-            'page' => $page,
-            'pageSize' => $pageSize,
-            'truncated' => false,
-            'includesSubfolders' => true,
-        ];
+        return $items;
     }
 
     /**

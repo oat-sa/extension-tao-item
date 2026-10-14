@@ -60,6 +60,9 @@ class SharedMediaSearchSourceDouble implements SharedMediaSearchSourceInterface,
     /** @var array<string, mixed> */
     public $getFileInfoResult = [];
 
+    /** @var callable|null */
+    public $getFileInfoHandler;
+
     public function resolveScopeClassUri(string $parentLink): string
     {
         if ($this->resolveScopeClassUriHandler !== null) {
@@ -92,6 +95,10 @@ class SharedMediaSearchSourceDouble implements SharedMediaSearchSourceInterface,
 
     public function getFileInfo($link): array
     {
+        if ($this->getFileInfoHandler !== null) {
+            return ($this->getFileInfoHandler)($link);
+        }
+
         return $this->getFileInfoResult;
     }
 
@@ -197,7 +204,7 @@ class AssetSearchBuilderTest extends TestCase
                 ->setPageSize(15)
         );
 
-        $this->assertSame(42, $result['total']);
+        $this->assertSame(0, $result['total']);
         $this->assertSame([], $result['items']);
         $this->assertTrue($result['includesSubfolders']);
     }
@@ -233,7 +240,7 @@ class AssetSearchBuilderTest extends TestCase
         $generisSearch
             ->expects($this->once())
             ->method('query')
-            ->with('color', 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media', 0, 10)
+            ->with('color', 'http://www.tao.lu/Ontologies/TAOMedia.rdf#Media', 0, 200)
             ->willReturn(new ResultSet(
                 [
                     ['id' => 'http://example/media/instance-1', 'label' => 'colorbars.mp4'],
@@ -280,6 +287,67 @@ class AssetSearchBuilderTest extends TestCase
         $this->assertSame(1, $result['total']);
         $this->assertTrue($result['includesSubfolders']);
         $this->assertSame('colorbars.mp4', $result['items'][0]['name']);
+    }
+
+    public function testSharedMediaGenerisFallbackOmitsRowsWhenHydrationFails(): void
+    {
+        $generisSearch = $this->createMock(Search::class);
+        $generisSearch
+            ->expects($this->once())
+            ->method('query')
+            ->willReturn(new ResultSet(
+                [
+                    ['label' => 'missing-id'],
+                    ['id' => 'http://example/media/wrong-mime', 'label' => 'wrong.mp4'],
+                    ['id' => 'http://example/media/not-found', 'label' => 'ghost.mp4'],
+                    ['id' => 'http://example/media/ok', 'label' => 'ok.mp4'],
+                ],
+                3
+            ));
+
+        $mediaSource = new SharedMediaSearchSourceDouble();
+        $mediaSource->getFileInfoHandler = static function (string $link): array {
+            if ($link === 'http://example/media/not-found') {
+                throw new \tao_models_classes_FileNotFoundException('missing');
+            }
+            if ($link === 'http://example/media/wrong-mime') {
+                return [
+                    'name' => 'wrong.mp4',
+                    'label' => 'wrong.mp4',
+                    'uri' => $link,
+                    'mime' => 'image/png',
+                ];
+            }
+
+            return [
+                'name' => 'ok.mp4',
+                'label' => 'ok.mp4',
+                'uri' => $link,
+                'mime' => 'video/mp4',
+            ];
+        };
+
+        $mediaAsset = $this->createMock(MediaAsset::class);
+        $mediaAsset->method('getMediaSource')->willReturn($mediaSource);
+        $mediaAsset->method('getMediaIdentifier')->willReturn('/');
+
+        $this->subject = new AssetSearchBuilder(
+            null,
+            null,
+            $this->createUpdatedAtResolverStub(),
+            $generisSearch
+        );
+
+        $result = $this->subject->search(
+            (new AssetSearchQuery($mediaAsset, 'item-uri', 'en-US', ['video/mp4']))
+                ->setQuery('clip')
+                ->setPage(1)
+                ->setPageSize(10)
+        );
+
+        $this->assertSame(1, $result['total']);
+        $this->assertCount(1, $result['items']);
+        $this->assertSame('ok.mp4', $result['items'][0]['name']);
     }
 
     public function testSearchFiltersSortsAndPaginatesResults(): void
