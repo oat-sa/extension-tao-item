@@ -31,8 +31,8 @@ use tao_models_classes_FileNotFoundException;
 /**
  * Builds Resource Manager search payloads from the existing media browse sources.
  *
- * Prefers the indexed search gateway when available. Without Elasticsearch, shared
- * shared media ({@see SharedMediaSearchSourceInterface}) uses paginated Generis label search like the Assets backoffice.
+ * Prefers the indexed search gateway when available. Without Elasticsearch, shared media
+ * ({@see SharedMediaSearchSourceInterface}) uses paginated Generis label search like the Assets backoffice.
  * Other sources fall back to filesystem subtree traversal with trailing-token prefix matching.
  */
 class AssetSearchBuilder
@@ -165,8 +165,10 @@ class AssetSearchBuilder
     /**
      * @return array<string, mixed>
      */
-    private function searchSharedMediaViaGeneris(AssetSearchQuery $search, SharedMediaSearchSourceInterface $mediaSource): array
-    {
+    private function searchSharedMediaViaGeneris(
+        AssetSearchQuery $search,
+        SharedMediaSearchSourceInterface $mediaSource
+    ): array {
         $page = $search->getPage();
         $pageSize = $search->getPageSize();
         $offset = max(0, ($page - 1) * $pageSize);
