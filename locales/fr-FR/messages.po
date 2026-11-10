@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:07\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,11 +20,33 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: French\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] "Test %d"
+msgstr[1] "Tests %d"
+
+msgid "%d users found"
+msgstr ""
+
+msgid "%s, %d of %d"
+msgstr "%s, %d de %d"
+
+msgid "1 user found"
+msgstr "1 utilisateur trouvé"
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Note</b>: pour les classes vides, seul le format RDF est disponible."
 
 msgid "Actual size"
 msgstr "Taille réelle"
+
+msgid "Add a comment"
+msgstr "Ajouter un commentaire"
 
 msgid "An error occurred while processing your request."
 msgstr "Une erreur s'est produite lors du traitement de votre demande."
@@ -32,33 +54,30 @@ msgstr "Une erreur s'est produite lors du traitement de votre demande."
 msgid "and"
 msgstr "et"
 
-msgid "and all of its content?"
-msgstr "et tout son contenu?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "sont actuellement utilisés dans un ou plusieurs tests, donc ils ne peuvent pas être supprimés :"
-
-msgid "Are you sure you want to delete the class"
-msgstr "Êtes-vous sûr(e) de vouloir supprimer cette classe"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Êtes-vous sûr de vouloir supprimer la classe %s et tout son contenu ?"
 
-msgid "Are you sure you want to delete the item"
-msgstr "Êtes-vous sûr(e) de vouloir supprimer cette question"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr "Êtes-vous sûr de vouloir supprimer la question %s?"
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Êtes-vous sûr de vouloir supprimer cette classe et tout son contenu ?"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "Êtes-vous sûr(e) de vouloir supprimer cette question ?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Édition"
+
+msgid "Be the first to add a comment"
+msgstr "Soyez le premier à ajouter un commentaire"
+
+msgid "Bold"
+msgstr "Bold"
+
+msgid "Bulleted list"
+msgstr "Liste à puces"
+
+msgid "Cancel"
+msgstr "Annuler"
 
 msgid "Class schema saved"
 msgstr "Schéma de classe enregistré"
@@ -69,8 +88,8 @@ msgstr "Fermer"
 msgid "Close console"
 msgstr "Fermer la console"
 
-msgid "contains content that is currently in use."
-msgstr "contient des éléments en cours d’utilisation."
+msgid "Comment formatting"
+msgstr "Formatage des commentaires"
 
 #, tao-public
 msgid "Copy To"
@@ -83,9 +102,6 @@ msgstr "Créer et concevoir des items et des exercices."
 #, tao-public
 msgid "Delete"
 msgstr "Supprimer"
-
-msgid "Deleting this class will break the"
-msgstr "Supprimer cette classe va provoquer une erreur dans"
 
 msgid "Deleting this item will break the"
 msgstr "Supprimer cette question va provoquer une erreur dans"
@@ -103,11 +119,20 @@ msgstr "Ne plus afficher ceci !"
 msgid "Duplicate"
 msgstr "Dupliquer"
 
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Edit comment"
+msgstr "Modifier le commentaire"
+
 msgid "Edit Item"
 msgstr "Édition de l'item"
 
 msgid "Edit item"
 msgstr "Éditer l'élément"
+
+msgid "edited"
+msgstr "édité"
 
 #, tao-public
 msgid "Export"
@@ -116,8 +141,14 @@ msgstr "Exportation"
 msgid "Expose the property value to create automated categories."
 msgstr "Exposer la valeur de la propriété pour créer des catégories automatisées."
 
+msgid "External previewer load timeout"
+msgstr "Délai de chargement du prévisualiseur externe"
+
 msgid "Failed retrieving %s"
 msgstr "N'a pas réussi à récupérer %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr "Impossible d'obtenir les jetons pour l'aperçu externe"
 
 msgid "Forbidden action"
 msgstr "Action interdite"
@@ -132,11 +163,17 @@ msgstr "Importation"
 msgid "is currently in use."
 msgstr "est en cours d’utilisation."
 
+msgid "Italic"
+msgstr "Italic"
+
 msgid "Item Model"
 msgstr "Modèle d'item"
 
 msgid "Item not found"
 msgstr "Item non trouvé"
+
+msgid "Item preview"
+msgstr "Aperçu de l’article"
 
 msgid "Item saved"
 msgstr "Item enregistré"
@@ -158,6 +195,15 @@ msgstr "Paysage"
 msgid "Last updated on %2s"
 msgstr "Dernière mise à jour le %2s"
 
+msgid "Link"
+msgstr "Lier"
+
+msgid "Loading preview..."
+msgstr "Chargement de l'aperçu..."
+
+msgid "Loading users"
+msgstr "Chargement des utilisateurs"
+
 msgid "Manage item class schema"
 msgstr "Gérer le schéma de classe d'item"
 
@@ -172,6 +218,9 @@ msgstr "Gérer le schéma"
 msgid "Mobile preview"
 msgstr "Aperçu sur mobile"
 
+msgid "More actions"
+msgstr "Plus d'actions"
+
 #, tao-public
 msgid "Move"
 msgstr "Déplacer"
@@ -184,20 +233,29 @@ msgstr "Déplacer vers"
 msgid "New class"
 msgstr "Nouvelle classe"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Pas d'outil de création d'item disponible pour le type d'item sélectionné : %s"
+msgid "No comments yet"
+msgstr "Pas encore de commentaires"
 
 msgid "No item type selected for the current item."
 msgstr "Pas de modèle d'item sélectionné pour cet item."
 
+msgid "No matching users"
+msgstr "Aucun utilisateur correspondant"
+
 msgid "Not yet available"
 msgstr "Pas encore disponible"
+
+msgid "Numbered list"
+msgstr "Liste numérotée"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "Une ou plusieurs valeurs ne peuvent pas être utilisées comme catégories de test automatique."
 
 msgid "Only items not used in any test will be deleted."
 msgstr "Seuls les éléments non utilisés dans aucun test seront supprimés."
 
-msgid "other"
-msgstr "autre"
+msgid "Only users with access to this item can be mentioned."
+msgstr "Seuls les utilisateurs ayant accès à cet élément peuvent être mentionnés."
 
 msgid "Please delete the subclasses before."
 msgstr "Veuillez supprimer les sous-classes avant."
@@ -207,6 +265,9 @@ msgstr "Veuillez sélectionner d'abord un type d'item !"
 
 msgid "Portrait"
 msgstr "Portrait"
+
+msgid "Post comment"
+msgstr "Poster un commentaire"
 
 #, tao-public
 msgid "Preview"
@@ -222,14 +283,20 @@ msgstr "Publié \"%1$s\" dans la langue \"%2$s"
 msgid "Remove this message"
 msgstr "Supprimer ce message"
 
+msgid "Reopen"
+msgstr "Rouvrir"
+
+msgid "Resolve"
+msgstr "Résoudre"
+
 msgid "Resource deleted"
 msgstr "Ressource supprimée"
 
 msgid "Retrieving external resources"
 msgstr "Récupération de ressources externes"
 
-msgid "s"
-msgstr "s"
+msgid "Save"
+msgstr "Enregistrer"
 
 msgid "Some items in the folder "
 msgstr "Certains éléments du dossier "
@@ -237,11 +304,23 @@ msgstr "Certains éléments du dossier "
 msgid "Submit"
 msgstr "Envoyer"
 
-msgid "test"
-msgstr "test"
-
 msgid "The class"
 msgstr "La classe"
+
+msgid "The comment was not deleted."
+msgstr "Le commentaire n'a pas été supprimé."
+
+msgid "The comment was not reopened."
+msgstr "Le commentaire n'a pas été rouvert."
+
+msgid "The comment was not resolved."
+msgstr "Le commentaire n'a pas été résolu."
+
+msgid "The comment was not saved."
+msgstr "Le commentaire n'a pas été enregistré."
+
+msgid "The comment was not updated."
+msgstr "Le commentaire n'a pas été mis à jour."
 
 msgid "The file you tried to upload is not valid"
 msgstr "Le fichier que vous avez essayé de charger n'est pas valide."
@@ -254,6 +333,9 @@ msgstr "Le module Items permet la création et le design d'items et d'exercices.
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "La propriété est exposée à l'addition de catégorie. Supprimer l'exposition ?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "La valeur «%s» ne peut pas être utilisée comme catégorie de test automatique."
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Cet aperçu peut être redimensionné pour s'adapter à votre écran. Le rendu final peut différer."
@@ -277,11 +359,29 @@ msgstr "Impossible de supprimer la ressource sélectionnée"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "Impossible de supprimer la ressource sélectionnée car vous n'avez pas les droits requis pour supprimer une partie de son contenu."
 
+msgid "Unable to load comments."
+msgstr "Impossible de charger les commentaires."
+
+msgid "Unable to load item preview"
+msgstr "Impossible de charger l'aperçu de l'élément"
+
+msgid "Unable to load users"
+msgstr "Impossible de charger les utilisateurs"
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Impossible de rendre l'item depuis %s : %s %s"
 
 msgid "Unable to upload file"
 msgstr "Autoriser le téléchargement du fichier"
+
+msgid "Unable to validate automatic test categories."
+msgstr "Impossible de valider les catégories de test automatiques."
+
+msgid "Underline"
+msgstr "Souligné"
+
+msgid "Use @ to mention a TAO user."
+msgstr "Utilisez @ pour mentionner un utilisateur de TAO."
 
 msgid "using it:"
 msgstr "qui l’utilise:"
