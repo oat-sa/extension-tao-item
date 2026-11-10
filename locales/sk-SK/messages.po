@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-04-24 19:14\n"
+"PO-Revision-Date: 2026-11-10 14:36\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk\n"
@@ -58,7 +58,7 @@ msgstr "Naozaj chcete túto položku odstrániť?"
 
 #, tao-public
 msgid "Authoring"
-msgstr "Autorstvo"
+msgstr "Tvorba"
 
 msgid "Class schema saved"
 msgstr "Schéma triedy bola uložená"
