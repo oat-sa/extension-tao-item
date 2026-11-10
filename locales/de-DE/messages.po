@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:07\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,11 +20,33 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: German\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] "%d andere."
+msgstr[1] "%d andere."
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] "%d Test"
+msgstr[1] "%d Tests"
+
+msgid "%d users found"
+msgstr "%d Benutzer gefunden"
+
+msgid "%s, %d of %d"
+msgstr "%s, %d von %d"
+
+msgid "1 user found"
+msgstr "1 Benutzer gefunden"
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Hinweis</b>: Für leere Klassen ist das RDF-Format die einzige verfügbare Formatierung."
 
 msgid "Actual size"
 msgstr "Tatsächliche Größe"
+
+msgid "Add a comment"
+msgstr "Kommentar hinzufügen"
 
 msgid "An error occurred while processing your request."
 msgstr "Bei der Bearbeitung Ihrer Anfrage ist ein Fehler aufgetreten."
@@ -32,33 +54,30 @@ msgstr "Bei der Bearbeitung Ihrer Anfrage ist ein Fehler aufgetreten."
 msgid "and"
 msgstr "und"
 
-msgid "and all of its content?"
-msgstr "und seinen gesamten Inhalt?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "werden derzeit in einem oder mehreren Tests verwendet, so dass sie nicht gelöscht werden können:"
-
-msgid "Are you sure you want to delete the class"
-msgstr "Sind Sie sicher, dass Sie die Klasse löschen möchten?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Sind Sie sicher, dass Sie die Klasse %s und den gesamten Inhalt löschen möchten?"
 
-msgid "Are you sure you want to delete the item"
-msgstr "Sind Sie sicher, dass Sie das Element löschen möchten?"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr "Sind Sie sicher, dass Sie das Element %s löschen möchten?"
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Sind Sie sicher, dass Sie diese Klasse und all ihren Inhalt löschen möchten?"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "Sind Sie sicher, dass Sie dieses Element löschen möchten?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Verfassen"
+
+msgid "Be the first to add a comment"
+msgstr "Sei der Erste, der einen Kommentar hinzufügen"
+
+msgid "Bold"
+msgstr "Bold"
+
+msgid "Bulleted list"
+msgstr "Aufzählung"
+
+msgid "Cancel"
+msgstr "Abbrechen"
 
 msgid "Class schema saved"
 msgstr "Klassenschema gespeichert"
@@ -69,8 +88,8 @@ msgstr "Schließen"
 msgid "Close console"
 msgstr "Konsole schließen"
 
-msgid "contains content that is currently in use."
-msgstr "enthält Inhalte, die derzeit in Verwendung sind."
+msgid "Comment formatting"
+msgstr "Kommentarformatierung"
 
 #, tao-public
 msgid "Copy To"
@@ -83,9 +102,6 @@ msgstr "Elemente und Übungen erstellen und gestalten."
 #, tao-public
 msgid "Delete"
 msgstr "Löschen"
-
-msgid "Deleting this class will break the"
-msgstr "Das Löschen dieser Klasse unterbricht "
 
 msgid "Deleting this item will break the"
 msgstr "Das Löschen dieses Elements unterbricht "
@@ -103,11 +119,20 @@ msgstr "Diese Meldung nicht wieder anzeigen!"
 msgid "Duplicate"
 msgstr "Duplizieren"
 
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Edit comment"
+msgstr "Kommentar bearbeiten"
+
 msgid "Edit Item"
 msgstr "Element bearbeiten"
 
 msgid "Edit item"
 msgstr "Element bearbeiten"
+
+msgid "edited"
+msgstr "bearbeitet"
 
 #, tao-public
 msgid "Export"
@@ -116,8 +141,14 @@ msgstr "Export"
 msgid "Expose the property value to create automated categories."
 msgstr "Den Eigenschaftswert freigeben, um automatisierte Kategorien zu erstellen."
 
+msgid "External previewer load timeout"
+msgstr "Timeout für externen Previewer laden"
+
 msgid "Failed retrieving %s"
 msgstr "Fehler bei Abruf von %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr "Fehler beim Abrufen von Token für externen Vorschau-Viewer"
 
 msgid "Forbidden action"
 msgstr "Verbotene Aktion"
@@ -132,11 +163,17 @@ msgstr "Importieren"
 msgid "is currently in use."
 msgstr "wird derzeit verwendet."
 
+msgid "Italic"
+msgstr "Italic"
+
 msgid "Item Model"
 msgstr "Element-Modell"
 
 msgid "Item not found"
 msgstr "Element nicht gefunden"
+
+msgid "Item preview"
+msgstr "Artikelvorschau"
 
 msgid "Item saved"
 msgstr "Element gespeichert"
@@ -158,6 +195,15 @@ msgstr "Querformat"
 msgid "Last updated on %2s"
 msgstr "Letztes Update vom %2s"
 
+msgid "Link"
+msgstr "Link"
+
+msgid "Loading preview..."
+msgstr "Vorschau wird geladen..."
+
+msgid "Loading users"
+msgstr "Lade Benutzer"
+
 msgid "Manage item class schema"
 msgstr "Verwalten des Klassenschemas für Elemente"
 
@@ -172,6 +218,9 @@ msgstr "Schema verwalten"
 msgid "Mobile preview"
 msgstr "Mobile Vorschau"
 
+msgid "More actions"
+msgstr "Weitere Aktionen"
+
 #, tao-public
 msgid "Move"
 msgstr "Verschieben"
@@ -184,20 +233,29 @@ msgstr "Bewegen nach"
 msgid "New class"
 msgstr "Neue Klasse"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Kein Bearbeitungswerkzeug verfügbar für den ausgewählten Typ des Elements: %s"
+msgid "No comments yet"
+msgstr "Noch keine Kommentare"
 
 msgid "No item type selected for the current item."
 msgstr "Kein Typ für das aktuelle Element ausgewählt"
 
+msgid "No matching users"
+msgstr "Keine passenden Benutzer"
+
 msgid "Not yet available"
 msgstr "Noch nicht verfügbar"
+
+msgid "Numbered list"
+msgstr "Nummerierte Liste"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "Ein oder mehrere Werte können nicht als automatische Testkategorien verwendet werden."
 
 msgid "Only items not used in any test will be deleted."
 msgstr "Nur Elemente, die in keinem Test verwendet werden, werden gelöscht."
 
-msgid "other"
-msgstr "andere"
+msgid "Only users with access to this item can be mentioned."
+msgstr "Nur Benutzer mit Zugriff auf diesen Artikel können erwähnt werden."
 
 msgid "Please delete the subclasses before."
 msgstr "Bitte löschen Sie vorher die Unterklassen."
@@ -207,6 +265,9 @@ msgstr "Bitte zuerst den Element-Typ auswählen!"
 
 msgid "Portrait"
 msgstr "Hochformat"
+
+msgid "Post comment"
+msgstr "Kommentar schreiben"
 
 #, tao-public
 msgid "Preview"
@@ -222,14 +283,20 @@ msgstr "\"%1$s\" in Sprache \"%2$s veröffentlicht"
 msgid "Remove this message"
 msgstr "Diese Nachricht entfernen"
 
+msgid "Reopen"
+msgstr "Wiederöffnen"
+
+msgid "Resolve"
+msgstr "Lösen"
+
 msgid "Resource deleted"
 msgstr "Ressource gelöscht"
 
 msgid "Retrieving external resources"
 msgstr "Externe Quellen abrufen"
 
-msgid "s"
-msgstr "s"
+msgid "Save"
+msgstr "Speichern"
 
 msgid "Some items in the folder "
 msgstr "Einige Elemente im Ordner "
@@ -237,11 +304,23 @@ msgstr "Einige Elemente im Ordner "
 msgid "Submit"
 msgstr "Absenden"
 
-msgid "test"
-msgstr "Test"
-
 msgid "The class"
 msgstr "Die Klasse"
+
+msgid "The comment was not deleted."
+msgstr "Der Kommentar wurde nicht gelöscht."
+
+msgid "The comment was not reopened."
+msgstr "Der Kommentar wurde nicht wieder geöffnet."
+
+msgid "The comment was not resolved."
+msgstr "Der Kommentar wurde nicht gelöst."
+
+msgid "The comment was not saved."
+msgstr "Der Kommentar wurde nicht gespeichert."
+
+msgid "The comment was not updated."
+msgstr "Der Kommentar wurde nicht aktualisiert."
 
 msgid "The file you tried to upload is not valid"
 msgstr "Die hochgeladene Datei ist ungültig"
@@ -254,6 +333,9 @@ msgstr "Das Element-Modul ermöglicht das Erstellen und Entwickeln von Elementen
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Die Eigenschaft ist zur Kategorieerweiterung freigegeben.&#13Exposition entfernen?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "Der Wert \"%s\" kann nicht als automatische Testkategorie verwendet werden."
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Diese Vorschau ist möglicherweise an ihren Bildschirm angepasst. Die endgültige Version kann davon abweichen."
@@ -277,11 +359,29 @@ msgstr "Die ausgewählte Ressource kann nicht gelöscht werden"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "Die ausgewählte Ressource konnte nicht gelöscht werden, da Sie nicht über die erforderlichen Rechte zum Löschen eines Teils ihres Inhalts verfügen."
 
+msgid "Unable to load comments."
+msgstr "Konnte Kommentare nicht laden."
+
+msgid "Unable to load item preview"
+msgstr "Vorschau kann nicht geladen werden"
+
+msgid "Unable to load users"
+msgstr "Benutzer können nicht geladen werden"
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Das Element konnte nicht aus %s gerendert werden: %s %s"
 
 msgid "Unable to upload file"
 msgstr "Die Datei konnte nicht hochgeladen werden"
+
+msgid "Unable to validate automatic test categories."
+msgstr "Automatische Testkategorien konnten nicht validiert werden."
+
+msgid "Underline"
+msgstr "Unterstrichen"
+
+msgid "Use @ to mention a TAO user."
+msgstr "Benutze @, um einen TAO-Benutzer zu erwähnen."
 
 msgid "using it:"
 msgstr "verwenden:"

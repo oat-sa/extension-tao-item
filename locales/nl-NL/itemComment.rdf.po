@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-11-10 16:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: nl\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/itemComment.rdf.po\n"
+"X-Crowdin-File-ID: 1344\n"
+"Language-Team: Dutch\n"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring Comment"
+msgstr "Opmerking schrijven"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Collaboration comment attached to an Item, Test, or Asset (not part of content/QTI)"
+msgstr "Samenwerkingscommentaar gekoppeld aan een artikel, Test of Bezitting (niet onderdeel van inhouds/QTI)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource URI"
+msgstr "Grondstof URI"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource type"
+msgstr "Bron type"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "RDF class URI of the target: Item, Test, or Media"
+msgstr "RDF klasse URI van het target: Item, Test of Media"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author ID"
+msgstr "Auteur ID"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author label"
+msgstr "Auteur label"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Comment body"
+msgstr "Commentaar lichaam"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Created at"
+msgstr "Aangemaakt op"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Edited"
+msgstr "Bewerkt"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment body was edited after creation (1/0)"
+msgstr "Of de inhoud van de opmerking na aanmaak is bewerkt (1/0)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resolved"
+msgstr "Opgelost"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment was marked resolved (1/0)"
+msgstr "Of de reactie is gemarkeerd afgehandeld (1/0)"
+

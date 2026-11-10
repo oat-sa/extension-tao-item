@@ -1,1 +1,1 @@
-{"Password":"Contrase\u00f1a"}
+{"translations":{"%d other.":["",""],"%d test":["",""],"Password":"Contrase\u00f1a"},"pluralForms":"nplurals=2; plural=(n != 1);"}

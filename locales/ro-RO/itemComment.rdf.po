@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-11-10 16:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ro\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100>0 && n%100<20)) ? 1 : 2);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ro\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/itemComment.rdf.po\n"
+"X-Crowdin-File-ID: 1344\n"
+"Language-Team: Romanian\n"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring Comment"
+msgstr "Autor comentariu"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Collaboration comment attached to an Item, Test, or Asset (not part of content/QTI)"
+msgstr "Comentariu de colaborare atașat la un Articol, un Test sau un Asset (nu parte a conținutului/QTI)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource URI"
+msgstr "URI resurse"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource type"
+msgstr "Tipul resursei"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "RDF class URI of the target: Item, Test, or Media"
+msgstr "RDF clasa URI a țintei: Articol, Test sau Media"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author ID"
+msgstr "ID autor"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author label"
+msgstr "Eticheta autorului"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Comment body"
+msgstr "Corpul comentariului"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Created at"
+msgstr "Creat la"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Edited"
+msgstr "Editat"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment body was edited after creation (1/0)"
+msgstr "Dacă organismul pentru comentarii a fost editat după creare (1/0)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resolved"
+msgstr "Rezolvat"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment was marked resolved (1/0)"
+msgstr "Dacă comentariul a fost marcat și rezolvat (1/0)"
+

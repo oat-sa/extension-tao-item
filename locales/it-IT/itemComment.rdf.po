@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-11-10 16:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: it\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: it\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/itemComment.rdf.po\n"
+"X-Crowdin-File-ID: 1344\n"
+"Language-Team: Italian\n"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring Comment"
+msgstr "Authoring Comment"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Collaboration comment attached to an Item, Test, or Asset (not part of content/QTI)"
+msgstr "Commenta di collaborazione allegata ad un articolo, Test o Asset (non parte del contenuto/QTI)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource URI"
+msgstr "Uri Risorse"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource type"
+msgstr "Tipo di risorsa"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "RDF class URI of the target: Item, Test, or Media"
+msgstr "URI di classe RDF del bersaglio: Articolo, Test o Media"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author ID"
+msgstr "Id Autore"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author label"
+msgstr "Etichetta autore"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Comment body"
+msgstr "Corpo del commento"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Created at"
+msgstr "Creato il"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Edited"
+msgstr "Modificato"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment body was edited after creation (1/0)"
+msgstr "Se il corpo del commento è stato modificato dopo la creazione (1/0)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resolved"
+msgstr "Risolto"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment was marked resolved (1/0)"
+msgstr "Se il commento è stato contrassegnato risolto (1/0)"
+
