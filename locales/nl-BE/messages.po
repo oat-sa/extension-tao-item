@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-11-10 14:36\n"
+"PO-Revision-Date: 2026-11-10 16:45\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl_BE\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,10 +20,32 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: Dutch, Belgium\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%d users found"
+msgstr ""
+
+msgid "%s, %d of %d"
+msgstr ""
+
+msgid "1 user found"
+msgstr ""
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
+msgstr ""
+
+msgid "Add a comment"
 msgstr ""
 
 msgid "An error occurred while processing your request."
@@ -32,32 +54,29 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-msgid "and all of its content?"
-msgstr ""
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
-
-msgid "Are you sure you want to delete the class"
 msgstr ""
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
-msgid "Are you sure you want to delete the item"
-msgstr ""
-
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
-
-msgid "Are you sure you want to delete this item?"
 msgstr ""
 
 #, tao-public
 msgid "Authoring"
+msgstr ""
+
+msgid "Be the first to add a comment"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Bulleted list"
+msgstr ""
+
+msgid "Cancel"
 msgstr ""
 
 msgid "Class schema saved"
@@ -69,7 +88,7 @@ msgstr ""
 msgid "Close console"
 msgstr ""
 
-msgid "contains content that is currently in use."
+msgid "Comment formatting"
 msgstr ""
 
 #, tao-public
@@ -82,9 +101,6 @@ msgstr ""
 
 #, tao-public
 msgid "Delete"
-msgstr ""
-
-msgid "Deleting this class will break the"
 msgstr ""
 
 msgid "Deleting this item will break the"
@@ -103,10 +119,19 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
+msgid "Edit"
+msgstr ""
+
+msgid "Edit comment"
+msgstr ""
+
 msgid "Edit Item"
 msgstr ""
 
 msgid "Edit item"
+msgstr ""
+
+msgid "edited"
 msgstr ""
 
 #, tao-public
@@ -116,7 +141,13 @@ msgstr ""
 msgid "Expose the property value to create automated categories."
 msgstr ""
 
+msgid "External previewer load timeout"
+msgstr ""
+
 msgid "Failed retrieving %s"
+msgstr ""
+
+msgid "Failed to get tokens for external previewer"
 msgstr ""
 
 msgid "Forbidden action"
@@ -132,10 +163,16 @@ msgstr ""
 msgid "is currently in use."
 msgstr ""
 
+msgid "Italic"
+msgstr ""
+
 msgid "Item Model"
 msgstr ""
 
 msgid "Item not found"
+msgstr ""
+
+msgid "Item preview"
 msgstr ""
 
 msgid "Item saved"
@@ -158,6 +195,15 @@ msgstr ""
 msgid "Last updated on %2s"
 msgstr ""
 
+msgid "Link"
+msgstr ""
+
+msgid "Loading preview..."
+msgstr ""
+
+msgid "Loading users"
+msgstr ""
+
 msgid "Manage item class schema"
 msgstr ""
 
@@ -172,6 +218,9 @@ msgstr ""
 msgid "Mobile preview"
 msgstr ""
 
+msgid "More actions"
+msgstr ""
+
 #, tao-public
 msgid "Move"
 msgstr ""
@@ -184,19 +233,28 @@ msgstr ""
 msgid "New class"
 msgstr ""
 
-msgid "No item authoring tool available for the selected type of item: %s"
+msgid "No comments yet"
 msgstr ""
 
 msgid "No item type selected for the current item."
 msgstr ""
 
+msgid "No matching users"
+msgstr ""
+
 msgid "Not yet available"
+msgstr ""
+
+msgid "Numbered list"
+msgstr ""
+
+msgid "One or more values cannot be used as automatic test categories."
 msgstr ""
 
 msgid "Only items not used in any test will be deleted."
 msgstr ""
 
-msgid "other"
+msgid "Only users with access to this item can be mentioned."
 msgstr ""
 
 msgid "Please delete the subclasses before."
@@ -206,6 +264,9 @@ msgid "Please select first the item type!"
 msgstr ""
 
 msgid "Portrait"
+msgstr ""
+
+msgid "Post comment"
 msgstr ""
 
 #, tao-public
@@ -222,14 +283,20 @@ msgstr ""
 msgid "Remove this message"
 msgstr ""
 
+msgid "Reopen"
+msgstr ""
+
+msgid "Resolve"
+msgstr ""
+
 msgid "Resource deleted"
 msgstr ""
 
 msgid "Retrieving external resources"
 msgstr ""
 
-msgid "s"
-msgstr ""
+msgid "Save"
+msgstr "Opslaan"
 
 msgid "Some items in the folder "
 msgstr ""
@@ -237,10 +304,22 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-msgid "test"
+msgid "The class"
 msgstr ""
 
-msgid "The class"
+msgid "The comment was not deleted."
+msgstr ""
+
+msgid "The comment was not reopened."
+msgstr ""
+
+msgid "The comment was not resolved."
+msgstr ""
+
+msgid "The comment was not saved."
+msgstr ""
+
+msgid "The comment was not updated."
 msgstr ""
 
 msgid "The file you tried to upload is not valid"
@@ -253,6 +332,9 @@ msgid "The Items module enables the creation and design of items and exercises."
 msgstr ""
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
+msgstr ""
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
 msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
@@ -277,11 +359,29 @@ msgstr ""
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
 
+msgid "Unable to load comments."
+msgstr ""
+
+msgid "Unable to load item preview"
+msgstr ""
+
+msgid "Unable to load users"
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "Unable to upload file"
 msgstr "Kan het bestand niet uploaden"
+
+msgid "Unable to validate automatic test categories."
+msgstr ""
+
+msgid "Underline"
+msgstr ""
+
+msgid "Use @ to mention a TAO user."
+msgstr ""
 
 msgid "using it:"
 msgstr ""
