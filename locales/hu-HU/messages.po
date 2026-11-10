@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:07\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: hu\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,11 +20,33 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: Hungarian\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] "%d egyéb."
+msgstr[1] "%d mások."
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] "%d teszt"
+msgstr[1] "%d tesztek"
+
+msgid "%d users found"
+msgstr "%d felhasználó található"
+
+msgid "%s, %d of %d"
+msgstr "%s, %d a %d-ból"
+
+msgid "1 user found"
+msgstr "1 felhasználót találtunk"
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Megjegyzés</b>: Üres osztályok esetén az RDF formátum<br />az egyetlen elérhető formátum."
 
 msgid "Actual size"
 msgstr "Valós méret"
+
+msgid "Add a comment"
+msgstr "Hozzászólás hozzáadása"
 
 msgid "An error occurred while processing your request."
 msgstr "Hiba történt a kérés feldolgozása során."
@@ -32,33 +54,30 @@ msgstr "Hiba történt a kérés feldolgozása során."
 msgid "and"
 msgstr "és"
 
-msgid "and all of its content?"
-msgstr "és annak minden tartalma?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "jelenleg egy vagy több tesztben használatban vannak, így nem törölhetők:"
-
-msgid "Are you sure you want to delete the class"
-msgstr "Biztosan törölni szeretnéd az osztályt?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Biztosan törölni szeretnéd a(z) %s osztályt és annak teljes tartalmát?"
 
-msgid "Are you sure you want to delete the item"
-msgstr "Biztosan törölni szeretné az elemet?"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr "Biztosan törölni szeretnéd az elemet %s?"
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Biztosan törölni szeretné ezt a kurzust és az összes tartalmát?"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "Biztosan törölni szeretné ezt az elemet?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Szerzői munka"
+
+msgid "Be the first to add a comment"
+msgstr "Légy az első, aki hozzászólást ír"
+
+msgid "Bold"
+msgstr "Bátor"
+
+msgid "Bulleted list"
+msgstr "Felsorolásjeles lista"
+
+msgid "Cancel"
+msgstr "Mégsem"
 
 msgid "Class schema saved"
 msgstr "Osztályséma mentve"
@@ -69,8 +88,8 @@ msgstr "Közeli"
 msgid "Close console"
 msgstr "Konzol bezárása"
 
-msgid "contains content that is currently in use."
-msgstr "jelenleg használatban lévő tartalmat tartalmaz."
+msgid "Comment formatting"
+msgstr "Megjegyzés formázása"
 
 #, tao-public
 msgid "Copy To"
@@ -83,9 +102,6 @@ msgstr "Elemek és gyakorlatok létrehozása és tervezése."
 #, tao-public
 msgid "Delete"
 msgstr "Töröl"
-
-msgid "Deleting this class will break the"
-msgstr "A kurzus törlése tönkreteszi a"
 
 msgid "Deleting this item will break the"
 msgstr "Az elem törlése megszakítja a"
@@ -103,11 +119,20 @@ msgstr "Ezt ne mutasd meg újra!"
 msgid "Duplicate"
 msgstr "Másolat"
 
+msgid "Edit"
+msgstr "Szerkesztés"
+
+msgid "Edit comment"
+msgstr "Hozzászólás szerkesztése"
+
 msgid "Edit Item"
 msgstr "Elem szerkesztése"
 
 msgid "Edit item"
 msgstr "Elem szerkesztése"
+
+msgid "edited"
+msgstr "szerkesztett"
 
 #, tao-public
 msgid "Export"
@@ -116,8 +141,14 @@ msgstr "Export"
 msgid "Expose the property value to create automated categories."
 msgstr "Automatizált kategóriák létrehozásához jelenítse meg a tulajdonság értékét."
 
+msgid "External previewer load timeout"
+msgstr "Külső előnézeti program betöltési időtúllépése"
+
 msgid "Failed retrieving %s"
 msgstr "Sikertelen lekérése %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr "Nem sikerült tokeneket lekérni a külső előnézeti eszközhöz."
 
 msgid "Forbidden action"
 msgstr "Tiltott cselekvés"
@@ -132,11 +163,17 @@ msgstr "Importálás"
 msgid "is currently in use."
 msgstr "jelenleg használatban van."
 
+msgid "Italic"
+msgstr "Dőlt betűs"
+
 msgid "Item Model"
 msgstr "Elem modell"
 
 msgid "Item not found"
 msgstr "A tétel nem található"
+
+msgid "Item preview"
+msgstr "Elem előnézete"
 
 msgid "Item saved"
 msgstr "Elem mentve"
@@ -158,6 +195,15 @@ msgstr "Táj"
 msgid "Last updated on %2s"
 msgstr "Utolsó frissítés: %2s"
 
+msgid "Link"
+msgstr "Link"
+
+msgid "Loading preview..."
+msgstr "Előnézet betöltése..."
+
+msgid "Loading users"
+msgstr "Felhasználók betöltése"
+
 msgid "Manage item class schema"
 msgstr "Elemosztály-séma kezelése"
 
@@ -172,6 +218,9 @@ msgstr "Séma kezelése"
 msgid "Mobile preview"
 msgstr "Mobil előnézet"
 
+msgid "More actions"
+msgstr "További műveletek"
+
 #, tao-public
 msgid "Move"
 msgstr "Mozog"
@@ -184,20 +233,29 @@ msgstr "Áthelyezés ide"
 msgid "New class"
 msgstr "Új osztály"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Nincs elérhető elemszerkesztő eszköz a kiválasztott elemtípushoz: %s"
+msgid "No comments yet"
+msgstr "Még nincsenek hozzászólások"
 
 msgid "No item type selected for the current item."
 msgstr "Nincs elemtípus kiválasztva az aktuális elemhez."
 
+msgid "No matching users"
+msgstr "Nincsenek egyező felhasználók"
+
 msgid "Not yet available"
 msgstr "Még nem elérhető"
+
+msgid "Numbered list"
+msgstr "Számozott lista"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "Egy vagy több érték nem használható automatikus tesztkategóriaként."
 
 msgid "Only items not used in any test will be deleted."
 msgstr "Csak azok az elemek törlődnek, amelyeket nem használtunk fel egyetlen tesztben sem."
 
-msgid "other"
-msgstr "más"
+msgid "Only users with access to this item can be mentioned."
+msgstr "Csak azokat a felhasználókat lehet megemlíteni, akik hozzáférnek ehhez az elemhez."
 
 msgid "Please delete the subclasses before."
 msgstr "Kérlek, előtte töröld az alosztályokat."
@@ -207,6 +265,9 @@ msgstr "Kérjük, először válassza ki a termék típusát!"
 
 msgid "Portrait"
 msgstr "Portré"
+
+msgid "Post comment"
+msgstr "Hozzászólás közzététele"
 
 #, tao-public
 msgid "Preview"
@@ -222,14 +283,20 @@ msgstr "Közzétéve: „%1$s”, nyelv: „%2$s”"
 msgid "Remove this message"
 msgstr "Üzenet eltávolítása"
 
+msgid "Reopen"
+msgstr "Újranyitás"
+
+msgid "Resolve"
+msgstr "Elhatározás"
+
 msgid "Resource deleted"
 msgstr "Erőforrás törölve"
 
 msgid "Retrieving external resources"
 msgstr "Külső erőforrások lekérése"
 
-msgid "s"
-msgstr "sz"
+msgid "Save"
+msgstr "Megtakarítás"
 
 msgid "Some items in the folder "
 msgstr "Néhány elem a mappában "
@@ -237,11 +304,23 @@ msgstr "Néhány elem a mappában "
 msgid "Submit"
 msgstr "Küldés"
 
-msgid "test"
-msgstr "teszt"
-
 msgid "The class"
 msgstr "Az osztály"
+
+msgid "The comment was not deleted."
+msgstr "A hozzászólást nem törölték."
+
+msgid "The comment was not reopened."
+msgstr "A hozzászólást nem nyitották meg újra."
+
+msgid "The comment was not resolved."
+msgstr "A megjegyzés nem került megoldásra."
+
+msgid "The comment was not saved."
+msgstr "A hozzászólás nem lett mentve."
+
+msgid "The comment was not updated."
+msgstr "A hozzászólás nem frissült."
 
 msgid "The file you tried to upload is not valid"
 msgstr "A feltölteni kívánt fájl érvénytelen"
@@ -254,6 +333,9 @@ msgstr "A Tételek modul lehetővé teszi tételek és gyakorlatok létrehozás�
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Az ingatlan kategória-hozzáadásnak van kitéve. Törölje a kitettséget?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "A \"%s\" érték nem használható automatikus tesztkategóriaként."
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Ez az előnézet méretezhető a képernyő méretéhez. A végső megjelenítés eltérhet."
@@ -277,11 +359,29 @@ msgstr "A kiválasztott erőforrás törlése sikertelen"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "A kiválasztott erőforrás nem törölhető, mert nem rendelkezik a szükséges jogosultságokkal a tartalmának egy részének törléséhez."
 
+msgid "Unable to load comments."
+msgstr "Nem sikerült betölteni a megjegyzéseket."
+
+msgid "Unable to load item preview"
+msgstr "Nem sikerült betölteni az elem előnézetét"
+
+msgid "Unable to load users"
+msgstr "Nem sikerült betölteni a felhasználókat"
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Nem sikerült megjeleníteni az elemet innen: %s : %s %s"
 
 msgid "Unable to upload file"
 msgstr "Nem sikerült feltölteni a fájlt"
+
+msgid "Unable to validate automatic test categories."
+msgstr "Nem sikerült érvényesíteni az automatikus tesztkategóriákat."
+
+msgid "Underline"
+msgstr "Aláhúzás"
+
+msgid "Use @ to mention a TAO user."
+msgstr "Használj @ jelet egy TAO felhasználó megemlítéséhez."
 
 msgid "using it:"
 msgstr "használatával:"

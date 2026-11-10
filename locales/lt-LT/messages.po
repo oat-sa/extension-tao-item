@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:07\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: lt\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && (n%100>19 || n%100<11) ? 0 : (n%10>=2 && n%10<=9) && (n%100>19 || n%100<11) ? 1 : n%1!=0 ? 2: 3);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,11 +20,37 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: Lithuanian\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+msgid "%d users found"
+msgstr ""
+
+msgid "%s, %d of %d"
+msgstr ""
+
+msgid "1 user found"
+msgstr ""
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr ""
 
 msgid "Actual size"
 msgstr "Tikrasis dydis"
+
+msgid "Add a comment"
+msgstr ""
 
 msgid "An error occurred while processing your request."
 msgstr ""
@@ -32,33 +58,30 @@ msgstr ""
 msgid "and"
 msgstr ""
 
-msgid "and all of its content?"
-msgstr ""
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
-msgstr ""
-
-msgid "Are you sure you want to delete the class"
 msgstr ""
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
-msgid "Are you sure you want to delete the item"
-msgstr ""
-
 msgid "Are you sure you want to delete the item %s?"
-msgstr ""
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr ""
-
-msgid "Are you sure you want to delete this item?"
 msgstr ""
 
 #, tao-public
 msgid "Authoring"
 msgstr "Redagavimas"
+
+msgid "Be the first to add a comment"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Bulleted list"
+msgstr ""
+
+msgid "Cancel"
+msgstr "Atšaukti"
 
 msgid "Class schema saved"
 msgstr "Klasės schema išsaugota"
@@ -69,7 +92,7 @@ msgstr "Uždaryti"
 msgid "Close console"
 msgstr "Uždaryti konsolę"
 
-msgid "contains content that is currently in use."
+msgid "Comment formatting"
 msgstr ""
 
 #, tao-public
@@ -83,9 +106,6 @@ msgstr "Kurti ir redaguoti laukus ir uždavinius."
 #, tao-public
 msgid "Delete"
 msgstr "Ištrinti"
-
-msgid "Deleting this class will break the"
-msgstr ""
 
 msgid "Deleting this item will break the"
 msgstr ""
@@ -103,11 +123,20 @@ msgstr "Daugiau šito nerodyti!"
 msgid "Duplicate"
 msgstr "Kurti kopiją"
 
+msgid "Edit"
+msgstr "Keisti"
+
+msgid "Edit comment"
+msgstr ""
+
 msgid "Edit Item"
 msgstr "Redaguoti klausimą"
 
 msgid "Edit item"
 msgstr "Redaguoti klausimą"
+
+msgid "edited"
+msgstr ""
 
 #, tao-public
 msgid "Export"
@@ -116,8 +145,14 @@ msgstr ""
 msgid "Expose the property value to create automated categories."
 msgstr "Pateikti nuostatas automatinių kategorijų sukūrimui."
 
+msgid "External previewer load timeout"
+msgstr ""
+
 msgid "Failed retrieving %s"
 msgstr "Nepavyko gauti %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr ""
 
 msgid "Forbidden action"
 msgstr ""
@@ -132,11 +167,17 @@ msgstr "Importuoti"
 msgid "is currently in use."
 msgstr ""
 
+msgid "Italic"
+msgstr ""
+
 msgid "Item Model"
 msgstr "Klausimo modelis"
 
 msgid "Item not found"
 msgstr "Elementas nerastas"
+
+msgid "Item preview"
+msgstr ""
 
 msgid "Item saved"
 msgstr "Klausimas išsaugotas"
@@ -158,6 +199,15 @@ msgstr "Išdėstymas"
 msgid "Last updated on %2s"
 msgstr "Paskutinis atnaujinimas buvo %2s"
 
+msgid "Link"
+msgstr ""
+
+msgid "Loading preview..."
+msgstr ""
+
+msgid "Loading users"
+msgstr ""
+
 msgid "Manage item class schema"
 msgstr "Tvarkyti elemento klasės schemą"
 
@@ -172,6 +222,9 @@ msgstr "Tvarkyti Schemą"
 msgid "Mobile preview"
 msgstr "Mobili peržiūra"
 
+msgid "More actions"
+msgstr ""
+
 #, tao-public
 msgid "Move"
 msgstr "Perkelti"
@@ -184,19 +237,28 @@ msgstr "Perkelti Į"
 msgid "New class"
 msgstr "Nauja klasė"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Nerastas kūrimo įrankis pasirinktam klausimų tipui: %s"
+msgid "No comments yet"
+msgstr ""
 
 msgid "No item type selected for the current item."
 msgstr "Nepasirinktas klausimo tipas šiam klausimui."
 
+msgid "No matching users"
+msgstr ""
+
 msgid "Not yet available"
 msgstr "Vis dar negalimas"
+
+msgid "Numbered list"
+msgstr ""
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr ""
 
 msgid "Only items not used in any test will be deleted."
 msgstr ""
 
-msgid "other"
+msgid "Only users with access to this item can be mentioned."
 msgstr ""
 
 msgid "Please delete the subclasses before."
@@ -207,6 +269,9 @@ msgstr "Prašome pirma pasirinkti klausimo tipą!"
 
 msgid "Portrait"
 msgstr "Portretas"
+
+msgid "Post comment"
+msgstr ""
 
 #, tao-public
 msgid "Preview"
@@ -222,14 +287,20 @@ msgstr ""
 msgid "Remove this message"
 msgstr "Pašalinti šį pranešimą"
 
+msgid "Reopen"
+msgstr ""
+
+msgid "Resolve"
+msgstr ""
+
 msgid "Resource deleted"
 msgstr ""
 
 msgid "Retrieving external resources"
 msgstr "Išorinių resursų gavimas"
 
-msgid "s"
-msgstr ""
+msgid "Save"
+msgstr "Išsaugoti"
 
 msgid "Some items in the folder "
 msgstr ""
@@ -237,10 +308,22 @@ msgstr ""
 msgid "Submit"
 msgstr "Pateikti"
 
-msgid "test"
+msgid "The class"
 msgstr ""
 
-msgid "The class"
+msgid "The comment was not deleted."
+msgstr ""
+
+msgid "The comment was not reopened."
+msgstr ""
+
+msgid "The comment was not resolved."
+msgstr ""
+
+msgid "The comment was not saved."
+msgstr ""
+
+msgid "The comment was not updated."
 msgstr ""
 
 msgid "The file you tried to upload is not valid"
@@ -254,6 +337,9 @@ msgstr "Elementų modulis leidžia kurti ir modeliuoti elementus bei užduotis."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Šis parametras yra rodomas prie naujos kategorijos pridėjimo.&#13Nerodyti ?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Šis rodinys gali būti didinamas arba mažinamas, pritaikant jūsų ekrano dydžiui."
@@ -277,11 +363,29 @@ msgstr ""
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
 
+msgid "Unable to load comments."
+msgstr ""
+
+msgid "Unable to load item preview"
+msgstr ""
+
+msgid "Unable to load users"
+msgstr ""
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Neįmanoma pateikti klausimo nuo %s : %s %s"
 
 msgid "Unable to upload file"
 msgstr "Nepavyko įkelti failo"
+
+msgid "Unable to validate automatic test categories."
+msgstr ""
+
+msgid "Underline"
+msgstr ""
+
+msgid "Use @ to mention a TAO user."
+msgstr ""
 
 msgid "using it:"
 msgstr ""

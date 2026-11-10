@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.09\n"
-"PO-Revision-Date: 2026-09-03T12:49:13\n"
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -28,11 +28,23 @@ msgid "%d test"
 msgid_plural "%d tests"
 msgstr[0] "%d件のテスト"
 
+msgid "%d users found"
+msgstr "%d ユーザが見つかりました"
+
+msgid "%s, %d of %d"
+msgstr ""
+
+msgid "1 user found"
+msgstr "1人のユーザーが見つかりました"
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。"
 
 msgid "Actual size"
 msgstr "実際の大きさ"
+
+msgid "Add a comment"
+msgstr "コメントを追加"
 
 msgid "An error occurred while processing your request."
 msgstr "リクエストの処理中にエラーが発生しました。"
@@ -40,33 +52,30 @@ msgstr "リクエストの処理中にエラーが発生しました。"
 msgid "and"
 msgstr "と"
 
-msgid "and all of its content?"
-msgstr "全ての内容はどうでしょうか?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "フォルダー内のこれらのアイテムは、現在、テストで使用されているため削除できません："
-
-msgid "Are you sure you want to delete the class"
-msgstr "このクラスを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "クラス %s とそのすべての内容を削除してもよろしいですか？"
 
-msgid "Are you sure you want to delete the item"
-msgstr "アイテムを削除してもよろしいですか？"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr "本当に %s を削除してもよろしいですか？"
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "このクラスとその内容をすべて削除してよいのですか？"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "このアイテムを削除してよろしいですか？"
 
 #, tao-public
 msgid "Authoring"
 msgstr "オーサリング"
+
+msgid "Be the first to add a comment"
+msgstr "最初にコメントを追加する"
+
+msgid "Bold"
+msgstr "Bold"
+
+msgid "Bulleted list"
+msgstr "箇条書きリスト"
+
+msgid "Cancel"
+msgstr "キャンセル"
 
 msgid "Class schema saved"
 msgstr "クラススキーマを保存しました"
@@ -77,8 +86,8 @@ msgstr "閉じる"
 msgid "Close console"
 msgstr "コンソールを閉じる"
 
-msgid "contains content that is currently in use."
-msgstr "には、現在使用中のコンテンツが含まれています。"
+msgid "Comment formatting"
+msgstr "コメントの書式設定"
 
 #, tao-public
 msgid "Copy To"
@@ -91,9 +100,6 @@ msgstr "アイテムとエクササイズの作成とデザイン"
 #, tao-public
 msgid "Delete"
 msgstr "削除"
-
-msgid "Deleting this class will break the"
-msgstr "このクラスを削除すると、"
 
 msgid "Deleting this item will break the"
 msgstr "このアイテムを削除すると、以下のテストが破損します。"
@@ -111,11 +117,20 @@ msgstr "以後表示しない！"
 msgid "Duplicate"
 msgstr "複製"
 
+msgid "Edit"
+msgstr "編集"
+
+msgid "Edit comment"
+msgstr "コメントを編集"
+
 msgid "Edit Item"
 msgstr "アイテム編集"
 
 msgid "Edit item"
 msgstr "アイテム編集"
+
+msgid "edited"
+msgstr "編集済み"
 
 #, tao-public
 msgid "Export"
@@ -125,13 +140,13 @@ msgid "Expose the property value to create automated categories."
 msgstr "自動化されたカテゴリを作成するには、プロパティ値を公開します。"
 
 msgid "External previewer load timeout"
-msgstr ""
+msgstr "外部プレビューワーの読み込みタイムアウト"
 
 msgid "Failed retrieving %s"
 msgstr "検索失敗 %s"
 
 msgid "Failed to get tokens for external previewer"
-msgstr ""
+msgstr "外部プレビューア用のトークンを取得できませんでした"
 
 msgid "Forbidden action"
 msgstr "禁止アクション"
@@ -146,6 +161,9 @@ msgstr "インポート"
 msgid "is currently in use."
 msgstr "は、現在使用中です。"
 
+msgid "Italic"
+msgstr "Italic"
+
 msgid "Item Model"
 msgstr "アイテムも出る"
 
@@ -153,7 +171,7 @@ msgid "Item not found"
 msgstr "アイテムが見つかりません"
 
 msgid "Item preview"
-msgstr ""
+msgstr "アイテムのプレビュー"
 
 msgid "Item saved"
 msgstr "アイテムが保存されました"
@@ -175,8 +193,14 @@ msgstr "横に長く"
 msgid "Last updated on %2s"
 msgstr "最終更新日： %2s"
 
+msgid "Link"
+msgstr "リンク"
+
 msgid "Loading preview..."
-msgstr ""
+msgstr "プレビューを読み込み中..."
+
+msgid "Loading users"
+msgstr "ユーザーを読み込み中"
 
 msgid "Manage item class schema"
 msgstr "スキーマ管理"
@@ -192,6 +216,9 @@ msgstr "スキーム管理"
 msgid "Mobile preview"
 msgstr "モバイルプレビュー"
 
+msgid "More actions"
+msgstr "その他のアクション"
+
 #, tao-public
 msgid "Move"
 msgstr "移動"
@@ -204,20 +231,29 @@ msgstr "移動"
 msgid "New class"
 msgstr "新規クラス"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "選択されたタイプのアイテムを編集するツールがありません：%s"
+msgid "No comments yet"
+msgstr "コメントはまだありません"
 
 msgid "No item type selected for the current item."
 msgstr "該当アイテムのタイプが選ばれていません。"
 
+msgid "No matching users"
+msgstr "一致するユーザーがありません"
+
 msgid "Not yet available"
 msgstr "現在利用できません"
+
+msgid "Numbered list"
+msgstr "番号付きリスト"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "1つ以上の値は自動テストカテゴリとして使用できません。"
 
 msgid "Only items not used in any test will be deleted."
 msgstr "テストで使用されていないアイテムだけが削除されます。"
 
-msgid "other"
-msgstr "(その他)"
+msgid "Only users with access to this item can be mentioned."
+msgstr "このアイテムへのアクセス権を持つユーザーだけに言及することができます。"
 
 msgid "Please delete the subclasses before."
 msgstr "前にサブクラスを削除してください。"
@@ -227,6 +263,9 @@ msgstr "最初のアイテムタイプを選択してください！"
 
 msgid "Portrait"
 msgstr "縦長"
+
+msgid "Post comment"
+msgstr "コメントを投稿"
 
 #, tao-public
 msgid "Preview"
@@ -242,14 +281,20 @@ msgstr "言語 \"%2$sで\"%1$s\" が公開されました。"
 msgid "Remove this message"
 msgstr "このメッセージを除く"
 
+msgid "Reopen"
+msgstr "再オープン"
+
+msgid "Resolve"
+msgstr "解決"
+
 msgid "Resource deleted"
 msgstr "リソースが削除されました"
 
 msgid "Retrieving external resources"
 msgstr "外部リソース検索中"
 
-msgid "s"
-msgstr " "
+msgid "Save"
+msgstr "保存"
 
 msgid "Some items in the folder "
 msgstr "【注意】"
@@ -257,11 +302,23 @@ msgstr "【注意】"
 msgid "Submit"
 msgstr "送信"
 
-msgid "test"
-msgstr "テスト"
-
 msgid "The class"
 msgstr "クラス"
+
+msgid "The comment was not deleted."
+msgstr "コメントは削除されていません。"
+
+msgid "The comment was not reopened."
+msgstr "コメントは再開されませんでした。"
+
+msgid "The comment was not resolved."
+msgstr "コメントは解決されませんでした。"
+
+msgid "The comment was not saved."
+msgstr "コメントは保存されませんでした。"
+
+msgid "The comment was not updated."
+msgstr "コメントは更新されませんでした。"
 
 msgid "The file you tried to upload is not valid"
 msgstr "アップロードしようとしたファイルは無効です。"
@@ -274,6 +331,9 @@ msgstr "アイテムとエクササイズの作成とデザインがアイテム
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove exposition ?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "値 \"%s\" は自動テストカテゴリとして使用できません。"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
@@ -297,14 +357,29 @@ msgstr "選択したリソースを削除できません"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "コンテンツの一部を削除するために必要な権限がないため、選択したリソースを削除できません。"
 
+msgid "Unable to load comments."
+msgstr "コメントを読み込めません。"
+
 msgid "Unable to load item preview"
-msgstr ""
+msgstr "アイテムのプレビューを読み込むことができません"
+
+msgid "Unable to load users"
+msgstr "ユーザーを読み込めません"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "%s からアイテムをレンダリングできません: %s %s"
 
 msgid "Unable to upload file"
 msgstr "ファイルをアップロードできません"
+
+msgid "Unable to validate automatic test categories."
+msgstr "自動テストカテゴリを検証できません。"
+
+msgid "Underline"
+msgstr "アンダーライン"
+
+msgid "Use @ to mention a TAO user."
+msgstr "@を使用してTAOユーザーをメンションします。"
 
 msgid "using it:"
 msgstr "で使用中です。"
