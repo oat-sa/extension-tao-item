@@ -36,6 +36,9 @@ define([
         getExposedsByClass : {
             url : url.route('getExposedsByClass', 'Category', 'taoItems')
         },
+        getInvalidExposedCategories : {
+            url : url.route('getInvalidExposedCategories', 'Category', 'taoItems')
+        },
         setExposed : {
             url : url.route('setExposed', 'Category', 'taoItems')
         }
@@ -70,6 +73,21 @@ define([
                     }
 
                     return resolve(request(config.getExposedsByClass.url, { id : id }));
+                });
+            },
+
+            /**
+             * Get invalid values from exposed properties for an item.
+             * @param {String} id - the item URI
+             * @returns {Promise} that resolves with invalid values by property URI.
+             */
+            getInvalidExposedCategories: function getInvalidExposedCategories(id) {
+                return new Promise(function(resolve, reject) {
+                    if (!id) {
+                        return reject(new TypeError('The item URI is required.'));
+                    }
+
+                    return resolve(request(config.getInvalidExposedCategories.url, { id: id }));
                 });
             },
 
